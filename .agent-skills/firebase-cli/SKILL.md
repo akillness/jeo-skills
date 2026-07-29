@@ -11,7 +11,7 @@ description: >
   firebase app distribution, firebase extensions, firebase apphosting, firebase dataconnect,
   firebase cli, firebase-tools, deploy firebase, firebase preview channel, firebase login,
   firebase use, firebase target apply. Route backend AI workflow orchestration to `genkit`
-  and direct in-app SDK integration to `firebase-ai-logic`.
+  and direct in-app SDK integration to `genkit` (`client-ai-logic` mode).
 allowed-tools: Bash Read Write Edit Glob Grep WebFetch
 metadata:
   tags: firebase, firebase-cli, firebase-tools, deploy, hosting, functions, firestore, database, emulators, auth, remote-config, app-distribution, extensions, apphosting, dataconnect
@@ -38,7 +38,7 @@ metadata:
 ## When not to use this skill
 
 - The main job is **backend AI workflow orchestration, tools, flows, RAG, evals, or observability** inside Firebase / Google AI products → use `genkit`
-- The main job is **direct app/client SDK integration** for Gemini-powered in-app features → use `firebase-ai-logic`
+- The main job is **direct app/client SDK integration** for Gemini-powered in-app features → use `genkit` (`client-ai-logic` mode)
 - The main job is **auth stack choice and product auth architecture** rather than Firebase CLI execution → use `authentication-setup`
 - The main job is **schema/index design** rather than Firebase CLI commands → use `database-schema-design`
 - The main job is **generic rollout strategy across providers** instead of Firebase-specific operator commands → use `deployment-automation`
@@ -107,7 +107,7 @@ Start by routing the request into one of these modes:
 ### Step 4: Route out aggressively when the job changed shape
 
 Use `firebase-cli` as the operator anchor, but hand off when the work is really about:
-- app/client Gemini SDK feature wiring → `firebase-ai-logic`
+- app/client Gemini SDK feature wiring → `genkit` (`client-ai-logic` mode)
 - flow/tool/RAG/eval orchestration → `genkit`
 - auth-model product decisions → `authentication-setup`
 - schema/index modeling → `database-schema-design`
@@ -184,7 +184,7 @@ Decision:
 3. **Scope deploys tightly** — `--only` and preview channels reduce accidental blast radius
 4. **Keep repo config explicit** — `firebase.json`, `.firebaserc`, and target mappings should match the repo’s real deploy surfaces
 5. **Use persistence intentionally in emulator work** — import/export directories make local debugging and tests repeatable
-6. **Separate Firebase operator work from app/AI logic work** — route to `firebase-ai-logic` or `genkit` when the CLI is no longer the main job
+6. **Separate Firebase operator work from app/AI logic work** — route to `genkit` (`client-ai-logic` mode) or `genkit` when the CLI is no longer the main job
 7. **Treat destructive admin commands as high-risk** — confirm paths, versions, and resource IDs before delete/rollback/import operations
 
 ## References

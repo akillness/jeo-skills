@@ -67,7 +67,7 @@ Next move:
 Treat these as legitimate alternatives, not failures:
 
 1. **Direct Firebase app/client integration**
-   - Best fit: `firebase-ai-logic`
+   - Best fit: `genkit` (`client-ai-logic` mode)
    - Use when the job is in-app/mobile/web SDK usage, App Check-aware clients, or direct Gemini features in the product surface.
 
 2. **Plain provider SDK + route handler**

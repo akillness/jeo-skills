@@ -2,47 +2,16 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-191-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
-**191개 로컬 스킬 폴더 · 설치 가능 스킬 191개 · TOON 포맷 · 멀티플랫폼**
-Claude, Gemini, Codex, Cursor, OpenCode, [jeopi](https://github.com/akillness/jeopi)를 위한 191개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
-> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 191개 로컬 스킬 폴더 = 총 191개 설치 가능 스킬
-### 🎬 창의 미디어 (19개)
-
-| `aura-asset-images` |
-| `browser-video-recording` |
-| `drawio` |
-| `elevenlabs-tts` |
-| `gbro-collage-broll` |
-| `generate-reference-inspired-brand-worlds` |
-| `video-motion-previs` |
-
-| `open-design-game-ui-concept` |
-| `open-design-game-ui-handoff` |
-| `open-design-game-ui-takeover` |
-| `paperbanana` |
-| `remotion-video-production` |
-| `slides-grab` |
-| `unsplash-asset-images` |
-| `video-production` |
-| `video-shotcraft` |
-| `video-to-superprompt` |
-| `vox-director` |
-| `webtoon-harness` |
-
-├── .agent-skills/          ← 191개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
-
+[![Skills](https://img.shields.io/badge/Skills-192-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
-[![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
-[![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**191개 로컬 스킬 폴더 · 설치 가능 스킬 191개 · TOON 포맷 · 멀티플랫폼**
-Claude, Gemini, Codex, Cursor, OpenCode, [jeopi](https://github.com/akillness/jeopi)를 위한 191개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
-> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 191개 로컬 스킬 폴더 = 총 191개 설치 가능 스킬
-├── .agent-skills/          ← 191개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
+**카테고리형 스킬 192개 · 경량 선택 설치 · 압축 TOON 카탈로그 · 멀티플랫폼**
 
+스펙 우선 멀티 에이전트 LLM 워크플로우 컬렉션입니다. `jeo-skill` 라우터를 먼저
+설치한 다음 필요한 웹, 인프라, 게임, 미디어, CLI, 유틸리티 스킬만 추가합니다.
 
-[빠른 시작](#-빠른-시작) · [스킬 목록](#-스킬-목록) · [설치](#-설치) · [English](README.md)
+[빠른 시작](#-경량-설치) · [스킬 목록](#-스킬-목록) · [English](README.md)
 
 </div>
 
@@ -50,11 +19,9 @@ Claude, Gemini, Codex, Cursor, OpenCode, [jeopi](https://github.com/akillness/je
 
 ## 💡 Agent Skills란?
 
-Claude, Gemini, Codex, Cursor, OpenCode, [jeopi](https://github.com/akillness/jeopi)를 위한 191개 스킬 컬렉션 — 스펙 우선, 멀티 에이전트, 크로스 플랫폼.
-> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 191개 로컬 스킬 폴더 = 총 191개 설치 가능 스킬
-├── .agent-skills/          ← 191개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
-
-
+각 스킬은 `.agent-skills/<name>/SKILL.md` 경로로 그대로 검색됩니다. 카테고리,
+하위 분류, 인터페이스, 번들, 연관 관계는 `.agent-skills/skills.json` 한 곳에서
+관리하므로 중복 래퍼 폴더를 만들거나 런타임 경로를 옮기지 않아도 됩니다.
 ## 🎮 Jeo 에이전트와 전설의 장비 세트
 
 `jeo-skills`는 `@../jeo-code` 스펙 우선 Socratic AI 코딩 에이전트인 **Jeo**(`jeo`)의 전설적인 장비 세트 역할을 합니다. 각 핵심 스킬은 복잡한 코드베이스를 안전하고 효율적으로 정복할 수 있도록 Jeo에게 강력한 도구를 장착해 줍니다.
@@ -101,199 +68,77 @@ curl -s https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-sk
 ---
 
 
-## 📦 설치
+## 📦 경량 설치
 
-> **크로스 플랫폼**: macOS, Linux, Windows(Git Bash / WSL2) 모두 지원합니다. LLM 설치 프롬프트가 OS를 자동 감지하여 적합한 패키지 매니저(`brew` / `snap` / `winget`)와 경로(`$HOME` / `$USERPROFILE` / `$XDG_DATA_HOME`)를 선택합니다.
-
-### ✨ 권장: LLM 위임 설치 (프롬프트 하나로 전 플랫폼 자동 처리)
-
-설치 프롬프트를 사용 중인 코딩 에이전트(Claude Code, Codex, Gemini CLI, …)에 그대로 건네세요. 에이전트가 가이드를 읽고 OS를 감지해 `skills` CLI를 설치하고, 모든 스킬을 에이전트별 올바른 경로에 추가하며, MCP/셸 도구까지 등록합니다 — 수동 단계가 없습니다.
+192개 스킬 폴더 전체가 아니라 **`jeo-skill` 라우터부터 설치**합니다. 카테고리,
+하위 분류, 인터페이스, 번들, 연관 스킬을 탐색할 수 있으며 앱·모델·MCP 서버·런타임은
+실제 선택된 작업에서만 온디맨드로 설치합니다.
 
 ```bash
-# 위임 가이드를 가져와 에이전트에게 전달
-curl -s https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-skills-prompt.md
+# 공유 글로벌 경로에 가벼운 스킬 하나만 설치
+npx --yes skills add https://github.com/akillness/jeo-skills \
+  --skill jeo-skill --global --agent universal --yes --copy --full-depth
+
+python3 "$HOME/.agents/skills/jeo-skill/scripts/jeo-skill.py" link
+jeo-skill doctor
 ```
 
-또는 에이전트 채팅창에 URL을 그대로 붙여넣으세요:
-
-> `https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-skills-prompt.md` 를 전부 읽고 그대로 따라 jeo-skills를 설치해줘.
-
-에이전트는 기본적으로 **전체 설치(full install)** 를 수행하며("core only" 또는 "minimal"이라고 하면 범위를 좁힙니다) 다음을 처리합니다:
-
-- macOS / Linux / Windows를 감지해 `brew` / `snap` / `winget`과 알맞은 설치 경로 선택,
-- `skills` CLI 설치 및 올바른 `-a` 에이전트 타게팅으로 스킬 추가(플랫폼 스킬 중복 노출 방지),
-- MCP 도구(`ooo`, `semble`), 셸 도구(`rtk`), `oh-my-claudecode` 플러그인 등록,
-- **기존 스킬 보존** — 추가/갱신만 하고 절대 삭제하지 않음.
-
----
-
-### 수동 설치 (고급 / CI / 에이전트 없는 환경)
-
-루프에 에이전트가 없는 스크립트·CI 환경에서는 단계를 직접 실행하세요.
-
-#### 0단계: `skills` CLI 설치
+필요한 범위를 먼저 탐색하고 미리 확인합니다.
 
 ```bash
-npm install -g skills
-skills --version
+jeo-skill categories
+jeo-skill list --category web --subcategory frontend
+jeo-skill list --category game --subcategory motion-vfx
+jeo-skill related code-review
+jeo-skill install --bundle web-frontend --dry-run
 ```
 
-#### 범위와 경로
-
-Vercel `skills` CLI는 GitHub 축약명, 전체 Git URL, 저장소 내부 특정 스킬 경로, 로컬 폴더를 모두 설치 소스로 받을 수 있습니다.
+검토한 스킬이나 번들만 설치합니다.
 
 ```bash
-# 프로젝트 설치: 현재 저장소의 에이전트 스킬 폴더에 설치
-npx skills add https://github.com/akillness/jeo-skills --skill deepinit --skill deep-dive
-
-# 글로벌 설치: 해당 에이전트에서 모든 프로젝트에 사용
-npx skills add -g https://github.com/akillness/jeo-skills --skill deepinit --skill deep-dive
-
-# 특정 에이전트 대상으로 설치
-npx skills add -g https://github.com/akillness/jeo-skills --skill deepinit --skill deep-dive -a claude-code -a codex -y
+jeo-skill install responsive-design react-best-practices --global --yes
+jeo-skill install --bundle game-web --global --yes
 ```
 
-| OS / 셸 | 글로벌 예시 | 프로젝트 예시 |
-|---------|-------------|---------------|
-| macOS / Linux | `$HOME/.claude/skills/`, `$HOME/.codex/skills/`, `$HOME/.gemini/skills/`, `$HOME/.config/opencode/skills/`, `$HOME/.agents/skills/`, `$HOME/.jeopi/agent/skills/`, `$HOME/.jeo/agent/skills/` | `.claude/skills/`, `.agents/skills/`, `.jeopi/skills/`, `.jeo/skills/` |
-| Windows PowerShell | `$env:USERPROFILE\.claude\skills\`, `$env:USERPROFILE\.codex\skills\`, `$env:USERPROFILE\.gemini\skills\`, `$env:APPDATA\opencode\skills\`, `$env:USERPROFILE\.agents\skills\`, `$env:USERPROFILE\.jeopi\agent\skills\`, `$env:USERPROFILE\.jeo\agent\skills\` | `.claude\skills\`, `.agents\skills\`, `.jeopi\skills\`, `.jeo\skills\` |
-| Windows Git Bash / WSL2 | `$HOME/.claude/skills/`, `$HOME/.codex/skills/`, `$HOME/.gemini/skills/`, `$HOME/.config/opencode/skills/`, `$HOME/.agents/skills/`, `$HOME/.jeopi/agent/skills/`, `$HOME/.jeo/agent/skills/` | `.claude/skills/`, `.agents/skills/`, `.jeopi/skills/`, `.jeo/skills/` |
-
-프로젝트 범위가 기본값이며 팀과 공유해야 하는 스킬은 커밋합니다. 글로벌 범위는 `-g`를 붙이며 개인 기본값에 적합합니다. `-a`로 에이전트별 경로를 고르고, 이식 가능한 공통 계층은 `.agents/skills/`입니다.
-
-> **`opencode`라는 이름의 제품은 두 개입니다.** `sst/opencode`([opencode.ai](https://opencode.ai))는 네이티브 스킬
-> 로더가 있어 `~/.config/opencode/skills/`, `~/.claude/skills/`, `~/.agents/skills/`를 모두 읽으므로 `-a opencode`든
-> 일반 글로벌 설치든 그대로 동작합니다. [`opencode-ai/opencode`](https://github.com/opencode-ai/opencode)는
-> [charmbracelet/crush](https://github.com/charmbracelet/crush)로 이어진 아카이브된 Go TUI로 스킬 로더가 **없어서**,
-> [setup-all-skills-prompt.md](setup-all-skills-prompt.md)의 Step 2b가 `~/.opencode/commands/jeo/`에 커스텀 커맨드
-> (`user:jeo:<skill>`)로 브리지합니다.
-> [oh-my-openagent](https://github.com/code-yeongyu/oh-my-openagent)(구 `oh-my-opencode`)는 sst/opencode 로더 위에서
-> 동작합니다 — OpenCode는 `bunx oh-my-openagent install`, Codex Light 에디션은 `npx lazycodex-ai install`.
-
-#### 플랫폼별 선택
+원라인 설치기도 같은 경량 기본값을 사용합니다.
 
 ```bash
-# Claude Code
-npx skills add https://github.com/akillness/jeo-skills \
-  --skill plannotator --skill agentation --skill ooo
-
-# Gemini CLI
-npx skills add https://github.com/akillness/jeo-skills \
-  --skill ooo --skill deep-dive
-antigravity extensions install https://github.com/akillness/jeo-skills
-
-# Codex CLI
-npx skills add https://github.com/akillness/jeo-skills \
-  --skill ooo --skill harness
-
-# jeopi — `-a` 지정 불필요: jeopi는 ~/.agents/skills 와
-# .claude/.codex/.config/opencode 스킬 디렉터리를 네이티브로 자동 발견하므로 글로벌 설치만으로 충분합니다.
-npx skills add -g https://github.com/akillness/jeo-skills \
-  --skill deep-research --skill god-tibo-imagen --skill perfectpixel
-# jeopi/jeo 전용 고정 설치(선택): ~/.jeopi/agent/skills/<skill> (글로벌) 또는 .jeopi/skills/<skill> (프로젝트) [.jeo도 동일]
+curl -fsSL https://raw.githubusercontent.com/akillness/jeo-skills/main/install.sh | bash
 ```
 
-#### 핵심 도구 설정 (전 플랫폼 공통)
+`JEO_SKILLS_SELECTION=bundle`, `category`, `all`은 더 넓은 범위가 의도된 경우에만
+지정합니다. 에이전트 위임·선택 설치·명시적 전체 설치 방법은
+[setup-all-skills-prompt.md](setup-all-skills-prompt.md)를 참고하세요.
+
+### 온디맨드 비디오 모션 프리비스
+
+`video-motion-previs`는 CLI 우선 모션 워크플로우를 유지합니다. 데스크톱 앱과
+모델/런타임 자산은 실제 모션 작업에서 필요할 때만 설치합니다.
 
 ```bash
-# ooo MCP — 스펙 우선 제어 루프
-pip install "ouroboros-ai[all]"
-claude mcp add ooo -s user -- ouroboros mcp      # Claude Code
-# Codex: setup-all-skills-prompt.md 실행 시 ~/.codex/config.toml 에 [mcp_servers.ooo] 추가
-# (Codex CLI는 TOML 만 읽음 — 이전 mcp.json 방식은 무음 무효 처리되던 버그였음)
-
-# semble MCP — 토큰 효율 코드 검색
-claude mcp add semble -s user -- uvx --from "semble[mcp]" semble
-
-# rtk — 토큰 최적화 셸 출력
-# macOS: brew install rtk  |  Linux: cargo install rtk  |  Windows: winget install rtk
-rtk init -g
-
-```
-
-#### 온디맨드 비디오 모션 프리비스 CLI
-
-`video-motion-previs`는 Motion Previs Studio v4를 위한 가벼운 CLI 진입점입니다. 패키지 앱이나 소스 체크아웃이 이미 있는지 먼저 확인하고, 래퍼를 PATH에 연결한 뒤 localhost 전용 토큰 보호 제어 API로 실행 중인 앱을 조작합니다.
-
-```bash
-npx skills add https://github.com/akillness/jeo-skills --skill video-motion-previs
-node ~/.agents/skills/video-motion-previs/scripts/video-motion-previs.mjs link
+jeo-skill install video-motion-previs --global --yes
 video-motion-previs check
-video-motion-previs launch
-video-motion-previs state
 ```
-
-앱과 모델/런타임 자산은 실제로 필요할 때만 설치합니다. 전체 스킬 설치 과정은 무거운 데스크톱 앱을 강제 설치하지 않고 작은 CLI 래퍼만 연결합니다.
-
 ---
 
 ## 📚 스킬 목록
 
-> 전체 매니페스트: `.agent-skills/skills.json` · 각 폴더의 `SKILL.md` · 191개 로컬 스킬 폴더 = 총 191개 설치 가능 스킬
-├── .agent-skills/          ← 191개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
+> 중앙 매니페스트: `.agent-skills/skills.json` · 192개 스킬 · 10개 기본 카테고리 · 하위 카테고리/인터페이스/관계 그룹 지원
 
-### 🎯 핵심 오케스트레이션 (7개)
+### 🌐 웹 (44개)
 
-| 스킬 |
-|------|
-| `bmad` |
-| `bmad-gds` |
-| `bmad-idea` |
-| `deep-dive` |
-| `deepinit` |
-| `spec-kit` |
-| `survey` |
+하위 분류: `frontend` (4), `backend` (3), `design` (11), `api` (2), `auth` (1), `data` (4), `testing` (3), `accessibility` (1), `performance` (1), `graphics` (10), `capture` (4)
 
-### 📋 계획 및 검토 (12개)
-
-| 스킬 |
-|------|
-| `agentation` |
-| `agentic-skills` |
-| `browser-harness` |
-| `grill-me` |
-| `grill-with-docs` |
-| `microsoft-agent-framework` |
-| `openai-agents-python` |
-| `plannotator` |
-| `playwriter` |
-| `to-issues` |
-| `to-prd` |
-| `triage` |
-
-### 🤖 에이전트 개발 (6개)
-
-| 스킬 |
-|------|
-| `article-prompts-to-skills` |
-| `cli-anything` |
-| `openspace` |
-| `prompts-chat` |
-| `skill-standardization` |
-| `upskill` |
-
-### ⚙️ 백엔드 (11개)
-
-| 스킬 |
-|------|
-| `amrouter` |
-| `api-design` |
-| `api-documentation` |
-| `authentication-setup` |
-| `backend-testing` |
-| `colibri` |
-| `database-schema-design` |
-| `payloadcms` |
-| `pydantic-ai` |
-| `supabase-agent-skills` |
-| `typesense` |
-
-### 🎨 프론트엔드 (27개)
-
-| 스킬 |
-|------|
-| `astryx` |
+| Skill |
+|---|
 | `ax` |
+| `react-best-practices` |
+| `react-bits` |
+| `state-management` |
+| `amrouter` |
+| `colibri` |
+| `pydantic-ai` |
+| `astryx` |
 | `build-daily-inspiration-sites` |
 | `daily-ui-inspiration-capture` |
 | `design-first-ui-prompting` |
@@ -301,12 +146,21 @@ video-motion-previs state
 | `devup-ui` |
 | `html-to-interaction-prompts` |
 | `lazyweb` |
-| `optimize-web-animations` |
-| `react-best-practices` |
-| `react-bits` |
-| `react-grab` |
 | `responsive-design` |
-| `state-management` |
+| `stitch-skills` |
+| `web-design` |
+| `api-design` |
+| `api-documentation` |
+| `authentication-setup` |
+| `database-schema-design` |
+| `payloadcms` |
+| `supabase-agent-skills` |
+| `typesense` |
+| `backend-testing` |
+| `browser-harness` |
+| `playwriter` |
+| `web-accessibility` |
+| `optimize-web-animations` |
 | `threejs-animation` |
 | `threejs-fundamentals` |
 | `threejs-geometry` |
@@ -317,182 +171,221 @@ video-motion-previs state
 | `threejs-postprocessing` |
 | `threejs-shaders` |
 | `threejs-textures` |
-| `web-accessibility` |
-| `web-design` |
+| `agentation` |
+| `react-grab` |
+| `slides-grab` |
+| `stitched-full-page-capture` |
 
-### 🔍 코드 품질 (14개)
+### 🏗 인프라 (11개)
 
-| 스킬 |
-|------|
+하위 분류: `deployment` (2), `environment` (2), `observability` (2), `security` (2), `cloud-data` (3), `automation` (0), `tooling` (0)
+
+| Skill |
+|---|
+| `deployment-automation` |
+| `vercel-deploy` |
+| `environment-setup` |
+| `system-environment-setup` |
+| `log-analysis` |
+| `monitoring-observability` |
+| `security-best-practices` |
+| `strix` |
+| `firebase-cli` |
+| `genkit` |
+| `looker-studio-bigquery` |
+
+### 🎮 게임 (19개)
+
+하위 분류: `client` (2), `web` (2), `server` (0), `design-ui` (4), `audio` (1), `animation` (0), `motion-vfx` (2), `sprite-image` (1), `art-resources` (0), `storytelling` (0), `tooling` (2), `qa-performance` (3), `release` (2)
+
+| Skill |
+|---|
+| `implement-fog-of-war` |
+| `unity-gamedev-skill-pack` |
+| `agentic-gamedev-skills` |
+| `web-game-development` |
+| `bmad-gds` |
+| `open-design-game-ui-concept` |
+| `open-design-game-ui-handoff` |
+| `open-design-game-ui-takeover` |
+| `rfxgen` |
+| `dalamud-vfx-editor` |
+| `game-vfx` |
+| `perfectpixel` |
+| `game-studio-harness` |
+| `underworld-overseer-save-mapper` |
+| `game-build-log-triage` |
+| `game-demo-feedback-triage` |
+| `game-performance-profiler` |
+| `game-ci-cd-pipeline` |
+| `steam-store-launch-ops` |
+
+### 🎬 크리에이티브 미디어 (19개)
+
+하위 분류: `image` (5), `video` (8), `motion` (1), `audio` (1), `presentation` (1), `diagram` (1), `design` (1), `capture` (0), `storytelling` (1)
+
+| Skill |
+|---|
+| `aura-asset-images` |
+| `generate-reference-inspired-brand-worlds` |
+| `god-tibo-imagen` |
+| `paperbanana` |
+| `unsplash-asset-images` |
+| `browser-video-recording` |
+| `gbro-collage-broll` |
+| `opencut` |
+| `remotion-video-production` |
+| `video-production` |
+| `video-shotcraft` |
+| `video-to-superprompt` |
+| `vox-director` |
+| `video-motion-previs` |
+| `elevenlabs-tts` |
+| `presentation-builder` |
+| `drawio` |
+| `open-design` |
+| `webtoon-harness` |
+
+### ⌨️ CLI 도구 (24개)
+
+하위 분류: `developer-cli` (6), `ai-cli` (7), `media-cli` (1), `automation-cli` (6), `search-cli` (3), `benchmark-cli` (1)
+
+| Skill |
+|---|
+| `caveman` |
+| `ccpi-marketplace` |
+| `cli-anything` |
+| `ghgrab` |
+| `jeo-skill` |
+| `pretext` |
+| `aider-cli-workflow` |
+| `claudekit` |
+| `fabric` |
+| `ooo` |
+| `open-code-review` |
+| `ponytail` |
+| `zeude` |
+| `compresso` |
+| `codeflow` |
+| `graphify` |
+| `npm-git-install` |
+| `okf` |
+| `rtk` |
+| `tokhub` |
+| `scrapling` |
+| `semble` |
+| `x-twitter-scraper` |
+| `hyperfine-benchmarking` |
+
+### 🤖 AI 및 에이전트 (25개)
+
+하위 분류: `orchestration` (4), `agent-frameworks` (2), `skill-authoring` (4), `evaluation` (3), `planning-review` (8), `discovery` (1), `prompting` (3)
+
+| Skill |
+|---|
+| `bmad` |
+| `deep-dive` |
+| `deepinit` |
+| `spec-kit` |
+| `microsoft-agent-framework` |
+| `openai-agents-python` |
+| `article-prompts-to-skills` |
+| `skill-standardization` |
+| `upskill` |
+| `write-a-skill` |
+| `langsmith` |
+| `opik` |
+| `skill-autoresearch` |
+| `bmad-idea` |
+| `grill-me` |
+| `grill-with-docs` |
+| `plannotator` |
+| `survey` |
+| `to-issues` |
+| `to-prd` |
+| `triage` |
+| `openspace` |
+| `agentic-skills` |
+| `agenticskills` |
+| `prompts-chat` |
+
+### 🧰 엔지니어링 (19개)
+
+하위 분류: `code-quality` (10), `testing` (4), `architecture` (2), `documentation` (2), `code-navigation` (1)
+
+| Skill |
+|---|
 | `audit-reference-originality` |
 | `audit-verify-explain-grade-5` |
 | `code-refactoring` |
 | `code-review` |
 | `debugging` |
 | `diagnose` |
-| `improve-codebase-architecture` |
+| `github-repo-candidate-quality-gate` |
 | `migrate-to-shoehorn` |
-| `open-code-review` |
 | `performance-optimization` |
 | `performance-profiling` |
+| `harness` |
+| `scaffold-exercises` |
 | `tdd` |
 | `testing-strategies` |
+| `improve-codebase-architecture` |
 | `zoom-out` |
-
-### 🏗 인프라 (12개)
-
-| 스킬 |
-|------|
-| `deployment-automation` |
-| `environment-setup` |
-| `firebase-cli` |
-| `genkit` |
-| `looker-studio-bigquery` |
-| `monitoring-observability` |
-| `rtk` |
-| `scrapling` |
-| `security-best-practices` |
-| `strix` |
-| `system-environment-setup` |
-| `vercel-deploy` |
-
-### 📝 문서화 (4개)
-
-| 스킬 |
-|------|
 | `changelog-maintenance` |
-| `presentation-builder` |
-| `research-paper-writing` |
 | `technical-writing` |
+| `codebase-search` |
 
-### 📊 프로젝트 관리 (4개)
+### 🔭 연구 및 분석 (9개)
 
-| 스킬 |
-|------|
+하위 분류: `academic` (2), `web-research` (2), `data-analysis` (2), `experimentation` (1), `benchmarking` (1), `intelligence` (1)
+
+| Skill |
+|---|
+| `academic-research` |
+| `research-paper-writing` |
+| `deep-research` |
+| `heretic` |
+| `data-analysis` |
+| `pattern-detection` |
+| `autoresearch` |
+| `scientific-llm-benchmarks` |
+| `agent-pulse` |
+
+### 📣 비즈니스 (6개)
+
+하위 분류: `marketing` (3), `support` (2), `publishing` (1)
+
+| Skill |
+|---|
+| `marketing-automation` |
+| `write-like-meng-on-x` |
+| `x-bookmark-quote-posts` |
+| `customer-email-draft-threads` |
+| `customer-support-verification` |
+| `yuwen-publish-precheck` |
+
+### 🔧 유틸리티 (16개)
+
+하위 분류: `knowledge` (6), `files` (1), `git` (3), `workspace` (1), `project-management` (4), `productivity` (1), `general` (0)
+
+| Skill |
+|---|
+| `lapian-notes` |
+| `llm-wiki` |
+| `notebooklm` |
+| `obsidian-mind` |
+| `obsidian-second-brain` |
+| `opencontext` |
+| `file-organization` |
+| `git-guardrails-claude-code` |
+| `git-submodule` |
+| `git-workflow` |
+| `game-sounds` |
 | `sprint-retrospective` |
 | `standup-meeting` |
 | `task-estimation` |
 | `task-planning` |
-
-### 🔭 검색 및 분석 (14개)
-
-| 스킬 |
-|------|
-| `academic-research` |
-| `agent-pulse` |
-| `autoresearch` |
-| `codebase-search` |
-| `data-analysis` |
-| `deep-research` |
-| `heretic` |
-| `langsmith` |
-| `log-analysis` |
-| `opik` |
-| `pattern-detection` |
-| `scientific-llm-benchmarks` |
-| `semble` |
-| `skill-autoresearch` |
-
-### 🎬 창의 미디어 (19개)
-
-| 스킬 |
-|------|
-| `aura-asset-images` |
-| `browser-video-recording` |
-| `drawio` |
-| `elevenlabs-tts` |
-| `gbro-collage-broll` |
-| `generate-reference-inspired-brand-worlds` |
-| `video-motion-previs` |
-| `open-design-game-ui-concept` |
-| `open-design-game-ui-handoff` |
-| `open-design-game-ui-takeover` |
-| `paperbanana` |
-| `remotion-video-production` |
-| `slides-grab` |
-| `unsplash-asset-images` |
-| `video-production` |
-| `video-shotcraft` |
-| `video-to-superprompt` |
-| `vox-director` |
-| `webtoon-harness` |
-
-
-### 📢 마케팅 (6개)
-
-| 스킬 |
-|------|
-| `customer-email-draft-threads` |
-| `customer-support-verification` |
-| `marketing-automation` |
-| `write-like-meng-on-x` |
-| `x-bookmark-quote-posts` |
-| `yuwen-publish-precheck` |
-
-### 🎮 게임 개발 (16개)
-
-| 스킬 |
-|------|
-| `agentic-gamedev-skills` |
-| `dalamud-vfx-editor` |
-| `game-build-log-triage` |
-| `game-ci-cd-pipeline` |
-| `game-demo-feedback-triage` |
-| `game-performance-profiler` |
-| `game-sounds` |
-| `game-studio-harness` |
-| `game-vfx` |
-| `implement-fog-of-war` |
-| `perfectpixel` |
-| `rfxgen` |
-| `steam-store-launch-ops` |
-| `underworld-overseer-save-mapper` |
-| `unity-gamedev-skill-pack` |
-| `web-game-development` |
-
-### 🔧 유틸리티 (39개)
-
-| 스킬 |
-|------|
-| `agenticskills` |
-| `aider-cli-workflow` |
-| `caveman` |
-| `ccpi-marketplace` |
-| `claudekit` |
-| `codeflow` |
-| `compresso` |
-| `fabric` |
-| `file-organization` |
-| `ghgrab` |
-| `git-guardrails-claude-code` |
-| `git-submodule` |
-| `git-workflow` |
-| `github-repo-candidate-quality-gate` |
-| `god-tibo-imagen` |
 | `google-workspace` |
-| `graphify` |
-| `harness` |
-| `hyperfine-benchmarking` |
-| `lapian-notes` |
-| `llm-wiki` |
-| `notebooklm` |
-| `npm-git-install` |
-| `obsidian-mind` |
-| `obsidian-second-brain` |
-| `okf` |
-| `ooo` |
-| `open-design` |
-| `opencontext` |
-| `opencut` |
-| `ponytail` |
-| `pretext` |
-| `scaffold-exercises` |
-| `stitch-skills` |
-| `stitched-full-page-capture` |
-| `tokhub` |
-| `write-a-skill` |
-| `x-twitter-scraper` |
-| `zeude` |
 
 ---
 
@@ -738,7 +631,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 ## 📁 구조
 
 ```text
-├── .agent-skills/          ← 191개 스킬 폴더 (각각 SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 192개 스킬 폴더 (SKILL.md + 선택적 지원 파일)
 ├── docs/                   ← 상세 가이드 (bmad, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
@@ -815,7 +708,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 |------|------|
 | **Three.js 구현 스킬 10개 추가** | [CloudAI-X/threejs-skills](https://github.com/CloudAI-X/threejs-skills)를 바탕으로 `threejs-fundamentals`, `threejs-geometry`, `threejs-materials`, `threejs-lighting`, `threejs-textures`, `threejs-loaders`, `threejs-animation`, `threejs-interaction`, `threejs-shaders`, `threejs-postprocessing`을 추가했습니다. 각 스킬은 집중된 구현 계약, TOON 검색 표면, eval, 업스트림/공식 레퍼런스를 제공하며, 직접 렌더링 작업은 `web-game-development`의 게임 시스템 라우팅과 분리합니다. |
 | **Open Design 게임 UI 스킬 추가** | 콘셉트 검토, 증거 기반 handoff, 승인된 런타임 통합을 위한 `open-design-game-ui-concept`, `open-design-game-ui-handoff`, `open-design-game-ui-takeover`을 추가했습니다. |
-| **카탈로그와 설치 가이드 동기화** | `skills.json` 1.4.0, `skills.toon`, 양쪽 README 카탈로그, `setup-all-skills-prompt.md`를 191개 스킬 기준으로 업데이트했습니다. |
+| **경량 카테고리 카탈로그** | 192개 스킬을 10개 기본 카테고리와 74개 하위 분류로 재구성하고 인터페이스 메타데이터, 선택 번들, 연관 관계 그룹을 추가했습니다. 선택 설치형 `jeo-skill` CLI를 도입해 기본 설치가 전체 카탈로그나 무거운 의존성을 복사하지 않도록 변경했습니다. `skills.toon`은 스킬당 한 레코드로 압축했고 `skills.json`은 2.0.0입니다. |
 
 ## 🆕 v2026-07-28 업데이트
 

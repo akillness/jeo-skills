@@ -2,6 +2,14 @@
 
 ## Mode selector
 
+### Client-ai-logic mode
+Use when one web/mobile feature directly integrates the Firebase AI Logic SDK and does not need a reusable server flow.
+
+Good fits:
+- streaming or structured model output in an app-owned feature
+- App Check/auth/error and abuse-boundary design
+- deciding which data/config stays client-visible versus server-only
+
 ### 1. Flow-foundation mode
 Use when the main need is one reusable backend AI capability with a clean contract.
 
@@ -54,7 +62,7 @@ Good fits:
 - small backend feature that may not justify a workflow layer
 
 ## Route-outs
-- Direct Firebase app/client SDK integration → `firebase-ai-logic`
+- Direct Firebase app/client SDK integration → `genkit` (`client-ai-logic` mode)
 - Firebase CLI / emulator / project operations → `firebase-cli`
 - Generic architecture / framework discovery → `survey`
 - Frontend-only app wiring → relevant web/frontend skill

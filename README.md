@@ -2,19 +2,17 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-191-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
-**191 local skill folders · 191 installable skills · TOON Format · Cross-platform**
-A curated collection of 191 agent skills for spec-first, multi-agent LLM workflows — Claude, Gemini, Codex, Cursor, OpenCode, and [jeopi](https://github.com/akillness/jeopi).
-
+[![Skills](https://img.shields.io/badge/Skills-192-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
-[![BMAD](https://img.shields.io/badge/BMAD-1.2.0-purple?style=for-the-badge)](docs/bmad/README.md)
-[![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**191 local skill folders · 191 installable skills · TOON Format · Cross-platform**
-├── .agent-skills/          ← 191 skill folders (each with SKILL.md + SKILL.toon)
+**192 categorized skills · lightweight selective install · compact TOON catalog · cross-platform**
 
-[Quick Start](#-quick-start) · [Skills List](#-skills-list) · [Installation](#-installation) · [한국어](README.ko.md)
+A curated collection for spec-first, multi-agent LLM workflows. Install the `jeo-skill`
+router first, then add only the web, infrastructure, game, media, CLI, or utility skills
+you need.
+
+[Quick Start](#-lightweight-installation) · [Skills List](#-skills-list) · [한국어](README.ko.md)
 
 </div>
 
@@ -22,9 +20,9 @@ A curated collection of 191 agent skills for spec-first, multi-agent LLM workflo
 
 ## 💡 What is Agent Skills?
 
-A curated collection of 191 agent skills for spec-first, multi-agent LLM workflows — Claude, Gemini, Codex, Cursor, OpenCode, and [jeopi](https://github.com/akillness/jeopi).
-├── .agent-skills/          ← 191 skill folders (each with SKILL.md + SKILL.toon)
-
+Each skill remains discoverable as `.agent-skills/<name>/SKILL.md`. Category, subcategory,
+interface, bundle, and relationship metadata lives once in `.agent-skills/skills.json`, so
+skills can be grouped without duplicating wrapper folders or moving runtime-facing paths.
 
 ## 🎮 Jeo Agent & The Legendary Equipment Set
 
@@ -45,223 +43,77 @@ A curated collection of 191 agent skills for spec-first, multi-agent LLM workflo
 ## 🏗 Workflow & Architecture
 
 <img src="assets/workflow.svg" alt="jeo-skills Workflow & Architecture" width="100%">
-## 📦 Installation
+## 📦 Lightweight Installation
 
-> **Cross-platform**: macOS, Linux, and Windows (Git Bash / WSL2) are all supported. The LLM installer auto-detects your OS and picks the right package manager (`brew` / `snap` / `winget`) and paths (`$HOME` / `$USERPROFILE` / `$XDG_DATA_HOME`) for each tool.
-
-### ✨ Recommended: LLM-driven install (one prompt, all platforms)
-
-Hand the setup prompt to your coding agent (Claude Code, Codex, Gemini CLI, …). It reads the guide, detects your OS, installs the `skills` CLI, adds every skill into the correct per-agent paths, and registers the MCP/shell tools — no manual steps.
+Install the **`jeo-skill` router first**, not all 192 skill folders. It provides category,
+subcategory, interface, bundle, and relationship discovery while keeping heavy apps,
+models, MCP servers, and runtimes on demand.
 
 ```bash
-# Fetch the delegation guide and hand it to your agent
-curl -s https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-skills-prompt.md
+# One lightweight skill, shared globally
+npx --yes skills add https://github.com/akillness/jeo-skills \
+  --skill jeo-skill --global --agent universal --yes --copy --full-depth
+
+python3 "$HOME/.agents/skills/jeo-skill/scripts/jeo-skill.py" link
+jeo-skill doctor
 ```
 
-Or just paste the URL into the agent chat:
-
-> Read `https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-skills-prompt.md` in full and follow it to install the jeo-skills.
-
-The agent runs a **full install by default** (say "core only" or "minimal" to narrow it) and will:
-
-- detect macOS / Linux / Windows and select `brew` / `snap` / `winget` + the right install paths,
-- install the `skills` CLI and add skills with correct `-a` agent targeting (no duplicate platform exposure),
-- register MCP tools (`ooo`, `semble`), shell tooling (`rtk`), and the `oh-my-claudecode` plugin,
-- **preserve any pre-existing skills** — it only adds or updates, never deletes.
-
----
-
-### Manual install (advanced / CI / no-agent)
-
-For scripted or CI environments where no agent is in the loop, run the steps yourself.
-
-#### Step 0: Install `skills` CLI
+Browse and preview the narrowest useful selection:
 
 ```bash
-npm install -g skills
-skills --version
+jeo-skill categories
+jeo-skill list --category web --subcategory frontend
+jeo-skill list --category game --subcategory motion-vfx
+jeo-skill related code-review
+jeo-skill install --bundle web-frontend --dry-run
 ```
 
-#### Scope and paths
-
-The Vercel `skills` CLI installs from GitHub shorthand, full Git URLs, direct skill paths, or local folders:
+Install only the reviewed names or bundle:
 
 ```bash
-# Project install: writes to the current repo's agent skill directory
-npx skills add https://github.com/akillness/jeo-skills --skill deepinit --skill deep-dive
-
-# Global install: available to that agent across projects
-npx skills add -g https://github.com/akillness/jeo-skills --skill deepinit --skill deep-dive
-
-# Target specific agents
-npx skills add -g https://github.com/akillness/jeo-skills --skill deepinit --skill deep-dive -a claude-code -a codex -y
+jeo-skill install responsive-design react-best-practices --global --yes
+jeo-skill install --bundle game-web --global --yes
 ```
 
-| OS / shell | Global examples | Project examples |
-|------------|-----------------|------------------|
-| macOS / Linux | `$HOME/.claude/skills/`, `$HOME/.codex/skills/`, `$HOME/.gemini/skills/`, `$HOME/.config/opencode/skills/`, `$HOME/.agents/skills/`, `$HOME/.jeopi/agent/skills/`, `$HOME/.jeo/agent/skills/` | `.claude/skills/`, `.agents/skills/`, `.jeopi/skills/`, `.jeo/skills/` |
-| Windows PowerShell | `$env:USERPROFILE\.claude\skills\`, `$env:USERPROFILE\.codex\skills\`, `$env:USERPROFILE\.gemini\skills\`, `$env:APPDATA\opencode\skills\`, `$env:USERPROFILE\.agents\skills\`, `$env:USERPROFILE\.jeopi\agent\skills\`, `$env:USERPROFILE\.jeo\agent\skills\` | `.claude\skills\`, `.agents\skills\`, `.jeopi\skills\`, `.jeo\skills\` |
-| Windows Git Bash / WSL2 | `$HOME/.claude/skills/`, `$HOME/.codex/skills/`, `$HOME/.gemini/skills/`, `$HOME/.config/opencode/skills/`, `$HOME/.agents/skills/`, `$HOME/.jeopi/agent/skills/`, `$HOME/.jeo/agent/skills/` | `.claude/skills/`, `.agents/skills/`, `.jeopi/skills/`, `.jeo/skills/` |
-
-Project scope is the default and should be committed when the team needs the same skill behavior. Global scope uses `-g` and is better for personal defaults. Agent-specific paths are selected with `-a`; the portable common layer is `.agents/skills/`.
-
-> **`opencode` is two different products.** `sst/opencode` ([opencode.ai](https://opencode.ai)) has a native
-> skill loader and reads `~/.config/opencode/skills/`, `~/.claude/skills/`, and `~/.agents/skills/`, so `-a opencode`
-> or a plain global install both work. [`opencode-ai/opencode`](https://github.com/opencode-ai/opencode) — the
-> archived Go TUI that continued as [charmbracelet/crush](https://github.com/charmbracelet/crush) — has **no** skill
-> loader; skills reach it as custom commands in `~/.opencode/commands/jeo/` (`user:jeo:<skill>`), generated by
-> Step 2b of [setup-all-skills-prompt.md](setup-all-skills-prompt.md).
-> [oh-my-openagent](https://github.com/code-yeongyu/oh-my-openagent) (ex `oh-my-opencode`) rides on the sst/opencode
-> loader — `bunx oh-my-openagent install` for OpenCode, `npx lazycodex-ai install` for the Codex Light edition.
-
-#### Choose by platform
+The one-line installer uses the same lightweight default:
 
 ```bash
-# Claude Code
-npx skills add https://github.com/akillness/jeo-skills \
-  --skill plannotator --skill agentation --skill ooo
-
-# Gemini CLI
-npx skills add https://github.com/akillness/jeo-skills \
-  --skill ooo --skill deep-dive
-antigravity extensions install https://github.com/akillness/jeo-skills
-
-# Codex CLI
-npx skills add https://github.com/akillness/jeo-skills \
-  --skill ooo --skill harness
-
-# jeopi — no `-a` id needed: jeopi natively discovers ~/.agents/skills plus the
-# .claude/.codex/.config/opencode skill dirs, so a global install is enough.
-npx skills add -g https://github.com/akillness/jeo-skills \
-  --skill deep-research --skill god-tibo-imagen --skill perfectpixel
-# optional jeopi/jeo-only pin: ~/.jeopi/agent/skills/<skill> (global) or .jeopi/skills/<skill> (project) [Same for .jeo]
+curl -fsSL https://raw.githubusercontent.com/akillness/jeo-skills/main/install.sh | bash
 ```
 
-#### Core tool setup (all platforms)
+Set `JEO_SKILLS_SELECTION=bundle`, `category`, or `all` only when that wider scope is
+intentional. See [setup-all-skills-prompt.md](setup-all-skills-prompt.md) for agent-driven,
+selective, and explicit full-install instructions.
+
+### On-demand video motion previs
+
+`video-motion-previs` remains a CLI-first motion workflow. Its desktop app and generated
+model/runtime assets are installed only when a real motion task needs them.
 
 ```bash
-# ooo MCP — spec-first control loop
-pip install "ouroboros-ai[all]"
-claude mcp add ooo -s user -- ouroboros mcp      # Claude Code
-# Codex: appends [mcp_servers.ooo] to ~/.codex/config.toml via setup-all-skills-prompt.md
-# (Codex CLI reads TOML, not mcp.json — prior JSON-based registration was a silent no-op)
-
-# semble MCP — token-efficient code search
-claude mcp add semble -s user -- uvx --from "semble[mcp]" semble
-
-# rtk — token-optimized shell output
-# macOS: brew install rtk  |  Linux: cargo install rtk  |  Windows: winget install rtk
-rtk init -g
-
-```
-#### On-demand video motion previs CLI
-
-`video-motion-previs` is the lightweight CLI front door for Motion Previs Studio v4. It checks for an existing packaged app or source checkout before installing anything, links the wrapper on PATH, and drives the running app through its localhost-only token-gated control API.
-
-```bash
-npx skills add https://github.com/akillness/jeo-skills --skill video-motion-previs
-node ~/.agents/skills/video-motion-previs/scripts/video-motion-previs.mjs link
+jeo-skill install video-motion-previs --global --yes
 video-motion-previs check
-video-motion-previs launch
-video-motion-previs state
 ```
-
-The app and generated model/runtime assets are installed only on demand; the all-skills setup links the small wrapper without forcing the heavy desktop payload.
-
-
-
 ---
 
 ## 📚 Skills List
 
-> Full manifest: `.agent-skills/skills.json` · each folder's `SKILL.md` · 191 local skill folders = 191 total installable skills
+> Central manifest: `.agent-skills/skills.json` · 192 skills · 10 primary categories · subcategory/interface/relationship metadata
 
-### 🎬 Creative Media (19)
+### 🌐 Web (44)
 
-| `aura-asset-images` |
-| `browser-video-recording` |
-| `drawio` |
-| `elevenlabs-tts` |
-| `gbro-collage-broll` |
-| `generate-reference-inspired-brand-worlds` |
-| `video-motion-previs` |
-| `open-design-game-ui-concept` |
-| `open-design-game-ui-handoff` |
-| `open-design-game-ui-takeover` |
-| `paperbanana` |
-| `remotion-video-production` |
-| `slides-grab` |
-| `unsplash-asset-images` |
-| `video-production` |
-| `video-shotcraft` |
-| `video-to-superprompt` |
-| `vox-director` |
-| `webtoon-harness` |
-
-├── .agent-skills/          ← 191 skill folders (each with SKILL.md + SKILL.toon)
-
-### 🎯 Core Orchestration (7)
+Subcategories: `frontend` (4), `backend` (3), `design` (11), `api` (2), `auth` (1), `data` (4), `testing` (3), `accessibility` (1), `performance` (1), `graphics` (10), `capture` (4)
 
 | Skill |
-|-------|
-| `bmad` |
-| `bmad-gds` |
-| `bmad-idea` |
-| `deep-dive` |
-| `deepinit` |
-| `spec-kit` |
-| `survey` |
-
-### 📋 Planning & Review (12)
-
-| Skill |
-|-------|
-| `agentation` |
-| `agentic-skills` |
-| `browser-harness` |
-| `grill-me` |
-| `grill-with-docs` |
-| `microsoft-agent-framework` |
-| `openai-agents-python` |
-| `plannotator` |
-| `playwriter` |
-| `to-issues` |
-| `to-prd` |
-| `triage` |
-
-### 🤖 Agent Development (6)
-
-| Skill |
-|-------|
-| `article-prompts-to-skills` |
-| `cli-anything` |
-| `openspace` |
-| `prompts-chat` |
-| `skill-standardization` |
-| `upskill` |
-
-### ⚙️ Backend (11)
-
-| Skill |
-|-------|
-| `amrouter` |
-| `api-design` |
-| `api-documentation` |
-| `authentication-setup` |
-| `backend-testing` |
-| `colibri` |
-| `database-schema-design` |
-| `payloadcms` |
-| `pydantic-ai` |
-| `supabase-agent-skills` |
-| `typesense` |
-
-### 🎨 Frontend (27)
-
-| Skill |
-|-------|
-| `astryx` |
+|---|
 | `ax` |
+| `react-best-practices` |
+| `react-bits` |
+| `state-management` |
+| `amrouter` |
+| `colibri` |
+| `pydantic-ai` |
+| `astryx` |
 | `build-daily-inspiration-sites` |
 | `daily-ui-inspiration-capture` |
 | `design-first-ui-prompting` |
@@ -269,12 +121,21 @@ The app and generated model/runtime assets are installed only on demand; the all
 | `devup-ui` |
 | `html-to-interaction-prompts` |
 | `lazyweb` |
-| `optimize-web-animations` |
-| `react-best-practices` |
-| `react-bits` |
-| `react-grab` |
 | `responsive-design` |
-| `state-management` |
+| `stitch-skills` |
+| `web-design` |
+| `api-design` |
+| `api-documentation` |
+| `authentication-setup` |
+| `database-schema-design` |
+| `payloadcms` |
+| `supabase-agent-skills` |
+| `typesense` |
+| `backend-testing` |
+| `browser-harness` |
+| `playwriter` |
+| `web-accessibility` |
+| `optimize-web-animations` |
 | `threejs-animation` |
 | `threejs-fundamentals` |
 | `threejs-geometry` |
@@ -285,160 +146,221 @@ The app and generated model/runtime assets are installed only on demand; the all
 | `threejs-postprocessing` |
 | `threejs-shaders` |
 | `threejs-textures` |
-| `web-accessibility` |
-| `web-design` |
+| `agentation` |
+| `react-grab` |
+| `slides-grab` |
+| `stitched-full-page-capture` |
 
-### 🔍 Code Quality (14)
+### 🏗 Infrastructure (11)
+
+Subcategories: `deployment` (2), `environment` (2), `observability` (2), `security` (2), `cloud-data` (3), `automation` (0), `tooling` (0)
 
 | Skill |
-|-------|
+|---|
+| `deployment-automation` |
+| `vercel-deploy` |
+| `environment-setup` |
+| `system-environment-setup` |
+| `log-analysis` |
+| `monitoring-observability` |
+| `security-best-practices` |
+| `strix` |
+| `firebase-cli` |
+| `genkit` |
+| `looker-studio-bigquery` |
+
+### 🎮 Game (19)
+
+Subcategories: `client` (2), `web` (2), `server` (0), `design-ui` (4), `audio` (1), `animation` (0), `motion-vfx` (2), `sprite-image` (1), `art-resources` (0), `storytelling` (0), `tooling` (2), `qa-performance` (3), `release` (2)
+
+| Skill |
+|---|
+| `implement-fog-of-war` |
+| `unity-gamedev-skill-pack` |
+| `agentic-gamedev-skills` |
+| `web-game-development` |
+| `bmad-gds` |
+| `open-design-game-ui-concept` |
+| `open-design-game-ui-handoff` |
+| `open-design-game-ui-takeover` |
+| `rfxgen` |
+| `dalamud-vfx-editor` |
+| `game-vfx` |
+| `perfectpixel` |
+| `game-studio-harness` |
+| `underworld-overseer-save-mapper` |
+| `game-build-log-triage` |
+| `game-demo-feedback-triage` |
+| `game-performance-profiler` |
+| `game-ci-cd-pipeline` |
+| `steam-store-launch-ops` |
+
+### 🎬 Creative Media (19)
+
+Subcategories: `image` (5), `video` (8), `motion` (1), `audio` (1), `presentation` (1), `diagram` (1), `design` (1), `capture` (0), `storytelling` (1)
+
+| Skill |
+|---|
+| `aura-asset-images` |
+| `generate-reference-inspired-brand-worlds` |
+| `god-tibo-imagen` |
+| `paperbanana` |
+| `unsplash-asset-images` |
+| `browser-video-recording` |
+| `gbro-collage-broll` |
+| `opencut` |
+| `remotion-video-production` |
+| `video-production` |
+| `video-shotcraft` |
+| `video-to-superprompt` |
+| `vox-director` |
+| `video-motion-previs` |
+| `elevenlabs-tts` |
+| `presentation-builder` |
+| `drawio` |
+| `open-design` |
+| `webtoon-harness` |
+
+### ⌨️ CLI Tools (24)
+
+Subcategories: `developer-cli` (6), `ai-cli` (7), `media-cli` (1), `automation-cli` (6), `search-cli` (3), `benchmark-cli` (1)
+
+| Skill |
+|---|
+| `caveman` |
+| `ccpi-marketplace` |
+| `cli-anything` |
+| `ghgrab` |
+| `jeo-skill` |
+| `pretext` |
+| `aider-cli-workflow` |
+| `claudekit` |
+| `fabric` |
+| `ooo` |
+| `open-code-review` |
+| `ponytail` |
+| `zeude` |
+| `compresso` |
+| `codeflow` |
+| `graphify` |
+| `npm-git-install` |
+| `okf` |
+| `rtk` |
+| `tokhub` |
+| `scrapling` |
+| `semble` |
+| `x-twitter-scraper` |
+| `hyperfine-benchmarking` |
+
+### 🤖 AI & Agents (25)
+
+Subcategories: `orchestration` (4), `agent-frameworks` (2), `skill-authoring` (4), `evaluation` (3), `planning-review` (8), `discovery` (1), `prompting` (3)
+
+| Skill |
+|---|
+| `bmad` |
+| `deep-dive` |
+| `deepinit` |
+| `spec-kit` |
+| `microsoft-agent-framework` |
+| `openai-agents-python` |
+| `article-prompts-to-skills` |
+| `skill-standardization` |
+| `upskill` |
+| `write-a-skill` |
+| `langsmith` |
+| `opik` |
+| `skill-autoresearch` |
+| `bmad-idea` |
+| `grill-me` |
+| `grill-with-docs` |
+| `plannotator` |
+| `survey` |
+| `to-issues` |
+| `to-prd` |
+| `triage` |
+| `openspace` |
+| `agentic-skills` |
+| `agenticskills` |
+| `prompts-chat` |
+
+### 🧰 Engineering (19)
+
+Subcategories: `code-quality` (10), `testing` (4), `architecture` (2), `documentation` (2), `code-navigation` (1)
+
+| Skill |
+|---|
 | `audit-reference-originality` |
 | `audit-verify-explain-grade-5` |
 | `code-refactoring` |
 | `code-review` |
 | `debugging` |
 | `diagnose` |
-| `improve-codebase-architecture` |
+| `github-repo-candidate-quality-gate` |
 | `migrate-to-shoehorn` |
-| `open-code-review` |
 | `performance-optimization` |
 | `performance-profiling` |
+| `harness` |
+| `scaffold-exercises` |
 | `tdd` |
 | `testing-strategies` |
+| `improve-codebase-architecture` |
 | `zoom-out` |
-
-### 🏗 Infrastructure (12)
-
-| Skill |
-|-------|
-| `deployment-automation` |
-| `environment-setup` |
-| `firebase-cli` |
-| `genkit` |
-| `looker-studio-bigquery` |
-| `monitoring-observability` |
-| `rtk` |
-| `scrapling` |
-| `security-best-practices` |
-| `strix` |
-| `system-environment-setup` |
-| `vercel-deploy` |
-
-### 📝 Documentation (4)
-
-| Skill |
-|-------|
 | `changelog-maintenance` |
-| `presentation-builder` |
-| `research-paper-writing` |
 | `technical-writing` |
+| `codebase-search` |
 
-### 📊 Project Management (4)
+### 🔭 Research & Analysis (9)
+
+Subcategories: `academic` (2), `web-research` (2), `data-analysis` (2), `experimentation` (1), `benchmarking` (1), `intelligence` (1)
 
 | Skill |
-|-------|
+|---|
+| `academic-research` |
+| `research-paper-writing` |
+| `deep-research` |
+| `heretic` |
+| `data-analysis` |
+| `pattern-detection` |
+| `autoresearch` |
+| `scientific-llm-benchmarks` |
+| `agent-pulse` |
+
+### 📣 Business (6)
+
+Subcategories: `marketing` (3), `support` (2), `publishing` (1)
+
+| Skill |
+|---|
+| `marketing-automation` |
+| `write-like-meng-on-x` |
+| `x-bookmark-quote-posts` |
+| `customer-email-draft-threads` |
+| `customer-support-verification` |
+| `yuwen-publish-precheck` |
+
+### 🔧 Utilities (16)
+
+Subcategories: `knowledge` (6), `files` (1), `git` (3), `workspace` (1), `project-management` (4), `productivity` (1), `general` (0)
+
+| Skill |
+|---|
+| `lapian-notes` |
+| `llm-wiki` |
+| `notebooklm` |
+| `obsidian-mind` |
+| `obsidian-second-brain` |
+| `opencontext` |
+| `file-organization` |
+| `git-guardrails-claude-code` |
+| `git-submodule` |
+| `git-workflow` |
+| `game-sounds` |
 | `sprint-retrospective` |
 | `standup-meeting` |
 | `task-estimation` |
 | `task-planning` |
-
-### 🔭 Search \& Analysis (14)
-
-| Skill |
-|-------|
-| `academic-research` |
-| `agent-pulse` |
-| `autoresearch` |
-| `codebase-search` |
-| `data-analysis` |
-| `deep-research` |
-| `heretic` |
-| `langsmith` |
-| `log-analysis` |
-| `opik` |
-| `pattern-detection` |
-| `scientific-llm-benchmarks` |
-| `semble` |
-| `skill-autoresearch` |
-
-
-
-
-### 📢 Marketing (6)
-
-| Skill |
-|-------|
-| `customer-email-draft-threads` |
-| `customer-support-verification` |
-| `marketing-automation` |
-| `write-like-meng-on-x` |
-| `x-bookmark-quote-posts` |
-| `yuwen-publish-precheck` |
-
-### 🎮 Game Development (16)
-
-| Skill |
-|-------|
-| `agentic-gamedev-skills` |
-| `dalamud-vfx-editor` |
-| `game-build-log-triage` |
-| `game-ci-cd-pipeline` |
-| `game-demo-feedback-triage` |
-| `game-performance-profiler` |
-| `game-sounds` |
-| `game-studio-harness` |
-| `game-vfx` |
-| `implement-fog-of-war` |
-| `perfectpixel` |
-| `rfxgen` |
-| `steam-store-launch-ops` |
-| `underworld-overseer-save-mapper` |
-| `unity-gamedev-skill-pack` |
-| `web-game-development` |
-
-### 🔧 Utilities (39)
-
-| Skill |
-|-------|
-| `agenticskills` |
-| `aider-cli-workflow` |
-| `caveman` |
-| `ccpi-marketplace` |
-| `claudekit` |
-| `codeflow` |
-| `compresso` |
-| `fabric` |
-| `file-organization` |
-| `ghgrab` |
-| `git-guardrails-claude-code` |
-| `git-submodule` |
-| `git-workflow` |
-| `github-repo-candidate-quality-gate` |
-| `god-tibo-imagen` |
 | `google-workspace` |
-| `graphify` |
-| `harness` |
-| `hyperfine-benchmarking` |
-| `lapian-notes` |
-| `llm-wiki` |
-| `notebooklm` |
-| `npm-git-install` |
-| `obsidian-mind` |
-| `obsidian-second-brain` |
-| `okf` |
-| `ooo` |
-| `open-design` |
-| `opencontext` |
-| `opencut` |
-| `ponytail` |
-| `pretext` |
-| `scaffold-exercises` |
-| `stitch-skills` |
-| `stitched-full-page-capture` |
-| `tokhub` |
-| `write-a-skill` |
-| `x-twitter-scraper` |
-| `zeude` |
 
 ---
 
@@ -698,7 +620,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 
 ```text
 .
-├── .agent-skills/          ← 191 skill folders (each with SKILL.md + SKILL.toon)
+├── .agent-skills/          ← 192 skill folders (SKILL.md + optional support files)
 ├── docs/                   ← detailed guides (bmad, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
@@ -779,7 +701,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 |--------|---------|
 | **Ten Three.js implementation skills** | Added `threejs-fundamentals`, `threejs-geometry`, `threejs-materials`, `threejs-lighting`, `threejs-textures`, `threejs-loaders`, `threejs-animation`, `threejs-interaction`, `threejs-shaders`, and `threejs-postprocessing`, adapted from [CloudAI-X/threejs-skills](https://github.com/CloudAI-X/threejs-skills). Each has a focused implementation contract, compact TOON discovery surface, evals, and upstream/official references; direct rendering work stays distinct from `web-game-development` game-system routing. |
 | **Open Design game UI skills** | Added `open-design-game-ui-concept`, `open-design-game-ui-handoff`, and `open-design-game-ui-takeover` for concept review, evidence-backed handoffs, and approved runtime integration. |
-| **Catalog and install guide synchronized** | Updated `skills.json` 1.4.0, `skills.toon`, both README catalogs, and `setup-all-skills-prompt.md` to 191 skills. |
+| **Lightweight category catalog** | Reorganized 192 skills into 10 primary categories and 74 focused subcategories with interface metadata, curated bundles, and relationship groups. Added the selectively installed `jeo-skill` CLI; the default installer no longer copies the full catalog or installs heavy dependencies. Compact `skills.toon` now contains one record per skill, and `skills.json` is version 2.0.0. |
 
 ## 🆕 What's New in v2026-07-28
 

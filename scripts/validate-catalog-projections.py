@@ -59,6 +59,7 @@ def manifest_descriptions(repo_root: Path) -> dict[str, str]:
     return {s["name"]: str(s.get("description", "")) for s in manifest["skills"]}
 
 
+
 def validate_manifest(repo_root: Path) -> tuple[list[str], dict[str, list[str]]]:
     manifest, skills, categories = load_manifest(repo_root)
     declared_count = manifest["skill_count"]
@@ -67,21 +68,27 @@ def validate_manifest(repo_root: Path) -> tuple[list[str], dict[str, list[str]]]
     names: list[str] = []
     paths: list[str] = []
     skill_categories: dict[str, str] = {}
+    skill_subcategories: dict[str, str] = {}
     manifest_root = repo_root / ".agent-skills"
 
     for index, skill in enumerate(skills, start=1):
         require(isinstance(skill, dict), f"manifest.skills[{index}] must be an object")
         name = skill.get("name")
         category = skill.get("category")
+        subcategory = skill.get("subcategory")
+        interface = skill.get("interface")
         path_value = skill.get("path")
         require(isinstance(name, str) and name, f"manifest.skills[{index}].name must be a non-empty string")
         require(isinstance(category, str) and category, f"manifest skill {name!r} has no category")
+        require(isinstance(subcategory, str) and subcategory, f"manifest skill {name!r} has no subcategory")
+        require(isinstance(interface, str) and interface, f"manifest skill {name!r} has no interface")
         require(isinstance(path_value, str) and path_value, f"manifest skill {name!r} has no path")
         path = safe_manifest_path(path_value, name)
         require((manifest_root / path).is_file(), f"manifest skill {name!r} declares missing file: .agent-skills/{path.as_posix()}")
         names.append(name)
         paths.append(path.as_posix())
         skill_categories[name] = category
+        skill_subcategories[name] = subcategory
 
     duplicate_names = {name for name, count in Counter(names).items() if count > 1}
     require(not duplicate_names, f"manifest contains duplicate skill names: {sorted_names(duplicate_names)}")
@@ -109,6 +116,57 @@ def validate_manifest(repo_root: Path) -> tuple[list[str], dict[str, list[str]]]
     for name, category in skill_categories.items():
         require(category in normalized_categories, f"manifest skill {name!r} declares undeclared category {category!r}")
 
+    subcategories = manifest.get("subcategories")
+    require(isinstance(subcategories, dict), "manifest.subcategories must be an object")
+    require(set(subcategories) == set(normalized_categories), "manifest.subcategories keys differ from categories")
+    for category, groups in subcategories.items():
+        require(isinstance(groups, dict) and groups, f"manifest subcategories for {category!r} must be a non-empty object")
+        flattened: list[str] = []
+        for subcategory, members in groups.items():
+            require(isinstance(subcategory, str) and subcategory, f"manifest category {category!r} has an invalid subcategory")
+            require(isinstance(members, list), f"manifest subcategory {category}/{subcategory} must be a list")
+            flattened.extend(members)
+            for name in members:
+                require(name in name_set, f"manifest subcategory {category}/{subcategory} references unknown skill {name!r}")
+                require(skill_categories[name] == category, f"manifest subcategory {category}/{subcategory} contains cross-category skill {name!r}")
+                require(skill_subcategories[name] == subcategory, f"manifest skill {name!r} declares subcategory {skill_subcategories[name]!r}, but is listed under {subcategory!r}")
+        duplicate_subcategory_members = {name for name, count in Counter(flattened).items() if count > 1}
+        require(not duplicate_subcategory_members, f"manifest subcategories for {category!r} repeat skills: {sorted_names(duplicate_subcategory_members)}")
+        require(set(flattened) == set(normalized_categories[category]), f"manifest subcategory coverage differs for {category!r}: " + _set_difference_message(set(normalized_categories[category]), set(flattened)))
+
+    bundles = manifest.get("bundles")
+    require(isinstance(bundles, dict), "manifest.bundles must be an object")
+    for bundle, members in bundles.items():
+        require(isinstance(bundle, str) and bundle, "manifest has an invalid bundle name")
+        require(isinstance(members, list) and members, f"manifest bundle {bundle!r} must be a non-empty list")
+        require(len(members) == len(set(members)), f"manifest bundle {bundle!r} repeats a skill")
+        unknown = set(members) - name_set
+        require(not unknown, f"manifest bundle {bundle!r} references unknown skills: {sorted_names(unknown)}")
+
+    retired_skills = manifest.get("retired_skills")
+    require(isinstance(retired_skills, dict), "manifest.retired_skills must be an object")
+    require(not (set(retired_skills) & name_set), "manifest.retired_skills overlaps live skills")
+    for retired_name, retirement in retired_skills.items():
+        require(isinstance(retired_name, str) and retired_name, "manifest has an invalid retired skill name")
+        require(isinstance(retirement, dict), f"retired skill {retired_name!r} must be an object")
+        require(isinstance(retirement.get("replacement"), str) and retirement["replacement"], f"retired skill {retired_name!r} has no replacement")
+        require(isinstance(retirement.get("reason"), str) and retirement["reason"], f"retired skill {retired_name!r} has no reason")
+        replacement_type = retirement.get("replacement_type")
+        require(replacement_type in {"skill", "workflow"}, f"retired skill {retired_name!r} has invalid replacement_type")
+        if replacement_type == "skill":
+            require(retirement["replacement"] in name_set, f"retired skill {retired_name!r} references unknown replacement {retirement['replacement']!r}")
+
+    relationship_groups = manifest.get("relationship_groups")
+    require(isinstance(relationship_groups, dict), "manifest.relationship_groups must be an object")
+    for group, relationship in relationship_groups.items():
+        require(isinstance(group, str) and group, "manifest has an invalid relationship group name")
+        require(isinstance(relationship, dict), f"manifest relationship group {group!r} must be an object")
+        members = relationship.get("members")
+        require(isinstance(members, list) and len(members) >= 2, f"manifest relationship group {group!r} needs at least two members")
+        require(len(members) == len(set(members)), f"manifest relationship group {group!r} repeats a skill")
+        unknown = set(members) - name_set
+        require(not unknown, f"manifest relationship group {group!r} references unknown skills: {sorted_names(unknown)}")
+
     live_paths = {
         (candidate / "SKILL.md").relative_to(manifest_root).as_posix()
         for candidate in manifest_root.iterdir()
@@ -132,36 +190,28 @@ def _set_difference_message(expected: set[str], actual: set[str]) -> str:
 
 
 ENGLISH_HEADINGS = {
-    "Core Orchestration": "core-orchestration",
-    "Planning & Review": "planning-review",
-    "Agent Development": "agent-development",
-    "Backend": "backend",
-    "Frontend": "frontend",
-    "Code Quality": "code-quality",
+    "Web": "web",
     "Infrastructure": "infrastructure",
-    "Documentation": "documentation",
-    "Project Management": "project-management",
-    r"Search \& Analysis": "search-analysis",
+    "Game": "game",
     "Creative Media": "creative-media",
-    "Marketing": "marketing",
-    "Game Development": "game-development",
+    "CLI Tools": "cli-tools",
+    "AI & Agents": "ai-agents",
+    "Engineering": "engineering",
+    "Research & Analysis": "research",
+    "Business": "business",
     "Utilities": "utilities",
 }
 
 KOREAN_HEADINGS = {
-    "핵심 오케스트레이션": "core-orchestration",
-    "계획 및 검토": "planning-review",
-    "에이전트 개발": "agent-development",
-    "백엔드": "backend",
-    "프론트엔드": "frontend",
-    "코드 품질": "code-quality",
+    "웹": "web",
     "인프라": "infrastructure",
-    "문서화": "documentation",
-    "프로젝트 관리": "project-management",
-    "검색 및 분석": "search-analysis",
-    "창의 미디어": "creative-media",
-    "마케팅": "marketing",
-    "게임 개발": "game-development",
+    "게임": "game",
+    "크리에이티브 미디어": "creative-media",
+    "CLI 도구": "cli-tools",
+    "AI 및 에이전트": "ai-agents",
+    "엔지니어링": "engineering",
+    "연구 및 분석": "research",
+    "비즈니스": "business",
     "유틸리티": "utilities",
 }
 

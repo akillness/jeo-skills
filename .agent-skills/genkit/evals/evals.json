@@ -4,7 +4,7 @@
     {
       "id": 1,
       "prompt": "Build a Genkit backend flow for our support app: retrieve help articles, call one ticket tool, and expose one server endpoint the web app can reuse.",
-      "expected_output": "Uses genkit, chooses a backend workflow mode, defines flow/tool/retrieval boundaries, and does not route to firebase-ai-logic.",
+      "expected_output": "Uses the server-owned Genkit path, chooses a backend workflow mode, and defines flow/tool/retrieval boundaries.",
       "assertions": [
         "Response treats Genkit as a server-owned workflow/orchestration layer",
         "Response mentions a backend flow contract or typed boundary",
@@ -14,10 +14,11 @@
     {
       "id": 2,
       "prompt": "Add Gemini-powered summaries directly inside our Firebase web app with the Firebase SDK.",
-      "expected_output": "Routes the request to firebase-ai-logic rather than insisting on Genkit.",
+      "expected_output": "Uses genkit in client-ai-logic mode rather than forcing a server-owned flow.",
       "assertions": [
-        "Response identifies firebase-ai-logic as the better fit",
-        "Response distinguishes direct app integration from server-side workflow ownership"
+        "Response identifies client-ai-logic as the primary mode",
+        "Response distinguishes direct app integration from server-side workflow ownership",
+        "Response covers App Check, auth, errors, or client/server data boundaries"
       ]
     },
     {

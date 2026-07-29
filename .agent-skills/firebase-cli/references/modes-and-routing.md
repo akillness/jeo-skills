@@ -17,7 +17,7 @@ Use `firebase-cli` when the request is primarily about operating Firebase from t
 |---|---|---|
 | Firebase project setup, aliases, Hosting/App Hosting deploys, or emulator commands | `firebase-cli` | Firebase platform/operator work |
 | Flow/tool/RAG/eval orchestration in the Firebase ecosystem | `genkit` | Backend AI workflow layer, not CLI operations |
-| Direct Gemini feature wiring inside the app/client SDK | `firebase-ai-logic` | App/client integration layer |
+| Direct Gemini feature wiring inside the app/client SDK | `genkit` (`client-ai-logic` mode) | App/client integration layer |
 | Auth architecture choice (hosted auth vs sessions/JWTs vs enterprise SSO) | `authentication-setup` | Product-auth design question |
 | Schema/index design and staged data-model evolution | `database-schema-design` | Storage-modeling question |
 | Generic preview/staging/prod rollout strategy across providers | `deployment-automation` | Provider-agnostic release design |

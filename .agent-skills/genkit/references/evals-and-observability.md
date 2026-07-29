@@ -29,4 +29,4 @@ Before scaling usage, define:
 5. Re-run before widening rollout
 
 ## Route-outs
-If the team mainly needs app-side abuse controls, client integration, or Firebase SDK usage, route back to `firebase-ai-logic`. If the team mainly needs platform logging/ops, pair with `monitoring-observability`.
+If the team mainly needs app-side abuse controls, client integration, or Firebase SDK usage, route back to `genkit` (`client-ai-logic` mode). If the team mainly needs platform logging/ops, pair with `monitoring-observability`.

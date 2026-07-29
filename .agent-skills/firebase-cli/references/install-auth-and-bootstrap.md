@@ -71,4 +71,4 @@ firebase use --clear
 1. Initialize only the Firebase surfaces the repo actually uses
 2. Commit `.firebaserc` when aliases are part of team workflow
 3. Keep secrets and service-account JSON files out of version control
-4. If the repo mixes Firebase platform work with AI app logic, document the route-out to `genkit` / `firebase-ai-logic`
+4. If the repo mixes Firebase platform work with AI app logic, document the route-out to `genkit` / `genkit` (`client-ai-logic` mode)
