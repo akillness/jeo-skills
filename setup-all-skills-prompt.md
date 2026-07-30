@@ -1,143 +1,240 @@
-# jeo-skills — Lightweight Installation Delegation Guide
+# jeo-skills — LLM Installation Delegation Guide
 
-> **For AI agents:** install the lightweight `jeo-skill` catalog/router first. Do not
-> install the full repository unless the user explicitly asks for every skill.
+> **For AI agents:** read this guide in full, detect the host OS and installed coding
+> agents, then perform the requested installation. The default mode is **full**. Use
+> **core only** or **minimal** only when the user explicitly asks for that narrower mode.
 
-> **Preserve existing work:** add or update selected skills only. Never remove unrelated
-> skill directories, reset agent configuration, or install heavy upstream apps/models/MCP
-> servers before a selected skill actually needs them.
+> **Preserve existing work:** add or update jeo-skills targets only. Never run a remove,
+> clear, reset, or cleanup command against existing skill directories. Never delete an
+> unrelated skill or replace an agent's entire configuration file.
 
-## Default outcome
+## Outcomes and modes
 
-The default installation adds one skill and one CLI:
+| Mode | Trigger | Outcome |
+|---|---|---|
+| `full` | Default | Install every jeo-skills skill, register supported MCP/shell tools, and configure detected integrations. |
+| `core` | User says “core only” | Install the `starter` bundle through `jeo-skill`; do not install the entire catalog. |
+| `minimal` | User says “minimal” | Install only the `jeo-skill` router and its CLI link; skip MCP, shell, and plugin setup. |
 
-- `jeo-skill`: category browser, relationship index, and selective installer;
-- `~/.local/bin/jeo-skill`: a symlink to its Python CLI.
+A full install installs the skill documents plus the explicitly listed shared tools below.
+It does **not** download every app, model weight, media runtime, SDK, or service mentioned
+inside all skills. Those remain on demand when a real task selects the corresponding skill.
 
-The catalog remains remote/on-demand. Individual skills are installed only after the user
-chooses a name, category slice, or curated bundle.
+## Step 1 — Detect OS, prerequisites, and coding agents
 
-## Step 1 — Check prerequisites
+Determine the platform before choosing paths or package managers:
 
 ```bash
-python3 --version
-node --version
-npx --version
+case "$(uname -s 2>/dev/null || echo Windows)" in
+  Darwin*) PLATFORM=macos ;;
+  Linux*) PLATFORM=linux ;;
+  MINGW*|MSYS*|CYGWIN*) PLATFORM=windows ;;
+  *) PLATFORM=windows ;;
+esac
+
+if [ "$PLATFORM" = windows ]; then
+  USER_HOME="${USERPROFILE:-$HOME}"
+else
+  USER_HOME="$HOME"
+fi
+SKILLS_ROOT="$USER_HOME/.agents/skills"
+REPO_URL="https://github.com/akillness/jeo-skills"
+
+printf 'platform=%s\nhome=%s\nskills_root=%s\n' "$PLATFORM" "$USER_HOME" "$SKILLS_ROOT"
+for cmd in node npm npx python3 claude codex gemini opencode cursor agy pi crush jeo gjc jeopi; do
+  command -v "$cmd" >/dev/null 2>&1 && printf 'found: %s\n' "$cmd"
+done
 ```
 
-Python 3.9+ runs the lightweight CLI. Node/npx is needed only for `skills add`.
+Install only missing prerequisites. Prefer the native package manager:
 
-## Step 2 — Install only the jeo-skill router
+- macOS: Homebrew (`brew install node python uv`);
+- Linux: the detected distro manager, or Snap when that is the managed option
+  (`sudo snap install node --classic`; install Python 3 through the distro);
+- Windows: Winget (`winget install OpenJS.NodeJS.LTS Python.Python.3.12 astral-sh.uv`),
+  then run Bash snippets in Git Bash or WSL2.
+
+Verify Node/npm/npx and Python before continuing:
 
 ```bash
-npx --yes skills add https://github.com/akillness/jeo-skills \
-  --skill jeo-skill --global --agent universal --yes --copy --full-depth
+node --version
+npm --version
+npx --version
+python3 --version
+```
 
-python3 "$HOME/.agents/skills/jeo-skill/scripts/jeo-skill.py" link
+## Step 2 — Install the skills CLI
+
+```bash
+if ! command -v skills >/dev/null 2>&1; then
+  npm install -g skills
+fi
+skills --version
+```
+
+## Step 3 — Build non-duplicating agent targets
+
+The skills CLI accepts runtime IDs, not executable names. Always target `universal`; it
+populates `~/.agents/skills`, which Codex, Gemini CLI, OpenCode, Cursor, jeo-code, GJC,
+and jeopi can share. Add a dedicated target only when that runtime uses a distinct root.
+Do **not** pass unsupported IDs such as `jeo`, `gjc`, or `jeopi`.
+
+```bash
+SKILLS_AGENT_ARGS=(-a universal)
+command -v claude >/dev/null 2>&1 && SKILLS_AGENT_ARGS+=(-a claude-code)
+(command -v agy >/dev/null 2>&1 || command -v antigravity >/dev/null 2>&1) \
+  && SKILLS_AGENT_ARGS+=(-a antigravity)
+(command -v pi >/dev/null 2>&1 && [ -d "$USER_HOME/.pi/agent" ]) \
+  && SKILLS_AGENT_ARGS+=(-a pi)
+command -v crush >/dev/null 2>&1 && SKILLS_AGENT_ARGS+=(-a crush)
+printf 'skills targets:'; printf ' %q' "${SKILLS_AGENT_ARGS[@]}"; printf '\n'
+```
+
+`codex`, `gemini-cli`, `opencode`, and `cursor` also map to the shared root, so adding
+all of those alongside `universal` would create redundant platform exposure rather than
+additional skills.
+
+## Step 4 — Install the requested scope
+
+### Default: full
+
+Unless the user said “core only” or “minimal”, install every live skill:
+
+```bash
+skills add -g "$REPO_URL" --skill '*' "${SKILLS_AGENT_ARGS[@]}" --yes --copy --full-depth
+```
+
+### Core only
+
+```bash
+skills add -g "$REPO_URL" --skill jeo-skill "${SKILLS_AGENT_ARGS[@]}" --yes --copy --full-depth
+python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" link
+jeo-skill install --bundle starter --global --yes
+```
+
+### Minimal
+
+```bash
+skills add -g "$REPO_URL" --skill jeo-skill "${SKILLS_AGENT_ARGS[@]}" --yes --copy --full-depth
+python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" link
 jeo-skill doctor
 ```
 
-If the runtime has a different shared skill root, locate the installed file without
-changing other skills:
+Stop here in minimal mode. In core mode, install only dependencies explicitly required
+by the selected starter skills; do not continue into the full shared-tool setup by default.
+
+## Step 5 — Full-mode shared tools
+
+Run this step only in full mode. Reuse working installations and make every registration
+idempotent: inspect/list first, add only when missing, and never rewrite a whole config.
+
+### RTK shell output compaction
 
 ```bash
-find "$HOME/.agents" "$HOME/.claude" -path '*/jeo-skill/scripts/jeo-skill.py' -print 2>/dev/null
+if ! command -v rtk >/dev/null 2>&1; then
+  if command -v brew >/dev/null 2>&1; then
+    brew install rtk
+  elif [ "$PLATFORM" = windows ]; then
+    printf '%s\n' 'Install the matching rtk.exe from https://github.com/rtk-ai/rtk/releases or use WSL2.'
+  else
+    curl -fsSL https://raw.githubusercontent.com/rtk-ai/rtk/refs/heads/master/install.sh | sh
+    export PATH="$USER_HOME/.local/bin:$PATH"
+  fi
+fi
+command -v rtk >/dev/null 2>&1 && rtk init -g
 ```
 
-Then run that file with `python3 ... link`.
+Do not use `cargo install rtk`; crates.io contains an unrelated package with that name.
 
-## Step 3 — Browse by category
+### Semble CLI and MCP server
 
 ```bash
-jeo-skill categories
-jeo-skill list --category web
-jeo-skill list --category web --subcategory frontend
-jeo-skill list --category game --subcategory motion-vfx
-jeo-skill list --category cli-tools --interface cli
+if ! command -v uvx >/dev/null 2>&1; then
+  if [ "$PLATFORM" = windows ]; then
+    powershell -NoProfile -Command "irm https://astral.sh/uv/install.ps1 | iex"
+  else
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+    export PATH="$USER_HOME/.local/bin:$USER_HOME/.cargo/bin:$PATH"
+  fi
+fi
+command -v semble >/dev/null 2>&1 || uv tool install 'semble[mcp]'
+
+if command -v claude >/dev/null 2>&1 && ! claude mcp list 2>/dev/null | grep -q '^semble'; then
+  claude mcp add semble -s user -- uvx --from 'semble[mcp]' semble
+fi
+if command -v codex >/dev/null 2>&1 && ! codex mcp list 2>/dev/null | grep -q '^semble'; then
+  codex mcp add semble -- uvx --from 'semble[mcp]' semble
+fi
 ```
 
-Primary categories are:
+For another detected agent, use its documented MCP command/config surface; do not guess a
+JSON/TOML schema or overwrite its existing settings.
 
-- `web`: frontend, backend, design, API, auth, data, testing, accessibility,
-  performance, graphics, capture;
-- `infrastructure`: deployment, environment, observability, security, cloud/data,
-  automation, tooling;
-- `game`: client, web, server, design/UI, audio, animation, motion/VFX,
-  sprite/image, art resources, storytelling, tooling, QA/performance, release;
-- `creative-media`: image, video, motion, audio, presentation, diagram, design,
-  capture, storytelling;
-- `cli-tools`: developer, AI, media, automation, search, benchmark CLIs;
-- `ai-agents`: orchestration, frameworks, skill authoring, evaluation,
-  planning/review, discovery, prompting;
-- `engineering`: code quality, testing, architecture, documentation, code navigation;
-- `research`: academic, web research, data analysis, experimentation, benchmarks,
-  intelligence;
-- `business`: marketing, support, publishing;
-- `utilities`: knowledge, files, Git, workspace, project management, productivity.
-
-## Step 4 — Review overlap before choosing
+### Ouroboros (`ooo`) MCP server
 
 ```bash
-jeo-skill related code-review
-jeo-skill related environment-setup
-jeo-skill related video-motion-previs
+if ! command -v ouroboros >/dev/null 2>&1; then
+  if command -v uv >/dev/null 2>&1; then
+    uv tool install 'ouroboros-ai[all]'
+  else
+    python3 -m pip install --user 'ouroboros-ai[all]'
+  fi
+fi
+
+if command -v claude >/dev/null 2>&1 && ! claude mcp list 2>/dev/null | grep -q '^ooo'; then
+  claude mcp add ooo -s user -- ouroboros mcp serve
+fi
+if command -v codex >/dev/null 2>&1 && ! codex mcp list 2>/dev/null | grep -q '^ooo'; then
+  codex mcp add ooo -- ouroboros mcp serve
+fi
 ```
 
-Relationship groups connect adjacent skills without copying their documentation. Keep
-separate skills when the job or runtime differs—for example, human code-review judgment
-and the `ocr` CLI. Only exact compatibility aliases should point to a canonical skill.
+### Claude Code orchestration plugin
 
-## Step 5 — Preview and install the narrowest selection
+When Claude Code is detected, install the official marketplace plugin without removing
+or replacing existing plugins:
 
 ```bash
-# No mutation
-jeo-skill install --bundle starter --dry-run
-jeo-skill install --category game --subcategory audio --dry-run
-
-# Install reviewed selections
-jeo-skill install --bundle web-frontend --global --yes
-jeo-skill install responsive-design react-best-practices --global --yes
+if command -v claude >/dev/null 2>&1; then
+  claude plugin marketplace add https://github.com/Yeachan-Heo/oh-my-claudecode || true
+  claude plugin install oh-my-claudecode || true
+fi
 ```
 
-Useful curated bundles:
+If the installed Claude version does not expose non-interactive plugin commands, report
+these two commands for the user to run through Claude Code's `/plugin` interface instead
+of editing plugin configuration by hand.
 
-- `starter`
-- `web-frontend`, `web-backend`, `web-design`
-- `infrastructure-core`
-- `game-client`, `game-web`, `game-art`
-- `media-video`
-- `skill-authoring`
-- `cli-core`
+## Step 6 — Runtime-specific shared-root checks
 
-A category can contain many skills. Prefer a bundle or subcategory unless the user truly
-needs the full category.
+- `jeo` and `jeopi` discover `~/.agents/skills` directly; no skills CLI agent ID is needed.
+- GJC may require skill discovery to be enabled and `~/.agents/skills` added to its
+  `skills.customDirectories`. Inspect its current config and merge only those keys; never
+  replace the whole file.
+- If an agent has no native skill loader, report that limitation rather than copying all
+  skill folders into an unverified directory.
 
-## Optional — Explicit full install
-
-Only when the user explicitly says “install every jeo skill”:
+## Step 7 — Verify and report
 
 ```bash
-npx --yes skills add https://github.com/akillness/jeo-skills \
-  --skill '*' --global --agent universal --yes --copy --full-depth
-```
-
-This installs skill documents, not every upstream dependency. Apps, model weights,
-language runtimes, MCP servers, and media toolchains remain on-demand according to each
-selected skill's instructions.
-
-## Verification
-
-```bash
+skills list -g 2>/dev/null || npx --yes skills list --global
+python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" link
 jeo-skill doctor
 jeo-skill categories --json
-jeo-skill install --bundle starter --dry-run
-npx --yes skills list --global --json
+command -v rtk >/dev/null 2>&1 && rtk gain
+command -v semble >/dev/null 2>&1 && semble --help >/dev/null
+command -v claude >/dev/null 2>&1 && claude mcp list
+command -v codex >/dev/null 2>&1 && codex mcp list
 ```
 
-Success means:
+Finally report:
 
-1. `doctor` resolves a valid catalog and reports the installed skill count/categories;
-2. category and subcategory filters return deterministic selections;
-3. dry-run prints names and an exact `npx skills add` command without installing;
-4. the global skill list contains `jeo-skill`;
-5. no unrelated skill was removed and no heavy dependency was installed implicitly.
+1. detected OS and agents;
+2. selected mode and installed skill count;
+3. exact global and per-agent paths used;
+4. MCP/shell/plugin registrations completed or skipped, with reasons;
+5. verification output and any manual follow-up.
+
+Compare pre-existing skill names captured before installation with the final listing. A
+successful run adds or updates jeo-skills targets and leaves every unrelated pre-existing
+skill present.

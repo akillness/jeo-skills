@@ -5,13 +5,17 @@
 [![Skills](https://img.shields.io/badge/Skills-192-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
+[![GJC](https://img.shields.io/badge/GJC-gajae--code-181717?style=for-the-badge&logo=github)](https://github.com/akillness/gajae-code)
+[![jeo-code](https://img.shields.io/badge/jeo--code-jeo-181717?style=for-the-badge&logo=github)](https://github.com/akillness/jeo-code)
+[![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
 **카테고리형 스킬 192개 · 경량 선택 설치 · 압축 TOON 카탈로그 · 멀티플랫폼**
 
-스펙 우선 멀티 에이전트 LLM 워크플로우 컬렉션입니다. `jeo-skill` 라우터를 먼저
-설치한 다음 필요한 웹, 인프라, 게임, 미디어, CLI, 유틸리티 스킬만 추가합니다.
+스펙 우선 멀티 에이전트 LLM 워크플로우 컬렉션입니다. 프롬프트 하나로 전체 설정을
+위임하거나, `jeo-skill` 라우터부터 설치해 필요한 웹, 인프라, 게임, 미디어, CLI,
+유틸리티 스킬만 선택적으로 추가할 수 있습니다.
 
-[빠른 시작](#-경량-설치) · [스킬 목록](#-스킬-목록) · [English](README.md)
+[빠른 시작](#-설치) · [스킬 목록](#-스킬-목록) · [English](README.md)
 
 </div>
 
@@ -45,30 +49,29 @@
 
 ---
 
-## 🚀 빠른 시작
+## 📦 설치
 
-> **사전 준비**: `npx skills add` 명령을 실행하려면 먼저 `skills` CLI가 필요합니다.
->
-> ```bash
-> npm install -g skills
-> ```
+### ✨ 권장: LLM 위임 설치(프롬프트 하나로 모든 플랫폼 지원)
+
+설정 프롬프트를 코딩 에이전트(Claude Code, Codex, Gemini CLI 등)에게 전달하세요. 에이전트가 가이드를 읽고 OS를 감지한 뒤 `skills` CLI를 설치하고, 각 에이전트의 올바른 경로에 모든 스킬을 추가하며, MCP/셸 도구까지 등록하므로 수동 단계가 필요 없습니다.
 
 ```bash
-# LLM 에이전트에게 전달 — 읽고 자동으로 설치를 진행합니다
+# 위임 가이드를 가져와 에이전트에게 전달
 curl -s https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-skills-prompt.md
 ```
 
-| 플랫폼 | 첫 번째 명령 |
-|--------|------------|
-| Claude Code | `ooo interview "작업"` 또는 `/team "작업"` |
-| Gemini CLI | `bmad "작업"` 또는 `ooo interview "작업"` |
-| Codex CLI | `bmad "작업"` 또는 `ooo interview "작업"` |
-| OpenCode | `bmad "작업"` 또는 `ooo interview "작업"` |
+또는 에이전트 채팅에 다음 문장을 그대로 붙여 넣으세요.
 
----
+> Read https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-skills-prompt.md in full and follow it to install the jeo-skills.
 
+에이전트는 기본적으로 **전체 설치**를 실행합니다. 범위를 줄이려면 “core only” 또는 “minimal”이라고 요청하세요. 에이전트가 수행하는 작업은 다음과 같습니다.
 
-## 📦 경량 설치
+- macOS / Linux / Windows를 감지하고 `brew` / `snap` / `winget`과 올바른 설치 경로를 선택합니다.
+- `skills` CLI를 설치하고 올바른 `-a` 에이전트 대상으로 스킬을 추가해 플랫폼별 중복 노출을 방지합니다.
+- MCP 도구(`ooo`, `semble`), 셸 도구(`rtk`), `oh-my-claudecode` 플러그인을 등록합니다.
+- 기존 스킬을 보존하며 추가 또는 업데이트만 수행하고 삭제하지 않습니다.
+
+### 경량 선택 설치(수동 / CI)
 
 192개 스킬 폴더 전체가 아니라 **`jeo-skill` 라우터부터 설치**합니다. 카테고리,
 하위 분류, 인터페이스, 번들, 연관 스킬을 탐색할 수 있으며 앱·모델·MCP 서버·런타임은
@@ -106,9 +109,9 @@ jeo-skill install --bundle game-web --global --yes
 curl -fsSL https://raw.githubusercontent.com/akillness/jeo-skills/main/install.sh | bash
 ```
 
-`JEO_SKILLS_SELECTION=bundle`, `category`, `all`은 더 넓은 범위가 의도된 경우에만
-지정합니다. 에이전트 위임·선택 설치·명시적 전체 설치 방법은
-[setup-all-skills-prompt.md](setup-all-skills-prompt.md)를 참고하세요.
+`JEO_SKILLS_SELECTION=bundle`, `category`, `all`은 셸 설치기의 더 넓은 범위가 의도된
+경우에만 지정합니다. LLM 위임 설치의 전체 기본 모드와 더 좁은 “core only”,
+“minimal” 모드는 [setup-all-skills-prompt.md](setup-all-skills-prompt.md)를 참고하세요.
 
 ### 온디맨드 비디오 모션 프리비스
 

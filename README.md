@@ -5,14 +5,17 @@
 [![Skills](https://img.shields.io/badge/Skills-192-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
+[![GJC](https://img.shields.io/badge/GJC-gajae--code-181717?style=for-the-badge&logo=github)](https://github.com/akillness/gajae-code)
+[![jeo-code](https://img.shields.io/badge/jeo--code-jeo-181717?style=for-the-badge&logo=github)](https://github.com/akillness/jeo-code)
+[![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
 **192 categorized skills · lightweight selective install · compact TOON catalog · cross-platform**
 
-A curated collection for spec-first, multi-agent LLM workflows. Install the `jeo-skill`
-router first, then add only the web, infrastructure, game, media, CLI, or utility skills
-you need.
+A curated collection for spec-first, multi-agent LLM workflows. Delegate a complete setup
+with one prompt, or install the `jeo-skill` router first and add only the web,
+infrastructure, game, media, CLI, or utility skills you need.
 
-[Quick Start](#-lightweight-installation) · [Skills List](#-skills-list) · [한국어](README.ko.md)
+[Quick Start](#-installation) · [Skills List](#-skills-list) · [한국어](README.ko.md)
 
 </div>
 
@@ -43,7 +46,29 @@ skills can be grouped without duplicating wrapper folders or moving runtime-faci
 ## 🏗 Workflow & Architecture
 
 <img src="assets/workflow.svg" alt="jeo-skills Workflow & Architecture" width="100%">
-## 📦 Lightweight Installation
+## 📦 Installation
+
+### ✨ Recommended: LLM-driven install (one prompt, all platforms)
+
+Hand the setup prompt to your coding agent (Claude Code, Codex, Gemini CLI, …). It reads the guide, detects your OS, installs the `skills` CLI, adds every skill into the correct per-agent paths, and registers the MCP/shell tools — no manual steps.
+
+```bash
+# Fetch the delegation guide and hand it to your agent
+curl -s https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-skills-prompt.md
+```
+
+Or just paste the URL into the agent chat:
+
+> Read https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-skills-prompt.md in full and follow it to install the jeo-skills.
+
+The agent runs a **full install by default** (say “core only” or “minimal” to narrow it) and will:
+
+- detect macOS / Linux / Windows and select `brew` / `snap` / `winget` + the right install paths,
+- install the `skills` CLI and add skills with correct `-a` agent targeting (no duplicate platform exposure),
+- register MCP tools (`ooo`, `semble`), shell tooling (`rtk`), and the `oh-my-claudecode` plugin,
+- **preserve any pre-existing skills** — it only adds or updates, never deletes.
+
+### Lightweight selective install (manual / CI)
 
 Install the **`jeo-skill` router first**, not all 192 skill folders. It provides category,
 subcategory, interface, bundle, and relationship discovery while keeping heavy apps,
@@ -81,9 +106,9 @@ The one-line installer uses the same lightweight default:
 curl -fsSL https://raw.githubusercontent.com/akillness/jeo-skills/main/install.sh | bash
 ```
 
-Set `JEO_SKILLS_SELECTION=bundle`, `category`, or `all` only when that wider scope is
-intentional. See [setup-all-skills-prompt.md](setup-all-skills-prompt.md) for agent-driven,
-selective, and explicit full-install instructions.
+Set `JEO_SKILLS_SELECTION=bundle`, `category`, or `all` only when that wider shell-installer
+scope is intentional. See [setup-all-skills-prompt.md](setup-all-skills-prompt.md) for the
+LLM-driven full default and the narrower “core only” and “minimal” modes.
 
 ### On-demand video motion previs
 
