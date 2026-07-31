@@ -227,6 +227,31 @@ python3 "$SKILLS_ROOT/animato/scripts/animato_agent.py" doctor
 verification. Skip steps 1–2 unless the user asked for animation work: `/api/run` and `/api/chat`
 execute model-written Python by design and must stay on a trusted local machine.
 
+### UniRig rigging runtime (on demand)
+
+The `unirig` skill installs as documents plus shell/Python wrappers; it never clones the
+upstream repository, downloads checkpoints, or installs CUDA wheels during setup. UniRig
+inference needs Python 3.11 and an NVIDIA GPU, so prepare it only when a task actually rigs
+a model:
+
+```bash
+# 1. readiness first — every blocking item is reported before any GPU work
+bash "$SKILLS_ROOT/unirig/scripts/doctor.sh"
+
+# 2. upstream checkout + dependencies (CUDA tag must match the machine)
+bash "$SKILLS_ROOT/unirig/scripts/install.sh" --repo-only          # checkout only
+bash "$SKILLS_ROOT/unirig/scripts/install.sh" --cuda cu121         # checkout + venv + deps
+
+# 3. plan a run without executing it (works on any machine, including macOS)
+bash "$SKILLS_ROOT/unirig/scripts/rig.sh" --input model.glb \
+     --output out/model_rigged.glb --dry-run
+```
+
+`doctor.sh` and `rig.sh --dry-run` need neither a GPU nor the checkout, so both are safe during
+installation verification. Skip step 2 unless the user asked for rigging work on a CUDA machine;
+on macOS or a CPU-only box, route out per `unirig/references/route-outs-and-troubleshooting.md`
+instead of forcing the install.
+
 ## Step 6 — Runtime-specific shared-root checks
 
 - `jeo` and `jeopi` discover `~/.agents/skills` directly; no skills CLI agent ID is needed.

@@ -2,14 +2,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-193-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-194-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![GJC](https://img.shields.io/badge/GJC-gajae--code-181717?style=for-the-badge&logo=github)](https://github.com/akillness/gajae-code)
 [![jeo-code](https://img.shields.io/badge/jeo--code-jeo-181717?style=for-the-badge&logo=github)](https://github.com/akillness/jeo-code)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**카테고리형 스킬 193개 · 경량 선택 설치 · 압축 TOON 카탈로그 · 멀티플랫폼**
+**카테고리형 스킬 194개 · 경량 선택 설치 · 압축 TOON 카탈로그 · 멀티플랫폼**
 
 스펙 우선 멀티 에이전트 LLM 워크플로우 컬렉션입니다. 프롬프트 하나로 전체 설정을
 위임하거나, `jeo-skill` 라우터부터 설치해 필요한 웹, 인프라, 게임, 미디어, CLI,
@@ -73,7 +73,7 @@ curl -s https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-sk
 
 ### 경량 선택 설치(수동 / CI)
 
-193개 스킬 폴더 전체가 아니라 **`jeo-skill` 라우터부터 설치**합니다. 카테고리,
+194개 스킬 폴더 전체가 아니라 **`jeo-skill` 라우터부터 설치**합니다. 카테고리,
 하위 분류, 인터페이스, 번들, 연관 스킬을 탐색할 수 있으며 앱·모델·MCP 서버·런타임은
 실제 선택된 작업에서만 온디맨드로 설치합니다.
 
@@ -126,7 +126,7 @@ video-motion-previs check
 
 ## 📚 스킬 목록
 
-> 중앙 매니페스트: `.agent-skills/skills.json` · 193개 스킬 · 10개 기본 카테고리 · 하위 카테고리/인터페이스/관계 그룹 지원
+> 중앙 매니페스트: `.agent-skills/skills.json` · 194개 스킬 · 10개 기본 카테고리 · 하위 카테고리/인터페이스/관계 그룹 지원
 
 ### 🌐 웹 (44개)
 
@@ -197,9 +197,9 @@ video-motion-previs check
 | `genkit` |
 | `looker-studio-bigquery` |
 
-### 🎮 게임 (20개)
+### 🎮 게임 (21개)
 
-하위 분류: `client` (2), `web` (2), `server` (0), `design-ui` (4), `audio` (1), `animation` (1), `motion-vfx` (2), `sprite-image` (1), `art-resources` (0), `storytelling` (0), `tooling` (2), `qa-performance` (3), `release` (2)
+하위 분류: `client` (2), `web` (2), `server` (0), `design-ui` (4), `audio` (1), `animation` (2), `motion-vfx` (2), `sprite-image` (1), `art-resources` (0), `storytelling` (0), `tooling` (2), `qa-performance` (3), `release` (2)
 
 | Skill |
 |---|
@@ -213,6 +213,7 @@ video-motion-previs check
 | `open-design-game-ui-takeover` |
 | `rfxgen` |
 | `animato` |
+| `unirig` |
 | `dalamud-vfx-editor` |
 | `game-vfx` |
 | `perfectpixel` |
@@ -635,7 +636,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 ## 📁 구조
 
 ```text
-├── .agent-skills/          ← 193개 스킬 폴더 (SKILL.md + 선택적 지원 파일)
+├── .agent-skills/          ← 194개 스킬 폴더 (SKILL.md + 선택적 지원 파일)
 ├── docs/                   ← 상세 가이드 (bmad, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
@@ -710,6 +711,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 
 | 변경 | 내용 |
 |------|------|
+| **UniRig 자동 리깅 파이프라인** | [VAST-AI-Research/UniRig](https://github.com/VAST-AI-Research/UniRig)(SIGGRAPH'25)를 위한 `unirig`을 추가했습니다. 스켈레톤 예측 → 스키닝 웨이트 예측 → 원본 텍스처 에셋에 리그 병합 순서로 진행합니다. 차단 항목을 보고하는 `doctor.sh`, 업스트림 CUDA/spconv/PyG 설치 순서를 그대로 따르는 `install.sh`, `--dry-run` 계획과 단계별 산출물 검증을 제공하는 `rig.sh`, NVIDIA GPU가 없는 환경을 위한 대안 경로를 포함합니다. |
 | **Animato 텍스트→애니메이션 루프** | [otdnnc/Animato](https://github.com/otdnnc/Animato)를 API 키 기반 에이전트 루프로 구동하는 `animato`를 추가했습니다. 리그드 모델 업로드 → bpy 프롬프트 생성 → 1회 추론 → `validate_bpy_script.py` 정적 게이트 → 헤드리스 실행 순서로 진행합니다. stdlib만 사용하는 CLI(`animato_agent.py`), 제거된 Blender API·애니메이션 bake 플래그 누락을 잡는 게이트, 스텁 서버로 전체 루프를 검증하는 오프라인 `selftest.py`를 포함합니다. |
 | **Three.js 구현 스킬 10개 추가** | [CloudAI-X/threejs-skills](https://github.com/CloudAI-X/threejs-skills)를 바탕으로 `threejs-fundamentals`, `threejs-geometry`, `threejs-materials`, `threejs-lighting`, `threejs-textures`, `threejs-loaders`, `threejs-animation`, `threejs-interaction`, `threejs-shaders`, `threejs-postprocessing`을 추가했습니다. 각 스킬은 집중된 구현 계약, TOON 검색 표면, eval, 업스트림/공식 레퍼런스를 제공하며, 직접 렌더링 작업은 `web-game-development`의 게임 시스템 라우팅과 분리합니다. |
 | **Open Design 게임 UI 스킬 추가** | 콘셉트 검토, 증거 기반 handoff, 승인된 런타임 통합을 위한 `open-design-game-ui-concept`, `open-design-game-ui-handoff`, `open-design-game-ui-takeover`을 추가했습니다. |

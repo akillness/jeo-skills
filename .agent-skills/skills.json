@@ -1,7 +1,7 @@
 {
   "version": "2.0.0",
   "generated": "2026-07-30",
-  "skill_count": 193,
+  "skill_count": 194,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -189,6 +189,7 @@
       "open-design-game-ui-takeover",
       "rfxgen",
       "animato",
+      "unirig",
       "dalamud-vfx-editor",
       "game-vfx",
       "perfectpixel",
@@ -447,7 +448,8 @@
         "rfxgen"
       ],
       "animation": [
-        "animato"
+        "animato",
+        "unirig"
       ],
       "motion-vfx": [
         "dalamud-vfx-editor",
@@ -737,7 +739,8 @@
       "game-vfx",
       "rfxgen",
       "perfectpixel",
-      "open-design-game-ui-concept"
+      "open-design-game-ui-concept",
+      "unirig"
     ],
     "media-video": [
       "video-production",
@@ -2987,6 +2990,41 @@
       "keyword": "animato",
       "version": "1.0.0",
       "source": "https://github.com/otdnnc/Animato"
+    },
+    {
+      "name": "unirig",
+      "description": "Automatically rig 3D models with UniRig (VAST-AI-Research, SIGGRAPH'25) — predict a skeleton, predict skinning weights, and merge the rig back onto the original mesh. Use when the user wants auto-rigging for .obj/.fbx/.glb/.gltf/.dae/.vrm assets, a skeleton or skin weights for a character or creature, a UniRig environment prepared on a CUDA machine, batch rigging of a model directory, or an honest comparison between UniRig, SkinTokens, Tripo, Mixamo, AccuRig, and Blender Rigify. Triggers on: unirig, auto rig, auto-rigging, 3D rigging, skeleton prediction, skinning weights, rig a character, armature generation, rigged glb, rigged fbx, bone weights.",
+      "category": "game",
+      "subcategory": "animation",
+      "interface": "cli",
+      "path": "unirig/SKILL.md",
+      "tags": [
+        "unirig",
+        "3d-rigging",
+        "auto-rigging",
+        "skeleton-prediction",
+        "skinning-weights",
+        "blender",
+        "fbx",
+        "glb",
+        "vrm",
+        "character-animation",
+        "game-art",
+        "pytorch"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
+      ],
+      "keyword": "unirig",
+      "version": "1.0",
+      "source": "https://github.com/VAST-AI-Research/UniRig"
     },
     {
       "name": "dalamud-vfx-editor",

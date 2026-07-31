@@ -1,0 +1,65 @@
+{
+  "skill_name": "unirig",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "이 GLB 캐릭터를 자동으로 리깅해줘.",
+      "expected_output": "The skill checks the environment first, dry-runs the pipeline, then runs skeleton → skin → merge and verifies the output.",
+      "assertions": [
+        "The response runs or references `scripts/doctor.sh` before a GPU run",
+        "The response uses `scripts/rig.sh` with `--stage all` (default) and `--dry-run` before executing",
+        "The response verifies the deliverable with `scripts/inspect_glb.py` or Blender"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "맥북에서 UniRig 돌릴 수 있어?",
+      "expected_output": "The skill states plainly that UniRig inference requires an NVIDIA CUDA GPU and routes out instead of inventing a CPU path.",
+      "assertions": [
+        "The response says there is no CPU/Apple-Silicon inference path",
+        "The response names the CUDA-only dependencies (spconv, flash_attn, torch_scatter/torch_cluster)",
+        "The response offers a route-out such as a cloud GPU, Tripo, Mixamo, AccuRig, or Rigify"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "리깅 결과를 원본 모델에 합쳤는데 메시가 전혀 안 움직여.",
+      "expected_output": "The skill identifies that the skeleton FBX was merged instead of the skin FBX.",
+      "assertions": [
+        "The response says merging `*_skeleton.fbx` yields no skinning weights",
+        "The response tells the user to re-merge with the `*_skin.fbx` output",
+        "The response mentions verifying skins/JOINTS_0/WEIGHTS_0 in the merged GLB"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "예측된 스켈레톤에 꼬리 본이 없어. 스키닝부터 다시 돌릴까?",
+      "expected_output": "The skill fixes the skeleton before re-running the skin stage.",
+      "assertions": [
+        "The response treats this as a skeleton-stage problem, not a skinning problem",
+        "The response suggests another `--seed` or editing the skeleton in Blender",
+        "The response re-runs `--stage skin` on the corrected skeleton file"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "flash_attn 설치가 계속 실패하는데 UniRig 설치 어떻게 해?",
+      "expected_output": "The skill isolates flash_attn from the rest of the requirements and points at the upstream build guidance.",
+      "assertions": [
+        "The response notes that `flash_attn` is inside upstream `requirements.txt` and aborts the whole install on failure",
+        "The response uses `scripts/install.sh`, which defers `flash_attn` to a separate step",
+        "The response links or refers to Dao-AILab/flash-attention for a prebuilt wheel or source build"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "새 프로젝트인데 UniRig랑 SkinTokens 중에 뭐 써야 해?",
+      "expected_output": "The skill recommends SkinTokens for new work while stating when UniRig still makes sense.",
+      "assertions": [
+        "The response identifies SkinTokens as the successor from the same lab",
+        "The response cites its reported skinning/bone-prediction gains over UniRig",
+        "The response keeps UniRig as the choice for its released checkpoint, Rig-XL tooling, or an existing environment"
+      ]
+    }
+  ]
+}
