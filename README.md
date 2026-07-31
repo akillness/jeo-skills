@@ -2,14 +2,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-192-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-193-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![GJC](https://img.shields.io/badge/GJC-gajae--code-181717?style=for-the-badge&logo=github)](https://github.com/akillness/gajae-code)
 [![jeo-code](https://img.shields.io/badge/jeo--code-jeo-181717?style=for-the-badge&logo=github)](https://github.com/akillness/jeo-code)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**192 categorized skills · lightweight selective install · compact TOON catalog · cross-platform**
+**193 categorized skills · lightweight selective install · compact TOON catalog · cross-platform**
 
 A curated collection for spec-first, multi-agent LLM workflows. Delegate a complete setup
 with one prompt, or install the `jeo-skill` router first and add only the web,
@@ -70,7 +70,7 @@ The agent runs a **full install by default** (say “core only” or “minimal�
 
 ### Lightweight selective install (manual / CI)
 
-Install the **`jeo-skill` router first**, not all 192 skill folders. It provides category,
+Install the **`jeo-skill` router first**, not all 193 skill folders. It provides category,
 subcategory, interface, bundle, and relationship discovery while keeping heavy apps,
 models, MCP servers, and runtimes on demand.
 
@@ -123,7 +123,7 @@ video-motion-previs check
 
 ## 📚 Skills List
 
-> Central manifest: `.agent-skills/skills.json` · 192 skills · 10 primary categories · subcategory/interface/relationship metadata
+> Central manifest: `.agent-skills/skills.json` · 193 skills · 10 primary categories · subcategory/interface/relationship metadata
 
 ### 🌐 Web (44)
 
@@ -194,9 +194,9 @@ Subcategories: `deployment` (2), `environment` (2), `observability` (2), `securi
 | `genkit` |
 | `looker-studio-bigquery` |
 
-### 🎮 Game (19)
+### 🎮 Game (20)
 
-Subcategories: `client` (2), `web` (2), `server` (0), `design-ui` (4), `audio` (1), `animation` (0), `motion-vfx` (2), `sprite-image` (1), `art-resources` (0), `storytelling` (0), `tooling` (2), `qa-performance` (3), `release` (2)
+Subcategories: `client` (2), `web` (2), `server` (0), `design-ui` (4), `audio` (1), `animation` (1), `motion-vfx` (2), `sprite-image` (1), `art-resources` (0), `storytelling` (0), `tooling` (2), `qa-performance` (3), `release` (2)
 
 | Skill |
 |---|
@@ -209,6 +209,7 @@ Subcategories: `client` (2), `web` (2), `server` (0), `design-ui` (4), `audio` (
 | `open-design-game-ui-handoff` |
 | `open-design-game-ui-takeover` |
 | `rfxgen` |
+| `animato` |
 | `dalamud-vfx-editor` |
 | `game-vfx` |
 | `perfectpixel` |
@@ -645,7 +646,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 
 ```text
 .
-├── .agent-skills/          ← 192 skill folders (SKILL.md + optional support files)
+├── .agent-skills/          ← 193 skill folders (SKILL.md + optional support files)
 ├── docs/                   ← detailed guides (bmad, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
@@ -724,6 +725,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 
 | Change | Details |
 |--------|---------|
+| **Animato text-to-animation loop** | Added `animato`, an API-key agent loop for [otdnnc/Animato](https://github.com/otdnnc/Animato): upload a rigged model, build the bpy prompt, spend one LLM call, gate the generated script with `validate_bpy_script.py`, then execute it headless. Ships a stdlib-only CLI (`animato_agent.py`), a static gate for removed Blender APIs and missing animation-bake flags, and an offline `selftest.py` that exercises the whole loop against a stub server. |
 | **Ten Three.js implementation skills** | Added `threejs-fundamentals`, `threejs-geometry`, `threejs-materials`, `threejs-lighting`, `threejs-textures`, `threejs-loaders`, `threejs-animation`, `threejs-interaction`, `threejs-shaders`, and `threejs-postprocessing`, adapted from [CloudAI-X/threejs-skills](https://github.com/CloudAI-X/threejs-skills). Each has a focused implementation contract, compact TOON discovery surface, evals, and upstream/official references; direct rendering work stays distinct from `web-game-development` game-system routing. |
 | **Open Design game UI skills** | Added `open-design-game-ui-concept`, `open-design-game-ui-handoff`, and `open-design-game-ui-takeover` for concept review, evidence-backed handoffs, and approved runtime integration. |
 | **Lightweight category catalog** | Reorganized 192 skills into 10 primary categories and 74 focused subcategories with interface metadata, curated bundles, and relationship groups. Added the selectively installed `jeo-skill` CLI; the default installer no longer copies the full catalog or installs heavy dependencies. Compact `skills.toon` now contains one record per skill, and `skills.json` is version 2.0.0. |

@@ -1,0 +1,56 @@
+{
+  "skill_name": "animato",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I have a rigged X Bot.fbx and a Gemini free-tier key. Animate it to wave hello without opening Blender, and do it from the terminal.",
+      "expected_output": "The gated API-key loop: doctor, then `animato_agent.py animate --file ... --message ...` in local mode, with the generated script persisted and checked before execution.",
+      "assertions": [
+        "The output uses the key from the environment or --api-key rather than pasting a prompt into a chat UI",
+        "The output runs the prompt -> single inference -> gate -> /api/run order",
+        "The output warns that the export overwrites the uploaded model in place",
+        "The output verifies `ok` and the resulting output_url instead of trusting the HTTP status"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "The model returned a bpy script that calls bpy.context.scene.objects.active and exports glTF without export_animations. Should I just run it?",
+      "expected_output": "A refusal to execute, citing the removed 2.80 API and the dropped animation flag, with a corrected request rather than a retry loop.",
+      "assertions": [
+        "The output rejects execution before /api/run is called",
+        "The output identifies bpy.context.scene.objects.active as a removed API",
+        "The output identifies the missing export_animations=True as animation loss",
+        "The output does not recommend blindly re-asking the model until it passes"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Can I expose the Animato server to my team over the internet so everyone can generate animations?",
+      "expected_output": "An explicit warning that /api/run and /api/chat execute arbitrary Python by design and are not sandboxed, so public exposure needs a sandbox.",
+      "assertions": [
+        "The output names /api/run (and /api/chat) as a remote-code-execution surface",
+        "The output states the child process isolates bpy crashes but does not sandbox code",
+        "The output recommends keeping the server local or sandboxing before exposure"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "I uploaded a .obj and asked for a walk cycle, but nothing animates.",
+      "expected_output": "A diagnosis that .obj carries no skeleton and cannot be animated, with a route to re-export a rigged .fbx/.gltf.",
+      "assertions": [
+        "The output identifies the missing skeleton in .obj as the cause",
+        "The output asks for a rigged .fbx or .gltf instead of retrying the prompt"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Write me a custom multi-agent retry loop that keeps calling the model until the Blender script finally runs.",
+      "expected_output": "A route-out: the skill keeps one inference per animation and directs the fix to the request/prompt dump, not to a retry storm.",
+      "assertions": [
+        "The output declines an unbounded retry loop",
+        "The output points at the /api/prompt dump (bone names, units, bpy 5.x cheat-sheet) as the fix surface",
+        "The output preserves the one-inference-per-animation contract"
+      ]
+    }
+  ]
+}

@@ -205,6 +205,28 @@ If the installed Claude version does not expose non-interactive plugin commands,
 these two commands for the user to run through Claude Code's `/plugin` interface instead
 of editing plugin configuration by hand.
 
+### Animato animation runtime (on demand)
+
+The `animato` skill installs as documents plus stdlib-only scripts; it never installs Blender,
+the upstream server, or a model key. Set those up only when a task actually animates a model:
+
+```bash
+# 1. upstream server (Python 3.13 + uv; bpy is a project dependency, no Blender install)
+git clone https://github.com/otdnnc/Animato.git && cd Animato && uv sync
+uv run fastapi run main.py            # UI + API on http://localhost:8000
+
+# 2. the key the agent loop spends (free tier is enough — one inference per animation)
+export ANIMATO_API_KEY=...            # or GEMINI_API_KEY / OPENAI_API_KEY
+
+# 3. verify wiring, then the loop itself
+python3 "$SKILLS_ROOT/animato/scripts/selftest.py"      # offline: stub server + stub LLM
+python3 "$SKILLS_ROOT/animato/scripts/animato_agent.py" doctor
+```
+
+`selftest.py` needs neither the server nor a key, so it is safe to run during installation
+verification. Skip steps 1–2 unless the user asked for animation work: `/api/run` and `/api/chat`
+execute model-written Python by design and must stay on a trusted local machine.
+
 ## Step 6 — Runtime-specific shared-root checks
 
 - `jeo` and `jeopi` discover `~/.agents/skills` directly; no skills CLI agent ID is needed.

@@ -1,7 +1,7 @@
 {
   "version": "2.0.0",
   "generated": "2026-07-30",
-  "skill_count": 192,
+  "skill_count": 193,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -188,6 +188,7 @@
       "open-design-game-ui-handoff",
       "open-design-game-ui-takeover",
       "rfxgen",
+      "animato",
       "dalamud-vfx-editor",
       "game-vfx",
       "perfectpixel",
@@ -445,7 +446,9 @@
       "audio": [
         "rfxgen"
       ],
-      "animation": [],
+      "animation": [
+        "animato"
+      ],
       "motion-vfx": [
         "dalamud-vfx-editor",
         "game-vfx"
@@ -2955,6 +2958,35 @@
       "keyword": "rfxgen",
       "version": "1.0.0",
       "source": "https://github.com/raysan5/rfxgen"
+    },
+    {
+      "name": "animato",
+      "description": "Drive Animato (github.com/otdnnc/Animato) as an API-key agent loop that turns a rigged .fbx/.gltf model plus a plain-text motion request into a baked animation: upload the model, build the bpy prompt, spend one LLM call with your own key, gate the generated script, run it headless, and verify the animated output. Use when the user wants text-to-animation for a 3D character, an unattended animation pipeline driven by a Gemini or OpenAI-compatible API key, or help operating a local Animato server. Triggers on: animato, text to animation, animate a rigged model, bpy animation script, blender headless keyframe, /api/chat animation, character motion from a prompt, GEMINI_API_KEY animation.",
+      "category": "game",
+      "subcategory": "animation",
+      "interface": "workflow",
+      "path": "animato/SKILL.md",
+      "tags": [
+        "game-development",
+        "animation",
+        "blender",
+        "bpy",
+        "3d",
+        "agent-loop",
+        "api-key"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "animato",
+      "version": "1.0.0",
+      "source": "https://github.com/otdnnc/Animato"
     },
     {
       "name": "dalamud-vfx-editor",
