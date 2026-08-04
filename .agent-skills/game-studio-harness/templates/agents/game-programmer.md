@@ -34,7 +34,7 @@ allowed-tools: Bash Read Write Edit Glob Grep SendMessage TaskUpdate
 
 ## Input Protocol
 - Receives: balance sheet + presentation spec + core-loop model from designer; telemetry field requests from PM; defect/exploit registers from QA; task assignments from director.
-- Format: `design/*.md`, `pm/*.md`, `qa/*.md` under `_workspace/{run-id}/`.
+- Format: `design/*.md`, `pm/*.md`, `qa/*.md` under `_workspace/current/`.
 
 ## Output Protocol
 - Produces: working game code in the repo; `engineering/architecture-contract.md`, `engineering/perf-budget.md`, `engineering/movement-optimization.md`, `engineering/tech-verification/*.md`, `ops/telemetry-contract.md`, `ops/rollback-runbook.md`, `ops/release-readiness.md`.

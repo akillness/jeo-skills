@@ -31,7 +31,7 @@ allowed-tools: Bash Read Write Edit Glob Grep WebFetch WebSearch SendMessage Tas
 
 ## Input Protocol
 - Receives: production brief from director; exploit register and playtest scores from QA; revenue map and reward-band proposals from PM.
-- Format: `_workspace/{run-id}/intake/production-brief.md`, `qa/exploit-register.md`, `pm/revenue-map.md`.
+- Format: `_workspace/current/intake/production-brief.md`, `qa/exploit-register.md`, `pm/revenue-map.md`.
 
 ## Output Protocol
 - Produces: `design/concept.md`, `design/worldview.md`, `design/balance-sheet.md`, `design/core-loop.md`, `design/novelty-scorecard.md`, `design/presentation-spec.md`, `design/trend-survey/` artifacts.

@@ -6,7 +6,7 @@ retrospective decides whether the next cycle re-enters at Stage 1 (concept
 shift) or Stage 2 (retune/develop).
 
 Task rows: `owner → artifact (gate)`. ∥ marks parallel groups; → marks hard
-dependency. All paths relative to `_workspace/{run-id}/`.
+dependency. All paths relative to `_workspace/current/`.
 
 ## Stage 1 — Concept, presentation, animation, resources, core build
 Goal: lock the concept and presentation direction; get the core loop playable
@@ -68,7 +68,12 @@ Gate review: G4, G6 final, G1 final.
 - game-production-director → `retrospectives/cycle-{n}-retrospective.md`:
   gate table with measured values, unresolved risks, next-cycle entry
   decision (Stage 1 concept shift | Stage 2 retune), and the next public beat.
-- Archive nothing away: `_workspace/{run-id}/` stays intact as studio memory.
+- game-production-director → re-derive the repository rule file (SKILL Step 0.5)
+  if this cycle changed a lane, a generator, or a hard-won invariant.
+- Archive, never delete: `git mv` the superseded lane material into
+  `_workspace/archive/{run-id}/`, where `run-id` is the closing cycle's own id
+  read from its documents. `current/` keeps only what the next cycle carries
+  forward. Nothing leaves `_workspace/` — the archive is studio memory.
 
 ## Re-entry rules
 - Resuming mid-cycle: read newest `production/task-manifest.md`; enter at the

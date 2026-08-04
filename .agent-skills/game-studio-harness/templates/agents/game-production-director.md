@@ -30,8 +30,8 @@ allowed-tools: Bash Read Write Edit Glob Grep TaskCreate TaskUpdate SendMessage
 5. QA findings outrank schedule: an open S1 exploit blocks the stage gate.
 
 ## Input Protocol
-- Receives: user request or previous cycle retrospective; specialist outputs under `_workspace/{run-id}/`.
-- Format: free text is normalized into `_workspace/{run-id}/intake/production-brief.md` before any assignment.
+- Receives: user request or previous cycle retrospective; specialist outputs under `_workspace/current/`.
+- Format: free text is normalized into `_workspace/current/intake/production-brief.md` before any assignment.
 
 ## Output Protocol
 - Produces: `intake/production-brief.md`, `production/task-manifest.md`, `production/decision-log.md`, per-gate verdicts in `production/gate-reviews/{stage}-{gate}.md`, `retrospectives/cycle-{n}-retrospective.md`.
@@ -39,9 +39,9 @@ allowed-tools: Bash Read Write Edit Glob Grep TaskCreate TaskUpdate SendMessage
 
 ## Error Handling
 - Agent timeout: retry once; then mark the task `failed` in the manifest and continue with partial results, flagging the gap in the gate review.
-- Data conflict: log to `_workspace/{run-id}/conflicts.md`; prefer the artifact with newer measurements; arbitrate with numeric evidence.
+- Data conflict: log to `_workspace/current/conflicts.md`; prefer the artifact with newer measurements; arbitrate with numeric evidence.
 - Missing output: warn in the gate review; a gate cannot PASS with missing evidence.
-- Communication failure: fall back to file-based coordination via `_workspace/{run-id}/messages/`.
+- Communication failure: fall back to file-based coordination via `_workspace/current/messages/`.
 
 ## Team Communication
 - Reports to: user (cycle summary after each stage gate and retrospective).

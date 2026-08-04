@@ -9,10 +9,11 @@ U[5]:
   Extensible, operationally stable implementation with strict new-tech verification and perf/movement-path budgets
   Archetype-rotation QA that hunts balance breaks, benchmarks similar games via survey, and measures every gate
 
-S[6]{n,action,details}:
-  1,Scaffold the run,Create _workspace/{run-id}/ (intake design pm engineering qa ops production messages retrospectives) at the target repo root and resume from the newest task manifest when present.
-  2,Normalize intake,Director writes production-brief.md with the bmad-gds schema and picks ONE operating mode plus the next public beat.
-  3,Materialize the team,Copy templates/agents/ into the runtime (.claude/agents/ on Claude Code with agent teams; sequential sub-agents with file-backed messages elsewhere) and assign stage tasks with owner artifact and gate linkage.
-  4,Run the 3-stage cycle,Stage 1 concept/presentation/animation/resources/core build → Stage 2 balance/core-loop stability/novelty development → Stage 3 ops stability and play impact per references/stage-cycle.md.
-  5,Gate with numbers,QA measures G1–G8 per references/quality-gates.md; director issues PASS/FIX/REDO with at most 2 FIX loops; open S1 defects or missing evidence block PASS.
-  6,Close the cycle,Write the retrospective with measured gate values and the next-cycle entry decision (Stage 1 concept shift vs Stage 2 retune); never delete _workspace artifacts.
+S[7]{n,action,details}:
+  1,Scaffold the run,Create _workspace/current/ (intake design pm engineering qa ops ui production messages retrospectives) at the target repo root; run-id is a value inside the documents, not a directory, and becomes _workspace/archive/{run-id}/ only at cycle close. Resume from current/production/task-manifest.md when present.
+  2,Write the repository rule file,Copy templates/repo-rules.md to the target repo agent instruction file (CLAUDE.md; AGENTS.md as a pointer, never a second copy), resolve every placeholder against the real repo, delete inapplicable sections, and state the reason beside any rule whose cost is invisible.
+  3,Normalize intake,Director writes production-brief.md with the bmad-gds schema and picks ONE operating mode plus the next public beat.
+  4,Materialize the team,Copy templates/agents/ into the runtime (.claude/agents/ on Claude Code with agent teams; sequential sub-agents with file-backed messages elsewhere) and assign stage tasks with owner artifact and gate linkage.
+  5,Run the 3-stage cycle,Stage 1 concept/presentation/animation/resources/core build → Stage 2 balance/core-loop stability/novelty development → Stage 3 ops stability and play impact per references/stage-cycle.md.
+  6,Gate with numbers,QA measures G1–G8 per references/quality-gates.md; director issues PASS/FIX/REDO with at most 2 FIX loops; open S1 defects or missing evidence block PASS.
+  7,Close the cycle,Write the retrospective with measured gate values and the next-cycle entry decision (Stage 1 concept shift vs Stage 2 retune); re-derive the rule file when a lane, generator, or invariant changed; git mv superseded lanes into _workspace/archive/{run-id}/ and never delete a _workspace artifact.

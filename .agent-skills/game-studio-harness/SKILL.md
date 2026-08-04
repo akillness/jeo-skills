@@ -5,11 +5,12 @@ description: >-
   verification-strict programmer, archetype-rotation QA. Runs the 3-stage operating cycle
   (concept/presentation/core build → balance/core-loop/novelty → ops stability/play impact) behind
   8 numeric quality gates with survey-grounded trends, signed designer↔PM negotiation records, and
-  QA broadcast discipline.
+  QA broadcast discipline. Writes the repository rule file (CLAUDE.md/AGENTS.md) so the contract
+  outlives the session, and keeps one live `_workspace/current/` beside a read-only archive.
 allowed-tools: Read Write Edit Glob Grep Bash Task
 metadata:
-  version: "1.0.0"
-  tags: game-production, game-studio, bmad-gds, numeric-balance, core-loop, novelty, monetization, qa-archetypes, stage-gates
+  version: "1.1.0"
+  tags: game-production, game-studio, bmad-gds, numeric-balance, core-loop, novelty, monetization, qa-archetypes, stage-gates, repo-rules, artifact-contract
   platforms: Claude Code, Codex, Gemini, OpenCode
   keyword: game-studio-harness
   source: akillness/jeo-skills
@@ -29,7 +30,7 @@ Read `references/quality-gates.md`, `references/stage-cycle.md`, and
 
 ## When to use this skill
 - Start a new game production cycle from an idea, GDD, prototype, or existing build
-- Resume an in-flight cycle (read the newest `_workspace/*/production/task-manifest.md` first)
+- Resume an in-flight cycle (read `_workspace/current/production/task-manifest.md` first)
 - Run a stage-gate review (G1–G8 verdicts) on the current build
 - Reprioritize when playtest feedback, defects, and milestone pressure collide
 - 게임 제작/밸런스/수익화/QA 사이클을 하나의 팀으로 돌릴 때
@@ -57,14 +58,36 @@ every defect within the cycle (`fixed` or `deferred` + reasoning).
 ## Instructions
 
 ### Step 0: Preparation
-Why: every artifact must be traceable per run.
-1. Derive `run-id` = `{YYYYMMDD}-{cycle-label}` and create `_workspace/{run-id}/{intake,design,pm,engineering,qa,ops,production,messages,retrospectives}/` at the target repo root.
-2. If resuming, read the newest existing `_workspace/*/production/task-manifest.md` and the last retrospective; enter at the recorded stage instead of Stage 1.
+Why: every artifact must be traceable, and the workspace has exactly one live folder.
+1. Create `_workspace/current/{intake,design,pm,engineering,qa,ops,ui,production,messages,retrospectives}/` at the target repo root. Do **not** create a dated run directory — `run-id` (`{YYYYMMDD}-{cycle-label}`) is a value carried inside the documents and becomes a directory name only at archive time (`_workspace/archive/{run-id}/`).
+2. If resuming, read `_workspace/current/production/task-manifest.md` and the last retrospective; enter at the recorded stage instead of Stage 1.
+3. At cycle close, `git mv` superseded lane material into `_workspace/archive/{run-id}/`. Never delete a `_workspace/` artifact.
+
+### Step 0.5: Write the repository rule file
+Why: the harness only governs the session that runs it. Everything the studio
+learns — lane ownership, the engine boundary, which generator owns which asset
+class, the git-safety protocol — evaporates the moment this session ends unless
+it is written where every future session must read it.
+
+1. Copy `templates/repo-rules.md` to the target repo's agent instruction file
+   (`CLAUDE.md` for Claude Code; mirror to `AGENTS.md` for Codex/Gemini/OpenCode
+   as a **pointer**, not a second copy — two contracts drift, and a drifted
+   contract is worse than none).
+2. Resolve every `{PLACEHOLDER}` against the real repository. A surviving
+   placeholder is a defect. Delete sections that do not apply: a rule nobody
+   follows teaches future sessions that rules are optional.
+3. State the reason beside any rule whose violation is tempting or whose cost is
+   invisible. `Never rename X` gets ignored; `renaming X orphans every existing
+   player's save data` gets obeyed.
+4. Re-derive it at each cycle close, not just at run creation. The rule file is
+   a cycle artifact — when `current/` gains a lane, when a generator is
+   replaced, or when a hard-won invariant is discovered, it is stale until
+   updated.
 
 ### Step 1: Materialize the team
 Why: agents must be file-based so sessions can reuse them.
 - Claude Code with `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1`: copy `templates/agents/*.md` into the target repo's `.claude/agents/` (skip files that already exist and match), then use TeamCreate + SendMessage + TaskCreate/TaskUpdate.
-- Any other runtime (Codex, Gemini, OpenCode) or teams flag off: run the same roles as sequential sub-agents in the phase order of `references/stage-cycle.md`; peer messages become numbered files in `_workspace/{run-id}/messages/{seq}-{from}.md`.
+- Any other runtime (Codex, Gemini, OpenCode) or teams flag off: run the same roles as sequential sub-agents in the phase order of `references/stage-cycle.md`; peer messages become numbered files in `_workspace/current/messages/{seq}-{from}.md`.
 
 ### Step 2: Intake (director)
 Normalize the request into `intake/production-brief.md` (bmad-gds schema:
@@ -96,10 +119,16 @@ Gate verdicts are PASS / FIX (≤2 revision loops) / REDO (previous stage).
 An open S1 defect or missing evidence blocks any PASS.
 
 ### Step 4: Cycle close (director)
-Write `retrospectives/cycle-{n}-retrospective.md`: per-gate measured values,
-unresolved risks, and the next-cycle entry decision (Stage 1 concept shift
-vs Stage 2 retune). The cycle loops — the studio is a standing structure,
-not a one-shot pipeline.
+1. Write `retrospectives/cycle-{n}-retrospective.md`: per-gate measured values,
+   unresolved risks, and the next-cycle entry decision (Stage 1 concept shift
+   vs Stage 2 retune).
+2. Re-derive the repository rule file (Step 0.5) if this cycle changed a lane,
+   replaced a generator, or discovered an invariant worth enforcing.
+3. `git mv` the superseded lane material into `_workspace/archive/{run-id}/`.
+   `current/` keeps only what the next cycle carries forward; nothing leaves
+   `_workspace/`.
+
+The cycle loops — the studio is a standing structure, not a one-shot pipeline.
 
 ### Step 5: Error handling
 | Scenario | Response |
@@ -132,11 +161,13 @@ QA re-verifies the band before the gate closes.
 1. One operating mode per cycle — mixing concept work and launch ops in one pass weakens both.
 2. Numbers gate everything: no adjective ever passes a gate (`references/quality-gates.md`).
 3. Surveys before invention: designer trend survey and QA benchmark survey are Stage 1 prerequisites, not optional garnish.
-4. Preserve `_workspace/` artifacts — they are the studio's memory across cycles; never delete.
-5. Keep the milestone thread: every task names the next public beat it serves.
-6. QA broadcast discipline: every exploit/discovery goes to all agents with an explicit feedback request — QA sense is the studio's shared sense.
+4. Preserve `_workspace/` artifacts — they are the studio's memory across cycles. Archive, never delete.
+5. The rule file is the studio's only durable output. A harness run that ships a build but leaves no contract has taught the next session nothing.
+6. Keep the milestone thread: every task names the next public beat it serves.
+7. QA broadcast discipline: every exploit/discovery goes to all agents with an explicit feedback request — QA sense is the studio's shared sense.
 
 ## References
 - [Quality Gates G1–G8](references/quality-gates.md)
 - [Stage Cycle Detail](references/stage-cycle.md)
 - [Artifact Contract](references/artifact-contract.md)
+- [Repository Rule File Template](templates/repo-rules.md)
