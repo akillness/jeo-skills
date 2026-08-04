@@ -191,6 +191,7 @@ Subcategories: `deployment` (2), `environment` (2), `observability` (2), `securi
 | `security-best-practices` |
 | `strix` |
 | `firebase-cli` |
+| `unity-cli` |
 | `genkit` |
 | `looker-studio-bigquery` |
 

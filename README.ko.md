@@ -194,6 +194,7 @@ video-motion-previs check
 | `security-best-practices` |
 | `strix` |
 | `firebase-cli` |
+| `unity-cli` |
 | `genkit` |
 | `looker-studio-bigquery` |
 
