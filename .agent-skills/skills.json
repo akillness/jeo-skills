@@ -1,7 +1,8 @@
 {
   "version": "2.0.0",
   "generated": "2026-07-30",
-  "skill_count": 195,
+  "skill_count": 196,
+
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -7205,6 +7206,45 @@
       "keyword": "nightrun",
       "version": "1.0",
       "source": "hardrave/NIGHTRUN"
+    },
+    {
+      "name": "soup",
+      "description": "Drive Soup (soup-cli), a CLI-first tool for fine-tuning and post-training LLMs with one YAML config and one command: SFT, DPO/GRPO/ORPO/SimPO/KTO, QLoRA/DoRA/LoRA+, layer streaming for 4-8 GB GPUs, eval-gated training, and serving. Use when picking a training method or quantization scheme, estimating cost/memory before training, fine-tuning locally on a small GPU, migrating a config from Axolotl/LLaMA-Factory/Unsloth, or serving/merging/pushing a trained adapter.",
+      "category": "cli-tools",
+      "subcategory": "ai-cli",
+      "interface": "workflow",
+      "path": "soup/SKILL.md",
+      "tags": [
+        "soup",
+        "soup-cli",
+        "llm-fine-tuning",
+        "post-training",
+        "sft",
+        "dpo",
+        "grpo",
+        "qlora",
+        "lora",
+        "layer-streaming",
+        "peft",
+        "trl"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "soup",
+      "version": "1.0",
+      "source": "MakazhanAlpamys/Soup"
     }
   ]
 }

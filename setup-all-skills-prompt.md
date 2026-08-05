@@ -272,6 +272,27 @@ confirmation as part of setup or automation; that step must stay a manual, inter
 choice by the user. See `nightrun/references/commands.md` for the full build/convert/QEMU
 command reference.
 
+### Soup LLM fine-tuning CLI (on demand)
+
+The `soup` skill installs as documents plus a read-only `doctor` wrapper; it never runs
+`pip install soup-cli` or starts a training job during setup. It targets `soup-cli`
+(fine-tuning/post-training LLMs), so prepare it only when a task actually needs to pick a
+training method, estimate cost/memory, or run `soup train`:
+
+bash
+# 1. read-only environment report (python, soup, torch/transformers/peft/trl, GPU backend) — installs nothing
+bash "$SKILLS_ROOT/soup/scripts/soup.sh" doctor
+
+# 2. only after the user confirms the install profile
+pip install soup-cli            # light CLI: init/advise/data/profile/cost
+pip install "soup-cli[train]"   # + torch/transformers/peft/trl for real training
+
+
+Never auto-run `soup train` (starts a real training job/spends GPU time) as part of setup
+or verification; that step must stay a task-triggered, user-confirmed action. See
+`soup/references/commands.md` for the full command reference.
+
+
 ## Step 6 — Runtime-specific shared-root checks
 
 

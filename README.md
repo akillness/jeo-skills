@@ -2,14 +2,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-195-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-196-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![GJC](https://img.shields.io/badge/GJC-gajae--code-181717?style=for-the-badge&logo=github)](https://github.com/akillness/gajae-code)
 [![jeo-code](https://img.shields.io/badge/jeo--code-jeo-181717?style=for-the-badge&logo=github)](https://github.com/akillness/jeo-code)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**195 categorized skills · lightweight selective install · compact TOON catalog · cross-platform**
+**196 categorized skills · lightweight selective install · compact TOON catalog · cross-platform**
 
 A curated collection for spec-first, multi-agent LLM workflows. Delegate a complete setup
 with one prompt, or install the `jeo-skill` router first and add only the web,
@@ -70,7 +70,7 @@ The agent runs a **full install by default** (say “core only” or “minimal�
 
 ### Lightweight selective install (manual / CI)
 
-Install the **`jeo-skill` router first**, not all 195 skill folders. It provides category,
+Install the **`jeo-skill` router first**, not all 196 skill folders. It provides category,
 subcategory, interface, bundle, and relationship discovery while keeping heavy apps,
 models, MCP servers, and runtimes on demand.
 
@@ -123,7 +123,7 @@ video-motion-previs check
 
 ## 📚 Skills List
 
-> Central manifest: `.agent-skills/skills.json` · 195 skills · 10 primary categories · subcategory/interface/relationship metadata
+> Central manifest: `.agent-skills/skills.json` · 196 skills · 10 primary categories · subcategory/interface/relationship metadata
 
 ### 🌐 Web (44)
 
@@ -249,7 +249,12 @@ Subcategories: `image` (5), `video` (8), `motion` (1), `audio` (1), `presentatio
 | `open-design` |
 | `webtoon-harness` |
 
-### ⌨️ CLI Tools (24)
+### ⌨️ CLI Tools (25)
+≔254i8..254i8
+Subcategories: `developer-cli` (6), `ai-cli` (8), `media-cli` (1), `automation-cli` (6), `search-cli` (3), `benchmark-cli` (1)
+≔270v9+
+| `soup` |
+
 
 Subcategories: `developer-cli` (6), `ai-cli` (7), `media-cli` (1), `automation-cli` (6), `search-cli` (3), `benchmark-cli` (1)
 
@@ -652,7 +657,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 
 ```text
 .
-├── .agent-skills/          ← 195 skill folders (SKILL.md + optional support files)
+├── .agent-skills/          ← 196 skill folders (SKILL.md + optional support files)
 ├── docs/                   ← detailed guides (bmad, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
@@ -718,6 +723,10 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 | `semble` | [MinishLab/semble](https://github.com/MinishLab/semble) | MIT |
 | `strix` | [usestrix/strix](https://github.com/usestrix/strix) | Apache-2.0 |
 | `autoresearch` | Andrej Karpathy methodology | — |
+| `nightrun` | [hardrave/NIGHTRUN](https://github.com/hardrave/NIGHTRUN) | MIT |
+
+| `soup` | [MakazhanAlpamys/Soup](https://github.com/MakazhanAlpamys/Soup) | Apache-2.0 |
+
 | `research-paper-writing` | [Master-cai/Research-Paper-Writing-Skills](https://github.com/Master-cai/Research-Paper-Writing-Skills) | — |
 | `academic-research` | [Imbad0202/academic-research-skills](https://github.com/Imbad0202/academic-research-skills) | CC-BY-NC-4.0 |
 | `open-code-review` | [alibaba/open-code-review](https://github.com/alibaba/open-code-review) | Apache-2.0 |
