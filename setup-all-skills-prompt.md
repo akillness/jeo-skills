@@ -252,7 +252,28 @@ installation verification. Skip step 2 unless the user asked for rigging work on
 on macOS or a CPU-only box, route out per `unirig/references/route-outs-and-troubleshooting.md`
 instead of forcing the install.
 
+### NightRun bare-metal LLM runtime (on demand)
+
+The `nightrun` skill installs as documents plus a read-only `doctor` wrapper; it never
+clones `hardrave/NIGHTRUN`, builds firmware, or flashes any media during setup. It targets
+building/flashing a bare-metal `no_std` Rust UEFI LLM appliance, so prepare it only when a
+task actually needs to build, convert a model, or boot the image:
+
+```bash
+# 1. clone on demand, never during install
+git clone https://github.com/hardrave/NIGHTRUN.git
+
+# 2. read-only prerequisite report (Rust nightly, QEMU, free disk) — writes nothing
+bash "$SKILLS_ROOT/nightrun/scripts/nightrun.sh" doctor NIGHTRUN
+```
+
+Never run `./install.sh` (real USB/SD flashing) or auto-answer its `FLASH /dev/sdX`
+confirmation as part of setup or automation; that step must stay a manual, interactive
+choice by the user. See `nightrun/references/commands.md` for the full build/convert/QEMU
+command reference.
+
 ## Step 6 — Runtime-specific shared-root checks
+
 
 - `jeo` and `jeopi` discover `~/.agents/skills` directly; no skills CLI agent ID is needed.
 - GJC may require skill discovery to be enabled and `~/.agents/skills` added to its

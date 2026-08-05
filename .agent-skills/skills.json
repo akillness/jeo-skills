@@ -1,7 +1,7 @@
 {
   "version": "2.0.0",
   "generated": "2026-07-30",
-  "skill_count": 194,
+  "skill_count": 195,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -294,7 +294,8 @@
       "zoom-out",
       "changelog-maintenance",
       "technical-writing",
-      "codebase-search"
+      "codebase-search",
+      "nightrun"
     ],
     "research": [
       "academic-research",
@@ -612,7 +613,8 @@
       ],
       "architecture": [
         "improve-codebase-architecture",
-        "zoom-out"
+        "zoom-out",
+        "nightrun"
       ],
       "documentation": [
         "changelog-maintenance",
@@ -7172,6 +7174,37 @@
       ],
       "keyword": "google-workspace",
       "version": "1.1.0"
+    },
+    {
+      "name": "nightrun",
+      "description": "Build, test, run, and flash NightRun, a bare-metal no_std Rust UEFI application that boots straight into a local LLM (Llama 3.2, Qwen3, or Granite 4.1) with no operating system. Use when building/flashing a bootable NightRun USB or Raspberry Pi 5 SD image, converting GGUF to the .nrm container, running/debugging the inference engine on host or QEMU/OVMF, or troubleshooting no_std kernel/tokenizer parity.",
+      "category": "engineering",
+      "subcategory": "architecture",
+      "interface": "workflow",
+      "path": "nightrun/SKILL.md",
+      "tags": [
+        "nightrun",
+        "rust",
+        "no_std",
+        "uefi",
+        "bare-metal",
+        "local-llm",
+        "gguf",
+        "qemu",
+        "raspberry-pi"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "nightrun",
+      "version": "1.0",
+      "source": "hardrave/NIGHTRUN"
     }
   ]
 }

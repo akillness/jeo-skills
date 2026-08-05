@@ -2,14 +2,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-194-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-195-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![GJC](https://img.shields.io/badge/GJC-gajae--code-181717?style=for-the-badge&logo=github)](https://github.com/akillness/gajae-code)
 [![jeo-code](https://img.shields.io/badge/jeo--code-jeo-181717?style=for-the-badge&logo=github)](https://github.com/akillness/jeo-code)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**194 categorized skills · lightweight selective install · compact TOON catalog · cross-platform**
+**195 categorized skills · lightweight selective install · compact TOON catalog · cross-platform**
 
 A curated collection for spec-first, multi-agent LLM workflows. Delegate a complete setup
 with one prompt, or install the `jeo-skill` router first and add only the web,
@@ -70,7 +70,7 @@ The agent runs a **full install by default** (say “core only” or “minimal�
 
 ### Lightweight selective install (manual / CI)
 
-Install the **`jeo-skill` router first**, not all 194 skill folders. It provides category,
+Install the **`jeo-skill` router first**, not all 195 skill folders. It provides category,
 subcategory, interface, bundle, and relationship discovery while keeping heavy apps,
 models, MCP servers, and runtimes on demand.
 
@@ -123,7 +123,7 @@ video-motion-previs check
 
 ## 📚 Skills List
 
-> Central manifest: `.agent-skills/skills.json` · 194 skills · 10 primary categories · subcategory/interface/relationship metadata
+> Central manifest: `.agent-skills/skills.json` · 195 skills · 10 primary categories · subcategory/interface/relationship metadata
 
 ### 🌐 Web (44)
 
@@ -312,9 +312,11 @@ Subcategories: `orchestration` (4), `agent-frameworks` (2), `skill-authoring` (4
 | `agenticskills` |
 | `prompts-chat` |
 
-### 🧰 Engineering (19)
+### 🧰 Engineering (20)
 
-Subcategories: `code-quality` (10), `testing` (4), `architecture` (2), `documentation` (2), `code-navigation` (1)
+
+Subcategories: `code-quality` (10), `testing` (4), `architecture` (3), `documentation` (2), `code-navigation` (1)
+
 
 | Skill |
 |---|
@@ -334,6 +336,8 @@ Subcategories: `code-quality` (10), `testing` (4), `architecture` (2), `document
 | `testing-strategies` |
 | `improve-codebase-architecture` |
 | `zoom-out` |
+| `nightrun` |
+
 | `changelog-maintenance` |
 | `technical-writing` |
 | `codebase-search` |
@@ -648,7 +652,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 
 ```text
 .
-├── .agent-skills/          ← 194 skill folders (SKILL.md + optional support files)
+├── .agent-skills/          ← 195 skill folders (SKILL.md + optional support files)
 ├── docs/                   ← detailed guides (bmad, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
