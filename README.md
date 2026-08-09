@@ -2,14 +2,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-196-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-198-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![GJC](https://img.shields.io/badge/GJC-gajae--code-181717?style=for-the-badge&logo=github)](https://github.com/akillness/gajae-code)
 [![jeo-code](https://img.shields.io/badge/jeo--code-jeo-181717?style=for-the-badge&logo=github)](https://github.com/akillness/jeo-code)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**196 categorized skills · lightweight selective install · compact TOON catalog · cross-platform**
+**198 categorized skills · lightweight selective install · compact TOON catalog · cross-platform**
 
 A curated collection for spec-first, multi-agent LLM workflows. Delegate a complete setup
 with one prompt, or install the `jeo-skill` router first and add only the web,
@@ -70,7 +70,7 @@ The agent runs a **full install by default** (say “core only” or “minimal�
 
 ### Lightweight selective install (manual / CI)
 
-Install the **`jeo-skill` router first**, not all 196 skill folders. It provides category,
+Install the **`jeo-skill` router first**, not all 198 skill folders. It provides category,
 subcategory, interface, bundle, and relationship discovery while keeping heavy apps,
 models, MCP servers, and runtimes on demand.
 
@@ -123,7 +123,7 @@ video-motion-previs check
 
 ## 📚 Skills List
 
-> Central manifest: `.agent-skills/skills.json` · 196 skills · 10 primary categories · subcategory/interface/relationship metadata
+> Central manifest: `.agent-skills/skills.json` · 198 skills · 10 primary categories · subcategory/interface/relationship metadata
 
 ### 🌐 Web (44)
 
@@ -176,9 +176,9 @@ Subcategories: `frontend` (4), `backend` (3), `design` (11), `api` (2), `auth` (
 | `slides-grab` |
 | `stitched-full-page-capture` |
 
-### 🏗 Infrastructure (11)
+### 🏗 Infrastructure (12)
 
-Subcategories: `deployment` (2), `environment` (2), `observability` (2), `security` (2), `cloud-data` (3), `automation` (0), `tooling` (0)
+Subcategories: `deployment` (2), `environment` (2), `observability` (2), `security` (2), `cloud-data` (3), `automation` (0), `tooling` (1)
 
 | Skill |
 |---|
@@ -195,9 +195,9 @@ Subcategories: `deployment` (2), `environment` (2), `observability` (2), `securi
 | `genkit` |
 | `looker-studio-bigquery` |
 
-### 🎮 Game (21)
+### 🎮 Game (22)
 
-Subcategories: `client` (2), `web` (2), `server` (0), `design-ui` (4), `audio` (1), `animation` (2), `motion-vfx` (2), `sprite-image` (1), `art-resources` (0), `storytelling` (0), `tooling` (2), `qa-performance` (3), `release` (2)
+Subcategories: `client` (2), `web` (2), `server` (0), `design-ui` (4), `audio` (1), `animation` (2), `motion-vfx` (2), `sprite-image` (1), `art-resources` (0), `storytelling` (0), `tooling` (2), `qa-performance` (4), `release` (2)
 
 | Skill |
 |---|
@@ -220,6 +220,7 @@ Subcategories: `client` (2), `web` (2), `server` (0), `design-ui` (4), `audio` (
 | `game-build-log-triage` |
 | `game-demo-feedback-triage` |
 | `game-performance-profiler` |
+| `wai-play` |
 | `game-ci-cd-pipeline` |
 | `steam-store-launch-ops` |
 
@@ -657,7 +658,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 
 ```text
 .
-├── .agent-skills/          ← 196 skill folders (SKILL.md + optional support files)
+├── .agent-skills/          ← 198 skill folders (SKILL.md + optional support files)
 ├── docs/                   ← detailed guides (bmad, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
@@ -726,6 +727,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 | `nightrun` | [hardrave/NIGHTRUN](https://github.com/hardrave/NIGHTRUN) | MIT |
 
 | `soup` | [MakazhanAlpamys/Soup](https://github.com/MakazhanAlpamys/Soup) | Apache-2.0 |
+| `wai-play` | [waiterve/wai-play](https://github.com/waiterve/wai-play) | — |
 
 | `research-paper-writing` | [Master-cai/Research-Paper-Writing-Skills](https://github.com/Master-cai/Research-Paper-Writing-Skills) | — |
 | `academic-research` | [Imbad0202/academic-research-skills](https://github.com/Imbad0202/academic-research-skills) | CC-BY-NC-4.0 |
@@ -735,6 +737,12 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 ---
 
 <!-- WHATS-NEW:START -->
+
+## 🆕 What's New in v2026-08-09
+
+| Change | Details |
+|--------|---------|
+| **WAI Play web-game auto-playtesting** | Added `wai-play` for [waiterve/wai-play](https://github.com/waiterve/wai-play): an agent that drives a real browser against a running web game and returns a five-dimension quality score with reproducible problem cards. The skill routes six modes (`testability`, `integration`, `run`, `report`, `scenario-gap`, `ops`) and puts testability before any run. Ships a read-only `wai-play.sh doctor` (Python, Playwright Chromium, `.env` key **names** only), a stdlib-only `check_integration.py` that statically checks a `GameFlowAgentAPI` file for missing methods, leftover throw-stubs, and template placeholders, plus references for the API contract, the five game-type profiles and key nodes, the scoring weights and evidence rules, and setup/route-outs. Keeps game quality and test credibility separate, and states the local-only operating boundary rather than implying it is deploy-ready. |
 
 ## 🆕 What's New in v2026-07-29
 

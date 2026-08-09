@@ -279,18 +279,48 @@ The `soup` skill installs as documents plus a read-only `doctor` wrapper; it nev
 (fine-tuning/post-training LLMs), so prepare it only when a task actually needs to pick a
 training method, estimate cost/memory, or run `soup train`:
 
-bash
+```bash
 # 1. read-only environment report (python, soup, torch/transformers/peft/trl, GPU backend) — installs nothing
 bash "$SKILLS_ROOT/soup/scripts/soup.sh" doctor
 
 # 2. only after the user confirms the install profile
 pip install soup-cli            # light CLI: init/advise/data/profile/cost
 pip install "soup-cli[train]"   # + torch/transformers/peft/trl for real training
-
+```
 
 Never auto-run `soup train` (starts a real training job/spends GPU time) as part of setup
 or verification; that step must stay a task-triggered, user-confirmed action. See
 `soup/references/commands.md` for the full command reference.
+
+### WAI Play web-game testing runtime (on demand)
+
+The `wai-play` skill installs as documents plus a read-only `doctor` wrapper and a
+stdlib-only static checker; it never clones `waiterve/wai-play`, installs Streamlit or
+Playwright, downloads a Chromium build, or starts a playtest during setup. Prepare it only
+when a task actually needs to playtest a web game:
+
+```bash
+# 1. read-only environment report (python, streamlit/playwright/openai/dotenv, Chromium, .env key NAMES) — installs nothing
+bash "$SKILLS_ROOT/wai-play/scripts/wai-play.sh" doctor
+
+# 2. static contract check on a game's integration file — reads the file, runs nothing
+python3 "$SKILLS_ROOT/wai-play/scripts/check_integration.py" \
+  --game-type survivor_like path/to/game-integration.js
+
+# 3. only after the user asks for a real playtest
+git clone https://github.com/waiterve/wai-play.git && cd wai-play
+python3 -m venv .venv && source .venv/bin/activate
+python -m pip install -r requirements.txt && python -m playwright install chromium
+cp .env.example .env            # add DeepSeek + Kimi keys; keyless runs work but are degraded
+streamlit run app.py
+```
+
+Both step-1 and step-2 commands are safe during installation verification: `doctor` reports
+`.env` key names only and never their values, and `check_integration.py` is a static text
+check that starts no browser. Skip step 3 unless the user asked for a playtest; it launches
+a local web service that drives a real browser. Test only games and source the user owns or
+is authorized to test, and disclose that AI source modeling sends source summaries to the
+configured third-party providers.
 
 
 ## Step 6 — Runtime-specific shared-root checks

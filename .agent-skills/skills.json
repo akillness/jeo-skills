@@ -1,8 +1,7 @@
 {
   "version": "2.0.0",
   "generated": "2026-07-30",
-  "skill_count": 196,
-
+  "skill_count": 198,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -176,6 +175,7 @@
       "security-best-practices",
       "strix",
       "firebase-cli",
+      "unity-cli",
       "genkit",
       "looker-studio-bigquery"
     ],
@@ -199,6 +199,7 @@
       "game-build-log-triage",
       "game-demo-feedback-triage",
       "game-performance-profiler",
+      "wai-play",
       "game-ci-cd-pipeline",
       "steam-store-launch-ops"
     ],
@@ -224,6 +225,7 @@
       "webtoon-harness"
     ],
     "cli-tools": [
+      "soup",
       "caveman",
       "ccpi-marketplace",
       "cli-anything",
@@ -293,10 +295,10 @@
       "testing-strategies",
       "improve-codebase-architecture",
       "zoom-out",
+      "nightrun",
       "changelog-maintenance",
       "technical-writing",
-      "codebase-search",
-      "nightrun"
+      "codebase-search"
     ],
     "research": [
       "academic-research",
@@ -428,7 +430,9 @@
         "looker-studio-bigquery"
       ],
       "automation": [],
-      "tooling": []
+      "tooling": [
+        "unity-cli"
+      ]
     },
     "game": {
       "client": [
@@ -469,7 +473,8 @@
       "qa-performance": [
         "game-build-log-triage",
         "game-demo-feedback-triage",
-        "game-performance-profiler"
+        "game-performance-profiler",
+        "wai-play"
       ],
       "release": [
         "game-ci-cd-pipeline",
@@ -530,7 +535,8 @@
         "ooo",
         "open-code-review",
         "ponytail",
-        "zeude"
+        "zeude",
+        "soup"
       ],
       "media-cli": [
         "compresso"
@@ -2634,6 +2640,38 @@
       "source": "https://firebase.google.com/docs/cli"
     },
     {
+      "name": "unity-cli",
+      "description": "Install, configure, and use the Unity Command Line Interface (CLI) for automated production workflows, project management, and cloud integration. Use when setting up CLI-based build automation, CI/CD pipelines, Editor/module management, authentication, or localhost API calls via the experimental Unity Pipeline package. Designed for verifiable, machine-readable game production workflows where the build machine must be describable and tests must return evidence. Triggers on: Unity CLI, unity command line, unity automation, unity ci/cd, unity build script, unity pipeline, unity production workflows.",
+      "category": "infrastructure",
+      "subcategory": "tooling",
+      "interface": "cli",
+      "path": "unity-cli/SKILL.md",
+      "tags": [
+        "unity",
+        "cli",
+        "automation",
+        "ci-cd",
+        "build",
+        "project-management",
+        "cloud",
+        "licensing",
+        "production",
+        "pipeline"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "unity-cli",
+      "version": "1.1.0",
+      "source": "https://unity.com/kr/blog/meet-the-unity-cli"
+    },
+    {
       "name": "genkit",
       "description": "Route Firebase AI feature work into either direct app/client Firebase AI Logic SDK integration or a server-owned Genkit workflow. Use when a web, mobile, backend, or full-stack feature needs model calls, typed outputs, reusable flows, tools, retrieval, prompt files, evals, observability, or deployment. Choose client-ai-logic, flow-foundation, tool-and-agent, retrieval-and-prompt, evaluation-and-observability, deployment-runtime, or comparison-or-fallback; route Firebase platform/operator work to `firebase-cli` and broad framework comparisons to `survey`.",
       "category": "infrastructure",
@@ -3278,6 +3316,43 @@
       "keyword": "game-performance-profiler",
       "version": "1.2",
       "source": "akillness/jeo-skills"
+    },
+    {
+      "name": "wai-play",
+      "description": "Route web-game auto-playtesting with WAI Play (waiterve/wai-play): decide whether the next move is a testability check, authoring or repairing the `GameFlowAgentAPI` bridge, running a real browser playtest, reading the five-dimension quality report, or unblocking a key node the agent cannot reach. Use when the user wants an AI agent to actually play their HTML5 / canvas / vibe-coded web game and return reproducible evidence, scores, and fix suggestions across the five supported types (survivor-like, arcade shooter, platformer, puzzle/card, visual novel). Triggers on: wai-play, WAI Play, auto-playtest, AI plays my game, web game testing agent, GameFlowAgentAPI, GameFlowIntegration, jumpToScenario, game quality score, playtest evidence. Route Unity/Unreal frame-time work to `game-performance-profiler`, engine build failures to `game-build-log-triage`, human playtest notes to `game-demo-feedback-triage`, and generic browser automation to `browser-harness`.",
+      "category": "game",
+      "subcategory": "qa-performance",
+      "interface": "workflow",
+      "path": "wai-play/SKILL.md",
+      "tags": [
+        "wai-play",
+        "web-game-testing",
+        "auto-playtest",
+        "game-qa",
+        "playwright",
+        "streamlit",
+        "gameflow-agent-api",
+        "evidence",
+        "game-scoring",
+        "html5-game"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "wai-play",
+      "version": "1.0",
+      "source": "https://github.com/waiterve/wai-play"
     },
     {
       "name": "game-ci-cd-pipeline",
@@ -7178,7 +7253,7 @@
     },
     {
       "name": "nightrun",
-      "description": "Build, test, run, and flash NightRun, a bare-metal no_std Rust UEFI application that boots straight into a local LLM (Llama 3.2, Qwen3, or Granite 4.1) with no operating system. Use when building/flashing a bootable NightRun USB or Raspberry Pi 5 SD image, converting GGUF to the .nrm container, running/debugging the inference engine on host or QEMU/OVMF, or troubleshooting no_std kernel/tokenizer parity.",
+      "description": "Build, test, run, and flash NightRun — a bare-metal, no_std Rust UEFI application that boots straight into a local LLM (Llama 3.2, Qwen3, or Granite 4.1) with no operating system underneath. Use when the user wants to build/flash a bootable NightRun USB or Raspberry Pi 5 SD image, convert a GGUF model into the `.nrm` container, run/debug the inference engine on the host or in QEMU/OVMF, or troubleshoot no_std kernel/tokenizer parity issues in the NightRun codebase. Triggers on: \"nightrun\", \"boot into an LLM\", \"bare-metal LLM runtime\", \"UEFI LLM appliance\", \"nrconvert\", \"nrhost\", \"cargo xtask\", \"nrm model file\", \"flash a bootable LLM USB\".",
       "category": "engineering",
       "subcategory": "architecture",
       "interface": "workflow",
@@ -7209,7 +7284,7 @@
     },
     {
       "name": "soup",
-      "description": "Drive Soup (soup-cli), a CLI-first tool for fine-tuning and post-training LLMs with one YAML config and one command: SFT, DPO/GRPO/ORPO/SimPO/KTO, QLoRA/DoRA/LoRA+, layer streaming for 4-8 GB GPUs, eval-gated training, and serving. Use when picking a training method or quantization scheme, estimating cost/memory before training, fine-tuning locally on a small GPU, migrating a config from Axolotl/LLaMA-Factory/Unsloth, or serving/merging/pushing a trained adapter.",
+      "description": "Drive Soup (`soup-cli`), a CLI-first tool for fine-tuning and post-training LLMs with one YAML config and one command — SFT, DPO/GRPO/ORPO/SimPO/KTO, QLoRA/DoRA/LoRA+, layer streaming for 4-8 GB GPUs, eval-gated training, and serving. Use when the user wants to `soup init`/`soup train` a model, pick a training method or quantization scheme, estimate cost/memory before training, fine-tune on a small local GPU, migrate a config from Axolotl/LLaMA-Factory/Unsloth, or serve/merge/push a trained adapter. Triggers on: \"soup-cli\", \"soup train\", \"soup init\", \"fine-tune an LLM locally\", \"QLoRA on a laptop GPU\", \"layer streaming\", \"soup advise\", \"soup autopilot\", \"DPO/GRPO/ORPO training\", \"merge LoRA adapter\".",
       "category": "cli-tools",
       "subcategory": "ai-cli",
       "interface": "workflow",

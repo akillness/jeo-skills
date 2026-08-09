@@ -1,0 +1,30 @@
+N:wai-play
+D:Route web-game auto-playtesting with WAI Play (waiterve/wai-play): decide whether the next move is a testability check, authoring or repairing the `GameFlowAgentAPI` bridge, running a real browser playtest, reading the five-dimension quality report, or unblocking a key node the agent cannot reach. Use when the user wants an AI agent to actually play their HTML5 / canvas / vibe-coded web game and return reproducible evidence, scores, and fix suggestions.
+G:wai-play web-game-testing auto-playtest ai-plays-my-game game-qa gameflow-agent-api gameflowintegration jumptoscenario playwright streamlit game-quality-score playtest-evidence html5-game vibe-coding survivor-like arcade-shooter platformer puzzle-card visual-novel
+
+U[6]:
+  Decide whether a web game can be driven by an agent at all before any run is configured
+  Author or repair a GameFlowAgentAPI / GameFlowIntegration bridge wired to real game state and real input
+  Configure a run from game type reachable URL optional source ZIP and available model keys
+  Read the five-dimension score while keeping game quality and test credibility separate
+  Resolve unreachable key nodes through repair plan safe jump or natural route by returned failure code
+  Choose between local Docker and keyless degraded operation within the stated privacy boundary
+
+S[8]{n,action,details}:
+  1,Intake,Record game type reachable URL integration state source availability and key availability first
+  2,Mode,Choose one primary mode: testability integration run report scenario-gap or ops
+  3,Doctor,Run scripts/wai-play.sh doctor for a read-only python playwright chromium and env-key report
+  4,Bridge,Statically check the integration file with scripts/check_integration.py before trusting any run
+  5,Demo,Validate the harness against the five bundled demo games before debugging a real game
+  6,Report,Give weighted dimension scores and credibility diagnostics separately and merge duplicate problem cards
+  7,Scenario,Map SCENARIO_PRECONDITION_MISSING LOADER_NOT_IMPLEMENTED UNSAFE_TO_JUMP and SERVER_AUTHORITATIVE_STATE to one correct response each
+  8,Route-out,Send Unity/Unreal profiling to game-performance-profiler build failures to game-build-log-triage human playtest notes to game-demo-feedback-triage and generic automation to browser-harness
+
+R[7]:
+  Never run before testability is established; an unreadable game yields a confident wrong report
+  Never let a bridge fabricate state; throwing on unimplemented methods is the correct behavior
+  Keep game quality scores and test credibility diagnostics apart in every summary
+  Initialize whole scenarios rather than single fields; partial jumps produce meaningless passes
+  Score the feedback dimension only from player-observable response not internal API deltas
+  Bind each merged problem to one best-attempt evidence set with a screenshot or a clip of at most 20 seconds
+  State degradation explicitly for keyless runs missing source ZIPs single runs and unreached key nodes

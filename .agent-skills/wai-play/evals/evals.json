@@ -1,0 +1,74 @@
+{
+  "skill_name": "wai-play",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I vibe-coded a browser survivor-like and I want an AI to actually play it and tell me what's broken. It's running at http://127.0.0.1:5500. Where do I start?",
+      "expected_output": "A WAI Play intake that captures the five packet facts, selects the testability mode rather than jumping to a run, and explains that a missing GameFlowAgentAPI limits the run to black-box testing.",
+      "assertions": [
+        "Output selects exactly one mode and names it",
+        "Output selects testability (or integration) rather than run as the first move",
+        "Output asks whether the page exposes window.GameFlowAgentAPI",
+        "Output identifies survivor_like as the game type",
+        "Output references scripts/wai-play.sh doctor",
+        "Output does not promise a quality score before testability is established"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "WAI Play gave my platformer 1.8 out of 5 across the board and said almost nothing works. That can't be right, the game plays fine for me.",
+      "expected_output": "A report-mode reading that checks the test-credibility diagnostics before accepting the game score, and recommends statically checking the integration file for stub throws and template placeholders.",
+      "assertions": [
+        "Output distinguishes game quality scores from test credibility diagnostics",
+        "Output recommends checking API integration completeness before trusting the low score",
+        "Output references scripts/check_integration.py",
+        "Output mentions unimplemented throw stubs or leftover template placeholders as a likely cause",
+        "Output does not immediately accept 1.8 as a verdict on the game"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "The boss_phase key node keeps failing with SCENARIO_UNSAFE_TO_JUMP. Can I just set elapsed to 360 in observe() so it triggers?",
+      "expected_output": "A scenario-gap answer that refuses the single-field shortcut, explains that a boss phase depends on level, gear, map, spawn pool, and boss AI, and recommends the natural route with a larger step budget.",
+      "assertions": [
+        "Output declines the single-field shortcut",
+        "Output explains that scenario entry requires initializing whole state, not one field",
+        "Output maps SCENARIO_UNSAFE_TO_JUMP to the natural-route response",
+        "Output warns that a forced jump produces a passing key node with no meaning",
+        "Output does not recommend faking state in observe()"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Can I host WAI Play as a public service so anyone can submit their game URL?",
+      "expected_output": "An ops-mode answer that states the current version targets local use and lists the missing pieces for public hosting rather than implying it is deploy-ready.",
+      "assertions": [
+        "Output states the current version targets local/demo use",
+        "Output names missing requirements such as accounts, job queue, quotas, remote-URL limits, and test-data cleanup",
+        "Output mentions the authorization boundary for testing games you own or are authorized to test",
+        "Output does not present public hosting as a supported configuration"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Our Unity game is dropping to 45 FPS during combat. Can WAI Play profile it?",
+      "expected_output": "A route-out that declines WAI Play for engine frame-time work and directs to game-performance-profiler, since WAI Play targets web games in the browser.",
+      "assertions": [
+        "Output routes to game-performance-profiler",
+        "Output explains WAI Play targets browser-run web games, not Unity/Unreal engine profiling",
+        "Output does not produce a WAI Play run configuration"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "I don't have DeepSeek or Kimi API keys. Is WAI Play useless to me?",
+      "expected_output": "An honest degradation answer: rule-based checks still run, while source modeling, AI route planning, and natural-language suggestions are unavailable, and any report must state which parts were degraded.",
+      "assertions": [
+        "Output states keyless operation still runs rule-based checks",
+        "Output names source modeling, route planning, and natural-language suggestions as the degraded capabilities",
+        "Output requires stating the degradation in the resulting report",
+        "Output does not claim full functionality without keys"
+      ]
+    }
+  ]
+}
