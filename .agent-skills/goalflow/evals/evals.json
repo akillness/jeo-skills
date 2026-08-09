@@ -1,0 +1,95 @@
+{
+  "skill_name": "goalflow",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I built a flow in Dify's editor and exported the DSL. How do I run it on my own infrastructure without Dify?",
+      "expected_output": "A transpile-mode answer that runs wf_transformer_tool, warns about inheriting DEFAULT_HOST_SUBSTITUTIONS, and explains that the generated class is inert until registered in the API-key map.",
+      "assertions": [
+        "Output selects exactly one mode and names it as transpile",
+        "Output shows the `python -m goalflow.tool.dify_transformer.wf_transformer_tool` invocation",
+        "Output warns that DEFAULT_HOST_SUBSTITUTIONS encodes the upstream authors' internal hostnames",
+        "Output states that the parse is read-only and does not modify the export file",
+        "Output explains that the generated class must be registered before it runs"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "How do I register a workflow so my API key routes to it?",
+      "expected_output": "The apikey_workflow_def_map answer plus an explicit flag that the map is keyed by MD5 of the API key and is a demo mechanism, not production auth.",
+      "assertions": [
+        "Output shows the apikey_workflow_def_map entry in auth_validator.py",
+        "Output states the key is the MD5 digest of the API key",
+        "Output flags MD5 as unsuitable for hashing secrets",
+        "Output does not present the static in-code map as production-ready authentication"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "We're about to open-source our internal fork of goalflow. Anything to check first?",
+      "expected_output": "A harden-mode answer that runs preflight_audit.py, prioritizes credential rotation over history scrubbing, and requires a fresh remote after filter-repo.",
+      "assertions": [
+        "Output selects harden mode",
+        "Output references scripts/preflight_audit.py",
+        "Output states that untracking .env does not remove it from git history",
+        "Output requires rotating credentials in addition to scrubbing history",
+        "Output requires force-pushing to a fresh remote rather than one that already carries the secrets",
+        "Output mentions at least one of: open CORS with credentials, MD5 auth, or CodeNode exec"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Tokens from a branch that wasn't taken are showing up in my SSE stream. Where do I fix this?",
+      "expected_output": "A pointer to the chunk processor's branch-aware routing rather than the data adapter, explaining the reachability check against answer/end nodes.",
+      "assertions": [
+        "Output directs the fix to the chunk processor, not the data adapter",
+        "Output explains the reachability check toward answer/end nodes given branches already taken",
+        "Output mentions _remove_dependencies or pruning edges from if-else / classifier / fail-branch nodes",
+        "Output does not recommend filtering tokens in the adapter layer"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Can I run goalflow without MySQL? I just want to try the node library.",
+      "expected_output": "A qualified yes that names exactly what breaks: MySQL backs the LangGraph checkpointer, so stop/resume and HITL stop being durable.",
+      "assertions": [
+        "Output states that MySQL backs the LangGraph checkpointer",
+        "Output names stop/resume and HITL as the capabilities that degrade",
+        "Output does not claim full functionality without MySQL",
+        "Output does not simply refuse to answer"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Should I use goalflow or just write LangGraph directly? We have no Dify flows.",
+      "expected_output": "An orient-mode fit check that routes out to plain LangGraph when there is no DSL to transpile, no swappable wire protocol need, and no graph-hosting-a-loop requirement.",
+      "assertions": [
+        "Output selects orient mode",
+        "Output names the conditions under which goalflow earns its weight",
+        "Output routes out to plain LangGraph or langgraph-fundamentals when those conditions are absent",
+        "Output does not advocate for goalflow by default"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "I want to add a skill that calls our internal pricing API during an agent turn.",
+      "expected_output": "A routing answer to the agent_kit skills engine because the capability must be executed, not merely described, with the injection-cost caveat for the main-project engine.",
+      "assertions": [
+        "Output routes to the agent_kit skills engine rather than the main-project engine",
+        "Output explains that the main-project engine treats scripts/ as passive and does not execute it",
+        "Output mentions executable 'module:func' or hybrid skill mode",
+        "Output notes that skill bodies are injected verbatim into the prompt"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "How does LangGraph's StateGraph handle conditional edges?",
+      "expected_output": "A route-out to langgraph-fundamentals, since this is a plain graph-API question with nothing goalflow-specific in it.",
+      "assertions": [
+        "Output routes to langgraph-fundamentals or langgraph-workflow",
+        "Output does not produce a goalflow mode selection",
+        "Output does not invent goalflow-specific API for a generic LangGraph question"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+N:goalflow
+D:Route goalflow (wanmol/goal-flow) work — a LangGraph framework that combines workflow graphs with agent loops — into exactly one mode: fit check, transpiling a Dify DSL export into runnable LangGraph Python, authoring workflow nodes and edges, building an `agent_kit` loop with middleware and a harness, wiring the serving layer (data adapters, SSE streaming, HITL, Redis/MySQL, API-key registration), or running the pre-publish security gate.
+G:goalflow goal-flow langgraph dify dify2langgraph transpiler dsl-export BaseWorkflow agent-kit AgentBaseNode middleware harness DataAdapter chunk-processor hitl sse-streaming checkpointer llmops python
+
+U[6]:
+  Decide whether goalflow earns its weight over plain LangGraph before any code is written
+  Transpile a Dify DSL export into a version-controlled LangGraph workflow you own
+  Author nodes against the real BaseNode contract including fan-in routing and error strategy
+  Build an agent loop with agent_kit graph builders middleware and the harness model router
+  Wire the serving layer: data adapter protocol streaming HITL storage and workflow registration
+  Gate a fork before publishing or deploying: history secrets internal hosts CORS auth and code exec
+
+S[10]{n,action,details}:
+  1,Intake,Record starting artifact target shape client protocol and whether Redis and MySQL actually exist
+  2,Mode,Choose one: orient transpile build agent serve or harden
+  3,Doctor,Run scripts/goalflow.sh doctor for a read-only python package and env-key-name report
+  4,Transpile,Run wf_transformer_tool and override DEFAULT_HOST_SUBSTITUTIONS instead of inheriting upstream hostnames
+  5,Nodes,Implement only call(state) and let the __call__ wrapper handle timing logging and the fan-in barrier
+  6,Register,Map the class in auth_validator but flag the MD5 keyed map as a demo mechanism not production auth
+  7,Agent,Prefer AgentBaseNode over AgentNode and the three deprecated bases; builder auto-selects on subagents
+  8,Protocol,Add protocols in a DataAdapter implementing generate and execute; never edit the engine or nodes
+  9,Harden,Run scripts/preflight_audit.py before any push to a shared remote and rotate rather than only scrub
+  10,Skills,Keep runtime SKILL.md bodies small because they are injected verbatim on every matched turn
+
+R[8]:
+  Do not present the MD5 API-key map as production auth even when answering how to register a workflow
+  Do not inherit DEFAULT_HOST_SUBSTITUTIONS; it encodes the original authors' internal hostnames
+  Treat CodeNode input as trusted-only because it execs provided Python with the AST guard disabled
+  Do not promise HITL or stop/resume without MySQL; the checkpointer is the backbone of both
+  Debug leaked untaken-branch tokens in the chunk processor not in the data adapter
+  Say when a default is Alibaba-shaped: Qwen DashScope OSS and Hologres come from the project origin
+  Treat history-resident secrets as compromised and rotate; scrubbing reduces exposure but does not end it
+  Route plain graph-API and generic LangChain questions to langgraph-fundamentals and langchain-fundamentals

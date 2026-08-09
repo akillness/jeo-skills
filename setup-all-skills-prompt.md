@@ -322,6 +322,41 @@ a local web service that drives a real browser. Test only games and source the u
 is authorized to test, and disclose that AI source modeling sends source summaries to the
 configured third-party providers.
 
+### goalflow LangGraph framework (on demand)
+
+The `goalflow` skill installs as documents plus a read-only `doctor` wrapper and two
+stdlib-only checkers; it never clones `wanmol/goal-flow`, installs LangGraph/FastAPI,
+provisions Redis or MySQL, or starts the server during setup. Prepare it only when a task
+actually needs to transpile a Dify flow, build a workflow, or run the engine:
+
+```bash
+# 1. read-only environment report (python 3.12, langgraph/fastapi/redis/pymysql, .env key NAMES) — installs nothing
+bash "$SKILLS_ROOT/goalflow/scripts/goalflow.sh" doctor
+bash "$SKILLS_ROOT/goalflow/scripts/goalflow.sh" doctor /path/to/goal-flow
+
+# 2. static pre-publish security gate on a checkout — reads files and git metadata, runs nothing
+python3 "$SKILLS_ROOT/goalflow/scripts/preflight_audit.py" /path/to/goal-flow
+
+# 3. static check of a runtime SKILL.md (goalflow's own skills/, not this catalog)
+python3 "$SKILLS_ROOT/goalflow/scripts/check_goalflow_skill.py" --all /path/to/goal-flow/skills
+
+# 4. only after the user asks to actually run it — needs Redis + MySQL
+git clone https://github.com/wanmol/goal-flow.git && cd goal-flow
+python3 -m venv venv && source venv/bin/activate
+pip install -e .                 # installs goalflow + the vendored agent_kit
+cp .env.example .env             # fill in real values; never commit it
+goalflow-server                  # http://localhost:8000
+```
+
+Steps 1–3 are safe during installation verification: `doctor` reports `.env` key names only
+and never their values, and both Python checkers are static readers that start no server and
+open no database connection. Skip step 4 unless the user asked to run the engine — it needs
+Redis and MySQL, and MySQL backs the LangGraph checkpointer that stop/resume and HITL depend on.
+
+Run `preflight_audit.py` before helping anyone push a goalflow fork to a shared or public
+remote. Upstream's own checklist warns that untracking `.env` does not remove it from git
+history; the published repo is already scrubbed, but internal forks and clones predating the
+scrub still carry live credentials that must be rotated, not merely scrubbed.
 
 ## Step 6 — Runtime-specific shared-root checks
 

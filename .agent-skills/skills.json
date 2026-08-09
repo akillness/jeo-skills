@@ -1,7 +1,7 @@
 {
   "version": "2.0.0",
   "generated": "2026-07-30",
-  "skill_count": 198,
+  "skill_count": 199,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -258,6 +258,7 @@
       "spec-kit",
       "microsoft-agent-framework",
       "openai-agents-python",
+      "goalflow",
       "article-prompts-to-skills",
       "skill-standardization",
       "upskill",
@@ -567,7 +568,8 @@
       ],
       "agent-frameworks": [
         "microsoft-agent-framework",
-        "openai-agents-python"
+        "openai-agents-python",
+        "goalflow"
       ],
       "skill-authoring": [
         "article-prompts-to-skills",
@@ -5005,6 +5007,47 @@
       "keyword": "openai-agents-python",
       "version": "1.0",
       "source": "openai/openai-agents-python"
+    },
+    {
+      "name": "goalflow",
+      "description": "Route goalflow (wanmol/goal-flow) work — a LangGraph framework that combines workflow graphs with agent loops — into exactly one mode: fit check, transpiling a Dify DSL export into runnable LangGraph Python, authoring workflow nodes and edges, building an `agent_kit` loop with middleware and a harness, wiring the serving layer (data adapters, SSE streaming, HITL, Redis/MySQL, API-key registration), or running the pre-publish security gate. Use when the user wants Dify's visual design without Dify's runtime, a graph node that hosts an agent loop, an OpenAI-compatible wire protocol over their own workflows, or prompt-injected `SKILL.md` capabilities. Triggers on: goalflow, goal-flow, dify to langgraph, dify transpiler, dify DSL export, BaseWorkflow, agent_kit, AgentBaseNode, DataAdapter, chunk processor, HITL interrupt, dify2langgraph. Route plain graph-API questions to `langgraph-fundamentals` and `langgraph-workflow`.",
+      "category": "ai-agents",
+      "subcategory": "agent-frameworks",
+      "interface": "workflow",
+      "path": "goalflow/SKILL.md",
+      "tags": [
+        "goalflow",
+        "goal-flow",
+        "langgraph",
+        "dify",
+        "dify2langgraph",
+        "transpiler",
+        "agent-loop",
+        "agent-kit",
+        "middleware",
+        "hitl",
+        "sse-streaming",
+        "data-adapter",
+        "llmops",
+        "python"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "goalflow",
+      "version": "1.0",
+      "source": "https://github.com/wanmol/goal-flow"
     },
     {
       "name": "article-prompts-to-skills",
