@@ -205,6 +205,20 @@ If the installed Claude version does not expose non-interactive plugin commands,
 these two commands for the user to run through Claude Code's `/plugin` interface instead
 of editing plugin configuration by hand.
 
+### Codex OMC hook compatibility
+
+OMC 4.15.7 emits Claude-only `suppressOutput` fields from three `PostToolUse`
+handlers. Codex rejects that field at its plugin boundary. When both Codex and
+the installed repair helper are present, repair only that known cached version;
+all other plugin caches remain untouched.
+
+```bash
+if command -v codex >/dev/null 2>&1 \
+  && [ -x "$SKILLS_ROOT/jeo-skill/scripts/repair-codex-omc-posttool-hooks.sh" ]; then
+  bash "$SKILLS_ROOT/jeo-skill/scripts/repair-codex-omc-posttool-hooks.sh"
+fi
+```
+
 ### Animato animation runtime (on demand)
 
 The `animato` skill installs as documents plus stdlib-only scripts; it never installs Blender,

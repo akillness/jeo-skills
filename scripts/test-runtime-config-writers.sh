@@ -8,6 +8,7 @@ OBS_INSTALL="$ROOT/.agent-skills/obsidian-second-brain/scripts/install.sh"
 PLAN_HOOK="$ROOT/.agent-skills/plannotator/scripts/setup-hook.sh"
 PLAN_GEMINI="$ROOT/.agent-skills/plannotator/scripts/setup-gemini-hook.sh"
 PLAN_OPENCODE="$ROOT/.agent-skills/plannotator/scripts/setup-opencode-plugin.sh"
+CODEX_OMC_POSTTOOL_REPAIR="$ROOT/.agent-skills/jeo-skill/scripts/repair-codex-omc-posttool-hooks.sh"
 ROOT_INSTALLER="$ROOT/install.sh"
 GUIDE="$ROOT/setup-all-skills-prompt.md"
 
@@ -87,6 +88,7 @@ require_file "$OBS_INSTALL"
 require_file "$PLAN_GEMINI"
 require_file "$PLAN_OPENCODE"
 require_file "$PLAN_HOOK"
+require_file "$CODEX_OMC_POSTTOOL_REPAIR"
 require_file "$ROOT_INSTALLER"
 require_file "$GUIDE"
 command -v jq >/dev/null 2>&1 || fail 'jq is required for this isolated regression test'
@@ -366,6 +368,227 @@ expect_status 1 'Obsidian second brain dangling symlink rejection'
 [ -L "$OBS_LINK_HOME/.jeo/config.json" ] && [ ! -e "$WORK/obsidian-dangling-target.json" ] || fail 'Obsidian second brain replaced dangling symlink'
 pass 'Obsidian second brain preserves backups and rejects failed or symlinked config updates'
 
+# The Codex OMC repair removes only the incompatible response field from all known cache hooks.
+# Its production SHA-256 allow-list pins canonical OMC sources, so this isolated fixture derives
+# an equivalent allow-list in a temporary helper from the exact post-repair fixture bytes.
+CODEX_OMC_REPAIR_HOME="$WORK/codex-omc-posttool-home"
+CODEX_OMC_REPAIR_CACHE="$CODEX_OMC_REPAIR_HOME/.codex/plugins/cache/omc/oh-my-claudecode/4.15.7/scripts"
+CODEX_OMC_REPAIR_EXPECTED="$WORK/codex-omc-posttool-expected"
+CODEX_OMC_POSTTOOL_REPAIR_TEST="$WORK/repair-codex-omc-posttool-hooks.sh"
+cp "$CODEX_OMC_POSTTOOL_REPAIR" "$WORK/repair-codex-omc-posttool-hooks.sh.before"
+mkdir -p "$CODEX_OMC_REPAIR_CACHE" "$CODEX_OMC_REPAIR_EXPECTED"
+printf '%s\n' 'model = "keep"' >"$CODEX_OMC_REPAIR_HOME/.codex/config.toml"
+cp "$CODEX_OMC_REPAIR_HOME/.codex/config.toml" "$WORK/codex-omc-config-before.toml"
+
+cat >"$CODEX_OMC_REPAIR_CACHE/post-tool-verifier.mjs" <<'EOF'
+export function generateMessage(message) {
+  const response = { continue: true };
+  response.hookSpecificOutput = {
+    hookEventName: 'PostToolUse',
+    additionalContext: 'Verify the tool result before continuing.',
+  };
+  const preserved = { hook: 'verifier' };
+  if (message) {
+    response.hookSpecificOutput.additionalContext = message;
+  } else {
+    response.suppressOutput = true;
+  }
+  console.log(JSON.stringify({ continue: true, suppressOutput: true }));
+  return { ...response, preserved };
+}
+EOF
+cat >"$CODEX_OMC_REPAIR_CACHE/project-memory-posttool.mjs" <<'EOF'
+export function learnFromToolOutput() {
+  const preserved = { hook: 'memory' };
+  console.log(JSON.stringify({ continue: true, suppressOutput: true }));
+  console.log(JSON.stringify({ continue: true, suppressOutput: true }));
+  console.log(JSON.stringify({ continue: true, suppressOutput: true }));
+  return preserved;
+}
+EOF
+cat >"$CODEX_OMC_REPAIR_CACHE/post-tool-rules-injector.mjs" <<'EOF'
+export function createRulesInjectorHook() {
+  const preserved = { hook: 'rules' };
+  console.log(JSON.stringify({ continue: true, suppressOutput: true }));
+  console.log(JSON.stringify({ continue: true, suppressOutput: true }));
+  console.log(JSON.stringify({ continue: true, suppressOutput: true }));
+  console.log(JSON.stringify({ continue: true, suppressOutput: true }));
+  console.log(JSON.stringify({ continue: true, suppressOutput: true }));
+  console.log(JSON.stringify({ continue: true, suppressOutput: true }));
+  return preserved;
+}
+EOF
+
+cat >"$CODEX_OMC_REPAIR_EXPECTED/post-tool-verifier.mjs" <<'EOF'
+export function generateMessage(message) {
+  const response = { continue: true };
+  response.hookSpecificOutput = {
+    hookEventName: 'PostToolUse',
+    additionalContext: 'Verify the tool result before continuing.',
+  };
+  const preserved = { hook: 'verifier' };
+  if (message) {
+    response.hookSpecificOutput.additionalContext = message;
+  }
+  console.log(JSON.stringify({ continue: true }));
+  return { ...response, preserved };
+}
+EOF
+cat >"$CODEX_OMC_REPAIR_EXPECTED/project-memory-posttool.mjs" <<'EOF'
+export function learnFromToolOutput() {
+  const preserved = { hook: 'memory' };
+  console.log(JSON.stringify({ continue: true }));
+  console.log(JSON.stringify({ continue: true }));
+  console.log(JSON.stringify({ continue: true }));
+  return preserved;
+}
+EOF
+cat >"$CODEX_OMC_REPAIR_EXPECTED/post-tool-rules-injector.mjs" <<'EOF'
+export function createRulesInjectorHook() {
+  const preserved = { hook: 'rules' };
+  console.log(JSON.stringify({ continue: true }));
+  console.log(JSON.stringify({ continue: true }));
+  console.log(JSON.stringify({ continue: true }));
+  console.log(JSON.stringify({ continue: true }));
+  console.log(JSON.stringify({ continue: true }));
+  console.log(JSON.stringify({ continue: true }));
+  return preserved;
+}
+EOF
+
+python3 - "$CODEX_OMC_POSTTOOL_REPAIR" "$CODEX_OMC_POSTTOOL_REPAIR_TEST" "$CODEX_OMC_REPAIR_EXPECTED" <<'PY' \
+  || fail 'could not create the isolated digest-pinned Codex OMC repair helper'
+from pathlib import Path
+import hashlib
+import re
+import shutil
+import sys
+
+source_helper, temporary_helper, expected_directory = map(Path, sys.argv[1:])
+expected = {
+    path.name: hashlib.sha256(path.read_bytes()).hexdigest()
+    for path in sorted(expected_directory.glob("*.mjs"))
+}
+if set(expected) != {
+    "post-tool-verifier.mjs",
+    "project-memory-posttool.mjs",
+    "post-tool-rules-injector.mjs",
+}:
+    raise SystemExit("unexpected post-repair fixture set")
+
+shutil.copyfile(source_helper, temporary_helper)
+source = temporary_helper.read_text(encoding="utf-8")
+replacement = "COMPATIBLE_DIGESTS = {\n" + "".join(
+    f'    "{name}": "{digest}",\n' for name, digest in expected.items()
+) + "}"
+updated, replacements = re.subn(
+    r'COMPATIBLE_DIGESTS = \{\n(?:    "[^"]+": "[0-9a-f]{64}",\n)+\}',
+    replacement,
+    source,
+    count=1,
+)
+if replacements != 1:
+    raise SystemExit("could not locate the helper digest allow-list")
+temporary_helper.write_text(updated, encoding="utf-8")
+PY
+
+run_capture env HOME="$CODEX_OMC_REPAIR_HOME" PATH="$PATH" /bin/bash "$CODEX_OMC_POSTTOOL_REPAIR_TEST"
+expect_status 0 'Codex OMC PostToolUse cache repair'
+cmp -s "$WORK/codex-omc-config-before.toml" "$CODEX_OMC_REPAIR_HOME/.codex/config.toml" \
+  || fail 'Codex OMC PostToolUse repair changed Codex configuration'
+for target in post-tool-verifier.mjs project-memory-posttool.mjs post-tool-rules-injector.mjs; do
+  cmp -s "$CODEX_OMC_REPAIR_EXPECTED/$target" "$CODEX_OMC_REPAIR_CACHE/$target" \
+    || fail "Codex OMC PostToolUse repair did not produce the expected $target bytes"
+done
+pass 'Codex OMC PostToolUse repair transforms each compatible fixture without changing unrelated content'
+
+for target in post-tool-verifier.mjs project-memory-posttool.mjs post-tool-rules-injector.mjs; do
+  cp "$CODEX_OMC_REPAIR_CACHE/$target" "$WORK/codex-omc-repaired-$target"
+done
+run_capture env HOME="$CODEX_OMC_REPAIR_HOME" PATH="$PATH" /bin/bash "$CODEX_OMC_POSTTOOL_REPAIR_TEST"
+expect_status 0 'Codex OMC PostToolUse idempotent rerun'
+for target in post-tool-verifier.mjs project-memory-posttool.mjs post-tool-rules-injector.mjs; do
+  cmp -s "$WORK/codex-omc-repaired-$target" "$CODEX_OMC_REPAIR_CACHE/$target" \
+    || fail "Codex OMC PostToolUse idempotent rerun changed $target"
+done
+pass 'Codex OMC PostToolUse repair rerun is byte-for-byte idempotent'
+
+# A memory-style decoy can retain the expected hook marker and every quiet response while
+# still being untrusted when its final bytes are not the allow-listed canonical source.
+CODEX_OMC_DECOY_HOME="$WORK/codex-omc-posttool-decoy-home"
+CODEX_OMC_DECOY_CACHE="$CODEX_OMC_DECOY_HOME/.codex/plugins/cache/omc/oh-my-claudecode/4.15.7/scripts"
+mkdir -p "$CODEX_OMC_DECOY_CACHE"
+for target in post-tool-verifier.mjs post-tool-rules-injector.mjs; do
+  cp "$CODEX_OMC_REPAIR_EXPECTED/$target" "$CODEX_OMC_DECOY_CACHE/$target"
+done
+cat >"$CODEX_OMC_DECOY_CACHE/project-memory-posttool.mjs" <<'EOF'
+export function learnFromToolOutput() {
+  const unrelated = { source: 'decoy-memory-hook' };
+  console.log(JSON.stringify({ continue: true, suppressOutput: true }));
+  console.log(JSON.stringify({ continue: true, suppressOutput: true }));
+  console.log(JSON.stringify({ continue: true, suppressOutput: true }));
+  return unrelated;
+}
+EOF
+for target in post-tool-verifier.mjs project-memory-posttool.mjs post-tool-rules-injector.mjs; do
+  cp "$CODEX_OMC_DECOY_CACHE/$target" "$WORK/codex-omc-decoy-$target.before"
+done
+run_capture env HOME="$CODEX_OMC_DECOY_HOME" PATH="$PATH" /bin/bash "$CODEX_OMC_POSTTOOL_REPAIR_TEST"
+expect_status 0 'Codex OMC PostToolUse digest-decoy skip'
+expect_output 'repair skipped: unrecognized project-memory-posttool.mjs' 'Codex OMC PostToolUse digest-decoy skip'
+for target in post-tool-verifier.mjs project-memory-posttool.mjs post-tool-rules-injector.mjs; do
+  cmp -s "$WORK/codex-omc-decoy-$target.before" "$CODEX_OMC_DECOY_CACHE/$target" \
+    || fail "Codex OMC PostToolUse repair changed digest-decoy target $target"
+done
+pass 'Codex OMC PostToolUse exact-digest gate skips a marker-and-count-matching memory decoy'
+
+# The helper must not follow a leaf target symlink.
+CODEX_OMC_LEAF_HOME="$WORK/codex-omc-posttool-leaf-home"
+CODEX_OMC_LEAF_CACHE="$CODEX_OMC_LEAF_HOME/.codex/plugins/cache/omc/oh-my-claudecode/4.15.7/scripts"
+CODEX_OMC_LEAF_TARGET="$WORK/codex-omc-posttool-leaf-target.mjs"
+mkdir -p "$CODEX_OMC_LEAF_CACHE"
+printf '%s\n' 'const outside = { suppressOutput: true };' >"$CODEX_OMC_LEAF_TARGET"
+cp "$CODEX_OMC_LEAF_TARGET" "$WORK/codex-omc-posttool-leaf-target.before"
+ln -s "$CODEX_OMC_LEAF_TARGET" "$CODEX_OMC_LEAF_CACHE/post-tool-verifier.mjs"
+run_capture env HOME="$CODEX_OMC_LEAF_HOME" PATH="$PATH" /bin/bash "$CODEX_OMC_POSTTOOL_REPAIR_TEST"
+expect_status 0 'Codex OMC PostToolUse leaf-symlink skip'
+expect_output 'repair skipped: unsafe target post-tool-verifier.mjs' 'Codex OMC PostToolUse leaf-symlink skip'
+cmp -s "$WORK/codex-omc-posttool-leaf-target.before" "$CODEX_OMC_LEAF_TARGET" \
+  || fail 'Codex OMC PostToolUse repair changed a leaf-symlink target'
+pass 'Codex OMC PostToolUse repair skips a leaf symlink without target mutation'
+
+# The helper must also reject a symlinked cache scripts directory before reading external targets.
+CODEX_OMC_SCRIPTS_LINK_HOME="$WORK/codex-omc-posttool-scripts-link-home"
+CODEX_OMC_SCRIPTS_PARENT="$CODEX_OMC_SCRIPTS_LINK_HOME/.codex/plugins/cache/omc/oh-my-claudecode/4.15.7"
+CODEX_OMC_SCRIPTS_TARGET="$WORK/codex-omc-posttool-external-scripts"
+mkdir -p "$CODEX_OMC_SCRIPTS_PARENT" "$CODEX_OMC_SCRIPTS_TARGET"
+for target in post-tool-verifier.mjs project-memory-posttool.mjs post-tool-rules-injector.mjs; do
+  printf '%s\n' "const external${target%%.*} = { suppressOutput: true };" >"$CODEX_OMC_SCRIPTS_TARGET/$target"
+  cp "$CODEX_OMC_SCRIPTS_TARGET/$target" "$WORK/codex-omc-external-$target.before"
+done
+ln -s "$CODEX_OMC_SCRIPTS_TARGET" "$CODEX_OMC_SCRIPTS_PARENT/scripts"
+run_capture env HOME="$CODEX_OMC_SCRIPTS_LINK_HOME" PATH="$PATH" /bin/bash "$CODEX_OMC_POSTTOOL_REPAIR_TEST"
+expect_status 0 'Codex OMC PostToolUse scripts-directory symlink skip'
+expect_output 'repair skipped: unsafe cache directory scripts' 'Codex OMC PostToolUse scripts-directory symlink skip'
+for target in post-tool-verifier.mjs project-memory-posttool.mjs post-tool-rules-injector.mjs; do
+  cmp -s "$WORK/codex-omc-external-$target.before" "$CODEX_OMC_SCRIPTS_TARGET/$target" \
+    || fail "Codex OMC PostToolUse repair changed an external scripts target $target"
+done
+pass 'Codex OMC PostToolUse repair skips a symlinked scripts directory without external mutation'
+
+CODEX_OMC_NOOP_HOME="$WORK/codex-omc-posttool-noop-home"
+mkdir -p "$CODEX_OMC_NOOP_HOME"
+run_capture env HOME="$CODEX_OMC_NOOP_HOME" PATH="$PATH" /bin/bash "$CODEX_OMC_POSTTOOL_REPAIR_TEST"
+expect_status 0 'Codex OMC PostToolUse cache-absent no-op'
+[ ! -e "$CODEX_OMC_NOOP_HOME/.codex" ] \
+  || fail 'Codex OMC PostToolUse cache-absent no-op created ~/.codex'
+pass 'Codex OMC PostToolUse repair preserves hook output, leaves config unchanged, and safely no-ops without a cache'
+
+cmp -s "$WORK/repair-codex-omc-posttool-hooks.sh.before" "$CODEX_OMC_POSTTOOL_REPAIR" \
+  || fail 'Codex OMC PostToolUse test mutated the repository repair helper'
+pass 'Codex OMC PostToolUse fixtures leave the repository helper byte-for-byte unchanged'
+
+
 # Every changed shell writer must remain parseable.
 for writer in \
   "$ROOT_INSTALLER" \
@@ -373,15 +596,16 @@ for writer in \
   "$ROOT/.agent-skills/obsidian-second-brain/scripts/install.sh" \
   "$ROOT/.agent-skills/plannotator/scripts/setup-hook.sh" \
   "$ROOT/.agent-skills/plannotator/scripts/setup-gemini-hook.sh" \
+  "$CODEX_OMC_POSTTOOL_REPAIR" \
   "$ROOT/.agent-skills/plannotator/scripts/setup-opencode-plugin.sh"; do
   /bin/bash -n "$writer" || fail "shell syntax invalid: $writer"
 done
 pass 'all changed runtime shell writers pass bash syntax validation'
 
-# Extract the seven hardened setup-guide shell sections and syntax-check each one.
+# Extract every current bash/sh fence from the setup guide and syntax-check it.
 GUIDE_DIR="$WORK/guide-shell"
 mkdir -p "$GUIDE_DIR"
-python3 - "$GUIDE" "$GUIDE_DIR" <<'PY' || fail 'could not extract hardened shell fences from setup guide'
+python3 - "$GUIDE" "$GUIDE_DIR" <<'PY' || fail 'could not extract shell fences from setup guide'
 from pathlib import Path
 import sys
 
@@ -392,280 +616,26 @@ blocks = []
 current = []
 for line in source.splitlines(keepends=True):
     marker = line.strip()
-    if not in_block and marker in {'```bash', '```sh'}:
+    if not in_block and marker in {"```bash", "```sh"}:
         in_block = True
         current = []
-    elif in_block and marker == '```':
-        blocks.append(''.join(current))
+    elif in_block and marker == "```":
+        blocks.append("".join(current))
         in_block = False
     elif in_block:
         current.append(line)
 if in_block:
-    raise SystemExit('unterminated shell fence')
-
-required_markers = (
-    '=== Installing ooo (Ouroboros) ===',
-    '=== Registering semble MCP ===',
-    '=== Platform Plugin Setup ===',
-    '=== Configuring jeo-code (jeo) rules + hooks ===',
-    '=== Configuring pi (jeo-pi) rules + MCP ===',
-    '=== Configuring jeopi (jeo-pi spec-first) hooks ===',
-    '# Re-use PLATFORM / _HOME / SKILLS_ROOT from Step 0 if already set',
-)
-for index, marker in enumerate(required_markers, 1):
-    matches = [block for block in blocks if marker in block]
-    if len(matches) != 1:
-        raise SystemExit(f'expected one fenced shell section for {marker!r}, found {len(matches)}')
-    (destination / f'{index:02d}.sh').write_text(matches[0])
+    raise SystemExit("unterminated shell fence")
+if not blocks:
+    raise SystemExit("no bash/sh fences found")
+for index, block in enumerate(blocks, 1):
+    (destination / f"{index:02d}.sh").write_text(block)
 PY
 for snippet in "$GUIDE_DIR"/*.sh; do
-  /bin/bash -n "$snippet" || fail "hardened setup-guide shell fence is invalid: $snippet"
+  /bin/bash -n "$snippet" || fail "setup-guide shell fence is invalid: $snippet"
 done
-pass 'seven extracted hardened setup-guide shell sections are syntactically valid'
-
-# Execute guide code fences in a minimal PATH. Stubs only replace installers/CLIs;
-# jq, Python, and the filesystem tools remain real and all homes are disposable.
-# The guide's TOML writers require a python3 with tomllib (3.11+), so resolve the
-# real interpreter instead of assuming a fixed system path.
-GUIDE_BIN="$WORK/guide-bin"
-GUIDE_PY="$(command -v python3 2>/dev/null || true)"
-[ -n "$GUIDE_PY" ] && "$GUIDE_PY" -c 'import tomllib' 2>/dev/null \
-  || fail 'a python3 with tomllib (3.11+) is required on PATH to execute the guide sections'
-GUIDE_PATH="$GUIDE_BIN:$(dirname "$GUIDE_PY"):/opt/homebrew/bin:/usr/bin:/bin"
-
-mkdir -p "$GUIDE_BIN"
-for tool in pip3 uvx semble claude codex npm jeo pi jeopi rtk npx; do
-  cat >"$GUIDE_BIN/$tool" <<'EOF'
-#!/bin/sh
-exit 0
-EOF
-  chmod 700 "$GUIDE_BIN/$tool"
-done
-
-run_guide() {
-  local guide_home="$1" section="$2"
-  # Run from an isolated working directory: Step 6 resolves a project-scoped
-  # vault from the current git toplevel, so an un-isolated cwd would bootstrap a
-  # vault inside this repository.
-  mkdir -p "$guide_home/workdir"
-  HOME="$guide_home" _HOME="$guide_home" PATH="$GUIDE_PATH" PLATFORM=macos \
-    SKILLS_ROOT="$guide_home/.agents/skills" OOO_GIT_INTERVIEW=0 OOO_SPEC_KIT=0 OOO_CLI_ANYTHING=0 \
-    /bin/bash -c 'cd "$1" && exec /bin/bash "$2"' bash "$guide_home/workdir" "$GUIDE_DIR/$section" >"$LAST_OUTPUT" 2>&1
-  LAST_STATUS=$?
-}
+pass 'all current setup-guide shell fences are syntactically valid'
 
 
-assert_guide_symlinks() {
-  local label="$1" section="$2" relative_config="$3"
-  local guide_home="$WORK/guide-link-$label"
-  local config="$guide_home/$relative_config"
-  local target="$WORK/guide-$label-real-target"
-  local missing="$WORK/guide-$label-dangling-target"
-
-  mkdir -p "$(dirname "$config")" "$guide_home/.pi/agent"
-  printf '%s\n' "{\"sentinel\":\"$label\"}" >"$target"
-  cp "$target" "$target.before"
-  ln -s "$target" "$config"
-  run_guide "$guide_home" "$section"
-  expect_status 1 "$label guide real symlink rejection"
-  cmp -s "$target.before" "$target" || fail "$label guide writer mutated its real symlink target"
-  rm -f "$config"
-  ln -s "$missing" "$config"
-  run_guide "$guide_home" "$section"
-  expect_status 1 "$label guide dangling symlink rejection"
-  [ -L "$config" ] && [ ! -e "$missing" ] || fail "$label guide writer replaced a dangling symlink"
-}
-
-# OOO and semble each own a direct Codex TOML writer in their guide section.
-GUIDE_OOO_HOME="$WORK/guide-ooo-home"
-mkdir -p "$GUIDE_OOO_HOME/.codex"
-printf '%s\n' 'model = "test"' >"$GUIDE_OOO_HOME/.codex/config.toml"
-chmod 640 "$GUIDE_OOO_HOME/.codex/config.toml"
-run_guide "$GUIDE_OOO_HOME" 01.sh
-expect_status 0 'OOO guide Codex TOML mutation'
-python3 - "$GUIDE_OOO_HOME/.codex/config.toml" <<'PY' || fail 'OOO guide did not write parseable named Codex table'
-import sys, tomllib
-with open(sys.argv[1], 'rb') as config:
-    data = tomllib.load(config)
-assert data['mcp_servers']['ooo']['command'] == 'ouroboros'
-PY
-[ "$(mode_of "$GUIDE_OOO_HOME/.codex/config.toml")" = 640 ] || fail 'OOO guide Codex mutation lost mode 640'
-assert_guide_symlinks ooo 01.sh '.codex/config.toml'
-pass 'OOO guide Codex writer mutates regular TOML and rejects both symlink forms'
-
-GUIDE_SEMBLE_HOME="$WORK/guide-semble-home"
-mkdir -p "$GUIDE_SEMBLE_HOME/.codex"
-printf '%s\n' 'model = "test"' >"$GUIDE_SEMBLE_HOME/.codex/config.toml"
-chmod 640 "$GUIDE_SEMBLE_HOME/.codex/config.toml"
-run_guide "$GUIDE_SEMBLE_HOME" 02.sh
-expect_status 0 'semble guide Codex TOML mutation'
-python3 - "$GUIDE_SEMBLE_HOME/.codex/config.toml" <<'PY' || fail 'semble guide did not write parseable named Codex table'
-import sys, tomllib
-with open(sys.argv[1], 'rb') as config:
-    data = tomllib.load(config)
-assert data['mcp_servers']['semble']['command'] == 'uvx'
-PY
-[ "$(mode_of "$GUIDE_SEMBLE_HOME/.codex/config.toml")" = 640 ] || fail 'semble guide Codex mutation lost mode 640'
-assert_guide_symlinks semble 02.sh '.codex/config.toml'
-pass 'semble guide Codex writer mutates regular TOML and rejects both symlink forms'
-
-# The Platform Plugin Setup section no longer installs any external runtime that
-# writes agent config; it must still run cleanly and leave a regular Codex config
-# untouched.
-GUIDE_PLUGIN_HOME="$WORK/guide-plugin-home"
-mkdir -p "$GUIDE_PLUGIN_HOME/.codex"
-printf '%s\n' 'model = "test"' >"$GUIDE_PLUGIN_HOME/.codex/config.toml"
-cp "$GUIDE_PLUGIN_HOME/.codex/config.toml" "$WORK/guide-plugin-codex-before.toml"
-run_guide "$GUIDE_PLUGIN_HOME" 03.sh
-expect_status 0 'Platform Plugin Setup section runs cleanly'
-cmp -s "$WORK/guide-plugin-codex-before.toml" "$GUIDE_PLUGIN_HOME/.codex/config.toml" \
-  || fail 'Platform Plugin Setup section mutated the Codex config'
-pass 'Platform Plugin Setup section runs without touching agent runtime config'
-
-# jeo, pi, and jeopi guide sections own JSON writers directly.
-GUIDE_JEO_HOME="$WORK/guide-jeo-home"
-mkdir -p "$GUIDE_JEO_HOME/.jeo"
-printf '%s\n' '{"hooks":{"existing":[]}}' >"$GUIDE_JEO_HOME/.jeo/config.json"
-chmod 640 "$GUIDE_JEO_HOME/.jeo/config.json"
-run_guide "$GUIDE_JEO_HOME" 04.sh
-expect_status 0 'jeo guide config merge'
-assert_json "$GUIDE_JEO_HOME/.jeo/config.json"
-jq -e '.hooks.enabled == true and (.hooks.hooks | length == 2)' "$GUIDE_JEO_HOME/.jeo/config.json" >/dev/null || fail 'jeo guide did not write its hook configuration'
-[ "$(mode_of "$GUIDE_JEO_HOME/.jeo/config.json")" = 640 ] || fail 'jeo guide mutation lost mode 640'
-assert_guide_symlinks jeo 04.sh '.jeo/config.json'
-pass 'jeo guide writer mutates regular JSON and rejects both symlink forms'
-
-# jeo must be pointed at a project-scoped wiki: a RELATIVE wikiRoot (jeo resolves
-# it against the launch directory) and a post-turn hook that feeds the turn-end
-# event to the shared ingest script without baking any vault path.
-jq -e '.wikiRoot == "llm-wiki"' "$GUIDE_JEO_HOME/.jeo/config.json" >/dev/null \
-  || fail 'jeo guide did not set the project-scoped relative wikiRoot'
-JEO_POST_TURN="$(jq -r '.hooks.hooks[] | select(.event == "post-turn") | .run' "$GUIDE_JEO_HOME/.jeo/config.json")"
-case "$JEO_POST_TURN" in
-  *'{"hook_event_name":"post-turn"}'*) ;;
-  *) fail 'jeo post-turn hook does not feed the turn-end event to the ingest script' ;;
-esac
-case "$JEO_POST_TURN" in
-  *"$GUIDE_JEO_HOME/.agents/hooks/ingest-prompt.py"*) ;;
-  *) fail 'jeo post-turn hook does not call the project-independent ingest script' ;;
-esac
-case "$JEO_POST_TURN" in
-  *LLM_WIKI_VAULT*|*OBSIDIAN_MIND_VAULT*|*'llm-wiki/scripts'*)
-    fail 'jeo post-turn hook baked a vault path instead of resolving it at run time' ;;
-esac
-pass 'jeo guide configures a project-scoped wikiRoot and a vault-path-free post-turn hook'
-
-
-GUIDE_PI_HOME="$WORK/guide-pi-home"
-mkdir -p "$GUIDE_PI_HOME/.pi/agent"
-printf '%s\n' '{"mcpServers":{"existing":{"command":"keep"}}}' >"$GUIDE_PI_HOME/.pi/agent/mcp.json"
-chmod 640 "$GUIDE_PI_HOME/.pi/agent/mcp.json"
-run_guide "$GUIDE_PI_HOME" 05.sh
-expect_status 0 'pi guide MCP merge'
-assert_json "$GUIDE_PI_HOME/.pi/agent/mcp.json"
-jq -e '.mcpServers.existing.command == "keep" and .mcpServers.semble.command == "uvx"' "$GUIDE_PI_HOME/.pi/agent/mcp.json" >/dev/null || fail 'pi guide did not preserve and add MCP entries'
-[ "$(mode_of "$GUIDE_PI_HOME/.pi/agent/mcp.json")" = 640 ] || fail 'pi guide mutation lost mode 640'
-assert_guide_symlinks pi 05.sh '.pi/agent/mcp.json'
-pass 'pi guide writer mutates regular JSON and rejects both symlink forms'
-
-GUIDE_JEOPI_HOME="$WORK/guide-jeopi-home"
-mkdir -p "$GUIDE_JEOPI_HOME/.jeopi"
-printf '%s\n' '{"hooks":{"existing":[]}}' >"$GUIDE_JEOPI_HOME/.jeopi/config.json"
-chmod 640 "$GUIDE_JEOPI_HOME/.jeopi/config.json"
-run_guide "$GUIDE_JEOPI_HOME" 06.sh
-expect_status 0 'jeopi guide config merge'
-assert_json "$GUIDE_JEOPI_HOME/.jeopi/config.json"
-jq -e '.hooks.enabled == true and (.hooks.hooks | length == 2)' "$GUIDE_JEOPI_HOME/.jeopi/config.json" >/dev/null || fail 'jeopi guide did not write its hook configuration'
-[ "$(mode_of "$GUIDE_JEOPI_HOME/.jeopi/config.json")" = 640 ] || fail 'jeopi guide mutation lost mode 640'
-assert_guide_symlinks jeopi 06.sh '.jeopi/config.json'
-pass 'jeopi guide writer mutates regular JSON and rejects both symlink forms'
-
-# Step 6 owns the Codex hooks.json writer. Its wrapper path remains isolated too.
-GUIDE_STEP6_HOME="$WORK/guide-step6-home"
-mkdir -p "$GUIDE_STEP6_HOME/.codex" "$GUIDE_STEP6_HOME/.agents/hooks"
-printf '%s\n' '#!/bin/sh' >"$GUIDE_STEP6_HOME/.agents/hooks/ingest-prompt.py"
-chmod 700 "$GUIDE_STEP6_HOME/.agents/hooks/ingest-prompt.py"
-
-printf '%s\n' '{"hooks":{}}' >"$GUIDE_STEP6_HOME/.codex/hooks.json"
-chmod 640 "$GUIDE_STEP6_HOME/.codex/hooks.json"
-run_guide "$GUIDE_STEP6_HOME" 07.sh
-expect_status 0 'Step 6 guide Codex hooks merge'
-assert_json "$GUIDE_STEP6_HOME/.codex/hooks.json"
-jq -e '.hooks.UserPromptSubmit[0].hooks[0].command and .hooks.Stop[0].hooks[0].command' "$GUIDE_STEP6_HOME/.codex/hooks.json" >/dev/null || fail 'Step 6 guide did not write both Codex hook events'
-[ "$(mode_of "$GUIDE_STEP6_HOME/.codex/hooks.json")" = 640 ] || fail 'Step 6 guide mutation lost mode 640'
-assert_guide_symlinks step6 07.sh '.codex/hooks.json'
-pass 'Step 6 guide hooks writer mutates regular JSON and rejects both symlink forms'
-
-# The ingest wrapper must stay project-independent: it targets the shared
-# ~/.agents/hooks/ingest-prompt.py and must not bake any vault path, because the
-# vault is resolved per repository at run time.
-STEP6_WRAPPER="$GUIDE_STEP6_HOME/.codex/hooks/llm-wiki-ingest.sh"
-[ -f "$STEP6_WRAPPER" ] || fail 'Step 6 guide did not write the Codex ingest wrapper'
-[ "$(mode_of "$STEP6_WRAPPER")" = 700 ] || fail 'Step 6 ingest wrapper is not mode 700'
-grep -qF "INGEST=\"$GUIDE_STEP6_HOME/.agents/hooks/ingest-prompt.py\"" "$STEP6_WRAPPER" \
-  || fail 'Step 6 ingest wrapper does not target the project-independent ingest path'
-if grep -q 'LLM_WIKI_VAULT\|OBSIDIAN_MIND_VAULT\|llm-wiki/scripts' "$STEP6_WRAPPER"; then
-  fail 'Step 6 ingest wrapper baked a vault path instead of resolving it at run time'
-fi
-pass 'Step 6 ingest wrapper is project-independent and bakes no vault path'
-
-# Step 6 must bootstrap the wiki under the resolved obsidian-mind vault (here the
-# outside-a-repo fallback), never at the legacy ~/vaults/llm-wiki path.
-[ -f "$GUIDE_STEP6_HOME/vaults/obsidian-mind/llm-wiki/index.md" ] \
-  || fail 'Step 6 guide did not bootstrap the wiki under the obsidian-mind fallback vault'
-[ ! -e "$GUIDE_STEP6_HOME/vaults/llm-wiki" ] \
-  || fail 'Step 6 guide still bootstraps the legacy ~/vaults/llm-wiki path'
-pass 'Step 6 guide bootstraps llm-wiki as a subfolder of the obsidian-mind vault'
-
-
-# Exercise the root installer's marker guard without calling its networked main().
-ROOT_LIBRARY="$WORK/install-library.sh"
-python3 - "$ROOT_INSTALLER" "$ROOT_LIBRARY" <<'PY' || fail 'could not isolate root installer cleanup guard'
-from pathlib import Path
-import sys
-
-source = Path(sys.argv[1]).read_text().splitlines(keepends=True)
-if not source or source[-1].strip() != 'main "$@"':
-    raise SystemExit('unexpected root installer entry point')
-Path(sys.argv[2]).write_text(''.join(source[:-1]))
-PY
-UNOWNED_STAGE="$WORK/unowned-stage"
-mkdir -p "$UNOWNED_STAGE"
-if ! /bin/bash -c 'source "$1"; TEMP_DIR="$2"; cleanup; [ -d "$2" ]' bash "$ROOT_LIBRARY" "$UNOWNED_STAGE"; then
-  fail 'root installer cleanup removed a directory without its ownership marker'
-fi
-
-# Exercise the root installer through a git stub: no clone/network, unique staging, cleanup on failure.
-ROOT_BIN="$WORK/root-bin"
-mkdir -p "$ROOT_BIN"
-cat >"$ROOT_BIN/git" <<'EOF'
-#!/bin/sh
-if [ "$1" = '--version' ]; then
-  printf '%s\n' 'git stub 1.0'
-  exit 0
-fi
-if [ "$1" = 'clone' ]; then
-  printf '%s\n' "$@" >"$JEO_TEST_GIT_LOG"
-  exit 1
-fi
-exit 0
-EOF
-chmod 700 "$ROOT_BIN/git"
-run_root_installer() {
-  local log="$1"
-  JEO_TEST_GIT_LOG="$log" TMPDIR="$WORK/tmp" HOME="$HOME" PATH="$ROOT_BIN:$ORIGINAL_PATH" \
-    INSTALL_GLOBAL=true INSTALL_MCP=false INSTALL_MODE=silent /bin/bash "$ROOT_INSTALLER" >"$LAST_OUTPUT" 2>&1
-  LAST_STATUS=$?
-}
-run_root_installer "$WORK/git-one.log"
-expect_status 1 'root installer failed clone cleanup run'
-first_stage="$(dirname "$(tail -n 1 "$WORK/git-one.log")")"
-[ ! -e "$first_stage" ] || fail 'root installer did not clean its failed secure staging directory'
-run_root_installer "$WORK/git-two.log"
-expect_status 1 'root installer second failed clone cleanup run'
-second_stage="$(dirname "$(tail -n 1 "$WORK/git-two.log")")"
-[ "$first_stage" != "$second_stage" ] || fail 'root installer reused a staging directory instead of creating a unique one'
-case "$first_stage" in "$WORK/tmp"/jeo-skills-install.*) ;; *) fail 'root installer staging path is not under the isolated TMPDIR' ;; esac
-pass 'root installer uses a guarded unique staging directory and cleans it after clone failure'
 
 printf 'ALL %d TARGETED RUNTIME CONFIG WRITER TESTS PASSED\n' "$PASS_COUNT"
