@@ -2,14 +2,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-199-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-207-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![GJC](https://img.shields.io/badge/GJC-gajae--code-181717?style=for-the-badge&logo=github)](https://github.com/akillness/gajae-code)
 [![jeo-code](https://img.shields.io/badge/jeo--code-jeo-181717?style=for-the-badge&logo=github)](https://github.com/akillness/jeo-code)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**199 categorized skills · lightweight selective install · compact TOON catalog · cross-platform**
+**207 categorized skills · lightweight selective install · compact TOON catalog · cross-platform**
 
 A curated collection for spec-first, multi-agent LLM workflows. Delegate a complete setup
 with one prompt, or install the `jeo-skill` router first and add only the web,
@@ -70,7 +70,7 @@ The agent runs a **full install by default** (say “core only” or “minimal�
 
 ### Lightweight selective install (manual / CI)
 
-Install the **`jeo-skill` router first**, not all 199 skill folders. It provides category,
+Install the **`jeo-skill` router first**, not all 207 skill folders. It provides category,
 subcategory, interface, bundle, and relationship discovery while keeping heavy apps,
 models, MCP servers, and runtimes on demand.
 
@@ -123,11 +123,12 @@ video-motion-previs check
 
 ## 📚 Skills List
 
-> Central manifest: `.agent-skills/skills.json` · 199 skills · 10 primary categories · subcategory/interface/relationship metadata
+> Central manifest: `.agent-skills/skills.json` · 207 skills · 10 primary categories · subcategory/interface/relationship metadata
 
-### 🌐 Web (44)
+### 🌐 Web (47)
 
-Subcategories: `frontend` (4), `backend` (3), `design` (11), `api` (2), `auth` (1), `data` (4), `testing` (3), `accessibility` (1), `performance` (1), `graphics` (10), `capture` (4)
+Subcategories: `frontend` (6), `backend` (3), `design` (11), `api` (2), `auth` (1), `data` (4), `testing` (3), `accessibility` (1), `performance` (1), `graphics` (10), `capture` (5)
+
 
 | Skill |
 |---|
@@ -135,6 +136,9 @@ Subcategories: `frontend` (4), `backend` (3), `design` (11), `api` (2), `auth` (
 | `react-best-practices` |
 | `react-bits` |
 | `state-management` |
+| `chatbot-template` |
+| `airship` |
+
 | `amrouter` |
 | `colibri` |
 | `pydantic-ai` |
@@ -175,6 +179,8 @@ Subcategories: `frontend` (4), `backend` (3), `design` (11), `api` (2), `auth` (
 | `react-grab` |
 | `slides-grab` |
 | `stitched-full-page-capture` |
+| `moli` |
+
 
 ### 🏗 Infrastructure (12)
 
@@ -224,9 +230,10 @@ Subcategories: `client` (2), `web` (2), `server` (0), `design-ui` (4), `audio` (
 | `game-ci-cd-pipeline` |
 | `steam-store-launch-ops` |
 
-### 🎬 Creative Media (19)
+### 🎬 Creative Media (20)
 
-Subcategories: `image` (5), `video` (8), `motion` (1), `audio` (1), `presentation` (1), `diagram` (1), `design` (1), `capture` (0), `storytelling` (1)
+Subcategories: `image` (5), `video` (9), `motion` (1), `audio` (1), `presentation` (1), `diagram` (1), `design` (1), `capture` (0), `storytelling` (1)
+
 
 | Skill |
 |---|
@@ -243,6 +250,8 @@ Subcategories: `image` (5), `video` (8), `motion` (1), `audio` (1), `presentatio
 | `video-shotcraft` |
 | `video-to-superprompt` |
 | `vox-director` |
+| `palmier-pro` |
+
 | `video-motion-previs` |
 | `elevenlabs-tts` |
 | `presentation-builder` |
@@ -250,14 +259,9 @@ Subcategories: `image` (5), `video` (8), `motion` (1), `audio` (1), `presentatio
 | `open-design` |
 | `webtoon-harness` |
 
-### ⌨️ CLI Tools (25)
-≔254i8..254i8
-Subcategories: `developer-cli` (6), `ai-cli` (8), `media-cli` (1), `automation-cli` (6), `search-cli` (3), `benchmark-cli` (1)
-≔270v9+
-| `soup` |
+### ⌨️ CLI Tools (27)
 
-
-Subcategories: `developer-cli` (6), `ai-cli` (7), `media-cli` (1), `automation-cli` (6), `search-cli` (3), `benchmark-cli` (1)
+Subcategories: `developer-cli` (7), `ai-cli` (9), `media-cli` (1), `automation-cli` (6), `search-cli` (3), `benchmark-cli` (1)
 
 | Skill |
 |---|
@@ -267,6 +271,7 @@ Subcategories: `developer-cli` (6), `ai-cli` (7), `media-cli` (1), `automation-c
 | `ghgrab` |
 | `jeo-skill` |
 | `pretext` |
+| `codeburn` |
 | `aider-cli-workflow` |
 | `claudekit` |
 | `fabric` |
@@ -274,6 +279,8 @@ Subcategories: `developer-cli` (6), `ai-cli` (7), `media-cli` (1), `automation-c
 | `open-code-review` |
 | `ponytail` |
 | `zeude` |
+| `soup` |
+| `mcp-server-sv-number` |
 | `compresso` |
 | `codeflow` |
 | `graphify` |
@@ -286,9 +293,11 @@ Subcategories: `developer-cli` (6), `ai-cli` (7), `media-cli` (1), `automation-c
 | `x-twitter-scraper` |
 | `hyperfine-benchmarking` |
 
-### 🤖 AI & Agents (26)
 
-Subcategories: `orchestration` (4), `agent-frameworks` (3), `skill-authoring` (4), `evaluation` (3), `planning-review` (8), `discovery` (1), `prompting` (3)
+### 🤖 AI & Agents (27)
+
+Subcategories: `orchestration` (4), `agent-frameworks` (3), `skill-authoring` (4), `evaluation` (4), `planning-review` (8), `discovery` (1), `prompting` (3)
+
 
 | Skill |
 |---|
@@ -306,6 +315,8 @@ Subcategories: `orchestration` (4), `agent-frameworks` (3), `skill-authoring` (4
 | `langsmith` |
 | `opik` |
 | `skill-autoresearch` |
+| `kadath` |
+
 | `bmad-idea` |
 | `grill-me` |
 | `grill-with-docs` |
@@ -378,9 +389,10 @@ Subcategories: `marketing` (3), `support` (2), `publishing` (1)
 | `customer-support-verification` |
 | `yuwen-publish-precheck` |
 
-### 🔧 Utilities (16)
+### 🔧 Utilities (17)
 
-Subcategories: `knowledge` (6), `files` (1), `git` (3), `workspace` (1), `project-management` (4), `productivity` (1), `general` (0)
+Subcategories: `knowledge` (6), `files` (2), `git` (3), `workspace` (1), `project-management` (4), `productivity` (1), `general` (0)
+
 
 | Skill |
 |---|
@@ -391,6 +403,8 @@ Subcategories: `knowledge` (6), `files` (1), `git` (3), `workspace` (1), `projec
 | `obsidian-second-brain` |
 | `opencontext` |
 | `file-organization` |
+| `watermarks-remover` |
+
 | `git-guardrails-claude-code` |
 | `git-submodule` |
 | `git-workflow` |
@@ -659,7 +673,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 
 ```text
 .
-├── .agent-skills/          ← 199 skill folders (SKILL.md + optional support files)
+├── .agent-skills/          ← 207 skill folders (SKILL.md + optional support files)
 ├── docs/                   ← detailed guides (bmad, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md

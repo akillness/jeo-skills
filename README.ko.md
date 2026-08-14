@@ -2,14 +2,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-199-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-207-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![GJC](https://img.shields.io/badge/GJC-gajae--code-181717?style=for-the-badge&logo=github)](https://github.com/akillness/gajae-code)
 [![jeo-code](https://img.shields.io/badge/jeo--code-jeo-181717?style=for-the-badge&logo=github)](https://github.com/akillness/jeo-code)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**카테고리형 스킬 199개 · 경량 선택 설치 · 압축 TOON 카탈로그 · 멀티플랫폼**
+**카테고리형 스킬 207개 · 경량 선택 설치 · 압축 TOON 카탈로그 · 멀티플랫폼**
 
 스펙 우선 멀티 에이전트 LLM 워크플로우 컬렉션입니다. 프롬프트 하나로 전체 설정을
 위임하거나, `jeo-skill` 라우터부터 설치해 필요한 웹, 인프라, 게임, 미디어, CLI,
@@ -73,7 +73,7 @@ curl -s https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-sk
 
 ### 경량 선택 설치(수동 / CI)
 
-199개 스킬 폴더 전체가 아니라 **`jeo-skill` 라우터부터 설치**합니다. 카테고리,
+207개 스킬 폴더 전체가 아니라 **`jeo-skill` 라우터부터 설치**합니다. 카테고리,
 하위 분류, 인터페이스, 번들, 연관 스킬을 탐색할 수 있으며 앱·모델·MCP 서버·런타임은
 실제 선택된 작업에서만 온디맨드로 설치합니다.
 
@@ -126,11 +126,12 @@ video-motion-previs check
 
 ## 📚 스킬 목록
 
-> 중앙 매니페스트: `.agent-skills/skills.json` · 199개 스킬 · 10개 기본 카테고리 · 하위 카테고리/인터페이스/관계 그룹 지원
+> 중앙 매니페스트: `.agent-skills/skills.json` · 207개 스킬 · 10개 기본 카테고리 · 하위 카테고리/인터페이스/관계 그룹 지원
 
-### 🌐 웹 (44개)
+### 🌐 웹 (47개)
 
-하위 분류: `frontend` (4), `backend` (3), `design` (11), `api` (2), `auth` (1), `data` (4), `testing` (3), `accessibility` (1), `performance` (1), `graphics` (10), `capture` (4)
+하위 분류: `frontend` (6), `backend` (3), `design` (11), `api` (2), `auth` (1), `data` (4), `testing` (3), `accessibility` (1), `performance` (1), `graphics` (10), `capture` (5)
+
 
 | Skill |
 |---|
@@ -138,6 +139,9 @@ video-motion-previs check
 | `react-best-practices` |
 | `react-bits` |
 | `state-management` |
+| `chatbot-template` |
+| `airship` |
+
 | `amrouter` |
 | `colibri` |
 | `pydantic-ai` |
@@ -178,6 +182,8 @@ video-motion-previs check
 | `react-grab` |
 | `slides-grab` |
 | `stitched-full-page-capture` |
+| `moli` |
+
 
 ### 🏗 인프라 (12개)
 
@@ -227,9 +233,10 @@ video-motion-previs check
 | `game-ci-cd-pipeline` |
 | `steam-store-launch-ops` |
 
-### 🎬 크리에이티브 미디어 (19개)
+### 🎬 크리에이티브 미디어 (20개)
 
-하위 분류: `image` (5), `video` (8), `motion` (1), `audio` (1), `presentation` (1), `diagram` (1), `design` (1), `capture` (0), `storytelling` (1)
+하위 분류: `image` (5), `video` (9), `motion` (1), `audio` (1), `presentation` (1), `diagram` (1), `design` (1), `capture` (0), `storytelling` (1)
+
 
 | Skill |
 |---|
@@ -246,6 +253,8 @@ video-motion-previs check
 | `video-shotcraft` |
 | `video-to-superprompt` |
 | `vox-director` |
+| `palmier-pro` |
+
 | `video-motion-previs` |
 | `elevenlabs-tts` |
 | `presentation-builder` |
@@ -253,14 +262,9 @@ video-motion-previs check
 | `open-design` |
 | `webtoon-harness` |
 
-### ⌨️ CLI 도구 (25개)
-≔257qg..257qg
-하위 분류: `developer-cli` (6), `ai-cli` (8), `media-cli` (1), `automation-cli` (6), `search-cli` (3), `benchmark-cli` (1)
-≔273v9+
-| `soup` |
+### ⌨️ CLI 도구 (27개)
 
-
-하위 분류: `developer-cli` (6), `ai-cli` (7), `media-cli` (1), `automation-cli` (6), `search-cli` (3), `benchmark-cli` (1)
+하위 분류: `developer-cli` (7), `ai-cli` (9), `media-cli` (1), `automation-cli` (6), `search-cli` (3), `benchmark-cli` (1)
 
 | Skill |
 |---|
@@ -270,6 +274,7 @@ video-motion-previs check
 | `ghgrab` |
 | `jeo-skill` |
 | `pretext` |
+| `codeburn` |
 | `aider-cli-workflow` |
 | `claudekit` |
 | `fabric` |
@@ -277,6 +282,8 @@ video-motion-previs check
 | `open-code-review` |
 | `ponytail` |
 | `zeude` |
+| `soup` |
+| `mcp-server-sv-number` |
 | `compresso` |
 | `codeflow` |
 | `graphify` |
@@ -289,9 +296,11 @@ video-motion-previs check
 | `x-twitter-scraper` |
 | `hyperfine-benchmarking` |
 
-### 🤖 AI 및 에이전트 (26개)
 
-하위 분류: `orchestration` (4), `agent-frameworks` (3), `skill-authoring` (4), `evaluation` (3), `planning-review` (8), `discovery` (1), `prompting` (3)
+### 🤖 AI 및 에이전트 (27개)
+
+하위 분류: `orchestration` (4), `agent-frameworks` (3), `skill-authoring` (4), `evaluation` (4), `planning-review` (8), `discovery` (1), `prompting` (3)
+
 
 | Skill |
 |---|
@@ -309,6 +318,8 @@ video-motion-previs check
 | `langsmith` |
 | `opik` |
 | `skill-autoresearch` |
+| `kadath` |
+
 | `bmad-idea` |
 | `grill-me` |
 | `grill-with-docs` |
@@ -381,9 +392,10 @@ video-motion-previs check
 | `customer-support-verification` |
 | `yuwen-publish-precheck` |
 
-### 🔧 유틸리티 (16개)
+### 🔧 유틸리티 (17개)
 
-하위 분류: `knowledge` (6), `files` (1), `git` (3), `workspace` (1), `project-management` (4), `productivity` (1), `general` (0)
+하위 분류: `knowledge` (6), `files` (2), `git` (3), `workspace` (1), `project-management` (4), `productivity` (1), `general` (0)
+
 
 | Skill |
 |---|
@@ -394,6 +406,8 @@ video-motion-previs check
 | `obsidian-second-brain` |
 | `opencontext` |
 | `file-organization` |
+| `watermarks-remover` |
+
 | `git-guardrails-claude-code` |
 | `git-submodule` |
 | `git-workflow` |
@@ -648,7 +662,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 ## 📁 구조
 
 ```text
-├── .agent-skills/          ← 199개 스킬 폴더 (SKILL.md + 선택적 지원 파일)
+├── .agent-skills/          ← 207개 스킬 폴더 (SKILL.md + 선택적 지원 파일)
 ├── docs/                   ← 상세 가이드 (bmad, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md

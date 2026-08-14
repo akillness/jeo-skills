@@ -305,6 +305,55 @@ pip install "soup-cli[train]"   # + torch/transformers/peft/trl for real trainin
 Never auto-run `soup train` (starts a real training job/spends GPU time) as part of setup
 or verification; that step must stay a task-triggered, user-confirmed action. See
 `soup/references/commands.md` for the full command reference.
+### Watermarks Remover heavy backends (on demand)
+
+The `watermarks-remover` skill installs as documents plus a read-only `doctor` wrapper over
+the upstream stdlib scripts; it never clones `guillaumemeyer/watermarks-remover` or installs
+the optional SynthID/CtrlRegen backends during setup:
+
+bash
+# 1. clone on demand, never during install
+git clone https://github.com/guillaumemeyer/watermarks-remover.git
+
+# 2. read-only prerequisite report (python, c2patool, exiftool) — installs nothing
+bash "$SKILLS_ROOT/watermarks-remover/scripts/watermarks-remover.sh" doctor watermarks-remover
+
+
+Never auto-run `setup_synthid.sh` / `setup_ctrlregen.sh` (each downloads ~10 GB of model
+weights) as part of setup or verification; those stay a task-triggered, user-confirmed
+choice. See `watermarks-remover/references/commands.md` for the full script reference.
+
+### SV Number MCP server (on demand)
+
+The `mcp-server-sv-number` skill installs as documents only; it never registers the MCP
+server or orders a number during setup. Every `order_number` call spends real money against
+the user's SV Number account balance, so treat activation as a task-triggered, user-confirmed
+action, never a setup/verification step:
+
+bash
+# 1. clone/install on demand, never during install
+git clone https://github.com/sv-number/mcp-server.git
+
+
+See `mcp-server-sv-number/references/setup.md` for the API-key/config and MCP client
+registration steps, and confirm the target country/service with the user before ordering.
+
+### KADATH agent evolution runs (on demand)
+
+The `kadath` skill installs as documents only; it never starts `./kadath.sh` or a Docker
+Compose stack during setup. Each generation of a KADATH run spends real OpenAI API cost and
+container compute, so prepare it only when a task actually needs an evolutionary agent-benchmark
+run, and always route the approval gate through the user:
+
+bash
+# clone on demand, never during install
+git clone https://github.com/i3T4AN/KADATH.git
+
+
+Never auto-approve a locked benchmark or auto-run `kadath run`/`kadath.sh` as part of setup
+or verification; propose → approve → run must stay explicit, user-confirmed steps. See
+`kadath/references/commands.md` for the full CLI reference.
+
 
 ### WAI Play web-game testing runtime (on demand)
 

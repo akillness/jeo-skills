@@ -1,7 +1,7 @@
 {
   "version": "2.0.0",
   "generated": "2026-07-30",
-  "skill_count": 199,
+  "skill_count": 207,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -163,7 +163,10 @@
       "agentation",
       "react-grab",
       "slides-grab",
-      "stitched-full-page-capture"
+      "stitched-full-page-capture",
+      "chatbot-template",
+      "airship",
+      "moli"
     ],
     "infrastructure": [
       "deployment-automation",
@@ -222,7 +225,8 @@
       "presentation-builder",
       "drawio",
       "open-design",
-      "webtoon-harness"
+      "webtoon-harness",
+      "palmier-pro"
     ],
     "cli-tools": [
       "soup",
@@ -249,7 +253,9 @@
       "scrapling",
       "semble",
       "x-twitter-scraper",
-      "hyperfine-benchmarking"
+      "hyperfine-benchmarking",
+      "codeburn",
+      "mcp-server-sv-number"
     ],
     "ai-agents": [
       "bmad",
@@ -277,7 +283,8 @@
       "openspace",
       "agentic-skills",
       "agenticskills",
-      "prompts-chat"
+      "prompts-chat",
+      "kadath"
     ],
     "engineering": [
       "audit-reference-originality",
@@ -336,7 +343,8 @@
       "standup-meeting",
       "task-estimation",
       "task-planning",
-      "google-workspace"
+      "google-workspace",
+      "watermarks-remover"
     ]
   },
   "subcategories": {
@@ -345,7 +353,9 @@
         "ax",
         "react-best-practices",
         "react-bits",
-        "state-management"
+        "state-management",
+        "chatbot-template",
+        "airship"
       ],
       "backend": [
         "amrouter",
@@ -405,7 +415,8 @@
         "agentation",
         "react-grab",
         "slides-grab",
-        "stitched-full-page-capture"
+        "stitched-full-page-capture",
+        "moli"
       ]
     },
     "infrastructure": {
@@ -498,7 +509,8 @@
         "video-production",
         "video-shotcraft",
         "video-to-superprompt",
-        "vox-director"
+        "vox-director",
+        "palmier-pro"
       ],
       "motion": [
         "video-motion-previs"
@@ -527,7 +539,8 @@
         "cli-anything",
         "ghgrab",
         "jeo-skill",
-        "pretext"
+        "pretext",
+        "codeburn"
       ],
       "ai-cli": [
         "aider-cli-workflow",
@@ -537,7 +550,8 @@
         "open-code-review",
         "ponytail",
         "zeude",
-        "soup"
+        "soup",
+        "mcp-server-sv-number"
       ],
       "media-cli": [
         "compresso"
@@ -580,7 +594,8 @@
       "evaluation": [
         "langsmith",
         "opik",
-        "skill-autoresearch"
+        "skill-autoresearch",
+        "kadath"
       ],
       "planning-review": [
         "bmad-idea",
@@ -680,7 +695,8 @@
         "opencontext"
       ],
       "files": [
-        "file-organization"
+        "file-organization",
+        "watermarks-remover"
       ],
       "git": [
         "git-guardrails-claude-code",
@@ -7363,6 +7379,303 @@
       "keyword": "soup",
       "version": "1.0",
       "source": "MakazhanAlpamys/Soup"
+    },
+    {
+      "name": "palmier-pro",
+      "description": "Drive Palmier Pro, an open source AI-native macOS video editor (Swift, SwiftUI/AppKit, AVFoundation) that exposes its timeline as an MCP server at `http://127.0.0.1:19789/mcp` so Claude Code/Desktop, Cursor, or Codex can read and edit a project's tracks, clips, media, transcript, captions, color/effects, and trigger generative AI (video/image/audio) requests side-by-side with a human editor. Use when the user wants to connect an agent to Palmier Pro's MCP server, call its timeline/clip/media/generation tools (`get_timeline`, `add_clips`, `move_clips`, `generate_video`, ...), build/run/test the Swift app from source, or debug the MCP tool surface in `ToolDefinitions.swift`/`ToolExecutor+*.swift`. Triggers on: \"palmier pro\", \"palmier-pro\", \"AI video editor MCP\", \"connect Claude to my video editor\", \"palmier MCP server\", \"edit my timeline with an agent\", \"swift build PalmierPro\", \"palmier-pro mcpb\", \"manage_project\"/\"get_timeline\"/\"add_clips\" tool.",
+      "category": "creative-media",
+      "subcategory": "video",
+      "interface": "workflow",
+      "path": "palmier-pro/SKILL.md",
+      "tags": [
+        "palmier-pro",
+        "video-editor",
+        "mcp",
+        "swift",
+        "swiftui",
+        "avfoundation",
+        "ai-video",
+        "timeline-editing",
+        "macos",
+        "generative-ai"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "palmier-pro",
+      "version": "1.0",
+      "source": "https://github.com/palmier-io/palmier-pro"
+    },
+    {
+      "name": "codeburn",
+      "description": "Drive CodeBurn, a free open-source local-first CLI/TUI/web/menubar tool that reads the session files already on disk from 40 AI coding tools (Claude Code, Codex, Cursor, Gemini CLI, Grok, OpenCode, and more) and breaks down token usage and dollar cost by task, model, tool, and project. Use when the user wants to see where their AI coding spend went, find and fix token waste in a Claude Code / agent setup, cap a session's budget before it runs away, compare which model is actually worth its price, check whether AI spend shipped or was reverted, or wire live usage/savings data into an agent over MCP. Triggers on: \"codeburn\", \"npx codeburn\", \"AI token usage\", \"AI coding cost\", \"where did my Claude spend go\", \"codeburn optimize\", \"codeburn guard\", \"codeburn compare models\", \"codeburn yield\", \"token waste in CLAUDE.md\", \"AI spend dashboard\".",
+      "category": "cli-tools",
+      "subcategory": "developer-cli",
+      "interface": "workflow",
+      "path": "codeburn/SKILL.md",
+      "tags": [
+        "codeburn",
+        "ai-cost-tracking",
+        "token-usage",
+        "claude-code",
+        "codex",
+        "cursor",
+        "observability",
+        "cost-optimization",
+        "cli",
+        "mcp",
+        "tui",
+        "guard-hooks"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "codeburn",
+      "version": "1.0",
+      "source": "https://github.com/getagentseal/codeburn"
+    },
+    {
+      "name": "watermarks-remover",
+      "description": "Strip multi-vendor AI provenance marks from text and files using the guillaumemeyer/watermarks-remover Python toolkit: invisible Unicode/space homoglyphs (Layer A, deterministic), statistical token-sampling watermarks via agent-guided rewrite (Layer B, best-effort), and C2PA/EXIF/XMP/doc-props metadata on PNG, JPEG, SVG, PDF, DOCX, ODT, HTML, and Markdown. Covers Claude, Gemini/SynthID-Text, OpenAI provenance surfaces, and open-LLM Kirchenbauer-style marks, plus optional external backends for SynthID pixel scoring and CtrlRegen pixel-domain removal. Use when the user wants to strip AI watermarks, remove C2PA / Content Credentials, clean AI metadata from a file, remove invisible Unicode / zero-width characters from AI-generated text, or audit a directory/website for AI provenance signals. Triggers on: \"remove watermark\", \"strip C2PA\", \"remove AI metadata\", \"clean invisible unicode\", \"remove-ai-marks\", \"SynthID removal\", \"audit_dir.py\", \"Layer A / Layer B watermark removal\".",
+      "category": "utilities",
+      "subcategory": "files",
+      "interface": "workflow",
+      "path": "watermarks-remover/SKILL.md",
+      "tags": [
+        "watermark-removal",
+        "ai-provenance",
+        "c2pa",
+        "synthid",
+        "unicode-scrub",
+        "metadata-stripping",
+        "privacy-hygiene",
+        "exif",
+        "content-credentials",
+        "python"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "watermarks-remover",
+      "version": "1.0",
+      "source": "https://github.com/guillaumemeyer/watermarks-remover"
+    },
+    {
+      "name": "chatbot-template",
+      "description": "Scaffold and extend chatbot-template, shadcn/ui's minimal Next.js starter for building an AI chatbot with the AI SDK, shadcn/react, shadcn/typeset, and the Vercel AI Gateway. It ships streaming markdown chat, tool calling (a server-executed GitHub repo lookup, provider-native web search, and a human-in-the-loop `ask_user` questionnaire), and one-click Vercel deploy with OIDC gateway auth. Use when the user wants to spin up a Next.js AI chat app fast, add a custom tool with a typed UI part, swap or restrict the model list, or harden the public `/api/chat` route before shipping. Triggers on: \"chatbot-template\", \"shadcn chatbot\", \"AI SDK chat app\", \"Next.js AI SDK starter\", \"Vercel AI Gateway chat\", \"streaming chat with shadcn/typeset\", \"ask_user questionnaire tool\", \"shadcn/react message scroller\".",
+      "category": "web",
+      "subcategory": "frontend",
+      "interface": "workflow",
+      "path": "chatbot-template/SKILL.md",
+      "tags": [
+        "chatbot-template",
+        "nextjs",
+        "ai-sdk",
+        "shadcn-ui",
+        "shadcn-react",
+        "vercel-ai-gateway",
+        "streaming-chat",
+        "tool-calling",
+        "react"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "chatbot-template",
+      "version": "1.0",
+      "source": "https://github.com/shadcn-ui/chatbot-template"
+    },
+    {
+      "name": "mcp-server-sv-number",
+      "description": "Drive the SV Number MCP server (`sv-number-mcp`), nine stdio tools that order a private phone number for one signup, read the SMS verification code straight from the API, and hand the number back — covering 200+ countries. Use when an agent hits a signup form that needs a real phone number for an OTP/SMS code, when picking a country or service code (`list_countries`, `list_services`), ordering and polling a number (`order_number`, `wait_for_code`), closing out an activation (`finish_activation`, `cancel_activation`, `request_another_sms`), checking account balance (`get_balance`), or computing a TOTP/2FA code locally from a shared secret (`totp_code`). Triggers on: \"sv-number\", \"sv-number-mcp\", \"SMS verification number\", \"order a phone number for OTP\", \"receive SMS verification code\", \"temporary/virtual number for signup\", \"sms-verification-number.com\", \"wait_for_code\", \"totp_code\", \"phone number MCP server for agents\".",
+      "category": "cli-tools",
+      "subcategory": "ai-cli",
+      "interface": "workflow",
+      "path": "mcp-server-sv-number/SKILL.md",
+      "tags": [
+        "mcp",
+        "mcp-server",
+        "sms",
+        "otp",
+        "phone-verification",
+        "sms-verification",
+        "sv-number",
+        "ai-agents",
+        "stdio",
+        "npx",
+        "totp"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "mcp-server-sv-number",
+      "version": "1.0",
+      "source": "https://github.com/sv-number/mcp-server"
+    },
+    {
+      "name": "airship",
+      "description": "Drive Airship (`@airshiplabs/cli`), a CLI that puts a visual, pannable design canvas in front of a running dev server so an engineer can click an element, describe a change, and have Claude Code, Codex, or OpenCode edit the underlying source file directly — no plugin, no build config, nothing added to the project. Use when the user wants to launch a visual editor over a local dev server (`npx @airshiplabs/cli --target <port>`), pick or compare coding agents (`--agent claude|codex|opencode`) for live UI edits, sandbox agent edits with `--safe`, scaffold an `airship.config.json` (`airship init`), or diagnose a broken setup (`airship doctor`). Triggers on: \"airship\", \"@airshiplabs/cli\", \"visual editor for my codebase\", \"click to edit UI\", \"design canvas over dev server\", \"airship doctor\", \"airship init\", \"pair Claude Code with a visual editor on localhost\".",
+      "category": "web",
+      "subcategory": "frontend",
+      "interface": "workflow",
+      "path": "airship/SKILL.md",
+      "tags": [
+        "airship",
+        "visual-editor",
+        "design-canvas",
+        "dev-server",
+        "claude-code",
+        "codex",
+        "opencode",
+        "cli",
+        "frontend-tooling",
+        "ui-editing"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "airship",
+      "version": "1.0",
+      "source": "https://github.com/0xnyn/airship"
+    },
+    {
+      "name": "kadath",
+      "description": "Run KADATH (Kernel for Agentic Darwinian Adaptation, Tooling, and Heredity), a Docker-based evolutionary kernel that turns a goal into a locked, Architect-authored benchmark, then evolves a population of smolagents-based coding agents across epochs: each agent runs in an isolated container, gets graded against frozen evidence, and the population is culled, mutated, and reproduced generation over generation until it converges on the best-performing agent framework for that goal. Use when the user wants to propose/approve/run a KADATH evolutionary run, check a run's status or live dashboard, pause/resume/continue a run, export the winning agent population, or understand its Architect/Grader/Tweaker/Birther pipeline, evidence-freezing, or genome lineage/memory model. Triggers on: \"kadath\", \"kadath.sh\", \"evolve an agent\", \"Darwinian agent evolution\", \"agent population fitness benchmark\", \"smolagents evolutionary run\", \"kadath dashboard\", \"genome lineage\", \"epoch champions\".",
+      "category": "ai-agents",
+      "subcategory": "evaluation",
+      "interface": "workflow",
+      "path": "kadath/SKILL.md",
+      "tags": [
+        "kadath",
+        "evolutionary-agents",
+        "smolagents",
+        "multi-agent",
+        "agent-benchmarking",
+        "docker",
+        "llm-agents",
+        "genetic-algorithm",
+        "python"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "kadath",
+      "version": "1.0",
+      "source": "https://github.com/i3T4AN/KADATH"
+    },
+    {
+      "name": "moli",
+      "description": "Drive Moli (`moli`), Lexmount's open-source headless browser for AI agents, built around on-demand rendering: real JavaScript, DOM, and CSS by default, with layout and pixels computed only when explicitly requested via `--layout`. Use when the user wants to fetch/extract a live JavaScript-rendered page as Markdown/HTML/JSON/semantic-tree, capture a screenshot or PDF, run a small bounded crawl, start a CDP/WebDriver automation server for Playwright/Puppeteer, replace a Chromium/ChromeDriver dependency, or diagnose readiness/network/frame issues on a rendered page. Triggers on: \"moli fetch\", \"moli serve\", \"headless browser for agents\", \"on-demand rendering browser\", \"CDP server without Chrome\", \"structure-first web scraping\", \"Lexmount browser\", \"moli-webfetch\", \"moli-cdp-server\".",
+      "category": "web",
+      "subcategory": "capture",
+      "interface": "workflow",
+      "path": "moli/SKILL.md",
+      "tags": [
+        "moli",
+        "lexmount",
+        "headless-browser",
+        "cdp",
+        "webdriver",
+        "web-scraping",
+        "browser-automation",
+        "playwright",
+        "puppeteer",
+        "rust"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "moli",
+      "version": "1.0",
+      "source": "https://github.com/lexmount/moli"
     }
   ]
 }
