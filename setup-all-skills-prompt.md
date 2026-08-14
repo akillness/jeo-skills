@@ -424,7 +424,7 @@ scrub still carry live credentials that must be rotated, not merely scrubbed.
 ## Step 6 — Runtime-specific shared-root checks
 
 
-- `jeo` and `jeopi` discover `~/.agents/skills` directly; no skills CLI agent ID is needed.
+- `jeo`, `jeopi`, `opencode`, and `gjc` discover `~/.agents/skills` directly; no skills CLI agent ID is needed.
 - GJC may require skill discovery to be enabled and `~/.agents/skills` added to its
   `skills.customDirectories`. Inspect its current config and merge only those keys; never
   replace the whole file.
