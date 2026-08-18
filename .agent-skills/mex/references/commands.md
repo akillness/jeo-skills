@@ -1,306 +1,176 @@
-# Mex Commands Reference
+# Mex command reference
 
-Curated command reference by workflow stage. For the full CLI, run `mex
---help`.
+All commands run from the project root. Replace `mex` with `npx mex-agent` if
+it is not installed globally. Verified against `mex --help` / `mex <cmd>
+--help` on mex-agent 0.7.1 and the upstream README
+(https://github.com/mex-memory/mex#core-commands) — the README's own "Core
+commands" table is incomplete relative to the installed CLI (it omits `init`,
+`pattern`, `watch`, `doctor`, `feedback`, `config`, `telemetry`); this file
+follows `--help` output where the two disagree. Do not add commands that
+neither source documents.
 
-## Installation and Setup
+## Known issue: `mex` name collision
 
-### Install globally
+On machines with TeX Live installed (common via Homebrew on macOS), `mex` is
+already a command — the pdfTeX-based Multilingual TeX format, unrelated to
+this tool. `command -v mex` alone cannot tell them apart; check the version
+string:
 
 ```bash
-npm install -g mex-agent
+mex --version
+# real mex-agent prints a bare semver, e.g. "0.7.1"
+# TeX Live's mex prints "pdfTeX 3.141592653-2.6-1.40.27 (TeX Live ...)"
+```
+
+If PATH resolves to the wrong one, either fix PATH order (an npm global bin
+directory must come before the TeX bin directory), or invoke every command as
+`npx mex-agent <command>` instead of bare `mex`. `scripts/install.sh` and
+`scripts/mex.sh doctor` in this skill both detect and warn about this
+automatically — `install.sh` refuses to proceed rather than silently running
+the wrong binary.
+
+## Install
+
+```bash
+npm install -g mex-agent      # installs the `mex` binary globally
+npx mex-agent setup           # run without a global install
 mex --version
 ```
 
-### Initialize a project
+## One-shot auto-install (this skill)
 
 ```bash
-cd /path/to/project
-mex setup
+bash .agent-skills/mex/scripts/install.sh /path/to/project
+bash .agent-skills/mex/scripts/install.sh /path/to/project --mode agent-memory
+bash .agent-skills/mex/scripts/install.sh /path/to/project --force
+bash .agent-skills/mex/scripts/install.sh /path/to/project --tool claude
+bash .agent-skills/mex/scripts/install.sh --skip-skill /path/to/project
+GLOBAL=1 bash .agent-skills/mex/scripts/install.sh -g /path/to/project
 ```
 
-Scaffolds `.mex/` directory with `index.md`, `ROUTER.md`, `graphs/`, and
-`wiki/`.
+Registers the jeo-skills plugin, installs `mex-agent` if missing (and refuses
+to continue if `mex` resolves to something else — see the collision note
+above), runs `mex setup` non-interactively by piping the `--tool` choice into
+its prompts (idempotent — skipped unless `.mex/` is absent or `--force` is
+given), builds the code graph (`mex graph`), runs `mex check`, and reports
+which project anchor file (`CLAUDE.md`, `AGENTS.md`, `.cursorrules`,
+`.windsurfrules`, `.github/copilot-instructions.md`, or
+`.opencode/opencode.json`) mex installed. `--tool` defaults to `codex`
+(`AGENTS.md`) because that is what jeo/gjc/jeopi read.
 
-### Check environment (read-only)
+## Setup and scaffolding
 
 ```bash
-bash .agent-skills/mex/scripts/mex.sh doctor
+mex setup                       # create .mex/ scaffold + project anchor file
+mex setup --mode agent-memory   # add HEARTBEAT.md conventions for long-running
+                                 # operational agents (homelabs, infra workspaces)
+mex                              # open the interactive terminal dashboard
+mex tui                          # same as bare `mex`
 ```
 
-Reports Node.js version, `mex` binary, Git repo status. Does not modify
-anything.
+`mex setup` is interactive (it asks which tool anchor to write, then whether
+to install mex globally) and only creates EMPTY scaffold files plus the
+anchor. It does **not** auto-populate `.mex/context/*.md` or `.mex/patterns/`
+— it prints a long prompt bounded by "COPY ABOVE THIS LINE" banners that a
+human must paste into their coding agent's chat; that agent session is what
+actually writes the project-specific wiki content. `scripts/install.sh`
+detects this banner and warns so the step isn't silently skipped.
 
-## Code Graph Operations
-
-### Update the code graph
+## Pre-analysis and diagnostics
 
 ```bash
-mex update
+mex init            # scan the codebase and print a pre-analysis brief for AI
+mex init --json      # same, as JSON
+mex doctor            # mex's own scaffold health diagnostic (not this skill's
+                       # scripts/mex.sh doctor, which only checks the environment)
 ```
 
-Parses all source files (TypeScript, JavaScript, Python, Rust) and generates
-symbol fingerprints. Creates `.mex/graphs/` checksums for drift detection.
-
-### Force a full rebuild
+## Code graph (deterministic, Tree-sitter + SQLite)
 
 ```bash
-mex update --force
+mex graph                                  # build or refresh the local code graph
+mex graph scope "trace the auth flow"      # compact, task-relevant context
+mex graph get <node-id...>                 # expand exact symbols from a scope result
+mex graph query where-defined <symbol>     # structural relationship queries
+mex graph query who-calls <symbol>
+mex graph query what-calls <symbol>
+mex graph ground                           # connect a pre-0.7 wiki to the graph
 ```
 
-Discards cached state and re-parses everything.
+Supports TypeScript, TSX, JavaScript, JSX, Python, and Rust, including
+framework-aware Express route-to-handler relationships. Agent-facing graph
+commands emit deterministic JSONL envelopes.
 
-### View graph metadata
+## Drift detection and repair
 
 ```bash
-mex whoami
+mex check     # validate paths, commands, deps, links, indexes, staleness,
+              # tool config, and grounded code symbols — no AI tokens spent
+mex sync      # repair stale/inconsistent knowledge with targeted agent prompts
+mex impact <symbol|file>   # find code and wiki content affected by a change
 ```
 
-Shows project name, Git commit, graph stats, and symbol count.
-
-## Drift Detection and Repair
-
-### Check for drift (read-only)
+## Project memory bookkeeping
 
 ```bash
-mex check
+mex log "<message>"   # record a decision, note, risk, or todo
+mex timeline           # read recent project events
+mex heartbeat          # run persistent-agent health checks (agent-memory mode)
+mex pattern add <name>   # create a new pattern file and add it to the index
+mex watch --interval [minutes]   # run mex heartbeat repeatedly instead of a hook
+mex watch                          # install a post-commit hook
+mex watch --uninstall               # remove the post-commit hook
 ```
 
-Validates:
-- All file paths (detects moved/deleted files)
-- All wiki links (detects broken references)
-- Symbol fingerprints (detects code changes)
-- Grounding references (detects missing code nodes)
-
-Does not modify anything.
-
-### Sync drift repairs
+## Utility
 
 ```bash
-mex sync
+mex completion <shell>   # print shell completions
+mex commands              # list every command and script
+mex config set telemetry off
+mex telemetry inspect
+mex feedback               # open the mex feedback form
 ```
 
-After `mex check` reports issues, this command:
-1. Removes stale paths from the wiki
-2. Updates broken links to new locations
-3. Recomputes fingerprints for changed symbols
-4. Suggests grounding fixes
+## Telemetry (opt-out by default)
 
-Can be paired with agent review:
+mex collects anonymous, opt-out usage data (command name, version, OS only —
+never paths, arguments, file contents, or personal data).
 
 ```bash
-mex check && mex sync && git diff .mex/
+DO_NOT_TRACK=1 mex setup
+MEX_TELEMETRY=0 mex setup
+mex config set telemetry off
+mex telemetry inspect    # audit the exact payload before opting in/out
 ```
 
-## Context Routing
+## MCP server — not published
 
-### Edit the router
+`packages/mex-mcp` exists in the upstream monorepo and exposes the wiki and
+event log as MCP tools, but it is **not published to npm** as of this
+writing, and the released `mex-agent` package ships no `mex mcp` CLI
+subcommand. The only supported way to run it today is from a source checkout:
 
 ```bash
-# Open in your editor
-$EDITOR .mex/ROUTER.md
+git clone https://github.com/mex-memory/mex
+cd mex && npm run build --workspace mex-mcp
 ```
 
-Map task types to relevant wiki pages:
+Do not invent a `mex mcp add`/`mex mcp serve` invocation for Claude Code,
+Cursor, jeo, gjc, jeopi, or OpenCode — no such flow ships in the released
+package. Check the MCP server section of the README
+(https://github.com/mex-memory/mex#mcp-server) before telling a user
+otherwise; it may change once the package is published.
 
-```markdown
-## Task: add API endpoint
-
-Load:
-- architecture/api-layers.md
-- conventions/naming.md
-
-Don't load:
-- ui/components.md
-```
-
-### Query the router
+## Read-only doctor wrapper (this skill)
 
 ```bash
-mex route --task "add a database migration"
+bash .agent-skills/mex/scripts/mex.sh doctor [project_path]
+bash .agent-skills/mex/scripts/mex.sh check <project_path> [extra mex check args...]
+bash .agent-skills/mex/scripts/mex.sh graph <project_path> [extra mex graph args...]
 ```
 
-Shows which wiki pages the router would load for that task.
-
-## Wiki Operations
-
-### List all wiki pages
-
-```bash
-ls -la .mex/wiki/
-find .mex/wiki -name "*.md" -type f
-```
-
-### View the anchor
-
-```bash
-cat .mex/index.md
-```
-
-This file is always loaded first; it points agents to the ROUTER.md and high-level project state.
-
-### Edit a wiki page
-
-```bash
-$EDITOR .mex/wiki/architecture/api-layers.md
-```
-
-Wiki pages are plain Markdown. Add frontmatter to ground claims:
-
-```yaml
----
-grounds_to:
-  - node: "function:a3f8...c21"
-    fingerprint: "mh:64:9f2a..."
----
-```
-
-## MCP Server (optional)
-
-### Start the MCP server
-
-```bash
-mex mcp serve --port 3000
-```
-
-Exposes project memory to agents over the Model Context Protocol.
-
-### Register with Claude Code
-
-```bash
-claude mcp add mex -- mex mcp serve
-```
-
-### Register with other agents
-
-```bash
-# Cursor, jeo, gjc, jeopi, OpenCode
-<agent_name> mcp add mex -- mex mcp serve
-```
-
-### Stop the server
-
-```bash
-# Press Ctrl+C in the terminal running `mex mcp serve`
-```
-
-## Debugging and Inspection
-
-### View the graph JSON
-
-```bash
-find .mex/graphs -name "*.json" | head -3
-cat .mex/graphs/graph.json | jq '.nodes | length'
-```
-
-### Inspect a symbol
-
-```bash
-mex whoami
-# Then look up the symbol hash in .mex/graphs/
-```
-
-### Dry-run a drift check
-
-```bash
-mex check --dry-run
-```
-
-(If supported; check `mex check --help`.)
-
-### Clear cache and restart
-
-```bash
-rm -rf .mex/graphs/*.json
-mex update
-```
-
-## Integrating with Git
-
-### Commit the scaffold
-
-```bash
-git add .mex/
-git commit -m "feat: add mex project memory scaffold"
-```
-
-### Ignore generated graphs (optional)
-
-```bash
-echo ".mex/graphs/" >> .gitignore
-```
-
-(Graphs can be regenerated; you may prefer to version only the wiki and
-ROUTER.md.)
-
-### Diff after a sync
-
-```bash
-mex check && mex sync
-git diff .mex/wiki/
-git diff .mex/ROUTER.md
-```
-
-Review the changes before committing.
-
-## Workflow Recipes
-
-### Prep a project for agent work
-
-```bash
-mex setup
-# Edit .mex/ROUTER.md
-mex update
-mex check
-```
-
-### End-of-session cleanup
-
-```bash
-mex check      # detect drift
-mex sync       # auto-repair
-git add .mex/wiki .mex/ROUTER.md
-git commit -m "chore: sync mex project memory"
-```
-
-### Multi-agent handoff
-
-```bash
-# Agent 1 finishes
-mex sync
-
-# Agent 2 starts
-mex route --task "<agent2's task>"
-# Agent 2 loads only relevant pages
-```
-
-## Troubleshooting
-
-### "Node.js version mismatch"
-
-```bash
-node --version  # Should be >= 22.5
-npm install -g mex-agent@latest
-```
-
-### "Git repository not found"
-
-```bash
-cd /path/to/project
-git init  # or: ensure you're in a Git repo
-```
-
-### "Symbol fingerprint mismatch"
-
-```bash
-mex update --force
-mex check
-```
-
-### ".mex/ directory is corrupted"
-
-```bash
-rm -rf .mex/
-mex setup
-mex update
-```
+`doctor` never installs or modifies anything — it only reports Node.js
+version, whether `mex` on PATH is actually mex-agent (vs. a name collision),
+Git repo status, `.mex/` scaffold presence, and which project anchor file
+exists.

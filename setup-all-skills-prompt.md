@@ -458,25 +458,33 @@ skill present.
 
 ### Mex project memory scaffold (on demand)
 
-The `mex` skill installs as documents plus a read-only `doctor` wrapper; it
-never runs `mex setup`, builds a code graph, or modifies project memory during
-setup. It targets `mex-agent` (persistent project memory + code graphs for AI
-agents), so prepare it only when a task actually needs to scaffold a living
-wiki, detect drift, or route architectural context to agents:
+The `mex` skill installs as documents plus `scripts/install.sh` (a real,
+one-shot auto-installer) and `scripts/mex.sh` (read-only `doctor` +
+`check`/`graph` wrappers). It never runs during blanket skill setup — prepare
+it only when a task actually needs to scaffold a living wiki, detect drift,
+or route architectural context to agents:
 
 ```bash
-# 1. read-only environment report (Node.js, mex-agent binary, Git repo) — installs nothing
+# 1. read-only environment report (Node.js, mex-agent binary vs. a same-named
+#    collision like TeX Live's mex, Git repo, .mex/ scaffold, project anchor)
 bash "$SKILLS_ROOT/mex/scripts/mex.sh" doctor /path/to/project
 
-# 2. only after the user confirms the scaffold
-cd /path/to/project
-npm install -g mex-agent
-mex setup
-# Edit .mex/ROUTER.md to map task types to wiki pages
-mex update
+# 2. only after the user confirms the scaffold — one-shot, idempotent install:
+#    registers the skill, installs mex-agent, runs `mex setup` (auto-answering
+#    its tool-selection prompt via --tool, default codex/AGENTS.md so
+#    jeo/gjc/jeopi pick it up), builds the code graph, and runs a drift check
+bash "$SKILLS_ROOT/mex/scripts/install.sh" /path/to/project
 ```
 
-Never auto-run `mex setup` or `mex update` (modifies project memory) as part of
-setup or verification; those steps must stay task-triggered, user-confirmed
-actions. See `mex/references/commands.md` for the full command reference.
+`mex setup` only creates an empty `.mex/` scaffold plus a root anchor file
+(`AGENTS.md`/`CLAUDE.md`/`.cursorrules`/etc., detected per tool) — that anchor
+is the "rule document" jeo/gjc/jeopi/Claude Code/etc. auto-load, and
+`install.sh` reports which one was written. It does **not** auto-populate the
+wiki content; `install.sh` detects mex's own "COPY ABOVE THIS LINE" prompt and
+warns that a human still has to paste it into a coding agent chat to fill in
+`.mex/context/*.md` and `.mex/patterns/*` from the real codebase. mex's MCP
+package is not published upstream as of this writing — do not claim an MCP
+server got wired up for any agent. Never run `install.sh` as part of blanket
+setup or verification; it stays a task-triggered, user-confirmed action. See
+`mex/references/commands.md` for the full command reference.
 
