@@ -118,6 +118,13 @@ into your coding agent's chat; that agent session is what actually writes
 project-specific content into the scaffold. `scripts/install.sh` detects the
 banner and prints a warning so this step is never silently skipped.
 
+One consequence of automating that prompt: mex's follow-up "Has population
+finished?" grounding step is TTY-only (`confirmAndCaptureGrounding` bails when
+stdin is not a TTY, verified in mex-agent 0.7.1), so driving `mex setup`
+non-interactively skips grounding capture. Run `mex ground` once the agent has
+populated the scaffold; `install.sh` prints this reminder.
+
+
 It also writes a **project anchor file at the repository root**, chosen
 interactively (mex asks "Which AI tool do you use?") — this is the "rule
 document" the skill turns on automatically once you've answered that one

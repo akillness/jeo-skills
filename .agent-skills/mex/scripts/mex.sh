@@ -18,76 +18,87 @@ set -euo pipefail
 cmd="${1:-}"
 project_path="${2:-.}"
 
+# ponytail: help is this header, printed until the first non-comment line —
+# no second copy of the usage text and no hardcoded line numbers to drift.
 usage() {
-  sed -n '2,16p' "$0"
+  awk 'NR>1 && /^#/ { sub(/^# ?/, ""); print; next } NR>1 { exit }' "$0"
   exit 1
 }
 
-require_mex() {
-  if ! command -v mex >/dev/null 2>&1; then
-    echo "error: 'mex' is not on PATH. Install with: npm install -g mex-agent" >&2
-    exit 1
-  fi
-  local mexver
-  mexver="$(mex --version 2>&1 | head -1)"
-  if [[ ! "$mexver" =~ ^[0-9]+\.[0-9]+\.[0-9]+ ]]; then
-    echo "error: 'mex' on PATH ($(command -v mex)) is not mex-agent (got: $mexver)." >&2
-    echo "       Another tool already owns the 'mex' command on this machine (e.g. TeX" >&2
-    echo "       Live's mex/pdfTeX format). Fix PATH order or run 'npx mex-agent' instead." >&2
-    exit 1
-  fi
+# Echoes the version string found. Exit 1: no `mex` on PATH. Exit 2: a `mex`
+# exists but is not mex-agent (TeX Live ships an unrelated `mex`), so callers
+# can tell "not installed" from "wrong binary" without repeating this check.
+mex_agent_version() {
+  command -v mex >/dev/null 2>&1 || return 1
+  local v
+  v="$(mex --version 2>&1 | head -1)"
+  echo "$v"
+  [[ "$v" =~ ^[0-9]+\.[0-9]+\.[0-9]+ ]] || return 2
 }
 
+require_mex() {
+  local v status=0
+  v="$(mex_agent_version)" || status=$?
+  case "$status" in
+    1)
+      echo "error: 'mex' is not on PATH. Install with: npm install -g mex-agent" >&2
+      exit 1
+      ;;
+    2)
+      echo "error: 'mex' on PATH ($(command -v mex)) is not mex-agent (got: $v)." >&2
+      echo "       Another tool already owns the 'mex' command on this machine (e.g. TeX" >&2
+      echo "       Live's mex/pdfTeX format). Fix PATH order or run 'npx mex-agent' instead." >&2
+      exit 1
+      ;;
+  esac
+}
 
 require_git() {
-  if ! git -C "$project_path" rev-parse --git-dir >/dev/null 2>&1; then
-    echo "error: '$project_path' is not a Git repository. Initialize with: git init" >&2
+  git -C "$1" rev-parse --git-dir >/dev/null 2>&1 || {
+    echo "error: '$1' is not a Git repository. Initialize with: git init" >&2
     exit 1
-  fi
+  }
 }
 
 case "$cmd" in
   doctor)
     echo "== Mex prerequisite report (read-only) =="
     if command -v node >/dev/null 2>&1; then
-      nodever="$(node --version 2>&1)"
-      echo "  ok    Node.js         $nodever (mex needs >= 22.5)"
+      echo "  ok    Node.js         $(node --version) (mex needs >= 22.5)"
     else
       echo "  MISSING Node.js       not on PATH (mex needs Node.js >= 22.5)"
     fi
-    if command -v mex >/dev/null 2>&1; then
-      mexver="$(mex --version 2>&1 | head -1)"
-      if [[ "$mexver" =~ ^[0-9]+\.[0-9]+\.[0-9]+ ]]; then
-        echo "  ok    mex-agent       $mexver ($(command -v mex))"
-      else
+
+    mexver=""
+    mexstatus=0
+    mexver="$(mex_agent_version)" || mexstatus=$?
+    case "$mexstatus" in
+      0) echo "  ok    mex-agent       $mexver ($(command -v mex))" ;;
+      1) echo "  MISSING mex-agent     not installed (npm install -g mex-agent)" ;;
+      2)
         echo "  WARN  mex-agent       'mex' on PATH is not mex-agent (got: $mexver)"
         echo "                        resolved to $(command -v mex)"
         echo "                        another tool already owns 'mex' (e.g. TeX Live's mex/pdfTeX"
         echo "                        format) — fix PATH order or use 'npx mex-agent' instead"
-      fi
+        ;;
+    esac
+
+    if git -C "$project_path" rev-parse --git-dir >/dev/null 2>&1; then
+      commit="$(git -C "$project_path" rev-parse --short HEAD 2>/dev/null || echo '?')"
+      echo "  ok    Git repository   $project_path (commit: $commit)"
     else
-      echo "  MISSING mex-agent     not installed (npm install -g mex-agent)"
+      echo "  info  Git repository   $project_path not a Git repo (mex works best with Git)"
     fi
 
-    if [ -n "${2:-}" ]; then
-      check_project_path="$2"
-    else
-      check_project_path="."
-    fi
-    if git -C "$check_project_path" rev-parse --git-dir >/dev/null 2>&1; then
-      commit="$(git -C "$check_project_path" rev-parse --short HEAD 2>/dev/null || echo '?')"
-      echo "  ok    Git repository   $check_project_path (commit: $commit)"
-    else
-      echo "  info  Git repository   $check_project_path not a Git repo (mex works best with Git)"
-    fi
-    if [ -d "$check_project_path/.mex" ]; then
+    if [ -d "$project_path/.mex" ]; then
       echo "  ok    .mex/            scaffold present"
     else
       echo "  info  .mex/            not yet scaffolded (run scripts/install.sh or 'mex setup')"
     fi
+
     anchor_found=""
     for anchor in CLAUDE.md AGENTS.md .cursorrules .windsurfrules .github/copilot-instructions.md .opencode/opencode.json; do
-      if [ -f "$check_project_path/$anchor" ]; then
+      if [ -f "$project_path/$anchor" ]; then
         echo "  ok    project anchor   $anchor"
         anchor_found="1"
       fi
@@ -95,28 +106,22 @@ case "$cmd" in
     if [ -z "$anchor_found" ]; then
       echo "  info  project anchor   none found (mex setup installs one automatically)"
     fi
+
     echo "  info  MCP server       packages/mex-mcp is not published upstream — no 'mex mcp' subcommand ships"
     echo "== end of report; nothing was installed or modified =="
     ;;
-  check)
-    require_mex
-    if [[ -z "$project_path" || "$project_path" == "doctor" ]]; then
-      echo "usage: mex.sh check <project_path> [extra mex check args...]" >&2
+  # ponytail: check and graph differ only by the subcommand name, so they share
+  # one branch instead of two near-identical copies.
+  check | graph)
+    [ $# -ge 2 ] || {
+      echo "usage: mex.sh $cmd <project_path> [extra mex $cmd args...]" >&2
       exit 1
-    fi
-    require_git "$project_path"
-    shift 2 || true
-    (cd "$project_path" && mex check "$@")
-    ;;
-  graph)
+    }
     require_mex
-    if [[ -z "$project_path" || "$project_path" == "doctor" ]]; then
-      echo "usage: mex.sh graph <project_path> [extra mex graph args...]" >&2
-      exit 1
-    fi
     require_git "$project_path"
-    shift 2 || true
-    (cd "$project_path" && mex graph "$@")
+
+    shift 2
+    (cd "$project_path" && mex "$cmd" "$@")
     ;;
   *)
     usage

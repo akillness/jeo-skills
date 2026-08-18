@@ -14,8 +14,8 @@
 #
 # There is intentionally no MCP registration step here: mex's MCP package
 # (packages/mex-mcp) is not published to npm as of this writing and ships no
-# `mex mcp` CLI subcommand in the released mex-agent package. Do not add one
-# until https://github.com/mex-memory/mex confirms publication.
+# `mex mcp` CLI subcommand in the released mex-agent package (verified against
+# mex-agent 0.7.1). Do not add one until mex-memory/mex confirms publication.
 #
 # Usage:
 #   bash scripts/install.sh [project_path]
@@ -35,20 +35,24 @@
 #
 # IMPORTANT: `mex setup` only creates an EMPTY .mex/ scaffold plus the project
 # anchor file. It does NOT auto-populate context/architecture.md, patterns/*,
-# etc. — it prints a prompt (between "COPY ABOVE THIS LINE" banners) that a
-# human must paste into their coding agent chat to actually populate the
+# etc. — it prints a prompt (between the "COPY BELOW/ABOVE THIS LINE" banners)
+# that a human must paste into their coding agent chat to actually populate the
 # wiki. This script surfaces that requirement; it cannot skip it.
+#
+# Also note: mex setup's "Has population finished?" grounding prompt is
+# TTY-only, so driving setup non-interactively (as this script does) skips
+# grounding capture. Run `mex ground` after the agent populates the scaffold.
 #
 # Env knobs:
 #   GLOBAL=1           install the skill globally (npx skills add -g)
-#   AGENTS=<list>       comma/space agent IDs for -a targeting (e.g. "claude-code,codex")
-#   SKIP_SKILL=1        same as --skip-skill
+#   AGENTS=<list>      comma/space agent IDs for -a targeting (e.g. "claude-code,codex")
+#   SKIP_SKILL=1       same as --skip-skill
 
 set -euo pipefail
 
-log()  { printf '\033[1;34m[mex]\033[0m %s\n' "$*"; }
+log() { printf '\033[1;34m[mex]\033[0m %s\n' "$*"; }
 warn() { printf '\033[1;33m[mex]\033[0m %s\n' "$*" >&2; }
-die()  { printf '\033[1;31m[mex]\033[0m %s\n' "$*" >&2; exit 2; }
+die() { printf '\033[1;31m[mex]\033[0m %s\n' "$*" >&2; exit 2; }
 
 REPO_URL="https://github.com/akillness/jeo-skills"
 SKILL="mex"
@@ -59,6 +63,8 @@ FORCE=0
 SKIP_SKILL_FLAG=0
 TOOL="codex"
 
+# mex setup has no non-interactive tool flag, so the choice is piped to its
+# menu. Numbers verified against mex-agent 0.7.1 (selectToolConfig).
 tool_choice_number() {
   case "$1" in
     claude) echo 1 ;;
@@ -79,7 +85,9 @@ while (($# > 0)); do
     --force) FORCE=1; shift ;;
     --skip-skill) SKIP_SKILL_FLAG=1; shift ;;
     --tool) TOOL="${2:?--tool needs a value}"; shift 2 ;;
-    -h|--help) sed -n '2,37p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    # ponytail: help is this header, printed until the first non-comment line —
+    # no second copy of the flag docs and no line numbers to drift.
+    -h | --help) awk 'NR>1 && /^#/ { sub(/^# ?/, ""); print; next } NR>1 { exit }' "$0"; exit 0 ;;
     -*) die "Unknown flag: $1 (see --help)" ;;
     *) PROJECT_PATH="$1"; shift ;;
   esac
@@ -90,15 +98,16 @@ TOOL_CHOICE="$(tool_choice_number "$TOOL")"
 [ -d "$PROJECT_PATH" ] || die "Project path does not exist: $PROJECT_PATH"
 
 # ---- step 1: skill (plugin) registration ----
-GLOBAL_FLAG=""
-[ "${GLOBAL:-0}" = "1" ] && GLOBAL_FLAG="-g"
+# ponytail: build the whole npx invocation in one array — correct quoting with
+# no shellcheck word-splitting pragma. Seeded with the fixed args (never empty)
+# because bash 3.2, still the system bash on macOS, treats "${arr[@]}" on an
+# empty array as an unbound variable under `set -u`.
+NPX_ARGS=(skills add "$REPO_URL" --skill "$SKILL" --yes)
+[ "${GLOBAL:-0}" = "1" ] && NPX_ARGS+=(-g)
+for a in ${AGENTS:+${AGENTS//,/ }}; do
+  NPX_ARGS+=(-a "$a")
+done
 
-AGENT_FLAGS=""
-if [ -n "${AGENTS:-}" ]; then
-  for a in ${AGENTS//,/ }; do
-    AGENT_FLAGS="$AGENT_FLAGS -a $a"
-  done
-fi
 
 install_skill() {
   if [ "${SKIP_SKILL:-0}" = "1" ] || [ "$SKIP_SKILL_FLAG" = "1" ]; then
@@ -111,22 +120,30 @@ install_skill() {
     return 0
   fi
   log "Registering the '$SKILL' skill via npx skills..."
-  # shellcheck disable=SC2086
-  npx skills add "$REPO_URL" --skill "$SKILL" $GLOBAL_FLAG $AGENT_FLAGS --yes \
+  npx "${NPX_ARGS[@]}" \
     || warn "npx skills add failed — install manually (git clone)."
+
 }
 
 # ---- step 2: Node.js and mex-agent ----
 require_node() {
   command -v node >/dev/null 2>&1 || die "Node.js >= 22.5 is required. Install it, then re-run."
-  local major minor
-  major="$(node -e 'console.log(process.versions.node.split(".")[0])')"
-  minor="$(node -e 'console.log(process.versions.node.split(".")[1])')"
+  # ponytail: parse `node --version` with shell expansion rather than spawning
+  # node twice to ask it about itself.
+  local ver major minor
+  ver="$(node --version)"
+  ver="${ver#v}"
+  major="${ver%%.*}"
+  minor="${ver#*.}"
+  minor="${minor%%.*}"
   if [ "$major" -lt 22 ] || { [ "$major" -eq 22 ] && [ "$minor" -lt 5 ]; }; then
-    die "Node.js $(node --version) found; mex requires >= 22.5"
+    die "Node.js v$ver found; mex requires >= 22.5"
   fi
 }
 
+# A `mex` on PATH is not necessarily mex-agent: TeX Live (Homebrew) ships an
+# unrelated `mex` (pdfTeX format). Match mex-agent's bare semver output so we
+# never drive `mex setup` through the wrong binary.
 verify_mex_agent() {
   local ver
   ver="$(mex --version 2>&1 | head -1)"
@@ -143,14 +160,15 @@ verify_mex_agent() {
 }
 
 install_mex_agent() {
-  if command -v mex >/dev/null 2>&1; then
-    log "'mex' already on PATH: $(mex --version 2>&1 | head -1)"
-  else
+  if ! command -v mex >/dev/null 2>&1; then
     command -v npm >/dev/null 2>&1 || die "npm not found; cannot install mex-agent"
     log "Installing mex-agent globally (npm install -g mex-agent)..."
     npm install -g mex-agent
     command -v mex >/dev/null 2>&1 || die "mex-agent install finished but 'mex' is still not on PATH"
   fi
+  # ponytail: no "already on PATH" line here — verify_mex_agent is the single
+  # place that reports the version, so a colliding binary is never announced
+  # as if it were mex-agent.
   verify_mex_agent
 }
 
@@ -161,32 +179,30 @@ run_setup() {
     return 0
   fi
   log "Running 'mex setup' in $PROJECT_PATH (auto-answering the tool prompt: $TOOL -> choice $TOOL_CHOICE)..."
-  local setup_log
-  setup_log="$(mktemp)"
-  # mex setup asks two interactive questions: which tool anchor to write, and
-  # whether to install mex globally (already handled by install_mex_agent
-  # above, so decline it here). Piping answers keeps this script non-interactive.
+  local setup_log args=(setup)
   if [ -n "$MODE" ]; then
-    (cd "$PROJECT_PATH" && printf '%s\nn\n' "$TOOL_CHOICE" | mex setup --mode "$MODE") | tee "$setup_log"
-  else
-    (cd "$PROJECT_PATH" && printf '%s\nn\n' "$TOOL_CHOICE" | mex setup) | tee "$setup_log"
+    args+=(--mode "$MODE")
   fi
+  setup_log="$(mktemp)"
+  # mex setup asks two piped questions: which tool anchor to write, and whether
+  # to install mex globally (already handled above, so decline it here).
+  (cd "$PROJECT_PATH" && printf '%s\nn\n' "$TOOL_CHOICE" | mex "${args[@]}") | tee "$setup_log"
   if grep -q "COPY ABOVE THIS LINE" "$setup_log"; then
     warn "'mex setup' only created an EMPTY .mex/ scaffold + the $TOOL anchor file."
     warn "The wiki content (context/*.md, patterns/*) is NOT populated yet — copy the"
-    warn "prompt printed above (between the two 'COPY ABOVE THIS LINE' banners) into"
+    warn "prompt printed above (between the two 'COPY ... THIS LINE' banners) into"
     warn "your coding agent's chat so it fills in the scaffold from the real codebase."
+    warn "Afterwards run 'mex ground' — grounding capture is TTY-only and was skipped."
   fi
   rm -f "$setup_log"
 }
 
-# ---- step 4: build the code graph ----
+# ---- step 4/5: code graph, then health check ----
 run_graph() {
   log "Building the code graph ('mex graph') in $PROJECT_PATH..."
   (cd "$PROJECT_PATH" && mex graph) || warn "'mex graph' reported an issue; see output above"
 }
 
-# ---- step 5: health check ----
 run_check() {
   log "Running 'mex check' in $PROJECT_PATH..."
   (cd "$PROJECT_PATH" && mex check) || warn "'mex check' reported drift or issues; see output above"
@@ -194,16 +210,8 @@ run_check() {
 
 # ---- step 6: report which project anchor mex installed ----
 report_anchor() {
-  local anchors=(
-    "CLAUDE.md"
-    "AGENTS.md"
-    ".cursorrules"
-    ".windsurfrules"
-    ".github/copilot-instructions.md"
-    ".opencode/opencode.json"
-  )
   local found=0
-  for anchor in "${anchors[@]}"; do
+  for anchor in CLAUDE.md AGENTS.md .cursorrules .windsurfrules .github/copilot-instructions.md .opencode/opencode.json; do
     if [ -f "$PROJECT_PATH/$anchor" ]; then
       log "Project anchor present: $anchor"
       found=1
