@@ -455,3 +455,28 @@ Finally report:
 Compare pre-existing skill names captured before installation with the final listing. A
 successful run adds or updates jeo-skills targets and leaves every unrelated pre-existing
 skill present.
+
+### Mex project memory scaffold (on demand)
+
+The `mex` skill installs as documents plus a read-only `doctor` wrapper; it
+never runs `mex setup`, builds a code graph, or modifies project memory during
+setup. It targets `mex-agent` (persistent project memory + code graphs for AI
+agents), so prepare it only when a task actually needs to scaffold a living
+wiki, detect drift, or route architectural context to agents:
+
+```bash
+# 1. read-only environment report (Node.js, mex-agent binary, Git repo) — installs nothing
+bash "$SKILLS_ROOT/mex/scripts/mex.sh" doctor /path/to/project
+
+# 2. only after the user confirms the scaffold
+cd /path/to/project
+npm install -g mex-agent
+mex setup
+# Edit .mex/ROUTER.md to map task types to wiki pages
+mex update
+```
+
+Never auto-run `mex setup` or `mex update` (modifies project memory) as part of
+setup or verification; those steps must stay task-triggered, user-confirmed
+actions. See `mex/references/commands.md` for the full command reference.
+
