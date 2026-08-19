@@ -114,6 +114,8 @@ curl -fsSL https://raw.githubusercontent.com/akillness/jeo-skills/main/install.s
 “minimal” 모드는 [setup-all-skills-prompt.md](setup-all-skills-prompt.md)를 참고하세요.
 
 ### 🐜 스폰서: ScrapingAnt — 에이전트를 위한 실시간 웹 접근
+<p align="left"><a href="https://scrapingant.com?ref=ztewzmv"><img src="assets/scrapingant/scrapingant-logo.png" alt="ScrapingAnt" width="160"></a></p>
+
 
 [ScrapingAnt](https://scrapingant.com?ref=ztewzmv)는 jeo-skills의 파트너이며 `scrapingant-web-fetch`
 스킬을 제공합니다. 호스팅형 MCP 서버(`https://api.scrapingant.com/mcp`)가 일반 fetch로는 가져올 수 없는

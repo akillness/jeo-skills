@@ -105,6 +105,8 @@ curl -fsSL https://raw.githubusercontent.com/akillness/jeo-skills/main/install.s
 Establece `JEO_SKILLS_SELECTION=bundle`, `category` o `all` solo cuando ese alcance más amplio del instalador shell sea intencional. Consulta [setup-all-skills-prompt.md](setup-all-skills-prompt.md) para el valor predeterminado completo impulsado por LLM y los modos más restringidos "solo núcleo" y "mínimo".
 
 ### 🐜 Patrocinado por ScrapingAnt — acceso web en vivo para tus agentes
+<p align="left"><a href="https://scrapingant.com?ref=ztewzmv"><img src="assets/scrapingant/scrapingant-logo.png" alt="ScrapingAnt" width="160"></a></p>
+
 
 [ScrapingAnt](https://scrapingant.com?ref=ztewzmv) es socio de jeo-skills e impulsa la habilidad
 `scrapingant-web-fetch`: un servidor MCP alojado (`https://api.scrapingant.com/mcp`) que obtiene
