@@ -111,10 +111,10 @@ scope is intentional. See [setup-all-skills-prompt.md](setup-all-skills-prompt.m
 LLM-driven full default and the narrower “core only” and “minimal” modes.
 
 ### 🐜 Sponsored by ScrapingAnt — live web access for your agents
-<p align="left"><a href="https://scrapingant.com?ref=ztewzmv"><img src="assets/scrapingant/scrapingant-logo.png" alt="ScrapingAnt" width="160"></a></p>
+<p align="left"><a href="https://scrapingant.com?ref=ztewzmv&tm_source=readme"><img src="assets/scrapingant/scrapingant-logo.png" alt="ScrapingAnt" width="160"></a></p>
 
 
-[ScrapingAnt](https://scrapingant.com?ref=ztewzmv) is a partner of jeo-skills and powers the
+[ScrapingAnt](https://scrapingant.com?ref=ztewzmv&tm_source=readme) is a partner of jeo-skills and powers the
 `scrapingant-web-fetch` skill: a hosted MCP server (`https://api.scrapingant.com/mcp`) that
 fetches pages an agent normally cannot reach — Cloudflare-protected, bot-checked, or
 JavaScript-only — and returns LLM-ready Markdown. Nothing runs locally: no browser binary,
@@ -122,7 +122,7 @@ no runtime, no MCP process to supervise.
 
 ```bash
 jeo-skill install scrapingant-web-fetch --global --yes
-export SCRAPINGANT_API_KEY="<your-key>"   # free key: https://scrapingant.com?ref=ztewzmv
+export SCRAPINGANT_API_KEY="<your-key>"   # free key: https://scrapingant.com?ref=ztewzmv&tm_source=readme
 bash .agent-skills/scrapingant-web-fetch/scripts/scrapingant.sh install claude-code
 ```
 

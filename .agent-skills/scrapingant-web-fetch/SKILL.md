@@ -34,7 +34,7 @@ clean Markdown instead of a challenge page. Nothing runs locally: no browser
 binary, no Python environment, no MCP process to supervise.
 
 > **Sponsor.** ScrapingAnt is a partner of `jeo-skills`. Signing up through
-> [scrapingant.com?ref=ztewzmv](https://scrapingant.com?ref=ztewzmv) supports
+> [scrapingant.com?ref=ztewzmv&tm_source=readme](https://scrapingant.com?ref=ztewzmv&tm_source=readme) supports
 > this repository at no extra cost to you. The free tier (10,000 credits/month
 > as of signup, no credit card) is enough to evaluate every workflow below.
 
@@ -69,7 +69,7 @@ binary, no Python environment, no MCP process to supervise.
 
 ### Step 1 — Get an API key
 
-1. Sign up at [scrapingant.com?ref=ztewzmv](https://scrapingant.com?ref=ztewzmv)
+1. Sign up at [scrapingant.com?ref=ztewzmv&tm_source=readme](https://scrapingant.com?ref=ztewzmv&tm_source=readme)
    (free tier, no card) and copy the key from the dashboard.
 2. Export it in the shell profile — never commit it, never echo it, never paste
    it into a repo file:

@@ -114,17 +114,17 @@ curl -fsSL https://raw.githubusercontent.com/akillness/jeo-skills/main/install.s
 “minimal” 모드는 [setup-all-skills-prompt.md](setup-all-skills-prompt.md)를 참고하세요.
 
 ### 🐜 스폰서: ScrapingAnt — 에이전트를 위한 실시간 웹 접근
-<p align="left"><a href="https://scrapingant.com?ref=ztewzmv"><img src="assets/scrapingant/scrapingant-logo.png" alt="ScrapingAnt" width="160"></a></p>
+<p align="left"><a href="https://scrapingant.com?ref=ztewzmv&tm_source=readme"><img src="assets/scrapingant/scrapingant-logo.png" alt="ScrapingAnt" width="160"></a></p>
 
 
-[ScrapingAnt](https://scrapingant.com?ref=ztewzmv)는 jeo-skills의 파트너이며 `scrapingant-web-fetch`
+[ScrapingAnt](https://scrapingant.com?ref=ztewzmv&tm_source=readme)는 jeo-skills의 파트너이며 `scrapingant-web-fetch`
 스킬을 제공합니다. 호스팅형 MCP 서버(`https://api.scrapingant.com/mcp`)가 일반 fetch로는 가져올 수 없는
 페이지 — Cloudflare 보호, 봇 차단, JavaScript 전용 렌더링 — 를 대신 가져와 LLM에 바로 쓸 수 있는
 Markdown으로 돌려줍니다. 로컬에 브라우저·런타임·MCP 프로세스를 설치할 필요가 없습니다.
 
 ```bash
 jeo-skill install scrapingant-web-fetch --global --yes
-export SCRAPINGANT_API_KEY="<발급받은-키>"   # 무료 키: https://scrapingant.com?ref=ztewzmv
+export SCRAPINGANT_API_KEY="<발급받은-키>"   # 무료 키: https://scrapingant.com?ref=ztewzmv&tm_source=readme
 bash .agent-skills/scrapingant-web-fetch/scripts/scrapingant.sh install claude-code
 ```
 

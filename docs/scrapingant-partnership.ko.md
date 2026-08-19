@@ -3,7 +3,10 @@
 > 상태: **실행 완료** · 최종 수정: 2026-08 · 릴리스된 스킬: [`scrapingant-web-fetch`](../.agent-skills/scrapingant-web-fetch/SKILL.md)
 >
 > 2026-08-19 이메일로 파트너십이 수락되었고 오픈소스 파트너 가입도 완료되어 README 스폰서
-> 섹션을 게시했다. 사용 중인 리퍼럴 링크: `https://scrapingant.com?ref=ztewzmv`.
+> 섹션을 게시했다. 사용 중인 리퍼럴 링크: `https://scrapingant.com?ref=ztewzmv&tm_source=readme` —
+> 2026-08 Tapfiliate URL Wizard에서 SubID `source:readme`를 추가해 재생성. README 유입을
+> 파트너 대시보드의 Reporting/Conversions에서 다른 채널과 구분할 수 있다.
+
 >
 > ScrapingAnt 공식 문서([docs.scrapingant.com/mcp-server](https://docs.scrapingant.com/mcp-server)) 및
 > MCP(Model Context Protocol) 사양을 근거로, 1) Skill 모듈 구현 형태, 2) 스폰서십/파트너십 유치 및
@@ -27,7 +30,9 @@
 | 도구 파라미터 | `url`(필수) · `browser`(기본 `true`) · `proxy_type`(`datacenter`\|`residential`) · `proxy_country`(ISO-3166) | docs.scrapingant.com/mcp-server |
 | 크레딧 비용 | 정적 1 · JS 렌더링 10 · 레지덴셜 25 · 레지덴셜+JS 125 | docs.scrapingant.com/credits-cost |
 | REST 대응 엔드포인트 | `/v2/markdown`, `/v2/general`, `/v2/usage` (키는 쿼리 파라미터) | docs.scrapingant.com/api-basics · /llm-markdown |
-| 리퍼럴 링크 | `https://scrapingant.com?ref=ztewzmv` | 파트너 프로그램 가입, 2026-08 |
+| 리퍼럴 링크 | `https://scrapingant.com?ref=ztewzmv&tm_source=readme` | 파트너 프로그램 가입, 2026-08; SubID `source:readme`는 2026-08 Tapfiliate URL Wizard에서 추가 |
+| 어필리에이트 약관 | 첫 달 매출 50% 커미션, 최소 지급액 $49, 쿠키 유효기간 45일, 셀프 리퍼럴 금지, 관계 오인 표시 금지, README/오픈소스 링크는 승인된 홍보 채널로 명시 | [scrapingant.com/legal/affiliate](https://scrapingant.com/legal/affiliate/), 2026-08 확인 |
+
 
 ## 1. 주요 검토 및 결정사항 (Decision Matrix)
 
@@ -103,10 +108,13 @@ ScrapingAnt 팀(Oleg Kulyk 대표 및 Growth/DevRel 팀) 컨택 시 제시할 �
 - [x] Outreach 메일 발송 및 회신 추적 (2026-08-19 수락)
 - [ ] 쇼케이스 벤치마크(Cloudflare 보호 사이트 vs 일반 fetch) 작성 — 실제 API 키 필요
 - [ ] 실제 키로 스킬 end-to-end 검증(`scrapingant.sh credits` / `probe`) — 현재는 인증 실패 경로만 확인됨
+- [x] [scrapingant.com/legal/affiliate](https://scrapingant.com/legal/affiliate/) 약관과 현재 사용 방식 대조(2026-08): README/오픈소스 링크는 승인된 홍보 채널로 명시되어 있고, 셀프 리퍼럴 아님, 3개 README 모두 고지 문구 포함 — 준수 확인. Tapfiliate URL Wizard에 SubID `source:readme`를 추가해 README 유입을 구분.
+
 
 ## 4. 리스크 및 유보 사항
 
 - **파트너십 미확정 상태에서의 노출**: 해소됨 — 2026-08-19 파트너십 수락 및 파트너 가입 완료가 "Sponsored by" 게시의 근거다. 이후 다른 스폰서 표기도 동일한 증빙이 있어야 한다.
-- **리퍼럴 고지**: 모든 스폰서 블록에 리퍼럴 링크라는 사실과 API 키가 사용자 소유로 남는다는 점을 명시한다. 링크를 다른 곳에 복사할 때도 이 고지를 유지한다.
+- **리퍼럴 고지**: 모든 스폰서 블록에 리퍼럴/스폰서 관계라는 사실과 API 키가 사용자 소유로 남는다는 점을 명시한다. 2026-08 [scrapingant.com/legal/affiliate](https://scrapingant.com/legal/affiliate/) 약관 — "제휴사는 본인, ScrapingAnt, 또는 양측 관계를 오인시켜서는 안 된다" — 대조 결과, 3개 README의 고지 문구가 이 요건을 충족한다. 링크를 다른 곳에 복사할 때도 이 고지를 유지한다.
+
 - **API/문서 변동**: 도구 이름·파라미터·크레딧 비용은 §0의 출처 기준이며 2026-08 라이브 문서로 재검증했다. Skill 수정 전 재확인 필수.
 - **크레딧 정책 변동**: "월 10,000 무료 크레딧"은 ScrapingAnt 정책이므로 문서에는 항상 "가입 시점 기준" 문구를 병기한다.

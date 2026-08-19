@@ -4,7 +4,8 @@
 >
 > Partnership accepted by email on 2026-08-19 (Oleg Kulyk, ScrapingAnt) and the
 > open-source partner signup is complete, so the README sponsor sections are live.
-> Referral link in use: `https://scrapingant.com?ref=ztewzmv`.
+> Referral link in use: `https://scrapingant.com?ref=ztewzmv&tm_source=readme` — regenerated 2026-08 via the Tapfiliate URL Wizard with SubID `source:readme` so README-driven clicks are distinguishable in the partner dashboard's Reporting/Conversions views.
+
 >
 > Based on the official ScrapingAnt documentation ([docs.scrapingant.com/mcp-server](https://docs.scrapingant.com/mcp-server))
 > and the MCP (Model Context Protocol) specification, this document records
@@ -29,7 +30,9 @@ Confirmed directly against the official ScrapingAnt docs, re-verified 2026-08. R
 | Tool parameters | `url` (required) · `browser` (default `true`) · `proxy_type` (`datacenter`\|`residential`) · `proxy_country` (ISO-3166) | docs.scrapingant.com/mcp-server |
 | Credit cost | static 1 · JS rendering 10 · residential 25 · residential+JS 125 | docs.scrapingant.com/credits-cost |
 | REST twins | `/v2/markdown`, `/v2/general`, `/v2/usage` (key as query param) | docs.scrapingant.com/api-basics · /llm-markdown |
-| Referral link | `https://scrapingant.com?ref=ztewzmv` | partner program signup, 2026-08 |
+| Referral link | `https://scrapingant.com?ref=ztewzmv&tm_source=readme` | partner program signup, 2026-08; SubID `source:readme` added 2026-08 via Tapfiliate URL Wizard |
+| Affiliate terms | 50% first-month commission, $49 min payout, 45-day cookie, self-referral banned, no misrepresentation, README/OSS linking explicitly listed as an approved channel | [scrapingant.com/legal/affiliate](https://scrapingant.com/legal/affiliate/), verified 2026-08 |
+
 
 ## 1. Decision Matrix
 
@@ -104,10 +107,13 @@ Ready-to-send draft: [`scrapingant-outreach-email.md`](scrapingant-outreach-emai
 - [x] Send outreach email and track replies (accepted 2026-08-19)
 - [ ] Write the showcase benchmark (Cloudflare-protected site vs plain fetch) — needs a live API key
 - [ ] Run the skill end-to-end against a real key (`scrapingant.sh credits` / `probe`); only the auth-failure path is verified so far
+- [x] Cross-check current usage against [scrapingant.com/legal/affiliate](https://scrapingant.com/legal/affiliate/) (2026-08): README/OSS linking is an explicitly approved promotion channel, no self-referral, disclosure sentence present in all three READMEs — compliant. Added SubID `source:readme` in the Tapfiliate URL Wizard to separate README traffic in Reporting/Conversions.
+
 
 ## 4. Risks & Reservations
 
 - **Exposure before a signed partnership**: resolved — the partnership was accepted on 2026-08-19 and the partner signup completed, which is what unblocked the "Sponsored by" sections. Any future sponsor claim needs the same evidence trail.
-- **Referral disclosure**: every sponsor block states that the link is a referral and that the API key stays with the user. Keep that disclosure whenever the link is copied elsewhere.
+- **Referral disclosure**: every sponsor block states that the link is a referral/sponsor arrangement and that the API key stays with the user. Verified 2026-08 against [scrapingant.com/legal/affiliate](https://scrapingant.com/legal/affiliate/): the terms require affiliates to "never misrepresent themselves, ScrapingAnt, or their relationship with ScrapingAnt" — the disclosure sentence in all three READMEs satisfies this. Keep that disclosure whenever the link is copied elsewhere.
+
 - **API/doc drift**: tool names, parameters, and credit costs follow the sources in §0 (re-verified 2026-08 against the live docs); re-verify before editing the skill.
 - **Credit policy changes**: "10,000 free credits/month" is ScrapingAnt policy — always qualify it with "as of signup" in user-facing docs.

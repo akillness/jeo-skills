@@ -503,7 +503,7 @@ cannot reach (Cloudflare/anti-bot, JS-only pages, geo-restricted content):
 bash "$SKILLS_ROOT/scrapingant-web-fetch/scripts/scrapingant.sh" doctor
 
 # 2. only after the user supplies a key (free tier: 10,000 credits/month at signup,
-#    no card — https://scrapingant.com?ref=ztewzmv)
+#    no card — https://scrapingant.com?ref=ztewzmv&tm_source=readme)
 export SCRAPINGANT_API_KEY="<user-provided-key>"
 bash "$SKILLS_ROOT/scrapingant-web-fetch/scripts/scrapingant.sh" install claude-code
 ```
