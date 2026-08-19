@@ -109,6 +109,35 @@
         }
       ]
     },
+    "heretic": {
+      "source": "akillness/jeo-skills",
+      "sourceType": "github",
+      "version": "1.0.0",
+      "keyword": "heretic",
+      "description": "p-e-w/heretic 기반 자동 방향성 절제(어블리터레이션) + LLM 해석가능성 툴킷 — 후속 학습 없이 오픈웨이트 트랜스포머 모델의 거부/과잉거부를 제거하고 거부 방향의 기하를 분석. 유해/무해 프롬프트의 첫 토큰 잔차 차이-평균으로 층별 거부 방향을 구해 어텐션/MLP 행렬을 직교화하고, Optuna TPE 최적화로 거부율과 원본 대비 KL 발산을 동시 최소화. 사용자가 수정 권한을 가진 모델에만 사용(AGPL-3.0). 모델 탐색·데이터셋·벤치마크 웹 조사는 scrapling 스킬로 라우팅.",
+      "tags": [
+        "heretic",
+        "abliteration",
+        "directional-ablation",
+        "decensor",
+        "refusal-direction",
+        "interpretability",
+        "residual-geometry",
+        "llm-safety-research",
+        "optuna",
+        "scrapling"
+      ],
+      "installCommand": "npx skills add https://github.com/akillness/jeo-skills --skill heretic",
+      "addedAt": "2026-07-01T00:00:00Z",
+      "updatedAt": "2026-07-01T00:00:00Z",
+      "extensions": [
+        {
+          "skill": "scrapling",
+          "status": "recommended",
+          "reason": "Owns web extraction for the discover mode — locating base/existing-heretic models, datasets, and benchmark/prior-art data; pick the lightest workable scraping mode."
+        }
+      ]
+    },
     "llm-monitoring-dashboard": {
       "source": "akillness/jeo-skills",
       "sourceType": "github",
@@ -126,6 +155,32 @@
       ],
       "addedAt": "2026-03-03T00:00:00Z"
     },
+    "mex": {
+      "source": "akillness/jeo-skills",
+      "sourceType": "github",
+      "computedHash": "0d86a91147538de9dca5cdd9553448fc979688f550bcc90d48aaf38180a1707f",
+      "version": "1.1",
+      "keyword": "mex",
+      "description": "mex-memory/mex(MIT) 기반 AI 코딩 에이전트용 영속 프로젝트 메모리 + 코드 그래프 CLI. `mex setup` 한 번으로 심볼 단위로 근거화된 living wiki를 스캐폴딩하고, tree-sitter 기반 결정론적 코드 그래프(graph.db)를 빌드하며, 에이전트가 표준 규칙으로 자동 로드하는 프로젝트 앵커 파일(CLAUDE.md/AGENTS.md/.cursorrules/.windsurfrules/copilot-instructions.md/opencode.json)을 설치. `mex check`로 드리프트를 기계적으로 탐지하고 `mex sync`로 수정 프롬프트를 생성하며, `mex graph scope \"<task>\"`로 작업 범위에 맞는 컴팩트 컨텍스트만 라우팅. MCP 패키지(packages/mex-mcp)는 아직 npm 미배포이므로 MCP 연동을 약속하지 말 것.",
+      "tags": [
+        "mex",
+        "mex-agent",
+        "project-memory",
+        "code-graphs",
+        "drift-detection",
+        "documentation",
+        "agent-memory",
+        "living-wiki",
+        "tree-sitter",
+        "sqlite",
+        "cli",
+        "project-anchor"
+      ],
+      "installCommand": "npx skills add https://github.com/akillness/jeo-skills --skill mex",
+      "addedAt": "2026-08-18T00:00:00Z",
+      "updatedAt": "2026-08-19T00:00:00Z"
+    },
+
     "obsidian-second-brain": {
       "source": "akillness/jeo-skills",
       "sourceType": "github",
@@ -186,6 +241,28 @@
       "sourceType": "github",
       "computedHash": "08ec6f9ff81f5b6f69bfdcb7aea1ea052583b0767a456c015a07cbff999ae949"
     },
+    "scrapling": {
+      "source": "akillness/jeo-skills",
+      "sourceType": "github",
+      "version": "1.0.0",
+      "keyword": "scrapling",
+      "description": "D4Vinci/Scrapling(BSD-3-Clause) 기반 라우팅 우선 적응형 웹 스크래핑 — 하나의 intake packet으로 parser-only(Selector), HTTP fetch(Fetcher), JS 브라우저(DynamicFetcher), stealth escalation(StealthyFetcher), MCP, spiders 중 가장 가벼운 경로를 선택. adaptive=True 셀렉터 드리프트 복구, CLI/shell/MCP/spider 오퍼레이터 표면을 하나의 라우팅 로직으로 계층화하며 사이트 ToS/robots/rate-limit/저작권을 항상 준수.",
+      "tags": [
+        "scrapling",
+        "web-scraping",
+        "crawling",
+        "adaptive-scraping",
+        "mcp",
+        "cli",
+        "playwright",
+        "cloudflare",
+        "spiders",
+        "python"
+      ],
+      "installCommand": "npx skills add https://github.com/akillness/jeo-skills --skill scrapling",
+      "addedAt": "2026-07-01T00:00:00Z",
+      "updatedAt": "2026-07-01T00:00:00Z"
+    },
     "survey": {
       "source": "akillness/jeo-skills",
       "sourceType": "github",
@@ -207,35 +284,6 @@
       "installCommand": "npx skills add https://github.com/akillness/jeo-skills --skill survey",
       "addedAt": "2026-03-10T00:00:00Z",
       "updatedAt": "2026-03-10T00:00:00Z"
-    },
-    "heretic": {
-      "source": "akillness/jeo-skills",
-      "sourceType": "github",
-      "version": "1.0.0",
-      "keyword": "heretic",
-      "description": "p-e-w/heretic 기반 자동 방향성 절제(어블리터레이션) + LLM 해석가능성 툴킷 — 후속 학습 없이 오픈웨이트 트랜스포머 모델의 거부/과잉거부를 제거하고 거부 방향의 기하를 분석. 유해/무해 프롬프트의 첫 토큰 잔차 차이-평균으로 층별 거부 방향을 구해 어텐션/MLP 행렬을 직교화하고, Optuna TPE 최적화로 거부율과 원본 대비 KL 발산을 동시 최소화. 사용자가 수정 권한을 가진 모델에만 사용(AGPL-3.0). 모델 탐색·데이터셋·벤치마크 웹 조사는 scrapling 스킬로 라우팅.",
-      "tags": [
-        "heretic",
-        "abliteration",
-        "directional-ablation",
-        "decensor",
-        "refusal-direction",
-        "interpretability",
-        "residual-geometry",
-        "llm-safety-research",
-        "optuna",
-        "scrapling"
-      ],
-      "installCommand": "npx skills add https://github.com/akillness/jeo-skills --skill heretic",
-      "addedAt": "2026-07-01T00:00:00Z",
-      "updatedAt": "2026-07-01T00:00:00Z",
-      "extensions": [
-        {
-          "skill": "scrapling",
-          "status": "recommended",
-          "reason": "Owns web extraction for the discover mode — locating base/existing-heretic models, datasets, and benchmark/prior-art data; pick the lightest workable scraping mode."
-        }
-      ]
     },
     "webtoon-harness": {
       "source": "akillness/jeo-skills",
@@ -270,28 +318,6 @@
           "reason": "Use harness to evolve or re-architect the webtoon agent team and skills."
         }
       ]
-    },
-    "scrapling": {
-      "source": "akillness/jeo-skills",
-      "sourceType": "github",
-      "version": "1.0.0",
-      "keyword": "scrapling",
-      "description": "D4Vinci/Scrapling(BSD-3-Clause) 기반 라우팅 우선 적응형 웹 스크래핑 — 하나의 intake packet으로 parser-only(Selector), HTTP fetch(Fetcher), JS 브라우저(DynamicFetcher), stealth escalation(StealthyFetcher), MCP, spiders 중 가장 가벼운 경로를 선택. adaptive=True 셀렉터 드리프트 복구, CLI/shell/MCP/spider 오퍼레이터 표면을 하나의 라우팅 로직으로 계층화하며 사이트 ToS/robots/rate-limit/저작권을 항상 준수.",
-      "tags": [
-        "scrapling",
-        "web-scraping",
-        "crawling",
-        "adaptive-scraping",
-        "mcp",
-        "cli",
-        "playwright",
-        "cloudflare",
-        "spiders",
-        "python"
-      ],
-      "installCommand": "npx skills add https://github.com/akillness/jeo-skills --skill scrapling",
-      "addedAt": "2026-07-01T00:00:00Z",
-      "updatedAt": "2026-07-01T00:00:00Z"
     }
   }
 }

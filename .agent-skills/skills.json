@@ -75,6 +75,8 @@
         "agent-frameworks",
         "skill-authoring",
         "evaluation",
+        "memory",
+
         "planning-review",
         "discovery",
         "prompting"
@@ -272,6 +274,9 @@
       "langsmith",
       "opik",
       "skill-autoresearch",
+      "kadath",
+      "mex",
+
       "bmad-idea",
       "grill-me",
       "grill-with-docs",
@@ -283,8 +288,8 @@
       "openspace",
       "agentic-skills",
       "agenticskills",
-      "prompts-chat",
-      "kadath"
+      "prompts-chat"
+
     ],
     "engineering": [
       "audit-reference-originality",
@@ -597,6 +602,10 @@
         "skill-autoresearch",
         "kadath"
       ],
+      "memory": [
+        "mex"
+      ],
+
       "planning-review": [
         "bmad-idea",
         "grill-me",
@@ -7679,8 +7688,12 @@
     },
     {
       "name": "mex",
-      "description": "Persistent project memory and code graphs for AI coding agents (mex-agent). Setup living wiki scaffold, build symbol-grounded documentation, keep architectural context structured, route relevant context to agents per task, detect/repair drift between code and docs.",
-      "keywords": [
+      "description": "Drive mex (`mex-agent`), persistent project memory and code graphs for AI coding agents. One command scaffolds a living wiki, builds a deterministic code graph, and installs a project anchor file (CLAUDE.md, root AGENTS.md, .cursorrules, .windsurfrules, copilot-instructions.md, or .opencode/opencode.json) that your agent auto-loads as a standing rule document. Use when the user wants to `mex setup` a new project, build a symbol-grounded wiki, keep knowledge connected to implementation, route relevant context to agents, or run drift detection (`mex check`, `mex sync`). Triggers on: \"mex setup\", \"project memory\", \"code graphs\", \"codebase documentation\", \"drift detection\", \"agent memory\", \"structured scaffolds\", \"architectural context\", \"living wiki\", \"project anchor file\".",
+      "category": "ai-agents",
+      "subcategory": "memory",
+      "interface": "cli",
+      "path": "mex/SKILL.md",
+      "tags": [
         "mex",
         "mex-agent",
         "project-memory",
@@ -7692,24 +7705,32 @@
         "tree-sitter",
         "sqlite",
         "cli",
-        "mcp"
+        "project-anchor"
       ],
-      "category": "ai-agents",
-      "subcategory": "memory",
-      "url": "https://github.com/mex-memory/mex",
-      "license": "MIT",
       "platforms": [
         "Claude",
         "ChatGPT",
         "Gemini",
         "Codex",
         "Cursor",
+        "Windsurf",
         "jeo",
         "gjc",
         "jeopi",
         "OpenCode"
       ],
-      "version": "1.0.0"
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "mex",
+      "version": "1.1",
+      "source": "mex-memory/mex"
+
     }
   ]
 }

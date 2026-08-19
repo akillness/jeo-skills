@@ -297,9 +297,10 @@ video-motion-previs check
 | `hyperfine-benchmarking` |
 
 
-### 🤖 AI 및 에이전트 (27개)
+### 🤖 AI 및 에이전트 (28개)
 
-하위 분류: `orchestration` (4), `agent-frameworks` (3), `skill-authoring` (4), `evaluation` (4), `planning-review` (8), `discovery` (1), `prompting` (3)
+하위 분류: `orchestration` (4), `agent-frameworks` (3), `skill-authoring` (4), `evaluation` (4), `memory` (1), `planning-review` (8), `discovery` (1), `prompting` (3)
+
 
 
 | Skill |
@@ -316,10 +317,12 @@ video-motion-previs check
 | `upskill` |
 | `write-a-skill` |
 | `langsmith` |
-| `mex` |
 | `opik` |
+
 | `skill-autoresearch` |
 | `kadath` |
+| `mex` |
+
 
 | `bmad-idea` |
 | `grill-me` |

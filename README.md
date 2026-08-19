@@ -294,9 +294,10 @@ Subcategories: `developer-cli` (7), `ai-cli` (9), `media-cli` (1), `automation-c
 | `hyperfine-benchmarking` |
 
 
-### 🤖 AI & Agents (27)
+### 🤖 AI & Agents (28)
 
-Subcategories: `orchestration` (4), `agent-frameworks` (3), `skill-authoring` (4), `evaluation` (4), `planning-review` (8), `discovery` (1), `prompting` (3)
+Subcategories: `orchestration` (4), `agent-frameworks` (3), `skill-authoring` (4), `evaluation` (4), `memory` (1), `planning-review` (8), `discovery` (1), `prompting` (3)
+
 
 
 | Skill |

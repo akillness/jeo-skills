@@ -1,0 +1,34 @@
+N:mex
+D:[mex] Drive mex (`mex-agent`), persistent project memory and code graphs for AI coding agents. One command scaffolds a living wiki, builds a deterministic code graph, and installs a project anchor file (CLAUDE.md, root AGENTS.md, .cursorrules, .windsurfrules, copilot-instructions.md, or .opencode/opencode.json) that your agent auto-loads as a standing rule document. Node.js >= 22.5, `npm install -g mex-agent` (MIT); binary is `mex`. Supports TypeScript, JavaScript, Python, and Rust.
+G:mex mex-agent project-memory code-graphs drift-detection documentation agent-memory living-wiki tree-sitter sqlite cli project-anchor
+
+U[7]:
+  Set up a new project scaffold for an AI-assisted codebase (`mex setup`)
+  Build a symbol-grounded living wiki tied to exact source locations
+  Get a project anchor file (AGENTS.md, CLAUDE.md, .cursorrules, ...) auto-generated so an agent picks up mex context with no manual wiring
+  Keep architectural notes, decisions, and conventions synchronized with code
+  Run drift detection (`mex check`) to catch stale documentation
+  Sync the wiki back to code after meaningful changes (`mex sync`)
+  Retrieve compact, task-scoped context instead of a full-repo grep (`mex graph scope "<task>"`)
+
+S[6]{n,step,details}:
+  1,One-shot auto-install,bash .agent-skills/mex/scripts/install.sh /path/to/project — installs mex-agent globally, verifies it is not a TeX Live `mex` collision, runs `mex setup` non-interactively, builds the code graph, runs `mex check`
+  2,Populate the scaffold,every context/*.md and patterns/* file is an empty template until you paste install.sh's printed prompt into your coding agent session — that agent session writes project-specific content
+  3,Edit ROUTER.md,map common agent tasks (e.g. "add a new API endpoint") to the relevant context/patterns files so agents load only what a task needs
+  4,Keep it current,`mex graph` rebuild after code changes; `mex check` (no AI tokens) validates paths/links/staleness; `mex sync` repairs drift with a targeted agent prompt
+  5,Do not promise MCP,packages/mex-mcp is unpublished to npm and ships no `mex mcp` CLI subcommand — only document the build-from-source path
+  6,Read-only environment check,bash .agent-skills/mex/scripts/mex.sh doctor [project_path] — inspects Node/mex/Git/.mex/ state without installing or modifying anything
+
+R[6]:
+  Use install.sh, not manual steps — it is idempotent (skips `mex setup` when .mex/ already exists) and reports which anchor file mex chose
+  ROUTER.md is the anchor — keep task-to-context mappings short so agents never load the entire wiki
+  Check before sessions (`mex check`), sync after (`mex sync`) to keep the wiki tethered to code
+  Version the wiki — .mex/ is Markdown/JSONL; commit it to Git to track how memory evolved
+  Never claim MCP is wired up for Claude Code, Cursor, jeo, gjc, jeopi, or OpenCode until packages/mex-mcp is actually published
+  Telemetry is opt-out by default — mention DO_NOT_TRACK=1 / MEX_TELEMETRY=0 / `mex config set telemetry off` if the user cares
+
+E[4]{type,command}:
+  Install skill,npx skills add https://github.com/akillness/jeo-skills --skill mex
+  Auto-install + wiki,bash .agent-skills/mex/scripts/install.sh ~/code/my-project
+  Detect drift,mex check   (then: mex sync)
+  Doctor,bash .agent-skills/mex/scripts/mex.sh doctor /path/to/project
