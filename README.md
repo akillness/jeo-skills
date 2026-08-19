@@ -2,14 +2,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-208-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-209-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![GJC](https://img.shields.io/badge/GJC-gajae--code-181717?style=for-the-badge&logo=github)](https://github.com/akillness/gajae-code)
 [![jeo-code](https://img.shields.io/badge/jeo--code-jeo-181717?style=for-the-badge&logo=github)](https://github.com/akillness/jeo-code)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**208 categorized skills · lightweight selective install · compact TOON catalog · cross-platform**
+**209 categorized skills · lightweight selective install · compact TOON catalog · cross-platform**
 
 A curated collection for spec-first, multi-agent LLM workflows. Delegate a complete setup
 with one prompt, or install the `jeo-skill` router first and add only the web,
@@ -70,7 +70,7 @@ The agent runs a **full install by default** (say “core only” or “minimal�
 
 ### Lightweight selective install (manual / CI)
 
-Install the **`jeo-skill` router first**, not all 208 skill folders. It provides category,
+Install the **`jeo-skill` router first**, not all 209 skill folders. It provides category,
 subcategory, interface, bundle, and relationship discovery while keeping heavy apps,
 models, MCP servers, and runtimes on demand.
 
@@ -110,6 +110,31 @@ Set `JEO_SKILLS_SELECTION=bundle`, `category`, or `all` only when that wider she
 scope is intentional. See [setup-all-skills-prompt.md](setup-all-skills-prompt.md) for the
 LLM-driven full default and the narrower “core only” and “minimal” modes.
 
+### 🐜 Sponsored by ScrapingAnt — live web access for your agents
+
+[ScrapingAnt](https://scrapingant.com?ref=ztewzmv) is a partner of jeo-skills and powers the
+`scrapingant-web-fetch` skill: a hosted MCP server (`https://api.scrapingant.com/mcp`) that
+fetches pages an agent normally cannot reach — Cloudflare-protected, bot-checked, or
+JavaScript-only — and returns LLM-ready Markdown. Nothing runs locally: no browser binary,
+no runtime, no MCP process to supervise.
+
+```bash
+jeo-skill install scrapingant-web-fetch --global --yes
+export SCRAPINGANT_API_KEY="<your-key>"   # free key: https://scrapingant.com?ref=ztewzmv
+bash .agent-skills/scrapingant-web-fetch/scripts/scrapingant.sh install claude-code
+```
+
+- **Free tier at signup:** 10,000 credits/month, no credit card, no rollover.
+- **Cost-aware by design:** static fetch 1 credit · JS rendering 10 · residential proxy 25/125 —
+  the skill escalates only after a cheaper attempt actually fails.
+- **Three tools:** `get_web_page_markdown` (default), `get_web_page_html`, `get_web_page_text`.
+- **Clients:** Claude Code, Claude Desktop, Cursor, Windsurf, Cline, VS Code / GitHub Copilot.
+- **Guide:** [`.agent-skills/scrapingant-web-fetch/SKILL.md`](.agent-skills/scrapingant-web-fetch/SKILL.md) ·
+  partnership scope and decisions in [`docs/scrapingant-partnership.md`](docs/scrapingant-partnership.md).
+
+Signing up through the link above supports this repository at no extra cost to you, and the API
+key stays yours — jeo-skills never ships or stores it.
+
 ### On-demand video motion previs
 
 `video-motion-previs` remains a CLI-first motion workflow. Its desktop app and generated
@@ -123,12 +148,11 @@ video-motion-previs check
 
 ## 📚 Skills List
 
-> Central manifest: `.agent-skills/skills.json` · 208 skills · 10 primary categories · subcategory/interface/relationship metadata
+> Central manifest: `.agent-skills/skills.json` · 209 skills · 10 primary categories · subcategory/interface/relationship metadata
 
 ### 🌐 Web (47)
 
 Subcategories: `frontend` (6), `backend` (3), `design` (11), `api` (2), `auth` (1), `data` (4), `testing` (3), `accessibility` (1), `performance` (1), `graphics` (10), `capture` (5)
-
 
 | Skill |
 |---|
@@ -136,9 +160,6 @@ Subcategories: `frontend` (6), `backend` (3), `design` (11), `api` (2), `auth` (
 | `react-best-practices` |
 | `react-bits` |
 | `state-management` |
-| `chatbot-template` |
-| `airship` |
-
 | `amrouter` |
 | `colibri` |
 | `pydantic-ai` |
@@ -179,8 +200,9 @@ Subcategories: `frontend` (6), `backend` (3), `design` (11), `api` (2), `auth` (
 | `react-grab` |
 | `slides-grab` |
 | `stitched-full-page-capture` |
+| `chatbot-template` |
+| `airship` |
 | `moli` |
-
 
 ### 🏗 Infrastructure (12)
 
@@ -234,7 +256,6 @@ Subcategories: `client` (2), `web` (2), `server` (0), `design-ui` (4), `audio` (
 
 Subcategories: `image` (5), `video` (9), `motion` (1), `audio` (1), `presentation` (1), `diagram` (1), `design` (1), `capture` (0), `storytelling` (1)
 
-
 | Skill |
 |---|
 | `aura-asset-images` |
@@ -250,28 +271,27 @@ Subcategories: `image` (5), `video` (9), `motion` (1), `audio` (1), `presentatio
 | `video-shotcraft` |
 | `video-to-superprompt` |
 | `vox-director` |
-| `palmier-pro` |
-
 | `video-motion-previs` |
 | `elevenlabs-tts` |
 | `presentation-builder` |
 | `drawio` |
 | `open-design` |
 | `webtoon-harness` |
+| `palmier-pro` |
 
-### ⌨️ CLI Tools (27)
+### ⌨️ CLI Tools (28)
 
-Subcategories: `developer-cli` (7), `ai-cli` (9), `media-cli` (1), `automation-cli` (6), `search-cli` (3), `benchmark-cli` (1)
+Subcategories: `developer-cli` (7), `ai-cli` (9), `media-cli` (1), `automation-cli` (6), `search-cli` (4), `benchmark-cli` (1)
 
 | Skill |
 |---|
+| `soup` |
 | `caveman` |
 | `ccpi-marketplace` |
 | `cli-anything` |
 | `ghgrab` |
 | `jeo-skill` |
 | `pretext` |
-| `codeburn` |
 | `aider-cli-workflow` |
 | `claudekit` |
 | `fabric` |
@@ -279,8 +299,6 @@ Subcategories: `developer-cli` (7), `ai-cli` (9), `media-cli` (1), `automation-c
 | `open-code-review` |
 | `ponytail` |
 | `zeude` |
-| `soup` |
-| `mcp-server-sv-number` |
 | `compresso` |
 | `codeflow` |
 | `graphify` |
@@ -289,16 +307,16 @@ Subcategories: `developer-cli` (7), `ai-cli` (9), `media-cli` (1), `automation-c
 | `rtk` |
 | `tokhub` |
 | `scrapling` |
+| `scrapingant-web-fetch` |
 | `semble` |
 | `x-twitter-scraper` |
 | `hyperfine-benchmarking` |
-
+| `codeburn` |
+| `mcp-server-sv-number` |
 
 ### 🤖 AI & Agents (28)
 
 Subcategories: `orchestration` (4), `agent-frameworks` (3), `skill-authoring` (4), `evaluation` (4), `memory` (1), `planning-review` (8), `discovery` (1), `prompting` (3)
-
-
 
 | Skill |
 |---|
@@ -318,7 +336,6 @@ Subcategories: `orchestration` (4), `agent-frameworks` (3), `skill-authoring` (4
 | `skill-autoresearch` |
 | `kadath` |
 | `mex` |
-
 | `bmad-idea` |
 | `grill-me` |
 | `grill-with-docs` |
@@ -334,9 +351,7 @@ Subcategories: `orchestration` (4), `agent-frameworks` (3), `skill-authoring` (4
 
 ### 🧰 Engineering (20)
 
-
 Subcategories: `code-quality` (10), `testing` (4), `architecture` (3), `documentation` (2), `code-navigation` (1)
-
 
 | Skill |
 |---|
@@ -357,7 +372,6 @@ Subcategories: `code-quality` (10), `testing` (4), `architecture` (3), `document
 | `improve-codebase-architecture` |
 | `zoom-out` |
 | `nightrun` |
-
 | `changelog-maintenance` |
 | `technical-writing` |
 | `codebase-search` |
@@ -395,7 +409,6 @@ Subcategories: `marketing` (3), `support` (2), `publishing` (1)
 
 Subcategories: `knowledge` (6), `files` (2), `git` (3), `workspace` (1), `project-management` (4), `productivity` (1), `general` (0)
 
-
 | Skill |
 |---|
 | `lapian-notes` |
@@ -405,8 +418,6 @@ Subcategories: `knowledge` (6), `files` (2), `git` (3), `workspace` (1), `projec
 | `obsidian-second-brain` |
 | `opencontext` |
 | `file-organization` |
-| `watermarks-remover` |
-
 | `git-guardrails-claude-code` |
 | `git-submodule` |
 | `git-workflow` |
@@ -416,6 +427,7 @@ Subcategories: `knowledge` (6), `files` (2), `git` (3), `workspace` (1), `projec
 | `task-estimation` |
 | `task-planning` |
 | `google-workspace` |
+| `watermarks-remover` |
 
 ---
 
@@ -675,7 +687,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 
 ```text
 .
-├── .agent-skills/          ← 208 skill folders (SKILL.md + optional support files)
+├── .agent-skills/          ← 209 skill folders (SKILL.md + optional support files)
 ├── docs/                   ← detailed guides (bmad, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
@@ -709,6 +721,8 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 | `heretic` | `heretic`, `abliterate`, `decensor a model` | [.agent-skills/heretic/SKILL.md](.agent-skills/heretic/SKILL.md) |
 | `bmad` | `bmad` | [docs/bmad/README.md](docs/bmad/README.md) |
 | Harness OSS | — | [docs/harness/README.md](docs/harness/README.md) |
+| `scrapingant-web-fetch` | `scrapingant`, `mcp web scraping`, `fetch blocked page` | [.agent-skills/scrapingant-web-fetch/SKILL.md](.agent-skills/scrapingant-web-fetch/SKILL.md) |
+| ScrapingAnt partnership (sponsor) | `scrapingant`, `sponsor` | [docs/scrapingant-partnership.md](docs/scrapingant-partnership.md) |
 
 ---
 

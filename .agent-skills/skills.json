@@ -1,7 +1,7 @@
 {
   "version": "2.0.0",
   "generated": "2026-07-30",
-  "skill_count": 208,
+  "skill_count": 209,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -76,7 +76,6 @@
         "skill-authoring",
         "evaluation",
         "memory",
-
         "planning-review",
         "discovery",
         "prompting"
@@ -253,6 +252,7 @@
       "rtk",
       "tokhub",
       "scrapling",
+      "scrapingant-web-fetch",
       "semble",
       "x-twitter-scraper",
       "hyperfine-benchmarking",
@@ -276,7 +276,6 @@
       "skill-autoresearch",
       "kadath",
       "mex",
-
       "bmad-idea",
       "grill-me",
       "grill-with-docs",
@@ -289,7 +288,6 @@
       "agentic-skills",
       "agenticskills",
       "prompts-chat"
-
     ],
     "engineering": [
       "audit-reference-originality",
@@ -571,6 +569,7 @@
       ],
       "search-cli": [
         "scrapling",
+        "scrapingant-web-fetch",
         "semble",
         "x-twitter-scraper"
       ],
@@ -605,7 +604,6 @@
       "memory": [
         "mex"
       ],
-
       "planning-review": [
         "bmad-idea",
         "grill-me",
@@ -956,6 +954,15 @@
         "firebase-cli"
       ],
       "note": "Genkit now owns both client-ai-logic and server workflow modes; firebase-cli remains the platform/operator boundary."
+    },
+    "live-web-fetch": {
+      "mode": "related",
+      "members": [
+        "scrapingant-web-fetch",
+        "scrapling",
+        "x-twitter-scraper",
+        "ax"
+      ]
     }
   },
   "skills": [
@@ -4811,6 +4818,51 @@
       "source": "https://github.com/D4Vinci/Scrapling"
     },
     {
+      "name": "scrapingant-web-fetch",
+      "description": "Fetch live web pages for agents through ScrapingAnt's hosted MCP server (`https://api.scrapingant.com/mcp`) with headless-Chrome rendering, rotating datacenter/residential proxies, Cloudflare and anti-bot handling, and LLM-ready Markdown output. Use when a plain fetch/WebFetch is blocked (403/429, Cloudflare challenge), when a JavaScript/SPA page returns an empty shell, when geo-specific content is needed, or when standing up a local browser scraper costs more than the task is worth. Triggers on: scrapingant, MCP web scraping, fetch blocked page, Cloudflare bypass, anti-bot scraping, JS rendered page, scrape to markdown, residential proxy fetch, geo-targeted scrape, live web access for agents.",
+      "category": "cli-tools",
+      "subcategory": "search-cli",
+      "interface": "mcp",
+      "path": "scrapingant-web-fetch/SKILL.md",
+      "tags": [
+        "scrapingant",
+        "mcp",
+        "web-scraping",
+        "markdown",
+        "anti-bot",
+        "cloudflare",
+        "headless-chrome",
+        "residential-proxy",
+        "js-rendering",
+        "rag",
+        "live-web-access",
+        "sponsor"
+      ],
+      "platforms": [
+        "Claude",
+        "Claude Code",
+        "Claude Desktop",
+        "Cursor",
+        "Windsurf",
+        "VS Code Copilot",
+        "Cline",
+        "jeo",
+        "gjc",
+        "jeopi",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "WebFetch"
+      ],
+      "keyword": "scrapingant",
+      "version": "1.0",
+      "source": "https://docs.scrapingant.com/mcp-server"
+    },
+    {
       "name": "semble",
       "description": "Fast, accurate code search for AI agents using ~98% fewer tokens than grep+read. Indexes any local or remote repository in under a second (~250ms on CPU, no GPU or API key needed). Supports natural-language and symbol queries, semantic similar-code discovery, and MCP server integration for Claude Code, Codex, Cursor, and OpenCode. Python library available for programmatic use. Triggers on: semble, code search, semantic code search, semble search, token-efficient search, find code, code search mcp, agent code search, semble find-related, semble savings.",
       "category": "cli-tools",
@@ -7730,7 +7782,6 @@
       "keyword": "mex",
       "version": "1.1",
       "source": "mex-memory/mex"
-
     }
   ]
 }

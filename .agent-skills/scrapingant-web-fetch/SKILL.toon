@@ -1,0 +1,32 @@
+N:scrapingant-web-fetch
+D:[scrapingant-web-fetch] Fetch live web pages through ScrapingAnt's hosted MCP server (https://api.scrapingant.com/mcp, streamableHttp, x-api-key) with headless-Chrome rendering, rotating datacenter/residential proxies, Cloudflare/anti-bot handling, and LLM-ready Markdown. No local server, browser, or runtime. Free tier: 10,000 credits/month at signup, no card. Sponsor of jeo-skills.
+G:scrapingant mcp web-scraping markdown anti-bot cloudflare headless-chrome residential-proxy js-rendering rag live-web-access sponsor
+
+U[6]:
+  A plain fetch/WebFetch returns 403/429 or a Cloudflare challenge instead of content
+  The target is a JS/SPA page whose raw HTML is an empty shell
+  Page content is needed as Markdown for RAG, summarization, or doc reference
+  Content is geo-restricted and must be fetched from a specific country
+  A one-off scrape does not justify installing Playwright, Scrapling, or a browser image
+  The runtime speaks MCP (Claude Code, Claude Desktop, Cursor, Windsurf, Cline, VS Code Copilot)
+
+S[5]{n,step,details}:
+  1,Get a key,sign up at https://scrapingant.com?ref=ztewzmv (free 10k credits/month, no card) and export SCRAPINGANT_API_KEY — never commit or echo it
+  2,Check the environment,bash .agent-skills/scrapingant-web-fetch/scripts/scrapingant.sh doctor — read-only, offline, reports key/curl/client-config state
+  3,Register the MCP server,scrapingant.sh install claude-code runs `claude mcp add scrapingant --transport http https://api.scrapingant.com/mcp -H "x-api-key: $SCRAPINGANT_API_KEY"`; other clients get their exact snippet from install <client> or references/mcp-clients.md
+  4,Pick the tool and parameters,get_web_page_markdown is the default (get_web_page_html/get_web_page_text on explicit request); url is required, browser defaults true, proxy_type defaults datacenter, proxy_country is an ISO-3166 code
+  5,Verify before reporting,scrapingant.sh credits (GET /v2/usage) and scrapingant.sh probe <url> validate the key end-to-end without an MCP client attached
+
+R[6]:
+  Try the free path first — plain curl/WebFetch costs 0 credits; route to ScrapingAnt only when it actually fails
+  Escalate one axis at a time: browser=false (1 credit) -> browser=true (10) -> proxy_type=residential (25/125); never start at the top
+  Default to Markdown output — raw HTML burns far more context for the same page and the same credits
+  Never hardcode the API key; it lives in SCRAPINGANT_API_KEY and scripts mask it in output
+  Watch the budget — 10,000 free credits do not roll over; run `credits` before a batch
+  Respect robots/ToS and rate limits; anti-bot bypass is for legitimate access, not for evading an explicit refusal
+
+E[4]{type,command}:
+  Install skill,npx skills add https://github.com/akillness/jeo-skills --skill scrapingant-web-fetch
+  Register MCP (Claude Code),bash .agent-skills/scrapingant-web-fetch/scripts/scrapingant.sh install claude-code
+  Doctor,bash .agent-skills/scrapingant-web-fetch/scripts/scrapingant.sh doctor
+  Smoke test,bash .agent-skills/scrapingant-web-fetch/scripts/scrapingant.sh probe https://example.com --no-browser

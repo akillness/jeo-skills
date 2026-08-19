@@ -180,7 +180,6 @@
       "addedAt": "2026-08-18T00:00:00Z",
       "updatedAt": "2026-08-19T00:00:00Z"
     },
-
     "obsidian-second-brain": {
       "source": "akillness/jeo-skills",
       "sourceType": "github",
@@ -240,6 +239,29 @@
       "source": "akillness/jeo-skills",
       "sourceType": "github",
       "computedHash": "08ec6f9ff81f5b6f69bfdcb7aea1ea052583b0767a456c015a07cbff999ae949"
+    },
+    "scrapingant-web-fetch": {
+      "source": "akillness/jeo-skills",
+      "sourceType": "github",
+      "version": "1.0",
+      "keyword": "scrapingant",
+      "description": "ScrapingAnt 호스팅 MCP 서버(https://api.scrapingant.com/mcp, streamableHttp, x-api-key)를 통한 실시간 웹 페이지 수집 — Headless Chrome 렌더링, 데이터센터/레지덴셜 프록시 로테이션, Cloudflare·안티봇 대응, LLM용 Markdown 반환. 로컬 서버·브라우저·런타임 설치 불필요. 도구 3종(get_web_page_markdown 기본 / get_web_page_html / get_web_page_text)과 browser·proxy_type·proxy_country 파라미터를 크레딧 비용(정적 1, JS 10, 레지덴셜 25/125) 기준으로 단계적으로 상향하도록 규정. 가입 시점 기준 무료 티어 월 10,000 크레딧(카드 불필요). jeo-skills 스폰서 파트너.",
+      "tags": [
+        "scrapingant",
+        "mcp",
+        "web-scraping",
+        "markdown",
+        "anti-bot",
+        "cloudflare",
+        "headless-chrome",
+        "residential-proxy",
+        "js-rendering",
+        "rag",
+        "live-web-access",
+        "sponsor"
+      ],
+      "installCommand": "npx skills add https://github.com/akillness/jeo-skills --skill scrapingant-web-fetch",
+      "addedAt": "2026-08-20T00:00:00Z"
     },
     "scrapling": {
       "source": "akillness/jeo-skills",

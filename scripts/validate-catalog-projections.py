@@ -215,6 +215,19 @@ KOREAN_HEADINGS = {
     "유틸리티": "utilities",
 }
 
+SPANISH_HEADINGS = {
+    "Web": "web",
+    "Infraestructura": "infrastructure",
+    "Juego": "game",
+    "Medios Creativos": "creative-media",
+    "Herramientas CLI": "cli-tools",
+    "IA y Agentes": "ai-agents",
+    "Ingeniería": "engineering",
+    "Investigación y Análisis": "research",
+    "Negocios": "business",
+    "Utilidades": "utilities",
+}
+
 HEADING_RE = re.compile(r"^###\s+(.+?)\s+\((\d+)(개)?\)\s*$")
 SKILL_ROW_RE = re.compile(r"^\|\s*`([^`]+)`\s*\|\s*$")
 LEGACY_TOON_RECORD_RE = re.compile(r"^([a-z0-9][a-z0-9-]*)\|(?:[^|]*\|){3}[^|]*\|[^|]*$")
@@ -676,13 +689,14 @@ def main() -> int:
         loadable = validate_skill_documents(repo_root, skill_names, manifest_descriptions(repo_root))
         validate_readme(repo_root / "README.md", "## 📚 Skills List", ENGLISH_HEADINGS, categories, len(skill_names))
         validate_readme(repo_root / "README.ko.md", "## 📚 스킬 목록", KOREAN_HEADINGS, categories, len(skill_names))
+        validate_readme(repo_root / "README.es-ES.md", "## 📚 Lista de Habilidades", SPANISH_HEADINGS, categories, len(skill_names))
         frozen_summary = validate_frontmatter_frozen(repo_root, require_applied=args.gate1)
         link_summary = validate_links(repo_root) if strict_links else None
     except ValidationError as error:
         print(f"catalog projection validation failed: {error}", file=sys.stderr)
         return 1
 
-    print(f"catalog projections valid: {len(skill_names)} skills, {len(categories)} categories, {toon_records} TOON records, 2 README tables, {loadable} loadable SKILL.md documents")
+    print(f"catalog projections valid: {len(skill_names)} skills, {len(categories)} categories, {toon_records} TOON records, 3 README tables, {loadable} loadable SKILL.md documents")
     print(frozen_summary)
     print(link_summary if link_summary else "rule 7/8: not enforced yet (pass --strict-links after L1)")
     return 0

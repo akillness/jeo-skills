@@ -488,3 +488,33 @@ server got wired up for any agent. Never run `install.sh` as part of blanket
 setup or verification; it stays a task-triggered, user-confirmed action. See
 `mex/references/commands.md` for the full command reference.
 
+
+### ScrapingAnt MCP web fetch (on demand, needs a key)
+
+The `scrapingant-web-fetch` skill installs as documents plus
+`scripts/scrapingant.sh` (`doctor` / `install` / `credits` / `probe`). It wraps
+ScrapingAnt's **hosted** MCP server, so blanket setup must not register it: the
+server needs a user-owned API key and every call spends that user's credits.
+Prepare it only when a task actually needs live web content that a plain fetch
+cannot reach (Cloudflare/anti-bot, JS-only pages, geo-restricted content):
+
+```bash
+# 1. read-only, offline report (key present? curl? client configs? already registered?)
+bash "$SKILLS_ROOT/scrapingant-web-fetch/scripts/scrapingant.sh" doctor
+
+# 2. only after the user supplies a key (free tier: 10,000 credits/month at signup,
+#    no card — https://scrapingant.com?ref=ztewzmv)
+export SCRAPINGANT_API_KEY="<user-provided-key>"
+bash "$SKILLS_ROOT/scrapingant-web-fetch/scripts/scrapingant.sh" install claude-code
+```
+
+Registration is one `claude mcp add scrapingant --transport http
+https://api.scrapingant.com/mcp -H "x-api-key: $SCRAPINGANT_API_KEY"`; every
+other client (Claude Desktop, Cursor, Cline, Windsurf, VS Code/Copilot) takes a
+config snippet from `install <client>` or `references/mcp-clients.md`. Never
+write the key into a repo file or echo it — the scripts mask it and pass it to
+curl over stdin. Credits are real money: static fetch costs 1 credit, JS
+rendering 10, residential proxy 25/125, so escalate only after a cheaper attempt
+fails, and check the remaining balance with `scrapingant.sh credits`. ScrapingAnt
+sponsors jeo-skills; the signup link above is a referral link and the key always
+stays with the user.

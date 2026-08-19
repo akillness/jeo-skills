@@ -4,14 +4,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-194-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-209-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![GJC](https://img.shields.io/badge/GJC-gajae--code-181717?style=for-the-badge&logo=github)](https://github.com/akillness/gajae-code)
 [![jeo-code](https://img.shields.io/badge/jeo--code-jeo-181717?style=for-the-badge&logo=github)](https://github.com/akillness/jeo-code)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**194 habilidades categorizadas · instalación selectiva ligera · catálogo TOON compacto · multiplataforma**
+**209 habilidades categorizadas · instalación selectiva ligera · catálogo TOON compacto · multiplataforma**
 
 Una colección curada para flujos de trabajo LLM multi-agente y centrados en especificaciones. Delega una configuración completa con un solo prompt, o instala primero el enrutador `jeo-skill` y añade solo las habilidades de web, infraestructura, juegos, medios, CLI o utilidades que necesites.
 
@@ -68,7 +68,7 @@ El agente ejecuta una **instalación completa por defecto** (di "solo núcleo" o
 
 ### Instalación selectiva ligera (manual / CI)
 
-Instala primero el **enrutador `jeo-skill`**, no las 194 carpetas de habilidades. Proporciona descubrimiento de categoría, subcategoría, interfaz, paquete y relación, manteniendo aplicaciones pesadas, modelos, servidores MCP y tiempos de ejecución bajo demanda.
+Instala primero el **enrutador `jeo-skill`**, no las 209 carpetas de habilidades. Proporciona descubrimiento de categoría, subcategoría, interfaz, paquete y relación, manteniendo aplicaciones pesadas, modelos, servidores MCP y tiempos de ejecución bajo demanda.
 
 ```bash
 # One lightweight skill, shared globally
@@ -104,6 +104,31 @@ curl -fsSL https://raw.githubusercontent.com/akillness/jeo-skills/main/install.s
 
 Establece `JEO_SKILLS_SELECTION=bundle`, `category` o `all` solo cuando ese alcance más amplio del instalador shell sea intencional. Consulta [setup-all-skills-prompt.md](setup-all-skills-prompt.md) para el valor predeterminado completo impulsado por LLM y los modos más restringidos "solo núcleo" y "mínimo".
 
+### 🐜 Patrocinado por ScrapingAnt — acceso web en vivo para tus agentes
+
+[ScrapingAnt](https://scrapingant.com?ref=ztewzmv) es socio de jeo-skills e impulsa la habilidad
+`scrapingant-web-fetch`: un servidor MCP alojado (`https://api.scrapingant.com/mcp`) que obtiene
+páginas que un agente normalmente no puede alcanzar — protegidas por Cloudflare, con verificación
+de bots o renderizadas solo con JavaScript — y las devuelve como Markdown listo para LLM. No se
+ejecuta nada en local: ni navegador, ni runtime, ni proceso MCP que mantener.
+
+```bash
+jeo-skill install scrapingant-web-fetch --global --yes
+export SCRAPINGANT_API_KEY="<tu-clave>"   # clave gratuita: https://scrapingant.com?ref=ztewzmv
+bash .agent-skills/scrapingant-web-fetch/scripts/scrapingant.sh install claude-code
+```
+
+- **Nivel gratuito al registrarse:** 10.000 créditos/mes, sin tarjeta, sin acumulación.
+- **Diseñado con el coste en mente:** petición estática 1 crédito · renderizado JS 10 · proxy
+  residencial 25/125 — la habilidad escala solo cuando un intento más barato falla de verdad.
+- **Tres herramientas:** `get_web_page_markdown` (por defecto), `get_web_page_html`, `get_web_page_text`.
+- **Clientes:** Claude Code, Claude Desktop, Cursor, Windsurf, Cline, VS Code / GitHub Copilot.
+- **Guía:** [`.agent-skills/scrapingant-web-fetch/SKILL.md`](.agent-skills/scrapingant-web-fetch/SKILL.md) ·
+  alcance y decisiones de la asociación en [`docs/scrapingant-partnership.md`](docs/scrapingant-partnership.md).
+
+Registrarte con el enlace anterior apoya este repositorio sin coste adicional para ti, y la clave
+de API sigue siendo tuya: jeo-skills nunca la almacena ni la distribuye.
+
 ### Previsualización de movimiento en vídeo bajo demanda
 
 `video-motion-previs` sigue siendo un flujo de trabajo de movimiento primero por CLI. Su aplicación de escritorio y los activos generados del modelo/tiempo de ejecución se instalan solo cuando una tarea de movimiento real los necesita.
@@ -116,11 +141,11 @@ video-motion-previs check
 
 ## 📚 Lista de Habilidades
 
-> Manifiesto central: `.\agent-skills/skills.json` · 194 habilidades · 10 categorías principales · metadatos de subcategoría/interfaz/relación
+> Manifiesto central: `.agent-skills/skills.json` · 209 habilidades · 10 categorías principales · metadatos de subcategoría/interfaz/relación
 
-### 🌐 Web (44)
+### 🌐 Web (47)
 
-Subcategorías: `frontend` (4), `backend` (3), `design` (11), `api` (2), `auth` (1), `data` (4), `testing` (3), `accessibility` (1), `performance` (1), `graphics` (10), `capture` (4)
+Subcategorías: `frontend` (6), `backend` (3), `design` (11), `api` (2), `auth` (1), `data` (4), `testing` (3), `accessibility` (1), `performance` (1), `graphics` (10), `capture` (5)
 
 | Skill |
 |---|
@@ -168,10 +193,13 @@ Subcategorías: `frontend` (4), `backend` (3), `design` (11), `api` (2), `auth` 
 | `react-grab` |
 | `slides-grab` |
 | `stitched-full-page-capture` |
+| `chatbot-template` |
+| `airship` |
+| `moli` |
 
-### 🏗 Infraestructura (11)
+### 🏗 Infraestructura (12)
 
-Subcategorías: `deployment` (2), `environment` (2), `observability` (2), `security` (2), `cloud-data` (3), `automation` (0), `tooling` (0)
+Subcategorías: `deployment` (2), `environment` (2), `observability` (2), `security` (2), `cloud-data` (3), `automation` (0), `tooling` (1)
 
 | Skill |
 |---|
@@ -188,9 +216,9 @@ Subcategorías: `deployment` (2), `environment` (2), `observability` (2), `secur
 | `genkit` |
 | `looker-studio-bigquery` |
 
-### 🎮 Juego (21)
+### 🎮 Juego (22)
 
-Subcategorías: `client` (2), `web` (2), `server` (0), `design-ui` (4), `audio` (1), `animation` (2), `motion-vfx` (2), `sprite-image` (1), `art-resources` (0), `storytelling` (0), `tooling` (2), `qa-performance` (3), `release` (2)
+Subcategorías: `client` (2), `web` (2), `server` (0), `design-ui` (4), `audio` (1), `animation` (2), `motion-vfx` (2), `sprite-image` (1), `art-resources` (0), `storytelling` (0), `tooling` (2), `qa-performance` (4), `release` (2)
 
 | Skill |
 |---|
@@ -213,12 +241,13 @@ Subcategorías: `client` (2), `web` (2), `server` (0), `design-ui` (4), `audio` 
 | `game-build-log-triage` |
 | `game-demo-feedback-triage` |
 | `game-performance-profiler` |
+| `wai-play` |
 | `game-ci-cd-pipeline` |
 | `steam-store-launch-ops` |
 
-### 🎬 Medios Creativos (19)
+### 🎬 Medios Creativos (20)
 
-Subcategorías: `image` (5), `video` (8), `motion` (1), `audio` (1), `presentation` (1), `diagram` (1), `design` (1), `capture` (0), `storytelling` (1)
+Subcategorías: `image` (5), `video` (9), `motion` (1), `audio` (1), `presentation` (1), `diagram` (1), `design` (1), `capture` (0), `storytelling` (1)
 
 | Skill |
 |---|
@@ -241,13 +270,15 @@ Subcategorías: `image` (5), `video` (8), `motion` (1), `audio` (1), `presentati
 | `drawio` |
 | `open-design` |
 | `webtoon-harness` |
+| `palmier-pro` |
 
-### ⌨️ Herramientas CLI (24)
+### ⌨️ Herramientas CLI (28)
 
-Subcategorías: `developer-cli` (6), `ai-cli` (7), `media-cli` (1), `automation-cli` (6), `search-cli` (3), `benchmark-cli` (1)
+Subcategorías: `developer-cli` (7), `ai-cli` (9), `media-cli` (1), `automation-cli` (6), `search-cli` (4), `benchmark-cli` (1)
 
 | Skill |
 |---|
+| `soup` |
 | `caveman` |
 | `ccpi-marketplace` |
 | `cli-anything` |
@@ -269,13 +300,16 @@ Subcategorías: `developer-cli` (6), `ai-cli` (7), `media-cli` (1), `automation-
 | `rtk` |
 | `tokhub` |
 | `scrapling` |
+| `scrapingant-web-fetch` |
 | `semble` |
 | `x-twitter-scraper` |
 | `hyperfine-benchmarking` |
+| `codeburn` |
+| `mcp-server-sv-number` |
 
-### 🤖 IA y Agentes (25)
+### 🤖 IA y Agentes (28)
 
-Subcategorías: `orchestration` (4), `agent-frameworks` (2), `skill-authoring` (4), `evaluation` (3), `planning-review` (8), `discovery` (1), `prompting` (3)
+Subcategorías: `orchestration` (4), `agent-frameworks` (3), `skill-authoring` (4), `evaluation` (4), `memory` (1), `planning-review` (8), `discovery` (1), `prompting` (3)
 
 | Skill |
 |---|
@@ -285,6 +319,7 @@ Subcategorías: `orchestration` (4), `agent-frameworks` (2), `skill-authoring` (
 | `spec-kit` |
 | `microsoft-agent-framework` |
 | `openai-agents-python` |
+| `goalflow` |
 | `article-prompts-to-skills` |
 | `skill-standardization` |
 | `upskill` |
@@ -292,6 +327,8 @@ Subcategorías: `orchestration` (4), `agent-frameworks` (2), `skill-authoring` (
 | `langsmith` |
 | `opik` |
 | `skill-autoresearch` |
+| `kadath` |
+| `mex` |
 | `bmad-idea` |
 | `grill-me` |
 | `grill-with-docs` |
@@ -305,9 +342,9 @@ Subcategorías: `orchestration` (4), `agent-frameworks` (2), `skill-authoring` (
 | `agenticskills` |
 | `prompts-chat` |
 
-### 🧰 Ingeniería (19)
+### 🧰 Ingeniería (20)
 
-Subcategorías: `code-quality` (10), `testing` (4), `architecture` (2), `documentation` (2), `code-navigation` (1)
+Subcategorías: `code-quality` (10), `testing` (4), `architecture` (3), `documentation` (2), `code-navigation` (1)
 
 | Skill |
 |---|
@@ -327,6 +364,7 @@ Subcategorías: `code-quality` (10), `testing` (4), `architecture` (2), `documen
 | `testing-strategies` |
 | `improve-codebase-architecture` |
 | `zoom-out` |
+| `nightrun` |
 | `changelog-maintenance` |
 | `technical-writing` |
 | `codebase-search` |
@@ -360,9 +398,9 @@ Subcategorías: `marketing` (3), `support` (2), `publishing` (1)
 | `customer-support-verification` |
 | `yuwen-publish-precheck` |
 
-### 🔧 Utilidades (16)
+### 🔧 Utilidades (17)
 
-Subcategorías: `knowledge` (6), `files` (1), `git` (3), `workspace` (1), `project-management` (4), `productivity` (1), `general` (0)
+Subcategorías: `knowledge` (6), `files` (2), `git` (3), `workspace` (1), `project-management` (4), `productivity` (1), `general` (0)
 
 | Skill |
 |---|
@@ -382,6 +420,7 @@ Subcategorías: `knowledge` (6), `files` (1), `git` (3), `workspace` (1), `proje
 | `task-estimation` |
 | `task-planning` |
 | `google-workspace` |
+| `watermarks-remover` |
 
 ---
 
@@ -641,7 +680,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 
 ```text
 .
-├── .agent-skills/          ← 194 skill folders (SKILL.md + optional support files)
+├── .agent-skills/          ← 209 skill folders (SKILL.md + optional support files)
 ├── docs/                   ← detailed guides (bmad, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
@@ -675,6 +714,8 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 | `heretic` | `heretic`, `abliterate`, `decensor a model` | [.agent-skills/heretic/SKILL.md](.agent-skills/heretic/SKILL.md) |
 | `bmad` | `bmad` | [docs/bmad/README.md](docs/bmad/README.md) |
 | OSS de Arneses | — | [docs/harness/README.md](docs/harness/README.md) |
+| `scrapingant-web-fetch` | `scrapingant`, `mcp web scraping`, `fetch blocked page` | [.agent-skills/scrapingant-web-fetch/SKILL.md](.agent-skills/scrapingant-web-fetch/SKILL.md) |
+| Asociación ScrapingAnt (patrocinador) | `scrapingant`, `sponsor` | [docs/scrapingant-partnership.md](docs/scrapingant-partnership.md) |
 
 ---
 

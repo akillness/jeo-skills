@@ -2,14 +2,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-208-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-209-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![GJC](https://img.shields.io/badge/GJC-gajae--code-181717?style=for-the-badge&logo=github)](https://github.com/akillness/gajae-code)
 [![jeo-code](https://img.shields.io/badge/jeo--code-jeo-181717?style=for-the-badge&logo=github)](https://github.com/akillness/jeo-code)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**카테고리형 스킬 208개 · 경량 선택 설치 · 압축 TOON 카탈로그 · 멀티플랫폼**
+**카테고리형 스킬 209개 · 경량 선택 설치 · 압축 TOON 카탈로그 · 멀티플랫폼**
 
 스펙 우선 멀티 에이전트 LLM 워크플로우 컬렉션입니다. 프롬프트 하나로 전체 설정을
 위임하거나, `jeo-skill` 라우터부터 설치해 필요한 웹, 인프라, 게임, 미디어, CLI,
@@ -73,7 +73,7 @@ curl -s https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-sk
 
 ### 경량 선택 설치(수동 / CI)
 
-208개 스킬 폴더 전체가 아니라 **`jeo-skill` 라우터부터 설치**합니다. 카테고리,
+209개 스킬 폴더 전체가 아니라 **`jeo-skill` 라우터부터 설치**합니다. 카테고리,
 하위 분류, 인터페이스, 번들, 연관 스킬을 탐색할 수 있으며 앱·모델·MCP 서버·런타임은
 실제 선택된 작업에서만 온디맨드로 설치합니다.
 
@@ -113,6 +113,30 @@ curl -fsSL https://raw.githubusercontent.com/akillness/jeo-skills/main/install.s
 경우에만 지정합니다. LLM 위임 설치의 전체 기본 모드와 더 좁은 “core only”,
 “minimal” 모드는 [setup-all-skills-prompt.md](setup-all-skills-prompt.md)를 참고하세요.
 
+### 🐜 스폰서: ScrapingAnt — 에이전트를 위한 실시간 웹 접근
+
+[ScrapingAnt](https://scrapingant.com?ref=ztewzmv)는 jeo-skills의 파트너이며 `scrapingant-web-fetch`
+스킬을 제공합니다. 호스팅형 MCP 서버(`https://api.scrapingant.com/mcp`)가 일반 fetch로는 가져올 수 없는
+페이지 — Cloudflare 보호, 봇 차단, JavaScript 전용 렌더링 — 를 대신 가져와 LLM에 바로 쓸 수 있는
+Markdown으로 돌려줍니다. 로컬에 브라우저·런타임·MCP 프로세스를 설치할 필요가 없습니다.
+
+```bash
+jeo-skill install scrapingant-web-fetch --global --yes
+export SCRAPINGANT_API_KEY="<발급받은-키>"   # 무료 키: https://scrapingant.com?ref=ztewzmv
+bash .agent-skills/scrapingant-web-fetch/scripts/scrapingant.sh install claude-code
+```
+
+- **가입 시점 기준 무료 티어:** 월 10,000 크레딧, 카드 등록 불필요, 이월 없음.
+- **비용을 고려한 설계:** 정적 fetch 1크레딧 · JS 렌더링 10 · 레지덴셜 프록시 25/125 —
+  스킬은 더 싼 시도가 실제로 실패한 뒤에만 단계를 올립니다.
+- **도구 3종:** `get_web_page_markdown`(기본), `get_web_page_html`, `get_web_page_text`.
+- **지원 클라이언트:** Claude Code, Claude Desktop, Cursor, Windsurf, Cline, VS Code / GitHub Copilot.
+- **가이드:** [`.agent-skills/scrapingant-web-fetch/SKILL.md`](.agent-skills/scrapingant-web-fetch/SKILL.md) ·
+  파트너십 범위와 결정 사항은 [`docs/scrapingant-partnership.ko.md`](docs/scrapingant-partnership.ko.md).
+
+위 링크로 가입하면 추가 비용 없이 이 저장소를 후원하게 되며, API 키는 사용자 소유로 남습니다 —
+jeo-skills는 키를 저장하거나 배포하지 않습니다.
+
 ### 온디맨드 비디오 모션 프리비스
 
 `video-motion-previs`는 CLI 우선 모션 워크플로우를 유지합니다. 데스크톱 앱과
@@ -126,12 +150,11 @@ video-motion-previs check
 
 ## 📚 스킬 목록
 
-> 중앙 매니페스트: `.agent-skills/skills.json` · 208개 스킬 · 10개 기본 카테고리 · 하위 카테고리/인터페이스/관계 그룹 지원
+> 중앙 매니페스트: `.agent-skills/skills.json` · 209개 스킬 · 10개 기본 카테고리 · 하위 카테고리/인터페이스/관계 그룹 지원
 
 ### 🌐 웹 (47개)
 
 하위 분류: `frontend` (6), `backend` (3), `design` (11), `api` (2), `auth` (1), `data` (4), `testing` (3), `accessibility` (1), `performance` (1), `graphics` (10), `capture` (5)
-
 
 | Skill |
 |---|
@@ -139,9 +162,6 @@ video-motion-previs check
 | `react-best-practices` |
 | `react-bits` |
 | `state-management` |
-| `chatbot-template` |
-| `airship` |
-
 | `amrouter` |
 | `colibri` |
 | `pydantic-ai` |
@@ -182,8 +202,9 @@ video-motion-previs check
 | `react-grab` |
 | `slides-grab` |
 | `stitched-full-page-capture` |
+| `chatbot-template` |
+| `airship` |
 | `moli` |
-
 
 ### 🏗 인프라 (12개)
 
@@ -237,7 +258,6 @@ video-motion-previs check
 
 하위 분류: `image` (5), `video` (9), `motion` (1), `audio` (1), `presentation` (1), `diagram` (1), `design` (1), `capture` (0), `storytelling` (1)
 
-
 | Skill |
 |---|
 | `aura-asset-images` |
@@ -253,28 +273,27 @@ video-motion-previs check
 | `video-shotcraft` |
 | `video-to-superprompt` |
 | `vox-director` |
-| `palmier-pro` |
-
 | `video-motion-previs` |
 | `elevenlabs-tts` |
 | `presentation-builder` |
 | `drawio` |
 | `open-design` |
 | `webtoon-harness` |
+| `palmier-pro` |
 
-### ⌨️ CLI 도구 (27개)
+### ⌨️ CLI 도구 (28개)
 
-하위 분류: `developer-cli` (7), `ai-cli` (9), `media-cli` (1), `automation-cli` (6), `search-cli` (3), `benchmark-cli` (1)
+하위 분류: `developer-cli` (7), `ai-cli` (9), `media-cli` (1), `automation-cli` (6), `search-cli` (4), `benchmark-cli` (1)
 
 | Skill |
 |---|
+| `soup` |
 | `caveman` |
 | `ccpi-marketplace` |
 | `cli-anything` |
 | `ghgrab` |
 | `jeo-skill` |
 | `pretext` |
-| `codeburn` |
 | `aider-cli-workflow` |
 | `claudekit` |
 | `fabric` |
@@ -282,8 +301,6 @@ video-motion-previs check
 | `open-code-review` |
 | `ponytail` |
 | `zeude` |
-| `soup` |
-| `mcp-server-sv-number` |
 | `compresso` |
 | `codeflow` |
 | `graphify` |
@@ -292,16 +309,16 @@ video-motion-previs check
 | `rtk` |
 | `tokhub` |
 | `scrapling` |
+| `scrapingant-web-fetch` |
 | `semble` |
 | `x-twitter-scraper` |
 | `hyperfine-benchmarking` |
-
+| `codeburn` |
+| `mcp-server-sv-number` |
 
 ### 🤖 AI 및 에이전트 (28개)
 
 하위 분류: `orchestration` (4), `agent-frameworks` (3), `skill-authoring` (4), `evaluation` (4), `memory` (1), `planning-review` (8), `discovery` (1), `prompting` (3)
-
-
 
 | Skill |
 |---|
@@ -318,12 +335,9 @@ video-motion-previs check
 | `write-a-skill` |
 | `langsmith` |
 | `opik` |
-
 | `skill-autoresearch` |
 | `kadath` |
 | `mex` |
-
-
 | `bmad-idea` |
 | `grill-me` |
 | `grill-with-docs` |
@@ -339,9 +353,7 @@ video-motion-previs check
 
 ### 🧰 엔지니어링 (20개)
 
-
 하위 분류: `code-quality` (10), `testing` (4), `architecture` (3), `documentation` (2), `code-navigation` (1)
-
 
 | Skill |
 |---|
@@ -362,7 +374,6 @@ video-motion-previs check
 | `improve-codebase-architecture` |
 | `zoom-out` |
 | `nightrun` |
-
 | `changelog-maintenance` |
 | `technical-writing` |
 | `codebase-search` |
@@ -400,7 +411,6 @@ video-motion-previs check
 
 하위 분류: `knowledge` (6), `files` (2), `git` (3), `workspace` (1), `project-management` (4), `productivity` (1), `general` (0)
 
-
 | Skill |
 |---|
 | `lapian-notes` |
@@ -410,8 +420,6 @@ video-motion-previs check
 | `obsidian-second-brain` |
 | `opencontext` |
 | `file-organization` |
-| `watermarks-remover` |
-
 | `git-guardrails-claude-code` |
 | `git-submodule` |
 | `git-workflow` |
@@ -421,6 +429,7 @@ video-motion-previs check
 | `task-estimation` |
 | `task-planning` |
 | `google-workspace` |
+| `watermarks-remover` |
 
 ---
 
@@ -666,7 +675,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 ## 📁 구조
 
 ```text
-├── .agent-skills/          ← 208개 스킬 폴더 (SKILL.md + 선택적 지원 파일)
+├── .agent-skills/          ← 209개 스킬 폴더 (SKILL.md + 선택적 지원 파일)
 ├── docs/                   ← 상세 가이드 (bmad, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
@@ -698,6 +707,8 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 | `heretic` | `heretic`, `어블리터레이션`, `모델 검열 제거` | [.agent-skills/heretic/SKILL.md](.agent-skills/heretic/SKILL.md) |
 | `bmad` | `bmad` | [docs/bmad/README.md](docs/bmad/README.md) |
 | Harness OSS | — | [docs/harness/README.ko.md](docs/harness/README.ko.md) |
+| `scrapingant-web-fetch` | `scrapingant`, `mcp 웹 스크래핑`, `차단된 페이지 fetch` | [.agent-skills/scrapingant-web-fetch/SKILL.md](.agent-skills/scrapingant-web-fetch/SKILL.md) |
+| ScrapingAnt 파트너십(스폰서) | `scrapingant`, `sponsor` | [docs/scrapingant-partnership.ko.md](docs/scrapingant-partnership.ko.md) |
 
 ---
 

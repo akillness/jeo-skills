@@ -1,6 +1,10 @@
 # ScrapingAnt MCP Skill Adoption & Sponsorship Plan
 
-> Status: **Reviewed — pending execution** · Last updated: 2026-02 · Planned skill: `scrapingant-web-fetch`
+> Status: **Executed** · Last updated: 2026-08 · Shipped skill: [`scrapingant-web-fetch`](../.agent-skills/scrapingant-web-fetch/SKILL.md)
+>
+> Partnership accepted by email on 2026-08-19 (Oleg Kulyk, ScrapingAnt) and the
+> open-source partner signup is complete, so the README sponsor sections are live.
+> Referral link in use: `https://scrapingant.com?ref=ztewzmv`.
 >
 > Based on the official ScrapingAnt documentation ([docs.scrapingant.com/mcp-server](https://docs.scrapingant.com/mcp-server))
 > and the MCP (Model Context Protocol) specification, this document records
@@ -12,7 +16,7 @@
 
 ## 0. Verified Facts (Source of Truth)
 
-Confirmed directly against the official ScrapingAnt docs as of 2026-02. Re-verify this section first whenever the doc is updated.
+Confirmed directly against the official ScrapingAnt docs, re-verified 2026-08. Re-verify this section first whenever the doc is updated.
 
 | Item | Value | Source |
 |---|---|---|
@@ -22,6 +26,10 @@ Confirmed directly against the official ScrapingAnt docs as of 2026-02. Re-verif
 | Tools (3) | `get_web_page_markdown` · `get_web_page_html` · `get_web_page_text` | ibid. |
 | Free tier | 10,000 credits/month, no credit card | scrapingant.com |
 | Documented clients | Claude Desktop, Claude Code (CLI), VS Code/Copilot, Cursor, Cline, Windsurf | docs.scrapingant.com/mcp-server |
+| Tool parameters | `url` (required) · `browser` (default `true`) · `proxy_type` (`datacenter`\|`residential`) · `proxy_country` (ISO-3166) | docs.scrapingant.com/mcp-server |
+| Credit cost | static 1 · JS rendering 10 · residential 25 · residential+JS 125 | docs.scrapingant.com/credits-cost |
+| REST twins | `/v2/markdown`, `/v2/general`, `/v2/usage` (key as query param) | docs.scrapingant.com/api-basics · /llm-markdown |
+| Referral link | `https://scrapingant.com?ref=ztewzmv` | partner program signup, 2026-08 |
 
 ## 1. Decision Matrix
 
@@ -90,14 +98,16 @@ Ready-to-send draft: [`scrapingant-outreach-email.md`](scrapingant-outreach-emai
 
 ### Step 3. Execution checklist
 
-- [ ] Scaffold the `scrapingant-web-fetch` skill (`SKILL.md` + MCP config snippet + missing-key guidance)
-- [ ] Register in the `skills.json` catalog; pass `validate_skill.sh` / `validate_catalog_sync.py`
-- [ ] Draft the README sponsor section (merge only after the partnership is confirmed)
-- [ ] Send outreach email and track replies
-- [ ] Write the showcase benchmark (Cloudflare-protected site vs plain fetch)
+- [x] Scaffold the `scrapingant-web-fetch` skill (`SKILL.md` + `SKILL.toon` + `references/` + `scripts/scrapingant.sh` with `doctor`/`install`/`credits`/`probe`)
+- [x] Register in the `skills.json` catalog (cli-tools / search-cli / `mcp`, 208 → 209) + `skills.toon` + `skills-lock.json`; `validate_skill.sh` reports 0 errors / 0 warnings and `scripts/validate-catalog-projections.py` passes
+- [x] Merge the README sponsor section — partnership confirmed, so `README.md` / `README.ko.md` / `README.es-ES.md` all carry it below the install guide
+- [x] Send outreach email and track replies (accepted 2026-08-19)
+- [ ] Write the showcase benchmark (Cloudflare-protected site vs plain fetch) — needs a live API key
+- [ ] Run the skill end-to-end against a real key (`scrapingant.sh credits` / `probe`); only the auth-failure path is verified so far
 
 ## 4. Risks & Reservations
 
-- **Exposure before a signed partnership**: do not merge the README banner or "Sponsored by" wording before the deal is confirmed (only neutral "integrates with ScrapingAnt MCP" phrasing until then).
-- **API/doc drift**: tool names and endpoint follow the sources in §0; re-verify before the skill ships.
+- **Exposure before a signed partnership**: resolved — the partnership was accepted on 2026-08-19 and the partner signup completed, which is what unblocked the "Sponsored by" sections. Any future sponsor claim needs the same evidence trail.
+- **Referral disclosure**: every sponsor block states that the link is a referral and that the API key stays with the user. Keep that disclosure whenever the link is copied elsewhere.
+- **API/doc drift**: tool names, parameters, and credit costs follow the sources in §0 (re-verified 2026-08 against the live docs); re-verify before editing the skill.
 - **Credit policy changes**: "10,000 free credits/month" is ScrapingAnt policy — always qualify it with "as of signup" in user-facing docs.
