@@ -84,6 +84,10 @@ ScrapingAnt 팀(Oleg Kulyk 대표 및 Growth/DevRel 팀) 컨택 시 제시할 �
   1. 공식 MCP Skill 등록 및 최우선 Web Fetch 드라이버 채택
   2. 개발자 대상 튜토리얼/사용 사례(Technical Article) 배포
   3. Skill 사용자용 프로모션 코드 또는 엔터프라이즈 티어 크레딧 지원(Sponsorship API Tier) 요청
+  3. Skill 사용자용 프로모션 코드 또는 엔터프라이즈 티어 크레딧 지원(Sponsorship API Tier) 요청
+
+발송용 초안: [`scrapingant-outreach-email.md`](scrapingant-outreach-email.md).
+
 
 ### Step 3. 실행 체크리스트
 

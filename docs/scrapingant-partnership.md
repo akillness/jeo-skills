@@ -85,6 +85,8 @@ Key proposal when contacting the ScrapingAnt team (CEO Oleg Kulyk and Growth/Dev
   1. Official MCP Skill listing and adoption as the first-choice web-fetch driver
   2. Developer-facing tutorials / technical use-case articles
   3. Promo codes for skill users or enterprise-tier credit support (Sponsorship API Tier)
+Ready-to-send draft: [`scrapingant-outreach-email.md`](scrapingant-outreach-email.md).
+
 
 ### Step 3. Execution checklist
 
