@@ -78,7 +78,7 @@ curl -s https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-sk
 > jeo-skill install scrapingant-web-fetch --global --yes
 > ```
 >
-> 무료 티어: 월 10,000 크레딧, 카드 등록 불필요. 자세한 내용은 아래 "스폰서: ScrapingAnt" 섹션을 참고하세요.
+> 무료 티어: 월 10,000 크레딧, 카드 등록 불필요 — [scrapingant.com?ref=ztewzmv](https://scrapingant.com?ref=ztewzmv&tm_source=readme)에서 무료 키를 받으세요(가입해도 추가 비용은 없으며 이 저장소를 후원하게 됩니다). 자세한 내용은 아래 "스폰서: ScrapingAnt" 섹션을 참고하세요.
 
 
 ### 경량 선택 설치(수동 / CI)
@@ -143,8 +143,7 @@ bash .agent-skills/scrapingant-web-fetch/scripts/scrapingant.sh install claude-c
   스킬은 더 싼 시도가 실제로 실패한 뒤에만 단계를 올립니다.
 - **도구 3종:** `get_web_page_markdown`(기본), `get_web_page_html`, `get_web_page_text`.
 - **지원 클라이언트:** Claude Code, Claude Desktop, Cursor, Windsurf, Cline, VS Code / GitHub Copilot.
-- **가이드:** [`.agent-skills/scrapingant-web-fetch/SKILL.md`](.agent-skills/scrapingant-web-fetch/SKILL.md) ·
-  파트너십 범위와 결정 사항은 [`docs/scrapingant-partnership.ko.md`](docs/scrapingant-partnership.ko.md).
+- **가이드:** [`.agent-skills/scrapingant-web-fetch/SKILL.md`](.agent-skills/scrapingant-web-fetch/SKILL.md).
 
 위 링크로 가입하면 추가 비용 없이 이 저장소를 후원하게 되며, API 키는 사용자 소유로 남습니다 —
 jeo-skills는 키를 저장하거나 배포하지 않습니다.
@@ -720,7 +719,6 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 | `bmad` | `bmad` | [docs/bmad/README.md](docs/bmad/README.md) |
 | Harness OSS | — | [docs/harness/README.ko.md](docs/harness/README.ko.md) |
 | `scrapingant-web-fetch` | `scrapingant`, `mcp 웹 스크래핑`, `차단된 페이지 fetch` | [.agent-skills/scrapingant-web-fetch/SKILL.md](.agent-skills/scrapingant-web-fetch/SKILL.md) |
-| ScrapingAnt 파트너십(스폰서) | `scrapingant`, `sponsor` | [docs/scrapingant-partnership.ko.md](docs/scrapingant-partnership.ko.md) |
 
 ---
 

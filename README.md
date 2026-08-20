@@ -75,7 +75,7 @@ The agent runs a **full install by default** (say “core only” or “minimal�
 > jeo-skill install scrapingant-web-fetch --global --yes
 > ```
 >
-> Free tier: 10,000 credits/month, no card required. Full walkthrough further down in "Sponsored by ScrapingAnt".
+> Free tier: 10,000 credits/month, no card required — grab a free key at [scrapingant.com?ref=ztewzmv](https://scrapingant.com?ref=ztewzmv&tm_source=readme) (supports this repo at no extra cost to you). Full walkthrough further down in "Sponsored by ScrapingAnt".
 
 
 ### Lightweight selective install (manual / CI)
@@ -141,8 +141,7 @@ bash .agent-skills/scrapingant-web-fetch/scripts/scrapingant.sh install claude-c
   the skill escalates only after a cheaper attempt actually fails.
 - **Three tools:** `get_web_page_markdown` (default), `get_web_page_html`, `get_web_page_text`.
 - **Clients:** Claude Code, Claude Desktop, Cursor, Windsurf, Cline, VS Code / GitHub Copilot.
-- **Guide:** [`.agent-skills/scrapingant-web-fetch/SKILL.md`](.agent-skills/scrapingant-web-fetch/SKILL.md) ·
-  partnership scope and decisions in [`docs/scrapingant-partnership.md`](docs/scrapingant-partnership.md).
+- **Guide:** [`.agent-skills/scrapingant-web-fetch/SKILL.md`](.agent-skills/scrapingant-web-fetch/SKILL.md).
 
 Signing up through the link above supports this repository at no extra cost to you, and the API
 key stays yours — jeo-skills never ships or stores it.
@@ -734,7 +733,6 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 | `bmad` | `bmad` | [docs/bmad/README.md](docs/bmad/README.md) |
 | Harness OSS | — | [docs/harness/README.md](docs/harness/README.md) |
 | `scrapingant-web-fetch` | `scrapingant`, `mcp web scraping`, `fetch blocked page` | [.agent-skills/scrapingant-web-fetch/SKILL.md](.agent-skills/scrapingant-web-fetch/SKILL.md) |
-| ScrapingAnt partnership (sponsor) | `scrapingant`, `sponsor` | [docs/scrapingant-partnership.md](docs/scrapingant-partnership.md) |
 
 ---
 

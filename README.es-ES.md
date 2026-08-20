@@ -73,7 +73,7 @@ El agente ejecuta una **instalación completa por defecto** (di "solo núcleo" o
 > jeo-skill install scrapingant-web-fetch --global --yes
 > ```
 >
-> Nivel gratuito: 10,000 créditos/mes, sin tarjeta. Más detalles en la sección "Patrocinado por ScrapingAnt" más abajo.
+> Nivel gratuito: 10,000 créditos/mes, sin tarjeta — consigue una clave gratuita en [scrapingant.com?ref=ztewzmv](https://scrapingant.com?ref=ztewzmv&tm_source=readme) (apoya este repositorio sin coste adicional para ti). Más detalles en la sección "Patrocinado por ScrapingAnt" más abajo.
 
 
 ### Instalación selectiva ligera (manual / CI)
@@ -135,8 +135,7 @@ bash .agent-skills/scrapingant-web-fetch/scripts/scrapingant.sh install claude-c
   residencial 25/125 — la habilidad escala solo cuando un intento más barato falla de verdad.
 - **Tres herramientas:** `get_web_page_markdown` (por defecto), `get_web_page_html`, `get_web_page_text`.
 - **Clientes:** Claude Code, Claude Desktop, Cursor, Windsurf, Cline, VS Code / GitHub Copilot.
-- **Guía:** [`.agent-skills/scrapingant-web-fetch/SKILL.md`](.agent-skills/scrapingant-web-fetch/SKILL.md) ·
-  alcance y decisiones de la asociación en [`docs/scrapingant-partnership.md`](docs/scrapingant-partnership.md).
+- **Guía:** [`.agent-skills/scrapingant-web-fetch/SKILL.md`](.agent-skills/scrapingant-web-fetch/SKILL.md).
 
 Registrarte con el enlace anterior apoya este repositorio sin coste adicional para ti, y la clave
 de API sigue siendo tuya: jeo-skills nunca la almacena ni la distribuye.
@@ -727,7 +726,6 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 | `bmad` | `bmad` | [docs/bmad/README.md](docs/bmad/README.md) |
 | OSS de Arneses | — | [docs/harness/README.md](docs/harness/README.md) |
 | `scrapingant-web-fetch` | `scrapingant`, `mcp web scraping`, `fetch blocked page` | [.agent-skills/scrapingant-web-fetch/SKILL.md](.agent-skills/scrapingant-web-fetch/SKILL.md) |
-| Asociación ScrapingAnt (patrocinador) | `scrapingant`, `sponsor` | [docs/scrapingant-partnership.md](docs/scrapingant-partnership.md) |
 
 ---
 
