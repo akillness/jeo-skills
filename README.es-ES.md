@@ -66,6 +66,16 @@ El agente ejecuta una **instalación completa por defecto** (di "solo núcleo" o
 - registrar herramientas MCP (`ooo`, `semble`), herramientas shell (`rtk`) y el complemento `oh-my-claudecode`,
 - **preservar cualquier habilidad preexistente**: solo añade o actualiza, nunca elimina.
 
+> [!TIP]
+> **¿También necesitas acceso web en vivo para tus agentes?** Añade la habilidad de fetch de ScrapingAnt en una línea — evita Cloudflare/bloqueos de bots y devuelve Markdown listo para LLM, sin navegador local:
+>
+> ```bash
+> jeo-skill install scrapingant-web-fetch --global --yes
+> ```
+>
+> Nivel gratuito: 10,000 créditos/mes, sin tarjeta. Más detalles en la sección "Patrocinado por ScrapingAnt" más abajo.
+
+
 ### Instalación selectiva ligera (manual / CI)
 
 Instala primero el **enrutador `jeo-skill`**, no las 209 carpetas de habilidades. Proporciona descubrimiento de categoría, subcategoría, interfaz, paquete y relación, manteniendo aplicaciones pesadas, modelos, servidores MCP y tiempos de ejecución bajo demanda.

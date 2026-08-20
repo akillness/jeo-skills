@@ -68,6 +68,16 @@ The agent runs a **full install by default** (say “core only” or “minimal�
 - register MCP tools (`ooo`, `semble`), shell tooling (`rtk`), and the `oh-my-claudecode` plugin,
 - **preserve any pre-existing skills** — it only adds or updates, never deletes.
 
+> [!TIP]
+> **Also want live web access for your agents?** Add ScrapingAnt's hosted fetch skill in one line — it bypasses Cloudflare/bot-checks and returns LLM-ready Markdown, no local browser needed:
+>
+> ```bash
+> jeo-skill install scrapingant-web-fetch --global --yes
+> ```
+>
+> Free tier: 10,000 credits/month, no card required. Full walkthrough further down in "Sponsored by ScrapingAnt".
+
+
 ### Lightweight selective install (manual / CI)
 
 Install the **`jeo-skill` router first**, not all 209 skill folders. It provides category,

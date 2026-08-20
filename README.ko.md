@@ -71,6 +71,16 @@ curl -s https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-sk
 - MCP 도구(`ooo`, `semble`), 셸 도구(`rtk`), `oh-my-claudecode` 플러그인을 등록합니다.
 - 기존 스킬을 보존하며 추가 또는 업데이트만 수행하고 삭제하지 않습니다.
 
+> [!TIP]
+> **에이전트에게 실시간 웹 접근도 필요하신가요?** ScrapingAnt가 제공하는 fetch 스킬을 한 줄로 추가하세요 — Cloudflare/봇 차단을 우회하고 LLM이 바로 쓸 수 있는 Markdown을 반환하며, 로컬 브라우저가 필요 없습니다.
+>
+> ```bash
+> jeo-skill install scrapingant-web-fetch --global --yes
+> ```
+>
+> 무료 티어: 월 10,000 크레딧, 카드 등록 불필요. 자세한 내용은 아래 "스폰서: ScrapingAnt" 섹션을 참고하세요.
+
+
 ### 경량 선택 설치(수동 / CI)
 
 209개 스킬 폴더 전체가 아니라 **`jeo-skill` 라우터부터 설치**합니다. 카테고리,
