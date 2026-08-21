@@ -13,13 +13,13 @@
 #   scrapingant.sh probe <url> [--no-browser] [--proxy datacenter|residential] [--country XX]
 #
 # Free key (10,000 credits/month at signup, no card):
-#   https://scrapingant.com?ref=ztewzmv
+#   https://scrapingant.com?ref=ztewzmv&tm_source=skill
 
 set -euo pipefail
 
 MCP_URL="https://api.scrapingant.com/mcp"
 API_BASE="https://api.scrapingant.com/v2"
-SIGNUP_URL="https://scrapingant.com?ref=ztewzmv"
+SIGNUP_URL="https://scrapingant.com?ref=ztewzmv&tm_source=skill"
 
 usage() {
   awk 'NR>1 && /^#/ { sub(/^# ?/, ""); print; next } NR>1 { exit }' "$0"

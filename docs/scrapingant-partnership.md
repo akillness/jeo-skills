@@ -4,7 +4,7 @@
 >
 > Partnership accepted by email on 2026-08-19 (Oleg Kulyk, ScrapingAnt) and the
 > open-source partner signup is complete, so the README sponsor sections are live.
-> Referral link in use: `https://scrapingant.com?ref=ztewzmv&tm_source=readme` — regenerated 2026-08 via the Tapfiliate URL Wizard with SubID `source:readme` so README-driven clicks are distinguishable in the partner dashboard's Reporting/Conversions views.
+> Referral link in use: `https://scrapingant.com?ref=ztewzmv&tm_source=readme` — regenerated 2026-08 via the Tapfiliate URL Wizard with SubID `source:readme` so README-driven clicks are distinguishable in the partner dashboard's Reporting/Conversions views. The `scrapingant-web-fetch` skill's SKILL.md, `scripts/scrapingant.sh` (`doctor`/`install`/error-path signup prompts), and `setup-all-skills-prompt.md` all carry the same `ref=ztewzmv` code so every signup — README, skill doc, or CLI helper — is credited; the script uses SubID `tm_source=skill` to keep that channel distinguishable from README clicks in Reporting/Conversions.
 
 >
 > Based on the official ScrapingAnt documentation ([docs.scrapingant.com/mcp-server](https://docs.scrapingant.com/mcp-server))

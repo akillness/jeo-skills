@@ -11,7 +11,7 @@ U[6]:
   The runtime speaks MCP (Claude Code, Claude Desktop, Cursor, Windsurf, Cline, VS Code Copilot)
 
 S[5]{n,step,details}:
-  1,Get a key,sign up at https://scrapingant.com?ref=ztewzmv (free 10k credits/month, no card) and export SCRAPINGANT_API_KEY — never commit or echo it
+  1,Get a key,sign up at https://scrapingant.com?ref=ztewzmv&tm_source=skill (free 10k credits/month, no card) and export SCRAPINGANT_API_KEY — never commit or echo it
   2,Check the environment,bash .agent-skills/scrapingant-web-fetch/scripts/scrapingant.sh doctor — read-only, offline, reports key/curl/client-config state
   3,Register the MCP server,scrapingant.sh install claude-code runs `claude mcp add scrapingant --transport http https://api.scrapingant.com/mcp -H "x-api-key: $SCRAPINGANT_API_KEY"`; other clients get their exact snippet from install <client> or references/mcp-clients.md
   4,Pick the tool and parameters,get_web_page_markdown is the default (get_web_page_html/get_web_page_text on explicit request); url is required, browser defaults true, proxy_type defaults datacenter, proxy_country is an ISO-3166 code
