@@ -46,6 +46,27 @@ skills can be grouped without duplicating wrapper folders or moving runtime-faci
 ## 🏗 Workflow & Architecture
 
 <img src="assets/workflow.svg" alt="jeo-skills Workflow & Architecture" width="100%">
+
+> [!IMPORTANT]
+> ### 🐜 Start here — give your agents live web access with ScrapingAnt
+> Before the full `jeo-skills` install below, add the sponsor-backed `scrapingant-web-fetch`
+> skill first: one self-contained command wires a hosted MCP fetch tool into every supported
+> client (Claude Code, Claude Desktop, Cursor, Windsurf, Cline, VS Code Copilot) that bypasses
+> Cloudflare/bot-checks and JS-only pages and returns clean, LLM-ready Markdown — no local
+> browser, no Playwright, nothing to maintain.
+>
+> ```bash
+> npx --yes skills add https://github.com/akillness/jeo-skills \
+>   --skill scrapingant-web-fetch --global --agent universal --yes --copy --full-depth
+> ```
+>
+> Grab a free key (10,000 credits/month, no card) at
+> [scrapingant.com?ref=ztewzmv&tm_source=readme](https://scrapingant.com?ref=ztewzmv&tm_source=readme)
+> — it also supports this repo at no extra cost to you. Full guide:
+> [`.agent-skills/scrapingant-web-fetch/SKILL.md`](.agent-skills/scrapingant-web-fetch/SKILL.md).
+>
+> **Then install the rest of `jeo-skills` below ⬇️**
+
 ## 📦 Installation
 
 ### ✨ Recommended: LLM-driven install (one prompt, all platforms)

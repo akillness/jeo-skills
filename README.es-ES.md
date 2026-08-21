@@ -44,6 +44,28 @@ Cada habilidad permanece descubreable como `.\agent-skills/<name>/SKILL.md`. Los
 ## 🏗 Flujo de Trabajo y Arquitectura
 
 <img src="assets/workflow.svg" alt="jeo-skills Workflow & Architecture" width="100%">
+
+> [!IMPORTANT]
+> ### 🐜 Empieza aquí: da a tus agentes acceso web en vivo con ScrapingAnt
+> Antes de la instalación completa de `jeo-skills` de abajo, añade primero la habilidad
+> patrocinada `scrapingant-web-fetch`: un único comando autocontenido conecta una
+> herramienta de fetch MCP alojada a cada cliente compatible (Claude Code, Claude Desktop,
+> Cursor, Windsurf, Cline, VS Code Copilot) que evita Cloudflare/bloqueos de bots y páginas
+> solo-JS, devolviendo Markdown limpio listo para LLM — sin navegador local, sin Playwright,
+> sin nada que mantener.
+>
+> ```bash
+> npx --yes skills add https://github.com/akillness/jeo-skills \
+>   --skill scrapingant-web-fetch --global --agent universal --yes --copy --full-depth
+> ```
+>
+> Consigue una clave gratuita (10,000 créditos/mes, sin tarjeta) en
+> [scrapingant.com?ref=ztewzmv&tm_source=readme](https://scrapingant.com?ref=ztewzmv&tm_source=readme)
+> — también apoya este repositorio sin coste adicional para ti. Guía completa:
+> [`.agent-skills/scrapingant-web-fetch/SKILL.md`](.agent-skills/scrapingant-web-fetch/SKILL.md).
+>
+> **Luego instala el resto de `jeo-skills` abajo ⬇️**
+
 ## 📦 Instalación
 
 ### ✨ Recomendado: Instalación impulsada por LLM (un solo prompt, todas las plataformas)

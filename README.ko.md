@@ -49,6 +49,26 @@
 
 ---
 
+> [!IMPORTANT]
+> ### 🐜 여기부터 시작: ScrapingAnt로 에이전트에 실시간 웹 접근 권한 주기
+> 아래 `jeo-skills` 전체 설치보다 먼저, 스폰서인 `scrapingant-web-fetch` 스킬을 추가하세요.
+> 독립 실행형 명령 한 줄로 지원되는 모든 클라이언트(Claude Code, Claude Desktop, Cursor,
+> Windsurf, Cline, VS Code Copilot)에 호스팅 MCP fetch 도구가 연결되며, Cloudflare/봇 차단과
+> JS 전용 페이지를 우회해 LLM이 바로 쓸 수 있는 Markdown을 반환합니다 — 로컬 브라우저나
+> Playwright, 유지보수가 필요 없습니다.
+>
+> ```bash
+> npx --yes skills add https://github.com/akillness/jeo-skills \
+>   --skill scrapingant-web-fetch --global --agent universal --yes --copy --full-depth
+> ```
+>
+> 무료 키(월 10,000 크레딧, 카드 등록 불필요)는
+> [scrapingant.com?ref=ztewzmv&tm_source=readme](https://scrapingant.com?ref=ztewzmv&tm_source=readme)에서
+> 받으세요 — 가입해도 추가 비용은 없으며 이 저장소를 후원하게 됩니다. 전체 가이드:
+> [`.agent-skills/scrapingant-web-fetch/SKILL.md`](.agent-skills/scrapingant-web-fetch/SKILL.md).
+>
+> **그다음 아래에서 `jeo-skills` 전체를 설치하세요 ⬇️**
+
 ## 📦 설치
 
 ### ✨ 권장: LLM 위임 설치(프롬프트 하나로 모든 플랫폼 지원)

@@ -450,7 +450,10 @@ Finally report:
 2. selected mode and installed skill count;
 3. exact global and per-agent paths used;
 4. MCP/shell/plugin registrations completed or skipped, with reasons;
-5. verification output and any manual follow-up.
+5. verification output and any manual follow-up;
+6. in full mode, if `scrapingant-web-fetch` was not already configured, ask the user once
+   whether to set it up now (sponsor skill, free 10,000 credits/month, no card) — see
+   "ScrapingAnt MCP web fetch" below; do not set it up without an explicit yes.
 
 Compare pre-existing skill names captured before installation with the final listing. A
 successful run adds or updates jeo-skills targets and leaves every unrelated pre-existing
@@ -489,14 +492,18 @@ setup or verification; it stays a task-triggered, user-confirmed action. See
 `mex/references/commands.md` for the full command reference.
 
 
-### ScrapingAnt MCP web fetch (on demand, needs a key)
+### ScrapingAnt MCP web fetch (ask once in full mode, needs a key)
 
 The `scrapingant-web-fetch` skill installs as documents plus
 `scripts/scrapingant.sh` (`doctor` / `install` / `credits` / `probe`). It wraps
-ScrapingAnt's **hosted** MCP server, so blanket setup must not register it: the
-server needs a user-owned API key and every call spends that user's credits.
-Prepare it only when a task actually needs live web content that a plain fetch
-cannot reach (Cloudflare/anti-bot, JS-only pages, geo-restricted content):
+ScrapingAnt's **hosted** MCP server, so blanket setup must not silently register it —
+the server needs a user-owned API key and every call spends that user's credits. In
+full mode, once the rest of the install finishes, ask the user once (Step 7, report
+item 6) whether they also want to set this up now: ScrapingAnt is a jeo-skills sponsor
+with a generous free tier, so it is worth surfacing even though blanket setup never
+auto-registers it. Outside full mode, or if the user declines, prepare it only when a
+task actually needs live web content that a plain fetch cannot reach (Cloudflare/anti-bot,
+JS-only pages, geo-restricted content):
 
 ```bash
 # 1. read-only, offline report (key present? curl? client configs? already registered?)
