@@ -95,7 +95,7 @@ El agente ejecuta una **instalación completa por defecto** (di "solo núcleo" o
 > jeo-skill install scrapingant-web-fetch --global --yes
 > ```
 >
-> Nivel gratuito: 10,000 créditos/mes, sin tarjeta — consigue una clave gratuita en [scrapingant.com?ref=ztewzmv](https://scrapingant.com?ref=ztewzmv&tm_source=readme) (apoya este repositorio sin coste adicional para ti). Más detalles en la sección "Patrocinado por ScrapingAnt" más abajo.
+> Nivel gratuito: 10,000 créditos/mes, sin tarjeta — consigue una clave gratuita en [scrapingant.com?ref=ztewzmv](https://scrapingant.com?ref=ztewzmv&tm_source=readme) (apoya este repositorio sin coste adicional para ti). Guía completa: [`.agent-skills/scrapingant-web-fetch/SKILL.md`](.agent-skills/scrapingant-web-fetch/SKILL.md).
 
 
 ### Instalación selectiva ligera (manual / CI)
@@ -135,32 +135,6 @@ curl -fsSL https://raw.githubusercontent.com/akillness/jeo-skills/main/install.s
 ```
 
 Establece `JEO_SKILLS_SELECTION=bundle`, `category` o `all` solo cuando ese alcance más amplio del instalador shell sea intencional. Consulta [setup-all-skills-prompt.md](setup-all-skills-prompt.md) para el valor predeterminado completo impulsado por LLM y los modos más restringidos "solo núcleo" y "mínimo".
-
-### 🐜 Patrocinado por ScrapingAnt — acceso web en vivo para tus agentes
-<p align="left"><a href="https://scrapingant.com?ref=ztewzmv&tm_source=readme"><img src="assets/scrapingant/scrapingant-logo.png" alt="ScrapingAnt" width="160"></a></p>
-
-
-[ScrapingAnt](https://scrapingant.com?ref=ztewzmv&tm_source=readme) es socio de jeo-skills e impulsa la habilidad
-`scrapingant-web-fetch`: un servidor MCP alojado (`https://api.scrapingant.com/mcp`) que obtiene
-páginas que un agente normalmente no puede alcanzar — protegidas por Cloudflare, con verificación
-de bots o renderizadas solo con JavaScript — y las devuelve como Markdown listo para LLM. No se
-ejecuta nada en local: ni navegador, ni runtime, ni proceso MCP que mantener.
-
-```bash
-jeo-skill install scrapingant-web-fetch --global --yes
-export SCRAPINGANT_API_KEY="<tu-clave>"   # clave gratuita: https://scrapingant.com?ref=ztewzmv&tm_source=readme
-bash .agent-skills/scrapingant-web-fetch/scripts/scrapingant.sh install claude-code
-```
-
-- **Nivel gratuito al registrarse:** 10.000 créditos/mes, sin tarjeta, sin acumulación.
-- **Diseñado con el coste en mente:** petición estática 1 crédito · renderizado JS 10 · proxy
-  residencial 25/125 — la habilidad escala solo cuando un intento más barato falla de verdad.
-- **Tres herramientas:** `get_web_page_markdown` (por defecto), `get_web_page_html`, `get_web_page_text`.
-- **Clientes:** Claude Code, Claude Desktop, Cursor, Windsurf, Cline, VS Code / GitHub Copilot.
-- **Guía:** [`.agent-skills/scrapingant-web-fetch/SKILL.md`](.agent-skills/scrapingant-web-fetch/SKILL.md).
-
-Registrarte con el enlace anterior apoya este repositorio sin coste adicional para ti, y la clave
-de API sigue siendo tuya: jeo-skills nunca la almacena ni la distribuye.
 
 ### Previsualización de movimiento en vídeo bajo demanda
 

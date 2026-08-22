@@ -98,7 +98,7 @@ curl -s https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-sk
 > jeo-skill install scrapingant-web-fetch --global --yes
 > ```
 >
-> 무료 티어: 월 10,000 크레딧, 카드 등록 불필요 — [scrapingant.com?ref=ztewzmv](https://scrapingant.com?ref=ztewzmv&tm_source=readme)에서 무료 키를 받으세요(가입해도 추가 비용은 없으며 이 저장소를 후원하게 됩니다). 자세한 내용은 아래 "스폰서: ScrapingAnt" 섹션을 참고하세요.
+> 무료 티어: 월 10,000 크레딧, 카드 등록 불필요 — [scrapingant.com?ref=ztewzmv](https://scrapingant.com?ref=ztewzmv&tm_source=readme)에서 무료 키를 받으세요(가입해도 추가 비용은 없으며 이 저장소를 후원하게 됩니다). 전체 가이드: [`.agent-skills/scrapingant-web-fetch/SKILL.md`](.agent-skills/scrapingant-web-fetch/SKILL.md).
 
 
 ### 경량 선택 설치(수동 / CI)
@@ -142,31 +142,6 @@ curl -fsSL https://raw.githubusercontent.com/akillness/jeo-skills/main/install.s
 `JEO_SKILLS_SELECTION=bundle`, `category`, `all`은 셸 설치기의 더 넓은 범위가 의도된
 경우에만 지정합니다. LLM 위임 설치의 전체 기본 모드와 더 좁은 “core only”,
 “minimal” 모드는 [setup-all-skills-prompt.md](setup-all-skills-prompt.md)를 참고하세요.
-
-### 🐜 스폰서: ScrapingAnt — 에이전트를 위한 실시간 웹 접근
-<p align="left"><a href="https://scrapingant.com?ref=ztewzmv&tm_source=readme"><img src="assets/scrapingant/scrapingant-logo.png" alt="ScrapingAnt" width="160"></a></p>
-
-
-[ScrapingAnt](https://scrapingant.com?ref=ztewzmv&tm_source=readme)는 jeo-skills의 파트너이며 `scrapingant-web-fetch`
-스킬을 제공합니다. 호스팅형 MCP 서버(`https://api.scrapingant.com/mcp`)가 일반 fetch로는 가져올 수 없는
-페이지 — Cloudflare 보호, 봇 차단, JavaScript 전용 렌더링 — 를 대신 가져와 LLM에 바로 쓸 수 있는
-Markdown으로 돌려줍니다. 로컬에 브라우저·런타임·MCP 프로세스를 설치할 필요가 없습니다.
-
-```bash
-jeo-skill install scrapingant-web-fetch --global --yes
-export SCRAPINGANT_API_KEY="<발급받은-키>"   # 무료 키: https://scrapingant.com?ref=ztewzmv&tm_source=readme
-bash .agent-skills/scrapingant-web-fetch/scripts/scrapingant.sh install claude-code
-```
-
-- **가입 시점 기준 무료 티어:** 월 10,000 크레딧, 카드 등록 불필요, 이월 없음.
-- **비용을 고려한 설계:** 정적 fetch 1크레딧 · JS 렌더링 10 · 레지덴셜 프록시 25/125 —
-  스킬은 더 싼 시도가 실제로 실패한 뒤에만 단계를 올립니다.
-- **도구 3종:** `get_web_page_markdown`(기본), `get_web_page_html`, `get_web_page_text`.
-- **지원 클라이언트:** Claude Code, Claude Desktop, Cursor, Windsurf, Cline, VS Code / GitHub Copilot.
-- **가이드:** [`.agent-skills/scrapingant-web-fetch/SKILL.md`](.agent-skills/scrapingant-web-fetch/SKILL.md).
-
-위 링크로 가입하면 추가 비용 없이 이 저장소를 후원하게 되며, API 키는 사용자 소유로 남습니다 —
-jeo-skills는 키를 저장하거나 배포하지 않습니다.
 
 ### 온디맨드 비디오 모션 프리비스
 

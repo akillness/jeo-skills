@@ -96,7 +96,7 @@ The agent runs a **full install by default** (say “core only” or “minimal�
 > jeo-skill install scrapingant-web-fetch --global --yes
 > ```
 >
-> Free tier: 10,000 credits/month, no card required — grab a free key at [scrapingant.com?ref=ztewzmv](https://scrapingant.com?ref=ztewzmv&tm_source=readme) (supports this repo at no extra cost to you). Full walkthrough further down in "Sponsored by ScrapingAnt".
+> Free tier: 10,000 credits/month, no card required — grab a free key at [scrapingant.com?ref=ztewzmv](https://scrapingant.com?ref=ztewzmv&tm_source=readme) (supports this repo at no extra cost to you). Full guide: [`.agent-skills/scrapingant-web-fetch/SKILL.md`](.agent-skills/scrapingant-web-fetch/SKILL.md).
 
 
 ### Lightweight selective install (manual / CI)
@@ -140,32 +140,6 @@ curl -fsSL https://raw.githubusercontent.com/akillness/jeo-skills/main/install.s
 Set `JEO_SKILLS_SELECTION=bundle`, `category`, or `all` only when that wider shell-installer
 scope is intentional. See [setup-all-skills-prompt.md](setup-all-skills-prompt.md) for the
 LLM-driven full default and the narrower “core only” and “minimal” modes.
-
-### 🐜 Sponsored by ScrapingAnt — live web access for your agents
-<p align="left"><a href="https://scrapingant.com?ref=ztewzmv&tm_source=readme"><img src="assets/scrapingant/scrapingant-logo.png" alt="ScrapingAnt" width="160"></a></p>
-
-
-[ScrapingAnt](https://scrapingant.com?ref=ztewzmv&tm_source=readme) is a partner of jeo-skills and powers the
-`scrapingant-web-fetch` skill: a hosted MCP server (`https://api.scrapingant.com/mcp`) that
-fetches pages an agent normally cannot reach — Cloudflare-protected, bot-checked, or
-JavaScript-only — and returns LLM-ready Markdown. Nothing runs locally: no browser binary,
-no runtime, no MCP process to supervise.
-
-```bash
-jeo-skill install scrapingant-web-fetch --global --yes
-export SCRAPINGANT_API_KEY="<your-key>"   # free key: https://scrapingant.com?ref=ztewzmv&tm_source=readme
-bash .agent-skills/scrapingant-web-fetch/scripts/scrapingant.sh install claude-code
-```
-
-- **Free tier at signup:** 10,000 credits/month, no credit card, no rollover.
-- **Cost-aware by design:** static fetch 1 credit · JS rendering 10 · residential proxy 25/125 —
-  the skill escalates only after a cheaper attempt actually fails.
-- **Three tools:** `get_web_page_markdown` (default), `get_web_page_html`, `get_web_page_text`.
-- **Clients:** Claude Code, Claude Desktop, Cursor, Windsurf, Cline, VS Code / GitHub Copilot.
-- **Guide:** [`.agent-skills/scrapingant-web-fetch/SKILL.md`](.agent-skills/scrapingant-web-fetch/SKILL.md).
-
-Signing up through the link above supports this repository at no extra cost to you, and the API
-key stays yours — jeo-skills never ships or stores it.
 
 ### On-demand video motion previs
 
