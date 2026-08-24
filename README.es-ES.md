@@ -45,27 +45,6 @@ Cada habilidad permanece descubreable como `.\agent-skills/<name>/SKILL.md`. Los
 
 <img src="assets/workflow.svg" alt="jeo-skills Workflow & Architecture" width="100%">
 
-> [!IMPORTANT]
-> ### 🐜 Empieza aquí: da a tus agentes acceso web en vivo con ScrapingAnt
-> Antes de la instalación completa de `jeo-skills` de abajo, añade primero la habilidad
-> patrocinada `scrapingant-web-fetch`: un único comando autocontenido conecta una
-> herramienta de fetch MCP alojada a cada cliente compatible (Claude Code, Claude Desktop,
-> Cursor, Windsurf, Cline, VS Code Copilot) que evita Cloudflare/bloqueos de bots y páginas
-> solo-JS, devolviendo Markdown limpio listo para LLM — sin navegador local, sin Playwright,
-> sin nada que mantener.
->
-> ```bash
-> npx --yes skills add https://github.com/akillness/jeo-skills \
->   --skill scrapingant-web-fetch --global --agent universal --yes --copy --full-depth
-> ```
->
-> Consigue una clave gratuita (10,000 créditos/mes, sin tarjeta) en
-> [scrapingant.com?ref=ztewzmv&tm_source=readme](https://scrapingant.com?ref=ztewzmv&tm_source=readme)
-> — también apoya este repositorio sin coste adicional para ti. Guía completa:
-> [`.agent-skills/scrapingant-web-fetch/SKILL.md`](.agent-skills/scrapingant-web-fetch/SKILL.md).
->
-> **Luego instala el resto de `jeo-skills` abajo ⬇️**
-
 ## 📦 Instalación
 
 ### ✨ Recomendado: Instalación impulsada por LLM (un solo prompt, todas las plataformas)
@@ -88,15 +67,12 @@ El agente ejecuta una **instalación completa por defecto** (di "solo núcleo" o
 - registrar herramientas MCP (`ooo`, `semble`), herramientas shell (`rtk`) y el complemento `oh-my-claudecode`,
 - **preservar cualquier habilidad preexistente**: solo añade o actualiza, nunca elimina.
 
-> [!TIP]
-> **¿También necesitas acceso web en vivo para tus agentes?** Añade la habilidad de fetch de ScrapingAnt en una línea — evita Cloudflare/bloqueos de bots y devuelve Markdown listo para LLM, sin navegador local:
->
-> ```bash
-> jeo-skill install scrapingant-web-fetch --global --yes
-> ```
->
-> Nivel gratuito: 10,000 créditos/mes, sin tarjeta — consigue una clave gratuita en [scrapingant.com?ref=ztewzmv](https://scrapingant.com?ref=ztewzmv&tm_source=readme) (apoya este repositorio sin coste adicional para ti). Guía completa: [`.agent-skills/scrapingant-web-fetch/SKILL.md`](.agent-skills/scrapingant-web-fetch/SKILL.md).
-
+> [!NOTE]
+> Incluido en el catálogo: **`scrapingant-web-fetch`** ofrece a los agentes una herramienta
+> de fetch MCP alojada que maneja Cloudflare/bloqueos de bots y páginas solo-JS, y devuelve
+> Markdown listo para LLM, sin navegador local. Requiere tu propia clave de API, por lo que
+> la guía de configuración solo lo configura si se solicita explícitamente. Detalles:
+> [`.agent-skills/scrapingant-web-fetch/SKILL.md`](.agent-skills/scrapingant-web-fetch/SKILL.md).
 
 ### Instalación selectiva ligera (manual / CI)
 

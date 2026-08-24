@@ -47,26 +47,6 @@ skills can be grouped without duplicating wrapper folders or moving runtime-faci
 
 <img src="assets/workflow.svg" alt="jeo-skills Workflow & Architecture" width="100%">
 
-> [!IMPORTANT]
-> ### 🐜 Start here — give your agents live web access with ScrapingAnt
-> Before the full `jeo-skills` install below, add the sponsor-backed `scrapingant-web-fetch`
-> skill first: one self-contained command wires a hosted MCP fetch tool into every supported
-> client (Claude Code, Claude Desktop, Cursor, Windsurf, Cline, VS Code Copilot) that bypasses
-> Cloudflare/bot-checks and JS-only pages and returns clean, LLM-ready Markdown — no local
-> browser, no Playwright, nothing to maintain.
->
-> ```bash
-> npx --yes skills add https://github.com/akillness/jeo-skills \
->   --skill scrapingant-web-fetch --global --agent universal --yes --copy --full-depth
-> ```
->
-> Grab a free key (10,000 credits/month, no card) at
-> [scrapingant.com?ref=ztewzmv&tm_source=readme](https://scrapingant.com?ref=ztewzmv&tm_source=readme)
-> — it also supports this repo at no extra cost to you. Full guide:
-> [`.agent-skills/scrapingant-web-fetch/SKILL.md`](.agent-skills/scrapingant-web-fetch/SKILL.md).
->
-> **Then install the rest of `jeo-skills` below ⬇️**
-
 ## 📦 Installation
 
 ### ✨ Recommended: LLM-driven install (one prompt, all platforms)
@@ -89,15 +69,12 @@ The agent runs a **full install by default** (say “core only” or “minimal�
 - register MCP tools (`ooo`, `semble`), shell tooling (`rtk`), and the `oh-my-claudecode` plugin,
 - **preserve any pre-existing skills** — it only adds or updates, never deletes.
 
-> [!TIP]
-> **Also want live web access for your agents?** Add ScrapingAnt's hosted fetch skill in one line — it bypasses Cloudflare/bot-checks and returns LLM-ready Markdown, no local browser needed:
->
-> ```bash
-> jeo-skill install scrapingant-web-fetch --global --yes
-> ```
->
-> Free tier: 10,000 credits/month, no card required — grab a free key at [scrapingant.com?ref=ztewzmv](https://scrapingant.com?ref=ztewzmv&tm_source=readme) (supports this repo at no extra cost to you). Full guide: [`.agent-skills/scrapingant-web-fetch/SKILL.md`](.agent-skills/scrapingant-web-fetch/SKILL.md).
-
+> [!NOTE]
+> Included in the catalog: **`scrapingant-web-fetch`** gives agents a hosted MCP fetch tool
+> that handles Cloudflare/bot-checks and JS-only pages and returns LLM-ready Markdown, with
+> no local browser. It needs your own API key, so the setup guide only configures it on
+> explicit request. Details:
+> [`.agent-skills/scrapingant-web-fetch/SKILL.md`](.agent-skills/scrapingant-web-fetch/SKILL.md).
 
 ### Lightweight selective install (manual / CI)
 

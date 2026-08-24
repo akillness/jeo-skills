@@ -46,28 +46,7 @@
 
 <img src="assets/workflow.svg" alt="jeo-skills Workflow & Architecture" width="100%">
 
-
 ---
-
-> [!IMPORTANT]
-> ### 🐜 여기부터 시작: ScrapingAnt로 에이전트에 실시간 웹 접근 권한 주기
-> 아래 `jeo-skills` 전체 설치보다 먼저, 스폰서인 `scrapingant-web-fetch` 스킬을 추가하세요.
-> 독립 실행형 명령 한 줄로 지원되는 모든 클라이언트(Claude Code, Claude Desktop, Cursor,
-> Windsurf, Cline, VS Code Copilot)에 호스팅 MCP fetch 도구가 연결되며, Cloudflare/봇 차단과
-> JS 전용 페이지를 우회해 LLM이 바로 쓸 수 있는 Markdown을 반환합니다 — 로컬 브라우저나
-> Playwright, 유지보수가 필요 없습니다.
->
-> ```bash
-> npx --yes skills add https://github.com/akillness/jeo-skills \
->   --skill scrapingant-web-fetch --global --agent universal --yes --copy --full-depth
-> ```
->
-> 무료 키(월 10,000 크레딧, 카드 등록 불필요)는
-> [scrapingant.com?ref=ztewzmv&tm_source=readme](https://scrapingant.com?ref=ztewzmv&tm_source=readme)에서
-> 받으세요 — 가입해도 추가 비용은 없으며 이 저장소를 후원하게 됩니다. 전체 가이드:
-> [`.agent-skills/scrapingant-web-fetch/SKILL.md`](.agent-skills/scrapingant-web-fetch/SKILL.md).
->
-> **그다음 아래에서 `jeo-skills` 전체를 설치하세요 ⬇️**
 
 ## 📦 설치
 
@@ -91,15 +70,12 @@ curl -s https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-sk
 - MCP 도구(`ooo`, `semble`), 셸 도구(`rtk`), `oh-my-claudecode` 플러그인을 등록합니다.
 - 기존 스킬을 보존하며 추가 또는 업데이트만 수행하고 삭제하지 않습니다.
 
-> [!TIP]
-> **에이전트에게 실시간 웹 접근도 필요하신가요?** ScrapingAnt가 제공하는 fetch 스킬을 한 줄로 추가하세요 — Cloudflare/봇 차단을 우회하고 LLM이 바로 쓸 수 있는 Markdown을 반환하며, 로컬 브라우저가 필요 없습니다.
->
-> ```bash
-> jeo-skill install scrapingant-web-fetch --global --yes
-> ```
->
-> 무료 티어: 월 10,000 크레딧, 카드 등록 불필요 — [scrapingant.com?ref=ztewzmv](https://scrapingant.com?ref=ztewzmv&tm_source=readme)에서 무료 키를 받으세요(가입해도 추가 비용은 없으며 이 저장소를 후원하게 됩니다). 전체 가이드: [`.agent-skills/scrapingant-web-fetch/SKILL.md`](.agent-skills/scrapingant-web-fetch/SKILL.md).
-
+> [!NOTE]
+> 카탈로그 포함 항목: **`scrapingant-web-fetch`** 는 호스팅 MCP fetch 도구를 제공해
+> Cloudflare/봇 차단과 JS 전용 페이지를 처리하고 LLM이 바로 쓸 수 있는 Markdown을
+> 반환하며, 로컬 브라우저가 필요 없습니다. 사용자 본인의 API 키가 필요하므로 설정
+> 가이드는 명시적으로 요청할 때만 구성합니다. 자세한 내용:
+> [`.agent-skills/scrapingant-web-fetch/SKILL.md`](.agent-skills/scrapingant-web-fetch/SKILL.md).
 
 ### 경량 선택 설치(수동 / CI)
 
