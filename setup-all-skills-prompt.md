@@ -20,6 +20,10 @@ A full install installs the skill documents plus the explicitly listed shared to
 It does **not** download every app, model weight, media runtime, SDK, or service mentioned
 inside all skills. Those remain on demand when a real task selects the corresponding skill.
 
+Every mode also mirrors the skills it installed into any detected Aside account, since the
+`skills` CLI cannot target Aside. Minimal mirrors just `jeo-skill`, core mirrors the starter
+bundle, full mirrors the whole catalog.
+
 ## Step 1 — Detect OS, prerequisites, and coding agents
 
 Determine the platform before choosing paths or package managers:
@@ -35,13 +39,17 @@ esac
 if [ "$PLATFORM" = windows ]; then
   USER_HOME="${USERPROFILE:-$HOME}"
 else
-  USER_HOME="$HOME"
+  # Resolve the login home independently of $HOME. An Aside bash session points
+  # $HOME at its own runtime home, which has no ~/.agents/skills.
+  USER_HOME=$(dscl . -read "/Users/$(id -un)" NFSHomeDirectory 2>/dev/null | awk '{print $2}')
+  [ -d "${USER_HOME:-}" ] || USER_HOME=$(python3 -c 'import pwd,os; print(pwd.getpwuid(os.getuid()).pw_dir)' 2>/dev/null)
+  [ -d "${USER_HOME:-}" ] || USER_HOME="$HOME"
 fi
 SKILLS_ROOT="$USER_HOME/.agents/skills"
 REPO_URL="https://github.com/akillness/jeo-skills"
 
 printf 'platform=%s\nhome=%s\nskills_root=%s\n' "$PLATFORM" "$USER_HOME" "$SKILLS_ROOT"
-for cmd in node npm npx python3 claude codex gemini opencode cursor agy pi crush jeo gjc jeopi; do
+for cmd in node npm npx python3 claude codex gemini opencode cursor agy pi crush jeo gjc jeopi aside; do
   command -v "$cmd" >/dev/null 2>&1 && printf 'found: %s\n' "$cmd"
 done
 ```
@@ -63,6 +71,56 @@ npx --version
 python3 --version
 ```
 
+### Running this guide inside an Aside session
+
+Aside's bash tool is not a login shell, and `~/.aside/runtime/env.sh` deliberately points
+`HOME`, npm, and pip at Aside's own runtime. Left alone that breaks this guide three ways:
+`$HOME/.agents/skills` does not exist, `npm -g` installs into the runtime prefix, and
+`pip install --user` fails with `Could not find an activated virtualenv`.
+
+Leave `HOME` itself untouched — Aside owns it, and repointing it redirects Aside-managed
+caches and config. Instead use the already-resolved `USER_HOME` for every host path,
+prepend absolute host tool paths, and sanitize the npm/pip variables only around host-tool
+commands:
+
+```bash
+# absolute host paths; derive them, never hardcode a user name or Node version
+ASIDE_PATHS="/opt/homebrew/bin:/usr/local/bin:$USER_HOME/.local/bin"
+[ -d "$USER_HOME/.pyenv/bin" ] && ASIDE_PATHS="$USER_HOME/.pyenv/bin:$USER_HOME/.pyenv/shims:$ASIDE_PATHS"
+# Prefer nvm's own default alias; fall back to any version with an executable node.
+# Avoid `sort -V` — older BSD sort on macOS does not support it.
+NVM_BIN=""
+if [ -r "$USER_HOME/.nvm/alias/default" ]; then
+  nvm_alias=$(cat "$USER_HOME/.nvm/alias/default" 2>/dev/null)
+  for cand in "$USER_HOME/.nvm/versions/node/$nvm_alias/bin" \
+              "$USER_HOME/.nvm/versions/node/v$nvm_alias"*/bin; do
+    [ -x "$cand/node" ] && NVM_BIN="$cand" && break
+  done
+fi
+if [ -z "$NVM_BIN" ]; then
+  for cand in "$USER_HOME"/.nvm/versions/node/*/bin; do
+    [ -x "$cand/node" ] && NVM_BIN="$cand"
+  done
+fi
+[ -n "$NVM_BIN" ] && ASIDE_PATHS="$NVM_BIN:$ASIDE_PATHS"
+export PATH="$ASIDE_PATHS:$PATH"
+
+# Aside's runtime npm/pip pins collide with nvm/pyenv and block --user installs
+unset NPM_CONFIG_PREFIX NPM_CONFIG_USERCONFIG NPM_CONFIG_CACHE
+unset PIP_REQUIRE_VIRTUALENV VIRTUAL_ENV PYTHONNOUSERSITE
+
+uv --version; rtk --version; semble --version   # host tools, once PATH is right
+```
+
+Run any command whose output path depends on the home directory with an explicit
+per-command override, e.g. `HOME="$USER_HOME" skills add …`, so it lands in the host
+`~/.agents/skills` instead of Aside's runtime home. The Step 4 snippets already carry this
+prefix; outside Aside it is a no-op because `USER_HOME` equals `$HOME` there.
+
+Under Aside, prefer Homebrew or pyenv installs. macOS security removes unsigned binaries
+that curl/tarball installers drop, so the `uv` and `rtk` shell installers below tend to
+vanish; tools already installed on the host run fine once `PATH` is set.
+
 ## Step 2 — Install the skills CLI
 
 ```bash
@@ -77,7 +135,7 @@ skills --version
 The skills CLI accepts runtime IDs, not executable names. Always target `universal`; it
 populates `~/.agents/skills`, which Codex, Gemini CLI, OpenCode, Cursor, jeo-code, GJC,
 and jeopi can share. Add a dedicated target only when that runtime uses a distinct root.
-Do **not** pass unsupported IDs such as `jeo`, `gjc`, or `jeopi`.
+Do **not** pass unsupported IDs such as `jeo`, `gjc`, `jeopi`, or `aside`.
 
 ```bash
 SKILLS_AGENT_ARGS=(-a universal)
@@ -94,6 +152,9 @@ printf 'skills targets:'; printf ' %q' "${SKILLS_AGENT_ARGS[@]}"; printf '\n'
 all of those alongside `universal` would create redundant platform exposure rather than
 additional skills.
 
+Aside is not a skills CLI runtime at all and does not read the shared root; it loads
+per-account skills from its own directory. Step 4 mirrors the installed skills there.
+
 ## Step 4 — Install the requested scope
 
 ### Default: full
@@ -101,24 +162,99 @@ additional skills.
 Unless the user said “core only” or “minimal”, install every live skill:
 
 ```bash
-skills add -g "$REPO_URL" --skill '*' "${SKILLS_AGENT_ARGS[@]}" --yes --copy --full-depth
+HOME="$USER_HOME" skills add -g "$REPO_URL" --skill '*' "${SKILLS_AGENT_ARGS[@]}" --yes --copy --full-depth
 ```
 
 ### Core only
 
 ```bash
-skills add -g "$REPO_URL" --skill jeo-skill "${SKILLS_AGENT_ARGS[@]}" --yes --copy --full-depth
-python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" link
-jeo-skill install --bundle starter --global --yes
+HOME="$USER_HOME" skills add -g "$REPO_URL" --skill jeo-skill "${SKILLS_AGENT_ARGS[@]}" --yes --copy --full-depth
+HOME="$USER_HOME" python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" link
+HOME="$USER_HOME" jeo-skill install --bundle starter --global --yes
 ```
 
 ### Minimal
 
 ```bash
-skills add -g "$REPO_URL" --skill jeo-skill "${SKILLS_AGENT_ARGS[@]}" --yes --copy --full-depth
-python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" link
-jeo-skill doctor
+HOME="$USER_HOME" skills add -g "$REPO_URL" --skill jeo-skill "${SKILLS_AGENT_ARGS[@]}" --yes --copy --full-depth
+HOME="$USER_HOME" python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" link
+HOME="$USER_HOME" jeo-skill doctor
 ```
+
+The `HOME="$USER_HOME"` prefix is what makes these land in the host `~/.agents/skills`.
+Outside Aside it is a harmless no-op, since `USER_HOME` already equals `$HOME`. Inside an
+Aside session, a bare `skills add` would install into `~/.aside/runtime/home/.agents/skills`
+and the Aside mirror below would then find nothing to copy.
+
+### Mirror the installed skills into Aside (all modes)
+
+Run this in every mode, including minimal, whenever Aside is present. The `skills` CLI has
+no Aside runtime ID, and Aside loads account skills from:
+
+```text
+<asideHome>/u/<accountId>/skills/user/<skill-name>/SKILL.md
+```
+
+Scope the name set to the mode you just installed, then copy only names that are both in
+the jeo-skills catalog and actually present in `$SKILLS_ROOT`. Never mirror the whole
+shared root — it holds skills from other sources.
+
+```bash
+ASIDE_HOME="$USER_HOME/.aside"
+ASIDE_MODE=full   # full | core | minimal — match the mode you installed
+
+# Call the router by absolute path. In full mode `link` has not run yet, so the
+# `jeo-skill` command is not on PATH; relying on it would silently yield no names.
+JEO_ROUTER="$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py"
+
+case "$ASIDE_MODE" in
+  minimal) ASIDE_NAMES="jeo-skill" ;;
+  core)    ASIDE_NAMES=$(HOME="$USER_HOME" python3 "$JEO_ROUTER" install -b starter --dry-run \
+             | sed -n 's/^Selected [0-9]* skill(s): //p' | tr ',' '\n' | tr -d ' ') ;;
+  *)       ASIDE_NAMES=$(HOME="$USER_HOME" python3 "$JEO_ROUTER" list --json \
+             | python3 -c 'import json,sys; print("\n".join(s["name"] for s in json.load(sys.stdin)))') ;;
+esac
+
+if [ ! -d "$ASIDE_HOME/u" ]; then
+  printf 'aside: not installed, skipping mirror\n'
+elif [ -z "${ASIDE_NAMES:-}" ]; then
+  printf 'aside: ERROR could not resolve catalog names from %s — mirror skipped, report this\n' "$JEO_ROUTER" >&2
+else
+  for acct in "$ASIDE_HOME"/u/*/; do
+    [ -d "$acct/skills" ] || continue
+    dest="${acct%/}/skills/user"
+    mkdir -p "$dest"
+    synced=0
+    while IFS= read -r name; do
+      [ -n "$name" ] || continue
+      [ -f "$SKILLS_ROOT/$name/SKILL.md" ] || continue
+      mkdir -p "$dest/$name"
+      cp -R "$SKILLS_ROOT/$name/." "$dest/$name/" && synced=$((synced + 1))
+    done <<EOF
+$ASIDE_NAMES
+EOF
+    printf 'aside_synced=%s -> %s\n' "$synced" "$dest"
+  done
+fi
+```
+
+Constraints for this step:
+
+- Discover accounts from directory names under `$ASIDE_HOME/u` only. Never read
+  `~/.aside/accounts.json`; it holds live access tokens.
+- Never touch `skills/builtin/`. It is checksum-tracked by `.bootstrap-manifest.json`.
+- Never delete anything under `skills/user/`. Unrelated user skills must survive; the copy
+  refreshes jeo-skills entries in place and is safe to re-run.
+- `cp -R "$src/."` (trailing `/.`) copies contents into an existing directory on both BSD
+  and GNU `cp`, so nested `scripts/` and `references/` land correctly instead of nesting twice.
+- Aside parses ordinary YAML frontmatter, so the catalog's folded `description: >` blocks
+  load as-is. The stricter double-quoted rule in Aside's bundled `skill-creator` is a style
+  lint for newly authored skills, not a loader requirement.
+- Resolve names through `python3 "$JEO_ROUTER"`, never the bare `jeo-skill` command. The
+  router falls back to the remote catalog and `~/.cache/jeo-skill/skills.json`, so it works
+  before `link` runs. An empty name set is an error to report, never a silent no-op.
+- Inside an Aside session, apply the Step 1 preamble first, and prefix the router with
+  `HOME="$USER_HOME"` if a command's output path depends on the home directory.
 
 Stop here in minimal mode. In core mode, install only dependencies explicitly required
 by the selected starter skills; do not continue into the full shared-tool setup by default.
@@ -137,6 +273,7 @@ if ! command -v rtk >/dev/null 2>&1; then
   elif [ "$PLATFORM" = windows ]; then
     printf '%s\n' 'Install the matching rtk.exe from https://github.com/rtk-ai/rtk/releases or use WSL2.'
   else
+    # Unreliable inside an Aside session: macOS removes the unsigned binary this drops.
     curl -fsSL https://raw.githubusercontent.com/rtk-ai/rtk/refs/heads/master/install.sh | sh
     export PATH="$USER_HOME/.local/bin:$PATH"
   fi
@@ -150,9 +287,12 @@ Do not use `cargo install rtk`; crates.io contains an unrelated package with tha
 
 ```bash
 if ! command -v uvx >/dev/null 2>&1; then
-  if [ "$PLATFORM" = windows ]; then
+  if command -v brew >/dev/null 2>&1; then
+    brew install uv
+  elif [ "$PLATFORM" = windows ]; then
     powershell -NoProfile -Command "irm https://astral.sh/uv/install.ps1 | iex"
   else
+    # Unreliable inside an Aside session: macOS removes the unsigned binary this drops.
     curl -LsSf https://astral.sh/uv/install.sh | sh
     export PATH="$USER_HOME/.local/bin:$USER_HOME/.cargo/bin:$PATH"
   fi
@@ -188,6 +328,30 @@ if command -v codex >/dev/null 2>&1 && ! codex mcp list 2>/dev/null | grep -q '^
   codex mcp add ooo -- ouroboros mcp serve
 fi
 ```
+
+### Aside MCP wiring
+
+Aside handles MCP in two directions, and only one of them is scriptable.
+
+**Aside as an MCP server.** `aside mcp` starts Aside over stdio, letting another agent
+drive its browser session. Register it idempotently:
+
+```bash
+if command -v aside >/dev/null 2>&1; then
+  if command -v claude >/dev/null 2>&1 && ! claude mcp list 2>/dev/null | grep -q '^aside'; then
+    claude mcp add aside -s user -- aside mcp
+  fi
+  if command -v codex >/dev/null 2>&1 && ! codex mcp list 2>/dev/null | grep -q '^aside'; then
+    codex mcp add aside -- aside mcp
+  fi
+fi
+```
+
+**Servers Aside itself consumes.** These live in `<asideHome>/u/<accountId>/settings.json`
+under an app-managed `mcp.servers` map, alongside `mcp.inventories` and a separate
+`~/.aside/mcp-credential-cleanup.json`. Aside's own `aside.settings` API exposes no MCP key,
+so the daemon owns that schema and its credential handling. Do not hand-edit it or guess the
+shape; add servers through Aside's own MCP settings UI and report that as a manual follow-up.
 
 ### Claude Code orchestration plugin
 
@@ -430,26 +594,37 @@ scrub still carry live credentials that must be rotated, not merely scrubbed.
   replace the whole file.
 - If an agent has no native skill loader, report that limitation rather than copying all
   skill folders into an unverified directory.
+- Aside does not read `~/.agents/skills`. It loads account skills from
+  `~/.aside/u/<accountId>/skills/user/`, populated by the Step 4 mirror. Re-run that mirror
+  after any skill update, and never write into its sibling `builtin/`.
 
 ## Step 7 — Verify and report
 
 ```bash
-skills list -g 2>/dev/null || npx --yes skills list --global
-python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" link
-jeo-skill doctor
-jeo-skill categories --json
+HOME="$USER_HOME" skills list -g 2>/dev/null || HOME="$USER_HOME" npx --yes skills list --global
+HOME="$USER_HOME" python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" link
+HOME="$USER_HOME" jeo-skill doctor
+HOME="$USER_HOME" jeo-skill categories --json
 command -v rtk >/dev/null 2>&1 && rtk gain
 command -v semble >/dev/null 2>&1 && semble --help >/dev/null
 command -v claude >/dev/null 2>&1 && claude mcp list
 command -v codex >/dev/null 2>&1 && codex mcp list
+command -v aside >/dev/null 2>&1 && aside --version
+for acct in "$USER_HOME"/.aside/u/*/; do
+  [ -d "$acct/skills/user" ] || continue
+  printf 'aside %s: %s user skills\n' "$(basename "${acct%/}")" \
+    "$(find "$acct/skills/user" -maxdepth 2 -name SKILL.md 2>/dev/null | wc -l | tr -d ' ')"
+done
 ```
 
 Finally report:
 
 1. detected OS and agents;
 2. selected mode and installed skill count;
-3. exact global and per-agent paths used;
-4. MCP/shell/plugin registrations completed or skipped, with reasons;
+3. exact global and per-agent paths used, including each Aside account's
+   `skills/user/` path and how many skills were mirrored there;
+4. MCP/shell/plugin registrations completed or skipped, with reasons — note whether Aside
+   was registered as an MCP server, and that servers Aside consumes stay a manual UI step;
 5. verification output and any manual follow-up;
 6. in full mode, if `scrapingant-web-fetch` was not already configured, ask the user once
    whether to set it up now (sponsor skill, free 10,000 credits/month, no card) — see
@@ -457,7 +632,8 @@ Finally report:
 
 Compare pre-existing skill names captured before installation with the final listing. A
 successful run adds or updates jeo-skills targets and leaves every unrelated pre-existing
-skill present.
+skill present. For Aside, that also means `skills/builtin/` is byte-identical and every
+unrelated `skills/user/` entry is still there.
 
 ### Mex project memory scaffold (on demand)
 
