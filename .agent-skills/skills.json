@@ -1,7 +1,7 @@
 {
   "version": "2.0.0",
   "generated": "2026-07-30",
-  "skill_count": 210,
+  "skill_count": 211,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -258,6 +258,7 @@
       "x-twitter-scraper",
       "hyperfine-benchmarking",
       "codeburn",
+      "mole",
       "mcp-server-sv-number"
     ],
     "ai-agents": [
@@ -545,7 +546,8 @@
         "ghgrab",
         "jeo-skill",
         "pretext",
-        "codeburn"
+        "codeburn",
+        "mole"
       ],
       "ai-cli": [
         "aider-cli-workflow",
@@ -7557,6 +7559,45 @@
       "keyword": "codeburn",
       "version": "1.0",
       "source": "https://github.com/getagentseal/codeburn"
+    },
+    {
+      "name": "mole",
+      "description": "Drive Mole (`mo`), tw93's GPL-3.0 macOS maintenance CLI that cleans caches and app leftovers, uninstalls apps with their remnants, purges rebuildable project artifacts, removes downloaded installers, explores disk usage, runs bounded system optimization, and reports live health. Routes one request to one mode: run a command safely (`--dry-run` first, the user runs the destructive step), consume the JSON/NDJSON agent surfaces (`mo analyze --json`, `mo status --json` / `--watch`, `mo history --json`, `~/.config/mole/clean-list.txt`), install/update/remove on the right channel, configure whitelists and scan paths, troubleshoot, or contribute to the repo. Use when a user wants to free Mac disk space or fully uninstall a Mac app. Triggers on: mole, `mo clean`, `mo uninstall`, `mo analyze`, `mo purge`, `mo status`, tw93/Mole, mole.fit, clean my Mac, what is eating my disk, CleanMyMac / AppCleaner / DaisyDisk alternative, brew install mole.",
+      "category": "cli-tools",
+      "subcategory": "developer-cli",
+      "interface": "cli",
+      "path": "mole/SKILL.md",
+      "tags": [
+        "mole",
+        "macos",
+        "cleanup",
+        "uninstaller",
+        "disk-analyzer",
+        "system-monitor",
+        "cli",
+        "tui",
+        "maintenance",
+        "homebrew",
+        "go",
+        "bash"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "mole",
+      "version": "1.0",
+      "source": "https://github.com/tw93/Mole"
     },
     {
       "name": "watermarks-remover",

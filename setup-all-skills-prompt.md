@@ -585,6 +585,33 @@ remote. Upstream's own checklist warns that untracking `.env` does not remove it
 history; the published repo is already scrubbed, but internal forks and clones predating the
 scrub still carry live credentials that must be rotated, not merely scrubbed.
 
+### Mole macOS maintenance CLI (on demand, deletes files)
+
+The `mole` skill installs as documents plus a read-only helper; it never runs `brew install mole`,
+never pipes `install.sh` into bash, and never runs a cleanup during setup. Mole deletes files on
+the user's live machine and `mo clean` / `mo purge` / `mo installer` delete **permanently**, so
+installation and every destructive run stay task-triggered and user-confirmed:
+
+```bash
+# 1. read-only readiness report (macOS/arch, mo presence + install channel, fd, config, logs) — installs nothing
+bash "$SKILLS_ROOT/mole/scripts/mole.sh" doctor
+
+# 2. print the agent-facing JSON surfaces — runs no Mole command at all
+bash "$SKILLS_ROOT/mole/scripts/mole.sh" surfaces
+
+# 3. only after the user asks for Mole
+brew install mole
+```
+
+Steps 1–2 are safe during installation verification; step 2 only prints documentation. Skip step 3
+unless the user asked for Mole. The helper's `json` subcommand is hard-restricted to `status`,
+`analyze`, and `history` so a destructive command is not reachable through it. Never run
+`mo clean`, `mo uninstall`, `mo purge`, `mo installer`, `mo optimize`, `mo remove`, or `mo update`
+(especially `--nightly`, which installs unreleased `main`) as part of setup or verification — always
+`--dry-run` first and let the user run the real command. macOS only. See
+`mole/references/safety.md` for the protection model and `mole/references/commands.md` for the full
+command/env reference.
+
 ### OpenStory AI video stack (on demand)
 
 The `openstory` skill installs as documents plus a read-only helper; it never clones

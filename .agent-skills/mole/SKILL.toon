@@ -1,0 +1,38 @@
+N:mole
+D:[mole] Drive Mole (`mo`), tw93's GPL-3.0 macOS maintenance CLI (64k+ stars): a Bash router plus two Go/Bubble Tea TUI binaries that clean caches and app leftovers, uninstall apps with their remnants, purge rebuildable project artifacts, remove downloaded installers, explore disk usage, run bounded optimization, and report live health. macOS 10.14+ only, Intel and Apple Silicon, stock Bash 3.2. Install with `brew install mole` or the install.sh script. It deletes files on a live machine, so `--dry-run` is mandatory and the dry-run is the undo.
+G:mole mo macos cleanup uninstaller disk-analyzer system-monitor purge installer cli tui homebrew tw93 cleanmymac appcleaner daisydisk istat
+
+U[7]:
+  Free Mac disk space or find what is eating it
+  Fully uninstall a Mac app including launch agents, preferences, and hidden remnants
+  Purge rebuildable project artifacts (node_modules, target, dist, .next) across project dirs
+  Read machine-readable output instead of scraping a TUI (analyze/status/history JSON)
+  Install, update, or remove Mole, or untangle a Homebrew-vs-script channel conflict
+  Configure whitelists, purge scan paths, shell completion, Touch ID, Raycast/Alfred launchers
+  Contribute to tw93/Mole (Bash 3.2 + Go, bats tests, the `# SAFE:` deletion contract)
+
+S[7]{n,step,details}:
+  1,Obey the five rules,Preview with --dry-run always | the USER runs the destructive command unless asked this turn | never parse a TUI frame | never invent flags (no --yes no --force) | protection is a whitelist not an argument
+  2,Pick one mode,run-command | automate | install-update | configure | troubleshoot | contribute — do not blend
+  3,run-command,Map question to one command then preview: analyze --json for "what is eating my disk" | clean --dry-run for space | uninstall --dry-run <app> | optimize --dry-run | purge --dry-run | installer --dry-run. State the deletion mode first
+  4,automate,Four surfaces only — mo analyze --json [path] | mo status --json | mo status --watch --interval 1s (NDJSON bound it) | mo history --json --limit N (1-200) | ~/.config/mole/clean-list.txt written by clean --dry-run ONLY
+  5,install-update,brew install mole OR curl install.sh. install.sh REFUSES a Homebrew-owned install; `mo update --nightly` is script-install only; the token `latest` is a legacy alias for unreleased main; --prefix ~/.local/bin keeps updates password-free
+  6,troubleshoot,TCC/Full Disk Access first | "Bundled analyzer binary not found" means reinstall or mo update | channel conflict is intentional | "did Mole take my file" is answered by the deletions log via mo history --json not by guessing
+  7,contribute,Read AGENTS.md (CLAUDE.md symlinks to it). make build | ./scripts/check.sh --format | MOLE_TEST_NO_AUTH=1 ./scripts/test.sh | go test ./... . Route deletions through mole_delete/safe_remove; raw rm -rf needs an inline `# SAFE:` reason that CI checks
+
+R[8]:
+  The dry-run is the undo — `mo clean`, `mo purge`, and `mo installer` delete PERMANENTLY; only `mo uninstall` and `mo analyze` route through Trash
+  Read ~/.config/mole/clean-list.txt, not the terminal summary, to show exactly what a real clean would remove
+  `mo optimize` is the destructive command whose effect is not "files disappear" — describe DNS flush, Finder/icon cache rebuild, and service refresh before running it
+  Bound `mo status --watch` to the samples the question needs, then terminate; never leave a monitor running
+  Stay on one install channel; Homebrew and script installs do not mix and --nightly exists only on the script channel
+  Whitelist instead of narrowing the command — hand-rolled rm around Mole loses path validation, Trash routing, and the operations log
+  Never run `mo update` (and especially `--nightly`) on a user's behalf unless asked
+  Trust the refusals: "When Mole cannot prove an item is safe to change, it skips or refuses it" — a skip with a reason is the product working
+
+E[5]{type,command}:
+  Install skill,npx skills add https://github.com/akillness/jeo-skills --skill mole
+  Install Mole,brew install mole
+  Readiness check,bash .agent-skills/mole/scripts/mole.sh doctor
+  Read-only disk map,bash .agent-skills/mole/scripts/mole.sh json analyze ~/Library
+  Preview a cleanup,mo clean --dry-run && cat ~/.config/mole/clean-list.txt
