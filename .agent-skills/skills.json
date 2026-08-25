@@ -1,7 +1,7 @@
 {
   "version": "2.0.0",
   "generated": "2026-07-30",
-  "skill_count": 212,
+  "skill_count": 213,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -200,6 +200,7 @@
       "perfectpixel",
       "game-studio-harness",
       "underworld-overseer-save-mapper",
+      "godogen",
       "game-build-log-triage",
       "game-demo-feedback-triage",
       "game-performance-profiler",
@@ -486,7 +487,8 @@
       "storytelling": [],
       "tooling": [
         "game-studio-harness",
-        "underworld-overseer-save-mapper"
+        "underworld-overseer-save-mapper",
+        "godogen"
       ],
       "qa-performance": [
         "game-build-log-triage",
@@ -3265,6 +3267,41 @@
       "keyword": "underworld-overseer-save-mapper",
       "version": "1.0.0",
       "source": "https://github.com/RobThePCGuy/Underworld-Overseer-Save-Mapper"
+    },
+    {
+      "name": "godogen",
+      "description": "Drive Godogen (htdt/godogen), the MIT-licensed publish-time generator that turns a game description into an autonomous Claude Code or Codex build for Godot 4 C#, Bevy Rust, or Babylon.js TypeScript. Route one request to one mode: preflight the toolchain and API keys; publish a fresh game repository or safely refresh a matching existing runtime with `./publish.sh --engine ...`; run the build and prove it from the live game or a 15-20s recording; budget paid Gemini, Grok, and Tripo3D asset generation; apply engine-specific build and capture rules; troubleshoot rendering and capture failures; or contribute through the issue-first upstream process. Use when the user wants an agent to build a playable game end to end with Godogen. Triggers on: godogen, htdt/godogen, publish.sh --engine, autonomous game development, Godot C# agent build, Bevy agent build, Babylon.js agent game, asset-gen, Tripo3D rig, proof video.",
+      "category": "game",
+      "subcategory": "tooling",
+      "interface": "workflow",
+      "path": "godogen/SKILL.md",
+      "tags": [
+        "godogen",
+        "autonomous-game-development",
+        "godot",
+        "bevy",
+        "babylonjs",
+        "claude-code",
+        "codex",
+        "asset-generation",
+        "tripo3d",
+        "proof-video"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "godogen",
+      "version": "1.0",
+      "source": "https://github.com/htdt/godogen"
     },
     {
       "name": "game-build-log-triage",

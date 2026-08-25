@@ -1,0 +1,95 @@
+{
+  "skill_name": "godogen",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Claude Code가 설명만 보고 Godot C# 게임을 끝까지 만들게 하고 싶어. Godogen으로 시작해줘.",
+      "expected_output": "The skill selects the Godot/Claude lane, runs a read-only preflight and target plan, then publishes only to a fresh repo before following the running-game proof contract.",
+      "assertions": [
+        "The response selects Godot and Claude rather than offering every lane equally",
+        "The response uses `scripts/godogen.sh doctor godot` and the read-only `plan` helper before `publish.sh`",
+        "The response says a compile is not completion and requires live inspection or a watched 15-20 second proof video"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "./publish.sh --engine babylon --agent codex --out ~/g 를 실행하면 뭐가 생겨?",
+      "expected_output": "The skill describes the current docs-only Codex/Babylon payload without reviving removed pipeline skills.",
+      "assertions": [
+        "The response names `AGENTS.md`, `babylon.md`, `.agents/skills/asset-gen/`, generated `agents/openai.yaml`, `.gitignore` when absent, and `git init`",
+        "The response says the generated game scaffold is built later by Codex rather than shipped by Godogen",
+        "The response identifies the 2026-07-02 docs-only runtime as the current pinned architecture"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "이미 여러 스킬이 있는 기존 저장소에 Godogen을 publish하고 --force로 정리해줘.",
+      "expected_output": "The skill blocks publication into the existing repo and explains both deletion paths before proposing a fresh target.",
+      "assertions": [
+        "The response says `--force` removes the whole resolved target with `rm -rf`",
+        "The response says normal publication uses `rsync --delete` on the entire `.claude/skills/` or `.agents/skills/` directory and can remove sibling skills",
+        "The response runs or references the `plan` helper and recommends a new empty directory rather than bypassing it"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Tripo3D glb 생성이 timeout 났어. 같은 명령 다시 실행할까?",
+      "expected_output": "The skill preserves the existing paid task and resumes it from the sidecar without another submission.",
+      "assertions": [
+        "The response says timeout does not prove the Tripo task failed",
+        "The response looks for `<output>.tripo.json` and uses `asset_gen.py resume -o <output>`",
+        "The response warns that resubmitting `glb`, `rig`, or `retarget` can double-charge"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Gemini 캐릭터 1장, 기본 rig 1개, walk idle attack 3개를 만들 비용부터 계산해줘.",
+      "expected_output": "The skill calculates the pinned estimate offline and requests approval before a provider call.",
+      "assertions": [
+        "The response uses or mirrors `cost-estimate.py --gemini-1k 1 --rig 1 --retarget 3`",
+        "The response totals 92 cents at the pinned rates",
+        "The response states that prices can change and obtains explicit approval for the exact plan before spending"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Babylon proof 영상이 까맣게 나오지만 npm run build는 성공했어.",
+      "expected_output": "The skill treats the running browser as the truth and checks capture readiness and renderer instead of accepting the build.",
+      "assertions": [
+        "The response says `npm run build` is only a compile gate",
+        "The response waits for a rendered frame and loaded textures/GLBs before capture",
+        "The response inspects the WebGL renderer and flags SwiftShader, llvmpipe, or lavapipe on a GPU host"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Unity 프로젝트 UHT 빌드가 실패했는데 Godogen으로 고칠 수 있어?",
+      "expected_output": "The request routes away from Godogen to the engine build-log skill.",
+      "assertions": [
+        "The response does not use Godogen for Unity or Unreal build logs",
+        "The response routes to `game-build-log-triage` and, if needed, Unity-specific skills",
+        "The response asks for or inspects the first actionable build failure rather than publishing a new game repo"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "예전에 Godogen으로 만든 Babylon Codex 게임의 런타임 문서만 최신 publish 결과로 갱신하고 싶어.",
+      "expected_output": "The skill allows a narrow normal re-publish only after recognizing the same lane and proving no sibling skill would be deleted.",
+      "assertions": [
+        "The response runs the read-only `plan` helper against the existing target",
+        "The response requires the matching `AGENTS.md`, `babylon.md`, and an `.agents/skills/` directory containing only `asset-gen`",
+        "The response commits or backs up the game repo, uses normal publish without `--force`, and reviews the diff for preserved gameplay files"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "godogen 스킬 폴더를 새로 추가했어. 카탈로그에서 빠진 게 없는지 확인해줘.",
+      "expected_output": "The response checks every structural discovery surface and both catalog validators.",
+      "assertions": [
+        "The response checks `.agent-skills/skills.json`, `.agent-skills/skills.toon`, `README.md`, `README.ko.md`, `README.es-ES.md`, and `setup-all-skills-prompt.md`",
+        "The response runs `validate_skill.sh`, `validate_catalog_sync.py`, and `validate-catalog-projections.py`",
+        "The response verifies the frontmatter description exactly matches the manifest description and contains no pipe delimiter"
+      ]
+    }
+  ]
+}

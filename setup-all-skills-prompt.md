@@ -549,6 +549,45 @@ a local web service that drives a real browser. Test only games and source the u
 is authorized to test, and disclose that AI source modeling sends source summaries to the
 configured third-party providers.
 
+### Godogen autonomous game generator (on demand, can delete files and spend money)
+
+The `godogen` skill installs as routing documents, a read-only host/publish inspector, and an
+offline cost calculator. Blanket setup must not clone `htdt/godogen`, install Godot/Rust/Node
+or GPU Python dependencies, run `publish.sh`, launch an engine or browser, or call Gemini,
+Grok, or Tripo3D. Prepare a lane only when a task actually needs Godogen:
+
+```bash
+# 1. read-only host report; provider keys are SET/MISSING only and values are never printed
+bash "$SKILLS_ROOT/godogen/scripts/godogen.sh" doctor all
+
+# 2. read-only preview; creates no target and blocks unsafe nonempty/symlink targets
+bash "$SKILLS_ROOT/godogen/scripts/godogen.sh" plan \
+  --engine godot --agent claude --out /path/to/new-empty-game
+
+# 3. offline estimate at the pinned upstream rates; makes no provider request
+python3 "$SKILLS_ROOT/godogen/scripts/cost-estimate.py" \
+  --gemini-1k 1 --rig 1 --retarget 3
+```
+
+Steps 1-3 are safe during installation verification. `doctor` runs version/presence checks
+only, `plan` never invokes upstream `publish.sh`, and the estimator uses Python's standard
+library with zero network requests. Missing engine tools or API keys are lane readiness facts,
+not reasons for setup to install anything.
+
+Never run Godogen's `publish.sh --force` during setup: at the pinned upstream commit it removes
+the entire resolved target with `rm -rf`. Even a normal publish uses `rsync --delete` on the
+whole `.claude/skills/` or `.agents/skills/` directory and can erase unrelated sibling skills.
+Prefer a fresh empty target. A normal re-publish is allowed only when the helper recognizes
+the same agent/engine runtime and finds no sibling skill beside `asset-gen`; commit or back up
+the game repo first and never add `--force`. Show the exact path and keep any forced publish
+user-confirmed.
+
+Paid asset generation is also task-triggered and confirmation-gated. Show operation counts and
+a cost ceiling before the first call. If Tripo3D times out, preserve `<output>.tripo.json` and
+run `asset_gen.py resume -o <output>`; never resubmit a pending `glb`, `rig`, or `retarget` job
+because it can double-charge. See `godogen/references/upstream-and-publish.md` and
+`godogen/references/asset-generation.md` before a real publish or spend.
+
 ### goalflow LangGraph framework (on demand)
 
 The `goalflow` skill installs as documents plus a read-only `doctor` wrapper and two

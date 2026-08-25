@@ -1,0 +1,39 @@
+N:godogen
+D:Drive htdt/godogen, the MIT publish-time generator that renders a thin Claude Code or Codex runtime into a fresh repo or safely refreshes a matching runtime, then builds and proves a Godot 4 C#, Bevy Rust, or Babylon.js TypeScript game from a description. Route to preflight, publish, run-delivery, paid asset budgeting, engine capture, troubleshooting, or issue-first contribution. Fresh targets, explicit spend approval, Tripo resume, and running-game proof are mandatory.
+G:godogen autonomous-game-development godot bevy babylonjs claude-code codex asset-gen tripo3d gemini grok proof-video game-generator
+
+U[7]:
+  Preflight Godogen and select Godot, Bevy, or Babylon.js plus Claude Code or Codex
+  Publish the current docs-only runtime into a new repo or refresh a recognized same-lane runtime
+  Run or steer an autonomous build under the live-game and proof-video contract
+  Budget Gemini, Grok, and Tripo3D image, video, GLB, rig, and retarget operations
+  Apply engine-specific implementation traps and deterministic capture recipes
+  Recover a timed-out Tripo task or diagnose rendering, browser, import, and capture failures
+  Contribute a narrow upstream change after an issue is approved
+
+S[7]{n,step,details}:
+  1,Enforce safety,Prefer a fresh empty target | refresh only a recognized same-lane runtime with no sibling skills after commit/backup | --force removes the resolved target | never print keys | approve a priced asset plan before the first provider call
+  2,Choose one mode,preflight | publish | run-delivery | asset-spend | engine-capture | troubleshoot | contribute
+  3,Preflight,Run scripts/godogen.sh doctor for only the selected lane; shared Bash Git rsync Python 3.10 ffmpeg and rendering checks stay read-only and keys print SET or MISSING only
+  4,Publish,Run scripts/godogen.sh plan first; render ./publish.sh --engine godot/bevy/babylon --agent claude/codex --out DIR into a new target or recognized refresh; never --force an update; inspect manifest guide asset-gen .gitignore and Git diff
+  5,Run and deliver,Read CLAUDE.md or AGENTS.md plus the engine guide; keep game README status and asset manifest; collaborative briefs expose a live game early; finished briefs close with a watched 15-20s proof video
+  6,Generate assets,Estimate the full plan offline; approve cost; review references before downstream GLB; use solid backgrounds then matte; preserve .tripo.json and resume instead of resubmitting
+  7,Verify and recover,Separate publish toolchain build runtime capture and provider layers; trust the running game over a compile and the installed engine/package source over model memory
+
+R[8]:
+  The current pin is 05cebffc8b10c5817e8a3db495b82e7b6004ab84 from 2026-07-02; older planner decomposer scaffold lookup capture and hook write-ups are stale
+  Godogen is source -> game repo -> game; publish.sh ships docs and asset-gen, not a generated engine scaffold
+  Never refresh an existing repo with sibling .claude/skills or .agents/skills because upstream rsync --delete removes them; a safe refresh must be same-lane with only asset-gen
+  Never use --force without the exact target displayed and explicit approval; prefer a new path
+  A Tripo timeout is resumable from <output>.tripo.json at no extra cost; another submission can double-charge
+  Godot uses .NET/Mono and build-time scene generation | Bevy pins one stable minor and captures offscreen | Babylon proves the live URL and rejects software renderer fallback on GPU hosts
+  Provider rates in scripts/cost-estimate.py are frozen to the pin; recheck current prices before a real spend
+  Compile success is not visual proof; inspect the running game and watch the final recording
+
+E[6]{type,command}:
+  Install skill,npx skills add https://github.com/akillness/jeo-skills --skill godogen
+  Read-only doctor,bash .agent-skills/godogen/scripts/godogen.sh doctor all
+  Safe publish preview,bash .agent-skills/godogen/scripts/godogen.sh plan --engine godot --agent claude --out /tmp/new-game
+  Show pinned sources,bash .agent-skills/godogen/scripts/godogen.sh upstream
+  Estimate rigged character,python3 .agent-skills/godogen/scripts/cost-estimate.py --gemini-1k 1 --rig 1 --retarget 3
+  Validate skill,bash .agent-skills/skill-standardization/scripts/validate_skill.sh .agent-skills/godogen
