@@ -1,7 +1,7 @@
 {
   "version": "2.0.0",
   "generated": "2026-07-30",
-  "skill_count": 209,
+  "skill_count": 210,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -227,7 +227,8 @@
       "drawio",
       "open-design",
       "webtoon-harness",
-      "palmier-pro"
+      "palmier-pro",
+      "openstory"
     ],
     "cli-tools": [
       "soup",
@@ -513,7 +514,8 @@
         "video-shotcraft",
         "video-to-superprompt",
         "vox-director",
-        "palmier-pro"
+        "palmier-pro",
+        "openstory"
       ],
       "motion": [
         "video-motion-previs"
@@ -7477,6 +7479,45 @@
       "keyword": "palmier-pro",
       "version": "1.0",
       "source": "https://github.com/palmier-io/palmier-pro"
+    },
+    {
+      "name": "openstory",
+      "description": "Work with OpenStory (github.com/openstory-so/openstory), the open-source AI script-to-video sequence platform built on Bun + TanStack Start + Cloudflare Workers (D1, R2, Workflows, Durable Objects) with Drizzle, Better Auth, and Fal.ai/OpenRouter models. Routes one request to one mode: run it locally (`bun install && bun dev` on Miniflare, `FAL_KEY` / `OPENROUTER_KEY`), trace the storyboard pipeline (scene split, casting, prompts, frame images, motion, music), author a Cloudflare Workflow under the three-place wiring and no-mid-run-read `scopedDb` contract, add or update an image/video/audio/LLM model, ship a safe D1 + Drizzle migration, or deploy. Use when the user mentions OpenStory or is operating this codebase. Triggers on: openstory, openstory.so, script to video, AI video sequence platform, storyboard workflow, triggerWorkflow, OpenStoryWorkflowEntrypoint, WorkflowScopedDb, IMAGE_MODELS, fal.ai model registry, D1 CASCADE data loss, flatten-migrations, deploy Cloudflare Workers video app.",
+      "category": "creative-media",
+      "subcategory": "video",
+      "interface": "workflow",
+      "path": "openstory/SKILL.md",
+      "tags": [
+        "openstory",
+        "ai-video",
+        "script-to-video",
+        "cloudflare-workers",
+        "cloudflare-workflows",
+        "tanstack-start",
+        "bun",
+        "drizzle",
+        "d1",
+        "fal-ai",
+        "storyboard",
+        "video-generation"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "openstory",
+      "version": "1.0",
+      "source": "https://github.com/openstory-so/openstory"
     },
     {
       "name": "codeburn",

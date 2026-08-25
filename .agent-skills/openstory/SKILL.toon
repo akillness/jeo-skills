@@ -1,0 +1,39 @@
+N:openstory
+D:[openstory] Work with OpenStory (github.com/openstory-so/openstory), the MIT-licensed open-source AI script-to-video sequence platform. One Cloudflare Worker: Bun + TanStack Start + Vite, D1 + Drizzle, R2, 33 Cloudflare Workflows, a RealtimeChannel Durable Object, Better Auth, Tailwind v4 + shadcn/ui. Local dev runs the same Workerd runtime through Miniflare — no Docker, no external DB, no Cloudflare account. Generation runs on Fal.ai + OpenRouter (+ native xAI) and costs real money. Requires bun >=1.3.0 <2 and node >=24 <25.
+G:openstory openstory.so ai-video script-to-video storyboard cloudflare-workers cloudflare-workflows durable-objects d1 r2 tanstack-start bun drizzle fal-ai better-auth video-generation
+
+U[7]:
+  Clone, bootstrap, and run OpenStory locally (`bun install && bun dev`) and wire FAL_KEY / OPENROUTER_KEY
+  Trace or debug the storyboard generation pipeline phase by phase
+  Author or edit a Cloudflare Workflow under the three-place wiring + no-mid-run-read scopedDb contract
+  Add, hide, or reprice an image / image-to-video / audio / LLM model in the registry
+  Ship a Drizzle schema change or D1 migration without triggering the CASCADE rebuild trap
+  Deploy: Cloudflare deploy button, Workers Builds on main, per-PR previews, or manual prod
+  Open an upstream PR under the `<issue-number>-feature-name` branch + Lefthook gates
+
+S[8]{n,step,details}:
+  1,Pick one mode,run-local | pipeline-trace | workflow-authoring | model-catalog | schema-migration | deploy | contribute — do not blend; if two apply run the read-only one first
+  2,run-local,git clone + bun install + bun dev (:3000). ensure-env.ts writes .env.local, then migrate + seed + vite dev. Read the startup bindings banner — if DB shows REMOTE kill the server
+  3,pipeline-trace,Entry src/functions/sequences.ts -> triggerWorkflow('/storyboard') -> STORYBOARD_WORKFLOW. Name the failing phase (Verify/Poster/SceneSplit/Casting/Sheets+Prompts/FrameImages/Motion+Music/Complete) before editing
+  4,workflow-authoring,Three-place wiring or it does not exist — wrangler.jsonc workflows[] (all 3 blocks) + re-export from src/server.ts + TRIGGER_TO_BINDING. Extend OpenStoryWorkflowEntrypoint, runImpl(event step scopedDb), work inside step.do()
+  5,model-catalog,Read https://fal.ai/models/{path}/llms.txt first. LLMs in src/lib/ai/models.config.ts; image/video/audio in src/lib/ai/models.ts; motion params are generated — run bun motion:codegen. Retire by hiding not deleting
+  6,schema-migration,bun db:generate then bun db:migrate:local. Never hand-write migration SQL or Better Auth tables (bun auth:generate). Avoid table rebuilds and ON DELETE CASCADE toward user/teams/sequences
+  7,deploy,Deploy button (clone not fork) | Workers Builds on main with CLOUDFLARE_ENV=production | manual bun cf:typegen && bun cf:deploy:prd | per-PR preview stacks. The placeholder D1 id in the default block is a safety feature
+  8,contribute,Branch `<issue-number>-feature-name`, PR body `Closes #<issue>`, then bun lint && bun format:check && bun typecheck && bun run test
+
+R[8]:
+  bun run test (not bun test), bun run build (not bun build), bun typecheck via tsgo (not tsc) — the three most repeated mistakes
+  Never add "remote": true to a D1 binding and never commit a real prod database_id into the default block
+  Treat scopedDb as a type-level contract — needing a mid-run read means you needed an earlier step.do() snapshot
+  Workflow bodies replay from the top on every step callback; steps must be idempotent and must not pass large blobs across boundaries
+  retries/retryDelay on triggerWorkflow() are no-ops — put retries on step.do() or the class
+  Cron changes need all three places (default block, [env.production], the constant scheduled() matches) or the job silently never runs
+  Generation spends real money via FAL_KEY — use the cheapest preview model while iterating, never loop retries on a failing generation
+  Regenerate rather than hand-write: bun motion:codegen, bun auth:generate, bun db:generate, bun cf:typegen
+
+E[5]{type,command}:
+  Install skill,npx skills add https://github.com/akillness/jeo-skills --skill openstory
+  First run,git clone https://github.com/openstory-so/openstory.git && cd openstory && bun install && bun dev
+  Readiness check,bash .agent-skills/openstory/scripts/openstory.sh doctor ./openstory
+  Env presence (names only),bash .agent-skills/openstory/scripts/openstory.sh env-check ./openstory
+  Recall pipeline phases,bash .agent-skills/openstory/scripts/openstory.sh phases

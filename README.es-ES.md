@@ -4,14 +4,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-209-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-210-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![GJC](https://img.shields.io/badge/GJC-gajae--code-181717?style=for-the-badge&logo=github)](https://github.com/akillness/gajae-code)
 [![jeo-code](https://img.shields.io/badge/jeo--code-jeo-181717?style=for-the-badge&logo=github)](https://github.com/akillness/jeo-code)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**209 habilidades categorizadas · instalación selectiva ligera · catálogo TOON compacto · multiplataforma**
+**210 habilidades categorizadas · instalación selectiva ligera · catálogo TOON compacto · multiplataforma**
 
 Una colección curada para flujos de trabajo LLM multi-agente y centrados en especificaciones. Delega una configuración completa con un solo prompt, o instala primero el enrutador `jeo-skill` y añade solo las habilidades de web, infraestructura, juegos, medios, CLI o utilidades que necesites.
 
@@ -76,7 +76,7 @@ El agente ejecuta una **instalación completa por defecto** (di "solo núcleo" o
 
 ### Instalación selectiva ligera (manual / CI)
 
-Instala primero el **enrutador `jeo-skill`**, no las 209 carpetas de habilidades. Proporciona descubrimiento de categoría, subcategoría, interfaz, paquete y relación, manteniendo aplicaciones pesadas, modelos, servidores MCP y tiempos de ejecución bajo demanda.
+Instala primero el **enrutador `jeo-skill`**, no las 210 carpetas de habilidades. Proporciona descubrimiento de categoría, subcategoría, interfaz, paquete y relación, manteniendo aplicaciones pesadas, modelos, servidores MCP y tiempos de ejecución bajo demanda.
 
 ```bash
 # One lightweight skill, shared globally
@@ -124,7 +124,7 @@ video-motion-previs check
 
 ## 📚 Lista de Habilidades
 
-> Manifiesto central: `.agent-skills/skills.json` · 209 habilidades · 10 categorías principales · metadatos de subcategoría/interfaz/relación
+> Manifiesto central: `.agent-skills/skills.json` · 210 habilidades · 10 categorías principales · metadatos de subcategoría/interfaz/relación
 
 ### 🌐 Web (47)
 
@@ -228,9 +228,9 @@ Subcategorías: `client` (2), `web` (2), `server` (0), `design-ui` (4), `audio` 
 | `game-ci-cd-pipeline` |
 | `steam-store-launch-ops` |
 
-### 🎬 Medios Creativos (20)
+### 🎬 Medios Creativos (21)
 
-Subcategorías: `image` (5), `video` (9), `motion` (1), `audio` (1), `presentation` (1), `diagram` (1), `design` (1), `capture` (0), `storytelling` (1)
+Subcategorías: `image` (5), `video` (10), `motion` (1), `audio` (1), `presentation` (1), `diagram` (1), `design` (1), `capture` (0), `storytelling` (1)
 
 | Skill |
 |---|
@@ -254,6 +254,7 @@ Subcategorías: `image` (5), `video` (9), `motion` (1), `audio` (1), `presentati
 | `open-design` |
 | `webtoon-harness` |
 | `palmier-pro` |
+| `openstory` |
 
 ### ⌨️ Herramientas CLI (28)
 
@@ -663,7 +664,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 
 ```text
 .
-├── .agent-skills/          ← 209 skill folders (SKILL.md + optional support files)
+├── .agent-skills/          ← 210 skill folders (SKILL.md + optional support files)
 ├── docs/                   ← detailed guides (bmad, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md

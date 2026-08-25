@@ -585,6 +585,35 @@ remote. Upstream's own checklist warns that untracking `.env` does not remove it
 history; the published repo is already scrubbed, but internal forks and clones predating the
 scrub still carry live credentials that must be rotated, not merely scrubbed.
 
+### OpenStory AI video stack (on demand)
+
+The `openstory` skill installs as documents plus a read-only helper; it never clones
+`openstory-so/openstory`, runs `bun install`, migrates a database, or deploys anything during
+setup. Its `doctor`/`env-check` commands only inspect the host and report env var **names**,
+never values. Prepare the stack only when a task actually needs to run or modify OpenStory:
+
+```bash
+# 1. read-only readiness report (bun/node engine range, repo, node_modules, .env.local) — installs nothing
+bash "$SKILLS_ROOT/openstory/scripts/openstory.sh" doctor .
+
+# 2. env presence by NAME only — never prints a value
+bash "$SKILLS_ROOT/openstory/scripts/openstory.sh" env-check /path/to/openstory
+
+# 3. only after the user asks to run it
+git clone https://github.com/openstory-so/openstory.git
+cd openstory && bun install && bun dev     # http://localhost:3000
+```
+
+Steps 1–2 are safe during installation verification. Skip step 3 unless the user asked for a
+local stack: `bun dev` writes `.env.local`, migrates and seeds a local D1, and starts a
+Workerd server. Never add AI keys, run `bun setup`, or trigger a generation as part of setup —
+`FAL_KEY` spends real money per call. Never run `bun db:migrate:prd`, `bun deploy`,
+`bun deploy:production`, or `bun cf:deploy:prd` during setup or verification; production
+deploys and remote D1 migrations stay task-triggered and user-confirmed. See
+`openstory/references/commands.md` for the full script/env reference and
+`openstory/references/troubleshooting.md` for the documented D1 CASCADE and remote-binding
+hazards.
+
 ## Step 6 — Runtime-specific shared-root checks
 
 
