@@ -641,6 +641,56 @@ deploys and remote D1 migrations stay task-triggered and user-confirmed. See
 `openstory/references/troubleshooting.md` for the documented D1 CASCADE and remote-binding
 hazards.
 
+### Drama Skills short-drama suite (on demand)
+
+The `drama-skills` catalog entry installs as routing documents plus a read-only helper. It
+never clones or links `zenstory-ai/drama-skills`, starts its local Dashboard, runs upstream
+Python, or calls a media provider during blanket setup. The upstream repository is a separate
+suite of ten independently installable skills; prepare it only when a task actually needs a
+Chinese short-drama or motion-comic workflow:
+
+```bash
+# 1. host and checkout inspection only — no upstream code is executed
+bash "$SKILLS_ROOT/drama-skills/scripts/drama-skills.sh" doctor /path/to/drama-skills
+bash "$SKILLS_ROOT/drama-skills/scripts/drama-skills.sh" routes
+
+# 2. stable upstream checkout, only after the user asks to use the suite
+#    v0.6.0 is the creator-first five-document release; main may be newer
+mkdir -p "$USER_HOME/.local/share"
+DRAMA_REPO="$USER_HOME/.local/share/drama-skills"
+if [ -e "$DRAMA_REPO" ]; then
+  printf 'drama-skills checkout already exists: %s (inspect it; do not overwrite)\n' "$DRAMA_REPO"
+else
+  git clone --branch v0.6.0 --depth 1 \
+    https://github.com/zenstory-ai/drama-skills.git "$DRAMA_REPO"
+fi
+
+# 3. inspect a real project without changing it
+bash "$SKILLS_ROOT/drama-skills/scripts/drama-skills.sh" project /path/to/project
+```
+
+The helper is safe during installation verification: it reads paths, checks Python 3.9+ and
+the expected ten `SKILL.md`/`selftest.py` pairs, reports the checkout commit, and prints only
+whether `ARK_API_KEY`, `OPENAI_API_KEY`, and `MINIMAX_API_KEY` are set. It does not print
+values, run self-tests, create symlinks, start the Dashboard, confirm a job, or expose any
+provider command.
+
+Skip the clone and links unless the user selected this workflow. When installing upstream,
+pin a tag or commit before linking individual `skills/*` directories into a runtime; never
+install `maintainers/skills/short-drama-knowhow`, and never overwrite unrelated existing
+skills. v0.6 is a breaking creator-first change from v0.5, so do not mix both formats in one
+project. A symlink to a moving `main` silently changes agent instructions after `git pull`.
+
+Normal writing, assets, prompts, storyboards, review, and offline validators need no API key.
+`short-drama-produce` is different: its Seedance, GPT Image 2, and MiniMax Music adapters can
+spend real money. Never run `production_tool.py confirm` or `run` during setup or verification.
+A real production task must show the exact prepared job and fingerprint, receive explicit user
+confirmation for that exact preview, never start another attempt while one is `running`, and
+require a fresh confirmation after any changed input or started failure. Keep adapter
+configuration and credentials outside the project. See
+`drama-skills/references/install-and-operations.md` and
+`drama-skills/references/production-safety.md`.
+
 ## Step 6 — Runtime-specific shared-root checks
 
 

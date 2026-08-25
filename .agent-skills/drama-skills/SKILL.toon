@@ -1,0 +1,42 @@
+N:drama-skills
+D:[drama-skills] Install, route, and operate zenstory-ai/drama-skills, the MIT-licensed creator-first suite of ten independent Agent Skills for Chinese short dramas and motion comics. Routes novel triage, adaptation development, episode writing, visual assets, image prompts, storyboards, video prompts, independent review, local Dashboard operations, and confirm-gated image/video/TTS/music production while preserving five human-readable episode documents. Python 3.9+; normal work is stdlib-only and keyless; external production may spend real money.
+G:drama-skills zenstory-ai short-drama motion-comic Chinese-drama novel-adaptation screenwriting visual-assets image-prompts storyboard video-prompts creator-first dashboard production-review python
+
+U[8]:
+  Install, pin, update, inspect, or troubleshoot the upstream ten-skill suite
+  Initialize, continue, inspect, package, or open the local Dashboard for a drama project
+  Triage a long novel before deciding whether to adapt it
+  Develop a source or idea into direction, a creative brief, story engine, and episode map
+  Write or revise an episode and derive its visual identity and continuity
+  Produce copy-ready image prompts, shot plans, frozen keyframes, or video prompts
+  Independently review story, assets, prompts, continuity, or existing media
+  Prepare optional image, video, TTS, or music jobs behind exact user confirmation
+
+S[7]{n,step,details}:
+  1,Pick one mode,install-maintain or route-create or project-ops or produce or troubleshoot; never blend paid production into writing
+  2,Pin and inspect,record the local tag/commit; do not mix v0.5 and v0.6 outputs; load only the selected upstream skill and references
+  3,Route one owner,short-drama for project ops; otherwise novel-analyze develop write assets image-prompts storyboard video-prompts produce or review
+  4,Preserve ownership,剧本.md 视觉设定.md 分镜.md 图片提示词.md 视频提示词.md are creator truth; validators and JSON indexes are derived
+  5,Use lifecycle tools correctly,init makes config and empty directories; selftests are maintenance-only; Dashboard stays loopback-only
+  6,Gate production,prepare exact preview then explicit fingerprint confirmation then one run; never reprepare/confirm/run a pending attempt; changes and failed retries need fresh confirmation
+  7,Verify and report,mode version owner inputs files checks unresolved decisions and exact production state
+
+R[10]:
+  Start from the stage whose real input exists; do not fabricate a ceremonial upstream pipeline
+  short-drama is a router and project operator, not an installation gate for the other nine skills
+  Only the stage owner writes its source document; review reports findings instead of silently rewriting it
+  Do not auto-add review, packaging, or production to a scoped creative request
+  Prefer a pinned release over symlinking a moving main branch into an agent skill root
+  v0.6 creator-first is a breaking change from v0.5; keep existing v0.5 projects pinned
+  Upstream snapshot b7846a0 separates IMG prompt-entry IDs from REF input-reference slots; recheck other versions
+  Stage selftests run only for install, upgrade, or troubleshooting; normal creation stays file-first
+  Adapter config and credentials live outside the project and secret values never appear in output
+  Generic programmable video routes to video-production; webtoon panels to webtoon-harness; OpenStory codebase work to openstory
+
+E[6]{type,command}:
+  Install this routing skill,npx skills add https://github.com/akillness/jeo-skills --skill drama-skills
+  Read-only suite check,bash .agent-skills/drama-skills/scripts/drama-skills.sh doctor /path/to/drama-skills
+  Print stage routes,bash .agent-skills/drama-skills/scripts/drama-skills.sh routes
+  Read-only project check,bash .agent-skills/drama-skills/scripts/drama-skills.sh project /path/to/project
+  Initialize upstream project,python3 <suite>/skills/short-drama/scripts/project_tool.py init ./my-drama --title "Example drama"
+  Inspect upstream project,python3 <suite>/skills/short-drama/scripts/project_tool.py status ./my-drama

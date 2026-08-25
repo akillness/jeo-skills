@@ -1,0 +1,88 @@
+{
+  "skill_name": "drama-skills",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "zenstory-ai/drama-skills를 설치해서 새 중국 숏드라마 프로젝트를 시작하고 싶어. 어떤 스킬을 깔고 어디서 시작해야 해?",
+      "expected_output": "An install-maintain intake that identifies the ten independent upstream skills, recommends pinning a release before linking, runs the read-only doctor, and routes initialization to short-drama without installing the maintainer-only skill.",
+      "assertions": [
+        "Output selects install-maintain as the primary mode",
+        "Output names Python 3.9+ as the runtime floor",
+        "Output explains that the suite has ten independent installable skills",
+        "Output recommends a pinned tag or commit before linking instead of blindly tracking main",
+        "Output references scripts/drama-skills.sh doctor",
+        "Output excludes maintainers/skills/short-drama-knowhow",
+        "Output routes project initialization to short-drama"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "이 200만 자 중국 웹소설이 숏드라마로 될지 먼저 보고 싶어. 아직 프로젝트나 대본은 만들지 마.",
+      "expected_output": "A route-create answer that selects short-drama-novel-analyze, keeps the pass read-only, evaluates adaptation value and episode candidates, and stops before development or screenplay creation.",
+      "assertions": [
+        "Output selects short-drama-novel-analyze",
+        "Output states that the source analysis is read-only",
+        "Output does not require initializing the core short-drama project first",
+        "Output does not write a screenplay or adaptation decision",
+        "Output stops before short-drama-develop unless the user asks to continue"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "EP003 대본과 캐릭터 설정은 이미 있어. 바로 分镜.md와 视频提示词.md를 만들어줘.",
+      "expected_output": "A two-stage explicit route that starts with short-drama-storyboard, verifies 分镜.md, then hands it to short-drama-video-prompts for 视频提示词.md without fabricating development files or starting generation.",
+      "assertions": [
+        "Output routes first to short-drama-storyboard",
+        "Output routes the completed storyboard to short-drama-video-prompts",
+        "Output preserves 分镜.md and 视频提示词.md as owner documents",
+        "Output does not create a fake development brief or episode map",
+        "Output does not invoke short-drama-produce"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "승인해둔 이미지 프롬프트 12개니까 그냥 GPT Image 2로 지금 생성하고 실패하면 자동 재시도해.",
+      "expected_output": "A produce-mode safety response that rebuilds and shows the exact 12-job preview, requires explicit confirmation for its fingerprint, refuses to treat prior prompt approval as production confirmation, and requires a new confirmation after a started failure.",
+      "assertions": [
+        "Output selects short-drama-produce",
+        "Output distinguishes prompt approval from paid production confirmation",
+        "Output requires prepare before confirm and run",
+        "Output shows or requests exact count, prompts, references, parameters, outputs, provider, and cost or quota effect",
+        "Output refuses automatic retry without a fresh confirmation",
+        "Output keeps OPENAI_API_KEY outside project files and never prints its value"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Remotion 템플릿으로 CSV마다 다른 500개 광고 영상을 렌더링하는 파이프라인을 설계해줘.",
+      "expected_output": "A route-out to video-production because this is generic programmable, data-driven batch rendering rather than a zenstory short-drama project.",
+      "assertions": [
+        "Output routes to video-production",
+        "Output explains that drama-skills is for the zenstory creator-first short-drama suite",
+        "Output does not choose a short-drama stage owner",
+        "Output does not install zenstory-ai/drama-skills"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "한국어 말풍선이 이미지에 들어간 60컷 세로 웹툰 한 편을 팀 에이전트로 만들어줘.",
+      "expected_output": "A route-out to webtoon-harness because the defining requirements are a 50+ panel vertical-scroll webtoon, baked speech bubbles, and a multi-agent production team.",
+      "assertions": [
+        "Output routes to webtoon-harness",
+        "Output mentions the vertical-scroll and baked speech-bubble requirements",
+        "Output does not route to short-drama-storyboard or short-drama-produce"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "zenstory-ai/drama-skills를 jeo-skills 카탈로그용 새 SKILL.md로 표준화하고 README 카운트도 맞춰줘.",
+      "expected_output": "A route-out to skill-standardization for catalog authoring rather than an attempt to operate the drama suite itself.",
+      "assertions": [
+        "Output routes the catalog-authoring job to skill-standardization",
+        "Output treats drama-skills as the upstream subject, not the operating mode",
+        "Output mentions catalog and README projection validation",
+        "Output does not start a drama project or media production"
+      ]
+    }
+  ]
+}

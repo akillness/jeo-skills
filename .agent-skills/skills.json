@@ -1,7 +1,7 @@
 {
   "version": "2.0.0",
   "generated": "2026-07-30",
-  "skill_count": 211,
+  "skill_count": 212,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -228,7 +228,8 @@
       "open-design",
       "webtoon-harness",
       "palmier-pro",
-      "openstory"
+      "openstory",
+      "drama-skills"
     ],
     "cli-tools": [
       "soup",
@@ -535,7 +536,8 @@
       ],
       "capture": [],
       "storytelling": [
-        "webtoon-harness"
+        "webtoon-harness",
+        "drama-skills"
       ]
     },
     "cli-tools": {
@@ -7864,6 +7866,43 @@
       "keyword": "mex",
       "version": "1.1",
       "source": "mex-memory/mex"
+    },
+    {
+      "name": "drama-skills",
+      "description": "Install, route, and operate zenstory-ai/drama-skills, the MIT-licensed 10-skill creator-first suite for Chinese short dramas and motion comics. Use when the user wants to import or troubleshoot the suite; initialize or resume a filesystem project; analyze a novel; develop an adaptation; write episodes; build visual assets; produce image prompts, storyboards, or video prompts; review a project; open its local Dashboard; or run confirm-gated image, video, TTS, or music production. Route each request to the correct `short-drama-*` owner while preserving the five-document episode contract. Triggers on: drama-skills, zenstory-ai/drama-skills, short-drama, Chinese short drama, motion comic, creator-first drama workflow, \u5267\u672c, \u89c6\u89c9\u8bbe\u5b9a, \u5206\u955c, \u56fe\u7247\u63d0\u793a\u8bcd, \u89c6\u9891\u63d0\u793a\u8bcd. Route generic programmable-video work to `video-production`, webtoon panel production to `webtoon-harness`, and the OpenStory codebase to `openstory`.",
+      "category": "creative-media",
+      "subcategory": "storytelling",
+      "interface": "workflow",
+      "path": "drama-skills/SKILL.md",
+      "tags": [
+        "short-drama",
+        "motion-comic",
+        "screenwriting",
+        "storyboard",
+        "image-prompts",
+        "video-prompts",
+        "novel-adaptation",
+        "creator-first",
+        "agent-skills",
+        "python"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "drama-skills",
+      "version": "1.0",
+      "source": "https://github.com/zenstory-ai/drama-skills"
     }
   ]
 }
