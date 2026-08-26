@@ -680,6 +680,52 @@ deploys and remote D1 migrations stay task-triggered and user-confirmed. See
 `openstory/references/troubleshooting.md` for the documented D1 CASCADE and remote-binding
 hazards.
 
+### OpenMontage agentic video production (on demand)
+
+The `openmontage` skill installs as original routing documents plus read-only checkout,
+pipeline, and project inspectors. Blanket setup must not clone `calesthio/OpenMontage`, run
+`make setup`, import its provider registry, install Python/Node/GPU packages, warm an npx
+cache, start Backlot, render a demo, or call a media provider. Inspect only when a task
+actually chooses OpenMontage:
+
+```bash
+# 1. host and checkout inspection only; no installs and no credential values
+bash "$SKILLS_ROOT/openmontage/scripts/openmontage.sh" doctor /path/to/OpenMontage
+
+# 2. dependency-free YAML/director inventory; does not import upstream Python
+bash "$SKILLS_ROOT/openmontage/scripts/openmontage.sh" pipelines \
+  /path/to/OpenMontage --strict
+
+# 3. only after the user asks to prepare a working checkout
+#    upstream had no release tags at the skill audit, so use the audited commit for a stable start
+git clone https://github.com/calesthio/OpenMontage.git
+cd OpenMontage
+git checkout cd9f3c1f03368be87b140af494914b8ee4e3c7a4
+make setup
+
+# 4. after dependencies are intentionally installed, discover capabilities without a provider call
+bash "$SKILLS_ROOT/openmontage/scripts/openmontage.sh" preflight .
+```
+
+Steps 1–2 are safe during installation verification. They read repository structure and
+host versions only; `doctor` reports `.env` tracking and `pipelines --strict` parses a
+small YAML subset with the Python standard library. Steps 3–4 are task-triggered because
+`make setup` creates `.venv`, downloads Python/npm/Piper dependencies, and creates `.env`
+from the example when absent; preflight imports the selected upstream checkout.
+
+Do not run `make install-gpu`, `make demo`, `make hyperframes-warm`,
+`scripts/backlot_simulate_run.py`, a Backlot server, or any provider integration during
+setup verification. A real production must run `provider_menu_summary()` first, announce
+the exact tool/provider/model and sample-versus-batch scope, show a cost ceiling, and obtain
+approval before each new paid path. Never print, copy, or commit credential values. Human
+approval gates in `pipeline_defs/*.yaml` are binding and require an `awaiting_human`
+checkpoint plus a later explicit approval before work continues.
+
+OpenMontage upstream is AGPL-3.0. Preserve its license and notices, keep the exact source
+revision, and review source-offer obligations before distributing or serving a modified
+version. See `openmontage/references/upstream-and-setup.md` for install and licensing
+boundaries and `openmontage/references/production-contract.md` before a real production.
+
 ### Drama Skills short-drama suite (on demand)
 
 The `drama-skills` catalog entry installs as routing documents plus a read-only helper. It

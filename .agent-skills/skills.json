@@ -1,7 +1,7 @@
 {
   "version": "2.0.0",
   "generated": "2026-07-30",
-  "skill_count": 213,
+  "skill_count": 214,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -230,7 +230,8 @@
       "webtoon-harness",
       "palmier-pro",
       "openstory",
-      "drama-skills"
+      "drama-skills",
+      "openmontage"
     ],
     "cli-tools": [
       "soup",
@@ -519,7 +520,8 @@
         "video-to-superprompt",
         "vox-director",
         "palmier-pro",
-        "openstory"
+        "openstory",
+        "openmontage"
       ],
       "motion": [
         "video-motion-previs"
@@ -7940,6 +7942,44 @@
       "keyword": "drama-skills",
       "version": "1.0",
       "source": "https://github.com/zenstory-ai/drama-skills"
+    },
+    {
+      "name": "openmontage",
+      "description": "Operate calesthio/OpenMontage, the AGPL-3.0 agent-orchestrated video production repository where a coding agent reads YAML pipelines and Markdown directors, invokes Python tools, checkpoints JSON artifacts, and exposes runs in the Backlot board. Route one request to one mode: assess and bootstrap a checkout; select a live pipeline from `pipeline_defs` and run `provider_menu_summary()` preflight; analyze a reference video; start or resume a checkpointed production with cost and human gates; inspect Backlot/project state; or extend and verify a provider, pipeline, renderer, or contract. Use when the user names OpenMontage or is operating its repository. Triggers on: OpenMontage, calesthio/OpenMontage, AGENT_GUIDE.md, pipeline_defs, provider_menu_summary, decision_log, Backlot, video_compose, Remotion vs HyperFrames, checkpoint_<stage>.json, agentic video production.",
+      "category": "creative-media",
+      "subcategory": "video",
+      "interface": "workflow",
+      "path": "openmontage/SKILL.md",
+      "tags": [
+        "openmontage",
+        "agentic-video",
+        "video-production",
+        "pipeline",
+        "backlot",
+        "remotion",
+        "hyperframes",
+        "ffmpeg",
+        "provider-routing",
+        "checkpoints"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Cursor",
+        "Copilot",
+        "Windsurf",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "openmontage",
+      "version": "1.0",
+      "source": "https://github.com/calesthio/OpenMontage"
     }
   ]
 }

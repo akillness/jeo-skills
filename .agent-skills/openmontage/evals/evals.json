@@ -1,0 +1,95 @@
+{
+  "skill_name": "openmontage",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "OpenMontage를 이 머신에 설치해서 쓸 수 있는지 먼저 확인해줘.",
+      "expected_output": "The skill inspects the checkout and host without installing, then proposes the smallest on-demand setup for the selected lane.",
+      "assertions": [
+        "The response runs or mirrors `scripts/openmontage.sh doctor` and the strict pipeline inventory before `make setup`",
+        "The response distinguishes Python 3.10+, FFmpeg, Node 18+ Remotion, and Node 22+ HyperFrames readiness",
+        "The response does not install GPU dependencies, start Backlot, clone during blanket setup, print keys, or call a provider"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "OpenMontage로 60초짜리 신경망 explainer를 만들자. 바로 이미지부터 생성해줘.",
+      "expected_output": "The skill selects the live explainer manifest but blocks premature generation until registry preflight and the proposal gate are complete.",
+      "assertions": [
+        "The response reads `pipeline_defs/animated-explainer.yaml` and starts with `provider_menu_summary()` rather than a raw support-envelope dump",
+        "The response reports capability ratios and classifies the selected path as passed, degraded, or blocked",
+        "The response presents tool/provider/model, cost ceiling, music plan, runtime and authoring-mode choices, then waits at the proposal gate before assets"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "이 유튜브 쇼츠 같은 템포로 우리 제품 영상을 OpenMontage에서 만들어줘: https://youtube.com/shorts/example",
+      "expected_output": "The skill uses the first-class reference-analysis path before choosing a production pipeline.",
+      "assertions": [
+        "The response reads `skills/meta/video-reference-analyst.md` and analyzes transcript, pacing, structure, scenes, keyframes, and style",
+        "The response distinguishes inspiration from source footage that should be edited",
+        "The response proposes two or three differentiated concepts rather than a carbon copy, then runs normal capability and pipeline selection"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Remotion과 HyperFrames가 둘 다 되는 머신이야. OpenMontage cinematic trailer는 알아서 하나 골라서 끝까지 만들어.",
+      "expected_output": "The skill refuses to silently choose or later swap a composition runtime and preserves the motion-required delivery promise.",
+      "assertions": [
+        "The response presents both Remotion and HyperFrames with a brief-specific benefit and drawback, includes FFmpeg when applicable, recommends one, and waits for explicit approval",
+        "The response chooses templated versus atelier as a separate decision and defaults toward atelier for hero work with the stated iteration cost",
+        "The response says a still animatic, Ken Burns treatment, or FFmpeg-only downgrade requires a new approved decision"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "projects/launch-film의 assets 체크포인트가 awaiting_human인데 세션이 끊겼어. 이어서 렌더까지 해줘.",
+      "expected_output": "The skill resumes from durable project state and stops at the existing human gate instead of rendering.",
+      "assertions": [
+        "The response inspects `project.json`, prior artifacts, `decision_log.json`, and `checkpoint_assets.json` or uses the project report helper",
+        "The response presents the existing asset filmstrip, review, spend, and projected compose cost without recomputing paid assets",
+        "The response ends at the approval request and does not start compose until a later explicit approval is recorded with `human_approved=True`"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "승인한 영상 provider가 실패했으니 말하지 말고 다른 모델로 바꿔서 계속해.",
+      "expected_output": "The skill surfaces the blocker and prepares alternatives but does not execute a material substitution without approval.",
+      "assertions": [
+        "The response states what failed and classifies auth, provider access, tool/runtime defect, or creative quality",
+        "The response shows available alternatives, their cost and quality consequences, and recommends one before waiting",
+        "The response appends the revised decision with the same decision-log category and subject instead of mutating or rewording the prior entry"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "OpenMontage에 새 video generation API provider를 추가하고 selector에서도 쓰이게 해줘.",
+      "expected_output": "The skill adds one concrete BaseTool provider contract and proves registry-driven selector discovery with mocked tests.",
+      "assertions": [
+        "The response uses a PascalCase `BaseTool` subclass without a `Tool` suffix and returns `ToolResult`",
+        "The response declares capability, provider, runtime, dependencies, schemas, cost, retry/resume, side effects, verification, and Layer 3 `agent_skills`",
+        "The response avoids a static selector list and tests registry discovery, input adaptation, auth redaction, cost, status mapping, idempotency or resume, and contract suites without a paid call"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "OpenMontage와 상관없이 일반적인 Remotion 기반 자동 영상 파이프라인을 설계해줘.",
+      "expected_output": "The request routes away from the OpenMontage operator skill to generic programmable-video planning.",
+      "assertions": [
+        "The response does not require an OpenMontage checkout or invent OpenMontage project state",
+        "The response routes to `video-production` or the narrow Remotion compatibility skill",
+        "The response uses OpenMontage only if the user later explicitly chooses that repository/runtime"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "OpenMontage 코드를 복사해서 우리 비공개 SaaS에 넣고 수정판을 서비스해도 돼?",
+      "expected_output": "The skill identifies the AGPL boundary, avoids unsupported legal certainty, and asks for an explicit licensing review before code reuse.",
+      "assertions": [
+        "The response identifies upstream as AGPL-3.0 and records the exact source revision",
+        "The response flags license/notice preservation and source-offer review for distribution or network service use",
+        "The response recommends linking or original wrappers when copying is unnecessary and escalates the proprietary hosted-service decision to legal ownership"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+N:openmontage
+D:Operate calesthio/OpenMontage, the AGPL-3.0 agent-orchestrated video system in which a coding agent selects YAML pipelines, reads stage and provider skills, discovers Python tools, checkpoints canonical artifacts, enforces cost and approval gates, and exposes project state in the read-only Backlot board. Route to checkout setup, live pipeline/provider preflight, reference analysis, checkpointed production or resume, project inspection, or provider/pipeline/renderer extension and verification.
+G:openmontage agentic-video video-production pipeline backlot remotion hyperframes ffmpeg provider-routing checkpoints decision-log human-approval cost-governance
+
+U[6]:
+  Assess or bootstrap an OpenMontage checkout without blanket installs or credential exposure
+  Select a live pipeline and report provider capability from provider_menu_summary preflight
+  Analyze a reference video before proposing differentiated production concepts
+  Start or resume a schema-checked project with decision cost review and human gates
+  Inspect Backlot and canonical project files without turning the board into control state
+  Extend and verify a provider tool selector pipeline renderer schema checkpoint or contract
+
+S[7]{n,step,details}:
+  1,Enforce Rule Zero,Read AGENT_GUIDE and PROJECT_CONTEXT; every production uses a checked-out manifest; read the current stage director and every tool agent_skills pointer; no ad hoc provider scripts or secret values
+  2,Choose one mode,fit-bootstrap | route-preflight | reference-analysis | produce-resume | inspect-backlot | extend-verify
+  3,Inspect and route,Run scripts/openmontage.sh doctor then pipelines --strict; use video-reference-analyst for inspiration and source_media_review for footage to edit; the live manifest defines order tools gates and artifacts
+  4,Preflight and propose,Run provider_menu_summary; present configured ratios warnings setup offers pipeline tool/provider/model alternatives cost ceiling music plan stage gates runtime and authoring mode; report passed degraded or blocked
+  5,Initialize or resume,Create projects/<id> with init_project; open Backlot non-fatally; compute get_next_stage with pipeline type; load partial progress and prior decisions; write in_progress before each stage
+  6,Checkpoint and compose,Self-review against manifest focus; awaiting_human ends the turn; complete only after approval; preserve motion-required promises and locked runtime; assets filmstrip approval precedes full compose
+  7,Verify or extend,Inspect final metadata frames audio captions and playback; add behavior to its owning tool/Layer2/Layer3/manifest/schema; run strict inventory focused tests contracts lint and full suite without paid calls
+
+R[10]:
+  The audit pin is cd9f3c1f03368be87b140af494914b8ee4e3c7a4 from 2026-08-22; no Git tags or GitHub releases existed on 2026-08-26
+  OpenMontage source is AGPL-3.0; preserve notices and review source-offer obligations before distribution or a modified network service
+  The coding agent is the orchestrator; Python supplies tools registry schemas cost persistence and Backlot, not creative control logic
+  Run provider_menu_summary first; provider_menu is deeper detail and support_envelope can be a multi-megabyte debugging surface
+  The checked-out pipeline_defs manifest overrides generic stage diagrams and static pipeline tables
+  Provider model runtime still-versus-motion narration and music substitutions are material decisions; append revisions with the same decision category and subject
+  Present Remotion and HyperFrames when both are available; FFmpeg is a third footage/post path; runtime and templated-versus-atelier mode are separate approvals
+  A manifest human gate writes awaiting_human and ends the turn; approval is per gate and completed requires human_approved true
+  All outputs belong under projects/<id>; Backlot is a read-only projection over project.json checkpoints history artifacts events decisions costs and renders
+  Render success or final.mp4 existence is not proof; inspect ffprobe data timeline frames audio subtitles delivery promise and full playback
+
+E[7]{type,command}:
+  Install skill,npx skills add https://github.com/akillness/jeo-skills --skill openmontage
+  Read-only doctor,bash .agent-skills/openmontage/scripts/openmontage.sh doctor /path/to/OpenMontage
+  Strict pipeline inventory,bash .agent-skills/openmontage/scripts/openmontage.sh pipelines /path/to/OpenMontage --strict
+  Human-sized provider preflight,bash .agent-skills/openmontage/scripts/openmontage.sh preflight /path/to/OpenMontage
+  Read-only project report,bash .agent-skills/openmontage/scripts/openmontage.sh project /path/to/OpenMontage my-project
+  Contract tests,bash .agent-skills/openmontage/scripts/openmontage.sh test-contracts /path/to/OpenMontage
+  Validate skill,bash .agent-skills/skill-standardization/scripts/validate_skill.sh .agent-skills/openmontage
