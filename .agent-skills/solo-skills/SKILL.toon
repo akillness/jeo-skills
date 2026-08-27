@@ -1,0 +1,53 @@
+N:solo-skills
+D:Audit, selectively adapt, install, route, and maintain bam-bam-2/solo-skills, a Korean solopreneur skill pack. Inspect the actual source tree, commit, MIT license, frontmatter, support scripts, personal paths, IDs, credential names, network targets, schedulers, permission bypasses, live flags, and destination collisions. Treat author-specific operating assumptions as examples to parameterize, and require separate approval for every send, publish, archive, remote, desktop, scheduled, paid-provider, credential, or persistent action.
+G:solo-skills bam-bam-2 korean solopreneur agent-skills skill-pack personal-automation discord notion naver threads kakao remote-offload content-workflow portability audit
+
+U[8]:
+  Audit the 26-source-folder Solo collection and its real installer discoveries
+  Select and adapt one Korean writing publishing meeting or automation workflow
+  Distinguish public skills from the separate fleet catalog of author automations
+  Detect invalid frontmatter destination-name collisions and missing portability inputs
+  Remove author-specific paths hosts IDs profiles schedules and credential searches
+  Gate Discord Naver Threads Notion Kakao mail SSH desktop scheduler and provider actions
+  Refresh a pinned adapted selection without losing provenance or safeguards
+  Route generic agent-team and reusable-skill work to canonical local owners
+
+S[10]{n,step,details}:
+  1,Pick one mode,audit route adapt install refresh operate or troubleshoot; installation does not approve operation
+  2,Pin and inspect,verify origin commit actual skills tree and MIT license; moving main is not a release
+  3,Run the read-only helper,doctor reports counts frontmatter mismatch and fixed risk labels without printing matches or executing code
+  4,Route one source owner,use the 26-skill map only after the user explicitly chooses this pack
+  5,Separate fleet.md,treat its claimed 49 and category-heading sum of 48 as unresolved discovery data rather than installed skills or current runtime state
+  6,Preview the target,plan blocks invalid selected frontmatter and existing same-name destinations including the local harness
+  7,Adapt before install,parameterize personal identity paths hosts recipients IDs credentials schedules providers permissions and live switches
+  8,Install selectively,copy the complete reviewed folder and record upstream pin adaptation diff MIT attribution target and rollback
+  9,Gate operation,show exact identity account recipient content time host command files cost credential names rollback and validation before live action
+  10,Verify and report,confirm installed bytes and support links separately from remote read-back scheduler status publication or artifact correctness
+
+R[16]:
+  The audited commit has 26 skill directories but Agent Skills CLI 1.5.23 discovers 24
+  style-skill-creator and voice-dna-creator have invalid YAML frontmatter at the pin
+  style-skill-creator also declares cw-style-skill-creator rather than its directory name
+  The upstream repository had no release tags at audit time so every install needs a commit pin
+  fleet.md claims 49 author automations while its eight category headings sum to 48 and neither number is additional public skill folders
+  The local jeo-skills harness is canonical and must not be overwritten silently
+  Generic skill authoring routes to skill-standardization or write-a-skill
+  Treat upstream personal paths hosts IDs voice samples claims schedules and accounts as examples
+  Preserve every support script reference template agent eval and resource in a selected folder
+  Installing instructions does not authorize sending publishing archiving scheduling remote execution or account access
+  Keep permission and sandbox bypass flags disabled by default
+  Do not scan unrelated private folders for credentials; use one approved credential source
+  Default outbound workflows to preview or dry run and keep live switches off
+  Never print secret values or expose private content to unapproved providers
+  Verify external state before retrying ambiguous actions to prevent duplicates
+  Removing a skill does not undo messages posts archives remote commands charges jobs or persistent agents
+
+E[8]{type,command}:
+  Read-only pinned audit,python3 .agent-skills/solo-skills/scripts/audit-pack.py doctor --repo /path/to/checkout --expect-commit d5789f592af17980054052fc7c05fe8a8e46be79 --format json
+  Read-only inventory,python3 .agent-skills/solo-skills/scripts/audit-pack.py inventory --repo /path/to/checkout --format json
+  Read-only selective plan,python3 .agent-skills/solo-skills/scripts/audit-pack.py plan --repo /path/to/checkout --target /path/to/skills --skill humanize-korean --format json
+  Real CLI list,npx --yes skills@1.5.23 add /path/to/checkout --list --full-depth
+  Selective install after adaptation,npx --yes skills@1.5.23 add /path/to/reviewed-checkout --skill humanize-korean --global --agent universal --yes --copy --full-depth
+  Generic agent team,use the canonical local harness
+  Reusable skill creation,use skill-standardization or write-a-skill
+  Live external action,preview exact target payload identity credentials rollback and validation then request confirmation

@@ -794,6 +794,26 @@ Logs and exports can contain prompts, source, tool data, and provider output. Us
 `zeroshot/references/product-and-installation.md` and
 `zeroshot/references/providers-and-security.md` before installing or executing.
 
+### Unity Technologies official skill pack (on demand)
+
+When the user explicitly names `Unity-Technologies/skills`, the official Unity Skills collection, or asks to inspect/install/refresh one of its upstream sub-skills:
+
+- Load `.agent-skills/unity-technologies-skills/SKILL.md` first.
+- Pin and audit the actual `skills/` tree, Unity Companion License, frontmatter, support files, and destination before copying anything.
+- Default to a named selective install. The audited pin has 22 source directories but 21 Agent Skills CLI discoveries because `physics-3d-collision` has invalid YAML, and the pack's `unity-cli` collides with the existing local skill.
+- Keep skill installation separate from Editor/module/package changes, live C# evaluation, project mutation, Git publication, UGS deployment, licensing, purchases, ads, privacy settings, credentials, builds, and tests. Preview and confirm each side-effect class separately.
+- Route generic third-party Unity pack curation to `unity-gamedev-skill-pack`, build-log failures to `game-build-log-triage`, game CI design to `game-ci-cd-pipeline`, and profiler interpretation to `game-performance-profiler`.
+
+### Solo Skills personal automation pack (on demand)
+
+When the user explicitly names `bam-bam-2/solo-skills`, Solo Skills, its 26-skill public collection, or `fleet.md`:
+
+- Load `.agent-skills/solo-skills/SKILL.md` first.
+- Treat the repository as one author's personal operating system that requires selective adaptation, not as 26 portable drop-in tools. Audit paths, hosts, IDs, account assumptions, credential sources, schedules, provider calls, support scripts, permission bypasses, live switches, and destination collisions before installation.
+- The audited pin has 26 source directories but 24 Agent Skills CLI discoveries because `style-skill-creator` and `voice-dna-creator` have invalid YAML. The local `harness` is canonical and must not be overwritten. `fleet.md` claims 49 automations, but its category headings sum to 48; neither number proves those jobs exist in the current environment.
+- Keep outbound messages, publishing, Notion archives, mail, Threads, Discord, KakaoTalk, SSH, desktop control, launchd, persistent agents, paid providers, and credential use in preview or dry-run mode until the exact identity, target, payload, timing, cost, rollback, and validation are confirmed.
+- Route generic agent-team design to `harness` and reusable skill authoring to `skill-standardization` or `write-a-skill`.
+
 ### Drama Skills short-drama suite (on demand)
 
 The `drama-skills` catalog entry installs as routing documents plus a read-only helper. It

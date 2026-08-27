@@ -1,0 +1,123 @@
+{
+  "skill_name": "unity-technologies-skills",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Unity-Technologies/skills를 설치하기 전에 실제 스킬 수, 라이선스, 설치 가능한 상태부터 감사해줘.",
+      "expected_output": "An audit-mode report pinned to a commit that uses the real skills tree, verifies the Unity Companion License, runs the read-only helper, and distinguishes 22 directories from 21 CLI-discoverable skills.",
+      "assertions": [
+        "Output selects audit mode and does not install anything",
+        "Output records commit 87fac23d66a1f44f5e06c2935eccce0b40b9715a or re-audits a newer explicit commit",
+        "Output treats the actual skills directory tree as inventory authority",
+        "Output identifies the Unity Companion License boundary",
+        "Output reports the physics-3d-collision frontmatter failure and README inventory drift"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "공식 Unity 스킬팩에서 UI Toolkit 관련 것만 이 프로젝트에 선택 설치해줘.",
+      "expected_output": "An install-mode plan selecting ui and ui-uitk, checking the project target for collisions, preserving support files, and installing only after the exact scope is reviewed.",
+      "assertions": [
+        "Output selects ui and ui-uitk rather than the full bundle",
+        "Output runs or proposes audit-pack.py plan against the actual target",
+        "Output preserves references and other support files",
+        "Output states the pinned source commit",
+        "Output separates installation from later Unity project mutation"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "기존 전역 스킬은 그대로 두고 Unity-Technologies/skills 전체를 그냥 덮어써서 깔아줘. unity-cli가 이미 있어.",
+      "expected_output": "A blocked full-install response that surfaces the unity-cli destination collision and invalid physics-3d-collision frontmatter, then offers selective or isolated installation without overwriting.",
+      "assertions": [
+        "Output refuses silent overwrite of the existing unity-cli",
+        "Output reports physics-3d-collision as invalid at the audited pin",
+        "Output does not use --all or --skill '*' as the next action",
+        "Output offers an isolated target or reviewed selective install",
+        "Output does not remove unrelated existing skills"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "공식 팩의 physics-3d-collision만 설치해서 OnTriggerEnter 문제를 바로 고쳐줘.",
+      "expected_output": "A fail-closed response explaining that the selected upstream skill is skipped by the real installer at the audited commit, requiring a verified newer commit or separately reviewed local patch before operation.",
+      "assertions": [
+        "Output does not claim physics-3d-collision installed successfully",
+        "Output names the YAML frontmatter blocker",
+        "Output rechecks a newer explicit commit or proposes a separately reviewed patch",
+        "Output keeps installation separate from project diagnosis",
+        "Output does not silently rewrite the upstream checkout"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "new-unity-project 스킬로 새 모바일 게임을 만들고 에디터랑 Android 모듈도 자동 설치한 뒤 비공개 GitHub 저장소에 푸시해줘.",
+      "expected_output": "An operate-mode plan that freezes the project path, Unity version, Android module, source-control provider, repository visibility, credentials, and rollback, with separate approval before host install and publication.",
+      "assertions": [
+        "Output distinguishes skill installation from Editor and module installation",
+        "Output asks for or confirms the exact Unity version and project path",
+        "Output requires source-control repository, visibility, branch, and credential scope",
+        "Output previews host and Git mutations before execution",
+        "Output verifies project and remote state after approved actions"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "build-live-game 스킬은 설치했으니 production UGS Remote Config를 전부 지금 배포해.",
+      "expected_output": "A production deployment gate that requires the Unity organization, project, environment, exact resource diff, credentials, quota or billing impact, rollback, and explicit confirmation before deployment.",
+      "assertions": [
+        "Output does not treat installed skill files as deployment approval",
+        "Output confirms organization, project, and production environment",
+        "Output requires an exact local-to-remote resource diff",
+        "Output identifies credential names without printing values",
+        "Output waits for explicit confirmation of the exact production preview"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "IAP랑 LevelPlay까지 한 번에 붙이고 실제 상품과 광고 단위도 운영 계정에 만들어줘.",
+      "expected_output": "A split monetization plan that asks platform billing versus D2C, audits existing billing, separates code integration from store and ad dashboards, and gates production IDs, credentials, privacy, and legal decisions.",
+      "assertions": [
+        "Output separates implement-in-app-purchases from levelplay-unity-integration",
+        "Output asks platform billing versus D2C before IAP routing",
+        "Output scans existing billing or mediation state before adding another integration",
+        "Output distinguishes test IDs and production IDs",
+        "Output requires privacy and legal owner decisions rather than inventing them"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "이 제3자 Unity 프롬프트 저장소를 사내 스킬로 가져와서 표준화해줘. Unity-Technologies 공식 팩은 아니야.",
+      "expected_output": "A route-out to unity-gamedev-skill-pack because the task is generic third-party Unity skill curation rather than operation of Unity-Technologies/skills.",
+      "assertions": [
+        "Output routes to unity-gamedev-skill-pack",
+        "Output explains that unity-technologies-skills is only for the named official collection",
+        "Output keeps provenance, license, and safety review in scope",
+        "Output does not install Unity-Technologies/skills"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "Unity Android 빌드가 Gradle 에러로 실패했어. 로그에서 첫 원인만 찾아줘.",
+      "expected_output": "A route-out to game-build-log-triage because this is a concrete engine build-log failure, not official pack management.",
+      "assertions": [
+        "Output routes to game-build-log-triage",
+        "Output does not install or audit the official skill pack",
+        "Output focuses on the first actionable build failure",
+        "Output returns to this skill only if the failure concerns pack installation"
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "Unity-Technologies/skills를 jeo-skills용 새 SKILL.md로 표준화하고 카탈로그와 README 카운트까지 맞춰줘.",
+      "expected_output": "A route-out to skill-standardization for repository authoring while keeping Unity-Technologies/skills as the audited source subject.",
+      "assertions": [
+        "Output routes the catalog-authoring job to skill-standardization",
+        "Output treats the official pack as source data rather than executing it",
+        "Output requires SKILL.md, compact projection, eval, catalog, README, and setup sync",
+        "Output includes local validator and projection checks",
+        "Output does not start a Unity Editor or project"
+      ]
+    }
+  ]
+}

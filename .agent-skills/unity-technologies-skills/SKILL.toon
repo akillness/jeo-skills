@@ -1,0 +1,49 @@
+N:unity-technologies-skills
+D:Audit, selectively install, route, and maintain the official Unity-Technologies/skills collection. Inspect the actual skills tree, pinned commit, Unity Companion License, frontmatter, support files, and destination collisions before copying. Separate skill installation from Editor, project, package, live C#, cloud, billing, ad, source-control, credential, build, and license actions, each of which needs its own reviewed scope and approval.
+G:Unity-Technologies Unity Skills official-unity agent-skills skill-pack unity-editor unity-cli upm ugs iap levelplay multiplayer vivox ui render-graph shader-graph localization navmesh physics
+
+U[8]:
+  Audit the official Unity Technologies pack inventory provenance license and installability
+  Select and install only named upstream Unity skills into a reviewed target
+  Route a Unity request to the narrowest official upstream sub-skill
+  Compare or refresh a pinned selection without replacing unrelated skills
+  Diagnose Agent Skills CLI discovery frontmatter or destination collision failures
+  Prepare bounded Unity Editor package project build test or live-command work
+  Prepare UGS IAP LevelPlay Vivox multiplayer or store work behind service-specific gates
+  Distinguish official-pack management from generic Unity pack curation build triage CI and profiling
+
+S[9]{n,step,details}:
+  1,Pick one mode,audit route install refresh operate or troubleshoot; do not blend installation with project execution
+  2,Pin and inspect,record the exact commit; verify Unity Companion License and actual skills tree; moving main is not a release
+  3,Run the read-only helper,doctor reports origin commit license counts frontmatter README drift and risk labels without executing upstream code
+  4,Route one owner,use new-unity-project unity-cli package management services monetization multiplayer UI rendering performance navigation or physics specialist
+  5,Preview destination,plan requires named skills or explicit all and blocks invalid selected frontmatter and existing same-name targets
+  6,Install selectively,preserve every reference resource script eval security note and changelog; never overwrite the existing local unity-cli silently
+  7,Gate operations,reconfirm exact project Editor version environment code credentials network cost rollback and validation before each side-effect class
+  8,Respect runtime boundaries,recheck Unity CLI package SDK and service versions; keep secrets out of arguments logs projects and reports
+  9,Verify and report,compare installed bytes and support links; record commit and license; separate install success from project or service success
+
+R[14]:
+  The audited commit has 22 skill directories but Agent Skills CLI 1.5.23 discovers 21
+  physics-3d-collision is skipped at the pin because its description has invalid YAML frontmatter
+  The top-level README lists 13 and is not the complete inventory authority
+  The upstream repository had no release tags at audit time so every install needs a commit pin
+  Unity Companion License material stays attributed and scoped to Unity-dependent projects
+  A full install can collide with the existing jeo-skills unity-cli and must not overwrite it
+  Generic third-party Unity pack curation routes to unity-gamedev-skill-pack
+  Unity build-log diagnosis routes to game-build-log-triage and CI design to game-ci-cd-pipeline
+  Preserve whole selected folders rather than copying only SKILL.md
+  Installing instruction files does not approve their commands
+  Arbitrary C# and live Editor control accept only reviewed trusted input
+  Cloud store ads privacy source-control licensing and credentials are separate authority scopes
+  Never print credential values or infer production approval from setup approval
+  Re-audit moving upstream content and destination collisions before refresh
+
+E[7]{type,command}:
+  Read-only pinned audit,python3 .agent-skills/unity-technologies-skills/scripts/audit-pack.py doctor --repo /path/to/checkout --expect-commit 87fac23d66a1f44f5e06c2935eccce0b40b9715a --format json
+  Read-only inventory,python3 .agent-skills/unity-technologies-skills/scripts/audit-pack.py inventory --repo /path/to/checkout --format json
+  Read-only selective plan,python3 .agent-skills/unity-technologies-skills/scripts/audit-pack.py plan --repo /path/to/checkout --target /path/to/skills --skill ui --skill ui-uitk --format json
+  Real CLI list,npx --yes skills@1.5.23 add /path/to/checkout --list --full-depth
+  Selective install after review,npx --yes skills@1.5.23 add /path/to/checkout --skill ui ui-uitk --global --agent universal --yes --copy --full-depth
+  Generic external-pack curation,use unity-gamedev-skill-pack
+  Concrete build-log failure,use game-build-log-triage

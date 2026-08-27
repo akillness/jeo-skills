@@ -1,7 +1,7 @@
 {
   "version": "2.0.0",
   "generated": "2026-07-30",
-  "skill_count": 215,
+  "skill_count": 217,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -206,7 +206,8 @@
       "game-performance-profiler",
       "wai-play",
       "game-ci-cd-pipeline",
-      "steam-store-launch-ops"
+      "steam-store-launch-ops",
+      "unity-technologies-skills"
     ],
     "creative-media": [
       "aura-asset-images",
@@ -353,7 +354,8 @@
       "task-estimation",
       "task-planning",
       "google-workspace",
-      "watermarks-remover"
+      "watermarks-remover",
+      "solo-skills"
     ]
   },
   "subcategories": {
@@ -458,7 +460,8 @@
     "game": {
       "client": [
         "implement-fog-of-war",
-        "unity-gamedev-skill-pack"
+        "unity-gamedev-skill-pack",
+        "unity-technologies-skills"
       ],
       "web": [
         "agentic-gamedev-skills",
@@ -732,7 +735,8 @@
         "task-planning"
       ],
       "productivity": [
-        "google-workspace"
+        "google-workspace",
+        "solo-skills"
       ],
       "general": []
     }
@@ -8024,6 +8028,87 @@
       "keyword": "zeroshot",
       "version": "1.0",
       "source": "https://github.com/the-open-engine/zeroshot"
+    },
+    {
+      "name": "unity-technologies-skills",
+      "description": "Audit, selectively install, route, and maintain the official Unity-Technologies/skills collection for Unity Editor, CLI, UI, rendering, physics, localization, multiplayer, UGS, IAP, and LevelPlay workflows. Use when the user explicitly names Unity-Technologies/skills, Unity Skills, or the official Unity agent-skill pack; wants its real inventory; needs a pinned selective install or refresh; must choose the correct upstream sub-skill; or needs to validate the pack before adoption. Inspect actual skill directories, support files, frontmatter, license, and destination collisions before any copy. Require separate approval before Editor or module installation, live C# evaluation, project mutation, cloud deployment, billing, ads, source-control publication, or credential use. Route generic third-party Unity pack curation to `unity-gamedev-skill-pack`, CLI-only work to `unity-cli`, build failures to `game-build-log-triage`, and game CI design to `game-ci-cd-pipeline`.",
+      "category": "game",
+      "subcategory": "client",
+      "interface": "workflow",
+      "path": "unity-technologies-skills/SKILL.md",
+      "tags": [
+        "unity",
+        "official-unity",
+        "agent-skills",
+        "skill-pack",
+        "unity-cli",
+        "unity-editor",
+        "upm",
+        "ugs",
+        "iap",
+        "levelplay",
+        "skill-installer"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex",
+        "Cursor",
+        "Cline"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "unity-technologies-skills",
+      "version": "1.0",
+      "source": "https://github.com/Unity-Technologies/skills"
+    },
+    {
+      "name": "solo-skills",
+      "description": "Audit, selectively adapt, install, route, and maintain the Korean solopreneur skill pack from bam-bam-2/solo-skills. Use when the user names solo-skills, bam-bam-2/solo-skills, its 26-skill collection, or `fleet.md`; wants a pinned inventory or selective install; needs to choose among its content, messaging, publishing, remote, media, or agent workflows; or needs to remove author-specific assumptions before adoption. Inspect frontmatter, support scripts, licenses, destination collisions, personal paths, account IDs, credential names, network targets, schedulers, permission-bypass flags, and live-action switches before copying or running anything. Require explicit approval for external messages, publishing, archives, remote commands, desktop control, scheduled agents, paid providers, account access, or local persistence. Route generic agent-team design to the canonical local `harness` and reusable skill authoring to `skill-standardization`.",
+      "category": "utilities",
+      "subcategory": "productivity",
+      "interface": "workflow",
+      "path": "solo-skills/SKILL.md",
+      "tags": [
+        "solo-skills",
+        "bam-bam-2",
+        "korean",
+        "solopreneur",
+        "agent-skills",
+        "skill-pack",
+        "discord",
+        "notion",
+        "naver",
+        "threads",
+        "automation",
+        "content-workflow"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex",
+        "Cursor",
+        "Cline"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "solo-skills",
+      "version": "1.0",
+      "source": "https://github.com/bam-bam-2/solo-skills"
     }
   ]
 }
