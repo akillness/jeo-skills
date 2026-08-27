@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-214-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-215-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![GJC](https://img.shields.io/badge/GJC-gajae--code-181717?style=for-the-badge&logo=github)](https://github.com/akillness/gajae-code)
@@ -267,9 +267,9 @@ video-motion-previs check
 | `drama-skills` |
 | `openmontage` |
 
-### ⌨️ CLI 도구 (29개)
+### ⌨️ CLI 도구 (30개)
 
-하위 분류: `developer-cli` (8), `ai-cli` (9), `media-cli` (1), `automation-cli` (6), `search-cli` (4), `benchmark-cli` (1)
+하위 분류: `developer-cli` (8), `ai-cli` (10), `media-cli` (1), `automation-cli` (6), `search-cli` (4), `benchmark-cli` (1)
 
 | Skill |
 |---|
@@ -302,6 +302,7 @@ video-motion-previs check
 | `codeburn` |
 | `mole` |
 | `mcp-server-sv-number` |
+| `zeroshot` |
 
 ### 🤖 AI 및 에이전트 (28개)
 

@@ -726,6 +726,74 @@ revision, and review source-offer obligations before distributing or serving a m
 version. See `openmontage/references/upstream-and-setup.md` for install and licensing
 boundaries and `openmontage/references/production-contract.md` before a real production.
 
+### ZeroShot multi-agent execution (on demand)
+
+The `zeroshot` skill installs as routing documents plus two read-only helpers. Blanket
+setup must not install either upstream product, enter the guided wizard, apply settings,
+start or resume a provider run, create a worktree or branch, mount credentials, open a
+PR, merge, schedule work, export private logs, or remove durable state. Inspect only when
+a task explicitly chooses ZeroShot:
+
+```bash
+# 1. host, repo, binary, settings-presence, and durable-state counts only
+#    environment variables are reported as SET or MISSING; values are never printed
+bash "$SKILLS_ROOT/zeroshot/scripts/zeroshot.sh" doctor /path/to/repo
+
+# 2. safe only when the Node product is already installed
+#    upstream tests require this plan to omit secret-shaped fields; it writes nothing
+command -v zeroshot >/dev/null 2>&1 && \
+  bash "$SKILLS_ROOT/zeroshot/scripts/zeroshot.sh" setup-plan /path/to/repo
+
+# 3. only after the user selects the established Node product
+#    pin the successful release rather than the moving main audit commit
+npm install -g @the-open-engine/zeroshot@6.45.0
+zeroshot --version
+```
+
+Steps 1 and 2 are safe during installation verification. `doctor` invokes only version
+flags when a ZeroShot binary exists; it never invokes a provider or run. `setup-plan`
+delegates to `zeroshot setup plan --json`, not
+`setup apply`. Skip step 3 unless the user asks to use the product: global npm install
+runs upstream lifecycle scripts and can build generated output, adjust native package
+permissions, inspect PATH, and print the setup invitation. Do not run bare `zeroshot`
+because first use can enter an interactive wizard.
+
+The standalone native product is separate. Install it only for a concrete Rust, Windows,
+JSON/NDJSON, named-target, or Python-SDK requirement:
+
+```bash
+npm install -g @the-open-engine/zeroshot-rust@0.4.0
+zeroshot-rust version
+```
+
+Its npm installer selects a declared platform archive and verifies release SHA-256 sums.
+The source Python SDK advertised `pip install zeroshot-rust`, but PyPI returned 404 and
+the trusted-publishing job failed when this skill was audited. Recheck the registry
+before recommending that command; never substitute an unverified wheel URL.
+
+A real Node run must freeze one bounded task, observable acceptance, provider/model,
+agent topology, iteration ceiling, explicit worktree or reviewed Docker isolation,
+credential and network scopes, delivery mode, and cost ceiling. Use the no-execution
+preflight and then wait for approval:
+
+```bash
+bash "$SKILLS_ROOT/zeroshot/scripts/zeroshot.sh" preflight \
+  --repo /path/to/repo \
+  --input 'Add JSON output with tests' \
+  --isolation worktree \
+  --delivery none \
+  --provider codex
+```
+
+The helper prints a shell-quoted proposal but never runs it. Current-checkout mutation
+and ship behavior have explicit approval guards. PR creation, merge, each new paid turn,
+resume, `finish`, schedules, credential forwarding, `stop`, `kill`, `force-stop`, `gc`,
+`clean`, `purge`, updates, uninstall, and publication remain separately confirmed actions.
+Logs and exports can contain prompts, source, tool data, and provider output. Use
+`trace_summary.py` for content-free structural checks. See
+`zeroshot/references/product-and-installation.md` and
+`zeroshot/references/providers-and-security.md` before installing or executing.
+
 ### Drama Skills short-drama suite (on demand)
 
 The `drama-skills` catalog entry installs as routing documents plus a read-only helper. It

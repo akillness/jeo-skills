@@ -1,0 +1,52 @@
+N:zeroshot
+D:Operate the-open-engine/zeroshot as a safety-first execution control plane for persistent multi-agent software workflows. Route to the established Node product or standalone Rust and Python lane; validate setup graph provider isolation credentials delivery and evidence without paid calls; freeze acceptance and cost; start or resume only after exact approval; monitor durable state; and verify trace or semantic JSONL without exposing content.
+G:zeroshot the-open-engine multi-agent coding-agents conductor worktree docker provider-routing pr-delivery auto-merge rust-cli python-sdk trace-jsonl semantic-jsonl
+
+U[8]:
+  Assess fit and choose Node zeroshot versus standalone zeroshot-rust or the Python SDK
+  Install or update one pinned product after checking host release registry CI and lifecycle scripts
+  Validate setup workflow runtime provider isolation credential and delivery plans without a paid run
+  Start a bounded software-change workflow only after exact task cost and side-effect approval
+  Observe diagnose stop resume or recover a durable run from status ledger worktree and log evidence
+  Open a review PR or ship only under separate delivery and merge approvals
+  Export and structurally verify trace or semantic JSONL without revealing prompts or raw output
+  Extend the owning Node Rust protocol target or Python subsystem with focused verification
+
+S[10]{n,step,details}:
+  1,Choose one mode,fit | install | plan | execute | observe | recover | evidence | target | extend; do not turn a read or plan request into mutation
+  2,Choose one product,Node owns established setup provider worktree Docker resume export and PR UX; Rust owns typed graphs targets JSON and NDJSON plus Windows; Python is a typed Rust projection and was not on PyPI at audit
+  3,Freeze the contract,Record exact version repo base bounded end state acceptance non-goals provider model topology retry limit isolation credential names delivery cost ceiling and approval
+  4,Inspect safely,Run scripts/zeroshot.sh doctor; print credential names or SET and MISSING only; setup-plan is read-only and applying settings is separate
+  5,Validate and isolate,Run upstream strict config validation or native validate-only; default Node coding to explicit worktree; inspect Docker mounts env Gateway tools web search and target auth
+  6,Preflight and approve,Use scripts/zeroshot.sh preflight to print one shell-quoted proposal; it blocks current checkout ship missing Docker provider and forge prerequisites; then wait for explicit approval
+  7,Execute exactly,Run only the approved command; any change to task provider model topology retry credentials network isolation delivery or cost requires reapproval
+  8,Observe and recover,Read JSON status and bounded logs first; stop before kill; resume means another paid turn; finish means PR plus merge; preserve ledgers and worktrees until resolved
+  9,Verify and deliver,Reproduce acceptance from direct files behavior tests and forge state; report whether a distinct validator ran; agent completion and Git state are not proof
+  10,Export or extend,Create a new sensitive trace or semantic export and run trace_summary.py; for source changes edit the owning subsystem and run focused Node Rust protocol or Python gates without live paid tests
+
+R[14]:
+  Audit pin is 362453b743ca1ef79d4fff3525f9db3cffdbf2ad on 2026-08-27; prefer successful Node v6.45.0 commit f015ffd66465b50613421717c323d14cef23df27 over that failing main push CI
+  Native zeroshot-rust-v0.4.0 is independently released; do not mix commands ids state versions or support claims with Node
+  Python source advertises pip install zeroshot-rust but PyPI returned 404 and publishing failed at audit; recheck before recommending
+  Never start resume finish schedule or another provider turn without explicit provider cost and consequence approval
+  No-flag Node resolution can mutate the current checkout; guided setup recommending worktree does not prove the setting was applied
+  Ship implies PR and merge behavior; PR implies worktree unless Docker; Docker wins; no-isolation conflicts with PR ship Docker and worktree
+  PR approval is not merge approval; finish is a ship operation; read back branch PR merge and issue state from the forge
+  Trivial local runs can use one worker with no independent validator; report actual verifier separation rather than a template promise
+  CLI providers own authentication; bundled Gateway settings can store an API key and must have narrow file and command tools
+  Docker defaults can mount gh git and ssh credentials; worktrees separate files but are not a credential process or network sandbox
+  Native runtime JSON lists environment variable names only; named targets can receive GH_TOKEN; direct targets are unauthenticated
+  target serve without bootstrap-key-file is unauthenticated; bind local experiments to loopback and require a security plan before exposure
+  Logs traces and semantic exports can contain prompts source tool data and provider output; never paste or upload them casually
+  Clean purge kill-all force-stop uninstall update schedules provider-live tests and publication each need the matching approval
+
+E[9]{type,command}:
+  Install skill,npx skills add https://github.com/akillness/jeo-skills --skill zeroshot
+  Read-only doctor,bash .agent-skills/zeroshot/scripts/zeroshot.sh doctor /path/to/repo
+  Read-only setup plan,bash .agent-skills/zeroshot/scripts/zeroshot.sh setup-plan /path/to/repo
+  Safe run preflight,bash .agent-skills/zeroshot/scripts/zeroshot.sh preflight --repo /path/to/repo --input 'Add JSON output with tests' --isolation worktree --delivery none --provider codex
+  Strict config validation,bash .agent-skills/zeroshot/scripts/zeroshot.sh validate-config workflow.json --strict
+  Read-only run status,bash .agent-skills/zeroshot/scripts/zeroshot.sh status RUN_ID
+  Content-free trace audit,python3 .agent-skills/zeroshot/scripts/trace_summary.py run.trace.jsonl --strict
+  Native no-submit validation,zeroshot-rust run --title 'Validate graph' --input input.json --template software-change --uniform-runtime-config runtime.json --validate-only
+  Validate skill,bash .agent-skills/skill-standardization/scripts/validate_skill.sh .agent-skills/zeroshot

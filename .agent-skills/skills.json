@@ -1,7 +1,7 @@
 {
   "version": "2.0.0",
   "generated": "2026-07-30",
-  "skill_count": 214,
+  "skill_count": 215,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -262,7 +262,8 @@
       "hyperfine-benchmarking",
       "codeburn",
       "mole",
-      "mcp-server-sv-number"
+      "mcp-server-sv-number",
+      "zeroshot"
     ],
     "ai-agents": [
       "bmad",
@@ -564,7 +565,8 @@
         "ponytail",
         "zeude",
         "soup",
-        "mcp-server-sv-number"
+        "mcp-server-sv-number",
+        "zeroshot"
       ],
       "media-cli": [
         "compresso"
@@ -7980,6 +7982,48 @@
       "keyword": "openmontage",
       "version": "1.0",
       "source": "https://github.com/calesthio/OpenMontage"
+    },
+    {
+      "name": "zeroshot",
+      "description": "Operate the-open-engine/zeroshot, the MIT-licensed agent orchestration system that routes a software task through a persistent graph of provider CLI agents, validators, worktree or Docker isolation, and optional PR delivery. Choose the established Node `zeroshot` product, the standalone `zeroshot-rust` engine, or its typed Python SDK; audit provider and credential boundaries; validate configs without paid calls; freeze acceptance, isolation, delivery, and cost before execution; monitor or recover durable runs; and verify trace or semantic JSONL evidence without exposing content. Use when the user names ZeroShot, zeroshot-rust, The Open Engine, conductor-bootstrap, `zeroshot run`, multi-agent coding workflow, ZeroShot trace export, or a ZeroShot target. Never start, resume, schedule, force-stop, create a PR, ship, clean, purge, or update without the matching approval.",
+      "category": "cli-tools",
+      "subcategory": "ai-cli",
+      "interface": "cli",
+      "path": "zeroshot/SKILL.md",
+      "tags": [
+        "zeroshot",
+        "the-open-engine",
+        "multi-agent",
+        "coding-agents",
+        "conductor",
+        "worktree",
+        "docker",
+        "provider-routing",
+        "pr-delivery",
+        "auto-merge",
+        "rust-cli",
+        "python-sdk",
+        "trace-jsonl"
+      ],
+      "platforms": [
+        "Claude",
+        "Codex",
+        "Gemini",
+        "OpenCode",
+        "Copilot",
+        "All"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "zeroshot",
+      "version": "1.0",
+      "source": "https://github.com/the-open-engine/zeroshot"
     }
   ]
 }
