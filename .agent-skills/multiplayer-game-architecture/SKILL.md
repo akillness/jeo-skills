@@ -197,15 +197,9 @@ SDK selection replace the authority matrix.
 
 ## Best practices
 
-1. Plan multiplayer before gameplay ownership hardens into single-process assumptions.
-2. Treat authority as a per-domain policy, not a slogan or one global boolean.
-3. Keep topology, replication, and transport as separate decisions.
-4. Never send hidden information merely to hide it in the client UI.
-5. Make commands idempotent and version the wire contract before supporting reconnects.
-6. Use project evidence for tick, snapshot, bandwidth, latency, and queue budgets.
-7. Test adverse networks and process separation before calling a local demo multiplayer-ready.
-8. Log identifiers and outcomes, not credentials, tokens, chat bodies, or hidden game state.
-9. Confirm every cloud, paid-service, deployment, and publication side effect separately.
+1. Decide per-domain authority before selecting transport, SDK, or hosting.
+2. Derive budgets from project evidence and verify process separation plus adverse networks.
+3. Keep hidden state and secrets on the authority, and approve live or paid actions separately.
 
 ## References
 

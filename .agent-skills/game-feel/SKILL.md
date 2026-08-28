@@ -175,15 +175,9 @@ Route the bottleneck to `game-performance-profiler`. Do not label a performance 
 
 ## Best practices
 
-1. Tune one existing mechanic in one reproducible context.
-2. Measure the response chain and label inferred stages.
-3. Fix the earliest weak causal link before layering polish.
-4. Keep trusted simulation and presentation effects separate.
-5. Derive every numeric parameter from mechanics and target-device evidence.
-6. Use event importance to prevent feedback inflation.
-7. Build reduced-motion and alternate-channel signals alongside the effect.
-8. Compare baseline and one controlled variant under matched conditions.
-9. Leave engine-specific implementation to the narrowest specialist.
+1. Measure one mechanic and fix its earliest weak causal link before layering polish.
+2. Keep simulation separate from presentation and ship an accessible replacement with each effect.
+3. Compare one controlled variant, then route implementation or profiling to the narrowest specialist.
 
 ## References
 

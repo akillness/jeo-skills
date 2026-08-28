@@ -181,15 +181,9 @@ project workflow.
 
 ## Best practices
 
-1. Start from real screens, states, player decisions, and supported devices.
-2. Treat every mockup as incomplete until reconciled with runtime behavior.
-3. Make focus, back, and device switching explicit state transitions.
-4. Use constraints and content-aware layout, not one fixed composition.
-5. Treat text scaling and localization as first-class layout states.
-6. Keep gameplay truth, hidden data, and presentation state separated.
-7. Provide redundant signals for critical information.
-8. Test interaction, not only screenshots.
-9. Route visual concepts and engine widgets to their established owners.
+1. Reconcile mockups with real states, player decisions, inputs, and supported devices.
+2. Treat focus, back, safe layout, localization, accessibility, and hidden data as dynamic contracts.
+3. Verify interaction, then route visual concepts and engine widgets to their established owners.
 
 ## References
 

@@ -47,5 +47,5 @@ The bundled auditor automates only the read-only parts of this algorithm.
 - It does not invent a standalone `higgsfield game` command family.
 - It does not freeze categories, templates, runtime versions, model catalogs, prices, or
   marketplace policy across future releases.
-- It does not copy the upstream game skill. It provides a compatibility and approval layer
-  around the actual current owner.
+- It does not copy the upstream game skill. It provides only a compatibility audit and
+  evidence-backed handoff to the actual current owner.

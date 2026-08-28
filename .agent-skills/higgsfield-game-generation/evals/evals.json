@@ -4,104 +4,99 @@
     {
       "id": 1,
       "prompt": "검색 결과에 higgsfield-game-generation 스킬이 있다는데 그대로 설치해줘.",
-      "expected_output": "The skill audits the pinned upstream tree before trusting the exact name.",
+      "expected_output": "The alias audits the current upstream tree before trusting or installing the exact name.",
       "assertions": [
-        "The response checks whether higgsfield-game-generation/SKILL.md actually exists",
-        "The response checks whether higgsfield-websites owns --type game and its game-flow reference",
-        "The response does not reconstruct a missing skill from search snippets",
-        "The response records the audited commit"
+        "The response checks whether the exact upstream skill folder exists",
+        "The response records the audited commit and current owner",
+        "The response does not reconstruct a missing skill from search snippets"
       ]
     },
     {
       "id": 2,
-      "prompt": "Higgsfield CLI 설치하고 로그인하고 게임 하나 만들어줘.",
-      "expected_output": "The skill separates installation, authentication, and project creation approvals.",
+      "prompt": "Higgsfield로 카드게임을 만들어줘.",
+      "expected_output": "Ordinary current game work routes directly to the checked-in higgsfield-websites owner.",
       "assertions": [
-        "The response checks for an existing CLI before proposing installation",
-        "The response does not run a remote installer or interactive login without explicit approval",
-        "The response freezes category, subdomain, rules, assets, credits, and public-state intent before creation"
+        "The response prefers higgsfield-websites for the operational workflow",
+        "The compatibility alias does not duplicate creation instructions",
+        "No project is created merely by resolving the owner"
       ]
     },
     {
       "id": 3,
-      "prompt": "higgsfield website create --type game로 카드게임 만들고 로컬 테스트까지만 해줘.",
-      "expected_output": "The skill creates only after approval, follows the generated scaffold, tests locally, and stops before deploy.",
+      "prompt": "예전 문서의 higgsfield game init 명령으로 시작하자.",
+      "expected_output": "The alias resolves the retired command against the current tree and hands off.",
       "assertions": [
-        "The response verifies the current command and category instead of treating the pinned syntax as permanent",
-        "The response reads generated app/AGENTS.md before editing",
-        "The response tests valid and invalid actions, hidden views, finish, and repeat or reconnect behavior where relevant",
-        "The response does not deploy or publish"
+        "The response audits the current owner",
+        "The response does not execute the stale command",
+        "The response routes operations to the checked-in owner"
       ]
     },
     {
       "id": 4,
-      "prompt": "게임 배포해줘. 커뮤니티에도 알아서 올려.",
-      "expected_output": "The skill treats deploy and marketplace publication as distinct public actions.",
+      "prompt": "Higgsfield 게임을 배포하고 커뮤니티에도 올려줘.",
+      "expected_output": "The alias resolves the owner but leaves deploy and publication to its gated workflow.",
       "assertions": [
-        "The response confirms the exact project and public target before deploy",
-        "The response asks for or verifies separate marketplace publication approval",
-        "The response reads back the live URL and listing state after approved actions"
+        "The response hands the task to the current operational owner",
+        "Deploy and marketplace publication remain separate approvals",
+        "The alias does not perform either public action"
       ]
     },
     {
       "id": 5,
-      "prompt": "예전 문서에 나온 higgsfield game init 명령으로 시작하자.",
-      "expected_output": "The skill rejects a retired command family and resolves the current owner.",
+      "prompt": "새 upstream에는 higgsfield-game-generation 폴더가 생긴 것 같아.",
+      "expected_output": "A newly checked-in exact owner is read and compared instead of being shadowed by the local alias.",
       "assertions": [
-        "The response audits the live tree and CLI help",
-        "The response does not use higgsfield game commands merely because an old document names them",
-        "The response uses the generated project contract as the implementation authority"
+        "The response audits the exact folder at a recorded commit",
+        "The local alias does not outrank a newer checked-in owner",
+        "Dual ownership is reported rather than silently resolved"
       ]
     },
     {
       "id": 6,
-      "prompt": "게임용 배경, 캐릭터, 음악, 효과음을 전부 최고 모델로 뽑아줘.",
-      "expected_output": "The skill creates an asset manifest and gates paid generation by current catalog and credit approval.",
+      "prompt": "INSTALL에는 게임 스킬이 있는데 exact 폴더와 websites game flow가 둘 다 없어.",
+      "expected_output": "The alias returns unresolved and stops.",
       "assertions": [
-        "The response records asset role, constraints, provenance, and acceptance criteria",
-        "The response inspects current model and job schemas instead of inventing names or prices",
-        "The response obtains generation scope and credit-ceiling approval before paid jobs",
-        "The response does not imply unrestricted rights from generated media"
+        "The response reports the inspected commit and missing evidence",
+        "The response does not guess an owner",
+        "The response stops before installation or mutation"
       ]
     },
     {
       "id": 7,
-      "prompt": "멀티 카드게임인데 각 플레이어 패를 그냥 전체 상태로 보내고 UI에서 숨기면 되지?",
-      "expected_output": "The skill keeps hidden information out of unauthorized player views.",
+      "prompt": "플랫폼 상관없이 브라우저 퍼즐게임을 만들어줘.",
+      "expected_output": "A provider-neutral request routes away from Higgsfield.",
       "assertions": [
-        "The response treats clients as hostile",
-        "The response requires per-player filtering in the generated view contract",
-        "The response routes authority and adversarial design to multiplayer-game-architecture when needed"
+        "The response routes to web-game-development",
+        "The response does not introduce Higgsfield hosting or credits"
       ]
     },
     {
       "id": 8,
-      "prompt": "특정 플랫폼은 상관없고 브라우저 퍼즐게임을 만들어줘.",
-      "expected_output": "The skill routes a provider-neutral request away from Higgsfield.",
+      "prompt": "Higgsfield로 게임과 무관한 광고 영상을 만들어줘.",
+      "expected_output": "Generic media generation routes to higgsfield-generate.",
       "assertions": [
-        "The response routes to web-game-development",
-        "The response does not introduce Higgsfield hosting, credits, or marketplace without user selection"
+        "The response routes to higgsfield-generate",
+        "The game compatibility alias does not absorb media generation"
       ]
     },
     {
       "id": 9,
-      "prompt": "Higgsfield 로그인 문제를 봐줘. 토큰이랑 account status 전체를 붙여줄게.",
-      "expected_output": "The skill avoids receiving or exposing credentials and uses minimal status evidence.",
+      "prompt": "Higgsfield 멀티게임의 서버 권한 모델부터 설계해줘.",
+      "expected_output": "Owner resolution and multiplayer authority are kept as separate concerns.",
       "assertions": [
-        "The response says not to paste tokens, cookies, or raw credential payloads",
-        "The response uses read-only version and minimal account-status checks",
-        "The response redacts unnecessary account identifiers in reporting"
+        "The response routes authority design to multiplayer-game-architecture",
+        "The response does not treat the Higgsfield scaffold as a substitute for the authority contract"
       ]
     },
     {
       "id": 10,
-      "prompt": "클론해둔 Higgsfield skills가 우리가 조사한 커밋이 맞는지 검사해줘.",
-      "expected_output": "The skill runs the read-only auditor with an expected commit and reports drift.",
+      "prompt": "클론한 Higgsfield skills의 게임 소유자를 읽기 전용으로 검사해줘.",
+      "expected_output": "The alias runs the auditor and reports a compact handoff record.",
       "assertions": [
-        "The response runs audit-higgsfield-game.py with --repo and --expect-commit",
-        "The response reports the resolved commit, pin match, exact skill presence, current owner, and warnings",
+        "The response runs audit-higgsfield-game.py with the repository path",
+        "The response reports commit, decision, evidence, warnings, and local owner availability",
         "The response runs or references --self-test",
-        "The response does not modify the checkout"
+        "The audited checkout is not modified"
       ]
     }
   ]

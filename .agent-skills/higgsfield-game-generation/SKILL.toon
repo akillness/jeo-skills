@@ -1,42 +1,33 @@
 N:higgsfield-game-generation
-D:Audit and operate Higgsfield's current browser-game workflow without trusting stale skill names or retired commands. Resolve the live upstream owner, freeze category/subdomain/rules/assets/credits/public-state approvals, obey the generated scaffold, test locally, and keep paid generation, create, deploy, and marketplace publish as separate gates.
-G:higgsfield-game-generation Higgsfield Games higgsfield-websites website-type-game browser-game realtime-rooms game-assets deploy publish marketplace drift-audit credits
+D:Compatibility alias and read-only owner auditor for the retired or missing Higgsfield game skill name. Resolve the checked-in owner, record evidence, and hand ordinary operations to that owner instead of maintaining a parallel game workflow.
+G:higgsfield-game-generation compatibility-alias drift-audit higgsfield-websites website-type-game retired-command owner-resolution
 
-U[8]:
-  Audit whether the exact game skill or higgsfield-websites currently owns the upstream flow
-  Plan one Higgsfield browser game without installing logging in creating or spending credits
-  Create or edit a game after category subdomain rules assets and side effects are approved
-  Route game-specific image 2D 3D texture animation music and SFX generation
-  Verify generated scaffold rules hidden information local build and room tests
-  Diagnose stale higgsfield game commands missing folders CLI auth or scaffold drift
-  Deploy a reviewed build to its public Higgsfield URL after explicit approval
-  Publish an already deployed game to the community marketplace under a separate approval
+U[5]:
+  Audit whether an exact higgsfield-game-generation skill now exists upstream
+  Resolve stale higgsfield game commands against the checked-in tree
+  Explain a mismatch between installation prose search results and skill folders
+  Identify whether higgsfield-websites still owns the --type game flow
+  Produce an evidence-backed handoff to the current operational owner
 
-S[8]{n,step,details}:
-  1,Choose one mode,audit-owner | plan-game | create-edit | test | deploy | publish | troubleshoot
-  2,Audit the owner,Run the read-only helper against a pinned upstream checkout; trust the tree and checked-in flow over search snippets or installation prose
-  3,Freeze the proposal,Record category subdomain players rules hidden state assets provenance credit ceiling local path deploy approval and separate publish approval
-  4,Preflight safely,Prefer an existing CLI; inspect version account status git and bun without exposing credentials; never auto-run remote installers or interactive login
-  5,Follow the scaffold,Use the live current owner; at the audited pin this is higgsfield website create --type game; read generated app/AGENTS.md before editing and never use retired higgsfield game commands
-  6,Gate assets,Create an asset manifest; inspect current model and job schemas; approve generation scope and credit ceiling before any paid request
-  7,Verify locally,Run documented logic build and room tests; add invalid-action hidden-state finish and repeat/reconnect coverage; do not infer success from files alone
-  8,Separate public actions,Deploy is a public live side effect; marketplace publish is distinct; read back the URL and listing state after each approved action
+S[5]{n,step,details}:
+  1,Record the source,Pin or record the upstream repository commit before comparing owners
+  2,Run the auditor,Use the read-only helper and its self-test; trust the tree over prose and search snippets
+  3,Resolve one owner,Choose the exact upstream skill or higgsfield-websites only when checked-in evidence supports it; otherwise stop unresolved
+  4,Hand off,Load the resolved owner or request approval to install it; do not copy its operational runbook into this alias
+  5,Preserve approvals,Owner resolution never approves installation authentication paid generation creation secrets deploy or marketplace publication
 
-R[10]:
-  At audited upstream commit fb18134b4aabe99c4bf7ff01c8f4883400efc80d INSTALL advertises nine skills but the tree has eight and no higgsfield-game-generation folder
-  The audited current game owner is higgsfield-websites with --type game and references/game-flow.md
-  Re-audit every newer upstream tree; if the exact skill appears read it before choosing the owner
-  Never reconstruct a missing upstream skill from search snippets
-  CLI installation authentication paid generation project creation deploy and publish are separate approvals
-  A Higgsfield deploy is public and is not a preview
-  Marketplace publication is never inferred from deploy approval
-  The generated app/AGENTS.md is the runtime contract and overrides stale examples
-  Never print tokens scoped Git credentials cookies raw account payloads or unnecessary IDs
-  Provider-neutral browser games route to web-game-development and authority design routes to multiplayer-game-architecture
+R[8]:
+  Prefer higgsfield-websites for ordinary current Higgsfield game work
+  At audited commit fb18134b4aabe99c4bf7ff01c8f4883400efc80d the exact folder is absent and higgsfield-websites owns --type game
+  Re-audit newer commits because ownership can change
+  Never reconstruct a missing skill from search snippets or installation prose
+  If both owners advertise games report the collision instead of silently choosing
+  If no owner is resolved stop before installation or mutation
+  Route generic media generation to higgsfield-generate
+  Route provider-neutral games to web-game-development and network authority to multiplayer-game-architecture
 
-E[5]{type,command}:
-  Install skill,npx skills add https://github.com/akillness/jeo-skills --skill higgsfield-game-generation
-  Read-only audit,python3 .agent-skills/higgsfield-game-generation/scripts/audit-higgsfield-game.py --repo /path/to/higgsfield-ai-skills --format json
-  Self-test auditor,python3 .agent-skills/higgsfield-game-generation/scripts/audit-higgsfield-game.py --self-test
-  Validate skill,bash .agent-skills/skill-standardization/scripts/validate_skill.sh .agent-skills/higgsfield-game-generation
-  Provider-neutral route,use web-game-development
+E[4]{type,command}:
+  Install alias,npx skills add https://github.com/akillness/jeo-skills --skill higgsfield-game-generation
+  Read-only audit,python3 "$SKILLS_ROOT/higgsfield-game-generation/scripts/audit-higgsfield-game.py" --repo /path/to/higgsfield-ai-skills --format json
+  Self-test auditor,python3 "$SKILLS_ROOT/higgsfield-game-generation/scripts/audit-higgsfield-game.py" --self-test
+  Validate alias,bash .agent-skills/skill-standardization/scripts/validate_skill.sh .agent-skills/higgsfield-game-generation

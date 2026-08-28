@@ -9,7 +9,7 @@ mirrors, and current pages were re-opened because search indexes can retain dele
 
 | Pictured label | Strongest public source match | Disposition in jeo-skills |
 |---|---|---|
-| `higgsfield-game-generation` | [higgsfield-ai/skills at `fb18134`](https://github.com/higgsfield-ai/skills/tree/fb18134b4aabe99c4bf7ff01c8f4883400efc80d) | Selected compatibility gap. The exact advertised folder is absent at the audited pin; `higgsfield-websites` owns `--type game`. The new `higgsfield-game-generation` wrapper audits that drift and separates paid generation, creation, deploy, and marketplace publication approvals. |
+| `higgsfield-game-generation` | [higgsfield-ai/skills at `fb18134`](https://github.com/higgsfield-ai/skills/tree/fb18134b4aabe99c4bf7ff01c8f4883400efc80d) | Retained only as a compatibility alias. The exact advertised folder is absent at the audited pin and `higgsfield-websites` owns `--type game`, so the local name now audits that drift and hands all operational work to the checked-in owner instead of duplicating its flow. |
 | `game-engine` | [github/awesome-copilot](https://github.com/github/awesome-copilot/tree/main/skills/game-engine) | Broad Canvas/WebGL/Phaser/Three.js reference. Existing `web-game-development` plus the installed Three.js family already owns this lane. |
 | `multiplayer-game` | [davila7/claude-code-templates multiplayer](https://github.com/davila7/claude-code-templates/tree/main/cli-tool/components/skills/creative-design/game-development/multiplayer) | Selected gap. The source is a compact principle sheet, but its generic topology table and fixed update-rate examples were not copied. This skill rebuilds the lane from engine, standards, and security sources. |
 | `game-developer` | [VoltAgent game-developer agent](https://github.com/VoltAgent/awesome-claude-code-subagents/blob/main/categories/07-specialized-domains/game-developer.md) | A very broad persona covering engines, rendering, networking, monetization, and invented universal targets. It competes with many existing specialists and is not a focused portable skill. |
@@ -22,12 +22,12 @@ mirrors, and current pages were re-opened because search indexes can retain dele
 
 ## Selection result
 
-Five distinct gaps were selected from the ten labels:
+Five non-competing catalog lanes were retained from the ten labels:
 
 1. `multiplayer-game-architecture`: engine-neutral topology, authority, replication,
    transport, lifecycle, security, observability, and impairment contract;
-2. `higgsfield-game-generation`: vendor-specific compatibility owner for a documented name
-   whose exact upstream folder is absent, including paid/public action gates;
+2. `higgsfield-game-generation`: read-only compatibility alias for a documented name whose
+   exact upstream folder is absent; it resolves and hands off to the checked-in owner;
 3. `game-design-theory`: one-lens, falsifiable causal design analysis, not a full GDD;
 4. `game-feel`: measured input-to-recovery tuning for one existing mechanic;
 5. `game-ui-ux`: canonical generic game-interface contract consolidating three overlapping

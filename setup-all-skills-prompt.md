@@ -861,17 +861,16 @@ matchmaking, WebSocket, WebRTC DataChannel, or WebTransport:
 - Route concrete Unity APIs to `unity-technologies-skills`, browser gameplay to `web-game-development`, service tests to `backend-testing`, CI to `game-ci-cd-pipeline`, security implementation to `security-best-practices`, and telemetry rollout to `monitoring-observability`.
 - Keep cloud provisioning, paid matchmaking, live credentials, deployment, and publication behind separate approval.
 
-### Higgsfield game generation compatibility workflow (on demand)
+### Higgsfield game generation compatibility alias (on demand)
 
-When the user explicitly selects Higgsfield for a browser game, names
-`higgsfield-game-generation`, uses `higgsfield website create --type game`, or asks about its
-game assets, realtime rooms, deploy, or marketplace flow:
+When a prompt, search result, installed catalog, or stale command explicitly names
+`higgsfield-game-generation` or the old `higgsfield game ...` family:
 
-- Load `.agent-skills/higgsfield-game-generation/SKILL.md` and audit the current upstream owner before trusting an exact skill name or old `higgsfield game` command.
-- For a checked-out upstream repository, run `python3 "$SKILLS_ROOT/higgsfield-game-generation/scripts/audit-higgsfield-game.py" --repo /path/to/higgsfield-ai-skills --format json` and the same helper with `--self-test`. At the audited pin, installation prose names `higgsfield-game-generation`, but that folder is absent and `higgsfield-websites` owns `--type game`.
-- Read the generated project's `app/AGENTS.md` before editing. Re-check the live category and command rather than freezing the audited pin forever.
-- Keep CLI installation, authentication, paid asset generation, project creation, secret changes, public deploy, and marketplace publication as separate approvals. Deploy is public; publication is a second action.
-- Route provider-neutral browser games to `web-game-development` and authority/hidden-state design to `multiplayer-game-architecture`.
+- Load `.agent-skills/higgsfield-game-generation/SKILL.md`; this is a read-only compatibility alias, not a second game builder.
+- Run `python3 "$SKILLS_ROOT/higgsfield-game-generation/scripts/audit-higgsfield-game.py" --repo /path/to/higgsfield-ai-skills --format json` and the same helper with `--self-test`. Trust the checked-in tree over installation prose or search snippets.
+- Hand ordinary planning, creation, editing, testing, deployment, and publication to the resolved upstream owner. At the audited pin that owner is `higgsfield-websites`; if it is not installed, request approval before installing the current upstream collection.
+- Owner resolution never approves CLI installation, authentication, paid generation, project creation, secret changes, public deployment, or marketplace publication.
+- Route provider-neutral browser games to `web-game-development` and authority design to `multiplayer-game-architecture`.
 
 ### Game design theory contract (on demand)
 

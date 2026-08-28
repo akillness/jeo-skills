@@ -8197,7 +8197,7 @@
     },
     {
       "name": "higgsfield-game-generation",
-      "description": "Audit and operate Higgsfield's current browser-game workflow without trusting stale skill names or retired CLI commands. Use when the user names Higgsfield Games, higgsfield-game-generation, Higgsfield MCP game generation, the `higgsfield website create --type game` flow, Higgsfield game assets, realtime rooms, game deploy, or marketplace publication. Verify the live upstream owner, CLI, auth, category, subdomain, local scaffold contract, tests, credit boundary, and deploy/publish state before acting. Treat CLI installation, authentication, paid generation, project creation, secret changes, public deploy, and marketplace publish as separate approvals. Route provider-neutral browser games to `web-game-development` and multiplayer authority design to `multiplayer-game-architecture`.",
+      "description": "Compatibility alias and read-only drift auditor for Higgsfield's retired or missing `higgsfield-game-generation` name. Use when, and only when, a prompt, search result, installed catalog, or stale command explicitly names that skill; when `higgsfield game ...` conflicts with the checked-in tree; or when ownership between the exact skill and `higgsfield-websites --type game` must be resolved. Audit the upstream tree, record the commit and evidence, then hand ordinary game planning, creation, editing, testing, asset generation, deployment, and marketplace publication to the current checked-in owner. Prefer `higgsfield-websites` for ordinary Higgsfield game work. Route provider-neutral browser games to `web-game-development` and multiplayer authority design to `multiplayer-game-architecture`.",
       "category": "game",
       "subcategory": "tooling",
       "interface": "workflow",
@@ -8205,16 +8205,11 @@
       "tags": [
         "higgsfield",
         "higgsfield-game-generation",
-        "browser-game",
-        "game-generation",
-        "realtime-rooms",
-        "game-assets",
-        "game-deploy",
-        "marketplace-publish",
+        "compatibility-alias",
+        "owner-resolution",
         "upstream-drift",
-        "credits",
-        "web-game",
-        "cli"
+        "retired-command",
+        "browser-game"
       ],
       "platforms": [
         "Higgsfield"
@@ -8222,14 +8217,12 @@
       "allowed_tools": [
         "Bash",
         "Read",
-        "Write",
-        "Edit",
         "Glob",
         "Grep",
         "WebFetch"
       ],
       "keyword": "higgsfield-game-generation",
-      "version": "1.0",
+      "version": "1.1",
       "source": "https://github.com/higgsfield-ai/skills"
     },
     {

@@ -169,15 +169,9 @@ question inside that production flow.
 
 ## Best practices
 
-1. Start from one decision and observed evidence, not a favorite framework.
-2. Mark every causal jump that lacks evidence.
-3. Use one primary lens and state what it cannot explain.
-4. Define counterevidence before running the prototype.
-5. Isolate one reversible design variable at a time.
-6. Pair behavioral and qualitative evidence.
-7. Avoid universal player types, magic ratios, or engagement targets.
-8. Keep ethical risks, accessibility barriers, and contradictory evidence visible.
-9. Route production, implementation, feel, UI, and telemetry to their actual owners.
+1. Test one decision through one bounded lens with explicit limits and counterevidence.
+2. Preserve contradictory, accessibility, and ethical evidence instead of using universal labels or numbers.
+3. Route production, implementation, feel, UI, and telemetry to their actual owners.
 
 ## References
 
