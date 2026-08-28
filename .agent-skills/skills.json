@@ -1,7 +1,7 @@
 {
   "version": "2.0.0",
   "generated": "2026-07-30",
-  "skill_count": 218,
+  "skill_count": 223,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -207,7 +207,12 @@
       "wai-play",
       "game-ci-cd-pipeline",
       "steam-store-launch-ops",
-      "unity-technologies-skills"
+      "unity-technologies-skills",
+      "multiplayer-game-architecture",
+      "higgsfield-game-generation",
+      "game-design-theory",
+      "game-feel",
+      "game-ui-ux"
     ],
     "creative-media": [
       "aura-asset-images",
@@ -468,12 +473,17 @@
         "agentic-gamedev-skills",
         "web-game-development"
       ],
-      "server": [],
+      "server": [
+        "multiplayer-game-architecture"
+      ],
       "design-ui": [
         "bmad-gds",
         "open-design-game-ui-concept",
         "open-design-game-ui-handoff",
-        "open-design-game-ui-takeover"
+        "open-design-game-ui-takeover",
+        "game-design-theory",
+        "game-feel",
+        "game-ui-ux"
       ],
       "audio": [
         "rfxgen"
@@ -494,7 +504,8 @@
       "tooling": [
         "game-studio-harness",
         "underworld-overseer-save-mapper",
-        "godogen"
+        "godogen",
+        "higgsfield-game-generation"
       ],
       "qa-performance": [
         "game-build-log-triage",
@@ -8148,6 +8159,183 @@
       "keyword": "solo-skills",
       "version": "1.0",
       "source": "https://github.com/bam-bam-2/solo-skills"
+    },
+    {
+      "name": "multiplayer-game-architecture",
+      "description": "Design and review the networking contract for multiplayer games before engine or backend implementation. Use when a team must choose dedicated-authoritative, listen-server, relay-assisted peer, lockstep, snapshot, or asynchronous models; assign authority for movement, combat, inventory, economy, and match state; plan prediction, reconciliation, interpolation, lag handling, matchmaking, reconnects, protocol versions, and cheat resistance; select WebSocket, WebRTC DataChannel, WebTransport, or an engine transport; or build a measured network impairment test matrix. Triggers on: multiplayer game, netcode, authoritative server, replication, rollback, host migration, client prediction, snapshot interpolation, lag compensation, matchmaking, WebSocket, WebRTC, WebTransport.",
+      "category": "game",
+      "subcategory": "server",
+      "interface": "workflow",
+      "path": "multiplayer-game-architecture/SKILL.md",
+      "tags": [
+        "multiplayer-game",
+        "netcode",
+        "network-architecture",
+        "authoritative-server",
+        "replication",
+        "client-prediction",
+        "snapshot-interpolation",
+        "lag-compensation",
+        "matchmaking",
+        "websocket",
+        "webrtc",
+        "webtransport"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
+      ],
+      "keyword": "multiplayer-game-architecture",
+      "version": "1.0",
+      "source": "akillness/jeo-skills"
+    },
+    {
+      "name": "higgsfield-game-generation",
+      "description": "Audit and operate Higgsfield's current browser-game workflow without trusting stale skill names or retired CLI commands. Use when the user names Higgsfield Games, higgsfield-game-generation, Higgsfield MCP game generation, the `higgsfield website create --type game` flow, Higgsfield game assets, realtime rooms, game deploy, or marketplace publication. Verify the live upstream owner, CLI, auth, category, subdomain, local scaffold contract, tests, credit boundary, and deploy/publish state before acting. Treat CLI installation, authentication, paid generation, project creation, secret changes, public deploy, and marketplace publish as separate approvals. Route provider-neutral browser games to `web-game-development` and multiplayer authority design to `multiplayer-game-architecture`.",
+      "category": "game",
+      "subcategory": "tooling",
+      "interface": "workflow",
+      "path": "higgsfield-game-generation/SKILL.md",
+      "tags": [
+        "higgsfield",
+        "higgsfield-game-generation",
+        "browser-game",
+        "game-generation",
+        "realtime-rooms",
+        "game-assets",
+        "game-deploy",
+        "marketplace-publish",
+        "upstream-drift",
+        "credits",
+        "web-game",
+        "cli"
+      ],
+      "platforms": [
+        "Higgsfield"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
+      ],
+      "keyword": "higgsfield-game-generation",
+      "version": "1.0",
+      "source": "https://github.com/higgsfield-ai/skills"
+    },
+    {
+      "name": "game-design-theory",
+      "description": "Turn a game-design question into one falsifiable theory packet instead of a framework collage. Use when a designer must explain why a mechanic may create a player experience, analyze mechanics-dynamics-aesthetics, test a core loop, inspect choice, uncertainty, progression, resource flow, mastery, autonomy, competence, or relatedness, compare design variants, or turn conflicting playtest interpretations into a bounded prototype. Choose one primary lens, state its limits, separate observation from assumption, map the causal chain, define counterevidence, and validate `game-design-hypothesis.json`. Triggers on: game design theory, MDA, mechanics dynamics aesthetics, player motivation, core loop theory, dominant strategy, reward loop, flow, Bartle types, fun analysis, design hypothesis, or why this mechanic works.",
+      "category": "game",
+      "subcategory": "design-ui",
+      "interface": "workflow",
+      "path": "game-design-theory/SKILL.md",
+      "tags": [
+        "game-design",
+        "game-design-theory",
+        "mda",
+        "mechanics-dynamics-aesthetics",
+        "player-motivation",
+        "core-loop",
+        "design-hypothesis",
+        "resource-loops",
+        "decision-design",
+        "playtesting",
+        "falsification",
+        "ethics"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
+      ],
+      "keyword": "game-design-theory",
+      "version": "1.0",
+      "source": "akillness/jeo-skills"
+    },
+    {
+      "name": "game-feel",
+      "description": "Diagnose and tune the response chain from player intent through input, simulation, visible motion, camera, animation, VFX, audio, haptics, UI, and recovery for an existing game mechanic. Use when movement, combat, jumping, firing, hits, pickups, menus, or abilities work mechanically but feel delayed, weak, weightless, noisy, inconsistent, nauseating, or unresponsive; when the user asks for game feel, juice, punch, hit stop, freeze frames, screenshake, squash and stretch, impact feedback, input latency, coyote time, or feedback layering; or when a team needs a baseline-versus-variant capture and an accessibility-safe tuning contract. Measure before tuning, change one causal variable, preserve simulation truth, and validate `game-feel-contract.json`.",
+      "category": "game",
+      "subcategory": "design-ui",
+      "interface": "workflow",
+      "path": "game-feel/SKILL.md",
+      "tags": [
+        "game-feel",
+        "juice",
+        "responsiveness",
+        "input-latency",
+        "impact-feedback",
+        "camera",
+        "animation",
+        "vfx",
+        "audio",
+        "haptics",
+        "accessibility",
+        "baseline-comparison"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
+      ],
+      "keyword": "game-feel",
+      "version": "1.0",
+      "source": "akillness/jeo-skills"
+    },
+    {
+      "name": "game-ui-ux",
+      "description": "Design and review an engine-neutral game UI/UX contract for HUDs, menus, inventories, shops, maps, settings, overlays, tutorials, notifications, and controller flows. Use when a game interface must define player decisions, information hierarchy, persistent versus contextual HUD state, screen-stack behavior, keyboard/gamepad/touch input, focus order, back behavior, safe areas, responsive layout, scalable text, localization, accessibility, event-driven data binding, or cross-device verification; when the user asks for game UI design, game UI UX, HUD usability, controller navigation, or Three.js game UI planning; or when a mockup must be reconciled with a real runtime. Produce and validate `game-ui-contract.json`, then route visual concepts and engine widgets to their specialist skills.",
+      "category": "game",
+      "subcategory": "design-ui",
+      "interface": "workflow",
+      "path": "game-ui-ux/SKILL.md",
+      "tags": [
+        "game-ui",
+        "game-ux",
+        "hud",
+        "menu",
+        "controller-navigation",
+        "focus-management",
+        "safe-area",
+        "responsive-layout",
+        "localization",
+        "accessibility",
+        "data-binding",
+        "threejs-ui"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
+      ],
+      "keyword": "game-ui-ux",
+      "version": "1.0",
+      "source": "akillness/jeo-skills"
     }
   ]
 }

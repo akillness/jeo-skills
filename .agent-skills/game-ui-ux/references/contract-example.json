@@ -1,0 +1,219 @@
+{
+  "contract_version": 1,
+  "project": {
+    "name": "co-op expedition inventory",
+    "build": "inventory-flow controller-pass branch",
+    "target_devices": [
+      "desktop display",
+      "handheld display"
+    ],
+    "input_methods": [
+      "keyboard and mouse",
+      "controller",
+      "touch"
+    ],
+    "locales": [
+      "English",
+      "Korean",
+      "Arabic pseudo-content pass"
+    ]
+  },
+  "player_decisions": [
+    {
+      "decision": "Choose which carried item to equip, move, inspect, or discard.",
+      "required_information": "Item identity, comparison, slot compatibility, quantity, ownership, and action consequence.",
+      "urgency": "current decision support"
+    },
+    {
+      "decision": "Confirm or cancel an irreversible discard.",
+      "required_information": "Exact item, quantity, loss consequence, and safe cancel path.",
+      "urgency": "critical"
+    }
+  ],
+  "screens": [
+    {
+      "id": "inventory-main",
+      "type": "pause menu screen",
+      "decision": "Browse carried items and select a safe next action.",
+      "states": [
+        "loading",
+        "populated",
+        "empty",
+        "stale after reconnect",
+        "error"
+      ],
+      "entry": "Open inventory from gameplay or resume the previous inventory focus after closing an item detail.",
+      "exit": "Back returns to gameplay when no modal is active; selecting an item opens details as an overlay.",
+      "back_behavior": "Close the topmost overlay first, otherwise resume gameplay without changing inventory state.",
+      "initial_focus": "Restore the last valid item; if unavailable, focus the first enabled category or the empty-state action."
+    },
+    {
+      "id": "item-detail",
+      "type": "overlay",
+      "decision": "Compare the selected item and choose equip, move, inspect, or discard.",
+      "states": [
+        "available actions",
+        "restricted action with reason",
+        "item removed by synchronized update"
+      ],
+      "entry": "Open from a valid inventory item and retain the background list position.",
+      "exit": "Back restores focus to the originating item or the nearest valid replacement.",
+      "back_behavior": "Dismiss the overlay without applying an action.",
+      "initial_focus": "Focus the primary enabled action, or the restriction explanation when no action is enabled."
+    },
+    {
+      "id": "discard-confirmation",
+      "type": "modal",
+      "decision": "Confirm or cancel irreversible item loss.",
+      "states": [
+        "ready",
+        "submitting",
+        "rejected",
+        "item already changed"
+      ],
+      "entry": "Open only from the discard action with the exact item and quantity in the prompt.",
+      "exit": "Cancel returns to item detail; success returns to the updated list; error preserves a recoverable choice.",
+      "back_behavior": "Back always cancels while no submission is in flight and never confirms.",
+      "initial_focus": "Focus the safe cancel action unless current platform guidance requires a different documented pattern."
+    }
+  ],
+  "information_hierarchy": {
+    "critical": [
+      "destructive discard consequence",
+      "network rejection or stale ownership",
+      "loss of required item state"
+    ],
+    "current": [
+      "selected item and comparison",
+      "enabled actions and restriction reasons",
+      "slot compatibility and quantity"
+    ],
+    "contextual": [
+      "extended lore",
+      "advanced statistics explanation",
+      "sort and filter controls"
+    ],
+    "hidden": [
+      "other players' private inventory contents",
+      "server-only anti-cheat state"
+    ]
+  },
+  "navigation": {
+    "methods": [
+      "pointer",
+      "keyboard",
+      "controller",
+      "touch"
+    ],
+    "focus_order": [
+      "screen title and status when announced",
+      "category navigation",
+      "inventory collection",
+      "selected item actions",
+      "secondary filters and help"
+    ],
+    "device_switch": "When the active device changes, preserve the selected item; show focus only for focus-driven input and update prompt glyphs without moving the selection.",
+    "modal_behavior": "Contain focus in the confirmation modal, block gameplay actions, and restore focus to the invoking discard control on cancel.",
+    "destructive_behavior": "Back never confirms, item and quantity are named, and stale server state prevents the action with a recoverable explanation."
+  },
+  "layout": {
+    "aspect_families": [
+      "landscape desktop",
+      "landscape handheld",
+      "portrait handheld where supported"
+    ],
+    "safe_area": "Constrain actionable content and critical text to the runtime-reported safe region while allowing decorative background to extend outside it.",
+    "anchors": [
+      "screen title and back affordance remain in the safe top region",
+      "item collection owns the main expandable region",
+      "action area stays adjacent to the selected item when space allows and reflows below it when constrained"
+    ],
+    "text_scaling": "Controls expand or reflow with the product UI/text scale and do not clip required labels or focus outlines.",
+    "reflow": "At constrained width or expanded text, convert the side detail panel into a stacked overlay while preserving selection and action order.",
+    "scrolling": "The collection and detail content have separate explicit scroll ownership; focus movement scrolls the relevant control into view."
+  },
+  "localization": {
+    "externalized": "All player-visible labels, item descriptions, quantities, prompts, and error messages are externalized.",
+    "expansion": "Buttons and panels support content expansion through wrapping, flexible containers, and reviewed truncation only for non-critical reference text.",
+    "bidirectional": "Logical start/end layout and focus order are reviewed with representative right-to-left content.",
+    "fonts": "Fallback fonts cover required scripts and symbols without changing semantic emphasis.",
+    "input_glyphs": "Prompts use the active device mapping and expose a readable text alternative."
+  },
+  "accessibility": {
+    "signals": [
+      "selection and item rarity do not rely on color alone",
+      "disabled actions expose a safe explanation",
+      "focus remains visible against every item background",
+      "status and error changes have persistent visual text and an announcement path where supported"
+    ],
+    "settings_entry": "Accessibility and input settings are reachable before gameplay and through the pause menu with every declared focus-driven input.",
+    "motion": "Inventory transitions respect reduced-motion settings and do not remove state-change confirmation.",
+    "media_alternatives": "Item audio previews, if present, have a visual state and stop control; no decision depends on audio or haptics alone."
+  },
+  "data_bindings": [
+    {
+      "element": "inventory collection",
+      "source": "authorized player inventory snapshot",
+      "initial_state": "Show loading until the first authorized snapshot or an explicit offline/error state arrives.",
+      "update": "Apply item-added, item-changed, item-removed, and reconnect snapshot events.",
+      "stale": "Mark actions unavailable and request a fresh snapshot after reconnect or version conflict.",
+      "error": "Preserve recoverable context and show a specific retry or exit path.",
+      "permission": "Never bind another player's private inventory or server-only validation data."
+    },
+    {
+      "element": "discard confirmation",
+      "source": "selected authorized item plus server action result",
+      "initial_state": "Render the exact current item and quantity from the selected snapshot.",
+      "update": "Disable duplicate submission and reconcile success, rejection, or stale-item response.",
+      "stale": "Cancel the pending action if the item changed and explain what must be reselected.",
+      "error": "Return to a safe actionable state without implying that discard succeeded.",
+      "permission": "The server validates ownership and quantity for every discard action."
+    }
+  ],
+  "verification": {
+    "matrix": [
+      {
+        "state": "populated inventory and item detail",
+        "device": "landscape desktop",
+        "input": "controller",
+        "locale": "Korean with expanded UI text scale",
+        "setting": "reduced motion",
+        "expected": "All items and actions are reachable with visible focus; prompts match the controller; back restores focus; text and critical signals do not clip."
+      },
+      {
+        "state": "discard confirmation after stale reconnect",
+        "device": "landscape handheld",
+        "input": "touch then controller",
+        "locale": "English",
+        "setting": "default motion and haptics off",
+        "expected": "The stale action cannot confirm, the explanation persists, device switching preserves the item context, and back takes the safe cancel path."
+      },
+      {
+        "state": "empty and error states",
+        "device": "portrait handheld",
+        "input": "touch",
+        "locale": "Arabic representative content",
+        "setting": "expanded UI text scale",
+        "expected": "Logical layout, safe area, text reflow, retry/exit actions, and scroll ownership remain understandable and operable."
+      }
+    ],
+    "acceptance": [
+      "Every declared screen state has a reachable and escapable interaction path.",
+      "Focus and selection survive permitted layout, locale, scale, and device changes.",
+      "Critical information uses redundant signals and remains inside the measured safe region.",
+      "Stale, error, and unauthorized data never appear as successful current state."
+    ],
+    "evidence": "Record build, device or viewport, input, locale, scale, accessibility settings, screen capture, and event/state trace for each required matrix row."
+  },
+  "decisions": [
+    {
+      "decision": "Use one responsive inventory flow rather than separate controller and touch screens.",
+      "basis": "The player decisions and data states are shared; input, focus visibility, prompts, and layout can vary within one explicit contract.",
+      "owner": "game UI/UX"
+    }
+  ],
+  "route_out": {
+    "next_owner": "engine UI implementation and accessibility verification",
+    "reason": "The generic interaction contract is frozen; concrete widgets, visuals, events, and runtime captures belong to the selected engine and product owners."
+  }
+}

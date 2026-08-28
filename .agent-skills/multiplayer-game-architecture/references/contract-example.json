@@ -1,0 +1,208 @@
+{
+  "contract_version": 1,
+  "game": {
+    "name": "Example Co-op Tactics",
+    "genre": "turn-based tactics",
+    "target_platforms": [
+      "desktop browsers",
+      "mobile browsers"
+    ]
+  },
+  "session": {
+    "pace": "turn-based",
+    "fairness": "casual cooperative",
+    "players_min": 2,
+    "players_max": 4,
+    "join_model": "private invite lobby",
+    "late_join": "spectate until the next round boundary"
+  },
+  "topology": {
+    "model": "dedicated-authoritative",
+    "authority_owner": "match server",
+    "trust_assumptions": [
+      "Clients may request legal commands but never author inventory or outcomes",
+      "The service identity layer authenticates a player before match join"
+    ],
+    "host_migration": "not applicable because no player hosts the match",
+    "risk_acceptance": []
+  },
+  "authority": [
+    {
+      "domain": "turn order",
+      "owner": "match server",
+      "client_can_request": [
+        "end turn"
+      ],
+      "authority_validation": [
+        "caller is the active player",
+        "action identifier has not already been applied"
+      ]
+    },
+    {
+      "domain": "unit actions",
+      "owner": "match server",
+      "client_can_request": [
+        "move unit",
+        "use ability"
+      ],
+      "authority_validation": [
+        "unit belongs to caller",
+        "target is legal in canonical state",
+        "action cost and cooldown are valid"
+      ]
+    },
+    {
+      "domain": "inventory and rewards",
+      "owner": "match server",
+      "client_can_request": [
+        "equip owned item",
+        "claim completed reward"
+      ],
+      "authority_validation": [
+        "item is owned and available",
+        "reward idempotency key is fresh"
+      ]
+    },
+    {
+      "domain": "match result",
+      "owner": "match server",
+      "client_can_request": [
+        "surrender vote"
+      ],
+      "authority_validation": [
+        "caller is a match member",
+        "vote is legal in the current phase"
+      ]
+    },
+    {
+      "domain": "hidden hands",
+      "owner": "match server",
+      "client_can_request": [
+        "play a card from own hand"
+      ],
+      "authority_validation": [
+        "card is in the caller's canonical hand",
+        "card is legal in the current turn"
+      ]
+    }
+  ],
+  "simulation": {
+    "clock": "server turn sequence",
+    "tick_rate_hz": null,
+    "tick_rate_basis": "This game resolves discrete commands and does not require a continuous simulation tick.",
+    "prediction": "Client may preview legal targets but never applies an outcome as final.",
+    "reconciliation": "Server command result replaces pending client preview state by action identifier.",
+    "measurement_plan": "Measure command resolution, round-trip, queue depth, and reconnect recovery on the supported browser and region matrix."
+  },
+  "replication": {
+    "model": "reliable commands plus canonical state snapshots",
+    "reliability_classes": {
+      "game commands": "reliable ordered and idempotent",
+      "presence": "replaceable latest state",
+      "private hand": "reliable authorized snapshot"
+    },
+    "interest_management": "All public match state reaches members; private hand state reaches only its owner.",
+    "hidden_state": "The server never sends another player's private hand to a client."
+  },
+  "transport": {
+    "primary": "WebSocket over TLS",
+    "rationale": "Broad target-browser support and reliable ordered turn commands fit this discrete simulation.",
+    "fallback": "HTTPS polling is limited to lobby status; an active match requires the WebSocket session.",
+    "backpressure": "Each connection has a bounded outbound queue; overflow closes the connection and forces a canonical resnapshot on reconnect."
+  },
+  "lifecycle": {
+    "states": [
+      "invited",
+      "joining",
+      "ready",
+      "playing",
+      "reconnecting",
+      "finished",
+      "persisted",
+      "closed"
+    ],
+    "reconnect": "A valid short-lived resume token restores membership and sends one canonical authorized snapshot.",
+    "disconnect": "The server marks the player absent and applies the product-owned turn timeout policy without transferring authority.",
+    "version_policy": "Reject incompatible protocol versions before match membership or state mutation."
+  },
+  "security": {
+    "identity": "Short-lived signed session token bound to player and match",
+    "authorization": "Check match membership, phase, ownership, and action permission for every message.",
+    "validation": [
+      "validate every message against the protocol schema",
+      "reject duplicate or stale action identifiers",
+      "calculate movement, combat, inventory, and rewards on the server"
+    ],
+    "abuse_controls": [
+      "explicit origin allowlist",
+      "message size limit",
+      "per-user command rate limit",
+      "idle timeout and bounded queues"
+    ],
+    "logging": "Log event type, result, reason, player id, match id, and sequence only; never log tokens or private hand contents."
+  },
+  "observability": {
+    "metrics": [
+      "join success rate",
+      "round-trip distribution",
+      "command resolution distribution",
+      "reconnect success rate",
+      "invalid command rate",
+      "outbound queue depth"
+    ],
+    "traces": [
+      "match id",
+      "connection id",
+      "action id",
+      "server turn sequence"
+    ],
+    "alerts": [
+      "reconnect failures exceed the product-owned threshold",
+      "outbound queues remain saturated",
+      "canonical state checksum mismatch is observed"
+    ]
+  },
+  "verification": {
+    "network_conditions": [
+      {
+        "name": "clean control",
+        "latency_ms": 0,
+        "jitter_ms": 0,
+        "loss_percent": 0,
+        "reorder_percent": 0
+      },
+      {
+        "name": "illustrative mobile impairment",
+        "latency_ms": 150,
+        "jitter_ms": 40,
+        "loss_percent": 2,
+        "reorder_percent": 1
+      }
+    ],
+    "scenarios": [
+      "two players submit commands at nearly the same time",
+      "a client replays an already applied action identifier",
+      "a player disconnects while a reward command is pending",
+      "an incompatible client attempts to join",
+      "a slow reader fills its outbound queue"
+    ],
+    "acceptance": [
+      "Out-of-turn and duplicate commands leave canonical state unchanged.",
+      "Reconnect sends one authorized canonical snapshot and never duplicates a reward.",
+      "Private hand state is absent from every unauthorized client capture.",
+      "Queue overflow follows the documented close and resnapshot path."
+    ]
+  },
+  "decisions": [
+    {
+      "decision": "Use a dedicated authoritative match server",
+      "reason": "The game has private hands, persistent rewards, and reconnect requirements.",
+      "evidence": "Authority matrix, hidden-state boundary, and reconnect acceptance criteria"
+    },
+    {
+      "decision": "Use WebSocket rather than a peer channel",
+      "reason": "The discrete command model needs broad browser support and one independent authority.",
+      "evidence": "Target-platform matrix and transport delivery requirements"
+    }
+  ]
+}

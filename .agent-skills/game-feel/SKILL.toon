@@ -1,0 +1,40 @@
+N:game-feel
+D:Diagnose and tune the measured response chain from player intent through input, simulation, motion, camera, animation, VFX, audio, haptics, UI, and recovery for one existing mechanic. Change one causal variable, preserve simulation truth, provide accessibility alternatives, compare baseline and variant, and validate game-feel-contract.json.
+G:game-feel juice responsiveness input-latency impact-feedback hit-stop screenshake squash-stretch coyote-time input-buffer camera VFX audio haptics reduced-motion baseline-variant
+
+U[8]:
+  Diagnose an existing mechanic that works but feels delayed weak weightless noisy or inconsistent
+  Capture intent device event input read simulation render feedback and recovery as one response chain
+  Separate input state animation camera rendering frame network and authority delay
+  Tune movement attacks jumps dashes hits pickups deaths abilities or button feedback
+  Coordinate visual audio haptic UI camera and animation channels by event importance
+  Preserve gameplay truth input policy and known rest states while adding transient polish
+  Build reduced-motion flash haptic and redundant-channel alternatives
+  Compare a baseline and one controlled variant under matched conditions
+
+S[8]{n,step,details}:
+  1,Freeze one context,Record build scene mechanic device input frame mode network camera and observable meaning of better
+  2,Capture baseline,Connect intent -> device -> input read -> simulation -> state -> rendered motion -> channels -> recovery; label measured and inferred stages
+  3,Name one weak link,Classify input state-machine simulation interpolation animation camera impact recognition clutter frame network or authority delay
+  4,Change one cause,Tune the earliest plausible variable; do not begin with a fixed bundle of shake flash freeze particles and sound
+  5,Protect truth,Keep camera and presentation effects off authoritative transforms; preserve input buffering cooldown scoring collision and multiplayer authority
+  6,Protect readability,Scale channels by event importance and use redundant signals without letting routine events compete with critical information
+  7,Protect players,Provide off or reduced controls for shake bob blur motion flashing and haptics and preserve the signal through another channel
+  8,Compare and route,Repeat matched baseline and variant captures; verify return-to-rest accessibility and budget; route engine VFX audio profiler network or UI implementation outward
+
+R[9]:
+  Game feel tunes one functionally correct mechanic and does not hide broken gameplay or frame pacing
+  No fixed count of feedback layers is required
+  No duration amplitude coyote window input buffer or shake curve is copied without mechanics and target-device evidence
+  Actual input latency is measured across the response chain and not inferred from visual impression alone
+  Camera shake and recoil stay presentation-only unless the mechanic explicitly owns simulation movement
+  Hit pause cannot duplicate actions deadlock timers violate authority or discard buffered input
+  Every transient effect returns to a known rest state
+  Reduced-motion and alternate-channel feedback ship with the effect
+  Frame bottlenecks route to game-performance-profiler and concrete effects route to game-vfx audio or engine specialists
+
+E[4]{type,command}:
+  Install skill,npx skills add https://github.com/akillness/jeo-skills --skill game-feel
+  Validate example,python3 .agent-skills/game-feel/scripts/validate-game-feel.py .agent-skills/game-feel/references/contract-example.json
+  Self-test validator,python3 .agent-skills/game-feel/scripts/validate-game-feel.py --self-test
+  Validate skill,bash .agent-skills/skill-standardization/scripts/validate_skill.sh .agent-skills/game-feel

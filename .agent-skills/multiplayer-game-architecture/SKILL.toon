@@ -1,0 +1,39 @@
+N:multiplayer-game-architecture
+D:Design and review a multiplayer game's networking contract before implementation. Separate topology, authority, replication, transport, lifecycle, security, observability, and verification; produce and validate multiplayer-contract.json; route engine-specific code outward.
+G:multiplayer-game netcode network-architecture authoritative-server replication prediction reconciliation snapshot-interpolation lag-compensation matchmaking host-migration websocket webrtc webtransport
+
+U[8]:
+  Choose dedicated-authoritative, listen-server, relay-assisted peer, lockstep, or asynchronous topology
+  Assign authority for movement, combat, inventory, economy, match state, and hidden information
+  Select command, snapshot, delta, lockstep, prediction, reconciliation, interpolation, and relevance models
+  Compare WebSocket, RTCDataChannel, WebTransport, or engine transports against delivery needs
+  Define lobby, allocation, join, late-join, reconnect, protocol-version, finish, and shutdown states
+  Design message validation, authorization, replay defense, abuse controls, and safe logging
+  Build clean and impaired network tests with mechanics-derived acceptance criteria
+  Validate multiplayer-contract.json before routing to engine or backend implementation
+
+S[8]{n,step,details}:
+  1,Freeze session envelope,Record pace, player range, fairness, platforms, persistence, hidden state, reconnect, late join, migration, and version assumptions
+  2,Choose topology first,Authority and continuity decide the primary model; transport does not decide who owns truth
+  3,Write authority matrix,For every critical domain name the writer, allowed client intent, and authority validation; never ship hidden state to unauthorized clients
+  4,Select replication per class,Use only relevant command, snapshot, delta, lockstep, prediction, reconciliation, interpolation, lag-compensation, priority, and interest mechanisms
+  5,Choose channels,Map reliability, ordering, freshness, size, overflow, fallback, and browser compatibility; classic WebSocket has no backpressure
+  6,Define lifecycle and security,Separate matchmaking, allocation, and simulation; validate identity, authorization, schema, state, sequence, rate, size, origin, and expiry
+  7,Verify under impairment,Use separate client processes and clean plus impaired conditions; test disconnect, reconnect, version mismatch, desync, and authority violations as applicable
+  8,Validate contract,Run scripts/validate-contract.py on multiplayer-contract.json and route implementation to the narrowest engine, backend, CI, security, or observability skill
+
+R[8]:
+  No universal tick, snapshot, latency, bandwidth, player-count, or queue target is copied into a project without mechanics and measurement evidence
+  Server authority is applied per trusted state domain; clients may still own input collection, presentation, and speculative visuals
+  WebSocket is a client-server transport, RTCDataChannel is a peer data channel, and WebTransport supplies HTTP/3 streams and datagrams; none chooses authority
+  Matchmaking, game-server allocation, and match simulation are separate responsibilities
+  Competitive or ranked peer or listen-server topology requires explicit risk acceptance
+  Hidden state not needed by a client is not replicated to that client
+  Cloud provisioning, paid services, live credentials, deploys, and publication require separate approval
+  The validator is Python 3.9+, standard-library only, read-only, and rejects placeholders
+
+E[4]{type,command}:
+  Install skill,npx skills add https://github.com/akillness/jeo-skills --skill multiplayer-game-architecture
+  Validate example,python3 .agent-skills/multiplayer-game-architecture/scripts/validate-contract.py .agent-skills/multiplayer-game-architecture/references/contract-example.json
+  Self-test validator,python3 .agent-skills/multiplayer-game-architecture/scripts/validate-contract.py --self-test
+  Validate skill,bash .agent-skills/skill-standardization/scripts/validate_skill.sh .agent-skills/multiplayer-game-architecture

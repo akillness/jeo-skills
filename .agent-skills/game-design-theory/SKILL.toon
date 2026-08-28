@@ -1,0 +1,40 @@
+N:game-design-theory
+D:Turn one game-design question into a falsifiable theory packet. Choose one bounded lens, separate evidence from assumption, map mechanic to dynamic to experience, name counterevidence, compare one reversible variant, validate game-design-hypothesis.json, and route production or implementation outward.
+G:game-design-theory MDA mechanics-dynamics-aesthetics player-motivation core-loop design-hypothesis reward-loop resource-flow dominant-strategy mastery autonomy competence relatedness playtest
+
+U[8]:
+  Trace mechanics through runtime dynamics to intended or observed player experience
+  Explain weak confusing dominant shallow or conflicting game systems
+  Analyze core loops choices uncertainty progression rewards resources and mastery
+  Frame autonomy competence and relatedness as context-specific motivation hypotheses
+  Reconcile conflicting playtest observations without averaging away barriers
+  Compare a control and one reversible design variant
+  Define counterevidence and the smallest prototype that can change a design belief
+  Validate game-design-hypothesis.json before routing into production
+
+S[8]{n,step,details}:
+  1,Freeze one question,Name the observed behavior evidence context controllable variable unlocked decision and out-of-scope surfaces
+  2,Choose one primary lens,Use MDA motivation needs decision structure feedback/resource loops or learning/mastery; add a secondary lens only when it changes the experiment
+  3,Build the causal chain,Map mechanic -> interaction -> runtime dynamic -> perceived signal -> experience and mark every unsupported arrow as an assumption
+  4,State the falsifier,Record expected signal competing explanation counterevidence and unchanged factors before building the variant
+  5,Design one comparison,Prefer a reversible prototype or data/config change; keep control and variant identical except for the intended variable
+  6,Collect bounded evidence,Use target context and pair behavioral with qualitative evidence; do not invent universal sample sizes ratios or engagement targets
+  7,Interpret conservatively,Report observations before explanations and inspect implementation exposure learning order familiarity accessibility and confounds
+  8,Validate and route,Run validate-design-hypothesis.py; return keep revise reject or inconclusive; route production feel UI balance telemetry and engine work to their owners
+
+R[9]:
+  Theory is a lens for a testable claim not a universal recipe for fun
+  One primary lens is required and its blind spots must be stated
+  MDA distinguishes mechanics runtime dynamics and player aesthetics but one dynamic can be interpreted differently
+  Autonomy competence and relatedness are hypotheses in a context not required checklist items
+  Bartle types are not universal player segments and stay limited to relevant evidenced multiplayer contexts
+  Retention session length and spend alone do not prove a desired experience
+  Every hypothesis names counterevidence before the prototype runs
+  Numeric thresholds sample sizes curves and ratios require project-owned risk and population evidence
+  Full GDD and production work route to bmad-gds or game-studio-harness
+
+E[4]{type,command}:
+  Install skill,npx skills add https://github.com/akillness/jeo-skills --skill game-design-theory
+  Validate example,python3 .agent-skills/game-design-theory/scripts/validate-design-hypothesis.py .agent-skills/game-design-theory/references/hypothesis-example.json
+  Self-test validator,python3 .agent-skills/game-design-theory/scripts/validate-design-hypothesis.py --self-test
+  Validate skill,bash .agent-skills/skill-standardization/scripts/validate_skill.sh .agent-skills/game-design-theory

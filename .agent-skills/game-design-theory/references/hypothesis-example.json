@@ -1,0 +1,99 @@
+{
+  "contract_version": 1,
+  "design_question": "Does hiding the next enemy intent until after the player drafts a card create tension or merely make the choice feel arbitrary?",
+  "context": {
+    "build": "combat-prototype intent-order branch",
+    "player_context": "returning tactics players using keyboard or controller in a guided lab session",
+    "evidence": [
+      "Players frequently reopened the card glossary before confirming a draft.",
+      "Several players said the revealed intent made their chosen card feel irrelevant."
+    ],
+    "decision": "Choose whether enemy intent is shown before or after each draft in the next prototype."
+  },
+  "desired_experience": {
+    "statement": "The draft should create informed tension between a safe card and a risky counterplay.",
+    "observable_signals": [
+      "Players can explain the tradeoff they considered before confirming.",
+      "Players describe a failed counterplay as a consequence of their choice rather than missing information."
+    ]
+  },
+  "lens": {
+    "name": "MDA",
+    "why": "The decision changes information mechanics, which may change drafting dynamics and the perceived tension of the choice.",
+    "limitations": "The lens does not prove how individual players interpret tension and does not isolate onboarding or card-language problems by itself."
+  },
+  "causal_chain": [
+    {
+      "mechanic": "Enemy intent is visible before the draft.",
+      "interaction": "The player compares available cards against a known threat.",
+      "dynamic": "The player weighs a safe defense against a narrower counterplay.",
+      "perceived_signal": "The interface exposes which threat each option addresses.",
+      "experience": "Informed tension between safety and risk.",
+      "assumption": "Showing intent will not make the preferred answer obvious in most tested states.",
+      "evidence": "Needs comparison evidence from the controlled variant."
+    },
+    {
+      "mechanic": "Enemy intent is hidden until after the draft.",
+      "interaction": "The player drafts using deck expectations and incomplete threat information.",
+      "dynamic": "The outcome depends more heavily on prediction and less on immediate counterplay.",
+      "perceived_signal": "A late reveal can make a card succeed or fail without a visible pre-choice cause.",
+      "experience": "Uncertainty that may be read as suspense or arbitrariness.",
+      "assumption": "Players understand the distribution well enough to make a meaningful prediction.",
+      "evidence": "Current glossary reopening suggests this assumption may be weak."
+    }
+  ],
+  "hypotheses": [
+    {
+      "claim": "Showing intent before the draft will improve perceived agency while preserving tension.",
+      "change": "Move the existing intent reveal to the start of the draft with no card, enemy, or reward changes.",
+      "expected_signal": "Players explain both options and attribute the outcome to the tradeoff they selected.",
+      "falsifier": "Players consistently report that the visible intent makes one card obviously correct or removes the uncertainty they valued.",
+      "competing_explanation": "Clearer card text, not intent timing, may account for improved explanations.",
+      "unchanged": "Cards, enemies, encounter order, rewards, tutorial copy, input handling, and outcome rules."
+    }
+  ],
+  "prototype": {
+    "control": "Current branch with intent revealed after card confirmation.",
+    "variant": "Same branch with intent revealed before card selection.",
+    "scope": "One encounter set and the existing intent presentation only.",
+    "risks": "Order and learning effects may change prediction skill between variants."
+  },
+  "evidence_plan": {
+    "participants_context": "Use players who understand the current card vocabulary; record prior familiarity and input method.",
+    "observations": [
+      "Decision explanation before confirmation",
+      "Glossary reopening and option comparison behavior",
+      "Outcome attribution after resolution"
+    ],
+    "behavioral_measures": [
+      "Which option is selected in each recorded encounter state",
+      "Whether the player revisits card or intent explanations before confirming"
+    ],
+    "qualitative_prompts": [
+      "What tradeoff did you think you were making?",
+      "What information would have changed your choice?"
+    ],
+    "decision_rule": "Keep the earlier reveal only if players can explain a real tradeoff and the evidence does not collapse most tested states into one obvious answer; otherwise revise the information or encounter design and repeat.",
+    "integrity_checks": [
+      "Confirm the intended reveal order is active in each capture.",
+      "Keep card text and encounter state identical across matched comparisons.",
+      "Record order, prior familiarity, locale, and input method."
+    ]
+  },
+  "ethics": {
+    "dark_patterns": "The variant does not add artificial urgency, concealed cost, or pressure to spend.",
+    "accessibility": "Intent meaning remains available through icon, text, and navigable explanation rather than color or motion alone.",
+    "privacy": "Store only consented session notes and gameplay events required for this decision."
+  },
+  "decisions": [
+    {
+      "decision": "Prototype intent timing before rewriting the card pool.",
+      "basis": "The current evidence points to an information-order question, but card-language clarity remains a competing explanation.",
+      "owner": "combat design"
+    }
+  ],
+  "route_out": {
+    "next_owner": "prototype implementation and playtest research",
+    "reason": "The causal claim needs a controlled runtime comparison before production design."
+  }
+}

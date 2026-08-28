@@ -1,0 +1,172 @@
+{
+  "contract_version": 1,
+  "mechanic": {
+    "name": "heavy hammer impact",
+    "build": "combat-lab hammer-response branch",
+    "scene": "single-target training room",
+    "target_devices": [
+      "desktop keyboard and mouse",
+      "desktop controller"
+    ],
+    "network_state": "offline authoritative simulation",
+    "camera": "third-person follow camera"
+  },
+  "goal": "Make confirmed heavy hits easier to recognize and more distinct from glancing hits without changing damage, collision, input acceptance, or player recovery.",
+  "baseline": {
+    "capture": "Frame-stepped gameplay capture synchronized with input, damage-event, animation-contact, and effect-start debug markers.",
+    "observations": [
+      "Damage is applied at the intended collision event.",
+      "The target recoil pose begins after the contact frame is visible.",
+      "Heavy and glancing hits use nearly identical visual and audio priorities."
+    ],
+    "measured_stages": [
+      "input read",
+      "simulation decision",
+      "trusted state change",
+      "rendered response",
+      "feedback channels"
+    ],
+    "inferred_stages": [
+      "player intent",
+      "perceived impact strength"
+    ]
+  },
+  "response_chain": [
+    {
+      "stage": "intent",
+      "owner": "player and input design",
+      "evidence": "The capture begins with the heavy-attack binding held through the documented charge state.",
+      "status": "observed"
+    },
+    {
+      "stage": "input",
+      "owner": "input system",
+      "evidence": "The input-read debug marker is present in the synchronized capture.",
+      "status": "measured"
+    },
+    {
+      "stage": "simulation",
+      "owner": "combat state machine",
+      "evidence": "The attack enters the committed state and the collision event resolves once.",
+      "status": "measured"
+    },
+    {
+      "stage": "state",
+      "owner": "damage system",
+      "evidence": "Damage and hit classification are logged at the trusted collision event.",
+      "status": "measured"
+    },
+    {
+      "stage": "render",
+      "owner": "animation and camera",
+      "evidence": "Contact pose, target recoil, and camera response are visible in frame stepping.",
+      "status": "measured"
+    },
+    {
+      "stage": "feedback",
+      "owner": "VFX and audio",
+      "evidence": "Impact sprite, audio event, and controller haptic events are captured by channel.",
+      "status": "measured"
+    },
+    {
+      "stage": "recovery",
+      "owner": "combat state machine and presentation cleanup",
+      "evidence": "Input acceptance, camera offset, transient scale, audio, and haptic state are checked after interruption and normal finish.",
+      "status": "measured"
+    }
+  ],
+  "primary_hypothesis": {
+    "weak_link": "impact recognition and event priority",
+    "problem": "The heavy hit uses the same channel hierarchy as a glancing hit, so the trusted damage difference is not clearly represented.",
+    "change": "Give the existing heavy-hit event a distinct contact pose and target recoil onset while keeping damage, collision, attack state, recovery, and input rules unchanged.",
+    "expected_signal": "Players identify the heavy hit from matched silent and normal captures and can name the contact difference without relying only on damage text.",
+    "falsifier": "The variant remains indistinguishable, obscures the target, or is perceived as stronger only because its audio or camera channel dominates.",
+    "competing_explanation": "The weak feeling may come from attack startup or camera framing rather than impact recognition."
+  },
+  "event_channels": [
+    {
+      "event": "heavy confirmed hit",
+      "importance": "high",
+      "channels": [
+        "contact pose",
+        "target recoil",
+        "impact shape",
+        "audio event",
+        "optional controller haptic"
+      ],
+      "necessary_information": "The attack connected as the heavy classification.",
+      "accessibility_alternative": "With motion or haptics reduced, preserve a stable impact shape, distinct audio where enabled, and a non-color-only heavy-hit marker."
+    },
+    {
+      "event": "glancing hit",
+      "importance": "routine",
+      "channels": [
+        "small impact shape",
+        "lighter audio event"
+      ],
+      "necessary_information": "The attack connected but did not qualify as heavy.",
+      "accessibility_alternative": "Use a distinct shape and label pattern rather than color alone."
+    }
+  ],
+  "safety": {
+    "simulation_truth": "Damage, collision, scoring, cooldown, hit classification, and authoritative transforms remain unchanged.",
+    "input_policy": "The change does not add input lock or alter buffering, cancel, or recovery rules.",
+    "return_to_rest": "Camera, pose overlays, transient scale, particles, audio, and haptics are restored on normal finish, interruption, pause, object reuse, and scene exit.",
+    "multiplayer_authority": "Not applicable to this offline capture; a networked port requires a separate authority review."
+  },
+  "accessibility": {
+    "settings": [
+      {
+        "control": "impact camera motion",
+        "affected_channels": [
+          "camera motion"
+        ],
+        "behavior": "Off and reduced settings leave the gameplay camera stable while preserving the impact marker and permitted audio/haptic channels.",
+        "persistence": "Use the product settings persistence contract."
+      },
+      {
+        "control": "combat haptics",
+        "affected_channels": [
+          "controller haptic"
+        ],
+        "behavior": "Off removes the haptic event without removing visual or audio confirmation.",
+        "persistence": "Use the product settings persistence contract."
+      }
+    ],
+    "redundant_signals": "Heavy and glancing classifications remain distinguishable without color, camera motion, haptics, or audio as the sole channel."
+  },
+  "comparison": {
+    "control": "Current branch with the existing heavy-hit presentation.",
+    "variant": "Same build and encounter with only the contact pose and target recoil onset changed.",
+    "matched_conditions": [
+      "same hammer state and target",
+      "same device and input path",
+      "same frame mode and camera",
+      "same damage, collision, cooldown, and recovery",
+      "same capture and debug-marker method"
+    ],
+    "repetition_basis": "Repeat normal, interrupted, paused, and reduced-feedback paths until cleanup and classification are consistent across the supported target inputs.",
+    "acceptance": [
+      "The heavy hit is distinguishable from the glancing hit through more than one permitted channel.",
+      "Trusted gameplay state and input policy match the control.",
+      "Every transient channel restores its documented rest state.",
+      "Reduced-motion and haptic-off paths preserve the hit classification."
+    ]
+  },
+  "performance": {
+    "budgets": "Use the combat scene's project-owned frame-time, memory, audio-voice, particle, and haptic budgets.",
+    "basis": "Capture on the supported target devices and compare against the same encounter control.",
+    "measurement": "Record frame pacing, effect lifetime, object reuse, and channel counts with the project's profilers."
+  },
+  "decisions": [
+    {
+      "decision": "Test impact recognition before changing attack startup or damage.",
+      "basis": "Trusted contact and damage timing are correct, while heavy and glancing feedback are not clearly differentiated.",
+      "owner": "combat presentation"
+    }
+  ],
+  "route_out": {
+    "next_owner": "animation and combat presentation implementation",
+    "reason": "The controlled variant is defined; concrete effect work should use the engine animation, VFX, audio, and accessibility owners."
+  }
+}

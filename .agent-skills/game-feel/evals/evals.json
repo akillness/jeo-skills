@@ -1,0 +1,107 @@
+{
+  "skill_name": "game-feel",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "공격 판정은 맞는데 타격감이 약해. 흔들림이랑 파티클 많이 넣어줘.",
+      "expected_output": "The skill captures the response chain and changes one weak causal link before layering effects.",
+      "assertions": [
+        "The response verifies contact, trusted state, animation, camera, and feedback timing",
+        "The response identifies one primary weak link",
+        "The response does not begin with a fixed shake and particle bundle",
+        "The response preserves damage, collision, input, and recovery"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "점프가 늦게 느껴지니 coyote time을 늘리면 되지?",
+      "expected_output": "The skill separates input, state, physics, animation, interpolation, and rendering delay.",
+      "assertions": [
+        "The response captures device event through rendered response",
+        "The response labels measured and inferred stages",
+        "The response does not change coyote time before identifying the delay source"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "hit stop은 보통 몇 ms가 정답이야? 업계 표준으로 넣어줘.",
+      "expected_output": "The skill refuses a universal duration and defines a mechanics-based comparison.",
+      "assertions": [
+        "The response does not provide one universal hit-stop duration",
+        "The response ties any candidate value to mechanic, input policy, timers, target devices, and capture",
+        "The response verifies interruption, cleanup, and multiplayer authority"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "모든 액션에 shake, flash, freeze, sound, particles를 똑같이 5개씩 넣자.",
+      "expected_output": "The skill rejects effect-count rules and builds an event-priority hierarchy.",
+      "assertions": [
+        "The response maps necessary information and importance per event",
+        "The response prevents routine events from competing with critical signals",
+        "The response uses only channels that add information or a tested experience"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "보스 공격은 강한 화면 흔들림이 핵심이니 끄기 옵션은 빼자.",
+      "expected_output": "The skill requires an off or reduced motion path with a replacement signal.",
+      "assertions": [
+        "The response provides off or reduced camera motion",
+        "The response preserves the boss-attack signal through stable visual, audio, haptic, text, or shape alternatives",
+        "The response does not call reduced motion less feedback"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "hit pause 중에는 timeScale만 0으로 했다가 나중에 1로 돌리면 되지?",
+      "expected_output": "The skill protects state, timers, nesting, interruption, and restoration.",
+      "assertions": [
+        "The response checks scaled and unscaled timers, input buffering, repeated effects, pause, interruption, and scene changes",
+        "The response restores a known prior state rather than blindly forcing a global value",
+        "The response verifies no duplicate actions or multiplayer authority violation"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "전투 이펙트가 많을 때 프레임이 뚝뚝 끊겨. 타격감 문제로 고쳐줘.",
+      "expected_output": "The skill routes a frame bottleneck to performance profiling.",
+      "assertions": [
+        "The response does not mask frame stalls with stronger feedback",
+        "The response routes measurement to game-performance-profiler",
+        "The response preserves one reproducible combat capture for later feel comparison"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "멀티플레이 타격감 때문에 클라이언트에서 피해와 넉백까지 먼저 확정하자.",
+      "expected_output": "The skill keeps presentation prediction separate from trusted gameplay authority.",
+      "assertions": [
+        "The response does not let a client authoritatively decide damage or knockback",
+        "The response separates local presentation response from authoritative state",
+        "The response routes authority design to multiplayer-game-architecture"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "game-feel-contract.json 초안을 검사해줘.",
+      "expected_output": "The skill runs the read-only validator and reports exact weak fields.",
+      "assertions": [
+        "The response runs validate-game-feel.py on the provided path",
+        "The response reports missing response stages, recovery, hypothesis, channel, safety, accessibility, comparison, or performance evidence by path",
+        "The response runs or references --self-test",
+        "The response does not mutate the contract"
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "메뉴 버튼 클릭이 밋밋한데 game-ui-ux로 갈까 game-feel로 갈까?",
+      "expected_output": "The skill distinguishes interaction contract from moment-to-moment feedback.",
+      "assertions": [
+        "The response uses game-feel for one existing button's response tuning",
+        "The response routes navigation, focus, layout, state, or screen-flow problems to game-ui-ux",
+        "The response keeps the button's action semantics and accessibility state intact"
+      ]
+    }
+  ]
+}

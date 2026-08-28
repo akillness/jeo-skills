@@ -1,0 +1,108 @@
+{
+  "skill_name": "multiplayer-game-architecture",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "우리 싱글 게임을 멀티플레이어로 바꿔줘. 일단 WebRTC부터 붙이면 되지?",
+      "expected_output": "The skill freezes the session and authority model before selecting a transport.",
+      "assertions": [
+        "The response asks for or states assumptions about pace, player count, fairness, platforms, hidden state, reconnect, and persistence",
+        "The response says WebRTC is a transport choice and does not decide gameplay authority",
+        "The response produces an authority matrix before implementation steps"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "랭크 FPS인데 서버 비용이 아까우니 한 플레이어를 호스트로 잡자.",
+      "expected_output": "The skill identifies the fairness and host-trust conflict instead of silently accepting a listen server.",
+      "assertions": [
+        "The response recommends an independent authoritative server for ranked outcomes unless explicit risk is accepted",
+        "The response names host cheating, host advantage, host loss, migration, and continuity risks",
+        "The response does not claim that relay or encryption removes gameplay trust risk"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "4인 턴제 협동 게임이야. prediction, rollback, lag compensation 다 넣어줘.",
+      "expected_output": "The skill selects only mechanisms that create player value for a discrete turn model.",
+      "assertions": [
+        "The response prefers command or state-transition replication with idempotency and canonical snapshots",
+        "The response explains why prediction, rollback, and lag compensation may be unnecessary",
+        "The response defines duplicate command and reconnect behavior"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "브라우저 게임 전송은 WebSocket, WebRTC, WebTransport 중 뭐가 제일 빨라?",
+      "expected_output": "The skill refuses a universal speed ranking and compares required delivery semantics and support.",
+      "assertions": [
+        "The response says classic WebSocket is broadly supported but lacks backpressure",
+        "The response says RTCDataChannel needs signaling and peer encryption does not create authority",
+        "The response says WebTransport offers HTTP/3 streams and datagrams but requires compatibility and fallback evidence",
+        "The response asks for message classes, target browsers, and network measurements before selecting"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "tick rate는 보통 몇으로 하면 돼? 업계 표준 숫자로 정해줘.",
+      "expected_output": "The skill rejects a magic rate and creates a mechanics-based measurement decision.",
+      "assertions": [
+        "The response does not copy a rate from Source, Unity, Unreal, or another game as a universal default",
+        "The response ties any proposed rate to mechanics, target devices, CPU, bandwidth, and latency budget",
+        "The response defines a measurement plan and rollback or degradation behavior"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "WebSocket 연결이 로그인됐으면 이후 메시지는 믿어도 되지?",
+      "expected_output": "The skill treats connection authentication and per-message authorization as separate controls.",
+      "assertions": [
+        "The response requires WSS, an explicit Origin allowlist, session expiry, schema validation, and per-message authorization",
+        "The response requires size, rate, connection, idle, queue, and backpressure controls",
+        "The response says gameplay legality must still be validated by the authority",
+        "The response avoids logging tokens, private messages, or hidden game state"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "localhost 탭 두 개에서 같이 움직여. 멀티플레이 완성됐다고 해도 돼?",
+      "expected_output": "The skill requires independent processes and adverse-path evidence.",
+      "assertions": [
+        "The response says two tabs alone do not prove authority, recovery, security, or real-network behavior",
+        "The response requires separate client processes or browsers with no shared in-memory state",
+        "The response adds clean and impaired network cases plus disconnect, reconnect, version mismatch, and authority-violation tests"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "매치메이커를 붙였으니 게임 서버 할당과 상태 동기화도 해결된 거지?",
+      "expected_output": "The skill separates matchmaking, allocation, and simulation responsibilities.",
+      "assertions": [
+        "The response says matchmaking chooses a group but does not automatically allocate or run the authoritative match",
+        "The response defines separate owners and failure transitions for matchmaking, allocation, and simulation",
+        "The response does not provision a live service without approval"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "Unity Netcode for GameObjects로 바로 구현해줘.",
+      "expected_output": "The skill creates the engine-neutral contract and then routes concrete APIs to the Unity skill.",
+      "assertions": [
+        "The response freezes topology, authority, replication, transport, lifecycle, and verification before SDK code",
+        "The response routes concrete Unity package and API work to `unity-technologies-skills`",
+        "The response does not let the SDK selection replace the authority matrix"
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "multiplayer-contract.json 초안을 만들었어. 구현 들어가기 전에 검사해줘.",
+      "expected_output": "The skill runs the deterministic contract validator and reports exact missing evidence.",
+      "assertions": [
+        "The response runs `scripts/validate-contract.py` on the provided path",
+        "The response reports structured paths for missing authority, lifecycle, security, observability, or verification fields",
+        "The response runs or references `--self-test` before trusting the validator",
+        "The response does not mutate the contract during validation"
+      ]
+    }
+  ]
+}

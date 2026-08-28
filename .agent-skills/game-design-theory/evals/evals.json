@@ -1,0 +1,105 @@
+{
+  "skill_name": "game-design-theory",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "MDA로 새 전투 메커니즘이 왜 긴장감을 만드는지 설명해줘.",
+      "expected_output": "The skill builds a mechanic-to-dynamic-to-experience causal chain and marks assumptions.",
+      "assertions": [
+        "The response separates mechanics, runtime dynamics, perceived signals, and experience",
+        "The response marks unsupported causal arrows as assumptions",
+        "The response defines observable signals and counterevidence"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "우리 유저는 전부 Achiever 타입이니까 업적을 많이 넣으면 되지?",
+      "expected_output": "The skill refuses universal Bartle segmentation and returns to contextual evidence.",
+      "assertions": [
+        "The response states that Bartle's types came from a bounded MUD context",
+        "The response does not infer immutable player needs from the label",
+        "The response asks for concrete behavior, context, and a testable design decision"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "보상 루프는 몇 분마다, 난이도는 몇 퍼센트씩 올리는 게 정석이야?",
+      "expected_output": "The skill rejects universal tuning numbers and asks for project-owned evidence.",
+      "assertions": [
+        "The response does not provide a magic reward interval or curve",
+        "The response maps sources, sinks, feedback, player context, and intended experience",
+        "The response defines a reversible comparison and measurement basis"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "세션 길이가 늘었으니 이 이벤트가 더 재미있다는 증거지?",
+      "expected_output": "The skill separates engagement behavior from experience evidence.",
+      "assertions": [
+        "The response says session length alone does not prove fun or positive experience",
+        "The response checks competing explanations and ethical cost",
+        "The response pairs behavioral evidence with qualitative evidence and a falsifier"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "플레이테스트에서 절반은 긴장감, 절반은 불공정하다고 했어. 결론 내줘.",
+      "expected_output": "The skill preserves conflicting evidence and proposes a bounded comparison.",
+      "assertions": [
+        "The response does not average away the disagreement",
+        "The response inspects context, information, familiarity, accessibility, and implementation integrity",
+        "The response defines evidence that would support or reject each explanation"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "game-design-hypothesis.json을 만들었으니 구현 전 검사해줘.",
+      "expected_output": "The skill runs the deterministic validator and reports exact paths.",
+      "assertions": [
+        "The response runs validate-design-hypothesis.py on the provided contract",
+        "The response reports missing lens limits, causal fields, falsifiers, prototype controls, evidence, ethics, or route-out by path",
+        "The response runs or references --self-test",
+        "The response does not modify the contract"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "선택지를 열 개 주면 autonomy가 높아지는 거지?",
+      "expected_output": "The skill treats autonomy as a contextual hypothesis, not option count.",
+      "assertions": [
+        "The response says more options do not automatically create meaningful autonomy",
+        "The response examines information, tradeoffs, consequences, and perceived agency",
+        "The response proposes a controlled variant with counterevidence"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "이 카드가 70% 선택됐으니 dominant strategy야.",
+      "expected_output": "The skill does not infer dominance from popularity alone.",
+      "assertions": [
+        "The response asks which states, goals, information, costs, and player skill were present",
+        "The response distinguishes popularity from dominance across relevant states",
+        "The response checks onboarding, clarity, availability, and reward confounds"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "게임 전체 GDD와 제작 일정까지 game-design-theory로 만들어줘.",
+      "expected_output": "The skill bounds the theory question and routes full production outward.",
+      "assertions": [
+        "The response routes full GDD and production to bmad-gds or game-studio-harness",
+        "The response offers to isolate one design hypothesis rather than absorbing all production work"
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "프로토타입 결과가 애매한데 어쨌든 원안을 유지할지 버릴지 골라줘.",
+      "expected_output": "The skill permits an inconclusive result and identifies missing evidence.",
+      "assertions": [
+        "The response does not force a keep or reject conclusion from insufficient evidence",
+        "The response checks exposure, confounds, integrity, and evidence sufficiency",
+        "The response records revise or inconclusive and names the smallest next test"
+      ]
+    }
+  ]
+}

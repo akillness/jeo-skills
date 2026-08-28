@@ -1,0 +1,106 @@
+{
+  "skill_name": "game-ui-ux",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "game-ui-design, game-ui-ux, threejs-game-ui-designer를 각각 따로 스킬로 만들어야 해?",
+      "expected_output": "The skill consolidates the generic intent and routes engine or project implementation outward.",
+      "assertions": [
+        "The response uses game-ui-ux as the canonical generic contract",
+        "The response routes Three.js implementation to existing threejs skills",
+        "The response routes project-specific Open Design work to open-design-game-ui skills",
+        "The response avoids duplicate skill creation"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "설정 화면이 마우스로는 되는데 컨트롤러로는 중간에서 빠져나오지 못해.",
+      "expected_output": "The skill maps and verifies focus, back, and escape behavior.",
+      "assertions": [
+        "The response captures initial focus, traversal, modal containment, focus restoration, and back behavior",
+        "The response requires every focusable control to be reachable and escapable",
+        "The response tests layout, locale, and scale changes for stranded focus"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "새 인벤토리 목업대로 구현하되 목업에 없는 에러랑 재접속 상태는 삭제해도 돼.",
+      "expected_output": "The skill preserves runtime states omitted by the mockup.",
+      "assertions": [
+        "The response treats the mockup as partial evidence",
+        "The response inventories loading, empty, error, offline, reconnect, destructive, and permission states",
+        "The response does not delete existing behavior merely because it is not visible in the mockup"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "모든 게임 UI는 1920x1080 기준으로 고정하고 글자 크기와 버튼도 숫자 하나로 정해줘.",
+      "expected_output": "The skill rejects one universal reference layout and uses target-derived constraints.",
+      "assertions": [
+        "The response records target devices, aspect families, safe areas, scale, and reflow",
+        "The response does not invent universal text, button, margin, or resolution values",
+        "The response verifies on measured target devices"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "아이폰 노치랑 TV 오버스캔에서 HUD가 잘리는데 anchor만 바꾸면 되지?",
+      "expected_output": "The skill defines runtime safe-area and content constraints before implementation.",
+      "assertions": [
+        "The response reads runtime safe bounds and target platform guidance",
+        "The response separates actionable critical content from decorative bleed",
+        "The response tests aspect, orientation, scale, and platform overlays"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "영문에서 맞으니 한국어와 아랍어는 나중에 문자열만 바꾸면 돼.",
+      "expected_output": "The skill treats localization as a layout and navigation state.",
+      "assertions": [
+        "The response covers expansion, wrapping, bidirectional layout, fonts, glyphs, formats, and input prompts",
+        "The response tests representative real content as well as pseudo-localization",
+        "The response preserves focus and scroll behavior under locale changes"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "HUD 값은 매 프레임 전부 읽어서 갱신하면 가장 안전하지?",
+      "expected_output": "The skill defines explicit initial snapshots and event-driven updates.",
+      "assertions": [
+        "The response records source, update event or query, stale, error, and owner per binding",
+        "The response avoids per-frame polling without a measured requirement",
+        "The response verifies rapid updates and reconnect state"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "다른 플레이어 인벤토리도 클라이언트에 보내고 UI에서 안 보이게만 하자.",
+      "expected_output": "The skill prevents unauthorized hidden data from reaching the binding.",
+      "assertions": [
+        "The response separates presentation state from authorized gameplay data",
+        "The response requires per-player permission and hidden-data boundaries",
+        "The response routes multiplayer authority and filtering to multiplayer-game-architecture"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "스크린샷 세 장이 예쁘게 나왔으니 UI 검증 완료라고 해도 돼?",
+      "expected_output": "The skill requires dynamic interaction and state evidence.",
+      "assertions": [
+        "The response says screenshots do not prove navigation, focus, back behavior, updates, or accessibility",
+        "The response builds a matrix across state, device, input, locale, scale, and settings",
+        "The response records exact build and observed evidence"
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "Darkbone Archer Open Design 목업을 런타임에 그대로 이식해줘.",
+      "expected_output": "The skill routes project-specific takeover to the existing Open Design sequence.",
+      "assertions": [
+        "The response routes to open-design-game-ui-takeover or the relevant concept/handoff stage",
+        "The response preserves runtime identity, states, interactions, data, and motion omitted by the standalone",
+        "The response does not absorb project-specific takeover into the generic game-ui-ux skill"
+      ]
+    }
+  ]
+}

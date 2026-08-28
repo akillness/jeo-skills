@@ -848,6 +848,67 @@ When the user explicitly names `Unity-Technologies/skills`, the official Unity S
 - Keep skill installation separate from Editor/module/package changes, live C# evaluation, project mutation, Git publication, UGS deployment, licensing, purchases, ads, privacy settings, credentials, builds, and tests. Preview and confirm each side-effect class separately.
 - Route generic third-party Unity pack curation to `unity-gamedev-skill-pack`, build-log failures to `game-build-log-triage`, game CI design to `game-ci-cd-pipeline`, and profiler interpretation to `game-performance-profiler`.
 
+### Multiplayer game architecture contract (on demand)
+
+When a task mentions multiplayer game architecture, netcode, server authority, replication,
+prediction, reconciliation, snapshot interpolation, lag compensation, host migration,
+matchmaking, WebSocket, WebRTC DataChannel, or WebTransport:
+
+- Load `.agent-skills/multiplayer-game-architecture/SKILL.md` before choosing an engine SDK or transport.
+- Freeze the session envelope, topology, per-domain authority, replication, transport, lifecycle, security, observability, and impairment-test contract before implementation.
+- Start from `references/contract-example.json`, replace its example product decisions, and run `python3 "$SKILLS_ROOT/multiplayer-game-architecture/scripts/validate-contract.py" multiplayer-contract.json` plus the same command with `--self-test`. The validator is read-only, Python 3.9-compatible, and standard-library only.
+- Never copy another game's tick, snapshot, latency, bandwidth, queue, or player-count target as a universal default. Require mechanics and measurement evidence.
+- Route concrete Unity APIs to `unity-technologies-skills`, browser gameplay to `web-game-development`, service tests to `backend-testing`, CI to `game-ci-cd-pipeline`, security implementation to `security-best-practices`, and telemetry rollout to `monitoring-observability`.
+- Keep cloud provisioning, paid matchmaking, live credentials, deployment, and publication behind separate approval.
+
+### Higgsfield game generation compatibility workflow (on demand)
+
+When the user explicitly selects Higgsfield for a browser game, names
+`higgsfield-game-generation`, uses `higgsfield website create --type game`, or asks about its
+game assets, realtime rooms, deploy, or marketplace flow:
+
+- Load `.agent-skills/higgsfield-game-generation/SKILL.md` and audit the current upstream owner before trusting an exact skill name or old `higgsfield game` command.
+- For a checked-out upstream repository, run `python3 "$SKILLS_ROOT/higgsfield-game-generation/scripts/audit-higgsfield-game.py" --repo /path/to/higgsfield-ai-skills --format json` and the same helper with `--self-test`. At the audited pin, installation prose names `higgsfield-game-generation`, but that folder is absent and `higgsfield-websites` owns `--type game`.
+- Read the generated project's `app/AGENTS.md` before editing. Re-check the live category and command rather than freezing the audited pin forever.
+- Keep CLI installation, authentication, paid asset generation, project creation, secret changes, public deploy, and marketplace publication as separate approvals. Deploy is public; publication is a second action.
+- Route provider-neutral browser games to `web-game-development` and authority/hidden-state design to `multiplayer-game-architecture`.
+
+### Game design theory contract (on demand)
+
+When a task mentions MDA, mechanics-dynamics-aesthetics, player motivation, core-loop theory,
+dominant strategy, resource/reward loops, design hypotheses, or why a mechanic creates an
+experience:
+
+- Load `.agent-skills/game-design-theory/SKILL.md` and freeze one design question, one primary lens, its limitations, the causal chain, and a falsifier.
+- Start from `references/hypothesis-example.json`, replace the example claims, and run `python3 "$SKILLS_ROOT/game-design-theory/scripts/validate-design-hypothesis.py" game-design-hypothesis.json` plus the same helper with `--self-test`.
+- Keep observations, telemetry, player reports, implementation facts, and assumptions separate. Do not turn MDA, self-determination needs, Bartle types, retention, or session length into universal proof.
+- Do not invent reward intervals, difficulty curves, ratios, sample sizes, or engagement targets. Use a reversible controlled variant and project-owned evidence.
+- Route full GDD/production to `bmad-gds` or `game-studio-harness`, feel tuning to `game-feel`, and interface work to `game-ui-ux`.
+
+### Game feel response-chain contract (on demand)
+
+When an existing mechanic works but feels delayed, weak, weightless, noisy, inconsistent, or
+unresponsive, or the task names game feel, juice, hit stop, screenshake, coyote time, input
+buffer, impact feedback, or feedback layering:
+
+- Load `.agent-skills/game-feel/SKILL.md` and capture one mechanic from intent/input through simulation, trusted state, render, feedback channels, and recovery.
+- Start from `references/contract-example.json`, replace the example mechanic, and run `python3 "$SKILLS_ROOT/game-feel/scripts/validate-game-feel.py" game-feel-contract.json` plus the same helper with `--self-test`.
+- Change one earliest causal variable. Never apply a fixed count of shake, flash, freeze, particles, sound, or copied timing values as a universal recipe.
+- Keep presentation effects separate from damage, collision, scoring, cooldowns, authority, and input policy. Require interruption cleanup and a known rest state.
+- Ship off/reduced motion, flash, and haptic controls with alternate channels. Route frame bottlenecks to `game-performance-profiler`, concrete effects to `game-vfx`/audio/engine skills, and authority design to `multiplayer-game-architecture`.
+
+### Game UI/UX contract (on demand)
+
+When a game task mentions HUD, menus, inventory, shops, maps, settings, overlays,
+controller navigation, focus, back behavior, safe areas, UI scaling, localization, or
+Three.js game UI planning:
+
+- Load `.agent-skills/game-ui-ux/SKILL.md` as the canonical generic owner for the pictured `game-ui-design`, `game-ui-ux`, and `threejs-game-ui-designer` intent.
+- Start from `references/contract-example.json`, replace the example screens and states, and run `python3 "$SKILLS_ROOT/game-ui-ux/scripts/validate-game-ui.py" game-ui-contract.json` plus the same helper with `--self-test`.
+- Preserve real runtime states, interactions, information, identity, and data omitted by a mockup. Define player decisions, hierarchy, screen stack, initial focus, traversal, device switch, back/cancel, safe area, reflow, localization, accessibility, bindings, and verification.
+- Do not invent one universal reference resolution, safe inset, text size, touch target, or margin. Measure target devices and current platform guidance.
+- Route Darkbone Archer concepts/handoffs/takeovers to `open-design-game-ui-*`, Three.js implementation to the existing `threejs-*` family, and moment-to-moment response tuning to `game-feel`.
+
 ### Solo Skills personal automation pack (on demand)
 
 When the user explicitly names `bam-bam-2/solo-skills`, Solo Skills, its 26-skill public collection, or `fleet.md`:

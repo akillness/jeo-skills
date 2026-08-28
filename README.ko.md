@@ -2,14 +2,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-218-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-223-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![GJC](https://img.shields.io/badge/GJC-gajae--code-181717?style=for-the-badge&logo=github)](https://github.com/akillness/gajae-code)
 [![jeo-code](https://img.shields.io/badge/jeo--code-jeo-181717?style=for-the-badge&logo=github)](https://github.com/akillness/jeo-code)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**카테고리형 스킬 218개 · 경량 선택 설치 · 압축 TOON 카탈로그 · 멀티플랫폼**
+**카테고리형 스킬 223개 · 경량 선택 설치 · 압축 TOON 카탈로그 · 멀티플랫폼**
 
 스펙 우선 멀티 에이전트 LLM 워크플로우 컬렉션입니다. 프롬프트 하나로 전체 설정을
 위임하거나, `jeo-skill` 라우터부터 설치해 필요한 웹, 인프라, 게임, 미디어, CLI,
@@ -79,7 +79,7 @@ curl -s https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-sk
 
 ### 경량 선택 설치(수동 / CI)
 
-218개 스킬 폴더 전체가 아니라 **`jeo-skill` 라우터부터 설치**합니다. 카테고리,
+223개 스킬 폴더 전체가 아니라 **`jeo-skill` 라우터부터 설치**합니다. 카테고리,
 하위 분류, 인터페이스, 번들, 연관 스킬을 탐색할 수 있으며 앱·모델·MCP 서버·런타임은
 실제 선택된 작업에서만 온디맨드로 설치합니다.
 
@@ -132,7 +132,7 @@ video-motion-previs check
 
 ## 📚 스킬 목록
 
-> 중앙 매니페스트: `.agent-skills/skills.json` · 218개 스킬 · 10개 기본 카테고리 · 하위 카테고리/인터페이스/관계 그룹 지원
+> 중앙 매니페스트: `.agent-skills/skills.json` · 223개 스킬 · 10개 기본 카테고리 · 하위 카테고리/인터페이스/관계 그룹 지원
 
 ### 🌐 웹 (47개)
 
@@ -207,9 +207,9 @@ video-motion-previs check
 | `genkit` |
 | `looker-studio-bigquery` |
 
-### 🎮 게임 (24개)
+### 🎮 게임 (29개)
 
-하위 분류: `client` (3), `web` (2), `server` (0), `design-ui` (4), `audio` (1), `animation` (2), `motion-vfx` (2), `sprite-image` (1), `art-resources` (0), `storytelling` (0), `tooling` (3), `qa-performance` (4), `release` (2)
+하위 분류: `client` (3), `web` (2), `server` (1), `design-ui` (7), `audio` (1), `animation` (2), `motion-vfx` (2), `sprite-image` (1), `art-resources` (0), `storytelling` (0), `tooling` (4), `qa-performance` (4), `release` (2)
 
 | Skill |
 |---|
@@ -237,6 +237,11 @@ video-motion-previs check
 | `game-ci-cd-pipeline` |
 | `steam-store-launch-ops` |
 | `unity-technologies-skills` |
+| `multiplayer-game-architecture` |
+| `higgsfield-game-generation` |
+| `game-design-theory` |
+| `game-feel` |
+| `game-ui-ux` |
 
 ### 🎬 크리에이티브 미디어 (23개)
 
@@ -666,7 +671,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 ## 📁 구조
 
 ```text
-├── .agent-skills/          ← 218개 스킬 폴더 (SKILL.md + 선택적 지원 파일)
+├── .agent-skills/          ← 223개 스킬 폴더 (SKILL.md + 선택적 지원 파일)
 ├── docs/                   ← 상세 가이드 (bmad, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md

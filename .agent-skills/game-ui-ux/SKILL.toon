@@ -1,0 +1,40 @@
+N:game-ui-ux
+D:Design and review the canonical generic game UI/UX contract for HUDs, menus, overlays, screen flow, information hierarchy, input and focus, safe areas, responsive layout, scalable text, localization, accessibility, data binding, and cross-device verification. Validate game-ui-contract.json and route visual concepts or engine widgets outward.
+G:game-ui-ux game-ui-design HUD menu inventory shop map settings overlay controller-navigation focus safe-area responsive-game-ui scalable-text localization accessibility state-binding Three.js
+
+U[8]:
+  Design or review HUD menu inventory shop map settings tutorial notification and overlay systems
+  Map player decisions to information priority persistence context and conflict rules
+  Define screen stack modal pause back cancel resume loading error and reconnect behavior
+  Support mouse keyboard controller touch and assistive input with predictable focus
+  Plan safe areas aspect families responsive constraints text scaling and content reflow
+  Treat localization glyphs expansion bidirectional text and input prompts as layout states
+  Define event-driven UI data sources stale states errors permissions and hidden-data boundaries
+  Verify real interaction across build device viewport input locale and accessibility settings
+
+S[8]{n,step,details}:
+  1,Inventory reality,Inspect runtime screens states designs devices locales controller maps and accessibility settings; mockups are partial evidence
+  2,Map decisions,Name the player decision status or feedback each element supports and classify urgency persistence visibility and conflict priority
+  3,Model flow,Define screens overlays modals push replace pop back resume disconnect destructive actions initial focus traversal and device switching
+  4,Define layout,Use constraints containers anchors and content rules; record aspect families safe areas scaling reflow and scroll ownership from target evidence
+  5,Define localization,Externalize strings and cover expansion plural formats bidirectional text fonts glyphs line breaks and input-glyph substitution
+  6,Define data,Record source event/query initial snapshot update stale permission error and owner; never bind hidden multiplayer data to unauthorized UI
+  7,Verify interaction,Test all required states inputs focus back aspects orientation safe areas text scale locales loading errors reduced motion and rapid updates
+  8,Validate and route,Run validate-game-ui.py; route visual concepts project-specific Open Design Three.js DOM/canvas engine widgets feel and accessibility outward
+
+R[9]:
+  This is the canonical generic lane for game-ui-design game-ui-ux and Three.js game UI planning
+  A mockup never deletes runtime states information identity or interactions it omits
+  Every element supports a player decision status feedback or legal requirement
+  Focus is visible predictable recoverable and able to leave every focusable element
+  No universal reference resolution touch size margin or text size replaces target-device evidence
+  Critical state never relies on one color audio motion haptic or position channel
+  Localization and text scaling are first-class layout states
+  Gameplay truth hidden information and presentation state remain separate
+  Static screenshots do not prove navigation state updates or accessibility
+
+E[4]{type,command}:
+  Install skill,npx skills add https://github.com/akillness/jeo-skills --skill game-ui-ux
+  Validate example,python3 .agent-skills/game-ui-ux/scripts/validate-game-ui.py .agent-skills/game-ui-ux/references/contract-example.json
+  Self-test validator,python3 .agent-skills/game-ui-ux/scripts/validate-game-ui.py --self-test
+  Validate skill,bash .agent-skills/skill-standardization/scripts/validate_skill.sh .agent-skills/game-ui-ux
