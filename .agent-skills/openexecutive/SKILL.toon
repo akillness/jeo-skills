@@ -1,0 +1,42 @@
+N:openexecutive
+D:Operate SenteLabsAI/OpenExecutive, the Apache-2.0 self-hosted virtual executive team: one Executive persona over eight specialist Claude agents (CSO, CFO, CHRO, GC, COO, CMO, CPO, Board) on FastAPI, Next.js 15, ChromaDB, and SQLite. Source install only, no PyPI or npm package. Route one request to fit-check, preflight, run-local, provider and cost control, integrations, operations, contribution, or troubleshooting. Every turn is billable, integrations reach real people, and several routes are irreversible.
+G:openexecutive open-executive sentelabs virtual-executive multi-agent anthropic claude fastapi nextjs chromadb rag self-hosted consult-specialist episodic-memory fly-io
+
+U[8]:
+  Decide whether Open Executive fits and pick local, Docker, or Fly.io
+  Preflight Python 3.11+, uv, Node 22+, and provider configuration
+  Choose Anthropic, OpenRouter, or local Ollama/LM Studio/vLLM models
+  Control paid spend, web search, and Anthropic prompt caching
+  Connect Slack, Discord, Telegram, Google Chat, or Gmail without unwanted sends
+  Operate fixtures, episodic memory, and the single-instance scheduler
+  Add a specialist agent with prompts, registry, knowledge, tests, and evals
+  Debug 401 unit tests, a stale make eval path, or first-boot slowness
+
+S[8]{n,step,details}:
+  1,Enforce safety,Every turn is billable across specialists plus a background extraction pass | integrations send real messages | fixtures reset is irreversible | never commit company data or .env | never print secret values | run exactly one API machine
+  2,Choose one mode,fit-check | preflight | run-local | provider-cost | integrations | operate | contribute | troubleshoot
+  3,Preflight,Run scripts/openexecutive.sh doctor for host tools, checkout detection, and SET/MISSING variable names; it installs nothing and starts nothing
+  4,Configure a provider,At least one of Anthropic key, OPENROUTER_ENABLED with a key, or LOCAL_MODELS_ENABLED with LOCAL_BASE_URL and matching model slugs, or the app refuses to start
+  5,Run locally,cp .env.example .env then make dev (API 8000, UI 3000) or docker compose; first boot pulls heavy ML deps and a ~90MB embedding model; make stop kills every process on 8000 and 3000
+  6,Control cost,Set ENABLE_WEB_SEARCH explicitly because the code default is ON and billed while .env.example claims off; keep tools sorted, persona constant, and dynamic content out of cached blocks
+  7,Operate by risk tier,Read-only vs recoverable vs destructive; preview consolidate-initiatives before --apply; never reset fixtures to fix a smaller problem; flyctl secrets and merges to main change live environments
+  8,Contribute,env -u BACKEND_SHARED_SECRET uv run pytest tests/unit/ | ruff and mypy | run_evals.py with an explicit --scenarios path | a new agent needs prompts, registry, tool enum, knowledge, evals, and architecture docs
+
+R[9]:
+  Pinned to commit 3a48f77a35e6980335553b9bdd02724e00f6f239 (2026-08-27); the repo has no tags or releases despite a 0.1.0 changelog entry, so pin a commit
+  It is a self-hosted application, not a library, CLI package, or MCP server to install into another project
+  config.py defaults enable_web_search to True with max uses 2, contradicting .env.example which claims off with 5 — trust the code
+  The outbound anti-spam guard dedups, rate-limits, and honors quiet hours but fails open and is not an approval gate
+  POST /fixtures/reset wipes live state AND the snapshot irreversibly, then re-seeds default departments so the wipe can look harmless
+  consolidate-initiatives --apply deletes merged rows and takes an immediate SQLite write lock; pause the API for large merges
+  The scheduler claims jobs with UPDATE RETURNING, so a second API machine double-fires scheduled actions
+  make eval passes a scenarios path that does not exist and the runner default only resolves from evals/, so pass --scenarios openexecutive/evals/_scenarios/ explicitly; a missing directory yields zero scenarios with no error
+  BACKEND_SHARED_SECRET set in a test shell makes full-app tests return 401 instead of their expected status
+
+E[6]{type,command}:
+  Install skill,npx skills add https://github.com/akillness/jeo-skills --skill openexecutive
+  Readiness check,bash .agent-skills/openexecutive/scripts/openexecutive.sh doctor /path/to/OpenExecutive
+  Risk tier summary,bash .agent-skills/openexecutive/scripts/openexecutive.sh safety
+  Offline config audit,python3 .agent-skills/openexecutive/scripts/audit-config.py /path/to/OpenExecutive/.env
+  Preview initiative merge,openexecutive consolidate-initiatives
+  Validate skill,bash .agent-skills/skill-standardization/scripts/validate_skill.sh .agent-skills/openexecutive

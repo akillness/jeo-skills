@@ -1,0 +1,106 @@
+{
+  "skill_name": "openexecutive",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "OpenExecutive를 내 맥북에서 돌려보고 싶어. 처음부터 알려줘.",
+      "expected_output": "The skill preflights the host, makes the operator choose one provider, then starts the app and warns about first-boot slowness.",
+      "assertions": [
+        "The response runs or references `scripts/openexecutive.sh doctor` before installing anything",
+        "The response states that at least one provider must be configured or the app refuses to start",
+        "The response warns that the first run pulls heavy ML dependencies and downloads an embedding model, so it takes minutes"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": ".env.example 보니까 웹 검색은 기본 꺼져 있다던데, 그냥 두면 돈 안 나가지?",
+      "expected_output": "The skill corrects the assumption using the code default rather than the sample env file.",
+      "assertions": [
+        "The response says the code default for `enable_web_search` is on, not off",
+        "The response explains that an unset variable means billable searches, so copying `.env.example` is what disables it",
+        "The response tells the user to set `ENABLE_WEB_SEARCH` explicitly and mentions `WEB_SEARCH_MAX_USES` as the cost cap"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "데모 픽스처가 지저분해졌어. POST /fixtures/reset 눌러서 정리하면 되지?",
+      "expected_output": "The skill blocks the reset as an irreversible factory wipe and offers the narrower operation.",
+      "assertions": [
+        "The response says `/fixtures/reset` wipes live state and the snapshot irreversibly",
+        "The response warns that re-seeding the default departments can make the wipe look harmless",
+        "The response offers unload or a targeted fixture delete and asks for confirmation before any destructive call"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Slack이랑 Discord 붙여서 임원이 알아서 팀원들한테 DM 보내게 하고 싶어.",
+      "expected_output": "The skill treats channel enablement as an externally visible action and refuses to silently turn it on.",
+      "assertions": [
+        "The response says the integrations deliver real messages to real people and requires explicit approval",
+        "The response explains that the outbound guard is anti-spam, fails open, and is not an approval gate",
+        "The response checks the roster model and whether the workspace is production or a test workspace before enabling"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "트래픽이 늘어서 Fly에서 API 머신을 2대로 늘리려고 해.",
+      "expected_output": "The skill refuses the scale-out and explains the scheduler invariant.",
+      "assertions": [
+        "The response says the scheduler claims jobs atomically and a second machine double-fires scheduled actions",
+        "The response says `max_machines_running = 1` in the Fly API config must not be overridden",
+        "The response suggests gating the scheduler first if horizontal scaling is genuinely required"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "make eval 돌렸는데 시나리오를 하나도 못 찾아. 내가 뭘 잘못한 거야?",
+      "expected_output": "The skill identifies the stale Makefile path as an upstream discrepancy and gives an explicit scenario path that actually resolves.",
+      "assertions": [
+        "The response says the Makefile passes a scenarios path that does not exist in the repository",
+        "The response points at the real scenario directory under `packages/core/openexecutive/evals/_scenarios/`",
+        "The response passes `--scenarios` explicitly and does not claim the runner default fixes it, because that default only resolves from the `evals/` directory",
+        "The response notes that a missing scenario directory yields zero scenarios instead of an error"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "유닛 테스트가 전부 401로 떨어져. 코드 문제야?",
+      "expected_output": "The skill identifies the environment variable rather than a code defect.",
+      "assertions": [
+        "The response identifies `BACKEND_SHARED_SECRET` present in the shell as the cause",
+        "The response gives the `env -u BACKEND_SHARED_SECRET` form to match CI",
+        "The response does not start debugging application code before clearing the variable"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "중복된 initiative가 너무 많아. consolidate-initiatives --apply 바로 돌릴게.",
+      "expected_output": "The skill requires a dry run first and warns about the write lock.",
+      "assertions": [
+        "The response runs `consolidate-initiatives` without `--apply` first and reviews the proposed clusters",
+        "The response says `--apply` deletes merged rows and takes an immediate SQLite write lock",
+        "The response suggests pausing the API for a large consolidation"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "멀티 에이전트 프레임워크 하나 골라줘. LangGraph랑 CrewAI 중에 뭐가 나아?",
+      "expected_output": "The request routes away from this skill to framework-selection skills.",
+      "assertions": [
+        "The response does not present Open Executive as a general framework choice",
+        "The response routes to `microsoft-agent-framework`, `openai-agents-python`, or `goalflow`",
+        "The response distinguishes a self-hosted application from a framework you build on"
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "openexecutive 스킬 폴더를 새로 추가했어. 카탈로그에서 빠진 게 없는지 확인해줘.",
+      "expected_output": "The response checks every structural discovery surface and both catalog validators.",
+      "assertions": [
+        "The response checks `.agent-skills/skills.json`, `.agent-skills/skills.toon`, `README.md`, `README.ko.md`, `README.es-ES.md`, and `setup-all-skills-prompt.md`",
+        "The response runs `validate_skill.sh`, `validate_catalog_sync.py`, and `validate-catalog-projections.py`",
+        "The response verifies the frontmatter description exactly matches the manifest description and contains no pipe delimiter"
+      ]
+    }
+  ]
+}

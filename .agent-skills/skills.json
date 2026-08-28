@@ -1,7 +1,7 @@
 {
   "version": "2.0.0",
   "generated": "2026-07-30",
-  "skill_count": 217,
+  "skill_count": 218,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -274,6 +274,7 @@
       "microsoft-agent-framework",
       "openai-agents-python",
       "goalflow",
+      "openexecutive",
       "article-prompts-to-skills",
       "skill-standardization",
       "upskill",
@@ -602,7 +603,8 @@
       "agent-frameworks": [
         "microsoft-agent-framework",
         "openai-agents-python",
-        "goalflow"
+        "goalflow",
+        "openexecutive"
       ],
       "skill-authoring": [
         "article-prompts-to-skills",
@@ -5176,6 +5178,43 @@
       "keyword": "goalflow",
       "version": "1.0",
       "source": "https://github.com/wanmol/goal-flow"
+    },
+    {
+      "name": "openexecutive",
+      "description": "Operate SenteLabsAI/OpenExecutive, the Apache-2.0 self-hosted virtual executive team that answers business questions through one Executive persona backed by eight specialist Claude agents over FastAPI, Next.js, ChromaDB, and SQLite. Route one request to one mode: fit-check the project; preflight Python 3.11, uv, and Node 22; choose an Anthropic, OpenRouter, or local model provider; run it with `make dev` or Docker; control paid spend and Anthropic prompt caching; connect Slack, Discord, Telegram, Google Chat, or Gmail without sending unwanted messages; operate fixtures, the single-instance scheduler, and Fly.io deploys; or contribute an agent with tests and evals. Use when a user wants to run, configure, extend, or debug Open Executive. Triggers on: openexecutive, Open Executive, SenteLabs, virtual executive team, virtual CFO or CSO agent, consult_specialist, openexec-api, episodic memory executive, fixtures reset, single-instance scheduler.",
+      "category": "ai-agents",
+      "subcategory": "agent-frameworks",
+      "interface": "workflow",
+      "path": "openexecutive/SKILL.md",
+      "tags": [
+        "openexecutive",
+        "sentelabs",
+        "multi-agent",
+        "virtual-executive",
+        "anthropic-claude",
+        "fastapi",
+        "nextjs",
+        "chromadb",
+        "rag",
+        "self-hosted"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "openexecutive",
+      "version": "1.0",
+      "source": "https://github.com/SenteLabsAI/OpenExecutive"
     },
     {
       "name": "article-prompts-to-skills",

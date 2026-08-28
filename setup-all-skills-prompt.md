@@ -624,6 +624,50 @@ remote. Upstream's own checklist warns that untracking `.env` does not remove it
 history; the published repo is already scrubbed, but internal forks and clones predating the
 scrub still carry live credentials that must be rotated, not merely scrubbed.
 
+### Open Executive virtual executive team (on demand, spends money and messages people)
+
+The `openexecutive` skill installs as routing documents plus a read-only inspector and an
+offline config auditor. Blanket setup must not clone `SenteLabsAI/OpenExecutive`, run
+`uv sync` or `npm install`, start the API or UI, load or reset fixtures, authenticate a
+Google account, or send a single model request. Prepare it only when a task actually needs
+Open Executive:
+
+```bash
+# 1. read-only host and checkout report; provider variables print as set/unset, never values
+bash "$SKILLS_ROOT/openexecutive/scripts/openexecutive.sh" doctor /path/to/OpenExecutive
+
+# 2. operation risk tiers; prints documentation and runs nothing
+bash "$SKILLS_ROOT/openexecutive/scripts/openexecutive.sh" safety
+
+# 3. offline audit of an existing .env; no network request, no secret values printed
+python3 "$SKILLS_ROOT/openexecutive/scripts/audit-config.py" /path/to/OpenExecutive/.env
+
+# 4. only after the user asks to actually run it
+git clone https://github.com/SenteLabsAI/OpenExecutive.git
+cd OpenExecutive && cp .env.example .env    # edit it, then: make dev
+```
+
+Steps 1-3 are safe during installation verification: the shell helper only probes tool
+versions and paths, and the Python auditor is a stdlib-only reader that opens no socket.
+Skip step 4 unless the user selected this workflow. The first run pulls heavy ML
+dependencies and downloads a roughly 90 MB embedding model, and the app refuses to start
+until an Anthropic key, OpenRouter, or a local model backend is configured.
+
+Every chat turn is billable: the Executive fans out to specialists, deep-reasoning models
+handle strategy, finance, legal, and board work, and a background pass extracts episodic
+memory after every response. Verify the search setting explicitly, because `config.py`
+defaults `enable_web_search` to on and bills per search even though `.env.example`
+describes it as off.
+
+Never enable Slack, Discord, Telegram, Google Chat, or Gmail during setup: those channels
+deliver real messages to real people, and the outbound anti-spam guard fails open rather
+than acting as an approval gate. Never call `POST /fixtures/reset`, which irreversibly
+wipes live state and the snapshot, and never run `make stop` casually, since it kills every
+process on ports 8000 and 3000. Run exactly one API machine so the scheduler does not
+double-fire, and keep `packages/core/company/` and `.env` out of Git. See
+`openexecutive/references/operations-and-safety.md` for the full risk tiers and
+`openexecutive/references/setup-and-providers.md` for provider and cost control.
+
 ### Mole macOS maintenance CLI (on demand, deletes files)
 
 The `mole` skill installs as documents plus a read-only helper; it never runs `brew install mole`,
