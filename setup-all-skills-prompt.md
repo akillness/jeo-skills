@@ -668,6 +668,52 @@ double-fire, and keep `packages/core/company/` and `.env` out of Git. See
 `openexecutive/references/operations-and-safety.md` for the full risk tiers and
 `openexecutive/references/setup-and-providers.md` for provider and cost control.
 
+### OpenOcta AIOps desktop and service agent (on demand, can operate production)
+
+The `openocta` skill installs as routing and safety documents plus two offline,
+read-only validators. Blanket setup must not download or execute a DMG, EXE, DEB,
+RPM, or tar package; clone the upstream repository; install Go, npm, or Wails
+dependencies; start the gateway or systemd service; save credentials; enable a model,
+MCP server, Skill, channel, webhook, schedule, or local CLI agent; connect a production
+target; run remediation; or uninstall anything.
+
+```bash
+# 1. validate the local evaluation contract; no model or network calls
+node "$SKILLS_ROOT/openocta/scripts/validate-evals.mjs" --json
+
+# 2. audit an existing pinned checkout without running upstream code or extracting ZIPs
+python3 "$SKILLS_ROOT/openocta/scripts/audit-openocta.py" source \
+  --repo /path/to/openocta \
+  --expect-commit 6b130c72cdc40d8b3bed304d3e6a64345e3d2622 \
+  --format json
+
+# 3. audit an existing config; reports field names and posture, never secret values
+python3 "$SKILLS_ROOT/openocta/scripts/audit-openocta.py" config \
+  --config /path/to/openocta.json --run-mode desktop --format json
+
+# 4. select one asset from release JSON already saved by the caller; downloads nothing
+python3 "$SKILLS_ROOT/openocta/scripts/audit-openocta.py" release \
+  --metadata /path/to/release.json --os darwin --arch arm64 --format json
+```
+
+These commands are safe during installation verification. The source auditor reads only
+Git metadata, targeted text files, and ZIP member names; the config auditor never prints
+credential values or internal endpoints; the release planner makes no network request.
+The audited source pin is v1.0.8 at
+`6b130c72cdc40d8b3bed304d3e6a64345e3d2622`, but the README still calls v1.0.6
+latest and one CLI help string says port 18789 while runtime source uses 18900, so
+re-derive release and behavior claims before acting on a newer version.
+
+Treat a config audit `BLOCKED` result as a stop condition. At v1.0.8 an absent
+`cozeloop` section enables outbound trace export with bundled defaults, while absent
+`localAgents` configuration enables delegation to recognized installed agent CLIs and
+an empty allowlist permits all of them; the schema's `requireApproval` field is not
+enforced by that tool. Explicitly disable both unless approved. Service or LAN exposure
+requires gateway authentication and firewall review, enabled hooks require their own
+token, and live operations require sandbox, command policy, validator, and approval
+queue review. Generic observability design routes to `monitoring-observability`, and
+supplied-log triage routes to `log-analysis`.
+
 ### Mole macOS maintenance CLI (on demand, deletes files)
 
 The `mole` skill installs as documents plus a read-only helper; it never runs `brew install mole`,

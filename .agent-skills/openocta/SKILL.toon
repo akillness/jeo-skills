@@ -1,0 +1,52 @@
+N:openocta
+D:Operate openocta/openocta, the Apache-2.0 desktop and service AIOps agent. Route one request to fit check, verified release install or upgrade, gateway and model configuration, security hardening, Skills and MCP or channel integration, live operation, troubleshooting, or source build. Require explicit review before installers, credentials, external integrations, production remediation, schedules, uninstall, or paid Server use.
+G:openocta open-octa aiops itops sre desktop-agent gateway monitoring knowledge-vault mcp skills channels webhooks digital-employees
+
+U[9]:
+  Decide whether OpenOcta fits an IT operations workflow without installing it
+  Select a platform release from GitHub metadata and verify its checksum
+  Configure desktop or service state, gateway, model provider, and local model
+  Harden sandbox, validator, command policy, approval queue, hooks, and network
+  Author or port an OpenOcta Skill without confusing it with jeo-skills
+  Connect MCP servers, digital employees, Knowledge Vault, channels, and webhooks
+  Gather read-only evidence before a confirmed production remediation
+  Troubleshoot gateway port, config precedence, singleton process, or marketplace drift
+  Test and build the pinned Go, Vite, and Wails source tree
+
+S[9]{n,step,details}:
+  1,Choose one mode,orient release configure harden integrate operate or build; split separate authority changes
+  2,Pin evidence,record origin commit tag operating system architecture run mode and intended target before execution
+  3,Audit offline,use audit-openocta.py for source config or saved release metadata; it never executes upstream code prints values or makes network requests
+  4,Verify distribution,trust GitHub Releases over stale README prose; select one package and the checksums file; review install startup and rollback effects
+  5,Configure safely,keep credential values private; separate desktop and service profiles; source default port is 18900 despite one 18789 help string
+  6,Harden authority,service and LAN exposure require auth and firewall; hooks require a token; enable the approval queue; explicitly disable unapproved CozeLoop export and local CLI delegation; unmatched commands stay ask or deny
+  7,Integrate narrowly,review every Skill MCP server channel webhook schedule target credential network path and license; test one read-only non-production event
+  8,Operate evidence-first,observe gateway and target state before mutation; confirm exact remediation restart termination rollback uninstall send or publish actions
+  9,Verify target-side,check release gateway model security integration service health and rollback at the authoritative system not only the agent transcript
+
+R[16]:
+  Audited at commit 6b130c72cdc40d8b3bed304d3e6a64345e3d2622 tagged v1.0.8 on 2026-08-24
+  README calls v1.0.6 latest and says Go 1.24+ while release metadata says v1.0.8 and go.mod requires Go 1.26.0
+  Runtime source defaults the gateway to port 18900 while one CLI help string says 18789
+  Desktop mode and service mode have different network authentication and process boundaries
+  Linux DEB and RPM post-install scripts enable and start a systemd service
+  Gateway authentication can be omitted upstream but this skill requires it for service or LAN mode
+  Webhook tokens can be omitted upstream but this skill blocks enabled hooks without a token
+  approvalQueue is documented off by default and must be enabled explicitly for live operations
+  Local-first storage does not prevent model provider channel MCP site API or operations egress
+  An absent cozeloop section enables trace export with bundled defaults at v1.0.8; explicitly disable it unless approved
+  Local CLI delegation defaults enabled with no agent allowlist and requireApproval is not enforced by that tool at the audited pin
+  OpenOcta Skills use runtime-specific tool IDs and are not automatically portable from jeo-skills
+  Bundled Skill ZIP files have no embedded license file at the audited pin and must not be redistributed
+  resource.openocta.com and several docs links were unavailable at audit time and must be rechecked
+  Packaged singleton logic can terminate other OpenOcta processes; use the skip override only for bounded debugging
+  Generic monitoring design routes to monitoring-observability and supplied log triage to log-analysis
+
+E[7]{type,command}:
+  Install skill,npx skills add https://github.com/akillness/jeo-skills --skill openocta
+  Audit pinned source,python3 .agent-skills/openocta/scripts/audit-openocta.py source --repo /path/to/openocta --expect-commit 6b130c72cdc40d8b3bed304d3e6a64345e3d2622 --format json
+  Audit config posture,python3 .agent-skills/openocta/scripts/audit-openocta.py config --config /path/to/openocta.json --run-mode service --format json
+  Plan release asset,python3 .agent-skills/openocta/scripts/audit-openocta.py release --metadata /path/to/release.json --os darwin --arch arm64 --format json
+  Check gateway,openocta gateway status --json then openocta gateway health --json
+  Validate evals,node .agent-skills/openocta/scripts/validate-evals.mjs --json
+  Validate skill,bash .agent-skills/skill-standardization/scripts/validate_skill.sh .agent-skills/openocta

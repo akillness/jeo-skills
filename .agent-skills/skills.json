@@ -1,7 +1,7 @@
 {
   "version": "2.0.0",
   "generated": "2026-07-30",
-  "skill_count": 225,
+  "skill_count": 226,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -176,6 +176,7 @@
       "system-environment-setup",
       "log-analysis",
       "monitoring-observability",
+      "openocta",
       "security-best-practices",
       "strix",
       "firebase-cli",
@@ -449,7 +450,8 @@
       ],
       "observability": [
         "log-analysis",
-        "monitoring-observability"
+        "monitoring-observability",
+        "openocta"
       ],
       "security": [
         "security-best-practices",
@@ -2600,6 +2602,46 @@
       "keyword": "monitoring-observability",
       "version": "2.1",
       "source": "akillness/jeo-skills"
+    },
+    {
+      "name": "openocta",
+      "description": "Operate openocta/openocta, the Apache-2.0 desktop and service AIOps agent for natural-language inspection, alert analysis, data queries, remediation, local knowledge, Skills, MCP, channels, and webhooks. Route one request to fit check, release install or upgrade, gateway and model configuration, security hardening, integration, troubleshooting, or source build. Use when the user names OpenOcta, Open Octa, its `openocta` CLI, port 18900, Knowledge Vault, OpenOcta Skills, digital employees, or the openocta/openocta repository. Require confirmation before installer execution, credentials, service or channel activation, marketplace installs, production remediation, or uninstall. Route generic observability design to `monitoring-observability` and raw log triage to `log-analysis`.",
+      "category": "infrastructure",
+      "subcategory": "observability",
+      "interface": "desktop",
+      "path": "openocta/SKILL.md",
+      "tags": [
+        "openocta",
+        "aiops",
+        "itops",
+        "sre",
+        "desktop-agent",
+        "gateway",
+        "monitoring",
+        "knowledge-vault",
+        "mcp",
+        "skills",
+        "channels"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex",
+        "Cursor",
+        "Cline"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "openocta",
+      "version": "1.0",
+      "source": "https://github.com/openocta/openocta"
     },
     {
       "name": "security-best-practices",
