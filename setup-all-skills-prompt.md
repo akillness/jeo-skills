@@ -918,6 +918,26 @@ When the user explicitly names `bam-bam-2/solo-skills`, Solo Skills, its 26-skil
 - Keep outbound messages, publishing, Notion archives, mail, Threads, Discord, KakaoTalk, SSH, desktop control, launchd, persistent agents, paid providers, and credential use in preview or dry-run mode until the exact identity, target, payload, timing, cost, rollback, and validation are confirmed.
 - Route generic agent-team design to `harness` and reusable skill authoring to `skill-standardization` or `write-a-skill`.
 
+### Scientific Agent Skills collection (on demand)
+
+When the user explicitly names `K-Dense-AI/scientific-agent-skills`, Scientific Agent Skills, or asks to inspect, route, install, or refresh one of its upstream scientific sub-skills:
+
+- Load `.agent-skills/scientific-agent-skills/SKILL.md` first. Treat it as a selective audit and routing wrapper, not as approval to vendor or install the complete collection.
+- Pin the real upstream checkout and run `python3 "$SKILLS_ROOT/scientific-agent-skills/scripts/audit-pack.py" doctor --repo /path/to/checkout --expect-commit f6fcafeb1cc8c82eca0160a18bc41c38427b8e0f --format json`. The audited `v2.65.0` snapshot has 163 skill directories; recount at a newer pin.
+- Inspect every selected license. The upstream `docx`, `pdf`, `pptx`, and `xlsx` folders carry Anthropic terms that prohibit copying, derivatives, and redistribution outside the covered services. Never copy, adapt, or install those four through this workflow; use the existing local document skills.
+- Default to one named package, database, method, or integration. Run the read-only `plan` command against the exact destination before any install, and never use `--all` to cross license, context, dependency, and collision boundaries.
+- Keep instruction-file installation separate from package or driver changes, credentials, paid APIs, private or patient data, cloud/GPU jobs, schedulers, laboratory hardware, clinical outputs, and publication. Review and confirm each operation separately.
+- Route general scholarly pipelines to `academic-research`, ordinary web investigation to `deep-research`, figures to `paperbanana`, and scientific LLM benchmark selection to `scientific-llm-benchmarks`.
+
+### ELI5 audience-adaptive explanation (on demand)
+
+`eli5` is prompt-only during normal use and needs no extra runtime during blanket setup:
+
+- Load `.agent-skills/eli5/SKILL.md` when the user says ELI5, asks to explain something to a named age, grade, role, family member, or team, or wants a concept broken down for a specific audience.
+- Use `node "$SKILLS_ROOT/eli5/scripts/validate-evals.mjs"` only to validate the local eval contract. It makes no model calls and writes nothing.
+- Do not run the upstream A/B eval harness during setup. It invokes the Claude CLI repeatedly, spends metered model calls, and writes iteration artifacts beside the runner.
+- Route audit, proof, and verification work to `audit-verify-explain-grade-5`; route tutorials, runbooks, FAQs, and help-center deliverables to `technical-writing`.
+
 ### Drama Skills short-drama suite (on demand)
 
 The `drama-skills` catalog entry installs as routing documents plus a read-only helper. It

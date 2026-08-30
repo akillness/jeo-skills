@@ -1,0 +1,45 @@
+N:eli5
+D:Explain a topic, codebase, document, concept, or error at a named audience's knowledge level and decision context. Calibrate vocabulary depth framing analogy and tone while preserving truth caveats and dignity. Route evidence audits to audit-verify-explain-grade-5 and tutorials or runbooks to technical-writing.
+G:eli5 explain plain-language audience teaching communication analogy simplify manager child parent partner grade
+
+U[8]:
+  Explain a complex concept like the audience is five or at another named age
+  Adapt code error or document explanations for a student manager engineer designer or executive
+  Explain a topic to a parent partner child friend or colleague without condescension
+  Break down jargon into a useful mental model and define essential terms
+  Change depth vocabulary framing and examples without changing source facts
+  Preserve uncertainty and safety boundaries in plain language
+  Route audit verification and measured claims to audit-verify-explain-grade-5
+  Route tutorials FAQs onboarding guides and runbooks to technical-writing
+
+S[7]{n,step,details}:
+  1,Identify audience and purpose,record age grade education role relationship prior knowledge decision and desired depth
+  2,Understand the source,read relevant code documents errors or claims; do not translate an invented mechanism
+  3,Choose the frame,lead with child student technical business design executive or relationship context without stereotyping
+  4,Build four layers,start with what then one analogy then needed mechanism then why it matters to that audience
+  5,Guard the analogy,map objects actions and outcomes; state its limit when a mismatch could create a wrong decision
+  6,Calibrate language,define essential terms remove decorative jargon preserve caveats and never use childish tone as a synonym for simple
+  7,Run the audience check,verify fit truth source attribution analogy depth so-what and route-out boundaries
+
+R[13]:
+  Explicit ELI5 without another audience defaults to age-five style
+  Generic explain without an audience does not automatically become childlike
+  Age role and relationship are calibration hypotheses not proof of knowledge
+  Purpose comes before syntax or implementation detail
+  One accurate analogy is better than several catchy metaphors
+  Analogy is not evidence and must not reverse cause and effect
+  Simple language keeps material caveats uncertainty numbers and attribution
+  Technical audiences get proper terminology trade-offs and edge cases
+  Managers and executives get impact risk options and decisions without invented ROI
+  Never talk down to children adults family members or nontechnical roles
+  Audit or verification requests route to audit-verify-explain-grade-5
+  Tutorials runbooks FAQs and help-center content route to technical-writing
+  Safety-critical explanation does not replace qualified medical legal financial or security ownership
+
+E[6]{type,command}:
+  Validate eval contract,node .agent-skills/eli5/scripts/validate-evals.mjs
+  Default audience,ELI5 what a database index is
+  Manager audience,Explain API rate limiting to my manager
+  Technical audience,Explain eventual consistency to a senior backend engineer
+  Audit route-out,Audit this performance fix and explain the verified result to a fifth grader
+  Documentation route-out,Turn this explanation into an onboarding tutorial with steps

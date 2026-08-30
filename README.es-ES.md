@@ -4,14 +4,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-223-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-225-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![GJC](https://img.shields.io/badge/GJC-gajae--code-181717?style=for-the-badge&logo=github)](https://github.com/akillness/gajae-code)
 [![jeo-code](https://img.shields.io/badge/jeo--code-jeo-181717?style=for-the-badge&logo=github)](https://github.com/akillness/jeo-code)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**223 habilidades categorizadas · instalación selectiva ligera · catálogo TOON compacto · multiplataforma**
+**225 habilidades categorizadas · instalación selectiva ligera · catálogo TOON compacto · multiplataforma**
 
 Una colección curada para flujos de trabajo LLM multi-agente y centrados en especificaciones. Delega una configuración completa con un solo prompt, o instala primero el enrutador `jeo-skill` y añade solo las habilidades de web, infraestructura, juegos, medios, CLI o utilidades que necesites.
 
@@ -76,7 +76,7 @@ El agente ejecuta una **instalación completa por defecto** (di "solo núcleo" o
 
 ### Instalación selectiva ligera (manual / CI)
 
-Instala primero el **enrutador `jeo-skill`**, no las 223 carpetas de habilidades. Proporciona descubrimiento de categoría, subcategoría, interfaz, paquete y relación, manteniendo aplicaciones pesadas, modelos, servidores MCP y tiempos de ejecución bajo demanda.
+Instala primero el **enrutador `jeo-skill`**, no las 225 carpetas de habilidades. Proporciona descubrimiento de categoría, subcategoría, interfaz, paquete y relación, manteniendo aplicaciones pesadas, modelos, servidores MCP y tiempos de ejecución bajo demanda.
 
 ```bash
 # One lightweight skill, shared globally
@@ -124,7 +124,7 @@ video-motion-previs check
 
 ## 📚 Lista de Habilidades
 
-> Manifiesto central: `.agent-skills/skills.json` · 223 habilidades · 10 categorías principales · metadatos de subcategoría/interfaz/relación
+> Manifiesto central: `.agent-skills/skills.json` · 225 habilidades · 10 categorías principales · metadatos de subcategoría/interfaz/relación
 
 ### 🌐 Web (47)
 
@@ -365,14 +365,15 @@ Subcategorías: `code-quality` (10), `testing` (4), `architecture` (3), `documen
 | `technical-writing` |
 | `codebase-search` |
 
-### 🔭 Investigación y Análisis (9)
+### 🔭 Investigación y Análisis (10)
 
-Subcategorías: `academic` (2), `web-research` (2), `data-analysis` (2), `experimentation` (1), `benchmarking` (1), `intelligence` (1)
+Subcategorías: `academic` (3), `web-research` (2), `data-analysis` (2), `experimentation` (1), `benchmarking` (1), `intelligence` (1)
 
 | Skill |
 |---|
 | `academic-research` |
 | `research-paper-writing` |
+| `scientific-agent-skills` |
 | `deep-research` |
 | `heretic` |
 | `data-analysis` |
@@ -394,9 +395,9 @@ Subcategorías: `marketing` (3), `support` (2), `publishing` (1)
 | `customer-support-verification` |
 | `yuwen-publish-precheck` |
 
-### 🔧 Utilidades (18)
+### 🔧 Utilidades (19)
 
-Subcategorías: `knowledge` (6), `files` (2), `git` (3), `workspace` (1), `project-management` (4), `productivity` (2), `general` (0)
+Subcategorías: `knowledge` (6), `files` (2), `git` (3), `workspace` (1), `project-management` (4), `productivity` (2), `general` (1)
 
 | Skill |
 |---|
@@ -418,6 +419,7 @@ Subcategorías: `knowledge` (6), `files` (2), `git` (3), `workspace` (1), `proje
 | `google-workspace` |
 | `watermarks-remover` |
 | `solo-skills` |
+| `eli5` |
 
 ---
 
@@ -677,7 +679,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 
 ```text
 .
-├── .agent-skills/          ← 223 skill folders (SKILL.md + optional support files)
+├── .agent-skills/          ← 225 skill folders (SKILL.md + optional support files)
 ├── docs/                   ← detailed guides (bmad, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
@@ -746,6 +748,8 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 | `autoresearch` | Andrej Karpathy methodology | — |
 | `research-paper-writing` | [Master-cai/Research-Paper-Writing-Skills](https://github.com/Master-cai/Research-Paper-Writing-Skills) | — |
 | `academic-research` | [Imbad0202/academic-research-skills](https://github.com/Imbad0202/academic-research-skills) | CC-BY-NC-4.0 |
+| `scientific-agent-skills` | [K-Dense-AI/scientific-agent-skills](https://github.com/K-Dense-AI/scientific-agent-skills) | Wrapper MIT; los términos upstream varían por habilidad |
+| `eli5` | [DreambigOu/ELI5](https://github.com/DreambigOu/ELI5) | MIT |
 | `open-code-review` | [alibaba/open-code-review](https://github.com/alibaba/open-code-review) | Apache-2.0 |
 | Especificación de Habilidades de Agente | [agentskills.io](https://agentskills.io/specification) | — |
 

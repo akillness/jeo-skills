@@ -1,0 +1,122 @@
+{
+  "skill_name": "eli5",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "ELI5 what a database index is.",
+      "expected_output": "An age-five explanation with one concrete lookup analogy, short simple sentences, the core purpose first, and a truthful space or update trade-off.",
+      "assertions": [
+        "The response defaults to an age-five audience",
+        "The response leads with the purpose of finding information faster",
+        "The response uses one concrete child-friendly analogy",
+        "The response avoids unexplained database jargon",
+        "The response does not claim that an index is free or always faster"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Explain a typical web application codebase's structure to my manager.",
+      "expected_output": "A concise manager-facing explanation framed around product areas, team ownership, risk, delivery, and a useful decision rather than source-code syntax.",
+      "assertions": [
+        "The response leads with business or team impact",
+        "The response frames the structure around ownership, risk, timeline, or capacity",
+        "The response avoids code blocks and unnecessary syntax",
+        "The response ends with a decision, recommendation, or practical implication",
+        "The response does not treat the manager as unintelligent"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Break down how Git merge conflicts work for a fifth grader.",
+      "expected_output": "A sequential fifth-grade explanation using a shared school-project or document analogy, defining any essential Git term and explaining how a person chooses the final version.",
+      "assertions": [
+        "The response uses a relatable fifth-grade analogy",
+        "The response explains the sequence from two edits to a conflict to a human choice",
+        "The response defines or avoids advanced Git terms",
+        "The response is not babyish",
+        "The response does not imply Git can always choose the correct content automatically"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Explain eventual consistency to a senior backend engineer.",
+      "expected_output": "A concise expert explanation using correct distributed-systems terminology, boundaries, trade-offs, failure cases, and comparisons rather than a child-oriented analogy.",
+      "assertions": [
+        "The response uses correct technical terminology",
+        "The response distinguishes convergence from immediate consistency",
+        "The response discusses relevant trade-offs or failure modes",
+        "The response does not waste space on elementary programming background",
+        "Any analogy is a technical comparison and not the center of the answer"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Explain passkeys to my mom without making her feel talked down to.",
+      "expected_output": "A respectful, practical explanation of passkeys using familiar device and sign-in behavior, with clear benefits, recovery limits, and no age-based condescension.",
+      "assertions": [
+        "The tone is warm and respectful",
+        "The response explains what changes during sign-in before technical mechanism",
+        "The response uses familiar device behavior without assuming low intelligence",
+        "The response preserves a meaningful recovery or device-access caveat",
+        "The response avoids forced slang or childish language"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Dumb this down: why did our API return 429?",
+      "expected_output": "A plain explanation that the service received too many requests in a time window, gives one simple traffic or queue analogy, and avoids echoing a demeaning frame.",
+      "assertions": [
+        "The response explains the rate-limit cause directly",
+        "The response uses at most one useful analogy",
+        "The response defines 429 in plain language",
+        "The response does not call the audience dumb",
+        "The response distinguishes the explanation from a verified root-cause audit if evidence is missing"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Audit this performance fix, prove it is faster, and then explain the verified result to a fifth grader.",
+      "expected_output": "A route-out to audit-verify-explain-grade-5 for evidence and measurement, followed by ELI5 audience adaptation only after the result is verified.",
+      "assertions": [
+        "The response routes the audit and proof work to audit-verify-explain-grade-5",
+        "The response does not invent benchmark evidence",
+        "The response separates verification from audience adaptation",
+        "The response uses ELI5 only for the final verified explanation"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "Turn this concept into a full onboarding tutorial with screenshots, numbered steps, and troubleshooting.",
+      "expected_output": "A route-out to technical-writing because the requested deliverable is a tutorial and runbook rather than a standalone audience-adaptive explanation.",
+      "assertions": [
+        "The response routes the deliverable to technical-writing",
+        "The response does not absorb screenshot production and troubleshooting into ELI5",
+        "The response can offer a plain-language concept summary as input to the tutorial"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "Explain this treatment option to my father in simple words and tell him which one to choose.",
+      "expected_output": "A respectful plain-language explanation that preserves risks and uncertainty while refusing to choose treatment or replace the clinician.",
+      "assertions": [
+        "The response explains provided facts in plain language",
+        "The response preserves material risks and uncertainty",
+        "The response does not choose or prescribe treatment",
+        "The response keeps the qualified clinician as decision owner",
+        "The response protects sensitive health information"
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "Explain this architecture to a designer who needs to improve the empty state.",
+      "expected_output": "A designer-facing explanation connecting system state to user-visible flow, feedback, accessibility, and edge cases without irrelevant backend detail.",
+      "assertions": [
+        "The response leads with the user-visible consequence",
+        "The response explains which system states map to the empty state",
+        "The response includes interaction feedback or accessibility implications",
+        "The response omits backend details that do not change the design decision",
+        "The response ends with the design decision or questions that matter"
+      ]
+    }
+  ]
+}

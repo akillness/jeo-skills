@@ -1,7 +1,7 @@
 {
   "version": "2.0.0",
   "generated": "2026-07-30",
-  "skill_count": 223,
+  "skill_count": 225,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -327,6 +327,7 @@
     "research": [
       "academic-research",
       "research-paper-writing",
+      "scientific-agent-skills",
       "deep-research",
       "heretic",
       "data-analysis",
@@ -361,7 +362,8 @@
       "task-planning",
       "google-workspace",
       "watermarks-remover",
-      "solo-skills"
+      "solo-skills",
+      "eli5"
     ]
   },
   "subcategories": {
@@ -686,7 +688,8 @@
     "research": {
       "academic": [
         "academic-research",
-        "research-paper-writing"
+        "research-paper-writing",
+        "scientific-agent-skills"
       ],
       "web-research": [
         "deep-research",
@@ -751,7 +754,9 @@
         "google-workspace",
         "solo-skills"
       ],
-      "general": []
+      "general": [
+        "eli5"
+      ]
     }
   },
   "bundles": {
@@ -6521,6 +6526,45 @@
       "source": "akillness/jeo-skills"
     },
     {
+      "name": "scientific-agent-skills",
+      "description": "Audit, inventory, route, selectively install, and safely refresh the K-Dense-AI/scientific-agent-skills collection for scientific packages, databases, lab integrations, research methods, and publication workflows. Use when the user names Scientific Agent Skills, K-Dense scientific skills, or that repository; needs the correct upstream sub-skill; wants a pinned subset installed or refreshed; or needs provenance, license, collision, and security review before adoption. Inspect the real skill tree and each selected license. Never wholesale-vendor the pack, and do not copy or adapt its proprietary Anthropic-derived docx, pdf, pptx, or xlsx folders. Require separate approval before dependency installation, credential use, paid APIs, cloud jobs, lab hardware, clinical outputs, or publication. Route ordinary paper pipelines to `academic-research`, general web research to `deep-research`, figures to `paperbanana`, and scientific LLM evaluation to `scientific-llm-benchmarks`.",
+      "category": "research",
+      "subcategory": "academic",
+      "interface": "workflow",
+      "path": "scientific-agent-skills/SKILL.md",
+      "tags": [
+        "scientific-agent-skills",
+        "k-dense",
+        "science",
+        "research",
+        "agent-skills",
+        "skill-pack",
+        "bioinformatics",
+        "cheminformatics",
+        "laboratory",
+        "selective-install"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex",
+        "Cursor",
+        "Cline"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "scientific-agent-skills",
+      "version": "1.0",
+      "source": "https://github.com/K-Dense-AI/scientific-agent-skills"
+    },
+    {
       "name": "deep-research",
       "description": "Routing front door for a structured, human-in-the-loop deep-research workflow (Weizhena/Deep-Research-skills) \u2014 turn a topic into an extensible outline, fan out parallel web-search agents to investigate each item into validated JSON, then render a complete markdown report. One skill, 4 reference pipelines: outline (research / add-items / add-fields), deep (parallel per-item investigation + field-coverage validation), report (TOC + per-field markdown), web-search (research agent + 5 routed source modules). Plugin: npx skills add https://github.com/akillness/jeo-skills --skill deep-research",
       "category": "research",
@@ -8159,6 +8203,41 @@
       "keyword": "solo-skills",
       "version": "1.0",
       "source": "https://github.com/bam-bam-2/solo-skills"
+    },
+    {
+      "name": "eli5",
+      "description": "Explain a topic, codebase, document, concept, or error at a specific audience's knowledge level and decision context. Use for ELI5, explain like I'm five, explain this to my manager, parent, child, partner, or team, break it down, dumb it down, make it understandable, or simplify it for a named age, grade, education level, job role, or relationship. This skill owns pure audience-adaptive explanation. Route requests that first require auditing or verifying a claim, change, fix, or test result to `audit-verify-explain-grade-5`; route tutorials, runbooks, and help-center content to `technical-writing`.",
+      "category": "utilities",
+      "subcategory": "general",
+      "interface": "workflow",
+      "path": "eli5/SKILL.md",
+      "tags": [
+        "eli5",
+        "explain",
+        "plain-language",
+        "audience",
+        "teaching",
+        "communication",
+        "analogy",
+        "simplify"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex",
+        "Cursor",
+        "Cline"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "eli5",
+      "version": "1.0",
+      "source": "https://github.com/DreambigOu/ELI5"
     },
     {
       "name": "multiplayer-game-architecture",

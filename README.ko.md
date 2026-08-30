@@ -2,14 +2,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-223-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-225-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![GJC](https://img.shields.io/badge/GJC-gajae--code-181717?style=for-the-badge&logo=github)](https://github.com/akillness/gajae-code)
 [![jeo-code](https://img.shields.io/badge/jeo--code-jeo-181717?style=for-the-badge&logo=github)](https://github.com/akillness/jeo-code)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**카테고리형 스킬 223개 · 경량 선택 설치 · 압축 TOON 카탈로그 · 멀티플랫폼**
+**카테고리형 스킬 225개 · 경량 선택 설치 · 압축 TOON 카탈로그 · 멀티플랫폼**
 
 스펙 우선 멀티 에이전트 LLM 워크플로우 컬렉션입니다. 프롬프트 하나로 전체 설정을
 위임하거나, `jeo-skill` 라우터부터 설치해 필요한 웹, 인프라, 게임, 미디어, CLI,
@@ -79,7 +79,7 @@ curl -s https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-sk
 
 ### 경량 선택 설치(수동 / CI)
 
-223개 스킬 폴더 전체가 아니라 **`jeo-skill` 라우터부터 설치**합니다. 카테고리,
+225개 스킬 폴더 전체가 아니라 **`jeo-skill` 라우터부터 설치**합니다. 카테고리,
 하위 분류, 인터페이스, 번들, 연관 스킬을 탐색할 수 있으며 앱·모델·MCP 서버·런타임은
 실제 선택된 작업에서만 온디맨드로 설치합니다.
 
@@ -132,7 +132,7 @@ video-motion-previs check
 
 ## 📚 스킬 목록
 
-> 중앙 매니페스트: `.agent-skills/skills.json` · 223개 스킬 · 10개 기본 카테고리 · 하위 카테고리/인터페이스/관계 그룹 지원
+> 중앙 매니페스트: `.agent-skills/skills.json` · 225개 스킬 · 10개 기본 카테고리 · 하위 카테고리/인터페이스/관계 그룹 지원
 
 ### 🌐 웹 (47개)
 
@@ -373,14 +373,15 @@ video-motion-previs check
 | `technical-writing` |
 | `codebase-search` |
 
-### 🔭 연구 및 분석 (9개)
+### 🔭 연구 및 분석 (10개)
 
-하위 분류: `academic` (2), `web-research` (2), `data-analysis` (2), `experimentation` (1), `benchmarking` (1), `intelligence` (1)
+하위 분류: `academic` (3), `web-research` (2), `data-analysis` (2), `experimentation` (1), `benchmarking` (1), `intelligence` (1)
 
 | Skill |
 |---|
 | `academic-research` |
 | `research-paper-writing` |
+| `scientific-agent-skills` |
 | `deep-research` |
 | `heretic` |
 | `data-analysis` |
@@ -402,9 +403,9 @@ video-motion-previs check
 | `customer-support-verification` |
 | `yuwen-publish-precheck` |
 
-### 🔧 유틸리티 (18개)
+### 🔧 유틸리티 (19개)
 
-하위 분류: `knowledge` (6), `files` (2), `git` (3), `workspace` (1), `project-management` (4), `productivity` (2), `general` (0)
+하위 분류: `knowledge` (6), `files` (2), `git` (3), `workspace` (1), `project-management` (4), `productivity` (2), `general` (1)
 
 | Skill |
 |---|
@@ -426,6 +427,7 @@ video-motion-previs check
 | `google-workspace` |
 | `watermarks-remover` |
 | `solo-skills` |
+| `eli5` |
 
 ---
 
@@ -671,7 +673,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 ## 📁 구조
 
 ```text
-├── .agent-skills/          ← 223개 스킬 폴더 (SKILL.md + 선택적 지원 파일)
+├── .agent-skills/          ← 225개 스킬 폴더 (SKILL.md + 선택적 지원 파일)
 ├── docs/                   ← 상세 가이드 (bmad, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
@@ -741,6 +743,8 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 
 | `research-paper-writing` | [Master-cai/Research-Paper-Writing-Skills](https://github.com/Master-cai/Research-Paper-Writing-Skills) | — |
 | `academic-research` | [Imbad0202/academic-research-skills](https://github.com/Imbad0202/academic-research-skills) | CC-BY-NC-4.0 |
+| `scientific-agent-skills` | [K-Dense-AI/scientific-agent-skills](https://github.com/K-Dense-AI/scientific-agent-skills) | MIT 래퍼; 업스트림 스킬별 조건 상이 |
+| `eli5` | [DreambigOu/ELI5](https://github.com/DreambigOu/ELI5) | MIT |
 | `open-code-review` | [alibaba/open-code-review](https://github.com/alibaba/open-code-review) | Apache-2.0 |
 | Agent Skills Spec | [agentskills.io](https://agentskills.io/specification) | — |
 
