@@ -816,6 +816,64 @@ revision, and review source-offer obligations before distributing or serving a m
 version. See `openmontage/references/upstream-and-setup.md` for install and licensing
 boundaries and `openmontage/references/production-contract.md` before a real production.
 
+### Open Generative AI studio (on demand, spends money and installs unsigned binaries)
+
+The `open-generative-ai` skill installs as routing documents plus two read-only helpers.
+Blanket setup must not download or run a DMG, EXE, AppImage, or DEB; clone
+`Anil-matcha/Open-Generative-AI`; run `npm install`, `npm run setup`, or any build; start
+Next.js, Electron, or Docker; enter a MuAPI key; download sd.cpp weights; attach a Wan2GP
+server; or trigger a generation. Inspect only when a task actually chooses this app:
+
+```bash
+# 1. validate the local evaluation contract; no model or network calls
+node "$SKILLS_ROOT/open-generative-ai/scripts/validate-evals.mjs" --json
+
+# 2. audit an existing checkout; runs no npm script and makes no network request
+python3 "$SKILLS_ROOT/open-generative-ai/scripts/audit-ogai.py" source \
+  --repo /path/to/Open-Generative-AI \
+  --expect-commit 5482a777047c0df189eef989ff994d0d7a1d2874 --format json
+
+# 3. count the shipped model catalog instead of trusting README claims
+python3 "$SKILLS_ROOT/open-generative-ai/scripts/audit-ogai.py" models \
+  --repo /path/to/Open-Generative-AI --endpoint nano-banana --format json
+
+# 4. select one asset from release JSON the caller already saved; downloads nothing
+python3 "$SKILLS_ROOT/open-generative-ai/scripts/audit-ogai.py" release \
+  --metadata /path/to/release.json --os darwin --arch arm64 --format json
+```
+
+All four commands are safe during installation verification. The auditor reads Git
+metadata and targeted text files only; it never executes upstream code, builds, downloads,
+launches the app, or prints an API key. `WARN` is expected at the audited pin because
+upstream documentation genuinely disagrees with the tree.
+
+The audited pin is `5482a777047c0df189eef989ff994d0d7a1d2874` (2026-08-29,
+`package.json` version 2.0.0, MIT). Re-derive before quoting anything: the README download
+table still links v1.0.9 while the latest release is v2.0.0, and the catalog defines 354
+model entries against README claims of 200+, 400+, 420+, and a repository description of
+500+.
+
+Never treat this as a free local generator. Every hosted model is a MuAPI call billed to
+the user's own access key, and local inference exists only in the Electron desktop app —
+web and Docker deployments always call `api.muapi.ai`. Because middleware rewrites
+`/api/v1`, `/api/app`, and `/api/workflow` upstream, any reachable deployment is a proxy
+to a paid API and must stay on loopback or behind authentication. The key lives in browser
+`localStorage` under a CSP that allows `unsafe-inline`, so never print, log, or commit it.
+
+Releases are unsigned and unnotarized with no published checksum asset. Clearing macOS
+quarantine with `xattr -cr`, accepting a Windows SmartScreen bypass, or setting
+`kernel.apparmor_restrict_unprivileged_userns=0` each weaken a protection and require
+explicit user approval — prefer the Linux `.deb`, which ships a scoped AppArmor profile.
+Confirm total download size before multi-gigabyte sd.cpp weights; Z-Image is documented to
+hang a base 8 GB Apple Silicon machine, so route that hardware to SD 1.5.
+
+Upstream advertises the absence of content filters. That does not transfer legal
+responsibility to the operator's tooling: the skill covers installing, configuring, and
+debugging the application, and refuses sexual content involving minors, non-consensual
+intimate imagery, deceptive impersonation of real people, and fraud. See
+`open-generative-ai/references/configuration-and-security.md` before any exposure and
+`open-generative-ai/references/local-inference.md` before any weight download.
+
 ### ZeroShot multi-agent execution (on demand)
 
 The `zeroshot` skill installs as routing documents plus two read-only helpers. Blanket

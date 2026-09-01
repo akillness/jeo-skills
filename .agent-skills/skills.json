@@ -1,7 +1,7 @@
 {
   "version": "2.0.0",
   "generated": "2026-07-30",
-  "skill_count": 226,
+  "skill_count": 227,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -238,7 +238,8 @@
       "palmier-pro",
       "openstory",
       "drama-skills",
-      "openmontage"
+      "openmontage",
+      "open-generative-ai"
     ],
     "cli-tools": [
       "soup",
@@ -541,7 +542,8 @@
         "vox-director",
         "palmier-pro",
         "openstory",
-        "openmontage"
+        "openmontage",
+        "open-generative-ai"
       ],
       "motion": [
         "video-motion-previs"
@@ -1051,7 +1053,7 @@
     },
     {
       "name": "react-bits",
-      "description": "Integrate, customize, and contribute to react-bits (github.com/DavidHDev/react-bits) \u2014 the largest and most creative library of animated React components. It covers Vite, Tailwind CSS v4, Three.js/Fiber, GSAP, and Framer Motion integrations. Use when the user asks about react-bits, animated React components, jsrepo registry, or contributing new animated components to the react-bits repository.",
+      "description": "Integrate, customize, and contribute to react-bits (github.com/DavidHDev/react-bits) — the largest and most creative library of animated React components. It covers Vite, Tailwind CSS v4, Three.js/Fiber, GSAP, and Framer Motion integrations. Use when the user asks about react-bits, animated React components, jsrepo registry, or contributing new animated components to the react-bits repository.",
       "category": "web",
       "subcategory": "frontend",
       "interface": "library",
@@ -1208,7 +1210,7 @@
     },
     {
       "name": "astryx",
-      "description": "Build fully customizable, agent-ready design systems with Astryx \u2014 Meta's production design system now open source. Ships 150+ React components built on StyleX with zero styling lock-in, component swizzling, brand theming, dark mode, and CLI tooling. Use when building component libraries, design systems, UI applications, design tokens, or when teams need consistent accessible components that AI agents can understand and extend. Triggers on: astryx, design system, component library, design tokens, react components, accessible components, astryx design, stylesheets, theme customization, component composition.",
+      "description": "Build fully customizable, agent-ready design systems with Astryx — Meta's production design system now open source. Ships 150+ React components built on StyleX with zero styling lock-in, component swizzling, brand theming, dark mode, and CLI tooling. Use when building component libraries, design systems, UI applications, design tokens, or when teams need consistent accessible components that AI agents can understand and extend. Triggers on: astryx, design system, component library, design tokens, react components, accessible components, astryx design, stylesheets, theme customization, component composition.",
       "category": "web",
       "subcategory": "design",
       "interface": "cli",
@@ -1373,7 +1375,7 @@
     },
     {
       "name": "devup-ui",
-      "description": "[devup-ui] Routing-first front door for Devup UI \u2014 a zero-runtime CSS-in-JS library whose Rust + WebAssembly preprocessor extracts every style at build time, so no styling JavaScript ships at runtime. Use to adopt/integrate Devup UI, wire the build-time plugin into Next.js/Vite/Rsbuild/Webpack/Bun, write styles with Box/css props or the styled-components-compatible styled() API, set up type-safe theming with devup.json, or migrate off styled-components/Emotion/Tailwind/Panda/vanilla-extract to zero runtime.",
+      "description": "[devup-ui] Routing-first front door for Devup UI — a zero-runtime CSS-in-JS library whose Rust + WebAssembly preprocessor extracts every style at build time, so no styling JavaScript ships at runtime. Use to adopt/integrate Devup UI, wire the build-time plugin into Next.js/Vite/Rsbuild/Webpack/Bun, write styles with Box/css props or the styled-components-compatible styled() API, set up type-safe theming with devup.json, or migrate off styled-components/Emotion/Tailwind/Panda/vanilla-extract to zero runtime.",
       "category": "web",
       "subcategory": "design",
       "interface": "library",
@@ -1435,7 +1437,7 @@
     },
     {
       "name": "lazyweb",
-      "description": "Lazyweb is the design-evidence skill for AI coding agents. Use it when designing, critiquing, or changing product UI \u2014 it provides real app screenshots, competitor references, best practices, quick examples, creative cross-category ideas, paywall optimization guidance, and mobile growth + monetization A/B test context. Routes to the right Lazyweb mode (design workflow, quick search, update, flowchart, or A/B test research) using MCP tools and the Lazyweb server at https://www.lazyweb.com/mcp. Use before designing any screen when you need design evidence instead of training-data vibes.",
+      "description": "Lazyweb is the design-evidence skill for AI coding agents. Use it when designing, critiquing, or changing product UI — it provides real app screenshots, competitor references, best practices, quick examples, creative cross-category ideas, paywall optimization guidance, and mobile growth + monetization A/B test context. Routes to the right Lazyweb mode (design workflow, quick search, update, flowchart, or A/B test research) using MCP tools and the Lazyweb server at https://www.lazyweb.com/mcp. Use before designing any screen when you need design evidence instead of training-data vibes.",
       "category": "web",
       "subcategory": "design",
       "interface": "mcp",
@@ -1473,7 +1475,7 @@
     },
     {
       "name": "responsive-design",
-      "description": "Routing-first responsive layout strategy and verification for web interfaces. Use when the main job is classifying whether the failure is page-shell adaptation, reusable component/container behavior, dense-data or toolbar pressure, responsive media, or reflow verification \u2014 then turning vague \u201cbreaks on mobile\u201d requests into one concrete strategy packet. Route component API design and system-wide breakpoint/token governance to `design-system`, and accessibility remediation plus broad UI audit work to `web-accessibility`.",
+      "description": "Routing-first responsive layout strategy and verification for web interfaces. Use when the main job is classifying whether the failure is page-shell adaptation, reusable component/container behavior, dense-data or toolbar pressure, responsive media, or reflow verification — then turning vague “breaks on mobile” requests into one concrete strategy packet. Route component API design and system-wide breakpoint/token governance to `design-system`, and accessibility remediation plus broad UI audit work to `web-accessibility`.",
       "category": "web",
       "subcategory": "design",
       "interface": "workflow",
@@ -1546,7 +1548,7 @@
     },
     {
       "name": "web-design",
-      "description": "Route web design, motion, WebGL, and visual-styling requests into the narrowest matching sub-skill of the 79-skill MengTo/Skills web-design family \u2014 Style/Design-System Packs, Full-Site Quality & Direction, Motion & Scroll Systems, WebGL/3D Backgrounds & Shaders, Library Embeds & Integrations, Component & State Effects, and CSS Technique Primitives. Use when picking and fetching the right visual recipe for a marketing site, landing page, portfolio, or dashboard shell, then combining layers in direction \u2192 layout \u2192 background \u2192 motion \u2192 component-state \u2192 polish order. Triggers on: web design, landing page, awwwards, GSAP, Lenis, scroll animation, WebGL background, shader, glass UI, dark mode design system, editorial layout, cursor trail, progressive blur, gradient border, three.js background, vanta, globe.gl, unicorn studio, marketing site polish.",
+      "description": "Route web design, motion, WebGL, and visual-styling requests into the narrowest matching sub-skill of the 79-skill MengTo/Skills web-design family — Style/Design-System Packs, Full-Site Quality & Direction, Motion & Scroll Systems, WebGL/3D Backgrounds & Shaders, Library Embeds & Integrations, Component & State Effects, and CSS Technique Primitives. Use when picking and fetching the right visual recipe for a marketing site, landing page, portfolio, or dashboard shell, then combining layers in direction → layout → background → motion → component-state → polish order. Triggers on: web design, landing page, awwwards, GSAP, Lenis, scroll animation, WebGL background, shader, glass UI, dark mode design system, editorial layout, cursor trail, progressive blur, gradient border, three.js background, vanta, globe.gl, unicorn studio, marketing site polish.",
       "category": "web",
       "subcategory": "design",
       "interface": "library",
@@ -1773,7 +1775,7 @@
     },
     {
       "name": "typesense",
-      "description": "Stand up a self-hostable, typo-tolerant search environment with Typesense \u2014 the open-source Algolia / ElasticSearch alternative (single C++ binary, <50ms instant search, no runtime deps). One routing-first skill: pick a server mode (binary download, official Docker image, or managed Typesense Cloud), install an API client (Python/JS/PHP/Ruby official; Go/Dart/C# community), design a collection schema, index documents, and run searches with typo tolerance, faceting/filtering, geo-search, sorting, grouping, synonyms, curation, scoped API keys, and federated multi-search \u2014 then wire an InstantSearch.js UI and a Raft-based HA cluster for production. Use when the user wants to build or operate an installable search backend, add site/app/product search, or migrate off Algolia/Elasticsearch. Triggers on: typesense, search engine, typo-tolerant search, algolia alternative, elasticsearch alternative, instantsearch, faceted search, geo search, vector search, self-hosted search, site search, product search.",
+      "description": "Stand up a self-hostable, typo-tolerant search environment with Typesense — the open-source Algolia / ElasticSearch alternative (single C++ binary, <50ms instant search, no runtime deps). One routing-first skill: pick a server mode (binary download, official Docker image, or managed Typesense Cloud), install an API client (Python/JS/PHP/Ruby official; Go/Dart/C# community), design a collection schema, index documents, and run searches with typo tolerance, faceting/filtering, geo-search, sorting, grouping, synonyms, curation, scoped API keys, and federated multi-search — then wire an InstantSearch.js UI and a Raft-based HA cluster for production. Use when the user wants to build or operate an installable search backend, add site/app/product search, or migrate off Algolia/Elasticsearch. Triggers on: typesense, search engine, typo-tolerant search, algolia alternative, elasticsearch alternative, instantsearch, faceted search, geo search, vector search, self-hosted search, site search, product search.",
       "category": "web",
       "subcategory": "data",
       "interface": "workflow",
@@ -1885,7 +1887,7 @@
     },
     {
       "name": "playwriter",
-      "description": "Reuse a running Chrome session for browser automation via Playwriter CLI + MCP. Use when the task depends on the browser the user already has open \u2014 existing logins, cookies, extensions, passkey-friendly flows, or live-tab continuity. Route repeatable fresh-browser or CI-style checks to `browser-harness` instead.",
+      "description": "Reuse a running Chrome session for browser automation via Playwriter CLI + MCP. Use when the task depends on the browser the user already has open — existing logins, cookies, extensions, passkey-friendly flows, or live-tab continuity. Route repeatable fresh-browser or CI-style checks to `browser-harness` instead.",
       "category": "web",
       "subcategory": "testing",
       "interface": "cli",
@@ -1914,7 +1916,7 @@
     },
     {
       "name": "web-accessibility",
-      "description": "Routing-first skill for web accessibility remediation and verification. Use when the main job is classifying which accessibility surface is failing \u2014 semantics, keyboard/focus, labels/announcements, visual perception/reflow, media alternatives, or routed-app navigation feedback \u2014 and turning vague audit, WCAG, axe/Lighthouse, or \"make this accessible\" requests into one concrete remediation packet. Broad UI critique for hierarchy, polish, and launch readiness belongs here too. Route component API architecture and system governance to `design-system`, and responsive layout strategy to `responsive-design`.",
+      "description": "Routing-first skill for web accessibility remediation and verification. Use when the main job is classifying which accessibility surface is failing — semantics, keyboard/focus, labels/announcements, visual perception/reflow, media alternatives, or routed-app navigation feedback — and turning vague audit, WCAG, axe/Lighthouse, or \"make this accessible\" requests into one concrete remediation packet. Broad UI critique for hierarchy, polish, and launch readiness belongs here too. Route component API architecture and system governance to `design-system`, and responsive layout strategy to `responsive-design`.",
       "category": "web",
       "subcategory": "accessibility",
       "interface": "workflow",
@@ -2272,7 +2274,7 @@
     },
     {
       "name": "agentation",
-      "description": "Exact rendered-UI feedback router \u2192 choose copy-paste review, watch-loop sync, self-driving critique, or platform setup. MCP: npx add-mcp \"npx -y agentation-mcp server\"",
+      "description": "Exact rendered-UI feedback router → choose copy-paste review, watch-loop sync, self-driving critique, or platform setup. MCP: npx add-mcp \"npx -y agentation-mcp server\"",
       "category": "web",
       "subcategory": "capture",
       "interface": "mcp",
@@ -2342,7 +2344,7 @@
     },
     {
       "name": "slides-grab",
-      "description": "Generate, visually edit, and export beautiful HTML/CSS presentation decks with agents using slides-grab (NomaDamas, MIT) \u2014 the open-source Claude Design alternative and best harness + editor + linter for slides in Claude Code / Codex. One routing-first skill across Plan (agent drafts an outline), Design (each slide is a self-contained slide-XX.html), Edit (a pure-JS browser editor where you drag a bbox over any region and ask the agent to rewrite just that area, or hand-tweak text/size/bold), and Export (capture-or-print PDF, per-slide PNG incl. Instagram 1:1 card-news, plus experimental/unstable PPTX and Figma-importable PPTX). Picks an install path (npm package + npx skills add, or clone), a deck workspace (--slides-dir, multi-deck decks/<name>/), one of 35 bundled design styles, and the supported asset flow (local ./assets/<file> only \u2014 image via god-tibo-imagen/codex/nano-banana, fetch-video via yt-dlp, tldraw .tldr\u2192SVG), validating with slides-grab validate before any export.",
+      "description": "Generate, visually edit, and export beautiful HTML/CSS presentation decks with agents using slides-grab (NomaDamas, MIT) — the open-source Claude Design alternative and best harness + editor + linter for slides in Claude Code / Codex. One routing-first skill across Plan (agent drafts an outline), Design (each slide is a self-contained slide-XX.html), Edit (a pure-JS browser editor where you drag a bbox over any region and ask the agent to rewrite just that area, or hand-tweak text/size/bold), and Export (capture-or-print PDF, per-slide PNG incl. Instagram 1:1 card-news, plus experimental/unstable PPTX and Figma-importable PPTX). Picks an install path (npm package + npx skills add, or clone), a deck workspace (--slides-dir, multi-deck decks/<name>/), one of 35 bundled design styles, and the supported asset flow (local ./assets/<file> only — image via god-tibo-imagen/codex/nano-banana, fetch-video via yt-dlp, tldraw .tldr→SVG), validating with slides-grab validate before any export.",
       "category": "web",
       "subcategory": "capture",
       "interface": "workflow",
@@ -2443,7 +2445,7 @@
     },
     {
       "name": "vercel-deploy",
-      "description": "Run Vercel-specific deployment operations for linked web/fullstack projects: preview deploys, direct production deploys, staged deploy + promote flows, aliases/domains, environment-variable sync, and rollback response. Use when the request is specifically about operating a project on Vercel after the provider is already chosen \u2014 especially when someone needs a preview URL, stable alias, custom domain, env-scope fix, production cutover, or rollback on Vercel. Triggers on: Vercel deploy, Vercel preview URL, vercel promote, vercel alias, Vercel domain, Vercel env, Vercel rollback, and Vercel CLI deployment. Route provider-neutral release strategy to `deployment-automation`, CI/workflow authoring to `deployment-automation`, and local install/auth/bootstrap work to `system-environment-setup`.",
+      "description": "Run Vercel-specific deployment operations for linked web/fullstack projects: preview deploys, direct production deploys, staged deploy + promote flows, aliases/domains, environment-variable sync, and rollback response. Use when the request is specifically about operating a project on Vercel after the provider is already chosen — especially when someone needs a preview URL, stable alias, custom domain, env-scope fix, production cutover, or rollback on Vercel. Triggers on: Vercel deploy, Vercel preview URL, vercel promote, vercel alias, Vercel domain, Vercel env, Vercel rollback, and Vercel CLI deployment. Route provider-neutral release strategy to `deployment-automation`, CI/workflow authoring to `deployment-automation`, and local install/auth/bootstrap work to `system-environment-setup`.",
       "category": "infrastructure",
       "subcategory": "deployment",
       "interface": "cli",
@@ -2645,7 +2647,7 @@
     },
     {
       "name": "security-best-practices",
-      "description": "Routing-first skill for web/application/API hardening. Use when the main job is classifying which security layer is missing \u2014 browser/perimeter policy, session/cookie/CSRF, abuse controls, validation/unsafe execution, secrets/runtime config, or verification \u2014 and turning vague OWASP/security asks into one concrete hardening brief. Route auth-stack choice to `authentication-setup`, schema work to `database-schema-design`, code-level bug fixing to `debugging` / `code-review`, and environment wiring to `system-environment-setup`.",
+      "description": "Routing-first skill for web/application/API hardening. Use when the main job is classifying which security layer is missing — browser/perimeter policy, session/cookie/CSRF, abuse controls, validation/unsafe execution, secrets/runtime config, or verification — and turning vague OWASP/security asks into one concrete hardening brief. Route auth-stack choice to `authentication-setup`, schema work to `database-schema-design`, code-level bug fixing to `debugging` / `code-review`, and environment wiring to `system-environment-setup`.",
       "category": "infrastructure",
       "subcategory": "security",
       "interface": "workflow",
@@ -2939,7 +2941,7 @@
     },
     {
       "name": "web-game-development",
-      "description": "Route Three.js and browser game-development requests into the narrowest matching sub-skill of the 19-skill MengTo/Skills game-development family \u2014 level authoring, map editing, cameras, enemy systems and AI, monster rigs, action combat, encounter design, inventory, hybrid/Vesperfall assets, VFX, audio feedback, mobile controls, performance tuning, QA, changelogs, and release. Use when a task touches any of those for a playable web game, and fetch the matching sub-skill before doing the work instead of improvising. Route Unity/C# engine work to `unity-gamedev-skill-pack` instead. Triggers on: three.js game, browser game, webgl game, isometric arpg, enemy AI, game camera, game inventory, game VFX, game audio feedback, ship web game, playtest web game, mobile threejs game, game encounter design, monster rig, hybrid game assets.",
+      "description": "Route Three.js and browser game-development requests into the narrowest matching sub-skill of the 19-skill MengTo/Skills game-development family — level authoring, map editing, cameras, enemy systems and AI, monster rigs, action combat, encounter design, inventory, hybrid/Vesperfall assets, VFX, audio feedback, mobile controls, performance tuning, QA, changelogs, and release. Use when a task touches any of those for a playable web game, and fetch the matching sub-skill before doing the work instead of improvising. Route Unity/C# engine work to `unity-gamedev-skill-pack` instead. Triggers on: three.js game, browser game, webgl game, isometric arpg, enemy AI, game camera, game inventory, game VFX, game audio feedback, ship web game, playtest web game, mobile threejs game, game encounter design, monster rig, hybrid game assets.",
       "category": "game",
       "subcategory": "web",
       "interface": "library",
@@ -3031,7 +3033,7 @@
     },
     {
       "name": "open-design-game-ui-handoff",
-      "description": "Build and validate Open Design handoffs from the real Darkbone Archer runtime \u2014 game UI (upgrade-only preservation contracts) AND VFX/skill/RIG design packages. Use whenever Codex must prepare, regenerate, or audit an Open Design handoff; feed an existing Claude Design handoff zip into Open Design; collect current screenshots, animation videos, keyframes, source anchors, assets, responsive states, or preservation boundaries; or prevent a standalone concept from deleting existing identity, motion, interaction, copy, or data that it does not show.",
+      "description": "Build and validate Open Design handoffs from the real Darkbone Archer runtime — game UI (upgrade-only preservation contracts) AND VFX/skill/RIG design packages. Use whenever Codex must prepare, regenerate, or audit an Open Design handoff; feed an existing Claude Design handoff zip into Open Design; collect current screenshots, animation videos, keyframes, source anchors, assets, responsive states, or preservation boundaries; or prevent a standalone concept from deleting existing identity, motion, interaction, copy, or data that it does not show.",
       "category": "game",
       "subcategory": "design-ui",
       "interface": "workflow",
@@ -3144,7 +3146,7 @@
     },
     {
       "name": "unirig",
-      "description": "Automatically rig 3D models with UniRig (VAST-AI-Research, SIGGRAPH'25) \u2014 predict a skeleton, predict skinning weights, and merge the rig back onto the original mesh. Use when the user wants auto-rigging for .obj/.fbx/.glb/.gltf/.dae/.vrm assets, a skeleton or skin weights for a character or creature, a UniRig environment prepared on a CUDA machine, batch rigging of a model directory, or an honest comparison between UniRig, SkinTokens, Tripo, Mixamo, AccuRig, and Blender Rigify. Triggers on: unirig, auto rig, auto-rigging, 3D rigging, skeleton prediction, skinning weights, rig a character, armature generation, rigged glb, rigged fbx, bone weights.",
+      "description": "Automatically rig 3D models with UniRig (VAST-AI-Research, SIGGRAPH'25) — predict a skeleton, predict skinning weights, and merge the rig back onto the original mesh. Use when the user wants auto-rigging for .obj/.fbx/.glb/.gltf/.dae/.vrm assets, a skeleton or skin weights for a character or creature, a UniRig environment prepared on a CUDA machine, batch rigging of a model directory, or an honest comparison between UniRig, SkinTokens, Tripo, Mixamo, AccuRig, and Blender Rigify. Triggers on: unirig, auto rig, auto-rigging, 3D rigging, skeleton prediction, skinning weights, rig a character, armature generation, rigged glb, rigged fbx, bone weights.",
       "category": "game",
       "subcategory": "animation",
       "interface": "cli",
@@ -3235,7 +3237,7 @@
     },
     {
       "name": "perfectpixel",
-      "description": "AI \uc560\ub2c8\uba54\uc774\uc158 \uc2a4\ud504\ub77c\uc774\ud2b8 \uc0dd\uc131. \ud14d\uc2a4\ud2b8 \uc124\uba85 \ud55c \uc904\ub85c \uce90\ub9ad\ud130 + \ub3d9\uc791 \uc560\ub2c8\uba54\uc774\uc158(\uac77\uae30\u00b7\ub2ec\ub9ac\uae30\u00b7\uacf5\uaca9\u00b7\ub9c8\ubc95 \ub4f1 100\uc5ec \uc885) + 8\ubc29\ud5a5 \uc2a4\ud504\ub77c\uc774\ud2b8 \uc138\ud2b8\ub97c \ub9cc\ub4e4\uace0, \uac8c\uc784 \uc5d4\uc9c4\uc6a9 \ubc88\ub4e4(\uc2a4\ud504\ub77c\uc774\ud2b8\uc2dc\ud2b8 \u00b7 manifest.json \u00b7 Aseprite JSON \u00b7 \uc0c1\ud0dc\ubcc4 GIF/APNG \u00b7 \uac1c\ubcc4 \ud504\ub808\uc784 PNG)\ub85c \ub0b4\ubcf4\ub0c5\ub2c8\ub2e4. Use when the user wants to generate game sprites, character animations, sprite sheets, sprite atlases, or 8-direction sprite sets from a text description. Triggers on: perfectpixel, ppgen, sprite generation, character animation, sprite sheet, sprite atlas, 8-direction sprite, god-tibo-imagen sprite, gemini sprite.",
+      "description": "AI 애니메이션 스프라이트 생성. 텍스트 설명 한 줄로 캐릭터 + 동작 애니메이션(걷기·달리기·공격·마법 등 100여 종) + 8방향 스프라이트 세트를 만들고, 게임 엔진용 번들(스프라이트시트 · manifest.json · Aseprite JSON · 상태별 GIF/APNG · 개별 프레임 PNG)로 내보냅니다. Use when the user wants to generate game sprites, character animations, sprite sheets, sprite atlases, or 8-direction sprite sets from a text description. Triggers on: perfectpixel, ppgen, sprite generation, character animation, sprite sheet, sprite atlas, 8-direction sprite, god-tibo-imagen sprite, gemini sprite.",
       "category": "game",
       "subcategory": "sprite-image",
       "interface": "workflow",
@@ -3272,7 +3274,7 @@
     },
     {
       "name": "game-studio-harness",
-      "description": "Five-role game production studio harness: director, numeric-balance designer, revenue-band PM, verification-strict programmer, archetype-rotation QA. Runs the 3-stage operating cycle (concept/presentation/core build \u2192 balance/core-loop/novelty \u2192 ops stability/play impact) behind 8 numeric quality gates with survey-grounded trends, signed designer\u2194PM negotiation records, and QA broadcast discipline. Writes the repository rule file (CLAUDE.md/AGENTS.md) so the contract outlives the session, and keeps one live `_workspace/current/` beside a read-only archive.",
+      "description": "Five-role game production studio harness: director, numeric-balance designer, revenue-band PM, verification-strict programmer, archetype-rotation QA. Runs the 3-stage operating cycle (concept/presentation/core build → balance/core-loop/novelty → ops stability/play impact) behind 8 numeric quality gates with survey-grounded trends, signed designer↔PM negotiation records, and QA broadcast discipline. Writes the repository rule file (CLAUDE.md/AGENTS.md) so the contract outlives the session, and keeps one live `_workspace/current/` beside a read-only archive.",
       "category": "game",
       "subcategory": "tooling",
       "interface": "workflow",
@@ -3501,7 +3503,7 @@
     },
     {
       "name": "game-ci-cd-pipeline",
-      "description": "Turn messy Unity or Unreal build/release automation into one bounded game-pipeline packet after naming the signal tier first: fast branch-gate CI, nightly/package- candidate builds, or release/certification candidates. Use when a game team needs to design or repair GitHub Actions, Unity Build Automation, Jenkins, TeamCity, or similar CI for engine builds \u2014 especially when they mention flaky packaging, cache superstition, giant build-job blobs, slow cook / package cycles, artifact confusion, SDK/signing drift, or manual candidate promotion that should become reproducible. Route one red log first-pass diagnosis to `game-build-log-triage`.",
+      "description": "Turn messy Unity or Unreal build/release automation into one bounded game-pipeline packet after naming the signal tier first: fast branch-gate CI, nightly/package- candidate builds, or release/certification candidates. Use when a game team needs to design or repair GitHub Actions, Unity Build Automation, Jenkins, TeamCity, or similar CI for engine builds — especially when they mention flaky packaging, cache superstition, giant build-job blobs, slow cook / package cycles, artifact confusion, SDK/signing drift, or manual candidate promotion that should become reproducible. Route one red log first-pass diagnosis to `game-build-log-triage`.",
       "category": "game",
       "subcategory": "release",
       "interface": "library",
@@ -3531,7 +3533,7 @@
     },
     {
       "name": "steam-store-launch-ops",
-      "description": "Turn Steam store-page, wishlist, demo, Next Fest, and launch-window ambiguity into one packet-first Steam launch brief. Use when an indie dev, small studio, founder-marketer, or publisher helper needs to decide whether the next move is a page-promise audit, wishlist-signal check, demo-readiness gate, event-timing workback, or launch-ops runbook \u2014 especially when they say \"help my Steam page\", \"wishlists are weak\", \"is our demo ready\", \"should we do Next Fest\", or \"give me a Steam launch checklist\". Route broad non-game GTM work to `marketing-automation` and player-feedback/build-performance issues to the game specialist skills.",
+      "description": "Turn Steam store-page, wishlist, demo, Next Fest, and launch-window ambiguity into one packet-first Steam launch brief. Use when an indie dev, small studio, founder-marketer, or publisher helper needs to decide whether the next move is a page-promise audit, wishlist-signal check, demo-readiness gate, event-timing workback, or launch-ops runbook — especially when they say \"help my Steam page\", \"wishlists are weak\", \"is our demo ready\", \"should we do Next Fest\", or \"give me a Steam launch checklist\". Route broad non-game GTM work to `marketing-automation` and player-feedback/build-performance issues to the game specialist skills.",
       "category": "game",
       "subcategory": "release",
       "interface": "workflow",
@@ -3620,7 +3622,7 @@
     },
     {
       "name": "god-tibo-imagen",
-      "description": "Generate images using Codex's ChatGPT backend with zero production dependencies. Reuses existing local Codex authentication (~/.codex/auth.json) \u2014 no new credentials needed. Supports CLI (gti command), Node.js library, and Python SDK. Accepts text prompts with optional reference images (PNG/JPG/GIF/WebP). Includes dry-run mode and debug output. Triggers on: god-tibo-imagen, gti, image generation, codex image, chatgpt image, ai image, gpt image generation.",
+      "description": "Generate images using Codex's ChatGPT backend with zero production dependencies. Reuses existing local Codex authentication (~/.codex/auth.json) — no new credentials needed. Supports CLI (gti command), Node.js library, and Python SDK. Accepts text prompts with optional reference images (PNG/JPG/GIF/WebP). Includes dry-run mode and debug output. Triggers on: god-tibo-imagen, gti, image generation, codex image, chatgpt image, ai image, gpt image generation.",
       "category": "creative-media",
       "subcategory": "image",
       "interface": "cli",
@@ -3656,7 +3658,7 @@
     },
     {
       "name": "paperbanana",
-      "description": "Route academic-figure work into the lightest workable PaperBanana mode instead of jumping straight to a full multi-agent generation run. Use when the user needs publication-quality methodology diagrams, statistical plots, figure evaluation, polishing an existing figure, batch/sweep generation, or a full-paper figure package from text or PDF. Even if the user does not say \"paperbanana\" \u2014 also triggers on: academic figure, methodology diagram, publication figure, generate diagram from paper, statistical plot from CSV, figure evaluation, polish figure, NeurIPS/ICML figure, arxiv illustration, plan-then-refine diagram pipeline.",
+      "description": "Route academic-figure work into the lightest workable PaperBanana mode instead of jumping straight to a full multi-agent generation run. Use when the user needs publication-quality methodology diagrams, statistical plots, figure evaluation, polishing an existing figure, batch/sweep generation, or a full-paper figure package from text or PDF. Even if the user does not say \"paperbanana\" — also triggers on: academic figure, methodology diagram, publication figure, generate diagram from paper, statistical plot from CSV, figure evaluation, polish figure, NeurIPS/ICML figure, arxiv illustration, plan-then-refine diagram pipeline.",
       "category": "creative-media",
       "subcategory": "image",
       "interface": "cli",
@@ -3775,7 +3777,7 @@
     },
     {
       "name": "opencut",
-      "description": "Work with the OpenCut open-source video editor repo (github.com/OpenCut-app/OpenCut) \u2014 clone/setup, run the web/desktop dev servers, understand the Rust/WASM compositor core, and follow current contribution focus areas. Use when the user asks about OpenCut, the \"open-source CapCut alternative\", opencut-classic, setting up the OpenCut monorepo (moon/proto or Bun/Docker), the OpenCut Rust core, or contributing a PR to OpenCut. Also triggers on \"opencut.app\", \"new.opencut.app\", and \"opencut-app/opencut-classic\".",
+      "description": "Work with the OpenCut open-source video editor repo (github.com/OpenCut-app/OpenCut) — clone/setup, run the web/desktop dev servers, understand the Rust/WASM compositor core, and follow current contribution focus areas. Use when the user asks about OpenCut, the \"open-source CapCut alternative\", opencut-classic, setting up the OpenCut monorepo (moon/proto or Bun/Docker), the OpenCut Rust core, or contributing a PR to OpenCut. Also triggers on \"opencut.app\", \"new.opencut.app\", and \"opencut-app/opencut-classic\".",
       "category": "creative-media",
       "subcategory": "video",
       "interface": "desktop",
@@ -3841,7 +3843,7 @@
     },
     {
       "name": "video-production",
-      "description": "Plan and route programmable or automated video production across code-first, template-first, and hybrid content pipelines. Use when the user needs repeatable video generation, branded short-form content, personalized videos, social clip batches, captioned/localized variants, video APIs, or video creation from data and templates \u2014 even if they only say video production. Triggers on: Remotion, programmatic video, automated video creation, video API, personalized video, batch-create shorts, render videos from code, repurpose content into clips.",
+      "description": "Plan and route programmable or automated video production across code-first, template-first, and hybrid content pipelines. Use when the user needs repeatable video generation, branded short-form content, personalized videos, social clip batches, captioned/localized variants, video APIs, or video creation from data and templates — even if they only say video production. Triggers on: Remotion, programmatic video, automated video creation, video API, personalized video, batch-create shorts, render videos from code, repurpose content into clips.",
       "category": "creative-media",
       "subcategory": "video",
       "interface": "library",
@@ -3873,7 +3875,7 @@
     },
     {
       "name": "video-shotcraft",
-      "description": "\u7528\u955c\u5934\u914d\u65b9\u5361 + \u5df2\u9a8c\u6536\u6a21\u677f + \u4ee3\u7801/\u97f3\u9891\u8d44\u4ea7\u5236\u4f5c\u7535\u5f71\u611f\u4ea7\u54c1\u89c6\u9891\uff08Remotion + \u771f\u5b9e\u9875\u9762\u622a\u56fe + 2.5D \u8fd0\u955c + \u8282\u594f\u5361\u70b9 + \u58f0\u97f3\u8bbe\u8ba1\uff09\u3002 Use when making a cinematic product promo or desktop demo video, naming the Ink Press template, reproducing template video effects, or building single motion-design shots with recipe cards. Triggers on: video-shotcraft, Ink Press template, product video, cinematic promo, shot recipe card, remotion video.",
+      "description": "用镜头配方卡 + 已验收模板 + 代码/音频资产制作电影感产品视频（Remotion + 真实页面截图 + 2.5D 运镜 + 节奏卡点 + 声音设计）。 Use when making a cinematic product promo or desktop demo video, naming the Ink Press template, reproducing template video effects, or building single motion-design shots with recipe cards. Triggers on: video-shotcraft, Ink Press template, product video, cinematic promo, shot recipe card, remotion video.",
       "category": "creative-media",
       "subcategory": "video",
       "interface": "workflow",
@@ -3932,7 +3934,7 @@
     },
     {
       "name": "vox-director",
-      "description": "Turn ONE topic into a finished Vox-style paper-collage explainer / ad video, end to end on the Atlas Cloud API + local ffmpeg \u2014 script, collage keyframes, motion, voice-over, music, captions, all automated. Use this whenever the user wants a \"Vox style\" video, a paper/torn-paper collage animation, a \"motion collage\", a narrated explainer or short ad built from AI-generated collage posters, a scrapbook-style tribute, or wants to turn a topic / product / person into a punchy narrated collage video \u2014 even if they don't say the word \"Vox\". Also use when reproducing Stav Zilber / rom1trs / Higgsfield-style collage ad workflows, or when the user asks for a motion collage or a scrapbook-style tribute. Triggers: \"vox video\", \"collage video\", \"motion collage\", \"paper collage explainer\", \"make a collage ad\", \"turn this topic into a collage video\".",
+      "description": "Turn ONE topic into a finished Vox-style paper-collage explainer / ad video, end to end on the Atlas Cloud API + local ffmpeg — script, collage keyframes, motion, voice-over, music, captions, all automated. Use this whenever the user wants a \"Vox style\" video, a paper/torn-paper collage animation, a \"motion collage\", a narrated explainer or short ad built from AI-generated collage posters, a scrapbook-style tribute, or wants to turn a topic / product / person into a punchy narrated collage video — even if they don't say the word \"Vox\". Also use when reproducing Stav Zilber / rom1trs / Higgsfield-style collage ad workflows, or when the user asks for a motion collage or a scrapbook-style tribute. Triggers: \"vox video\", \"collage video\", \"motion collage\", \"paper collage explainer\", \"make a collage ad\", \"turn this topic into a collage video\".",
       "category": "creative-media",
       "subcategory": "video",
       "interface": "workflow",
@@ -4048,7 +4050,7 @@
     },
     {
       "name": "drawio",
-      "description": "Turn natural-language descriptions into editable `.drawio` diagrams and export them to PNG / SVG / PDF / JPG via the native draw.io desktop CLI, or turn an existing codebase (Python / JS-TS / Go / Rust) into an auto-laid-out structure diagram. Wraps Agents365-ai/drawio-skill: 6 diagram presets (ERD, UML class, sequence, architecture, ML/DL, flowchart), search across 10,000+ official AWS/Azure/GCP/Cisco/K8s/UML/ BPMN shapes, 321 AI/LLM brand logos, vision self-check + auto-fix, and a 5-round iterative refinement loop. No MCP server, no daemon \u2014 runs from a single SKILL.md and the draw.io CLI. Use when the user wants polished, precise, exportable diagrams or wants to visualize code structure. Triggers on: drawio, draw.io, drawio diagram, architecture diagram, ERD, UML diagram, sequence diagram, flowchart, network diagram, visualize codebase, code structure diagram, class hierarchy, export diagram png/svg/pdf, AWS/Azure/GCP icon, draw.io shapes.",
+      "description": "Turn natural-language descriptions into editable `.drawio` diagrams and export them to PNG / SVG / PDF / JPG via the native draw.io desktop CLI, or turn an existing codebase (Python / JS-TS / Go / Rust) into an auto-laid-out structure diagram. Wraps Agents365-ai/drawio-skill: 6 diagram presets (ERD, UML class, sequence, architecture, ML/DL, flowchart), search across 10,000+ official AWS/Azure/GCP/Cisco/K8s/UML/ BPMN shapes, 321 AI/LLM brand logos, vision self-check + auto-fix, and a 5-round iterative refinement loop. No MCP server, no daemon — runs from a single SKILL.md and the draw.io CLI. Use when the user wants polished, precise, exportable diagrams or wants to visualize code structure. Triggers on: drawio, draw.io, drawio diagram, architecture diagram, ERD, UML diagram, sequence diagram, flowchart, network diagram, visualize codebase, code structure diagram, class hierarchy, export diagram png/svg/pdf, AWS/Azure/GCP icon, draw.io shapes.",
       "category": "creative-media",
       "subcategory": "diagram",
       "interface": "cli",
@@ -4091,7 +4093,7 @@
     },
     {
       "name": "open-design",
-      "description": "Route design-generation work into the right Open Design workflow mode \u2014 prototype, deck, document, or media artifact. Use when the user needs local-first UI prototype generation, presentation deck creation, or design-system-aware HTML/PDF/PPTX artifacts via locally-installed coding agents. Supports 72 built-in design systems, 5 visual directions, 93 media prompt templates, and multi-format export. Triggers on: open-design, local design tool, prototype generation, design deck, design artifact, design agent workflow, open design prototype, design system artifact, UI prototype generation.",
+      "description": "Route design-generation work into the right Open Design workflow mode — prototype, deck, document, or media artifact. Use when the user needs local-first UI prototype generation, presentation deck creation, or design-system-aware HTML/PDF/PPTX artifacts via locally-installed coding agents. Supports 72 built-in design systems, 5 visual directions, 93 media prompt templates, and multi-format export. Triggers on: open-design, local design tool, prototype generation, design deck, design artifact, design agent workflow, open design prototype, design system artifact, UI prototype generation.",
       "category": "creative-media",
       "subcategory": "design",
       "interface": "desktop",
@@ -4130,7 +4132,7 @@
     },
     {
       "name": "webtoon-harness",
-      "description": "Run an end-to-end webtoon production harness \u2014 a 27-agent / 4-phase Claude Code agent team that takes a single episode from trend research to a finished vertical-scroll viewer. Use when the user wants to produce a webtoon episode: research popular webtoon trends, write a dialogue-heavy, high-tension, twist-every-episode scenario, render character reference sheets first, render 50+ panels per episode with in-image speech-bubble (Korean dialogue) baking via codex-image, run a generation\u2013validation loop, and assemble a vertical-scroll viewer. Triggers on: webtoon harness, make a webtoon, produce a webtoon episode, webtoon scenario to image, next episode, redraw panel, stronger twist, webtoon trend research. Web data gathering for the trend-research phase routes through the `scrapling` skill. Pure webtoon recommendation/critique is answered directly.",
+      "description": "Run an end-to-end webtoon production harness — a 27-agent / 4-phase Claude Code agent team that takes a single episode from trend research to a finished vertical-scroll viewer. Use when the user wants to produce a webtoon episode: research popular webtoon trends, write a dialogue-heavy, high-tension, twist-every-episode scenario, render character reference sheets first, render 50+ panels per episode with in-image speech-bubble (Korean dialogue) baking via codex-image, run a generation–validation loop, and assemble a vertical-scroll viewer. Triggers on: webtoon harness, make a webtoon, produce a webtoon episode, webtoon scenario to image, next episode, redraw panel, stronger twist, webtoon trend research. Web data gathering for the trend-research phase routes through the `scrapling` skill. Pure webtoon recommendation/critique is answered directly.",
       "category": "creative-media",
       "subcategory": "storytelling",
       "interface": "workflow",
@@ -4229,7 +4231,7 @@
     },
     {
       "name": "cli-anything",
-      "description": "Make any software agent-native with HKUDS CLI-Anything \u2014 four routed modes: install ready-made harnesses via CLI-Hub (cli-hub list/search/info/install/launch), give agents the cli-hub-meta-skill for autonomous discovery, generate a new harness from any codebase/repo via the 7-phase /cli-anything pipeline, or iterate with :refine/:test/:validate; 40+ harnesses, 2,461 tests, Click CLIs with REPL + --json.",
+      "description": "Make any software agent-native with HKUDS CLI-Anything — four routed modes: install ready-made harnesses via CLI-Hub (cli-hub list/search/info/install/launch), give agents the cli-hub-meta-skill for autonomous discovery, generate a new harness from any codebase/repo via the 7-phase /cli-anything pipeline, or iterate with :refine/:test/:validate; 40+ harnesses, 2,461 tests, Click CLIs with REPL + --json.",
       "category": "cli-tools",
       "subcategory": "developer-cli",
       "interface": "cli",
@@ -4326,7 +4328,7 @@
     },
     {
       "name": "pretext",
-      "description": "Fast, accurate, and comprehensive multiline text measurement and layout library for JavaScript/TypeScript \u2014 without DOM reflow. Use when the user needs to calculate paragraph heights, line counts, manual line layouts (text flowing around floated images), or rich text rendering (emoji, CJK, RTL) on DOM, Canvas, or SVG targets. Covers npm install, core API (prepare/layout, prepareWithSegments/layoutWithLines), and options (whiteSpace, wordBreak, letterSpacing). Triggers on: pretext, text measurement, text layout, paragraph height, line layout, text reflow, canvas text measurement, DOM reflow.",
+      "description": "Fast, accurate, and comprehensive multiline text measurement and layout library for JavaScript/TypeScript — without DOM reflow. Use when the user needs to calculate paragraph heights, line counts, manual line layouts (text flowing around floated images), or rich text rendering (emoji, CJK, RTL) on DOM, Canvas, or SVG targets. Covers npm install, core API (prepare/layout, prepareWithSegments/layoutWithLines), and options (whiteSpace, wordBreak, letterSpacing). Triggers on: pretext, text measurement, text layout, paragraph height, line layout, text reflow, canvas text measurement, DOM reflow.",
       "category": "cli-tools",
       "subcategory": "developer-cli",
       "interface": "cli",
@@ -4400,7 +4402,7 @@
     },
     {
       "name": "claudekit",
-      "description": "Claude Code hook library \u2014 pre-built PreToolUse/PostToolUse hooks for common guardrails, auto-formatting, workflow automation",
+      "description": "Claude Code hook library — pre-built PreToolUse/PostToolUse hooks for common guardrails, auto-formatting, workflow automation",
       "category": "cli-tools",
       "subcategory": "ai-cli",
       "interface": "cli",
@@ -4431,7 +4433,7 @@
     },
     {
       "name": "fabric",
-      "description": "Routing-first Fabric operator skill for reusable named AI transforms over stdin, files, transcripts, notes, logs, and cleaned web text. Use when the user wants Fabric patterns, custom pattern packs, shell-pipe composition, or `fabric --serve` workflows \u2014 not generic one-off chat prompting, repo-aware coding, or fully deterministic automation.",
+      "description": "Routing-first Fabric operator skill for reusable named AI transforms over stdin, files, transcripts, notes, logs, and cleaned web text. Use when the user wants Fabric patterns, custom pattern packs, shell-pipe composition, or `fabric --serve` workflows — not generic one-off chat prompting, repo-aware coding, or fully deterministic automation.",
       "category": "cli-tools",
       "subcategory": "ai-cli",
       "interface": "cli",
@@ -4465,7 +4467,7 @@
     },
     {
       "name": "ooo",
-      "description": "Run the Ouroboros specification-first development loop: reduce ambiguity with a Socratic interview grounded in live git data (commits, churn, contributors), freeze an immutable seed/spec, render the execution plan through spec-kit (/speckit.plan \u2192 /speckit.tasks), execute against that contract through cli-anything agent-native CLI harnesses (cli-hub, --json evidence), verify before claiming success, and keep looping until completion is actually verified. Use when the user wants spec-first clarification, git-aware interviews, immutable requirements, drift-aware implementation, harness-driven execution, or a persistent completion loop that should keep going until tests / checks / acceptance criteria pass. Triggers on: ooo, ouroboros, interview, seed, run workflow, evaluate, evolve, ooo ralph, specification first, socratic interview, git-aware interview, ambiguity reduction, execution plan, cli harness execute, persistent completion.",
+      "description": "Run the Ouroboros specification-first development loop: reduce ambiguity with a Socratic interview grounded in live git data (commits, churn, contributors), freeze an immutable seed/spec, render the execution plan through spec-kit (/speckit.plan → /speckit.tasks), execute against that contract through cli-anything agent-native CLI harnesses (cli-hub, --json evidence), verify before claiming success, and keep looping until completion is actually verified. Use when the user wants spec-first clarification, git-aware interviews, immutable requirements, drift-aware implementation, harness-driven execution, or a persistent completion loop that should keep going until tests / checks / acceptance criteria pass. Triggers on: ooo, ouroboros, interview, seed, run workflow, evaluate, evolve, ooo ralph, specification first, socratic interview, git-aware interview, ambiguity reduction, execution plan, cli harness execute, persistent completion.",
       "category": "cli-tools",
       "subcategory": "ai-cli",
       "interface": "cli",
@@ -4593,7 +4595,7 @@
     },
     {
       "name": "zeude",
-      "description": "Enterprise AI adoption platform for Claude Code \u2014 measures team usage via OpenTelemetry, syncs skills/MCP servers/hooks from a central dashboard, and delivers context-aware skill suggestions at prompt time. Solves the Intention-Action Gap: organizations that deploy Zeude see 3x adoption improvement (6% \u2192 18%). Requires Supabase (config) and ClickHouse (analytics). Triggers on: zeude, ai adoption, claude code adoption, enterprise claude, opentelemetry claude, skill sync, team claude management.",
+      "description": "Enterprise AI adoption platform for Claude Code — measures team usage via OpenTelemetry, syncs skills/MCP servers/hooks from a central dashboard, and delivers context-aware skill suggestions at prompt time. Solves the Intention-Action Gap: organizations that deploy Zeude see 3x adoption improvement (6% → 18%). Requires Supabase (config) and ClickHouse (analytics). Triggers on: zeude, ai adoption, claude code adoption, enterprise claude, opentelemetry claude, skill sync, team claude management.",
       "category": "cli-tools",
       "subcategory": "ai-cli",
       "interface": "cli",
@@ -4627,7 +4629,7 @@
     },
     {
       "name": "compresso",
-      "description": "Free offline desktop video/image compression (Tauri+React) \u2014 batch compress, trim/split, convert formats, embed subtitles. Install: brew install --cask codeforreal1/tap/compresso",
+      "description": "Free offline desktop video/image compression (Tauri+React) — batch compress, trim/split, convert formats, embed subtitles. Install: brew install --cask codeforreal1/tap/compresso",
       "category": "cli-tools",
       "subcategory": "media-cli",
       "interface": "cli",
@@ -4666,7 +4668,7 @@
     },
     {
       "name": "codeflow",
-      "description": "Turn any GitHub repo, local folder, PR, or markdown/Obsidian vault into an interactive architecture map with CodeFlow \u2014 a zero-build single index.html browser app (React 18 + D3.js from pinned CDNs) that runs 100% client-side with no backend and no data collection. Pick an input (public repo, private repo with a local token, local files, PR URL, markdown vault), choose a visualization mode (folder/layer/churn/blast), and read the analysis \u2014 dependency graph, blast radius, code ownership, heuristic security scanner, pattern/anti-pattern detection, A\u2013F health score, activity heatmap, PR impact \u2014 then export JSON/Markdown/text/SVG/PDF or wire the self-updating CodeFlow Card SVG onto a README.",
+      "description": "Turn any GitHub repo, local folder, PR, or markdown/Obsidian vault into an interactive architecture map with CodeFlow — a zero-build single index.html browser app (React 18 + D3.js from pinned CDNs) that runs 100% client-side with no backend and no data collection. Pick an input (public repo, private repo with a local token, local files, PR URL, markdown vault), choose a visualization mode (folder/layer/churn/blast), and read the analysis — dependency graph, blast radius, code ownership, heuristic security scanner, pattern/anti-pattern detection, A–F health score, activity heatmap, PR impact — then export JSON/Markdown/text/SVG/PDF or wire the self-updating CodeFlow Card SVG onto a README.",
       "category": "cli-tools",
       "subcategory": "automation-cli",
       "interface": "cli",
@@ -4780,7 +4782,7 @@
     },
     {
       "name": "okf",
-      "description": "Create, validate, and consume Google's Open Knowledge Format (OKF) bundles \u2014 YAML-frontmatter Markdown files with type / title / description / resource / tags / timestamp fields for portable, interoperable AI-agent knowledge sharing. OKF formalizes the LLM-Wiki pattern into a vendor-neutral open specification so any producer can write and any agent can consume without translation. Routes: use `llm-wiki` for raw source capture + vault maintenance, `obsidian` for Obsidian-vault workflows, `graphify` for durable committed graphs, `scrapling` for web-content extraction into OKF docs. Triggers on: okf, open knowledge format, knowledge bundle, okf document, llm wiki standard, knowledge atom, agent context format, okf frontmatter, okf bundle, knowledge interoperability.",
+      "description": "Create, validate, and consume Google's Open Knowledge Format (OKF) bundles — YAML-frontmatter Markdown files with type / title / description / resource / tags / timestamp fields for portable, interoperable AI-agent knowledge sharing. OKF formalizes the LLM-Wiki pattern into a vendor-neutral open specification so any producer can write and any agent can consume without translation. Routes: use `llm-wiki` for raw source capture + vault maintenance, `obsidian` for Obsidian-vault workflows, `graphify` for durable committed graphs, `scrapling` for web-content extraction into OKF docs. Triggers on: okf, open knowledge format, knowledge bundle, okf document, llm wiki standard, knowledge atom, agent context format, okf frontmatter, okf bundle, knowledge interoperability.",
       "category": "cli-tools",
       "subcategory": "automation-cli",
       "interface": "cli",
@@ -4855,7 +4857,7 @@
     },
     {
       "name": "tokhub",
-      "description": "Set up, run, and contribute to TokHub (github.com/yaojingang/TokHub) \u2014 an open-source AI API relay monitoring, recommendation, and OpenAI-compatible gateway system with L1/L2/L3 channel health probing, usage metering, alerts, audit, and Docker self-hosting. Use when the user asks about TokHub, \"AI API \u4e2d\u8f6c\u7ad9\u76d1\u63a7\", cloning/running the Go + React monorepo (TOKHUB_ROLE, sqlc, TimescaleDB, NATS), the L1/L2/L3 probe algorithm, the OpenAI-compatible `/gateway/v1/*` endpoint, or contributing a PR to TokHub. Do not use for connecting a running agent to a live TokHub instance's own API (that is covered by the project's own bundled `agent-skills/tokhub` skill inside the TokHub repo, not this one).",
+      "description": "Set up, run, and contribute to TokHub (github.com/yaojingang/TokHub) — an open-source AI API relay monitoring, recommendation, and OpenAI-compatible gateway system with L1/L2/L3 channel health probing, usage metering, alerts, audit, and Docker self-hosting. Use when the user asks about TokHub, \"AI API 中转站监控\", cloning/running the Go + React monorepo (TOKHUB_ROLE, sqlc, TimescaleDB, NATS), the L1/L2/L3 probe algorithm, the OpenAI-compatible `/gateway/v1/*` endpoint, or contributing a PR to TokHub. Do not use for connecting a running agent to a live TokHub instance's own API (that is covered by the project's own bundled `agent-skills/tokhub` skill inside the TokHub repo, not this one).",
       "category": "cli-tools",
       "subcategory": "automation-cli",
       "interface": "cli",
@@ -5101,7 +5103,7 @@
     },
     {
       "name": "spec-kit",
-      "description": "Run GitHub's Spec-Driven Development (SDD) workflow via the `specify` CLI \u2014 install spec-kit, initialize a project for one of 30+ AI coding agents (Claude Code, Copilot, Gemini, Cursor, Codex, Qwen, opencode, Kiro, etc.), and drive the constitution \u2192 specify \u2192 plan \u2192 tasks \u2192 implement command pipeline. Use when the user wants to bootstrap a Spec-Driven Development project, install `specify-cli`, generate executable specs before code, or invoke the `/speckit.*` slash commands (`/speckit.constitution`, `/speckit.specify`, `/speckit.plan`, `/speckit.tasks`, `/speckit.implement`, `/speckit.clarify`, `/speckit.analyze`, `/speckit.checklist`). Triggers on: spec-kit, speckit, specify, specify init, spec-driven, spec driven development, SDD, /speckit, executable spec.",
+      "description": "Run GitHub's Spec-Driven Development (SDD) workflow via the `specify` CLI — install spec-kit, initialize a project for one of 30+ AI coding agents (Claude Code, Copilot, Gemini, Cursor, Codex, Qwen, opencode, Kiro, etc.), and drive the constitution → specify → plan → tasks → implement command pipeline. Use when the user wants to bootstrap a Spec-Driven Development project, install `specify-cli`, generate executable specs before code, or invoke the `/speckit.*` slash commands (`/speckit.constitution`, `/speckit.specify`, `/speckit.plan`, `/speckit.tasks`, `/speckit.implement`, `/speckit.clarify`, `/speckit.analyze`, `/speckit.checklist`). Triggers on: spec-kit, speckit, specify, specify init, spec-driven, spec driven development, SDD, /speckit, executable spec.",
       "category": "ai-agents",
       "subcategory": "orchestration",
       "interface": "cli",
@@ -5198,7 +5200,7 @@
     },
     {
       "name": "goalflow",
-      "description": "Route goalflow (wanmol/goal-flow) work \u2014 a LangGraph framework that combines workflow graphs with agent loops \u2014 into exactly one mode: fit check, transpiling a Dify DSL export into runnable LangGraph Python, authoring workflow nodes and edges, building an `agent_kit` loop with middleware and a harness, wiring the serving layer (data adapters, SSE streaming, HITL, Redis/MySQL, API-key registration), or running the pre-publish security gate. Use when the user wants Dify's visual design without Dify's runtime, a graph node that hosts an agent loop, an OpenAI-compatible wire protocol over their own workflows, or prompt-injected `SKILL.md` capabilities. Triggers on: goalflow, goal-flow, dify to langgraph, dify transpiler, dify DSL export, BaseWorkflow, agent_kit, AgentBaseNode, DataAdapter, chunk processor, HITL interrupt, dify2langgraph. Route plain graph-API questions to `langgraph-fundamentals` and `langgraph-workflow`.",
+      "description": "Route goalflow (wanmol/goal-flow) work — a LangGraph framework that combines workflow graphs with agent loops — into exactly one mode: fit check, transpiling a Dify DSL export into runnable LangGraph Python, authoring workflow nodes and edges, building an `agent_kit` loop with middleware and a harness, wiring the serving layer (data adapters, SSE streaming, HITL, Redis/MySQL, API-key registration), or running the pre-publish security gate. Use when the user wants Dify's visual design without Dify's runtime, a graph node that hosts an agent loop, an OpenAI-compatible wire protocol over their own workflows, or prompt-injected `SKILL.md` capabilities. Triggers on: goalflow, goal-flow, dify to langgraph, dify transpiler, dify DSL export, BaseWorkflow, agent_kit, AgentBaseNode, DataAdapter, chunk processor, HITL interrupt, dify2langgraph. Route plain graph-API questions to `langgraph-fundamentals` and `langgraph-workflow`.",
       "category": "ai-agents",
       "subcategory": "agent-frameworks",
       "interface": "workflow",
@@ -5332,7 +5334,7 @@
     },
     {
       "name": "upskill",
-      "description": "Turn a weak/cheap \"Flash\" model into a \"Pro\" performer by wrapping HKUDS UpSkill \u2014 captures agent session failures, has a strong Teacher model analyze them and draft a skill, then validates it against the weak Student model in a closed Ralph Loop (up to 3 rounds) before storing it for automatic reuse. Use when the user wants to install UpSkill, run `/upskill-init`, `/upskill-configure`, `/upskill-build`, `/upskill-run`, `/upskill-list`, `/upskill-status`, `/upskill-mode`, `/upskill-model`, `/upskill-remove`, or `/upskill-uninstall`, wants a cheap model to perform closer to a Pro model without switching, or wants a good session (success or failure) distilled into a validated skill. Triggers on: upskill, up-skill, flash to pro, teacher student distillation, ralph loop skill validation, distill agent failures into skills. Routes skill-quality ratcheting to `skill-autoresearch`, scaffolding to `write-a-skill`, and spec-compliance rewrites to `skill-standardization`.",
+      "description": "Turn a weak/cheap \"Flash\" model into a \"Pro\" performer by wrapping HKUDS UpSkill — captures agent session failures, has a strong Teacher model analyze them and draft a skill, then validates it against the weak Student model in a closed Ralph Loop (up to 3 rounds) before storing it for automatic reuse. Use when the user wants to install UpSkill, run `/upskill-init`, `/upskill-configure`, `/upskill-build`, `/upskill-run`, `/upskill-list`, `/upskill-status`, `/upskill-mode`, `/upskill-model`, `/upskill-remove`, or `/upskill-uninstall`, wants a cheap model to perform closer to a Pro model without switching, or wants a good session (success or failure) distilled into a validated skill. Triggers on: upskill, up-skill, flash to pro, teacher student distillation, ralph loop skill validation, distill agent failures into skills. Routes skill-quality ratcheting to `skill-autoresearch`, scaffolding to `write-a-skill`, and spec-compliance rewrites to `skill-standardization`.",
       "category": "ai-agents",
       "subcategory": "skill-authoring",
       "interface": "cli",
@@ -5429,7 +5431,7 @@
     },
     {
       "name": "opik",
-      "description": "Run Comet's Opik \u2014 open-source LLM observability, evaluation, and optimization \u2014 from one routing-first skill: install the Python/TypeScript SDK, stand up a server (Comet.com cloud, Docker Compose via `./opik.sh`, or Kubernetes/Helm), wire tracing through `@opik.track` or one of 50+ framework integrations (OpenAI, Anthropic, LangChain, LangGraph, LlamaIndex, CrewAI, DSPy, Ollama, Bedrock, Vercel AI SDK, \u2026), score outputs with LLM-as-a-judge metrics (Hallucination, Moderation, Answer Relevance, Context Precision), and run Datasets/Experiments evaluations including PyTest CI gates. Use when the user wants LLM tracing, prompt evaluation, production LLM monitoring, agent optimization, or guardrails with Opik. Triggers on: opik, comet opik, opik configure, opik.sh, llm observability, llm tracing, llm as a judge, hallucination metric, prompt evaluation, opik dashboard, opik guardrails, agent optimizer.",
+      "description": "Run Comet's Opik — open-source LLM observability, evaluation, and optimization — from one routing-first skill: install the Python/TypeScript SDK, stand up a server (Comet.com cloud, Docker Compose via `./opik.sh`, or Kubernetes/Helm), wire tracing through `@opik.track` or one of 50+ framework integrations (OpenAI, Anthropic, LangChain, LangGraph, LlamaIndex, CrewAI, DSPy, Ollama, Bedrock, Vercel AI SDK, …), score outputs with LLM-as-a-judge metrics (Hallucination, Moderation, Answer Relevance, Context Precision), and run Datasets/Experiments evaluations including PyTest CI gates. Use when the user wants LLM tracing, prompt evaluation, production LLM monitoring, agent optimization, or guardrails with Opik. Triggers on: opik, comet opik, opik configure, opik.sh, llm observability, llm tracing, llm as a judge, hallucination metric, prompt evaluation, opik dashboard, opik guardrails, agent optimizer.",
       "category": "ai-agents",
       "subcategory": "evaluation",
       "interface": "library",
@@ -5844,7 +5846,7 @@
     },
     {
       "name": "agenticskills",
-      "description": "One-shot installer for the akillness/oh-my-gods agent skill bundle (80+ god-skills) \u2014 wraps the official install.sh with pinned URL and env knobs (PLATFORM, WITH_LANGCHAIN, INSTALL_MODE, SKIP_BACKUP) to copy the catalog into Claude Code, Codex CLI, Antigravity/Gemini, and OpenCode in one step.",
+      "description": "One-shot installer for the akillness/oh-my-gods agent skill bundle (80+ god-skills) — wraps the official install.sh with pinned URL and env knobs (PLATFORM, WITH_LANGCHAIN, INSTALL_MODE, SKIP_BACKUP) to copy the catalog into Claude Code, Codex CLI, Antigravity/Gemini, and OpenCode in one step.",
       "category": "ai-agents",
       "subcategory": "prompting",
       "interface": "cli",
@@ -6033,7 +6035,7 @@
     },
     {
       "name": "debugging",
-      "description": "Run a reproduce \u2192 isolate \u2192 verify debugging workflow for concrete bugs, regressions, flaky failures, and environment-specific behavior. Use when the user already has a failing command, test, request, UI flow, or narrowed symptom and needs root-cause diagnosis or fix verification rather than raw log-line selection, broad test-policy design, PR review, or generic performance tuning.",
+      "description": "Run a reproduce → isolate → verify debugging workflow for concrete bugs, regressions, flaky failures, and environment-specific behavior. Use when the user already has a failing command, test, request, UI flow, or narrowed symptom and needs root-cause diagnosis or fix verification rather than raw log-line selection, broad test-policy design, PR review, or generic performance tuning.",
       "category": "engineering",
       "subcategory": "code-quality",
       "interface": "workflow",
@@ -6284,7 +6286,7 @@
     },
     {
       "name": "tdd",
-      "description": "Red-green-refactor TDD using vertical slices \u2014 tests specify observable behavior through public interfaces",
+      "description": "Red-green-refactor TDD using vertical slices — tests specify observable behavior through public interfaces",
       "category": "engineering",
       "subcategory": "testing",
       "interface": "workflow",
@@ -6506,7 +6508,7 @@
     },
     {
       "name": "academic-research",
-      "description": "Full academic research pipeline from discovery to publication \u2014 4 reference pipelines, 27 modes, 39-agent ensemble (deep-research 8 modes, academic-paper 11 modes, academic-paper-reviewer 6 modes, academic-pipeline 10-stage orchestrator). Routes each request to the right pipeline and mode. Human-in-the-loop throughout. Plugin (upstream): claude plugin marketplace add Imbad0202/academic-research-skills",
+      "description": "Full academic research pipeline from discovery to publication — 4 reference pipelines, 27 modes, 39-agent ensemble (deep-research 8 modes, academic-paper 11 modes, academic-paper-reviewer 6 modes, academic-pipeline 10-stage orchestrator). Routes each request to the right pipeline and mode. Human-in-the-loop throughout. Plugin (upstream): claude plugin marketplace add Imbad0202/academic-research-skills",
       "category": "research",
       "subcategory": "academic",
       "interface": "workflow",
@@ -6608,7 +6610,7 @@
     },
     {
       "name": "deep-research",
-      "description": "Routing front door for a structured, human-in-the-loop deep-research workflow (Weizhena/Deep-Research-skills) \u2014 turn a topic into an extensible outline, fan out parallel web-search agents to investigate each item into validated JSON, then render a complete markdown report. One skill, 4 reference pipelines: outline (research / add-items / add-fields), deep (parallel per-item investigation + field-coverage validation), report (TOC + per-field markdown), web-search (research agent + 5 routed source modules). Plugin: npx skills add https://github.com/akillness/jeo-skills --skill deep-research",
+      "description": "Routing front door for a structured, human-in-the-loop deep-research workflow (Weizhena/Deep-Research-skills) — turn a topic into an extensible outline, fan out parallel web-search agents to investigate each item into validated JSON, then render a complete markdown report. One skill, 4 reference pipelines: outline (research / add-items / add-fields), deep (parallel per-item investigation + field-coverage validation), report (TOC + per-field markdown), web-search (research agent + 5 routed source modules). Plugin: npx skills add https://github.com/akillness/jeo-skills --skill deep-research",
       "category": "research",
       "subcategory": "web-research",
       "interface": "workflow",
@@ -6985,7 +6987,7 @@
     },
     {
       "name": "yuwen-publish-precheck",
-      "description": "\u56fd\u5185\u81ea\u5a92\u4f53\u53d1\u5e03\u524d\u98ce\u9669\u81ea\u5ba1\u4e0e\u4fdd\u610f\u4fee\u590d\uff1a\u5ba1\u53e3\u64ad\u7a3f\u3001\u6587\u7ae0\u3001\u56fe\u6587\u7b14\u8bb0\u3001\u5b57\u5e55\u3001\u5c01\u9762\u6587\u5b57\u80fd\u4e0d\u80fd\u53d1\u6296\u97f3/\u5c0f\u7ea2\u4e66/\u5fae\u4fe1\u89c6\u9891\u53f7\uff0c\u7ed9\u51fa\u5177\u4f53\u4f4d\u7f6e\u3001\u4f9d\u636e\u548c\u53ef\u76f4\u63a5\u66ff\u6362\u7684\u6539\u7a3f\uff1b\u88ab\u9650\u6d41/\u5220\u9664/\u5904\u7f5a\u540e\u5e2e\u4f60\u590d\u76d8\u5f52\u56e0\uff1b\u4f60\u7684\u884c\u4e1a\u654f\u611f\u8bcd\u3001\u8bef\u62a5\u767d\u540d\u5355\u548c\u8e29\u5751\u6848\u4f8b\u4f1a\u6c89\u6dc0\u6210\u4e2a\u4eba\u89c4\u5219\u5e93\uff0c\u8d8a\u7528\u8d8a\u51c6\u3002Use when \u7528\u6237\u8bf4\"\u80fd\u4e0d\u80fd\u53d1\"\"\u5ba1\u4e00\u4e0b\u7a3f\u5b50\"\"\u67e5\u8fdd\u7981\u8bcd/\u654f\u611f\u8bcd\"\"\u4f1a\u4e0d\u4f1a\u9650\u6d41/\u88ab\u9650\u6d41\u4e86\"\"\u5e2e\u6211\u6539\u6210\u80fd\u53d1\u7684\u7248\u672c\"\"\u53d1\u5e03\u524d\u68c0\u67e5\"\"\u88ab\u5e73\u53f0\u5904\u7f5a/\u5220\u9664\u4e86\"\"\u5e2e\u6211\u76ef\u7740\u8fd9\u4e2a\u8bcd\"\"\u5bfc\u5165\u8fdd\u7981\u8bcd\u8868\"\u3002Not for \u6d77\u5916\u5e73\u53f0(X/YouTube)\u5185\u5bb9\u5ba1\u6838\u3001\u8d77\u53f7\u6da8\u7c89\u7b56\u7565\u3001\u5199\u7a3f\u521b\u4f5c\u672c\u8eab\u3002",
+      "description": "国内自媒体发布前风险自审与保意修复：审口播稿、文章、图文笔记、字幕、封面文字能不能发抖音/小红书/微信视频号，给出具体位置、依据和可直接替换的改稿；被限流/删除/处罚后帮你复盘归因；你的行业敏感词、误报白名单和踩坑案例会沉淀成个人规则库，越用越准。Use when 用户说\"能不能发\"\"审一下稿子\"\"查违禁词/敏感词\"\"会不会限流/被限流了\"\"帮我改成能发的版本\"\"发布前检查\"\"被平台处罚/删除了\"\"帮我盯着这个词\"\"导入违禁词表\"。Not for 海外平台(X/YouTube)内容审核、起号涨粉策略、写稿创作本身。",
       "category": "business",
       "subcategory": "publishing",
       "interface": "workflow",
@@ -7011,7 +7013,7 @@
     },
     {
       "name": "lapian-notes",
-      "description": "Work with Lapian Notes / \u62c9\u7247\u7b14\u8bb0 (github.com/bkingfilm/lapian-notes) \u2014 a local- first React/Vite tool that turns a film into an editable shot-by-shot study notebook: local frame extraction, AI-assisted structure analysis (bring your own AI, no API key required), story-line swimlane timeline, structure tree, and audience-emotion curve. Use when the user asks about Lapian Notes, \"\u62c9\u7247\u7b14\u8bb0\", \"\u62c9\u7247\" (shot-by-shot film analysis) tooling, cloning/running this repo (npm run dev, run.bat/run.command), the AI-analysis-package (ZIP) round-trip workflow, or contributing a PR to lapian-notes. Not for generic video editing (use `opencut` for that) or generic film-analysis theory unrelated to this codebase.",
+      "description": "Work with Lapian Notes / 拉片笔记 (github.com/bkingfilm/lapian-notes) — a local- first React/Vite tool that turns a film into an editable shot-by-shot study notebook: local frame extraction, AI-assisted structure analysis (bring your own AI, no API key required), story-line swimlane timeline, structure tree, and audience-emotion curve. Use when the user asks about Lapian Notes, \"拉片笔记\", \"拉片\" (shot-by-shot film analysis) tooling, cloning/running this repo (npm run dev, run.bat/run.command), the AI-analysis-package (ZIP) round-trip workflow, or contributing a PR to lapian-notes. Not for generic video editing (use `opencut` for that) or generic film-analysis theory unrelated to this codebase.",
       "category": "utilities",
       "subcategory": "knowledge",
       "interface": "library",
@@ -7113,7 +7115,7 @@
     },
     {
       "name": "obsidian-mind",
-      "description": "Route obsidian-mind work into the right mode: install/bootstrap the vault (ShardMind vs git clone), the daily standup/dump/wrap-up session loop, capture routes for decisions, incidents, 1:1s, and wins, the performance-graph review flow (/om-review-brief, /om-self-review, /om-peer-scan), vault maintenance and /om-vault-upgrade migration, multi-agent wiring across Claude Code, Codex CLI, and Gemini CLI, and optional QMD semantic search. obsidian-mind is a specific ready-made Obsidian vault template giving coding agents persistent, session-spanning memory through five lifecycle hooks, /om-* commands, subagents, and a competency graph \u2014 not a generic vault-building or wiki-authoring workflow. Triggers on: obsidian-mind, om-standup, om-dump, om-wrap-up, om-review-brief, om-self-review, om-peer-scan, om-vault-upgrade, brag doc, North Star.md, performance graph, competency notes, session lifecycle hooks, shardmind install obsidian-mind.",
+      "description": "Route obsidian-mind work into the right mode: install/bootstrap the vault (ShardMind vs git clone), the daily standup/dump/wrap-up session loop, capture routes for decisions, incidents, 1:1s, and wins, the performance-graph review flow (/om-review-brief, /om-self-review, /om-peer-scan), vault maintenance and /om-vault-upgrade migration, multi-agent wiring across Claude Code, Codex CLI, and Gemini CLI, and optional QMD semantic search. obsidian-mind is a specific ready-made Obsidian vault template giving coding agents persistent, session-spanning memory through five lifecycle hooks, /om-* commands, subagents, and a competency graph — not a generic vault-building or wiki-authoring workflow. Triggers on: obsidian-mind, om-standup, om-dump, om-wrap-up, om-review-brief, om-self-review, om-peer-scan, om-vault-upgrade, brag doc, North Star.md, performance graph, competency notes, session lifecycle hooks, shardmind install obsidian-mind.",
       "category": "utilities",
       "subcategory": "knowledge",
       "interface": "cli",
@@ -7147,7 +7149,7 @@
     },
     {
       "name": "obsidian-second-brain",
-      "description": "Routing front door for obsidian-second-brain \u2014 a self-rewriting Obsidian vault that evolves Karpathy's LLM-Wiki pattern. Every source REWRITES existing pages instead of appending: people updated, claims revised, contradictions reconciled, patterns synthesized automatically. 45 commands across 4 layers, background + 4 scheduled agents, 4 role presets, AI-first write validator. Cross-CLI: Claude Code, Codex CLI, Gemini CLI, OpenCode.",
+      "description": "Routing front door for obsidian-second-brain — a self-rewriting Obsidian vault that evolves Karpathy's LLM-Wiki pattern. Every source REWRITES existing pages instead of appending: people updated, claims revised, contradictions reconciled, patterns synthesized automatically. 45 commands across 4 layers, background + 4 scheduled agents, 4 role presets, AI-first write validator. Cross-CLI: Claude Code, Codex CLI, Gemini CLI, OpenCode.",
       "category": "utilities",
       "subcategory": "knowledge",
       "interface": "cli",
@@ -7191,7 +7193,7 @@
     },
     {
       "name": "opencontext",
-      "description": "Route active project/repo memory requests into one honest packet: memory-layer choice, load-context, search-context, store-conclusions, setup-integration, or repo-packer route-out. Use when agents need searchable decisions, manifests, stable links, handoff notes, and small \u201cread this first\u201d packets across sessions. Route long-lived markdown knowledge bases to `llm-wiki`, structural graph memory to `graphify`, human-authored vault organization to note/vault skills, and one-shot repo packing to tools like Repomix, Gitingest, or Code2Prompt.",
+      "description": "Route active project/repo memory requests into one honest packet: memory-layer choice, load-context, search-context, store-conclusions, setup-integration, or repo-packer route-out. Use when agents need searchable decisions, manifests, stable links, handoff notes, and small “read this first” packets across sessions. Route long-lived markdown knowledge bases to `llm-wiki`, structural graph memory to `graphify`, human-authored vault organization to note/vault skills, and one-shot repo packing to tools like Repomix, Gitingest, or Code2Prompt.",
       "category": "utilities",
       "subcategory": "knowledge",
       "interface": "workflow",
@@ -7560,7 +7562,7 @@
     },
     {
       "name": "nightrun",
-      "description": "Build, test, run, and flash NightRun \u2014 a bare-metal, no_std Rust UEFI application that boots straight into a local LLM (Llama 3.2, Qwen3, or Granite 4.1) with no operating system underneath. Use when the user wants to build/flash a bootable NightRun USB or Raspberry Pi 5 SD image, convert a GGUF model into the `.nrm` container, run/debug the inference engine on the host or in QEMU/OVMF, or troubleshoot no_std kernel/tokenizer parity issues in the NightRun codebase. Triggers on: \"nightrun\", \"boot into an LLM\", \"bare-metal LLM runtime\", \"UEFI LLM appliance\", \"nrconvert\", \"nrhost\", \"cargo xtask\", \"nrm model file\", \"flash a bootable LLM USB\".",
+      "description": "Build, test, run, and flash NightRun — a bare-metal, no_std Rust UEFI application that boots straight into a local LLM (Llama 3.2, Qwen3, or Granite 4.1) with no operating system underneath. Use when the user wants to build/flash a bootable NightRun USB or Raspberry Pi 5 SD image, convert a GGUF model into the `.nrm` container, run/debug the inference engine on the host or in QEMU/OVMF, or troubleshoot no_std kernel/tokenizer parity issues in the NightRun codebase. Triggers on: \"nightrun\", \"boot into an LLM\", \"bare-metal LLM runtime\", \"UEFI LLM appliance\", \"nrconvert\", \"nrhost\", \"cargo xtask\", \"nrm model file\", \"flash a bootable LLM USB\".",
       "category": "engineering",
       "subcategory": "architecture",
       "interface": "workflow",
@@ -7591,7 +7593,7 @@
     },
     {
       "name": "soup",
-      "description": "Drive Soup (`soup-cli`), a CLI-first tool for fine-tuning and post-training LLMs with one YAML config and one command \u2014 SFT, DPO/GRPO/ORPO/SimPO/KTO, QLoRA/DoRA/LoRA+, layer streaming for 4-8 GB GPUs, eval-gated training, and serving. Use when the user wants to `soup init`/`soup train` a model, pick a training method or quantization scheme, estimate cost/memory before training, fine-tune on a small local GPU, migrate a config from Axolotl/LLaMA-Factory/Unsloth, or serve/merge/push a trained adapter. Triggers on: \"soup-cli\", \"soup train\", \"soup init\", \"fine-tune an LLM locally\", \"QLoRA on a laptop GPU\", \"layer streaming\", \"soup advise\", \"soup autopilot\", \"DPO/GRPO/ORPO training\", \"merge LoRA adapter\".",
+      "description": "Drive Soup (`soup-cli`), a CLI-first tool for fine-tuning and post-training LLMs with one YAML config and one command — SFT, DPO/GRPO/ORPO/SimPO/KTO, QLoRA/DoRA/LoRA+, layer streaming for 4-8 GB GPUs, eval-gated training, and serving. Use when the user wants to `soup init`/`soup train` a model, pick a training method or quantization scheme, estimate cost/memory before training, fine-tune on a small local GPU, migrate a config from Axolotl/LLaMA-Factory/Unsloth, or serve/merge/push a trained adapter. Triggers on: \"soup-cli\", \"soup train\", \"soup init\", \"fine-tune an LLM locally\", \"QLoRA on a laptop GPU\", \"layer streaming\", \"soup advise\", \"soup autopilot\", \"DPO/GRPO/ORPO training\", \"merge LoRA adapter\".",
       "category": "cli-tools",
       "subcategory": "ai-cli",
       "interface": "workflow",
@@ -7857,7 +7859,7 @@
     },
     {
       "name": "mcp-server-sv-number",
-      "description": "Drive the SV Number MCP server (`sv-number-mcp`), nine stdio tools that order a private phone number for one signup, read the SMS verification code straight from the API, and hand the number back \u2014 covering 200+ countries. Use when an agent hits a signup form that needs a real phone number for an OTP/SMS code, when picking a country or service code (`list_countries`, `list_services`), ordering and polling a number (`order_number`, `wait_for_code`), closing out an activation (`finish_activation`, `cancel_activation`, `request_another_sms`), checking account balance (`get_balance`), or computing a TOTP/2FA code locally from a shared secret (`totp_code`). Triggers on: \"sv-number\", \"sv-number-mcp\", \"SMS verification number\", \"order a phone number for OTP\", \"receive SMS verification code\", \"temporary/virtual number for signup\", \"sms-verification-number.com\", \"wait_for_code\", \"totp_code\", \"phone number MCP server for agents\".",
+      "description": "Drive the SV Number MCP server (`sv-number-mcp`), nine stdio tools that order a private phone number for one signup, read the SMS verification code straight from the API, and hand the number back — covering 200+ countries. Use when an agent hits a signup form that needs a real phone number for an OTP/SMS code, when picking a country or service code (`list_countries`, `list_services`), ordering and polling a number (`order_number`, `wait_for_code`), closing out an activation (`finish_activation`, `cancel_activation`, `request_another_sms`), checking account balance (`get_balance`), or computing a TOTP/2FA code locally from a shared secret (`totp_code`). Triggers on: \"sv-number\", \"sv-number-mcp\", \"SMS verification number\", \"order a phone number for OTP\", \"receive SMS verification code\", \"temporary/virtual number for signup\", \"sms-verification-number.com\", \"wait_for_code\", \"totp_code\", \"phone number MCP server for agents\".",
       "category": "cli-tools",
       "subcategory": "ai-cli",
       "interface": "workflow",
@@ -7895,7 +7897,7 @@
     },
     {
       "name": "airship",
-      "description": "Drive Airship (`@airshiplabs/cli`), a CLI that puts a visual, pannable design canvas in front of a running dev server so an engineer can click an element, describe a change, and have Claude Code, Codex, or OpenCode edit the underlying source file directly \u2014 no plugin, no build config, nothing added to the project. Use when the user wants to launch a visual editor over a local dev server (`npx @airshiplabs/cli --target <port>`), pick or compare coding agents (`--agent claude|codex|opencode`) for live UI edits, sandbox agent edits with `--safe`, scaffold an `airship.config.json` (`airship init`), or diagnose a broken setup (`airship doctor`). Triggers on: \"airship\", \"@airshiplabs/cli\", \"visual editor for my codebase\", \"click to edit UI\", \"design canvas over dev server\", \"airship doctor\", \"airship init\", \"pair Claude Code with a visual editor on localhost\".",
+      "description": "Drive Airship (`@airshiplabs/cli`), a CLI that puts a visual, pannable design canvas in front of a running dev server so an engineer can click an element, describe a change, and have Claude Code, Codex, or OpenCode edit the underlying source file directly — no plugin, no build config, nothing added to the project. Use when the user wants to launch a visual editor over a local dev server (`npx @airshiplabs/cli --target <port>`), pick or compare coding agents (`--agent claude|codex|opencode`) for live UI edits, sandbox agent edits with `--safe`, scaffold an `airship.config.json` (`airship init`), or diagnose a broken setup (`airship doctor`). Triggers on: \"airship\", \"@airshiplabs/cli\", \"visual editor for my codebase\", \"click to edit UI\", \"design canvas over dev server\", \"airship doctor\", \"airship init\", \"pair Claude Code with a visual editor on localhost\".",
       "category": "web",
       "subcategory": "frontend",
       "interface": "workflow",
@@ -8050,7 +8052,7 @@
     },
     {
       "name": "drama-skills",
-      "description": "Install, route, and operate zenstory-ai/drama-skills, the MIT-licensed 10-skill creator-first suite for Chinese short dramas and motion comics. Use when the user wants to import or troubleshoot the suite; initialize or resume a filesystem project; analyze a novel; develop an adaptation; write episodes; build visual assets; produce image prompts, storyboards, or video prompts; review a project; open its local Dashboard; or run confirm-gated image, video, TTS, or music production. Route each request to the correct `short-drama-*` owner while preserving the five-document episode contract. Triggers on: drama-skills, zenstory-ai/drama-skills, short-drama, Chinese short drama, motion comic, creator-first drama workflow, \u5267\u672c, \u89c6\u89c9\u8bbe\u5b9a, \u5206\u955c, \u56fe\u7247\u63d0\u793a\u8bcd, \u89c6\u9891\u63d0\u793a\u8bcd. Route generic programmable-video work to `video-production`, webtoon panel production to `webtoon-harness`, and the OpenStory codebase to `openstory`.",
+      "description": "Install, route, and operate zenstory-ai/drama-skills, the MIT-licensed 10-skill creator-first suite for Chinese short dramas and motion comics. Use when the user wants to import or troubleshoot the suite; initialize or resume a filesystem project; analyze a novel; develop an adaptation; write episodes; build visual assets; produce image prompts, storyboards, or video prompts; review a project; open its local Dashboard; or run confirm-gated image, video, TTS, or music production. Route each request to the correct `short-drama-*` owner while preserving the five-document episode contract. Triggers on: drama-skills, zenstory-ai/drama-skills, short-drama, Chinese short drama, motion comic, creator-first drama workflow, 剧本, 视觉设定, 分镜, 图片提示词, 视频提示词. Route generic programmable-video work to `video-production`, webtoon panel production to `webtoon-harness`, and the OpenStory codebase to `openstory`.",
       "category": "creative-media",
       "subcategory": "storytelling",
       "interface": "workflow",
@@ -8122,6 +8124,46 @@
       "keyword": "openmontage",
       "version": "1.0",
       "source": "https://github.com/calesthio/OpenMontage"
+    },
+    {
+      "name": "open-generative-ai",
+      "description": "Operate Anil-matcha/Open-Generative-AI, the MIT-licensed Next.js and Electron studio that fronts MuAPI image, video, audio, lip sync, workflow, and agent models with optional local sd.cpp and Wan2GP inference. Route one request to fit check, desktop release install, source or Docker self-host, API key and provider configuration, local inference setup, model catalog verification, troubleshooting, or upgrade. Use when the user names Open Generative AI, Anil-matcha/Open-Generative-AI, its Image, Video, Cinema, Lip Sync, Workflow, or Design Agent studios, `npm run electron:dev`, MuAPI keys, sd.cpp, or Wan2GP. Require confirmation before installer execution, unsigned-binary Gatekeeper or SmartScreen overrides, AppArmor sysctl changes, credential entry, multi-gigabyte model downloads, public deployment, or paid generation. Route provider-neutral programmatic video pipelines to `video-production` and local desktop video editing to `opencut`.",
+      "category": "creative-media",
+      "subcategory": "video",
+      "interface": "desktop",
+      "path": "open-generative-ai/SKILL.md",
+      "tags": [
+        "open-generative-ai",
+        "muapi",
+        "image-generation",
+        "video-generation",
+        "lipsync",
+        "electron",
+        "nextjs",
+        "self-hosted",
+        "local-inference",
+        "sd-cpp",
+        "wan2gp"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex",
+        "Cursor",
+        "Cline"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "open-generative-ai",
+      "version": "1.0",
+      "source": "https://github.com/Anil-matcha/Open-Generative-AI"
     },
     {
       "name": "zeroshot",

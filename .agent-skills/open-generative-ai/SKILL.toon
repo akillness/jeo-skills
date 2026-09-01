@@ -1,0 +1,47 @@
+N:open-generative-ai
+D:Operate Anil-matcha/Open-Generative-AI, the MIT-licensed Next.js and Electron studio fronting MuAPI image, video, audio, lip sync, workflow, and agent models with optional local sd.cpp and Wan2GP inference. Route one request to fit check, desktop install, source or Docker self-host, key and exposure configuration, local inference setup, model catalog verification, troubleshooting, or extension. Require confirmation before installers, unsigned-binary overrides, sysctl changes, credentials, multi-gigabyte downloads, public deployment, or paid generation.
+G:open-generative-ai muapi anil-matcha image-generation video-generation lipsync cinema-studio workflow-studio electron nextjs self-hosted local-inference sd-cpp wan2gp byok
+
+U[8]:
+  Decide whether Open Generative AI fits a media workflow before installing it
+  Choose between desktop release, source checkout, Docker, and hosted muapi.ai
+  Install or upgrade an unsigned desktop build across macOS Windows and Linux
+  Configure the MuAPI key, proxy routes, and self-host network exposure safely
+  Set up bundled sd.cpp weights or attach a separate user-run Wan2GP GPU server
+  Verify a model endpoint exists in the shipped catalog before promising it
+  Diagnose submodule, workspace build, 401, port, upload, or local-GPU failures
+  Add a model entry, studio component, or workflow node against a pinned commit
+
+S[8]{n,step,details}:
+  1,Choose one mode,orient install selfhost configure localai catalog operate or extend; installers credentials downloads and exposure are separate approvals
+  2,Establish version truth,derive from releases API then package.json then source; README download table and model counts are stale
+  3,Pick the product form,local inference is desktop-only; web and Docker always call MuAPI so self-hosted UI is not self-hosted models
+  4,Treat launch prompts as decisions,builds are unsigned; xattr SmartScreen and AppArmor userns workarounds each weaken a protection the user must approve
+  5,Protect the key,paste the key value not its label; never print it; localStorage plus unsafe-inline CSP makes any XSS a disclosure
+  6,Gate downloads,confirm total size and disk before multi-GB sd.cpp weights; Z-Image hangs base 8 GB Apple Silicon so route to SD 1.5
+  7,Verify models in source,count models.js arrays rather than quoting README claims; confirm endpoint and declared inputs before promising one
+  8,Diagnose by layer,npm run setup covers submodules install and workspace build; most broken-checkout reports are a skipped bootstrap
+
+R[14]:
+  Audited at commit 5482a777047c0df189eef989ff994d0d7a1d2874 dated 2026-08-29 with package.json version 2.0.0 and MIT license
+  README download table still links v1.0.9 while the latest release is v2.0.0 published 2026-05-23
+  Latest release predates the audited commit so a source checkout is newer than any published installer
+  Catalog defines 354 model entries while README claims variously 200+ 400+ 420+ and the repo description says 500+
+  README per-category claims overstate text-to-image 70+ against 31 and text-to-video 85+ against 47
+  Local inference is Electron-desktop only; web and Docker deployments always call api.muapi.ai
+  Wan2GP is not bundled and is a separate user-run CUDA or ROCm Gradio server with no Apple Silicon path
+  Wan2GP video models are not wired into Video Studio and Image Studio rejects video output explicitly
+  MuAPI key lives in browser localStorage and ships under a CSP allowing unsafe-inline and unsafe-eval
+  Middleware rewrites /api/v1 /api/app and /api/workflow to api.muapi.ai making any reachable deployment a proxy to a paid API
+  Docker compose publishes host port 3001 to container 3000 not 3000 to 3000
+  Three git submodules Vibe-Workflow Open-Poe-AI and Open-AI-Design-Agent carry their own licenses and history
+  No release checksum or signature asset is published so every platform shows an unsigned-binary warning
+  Absent vendor content filters do not transfer legal responsibility; this skill operates the software and refuses CSAM NCII impersonation and fraud
+
+E[6]{type,command}:
+  Install skill,npx skills add https://github.com/akillness/jeo-skills --skill open-generative-ai
+  Audit pinned source,python3 .agent-skills/open-generative-ai/scripts/audit-ogai.py source --repo /path/to/Open-Generative-AI --expect-commit 5482a777047c0df189eef989ff994d0d7a1d2874 --format json
+  Count model catalog,python3 .agent-skills/open-generative-ai/scripts/audit-ogai.py models --repo /path/to/Open-Generative-AI --endpoint nano-banana --format json
+  Plan release asset,python3 .agent-skills/open-generative-ai/scripts/audit-ogai.py release --metadata /path/to/release.json --os darwin --arch arm64 --format json
+  Validate evals,node .agent-skills/open-generative-ai/scripts/validate-evals.mjs --json
+  Validate skill,bash .agent-skills/skill-standardization/scripts/validate_skill.sh .agent-skills/open-generative-ai
