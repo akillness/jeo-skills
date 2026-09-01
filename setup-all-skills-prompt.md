@@ -369,6 +369,59 @@ If the installed Claude version does not expose non-interactive plugin commands,
 these two commands for the user to run through Claude Code's `/plugin` interface instead
 of editing plugin configuration by hand.
 
+### ECC agent harness (full mode; target-selected)
+
+ECC is a separate agent-harness plugin. In full mode, offer it after the shared
+skill install whenever Claude Code or Codex is detected. It changes provider-owned
+plugin state and can enable hooks, so select each target, preview it, and obtain one
+confirmation before applying it. Do not infer a Claude scope, hook profile, or Codex
+hook-trust decision from the presence of another plugin.
+
+Use one ECC installation path per harness. Never stack the native plugin with a
+manual/full ECC install, and never combine Codex's native plugin with the legacy
+`sync-ecc-to-codex.sh` path. Run the installed catalog helper before selecting a path:
+
+```bash
+bash "$SKILLS_ROOT/ecc/scripts/ecc.sh" doctor
+```
+
+For an interactive Claude terminal, the canonical guided path is:
+
+```bash
+npx ecc-universal setup
+```
+
+Agent shells are commonly non-TTY, so first inventory the provider state, select
+`user|project|local` plus `off|minimal|standard|strict`, and preview explicit values:
+
+```bash
+claude plugin marketplace list --json
+claude plugin list --json
+npx --yes --package ecc-universal ecc setup --mode claude-plugin \
+  --scope <scope> --hooks <hooks> --dry-run --json
+```
+
+After confirmation, rerun the same command without `--dry-run` and with `--yes`.
+Verify one enabled `ecc@ecc` entry at the approved scope using `claude plugin list --json`;
+reload plugins or restart Claude Code only after that verification succeeds.
+
+For Codex, inventory first, then apply the native marketplace path after confirmation:
+
+```bash
+codex plugin marketplace list --json
+codex plugin list --json
+codex plugin marketplace add affaan-m/ECC
+codex plugin add ecc@ecc --json
+codex plugin list --json
+```
+
+Codex has one active plugin state rather than Claude scopes. Its hook trust is a
+provider-owned decision; do not map Claude's four ECC hook profiles onto Codex or claim
+they were enabled. Other ECC adapters stay task-triggered: preview a selected target
+from a trusted checkout with `./install.sh --profile minimal --target <target> --dry-run --json`
+before any write. Never run ECC's automatic-update workflow during blanket setup because
+it fetches and fast-forwards an existing checkout before reinstalling recorded targets.
+
 ### Codex OMC hook compatibility
 
 OMC 4.15.7 emits Claude-only `suppressOutput` fields from three `PostToolUse`

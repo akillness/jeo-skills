@@ -1,0 +1,35 @@
+{
+  "skill_name": "ecc",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Claude Code에 ECC를 설치해서 바로 쓰게 해줘.",
+      "expected_output": "The skill inventories provider state, selects one Claude installation method, previews explicit scope and hook settings, and waits before mutation.",
+      "assertions": [
+        "The response runs or mirrors `scripts/ecc.sh doctor`, `claude plugin marketplace list --json`, and `claude plugin list --json` before installation",
+        "The response uses explicit scope and hook values with `npx --yes --package ecc-universal ecc setup ... --dry-run --json` rather than a bare interactive setup command",
+        "The response does not stack the native Claude plugin path with a manual/full ECC installation"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Codex에 ECC를 설치하고 hook도 standard로 켜줘.",
+      "expected_output": "The skill uses Codex's native marketplace lifecycle and explains that Codex hook trust is provider-owned rather than a Claude profile.",
+      "assertions": [
+        "The response inventories Codex marketplace and plugin state before proposing `codex plugin marketplace add affaan-m/ECC` and `codex plugin add ecc@ecc --json`",
+        "The response does not claim that Claude's off/minimal/standard/strict profiles apply to Codex",
+        "The response does not combine the native plugin with `sync-ecc-to-codex.sh`"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "ECC로 우리 팀에 맞는 에이전트 조직을 새로 설계해줘.",
+      "expected_output": "The skill routes bespoke team design to the local harness skill rather than treating ECC installation as the design solution.",
+      "assertions": [
+        "The response routes custom agent-team architecture to `harness`",
+        "The response does not install ECC merely because the request needs multiple agents",
+        "The response distinguishes a harness installation from a project-specific workflow design"
+      ]
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 {
   "version": "2.0.0",
   "generated": "2026-07-30",
-  "skill_count": 230,
+  "skill_count": 231,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -279,6 +279,7 @@
       "deep-dive",
       "deepinit",
       "spec-kit",
+      "ecc",
       "microsoft-agent-framework",
       "openai-agents-python",
       "goalflow",
@@ -619,7 +620,8 @@
         "bmad",
         "deep-dive",
         "deepinit",
-        "spec-kit"
+        "spec-kit",
+        "ecc"
       ],
       "agent-frameworks": [
         "microsoft-agent-framework",
@@ -5158,6 +5160,52 @@
       "keyword": "spec-kit",
       "version": "1.0.0",
       "source": "akillness/jeo-skills"
+    },
+    {
+      "name": "ecc",
+      "description": "Install, configure, verify, update, or recover affaan-m/ECC, the MIT-licensed agent harness with native Claude Code and Codex plugins plus selective adapters for other supported clients. Use when the user names ECC, Everything Claude Code, ecc-universal, ecc@ecc, `ecc setup`, or an ECC plugin, hook, rule, skill, or harness installation. Route generic agent-team design to `harness`, delivery workflow selection to `agentic-skills`, and BMAD phase selection to `bmad`.",
+      "category": "ai-agents",
+      "subcategory": "orchestration",
+      "interface": "cli",
+      "path": "ecc/SKILL.md",
+      "tags": [
+        "ecc",
+        "everything-claude-code",
+        "agent-harness",
+        "agent-operating-system",
+        "orchestration",
+        "claude-code",
+        "codex",
+        "plugin",
+        "hooks",
+        "quality-gates"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex",
+        "Kimi Code",
+        "Cursor",
+        "OpenCode",
+        "Gemini CLI",
+        "Zed",
+        "Antigravity",
+        "Qwen",
+        "Hermes",
+        "OpenClaw",
+        "CodeBuddy",
+        "JoyCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "ecc",
+      "version": "2.2.1",
+      "source": "https://github.com/affaan-m/ECC"
     },
     {
       "name": "microsoft-agent-framework",
