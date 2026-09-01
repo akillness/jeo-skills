@@ -1,0 +1,39 @@
+N:mcp-builder
+D:Build production MCP servers that let LLMs drive an external API through well-designed tools, in TypeScript with the MCP SDK or Python with FastMCP. Route one request to research, tool design, transport choice, implementation, security review, or evaluation. Measure quality by whether an agent completes real tasks, not by endpoint coverage. Require confirmation before an evaluation run that spends API credits or touches live systems.
+G:mcp-builder model-context-protocol mcp-server fastmcp typescript-sdk tool-design stdio streamable-http tool-naming mcp-evaluation anthropics
+
+U[6]:
+  Wrap an external API or service as an MCP server
+  Decide tool granularity between comprehensive coverage and workflow tools
+  Name and shape tools so an agent picks the right one unprompted
+  Choose transport and state model between stdio and stateless streamable HTTP
+  Diagnose a server whose tools the model misuses or cannot chain
+  Build and run the ten-question evaluation that proves the server works
+
+S[7]{n,step,details}:
+  1,Pick the phase,research design implement secure or evaluate; skipping research and design produces thin unusable tools
+  2,Research first,read real API semantics pagination auth and rate limits; when uncertain prioritize comprehensive coverage over workflow tools
+  3,Choose the stack,TypeScript with the MCP SDK is the upstream default; Python with FastMCP fits an existing Python service
+  4,Design for discovery,consistent prefixes action verbs concise descriptions filterable paginated results and errors that name a next step
+  5,Choose transport,stdio for local and streamable HTTP for remote; prefer stateless JSON over stateful sessions
+  6,Secure the surface,authenticate authorize validate input enable DNS rebinding protection and annotate destructive tools honestly
+  7,Evaluate then report,ten independent read-only complex verifiable stable questions with answers you solved yourself; report a pass count not that evals exist
+
+R[10]:
+  Bundled from anthropics/skills commit 3b3fad96af16a10759d930941b4520ba0c40edae dated 2026-08-21
+  The repository root declares no SPDX license but skills/mcp-builder ships its own Apache-2.0 LICENSE.txt which is the operative grant
+  Apache-2.0 requires retaining the license and attribution so LICENSE.upstream.txt ships with this skill
+  Do not generalize that license to sibling skills in anthropics/skills; each carries its own terms
+  Server quality is measured by task completion not by endpoint count
+  The evaluation harness needs an Anthropic API key and spends credits per question
+  Never run the harness against production data or with non-read-only questions
+  A wrong annotation on a destructive tool removes the user's chance to intervene and is a security defect
+  Large TypeScript and Python guides are intentionally not bundled; fetch them at implementation time
+  MCP spec and SDKs move independently of this pin so prefer live sources for version-sensitive signatures
+
+E[5]{type,command}:
+  Install skill,npx skills add https://github.com/akillness/jeo-skills --skill mcp-builder
+  Fetch TypeScript guide,curl -fsS https://raw.githubusercontent.com/anthropics/skills/3b3fad96af16a10759d930941b4520ba0c40edae/skills/mcp-builder/reference/node_mcp_server.md -o node_mcp_server.md
+  Fetch Python guide,curl -fsS https://raw.githubusercontent.com/anthropics/skills/3b3fad96af16a10759d930941b4520ba0c40edae/skills/mcp-builder/reference/python_mcp_server.md -o python_mcp_server.md
+  Validate evals,node .agent-skills/mcp-builder/scripts/validate-evals.mjs --json
+  Validate skill,bash .agent-skills/skill-standardization/scripts/validate_skill.sh .agent-skills/mcp-builder

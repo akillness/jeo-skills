@@ -1,0 +1,37 @@
+N:design-taste-frontend
+D:Apply anti-generic frontend design rules bundled from Leonxlnx/taste-skill for landing pages, portfolios, editorial pages, and redesigns. Declare a design read, set DESIGN_VARIANCE MOTION_INTENSITY and VISUAL_DENSITY explicitly, pick a real design system or name the aesthetic, sweep AI tells including the em-dash ban, audit before redesigning, and pass the pre-flight check. Not for dashboards, data tables, wizards, or admin UI.
+G:design-taste-frontend taste-skill anti-slop frontend-design landing-page portfolio redesign ai-tells em-dash-ban design-variance motion-intensity visual-density awwwards linear-style
+
+U[5]:
+  Fix a landing page portfolio or marketing site that looks templated or AI-default
+  Modernize a redesign without discarding logo brand color naming or legal copy
+  Execute a named aesthetic such as Linear-clean brutalist or premium consumer
+  Sweep AI tells and run the pre-flight check before shipping a page
+  Decide whether the brief is in scope at all before generating anything
+
+S[7]{n,step,details}:
+  1,Scope check,dashboards data tables wizards code editors native mobile and realtime collab are disclaimed; name the right tool instead
+  2,Use bundled rules,the operative ruleset ships in this skill's references under MIT attribution; no install and no network needed
+  3,Declare the design read,one line naming page kind audience vibe and design system; ask at most one question when it genuinely diverges
+  4,Set dials explicitly,DESIGN_VARIANCE MOTION_INTENSITY VISUAL_DENSITY with baseline 8/6/4; silent baseline is a pre-flight failure
+  5,Choose honestly,pick an official design system when the brief implies one or name the aesthetic family; never ship an unnamed default
+  6,Sweep AI tells,zero em-dashes anywhere visible plus gradient hero equal-card grids Inter slate-900 and placeholder content
+  7,Pre-flight then report,theme color and shape locks WCAG AA CTA and form contrast hero fit and reduced motion; state which boxes passed
+
+R[10]:
+  Bundled from Leonxlnx/taste-skill commit ccbc15639c97057cbfcf32ecebc38ef716e4bb37 dated 2026-08-24 MIT copyright leonxlnx
+  Upstream folder is skills/taste-skill but its frontmatter name is design-taste-frontend
+  That shared name means installing upstream can shadow or overwrite this catalog copy so it is not a setup step
+  This skill is self-contained; references carry the operative rules and LICENSE.upstream.txt carries the MIT notice
+  Em-dash ban is binary; a single visible em-dash or separator en-dash fails pre-flight
+  Quiet constraints such as public-sector or accessibility-critical override aesthetic preference
+  Redesign preserve mode never silently changes logo brand color product naming or legal copy
+  Contrast and reduced motion are ship gates not polish
+  Dashboards and dense product UI route to design-system with Fluent Carbon Atlassian or Polaris
+  Deeper accessibility remediation routes to web-accessibility and layout adaptation to responsive-design
+
+E[4]{type,command}:
+  Install skill,npx skills add https://github.com/akillness/jeo-skills --skill design-taste-frontend
+  Check provenance,curl -fsS https://raw.githubusercontent.com/Leonxlnx/taste-skill/ccbc15639c97057cbfcf32ecebc38ef716e4bb37/skills/taste-skill/SKILL.md | head -40
+  Validate evals,node .agent-skills/design-taste-frontend/scripts/validate-evals.mjs --json
+  Validate skill,bash .agent-skills/skill-standardization/scripts/validate_skill.sh .agent-skills/design-taste-frontend

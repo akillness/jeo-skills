@@ -1,7 +1,7 @@
 {
   "version": "2.0.0",
   "generated": "2026-07-30",
-  "skill_count": 227,
+  "skill_count": 230,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -167,7 +167,8 @@
       "stitched-full-page-capture",
       "chatbot-template",
       "airship",
-      "moli"
+      "moli",
+      "design-taste-frontend"
     ],
     "infrastructure": [
       "deployment-automation",
@@ -302,7 +303,9 @@
       "openspace",
       "agentic-skills",
       "agenticskills",
-      "prompts-chat"
+      "prompts-chat",
+      "find-skills",
+      "mcp-builder"
     ],
     "engineering": [
       "audit-reference-originality",
@@ -394,7 +397,8 @@
         "lazyweb",
         "responsive-design",
         "stitch-skills",
-        "web-design"
+        "web-design",
+        "design-taste-frontend"
       ],
       "api": [
         "api-design",
@@ -621,7 +625,8 @@
         "microsoft-agent-framework",
         "openai-agents-python",
         "goalflow",
-        "openexecutive"
+        "openexecutive",
+        "mcp-builder"
       ],
       "skill-authoring": [
         "article-prompts-to-skills",
@@ -649,7 +654,8 @@
         "triage"
       ],
       "discovery": [
-        "openspace"
+        "openspace",
+        "find-skills"
       ],
       "prompting": [
         "agentic-skills",
@@ -888,7 +894,8 @@
         "design-system",
         "design-first-ui-prompting",
         "responsive-design",
-        "web-accessibility"
+        "web-accessibility",
+        "design-taste-frontend"
       ]
     },
     "react": {
@@ -1001,6 +1008,15 @@
         "x-twitter-scraper",
         "ax"
       ]
+    },
+    "skill-discovery": {
+      "mode": "adjacent",
+      "members": [
+        "find-skills",
+        "openspace",
+        "jeo-skill"
+      ],
+      "note": "Public skills.sh registry search versus in-repo skill ranking versus local jeo-skills catalog browsing."
     }
   },
   "skills": [
@@ -8006,6 +8022,47 @@
       "source": "https://github.com/lexmount/moli"
     },
     {
+      "name": "design-taste-frontend",
+      "description": "Apply anti-generic frontend design rules bundled from Leonxlnx/taste-skill, the MIT-licensed anti-slop ruleset for landing pages, portfolios, editorial pages, and redesigns. Use when output looks templated, AI-default, or \"sloppy\" and the user wants a deliberate design read, explicit DESIGN_VARIANCE / MOTION_INTENSITY / VISUAL_DENSITY dials, a real design system choice, an AI-tells sweep including the em-dash ban, a redesign audit that preserves brand equity, or the pre-flight check before shipping. Even if the user does not say taste-skill, also triggers on: looks like AI made it, generic landing page, purple gradient hero, make it less templated, Awwwards feel, Linear-style, redesign without losing the brand. Not for dashboards, data tables, wizards, or admin UI. Route shared token governance to `design-system`, layout adaptation to `responsive-design`, accessibility remediation to `web-accessibility`, and visual-recipe lookup to `web-design`.",
+      "category": "web",
+      "subcategory": "design",
+      "interface": "workflow",
+      "path": "design-taste-frontend/SKILL.md",
+      "tags": [
+        "design-taste-frontend",
+        "taste-skill",
+        "anti-slop",
+        "frontend-design",
+        "landing-page",
+        "portfolio",
+        "redesign",
+        "ai-tells",
+        "em-dash-ban",
+        "design-variance",
+        "motion-intensity",
+        "visual-density"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex",
+        "Cursor",
+        "Cline"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "design-taste-frontend",
+      "version": "1.0",
+      "source": "https://github.com/Leonxlnx/taste-skill"
+    },
+    {
       "name": "mex",
       "description": "Drive mex (`mex-agent`), persistent project memory and code graphs for AI coding agents. One command scaffolds a living wiki, builds a deterministic code graph, and installs a project anchor file (CLAUDE.md, root AGENTS.md, .cursorrules, .windsurfrules, copilot-instructions.md, or .opencode/opencode.json) that your agent auto-loads as a standing rule document. Use when the user wants to `mex setup` a new project, build a symbol-grounded wiki, keep knowledge connected to implementation, route relevant context to agents, or run drift detection (`mex check`, `mex sync`). Triggers on: \"mex setup\", \"project memory\", \"code graphs\", \"codebase documentation\", \"drift detection\", \"agent memory\", \"structured scaffolds\", \"architectural context\", \"living wiki\", \"project anchor file\".",
       "category": "ai-agents",
@@ -8049,6 +8106,80 @@
       "keyword": "mex",
       "version": "1.1",
       "source": "mex-memory/mex"
+    },
+    {
+      "name": "find-skills",
+      "description": "Discover and install Agent Skills from the public skills.sh ecosystem using the `npx skills` CLI. Route one request to search, quality triage, install, update, or authoring handoff. Use when the user asks \"is there a skill for X\", \"find me a skill\", \"how do I do X\" where a published skill may already exist, wants to browse the skills.sh leaderboard, or wants to install from `vercel-labs/agent-skills`, `anthropics/skills`, or another GitHub owner. Verify install count, source reputation, and repository stars before recommending, and require confirmation before any install, global `-g` write, or `--yes` run. Route browsing the local jeo-skills catalog to `jeo-skill`, in-repo skill retrieval and ranking to `openspace`, authoring a new skill to `write-a-skill`, and spec compliance to `skill-standardization`.",
+      "category": "ai-agents",
+      "subcategory": "discovery",
+      "interface": "cli",
+      "path": "find-skills/SKILL.md",
+      "tags": [
+        "find-skills",
+        "npx-skills",
+        "skills-sh",
+        "agent-skills",
+        "skill-discovery",
+        "skill-registry",
+        "skill-install",
+        "vercel-labs"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex",
+        "Cursor",
+        "Cline"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "find-skills",
+      "version": "1.0",
+      "source": "https://github.com/vercel-labs/skills"
+    },
+    {
+      "name": "mcp-builder",
+      "description": "Build production MCP (Model Context Protocol) servers that let LLMs drive an external API through well-designed tools, in TypeScript (MCP SDK) or Python (FastMCP). Route one request to research and planning, tool design, transport choice, implementation, security review, or evaluation. Use when the user wants to wrap an API as MCP tools, name and shape those tools, choose between stdio and streamable HTTP, fix a server whose tools the model cannot use correctly, or build the 10-question evaluation that proves it works. Requires confirmation before running an evaluation harness that spends API credits or calls a live service. Route consuming an existing MCP server to that server's own skill, and generic API contract design to `api-design`.",
+      "category": "ai-agents",
+      "subcategory": "agent-frameworks",
+      "interface": "workflow",
+      "path": "mcp-builder/SKILL.md",
+      "tags": [
+        "mcp-builder",
+        "model-context-protocol",
+        "mcp-server",
+        "fastmcp",
+        "typescript-sdk",
+        "tool-design",
+        "stdio",
+        "streamable-http",
+        "mcp-evaluation",
+        "anthropics"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex",
+        "Cursor",
+        "Cline"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "mcp-builder",
+      "version": "1.0",
+      "source": "https://github.com/anthropics/skills"
     },
     {
       "name": "drama-skills",

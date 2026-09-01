@@ -1,0 +1,92 @@
+{
+  "skill_name": "mcp-builder",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "우리 내부 REST API를 MCP 서버로 만들어줘. 엔드포인트 40개야.",
+      "expected_output": "The skill starts in research and design rather than generating 40 thin tools, and decides coverage strategy explicitly.",
+      "assertions": [
+        "The response inventories the API and identifies the workflows users actually perform before writing tools",
+        "The response states the coverage-versus-workflow-tools tradeoff and defaults to comprehensive coverage when uncertain",
+        "The response does not emit one thin tool per endpoint without a design pass",
+        "The response proposes consistent tool name prefixes and action verbs"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "모델이 자꾸 엉뚱한 tool 을 호출해. 코드 버그인가?",
+      "expected_output": "The skill treats this as a tool-design problem first, inspecting names and descriptions before changing implementation.",
+      "assertions": [
+        "The response checks for ambiguous names, overlapping descriptions, and missing prefixes",
+        "The response treats discoverability as the likely cause rather than an implementation bug",
+        "The response recommends renaming or re-describing before adding code",
+        "The response does not add another tool as the first remedy"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "eval 하니스 지금 돌려줘.",
+      "expected_output": "The skill gates the run on API-key ownership, per-run credit cost, read-only questions, and non-production data before executing.",
+      "assertions": [
+        "The response states that the harness requires an Anthropic API key and spends credits per question",
+        "The response confirms every question is read-only before running",
+        "The response confirms the server points at non-production data",
+        "The response asks for explicit confirmation rather than running immediately"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "eval 질문 10개 만들어줬으니까 이제 서버 검증 끝난 거지?",
+      "expected_output": "The skill distinguishes writing evaluations from running them and declines to call the server validated.",
+      "assertions": [
+        "The response states that writing evaluations is not the same as running them",
+        "The response says a pass count out of ten is the actual evidence",
+        "The response notes that each expected answer must be independently verified by solving the question",
+        "The response does not report the server as validated"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "삭제 tool 인데 확인 프롬프트 뜨는 게 귀찮아. read-only 로 표시해도 돼?",
+      "expected_output": "The skill refuses, explaining that a false annotation removes the user's intervention point and is a security defect.",
+      "assertions": [
+        "The response refuses to annotate a destructive tool as read-only",
+        "The response explains that annotations drive client-side confirmation prompts",
+        "The response frames a wrong annotation as a security defect rather than a metadata preference",
+        "The response offers a legitimate alternative such as idempotency or a narrower tool"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "anthropics/skills 는 라이선스가 없던데 그냥 우리 제품에 다 가져다 써도 되지?",
+      "expected_output": "The skill corrects the premise: the repository root has no SPDX license but this skill ships its own Apache-2.0 LICENSE.txt, which does not generalize to siblings.",
+      "assertions": [
+        "The response states that `skills/mcp-builder/LICENSE.txt` grants Apache-2.0 for this skill specifically",
+        "The response warns that the absent root license does not make the whole repository permissive",
+        "The response says Apache-2.0 requires retaining license and attribution notices",
+        "The response does not generalize the license to other skills in the repository"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "원격 MCP 서버인데 세션 상태 유지하면서 스트리밍으로 하고 싶어.",
+      "expected_output": "The skill states the upstream preference for stateless JSON over stateful streaming and asks for the concrete requirement before agreeing.",
+      "assertions": [
+        "The response states that streamable HTTP with stateless JSON is the recommended default for remote servers",
+        "The response explains that stateless is simpler to scale and maintain",
+        "The response asks what concrete requirement makes stateful sessions necessary",
+        "The response mentions DNS rebinding protection for HTTP transports"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "이미 있는 Notion MCP 서버 우리 에이전트에 붙여줘.",
+      "expected_output": "The skill recognizes this is consuming an existing server rather than building one and routes away.",
+      "assertions": [
+        "The response distinguishes building an MCP server from configuring an existing one",
+        "The response routes to that server's own skill or configuration documentation",
+        "The response does not begin designing a new MCP server"
+      ]
+    }
+  ]
+}

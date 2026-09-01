@@ -1,0 +1,93 @@
+{
+  "skill_name": "design-taste-frontend",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "이 랜딩페이지 딱 봐도 AI가 만든 티 나. 안 그래 보이게 고쳐줘.",
+      "expected_output": "The skill declares a design read, names the specific tells present, sets dials away from silent baseline with reasoning, and reports what changed.",
+      "assertions": [
+        "The response states a one-line design read before generating anything",
+        "The response names concrete tells present such as gradient hero, three equal cards, Inter plus slate-900, or em-dashes",
+        "The response sets DESIGN_VARIANCE, MOTION_INTENSITY, and VISUAL_DENSITY explicitly with reasoning rather than silently using 8/6/4",
+        "The response reports which tells were removed rather than claiming it looks better"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "우리 어드민 대시보드에도 이 taste 적용해줘.",
+      "expected_output": "The skill states that dashboards are explicitly out of scope, routes to a product-UI system, and offers to apply only to adjacent marketing surfaces.",
+      "assertions": [
+        "The response says dashboards and dense product UI are disclaimed by this skill",
+        "The response routes to `design-system` or names Fluent, Carbon, Atlassian, or Polaris",
+        "The response does not apply landing-page aesthetics to the admin panel",
+        "The response offers to help with the marketing surfaces that remain in scope"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "리디자인 하는데 로고랑 브랜드 컬러는 절대 못 바꿔.",
+      "expected_output": "The skill enters preserve mode, audits before changing anything, and holds the protected set fixed while pulling typography, spacing, hierarchy, and motion levers.",
+      "assertions": [
+        "The response detects preserve mode and audits the existing page first",
+        "The response states that logo, brand color, product naming, and legal copy never change silently",
+        "The response pulls typography, spacing, hierarchy, or motion levers instead",
+        "The response matches existing variance and density rather than jumping to baseline"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "헤드라인에 em-dash 하나쯤은 괜찮지 않아? 자연스러운데.",
+      "expected_output": "The skill holds the ban as binary, explains why upstream states it that way, and offers concrete replacements.",
+      "assertions": [
+        "The response states that the em-dash ban is zero-tolerance for user-visible text, not a 'use sparingly' guideline",
+        "The response offers specific replacements such as a period, comma, colon, parentheses, or ` - `",
+        "The response notes that a visible em-dash fails the pre-flight check",
+        "The response does not weaken the rule to accommodate the request"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "공공기관 서비스 사이트인데 Awwwards 스타일로 화려하게 뽑아줘.",
+      "expected_output": "The skill recognizes that trust-first and accessibility-critical constraints override aesthetic preference, and proposes low dial values with the reasoning stated.",
+      "assertions": [
+        "The response states that public-sector and accessibility-critical constraints override aesthetic preference",
+        "The response proposes low DESIGN_VARIANCE and MOTION_INTENSITY rather than experimental values",
+        "The response suggests an appropriate system such as GOV.UK Frontend or USWDS",
+        "The response explains the tradeoff instead of silently refusing or silently complying"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "업스트림 taste-skill 도 같이 설치해줘.",
+      "expected_output": "The skill warns that upstream shares this skill's frontmatter name and can shadow or overwrite the catalog copy, and does not install it as a routine step.",
+      "assertions": [
+        "The response states that upstream's frontmatter name is also `design-taste-frontend`",
+        "The response warns that installing it can shadow or overwrite this catalog copy",
+        "The response notes that this skill is already self-contained and needs no install to operate",
+        "The response requires explicit confirmation and suggests an isolated directory if the user still wants it"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "CTA 버튼 색이 배경이랑 비슷한데 디자인상 그게 예뻐. 그냥 두자.",
+      "expected_output": "The skill treats contrast as a ship gate rather than an aesthetic preference and offers a compliant alternative.",
+      "assertions": [
+        "The response states that WCAG AA contrast on CTAs is a pre-flight gate, not polish",
+        "The response offers an alternative that preserves the intended look while passing contrast",
+        "The response does not approve shipping the failing contrast",
+        "The response routes deeper accessibility work to `web-accessibility`"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "그냥 알아서 예쁘게 만들어줘. 아무 설명 없이 코드만 줘.",
+      "expected_output": "The skill still declares the design read and dial values because an unstated design decision is an accidental one, while keeping the explanation to one line.",
+      "assertions": [
+        "The response states a one-line design read even when brevity is requested",
+        "The response states the chosen dial values rather than silently defaulting",
+        "The response keeps the preamble minimal instead of producing a long design essay",
+        "The response still runs the pre-flight check before delivering code"
+      ]
+    }
+  ]
+}
