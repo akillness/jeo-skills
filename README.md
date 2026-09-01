@@ -275,9 +275,9 @@ Subcategories: `image` (5), `video` (12), `motion` (1), `audio` (1), `presentati
 | `openmontage` |
 | `open-generative-ai` |
 
-### ⌨️ CLI Tools (30)
+### ⌨️ CLI Tools (31)
 
-Subcategories: `developer-cli` (8), `ai-cli` (10), `media-cli` (1), `automation-cli` (6), `search-cli` (4), `benchmark-cli` (1)
+Subcategories: `developer-cli` (8), `ai-cli` (11), `media-cli` (1), `automation-cli` (6), `search-cli` (4), `benchmark-cli` (1)
 
 | Skill |
 |---|
@@ -298,6 +298,7 @@ Subcategories: `developer-cli` (8), `ai-cli` (10), `media-cli` (1), `automation-
 | `compresso` |
 | `codeflow` |
 | `graphify` |
+| `headroom` |
 | `npm-git-install` |
 | `okf` |
 | `rtk` |

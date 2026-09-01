@@ -276,9 +276,9 @@ video-motion-previs check
 | `openmontage` |
 | `open-generative-ai` |
 
-### ⌨️ CLI 도구 (30개)
+### ⌨️ CLI 도구 (31개)
 
-하위 분류: `developer-cli` (8), `ai-cli` (10), `media-cli` (1), `automation-cli` (6), `search-cli` (4), `benchmark-cli` (1)
+하위 분류: `developer-cli` (8), `ai-cli` (11), `media-cli` (1), `automation-cli` (6), `search-cli` (4), `benchmark-cli` (1)
 
 | Skill |
 |---|
@@ -299,6 +299,7 @@ video-motion-previs check
 | `compresso` |
 | `codeflow` |
 | `graphify` |
+| `headroom` |
 | `npm-git-install` |
 | `okf` |
 | `rtk` |

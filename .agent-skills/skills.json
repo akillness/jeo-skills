@@ -1,7 +1,7 @@
 {
   "version": "2.0.0",
   "generated": "2026-07-30",
-  "skill_count": 231,
+  "skill_count": 232,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -260,6 +260,7 @@
       "compresso",
       "codeflow",
       "graphify",
+      "headroom",
       "npm-git-install",
       "okf",
       "rtk",
@@ -586,6 +587,7 @@
         "aider-cli-workflow",
         "claudekit",
         "fabric",
+        "headroom",
         "ooo",
         "open-code-review",
         "ponytail",
@@ -1010,6 +1012,15 @@
         "x-twitter-scraper",
         "ax"
       ]
+    },
+    "code-context-policy": {
+      "mode": "layered",
+      "members": [
+        "headroom",
+        "graphify",
+        "ponytail"
+      ],
+      "note": "Headroom optimizes active transport, Graphify supplies read-only code context, and Ponytail minimizes code only after an authoritative 60% context signal."
     },
     "skill-discovery": {
       "mode": "adjacent",
@@ -4759,6 +4770,43 @@
       "keyword": "graphify",
       "version": "3.0",
       "source": "https://github.com/Graphify-Labs/graphify"
+    },
+    {
+      "name": "headroom",
+      "description": "Install, configure, and operate Headroom, the local-first context optimization layer for coding agents. Use when the user needs proxy-level compression, Headroom MCP tools, persistent Claude/Codex/OpenCode routing, or a code-work policy that combines Headroom health with Graphify preflight and context-aware Ponytail minimization. Triggers on: headroom, headroom proxy, headroom deploy, headroom wrap, headroom mcp, headroom doctor, context compression, token savings, context budget, or Headroom code policy.",
+      "category": "cli-tools",
+      "subcategory": "ai-cli",
+      "interface": "cli",
+      "path": "headroom/SKILL.md",
+      "tags": [
+        "headroom",
+        "context-optimization",
+        "token-savings",
+        "compression",
+        "proxy",
+        "mcp",
+        "graphify",
+        "ponytail",
+        "claude-code",
+        "codex"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex CLI",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Grep",
+        "Glob"
+      ],
+      "keyword": "headroom",
+      "version": "0.37",
+      "source": "https://github.com/headroomlabs-ai/headroom"
     },
     {
       "name": "npm-git-install",

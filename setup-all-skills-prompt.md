@@ -307,6 +307,59 @@ if command -v codex >/dev/null 2>&1 && ! codex mcp list 2>/dev/null | grep -q '^
 fi
 ```
 
+### Graphify and Headroom code-context layer
+
+Install the two CLIs separately: Graphify supplies bounded, read-only project
+context; Headroom supplies persistent transport compression. Do not run
+`graphify update` during setup — it writes `.graphify/` in the current checkout.
+
+```bash
+if ! command -v graphify >/dev/null 2>&1; then
+  uv tool install graphifyy
+fi
+if ! command -v headroom >/dev/null 2>&1; then
+  if [ "$PLATFORM" = windows ]; then
+    printf '%s\n' 'Headroom needs its documented MSVC and Rust prerequisites on Windows; install it on demand after those prerequisites are available.'
+  else
+    uv tool install --python 3.13 'headroom-ai[proxy,mcp,code]'
+  fi
+fi
+
+command -v graphify >/dev/null 2>&1 && graphify --version
+if command -v headroom >/dev/null 2>&1; then
+  headroom --version
+  if headroom install status; then
+    headroom doctor
+  else
+    headroom deploy
+    headroom install status
+    headroom doctor
+  fi
+fi
+```
+
+`headroom deploy` is the durable routing path; do not layer `headroom wrap` on
+top of a healthy deployment. The Claude Code adapter below is the only portable
+source-mutation hook in this catalog: it runs `graphify scope <cwd>` and
+`graphify check-update <cwd>` only when a graph already exists, plus
+`headroom doctor`, once before the first source edit. It keeps those preflights
+read-only, denies that first edit so the agent retries with evidence, and invokes
+the Ponytail ladder only when the host explicitly supplies
+`context_usage_percent >= 60`. It never infers context usage from proxy savings.
+
+```bash
+if command -v claude >/dev/null 2>&1 \
+  && [ -x "$SKILLS_ROOT/headroom/scripts/setup-claude-code-policy-hook.sh" ]; then
+  bash "$SKILLS_ROOT/headroom/scripts/setup-claude-code-policy-hook.sh"
+  python3 "$SKILLS_ROOT/headroom/scripts/jeo-code-policy-hook.py" --self-test
+fi
+```
+
+Headroom can route other detected clients, but their hook payloads do not share
+Claude Code's source-mutation and explicit-context signals. Use the `graphify`
+and `ponytail` skills there; do not claim the Claude policy hook enforces those
+hosts.
+
 For another detected agent, use its documented MCP command/config surface; do not guess a
 JSON/TOML schema or overwrite its existing settings.
 
