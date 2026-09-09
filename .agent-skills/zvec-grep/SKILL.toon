@@ -1,0 +1,37 @@
+N:zvec-grep
+D:Drive zvec-grep (`zg`), zvec-ai's local-first workspace search CLI and MCP server, to index code and documents, run hybrid, vector, BM25, or exhaustive managed ripgrep searches, configure agent integrations, and diagnose index or server freshness. Use when a task needs local workspace-grounded retrieval across code, Markdown, text, structured data, or images. Triggers on: zvec-grep, zvec grep, `zg`, @zvec/zvec-grep, local-first workspace search, hybrid workspace search, semantic repository search, zvec MCP, zvec_grep_search, managed ripgrep, `.zvec-grep`, or Remote Embedding authorization.
+G:zvec-grep|zvec|workspace-search|hybrid-search|semantic-search|bm25|ripgrep|mcp|cli|local-first|embeddings|node
+U[8]:
+  Index a scoped local workspace with an explicit model and file filters
+  Choose ranked hybrid, FTS, vector, or exhaustive managed ripgrep retrieval
+  Inspect and maintain workspace index status, freshness, rebuild, and drop boundaries
+  Operate direct, server, or auto execution and the loopback MCP daemon
+  Install or remove Codex, Claude, Qwen, Qoder, OpenCode, or Cursor integrations
+  Protect unmanaged agent configuration and use --force only after inspection
+  Obtain explicit Remote Embedding authorization without exposing credentials
+  Route code-only search, graphs, web retrieval, and durable memory to their owning skills
+S[9]{n,action,details}:
+  1,Classify route,Exact evidence uses rg or zg query --rg; conceptual discovery uses indexed zg query
+  2,Verify runtime,Check Node >=22 and installed zg help before copying commands
+  3,Scope workspace,Choose root and globs before creating persistent .zvec-grep state
+  4,Probe narrowly,Use one capped semantic probe then confirm with exact reads
+  5,Maintain index,Use status first; rebuild only for model or endpoint changes; never drop implicitly
+  6,Choose transport,Use auto for normal use, server for MCP, direct for one-off or CI
+  7,Integrate safely,Preserve marked config blocks and inspect unmanaged entries before --force
+  8,Authorize data,Keep provider credentials separate from explicit Remote Embedding consent
+  9,Report truth,Include root scope freshness and route without secrets or treating ranked results as exhaustive
+R[10]:
+  Use the published 0.2.2 subcommands; GitHub main action flags are a different unreleased contract
+  Do not use semantic ranking to prove every occurrence or prove absence
+  Do not create rebuild drop or server state silently in an agent workflow
+  Do not grant Remote Embedding because local MCP tool approval was accepted
+  Do not use --force before inspecting an unmanaged zvec_grep configuration entry
+  Keep .zvec-grep generated state out of commits and backups by default
+  Use semble for remote git or token-efficient code search and find-related
+  Use graphify for dependency and relationship graph artifacts
+  Use scrapling or web tools for external pages and typesense for hosted app search
+  Read installed zg help and the pinned npm package docs because upstream main is pre-stable
+E[3]{desc,in,out}:
+  "Exact evidence","find every TODO in src","zg query --rg -n -F TODO src or native rg; no index required"
+  "Semantic workspace discovery","where is authentication validated","scope with zg index, probe zg query --vector <question> --limit 5, then confirm with rg"
+  "Remote git code search","search a GitHub repository without cloning and find similar code","route to semble instead of zvec-grep"

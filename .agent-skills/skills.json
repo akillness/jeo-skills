@@ -1,7 +1,7 @@
 {
   "version": "2.0.0",
   "generated": "2026-07-30",
-  "skill_count": 232,
+  "skill_count": 233,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -268,6 +268,7 @@
       "scrapling",
       "scrapingant-web-fetch",
       "semble",
+      "zvec-grep",
       "x-twitter-scraper",
       "hyperfine-benchmarking",
       "codeburn",
@@ -611,6 +612,7 @@
         "scrapling",
         "scrapingant-web-fetch",
         "semble",
+        "zvec-grep",
         "x-twitter-scraper"
       ],
       "benchmark-cli": [
@@ -839,6 +841,7 @@
       "jeo-skill",
       "rtk",
       "semble",
+      "zvec-grep",
       "graphify",
       "scrapling"
     ]
@@ -1030,6 +1033,15 @@
         "jeo-skill"
       ],
       "note": "Public skills.sh registry search versus in-repo skill ranking versus local jeo-skills catalog browsing."
+    },
+    "workspace-search": {
+      "mode": "provider-choice",
+      "members": [
+        "codebase-search",
+        "semble",
+        "zvec-grep"
+      ],
+      "note": "codebase-search routes repository-navigation work, semble provides lightweight code search including remote Git and find-related, and zvec-grep provides local mixed-workspace hybrid/vector/BM25 retrieval with explicit index state."
     }
   },
   "skills": [
@@ -8719,6 +8731,48 @@
       "keyword": "game-ui-ux",
       "version": "1.0",
       "source": "akillness/jeo-skills"
+    },
+    {
+      "name": "zvec-grep",
+      "description": "Drive zvec-grep (`zg`), zvec-ai's local-first workspace search CLI and MCP server, to index code and documents, run hybrid, vector, BM25, or exhaustive managed ripgrep searches, configure agent integrations, and diagnose index or server freshness. Use when a task needs local workspace-grounded retrieval across code, Markdown, text, structured data, or images. Triggers on: zvec-grep, zvec grep, `zg`, @zvec/zvec-grep, local-first workspace search, hybrid workspace search, semantic repository search, zvec MCP, zvec_grep_search, managed ripgrep, `.zvec-grep`, or Remote Embedding authorization.",
+      "category": "cli-tools",
+      "subcategory": "search-cli",
+      "interface": "cli",
+      "path": "zvec-grep/SKILL.md",
+      "tags": [
+        "zvec-grep",
+        "zvec",
+        "workspace-search",
+        "hybrid-search",
+        "semantic-search",
+        "bm25",
+        "ripgrep",
+        "mcp",
+        "cli",
+        "local-first",
+        "embeddings",
+        "node"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex CLI",
+        "Qwen Code",
+        "Qoder",
+        "OpenCode",
+        "Cursor"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
+      ],
+      "keyword": "zvec-grep",
+      "version": "0.2.2",
+      "source": "https://github.com/zvec-ai/zvec-grep"
     }
   ]
 }

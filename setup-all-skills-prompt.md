@@ -307,6 +307,32 @@ if command -v codex >/dev/null 2>&1 && ! codex mcp list 2>/dev/null | grep -q '^
 fi
 ```
 
+### Zvec-grep local workspace search
+
+Install `zg` for local-first hybrid, vector, lexical, and managed-ripgrep
+search. It requires Node.js 22 or newer. This bootstrap installs only the CLI; it
+does not download an embedding model, create a `.zvec-grep/` index, start the
+local MCP server, edit agent configuration, or authorize Remote Embedding.
+
+`npm -g` follows the host Node prefix selected in Step 1. If `zg version`
+fails after installation, keep the package in place and diagnose the host's native
+zvec binding rather than retrying an index or downloading a model.
+
+```bash
+ZG_NODE_MAJOR=$(node -p 'process.versions.node.split(".")[0]' 2>/dev/null || printf '0')
+if [ "$ZG_NODE_MAJOR" -lt 22 ]; then
+  printf '%s\n' 'zvec-grep requires Node.js 22 or newer; upgrade Node before installing zg.' >&2
+else
+  command -v zg >/dev/null 2>&1 || npm install -g @zvec/zvec-grep@0.2.2
+  zg version
+  zg help
+fi
+```
+
+For a real workspace-search task, load the installed `zvec-grep` skill first.
+Create an index or agent integration only after the user names the workspace and
+approves that persistent operation.
+
 ### Graphify and Headroom code-context layer
 
 Install the two CLIs separately: Graphify supplies bounded, read-only project

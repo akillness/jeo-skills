@@ -1,0 +1,94 @@
+{
+  "skill_name": "zvec-grep",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Install zvec-grep and let the agent search this repository by meaning.",
+      "expected_output": "The skill uses the current @zvec/zvec-grep package, checks Node >=22, scopes and explicitly indexes the workspace, then configures only the requested agent integration.",
+      "assertions": [
+        "Response checks Node.js >=22 and uses @zvec/zvec-grep",
+        "Response distinguishes explicit index creation from semantic querying",
+        "Response names the requested agent target and restart or verification step"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Find every occurrence of TODO in src and show the exact lines.",
+      "expected_output": "The skill routes the request to native rg or zg query --rg, not vector search, because the user asked for exhaustive exact evidence.",
+      "assertions": [
+        "Response uses rg or zg query --rg",
+        "Response does not require an index or semantic model",
+        "Response does not claim ranked semantic results prove every occurrence"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Where is authentication validated across this repository? Use zvec-grep.",
+      "expected_output": "The skill chooses one focused indexed semantic probe, caps results, and follows promising hits with exact grep or file reads.",
+      "assertions": [
+        "Response uses a hybrid or vector query with a result limit",
+        "Response states the workspace root and index side effect",
+        "Response follows semantic discovery with exact evidence"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Our zg query is stale after a refactor. Fix it without deleting the index.",
+      "expected_output": "The skill checks status and freshness, then chooses incremental update or explicit rebuild; it does not recommend --drop as a generic repair.",
+      "assertions": [
+        "Response starts with zg status or zg status --check-ready",
+        "Response distinguishes incremental update from rebuild",
+        "Response does not silently run zg index --drop --yes"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Enable remote Qwen embeddings for the MCP server automatically so agents never have to ask.",
+      "expected_output": "The skill refuses automatic consent, explains credentials versus data authorization, and offers an explicit per-command or workspace-grant path only after approval.",
+      "assertions": [
+        "Response does not grant Remote Embedding automatically",
+        "Response separates provider credentials from data authorization",
+        "Response mentions --allow-remote or zg auth grant with explicit scope"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Run zg install --target claude and zg index on the repo.",
+      "expected_output": "The skill recognizes the released 0.2.2 subcommand syntax, identifies installation and indexing as persistent operations, and asks for explicit approval if needed.",
+      "assertions": [
+        "Response uses zg install and zg index",
+        "Response identifies the commands as persistent operations",
+        "Response tells the user to check installed zg help and not copy GitHub main long action flags"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Configure zvec-grep for Claude Code, but keep any existing unmanaged MCP server entries.",
+      "expected_output": "The skill uses the managed installer, inspects conflicts before --force, preserves unrelated settings, restarts Claude Code, and verifies zvec_grep_search.",
+      "assertions": [
+        "Response mentions managed blocks and preserving unrelated settings",
+        "Response does not use --force without inspecting an unmanaged zvec_grep entry",
+        "Response verifies the tool after restarting the client"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "Search a remote Git repository without cloning it and find semantically similar code.",
+      "expected_output": "The skill routes to semble rather than zvec-grep because remote git indexing and find-related are outside zvec-grep's local workspace boundary.",
+      "assertions": [
+        "Response routes to semble",
+        "Response does not claim zvec-grep is a remote git search replacement",
+        "Response explains the boundary briefly"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "Build a dependency graph and export architecture artifacts from this repository.",
+      "expected_output": "The skill routes to graphify rather than running zvec-grep semantic search.",
+      "assertions": [
+        "Response routes to graphify",
+        "Response does not create a zvec-grep index as the primary solution"
+      ]
+    }
+  ]
+}
