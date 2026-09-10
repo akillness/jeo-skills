@@ -1,7 +1,7 @@
 {
   "version": "2.0.0",
   "generated": "2026-07-30",
-  "skill_count": 233,
+  "skill_count": 234,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -266,6 +266,7 @@
       "rtk",
       "tokhub",
       "scrapling",
+      "agent-reach",
       "scrapingant-web-fetch",
       "semble",
       "zvec-grep",
@@ -610,6 +611,7 @@
       ],
       "search-cli": [
         "scrapling",
+        "agent-reach",
         "scrapingant-web-fetch",
         "semble",
         "zvec-grep",
@@ -1012,6 +1014,7 @@
       "members": [
         "scrapingant-web-fetch",
         "scrapling",
+        "agent-reach",
         "x-twitter-scraper",
         "ax"
       ]
@@ -5007,6 +5010,37 @@
       "keyword": "scrapling",
       "version": "1.2",
       "source": "https://github.com/D4Vinci/Scrapling"
+    },
+    {
+      "name": "agent-reach",
+      "description": "Operate Panniantong/Agent-Reach, the MIT-licensed installer, doctor, and routing layer for platform-specific internet research tools. Use when the user names Agent Reach, agent-reach, its channel doctor, optional backend setup, OpenCLI integration, cookie configuration, transcription, or an Agent Reach update or uninstall. Choose fit-check, offline preflight, scoped setup, channel routing, credential handoff, transcription, or maintenance. Preserve existing skills: upstream installation can replace the same-named agent-reach skill. Require explicit approval for installs, credential access, browser/session integration, Docker changes, paid uploads, and deletion. Route generic crawling to scrapling and existing authenticated browser tasks to the browser or platform skill.",
+      "category": "cli-tools",
+      "subcategory": "search-cli",
+      "interface": "cli",
+      "path": "agent-reach/SKILL.md",
+      "tags": [
+        "agent-reach",
+        "platform-research",
+        "channel-routing",
+        "doctor",
+        "cli",
+        "mcp",
+        "opencli",
+        "credential-safety"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
+      ],
+      "keyword": "agent-reach",
+      "version": "1.0.0",
+      "source": "https://github.com/Panniantong/Agent-Reach"
     },
     {
       "name": "scrapingant-web-fetch",

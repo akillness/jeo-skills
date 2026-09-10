@@ -1329,6 +1329,35 @@ successful run adds or updates jeo-skills targets and leaves every unrelated pre
 skill present. For Aside, that also means `skills/builtin/` is byte-identical and every
 unrelated `skills/user/` entry is still there.
 
+### Agent Reach platform research (on demand, skill-name collision)
+
+The `agent-reach` skill installs only this catalog's documents, offline checker,
+and tests. Even in full mode, do not install or execute the upstream application,
+optional CLIs, browser extensions, MCP servers, cookie import, Docker operations,
+or transcription providers. Package presence is not channel readiness.
+
+`agent-reach install --system` and `agent-reach skill --install` can replace
+existing same-named skill directories, including this wrapper. Upstream uninstall
+can delete them. Preserve the catalog wrapper and user edits; require explicit
+path-by-path approval and backups before any replacement or deletion.
+
+```bash
+# Offline only, from the installed skill; no upstream application is executed.
+python3 "$SKILLS_ROOT/agent-reach/scripts/agent-reach-check.py"
+python3 -m unittest discover -s "$SKILLS_ROOT/agent-reach/scripts" -p 'test_*.py'
+```
+
+The helper needs Python 3.9+, never runs installed binaries, and does not read
+account configuration or secrets. Normal output is JSON. Source matching covers
+only listed file bytes, not a whole checkout or live platform access. Agent Reach
+itself requires Python 3.10+; use a separately approved package-only installation
+pinned to the audited revision before considering optional backend setup. Read
+`agent-reach/references/commands.md` and `upstream-and-safety.md` first.
+
+Do not run upstream `doctor` during blanket verification: it can execute local
+probes and inspect stored configuration/local services. Never treat cookie access,
+browser integration, a paid audio upload, or an update as implied by skill install.
+
 ### Mex project memory scaffold (on demand)
 
 The `mex` skill installs as documents plus `scripts/install.sh` (a real,

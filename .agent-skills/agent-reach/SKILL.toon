@@ -1,0 +1,31 @@
+N:agent-reach
+D:Operate Panniantong/Agent-Reach, the MIT-licensed installer, doctor, and routing layer for platform-specific internet research tools. Use when the user names Agent Reach, agent-reach, its channel doctor, optional backend setup, OpenCLI integration, cookie configuration, transcription, or an Agent Reach update or uninstall. Choose fit-check, offline preflight, scoped setup, channel routing, credential handoff, transcription, or maintenance. Preserve existing skills: upstream installation can replace the same-named agent-reach skill. Require explicit approval for installs, credential access, browser/session integration, Docker changes, paid uploads, and deletion. Route generic crawling to scrapling and existing authenticated browser tasks to the browser or platform skill.
+U[7]:
+  Fit-check a named platform and select one bounded read route
+  Inspect host presence and selected source fingerprints without executing upstream
+  Prepare approval-gated pinned package and backend setup
+  Diagnose a trusted installed channel and verify a real read
+  Scope cookie handoff and existing browser-session integration
+  Approve audio upload provider cost and fallback separately
+  Update or remove deliberately while preserving same-named skills
+S[7]{n,action,details}:
+  1,Select mode,Setup and doctor layer; retrieval belongs to external backends
+  2,Preflight,Use the bundled offline checker and do not read account configuration
+  3,Freeze setup,Pin source; check Python 3.10+; preserve existing agent-reach skills
+  4,Route read,Use a usable active backend and one bounded query
+  5,Authorize credentials,Keep platform and destination explicit; never expose secret values
+  6,Authorize upload,Select transcription provider and cost before transfer
+  7,Verify,Distinguish documents package presence channel readiness and actual retrieval
+R[8]:
+  No invented agent-reach search/read/fetch commands; bundled MCP is get_status only
+  Never run upstream installation or doctor during blanket catalog setup
+  System and skill installers may replace this same-named wrapper
+  Default safe install checks are not an inert offline inventory
+  Automatic browser import is Bilibili/Xueqiu only and needs permission
+  XHS Docker cookie copy/restart requires image and destination verification
+  Uninstall leaves external tools MCP entries and possible legacy credential copies
+  Fingerprints cover listed file bytes only; mismatch requires review not auto-acceptance
+E[3]{desc,in,out}:
+  "Preserve skills","install Agent Reach without changing skills","offline report then approved package-only setup"
+  "Private audio","transcribe with any provider","confirm rights upload provider and cost; no silent fallback"
+  "Generic crawl","crawl arbitrary websites","route to scrapling or existing browser owner"
