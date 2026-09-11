@@ -434,7 +434,7 @@ const tokens = {
 export { tokens }
 ```
 
-## Best Practices
+## Best practices
 
 1. **Import directly from component modules** — avoid barrel imports in hot code
    paths (see `react-best-practices` Rule 2.1)
@@ -501,7 +501,7 @@ updates. Watch the upstream repo for breaking changes you may want to backport.
 - **Component Lifecycle**: https://github.com/facebook/astryx/wiki/Component-Lifecycle
 - **Blog**: https://facebook.github.io/astryx/blog/
 
-## Output Format
+## Output format
 
 When the user asks for Astryx help, return a compact brief:
 
@@ -525,7 +525,7 @@ When the user asks for Astryx help, return a compact brief:
 - `react-grab` for UI element context capture and inspection
 ```
 
-## Best Practices for Agents
+## Best practices for agents
 
 1. **Discover components via direct exports** — don't traverse nested modules;
    Astryx exports all components at base level for agent simplicity

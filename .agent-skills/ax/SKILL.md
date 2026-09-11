@@ -318,7 +318,7 @@ ax https://site.example.com '.observed-selector' --row 'field=selector' --json
 
 ---
 
-## Best Practices
+## Best practices
 
 ### 1. Always Start with `--outline`
 

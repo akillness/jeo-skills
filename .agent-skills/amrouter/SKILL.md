@@ -399,7 +399,7 @@ while (true) {
 
 ---
 
-## Best Practices
+## Best practices
 
 ### 1. Use Combos for Resilience
 
