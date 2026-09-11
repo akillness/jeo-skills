@@ -19,6 +19,10 @@ metadata:
 
 Get a higher-level architectural perspective on unfamiliar code sections.
 
+## Upstream status
+
+Removed upstream in mattpocock/skills (unused in practice). Kept here as the architecture zoom-out entry point.
+
 ## When to use this skill
 
 - Navigating unfamiliar code and needing to understand how it connects to the larger system

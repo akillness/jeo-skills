@@ -19,6 +19,10 @@ metadata:
 
 Create structured agent skills with proper documentation.
 
+## Upstream status
+
+Superseded upstream by writing-for-agents. Kept here because find-skills, upskill, solo-skills, and openocta route to it.
+
 ## When to use this skill
 
 - Formalizing a workflow into a reusable, shareable skill

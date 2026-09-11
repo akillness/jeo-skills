@@ -70,6 +70,10 @@ Database connection:
 > Normal: "A connection pool allows you to reuse existing database connections rather than creating new ones, which avoids the overhead of the TCP handshake and authentication process, resulting in better performance under load."
 > Caveman: "Pool = reuse DB conn. Skip handshake → fast under load."
 
+## Upstream status
+
+Removed upstream in mattpocock/skills (it was a duplicate of another skill under test). Kept here because ponytail routes to it.
+
 ## When to use this skill
 - Use this skill when you need the workflow described above and want consistent, repeatable execution.
 

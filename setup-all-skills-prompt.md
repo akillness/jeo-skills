@@ -1424,3 +1424,40 @@ rendering 10, residential proxy 25/125, so escalate only after a cheaper attempt
 fails, and check the remaining balance with `scrapingant.sh credits`. ScrapingAnt
 sponsors jeo-skills; the signup link above is a referral link and the key always
 stays with the user.
+
+
+### Matt Pocock engineering suite (on demand, writes to your issue tracker and repo)
+
+The 28 skills imported from `mattpocock/skills` (MIT, commit `3cca18b`) are prompt-only and
+need no runtime during blanket setup, but several of them write outside the conversation, so
+they carry a standing boundary:
+
+- Load `.agent-skills/ask-matt/SKILL.md` first when the user asks which of these flows fits.
+  `ask-matt` is the suite router; it maps every user-invoked skill and how they relate.
+- Do **not** run `setup-matt-pocock-skills` during blanket setup. It edits the target repo's
+  `CLAUDE.md` / `AGENTS.md` and creates issue-tracker, triage-label, and domain docs. Run it
+  once, per repo, only after the user confirms the tracker and label vocabulary.
+- `to-spec`, `to-tickets`, `triage`, and `wayfinder` publish to whatever the repo's
+  `### Issue tracker` block points at, which may be live GitHub Issues, GitLab, or Linear.
+  Confirm the destination before the first write; a local `.scratch/` markdown tracker is the
+  safe default.
+- `implement` commits to the current branch and calls `code-review` when it finishes.
+  `resolving-merge-conflicts` is told never to `--abort`, so only start it on a conflict the
+  user actually wants resolved.
+- `code-review`, `research`, `improve-codebase-architecture`, and `grilling` dispatch
+  background or parallel sub-agents. Those are metered model calls; do not fan them out
+  during setup or on a whole monorepo without a scope.
+- `git-guardrails-claude-code` installs Claude Code `PreToolUse` hooks, and `wizard` emits a
+  bash script for a human to execute. Review both before they run.
+- `handoff` writes its document to the OS temporary directory on purpose, never into the
+  workspace. Keep it that way, and let it redact secrets before you read the file back.
+- `grilling` owns the interview procedure; `grill-me` and `grill-with-docs` are thin
+  user-invoked entry points that call it. Do not duplicate the procedure into them.
+- Upstream renames are already applied here: use `diagnosing-bugs` (was `diagnose`),
+  `to-spec` (was `to-prd`), and `to-tickets` (was `to-issues` and `to-plan`). The manifest's
+  `retired_skills` ledger records all three. `caveman`, `zoom-out`, and `write-a-skill` were
+  retired upstream but are kept locally because `ponytail`, the architecture entry point, and
+  `find-skills` / `upskill` / `solo-skills` / `openocta` still route to them; each one states
+  its upstream status at the top of its `SKILL.md`.
+- Route catalog-wide discovery to `jeo-skill`, `find-skills`, or `openspace` rather than
+  `ask-matt`, which only knows this one suite.

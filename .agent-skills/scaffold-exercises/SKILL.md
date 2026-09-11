@@ -1,119 +1,149 @@
 ---
 name: scaffold-exercises
-description: >-
-  Create educational exercise directories compliant with pnpm ai-hero-cli internal lint
+description: >
+  Create exercise directory structures with sections, problems, solutions, and explainers that
+  pass linting. Use when user wants to scaffold exercises, create exercise stubs, or set up a new
+  course section.
 allowed-tools: Read Grep Glob Bash Write Edit
 compatibility: >
-  Designed for ai-hero-cli course content structure. Validates with
-  `pnpm ai-hero-cli internal lint`. Primarily for educational content creators
-  building structured learning materials.
+  Specific to the ai-hero course repository layout. Not a general project scaffolder.
 metadata:
-  tags: education, exercises, scaffolding, course-content, linting, structure
+  tags: exercise-scaffolding, ai-hero-cli, course-sections, problem-solution, lint-compliant
   platforms: Claude, ChatGPT, Gemini, Codex
   version: "1.0"
   source: mattpocock/skills
+  upstream_commit: 3cca18b368ae95cdbdebbff572ccafa662551015
+  invocation: model-invoked
 ---
 
 # Scaffold Exercises
 
-Create exercise directory structures that pass linting validation for educational content.
+Create exercise directory structures with sections, problems, solutions, and explainers that pass linting. Use when user wants to scaffold exercises, create exercise stubs, or set up a new course section.
+
+This skill is imported from `mattpocock/skills` (MIT) and is **model-invoked** upstream.
 
 ## When to use this skill
 
-- Creating course sections and exercises for educational content
-- Scaffolding structured learning materials with problem/solution variants
-- Building content that must pass `pnpm ai-hero-cli internal lint`
-
-## When not to use this skill
-
-- General project scaffolding → use `file-organization`
-- Documentation writing → use `technical-writing`
-
-## Directory structure
-
-```
-exercises/
-├── 01-introduction/
-│   ├── 01.01-getting-started/
-│   │   ├── problem/
-│   │   │   ├── readme.md     (required, non-empty, has title)
-│   │   │   └── main.ts       (optional, >1 line if present)
-│   │   └── solution/
-│   │       ├── readme.md
-│   │       └── main.ts
-│   └── 01.02-basic-concepts/
-│       └── explainer/
-│           └── readme.md
-```
-
-## Naming conventions
-
-- Sections: `XX-section-name/` (two-digit number, lowercase, hyphens)
-- Exercises: `XX.YY-exercise-name/` (section.exercise number, lowercase, hyphens)
-- Variants: `problem/`, `solution/`, `explainer/`
-
-## Required files per variant
-
-Every variant folder needs:
-- `readme.md` — non-empty, must have at least a title (`# Title`)
-- `main.ts` — optional, but must be >1 line if present
-
-## Workflow
-
-### 1. Parse requirements
-
-Identify section names, exercise names, and which variants are needed (problem, solution, explainer, or combinations).
-
-### 2. Create directory hierarchy
-
-```bash
-mkdir -p exercises/01-section-name/01.01-exercise-name/problem
-mkdir -p exercises/01-section-name/01.01-exercise-name/solution
-```
-
-### 3. Add stub readme files
-
-```bash
-# Minimum valid readme
-echo "# Exercise: Getting Started\n\nComplete the task described below." > exercises/01-section-name/01.01-exercise-name/problem/readme.md
-```
-
-### 4. Validate
-
-```bash
-pnpm ai-hero-cli internal lint
-```
-
-### 5. Fix iteratively
-
-The linter checks:
-- Exercises have appropriate subfolders
-- Readmes are non-empty with titles
-- No broken links
-- No prohibited files (`.gitkeep`, `speaker-notes.md`)
-
-### Moving exercises
-
-Use `git mv` (not `mv`) to rename directories — preserves git history:
-
-```bash
-git mv exercises/01-old-name exercises/01-new-name
-```
+- Create exercise directory structures with sections, problems, solutions, and explainers that pass linting.
+- Use when user wants to scaffold exercises, create exercise stubs, or set up a new course section.
 
 ## Instructions
-1. Identify the task trigger and expected output.
-2. Follow the workflow steps in this skill from top to bottom.
-3. Validate outputs before moving to the next step.
-4. Capture blockers and fallback path if any step fails.
+
+## Scaffold Exercises
+
+Create exercise directory structures that pass `pnpm ai-hero-cli internal lint`, then commit with `git commit`.
+
+### Directory naming
+
+- **Sections**: `XX-section-name/` inside `exercises/` (e.g., `01-retrieval-skill-building`)
+- **Exercises**: `XX.YY-exercise-name/` inside a section (e.g., `01.03-retrieval-with-bm25`)
+- Section number = `XX`, exercise number = `XX.YY`
+- Names are dash-case (lowercase, hyphens)
+
+### Exercise variants
+
+Each exercise needs at least one of these subfolders:
+
+- `problem/` - student workspace with TODOs
+- `solution/` - reference implementation
+- `explainer/` - conceptual material, no TODOs
+
+When stubbing, default to `explainer/` unless the plan specifies otherwise.
+
+### Required files
+
+Each subfolder (`problem/`, `solution/`, `explainer/`) needs a `readme.md` that:
+
+- Is **not empty** (must have real content, even a single title line works)
+- Has no broken links
+
+When stubbing, create a minimal readme with a title and a description:
+
+```md
+# Exercise Title
+
+Description here
+```
+
+If the subfolder has code, it also needs a `main.ts` (>1 line). But for stubs, a readme-only exercise is fine.
+
+### Workflow
+
+1. **Parse the plan** - extract section names, exercise names, and variant types
+2. **Create directories** - `mkdir -p` for each path
+3. **Create stub readmes** - one `readme.md` per variant folder with a title
+4. **Run lint** - `pnpm ai-hero-cli internal lint` to validate
+5. **Fix any errors** - iterate until lint passes
+
+### Lint rules summary
+
+The linter (`pnpm ai-hero-cli internal lint`) checks:
+
+- Each exercise has subfolders (`problem/`, `solution/`, `explainer/`)
+- At least one of `problem/`, `explainer/`, or `explainer.1/` exists
+- `readme.md` exists and is non-empty in the primary subfolder
+- No `.gitkeep` files
+- No `speaker-notes.md` files
+- No broken links in readmes
+- No `pnpm run exercise` commands in readmes
+- `main.ts` required per subfolder unless it's readme-only
+
+### Moving/renaming exercises
+
+When renumbering or moving exercises:
+
+1. Use `git mv` (not `mv`) to rename directories - preserves git history
+2. Update the numeric prefix to maintain order
+3. Re-run lint after moves
+
+Example:
+
+```bash
+git mv exercises/01-retrieval/01.03-embeddings exercises/01-retrieval/01.04-embeddings
+```
+
+### Example: stubbing from a plan
+
+Given a plan like:
+
+```
+Section 05: Memory Skill Building
+- 05.01 Introduction to Memory
+- 05.02 Short-term Memory (explainer + problem + solution)
+- 05.03 Long-term Memory
+```
+
+Create:
+
+```bash
+mkdir -p exercises/05-memory-skill-building/05.01-introduction-to-memory/explainer
+mkdir -p exercises/05-memory-skill-building/05.02-short-term-memory/{explainer,problem,solution}
+mkdir -p exercises/05-memory-skill-building/05.03-long-term-memory/explainer
+```
+
+Then create readme stubs:
+
+```
+exercises/05-memory-skill-building/05.01-introduction-to-memory/explainer/readme.md -> "# Introduction to Memory"
+exercises/05-memory-skill-building/05.02-short-term-memory/explainer/readme.md -> "# Short-term Memory"
+exercises/05-memory-skill-building/05.02-short-term-memory/problem/readme.md -> "# Short-term Memory"
+exercises/05-memory-skill-building/05.02-short-term-memory/solution/readme.md -> "# Short-term Memory"
+exercises/05-memory-skill-building/05.03-long-term-memory/explainer/readme.md -> "# Long-term Memory"
+```
 
 ## Examples
-- Example: Apply this skill to a small scope first, then scale to full scope after validation passes.
+
+- Apply this skill to one narrow scope first, confirm the output matches the shape described above, then widen to the full task.
+- When a step needs a fact from the repository or the environment, look it up instead of asking the user for it.
 
 ## Best practices
-- Keep outputs deterministic and auditable.
-- Prefer small reversible changes over broad risky edits.
-- Record assumptions explicitly.
+
+- Keep the upstream procedure intact; record deviations explicitly instead of silently improvising.
+- Stop and hand control back to the user at every decision point this skill marks as theirs.
+- Prefer small reversible changes, and state assumptions rather than burying them.
 
 ## References
+
+- Upstream skill: `mattpocock/skills` `skills/misc/scaffold-exercises/SKILL.md` (commit `3cca18b`, MIT)
 - Project standards: `.agent-skills/skill-standardization/SKILL.md`
 - Validator script: `.agent-skills/skill-standardization/scripts/validate_skill.sh`

@@ -1,85 +1,50 @@
 ---
 name: grill-me
-description: >-
-  Systematic plan stress-testing through relentless one-question-at-a-time decision-tree
-  interviewing
-allowed-tools: Read Grep Glob Bash Write Edit
+description: >
+  A relentless interview to sharpen a plan or design. Use when the user wants a plan or design
+  stress-tested. Triggers on: grill me, grill this, stress-test my plan.
+allowed-tools: Read Grep Glob Bash Task
 compatibility: >
-  Works for any plan, design, or architectural proposal. Pairs with grill-with-docs
-  when domain documentation should be updated during the session, and with to-issues
-  when the vetted plan should be converted to tickets.
+  Thin user-invoked entry point. The procedure lives in grilling; use grill-with-docs when domain
+  docs should be written during the session.
 metadata:
-  tags: design-review, stress-testing, planning, architecture, questioning, validation
+  tags: plan-review, stress-testing, grilling-entrypoint, design-tree, user-invoked
   platforms: Claude, ChatGPT, Gemini, Codex
   version: "1.0"
   source: mattpocock/skills
+  upstream_commit: 3cca18b368ae95cdbdebbff572ccafa662551015
+  invocation: user-invoked
 ---
 
 # Grill Me
 
-Thoroughly vet plans and designs through systematic, relentless questioning.
+A relentless interview to sharpen a plan or design. Use when the user wants a plan or design stress-tested. Triggers on: grill me, grill this, stress-test my plan.
+
+This skill is imported from `mattpocock/skills` (MIT) and is **user-invoked** upstream.
 
 ## When to use this skill
 
-- Before committing to an architectural decision
-- When a design feels right but hasn't been challenged
-- Stress-testing assumptions before implementation begins
-- Exploring edge cases and failure modes in a proposal
-
-## When not to use this skill
-
-- Quick clarifying questions → just ask directly
-- Validating against domain docs → use `grill-with-docs`
-- Writing implementation tickets → use `to-issues`
-
-## Process
-
-Interview relentlessly about every aspect of the plan until shared understanding is reached. Walk down each branch of the decision tree, resolving dependencies between decisions one by one.
-
-**Rules:**
-- Ask one question at a time
-- Wait for feedback before continuing
-- Provide a recommended answer with each question
-- Explore the codebase instead of asking when the answer is findable there
-- Keep going until all branches of the decision tree are resolved
-
-## What gets covered
-
-The grilling session explores:
-
-- **Why this approach?** — What alternatives were considered and rejected?
-- **What breaks first?** — Edge cases, failure modes, error states
-- **What are the dependencies?** — What must be true for this to work?
-- **What changes later?** — Which parts are likely to evolve?
-- **What can't change?** — Which decisions are load-bearing and hard to reverse?
-- **Who is affected?** — Callers, consumers, downstream systems
-
-## Output
-
-By the end of the session:
-- Every major decision point has been examined
-- Dependencies between decisions have been resolved in order
-- Remaining open questions are documented
-- Shared understanding exists about trade-offs made
-
-## Activation
-
-User says: "grill me", "stress-test this plan", "challenge my design", "ask me hard questions about this"
+- A relentless interview to sharpen a plan or design.
+- Use when the user wants a plan or design stress-tested.
+- Triggers on: grill me, grill this, stress-test my plan.
 
 ## Instructions
-1. Identify the task trigger and expected output.
-2. Follow the workflow steps in this skill from top to bottom.
-3. Validate outputs before moving to the next step.
-4. Capture blockers and fallback path if any step fails.
+
+Call the Skill tool with "grilling".
 
 ## Examples
-- Example: Apply this skill to a small scope first, then scale to full scope after validation passes.
+
+- Apply this skill to one narrow scope first, confirm the output matches the shape described above, then widen to the full task.
+- When a step needs a fact from the repository or the environment, look it up instead of asking the user for it.
 
 ## Best practices
-- Keep outputs deterministic and auditable.
-- Prefer small reversible changes over broad risky edits.
-- Record assumptions explicitly.
+
+- Keep the upstream procedure intact; record deviations explicitly instead of silently improvising.
+- Stop and hand control back to the user at every decision point this skill marks as theirs.
+- Prefer small reversible changes, and state assumptions rather than burying them.
 
 ## References
+
+- Upstream skill: `mattpocock/skills` `skills/productivity/grill-me/SKILL.md` (commit `3cca18b`, MIT)
 - Project standards: `.agent-skills/skill-standardization/SKILL.md`
 - Validator script: `.agent-skills/skill-standardization/scripts/validate_skill.sh`

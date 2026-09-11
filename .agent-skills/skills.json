@@ -1,7 +1,7 @@
 {
   "version": "2.0.0",
   "generated": "2026-07-30",
-  "skill_count": 234,
+  "skill_count": 250,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -301,15 +301,21 @@
       "grill-with-docs",
       "plannotator",
       "survey",
-      "to-issues",
-      "to-prd",
+      "to-tickets",
+      "to-spec",
       "triage",
       "openspace",
       "agentic-skills",
       "agenticskills",
       "prompts-chat",
       "find-skills",
-      "mcp-builder"
+      "mcp-builder",
+      "ask-matt",
+      "grilling",
+      "setup-matt-pocock-skills",
+      "to-questionnaire",
+      "wayfinder",
+      "writing-for-agents"
     ],
     "engineering": [
       "audit-reference-originality",
@@ -317,7 +323,7 @@
       "code-refactoring",
       "code-review",
       "debugging",
-      "diagnose",
+      "diagnosing-bugs",
       "github-repo-candidate-quality-gate",
       "migrate-to-shoehorn",
       "performance-optimization",
@@ -331,7 +337,11 @@
       "nightrun",
       "changelog-maintenance",
       "technical-writing",
-      "codebase-search"
+      "codebase-search",
+      "codebase-design",
+      "domain-modeling",
+      "implement",
+      "prototype"
     ],
     "research": [
       "academic-research",
@@ -343,7 +353,8 @@
       "pattern-detection",
       "autoresearch",
       "scientific-llm-benchmarks",
-      "agent-pulse"
+      "agent-pulse",
+      "research"
     ],
     "business": [
       "marketing-automation",
@@ -372,7 +383,12 @@
       "google-workspace",
       "watermarks-remover",
       "solo-skills",
-      "eli5"
+      "eli5",
+      "handoff",
+      "resolving-merge-conflicts",
+      "teach",
+      "wait-what",
+      "wizard"
     ]
   },
   "subcategories": {
@@ -627,7 +643,8 @@
         "deep-dive",
         "deepinit",
         "spec-kit",
-        "ecc"
+        "ecc",
+        "setup-matt-pocock-skills"
       ],
       "agent-frameworks": [
         "microsoft-agent-framework",
@@ -640,7 +657,8 @@
         "article-prompts-to-skills",
         "skill-standardization",
         "upskill",
-        "write-a-skill"
+        "write-a-skill",
+        "writing-for-agents"
       ],
       "evaluation": [
         "langsmith",
@@ -657,13 +675,17 @@
         "grill-with-docs",
         "plannotator",
         "survey",
-        "to-issues",
-        "to-prd",
-        "triage"
+        "to-tickets",
+        "to-spec",
+        "triage",
+        "grilling",
+        "to-questionnaire",
+        "wayfinder"
       ],
       "discovery": [
         "openspace",
-        "find-skills"
+        "find-skills",
+        "ask-matt"
       ],
       "prompting": [
         "agentic-skills",
@@ -678,11 +700,12 @@
         "code-refactoring",
         "code-review",
         "debugging",
-        "diagnose",
+        "diagnosing-bugs",
         "github-repo-candidate-quality-gate",
         "migrate-to-shoehorn",
         "performance-optimization",
-        "performance-profiling"
+        "performance-profiling",
+        "implement"
       ],
       "testing": [
         "harness",
@@ -693,7 +716,10 @@
       "architecture": [
         "improve-codebase-architecture",
         "zoom-out",
-        "nightrun"
+        "nightrun",
+        "codebase-design",
+        "domain-modeling",
+        "prototype"
       ],
       "documentation": [
         "changelog-maintenance",
@@ -711,7 +737,8 @@
       ],
       "web-research": [
         "deep-research",
-        "heretic"
+        "heretic",
+        "research"
       ],
       "data-analysis": [
         "data-analysis",
@@ -748,7 +775,8 @@
         "notebooklm",
         "obsidian-mind",
         "obsidian-second-brain",
-        "opencontext"
+        "opencontext",
+        "handoff"
       ],
       "files": [
         "file-organization",
@@ -757,7 +785,8 @@
       "git": [
         "git-guardrails-claude-code",
         "git-submodule",
-        "git-workflow"
+        "git-workflow",
+        "resolving-merge-conflicts"
       ],
       "workspace": [
         "game-sounds"
@@ -770,10 +799,13 @@
       ],
       "productivity": [
         "google-workspace",
-        "solo-skills"
+        "solo-skills",
+        "wizard"
       ],
       "general": [
-        "eli5"
+        "eli5",
+        "teach",
+        "wait-what"
       ]
     }
   },
@@ -859,6 +891,21 @@
       "replacement_type": "skill",
       "mode": "client-ai-logic",
       "reason": "Direct Firebase AI Logic SDK guidance is merged into genkit client-ai-logic mode."
+    },
+    "diagnose": {
+      "replacement": "diagnosing-bugs",
+      "replacement_type": "skill",
+      "reason": "Renamed upstream in mattpocock/skills; invoke it as diagnosing-bugs."
+    },
+    "to-prd": {
+      "replacement": "to-spec",
+      "replacement_type": "skill",
+      "reason": "Renamed upstream in mattpocock/skills; spec is now the single through-line term."
+    },
+    "to-issues": {
+      "replacement": "to-tickets",
+      "replacement_type": "skill",
+      "reason": "Merged upstream with to-plan into to-tickets, which declares blocking edges per ticket."
     }
   },
   "relationship_groups": {
@@ -1045,6 +1092,39 @@
         "zvec-grep"
       ],
       "note": "codebase-search routes repository-navigation work, semble provides lightweight code search including remote Git and find-related, and zvec-grep provides local mixed-workspace hybrid/vector/BM25 retrieval with explicit index state."
+    },
+    "matt-pocock-engineering-flow": {
+      "mode": "related",
+      "members": [
+        "ask-matt",
+        "setup-matt-pocock-skills",
+        "grilling",
+        "grill-me",
+        "grill-with-docs",
+        "domain-modeling",
+        "to-spec",
+        "to-tickets",
+        "wayfinder",
+        "triage",
+        "implement",
+        "tdd",
+        "code-review",
+        "diagnosing-bugs",
+        "codebase-design",
+        "improve-codebase-architecture",
+        "prototype",
+        "research"
+      ],
+      "note": "One imported suite from mattpocock/skills. ask-matt is its router; setup-matt-pocock-skills must run once per repo before the tracker-aware skills work."
+    },
+    "grilling": {
+      "mode": "alias-chain",
+      "members": [
+        "grilling",
+        "grill-me",
+        "grill-with-docs"
+      ],
+      "note": "grilling owns the procedure; grill-me and grill-with-docs are thin user-invoked entry points that call it."
     }
   },
   "skills": [
@@ -5694,18 +5774,17 @@
     },
     {
       "name": "grill-me",
-      "description": "Systematic plan stress-testing through relentless one-question-at-a-time decision-tree interviewing",
+      "description": "A relentless interview to sharpen a plan or design. Use when the user wants a plan or design stress-tested. Triggers on: grill me, grill this, stress-test my plan.",
       "category": "ai-agents",
       "subcategory": "planning-review",
       "interface": "workflow",
       "path": "grill-me/SKILL.md",
       "tags": [
-        "design-review",
+        "plan-review",
         "stress-testing",
-        "planning",
-        "architecture",
-        "questioning",
-        "validation"
+        "grilling-entrypoint",
+        "design-tree",
+        "user-invoked"
       ],
       "platforms": [
         "Claude",
@@ -5718,8 +5797,7 @@
         "Grep",
         "Glob",
         "Bash",
-        "Write",
-        "Edit"
+        "Task"
       ],
       "keyword": "grill-me",
       "version": "1.0",
@@ -5727,18 +5805,17 @@
     },
     {
       "name": "grill-with-docs",
-      "description": "Stress-test plans against project domain model, sharpen terminology, update CONTEXT.md and ADRs inline",
+      "description": "A relentless interview to sharpen a plan or design, which also creates docs (ADR's and glossary) as we go. Use when the grilling session should also leave ADRs and glossary entries behind. Triggers on: grill with docs, grill and document, grill this and write the ADR.",
       "category": "ai-agents",
       "subcategory": "planning-review",
       "interface": "workflow",
       "path": "grill-with-docs/SKILL.md",
       "tags": [
-        "design-review",
-        "architecture",
-        "domain-model",
-        "documentation",
+        "plan-review",
         "adr",
-        "context-map"
+        "glossary",
+        "grilling-entrypoint",
+        "domain-modeling"
       ],
       "platforms": [
         "Claude",
@@ -5752,7 +5829,8 @@
         "Glob",
         "Bash",
         "Write",
-        "Edit"
+        "Edit",
+        "Task"
       ],
       "keyword": "grill-with-docs",
       "version": "1.0",
@@ -5838,19 +5916,18 @@
       "source": "akillness/jeo-skills"
     },
     {
-      "name": "to-issues",
-      "description": "Convert plans/specs into independently-grabbable vertical slice issues (HITL or AFK classification)",
+      "name": "to-tickets",
+      "description": "Break a plan, spec, or the current conversation into a set of tracer-bullet tickets, each declaring its blocking edges, published to the configured tracker (edges as text in one file per ticket locally, or native blocking links on a real tracker). Use when a plan or spec should become executable work items. Triggers on: to-tickets, to-issues, to-plan, break this into tickets.",
       "category": "ai-agents",
       "subcategory": "planning-review",
       "interface": "workflow",
-      "path": "to-issues/SKILL.md",
+      "path": "to-tickets/SKILL.md",
       "tags": [
-        "issues",
-        "planning",
+        "tracer-bullets",
         "vertical-slices",
-        "decomposition",
-        "project-management",
-        "tickets"
+        "wide-refactor",
+        "blocking-edges",
+        "issue-tracker"
       ],
       "platforms": [
         "Claude",
@@ -5866,24 +5943,23 @@
         "Write",
         "Edit"
       ],
-      "keyword": "to-issues",
+      "keyword": "to-tickets",
       "version": "1.0",
       "source": "mattpocock/skills"
     },
     {
-      "name": "to-prd",
-      "description": "Generate structured PRD from conversation context without interviewing the user",
+      "name": "to-spec",
+      "description": "Turn the current conversation into a spec and publish it to the project issue tracker: no interview, just synthesis of what you've already discussed. Use when the conversation is ready to become a written spec. Triggers on: to-spec, to-prd, write this up as a spec.",
       "category": "ai-agents",
       "subcategory": "planning-review",
       "interface": "workflow",
-      "path": "to-prd/SKILL.md",
+      "path": "to-spec/SKILL.md",
       "tags": [
+        "spec",
         "prd",
-        "requirements",
-        "product",
-        "documentation",
-        "planning",
-        "user-stories"
+        "issue-tracker",
+        "conversation-synthesis",
+        "no-interview"
       ],
       "platforms": [
         "Claude",
@@ -5899,24 +5975,23 @@
         "Write",
         "Edit"
       ],
-      "keyword": "to-prd",
+      "keyword": "to-spec",
       "version": "1.0",
       "source": "mattpocock/skills"
     },
     {
       "name": "triage",
-      "description": "Moves tracker issues through a structured triage state machine with category and readiness decisions; use to evaluate or prepare work items for implementation.",
+      "description": "Move issues and external PRs through a state machine of triage roles, categorise, verify, grill if needed, and write agent-ready briefs. Use when issues or external PRs need categorising, verifying, and turning into agent-ready briefs. Triggers on: triage, triage the backlog, review these issues.",
       "category": "ai-agents",
       "subcategory": "planning-review",
       "interface": "workflow",
       "path": "triage/SKILL.md",
       "tags": [
-        "triage",
-        "issues",
+        "triage-roles",
         "state-machine",
-        "project-management",
-        "bug-tracking",
-        "enhancement"
+        "agent-brief",
+        "issue-categorisation",
+        "external-prs"
       ],
       "platforms": [
         "Claude",
@@ -6161,18 +6236,17 @@
     },
     {
       "name": "code-review",
-      "description": "Turn a PR, diff, merge request, or patch stack into one evidence-first review brief with severity, missing-proof checks, and route-outs.",
+      "description": "Review the changes since a fixed point (commit, branch, tag, or merge-base) along two axes: Standards (does the code follow this repo's documented coding standards?) and Spec (does the code match what the originating issue/spec asked for?). Runs both reviews in parallel sub-agents and reports them side by side. Use when the user wants to review a branch, a PR, work-in- progress changes, or asks to \"review since X\".",
       "category": "engineering",
       "subcategory": "code-quality",
       "interface": "workflow",
       "path": "code-review/SKILL.md",
       "tags": [
         "code-review",
-        "pull-request-review",
-        "diff-review",
-        "security-review",
-        "risk-review",
-        "pre-merge"
+        "standards-review",
+        "spec-review",
+        "parallel-subagents",
+        "merge-base"
       ],
       "platforms": [
         "Claude",
@@ -6185,11 +6259,11 @@
         "Grep",
         "Glob",
         "Bash",
-        "Write"
+        "Task"
       ],
       "keyword": "code-review",
-      "version": "2.1",
-      "source": "akillness/jeo-skills"
+      "version": "1.0",
+      "source": "mattpocock/skills"
     },
     {
       "name": "debugging",
@@ -6224,19 +6298,18 @@
       "source": "akillness/jeo-skills"
     },
     {
-      "name": "diagnose",
-      "description": "Investigates hard, flaky, or performance failures through a six-phase feedback-loop-first debugging process; use when quick targeted debugging is insufficient.",
+      "name": "diagnosing-bugs",
+      "description": "Diagnosis loop for hard bugs and performance regressions. Use when the user says \"diagnose\"/\"debug this\", or reports something broken/throwing/failing/slow.",
       "category": "engineering",
       "subcategory": "code-quality",
       "interface": "workflow",
-      "path": "diagnose/SKILL.md",
+      "path": "diagnosing-bugs/SKILL.md",
       "tags": [
         "debugging",
-        "feedback-loop",
-        "reproduction",
-        "hypothesis",
-        "instrumentation",
-        "post-mortem"
+        "diagnosis-loop",
+        "performance-regression",
+        "hitl-loop",
+        "feedback-loop"
       ],
       "platforms": [
         "Claude",
@@ -6252,7 +6325,7 @@
         "Write",
         "Edit"
       ],
-      "keyword": "diagnose",
+      "keyword": "diagnosing-bugs",
       "version": "1.0",
       "source": "mattpocock/skills"
     },
@@ -6284,18 +6357,17 @@
     },
     {
       "name": "migrate-to-shoehorn",
-      "description": "Migrate TypeScript test as assertions to fromPartial/fromAny/fromExact from @total-typescript/shoehorn",
+      "description": "Migrate test files from `as` type assertions to @total-typescript/shoehorn. Use when user mentions shoehorn, wants to replace `as` in tests, or needs partial test data.",
       "category": "engineering",
       "subcategory": "code-quality",
       "interface": "workflow",
       "path": "migrate-to-shoehorn/SKILL.md",
       "tags": [
         "typescript",
-        "testing",
-        "type-safety",
-        "assertions",
-        "migration",
-        "shoehorn"
+        "shoehorn",
+        "type-assertions",
+        "test-data",
+        "total-typescript"
       ],
       "platforms": [
         "Claude",
@@ -6411,18 +6483,17 @@
     },
     {
       "name": "scaffold-exercises",
-      "description": "Create educational exercise directories compliant with pnpm ai-hero-cli internal lint",
+      "description": "Create exercise directory structures with sections, problems, solutions, and explainers that pass linting. Use when user wants to scaffold exercises, create exercise stubs, or set up a new course section.",
       "category": "engineering",
       "subcategory": "testing",
       "interface": "cli",
       "path": "scaffold-exercises/SKILL.md",
       "tags": [
-        "education",
-        "exercises",
-        "scaffolding",
-        "course-content",
-        "linting",
-        "structure"
+        "exercise-scaffolding",
+        "ai-hero-cli",
+        "course-sections",
+        "problem-solution",
+        "lint-compliant"
       ],
       "platforms": [
         "Claude",
@@ -6444,17 +6515,17 @@
     },
     {
       "name": "tdd",
-      "description": "Red-green-refactor TDD using vertical slices — tests specify observable behavior through public interfaces",
+      "description": "Test-driven development. Use when the user wants to build features or fix bugs test-first, mentions \"red-green-refactor\", or wants integration tests.",
       "category": "engineering",
       "subcategory": "testing",
       "interface": "workflow",
       "path": "tdd/SKILL.md",
       "tags": [
         "tdd",
-        "test-driven-development",
         "red-green-refactor",
-        "vertical-slices",
-        "behavior-verification"
+        "integration-tests",
+        "mocking",
+        "test-first"
       ],
       "platforms": [
         "Claude",
@@ -6508,18 +6579,17 @@
     },
     {
       "name": "improve-codebase-architecture",
-      "description": "Identify architectural friction and propose deepening opportunities for testability using deletion-test, seam, locality vocabulary",
+      "description": "Scan a codebase for deepening opportunities, present them as a visual HTML report, then grill through whichever one you pick. Use when the user wants architecture improvement candidates surfaced before choosing one. Triggers on: improve the architecture, find deepening opportunities, where should we refactor.",
       "category": "engineering",
       "subcategory": "architecture",
       "interface": "workflow",
       "path": "improve-codebase-architecture/SKILL.md",
       "tags": [
-        "architecture",
-        "refactoring",
-        "deep-modules",
-        "testability",
-        "locality",
-        "leverage"
+        "deepening-opportunities",
+        "html-report",
+        "architecture-scan",
+        "seams",
+        "grilling"
       ],
       "platforms": [
         "Claude",
@@ -6533,7 +6603,8 @@
         "Glob",
         "Bash",
         "Write",
-        "Edit"
+        "Edit",
+        "Task"
       ],
       "keyword": "improve-codebase-architecture",
       "version": "1.0",
@@ -7418,21 +7489,23 @@
     },
     {
       "name": "git-guardrails-claude-code",
-      "description": "Installs Claude Code PreToolUse safeguards against destructive Git commands; use to protect repositories, not for general Git workflow guidance.",
+      "description": "Set up Claude Code hooks to block dangerous git commands (push, reset --hard, clean, branch -D, etc.) before they execute. Use when user wants to prevent destructive git operations, add git safety hooks, or block git push/reset in Claude Code.",
       "category": "utilities",
       "subcategory": "git",
       "interface": "workflow",
       "path": "git-guardrails-claude-code/SKILL.md",
       "tags": [
-        "git",
-        "safety",
-        "hooks",
-        "destructive-operations",
-        "guardrails",
-        "claude-code"
+        "git-safety",
+        "claude-code-hooks",
+        "pretooluse",
+        "destructive-commands",
+        "guardrails"
       ],
       "platforms": [
-        "Claude"
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
       ],
       "allowed_tools": [
         "Read",
@@ -8807,6 +8880,504 @@
       "keyword": "zvec-grep",
       "version": "0.2.2",
       "source": "https://github.com/zvec-ai/zvec-grep"
+    },
+    {
+      "name": "ask-matt",
+      "description": "Ask which skill or flow fits your situation. A router over the skills in this repo. Use when the user asks which of these engineering skills or flows fits their situation. Triggers on: ask- matt, which skill should I use, what flow fits here.",
+      "category": "ai-agents",
+      "subcategory": "discovery",
+      "interface": "workflow",
+      "path": "ask-matt/SKILL.md",
+      "tags": [
+        "skill-routing",
+        "workflow-selection",
+        "phase-boundaries",
+        "engineering-flow",
+        "suite-router"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Grep",
+        "Glob"
+      ],
+      "keyword": "ask-matt",
+      "version": "1.0",
+      "source": "mattpocock/skills"
+    },
+    {
+      "name": "codebase-design",
+      "description": "Shared vocabulary for designing deep modules. Use when the user wants to design or improve a module's interface, find deepening opportunities, decide where a seam goes, make code more testable or AI-navigable, or when another skill needs the deep-module vocabulary.",
+      "category": "engineering",
+      "subcategory": "architecture",
+      "interface": "workflow",
+      "path": "codebase-design/SKILL.md",
+      "tags": [
+        "deep-modules",
+        "seams",
+        "testability",
+        "interface-design",
+        "design-it-twice"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Grep",
+        "Glob",
+        "Bash",
+        "Write",
+        "Edit"
+      ],
+      "keyword": "codebase-design",
+      "version": "1.0",
+      "source": "mattpocock/skills"
+    },
+    {
+      "name": "domain-modeling",
+      "description": "Build and sharpen a project's domain model. Use when discussing codebase terminology, writing or editing a CONTEXT.md, or recording or editing an ADR.",
+      "category": "engineering",
+      "subcategory": "architecture",
+      "interface": "workflow",
+      "path": "domain-modeling/SKILL.md",
+      "tags": [
+        "domain-model",
+        "ubiquitous-language",
+        "adr",
+        "context-md",
+        "terminology"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Grep",
+        "Glob",
+        "Write",
+        "Edit"
+      ],
+      "keyword": "domain-modeling",
+      "version": "1.0",
+      "source": "mattpocock/skills"
+    },
+    {
+      "name": "grilling",
+      "description": "Grill the user relentlessly about a plan, decision, or idea. Use when the user wants to stress- test their thinking, or uses any 'grill' trigger phrases.",
+      "category": "ai-agents",
+      "subcategory": "planning-review",
+      "interface": "workflow",
+      "path": "grilling/SKILL.md",
+      "tags": [
+        "design-tree",
+        "frontier-rounds",
+        "stress-testing",
+        "plan-review",
+        "interview"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Grep",
+        "Glob",
+        "Bash",
+        "Task"
+      ],
+      "keyword": "grilling",
+      "version": "1.0",
+      "source": "mattpocock/skills"
+    },
+    {
+      "name": "handoff",
+      "description": "Compact the current conversation into a handoff document for another agent to pick up. Use when the user says handoff, is running out of context, or wants a fresh agent to pick the work up. Triggers on: handoff, hand this off, compact this conversation.",
+      "category": "utilities",
+      "subcategory": "knowledge",
+      "interface": "workflow",
+      "path": "handoff/SKILL.md",
+      "tags": [
+        "session-handoff",
+        "context-compaction",
+        "agent-continuity",
+        "redaction",
+        "suggested-skills"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Grep",
+        "Glob",
+        "Write"
+      ],
+      "keyword": "handoff",
+      "version": "1.0",
+      "source": "mattpocock/skills"
+    },
+    {
+      "name": "implement",
+      "description": "Implement a piece of work based on a spec or set of tickets. Use when an agreed spec or ticket set should now be built. Triggers on: implement, build this spec, work these tickets.",
+      "category": "engineering",
+      "subcategory": "code-quality",
+      "interface": "workflow",
+      "path": "implement/SKILL.md",
+      "tags": [
+        "implementation",
+        "spec-execution",
+        "ticket-execution",
+        "tdd-seams",
+        "commit-flow"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Grep",
+        "Glob",
+        "Bash",
+        "Write",
+        "Edit"
+      ],
+      "keyword": "implement",
+      "version": "1.0",
+      "source": "mattpocock/skills"
+    },
+    {
+      "name": "prototype",
+      "description": "Build a throwaway prototype to answer a design question. Use when the user wants to sanity-check whether a state model or logic feels right, or explore what a UI should look like.",
+      "category": "engineering",
+      "subcategory": "architecture",
+      "interface": "workflow",
+      "path": "prototype/SKILL.md",
+      "tags": [
+        "throwaway-prototype",
+        "design-question",
+        "state-model",
+        "ui-exploration",
+        "spike"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Grep",
+        "Glob",
+        "Bash",
+        "Write",
+        "Edit"
+      ],
+      "keyword": "prototype",
+      "version": "1.0",
+      "source": "mattpocock/skills"
+    },
+    {
+      "name": "research",
+      "description": "Investigate a question against high-trust primary sources and capture the findings as a Markdown file in the repo. Use when the user wants a topic researched, docs or API facts gathered, or reading legwork delegated to a background agent.",
+      "category": "research",
+      "subcategory": "web-research",
+      "interface": "workflow",
+      "path": "research/SKILL.md",
+      "tags": [
+        "primary-sources",
+        "background-agent",
+        "citation",
+        "docs-research",
+        "findings-file"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Grep",
+        "Glob",
+        "Bash",
+        "Write",
+        "Task"
+      ],
+      "keyword": "research",
+      "version": "1.0",
+      "source": "mattpocock/skills"
+    },
+    {
+      "name": "resolving-merge-conflicts",
+      "description": "Use when you need to resolve an in-progress git merge/rebase conflict.",
+      "category": "utilities",
+      "subcategory": "git",
+      "interface": "workflow",
+      "path": "resolving-merge-conflicts/SKILL.md",
+      "tags": [
+        "merge-conflict",
+        "rebase",
+        "intent-preservation",
+        "automated-checks",
+        "git-recovery"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Grep",
+        "Glob",
+        "Bash",
+        "Write",
+        "Edit"
+      ],
+      "keyword": "resolving-merge-conflicts",
+      "version": "1.0",
+      "source": "mattpocock/skills"
+    },
+    {
+      "name": "setup-matt-pocock-skills",
+      "description": "Configure this repo for the engineering skills: set up its issue tracker, triage label vocabulary, and domain doc layout. Run once before first use of the other engineering skills. Use when this repo has not yet been configured for the suite. Triggers on: setup-matt-pocock- skills, configure the issue tracker, set up triage labels.",
+      "category": "ai-agents",
+      "subcategory": "orchestration",
+      "interface": "workflow",
+      "path": "setup-matt-pocock-skills/SKILL.md",
+      "tags": [
+        "repo-configuration",
+        "issue-tracker",
+        "triage-labels",
+        "domain-docs",
+        "one-time-setup"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Grep",
+        "Glob",
+        "Bash",
+        "Write",
+        "Edit"
+      ],
+      "keyword": "setup-matt-pocock-skills",
+      "version": "1.0",
+      "source": "mattpocock/skills"
+    },
+    {
+      "name": "teach",
+      "description": "Teach the user a new skill or concept, within this workspace. Use when the user wants to learn a concept or skill inside this workspace. Triggers on: teach me, help me learn, explain this properly.",
+      "category": "utilities",
+      "subcategory": "general",
+      "interface": "workflow",
+      "path": "teach/SKILL.md",
+      "tags": [
+        "teaching",
+        "learning-record",
+        "mission",
+        "glossary",
+        "workspace-learning"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Grep",
+        "Glob",
+        "Write",
+        "Edit"
+      ],
+      "keyword": "teach",
+      "version": "1.0",
+      "source": "mattpocock/skills"
+    },
+    {
+      "name": "to-questionnaire",
+      "description": "Turn a decision you can't fully answer into a questionnaire for someone else to fill in. Use when a decision needs another person's input before it can be settled. Triggers on: to- questionnaire, make this a questionnaire, ask them these questions.",
+      "category": "ai-agents",
+      "subcategory": "planning-review",
+      "interface": "workflow",
+      "path": "to-questionnaire/SKILL.md",
+      "tags": [
+        "questionnaire",
+        "delegated-decision",
+        "open-questions",
+        "stakeholder-input",
+        "decision-capture"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Grep",
+        "Glob",
+        "Write"
+      ],
+      "keyword": "to-questionnaire",
+      "version": "1.0",
+      "source": "mattpocock/skills"
+    },
+    {
+      "name": "wait-what",
+      "description": "Stop. That last message did not land: re-pitch it. Use when the previous answer did not land and needs re-pitching in plain language. Triggers on: wait what, I don't follow, re-pitch that.",
+      "category": "utilities",
+      "subcategory": "general",
+      "interface": "workflow",
+      "path": "wait-what/SKILL.md",
+      "tags": [
+        "re-pitch",
+        "simplified-technical-english",
+        "ubiquitous-language",
+        "confusion-recovery",
+        "context-md"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Grep",
+        "Glob"
+      ],
+      "keyword": "wait-what",
+      "version": "1.0",
+      "source": "mattpocock/skills"
+    },
+    {
+      "name": "wayfinder",
+      "description": "Plan a huge chunk of work (more than one agent session can hold) as a shared map of decision tickets on your issue tracker, and resolve them one at a time until the way to the destination is clear. Use when the work is too large for one agent session and needs a shared decision map first. Triggers on: wayfinder, map this out, too big to plan in one go.",
+      "category": "ai-agents",
+      "subcategory": "planning-review",
+      "interface": "workflow",
+      "path": "wayfinder/SKILL.md",
+      "tags": [
+        "decision-tickets",
+        "wayfinding-map",
+        "multi-session-planning",
+        "issue-tracker",
+        "big-chunk"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Grep",
+        "Glob",
+        "Bash",
+        "Write",
+        "Edit"
+      ],
+      "keyword": "wayfinder",
+      "version": "1.0",
+      "source": "mattpocock/skills"
+    },
+    {
+      "name": "wizard",
+      "description": "Generate an interactive bash wizard that walks a human through steps only they can perform. Use when provisioning infrastructure, setting up credentials or CI secrets, walking an unfamiliar third-party dashboard, or running a one-off migration or cutover. Don't invoke this for steps the agent can perform itself.",
+      "category": "utilities",
+      "subcategory": "productivity",
+      "interface": "workflow",
+      "path": "wizard/SKILL.md",
+      "tags": [
+        "interactive-bash-wizard",
+        "human-in-the-loop",
+        "provisioning",
+        "credentials",
+        "cutover"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Grep",
+        "Glob",
+        "Bash",
+        "Write",
+        "Edit"
+      ],
+      "keyword": "wizard",
+      "version": "1.0",
+      "source": "mattpocock/skills"
+    },
+    {
+      "name": "writing-for-agents",
+      "description": "Writing documents for agents. Use when creating or editing skills, or modifying AGENTS.md or CLAUDE.md.",
+      "category": "ai-agents",
+      "subcategory": "skill-authoring",
+      "interface": "workflow",
+      "path": "writing-for-agents/SKILL.md",
+      "tags": [
+        "skill-writing",
+        "agents-md",
+        "claude-md",
+        "skill-mechanics",
+        "agent-prose"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Grep",
+        "Glob",
+        "Write",
+        "Edit"
+      ],
+      "keyword": "writing-for-agents",
+      "version": "1.0",
+      "source": "mattpocock/skills"
     }
   ]
 }

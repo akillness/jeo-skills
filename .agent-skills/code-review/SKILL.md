@@ -1,252 +1,141 @@
 ---
 name: code-review
-description: >-
-  Turn a PR, diff, merge request, or patch stack into one evidence-first review brief with
-  severity, missing-proof checks, and route-outs.
-allowed-tools: Read Grep Glob Bash Write
+description: >
+  Review the changes since a fixed point (commit, branch, tag, or merge-base) along two axes:
+  Standards (does the code follow this repo's documented coding standards?) and Spec (does the
+  code match what the originating issue/spec asked for?). Runs both reviews in parallel sub-agents
+  and reports them side by side. Use when the user wants to review a branch, a PR, work-in-
+  progress changes, or asks to "review since X".
+allowed-tools: Read Grep Glob Bash Task
+compatibility: >
+  Reviews changes since a fixed point along Standards and Spec axes in parallel sub-agents. Route
+  hosted PR policy design and severity triage to the local review routing notes in references.
 metadata:
-  tags: code-review, pull-request-review, diff-review, security-review, risk-review, pre-merge
+  tags: code-review, standards-review, spec-review, parallel-subagents, merge-base
   platforms: Claude, ChatGPT, Gemini, Codex
-  version: 2.1
-  source: akillness/jeo-skills
+  version: "1.0"
+  source: mattpocock/skills
+  upstream_commit: 3cca18b368ae95cdbdebbff572ccafa662551015
+  invocation: model-invoked
 ---
 
+# Code Review — Standards and Spec
 
+Review the changes since a fixed point (commit, branch, tag, or merge-base) along two axes: Standards (does the code follow this repo's documented coding standards?) and Spec (does the code match what the originating issue/spec asked for?). Runs both reviews in parallel sub-agents and reports them side by side. Use when the user wants to review a branch, a PR, work-in-progress changes, or asks to "review since X".
 
-
-
-
-# Code Review
-
-Use this skill when the main question is **"is this specific change ready, what evidence do we trust, and what should a reviewer actually say?"**
-
-The job is not to dump a giant clean-code checklist.
-The job is to:
-1. normalize the review packet,
-2. choose the right review mode,
-3. inspect the highest-risk behavior first,
-4. separate missing evidence from proven defects,
-5. classify findings by severity,
-6. route non-review work out immediately.
-
-Read [references/intake-packets-and-escalations.md](references/intake-packets-and-escalations.md) before handling an unfamiliar review packet.
-Read [references/review-modes.md](references/review-modes.md) for deeper heuristics by change type.
-Read [references/handoff-boundaries.md](references/handoff-boundaries.md) when deciding whether `code-review`, `git-workflow`, `debugging`, `testing-strategies`, `web-accessibility`, `web-accessibility`, or repo/PR workflow skills should own the next step.
+This skill is imported from `mattpocock/skills` (MIT) and is **model-invoked** upstream.
 
 ## When to use this skill
-- Reviewing a PR, MR, local diff, patch stack, or self-review packet before merge
-- Deciding what reviewer comments matter most and how severe they are
-- Checking a change for correctness, security, migration/rollout risk, maintainability, and missing validation evidence
-- Writing a concise approve / request-changes / block / route-out review brief
-- Reviewing backend, frontend, CLI, fullstack, or game-programming changes where the core task is judgment on the change rather than implementation
 
-## When not to use this skill
-- **The real task is splitting commits, rebasing, conflict resolution, or push recovery** → use `git-workflow`
-- **The real task is reproducing or isolating a live failure** → use `debugging`
-- **The real task is choosing long-term coverage shape, CI gates, or flaky-suite policy** → use `testing-strategies`
-- **The real task is pure design, accessibility, or visual-governance critique** → use `web-accessibility` or `web-accessibility`
-- **The real task is reviewer assignment, CODEOWNERS interpretation, labels, merge queue, or repo settings** → use a repo / PR workflow skill
-- **The real task is measurement-led bottleneck analysis or tuning** → use `performance-optimization`
+- Review the changes since a fixed point (commit, branch, tag, or merge-base) along two axes: Standards (does the code follow this repo's documented coding standards?) and Spec (does the code match what the originating issue/spec asked for?).
+- Runs both reviews in parallel sub-agents and reports them side by side.
+- Use when the user wants to review a branch, a PR, work-in-progress changes, or asks to "review since X".
 
 ## Instructions
 
-### Step 1: Normalize the review packet
-Start from the evidence already present instead of asking for an idealized packet.
+Two-axis review of the diff between `HEAD` and a fixed point the user supplies:
 
-Capture:
-- review surface: PR / MR / local diff / patch stack / self-review
-- goal of the change
-- hotspots: API, UI, schema, auth, config, build/release, game runtime, tooling, unknown
-- packet shape: diff only | diff + tests | schema/auth rollout notes | screenshots/preview | CI bot findings | game/runtime validation notes | mixed
-- obvious evidence present or missing
+- **Standards**: does the code conform to this repo's documented coding standards?
+- **Spec**: does the code faithfully implement the originating issue / spec?
 
-Minimum frame:
-```markdown
-Review surface: PR
-Goal: add coupon support to checkout
-Hotspots: discount logic, schema migration, auth edge cases
-Packet: diff + tests, no rollout notes
-```
+Both axes run as **parallel sub-agents** so they don't pollute each other's context, then this skill aggregates their findings.
 
-If the packet is still mostly branch hygiene or repo-admin work, route out before pretending review has started.
+The issue tracker should have been provided to you. If `docs/agents/issue-tracker.md` is missing, tell the user to run `/setup-matt-pocock-skills`.
 
-### Step 2: Choose one primary review mode
-Pick one primary mode from [references/review-modes.md](references/review-modes.md):
-- general change review
-- backend / platform review
-- frontend / UX-adjacent review
-- game-programming / engine review
-- policy / meta review
+### Process
 
-Rule: one primary mode, optional secondary mode.
-Do not flatten every diff into the same checklist.
+#### 1. Pin the fixed point
 
-### Step 3: Inspect the highest-risk path first
-Prioritize in this order:
-1. broken correctness or edge-case handling
-2. security / privacy / trust-boundary mistakes
-3. schema, migration, config, rollout, or compatibility risk
-4. missing or misleading tests / screenshots / previews / rollout proof
-5. maintainability problems that will slow future work
-6. style and readability nits
+Whatever the user said is the fixed point (a commit SHA, branch name, tag, `main`, `HEAD~5`, etc.). If they didn't specify one, ask for it.
 
-High-value questions:
-- Can the change behave incorrectly even if current tests are green?
-- Did a trust boundary, permission rule, secret path, or user-controlled input change?
-- Did the change alter schemas, contracts, jobs, rollout behavior, or game/runtime state without enough safeguards?
-- Is the packet missing the one artifact needed to judge the risky path honestly?
+Capture the diff command once: `git diff <fixed-point>...HEAD` (three-dot, so the comparison is against the merge-base). Also note the list of commits via `git log <fixed-point>..HEAD --oneline`.
 
-### Step 4: Separate findings from missing evidence
-A review can fail because the code is wrong **or** because the packet is not convincing enough.
+Before going further, confirm the fixed point resolves (`git rev-parse <fixed-point>`) and the diff is non-empty. A bad ref or empty diff should fail here, not inside two parallel sub-agents.
 
-Evidence sources to check:
-- the diff itself
-- nearby code paths and existing invariants
-- tests and fixtures
-- schema / contract / migration notes
-- screenshots, recordings, or preview links for behavior/layout-sensitive frontend work
-- rollout notes, config changes, and CI bot findings
-- playtest or engine-validation notes for game/runtime work
+#### 2. Identify the spec source
 
-Good finding shape:
-```markdown
-[Blocker] The new API still trusts the client-provided discount amount. Recompute discount server-side and add a regression test for mismatched input.
-```
+Look for the originating spec, in this order:
 
-Good missing-evidence shape:
-```markdown
-[Major] The diff changes responsive navigation states, but the packet has no screenshots or preview link for mobile/tablet open-close behavior.
-```
+1. Issue references in the commit messages (`#123`, `Closes #45`, GitLab `!67`, etc.), fetched via the workflow in `docs/agents/issue-tracker.md`.
+2. A path the user passed as an argument.
+3. A spec file under `docs/`, `specs/`, or `.scratch/` matching the branch name or feature.
+4. If nothing is found, ask the user where the spec is. If they say there isn't one, the **Spec** sub-agent will skip and report "no spec available".
 
-### Step 5: Classify severity and route-outs
-Use a small, explicit severity model.
+#### 3. Identify the standards sources
 
-- **Blocker** — merge should not proceed: correctness break, security issue, data loss, broken migration, or clearly missing validation for a risky path
-- **Major** — important but fixable in the current review round: missing tests/evidence for a core path, incomplete rollout/migration story, or a high-maintenance design choice
-- **Minor** — readability, naming, local cleanup, optional simplification
-- **Route-out** — the concern is real, but another skill owns the next step
+Anything in the repo that documents how code should be written, such as `CODING_STANDARDS.md` or `CONTRIBUTING.md`.
 
-Typical route-outs:
-- commit cleanup / rebase / push safety → `git-workflow`
-- reproduce and isolate live failure → `debugging`
-- broader coverage policy or flaky-suite direction → `testing-strategies`
-- visual/accessibility/product polish review → `web-accessibility` or `web-accessibility`
-- reviewer assignment, CODEOWNERS, branch rules, merge queue, PR operations → repo / PR workflow skill
+On top of whatever the repo documents, the Standards axis always carries the **smell baseline** below: a fixed set of Fowler code smells (_Refactoring_, ch.3) that applies even when a repo documents nothing. Two rules bind it:
 
-### Step 6: Produce a reviewer-grade decision brief
-Preferred shape:
-```markdown
-# Code Review Brief
+- **The repo overrides.** A documented repo standard always wins; where it endorses something the baseline would flag, suppress the smell.
+- **Always a judgement call.** Each smell is a labelled heuristic ("possible Feature Envy"), never a hard violation. Like any standard here, skip anything tooling already enforces.
 
-## Decision
-- Approve | Request changes | Block pending investigation | Needs follow-up from another skill
+Each smell reads *what it is* → *how to fix*; match it against the diff:
 
-## Review frame
-- Surface:
-- Goal:
-- Primary mode:
-- Packet:
+- **Mysterious Name**: a function, variable, or type whose name doesn't reveal what it does or holds. → rename it; if no honest name comes, the design's murky.
+- **Duplicated Code**: the same logic shape appears in more than one hunk or file in the change. → extract the shared shape, call it from both.
+- **Feature Envy**: a method that reaches into another object's data more than its own. → move the method onto the data it envies.
+- **Data Clumps**: the same few fields or params keep travelling together (a type wanting to be born). → bundle them into one type, pass that.
+- **Primitive Obsession**: a primitive or string standing in for a domain concept that deserves its own type. → give the concept its own small type.
+- **Repeated Switches**: the same `switch`/`if`-cascade on the same type recurs across the change. → replace with polymorphism, or one map both sites share.
+- **Shotgun Surgery**: one logical change forces scattered edits across many files in the diff. → gather what changes together into one module.
+- **Divergent Change**: one file or module is edited for several unrelated reasons. → split so each module changes for one reason.
+- **Speculative Generality**: abstraction, parameters, or hooks added for needs the spec doesn't have. → delete it; inline back until a real need shows.
+- **Message Chains**: long `a.b().c().d()` navigation the caller shouldn't depend on. → hide the walk behind one method on the first object.
+- **Middle Man**: a class or function that mostly just delegates onward. → cut it, call the real target direct.
+- **Refused Bequest**: a subclass or implementer that ignores or overrides most of what it inherits. → drop the inheritance, use composition.
 
-## Key findings
-1. [Severity] ...
-2. [Severity] ...
-3. [Route-out] ...
+#### 4. Spawn both sub-agents in parallel
 
-## Missing evidence
-- ...
+**Standards sub-agent prompt** should include:
 
-## Recommended next step
-- merge
-- patch specific issues
-- collect one missing artifact
-- split the diff
-- route next to another skill
-```
+- The full diff command and commit list.
+- The list of standards-source files you found in step 3, **plus the smell baseline from step 3** pasted in full (the sub-agent has no other access to it).
+- The brief: "Report, per file/hunk where relevant, (a) every place the diff violates a documented standard: cite the standard (file + the rule); and (b) any baseline smell you spot: name it and quote the hunk. Distinguish hard violations from judgement calls: documented-standard breaches can be hard, but baseline smells are always judgement calls, and a documented repo standard overrides the baseline. Skip anything tooling enforces. Under 400 words."
 
-If approving, say why the change looks safe:
-- risky areas reviewed
-- evidence that exists
-- residual concerns, if any
+**Spec sub-agent prompt** should include:
 
-### Step 7: Escalate confidence honestly
-- If the diff is too large, say review confidence is limited and focus on the highest-risk slice.
-- If frontend or marketing-site behavior depends on rendering states, ask for preview evidence instead of bluffing.
-- If backend or rollout risk is high, demand migration/config/rollback proof before approval.
-- If game/runtime behavior still needs playtest or engine validation, state that clearly.
-- If bot findings exist (reviewdog, CI comments, static-analysis annotations), treat them as evidence inputs, not as the final review judgment.
+- The diff command and commit list.
+- The path or fetched contents of the spec.
+- The brief: "Report: (a) requirements the spec asked for that are missing or partial; (b) behaviour in the diff that wasn't asked for (scope creep); (c) requirements that look implemented but where the implementation looks wrong. Quote the spec line for each finding. Under 400 words."
 
-## Output format
-Always return a concise review brief or review-comment set.
+If the spec is missing, skip the Spec sub-agent and note this in the final report.
 
-Required qualities:
-- identify the review surface and change goal
-- focus on the highest-risk findings first
-- separate concrete defects from missing evidence
-- choose an explicit decision
-- name the correct neighboring skill when the task has shifted
-- avoid generic checklist filler
+#### 5. Aggregate
+
+Present the two reports under `## Standards` and `## Spec` headings, verbatim or lightly cleaned. Do **not** merge or rerank findings, because the two axes are deliberately separate (see _Why two axes_).
+
+End with a one-line summary: total findings per axis, and the worst issue _within each axis_ (if any). Don't pick a single winner across axes: that's the reranking the separation exists to prevent.
+
+### Why two axes
+
+A change can pass one axis and fail the other:
+
+- Code that follows every standard but implements the wrong thing → **Standards pass, Spec fail.**
+- Code that does exactly what the issue asked but breaks the project's conventions → **Spec pass, Standards fail.**
+
+Reporting them separately stops one axis from masking the other.
+
+### Local routing kept from the previous jeo-skills revision
+
+The repository-agnostic review-routing brief (severity ladder, missing-proof checks,
+and route-outs to `debugging`, `testing-strategies`, and `code-refactoring`) now lives in
+[references/jeo-review-routing.md](references/jeo-review-routing.md). Read it when the request
+is "how should we review this" rather than "run the review now".
 
 ## Examples
 
-### Example 1: Backend PR with migration risk
-**Input**
-> Review this PR that adds coupon support to the checkout API. There is a schema migration and a few tests.
-
-**Output sketch**
-- Decision: Request changes
-- Review frame: backend / platform review, packet = diff + tests + migration
-- Key findings:
-  1. [Blocker] discount value is still accepted from the client instead of recomputed server-side
-  2. [Major] migration lacks rollback/backfill notes and no compatibility test covers old rows
-  3. [Major] no test for invalid or expired coupon race conditions
-- Recommended next step: patch validation + add migration/test evidence, then re-review
-
-### Example 2: Frontend diff that needs preview evidence
-**Input**
-> Can you code-review this responsive navbar change before I merge it?
-
-**Output sketch**
-- Decision: Needs follow-up before approval
-- Summary: implementation may be maintainable, but behavior cannot be fully judged from the diff alone
-- Key findings:
-  1. [Major] missing mobile/tablet screenshots or preview link for menu states
-  2. [Minor] duplicated breakpoint logic should be centralized
-  3. [Route-out] accessibility or visual-polish checks should go through `web-accessibility` / `web-accessibility`
-
-### Example 3: Request that should route away
-**Input**
-> Before review, help me split this huge branch into smaller commits and rebase it cleanly.
-
-**Output sketch**
-- Decision: Route out
-- Summary: this is primarily a Git-structure problem, not review judgment yet
-- Route: `git-workflow`
-
-### Example 4: Review packet with bot annotations
-**Input**
-> reviewdog already commented on the lint and static-analysis issues. Can you do the final review pass?
-
-**Output sketch**
-- Treat the bot comments as inputs, not the full answer
-- Re-check the risky behavior, missing evidence, and merge decision
-- Route repo-admin follow-up elsewhere if the request shifts into PR operations
+- Apply this skill to one narrow scope first, confirm the output matches the shape described above, then widen to the full task.
+- When a step needs a fact from the repository or the environment, look it up instead of asking the user for it.
 
 ## Best practices
-1. Review the highest-risk behavior before style or formatting.
-2. Tie every serious finding to evidence from the diff, nearby code, tests, or one clearly missing artifact.
-3. Distinguish missing evidence from proven bugs.
-4. Use severity labels so authors know what blocks merge.
-5. Keep one primary review mode instead of flattening every diff into one checklist.
-6. Ask for previews/screenshots when rendered behavior matters.
-7. Demand rollout or migration proof when backend/platform risk is high.
-8. Treat CI bots and static-analysis comments as evidence inputs, not as the reviewer.
-9. Route Git, debugging, test-policy, UI-governance, and repo-admin tasks out instead of absorbing everything.
-10. If approving, say why the change looks safe — not just "LGTM".
+
+- Keep the upstream procedure intact; record deviations explicitly instead of silently improvising.
+- Stop and hand control back to the user at every decision point this skill marks as theirs.
+- Prefer small reversible changes, and state assumptions rather than burying them.
 
 ## References
-- [GitHub Docs — About pull request reviews](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/reviewing-changes-in-pull-requests/about-pull-request-reviews)
-- [GitHub Docs — About code owners](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners)
-- [GitHub Docs — About protected branches](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches)
-- [GitLab Docs — Merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [reviewdog](https://github.com/reviewdog/reviewdog)
-- [Danger JS](https://danger.systems/js/)
+
+- Upstream skill: `mattpocock/skills` `skills/engineering/code-review/SKILL.md` (commit `3cca18b`, MIT)
+- Project standards: `.agent-skills/skill-standardization/SKILL.md`
+- Validator script: `.agent-skills/skill-standardization/scripts/validate_skill.sh`

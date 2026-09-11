@@ -1,86 +1,70 @@
 ---
 name: git-guardrails-claude-code
-description: >-
-  Installs Claude Code PreToolUse safeguards against destructive Git commands; use to protect
-  repositories, not for general Git workflow guidance.
+description: >
+  Set up Claude Code hooks to block dangerous git commands (push, reset --hard, clean, branch -D,
+  etc.) before they execute. Use when user wants to prevent destructive git operations, add git
+  safety hooks, or block git push/reset in Claude Code.
 allowed-tools: Read Grep Glob Bash Write Edit
 compatibility: >
-  Claude Code only — uses Claude Code's PreToolUse hook system. Can be installed
-  per-project (.claude/hooks/) or globally (~/.claude/hooks/). Pairs with git-workflow
-  for safe branching practices.
+  Claude Code hook setup only. Route general Git workflow guidance to git-workflow.
 metadata:
-  tags: git, safety, hooks, destructive-operations, guardrails, claude-code
-  platforms: Claude
+  tags: git-safety, claude-code-hooks, pretooluse, destructive-commands, guardrails
+  platforms: Claude, ChatGPT, Gemini, Codex
   version: "1.0"
   source: mattpocock/skills
+  upstream_commit: 3cca18b368ae95cdbdebbff572ccafa662551015
+  invocation: model-invoked
 ---
 
 # Git Guardrails for Claude Code
 
-Prevent Claude Code from executing destructive git operations via PreToolUse hooks.
+Set up Claude Code hooks to block dangerous git commands (push, reset --hard, clean, branch -D, etc.) before they execute. Use when user wants to prevent destructive git operations, add git safety hooks, or block git push/reset in Claude Code.
+
+This skill is imported from `mattpocock/skills` (MIT) and is **model-invoked** upstream.
 
 ## When to use this skill
 
-- Protecting critical repositories from accidental destructive git commands
-- Setting up safety nets before giving Claude Code broad git permissions
-- After an incident involving unintended git destructive operations
+- Set up Claude Code hooks to block dangerous git commands (push, reset --hard, clean, branch -D, etc.) before they execute.
+- Use when user wants to prevent destructive git operations, add git safety hooks, or block git push/reset in Claude Code.
 
-## When not to use this skill
+## Instructions
 
-- General git workflow guidance → use `git-workflow`
-- Non-Claude-Code platforms → hooks are Claude Code-specific
+## Setup Git Guardrails
 
-## Blocked operations
+Sets up a PreToolUse hook that intercepts and blocks dangerous git commands before Claude executes them.
 
-The guardrail blocks:
-- `git push --force` / `git push -f`
+### What Gets Blocked
+
+- `git push` (all variants including `--force`)
 - `git reset --hard`
 - `git clean -f` / `git clean -fd`
 - `git branch -D`
-- `git checkout -- .` / `git checkout -- <file>`
-- `git restore` (destructive forms)
+- `git checkout .` / `git restore .`
 
-## Installation
+When blocked, Claude sees a message telling it that it does not have authority to access these commands.
 
-### Step 1 — Choose scope
+### Steps
 
-**Project-level** (recommended for critical repos):
-```bash
-mkdir -p .claude/hooks
-```
+#### 1. Ask scope
 
-**Global** (for all Claude Code sessions):
-```bash
-mkdir -p ~/.claude/hooks
-```
+Ask the user: install for **this project only** (`.claude/settings.json`) or **all projects** (`~/.claude/settings.json`)?
 
-### Step 2 — Create the blocking script
+#### 2. Copy the hook script
 
-Save as `.claude/hooks/git-guardrails.sh` (or `~/.claude/hooks/git-guardrails.sh`):
+The bundled script is at: [scripts/block-dangerous-git.sh](scripts/block-dangerous-git.sh)
 
-```bash
-#!/bin/bash
-# Blocks destructive git operations
+Copy it to the target location based on scope:
 
-COMMAND="$1"
+- **Project**: `.claude/hooks/block-dangerous-git.sh`
+- **Global**: `~/.claude/hooks/block-dangerous-git.sh`
 
-if echo "$COMMAND" | grep -qE 'git (push --force|push -f|reset --hard|clean -f|clean -fd|branch -D|checkout -- |restore )'; then
-  echo "BLOCKED: Claude does not have authority to run destructive git operations."
-  echo "Command attempted: $COMMAND"
-  echo "If you need this operation, run it yourself in the terminal."
-  exit 2
-fi
+Make it executable with `chmod +x`.
 
-exit 0
-```
+#### 3. Add hook to settings
 
-```bash
-chmod +x .claude/hooks/git-guardrails.sh
-```
+Add to the appropriate settings file:
 
-### Step 3 — Register the hook in settings
-
-Add to `.claude/settings.json` (project) or `~/.claude/settings.json` (global):
+**Project** (`.claude/settings.json`):
 
 ```json
 {
@@ -91,7 +75,7 @@ Add to `.claude/settings.json` (project) or `~/.claude/settings.json` (global):
         "hooks": [
           {
             "type": "command",
-            "command": ".claude/hooks/git-guardrails.sh"
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/block-dangerous-git.sh"
           }
         ]
       }
@@ -100,38 +84,56 @@ Add to `.claude/settings.json` (project) or `~/.claude/settings.json` (global):
 }
 ```
 
-For global installation, use the full path: `~/.claude/hooks/git-guardrails.sh`
+**Global** (`~/.claude/settings.json`):
 
-### Step 4 — Verify
-
-```bash
-echo "git reset --hard" | .claude/hooks/git-guardrails.sh
-# Should exit with status 2 and print BLOCKED message
+```json
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/block-dangerous-git.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
 ```
 
-## Customization
+If the settings file already exists, merge the hook into the existing `hooks.PreToolUse` array. Don't overwrite other settings.
 
-Edit the regex pattern in the script to add or remove blocked operations:
+#### 4. Ask about customization
+
+Ask if user wants to add or remove any patterns from the blocked list. Edit the copied script accordingly.
+
+#### 5. Verify
+
+Run a quick test:
 
 ```bash
-# Add git tag -d to blocked list:
-grep -qE 'git (push --force|push -f|reset --hard|clean -f|clean -fd|branch -D|checkout -- |restore |tag -d)'
+echo '{"tool_input":{"command":"git push origin main"}}' | <path-to-script>
 ```
 
-## Instructions
-1. Identify the task trigger and expected output.
-2. Follow the workflow steps in this skill from top to bottom.
-3. Validate outputs before moving to the next step.
-4. Capture blockers and fallback path if any step fails.
+Should exit with code 2 and print a BLOCKED message to stderr.
 
 ## Examples
-- Example: Apply this skill to a small scope first, then scale to full scope after validation passes.
+
+- Apply this skill to one narrow scope first, confirm the output matches the shape described above, then widen to the full task.
+- When a step needs a fact from the repository or the environment, look it up instead of asking the user for it.
 
 ## Best practices
-- Keep outputs deterministic and auditable.
-- Prefer small reversible changes over broad risky edits.
-- Record assumptions explicitly.
+
+- Keep the upstream procedure intact; record deviations explicitly instead of silently improvising.
+- Stop and hand control back to the user at every decision point this skill marks as theirs.
+- Prefer small reversible changes, and state assumptions rather than burying them.
 
 ## References
+
+- Upstream skill: `mattpocock/skills` `skills/misc/git-guardrails-claude-code/SKILL.md` (commit `3cca18b`, MIT)
+- Script: `scripts/block-dangerous-git.sh`
 - Project standards: `.agent-skills/skill-standardization/SKILL.md`
 - Validator script: `.agent-skills/skill-standardization/scripts/validate_skill.sh`

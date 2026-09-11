@@ -2,14 +2,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-234-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-250-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![GJC](https://img.shields.io/badge/GJC-gajae--code-181717?style=for-the-badge&logo=github)](https://github.com/akillness/gajae-code)
 [![jeo-code](https://img.shields.io/badge/jeo--code-jeo-181717?style=for-the-badge&logo=github)](https://github.com/akillness/jeo-code)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**234 categorized skills · lightweight selective install · compact TOON catalog · cross-platform**
+**250 categorized skills · lightweight selective install · compact TOON catalog · cross-platform**
 
 A curated collection for spec-first, multi-agent LLM workflows. Delegate a complete setup
 with one prompt, or install the `jeo-skill` router first and add only the web,
@@ -78,7 +78,7 @@ The agent runs a **full install by default** (say “core only” or “minimal�
 
 ### Lightweight selective install (manual / CI)
 
-Install the **`jeo-skill` router first**, not all 234 skill folders. It provides category,
+Install the **`jeo-skill` router first**, not all 250 skill folders. It provides category,
 subcategory, interface, bundle, and relationship discovery while keeping heavy apps,
 models, MCP servers, and runtimes on demand.
 
@@ -131,7 +131,7 @@ video-motion-previs check
 
 ## 📚 Skills List
 
-> Central manifest: `.agent-skills/skills.json` · 234 skills · 10 primary categories · subcategory/interface/relationship metadata
+> Central manifest: `.agent-skills/skills.json` · 250 skills · 10 primary categories · subcategory/interface/relationship metadata
 
 ### 🌐 Web (48)
 
@@ -315,9 +315,9 @@ Subcategories: `developer-cli` (8), `ai-cli` (11), `media-cli` (1), `automation-
 | `mcp-server-sv-number` |
 | `zeroshot` |
 
-### 🤖 AI & Agents (32)
+### 🤖 AI & Agents (38)
 
-Subcategories: `orchestration` (5), `agent-frameworks` (5), `skill-authoring` (4), `evaluation` (4), `memory` (1), `planning-review` (8), `discovery` (2), `prompting` (3)
+Subcategories: `orchestration` (6), `agent-frameworks` (5), `skill-authoring` (5), `evaluation` (4), `memory` (1), `planning-review` (11), `discovery` (3), `prompting` (3)
 
 | Skill |
 |---|
@@ -344,8 +344,8 @@ Subcategories: `orchestration` (5), `agent-frameworks` (5), `skill-authoring` (4
 | `grill-with-docs` |
 | `plannotator` |
 | `survey` |
-| `to-issues` |
-| `to-prd` |
+| `to-tickets` |
+| `to-spec` |
 | `triage` |
 | `openspace` |
 | `agentic-skills` |
@@ -353,10 +353,16 @@ Subcategories: `orchestration` (5), `agent-frameworks` (5), `skill-authoring` (4
 | `prompts-chat` |
 | `find-skills` |
 | `mcp-builder` |
+| `ask-matt` |
+| `grilling` |
+| `setup-matt-pocock-skills` |
+| `to-questionnaire` |
+| `wayfinder` |
+| `writing-for-agents` |
 
-### 🧰 Engineering (20)
+### 🧰 Engineering (24)
 
-Subcategories: `code-quality` (10), `testing` (4), `architecture` (3), `documentation` (2), `code-navigation` (1)
+Subcategories: `code-quality` (11), `testing` (4), `architecture` (6), `documentation` (2), `code-navigation` (1)
 
 | Skill |
 |---|
@@ -365,7 +371,7 @@ Subcategories: `code-quality` (10), `testing` (4), `architecture` (3), `document
 | `code-refactoring` |
 | `code-review` |
 | `debugging` |
-| `diagnose` |
+| `diagnosing-bugs` |
 | `github-repo-candidate-quality-gate` |
 | `migrate-to-shoehorn` |
 | `performance-optimization` |
@@ -380,10 +386,14 @@ Subcategories: `code-quality` (10), `testing` (4), `architecture` (3), `document
 | `changelog-maintenance` |
 | `technical-writing` |
 | `codebase-search` |
+| `codebase-design` |
+| `domain-modeling` |
+| `implement` |
+| `prototype` |
 
-### 🔭 Research & Analysis (10)
+### 🔭 Research & Analysis (11)
 
-Subcategories: `academic` (3), `web-research` (2), `data-analysis` (2), `experimentation` (1), `benchmarking` (1), `intelligence` (1)
+Subcategories: `academic` (3), `web-research` (3), `data-analysis` (2), `experimentation` (1), `benchmarking` (1), `intelligence` (1)
 
 | Skill |
 |---|
@@ -397,6 +407,7 @@ Subcategories: `academic` (3), `web-research` (2), `data-analysis` (2), `experim
 | `autoresearch` |
 | `scientific-llm-benchmarks` |
 | `agent-pulse` |
+| `research` |
 
 ### 📣 Business (6)
 
@@ -411,9 +422,9 @@ Subcategories: `marketing` (3), `support` (2), `publishing` (1)
 | `customer-support-verification` |
 | `yuwen-publish-precheck` |
 
-### 🔧 Utilities (19)
+### 🔧 Utilities (24)
 
-Subcategories: `knowledge` (6), `files` (2), `git` (3), `workspace` (1), `project-management` (4), `productivity` (2), `general` (1)
+Subcategories: `knowledge` (7), `files` (2), `git` (4), `workspace` (1), `project-management` (4), `productivity` (3), `general` (3)
 
 | Skill |
 |---|
@@ -436,6 +447,11 @@ Subcategories: `knowledge` (6), `files` (2), `git` (3), `workspace` (1), `projec
 | `watermarks-remover` |
 | `solo-skills` |
 | `eli5` |
+| `handoff` |
+| `resolving-merge-conflicts` |
+| `teach` |
+| `wait-what` |
+| `wizard` |
 
 ---
 
@@ -695,7 +711,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 
 ```text
 .
-├── .agent-skills/          ← 234 skill folders (SKILL.md + optional support files)
+├── .agent-skills/          ← 250 skill folders (SKILL.md + optional support files)
 ├── docs/                   ← detailed guides (bmad, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md

@@ -1,127 +1,160 @@
 ---
 name: migrate-to-shoehorn
-description: >-
-  Migrate TypeScript test as assertions to fromPartial/fromAny/fromExact from
-  @total-typescript/shoehorn
+description: >
+  Migrate test files from `as` type assertions to @total-typescript/shoehorn. Use when user
+  mentions shoehorn, wants to replace `as` in tests, or needs partial test data.
 allowed-tools: Read Grep Glob Bash Write Edit
 compatibility: >
-  TypeScript projects only. Test code exclusively — production usage is prohibited.
-  Requires npm install @total-typescript/shoehorn. Pairs with testing-strategies
-  and backend-testing for broader test quality work.
+  TypeScript test files only. Route broader test policy to testing-strategies.
 metadata:
-  tags: typescript, testing, type-safety, assertions, migration, shoehorn
+  tags: typescript, shoehorn, type-assertions, test-data, total-typescript
   platforms: Claude, ChatGPT, Gemini, Codex
   version: "1.0"
   source: mattpocock/skills
+  upstream_commit: 3cca18b368ae95cdbdebbff572ccafa662551015
+  invocation: model-invoked
 ---
 
 # Migrate to Shoehorn
 
-Replace unsafe TypeScript `as` assertions in test files with type-safe alternatives from `@total-typescript/shoehorn`.
+Migrate test files from `as` type assertions to @total-typescript/shoehorn. Use when user mentions shoehorn, wants to replace `as` in tests, or needs partial test data.
+
+This skill is imported from `mattpocock/skills` (MIT) and is **model-invoked** upstream.
 
 ## When to use this skill
 
-- Modernizing test code to eliminate `as` type assertion anti-patterns
-- Making test data creation type-safe with autocomplete support
-- Migrating from `as unknown as Type` double-assertions
+- Migrate test files from `as` type assertions to @total-typescript/shoehorn.
+- Use when user mentions shoehorn, wants to replace `as` in tests, or needs partial test data.
 
-## When not to use this skill
+## Instructions
 
-- Production code (shoehorn is **test code only**)
-- Non-TypeScript projects
-- Runtime type validation → use a library like `zod`
+## Migrate to Shoehorn
 
-## Installation
+### Why shoehorn?
+
+`shoehorn` lets you pass partial data in tests while keeping TypeScript happy. It replaces `as` assertions with type-safe alternatives.
+
+**Test code only.** Never use shoehorn in production code.
+
+Problems with `as` in tests:
+
+- Trained not to use it
+- Must manually specify target type
+- Double-as (`as unknown as Type`) for intentionally wrong data
+
+### Install
 
 ```bash
 npm i @total-typescript/shoehorn
 ```
 
-## The three functions
+### Migration patterns
 
-### `fromPartial<T>(partial)` — incomplete objects
+#### Large objects with few needed properties
 
-Use when you only need a few properties of a large type:
+Before:
 
-```typescript
-// Before (unsafe)
-const user = { name: "Alice" } as User
+```ts
+type Request = {
+  body: { id: string };
+  headers: Record<string, string>;
+  cookies: Record<string, string>;
+  // ...20 more properties
+};
 
-// After (type-safe, keeps autocomplete)
-import { fromPartial } from "@total-typescript/shoehorn"
-const user = fromPartial<User>({ name: "Alice" })
+it("gets user by id", () => {
+  // Only care about body.id but must fake entire Request
+  getUser({
+    body: { id: "123" },
+    headers: {},
+    cookies: {},
+    // ...fake all 20 properties
+  });
+});
 ```
 
-### `fromAny<T>(value)` — intentionally wrong data
+After:
 
-Use when testing with deliberately incorrect data (error cases, edge cases):
+```ts
+import { fromPartial } from "@total-typescript/shoehorn";
 
-```typescript
-// Before (verbose double-as)
-const badInput = { invalid: true } as unknown as User
-
-// After
-import { fromAny } from "@total-typescript/shoehorn"
-const badInput = fromAny<User>({ invalid: true })
+it("gets user by id", () => {
+  getUser(
+    fromPartial({
+      body: { id: "123" },
+    }),
+  );
+});
 ```
 
-### `fromExact<T>(complete)` — enforced complete objects
+#### `as Type` → `fromPartial()`
 
-Use when the test requires a fully-specified object (no missing fields):
+Before:
 
-```typescript
-// Before
-const user = { name: "Alice", email: "alice@example.com", id: 1 } as User
-
-// After (TypeScript will error if any field is missing)
-import { fromExact } from "@total-typescript/shoehorn"
-const user = fromExact<User>({ name: "Alice", email: "alice@example.com", id: 1 })
+```ts
+getUser({ body: { id: "123" } } as Request);
 ```
 
-## Migration workflow
+After:
 
-### 1. Find all `as` assertions in test files
+```ts
+import { fromPartial } from "@total-typescript/shoehorn";
 
-```bash
-grep -rn " as " --include="*.test.ts" --include="*.spec.ts" --include="*.test.tsx"
+getUser(fromPartial({ body: { id: "123" } }));
 ```
 
-### 2. Classify each assertion
+#### `as unknown as Type` → `fromAny()`
 
-- Partial object, only some fields needed → `fromPartial()`
-- Intentionally wrong/invalid data → `fromAny()`
-- Complete object, all fields present → `fromExact()`
+Before:
 
-### 3. Replace and add import
-
-```typescript
-import { fromPartial, fromAny, fromExact } from "@total-typescript/shoehorn"
+```ts
+getUser({ body: { id: 123 } } as unknown as Request); // wrong type on purpose
 ```
 
-### 4. Verify TypeScript still compiles
+After:
 
-```bash
-npx tsc --noEmit
+```ts
+import { fromAny } from "@total-typescript/shoehorn";
+
+getUser(fromAny({ body: { id: 123 } }));
 ```
 
-## Critical constraint
+### When to use each
 
-**Test code only.** Never use `fromPartial`, `fromAny`, or `fromExact` in production code. These functions bypass type safety for testing purposes only.
+| Function        | Use case                                           |
+| --------------- | -------------------------------------------------- |
+| `fromPartial()` | Pass partial data that still type-checks           |
+| `fromAny()`     | Pass intentionally wrong data (keeps autocomplete) |
+| `fromExact()`   | Force full object (swap with fromPartial later)    |
 
-## Instructions
-1. Identify the task trigger and expected output.
-2. Follow the workflow steps in this skill from top to bottom.
-3. Validate outputs before moving to the next step.
-4. Capture blockers and fallback path if any step fails.
+### Workflow
+
+1. **Gather requirements** - ask user:
+   - What test files have `as` assertions causing problems?
+   - Are they dealing with large objects where only some properties matter?
+   - Do they need to pass intentionally wrong data for error testing?
+
+2. **Install and migrate**:
+   - [ ] Install: `npm i @total-typescript/shoehorn`
+   - [ ] Find test files with `as` assertions: `grep -r " as [A-Z]" --include="*.test.ts" --include="*.spec.ts"`
+   - [ ] Replace `as Type` with `fromPartial()`
+   - [ ] Replace `as unknown as Type` with `fromAny()`
+   - [ ] Add imports from `@total-typescript/shoehorn`
+   - [ ] Run type check to verify
 
 ## Examples
-- Example: Apply this skill to a small scope first, then scale to full scope after validation passes.
+
+- Apply this skill to one narrow scope first, confirm the output matches the shape described above, then widen to the full task.
+- When a step needs a fact from the repository or the environment, look it up instead of asking the user for it.
 
 ## Best practices
-- Keep outputs deterministic and auditable.
-- Prefer small reversible changes over broad risky edits.
-- Record assumptions explicitly.
+
+- Keep the upstream procedure intact; record deviations explicitly instead of silently improvising.
+- Stop and hand control back to the user at every decision point this skill marks as theirs.
+- Prefer small reversible changes, and state assumptions rather than burying them.
 
 ## References
+
+- Upstream skill: `mattpocock/skills` `skills/misc/migrate-to-shoehorn/SKILL.md` (commit `3cca18b`, MIT)
 - Project standards: `.agent-skills/skill-standardization/SKILL.md`
 - Validator script: `.agent-skills/skill-standardization/scripts/validate_skill.sh`

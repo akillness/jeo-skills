@@ -2,14 +2,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-234-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-250-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![GJC](https://img.shields.io/badge/GJC-gajae--code-181717?style=for-the-badge&logo=github)](https://github.com/akillness/gajae-code)
 [![jeo-code](https://img.shields.io/badge/jeo--code-jeo-181717?style=for-the-badge&logo=github)](https://github.com/akillness/jeo-code)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**카테고리형 스킬 234개 · 경량 선택 설치 · 압축 TOON 카탈로그 · 멀티플랫폼**
+**카테고리형 스킬 250개 · 경량 선택 설치 · 압축 TOON 카탈로그 · 멀티플랫폼**
 
 스펙 우선 멀티 에이전트 LLM 워크플로우 컬렉션입니다. 프롬프트 하나로 전체 설정을
 위임하거나, `jeo-skill` 라우터부터 설치해 필요한 웹, 인프라, 게임, 미디어, CLI,
@@ -79,7 +79,7 @@ curl -s https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-sk
 
 ### 경량 선택 설치(수동 / CI)
 
-234개 스킬 폴더 전체가 아니라 **`jeo-skill` 라우터부터 설치**합니다. 카테고리,
+250개 스킬 폴더 전체가 아니라 **`jeo-skill` 라우터부터 설치**합니다. 카테고리,
 하위 분류, 인터페이스, 번들, 연관 스킬을 탐색할 수 있으며 앱·모델·MCP 서버·런타임은
 실제 선택된 작업에서만 온디맨드로 설치합니다.
 
@@ -132,7 +132,7 @@ video-motion-previs check
 
 ## 📚 스킬 목록
 
-> 중앙 매니페스트: `.agent-skills/skills.json` · 234개 스킬 · 10개 기본 카테고리 · 하위 카테고리/인터페이스/관계 그룹 지원
+> 중앙 매니페스트: `.agent-skills/skills.json` · 250개 스킬 · 10개 기본 카테고리 · 하위 카테고리/인터페이스/관계 그룹 지원
 
 ### 🌐 웹 (48개)
 
@@ -316,9 +316,9 @@ video-motion-previs check
 | `mcp-server-sv-number` |
 | `zeroshot` |
 
-### 🤖 AI 및 에이전트 (32개)
+### 🤖 AI 및 에이전트 (38개)
 
-하위 분류: `orchestration` (5), `agent-frameworks` (5), `skill-authoring` (4), `evaluation` (4), `memory` (1), `planning-review` (8), `discovery` (2), `prompting` (3)
+하위 분류: `orchestration` (6), `agent-frameworks` (5), `skill-authoring` (5), `evaluation` (4), `memory` (1), `planning-review` (11), `discovery` (3), `prompting` (3)
 
 | Skill |
 |---|
@@ -345,8 +345,8 @@ video-motion-previs check
 | `grill-with-docs` |
 | `plannotator` |
 | `survey` |
-| `to-issues` |
-| `to-prd` |
+| `to-tickets` |
+| `to-spec` |
 | `triage` |
 | `openspace` |
 | `agentic-skills` |
@@ -354,10 +354,16 @@ video-motion-previs check
 | `prompts-chat` |
 | `find-skills` |
 | `mcp-builder` |
+| `ask-matt` |
+| `grilling` |
+| `setup-matt-pocock-skills` |
+| `to-questionnaire` |
+| `wayfinder` |
+| `writing-for-agents` |
 
-### 🧰 엔지니어링 (20개)
+### 🧰 엔지니어링 (24개)
 
-하위 분류: `code-quality` (10), `testing` (4), `architecture` (3), `documentation` (2), `code-navigation` (1)
+하위 분류: `code-quality` (11), `testing` (4), `architecture` (6), `documentation` (2), `code-navigation` (1)
 
 | Skill |
 |---|
@@ -366,7 +372,7 @@ video-motion-previs check
 | `code-refactoring` |
 | `code-review` |
 | `debugging` |
-| `diagnose` |
+| `diagnosing-bugs` |
 | `github-repo-candidate-quality-gate` |
 | `migrate-to-shoehorn` |
 | `performance-optimization` |
@@ -381,10 +387,14 @@ video-motion-previs check
 | `changelog-maintenance` |
 | `technical-writing` |
 | `codebase-search` |
+| `codebase-design` |
+| `domain-modeling` |
+| `implement` |
+| `prototype` |
 
-### 🔭 연구 및 분석 (10개)
+### 🔭 연구 및 분석 (11개)
 
-하위 분류: `academic` (3), `web-research` (2), `data-analysis` (2), `experimentation` (1), `benchmarking` (1), `intelligence` (1)
+하위 분류: `academic` (3), `web-research` (3), `data-analysis` (2), `experimentation` (1), `benchmarking` (1), `intelligence` (1)
 
 | Skill |
 |---|
@@ -398,6 +408,7 @@ video-motion-previs check
 | `autoresearch` |
 | `scientific-llm-benchmarks` |
 | `agent-pulse` |
+| `research` |
 
 ### 📣 비즈니스 (6개)
 
@@ -412,9 +423,9 @@ video-motion-previs check
 | `customer-support-verification` |
 | `yuwen-publish-precheck` |
 
-### 🔧 유틸리티 (19개)
+### 🔧 유틸리티 (24개)
 
-하위 분류: `knowledge` (6), `files` (2), `git` (3), `workspace` (1), `project-management` (4), `productivity` (2), `general` (1)
+하위 분류: `knowledge` (7), `files` (2), `git` (4), `workspace` (1), `project-management` (4), `productivity` (3), `general` (3)
 
 | Skill |
 |---|
@@ -437,6 +448,11 @@ video-motion-previs check
 | `watermarks-remover` |
 | `solo-skills` |
 | `eli5` |
+| `handoff` |
+| `resolving-merge-conflicts` |
+| `teach` |
+| `wait-what` |
+| `wizard` |
 
 ---
 
@@ -682,7 +698,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 ## 📁 구조
 
 ```text
-├── .agent-skills/          ← 234개 스킬 폴더 (SKILL.md + 선택적 지원 파일)
+├── .agent-skills/          ← 250개 스킬 폴더 (SKILL.md + 선택적 지원 파일)
 ├── docs/                   ← 상세 가이드 (bmad, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
