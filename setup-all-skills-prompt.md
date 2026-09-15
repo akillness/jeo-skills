@@ -846,6 +846,47 @@ token, and live operations require sandbox, command policy, validator, and appro
 queue review. Generic observability design routes to `monitoring-observability`, and
 supplied-log triage routes to `log-analysis`.
 
+### MCP for Blender bridge (on demand, runs code in Blender and defaults telemetry on)
+
+The `blender-mcp` skill installs as routing documents plus one offline checker. Blanket setup
+must not install `uv`, run `uvx blender-mcp`, write into a Blender addons directory, launch
+Blender, open the addon socket, or call an asset or generation provider. Prepare it only when
+a task actually needs an agent to drive Blender:
+
+```bash
+# 1. offline readiness: host tools, installed addon protocol version, connection settings,
+#    and credential variable NAMES only. Opens no socket and starts nothing.
+python3 "$SKILLS_ROOT/blender-mcp/scripts/blender-mcp-check.py" doctor
+
+# 2. computed safety and privacy posture (code execution, network exposure, telemetry)
+python3 "$SKILLS_ROOT/blender-mcp/scripts/blender-mcp-check.py" posture
+
+# 3. only after the user asks to actually use it
+uvx blender-mcp install-addon      # writes into Blender's addons dir, keeps a .bak
+uvx blender-mcp                    # the MCP server; the client normally launches this
+```
+
+Steps 1-2 are safe during installation verification: the checker is stdlib-only, makes no
+network request, and reports credentials as set or unset without printing a value. Skip step 3
+unless the user selected this workflow, and remember the addon must then be enabled in Blender
+preferences and started from the `N` sidebar before anything works.
+
+Two defaults must be stated to the user rather than assumed:
+
+- **`execute_blender_code` runs arbitrary Python inside the user's Blender process and is
+  unvalidated by default.** Upstream says this is the product feature. Tell the user to save
+  their work, and prefer `BLENDER_MCP_SAFE_MODE=1`, which validates scripts on the MCP path
+  only and is explicitly not a sandbox around Blender.
+- **Telemetry consent is on by default** and can capture prompts, generated code, scene
+  metadata, viewport screenshots, and edits the user makes by hand in Blender. Settle it before
+  confidential or client work by unchecking consent in the addon preferences, setting
+  `DISABLE_TELEMETRY` or a sibling variable, or calling the `disable_telemetry` tool.
+
+The addon socket has no authentication or encryption, so keep it on `localhost` and reach a
+remote machine through an SSH tunnel rather than pointing `BLENDER_HOST` at it. Never put
+Sketchfab, Poly Pizza, Hyper3D, or Hunyuan3D credentials in setup output. See
+`blender-mcp/references/safety-and-privacy.md` and `blender-mcp/references/setup-and-clients.md`.
+
 ### Mole macOS maintenance CLI (on demand, deletes files)
 
 The `mole` skill installs as documents plus a read-only helper; it never runs `brew install mole`,

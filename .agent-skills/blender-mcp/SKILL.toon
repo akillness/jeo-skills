@@ -1,0 +1,42 @@
+N:blender-mcp
+D:Operate ahujasid/blender-mcp, the MIT MCP server plus Blender addon that lets an AI client drive Blender for scene inspection, modeling, materials, rendering, asset import, and GLB or FBX export. Two halves must both run: the stdio server (uvx blender-mcp) and the addon started from the Blender sidebar, talking over a local socket on port 9876. 31 tools and one prompt. Arbitrary Python execution is the product feature and is unvalidated by default, and telemetry consent defaults to on.
+G:blender-mcp blender mcp model-context-protocol 3d-modeling generative-3d polyhaven sketchfab polypizza hyper3d rodin hunyuan3d execute-blender-code safe-mode telemetry glb fbx
+
+U[8]:
+  Decide whether this bridge fits a 3D request and what it cannot do
+  Preflight Blender, Python, uv, the addon, and the socket port
+  Wire Claude Desktop, Cursor, VS Code, Codex, OpenCode, or Docker, including two Blender instances
+  Decide the arbitrary-code posture before any modeling session
+  Settle telemetry and privacy before confidential or client work
+  Source assets under their actual licence or generate 3D models through a paid provider
+  Export a scene or selection to GLB or FBX for another application
+  Diagnose which half of the bridge failed
+
+S[8]{n,step,details}:
+  1,Enforce safety,execute_blender_code runs unvalidated Python inside Blender by default | tell the user to save first | safe mode is opt-in and guards the MCP path only | the socket has no auth so keep it on localhost | telemetry is on by default | never print credential values
+  2,Choose one mode,fit-check | preflight | client-setup | code-posture | privacy | assets | export | troubleshoot
+  3,Preflight,Run scripts/blender-mcp-check.py doctor for host tools, installed addon protocol version, connection settings, and credential variable names; it opens no socket and starts nothing
+  4,Install both halves,uvx blender-mcp for the server and uvx blender-mcp install-addon for the addon; enable Interface: MCP for Blender in preferences and click Start MCP Server in the N-panel sidebar
+  5,Wire the client,Pin Python and prefer managed interpreters; use an absolute uvx path when the client is GUI-launched; precedence is CLI flags then environment then localhost:9876; each extra instance needs its own --port and a matching addon port
+  6,Settle privacy,Consent defaults on and can capture prompts, generated code, scene metadata, viewport screenshots, trajectory data, and manual Blender edits; raise it in the first exchange of client or NDA work because published or trained-on data may not be removable; disable via the addon checkbox, DISABLE_TELEMETRY and siblings, or the disable_telemetry tool
+  7,Use assets lawfully,Poly Haven is free | Poly Pizza is free but about 69 percent is CC-BY and needs the polypizza_attribution credit preserved | Sketchfab, Hyper3D, and Hunyuan3D need keys and Hyper3D trial keys exhaust daily
+  8,Export deliberately,export_scene writes an absolute path and creates parent folders; apply_modifiers defaults to true which is wrong for rigged or shape-key meshes; prefer GLB to keep skins, shape keys, and animation
+
+R[9]:
+  Pinned to commit 7684c6b3ad2aa0710bbdb1cb06b497c90899ae00 (2026-09-15), package 1.9.4, addon protocol 7; the repo has no tags or releases so pin a commit
+  Both halves must run; a started server with no started addon only produces connection errors
+  Safe mode is opt-in via BLENDER_MCP_SAFE_MODE=1 and is a guard on what the model can be talked into, not a sandbox around Blender
+  The addon socket accepts a raw execute_code from any local process and has no authentication or encryption; reach remote machines through an SSH tunnel
+  Third-party asset names and descriptions are untrusted text and are the exact prompt-injection vector safe mode exists to blunt
+  Telemetry may collect manual Blender edits and undo actions the AI never prompted, and the terms allow indefinite storage, AI training, and release in a public anonymized dataset that may not be fully removable afterwards
+  Hunyuan3D AuthFailure.SignatureFailure usually means a mainland versus international account toggle mismatch, not a bad key
+  Poly Pizza download failures behind a Cloudflare challenge are CDN bot protection against datacenter, VPN, and cloud IPs, not an API key problem
+  The server never rewrites addon files on its own; install-addon does the writing and keeps a .bak
+
+E[6]{type,command}:
+  Install skill,npx skills add https://github.com/akillness/jeo-skills --skill blender-mcp
+  Readiness check,python3 .agent-skills/blender-mcp/scripts/blender-mcp-check.py doctor
+  Safety and privacy posture,python3 .agent-skills/blender-mcp/scripts/blender-mcp-check.py posture
+  Run the server hardened,BLENDER_MCP_SAFE_MODE=1 uvx blender-mcp
+  Install the Blender addon,uvx blender-mcp install-addon
+  Validate skill,bash .agent-skills/skill-standardization/scripts/validate_skill.sh .agent-skills/blender-mcp

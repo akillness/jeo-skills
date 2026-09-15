@@ -1,0 +1,106 @@
+{
+  "skill_name": "blender-mcp",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Claude로 Blender 조종하고 싶어. blender-mcp 세팅 알려줘.",
+      "expected_output": "The skill preflights the host, then sets up both halves and says the addon must be started in Blender.",
+      "assertions": [
+        "The response runs or references `scripts/blender-mcp-check.py doctor` before installing anything",
+        "The response covers both halves: `uvx blender-mcp` for the server and `uvx blender-mcp install-addon` plus enabling the addon",
+        "The response says the addon must be started from the Blender sidebar and that a passing check is not a live connection"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "이제 모델링 시작하자. 의자 만들어줘.",
+      "expected_output": "The skill establishes the code-execution posture before running generated Python in Blender.",
+      "assertions": [
+        "The response tells the user to save their work first",
+        "The response says `execute_blender_code` runs arbitrary Python inside Blender and is unvalidated by default",
+        "The response offers `BLENDER_MCP_SAFE_MODE=1` rather than assuming safe mode is already on"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "safe mode 켜면 샌드박스 안에서 도는 거지? 그럼 아무거나 실행해도 안전하겠네.",
+      "expected_output": "The skill corrects the sandbox assumption using the upstream scope note.",
+      "assertions": [
+        "The response says safe mode covers the MCP path only and is not a sandbox around Blender",
+        "The response explains the addon socket accepts a raw execute_code from any local process",
+        "The response describes it as a guard on what the model can be talked into writing"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "클라이언트 프로젝트 작업에 쓸 건데, 데이터 밖으로 안 나가지?",
+      "expected_output": "The skill raises the default-on telemetry and names what it collects before the work starts.",
+      "assertions": [
+        "The response says telemetry consent is on by default in the addon preferences",
+        "The response names concrete collected items such as prompts, generated code, scene metadata, viewport screenshots, and manual Blender edits",
+        "The response says the terms allow indefinite storage, AI training, and release in a public anonymized dataset that may not be fully removable afterwards",
+        "The response gives an opt-out such as the addon checkbox, `DISABLE_TELEMETRY` or a sibling variable, or the `disable_telemetry` tool, and raises it before the work starts rather than after"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "서버는 내 노트북에서 돌리고 Blender는 작업실 데스크톱에 있어. BLENDER_HOST에 그 IP 넣으면 되지?",
+      "expected_output": "The skill refuses the direct remote connection and routes to a tunnel.",
+      "assertions": [
+        "The response says the addon socket has no authentication or encryption",
+        "The response says anyone who can reach that port can run Python inside Blender",
+        "The response recommends an SSH tunnel and keeping the listener on localhost"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Poly Pizza에서 받은 의자 모델 상업용 게임에 써도 돼?",
+      "expected_output": "The skill answers from the licence attached to the asset rather than assuming CC0.",
+      "assertions": [
+        "The response says roughly 69 percent of the catalogue is CC-BY and requires crediting the creator",
+        "The response points at the `polypizza_attribution` custom property written onto the imported object",
+        "The response mentions filtering with `licence=\"CC0\"` when no credit is wanted"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Claude Desktop에서 spawn uvx ENOENT 에러가 나. uvx는 터미널에서 잘 되는데.",
+      "expected_output": "The skill identifies the GUI PATH problem and gives the absolute-path fix.",
+      "assertions": [
+        "The response explains that GUI-launched clients do not inherit the terminal PATH",
+        "The response tells the user to use the absolute `uvx` path from `which uvx` or `where uvx`, or the Windows `cmd /c` wrapper",
+        "The response says to fully quit and relaunch the client after the change"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "Hunyuan3D가 AuthFailure.SignatureFailure 뜨는데 키를 새로 발급받아야 하나?",
+      "expected_output": "The skill diagnoses the account-region toggle before blaming the credentials.",
+      "assertions": [
+        "The response identifies a mainland versus international account mismatch rather than an invalid key",
+        "The response points at the International (Pro) account toggle in the sidebar",
+        "The response does not tell the user to regenerate credentials as the first step"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "리깅된 캐릭터를 게임엔진으로 빼줘.",
+      "expected_output": "The skill exports deliberately and flags the modifier default that breaks rigs.",
+      "assertions": [
+        "The response uses `export_scene` with an absolute path and notes that parent folders are created",
+        "The response says `apply_modifiers` defaults to true and should be false for rigged or shape-key meshes",
+        "The response prefers GLB so skins, shape keys, and animation survive"
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "blender-mcp 스킬 폴더를 새로 추가했어. 카탈로그에서 빠진 게 없는지 확인해줘.",
+      "expected_output": "The response checks every structural discovery surface and both catalog validators.",
+      "assertions": [
+        "The response checks `.agent-skills/skills.json`, `.agent-skills/skills.toon`, `README.md`, `README.ko.md`, `README.es-ES.md`, and `setup-all-skills-prompt.md`",
+        "The response runs `validate_skill.sh`, `validate_catalog_sync.py`, and `validate-catalog-projections.py`",
+        "The response verifies the frontmatter description exactly matches the manifest description and contains no pipe delimiter"
+      ]
+    }
+  ]
+}

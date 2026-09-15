@@ -1,7 +1,7 @@
 {
   "version": "2.0.0",
   "generated": "2026-07-30",
-  "skill_count": 250,
+  "skill_count": 251,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -235,6 +235,7 @@
       "presentation-builder",
       "drawio",
       "open-design",
+      "blender-mcp",
       "webtoon-harness",
       "palmier-pro",
       "openstory",
@@ -582,7 +583,8 @@
         "drawio"
       ],
       "design": [
-        "open-design"
+        "open-design",
+        "blender-mcp"
       ],
       "capture": [],
       "storytelling": [
@@ -4253,6 +4255,43 @@
       "keyword": "open-design",
       "version": "1.0",
       "source": "https://github.com/nexu-io/open-design"
+    },
+    {
+      "name": "blender-mcp",
+      "description": "Operate ahujasid/blender-mcp, the MIT-licensed MCP server plus Blender addon that lets an AI client drive Blender for scene inspection, modeling, materials, rendering, asset import, and GLB or FBX export. Route one request to one mode: fit-check the project; preflight the host, addon, and port; install and wire a client such as Claude Desktop, Cursor, VS Code, Codex, or OpenCode; harden the arbitrary-code path with safe mode; control telemetry and privacy before touching client work; source or generate 3D assets under their licences; export to disk; or troubleshoot a broken connection. Use when a user wants an AI agent to control Blender. Triggers on: blender-mcp, MCP for Blender, control Blender with Claude, execute_blender_code, BLENDER_MCP_SAFE_MODE, Poly Haven, Hyper3D Rodin, Hunyuan3D, Sketchfab import, Poly Pizza, Blender addon port 9876.",
+      "category": "creative-media",
+      "subcategory": "design",
+      "interface": "mcp",
+      "path": "blender-mcp/SKILL.md",
+      "tags": [
+        "blender-mcp",
+        "blender",
+        "mcp",
+        "model-context-protocol",
+        "3d-modeling",
+        "generative-3d",
+        "polyhaven",
+        "sketchfab",
+        "hyper3d",
+        "telemetry"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "blender-mcp",
+      "version": "1.0",
+      "source": "https://github.com/ahujasid/blender-mcp"
     },
     {
       "name": "webtoon-harness",
