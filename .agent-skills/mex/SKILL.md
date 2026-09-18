@@ -85,6 +85,15 @@ unrelated to this tool. `mex --version` disambiguates them: mex-agent prints
 a bare semver (e.g. `0.7.1`); TeX Live's prints `pdfTeX ...`. `install.sh` and
 `scripts/mex.sh doctor` both check this automatically.
 
+Detection alone does not unblock the machine, so `scripts/mex.sh` resolves
+`MEX_AGENT_BIN` → `mex-agent` → `mex` and runs the first whose `--version` is
+a bare semver. Prefer exposing an unambiguous `mex-agent` command on PATH
+(a wrapper that execs `node .../mex-agent/dist/cli.js "$@"`): it leaves TeX
+Live's `mex` alone and is the only fix that also survives sandboxes with a
+minimal PATH. `doctor` still reports the shadowing even after a fallback
+succeeds, because a bare `mex` written into a script, anchor file, or doc will
+keep running the wrong tool. See `references/commands.md` for all four options.
+
 
 ### Step 2: What auto-install produces
 

@@ -22,12 +22,24 @@ mex --version
 # TeX Live's mex prints "pdfTeX 3.141592653-2.6-1.40.27 (TeX Live ...)"
 ```
 
-If PATH resolves to the wrong one, either fix PATH order (an npm global bin
-directory must come before the TeX bin directory), or invoke every command as
-`npx mex-agent <command>` instead of bare `mex`. `scripts/install.sh` and
-`scripts/mex.sh doctor` in this skill both detect and warn about this
+If PATH resolves to the wrong one, use any of these, in order of preference:
+
+1. Expose an unambiguous `mex-agent` command on PATH (a wrapper that execs
+   `node <prefix>/lib/node_modules/mex-agent/dist/cli.js "$@"`). This is the
+   only option that also works from sandboxes with a minimal PATH, and it
+   leaves TeX Live's `mex` untouched.
+2. `export MEX_AGENT_BIN=/abs/path/to/mex-agent` — `scripts/mex.sh` reads this
+   first and routes `check`/`graph` through it.
+3. Fix PATH order so an npm global bin directory precedes the TeX bin
+   directory. Note this shadows TeX Live's `mex` for every other tool too.
+4. `npx mex-agent <command>` for one-off invocations.
+
+`scripts/install.sh` and `scripts/mex.sh doctor` in this skill both detect this
 automatically — `install.sh` refuses to proceed rather than silently running
-the wrong binary.
+the wrong binary. `scripts/mex.sh` resolves `MEX_AGENT_BIN` → `mex-agent` →
+`mex` and uses the first whose `--version` is a bare semver, so `check` and
+`graph` keep working on a machine where TeX owns the `mex` name; `doctor`
+still reports the shadowing so a bare `mex` in a script or doc is not trusted.
 
 ## Install
 

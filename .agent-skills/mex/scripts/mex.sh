@@ -25,29 +25,49 @@ usage() {
   exit 1
 }
 
-# Echoes the version string found. Exit 1: no `mex` on PATH. Exit 2: a `mex`
-# exists but is not mex-agent (TeX Live ships an unrelated `mex`), so callers
-# can tell "not installed" from "wrong binary" without repeating this check.
-mex_agent_version() {
-  command -v mex >/dev/null 2>&1 || return 1
-  local v
-  v="$(mex --version 2>&1 | head -1)"
-  echo "$v"
-  [[ "$v" =~ ^[0-9]+\.[0-9]+\.[0-9]+ ]] || return 2
+# Bare `mex` is ambiguous: TeX Live ships an unrelated `mex` (pdfTeX
+# Multilingual format) that wins on PATH for many Homebrew users. Detecting
+# that is not enough — refusing to run leaves the caller with no way forward
+# on a machine that HAS mex-agent under a different name. So resolve across
+# every candidate name and pick the first one whose --version is a bare semver.
+#
+# Echoes "<binary>\t<version>" on success.
+# Exit 1: no usable mex-agent found anywhere.
+# Exit 2: a `mex` exists but is not mex-agent, and no fallback was found.
+MEX=""
+resolve_mex() {
+  local c v
+  for c in "${MEX_AGENT_BIN:-}" mex-agent mex; do
+    [ -n "$c" ] || continue
+    command -v "$c" >/dev/null 2>&1 || continue
+    v="$("$c" --version 2>&1 | head -1)"
+    if [[ "$v" =~ ^[0-9]+\.[0-9]+\.[0-9]+ ]]; then
+      printf '%s\t%s\n' "$(command -v "$c")" "$v"
+      return 0
+    fi
+  done
+  command -v mex >/dev/null 2>&1 && return 2
+  return 1
 }
 
 require_mex() {
-  local v status=0
-  v="$(mex_agent_version)" || status=$?
+  local resolved status=0
+  resolved="$(resolve_mex)" || status=$?
   case "$status" in
-    1)
-      echo "error: 'mex' is not on PATH. Install with: npm install -g mex-agent" >&2
+    0) MEX="${resolved%%$'\t'*}" ;;
+    2)
+      echo "error: 'mex' on PATH ($(command -v mex)) is not mex-agent, and no" >&2
+      echo "       mex-agent fallback was found." >&2
+      echo "       Another tool already owns the 'mex' command on this machine (e.g. TeX" >&2
+      echo "       Live's mex/pdfTeX format). Fix it with any one of:" >&2
+      echo "         - npm install -g mex-agent, then put its bin dir ahead of TeX on PATH" >&2
+      echo "         - expose an unambiguous 'mex-agent' command on PATH" >&2
+      echo "         - export MEX_AGENT_BIN=/abs/path/to/mex-agent" >&2
       exit 1
       ;;
-    2)
-      echo "error: 'mex' on PATH ($(command -v mex)) is not mex-agent (got: $v)." >&2
-      echo "       Another tool already owns the 'mex' command on this machine (e.g. TeX" >&2
-      echo "       Live's mex/pdfTeX format). Fix PATH order or run 'npx mex-agent' instead." >&2
+    *)
+      echo "error: mex-agent is not installed. Install with: npm install -g mex-agent" >&2
+      echo "       Or point MEX_AGENT_BIN at an existing mex-agent executable." >&2
       exit 1
       ;;
   esac
@@ -69,18 +89,29 @@ case "$cmd" in
       echo "  MISSING Node.js       not on PATH (mex needs Node.js >= 22.5)"
     fi
 
-    mexver=""
+    mexresolved=""
     mexstatus=0
-    mexver="$(mex_agent_version)" || mexstatus=$?
+    mexresolved="$(resolve_mex)" || mexstatus=$?
     case "$mexstatus" in
-      0) echo "  ok    mex-agent       $mexver ($(command -v mex))" ;;
-      1) echo "  MISSING mex-agent     not installed (npm install -g mex-agent)" ;;
-      2)
-        echo "  WARN  mex-agent       'mex' on PATH is not mex-agent (got: $mexver)"
-        echo "                        resolved to $(command -v mex)"
-        echo "                        another tool already owns 'mex' (e.g. TeX Live's mex/pdfTeX"
-        echo "                        format) — fix PATH order or use 'npx mex-agent' instead"
+      0)
+        mexbin="${mexresolved%%$'\t'*}"
+        mexver="${mexresolved##*$'\t'}"
+        echo "  ok    mex-agent       $mexver ($mexbin)"
+        # Surface the ambiguity even when a fallback saved us, so the operator
+        # knows a bare `mex` in a script or doc will still run the wrong tool.
+        if command -v mex >/dev/null 2>&1 && [ "$(command -v mex)" != "$mexbin" ]; then
+          echo "  info  'mex' name      shadowed by $(command -v mex) ($(mex --version 2>&1 | head -1))"
+          echo "                        use '$mexbin' — a bare 'mex' runs the other tool"
+        fi
         ;;
+      2)
+        echo "  WARN  mex-agent       'mex' on PATH is not mex-agent and no fallback found"
+        echo "                        resolved to $(command -v mex) ($(mex --version 2>&1 | head -1))"
+        echo "                        another tool already owns 'mex' (e.g. TeX Live's mex/pdfTeX"
+        echo "                        format) — install mex-agent, expose a 'mex-agent' command,"
+        echo "                        or set MEX_AGENT_BIN=/abs/path/to/mex-agent"
+        ;;
+      *) echo "  MISSING mex-agent     not installed (npm install -g mex-agent)" ;;
     esac
 
     if git -C "$project_path" rev-parse --git-dir >/dev/null 2>&1; then
@@ -121,7 +152,7 @@ case "$cmd" in
     require_git "$project_path"
 
     shift 2
-    (cd "$project_path" && mex "$cmd" "$@")
+    (cd "$project_path" && "$MEX" "$cmd" "$@")
     ;;
   *)
     usage
