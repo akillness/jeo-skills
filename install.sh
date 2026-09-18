@@ -13,8 +13,18 @@ GLOBAL="${INSTALL_GLOBAL:-true}"
 info() { printf '[jeo-skills] %s\n' "$*"; }
 fail() { printf '[jeo-skills] ERROR: %s\n' "$*" >&2; exit 1; }
 
+# `command -v` only proves a name resolves, not that it runs. macOS ships
+# /usr/bin/python3 and /usr/bin/git as Xcode Command Line Tools stubs that
+# resolve fine but exit non-zero with "You have not agreed to the Xcode
+# license agreements" until `sudo xcodebuild -license accept` is run. Execute
+# each prerequisite once so a broken toolchain fails here with a clear reason
+# instead of midway through the install.
 command -v python3 >/dev/null 2>&1 || fail "Python 3.9+ is required"
+python3 -c 'import sys; sys.exit(0 if sys.version_info >= (3, 9) else 1)' >/dev/null 2>&1 \
+  || fail "python3 resolves to $(command -v python3) but is not a usable Python 3.9+. On macOS, run 'sudo xcodebuild -license accept' or install a real Python 3."
 command -v npx >/dev/null 2>&1 || fail "Node.js/npx is required"
+npx --version >/dev/null 2>&1 \
+  || fail "npx resolves to $(command -v npx) but does not run. Reinstall Node.js."
 
 ADD_ARGS=(--skill jeo-skill --agent "$AGENT" --yes --copy --full-depth)
 if [ "$GLOBAL" = "true" ]; then
@@ -41,7 +51,20 @@ find_cli() {
 
 CLI_PATH="$(find_cli)" || fail "jeo-skill installed, but its CLI path was not found"
 python3 "$CLI_PATH" link
-jeo-skill doctor
+
+# `link` drops a symlink in ~/.local/bin, which is NOT on the default macOS
+# PATH (/etc/paths has no ~/.local/bin). Invoking a bare `jeo-skill` here would
+# abort the whole installer under `set -e` on a clean machine, after the
+# install already succeeded. Always drive the CLI through its resolved path.
+run_cli() { python3 "$CLI_PATH" "$@"; }
+
+run_cli doctor
+
+if ! command -v jeo-skill >/dev/null 2>&1; then
+  info "Note: $HOME/.local/bin is not on your PATH, so the 'jeo-skill' command"
+  info "      is not callable yet. Add this to your shell profile:"
+  info "        export PATH=\"\$HOME/.local/bin:\$PATH\""
+fi
 
 case "$SELECTION" in
   router)
@@ -51,14 +74,14 @@ case "$SELECTION" in
     info "Installing curated bundle: $BUNDLE"
     SELECT_ARGS=(--bundle "$BUNDLE" --agent "$AGENT" --yes)
     if [ "$GLOBAL" = "true" ]; then SELECT_ARGS+=(--global); fi
-    jeo-skill install "${SELECT_ARGS[@]}"
+    run_cli install "${SELECT_ARGS[@]}"
     ;;
   category)
     [ -n "$CATEGORY" ] || fail "JEO_SKILLS_CATEGORY is required for category mode"
     SELECT_ARGS=(--category "$CATEGORY" --agent "$AGENT" --yes)
     if [ "$GLOBAL" = "true" ]; then SELECT_ARGS+=(--global); fi
     if [ -n "$SUBCATEGORY" ]; then SELECT_ARGS+=(--subcategory "$SUBCATEGORY"); fi
-    jeo-skill install "${SELECT_ARGS[@]}"
+    run_cli install "${SELECT_ARGS[@]}"
     ;;
   all)
     info "Explicit full install selected"
