@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "platform": "youtube-shorts",
+  "release_adapter_id": "youtube-shorts-v1",
+  "video_sha256": "",
+  "published_url": null,
+  "published_at_kst": null,
+  "live_title": "",
+  "live_description": "",
+  "live_labels": [],
+  "live_product_tag_ids": [],
+  "verification": "PENDING"
+}

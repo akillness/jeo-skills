@@ -1,0 +1,8 @@
+{
+  "concept_id": "k01",
+  "approved": true,
+  "approval_reference": "fixture:test-only-not-publication",
+  "claim_ids": [],
+  "asset_ids": ["a01"],
+  "shots": ["s01", "s02", "s03"]
+}

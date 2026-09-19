@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aside.local/shopping-shorts/timeline.schema.json",
+  "title": "Shopping Shorts Assembly Timeline",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["width", "height", "fps", "clips", "voiceover", "music", "caption_plan", "captions", "music_gain_db", "output_duration_seconds"],
+  "properties": {
+    "width": {"const": 1080},
+    "height": {"const": 1920},
+    "fps": {"type": "number", "minimum": 24, "maximum": 60},
+    "clips": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 8,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "duration_seconds"],
+        "properties": {
+          "path": {"type": "string", "minLength": 1},
+          "duration_seconds": {"type": "number", "exclusiveMinimum": 0, "maximum": 30}
+        }
+      }
+    },
+    "voiceover": {"type": ["string", "null"]},
+    "music": {"type": ["string", "null"]},
+    "caption_plan": {"type": ["string", "null"]},
+    "captions": {"type": ["string", "null"]},
+    "music_gain_db": {"type": "number", "minimum": -60, "maximum": 0},
+    "output_duration_seconds": {"type": "number", "minimum": 15, "maximum": 60}
+  }
+}

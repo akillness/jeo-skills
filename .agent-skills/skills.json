@@ -1,7 +1,7 @@
 {
   "version": "2.0.0",
   "generated": "2026-09-18",
-  "skill_count": 358,
+  "skill_count": 359,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -257,7 +257,8 @@
       "higgsfield-soul-id",
       "higgsfield-youtube-thumbnail",
       "higgsfield-video-explainer",
-      "higgsfield-brandkit"
+      "higgsfield-brandkit",
+      "shopping-shorts"
     ],
     "cli-tools": [
       "soup",
@@ -690,7 +691,8 @@
         "openstory",
         "openmontage",
         "open-generative-ai",
-        "higgsfield-video-explainer"
+        "higgsfield-video-explainer",
+        "shopping-shorts"
       ],
       "motion": [
         "video-motion-previs"
@@ -1104,7 +1106,8 @@
       "video-production",
       "video-shotcraft",
       "video-motion-previs",
-      "remotion-video-production"
+      "remotion-video-production",
+      "shopping-shorts"
     ],
     "skill-authoring": [
       "skill-standardization",
@@ -1256,7 +1259,8 @@
         "video-shotcraft",
         "video-motion-previs",
         "remotion-video-production",
-        "video-to-superprompt"
+        "video-to-superprompt",
+        "shopping-shorts"
       ]
     },
     "image-sources": {
@@ -13124,6 +13128,45 @@
       "keyword": "rhwp-edit",
       "version": "1.0",
       "source": "https://github.com/NomaDamas/k-skill"
+    },
+    {
+      "name": "shopping-shorts",
+      "description": "상품 링크나 권리 확인된 제품 사진을 근거 중심의 9:16 쇼핑 쇼츠 패키지로 전환한다. Use when 쇼핑 쇼츠·상품 추천 숏폼·어필리에이트 영상·AI 제품 광고를 조사, 기획, 생성, 검수하거나 YouTube·Instagram Reels·TikTok·X·네이버 클립과 YPP·쿠팡·지그재그 등 한국 크리에이터 수익 경로를 현재 공식 조건으로 비교할 때. Open-Generative-AI를 영상 생성 표면으로 연결하되 가짜 체험담, 경쟁 영상 복제, 대량 양산, 무고지 제휴, 승인 없는 가입·유료 생성·업로드에는 사용하지 않는다.",
+      "category": "creative-media",
+      "subcategory": "video",
+      "interface": "workflow",
+      "path": "shopping-shorts/SKILL.md",
+      "tags": [
+        "shopping-shorts",
+        "vertical-video",
+        "commerce",
+        "affiliate",
+        "product-evidence",
+        "platform-compliance",
+        "youtube",
+        "instagram",
+        "tiktok",
+        "x",
+        "naver"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
+      ],
+      "keyword": "shopping-shorts",
+      "version": "1.0.0",
+      "source": "akillness/jeo-skills"
     }
   ]
 }

@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aside.local/shopping-shorts/render-plan.schema.json",
+  "title": "Shopping Shorts Render Plan",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["source_repo", "source_sha", "execution_surface", "currency", "estimated_cost", "balance_verified", "paid_execution_approved", "generated_text_policy", "output", "shots"],
+  "properties": {
+    "source_repo": {"const": "https://github.com/Anil-matcha/Open-Generative-AI"},
+    "source_sha": {"const": "5482a777047c0df189eef989ff994d0d7a1d2874"},
+    "execution_surface": {"enum": ["muapi-api", "open-generative-ai-gui", "wan2gp-gradio"]},
+    "currency": {"type": "string", "minLength": 1},
+    "estimated_cost": {"type": ["number", "null"], "minimum": 0},
+    "balance_verified": {"type": "boolean"},
+    "paid_execution_approved": {"type": "boolean"},
+    "generated_text_policy": {"const": "forbid-generated-typography"},
+    "output": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["width", "height", "fps", "duration_seconds"],
+      "properties": {
+        "width": {"const": 1080},
+        "height": {"const": 1920},
+        "fps": {"type": "integer", "minimum": 24, "maximum": 60},
+        "duration_seconds": {"type": "number", "minimum": 15, "maximum": 60}
+      }
+    },
+    "shots": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 8,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["shot_id", "mode", "endpoint", "duration_seconds", "aspect_ratio", "resolution", "prompt", "source_asset_ids", "claim_ids", "output_path"],
+        "properties": {
+          "shot_id": {"type": "string", "pattern": "^s[0-9]{2,}$"},
+          "mode": {"enum": ["t2v", "i2v", "v2v", "recast", "lipsync"]},
+          "endpoint": {"type": "string", "minLength": 1},
+          "duration_seconds": {"type": "number", "exclusiveMinimum": 0, "maximum": 30},
+          "aspect_ratio": {"const": "9:16"},
+          "resolution": {"type": "string", "minLength": 1},
+          "prompt": {"type": "string", "minLength": 10},
+          "source_asset_ids": {"type": "array", "items": {"type": "string", "pattern": "^a[0-9]{2,}$"}, "uniqueItems": true},
+          "claim_ids": {"type": "array", "items": {"type": "string", "pattern": "^c[0-9]{2,}$"}, "uniqueItems": true},
+          "output_path": {"type": "string", "minLength": 1},
+          "provider_payload": {"type": "object", "additionalProperties": true}
+        }
+      }
+    }
+  }
+}

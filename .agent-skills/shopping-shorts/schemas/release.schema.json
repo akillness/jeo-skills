@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aside.local/shopping-shorts/release.schema.json",
+  "title": "Shopping Shorts Release Package",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["platform", "channel_id", "video_path", "video_sha256", "title", "description", "tags", "product_tag_ids", "youtube_ai_disclosure", "paid_promotion_toggle", "commercial_disclosure_text", "publication_approved", "published_url"],
+  "properties": {
+    "platform": {"enum": ["youtube-shorts", "naver-clip", "instagram-reels", "tiktok-video", "x-video-post", "other-researched"]},
+    "channel_id": {"type": "string", "minLength": 1},
+    "video_path": {"type": "string", "minLength": 1},
+    "video_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "title": {"type": "string", "minLength": 1, "maxLength": 100},
+    "description": {"type": "string", "minLength": 1},
+    "tags": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "product_tag_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "youtube_ai_disclosure": {"enum": ["yes", "no", "not-applicable"]},
+    "paid_promotion_toggle": {"type": "boolean"},
+    "commercial_disclosure_text": {"type": "string"},
+    "publication_approved": {"type": "boolean"},
+    "published_url": {"type": ["string", "null"], "format": "uri"}
+  }
+}

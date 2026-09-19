@@ -1,0 +1,59 @@
+{
+  "reviewer_independent": false,
+  "claim_coverage": 0,
+  "unverified_claims": 0,
+  "fabricated_experience": false,
+  "asset_rights_complete": false,
+  "product_identity_preserved": false,
+  "product_behavior_supported": false,
+  "generated_footage_text_free": false,
+  "reference_expression_copied": false,
+  "batch_count": 1,
+  "realistic_synthetic_content": true,
+  "youtube_ai_disclosure": "yes",
+  "paid_promotion_toggle": "not-required",
+  "commercial_disclosure": {
+    "required": false,
+    "onscreen": false,
+    "description": false,
+    "text": ""
+  },
+  "virtual_person": {
+    "present": false,
+    "label_visible_while_present": false
+  },
+  "visual_review": {
+    "start_frame": false,
+    "middle_frame": false,
+    "end_frame": false,
+    "full_playback": false
+  },
+  "generated_text_review": {
+    "reviewer_id": "",
+    "reviewed_at_kst": "",
+    "final_media_path": "assembly/final.mp4",
+    "final_media_sha256": "",
+    "source_clips": [],
+    "frame_checks": [],
+    "full_playback_reviewed": false
+  },
+  "caption_overlay": {
+    "source": "assembly-generated",
+    "animation": "typewriter",
+    "max_lines": 2,
+    "font_verified": false,
+    "safe_area_verified": false,
+    "burn_in_verified": false
+  },
+  "technical": {
+    "width": 0,
+    "height": 0,
+    "fps": 0,
+    "duration_seconds": 0,
+    "video_codec": "",
+    "audio_peak_dbfs": null,
+    "captions_safe": false
+  },
+  "verdict": "FIX",
+  "findings": []
+}

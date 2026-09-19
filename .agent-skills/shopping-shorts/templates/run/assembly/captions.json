@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "style": {
+    "animation": "typewriter",
+    "font_family": "",
+    "font_size": 64,
+    "primary_color": "#FFFFFF",
+    "outline_color": "#111111",
+    "outline_width": 4,
+    "max_lines": 2,
+    "max_chars_per_line": 18,
+    "typing_ms_per_character": 65,
+    "minimum_hold_ms": 500,
+    "margin_v": 260
+  },
+  "cues": []
+}

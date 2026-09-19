@@ -2,14 +2,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-358-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-359-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![GJC](https://img.shields.io/badge/GJC-gajae--code-181717?style=for-the-badge&logo=github)](https://github.com/akillness/gajae-code)
 [![jeo-code](https://img.shields.io/badge/jeo--code-jeo-181717?style=for-the-badge&logo=github)](https://github.com/akillness/jeo-code)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**358 categorized skills · lightweight selective install · compact TOON catalog · cross-platform**
+**359 categorized skills · lightweight selective install · compact TOON catalog · cross-platform**
 
 A curated collection for spec-first, multi-agent LLM workflows. Delegate a complete setup
 with one prompt, or install the `jeo-skill` router first and add only the web,
@@ -78,7 +78,7 @@ The agent runs a **full install by default** (say “core only” or “minimal�
 
 ### Lightweight selective install (manual / CI)
 
-Install the **`jeo-skill` router first**, not all 358 skill folders. It provides category,
+Install the **`jeo-skill` router first**, not all 359 skill folders. It provides category,
 subcategory, interface, bundle, and relationship discovery while keeping heavy apps,
 models, MCP servers, and runtimes on demand.
 
@@ -131,7 +131,7 @@ video-motion-previs check
 
 ## 📚 Skills List
 
-> Central manifest: `.agent-skills/skills.json` · 358 skills · 10 primary categories · subcategory/interface/relationship metadata
+> Central manifest: `.agent-skills/skills.json` · 359 skills · 10 primary categories · subcategory/interface/relationship metadata
 
 ### 🌐 Web (49)
 
@@ -245,9 +245,9 @@ Subcategories: `client` (3), `web` (2), `server` (1), `design-ui` (7), `audio` (
 | `game-feel` |
 | `game-ui-ux` |
 
-### 🎬 Creative Media (32)
+### 🎬 Creative Media (33)
 
-Subcategories: `image` (10), `video` (13), `motion` (1), `audio` (1), `presentation` (1), `diagram` (1), `design` (3), `capture` (0), `storytelling` (2)
+Subcategories: `image` (10), `video` (14), `motion` (1), `audio` (1), `presentation` (1), `diagram` (1), `design` (3), `capture` (0), `storytelling` (2)
 
 | Skill |
 |---|
@@ -283,6 +283,7 @@ Subcategories: `image` (10), `video` (13), `motion` (1), `audio` (1), `presentat
 | `higgsfield-youtube-thumbnail` |
 | `higgsfield-video-explainer` |
 | `higgsfield-brandkit` |
+| `shopping-shorts` |
 
 ### ⌨️ CLI Tools (34)
 
@@ -819,7 +820,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 
 ```text
 .
-├── .agent-skills/          ← 358 skill folders (SKILL.md + optional support files)
+├── .agent-skills/          ← 359 skill folders (SKILL.md + optional support files)
 ├── docs/                   ← detailed guides (bmad, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
@@ -914,7 +915,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 
 | Change | Details |
 |--------|---------|
-| **Catalog now 358 skills (+107)** | Synced the catalog with the globally installed skill set. Five upstream families are vendored at pinned commits: 65 product-management skills plus the `pm-skills` router from [phuryn/pm-skills](https://github.com/phuryn/pm-skills) (`8607e3b`, MIT — new `business` subcategories `pm-toolkit`, `pm-discovery`, `pm-strategy`, `pm-execution`, `pm-market-research`, `pm-analytics`, `pm-go-to-market`, `pm-growth`); ten LangChain / LangGraph / Deep Agents skills from [langchain-ai/langchain-skills](https://github.com/langchain-ai/langchain-skills) (`88df7d9`, MIT); the eight `higgsfield-*` CLI skills from [higgsfield-ai/skills](https://github.com/higgsfield-ai/skills) (0.12.0, `d071406`, MIT), which finally gives `higgsfield-game-generation` an in-catalog target; `hwp`, `rhwp-edit`, `rhwp-advanced`, `korean-patent-search`, and `k-skill-setup` from [NomaDamas/k-skill](https://github.com/NomaDamas/k-skill) (`783d3c3`, MIT); and 17 agent-engineering skills from [akillness/oh-my-gods](https://github.com/akillness/oh-my-gods) (`1b2779a`) so `jeo-skill install` can place them standalone while `agenticskills` stays the whole-bundle installer. `youtube-growth-playbook-2026` is a locally authored addition. Five relationship groups (`pm-skills`, `langchain-skills`, `higgsfield-cli`, `k-skill`, `oh-my-gods-agent-engineering`) and two bundles (`product-management`, `langchain`) were added. |
+| **Catalog now 359 skills (+108)** | Synced the catalog with the globally installed skill set. Five upstream families are vendored at pinned commits: 65 product-management skills plus the `pm-skills` router from [phuryn/pm-skills](https://github.com/phuryn/pm-skills) (`8607e3b`, MIT — new `business` subcategories `pm-toolkit`, `pm-discovery`, `pm-strategy`, `pm-execution`, `pm-market-research`, `pm-analytics`, `pm-go-to-market`, `pm-growth`); ten LangChain / LangGraph / Deep Agents skills from [langchain-ai/langchain-skills](https://github.com/langchain-ai/langchain-skills) (`88df7d9`, MIT); the eight `higgsfield-*` CLI skills from [higgsfield-ai/skills](https://github.com/higgsfield-ai/skills) (0.12.0, `d071406`, MIT), which finally gives `higgsfield-game-generation` an in-catalog target; `hwp`, `rhwp-edit`, `rhwp-advanced`, `korean-patent-search`, and `k-skill-setup` from [NomaDamas/k-skill](https://github.com/NomaDamas/k-skill) (`783d3c3`, MIT); and 17 agent-engineering skills from [akillness/oh-my-gods](https://github.com/akillness/oh-my-gods) (`1b2779a`) so `jeo-skill install` can place them standalone while `agenticskills` stays the whole-bundle installer. `youtube-growth-playbook-2026` is a locally authored addition. The global-only `shopping-shorts` evidence-first vertical-commerce video harness was also promoted into the catalog after its 79-case media regression suite passed; it joins the `media-video` bundle and the `video-production` relationship group. Five relationship groups (`pm-skills`, `langchain-skills`, `higgsfield-cli`, `k-skill`, `oh-my-gods-agent-engineering`) and two bundles (`product-management`, `langchain`) were added. |
 | **Knowledge-pipeline hooks are back in the install guide** | The lightweight rewrite of `setup-all-skills-prompt.md` had dropped the `llm-wiki` + graphify hook wiring even though the `llm-wiki` skill still claimed it was there. Step 5 now bootstraps the per-repo vault, installs `hooks/ingest-prompt.py` at `~/.agents/hooks/`, and registers the vault-path-free `llm-wiki-ingest.sh` wrapper for Claude Code (`UserPromptSubmit`/`Stop`), Codex (`UserPromptSubmit`/`Stop`), and Gemini/Antigravity (`BeforeAgent`/`AfterAgent`) idempotently — existing hooks and unrelated settings keys are preserved. |
 | **`scripts/generate-catalog-projections.py`** | New inverse of the validator: regenerates `skills.toon` and the three README skills-list sections surgically from `skills.json` (headings, subcategory counts, table rows, intro count only; everything else byte-preserved). `--check` asserts a regeneration is a no-op, so "fix the manifest, not the projections" now has a mechanical follow-through. The August README entries were also moved into `changelog/` so `changelog.py check` passes again. |
 | **Not imported on purpose** | Six unattributed single-file skills that shipped alongside pm-skills globally (`blog-post`, `data-visualization`, `query-writing`, `schema-exploration`, `social-media`, `web-research`), the stale `framework-selection` / `langgraph-docs` (no longer in upstream), and everything previously removed or retired from this catalog (OMC/OMX/ooo command shims, `jeo`, `ralph`, `agent-browser`, `obsidian`, ...) stay out. |

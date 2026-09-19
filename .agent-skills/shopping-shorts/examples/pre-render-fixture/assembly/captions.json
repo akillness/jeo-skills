@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "style": {
+    "animation": "typewriter",
+    "font_family": "Arial",
+    "font_size": 64,
+    "primary_color": "#FFFFFF",
+    "outline_color": "#111111",
+    "outline_width": 4,
+    "max_lines": 2,
+    "max_chars_per_line": 18,
+    "typing_ms_per_character": 45,
+    "minimum_hold_ms": 500,
+    "margin_v": 260
+  },
+  "cues": [
+    {
+      "cue_id": "t01",
+      "start_seconds": 0,
+      "end_seconds": 5,
+      "text": "검증 전용 픽스처"
+    },
+    {
+      "cue_id": "t02",
+      "start_seconds": 5,
+      "end_seconds": 10,
+      "text": "렌더보다 근거가 먼저"
+    },
+    {
+      "cue_id": "t03",
+      "start_seconds": 10,
+      "end_seconds": 15,
+      "text": "공개하지 마세요"
+    }
+  ]
+}

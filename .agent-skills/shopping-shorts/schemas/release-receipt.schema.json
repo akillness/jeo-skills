@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aside.local/shopping-shorts/release-receipt.schema.json",
+  "title": "Shopping Shorts Release Read-Back Receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "platform", "release_adapter_id", "video_sha256", "published_url", "published_at_kst", "live_title", "live_description", "live_labels", "live_product_tag_ids", "verification"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "platform": {"enum": ["youtube-shorts", "naver-clip", "instagram-reels", "tiktok-video", "x-video-post", "other-researched"]},
+    "release_adapter_id": {"type": "string", "minLength": 1},
+    "video_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "published_url": {"type": "string", "format": "uri"},
+    "published_at_kst": {"type": "string", "format": "date-time"},
+    "live_title": {"type": "string"},
+    "live_description": {"type": "string"},
+    "live_labels": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "live_product_tag_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "verification": {"const": "PASS"}
+  }
+}

@@ -138,6 +138,18 @@
         }
       ]
     },
+    "higgsfield-soul-id": {
+      "source": "akillness/jeo-skills",
+      "sourceType": "github",
+      "skillPath": ".agent-skills/higgsfield-soul-id/SKILL.md",
+      "computedHash": "ff8418fe5fe936d65898601e28bb282c4c47c0fc0cd5c3e54e1c75565609683a"
+    },
+    "korean-patent-search": {
+      "source": "akillness/jeo-skills",
+      "sourceType": "github",
+      "skillPath": ".agent-skills/korean-patent-search/SKILL.md",
+      "computedHash": "607aacdbff7b7f30f0564199aea99be0994c2213811ab21bdeb59c4d6d203f92"
+    },
     "llm-monitoring-dashboard": {
       "source": "akillness/jeo-skills",
       "sourceType": "github",

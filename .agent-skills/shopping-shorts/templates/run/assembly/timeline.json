@@ -1,0 +1,12 @@
+{
+  "width": 1080,
+  "height": 1920,
+  "fps": 30,
+  "clips": [],
+  "voiceover": null,
+  "music": null,
+  "caption_plan": "captions.json",
+  "captions": "captions.ass",
+  "music_gain_db": -18,
+  "output_duration_seconds": 30
+}

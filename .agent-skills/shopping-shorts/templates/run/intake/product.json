@@ -1,0 +1,26 @@
+{
+  "product_id": "",
+  "name": "",
+  "canonical_url": "",
+  "seller": "",
+  "manufacturer": "",
+  "category": "",
+  "market": "KR",
+  "channel": {
+    "platform": "youtube-shorts",
+    "channel_id": null,
+    "account_type": "unknown",
+    "program_enrollment": "unknown",
+    "commerce_attachment": "unknown",
+    "publication_adapter": "youtube-shorts-v1"
+  },
+  "commercial_relationship": {
+    "affiliate": false,
+    "gifted": false,
+    "sponsored": false,
+    "self_owned_brand": false
+  },
+  "visual_effect_score": 0,
+  "review_evidence_count": 0,
+  "notes": []
+}

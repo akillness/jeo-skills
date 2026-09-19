@@ -1,0 +1,1419 @@
+{
+  "schema_version": 1,
+  "run_id": "20260901-0900-fixture-product",
+  "market": "KR",
+  "research_status": "complete",
+  "freshness_mode": "fixture",
+  "researched_at_kst": "2026-09-01T11:30:00+09:00",
+  "required_program_ids": [
+    "youtube-ypp",
+    "youtube-shopping-affiliate",
+    "coupang-partners",
+    "zigzag-sharing-reward",
+    "zigzag-creator-lounge",
+    "naver-clip-ad-incentive",
+    "naver-shopping-connect",
+    "instagram-gifts",
+    "instagram-subscriptions",
+    "instagram-bonuses",
+    "instagram-creator-marketplace",
+    "instagram-shopping-tags",
+    "tiktok-creator-rewards",
+    "tiktok-video-gifts",
+    "tiktok-one-marketplace",
+    "tiktok-shop-affiliate",
+    "x-creator-revenue-sharing",
+    "x-original-content-rewards",
+    "x-creator-subscriptions",
+    "x-paid-partnerships"
+  ],
+  "sources": [
+    {
+      "source_id": "yt-official-fixture",
+      "provider": "youtube",
+      "url": "https://support.google.com/youtube/answer/72851?hl=ko",
+      "title": "YPP official fixture source",
+      "source_kind": "official-help",
+      "retrieved_at_kst": "2026-09-01T11:30:00+09:00"
+    },
+    {
+      "source_id": "cp-official-fixture",
+      "provider": "coupang",
+      "url": "https://partners.coupangcdn.com/partners-guide/partners-guide-20260611145240.pdf",
+      "title": "Coupang Partners official fixture source",
+      "source_kind": "official-help",
+      "retrieved_at_kst": "2026-09-01T11:30:00+09:00"
+    },
+    {
+      "source_id": "zz-official-fixture",
+      "provider": "zigzag",
+      "url": "https://zigzagkr.zendesk.com/hc/ko/articles/5397020982287",
+      "title": "Zigzag official fixture source",
+      "source_kind": "official-help",
+      "retrieved_at_kst": "2026-09-01T11:30:00+09:00"
+    },
+    {
+      "source_id": "nv-official-fixture",
+      "provider": "naver",
+      "url": "https://help.naver.com/service/30027/contents/24394?lang=ko",
+      "title": "Naver official fixture source",
+      "source_kind": "official-help",
+      "retrieved_at_kst": "2026-09-01T11:30:00+09:00"
+    },
+    {
+      "source_id": "instagram-gifts-help",
+      "provider": "instagram",
+      "url": "https://help.instagram.com/523408036294825/",
+      "title": "Instagram Gifts availability",
+      "source_kind": "official-help",
+      "retrieved_at_kst": "2026-09-01T10:00:00+09:00"
+    },
+    {
+      "source_id": "instagram-subscriptions-help",
+      "provider": "instagram",
+      "url": "https://help.instagram.com/478012211024479",
+      "title": "Instagram Subscriptions eligibility",
+      "source_kind": "official-help",
+      "retrieved_at_kst": "2026-09-01T10:00:00+09:00"
+    },
+    {
+      "source_id": "instagram-marketplace-help",
+      "provider": "instagram",
+      "url": "https://help.instagram.com/1389278101788752",
+      "title": "Meta Creator Marketplace eligibility",
+      "source_kind": "official-help",
+      "retrieved_at_kst": "2026-09-01T10:00:00+09:00"
+    },
+    {
+      "source_id": "instagram-commerce-help",
+      "provider": "instagram",
+      "url": "https://help.instagram.com/549256849084694",
+      "title": "Instagram Shops supported countries",
+      "source_kind": "official-help",
+      "retrieved_at_kst": "2026-09-01T10:00:00+09:00"
+    },
+    {
+      "source_id": "instagram-publishing-api",
+      "provider": "instagram",
+      "url": "https://developers.facebook.com/docs/instagram-platform/content-publishing/",
+      "title": "Instagram Content Publishing API",
+      "source_kind": "official-developer",
+      "retrieved_at_kst": "2026-09-01T10:00:00+09:00"
+    },
+    {
+      "source_id": "tiktok-creator-rewards-help",
+      "provider": "tiktok",
+      "url": "https://support.tiktok.com/en/business-and-creator/creator-rewards-program/creator-rewards-program",
+      "title": "TikTok Creator Rewards Program",
+      "source_kind": "official-help",
+      "retrieved_at_kst": "2026-09-01T10:00:00+09:00"
+    },
+    {
+      "source_id": "tiktok-video-gifts-help",
+      "provider": "tiktok",
+      "url": "https://support.tiktok.com/en/business-and-creator/video-gifts-on-tiktok/video-gifts-on-tiktok",
+      "title": "TikTok Video Gifts",
+      "source_kind": "official-help",
+      "retrieved_at_kst": "2026-09-01T10:00:00+09:00"
+    },
+    {
+      "source_id": "tiktok-one-help",
+      "provider": "tiktok",
+      "url": "https://support.tiktok.com/en/business-and-creator/tiktok-one",
+      "title": "TikTok One eligibility",
+      "source_kind": "official-help",
+      "retrieved_at_kst": "2026-09-01T10:00:00+09:00"
+    },
+    {
+      "source_id": "tiktok-branded-content-policy",
+      "provider": "tiktok",
+      "url": "https://www.tiktok.com/legal/page/global/bc-policy/en",
+      "title": "TikTok Branded Content Policy",
+      "source_kind": "official-policy",
+      "retrieved_at_kst": "2026-09-01T10:00:00+09:00"
+    },
+    {
+      "source_id": "tiktok-kr-industry-entry-policy",
+      "provider": "tiktok",
+      "url": "https://ads.tiktok.com/help/article/tiktok-ads-policy-industry-entry?lang=en",
+      "title": "TikTok Ads Policy: Industry Entry, South Korea",
+      "source_kind": "official-policy",
+      "retrieved_at_kst": "2026-09-01T14:20:00+09:00"
+    },
+    {
+      "source_id": "tiktok-posting-api",
+      "provider": "tiktok",
+      "url": "https://developers.tiktok.com/doc/content-posting-api-reference-direct-post",
+      "title": "TikTok Direct Post API",
+      "source_kind": "official-developer",
+      "retrieved_at_kst": "2026-09-01T10:00:00+09:00"
+    },
+    {
+      "source_id": "tiktok-shop-partner-docs",
+      "provider": "tiktok",
+      "url": "https://partner.tiktokshop.com/docv2/page/affiliate-creator-api-overview",
+      "title": "TikTok Shop Affiliate Creator API",
+      "source_kind": "official-developer",
+      "retrieved_at_kst": "2026-09-01T10:00:00+09:00"
+    },
+    {
+      "source_id": "x-revenue-sharing-help",
+      "provider": "x",
+      "url": "https://help.x.com/en/using-x/creator-revenue-sharing",
+      "title": "X Creator Revenue Sharing transition",
+      "source_kind": "official-help",
+      "retrieved_at_kst": "2026-09-01T10:00:00+09:00"
+    },
+    {
+      "source_id": "x-original-rewards-help",
+      "provider": "x",
+      "url": "https://help.x.com/en/using-x/original-content-rewards",
+      "title": "X Original Content Rewards",
+      "source_kind": "official-help",
+      "retrieved_at_kst": "2026-09-01T10:00:00+09:00"
+    },
+    {
+      "source_id": "x-subscriptions-help",
+      "provider": "x",
+      "url": "https://help.x.com/en/using-x/subscriptions-creator",
+      "title": "X Creator Subscriptions",
+      "source_kind": "official-help",
+      "retrieved_at_kst": "2026-09-01T10:00:00+09:00"
+    },
+    {
+      "source_id": "x-paid-partnerships-policy",
+      "provider": "x",
+      "url": "https://help.x.com/en/rules-and-policies/paid-partnerships-policy",
+      "title": "X Paid Partnerships Policy",
+      "source_kind": "official-policy",
+      "retrieved_at_kst": "2026-09-01T10:00:00+09:00"
+    },
+    {
+      "source_id": "x-api-pricing",
+      "provider": "x",
+      "url": "https://docs.x.com/x-api/getting-started/pricing",
+      "title": "X API pricing",
+      "source_kind": "official-developer",
+      "retrieved_at_kst": "2026-09-01T10:00:00+09:00"
+    },
+    {
+      "source_id": "instagram-gifts-business-help",
+      "provider": "instagram",
+      "url": "https://www.facebook.com/business/help/738469380549477",
+      "title": "Instagram Gifts creator eligibility",
+      "source_kind": "official-help",
+      "retrieved_at_kst": "2026-09-01T10:00:00+09:00"
+    },
+    {
+      "source_id": "instagram-bonuses-help",
+      "provider": "instagram",
+      "url": "https://help.instagram.com/708013994693013",
+      "title": "Instagram Bonuses eligibility",
+      "source_kind": "official-help",
+      "retrieved_at_kst": "2026-09-01T10:00:00+09:00"
+    }
+  ],
+  "programs": [
+    {
+      "program_id": "youtube-ypp",
+      "provider": "youtube",
+      "surface_kind": "platform-revenue",
+      "program_state": "active",
+      "account_status": "unknown",
+      "registration_required": true,
+      "media_registration": "account-dependent",
+      "eligibility": [
+        {
+          "criterion": "Fixture only; live account state intentionally unknown.",
+          "status": "unknown",
+          "source_ids": [
+            "yt-official-fixture"
+          ]
+        }
+      ],
+      "attribution": {
+        "status": "not-applicable",
+        "window_hours": null,
+        "basis": null,
+        "source_ids": []
+      },
+      "commission_or_revenue": {
+        "status": "dynamic",
+        "value": "Fixture placeholder; refresh from current official source or account UI.",
+        "observed_at_kst": "2026-09-01T11:30:00+09:00",
+        "source_ids": [
+          "yt-official-fixture"
+        ]
+      },
+      "payout": {
+        "status": "dynamic",
+        "value": "Fixture placeholder; refresh before release.",
+        "observed_at_kst": "2026-09-01T11:30:00+09:00",
+        "source_ids": [
+          "yt-official-fixture"
+        ]
+      },
+      "disclosures": [],
+      "content_restrictions": [
+        "Fixture only; do not publish."
+      ],
+      "automation": {
+        "official_api": "unknown",
+        "link_generation": "not-applicable",
+        "metrics_read": "unknown",
+        "content_upload": "unknown",
+        "data_retention": "unknown"
+      },
+      "asset_terms_status": "not-applicable",
+      "source_ids": [
+        "yt-official-fixture"
+      ],
+      "unknowns": [
+        "Live account status intentionally unknown."
+      ]
+    },
+    {
+      "program_id": "youtube-shopping-affiliate",
+      "provider": "youtube",
+      "surface_kind": "native-affiliate",
+      "program_state": "active",
+      "account_status": "unknown",
+      "registration_required": true,
+      "media_registration": "account-dependent",
+      "eligibility": [
+        {
+          "criterion": "Fixture only; live account state intentionally unknown.",
+          "status": "unknown",
+          "source_ids": [
+            "yt-official-fixture"
+          ]
+        }
+      ],
+      "attribution": {
+        "status": "unknown",
+        "window_hours": null,
+        "basis": null,
+        "source_ids": []
+      },
+      "commission_or_revenue": {
+        "status": "dynamic",
+        "value": "Fixture placeholder; refresh from current official source or account UI.",
+        "observed_at_kst": "2026-09-01T11:30:00+09:00",
+        "source_ids": [
+          "yt-official-fixture"
+        ]
+      },
+      "payout": {
+        "status": "dynamic",
+        "value": "Fixture placeholder; refresh before release.",
+        "observed_at_kst": "2026-09-01T11:30:00+09:00",
+        "source_ids": [
+          "yt-official-fixture"
+        ]
+      },
+      "disclosures": [
+        {
+          "surface": "fixture",
+          "required": true,
+          "placement": "near the commercial recommendation",
+          "text_template": null,
+          "source_ids": [
+            "yt-official-fixture"
+          ]
+        }
+      ],
+      "content_restrictions": [
+        "Fixture only; do not publish."
+      ],
+      "automation": {
+        "official_api": "unknown",
+        "link_generation": "unknown",
+        "metrics_read": "unknown",
+        "content_upload": "unknown",
+        "data_retention": "unknown"
+      },
+      "asset_terms_status": "unknown",
+      "source_ids": [
+        "yt-official-fixture"
+      ],
+      "unknowns": [
+        "Live account status intentionally unknown."
+      ]
+    },
+    {
+      "program_id": "coupang-partners",
+      "provider": "coupang",
+      "surface_kind": "external-affiliate",
+      "program_state": "active",
+      "account_status": "unknown",
+      "registration_required": true,
+      "media_registration": "required",
+      "eligibility": [
+        {
+          "criterion": "Fixture only; live account state intentionally unknown.",
+          "status": "unknown",
+          "source_ids": [
+            "cp-official-fixture"
+          ]
+        }
+      ],
+      "attribution": {
+        "status": "unknown",
+        "window_hours": null,
+        "basis": null,
+        "source_ids": []
+      },
+      "commission_or_revenue": {
+        "status": "dynamic",
+        "value": "Fixture placeholder; refresh from current official source or account UI.",
+        "observed_at_kst": "2026-09-01T11:30:00+09:00",
+        "source_ids": [
+          "cp-official-fixture"
+        ]
+      },
+      "payout": {
+        "status": "dynamic",
+        "value": "Fixture placeholder; refresh before release.",
+        "observed_at_kst": "2026-09-01T11:30:00+09:00",
+        "source_ids": [
+          "cp-official-fixture"
+        ]
+      },
+      "disclosures": [
+        {
+          "surface": "fixture",
+          "required": true,
+          "placement": "near the commercial recommendation",
+          "text_template": null,
+          "source_ids": [
+            "cp-official-fixture"
+          ]
+        }
+      ],
+      "content_restrictions": [
+        "Fixture only; do not publish."
+      ],
+      "automation": {
+        "official_api": "unknown",
+        "link_generation": "unknown",
+        "metrics_read": "unknown",
+        "content_upload": "not-applicable",
+        "data_retention": "unknown"
+      },
+      "asset_terms_status": "unknown",
+      "source_ids": [
+        "cp-official-fixture"
+      ],
+      "unknowns": [
+        "Live account status intentionally unknown."
+      ]
+    },
+    {
+      "program_id": "zigzag-sharing-reward",
+      "provider": "zigzag",
+      "surface_kind": "external-affiliate",
+      "program_state": "active",
+      "account_status": "unknown",
+      "registration_required": true,
+      "media_registration": "account-dependent",
+      "eligibility": [
+        {
+          "criterion": "Fixture only; live account state intentionally unknown.",
+          "status": "unknown",
+          "source_ids": [
+            "zz-official-fixture"
+          ]
+        }
+      ],
+      "attribution": {
+        "status": "unknown",
+        "window_hours": null,
+        "basis": null,
+        "source_ids": []
+      },
+      "commission_or_revenue": {
+        "status": "dynamic",
+        "value": "Fixture placeholder; refresh from current official source or account UI.",
+        "observed_at_kst": "2026-09-01T11:30:00+09:00",
+        "source_ids": [
+          "zz-official-fixture"
+        ]
+      },
+      "payout": {
+        "status": "dynamic",
+        "value": "Fixture placeholder; refresh before release.",
+        "observed_at_kst": "2026-09-01T11:30:00+09:00",
+        "source_ids": [
+          "zz-official-fixture"
+        ]
+      },
+      "disclosures": [
+        {
+          "surface": "fixture",
+          "required": true,
+          "placement": "near the commercial recommendation",
+          "text_template": null,
+          "source_ids": [
+            "zz-official-fixture"
+          ]
+        }
+      ],
+      "content_restrictions": [
+        "Fixture only; do not publish."
+      ],
+      "automation": {
+        "official_api": "unknown",
+        "link_generation": "unknown",
+        "metrics_read": "unknown",
+        "content_upload": "not-applicable",
+        "data_retention": "unknown"
+      },
+      "asset_terms_status": "unknown",
+      "source_ids": [
+        "zz-official-fixture"
+      ],
+      "unknowns": [
+        "Live account status intentionally unknown."
+      ]
+    },
+    {
+      "program_id": "zigzag-creator-lounge",
+      "provider": "zigzag",
+      "surface_kind": "campaign-marketplace",
+      "program_state": "active",
+      "account_status": "unknown",
+      "registration_required": true,
+      "media_registration": "account-dependent",
+      "eligibility": [
+        {
+          "criterion": "Fixture only; live account state intentionally unknown.",
+          "status": "unknown",
+          "source_ids": [
+            "zz-official-fixture"
+          ]
+        }
+      ],
+      "attribution": {
+        "status": "unknown",
+        "window_hours": null,
+        "basis": null,
+        "source_ids": []
+      },
+      "commission_or_revenue": {
+        "status": "dynamic",
+        "value": "Fixture placeholder; refresh from current official source or account UI.",
+        "observed_at_kst": "2026-09-01T11:30:00+09:00",
+        "source_ids": [
+          "zz-official-fixture"
+        ]
+      },
+      "payout": {
+        "status": "dynamic",
+        "value": "Fixture placeholder; refresh before release.",
+        "observed_at_kst": "2026-09-01T11:30:00+09:00",
+        "source_ids": [
+          "zz-official-fixture"
+        ]
+      },
+      "disclosures": [
+        {
+          "surface": "fixture",
+          "required": true,
+          "placement": "near the commercial recommendation",
+          "text_template": null,
+          "source_ids": [
+            "zz-official-fixture"
+          ]
+        }
+      ],
+      "content_restrictions": [
+        "Fixture only; do not publish."
+      ],
+      "automation": {
+        "official_api": "not-found",
+        "link_generation": "ui",
+        "metrics_read": "ui",
+        "content_upload": "ui",
+        "data_retention": "unknown"
+      },
+      "asset_terms_status": "unknown",
+      "source_ids": [
+        "zz-official-fixture"
+      ],
+      "unknowns": [
+        "Live account status intentionally unknown."
+      ]
+    },
+    {
+      "program_id": "naver-clip-ad-incentive",
+      "provider": "naver",
+      "surface_kind": "platform-revenue",
+      "program_state": "active",
+      "account_status": "unknown",
+      "registration_required": true,
+      "media_registration": "account-dependent",
+      "eligibility": [
+        {
+          "criterion": "Fixture only; live account state intentionally unknown.",
+          "status": "unknown",
+          "source_ids": [
+            "nv-official-fixture"
+          ]
+        }
+      ],
+      "attribution": {
+        "status": "not-applicable",
+        "window_hours": null,
+        "basis": null,
+        "source_ids": []
+      },
+      "commission_or_revenue": {
+        "status": "dynamic",
+        "value": "Fixture placeholder; refresh from current official source or account UI.",
+        "observed_at_kst": "2026-09-01T11:30:00+09:00",
+        "source_ids": [
+          "nv-official-fixture"
+        ]
+      },
+      "payout": {
+        "status": "dynamic",
+        "value": "Fixture placeholder; refresh before release.",
+        "observed_at_kst": "2026-09-01T11:30:00+09:00",
+        "source_ids": [
+          "nv-official-fixture"
+        ]
+      },
+      "disclosures": [],
+      "content_restrictions": [
+        "Fixture only; do not publish."
+      ],
+      "automation": {
+        "official_api": "not-found",
+        "link_generation": "not-applicable",
+        "metrics_read": "ui",
+        "content_upload": "ui",
+        "data_retention": "unknown"
+      },
+      "asset_terms_status": "not-applicable",
+      "source_ids": [
+        "nv-official-fixture"
+      ],
+      "unknowns": [
+        "Live account status intentionally unknown."
+      ]
+    },
+    {
+      "program_id": "naver-shopping-connect",
+      "provider": "naver",
+      "surface_kind": "native-affiliate",
+      "program_state": "active",
+      "account_status": "unknown",
+      "registration_required": true,
+      "media_registration": "account-dependent",
+      "eligibility": [
+        {
+          "criterion": "Fixture only; live account state intentionally unknown.",
+          "status": "unknown",
+          "source_ids": [
+            "nv-official-fixture"
+          ]
+        }
+      ],
+      "attribution": {
+        "status": "unknown",
+        "window_hours": null,
+        "basis": null,
+        "source_ids": []
+      },
+      "commission_or_revenue": {
+        "status": "dynamic",
+        "value": "Fixture placeholder; refresh from current official source or account UI.",
+        "observed_at_kst": "2026-09-01T11:30:00+09:00",
+        "source_ids": [
+          "nv-official-fixture"
+        ]
+      },
+      "payout": {
+        "status": "dynamic",
+        "value": "Fixture placeholder; refresh before release.",
+        "observed_at_kst": "2026-09-01T11:30:00+09:00",
+        "source_ids": [
+          "nv-official-fixture"
+        ]
+      },
+      "disclosures": [
+        {
+          "surface": "fixture",
+          "required": true,
+          "placement": "near the commercial recommendation",
+          "text_template": null,
+          "source_ids": [
+            "nv-official-fixture"
+          ]
+        }
+      ],
+      "content_restrictions": [
+        "Fixture only; do not publish."
+      ],
+      "automation": {
+        "official_api": "not-found",
+        "link_generation": "ui",
+        "metrics_read": "ui",
+        "content_upload": "ui",
+        "data_retention": "unknown"
+      },
+      "asset_terms_status": "unknown",
+      "source_ids": [
+        "nv-official-fixture"
+      ],
+      "unknowns": [
+        "Live account status intentionally unknown."
+      ]
+    },
+    {
+      "program_id": "instagram-gifts",
+      "provider": "instagram",
+      "surface_kind": "platform-revenue",
+      "program_state": "active",
+      "account_status": "unknown",
+      "registration_required": true,
+      "media_registration": "account-dependent",
+      "eligibility": [
+        {
+          "criterion": "Professional account, age 19+, 500 followers, payout setup, and KR availability.",
+          "status": "verified",
+          "source_ids": [
+            "instagram-gifts-help",
+            "instagram-gifts-business-help"
+          ]
+        }
+      ],
+      "attribution": {
+        "status": "not-applicable",
+        "window_hours": null,
+        "basis": null,
+        "source_ids": []
+      },
+      "commission_or_revenue": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "payout": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "disclosures": [],
+      "content_restrictions": [],
+      "automation": {
+        "official_api": "unknown",
+        "link_generation": "not-applicable",
+        "metrics_read": "ui",
+        "content_upload": "ui",
+        "data_retention": "unknown"
+      },
+      "asset_terms_status": "not-applicable",
+      "source_ids": [
+        "instagram-gifts-help",
+        "instagram-gifts-business-help"
+      ],
+      "unknowns": [
+        "Fixture research only; account status is not evidence."
+      ]
+    },
+    {
+      "program_id": "instagram-subscriptions",
+      "provider": "instagram",
+      "surface_kind": "platform-revenue",
+      "program_state": "active",
+      "account_status": "unknown",
+      "registration_required": true,
+      "media_registration": "account-dependent",
+      "eligibility": [
+        {
+          "criterion": "Professional account, age 19+, 10,000 followers, and KR availability.",
+          "status": "verified",
+          "source_ids": [
+            "instagram-subscriptions-help"
+          ]
+        }
+      ],
+      "attribution": {
+        "status": "not-applicable",
+        "window_hours": null,
+        "basis": null,
+        "source_ids": []
+      },
+      "commission_or_revenue": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "payout": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "disclosures": [],
+      "content_restrictions": [],
+      "automation": {
+        "official_api": "unknown",
+        "link_generation": "not-applicable",
+        "metrics_read": "ui",
+        "content_upload": "ui",
+        "data_retention": "unknown"
+      },
+      "asset_terms_status": "not-applicable",
+      "source_ids": [
+        "instagram-subscriptions-help"
+      ],
+      "unknowns": [
+        "Fixture research only; account status is not evidence."
+      ]
+    },
+    {
+      "program_id": "instagram-bonuses",
+      "provider": "instagram",
+      "surface_kind": "platform-revenue",
+      "program_state": "invite-only",
+      "account_status": "unknown",
+      "registration_required": true,
+      "media_registration": "account-dependent",
+      "eligibility": [
+        {
+          "criterion": "Age 19+, Professional account, invite-only account eligibility, and current in-app bonus terms.",
+          "status": "unknown",
+          "source_ids": [
+            "instagram-bonuses-help"
+          ]
+        },
+        {
+          "criterion": "Reels bonus: at least 5 million Reels views in the previous 3 months; photo/carousel bonus: market-specific minimum monthly views for 3 consecutive months, with South Korea listed at 1 million per month.",
+          "status": "verified",
+          "source_ids": [
+            "instagram-bonuses-help"
+          ]
+        }
+      ],
+      "attribution": {
+        "status": "not-applicable",
+        "window_hours": null,
+        "basis": null,
+        "source_ids": []
+      },
+      "commission_or_revenue": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "payout": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "disclosures": [],
+      "content_restrictions": [
+        "Branded, promotional, paid-partnership, collaborative, and crossposted content is excluded from Instagram bonus earnings."
+      ],
+      "automation": {
+        "official_api": "unknown",
+        "link_generation": "not-applicable",
+        "metrics_read": "ui",
+        "content_upload": "ui",
+        "data_retention": "unknown"
+      },
+      "asset_terms_status": "not-applicable",
+      "source_ids": [
+        "instagram-bonuses-help"
+      ],
+      "unknowns": [
+        "Fixture research only; account status is not evidence."
+      ]
+    },
+    {
+      "program_id": "instagram-creator-marketplace",
+      "provider": "instagram",
+      "surface_kind": "campaign-marketplace",
+      "program_state": "active",
+      "account_status": "unknown",
+      "registration_required": true,
+      "media_registration": "account-dependent",
+      "eligibility": [
+        {
+          "criterion": "Public professional account, age 19+, 1,000 followers, and marketplace approval.",
+          "status": "verified",
+          "source_ids": [
+            "instagram-marketplace-help"
+          ]
+        }
+      ],
+      "attribution": {
+        "status": "not-applicable",
+        "window_hours": null,
+        "basis": null,
+        "source_ids": []
+      },
+      "commission_or_revenue": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "payout": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "disclosures": [
+        {
+          "surface": "instagram-reels",
+          "required": true,
+          "placement": "Instagram Paid partnership label plus visible local-law disclosure.",
+          "text_template": null,
+          "source_ids": [
+            "instagram-marketplace-help"
+          ]
+        }
+      ],
+      "content_restrictions": [],
+      "automation": {
+        "official_api": "unknown",
+        "link_generation": "not-applicable",
+        "metrics_read": "ui",
+        "content_upload": "ui",
+        "data_retention": "unknown"
+      },
+      "asset_terms_status": "not-applicable",
+      "source_ids": [
+        "instagram-marketplace-help"
+      ],
+      "unknowns": [
+        "Fixture research only; account status is not evidence."
+      ]
+    },
+    {
+      "program_id": "instagram-shopping-tags",
+      "provider": "instagram",
+      "surface_kind": "native-commerce",
+      "program_state": "limited",
+      "account_status": "unknown",
+      "registration_required": true,
+      "media_registration": "account-dependent",
+      "eligibility": [
+        {
+          "criterion": "KR open-beta Shop/catalog and Commerce eligibility.",
+          "status": "verified",
+          "source_ids": [
+            "instagram-commerce-help"
+          ]
+        }
+      ],
+      "attribution": {
+        "status": "not-applicable",
+        "window_hours": null,
+        "basis": null,
+        "source_ids": []
+      },
+      "commission_or_revenue": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "payout": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "disclosures": [],
+      "content_restrictions": [
+        "Content Publishing API does not support shopping tags."
+      ],
+      "automation": {
+        "official_api": "not-found",
+        "link_generation": "ui",
+        "metrics_read": "account-gated",
+        "content_upload": "ui",
+        "data_retention": "unknown"
+      },
+      "asset_terms_status": "conditional",
+      "source_ids": [
+        "instagram-commerce-help",
+        "instagram-publishing-api"
+      ],
+      "unknowns": [
+        "Fixture research only; account status is not evidence."
+      ]
+    },
+    {
+      "program_id": "tiktok-creator-rewards",
+      "provider": "tiktok",
+      "surface_kind": "platform-revenue",
+      "program_state": "active",
+      "account_status": "unknown",
+      "registration_required": true,
+      "media_registration": "account-dependent",
+      "eligibility": [
+        {
+          "criterion": "KR Personal Account, age 19+, 10,000 followers, 100,000 views in 30 days, and one-minute original video.",
+          "status": "verified",
+          "source_ids": [
+            "tiktok-creator-rewards-help"
+          ]
+        }
+      ],
+      "attribution": {
+        "status": "not-applicable",
+        "window_hours": null,
+        "basis": null,
+        "source_ids": []
+      },
+      "commission_or_revenue": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "payout": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "disclosures": [],
+      "content_restrictions": [
+        "At least one minute.",
+        "Ads, paid promotions, and sponsored content are not reward-eligible.",
+        "Before any South Korea branded-content route, classify the advertised product or service against TikTok’s current KR prohibited and restricted industry table."
+      ],
+      "automation": {
+        "official_api": "unknown",
+        "link_generation": "not-applicable",
+        "metrics_read": "ui",
+        "content_upload": "ui",
+        "data_retention": "unknown"
+      },
+      "asset_terms_status": "not-applicable",
+      "source_ids": [
+        "tiktok-creator-rewards-help",
+        "tiktok-kr-industry-entry-policy"
+      ],
+      "unknowns": [
+        "Fixture research only; account status is not evidence."
+      ]
+    },
+    {
+      "program_id": "tiktok-video-gifts",
+      "provider": "tiktok",
+      "surface_kind": "platform-revenue",
+      "program_state": "active",
+      "account_status": "unknown",
+      "registration_required": true,
+      "media_registration": "account-dependent",
+      "eligibility": [
+        {
+          "criterion": "KR age 19+, 10,000 followers, 30-day-old Personal Account, and recent public video.",
+          "status": "verified",
+          "source_ids": [
+            "tiktok-video-gifts-help"
+          ]
+        }
+      ],
+      "attribution": {
+        "status": "not-applicable",
+        "window_hours": null,
+        "basis": null,
+        "source_ids": []
+      },
+      "commission_or_revenue": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "payout": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "disclosures": [],
+      "content_restrictions": [
+        "Before any South Korea branded-content route, classify the advertised product or service against TikTok’s current KR prohibited and restricted industry table."
+      ],
+      "automation": {
+        "official_api": "unknown",
+        "link_generation": "not-applicable",
+        "metrics_read": "ui",
+        "content_upload": "ui",
+        "data_retention": "unknown"
+      },
+      "asset_terms_status": "not-applicable",
+      "source_ids": [
+        "tiktok-video-gifts-help",
+        "tiktok-kr-industry-entry-policy"
+      ],
+      "unknowns": [
+        "Fixture research only; account status is not evidence."
+      ]
+    },
+    {
+      "program_id": "tiktok-one-marketplace",
+      "provider": "tiktok",
+      "surface_kind": "campaign-marketplace",
+      "program_state": "active",
+      "account_status": "unknown",
+      "registration_required": true,
+      "media_registration": "account-dependent",
+      "eligibility": [
+        {
+          "criterion": "Age 18+, 10,000 followers, 1,000 post views and 3 posts in 30 days, subject to regional variation.",
+          "status": "verified",
+          "source_ids": [
+            "tiktok-one-help"
+          ]
+        }
+      ],
+      "attribution": {
+        "status": "not-applicable",
+        "window_hours": null,
+        "basis": null,
+        "source_ids": []
+      },
+      "commission_or_revenue": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "payout": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "disclosures": [
+        {
+          "surface": "tiktok-video",
+          "required": true,
+          "placement": "Commercial content disclosure toggle and visible product identification.",
+          "text_template": null,
+          "source_ids": [
+            "tiktok-branded-content-policy"
+          ]
+        }
+      ],
+      "content_restrictions": [
+        "Before any South Korea branded-content route, classify the advertised product or service against TikTok’s current KR prohibited and restricted industry table."
+      ],
+      "automation": {
+        "official_api": "unknown",
+        "link_generation": "not-applicable",
+        "metrics_read": "ui",
+        "content_upload": "ui",
+        "data_retention": "unknown"
+      },
+      "asset_terms_status": "not-applicable",
+      "source_ids": [
+        "tiktok-one-help",
+        "tiktok-branded-content-policy",
+        "tiktok-kr-industry-entry-policy"
+      ],
+      "unknowns": [
+        "Fixture research only; account status is not evidence."
+      ]
+    },
+    {
+      "program_id": "tiktok-shop-affiliate",
+      "provider": "tiktok",
+      "surface_kind": "native-affiliate",
+      "program_state": "unknown",
+      "account_status": "unknown",
+      "registration_required": true,
+      "media_registration": "account-dependent",
+      "eligibility": [
+        {
+          "criterion": "Official KR local Shop launch and creator account access were not verified.",
+          "status": "unknown",
+          "source_ids": [
+            "tiktok-shop-partner-docs"
+          ]
+        }
+      ],
+      "attribution": {
+        "status": "not-applicable",
+        "window_hours": null,
+        "basis": null,
+        "source_ids": []
+      },
+      "commission_or_revenue": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "payout": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "disclosures": [],
+      "content_restrictions": [
+        "Before any South Korea branded-content route, classify the advertised product or service against TikTok’s current KR prohibited and restricted industry table."
+      ],
+      "automation": {
+        "official_api": "account-gated",
+        "link_generation": "account-gated",
+        "metrics_read": "account-gated",
+        "content_upload": "api-audit-required",
+        "data_retention": "unknown"
+      },
+      "asset_terms_status": "unknown",
+      "source_ids": [
+        "tiktok-shop-partner-docs",
+        "tiktok-kr-industry-entry-policy"
+      ],
+      "unknowns": [
+        "No official KR local TikTok Shop launch evidence in the fixture baseline."
+      ]
+    },
+    {
+      "program_id": "x-creator-revenue-sharing",
+      "provider": "x",
+      "surface_kind": "platform-revenue",
+      "program_state": "retiring",
+      "account_status": "unknown",
+      "registration_required": true,
+      "media_registration": "account-dependent",
+      "eligibility": [
+        {
+          "criterion": "New enrollment closed August 7, 2026; program retires September 7, 2026.",
+          "status": "verified",
+          "source_ids": [
+            "x-revenue-sharing-help"
+          ]
+        }
+      ],
+      "attribution": {
+        "status": "not-applicable",
+        "window_hours": null,
+        "basis": null,
+        "source_ids": []
+      },
+      "commission_or_revenue": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "payout": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "disclosures": [],
+      "content_restrictions": [],
+      "automation": {
+        "official_api": "unknown",
+        "link_generation": "not-applicable",
+        "metrics_read": "ui",
+        "content_upload": "ui",
+        "data_retention": "unknown"
+      },
+      "asset_terms_status": "not-applicable",
+      "source_ids": [
+        "x-revenue-sharing-help"
+      ],
+      "unknowns": [
+        "Fixture research only; account status is not evidence."
+      ]
+    },
+    {
+      "program_id": "x-original-content-rewards",
+      "provider": "x",
+      "surface_kind": "platform-revenue",
+      "program_state": "announced",
+      "account_status": "unknown",
+      "registration_required": true,
+      "media_registration": "account-dependent",
+      "eligibility": [
+        {
+          "criterion": "Rollout begins September 8, 2026 for eligible creators.",
+          "status": "verified",
+          "source_ids": [
+            "x-original-rewards-help"
+          ]
+        }
+      ],
+      "attribution": {
+        "status": "not-applicable",
+        "window_hours": null,
+        "basis": null,
+        "source_ids": []
+      },
+      "commission_or_revenue": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "payout": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "disclosures": [],
+      "content_restrictions": [
+        "Content created or posted using automated means is reward-ineligible.",
+        "AI-generated armed-conflict video without AI disclosure triggers monetization suspension."
+      ],
+      "automation": {
+        "official_api": "unknown",
+        "link_generation": "not-applicable",
+        "metrics_read": "ui",
+        "content_upload": "ui",
+        "data_retention": "unknown"
+      },
+      "asset_terms_status": "not-applicable",
+      "source_ids": [
+        "x-original-rewards-help"
+      ],
+      "unknowns": [
+        "Fixture research only; account status is not evidence."
+      ]
+    },
+    {
+      "program_id": "x-creator-subscriptions",
+      "provider": "x",
+      "surface_kind": "platform-revenue",
+      "program_state": "active",
+      "account_status": "unknown",
+      "registration_required": true,
+      "media_registration": "account-dependent",
+      "eligibility": [
+        {
+          "criterion": "Age 18+, active in 30 days, 2,000 verified followers, and 5M organic impressions in 3 months.",
+          "status": "verified",
+          "source_ids": [
+            "x-subscriptions-help"
+          ]
+        }
+      ],
+      "attribution": {
+        "status": "not-applicable",
+        "window_hours": null,
+        "basis": null,
+        "source_ids": []
+      },
+      "commission_or_revenue": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "payout": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "disclosures": [],
+      "content_restrictions": [],
+      "automation": {
+        "official_api": "unknown",
+        "link_generation": "not-applicable",
+        "metrics_read": "ui",
+        "content_upload": "ui",
+        "data_retention": "unknown"
+      },
+      "asset_terms_status": "not-applicable",
+      "source_ids": [
+        "x-subscriptions-help"
+      ],
+      "unknowns": [
+        "Fixture research only; account status is not evidence."
+      ]
+    },
+    {
+      "program_id": "x-paid-partnerships",
+      "provider": "x",
+      "surface_kind": "external-affiliate",
+      "program_state": "active",
+      "account_status": "not-applicable",
+      "registration_required": false,
+      "media_registration": "not-required",
+      "eligibility": [
+        {
+          "criterion": "Paid Partnership disclosure applies to affiliate links, discounts, gifts, and compensation.",
+          "status": "verified",
+          "source_ids": [
+            "x-paid-partnerships-policy"
+          ]
+        }
+      ],
+      "attribution": {
+        "status": "not-applicable",
+        "window_hours": null,
+        "basis": null,
+        "source_ids": []
+      },
+      "commission_or_revenue": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "payout": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "disclosures": [
+        {
+          "surface": "x-video-post",
+          "required": true,
+          "placement": "X Paid Partnership disclosure control and clear on-post product or CTA.",
+          "text_template": null,
+          "source_ids": [
+            "x-paid-partnerships-policy"
+          ]
+        }
+      ],
+      "content_restrictions": [
+        "Pre-roll advertising and sponsorship graphics in video content require prior X consent; a paid-partnership label does not replace that consent."
+      ],
+      "automation": {
+        "official_api": "available",
+        "link_generation": "external",
+        "metrics_read": "api",
+        "content_upload": "api",
+        "data_retention": "unknown"
+      },
+      "asset_terms_status": "not-applicable",
+      "source_ids": [
+        "x-paid-partnerships-policy",
+        "x-api-pricing"
+      ],
+      "unknowns": [
+        "This is a supporting disclosure route, not a payout program."
+      ]
+    }
+  ],
+  "unknowns": [
+    "This fixture intentionally does not establish a monetization route.",
+    "Instagram, TikTok, and X fixture account statuses remain unknown."
+  ]
+}

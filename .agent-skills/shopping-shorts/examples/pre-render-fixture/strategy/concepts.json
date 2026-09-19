@@ -1,0 +1,22 @@
+{
+  "concepts": [
+    {
+      "concept_id": "k01",
+      "viewer": "validator developer",
+      "problem": "verify the pre-render contract without a paid call",
+      "hook": "show the fixture card before any provider request",
+      "proof": [],
+      "caveat": "This is not a real product or publishable creative.",
+      "cta": "Run the validator only.",
+      "reference_abstraction": "test-only gate sequence",
+      "copied_expression": false,
+      "score": {
+        "viewer_fit": 2,
+        "visible_proof": 0,
+        "evidence_strength": 0,
+        "originality": 2,
+        "production_feasibility": 2
+      }
+    }
+  ]
+}

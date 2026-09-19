@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "source_repo": "https://github.com/Anil-matcha/Open-Generative-AI",
+  "source_sha": "5482a777047c0df189eef989ff994d0d7a1d2874",
+  "execution_surface": "open-generative-ai-gui",
+  "estimated_cost": 0,
+  "currency": "fixture",
+  "ready_to_submit": false,
+  "blockers": [
+    "manual-gui-handoff-required"
+  ],
+  "requests": [
+    {
+      "shot_id": "s01",
+      "execution_surface": "open-generative-ai-gui",
+      "endpoint": "wan2.1-image-to-video",
+      "normalized_intent": {
+        "prompt": "Fixture-only slow camera push while product identity stays unchanged.",
+        "duration_seconds": 5,
+        "aspect_ratio": "9:16",
+        "resolution": "720p",
+        "source_asset_ids": [
+          "a01"
+        ],
+        "claim_ids": []
+      },
+      "output_path": "_workspace/current/production/clips/s01.mp4",
+      "requires_manual_finish": true
+    },
+    {
+      "shot_id": "s02",
+      "execution_surface": "open-generative-ai-gui",
+      "endpoint": "wan2.1-image-to-video",
+      "normalized_intent": {
+        "prompt": "Fixture-only gentle side light movement with no product transformation.",
+        "duration_seconds": 5,
+        "aspect_ratio": "9:16",
+        "resolution": "720p",
+        "source_asset_ids": [
+          "a01"
+        ],
+        "claim_ids": []
+      },
+      "output_path": "_workspace/current/production/clips/s02.mp4",
+      "requires_manual_finish": true
+    },
+    {
+      "shot_id": "s03",
+      "execution_surface": "open-generative-ai-gui",
+      "endpoint": "wan2.1-image-to-video",
+      "normalized_intent": {
+        "prompt": "Fixture-only static end card with subtle background motion and no claim.",
+        "duration_seconds": 5,
+        "aspect_ratio": "9:16",
+        "resolution": "720p",
+        "source_asset_ids": [
+          "a01"
+        ],
+        "claim_ids": []
+      },
+      "output_path": "_workspace/current/production/clips/s03.mp4",
+      "requires_manual_finish": true
+    }
+  ]
+}

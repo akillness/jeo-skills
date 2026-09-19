@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aside.local/shopping-shorts/run.schema.json",
+  "title": "Shopping Shorts Run",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "run_id", "status", "created_at_kst", "commerce_mode", "experience_mode", "max_outputs", "revision_loops", "gates", "output_paths"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "run_id": {"type": "string", "pattern": "^[0-9]{8}-[0-9]{4}-[a-z0-9][a-z0-9-]{2,80}$"},
+    "status": {"enum": ["intake", "researching", "awaiting_concept_approval", "approved_for_render", "rendering", "assembling", "reviewing", "ready_for_release", "released", "blocked", "rejected"]},
+    "created_at_kst": {"type": "string", "format": "date-time"},
+    "closed_at_kst": {"type": ["string", "null"], "format": "date-time"},
+    "product_id": {"type": ["string", "null"]},
+    "commerce_mode": {"enum": ["unknown", "commerce-ready", "creative-only", "blocked"]},
+    "experience_mode": {"const": "sourced-only"},
+    "max_outputs": {"const": 1},
+    "revision_loops": {"type": "integer", "minimum": 0, "maximum": 2},
+    "gates": {"type": "object", "additionalProperties": {"enum": ["PENDING", "PASS", "FAIL", "BLOCKED"]}},
+    "output_paths": {"type": "array", "maxItems": 1, "items": {"type": "string"}}
+  }
+}

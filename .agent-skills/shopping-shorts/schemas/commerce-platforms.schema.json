@@ -1,0 +1,139 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aside.local/schemas/shopping-shorts/commerce-platforms.schema.json",
+  "title": "Shopping Shorts Commerce Platform Research",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "run_id", "market", "research_status", "freshness_mode", "researched_at_kst", "required_program_ids", "sources", "programs", "unknowns"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "run_id": {"type": "string", "minLength": 1},
+    "market": {"const": "KR"},
+    "research_status": {"enum": ["draft", "complete"]},
+    "freshness_mode": {"enum": ["live", "fixture"]},
+    "researched_at_kst": {"type": ["string", "null"], "format": "date-time"},
+    "required_program_ids": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 0,
+      "items": {"$ref": "#/$defs/source"}
+    },
+    "programs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/program"}
+    },
+    "unknowns": {"type": "array", "items": {"type": "string"}}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"research_status": {"const": "complete"}}},
+      "then": {
+        "properties": {
+          "researched_at_kst": {"type": "string", "format": "date-time"},
+          "sources": {"minItems": 1}
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_id", "provider", "url", "title", "source_kind", "retrieved_at_kst"],
+      "properties": {
+        "source_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]{2,80}$"},
+        "provider": {"enum": ["youtube", "coupang", "zigzag", "naver", "instagram", "tiktok", "x"]},
+        "url": {"type": "string", "format": "uri"},
+        "title": {"type": "string", "minLength": 1},
+        "source_kind": {"enum": ["official-policy", "official-help", "official-terms", "official-announcement", "official-developer", "account-ui"]},
+        "retrieved_at_kst": {"type": "string", "format": "date-time"}
+      }
+    },
+    "criterion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["criterion", "status", "source_ids"],
+      "properties": {
+        "criterion": {"type": "string", "minLength": 1},
+        "status": {"enum": ["verified", "unknown", "failed", "not-applicable"]},
+        "source_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string"}}
+      }
+    },
+    "observedValue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "value", "observed_at_kst", "source_ids"],
+      "properties": {
+        "status": {"enum": ["verified", "dynamic", "unknown", "not-applicable"]},
+        "value": {"type": ["string", "null"]},
+        "observed_at_kst": {"type": ["string", "null"], "format": "date-time"},
+        "source_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string"}}
+      }
+    },
+    "program": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["program_id", "provider", "surface_kind", "program_state", "account_status", "registration_required", "media_registration", "eligibility", "attribution", "commission_or_revenue", "payout", "disclosures", "content_restrictions", "automation", "asset_terms_status", "source_ids", "unknowns"],
+      "properties": {
+        "program_id": {"type": "string", "minLength": 1},
+        "provider": {"enum": ["youtube", "coupang", "zigzag", "naver", "instagram", "tiktok", "x"]},
+        "surface_kind": {"enum": ["platform-revenue", "native-affiliate", "native-commerce", "external-affiliate", "campaign-marketplace"]},
+        "program_state": {"enum": ["active", "invite-only", "limited", "announced", "enrollment-closed", "retiring", "ended", "not-available", "unknown"]},
+        "account_status": {"enum": ["eligible", "registered", "approved", "pending", "not-eligible", "unknown", "not-applicable"]},
+        "registration_required": {"type": ["boolean", "null"]},
+        "media_registration": {"enum": ["required", "not-required", "account-dependent", "unknown"]},
+        "eligibility": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/criterion"}},
+        "attribution": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["status", "window_hours", "basis", "source_ids"],
+          "properties": {
+            "status": {"enum": ["verified", "dynamic", "unknown", "not-applicable"]},
+            "window_hours": {"type": ["number", "null"], "minimum": 0},
+            "basis": {"type": ["string", "null"]},
+            "source_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string"}}
+          }
+        },
+        "commission_or_revenue": {"$ref": "#/$defs/observedValue"},
+        "payout": {"$ref": "#/$defs/observedValue"},
+        "disclosures": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["surface", "required", "placement", "text_template", "source_ids"],
+            "properties": {
+              "surface": {"type": "string", "minLength": 1},
+              "required": {"type": "boolean"},
+              "placement": {"type": "string", "minLength": 1},
+              "text_template": {"type": ["string", "null"]},
+              "source_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string"}}
+            }
+          }
+        },
+        "content_restrictions": {"type": "array", "items": {"type": "string"}},
+        "automation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["official_api", "link_generation", "metrics_read", "content_upload", "data_retention"],
+          "properties": {
+            "official_api": {"enum": ["available", "account-gated", "not-found", "not-applicable", "unknown"]},
+            "link_generation": {"enum": ["api", "ui", "external", "account-gated", "not-applicable", "unknown"]},
+            "metrics_read": {"enum": ["api", "ui", "account-gated", "not-applicable", "unknown"]},
+            "content_upload": {"enum": ["api", "api-audit-required", "api-private-only", "ui", "unsupported", "not-applicable", "unknown"]},
+            "data_retention": {"enum": ["allowed", "restricted", "not-applicable", "unknown"]}
+          }
+        },
+        "asset_terms_status": {"enum": ["verified", "conditional", "unknown", "not-applicable"]},
+        "source_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}},
+        "unknowns": {"type": "array", "items": {"type": "string"}}
+      }
+    }
+  }
+}

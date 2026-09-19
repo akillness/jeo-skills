@@ -1,0 +1,228 @@
+{
+  "schema_version": 1,
+  "catalog_id": "shopping-shorts-kr-2026-09-01",
+  "market": "KR",
+  "publication_surfaces": {
+    "youtube-shorts": {
+      "provider": "youtube",
+      "release_adapter_id": "youtube-shorts-v1"
+    },
+    "naver-clip": {
+      "provider": "naver",
+      "release_adapter_id": null
+    },
+    "instagram-reels": {
+      "provider": "instagram",
+      "release_adapter_id": null
+    },
+    "tiktok-video": {
+      "provider": "tiktok",
+      "release_adapter_id": null
+    },
+    "x-video-post": {
+      "provider": "x",
+      "release_adapter_id": null
+    },
+    "other-researched": {
+      "provider": null,
+      "release_adapter_id": null
+    }
+  },
+  "programs": [
+    {
+      "program_id": "youtube-ypp",
+      "provider": "youtube",
+      "route_role": "primary-or-supporting",
+      "publication_surfaces": [
+        "youtube-shorts"
+      ],
+      "surface_kind": "platform-revenue"
+    },
+    {
+      "program_id": "youtube-shopping-affiliate",
+      "provider": "youtube",
+      "route_role": "primary-or-supporting",
+      "publication_surfaces": [
+        "youtube-shorts"
+      ],
+      "surface_kind": "native-affiliate"
+    },
+    {
+      "program_id": "coupang-partners",
+      "provider": "coupang",
+      "route_role": "primary-or-supporting",
+      "publication_surfaces": [
+        "youtube-shorts",
+        "naver-clip",
+        "instagram-reels",
+        "tiktok-video",
+        "x-video-post",
+        "other-researched"
+      ],
+      "surface_kind": "external-affiliate"
+    },
+    {
+      "program_id": "zigzag-sharing-reward",
+      "provider": "zigzag",
+      "route_role": "primary-or-supporting",
+      "publication_surfaces": [
+        "youtube-shorts",
+        "instagram-reels",
+        "tiktok-video",
+        "x-video-post",
+        "other-researched"
+      ],
+      "surface_kind": "external-affiliate"
+    },
+    {
+      "program_id": "zigzag-creator-lounge",
+      "provider": "zigzag",
+      "route_role": "primary-or-supporting",
+      "publication_surfaces": [
+        "youtube-shorts",
+        "instagram-reels",
+        "tiktok-video",
+        "x-video-post",
+        "other-researched"
+      ],
+      "surface_kind": "campaign-marketplace"
+    },
+    {
+      "program_id": "naver-clip-ad-incentive",
+      "provider": "naver",
+      "route_role": "primary-or-supporting",
+      "publication_surfaces": [
+        "naver-clip"
+      ],
+      "surface_kind": "platform-revenue"
+    },
+    {
+      "program_id": "naver-shopping-connect",
+      "provider": "naver",
+      "route_role": "primary-or-supporting",
+      "publication_surfaces": [
+        "youtube-shorts",
+        "naver-clip",
+        "instagram-reels"
+      ],
+      "surface_kind": "native-affiliate"
+    },
+    {
+      "program_id": "instagram-gifts",
+      "provider": "instagram",
+      "route_role": "primary-or-supporting",
+      "publication_surfaces": [
+        "instagram-reels"
+      ],
+      "surface_kind": "platform-revenue"
+    },
+    {
+      "program_id": "instagram-subscriptions",
+      "provider": "instagram",
+      "route_role": "primary-or-supporting",
+      "publication_surfaces": [
+        "instagram-reels"
+      ],
+      "surface_kind": "platform-revenue"
+    },
+    {
+      "program_id": "instagram-bonuses",
+      "provider": "instagram",
+      "route_role": "research-only",
+      "publication_surfaces": [
+        "instagram-reels"
+      ],
+      "surface_kind": "platform-revenue"
+    },
+    {
+      "program_id": "instagram-creator-marketplace",
+      "provider": "instagram",
+      "route_role": "primary-or-supporting",
+      "publication_surfaces": [
+        "instagram-reels"
+      ],
+      "surface_kind": "campaign-marketplace"
+    },
+    {
+      "program_id": "instagram-shopping-tags",
+      "provider": "instagram",
+      "route_role": "primary-or-supporting",
+      "publication_surfaces": [
+        "instagram-reels"
+      ],
+      "surface_kind": "native-commerce"
+    },
+    {
+      "program_id": "tiktok-creator-rewards",
+      "provider": "tiktok",
+      "route_role": "research-only",
+      "publication_surfaces": [
+        "tiktok-video"
+      ],
+      "surface_kind": "platform-revenue"
+    },
+    {
+      "program_id": "tiktok-video-gifts",
+      "provider": "tiktok",
+      "route_role": "primary-or-supporting",
+      "publication_surfaces": [
+        "tiktok-video"
+      ],
+      "surface_kind": "platform-revenue"
+    },
+    {
+      "program_id": "tiktok-one-marketplace",
+      "provider": "tiktok",
+      "route_role": "primary-or-supporting",
+      "publication_surfaces": [
+        "tiktok-video"
+      ],
+      "surface_kind": "campaign-marketplace"
+    },
+    {
+      "program_id": "tiktok-shop-affiliate",
+      "provider": "tiktok",
+      "route_role": "primary-or-supporting",
+      "publication_surfaces": [
+        "tiktok-video"
+      ],
+      "surface_kind": "native-affiliate"
+    },
+    {
+      "program_id": "x-creator-revenue-sharing",
+      "provider": "x",
+      "route_role": "research-only",
+      "publication_surfaces": [
+        "x-video-post"
+      ],
+      "surface_kind": "platform-revenue"
+    },
+    {
+      "program_id": "x-original-content-rewards",
+      "provider": "x",
+      "route_role": "research-only",
+      "publication_surfaces": [
+        "x-video-post"
+      ],
+      "surface_kind": "platform-revenue"
+    },
+    {
+      "program_id": "x-creator-subscriptions",
+      "provider": "x",
+      "route_role": "primary-or-supporting",
+      "publication_surfaces": [
+        "x-video-post"
+      ],
+      "surface_kind": "platform-revenue"
+    },
+    {
+      "program_id": "x-paid-partnerships",
+      "provider": "x",
+      "route_role": "supporting-only",
+      "publication_surfaces": [
+        "x-video-post"
+      ],
+      "surface_kind": "external-affiliate"
+    }
+  ]
+}

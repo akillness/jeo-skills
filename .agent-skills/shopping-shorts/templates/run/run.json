@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "run_id": "__RUN_ID__",
+  "status": "intake",
+  "created_at_kst": "__CREATED_AT_KST__",
+  "closed_at_kst": null,
+  "product_id": null,
+  "commerce_mode": "unknown",
+  "experience_mode": "sourced-only",
+  "max_outputs": 1,
+  "revision_loops": 0,
+  "gates": {
+    "G0": "PENDING",
+    "G1": "PENDING",
+    "G2": "PENDING",
+    "G3": "PENDING",
+    "G4": "PENDING",
+    "G5": "PENDING",
+    "G6": "PENDING",
+    "G7": "PENDING",
+    "G8": "PENDING",
+    "G9": "PENDING"
+  },
+  "output_paths": []
+}

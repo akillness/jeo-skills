@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aside.local/schemas/shopping-shorts/commerce-verdict.schema.json",
+  "title": "Shopping Shorts Commerce Gate Receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "run_id", "verdict", "commerce_mode", "platform_research_sha256", "route_sha256", "checked_at_kst", "blocking_unknowns", "notes"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "run_id": {"type": "string", "minLength": 1},
+    "verdict": {"enum": ["PENDING", "PASS", "FAIL"]},
+    "commerce_mode": {"enum": ["unknown", "commerce-ready", "creative-only", "blocked"]},
+    "platform_research_sha256": {"type": ["string", "null"], "pattern": "^[a-f0-9]{64}$"},
+    "route_sha256": {"type": ["string", "null"], "pattern": "^[a-f0-9]{64}$"},
+    "checked_at_kst": {"type": ["string", "null"], "format": "date-time"},
+    "blocking_unknowns": {"type": "array", "items": {"type": "string"}},
+    "notes": {"type": "array", "items": {"type": "string"}}
+  }
+}

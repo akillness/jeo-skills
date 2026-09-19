@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aside.local/shopping-shorts/rights.schema.json",
+  "title": "Shopping Shorts Rights Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["assets"],
+  "properties": {
+    "assets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["asset_id", "local_path", "source_url", "creator_or_owner", "rights_basis", "permission_evidence", "commercial_use", "transformation_allowed", "sha256", "contains_person", "contains_third_party_mark"],
+        "properties": {
+          "asset_id": {"type": "string", "pattern": "^a[0-9]{2,}$"},
+          "local_path": {"type": "string", "minLength": 1},
+          "source_url": {"type": "string", "format": "uri"},
+          "creator_or_owner": {"type": "string", "minLength": 1},
+          "rights_basis": {"enum": ["owned", "written-permission", "licensed-commercial", "public-domain", "cc-by", "cc-by-sa", "platform-affiliate-asset-with-verified-terms"]},
+          "license_url": {"type": ["string", "null"], "format": "uri"},
+          "permission_evidence": {"type": "string", "minLength": 1},
+          "commercial_use": {"const": true},
+          "transformation_allowed": {"const": true},
+          "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+          "contains_person": {"type": "boolean"},
+          "contains_third_party_mark": {"type": "boolean"}
+        }
+      }
+    }
+  }
+}

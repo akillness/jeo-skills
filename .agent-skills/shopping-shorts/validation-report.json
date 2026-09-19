@@ -1,0 +1,528 @@
+{
+  "edition": "plan-validation-20260901",
+  "validated_at_kst": "2026-09-01T16:23:16+09:00",
+  "verdict": "PASS",
+  "clean_review": "SHIP",
+  "media_tested": true,
+  "tests": 79,
+  "results": [
+    {
+      "name": "harness preview",
+      "verdict": "PASS",
+      "expected_success": true
+    },
+    {
+      "name": "harness apply",
+      "verdict": "PASS",
+      "expected_success": true
+    },
+    {
+      "name": "harness structure",
+      "verdict": "PASS",
+      "expected_success": true
+    },
+    {
+      "name": "fresh intake",
+      "verdict": "PASS",
+      "expected_success": true
+    },
+    {
+      "name": "pre-render fixture",
+      "verdict": "PASS",
+      "expected_success": true
+    },
+    {
+      "name": "provider packet",
+      "verdict": "PASS",
+      "expected_success": true
+    },
+    {
+      "name": "manual GUI handoff guard",
+      "verdict": "PASS",
+      "expected_success": true
+    },
+    {
+      "name": "nested credential field guard",
+      "verdict": "PASS",
+      "expected_success": false,
+      "expected_error": "provider_payload.auth.access_token is a credential field"
+    },
+    {
+      "name": "commerce research contract",
+      "verdict": "PASS",
+      "expected_success": true
+    },
+    {
+      "name": "Instagram KR age and bonus split contract",
+      "verdict": "PASS",
+      "expected_success": true
+    },
+    {
+      "name": "fixture freshness opt-in guard",
+      "verdict": "PASS",
+      "expected_success": false,
+      "expected_error": "fixture freshness requires an explicit test-only opt-in"
+    },
+    {
+      "name": "required platform program guard",
+      "verdict": "PASS",
+      "expected_success": false,
+      "expected_error": "programs missing x-paid-partnerships"
+    },
+    {
+      "name": "catalog surface kind guard",
+      "verdict": "PASS",
+      "expected_success": false,
+      "expected_error": "surface_kind differs from KR catalog"
+    },
+    {
+      "name": "social post official-source guard",
+      "verdict": "PASS",
+      "expected_success": false,
+      "expected_error": "X posts are not official policy sources"
+    },
+    {
+      "name": "YouTube UGC official-source guard",
+      "verdict": "PASS",
+      "expected_success": false,
+      "expected_error": "host www.youtube.com is not an approved official youtube host"
+    },
+    {
+      "name": "TikTok Ads official-source path guard",
+      "verdict": "PASS",
+      "expected_success": false,
+      "expected_error": "TikTok Ads source must be under /help/article/"
+    },
+    {
+      "name": "stale platform research guard",
+      "verdict": "PASS",
+      "expected_success": false,
+      "expected_error": "commerce-platforms.json: research is older than 7 days"
+    },
+    {
+      "name": "X transition boundary refresh guard",
+      "verdict": "PASS",
+      "expected_success": false,
+      "expected_error": "2026-09-07 transition boundary passed"
+    },
+    {
+      "name": "commerce hash receipt guard",
+      "verdict": "PASS",
+      "expected_success": false,
+      "expected_error": "validation/commerce.json: route hash mismatch"
+    },
+    {
+      "name": "unknown account cannot become commerce-ready",
+      "verdict": "PASS",
+      "expected_success": false,
+      "expected_error": "selected program coupang-partners has account_status unknown"
+    },
+    {
+      "name": "commerce-ready positive control",
+      "verdict": "PASS",
+      "expected_success": true
+    },
+    {
+      "name": "Coupang route constraints guard",
+      "verdict": "PASS",
+      "expected_success": false,
+      "expected_error": "Coupang route requires no-click-inducement constraint"
+    },
+    {
+      "name": "Coupang click inducement guard",
+      "verdict": "PASS",
+      "expected_success": false,
+      "expected_error": "Coupang click inducement is prohibited"
+    },
+    {
+      "name": "Coupang Korean metric particle guard",
+      "verdict": "PASS",
+      "expected_success": false,
+      "expected_error": "Coupang restricted performance metrics must not be disclosed"
+    },
+    {
+      "name": "unsupported Naver Clip release guard",
+      "verdict": "PASS",
+      "expected_success": false,
+      "expected_error": "selected route has no production adapter"
+    },
+    {
+      "name": "retiring X revenue route guard",
+      "verdict": "PASS",
+      "expected_success": false,
+      "expected_error": "selected program x-creator-revenue-sharing has non-selectable state retiring"
+    },
+    {
+      "name": "X automated rewards route guard",
+      "verdict": "PASS",
+      "expected_success": false,
+      "expected_error": "selected program x-original-content-rewards is research-only in this harness"
+    },
+    {
+      "name": "Instagram bonus commercial route guard",
+      "verdict": "PASS",
+      "expected_success": false,
+      "expected_error": "selected program instagram-bonuses is research-only in this harness"
+    },
+    {
+      "name": "X paid partnership label guard",
+      "verdict": "PASS",
+      "expected_success": false,
+      "expected_error": "X commercial route requires x-paid-partnership-label"
+    },
+    {
+      "name": "X third-party video ad screen guard",
+      "verdict": "PASS",
+      "expected_success": false,
+      "expected_error": "X commercial route requires x-third-party-video-ad-screen"
+    },
+    {
+      "name": "X third-party video ad evidence guard",
+      "verdict": "PASS",
+      "expected_success": false,
+      "expected_error": "requires bound third-party video ad evidence"
+    },
+    {
+      "name": "X third-party video ad evidence positive control",
+      "verdict": "PASS",
+      "expected_success": true
+    },
+    {
+      "name": "TikTok Creator Rewards shopping route guard",
+      "verdict": "PASS",
+      "expected_success": false,
+      "expected_error": "selected program tiktok-creator-rewards is research-only in this harness"
+    },
+    {
+      "name": "TikTok commercial content toggle guard",
+      "verdict": "PASS",
+      "expected_success": false,
+      "expected_error": "TikTok commercial route requires tiktok-commercial-content-toggle"
+    },
+    {
+      "name": "TikTok KR category screen guard",
+      "verdict": "PASS",
+      "expected_success": false,
+      "expected_error": "TikTok commercial route requires tiktok-kr-category-screen"
+    },
+    {
+      "name": "TikTok KR category evidence guard",
+      "verdict": "PASS",
+      "expected_success": false,
+      "expected_error": "requires bound allowed-category screen evidence"
+    },
+    {
+      "name": "TikTok KR category evidence positive control",
+      "verdict": "PASS",
+      "expected_success": true
+    },
+    {
+      "name": "TikTok Shop KR availability guard",
+      "verdict": "PASS",
+      "expected_success": false,
+      "expected_error": "selected program tiktok-shop-affiliate has non-selectable state unknown"
+    },
+    {
+      "name": "Instagram shopping tag adapter guard",
+      "verdict": "PASS",
+      "expected_success": false,
+      "expected_error": "instagram-reels has no public release adapter"
+    },
+    {
+      "name": "Instagram paid partnership label guard",
+      "verdict": "PASS",
+      "expected_success": false,
+      "expected_error": "Instagram commercial route requires instagram-paid-partnership-label"
+    },
+    {
+      "name": "one-output guard",
+      "verdict": "PASS",
+      "expected_success": false,
+      "expected_error": "run.json: max_outputs must be 1"
+    },
+    {
+      "name": "rights fail-closed",
+      "verdict": "PASS",
+      "expected_success": false,
+      "expected_error": "rights.json assets[0]: unsupported rights_basis"
+    },
+    {
+      "name": "intermediate symlink containment guard",
+      "verdict": "PASS",
+      "expected_success": false,
+      "expected_error": "outside run root"
+    },
+    {
+      "name": "fabricated-experience guard",
+      "verdict": "PASS",
+      "expected_success": false,
+      "expected_error": "selected-concept.json: possible unsupported first-person experience claim"
+    },
+    {
+      "name": "pinned-source guard",
+      "verdict": "PASS",
+      "expected_success": false,
+      "expected_error": "render-plan.json: source_sha mismatch"
+    },
+    {
+      "name": "generated typography policy guard",
+      "verdict": "PASS",
+      "expected_success": false,
+      "expected_error": "generated_text_policy must forbid generated typography"
+    },
+    {
+      "name": "generated typography prompt guard",
+      "verdict": "PASS",
+      "expected_success": false,
+      "expected_error": "prompt requests generated typography"
+    },
+    {
+      "name": "generated typography payload guard",
+      "verdict": "PASS",
+      "expected_success": false,
+      "expected_error": "provider_payload requests generated typography"
+    },
+    {
+      "name": "generated typography text field guard",
+      "verdict": "PASS",
+      "expected_success": false,
+      "expected_error": "provider_payload requests generated typography"
+    },
+    {
+      "name": "generated typography array field guard",
+      "verdict": "PASS",
+      "expected_success": false,
+      "expected_error": "provider_payload requests generated typography"
+    },
+    {
+      "name": "generated typography object field guard",
+      "verdict": "PASS",
+      "expected_success": false,
+      "expected_error": "provider_payload requests generated typography"
+    },
+    {
+      "name": "storyboard contract guard",
+      "verdict": "PASS",
+      "expected_success": false,
+      "expected_error": "production/storyboard.md: missing"
+    },
+    {
+      "name": "storyboard row binding guard",
+      "verdict": "PASS",
+      "expected_success": false,
+      "expected_error": "end time differs from render plan"
+    },
+    {
+      "name": "two-line caption guard",
+      "verdict": "PASS",
+      "expected_success": false,
+      "expected_error": "text exceeds two lines"
+    },
+    {
+      "name": "caption intermediate symlink guard",
+      "verdict": "PASS",
+      "expected_success": false,
+      "expected_error": "caption input contains a symlinked path segment"
+    },
+    {
+      "name": "fixture clip",
+      "verdict": "PASS",
+      "expected_success": true
+    },
+    {
+      "name": "fixture voice",
+      "verdict": "PASS",
+      "expected_success": true
+    },
+    {
+      "name": "typewriter captions",
+      "verdict": "PASS",
+      "expected_success": true
+    },
+    {
+      "name": "ffmpeg assembly",
+      "verdict": "PASS",
+      "expected_success": true
+    },
+    {
+      "name": "media verification",
+      "verdict": "PASS",
+      "expected_success": true
+    },
+    {
+      "name": "review frame start",
+      "verdict": "PASS",
+      "expected_success": true
+    },
+    {
+      "name": "review frame middle",
+      "verdict": "PASS",
+      "expected_success": true
+    },
+    {
+      "name": "review frame end",
+      "verdict": "PASS",
+      "expected_success": true
+    },
+    {
+      "name": "stale caption digest guard",
+      "verdict": "PASS",
+      "expected_success": false,
+      "expected_error": "rendered captions are stale or do not match caption_plan"
+    },
+    {
+      "name": "exact ASS artifact guard",
+      "verdict": "PASS",
+      "expected_success": false,
+      "expected_error": "rendered captions are stale or do not match caption_plan"
+    },
+    {
+      "name": "assembly output symlink guard",
+      "verdict": "PASS",
+      "expected_success": false,
+      "expected_error": "output must not be a symlink"
+    },
+    {
+      "name": "assembly intermediate symlink guard",
+      "verdict": "PASS",
+      "expected_success": false,
+      "expected_error": "timeline contains a missing or symlinked path segment"
+    },
+    {
+      "name": "final-stage positive control",
+      "verdict": "PASS",
+      "expected_success": true
+    },
+    {
+      "name": "paid promotion QA-release linkage guard",
+      "verdict": "PASS",
+      "expected_success": false,
+      "expected_error": "paid promotion toggle differs from QA"
+    },
+    {
+      "name": "paid promotion enum guard",
+      "verdict": "PASS",
+      "expected_success": false,
+      "expected_error": "paid_promotion_toggle must be required or not-required"
+    },
+    {
+      "name": "complete visual review guard",
+      "verdict": "PASS",
+      "expected_success": false,
+      "expected_error": "visual review must include four completed checks"
+    },
+    {
+      "name": "complete technical review guard",
+      "verdict": "PASS",
+      "expected_success": false,
+      "expected_error": "technical dimensions must be 1080x1920"
+    },
+    {
+      "name": "generated footage text QA guard",
+      "verdict": "PASS",
+      "expected_success": false,
+      "expected_error": "generated source footage contains synthetic typography"
+    },
+    {
+      "name": "generated text evidence binding guard",
+      "verdict": "PASS",
+      "expected_success": false,
+      "expected_error": "generated text review media digest mismatch"
+    },
+    {
+      "name": "spoofed final media guard",
+      "verdict": "PASS",
+      "expected_success": false,
+      "expected_error": "generated text review media verification failed"
+    },
+    {
+      "name": "caption overlay QA guard",
+      "verdict": "PASS",
+      "expected_success": false,
+      "expected_error": "assembly captions must use typewriter and at most two lines"
+    },
+    {
+      "name": "caption burn-in artifact guard",
+      "verdict": "PASS",
+      "expected_success": false,
+      "expected_error": "rendered captions are missing"
+    },
+    {
+      "name": "release-stage positive control",
+      "verdict": "PASS",
+      "expected_success": true
+    },
+    {
+      "name": "release read-back receipt guard",
+      "verdict": "PASS",
+      "expected_success": false,
+      "expected_error": "release receipt: URL differs from package"
+    }
+  ],
+  "supplementary_checks": {
+    "no_media_skip_guard": "PASS",
+    "skill_standardization": {
+      "verdict": "PASS",
+      "errors": 0,
+      "warnings": 0
+    },
+    "harness": {
+      "verdict": "PASS",
+      "expected_agents": 9,
+      "expected_skills": 2,
+      "errors": 0,
+      "warnings": 0
+    },
+    "pre_render_fixture": {
+      "verdict": "PASS",
+      "errors": 0,
+      "warnings": 0
+    },
+    "static": {
+      "verdict": "PASS",
+      "node_check_scripts": 11,
+      "json_parsed": 43,
+      "symlinks": 0
+    },
+    "media_contract": {
+      "width": 1080,
+      "height": 1920,
+      "fps": 30,
+      "duration_seconds": 15,
+      "video_codec": "h264",
+      "pixel_format": "yuv420p",
+      "audio_codec": "aac",
+      "caption_animation": "typewriter",
+      "caption_max_lines": 2,
+      "caption_plan_full_byte_match": true,
+      "final_media_probe": true
+    },
+    "review_findings_closed": [
+      "final caption validation rebuilds and byte-compares deterministic ASS",
+      "assembly rejects intermediate and output-leaf symlinks before ffmpeg",
+      "generated typography is rejected in prompts and normalized scalar or structured provider payload fields",
+      "generated-text QA binds final media, source clips, and three frames by SHA-256 and probes the actual MP4 stream",
+      "storyboard binds selected-concept and render-plan digests plus parsed row order, timing, claims, and assets",
+      "TikTok and X screen controls require official-source decision receipts with image SHA-256"
+    ]
+  },
+  "fixture_hashes": {
+    "commerce_platforms_sha256": "a66bc5ef6e7e7d27a90ee0b5916657111b7593427165b82a02913aa590100109",
+    "commerce_route_sha256": "0a33d6281de4c56b6e0df3eced88ae2b478b2356dca17fa35ac12611e9afb925"
+  },
+  "source_pins": {
+    "open_generative_ai_sha": "5482a777047c0df189eef989ff994d0d7a1d2874",
+    "higgsfield_cli_audit_sha": "8827135df7601667f66cd36ce84cf72106d690c4",
+    "higgsfield_status": "HOLD"
+  },
+  "planning_decisions": {
+    "hejhome_six_shot_plan": "ADOPT_WITH_REVISIONS",
+    "generated_clip_typography": "REJECT",
+    "assembly_typewriter_two_lines": "ADOPT",
+    "views_200k_benchmark": "ADOPT_FOR_DISCOVERY_ONLY",
+    "three_item_listicle_rule": "REJECT",
+    "pinned_source_guard_bypass": "REJECT",
+    "higgsfield_cli_adapter": "HOLD",
+    "git_push": "NOT_AUTHORIZED"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aside.local/shopping-shorts/evidence.schema.json",
+  "title": "Shopping Shorts Evidence Ledger",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["claims", "coverage"],
+  "properties": {
+    "claims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["claim_id", "claim", "status", "source_url", "publisher", "retrieved_at", "quote_or_coordinate", "used_in"],
+        "properties": {
+          "claim_id": {"type": "string", "pattern": "^c[0-9]{2,}$"},
+          "claim": {"type": "string", "minLength": 1},
+          "status": {"enum": ["verified", "inferred", "unverified"]},
+          "source_url": {"type": "string", "format": "uri"},
+          "publisher": {"type": "string", "minLength": 1},
+          "retrieved_at": {"type": "string", "format": "date-time"},
+          "quote_or_coordinate": {"type": "string", "minLength": 1},
+          "freshness": {"type": ["string", "null"]},
+          "caveat": {"type": ["string", "null"]},
+          "used_in": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}
+        }
+      }
+    },
+    "coverage": {"type": "number", "minimum": 0, "maximum": 1}
+  }
+}

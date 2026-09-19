@@ -2,14 +2,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-358-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-359-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![GJC](https://img.shields.io/badge/GJC-gajae--code-181717?style=for-the-badge&logo=github)](https://github.com/akillness/gajae-code)
 [![jeo-code](https://img.shields.io/badge/jeo--code-jeo-181717?style=for-the-badge&logo=github)](https://github.com/akillness/jeo-code)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**카테고리형 스킬 358개 · 경량 선택 설치 · 압축 TOON 카탈로그 · 멀티플랫폼**
+**카테고리형 스킬 359개 · 경량 선택 설치 · 압축 TOON 카탈로그 · 멀티플랫폼**
 
 스펙 우선 멀티 에이전트 LLM 워크플로우 컬렉션입니다. 프롬프트 하나로 전체 설정을
 위임하거나, `jeo-skill` 라우터부터 설치해 필요한 웹, 인프라, 게임, 미디어, CLI,
@@ -79,7 +79,7 @@ curl -s https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-sk
 
 ### 경량 선택 설치(수동 / CI)
 
-358개 스킬 폴더 전체가 아니라 **`jeo-skill` 라우터부터 설치**합니다. 카테고리,
+359개 스킬 폴더 전체가 아니라 **`jeo-skill` 라우터부터 설치**합니다. 카테고리,
 하위 분류, 인터페이스, 번들, 연관 스킬을 탐색할 수 있으며 앱·모델·MCP 서버·런타임은
 실제 선택된 작업에서만 온디맨드로 설치합니다.
 
@@ -132,7 +132,7 @@ video-motion-previs check
 
 ## 📚 스킬 목록
 
-> 중앙 매니페스트: `.agent-skills/skills.json` · 358개 스킬 · 10개 기본 카테고리 · 하위 카테고리/인터페이스/관계 그룹 지원
+> 중앙 매니페스트: `.agent-skills/skills.json` · 359개 스킬 · 10개 기본 카테고리 · 하위 카테고리/인터페이스/관계 그룹 지원
 
 ### 🌐 웹 (49개)
 
@@ -246,9 +246,9 @@ video-motion-previs check
 | `game-feel` |
 | `game-ui-ux` |
 
-### 🎬 크리에이티브 미디어 (32개)
+### 🎬 크리에이티브 미디어 (33개)
 
-하위 분류: `image` (10), `video` (13), `motion` (1), `audio` (1), `presentation` (1), `diagram` (1), `design` (3), `capture` (0), `storytelling` (2)
+하위 분류: `image` (10), `video` (14), `motion` (1), `audio` (1), `presentation` (1), `diagram` (1), `design` (3), `capture` (0), `storytelling` (2)
 
 | Skill |
 |---|
@@ -284,6 +284,7 @@ video-motion-previs check
 | `higgsfield-youtube-thumbnail` |
 | `higgsfield-video-explainer` |
 | `higgsfield-brandkit` |
+| `shopping-shorts` |
 
 ### ⌨️ CLI 도구 (34개)
 
@@ -806,7 +807,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 ## 📁 구조
 
 ```text
-├── .agent-skills/          ← 358개 스킬 폴더 (SKILL.md + 선택적 지원 파일)
+├── .agent-skills/          ← 359개 스킬 폴더 (SKILL.md + 선택적 지원 파일)
 ├── docs/                   ← 상세 가이드 (bmad, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
@@ -896,7 +897,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 
 | 변경 | 내용 |
 |------|------|
-| **카탈로그 358개 스킬 (+107)** | 글로벌에 설치된 스킬 세트와 카탈로그를 동기화했습니다. 다섯 개 업스트림 패밀리를 고정 커밋으로 벤더링: [phuryn/pm-skills](https://github.com/phuryn/pm-skills)의 PM 스킬 65개와 `pm-skills` 라우터(`8607e3b`, MIT — `business` 하위 분류 `pm-toolkit`, `pm-discovery`, `pm-strategy`, `pm-execution`, `pm-market-research`, `pm-analytics`, `pm-go-to-market`, `pm-growth` 신설); [langchain-ai/langchain-skills](https://github.com/langchain-ai/langchain-skills)의 LangChain / LangGraph / Deep Agents 스킬 10개(`88df7d9`, MIT); [higgsfield-ai/skills](https://github.com/higgsfield-ai/skills)의 `higgsfield-*` CLI 스킬 8개(0.12.0, `d071406`, MIT — `higgsfield-game-generation` 별칭이 드디어 카탈로그 내부 대상을 가리킴); [NomaDamas/k-skill](https://github.com/NomaDamas/k-skill)의 `hwp`, `rhwp-edit`, `rhwp-advanced`, `korean-patent-search`, `k-skill-setup`(`783d3c3`, MIT); [akillness/oh-my-gods](https://github.com/akillness/oh-my-gods)의 에이전트 엔지니어링 스킬 17개(`1b2779a`) — `agenticskills`는 번들 전체 설치기로 유지되고, 이 17개는 `jeo-skill install`로 단독 설치 가능. `youtube-growth-playbook-2026`은 로컬 작성 스킬. 연관 그룹 5개(`pm-skills`, `langchain-skills`, `higgsfield-cli`, `k-skill`, `oh-my-gods-agent-engineering`)와 번들 2개(`product-management`, `langchain`) 추가. |
+| **카탈로그 359개 스킬 (+108)** | 글로벌에 설치된 스킬 세트와 카탈로그를 동기화했습니다. 다섯 개 업스트림 패밀리를 고정 커밋으로 벤더링: [phuryn/pm-skills](https://github.com/phuryn/pm-skills)의 PM 스킬 65개와 `pm-skills` 라우터(`8607e3b`, MIT — `business` 하위 분류 `pm-toolkit`, `pm-discovery`, `pm-strategy`, `pm-execution`, `pm-market-research`, `pm-analytics`, `pm-go-to-market`, `pm-growth` 신설); [langchain-ai/langchain-skills](https://github.com/langchain-ai/langchain-skills)의 LangChain / LangGraph / Deep Agents 스킬 10개(`88df7d9`, MIT); [higgsfield-ai/skills](https://github.com/higgsfield-ai/skills)의 `higgsfield-*` CLI 스킬 8개(0.12.0, `d071406`, MIT — `higgsfield-game-generation` 별칭이 드디어 카탈로그 내부 대상을 가리킴); [NomaDamas/k-skill](https://github.com/NomaDamas/k-skill)의 `hwp`, `rhwp-edit`, `rhwp-advanced`, `korean-patent-search`, `k-skill-setup`(`783d3c3`, MIT); [akillness/oh-my-gods](https://github.com/akillness/oh-my-gods)의 에이전트 엔지니어링 스킬 17개(`1b2779a`) — `agenticskills`는 번들 전체 설치기로 유지되고, 이 17개는 `jeo-skill install`로 단독 설치 가능. `youtube-growth-playbook-2026`은 로컬 작성 스킬. 글로벌에만 있던 근거 중심 세로형 커머스 영상 하네스 `shopping-shorts`도 79개 미디어 회귀 테스트 통과 후 카탈로그로 승격해 `media-video` 번들과 `video-production` 연관 그룹에 추가. 연관 그룹 5개(`pm-skills`, `langchain-skills`, `higgsfield-cli`, `k-skill`, `oh-my-gods-agent-engineering`)와 번들 2개(`product-management`, `langchain`) 추가. |
 | **설치 가이드에 지식 파이프라인 훅 복원** | `setup-all-skills-prompt.md`의 경량화 개편 때 `llm-wiki` + graphify 훅 배선이 빠졌지만 `llm-wiki` 스킬은 여전히 있다고 안내하고 있었습니다. Step 5가 이제 레포별 볼트를 부트스트랩하고, `hooks/ingest-prompt.py`를 `~/.agents/hooks/`에 설치하며, 볼트 경로를 담지 않는 `llm-wiki-ingest.sh` 래퍼를 Claude Code(`UserPromptSubmit`/`Stop`), Codex(`UserPromptSubmit`/`Stop`), Gemini/Antigravity(`BeforeAgent`/`AfterAgent`)에 멱등하게 등록합니다 — 기존 훅과 무관한 설정 키는 그대로 보존됩니다. |
 | **`scripts/generate-catalog-projections.py`** | 검증기의 역함수: `skills.json`에서 `skills.toon`과 README 3종의 스킬 목록 섹션(제목 카운트, 하위 분류 카운트, 표 행, 소개 카운트만)을 외과적으로 재생성하고 나머지는 바이트 단위로 보존합니다. `--check`는 재생성이 no-op임을 단언하므로 "프로젝션 대신 매니페스트를 고쳐라"에 이제 기계적 후속 수단이 생겼습니다. README에만 있던 8월 항목도 `changelog/`로 옮겨 `changelog.py check`가 다시 통과합니다. |
 | **의도적으로 미포함** | pm-skills와 함께 글로벌에 설치돼 있던 출처 불명 단일 파일 스킬 6개(`blog-post`, `data-visualization`, `query-writing`, `schema-exploration`, `social-media`, `web-research`), 업스트림에서 사라진 `framework-selection` / `langgraph-docs`, 그리고 이 카탈로그에서 이전에 제거·은퇴한 모든 스킬(OMC/OMX/ooo 명령 shim, `jeo`, `ralph`, `agent-browser`, `obsidian` 등)은 그대로 제외했습니다. |

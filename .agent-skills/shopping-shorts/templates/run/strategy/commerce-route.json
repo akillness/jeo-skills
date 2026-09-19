@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "run_id": "__RUN_ID__",
+  "selected_at_kst": null,
+  "platform_research_sha256": null,
+  "route_status": "unknown",
+  "publication_surface": "youtube-shorts",
+  "monetization_program": "none",
+  "product_source": "unknown",
+  "program_ids": [],
+  "production_supported": true,
+  "account_checks": [],
+  "media_registration": "unknown",
+  "asset_terms_status": "unknown",
+  "required_disclosures": [],
+  "cta_constraints": [],
+  "automation_constraints": [],
+  "compliance_evidence": [],
+  "blocking_unknowns": ["Platform research and account checks are pending."],
+  "selection_reason": "Route selection pending current platform research and account checks."
+}

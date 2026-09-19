@@ -1,0 +1,17 @@
+{
+  "source_repo": "https://github.com/Anil-matcha/Open-Generative-AI",
+  "source_sha": "5482a777047c0df189eef989ff994d0d7a1d2874",
+  "execution_surface": "muapi-api",
+  "currency": "credits",
+  "estimated_cost": null,
+  "balance_verified": false,
+  "paid_execution_approved": false,
+  "generated_text_policy": "forbid-generated-typography",
+  "output": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "duration_seconds": 30
+  },
+  "shots": []
+}

@@ -1,0 +1,996 @@
+{
+  "schema_version": 1,
+  "run_id": "__RUN_ID__",
+  "market": "KR",
+  "research_status": "draft",
+  "freshness_mode": "live",
+  "researched_at_kst": null,
+  "required_program_ids": [
+    "youtube-ypp",
+    "youtube-shopping-affiliate",
+    "coupang-partners",
+    "zigzag-sharing-reward",
+    "zigzag-creator-lounge",
+    "naver-clip-ad-incentive",
+    "naver-shopping-connect",
+    "instagram-gifts",
+    "instagram-subscriptions",
+    "instagram-bonuses",
+    "instagram-creator-marketplace",
+    "instagram-shopping-tags",
+    "tiktok-creator-rewards",
+    "tiktok-video-gifts",
+    "tiktok-one-marketplace",
+    "tiktok-shop-affiliate",
+    "x-creator-revenue-sharing",
+    "x-original-content-rewards",
+    "x-creator-subscriptions",
+    "x-paid-partnerships"
+  ],
+  "sources": [],
+  "programs": [
+    {
+      "program_id": "youtube-ypp",
+      "provider": "youtube",
+      "surface_kind": "platform-revenue",
+      "program_state": "unknown",
+      "account_status": "unknown",
+      "registration_required": null,
+      "media_registration": "unknown",
+      "eligibility": [
+        {
+          "criterion": "Fill current official eligibility and account evidence.",
+          "status": "unknown",
+          "source_ids": []
+        }
+      ],
+      "attribution": {
+        "status": "not-applicable",
+        "window_hours": null,
+        "basis": null,
+        "source_ids": []
+      },
+      "commission_or_revenue": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "payout": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "disclosures": [],
+      "content_restrictions": [],
+      "automation": {
+        "official_api": "unknown",
+        "link_generation": "not-applicable",
+        "metrics_read": "unknown",
+        "content_upload": "unknown",
+        "data_retention": "unknown"
+      },
+      "asset_terms_status": "not-applicable",
+      "source_ids": [],
+      "unknowns": [
+        "Research pending."
+      ]
+    },
+    {
+      "program_id": "youtube-shopping-affiliate",
+      "provider": "youtube",
+      "surface_kind": "native-affiliate",
+      "program_state": "unknown",
+      "account_status": "unknown",
+      "registration_required": null,
+      "media_registration": "unknown",
+      "eligibility": [
+        {
+          "criterion": "Fill current official eligibility and account evidence.",
+          "status": "unknown",
+          "source_ids": []
+        }
+      ],
+      "attribution": {
+        "status": "unknown",
+        "window_hours": null,
+        "basis": null,
+        "source_ids": []
+      },
+      "commission_or_revenue": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "payout": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "disclosures": [],
+      "content_restrictions": [],
+      "automation": {
+        "official_api": "unknown",
+        "link_generation": "unknown",
+        "metrics_read": "unknown",
+        "content_upload": "unknown",
+        "data_retention": "unknown"
+      },
+      "asset_terms_status": "unknown",
+      "source_ids": [],
+      "unknowns": [
+        "Research pending."
+      ]
+    },
+    {
+      "program_id": "coupang-partners",
+      "provider": "coupang",
+      "surface_kind": "external-affiliate",
+      "program_state": "unknown",
+      "account_status": "unknown",
+      "registration_required": null,
+      "media_registration": "unknown",
+      "eligibility": [
+        {
+          "criterion": "Fill current official eligibility, final approval, and media registration evidence.",
+          "status": "unknown",
+          "source_ids": []
+        }
+      ],
+      "attribution": {
+        "status": "unknown",
+        "window_hours": null,
+        "basis": null,
+        "source_ids": []
+      },
+      "commission_or_revenue": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "payout": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "disclosures": [],
+      "content_restrictions": [],
+      "automation": {
+        "official_api": "unknown",
+        "link_generation": "unknown",
+        "metrics_read": "unknown",
+        "content_upload": "not-applicable",
+        "data_retention": "unknown"
+      },
+      "asset_terms_status": "unknown",
+      "source_ids": [],
+      "unknowns": [
+        "Research pending."
+      ]
+    },
+    {
+      "program_id": "zigzag-sharing-reward",
+      "provider": "zigzag",
+      "surface_kind": "external-affiliate",
+      "program_state": "unknown",
+      "account_status": "unknown",
+      "registration_required": null,
+      "media_registration": "unknown",
+      "eligibility": [
+        {
+          "criterion": "Fill current app terms, SNS registration, and link issue evidence.",
+          "status": "unknown",
+          "source_ids": []
+        }
+      ],
+      "attribution": {
+        "status": "unknown",
+        "window_hours": null,
+        "basis": null,
+        "source_ids": []
+      },
+      "commission_or_revenue": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "payout": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "disclosures": [],
+      "content_restrictions": [],
+      "automation": {
+        "official_api": "unknown",
+        "link_generation": "unknown",
+        "metrics_read": "unknown",
+        "content_upload": "not-applicable",
+        "data_retention": "unknown"
+      },
+      "asset_terms_status": "unknown",
+      "source_ids": [],
+      "unknowns": [
+        "Research pending."
+      ]
+    },
+    {
+      "program_id": "zigzag-creator-lounge",
+      "provider": "zigzag",
+      "surface_kind": "campaign-marketplace",
+      "program_state": "unknown",
+      "account_status": "unknown",
+      "registration_required": null,
+      "media_registration": "unknown",
+      "eligibility": [
+        {
+          "criterion": "Fill current creator approval and campaign evidence.",
+          "status": "unknown",
+          "source_ids": []
+        }
+      ],
+      "attribution": {
+        "status": "unknown",
+        "window_hours": null,
+        "basis": null,
+        "source_ids": []
+      },
+      "commission_or_revenue": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "payout": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "disclosures": [],
+      "content_restrictions": [],
+      "automation": {
+        "official_api": "not-found",
+        "link_generation": "ui",
+        "metrics_read": "ui",
+        "content_upload": "ui",
+        "data_retention": "unknown"
+      },
+      "asset_terms_status": "conditional",
+      "source_ids": [],
+      "unknowns": [
+        "Research pending."
+      ]
+    },
+    {
+      "program_id": "naver-clip-ad-incentive",
+      "provider": "naver",
+      "surface_kind": "platform-revenue",
+      "program_state": "unknown",
+      "account_status": "unknown",
+      "registration_required": null,
+      "media_registration": "unknown",
+      "eligibility": [
+        {
+          "criterion": "Fill current monetization review, follower, and valid-view evidence.",
+          "status": "unknown",
+          "source_ids": []
+        }
+      ],
+      "attribution": {
+        "status": "not-applicable",
+        "window_hours": null,
+        "basis": null,
+        "source_ids": []
+      },
+      "commission_or_revenue": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "payout": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "disclosures": [],
+      "content_restrictions": [],
+      "automation": {
+        "official_api": "not-found",
+        "link_generation": "not-applicable",
+        "metrics_read": "ui",
+        "content_upload": "ui",
+        "data_retention": "unknown"
+      },
+      "asset_terms_status": "not-applicable",
+      "source_ids": [],
+      "unknowns": [
+        "Research pending."
+      ]
+    },
+    {
+      "program_id": "naver-shopping-connect",
+      "provider": "naver",
+      "surface_kind": "native-affiliate",
+      "program_state": "unknown",
+      "account_status": "unknown",
+      "registration_required": null,
+      "media_registration": "unknown",
+      "eligibility": [
+        {
+          "criterion": "Fill current Brand Connect, terms, ID, and product-tag evidence.",
+          "status": "unknown",
+          "source_ids": []
+        }
+      ],
+      "attribution": {
+        "status": "unknown",
+        "window_hours": null,
+        "basis": null,
+        "source_ids": []
+      },
+      "commission_or_revenue": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "payout": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "disclosures": [],
+      "content_restrictions": [],
+      "automation": {
+        "official_api": "not-found",
+        "link_generation": "ui",
+        "metrics_read": "ui",
+        "content_upload": "ui",
+        "data_retention": "unknown"
+      },
+      "asset_terms_status": "unknown",
+      "source_ids": [],
+      "unknowns": [
+        "Research pending."
+      ]
+    },
+    {
+      "program_id": "instagram-gifts",
+      "provider": "instagram",
+      "surface_kind": "platform-revenue",
+      "program_state": "unknown",
+      "account_status": "unknown",
+      "registration_required": null,
+      "media_registration": "unknown",
+      "eligibility": [
+        {
+          "criterion": "Fill current official eligibility, Korean availability, and account evidence.",
+          "status": "unknown",
+          "source_ids": []
+        }
+      ],
+      "attribution": {
+        "status": "unknown",
+        "window_hours": null,
+        "basis": null,
+        "source_ids": []
+      },
+      "commission_or_revenue": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "payout": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "disclosures": [],
+      "content_restrictions": [],
+      "automation": {
+        "official_api": "unknown",
+        "link_generation": "unknown",
+        "metrics_read": "unknown",
+        "content_upload": "unknown",
+        "data_retention": "unknown"
+      },
+      "asset_terms_status": "unknown",
+      "source_ids": [],
+      "unknowns": [
+        "Research pending."
+      ]
+    },
+    {
+      "program_id": "instagram-subscriptions",
+      "provider": "instagram",
+      "surface_kind": "platform-revenue",
+      "program_state": "unknown",
+      "account_status": "unknown",
+      "registration_required": null,
+      "media_registration": "unknown",
+      "eligibility": [
+        {
+          "criterion": "Fill current official eligibility, Korean availability, and account evidence.",
+          "status": "unknown",
+          "source_ids": []
+        }
+      ],
+      "attribution": {
+        "status": "unknown",
+        "window_hours": null,
+        "basis": null,
+        "source_ids": []
+      },
+      "commission_or_revenue": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "payout": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "disclosures": [],
+      "content_restrictions": [],
+      "automation": {
+        "official_api": "unknown",
+        "link_generation": "unknown",
+        "metrics_read": "unknown",
+        "content_upload": "unknown",
+        "data_retention": "unknown"
+      },
+      "asset_terms_status": "unknown",
+      "source_ids": [],
+      "unknowns": [
+        "Research pending."
+      ]
+    },
+    {
+      "program_id": "instagram-bonuses",
+      "provider": "instagram",
+      "surface_kind": "platform-revenue",
+      "program_state": "unknown",
+      "account_status": "unknown",
+      "registration_required": null,
+      "media_registration": "unknown",
+      "eligibility": [
+        {
+          "criterion": "Fill current official eligibility, Korean availability, and account evidence.",
+          "status": "unknown",
+          "source_ids": []
+        }
+      ],
+      "attribution": {
+        "status": "unknown",
+        "window_hours": null,
+        "basis": null,
+        "source_ids": []
+      },
+      "commission_or_revenue": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "payout": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "disclosures": [],
+      "content_restrictions": [],
+      "automation": {
+        "official_api": "unknown",
+        "link_generation": "unknown",
+        "metrics_read": "unknown",
+        "content_upload": "unknown",
+        "data_retention": "unknown"
+      },
+      "asset_terms_status": "unknown",
+      "source_ids": [],
+      "unknowns": [
+        "Research pending."
+      ]
+    },
+    {
+      "program_id": "instagram-creator-marketplace",
+      "provider": "instagram",
+      "surface_kind": "campaign-marketplace",
+      "program_state": "unknown",
+      "account_status": "unknown",
+      "registration_required": null,
+      "media_registration": "unknown",
+      "eligibility": [
+        {
+          "criterion": "Fill current official eligibility, Korean availability, and account evidence.",
+          "status": "unknown",
+          "source_ids": []
+        }
+      ],
+      "attribution": {
+        "status": "unknown",
+        "window_hours": null,
+        "basis": null,
+        "source_ids": []
+      },
+      "commission_or_revenue": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "payout": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "disclosures": [],
+      "content_restrictions": [],
+      "automation": {
+        "official_api": "unknown",
+        "link_generation": "unknown",
+        "metrics_read": "unknown",
+        "content_upload": "unknown",
+        "data_retention": "unknown"
+      },
+      "asset_terms_status": "unknown",
+      "source_ids": [],
+      "unknowns": [
+        "Research pending."
+      ]
+    },
+    {
+      "program_id": "instagram-shopping-tags",
+      "provider": "instagram",
+      "surface_kind": "native-commerce",
+      "program_state": "unknown",
+      "account_status": "unknown",
+      "registration_required": null,
+      "media_registration": "unknown",
+      "eligibility": [
+        {
+          "criterion": "Fill current official eligibility, Korean availability, and account evidence.",
+          "status": "unknown",
+          "source_ids": []
+        }
+      ],
+      "attribution": {
+        "status": "unknown",
+        "window_hours": null,
+        "basis": null,
+        "source_ids": []
+      },
+      "commission_or_revenue": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "payout": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "disclosures": [],
+      "content_restrictions": [],
+      "automation": {
+        "official_api": "unknown",
+        "link_generation": "unknown",
+        "metrics_read": "unknown",
+        "content_upload": "unknown",
+        "data_retention": "unknown"
+      },
+      "asset_terms_status": "unknown",
+      "source_ids": [],
+      "unknowns": [
+        "Research pending."
+      ]
+    },
+    {
+      "program_id": "tiktok-creator-rewards",
+      "provider": "tiktok",
+      "surface_kind": "platform-revenue",
+      "program_state": "unknown",
+      "account_status": "unknown",
+      "registration_required": null,
+      "media_registration": "unknown",
+      "eligibility": [
+        {
+          "criterion": "Fill current official eligibility, Korean availability, and account evidence.",
+          "status": "unknown",
+          "source_ids": []
+        }
+      ],
+      "attribution": {
+        "status": "unknown",
+        "window_hours": null,
+        "basis": null,
+        "source_ids": []
+      },
+      "commission_or_revenue": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "payout": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "disclosures": [],
+      "content_restrictions": [],
+      "automation": {
+        "official_api": "unknown",
+        "link_generation": "unknown",
+        "metrics_read": "unknown",
+        "content_upload": "unknown",
+        "data_retention": "unknown"
+      },
+      "asset_terms_status": "unknown",
+      "source_ids": [],
+      "unknowns": [
+        "Research pending."
+      ]
+    },
+    {
+      "program_id": "tiktok-video-gifts",
+      "provider": "tiktok",
+      "surface_kind": "platform-revenue",
+      "program_state": "unknown",
+      "account_status": "unknown",
+      "registration_required": null,
+      "media_registration": "unknown",
+      "eligibility": [
+        {
+          "criterion": "Fill current official eligibility, Korean availability, and account evidence.",
+          "status": "unknown",
+          "source_ids": []
+        }
+      ],
+      "attribution": {
+        "status": "unknown",
+        "window_hours": null,
+        "basis": null,
+        "source_ids": []
+      },
+      "commission_or_revenue": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "payout": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "disclosures": [],
+      "content_restrictions": [],
+      "automation": {
+        "official_api": "unknown",
+        "link_generation": "unknown",
+        "metrics_read": "unknown",
+        "content_upload": "unknown",
+        "data_retention": "unknown"
+      },
+      "asset_terms_status": "unknown",
+      "source_ids": [],
+      "unknowns": [
+        "Research pending."
+      ]
+    },
+    {
+      "program_id": "tiktok-one-marketplace",
+      "provider": "tiktok",
+      "surface_kind": "campaign-marketplace",
+      "program_state": "unknown",
+      "account_status": "unknown",
+      "registration_required": null,
+      "media_registration": "unknown",
+      "eligibility": [
+        {
+          "criterion": "Fill current official eligibility, Korean availability, and account evidence.",
+          "status": "unknown",
+          "source_ids": []
+        }
+      ],
+      "attribution": {
+        "status": "unknown",
+        "window_hours": null,
+        "basis": null,
+        "source_ids": []
+      },
+      "commission_or_revenue": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "payout": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "disclosures": [],
+      "content_restrictions": [],
+      "automation": {
+        "official_api": "unknown",
+        "link_generation": "unknown",
+        "metrics_read": "unknown",
+        "content_upload": "unknown",
+        "data_retention": "unknown"
+      },
+      "asset_terms_status": "unknown",
+      "source_ids": [],
+      "unknowns": [
+        "Research pending."
+      ]
+    },
+    {
+      "program_id": "tiktok-shop-affiliate",
+      "provider": "tiktok",
+      "surface_kind": "native-affiliate",
+      "program_state": "unknown",
+      "account_status": "unknown",
+      "registration_required": null,
+      "media_registration": "unknown",
+      "eligibility": [
+        {
+          "criterion": "Fill current official eligibility, Korean availability, and account evidence.",
+          "status": "unknown",
+          "source_ids": []
+        }
+      ],
+      "attribution": {
+        "status": "unknown",
+        "window_hours": null,
+        "basis": null,
+        "source_ids": []
+      },
+      "commission_or_revenue": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "payout": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "disclosures": [],
+      "content_restrictions": [],
+      "automation": {
+        "official_api": "unknown",
+        "link_generation": "unknown",
+        "metrics_read": "unknown",
+        "content_upload": "unknown",
+        "data_retention": "unknown"
+      },
+      "asset_terms_status": "unknown",
+      "source_ids": [],
+      "unknowns": [
+        "Research pending."
+      ]
+    },
+    {
+      "program_id": "x-creator-revenue-sharing",
+      "provider": "x",
+      "surface_kind": "platform-revenue",
+      "program_state": "unknown",
+      "account_status": "unknown",
+      "registration_required": null,
+      "media_registration": "unknown",
+      "eligibility": [
+        {
+          "criterion": "Fill current official eligibility, Korean availability, and account evidence.",
+          "status": "unknown",
+          "source_ids": []
+        }
+      ],
+      "attribution": {
+        "status": "unknown",
+        "window_hours": null,
+        "basis": null,
+        "source_ids": []
+      },
+      "commission_or_revenue": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "payout": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "disclosures": [],
+      "content_restrictions": [],
+      "automation": {
+        "official_api": "unknown",
+        "link_generation": "unknown",
+        "metrics_read": "unknown",
+        "content_upload": "unknown",
+        "data_retention": "unknown"
+      },
+      "asset_terms_status": "unknown",
+      "source_ids": [],
+      "unknowns": [
+        "Research pending."
+      ]
+    },
+    {
+      "program_id": "x-original-content-rewards",
+      "provider": "x",
+      "surface_kind": "platform-revenue",
+      "program_state": "unknown",
+      "account_status": "unknown",
+      "registration_required": null,
+      "media_registration": "unknown",
+      "eligibility": [
+        {
+          "criterion": "Fill current official eligibility, Korean availability, and account evidence.",
+          "status": "unknown",
+          "source_ids": []
+        }
+      ],
+      "attribution": {
+        "status": "unknown",
+        "window_hours": null,
+        "basis": null,
+        "source_ids": []
+      },
+      "commission_or_revenue": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "payout": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "disclosures": [],
+      "content_restrictions": [],
+      "automation": {
+        "official_api": "unknown",
+        "link_generation": "unknown",
+        "metrics_read": "unknown",
+        "content_upload": "unknown",
+        "data_retention": "unknown"
+      },
+      "asset_terms_status": "unknown",
+      "source_ids": [],
+      "unknowns": [
+        "Research pending."
+      ]
+    },
+    {
+      "program_id": "x-creator-subscriptions",
+      "provider": "x",
+      "surface_kind": "platform-revenue",
+      "program_state": "unknown",
+      "account_status": "unknown",
+      "registration_required": null,
+      "media_registration": "unknown",
+      "eligibility": [
+        {
+          "criterion": "Fill current official eligibility, Korean availability, and account evidence.",
+          "status": "unknown",
+          "source_ids": []
+        }
+      ],
+      "attribution": {
+        "status": "unknown",
+        "window_hours": null,
+        "basis": null,
+        "source_ids": []
+      },
+      "commission_or_revenue": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "payout": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "disclosures": [],
+      "content_restrictions": [],
+      "automation": {
+        "official_api": "unknown",
+        "link_generation": "unknown",
+        "metrics_read": "unknown",
+        "content_upload": "unknown",
+        "data_retention": "unknown"
+      },
+      "asset_terms_status": "unknown",
+      "source_ids": [],
+      "unknowns": [
+        "Research pending."
+      ]
+    },
+    {
+      "program_id": "x-paid-partnerships",
+      "provider": "x",
+      "surface_kind": "external-affiliate",
+      "program_state": "unknown",
+      "account_status": "unknown",
+      "registration_required": null,
+      "media_registration": "unknown",
+      "eligibility": [
+        {
+          "criterion": "Fill current official eligibility, Korean availability, and account evidence.",
+          "status": "unknown",
+          "source_ids": []
+        }
+      ],
+      "attribution": {
+        "status": "unknown",
+        "window_hours": null,
+        "basis": null,
+        "source_ids": []
+      },
+      "commission_or_revenue": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "payout": {
+        "status": "unknown",
+        "value": null,
+        "observed_at_kst": null,
+        "source_ids": []
+      },
+      "disclosures": [],
+      "content_restrictions": [],
+      "automation": {
+        "official_api": "unknown",
+        "link_generation": "unknown",
+        "metrics_read": "unknown",
+        "content_upload": "unknown",
+        "data_retention": "unknown"
+      },
+      "asset_terms_status": "unknown",
+      "source_ids": [],
+      "unknowns": [
+        "Research pending."
+      ]
+    }
+  ],
+  "unknowns": [
+    "Complete official platform research before route selection."
+  ]
+}

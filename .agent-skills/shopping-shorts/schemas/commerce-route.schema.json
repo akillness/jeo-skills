@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aside.local/schemas/shopping-shorts/commerce-route.schema.json",
+  "title": "Shopping Shorts Selected Commerce Route",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "run_id", "selected_at_kst", "platform_research_sha256", "route_status", "publication_surface", "monetization_program", "product_source", "program_ids", "production_supported", "account_checks", "media_registration", "asset_terms_status", "required_disclosures", "cta_constraints", "automation_constraints", "compliance_evidence", "blocking_unknowns", "selection_reason"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "run_id": {"type": "string", "minLength": 1},
+    "selected_at_kst": {"type": ["string", "null"], "format": "date-time"},
+    "platform_research_sha256": {"type": ["string", "null"], "pattern": "^[a-f0-9]{64}$"},
+    "route_status": {"enum": ["unknown", "commerce-ready", "creative-only", "blocked"]},
+    "publication_surface": {"enum": ["youtube-shorts", "naver-clip", "instagram-reels", "tiktok-video", "x-video-post", "other-researched"]},
+    "monetization_program": {"type": "string", "minLength": 1},
+    "product_source": {"type": "string", "minLength": 1},
+    "program_ids": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
+    "production_supported": {"type": "boolean"},
+    "account_checks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["check", "status", "evidence"],
+        "properties": {
+          "check": {"type": "string", "minLength": 1},
+          "status": {"enum": ["verified", "unknown", "failed", "not-applicable"]},
+          "evidence": {"type": "string"}
+        }
+      }
+    },
+    "media_registration": {"enum": ["verified", "unknown", "failed", "not-required"]},
+    "asset_terms_status": {"enum": ["verified", "unknown", "failed", "not-applicable"]},
+    "required_disclosures": {"type": "array", "items": {"type": "string"}},
+    "cta_constraints": {"type": "array", "items": {"type": "string"}},
+    "automation_constraints": {"type": "array", "items": {"type": "string"}},
+    "compliance_evidence": {
+      "type": "array",
+      "maxItems": 20,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["control_id", "subject", "decision", "source_id", "observed_at_kst", "evidence_type", "evidence_path", "evidence_sha256", "reviewer_id"],
+        "properties": {
+          "control_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]{2,80}$"},
+          "subject": {"type": "string", "minLength": 1},
+          "decision": {"enum": ["allowed", "restricted", "prohibited", "consent-confirmed", "not-present", "blocked"]},
+          "source_id": {"type": "string", "minLength": 1},
+          "observed_at_kst": {"type": "string", "format": "date-time"},
+          "evidence_type": {"const": "screen-capture"},
+          "evidence_path": {"type": "string", "pattern": "^research/screens/[A-Za-z0-9._/-]+\\.(png|jpg|jpeg|webp)$"},
+          "evidence_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+          "reviewer_id": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "blocking_unknowns": {"type": "array", "items": {"type": "string"}},
+    "selection_reason": {"type": "string", "minLength": 1}
+  }
+}

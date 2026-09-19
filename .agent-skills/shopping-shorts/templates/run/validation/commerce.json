@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "run_id": "__RUN_ID__",
+  "verdict": "PENDING",
+  "commerce_mode": "unknown",
+  "platform_research_sha256": null,
+  "route_sha256": null,
+  "checked_at_kst": null,
+  "blocking_unknowns": ["Platform research and route selection are pending."],
+  "notes": []
+}

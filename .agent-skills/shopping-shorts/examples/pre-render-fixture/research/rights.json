@@ -1,0 +1,18 @@
+{
+  "assets": [
+    {
+      "asset_id": "a01",
+      "local_path": "_workspace/current/intake/assets/fixture-product.png",
+      "source_url": "https://example.invalid/fixture-product.png",
+      "creator_or_owner": "shopping-shorts fixture generator",
+      "rights_basis": "owned",
+      "license_url": null,
+      "permission_evidence": "Created locally as a one-pixel test fixture; no third-party asset is embedded.",
+      "commercial_use": true,
+      "transformation_allowed": true,
+      "sha256": "431ced6916a2a21a156e38701afe55bbd7f88969fbbfc56d7fe099d47f265460",
+      "contains_person": false,
+      "contains_third_party_mark": false
+    }
+  ]
+}
