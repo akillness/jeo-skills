@@ -58,10 +58,11 @@ OM_VAULT="${OBSIDIAN_MIND_VAULT:-$(git rev-parse --show-toplevel 2>/dev/null || 
 bash scripts/bootstrap-vault.sh "${LLM_WIKI_VAULT:-$OM_VAULT/llm-wiki}"
 ```
 
-`setup-all-skills-prompt.md` (Step 3e / Step 6) already calls this script with
-that exact resolution during install, and `hooks/ingest-prompt.py` bootstraps a
-missing vault on the first captured prompt in any other repo, so a fresh `jeo`
-setup and a manual bootstrap never diverge.
+`setup-all-skills-prompt.md` (Step 5, "Knowledge pipeline hooks") calls this script with
+that exact resolution during a full-mode install and registers `hooks/ingest-prompt.py`
+as the prompt-in / turn-end hook for Claude Code, Codex, and Gemini; the ingest script
+bootstraps a missing vault on the first captured prompt in any other repo, so a fresh
+`jeo` setup and a manual bootstrap never diverge.
 
 
 The bootstrap creates:

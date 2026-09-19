@@ -389,6 +389,120 @@ hosts.
 For another detected agent, use its documented MCP command/config surface; do not guess a
 JSON/TOML schema or overwrite its existing settings.
 
+### Knowledge pipeline hooks (llm-wiki + graphify, per-repo vault)
+
+Wire every prompt and every finished turn through `hooks/ingest-prompt.py` so the
+`llm-wiki` vault and its graphify graph stay current mid-conversation, not once per
+session. The vault is **project-scoped**: `ingest-prompt.py` resolves it at run time as
+`$LLM_WIKI_VAULT` → `$OBSIDIAN_MIND_VAULT/llm-wiki` → `<git toplevel>/llm-wiki` →
+`~/vaults/obsidian-mind/llm-wiki`, so no hook or wrapper stores a vault path and one
+installed script serves every repository. Per-agent events:
+
+| Agent | prompt-in | turn-end | Config file |
+|---|---|---|---|
+| Claude Code | `UserPromptSubmit` | `Stop` | `~/.claude/settings.json` |
+| Codex CLI | `UserPromptSubmit` | `Stop` | `~/.codex/hooks.json` |
+| Gemini CLI / Antigravity | `BeforeAgent` | `AfterAgent` | `~/.gemini/settings.json` |
+
+```bash
+KP_SCRIPTS="$USER_HOME/.agents/hooks"
+KP_INGEST="$KP_SCRIPTS/ingest-prompt.py"
+KP_RAW_URL="https://raw.githubusercontent.com/akillness/jeo-skills/main/hooks/ingest-prompt.py"
+
+# 1. Bootstrap the CURRENT project's vault only; other repos are bootstrapped by
+#    ingest-prompt.py itself on their first captured prompt.
+OM_VAULT="${OBSIDIAN_MIND_VAULT:-$(git rev-parse --show-toplevel 2>/dev/null || echo "$USER_HOME/vaults/obsidian-mind")}"
+KP_VAULT="${LLM_WIKI_VAULT:-$OM_VAULT/llm-wiki}"
+if [ ! -f "$KP_VAULT/index.md" ] && [ -x "$SKILLS_ROOT/llm-wiki/scripts/bootstrap-vault.sh" ]; then
+  bash "$SKILLS_ROOT/llm-wiki/scripts/bootstrap-vault.sh" "$KP_VAULT"
+fi
+
+# 2. Place the shared ingest script at its project-independent path (once).
+mkdir -p "$KP_SCRIPTS"
+if [ ! -f "$KP_INGEST" ]; then
+  curl -fsSL "$KP_RAW_URL" -o "$KP_INGEST" && chmod +x "$KP_INGEST"
+fi
+
+# 3. Install one vault-path-free wrapper per agent and register it for both events.
+#    Idempotent: an entry whose command already names the wrapper is left alone, and
+#    every other key in the settings file is preserved.
+secure_kp_hooks() {
+  local settings="$1" wrapper="$2" before="$3" after="$4"
+  KP_INGEST="$KP_INGEST" python3 - "$settings" "$wrapper" "$before" "$after" <<'PY'
+import json, os, pathlib, stat, sys, tempfile
+settings, wrapper, before_event, after_event = pathlib.Path(sys.argv[1]), pathlib.Path(sys.argv[2]), sys.argv[3], sys.argv[4]
+ingest = os.environ["KP_INGEST"]
+
+def replace(p, text, validator, default_mode=0o600):
+    try:
+        old = os.lstat(p)
+        if stat.S_ISLNK(old.st_mode) or not stat.S_ISREG(old.st_mode):
+            raise RuntimeError(f"refusing non-regular runtime file: {p}")
+    except FileNotFoundError:
+        old = None
+    p.parent.mkdir(parents=True, exist_ok=True)
+    validator(text)
+    fd, name = tempfile.mkstemp(prefix=f".{p.name}.tmp.", dir=p.parent)
+    tmp = pathlib.Path(name)
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as out:
+            out.write(text); out.flush(); os.fsync(out.fileno())
+        os.chmod(tmp, stat.S_IMODE(old.st_mode) if old else default_mode)
+        os.replace(tmp, p)
+    except Exception:
+        tmp.unlink(missing_ok=True)
+        raise
+
+wrapper_text = f'''#!/bin/bash
+# Vault-path free on purpose: ingest-prompt.py resolves the project-scoped vault
+# itself from the hook's working directory, so one wrapper serves every repo.
+set -euo pipefail
+INGEST="{ingest}"
+[ -x "$INGEST" ] || exit 0
+if [ -n "${{1:-}}" ]; then INPUT="$1"; else INPUT="$(cat 2>/dev/null || true)"; fi
+printf '%s' "$INPUT" | python3 "$INGEST" >/dev/null 2>&1 || true
+
+exit 0
+'''
+replace(wrapper, wrapper_text, lambda _: None, 0o700)
+data = json.loads(settings.read_text(encoding="utf-8")) if settings.is_file() else {}
+cmd = f'bash "{wrapper}"'
+for event in (before_event, after_event):
+    entries = data.setdefault("hooks", {}).setdefault(event, [])
+    if not any(any(h.get("command") in (cmd, str(wrapper)) for h in e.get("hooks", [])) for e in entries):
+        entry = {"hooks": [{"type": "command", "command": cmd}]}
+        if event in ("BeforeAgent", "AfterAgent"):
+            entry["matcher"] = ""; entry["hooks"][0]["name"] = "llm-wiki-ingest"
+        entries.append(entry)
+replace(settings, json.dumps(data, indent=2) + "\n", json.loads)
+PY
+}
+
+if command -v claude >/dev/null 2>&1; then
+  CLAUDE_DIR="${CLAUDE_CONFIG_DIR:-$USER_HOME/.claude}"
+  secure_kp_hooks "$CLAUDE_DIR/settings.json" "$CLAUDE_DIR/hooks/llm-wiki-ingest.sh" UserPromptSubmit Stop
+fi
+if command -v codex >/dev/null 2>&1; then
+  secure_kp_hooks "$USER_HOME/.codex/hooks.json" "$USER_HOME/.codex/hooks/llm-wiki-ingest.sh" UserPromptSubmit Stop
+fi
+if command -v gemini >/dev/null 2>&1 || command -v agy >/dev/null 2>&1; then
+  secure_kp_hooks "$USER_HOME/.gemini/settings.json" "$USER_HOME/.gemini/hooks/llm-wiki-ingest.sh" BeforeAgent AfterAgent
+fi
+
+# 4. Prove the hook runs end to end. A turn-end event captures no prompt text, so
+#    this writes nothing into the vault beyond a graph refresh; exit 0 is expected
+#    even without graphify, because the script never blocks the host agent.
+printf '{"hook_event_name":"Stop"}' | python3 "$KP_INGEST" && echo "ingest-prompt.py ok"
+```
+
+`jeo`, `jeopi`, and `gjc` register the same script through their own `post-turn` /
+`wikiRoot` config; read the `llm-wiki` skill's "Vault contract" section before touching
+those files, and merge keys rather than rewriting them. Keep the shared wrapper limited to
+the ingest call: the script already rebuilds the vault's own `<vault>/.graphify/` graph
+when `graphifyy` is importable. A checkout-level `graphify update .` belongs in a separate,
+user-owned `Stop` hook if wanted, because it writes `.graphify/` into every repository the
+agent touches.
+
 ### Ouroboros (`ooo`) MCP server
 
 ```bash
