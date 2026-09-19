@@ -1616,3 +1616,115 @@ they carry a standing boundary:
   its upstream status at the top of its `SKILL.md`.
 - Route catalog-wide discovery to `jeo-skill`, `find-skills`, or `openspace` rather than
   `ask-matt`, which only knows this one suite.
+
+### PM Skills product-management suite (prompt-only, 65 + 1 router)
+
+The 65 product-management skills vendored from `phuryn/pm-skills` (MIT, commit `8607e3b`)
+plus the `pm-skills` router are prompt-only: they need no runtime, key, or MCP server during
+blanket setup.
+
+- Load `.agent-skills/pm-skills/SKILL.md` first when a request is broadly "PM work"; it maps
+  the eight upstream plugins (`pm-product-discovery`, `pm-product-strategy`, `pm-execution`,
+  `pm-market-research`, `pm-data-analytics`, `pm-go-to-market`, `pm-marketing-growth`,
+  `pm-toolkit`) to the individual skills, which the manifest groups as the `pm-*`
+  subcategories of `business`.
+- Do **not** run `pm-skills/scripts/setup.sh` during blanket setup. It calls
+  `claude plugin marketplace add phuryn/pm-skills` and installs upstream plugins into Claude
+  Code; the catalog copies already make every skill available to every runtime. Run it only
+  when the user wants the upstream slash commands (`/discover`, `/write-prd`, ...) as well.
+- `draft-nda` and `privacy-policy` produce legal drafts; both mark the clauses that need a
+  lawyer, and the agent must keep those markers instead of presenting the draft as reviewed.
+- `sql-queries` writes queries from a described schema and never connects to a database on
+  its own; execution stays with whatever database tool the user already approved.
+- Four skills upstream added after the vendored commit (`code-review`,
+  `intended-vs-implemented`, `shipping-artifacts`, `strategy-red-team`) are intentionally
+  not imported: `code-review` collides with the mattpocock skill of the same name, and the
+  others have not been audited yet.
+
+### LangChain, LangGraph, and Deep Agents skills (prompt-only)
+
+Ten skills are vendored from `langchain-ai/langchain-skills` (MIT per its
+`.claude-plugin/plugin.json`, commit `88df7d9`): `langchain-fundamentals`,
+`langchain-middleware`, `langchain-rag`, `langchain-dependencies`, `langgraph-fundamentals`,
+`langgraph-persistence`, `langgraph-human-in-the-loop`, `deep-agents-core`,
+`deep-agents-memory`, and `deep-agents-orchestration`. They are documentation that shapes
+generated code and install nothing.
+
+- Start with `langchain-dependencies` for any new project: it pins the minimum package
+  versions the other skills assume, for both Python and TypeScript.
+- `deepagents`, `langgraph-workflow`, and `langchain-bmad` are the akillness/oh-my-gods
+  wrappers around the same frameworks; `goalflow` and `langsmith` remain the in-catalog
+  skills that build on them. The `langchain-skills` relationship group lists all of them.
+- The upstream quickstart, CLI, swarm, and eval-engineering skills are not vendored; point
+  users at the upstream repository for those.
+
+### Higgsfield CLI creative suite (on demand, spends money)
+
+The eight `higgsfield-*` skills are vendored from `higgsfield-ai/skills` (MIT, `VERSION`
+0.12.0, commit `d071406`). Every one of them wraps the `higgsfield` CLI, which needs an
+account and spends paid credits on each generation, so blanket setup installs the documents
+only.
+
+```bash
+# only after the user asks to generate with Higgsfield
+curl -fsSL https://raw.githubusercontent.com/higgsfield-ai/cli/main/install.sh | sh
+higgsfield auth login        # opens the browser; never paste an API key into chat
+higgsfield --version
+```
+
+- `higgsfield-generate` is the general entry point; `higgsfield-soul-id` trains a face
+  identity (5-20 photos, paid plan) and must run before any Soul-aware model.
+- `higgsfield-websites` deploys to Cloudflare through the Higgsfield backend and
+  `higgsfield-brandkit` persists approvals locally; confirm the target before either
+  publishes.
+- `higgsfield-game-generation` stays the compatibility alias and now resolves to the
+  in-catalog `higgsfield-websites --type game`; do not re-create the retired game skill.
+
+### k-skill Korean document and IP tools (on demand, needs credentials)
+
+`hwp`, `rhwp-edit`, `rhwp-advanced`, `korean-patent-search`, and `k-skill-setup` are
+vendored from `NomaDamas/k-skill` (MIT; the upstream proxy directories are AGPL-3.0-only
+and are **not** imported). Each skill is a stub that fetches its live instructions from the
+upstream CLI, so nothing runs until a task needs it:
+
+```bash
+# 1. read-only readiness: only reports whether the secrets file exists with mode 0600
+bash "$SKILLS_ROOT/k-skill-setup/scripts/check-setup.sh"
+
+# 2. only after the user asks for a k-skill task — prints the current upstream instructions
+npx -y @nomadamas/k-skill@0 instruct hwp
+```
+
+- `korean-patent-search` calls the KIPRIS Plus Open API with a ServiceKey read from
+  `KIPRIS_PLUS_API_KEY` (or `--service-key`); report the variable *name* only, never the
+  value, and keep the key in `~/.config/k-skill/secrets.env` (mode 0600) rather than a shell
+  history line.
+- `rhwp-edit` round-trips HWP 5.x through the beta `@rhwp/core` WASM engine; keep a copy of
+  any document before an edit, and prefer `hwp` (kordoc, read/convert only) when the task
+  does not need to write HWP.
+- The upstream update command (`npx -y @nomadamas/k-skill@0 update`) rewrites installed
+  skill copies in place; run it only on an explicit request, and never inside this
+  catalog's checkout.
+
+### oh-my-gods agent-engineering pack (prompt-only; `agent-manager` needs tmux)
+
+Fourteen agent-engineering skills are vendored from `akillness/oh-my-gods`
+(`.god-skills/`, commit `1b2779a`): `a2a-protocol`, `agent-benchmarking`, `agent-guardrails`,
+`agent-memory-architecture`, `agent-observability`, `agent-system-design`,
+`agent-tool-routing`, `multi-agent-eval-harness`, `reflexion-pattern`, `mcp-server-design`,
+`agent-manager`, `agent-workflow`, `agent-principles`, and `agent-development-principles`.
+
+- `agenticskills` remains the whole-bundle installer for the 80+ god-skills; these fourteen
+  are vendored so `jeo-skill install` can place them standalone. Do not run both on the same
+  target without checking for duplicate folders first.
+- `agent-manager` starts, stops, and schedules agents in tmux sessions and can register cron
+  jobs; it needs tmux and Python 3 and must only be invoked on an explicit request.
+- `agent-development-principles` is a compatibility alias for `agent-principles`; route new
+  work to the canonical name.
+
+### YouTube growth playbook (prompt-only)
+
+`youtube-growth-playbook-2026` is a locally authored planning skill: it turns growth advice
+into an evidence-checked 90-day plan using YouTube Studio only, needs no API key, and never
+posts or edits a channel. Its Korean trigger words (떡상, 유튜브 성장, 죽음의 계곡) are part
+of the description on purpose.

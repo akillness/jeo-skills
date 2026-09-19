@@ -1,0 +1,45 @@
+{
+  "skill_name": "agent-manager",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Use agent-manager to start my dev agent in tmux, verify it came up cleanly, and tail the live output.",
+      "expected_output": "A lifecycle-management answer that stays on agent-manager, starts the named agent, and verifies runtime health with explicit status or monitoring commands.",
+      "assertions": [
+        "Response chooses `agent-manager` as the execution surface",
+        "Response includes a start command such as `$CLI start NAME`",
+        "Response includes a verification command such as `$CLI status NAME` or `$CLI monitor NAME --follow`"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "I want a weekday 9am standup schedule and a 30-minute heartbeat for my QA agent. How should agent-manager define and sync that safely?",
+      "expected_output": "Guidance that uses agent-manager frontmatter plus the safe schedule and heartbeat sync flow instead of generic cron-only advice.",
+      "assertions": [
+        "Response includes `schedules` or `heartbeat` frontmatter fields",
+        "Response mentions `schedule sync --dry-run` or `heartbeat sync --dry-run` before live sync",
+        "Response keeps the answer anchored to agent-manager rather than generic cron setup"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "What is the safest way to verify my agent-manager install before I start or schedule any agents?",
+      "expected_output": "A verification-focused answer that uses the install/setup path when needed and explicitly recommends the doctor command before live lifecycle changes.",
+      "assertions": [
+        "Response mentions `scripts/install.sh`, `scripts/setup.sh`, or the CLI alias setup path",
+        "Response mentions `$CLI doctor` or `python3 .../main.py doctor`",
+        "Response frames doctor as the verification step before starting or scheduling agents"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "I have a long testing checklist for a running agent. Should I paste it into stdin or use a file when assigning it through agent-manager?",
+      "expected_output": "A task-assignment answer that prefers task files for longer prompts, shows the agent-manager command shape, and mentions checking runtime output afterward.",
+      "assertions": [
+        "Response mentions `assign --task-file` for longer jobs or checklists",
+        "Response also acknowledges stdin assignment as the shorter-task alternative",
+        "Response mentions `status` or `monitor` after sending the assignment"
+      ]
+    }
+  ]
+}

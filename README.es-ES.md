@@ -4,14 +4,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-251-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-358-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![GJC](https://img.shields.io/badge/GJC-gajae--code-181717?style=for-the-badge&logo=github)](https://github.com/akillness/gajae-code)
 [![jeo-code](https://img.shields.io/badge/jeo--code-jeo-181717?style=for-the-badge&logo=github)](https://github.com/akillness/jeo-code)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**251 habilidades categorizadas · instalación selectiva ligera · catálogo TOON compacto · multiplataforma**
+**358 habilidades categorizadas · instalación selectiva ligera · catálogo TOON compacto · multiplataforma**
 
 Una colección curada para flujos de trabajo LLM multi-agente y centrados en especificaciones. Delega una configuración completa con un solo prompt, o instala primero el enrutador `jeo-skill` y añade solo las habilidades de web, infraestructura, juegos, medios, CLI o utilidades que necesites.
 
@@ -76,7 +76,7 @@ El agente ejecuta una **instalación completa por defecto** (di "solo núcleo" o
 
 ### Instalación selectiva ligera (manual / CI)
 
-Instala primero el **enrutador `jeo-skill`**, no las 251 carpetas de habilidades. Proporciona descubrimiento de categoría, subcategoría, interfaz, paquete y relación, manteniendo aplicaciones pesadas, modelos, servidores MCP y tiempos de ejecución bajo demanda.
+Instala primero el **enrutador `jeo-skill`**, no las 358 carpetas de habilidades. Proporciona descubrimiento de categoría, subcategoría, interfaz, paquete y relación, manteniendo aplicaciones pesadas, modelos, servidores MCP y tiempos de ejecución bajo demanda.
 
 ```bash
 # One lightweight skill, shared globally
@@ -124,11 +124,11 @@ video-motion-previs check
 
 ## 📚 Lista de Habilidades
 
-> Manifiesto central: `.agent-skills/skills.json` · 251 habilidades · 10 categorías principales · metadatos de subcategoría/interfaz/relación
+> Manifiesto central: `.agent-skills/skills.json` · 358 habilidades · 10 categorías principales · metadatos de subcategoría/interfaz/relación
 
-### 🌐 Web (48)
+### 🌐 Web (49)
 
-Subcategorías: `frontend` (6), `backend` (3), `design` (12), `api` (2), `auth` (1), `data` (4), `testing` (3), `accessibility` (1), `performance` (1), `graphics` (10), `capture` (5)
+Subcategorías: `frontend` (7), `backend` (3), `design` (12), `api` (2), `auth` (1), `data` (4), `testing` (3), `accessibility` (1), `performance` (1), `graphics` (10), `capture` (5)
 
 | Skill |
 |---|
@@ -180,6 +180,7 @@ Subcategorías: `frontend` (6), `backend` (3), `design` (12), `api` (2), `auth` 
 | `airship` |
 | `moli` |
 | `design-taste-frontend` |
+| `higgsfield-websites` |
 
 ### 🏗 Infraestructura (13)
 
@@ -237,9 +238,9 @@ Subcategorías: `client` (3), `web` (2), `server` (1), `design-ui` (7), `audio` 
 | `game-feel` |
 | `game-ui-ux` |
 
-### 🎬 Medios Creativos (25)
+### 🎬 Medios Creativos (32)
 
-Subcategorías: `image` (5), `video` (12), `motion` (1), `audio` (1), `presentation` (1), `diagram` (1), `design` (2), `capture` (0), `storytelling` (2)
+Subcategorías: `image` (10), `video` (13), `motion` (1), `audio` (1), `presentation` (1), `diagram` (1), `design` (3), `capture` (0), `storytelling` (2)
 
 | Skill |
 |---|
@@ -268,10 +269,17 @@ Subcategorías: `image` (5), `video` (12), `motion` (1), `audio` (1), `presentat
 | `drama-skills` |
 | `openmontage` |
 | `open-generative-ai` |
+| `higgsfield-generate` |
+| `higgsfield-marketplace-cards` |
+| `higgsfield-product-photoshoot` |
+| `higgsfield-soul-id` |
+| `higgsfield-youtube-thumbnail` |
+| `higgsfield-video-explainer` |
+| `higgsfield-brandkit` |
 
-### ⌨️ Herramientas CLI (33)
+### ⌨️ Herramientas CLI (34)
 
-Subcategorías: `developer-cli` (8), `ai-cli` (11), `media-cli` (1), `automation-cli` (6), `search-cli` (6), `benchmark-cli` (1)
+Subcategorías: `developer-cli` (9), `ai-cli` (11), `media-cli` (1), `automation-cli` (6), `search-cli` (6), `benchmark-cli` (1)
 
 | Skill |
 |---|
@@ -308,10 +316,11 @@ Subcategorías: `developer-cli` (8), `ai-cli` (11), `media-cli` (1), `automation
 | `mole` |
 | `mcp-server-sv-number` |
 | `zeroshot` |
+| `k-skill-setup` |
 
-### 🤖 IA y Agentes (38)
+### 🤖 IA y Agentes (65)
 
-Subcategorías: `orchestration` (6), `agent-frameworks` (5), `skill-authoring` (5), `evaluation` (4), `memory` (1), `planning-review` (11), `discovery` (3), `prompting` (3)
+Subcategorías: `orchestration` (11), `agent-frameworks` (20), `skill-authoring` (5), `evaluation` (7), `memory` (2), `planning-review` (14), `discovery` (3), `prompting` (3)
 
 | Skill |
 |---|
@@ -353,6 +362,33 @@ Subcategorías: `orchestration` (6), `agent-frameworks` (5), `skill-authoring` (
 | `to-questionnaire` |
 | `wayfinder` |
 | `writing-for-agents` |
+| `agent-guardrails` |
+| `agent-system-design` |
+| `agent-tool-routing` |
+| `reflexion-pattern` |
+| `agent-manager` |
+| `langchain-fundamentals` |
+| `langchain-middleware` |
+| `langchain-rag` |
+| `langchain-dependencies` |
+| `langgraph-fundamentals` |
+| `langgraph-persistence` |
+| `langgraph-human-in-the-loop` |
+| `deep-agents-core` |
+| `deep-agents-memory` |
+| `deep-agents-orchestration` |
+| `deepagents` |
+| `langgraph-workflow` |
+| `langchain-bmad` |
+| `a2a-protocol` |
+| `mcp-server-design` |
+| `agent-benchmarking` |
+| `agent-observability` |
+| `multi-agent-eval-harness` |
+| `agent-memory-architecture` |
+| `agent-workflow` |
+| `agent-principles` |
+| `agent-development-principles` |
 
 ### 🧰 Ingeniería (24)
 
@@ -385,9 +421,9 @@ Subcategorías: `code-quality` (11), `testing` (4), `architecture` (6), `documen
 | `implement` |
 | `prototype` |
 
-### 🔭 Investigación y Análisis (11)
+### 🔭 Investigación y Análisis (12)
 
-Subcategorías: `academic` (3), `web-research` (3), `data-analysis` (2), `experimentation` (1), `benchmarking` (1), `intelligence` (1)
+Subcategorías: `academic` (3), `web-research` (3), `data-analysis` (2), `experimentation` (1), `benchmarking` (1), `intelligence` (2)
 
 | Skill |
 |---|
@@ -402,10 +438,11 @@ Subcategorías: `academic` (3), `web-research` (3), `data-analysis` (2), `experi
 | `scientific-llm-benchmarks` |
 | `agent-pulse` |
 | `research` |
+| `korean-patent-search` |
 
-### 📣 Negocios (6)
+### 📣 Negocios (73)
 
-Subcategorías: `marketing` (3), `support` (2), `publishing` (1)
+Subcategorías: `marketing` (4), `support` (2), `publishing` (1), `pm-toolkit` (5), `pm-discovery` (13), `pm-strategy` (12), `pm-execution` (15), `pm-market-research` (7), `pm-analytics` (3), `pm-go-to-market` (6), `pm-growth` (5)
 
 | Skill |
 |---|
@@ -415,10 +452,77 @@ Subcategorías: `marketing` (3), `support` (2), `publishing` (1)
 | `customer-email-draft-threads` |
 | `customer-support-verification` |
 | `yuwen-publish-precheck` |
+| `youtube-growth-playbook-2026` |
+| `pm-skills` |
+| `draft-nda` |
+| `grammar-check` |
+| `privacy-policy` |
+| `review-resume` |
+| `analyze-feature-requests` |
+| `brainstorm-experiments-existing` |
+| `brainstorm-experiments-new` |
+| `brainstorm-ideas-existing` |
+| `brainstorm-ideas-new` |
+| `identify-assumptions-existing` |
+| `identify-assumptions-new` |
+| `interview-script` |
+| `metrics-dashboard` |
+| `opportunity-solution-tree` |
+| `prioritize-assumptions` |
+| `prioritize-features` |
+| `summarize-interview` |
+| `ansoff-matrix` |
+| `business-model` |
+| `lean-canvas` |
+| `monetization-strategy` |
+| `pestle-analysis` |
+| `porters-five-forces` |
+| `pricing-strategy` |
+| `product-strategy` |
+| `product-vision` |
+| `startup-canvas` |
+| `swot-analysis` |
+| `value-proposition` |
+| `brainstorm-okrs` |
+| `create-prd` |
+| `dummy-dataset` |
+| `job-stories` |
+| `outcome-roadmap` |
+| `pre-mortem` |
+| `prioritization-frameworks` |
+| `release-notes` |
+| `retro` |
+| `sprint-plan` |
+| `stakeholder-map` |
+| `summarize-meeting` |
+| `test-scenarios` |
+| `user-stories` |
+| `wwas` |
+| `competitor-analysis` |
+| `customer-journey-map` |
+| `market-segments` |
+| `market-sizing` |
+| `sentiment-analysis` |
+| `user-personas` |
+| `user-segmentation` |
+| `ab-test-analysis` |
+| `cohort-analysis` |
+| `sql-queries` |
+| `beachhead-segment` |
+| `competitive-battlecard` |
+| `growth-loops` |
+| `gtm-motions` |
+| `gtm-strategy` |
+| `ideal-customer-profile` |
+| `marketing-ideas` |
+| `north-star-metric` |
+| `positioning-ideas` |
+| `product-name` |
+| `value-prop-statements` |
 
-### 🔧 Utilidades (24)
+### 🔧 Utilidades (27)
 
-Subcategorías: `knowledge` (7), `files` (2), `git` (4), `workspace` (1), `project-management` (4), `productivity` (3), `general` (3)
+Subcategorías: `knowledge` (7), `files` (5), `git` (4), `workspace` (1), `project-management` (4), `productivity` (3), `general` (3)
 
 | Skill |
 |---|
@@ -446,6 +550,9 @@ Subcategorías: `knowledge` (7), `files` (2), `git` (4), `workspace` (1), `proje
 | `teach` |
 | `wait-what` |
 | `wizard` |
+| `hwp` |
+| `rhwp-advanced` |
+| `rhwp-edit` |
 
 ---
 
@@ -705,7 +812,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 
 ```text
 .
-├── .agent-skills/          ← 251 skill folders (SKILL.md + optional support files)
+├── .agent-skills/          ← 358 skill folders (SKILL.md + optional support files)
 ├── docs/                   ← detailed guides (bmad, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
@@ -779,6 +886,11 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 | `eli5` | [DreambigOu/ELI5](https://github.com/DreambigOu/ELI5) | MIT |
 | `openocta` | [openocta/openocta](https://github.com/openocta/openocta) | Wrapper Apache-2.0 |
 | `open-code-review` | [alibaba/open-code-review](https://github.com/alibaba/open-code-review) | Apache-2.0 |
+| `pm-skills` + 65 habilidades `pm-*` | [phuryn/pm-skills @ 8607e3b](https://github.com/phuryn/pm-skills) | MIT |
+| `langchain-*`, `langgraph-*`, `deep-agents-*` | [langchain-ai/langchain-skills @ 88df7d9](https://github.com/langchain-ai/langchain-skills) | MIT |
+| `higgsfield-*` (8) | [higgsfield-ai/skills 0.12.0 @ d071406](https://github.com/higgsfield-ai/skills) | MIT |
+| `hwp`, `rhwp-edit`, `rhwp-advanced`, `korean-patent-search`, `k-skill-setup` | [NomaDamas/k-skill @ 783d3c3](https://github.com/NomaDamas/k-skill) | MIT (directorios proxy AGPL-3.0, no incluidos) |
+| `a2a-protocol`, `agent-*`, `multi-agent-eval-harness`, `reflexion-pattern`, `mcp-server-design`, `deepagents`, `langgraph-workflow`, `langchain-bmad` | [akillness/oh-my-gods @ 1b2779a](https://github.com/akillness/oh-my-gods) | MIT |
 | Especificación de Habilidades de Agente | [agentskills.io](https://agentskills.io/specification) | — |
 
 ---

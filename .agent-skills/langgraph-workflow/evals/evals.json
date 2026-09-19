@@ -1,0 +1,35 @@
+{
+  "skill_name": "langgraph-workflow",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Build a LangGraph StateGraph for a multi-step content generation pipeline: plan → write → review. If quality score < 0.7, loop back to write. Max 3 retries.",
+      "expected_output": "Working StateGraph with conditional edges routing from review back to write on low quality, AND to END on success or max retries.",
+      "assertions": [
+        "StateGraph is created with nodes: plan, write, review",
+        "Conditional edge from review routes to write on low quality and to END on pass",
+        "retry_count field is incremented and capped at 3"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Add a Human-in-the-Loop approval gate before the deploy node in my LangGraph pipeline. The agent should pause and wait for human confirmation.",
+      "expected_output": "Graph compiled with interrupt_before=['deploy'] and MemorySaver checkpointer. Resume logic shown.",
+      "assertions": [
+        "compile() is called with interrupt_before=['deploy']",
+        "MemorySaver or equivalent checkpointer is provided",
+        "Resume invocation shown with None input and thread_id"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Set up LangSmith tracing for my LangGraph workflow so I can monitor each node's token usage and latency.",
+      "expected_output": "Environment variables set (LANGCHAIN_TRACING_V2, LANGCHAIN_API_KEY). @traceable decorator shown for custom spans.",
+      "assertions": [
+        "LANGCHAIN_TRACING_V2=true is set",
+        "LANGCHAIN_API_KEY is referenced",
+        "@traceable decorator is used on at least one function"
+      ]
+    }
+  ]
+}

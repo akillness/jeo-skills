@@ -1,0 +1,55 @@
+{
+  "skill_name": "agent-workflow",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "My agent session is getting slow and confused after a long day of mixed tasks. What workflow should I use to reset without losing the useful parts?",
+      "expected_output": "Treats the issue as session and context hygiene first, recommends reset or handoff tactics, and preserves only the bounded context needed next.",
+      "assertions": [
+        "Response classifies the request as a session-control or context-management problem before listing commands",
+        "Response recommends reset, resume, or handoff tactics instead of piling more instructions into the same polluted thread",
+        "Response preserves only the context needed for the next bounded task rather than suggesting a full transcript replay"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "What is a good daily workflow for using Claude or Codex to inspect code, make a change, run tests, and open a PR without the session getting messy?",
+      "expected_output": "Chooses a compact inspect-edit-verify-commit loop, grounds the repo state, and includes verification before PR creation.",
+      "assertions": [
+        "Response proposes a bounded repo-delivery loop instead of a generic command dump",
+        "Response grounds the workflow in current repo or branch state before PR advice",
+        "Response includes verification such as tests, build checks, or diff review before opening the PR"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "I can use shell tools, MCP servers, or browser automation. How should I decide which workflow to use for a task?",
+      "expected_output": "Separates local shell work from external-service or runtime needs and keeps heavier surfaces scoped to tasks that benefit from them.",
+      "assertions": [
+        "Response distinguishes local repo work from external-service or runtime-verification work",
+        "Response avoids prescribing MCP or browser automation as the default for simple local tasks",
+        "Response recommends playwriter when live browser session continuity matters"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "I want one agent researching, another implementing, and another validating. What workflow keeps that from turning into chaos?",
+      "expected_output": "Treats the request as a multi-agent coordination problem, uses bounded ownership, and avoids parallelizing critical-path work blindly.",
+      "assertions": [
+        "Response classifies the request as a multi-agent workflow problem before prescribing tool details",
+        "Response assigns bounded ownership, artifact handoff, or synthesis checkpoints to the split lanes",
+        "Response warns against parallelizing unresolved critical-path work or overlapping write scopes"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "I changed a UI flow and need to verify the live browser behavior. Should my workflow use a headless browser or the browser I already have open?",
+      "expected_output": "Treats this as runtime verification, routes live-session checks to playwriter, and keeps the verification lane distinct from code editing.",
+      "assertions": [
+        "Response recognizes that the main job is runtime or browser verification, not generic code editing",
+        "Response recommends playwriter when the already-open browser session or existing state matters",
+        "Response keeps runtime verification as an explicit workflow lane instead of burying it inside a generic shell loop"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "skill_name": "pm-skills",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I want to use pm-skills to start discovering product opportunities for reducing churn. What do I do?",
+      "expected_output": "Install pm-product-discovery plugin and run /discover command",
+      "assertions": [
+        "Response mentions claude plugin install pm-product-discovery@pm-skills",
+        "Response shows /discover command for opportunity mapping",
+        "Response explains Teresa Torres Opportunity Solution Tree",
+        "Response mentions continuous discovery habits"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "How do I write a PRD using pm-skills?",
+      "expected_output": "Install pm-execution plugin and use /write-prd command",
+      "assertions": [
+        "Response mentions pm-execution plugin installation",
+        "Response shows /write-prd command",
+        "Response mentions key PRD sections (problem, user stories, success metrics)",
+        "Response suggests running /discover before writing the PRD"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "I need to define our north star metric and OKRs. Which pm-skills plugins and commands should I use?",
+      "expected_output": "pm-product-strategy plugin with /north-star and /okrs commands",
+      "assertions": [
+        "Response mentions pm-product-strategy plugin",
+        "Response shows /north-star command",
+        "Response shows /okrs command",
+        "Response explains north star + input metrics relationship"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "How do I use pm-skills to plan a product launch?",
+      "expected_output": "pm-go-to-market plugin with /plan-launch, /positioning, /pricing commands",
+      "assertions": [
+        "Response mentions pm-go-to-market plugin",
+        "Response shows /plan-launch command",
+        "Response shows /positioning command",
+        "Response explains GTM launch phases (pre-launch, launch, post-launch)"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "How do I install all pm-skills plugins at once?",
+      "expected_output": "claude plugin marketplace add phuryn/pm-skills then claude plugin install for each plugin",
+      "assertions": [
+        "Response shows claude plugin marketplace add phuryn/pm-skills",
+        "Response shows install commands for all 8 plugins",
+        "Response mentions setup.sh --all option",
+        "Response lists all 8 plugin names"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "skill_name": "agent-development-principles",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Use agent-development-principles to explain the core habits for working with AI coding agents.",
+      "expected_output": "A compatibility-aware answer that recognizes the exact legacy skill name and routes the substantive guidance to the canonical `agent-principles` skill.",
+      "assertions": [
+        "Response acknowledges `agent-development-principles` as an exact-name or legacy surface",
+        "Response routes the substantive collaboration-principles work to `agent-principles`",
+        "Response does not duplicate the full canonical guide inside the alias"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "My old install docs still say to use agent-development-principles. Is that still valid?",
+      "expected_output": "A compatibility answer that preserves the old name while clarifying that `agent-principles` is the canonical skill.",
+      "assertions": [
+        "Response preserves backward compatibility",
+        "Response identifies `agent-principles` as the canonical skill",
+        "Response avoids treating both skills as equal defaults"
+      ]
+    }
+  ]
+}

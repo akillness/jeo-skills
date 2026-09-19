@@ -1,0 +1,45 @@
+{
+  "skill_name": "langchain-bmad",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We want to use BMAD for an AI workflow, but we still need to decide whether LangGraph or Deep Agents fits better.",
+      "expected_output": "Routes first to framework-selection inside a BMAD analysis or planning lane.",
+      "assertions": [
+        "Response mentions framework-selection as the next move",
+        "Response treats this as BMAD routing plus framework choice",
+        "Response does not jump straight to implementation-only skills"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Our PRD is approved. What should come next in BMAD for a LangGraph system that needs durable execution?",
+      "expected_output": "Routes to solutioning or architecture with langgraph-fundamentals plus langgraph-persistence.",
+      "assertions": [
+        "Response keeps BMAD phase progression explicit",
+        "Response mentions langgraph-fundamentals",
+        "Response mentions langgraph-persistence"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Brainstorm three agent product ideas before we choose any framework.",
+      "expected_output": "Routes out of langchain-bmad and into bmad-idea.",
+      "assertions": [
+        "Response mentions bmad-idea",
+        "Response explains that framework selection is premature",
+        "Response avoids dumping the LangChain skill catalog"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "The architecture is done. We need HITL approval and persistence in our LangGraph app.",
+      "expected_output": "Hands implementation off to the narrow LangGraph skills instead of re-explaining BMAD.",
+      "assertions": [
+        "Response mentions langgraph-human-in-the-loop",
+        "Response mentions langgraph-persistence",
+        "Response treats BMAD as the artifact-tracking layer rather than the implementation surface"
+      ]
+    }
+  ]
+}

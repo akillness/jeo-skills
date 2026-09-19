@@ -1,0 +1,16 @@
+N:agent-development-principles
+D:Compatibility alias for agent-principles. Use when an existing workflow, install surface, or exact-name request still references agent-development-principles; substantive collaboration-principles work should route to agent-principles.
+G:agentic-development principles context-management automation ai-collaboration
+U[4]:
+  Preserve exact-name compatibility for old docs and installs
+  Recognize the legacy agent-development-principles name
+  Route substantive principles guidance to agent-principles
+  Keep duplicate catalog competition low
+R[3]:
+  Do not compete with the canonical skill as a peer default
+  Keep the alias brief and explicit
+  Preserve backward compatibility without duplicating the full guide
+S[3]{n,action}:
+  1,Recognize the request as a legacy alias surface
+  2,Preserve exact-name compatibility
+  3,Route the substantive work to agent-principles

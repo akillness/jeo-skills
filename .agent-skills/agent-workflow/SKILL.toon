@@ -1,0 +1,9 @@
+N:agent-workflow
+D:Plan and improve day-to-day AI coding-agent workflow across Claude Code, Codex, Gemini CLI, and MCP-heavy repos. Use when the user needs a practical operating loop for session startup, context recovery, repo delivery, runtime verification, worktrees, or multi-agent handoffs.
+G:agent-workflow productivity session-management mcp worktree multi-agent runtime-verification
+U[6]:
+  Improve daily AI coding-agent workflow
+  Recover from context overload or stale sessions
+  Choose shell vs MCP vs browser execution surfaces
+  Set up repo delivery loops for edit, test, and PR work
+  Split bounded multi-agent lanes without coordination drift

@@ -1,0 +1,65 @@
+{
+  "skill_name": "deepagents",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Build a Python agent with deepagents that can inspect a repo and suggest a plan.",
+      "expected_output": "Python code using create_deep_agent() and a note that the default harness already includes file-aware tools and planning support.",
+      "assertions": [
+        "Response includes create_deep_agent()",
+        "Response mentions built-in file tools",
+        "Response uses valid Python syntax"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "How do I add a research specialist subagent in deepagents?",
+      "expected_output": "Example using SubAgentMiddleware and a SubAgent definition with name, description, system_prompt, and tools.",
+      "assertions": [
+        "Response imports SubAgentMiddleware and SubAgent",
+        "SubAgent includes name, description, and system_prompt",
+        "Response explains that the main agent delegates to the specialist"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Configure deepagents so shell commands require human approval before execution.",
+      "expected_output": "A create_deep_agent() example with interrupt_on plus a checkpointer and thread_id-based resume guidance.",
+      "assertions": [
+        "Response uses interrupt_on for execute",
+        "Response includes a checkpointer",
+        "Response mentions same thread_id for resume"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "I need scratch files during a run and durable memory across runs. Which deepagents backend should I use?",
+      "expected_output": "A CompositeBackend example that combines StateBackend for scratch space with StoreBackend for durable memory.",
+      "assertions": [
+        "Response mentions CompositeBackend",
+        "Response includes StateBackend and StoreBackend",
+        "Response explains why each route exists"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Explain when to use skills versus memory in deepagents.",
+      "expected_output": "Clear differentiation: skills are reusable progressive-disclosure capabilities, memory is persistent project context.",
+      "assertions": [
+        "Response defines skills and memory separately",
+        "Response mentions progressive disclosure for skills",
+        "Response does not collapse both concepts into one"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "I already have a LangGraph supervisor. Should I still use deepagents?",
+      "expected_output": "Guidance that deepagents is a good specialist harness inside a larger LangGraph workflow when orchestration still belongs to the outer graph.",
+      "assertions": [
+        "Response explains hybrid usage",
+        "Response keeps LangGraph as the orchestrator",
+        "Response frames deepagents as a specialist harness"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+N:agent-principles
+D:Use this skill when a user needs the baseline habits for working well with AI coding agents: break work down, keep context clean, choose plan versus execute depth, automate repeated work, and verify outputs. Triggers on: agent principles, AI collaboration principles, context management, divide and conquer, plan vs execute, verify AI output.
+G:agentic-development principles context-management automation multi-agent
+U[6]:
+  Confirm baseline collaboration principles for AI-agent work
+  Break broad requests into smaller verified steps
+  Keep context fresh with session hygiene and handoff notes
+  Choose the right plan-versus-execute depth
+  Spot repetition that should become automation
+  Verify outputs before trusting them
+R[4]:
+  Route daily workflow mechanics to agent-workflow
+  Route configuration and permissions setup to agent-configuration
+  Keep the entrypoint focused on principles, not platform trivia
+  Use references for deep examples instead of bloating the main file
+S[4]{n,action}:
+  1,Confirm the request belongs to the principles surface
+  2,Apply the six-principle checklist
+  3,Recommend the smallest useful correction
+  4,Route adjacent jobs to the narrower sibling skill

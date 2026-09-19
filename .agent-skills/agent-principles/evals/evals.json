@@ -1,0 +1,46 @@
+{
+  "skill_name": "agent-principles",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I am about to use an AI coding agent on a messy refactor. What principles should I follow so the work stays safe and productive?",
+      "expected_output": "A principles-first answer that focuses on task decomposition, context hygiene, plan-vs-execute judgment, and verification instead of tool-specific setup.",
+      "assertions": [
+        "Response keeps the answer on collaboration principles rather than platform-specific configuration",
+        "Response includes divide-and-conquer or task decomposition guidance",
+        "Response includes plan-versus-execute or safety judgment",
+        "Response includes verification guidance before trusting the output"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "How should I keep context clean when working with AI agents across a long debugging session?",
+      "expected_output": "A principles answer that recommends context hygiene patterns such as single-purpose sessions or handoff notes.",
+      "assertions": [
+        "Response includes context-management guidance",
+        "Response mentions a fresh session, handoff, or similar context reset pattern",
+        "Response stays at the principles layer instead of switching to a daily workflow tutorial"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "What daily slash commands and MCP habits should I use while coding with agents?",
+      "expected_output": "A route-out answer that sends workflow-specific questions to the narrower workflow skill instead of absorbing them here.",
+      "assertions": [
+        "Response routes workflow-specific questions to `agent-workflow`",
+        "Response explains why the request is workflow-specific rather than principles-only",
+        "Response does not try to fully answer the workflow question inside `agent-principles`"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Should I automate this repetitive AI-agent review ritual, or is that overkill?",
+      "expected_output": "A principles answer that uses repetition as the automation threshold and suggests the smallest useful packaging surface.",
+      "assertions": [
+        "Response includes the idea of automating repeated work",
+        "Response recommends an incremental packaging surface such as a command, template, skill, or hook",
+        "Response avoids turning the answer into a platform-specific setup guide"
+      ]
+    }
+  ]
+}

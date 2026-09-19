@@ -2,14 +2,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-251-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-358-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![GJC](https://img.shields.io/badge/GJC-gajae--code-181717?style=for-the-badge&logo=github)](https://github.com/akillness/gajae-code)
 [![jeo-code](https://img.shields.io/badge/jeo--code-jeo-181717?style=for-the-badge&logo=github)](https://github.com/akillness/jeo-code)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**카테고리형 스킬 251개 · 경량 선택 설치 · 압축 TOON 카탈로그 · 멀티플랫폼**
+**카테고리형 스킬 358개 · 경량 선택 설치 · 압축 TOON 카탈로그 · 멀티플랫폼**
 
 스펙 우선 멀티 에이전트 LLM 워크플로우 컬렉션입니다. 프롬프트 하나로 전체 설정을
 위임하거나, `jeo-skill` 라우터부터 설치해 필요한 웹, 인프라, 게임, 미디어, CLI,
@@ -79,7 +79,7 @@ curl -s https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-sk
 
 ### 경량 선택 설치(수동 / CI)
 
-251개 스킬 폴더 전체가 아니라 **`jeo-skill` 라우터부터 설치**합니다. 카테고리,
+358개 스킬 폴더 전체가 아니라 **`jeo-skill` 라우터부터 설치**합니다. 카테고리,
 하위 분류, 인터페이스, 번들, 연관 스킬을 탐색할 수 있으며 앱·모델·MCP 서버·런타임은
 실제 선택된 작업에서만 온디맨드로 설치합니다.
 
@@ -132,11 +132,11 @@ video-motion-previs check
 
 ## 📚 스킬 목록
 
-> 중앙 매니페스트: `.agent-skills/skills.json` · 251개 스킬 · 10개 기본 카테고리 · 하위 카테고리/인터페이스/관계 그룹 지원
+> 중앙 매니페스트: `.agent-skills/skills.json` · 358개 스킬 · 10개 기본 카테고리 · 하위 카테고리/인터페이스/관계 그룹 지원
 
-### 🌐 웹 (48개)
+### 🌐 웹 (49개)
 
-하위 분류: `frontend` (6), `backend` (3), `design` (12), `api` (2), `auth` (1), `data` (4), `testing` (3), `accessibility` (1), `performance` (1), `graphics` (10), `capture` (5)
+하위 분류: `frontend` (7), `backend` (3), `design` (12), `api` (2), `auth` (1), `data` (4), `testing` (3), `accessibility` (1), `performance` (1), `graphics` (10), `capture` (5)
 
 | Skill |
 |---|
@@ -188,6 +188,7 @@ video-motion-previs check
 | `airship` |
 | `moli` |
 | `design-taste-frontend` |
+| `higgsfield-websites` |
 
 ### 🏗 인프라 (13개)
 
@@ -245,9 +246,9 @@ video-motion-previs check
 | `game-feel` |
 | `game-ui-ux` |
 
-### 🎬 크리에이티브 미디어 (25개)
+### 🎬 크리에이티브 미디어 (32개)
 
-하위 분류: `image` (5), `video` (12), `motion` (1), `audio` (1), `presentation` (1), `diagram` (1), `design` (2), `capture` (0), `storytelling` (2)
+하위 분류: `image` (10), `video` (13), `motion` (1), `audio` (1), `presentation` (1), `diagram` (1), `design` (3), `capture` (0), `storytelling` (2)
 
 | Skill |
 |---|
@@ -276,10 +277,17 @@ video-motion-previs check
 | `drama-skills` |
 | `openmontage` |
 | `open-generative-ai` |
+| `higgsfield-generate` |
+| `higgsfield-marketplace-cards` |
+| `higgsfield-product-photoshoot` |
+| `higgsfield-soul-id` |
+| `higgsfield-youtube-thumbnail` |
+| `higgsfield-video-explainer` |
+| `higgsfield-brandkit` |
 
-### ⌨️ CLI 도구 (33개)
+### ⌨️ CLI 도구 (34개)
 
-하위 분류: `developer-cli` (8), `ai-cli` (11), `media-cli` (1), `automation-cli` (6), `search-cli` (6), `benchmark-cli` (1)
+하위 분류: `developer-cli` (9), `ai-cli` (11), `media-cli` (1), `automation-cli` (6), `search-cli` (6), `benchmark-cli` (1)
 
 | Skill |
 |---|
@@ -316,10 +324,11 @@ video-motion-previs check
 | `mole` |
 | `mcp-server-sv-number` |
 | `zeroshot` |
+| `k-skill-setup` |
 
-### 🤖 AI 및 에이전트 (38개)
+### 🤖 AI 및 에이전트 (65개)
 
-하위 분류: `orchestration` (6), `agent-frameworks` (5), `skill-authoring` (5), `evaluation` (4), `memory` (1), `planning-review` (11), `discovery` (3), `prompting` (3)
+하위 분류: `orchestration` (11), `agent-frameworks` (20), `skill-authoring` (5), `evaluation` (7), `memory` (2), `planning-review` (14), `discovery` (3), `prompting` (3)
 
 | Skill |
 |---|
@@ -361,6 +370,33 @@ video-motion-previs check
 | `to-questionnaire` |
 | `wayfinder` |
 | `writing-for-agents` |
+| `agent-guardrails` |
+| `agent-system-design` |
+| `agent-tool-routing` |
+| `reflexion-pattern` |
+| `agent-manager` |
+| `langchain-fundamentals` |
+| `langchain-middleware` |
+| `langchain-rag` |
+| `langchain-dependencies` |
+| `langgraph-fundamentals` |
+| `langgraph-persistence` |
+| `langgraph-human-in-the-loop` |
+| `deep-agents-core` |
+| `deep-agents-memory` |
+| `deep-agents-orchestration` |
+| `deepagents` |
+| `langgraph-workflow` |
+| `langchain-bmad` |
+| `a2a-protocol` |
+| `mcp-server-design` |
+| `agent-benchmarking` |
+| `agent-observability` |
+| `multi-agent-eval-harness` |
+| `agent-memory-architecture` |
+| `agent-workflow` |
+| `agent-principles` |
+| `agent-development-principles` |
 
 ### 🧰 엔지니어링 (24개)
 
@@ -393,9 +429,9 @@ video-motion-previs check
 | `implement` |
 | `prototype` |
 
-### 🔭 연구 및 분석 (11개)
+### 🔭 연구 및 분석 (12개)
 
-하위 분류: `academic` (3), `web-research` (3), `data-analysis` (2), `experimentation` (1), `benchmarking` (1), `intelligence` (1)
+하위 분류: `academic` (3), `web-research` (3), `data-analysis` (2), `experimentation` (1), `benchmarking` (1), `intelligence` (2)
 
 | Skill |
 |---|
@@ -410,10 +446,11 @@ video-motion-previs check
 | `scientific-llm-benchmarks` |
 | `agent-pulse` |
 | `research` |
+| `korean-patent-search` |
 
-### 📣 비즈니스 (6개)
+### 📣 비즈니스 (73개)
 
-하위 분류: `marketing` (3), `support` (2), `publishing` (1)
+하위 분류: `marketing` (4), `support` (2), `publishing` (1), `pm-toolkit` (5), `pm-discovery` (13), `pm-strategy` (12), `pm-execution` (15), `pm-market-research` (7), `pm-analytics` (3), `pm-go-to-market` (6), `pm-growth` (5)
 
 | Skill |
 |---|
@@ -423,10 +460,77 @@ video-motion-previs check
 | `customer-email-draft-threads` |
 | `customer-support-verification` |
 | `yuwen-publish-precheck` |
+| `youtube-growth-playbook-2026` |
+| `pm-skills` |
+| `draft-nda` |
+| `grammar-check` |
+| `privacy-policy` |
+| `review-resume` |
+| `analyze-feature-requests` |
+| `brainstorm-experiments-existing` |
+| `brainstorm-experiments-new` |
+| `brainstorm-ideas-existing` |
+| `brainstorm-ideas-new` |
+| `identify-assumptions-existing` |
+| `identify-assumptions-new` |
+| `interview-script` |
+| `metrics-dashboard` |
+| `opportunity-solution-tree` |
+| `prioritize-assumptions` |
+| `prioritize-features` |
+| `summarize-interview` |
+| `ansoff-matrix` |
+| `business-model` |
+| `lean-canvas` |
+| `monetization-strategy` |
+| `pestle-analysis` |
+| `porters-five-forces` |
+| `pricing-strategy` |
+| `product-strategy` |
+| `product-vision` |
+| `startup-canvas` |
+| `swot-analysis` |
+| `value-proposition` |
+| `brainstorm-okrs` |
+| `create-prd` |
+| `dummy-dataset` |
+| `job-stories` |
+| `outcome-roadmap` |
+| `pre-mortem` |
+| `prioritization-frameworks` |
+| `release-notes` |
+| `retro` |
+| `sprint-plan` |
+| `stakeholder-map` |
+| `summarize-meeting` |
+| `test-scenarios` |
+| `user-stories` |
+| `wwas` |
+| `competitor-analysis` |
+| `customer-journey-map` |
+| `market-segments` |
+| `market-sizing` |
+| `sentiment-analysis` |
+| `user-personas` |
+| `user-segmentation` |
+| `ab-test-analysis` |
+| `cohort-analysis` |
+| `sql-queries` |
+| `beachhead-segment` |
+| `competitive-battlecard` |
+| `growth-loops` |
+| `gtm-motions` |
+| `gtm-strategy` |
+| `ideal-customer-profile` |
+| `marketing-ideas` |
+| `north-star-metric` |
+| `positioning-ideas` |
+| `product-name` |
+| `value-prop-statements` |
 
-### 🔧 유틸리티 (24개)
+### 🔧 유틸리티 (27개)
 
-하위 분류: `knowledge` (7), `files` (2), `git` (4), `workspace` (1), `project-management` (4), `productivity` (3), `general` (3)
+하위 분류: `knowledge` (7), `files` (5), `git` (4), `workspace` (1), `project-management` (4), `productivity` (3), `general` (3)
 
 | Skill |
 |---|
@@ -454,6 +558,9 @@ video-motion-previs check
 | `teach` |
 | `wait-what` |
 | `wizard` |
+| `hwp` |
+| `rhwp-advanced` |
+| `rhwp-edit` |
 
 ---
 
@@ -699,7 +806,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 ## 📁 구조
 
 ```text
-├── .agent-skills/          ← 251개 스킬 폴더 (SKILL.md + 선택적 지원 파일)
+├── .agent-skills/          ← 358개 스킬 폴더 (SKILL.md + 선택적 지원 파일)
 ├── docs/                   ← 상세 가이드 (bmad, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
@@ -774,11 +881,25 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 | `eli5` | [DreambigOu/ELI5](https://github.com/DreambigOu/ELI5) | MIT |
 | `openocta` | [openocta/openocta](https://github.com/openocta/openocta) | Apache-2.0 래퍼 |
 | `open-code-review` | [alibaba/open-code-review](https://github.com/alibaba/open-code-review) | Apache-2.0 |
+| `pm-skills` + `pm-*` 스킬 65개 | [phuryn/pm-skills @ 8607e3b](https://github.com/phuryn/pm-skills) | MIT |
+| `langchain-*`, `langgraph-*`, `deep-agents-*` | [langchain-ai/langchain-skills @ 88df7d9](https://github.com/langchain-ai/langchain-skills) | MIT |
+| `higgsfield-*` (8개) | [higgsfield-ai/skills 0.12.0 @ d071406](https://github.com/higgsfield-ai/skills) | MIT |
+| `hwp`, `rhwp-edit`, `rhwp-advanced`, `korean-patent-search`, `k-skill-setup` | [NomaDamas/k-skill @ 783d3c3](https://github.com/NomaDamas/k-skill) | MIT (프록시 디렉터리는 AGPL-3.0, 미포함) |
+| `a2a-protocol`, `agent-*`, `multi-agent-eval-harness`, `reflexion-pattern`, `mcp-server-design`, `deepagents`, `langgraph-workflow`, `langchain-bmad` | [akillness/oh-my-gods @ 1b2779a](https://github.com/akillness/oh-my-gods) | MIT |
 | Agent Skills Spec | [agentskills.io](https://agentskills.io/specification) | — |
 
 ---
 
 <!-- WHATS-NEW:START -->
+
+## 🆕 v2026-09-18 업데이트
+
+| 변경 | 내용 |
+|------|------|
+| **카탈로그 358개 스킬 (+107)** | 글로벌에 설치된 스킬 세트와 카탈로그를 동기화했습니다. 다섯 개 업스트림 패밀리를 고정 커밋으로 벤더링: [phuryn/pm-skills](https://github.com/phuryn/pm-skills)의 PM 스킬 65개와 `pm-skills` 라우터(`8607e3b`, MIT — `business` 하위 분류 `pm-toolkit`, `pm-discovery`, `pm-strategy`, `pm-execution`, `pm-market-research`, `pm-analytics`, `pm-go-to-market`, `pm-growth` 신설); [langchain-ai/langchain-skills](https://github.com/langchain-ai/langchain-skills)의 LangChain / LangGraph / Deep Agents 스킬 10개(`88df7d9`, MIT); [higgsfield-ai/skills](https://github.com/higgsfield-ai/skills)의 `higgsfield-*` CLI 스킬 8개(0.12.0, `d071406`, MIT — `higgsfield-game-generation` 별칭이 드디어 카탈로그 내부 대상을 가리킴); [NomaDamas/k-skill](https://github.com/NomaDamas/k-skill)의 `hwp`, `rhwp-edit`, `rhwp-advanced`, `korean-patent-search`, `k-skill-setup`(`783d3c3`, MIT); [akillness/oh-my-gods](https://github.com/akillness/oh-my-gods)의 에이전트 엔지니어링 스킬 17개(`1b2779a`) — `agenticskills`는 번들 전체 설치기로 유지되고, 이 17개는 `jeo-skill install`로 단독 설치 가능. `youtube-growth-playbook-2026`은 로컬 작성 스킬. 연관 그룹 5개(`pm-skills`, `langchain-skills`, `higgsfield-cli`, `k-skill`, `oh-my-gods-agent-engineering`)와 번들 2개(`product-management`, `langchain`) 추가. |
+| **설치 가이드에 지식 파이프라인 훅 복원** | `setup-all-skills-prompt.md`의 경량화 개편 때 `llm-wiki` + graphify 훅 배선이 빠졌지만 `llm-wiki` 스킬은 여전히 있다고 안내하고 있었습니다. Step 5가 이제 레포별 볼트를 부트스트랩하고, `hooks/ingest-prompt.py`를 `~/.agents/hooks/`에 설치하며, 볼트 경로를 담지 않는 `llm-wiki-ingest.sh` 래퍼를 Claude Code(`UserPromptSubmit`/`Stop`), Codex(`UserPromptSubmit`/`Stop`), Gemini/Antigravity(`BeforeAgent`/`AfterAgent`)에 멱등하게 등록합니다 — 기존 훅과 무관한 설정 키는 그대로 보존됩니다. |
+| **`scripts/generate-catalog-projections.py`** | 검증기의 역함수: `skills.json`에서 `skills.toon`과 README 3종의 스킬 목록 섹션(제목 카운트, 하위 분류 카운트, 표 행, 소개 카운트만)을 외과적으로 재생성하고 나머지는 바이트 단위로 보존합니다. `--check`는 재생성이 no-op임을 단언하므로 "프로젝션 대신 매니페스트를 고쳐라"에 이제 기계적 후속 수단이 생겼습니다. README에만 있던 8월 항목도 `changelog/`로 옮겨 `changelog.py check`가 다시 통과합니다. |
+| **의도적으로 미포함** | pm-skills와 함께 글로벌에 설치돼 있던 출처 불명 단일 파일 스킬 6개(`blog-post`, `data-visualization`, `query-writing`, `schema-exploration`, `social-media`, `web-research`), 업스트림에서 사라진 `framework-selection` / `langgraph-docs`, 그리고 이 카탈로그에서 이전에 제거·은퇴한 모든 스킬(OMC/OMX/ooo 명령 shim, `jeo`, `ralph`, `agent-browser`, `obsidian` 등)은 그대로 제외했습니다. |
 
 ## 🆕 v2026-08-09 업데이트
 
@@ -791,11 +912,9 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 
 | 변경 | 내용 |
 |------|------|
-| **UniRig 자동 리깅 파이프라인** | [VAST-AI-Research/UniRig](https://github.com/VAST-AI-Research/UniRig)(SIGGRAPH'25)를 위한 `unirig`을 추가했습니다. 스켈레톤 예측 → 스키닝 웨이트 예측 → 원본 텍스처 에셋에 리그 병합 순서로 진행합니다. 차단 항목을 보고하는 `doctor.sh`, 업스트림 CUDA/spconv/PyG 설치 순서를 그대로 따르는 `install.sh`, `--dry-run` 계획과 단계별 산출물 검증을 제공하는 `rig.sh`, NVIDIA GPU가 없는 환경을 위한 대안 경로를 포함합니다. |
-| **Animato 텍스트→애니메이션 루프** | [otdnnc/Animato](https://github.com/otdnnc/Animato)를 API 키 기반 에이전트 루프로 구동하는 `animato`를 추가했습니다. 리그드 모델 업로드 → bpy 프롬프트 생성 → 1회 추론 → `validate_bpy_script.py` 정적 게이트 → 헤드리스 실행 순서로 진행합니다. stdlib만 사용하는 CLI(`animato_agent.py`), 제거된 Blender API·애니메이션 bake 플래그 누락을 잡는 게이트, 스텁 서버로 전체 루프를 검증하는 오프라인 `selftest.py`를 포함합니다. |
 | **Three.js 구현 스킬 10개 추가** | [CloudAI-X/threejs-skills](https://github.com/CloudAI-X/threejs-skills)를 바탕으로 `threejs-fundamentals`, `threejs-geometry`, `threejs-materials`, `threejs-lighting`, `threejs-textures`, `threejs-loaders`, `threejs-animation`, `threejs-interaction`, `threejs-shaders`, `threejs-postprocessing`을 추가했습니다. 각 스킬은 집중된 구현 계약, TOON 검색 표면, eval, 업스트림/공식 레퍼런스를 제공하며, 직접 렌더링 작업은 `web-game-development`의 게임 시스템 라우팅과 분리합니다. |
 | **Open Design 게임 UI 스킬 추가** | 콘셉트 검토, 증거 기반 handoff, 승인된 런타임 통합을 위한 `open-design-game-ui-concept`, `open-design-game-ui-handoff`, `open-design-game-ui-takeover`을 추가했습니다. |
-| **경량 카테고리 카탈로그** | 192개 스킬을 10개 기본 카테고리와 74개 하위 분류로 재구성하고 인터페이스 메타데이터, 선택 번들, 연관 관계 그룹을 추가했습니다. 선택 설치형 `jeo-skill` CLI를 도입해 기본 설치가 전체 카탈로그나 무거운 의존성을 복사하지 않도록 변경했습니다. `skills.toon`은 스킬당 한 레코드로 압축했고 `skills.json`은 2.0.0입니다. |
+| **카탈로그와 설치 가이드 동기화** | `skills.json` 1.4.0, `skills.toon`, 양쪽 README 카탈로그, `setup-all-skills-prompt.md`를 187개 스킬 기준으로 업데이트했습니다. |
 
 ## 🆕 v2026-07-28 업데이트
 
