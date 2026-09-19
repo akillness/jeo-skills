@@ -1,8 +1,9 @@
 # Mex command reference
 
-All commands run from the project root. Replace `mex` with `npx mex-agent` if
-it is not installed globally. Verified against `mex --help` / `mex <cmd>
---help` on mex-agent 0.7.1 and the upstream README
+All commands run from the project root. Prefer the unambiguous `mex-agent`
+wrapper installed by this skill; use `npx mex-agent` when no wrapper is
+available. Use bare `mex` only after its version prints a mex-agent semantic
+version. Verified against mex-agent 0.7.1 `--help` and the upstream README
 (https://github.com/mex-memory/mex#core-commands) — the README's own "Core
 commands" table is incomplete relative to the installed CLI (it omits `init`,
 `pattern`, `watch`, `doctor`, `feedback`, `config`, `telemetry`); this file
@@ -22,31 +23,19 @@ mex --version
 # TeX Live's mex prints "pdfTeX 3.141592653-2.6-1.40.27 (TeX Live ...)"
 ```
 
-If PATH resolves to the wrong one, use any of these, in order of preference:
-
-1. Expose an unambiguous `mex-agent` command on PATH (a wrapper that execs
-   `node <prefix>/lib/node_modules/mex-agent/dist/cli.js "$@"`). This is the
-   only option that also works from sandboxes with a minimal PATH, and it
-   leaves TeX Live's `mex` untouched.
-2. `export MEX_AGENT_BIN=/abs/path/to/mex-agent` — `scripts/mex.sh` reads this
-   first and routes `check`/`graph` through it.
-3. Fix PATH order so an npm global bin directory precedes the TeX bin
-   directory. Note this shadows TeX Live's `mex` for every other tool too.
-4. `npx mex-agent <command>` for one-off invocations.
-
-`scripts/install.sh` and `scripts/mex.sh doctor` in this skill both detect this
-automatically — `install.sh` refuses to proceed rather than silently running
-the wrong binary. `scripts/mex.sh` resolves `MEX_AGENT_BIN` → `mex-agent` →
-`mex` and uses the first whose `--version` is a bare semver, so `check` and
-`graph` keep working on a machine where TeX owns the `mex` name; `doctor`
-still reports the shadowing so a bare `mex` in a script or doc is not trusted.
+If PATH resolves bare `mex` to the wrong tool, use `mex-agent <command>` or
+`npx mex-agent <command>` instead. For a nonstandard install, set
+`MEX_AGENT_BIN=/absolute/path/to/mex-agent`. `scripts/install.sh` creates the
+unambiguous `~/.local/bin/mex-agent` wrapper when needed, and both installer
+and helper resolve it before considering bare `mex`. `doctor` still reports
+the collision so stale docs or scripts using bare `mex` remain visible.
 
 ## Install
 
 ```bash
-npm install -g mex-agent      # installs the `mex` binary globally
-npx mex-agent setup           # run without a global install
-mex --version
+npm install -g mex-agent      # installs the upstream package
+mex-agent --version           # unambiguous wrapper installed by this skill
+npx mex-agent setup           # fallback without the wrapper
 ```
 
 ## One-shot auto-install (this skill)
@@ -60,27 +49,24 @@ bash .agent-skills/mex/scripts/install.sh --skip-skill /path/to/project
 GLOBAL=1 bash .agent-skills/mex/scripts/install.sh -g /path/to/project
 ```
 
-Registers the jeo-skills plugin, installs `mex-agent` if missing (and refuses
-to continue if `mex` resolves to something else — see the collision note
-above), runs `mex setup` non-interactively by piping the `--tool` choice into
-its prompts (idempotent — skipped unless `.mex/` is absent or `--force` is
-given), builds the code graph (`mex graph`), runs `mex check`, and reports
-which project anchor file (`CLAUDE.md`, `AGENTS.md`, `.cursorrules`,
-`.windsurfrules`, `.github/copilot-instructions.md`, or
-`.opencode/opencode.json`) mex installed. `--tool` defaults to `codex`
-(`AGENTS.md`) because that is what jeo/gjc/jeopi read.
+Registers the jeo-skills plugin, resolves or installs `mex-agent`, creates an
+unambiguous wrapper when needed, and runs `mex-agent setup` non-interactively by
+piping the `--tool` choice into its prompts. Setup is skipped unless `.mex/`
+is absent or `--force` is given, but the default `codex`/`multiple` path still
+ensures a root `AGENTS.md` bridge for jeo/gjc/jeopi. It then builds the code
+graph, runs `mex-agent check`, and reports every project anchor found.
 
 ## Setup and scaffolding
 
 ```bash
-mex setup                       # create .mex/ scaffold + project anchor file
-mex setup --mode agent-memory   # add HEARTBEAT.md conventions for long-running
-                                 # operational agents (homelabs, infra workspaces)
-mex                              # open the interactive terminal dashboard
-mex tui                          # same as bare `mex`
+mex-agent setup                       # create .mex/ scaffold + project anchor file
+mex-agent setup --mode agent-memory   # add HEARTBEAT.md conventions for long-running
+                                       # operational agents (homelabs, infra workspaces)
+mex-agent                              # open the interactive terminal dashboard
+mex-agent tui                          # same dashboard, without the TeX collision
 ```
 
-`mex setup` is interactive (it asks which tool anchor to write, then whether
+`mex-agent setup` is interactive (it asks which tool anchor to write, then whether
 to install mex globally) and only creates EMPTY scaffold files plus the
 anchor. It does **not** auto-populate `.mex/context/*.md` or `.mex/patterns/`
 — it prints a long prompt bounded by "COPY ABOVE THIS LINE" banners that a
@@ -91,22 +77,22 @@ detects this banner and warns so the step isn't silently skipped.
 ## Pre-analysis and diagnostics
 
 ```bash
-mex init            # scan the codebase and print a pre-analysis brief for AI
-mex init --json      # same, as JSON
-mex doctor            # mex's own scaffold health diagnostic (not this skill's
+mex-agent init            # scan the codebase and print a pre-analysis brief for AI
+mex-agent init --json      # same, as JSON
+mex-agent doctor           # mex's own scaffold health diagnostic (not this skill's
                        # scripts/mex.sh doctor, which only checks the environment)
 ```
 
 ## Code graph (deterministic, Tree-sitter + SQLite)
 
 ```bash
-mex graph                                  # build or refresh the local code graph
-mex graph scope "trace the auth flow"      # compact, task-relevant context
-mex graph get <node-id...>                 # expand exact symbols from a scope result
-mex graph query where-defined <symbol>     # structural relationship queries
-mex graph query who-calls <symbol>
-mex graph query what-calls <symbol>
-mex graph ground                           # connect a pre-0.7 wiki to the graph
+mex-agent graph                                  # build or refresh the local code graph
+mex-agent graph scope "trace the auth flow"      # compact, task-relevant context
+mex-agent graph get <node-id...>                 # expand exact symbols from a scope result
+mex-agent graph query where-defined <symbol>     # structural relationship queries
+mex-agent graph query who-calls <symbol>
+mex-agent graph query what-calls <symbol>
+mex-agent graph ground                           # connect a pre-0.7 wiki to the graph
 ```
 
 Supports TypeScript, TSX, JavaScript, JSX, Python, and Rust, including
@@ -116,32 +102,32 @@ commands emit deterministic JSONL envelopes.
 ## Drift detection and repair
 
 ```bash
-mex check     # validate paths, commands, deps, links, indexes, staleness,
-              # tool config, and grounded code symbols — no AI tokens spent
-mex sync      # repair stale/inconsistent knowledge with targeted agent prompts
-mex impact <symbol|file>   # find code and wiki content affected by a change
+mex-agent check     # validate paths, commands, deps, links, indexes, staleness,
+                    # tool config, and grounded code symbols — no AI tokens spent
+mex-agent sync      # repair stale/inconsistent knowledge with targeted agent prompts
+mex-agent impact <symbol|file>   # find code and wiki content affected by a change
 ```
 
 ## Project memory bookkeeping
 
 ```bash
-mex log "<message>"   # record a decision, note, risk, or todo
-mex timeline           # read recent project events
-mex heartbeat          # run persistent-agent health checks (agent-memory mode)
-mex pattern add <name>   # create a new pattern file and add it to the index
-mex watch --interval [minutes]   # run mex heartbeat repeatedly instead of a hook
-mex watch                          # install a post-commit hook
-mex watch --uninstall               # remove the post-commit hook
+mex-agent log "<message>"   # record a decision, note, risk, or todo
+mex-agent timeline           # read recent project events
+mex-agent heartbeat          # run persistent-agent health checks (agent-memory mode)
+mex-agent pattern add <name>   # create a new pattern file and add it to the index
+mex-agent watch --interval [minutes]   # run heartbeat repeatedly instead of a hook
+mex-agent watch                          # install a post-commit hook
+mex-agent watch --uninstall               # remove the post-commit hook
 ```
 
 ## Utility
 
 ```bash
-mex completion <shell>   # print shell completions
-mex commands              # list every command and script
-mex config set telemetry off
-mex telemetry inspect
-mex feedback               # open the mex feedback form
+mex-agent completion <shell>   # print shell completions
+mex-agent commands              # list every command and script
+mex-agent config set telemetry off
+mex-agent telemetry inspect
+mex-agent feedback               # open the mex feedback form
 ```
 
 ## Telemetry (opt-out by default)
@@ -150,10 +136,10 @@ mex collects anonymous, opt-out usage data (command name, version, OS only —
 never paths, arguments, file contents, or personal data).
 
 ```bash
-DO_NOT_TRACK=1 mex setup
-MEX_TELEMETRY=0 mex setup
-mex config set telemetry off
-mex telemetry inspect    # audit the exact payload before opting in/out
+DO_NOT_TRACK=1 mex-agent setup
+MEX_TELEMETRY=0 mex-agent setup
+mex-agent config set telemetry off
+mex-agent telemetry inspect    # audit the exact payload before opting in/out
 ```
 
 ## MCP server — not published
@@ -182,7 +168,8 @@ bash .agent-skills/mex/scripts/mex.sh check <project_path> [extra mex check args
 bash .agent-skills/mex/scripts/mex.sh graph <project_path> [extra mex graph args...]
 ```
 
-`doctor` never installs or modifies anything — it only reports Node.js
-version, whether `mex` on PATH is actually mex-agent (vs. a name collision),
-Git repo status, `.mex/` scaffold presence, and which project anchor file
-exists.
+`doctor` never installs or modifies anything — it reports Node.js, the
+resolved mex-agent executable, any shadowing TeX `mex`, Git status, `.mex/`,
+and anchors. `check` and `graph` execute the real CLI; mex-agent 0.7.1 may
+refresh `.mex/graph.db` during `check`, so use a scratch copy for strict
+read-only audits.
