@@ -6,11 +6,13 @@ description: >
   (FastMCP). Route one request to research and planning, tool design, transport
   choice, implementation, security review, or evaluation. Use when the user
   wants to wrap an API as MCP tools, name and shape those tools, choose between
-  stdio and streamable HTTP, fix a server whose tools the model cannot use
-  correctly, or build the 10-question evaluation that proves it works. Requires
-  confirmation before running an evaluation harness that spends API credits or
-  calls a live service. Route consuming an existing MCP server to that server's
-  own skill, and generic API contract design to `api-design`.
+  stdio and streamable HTTP, decide tools vs resources vs prompts, write a Server
+  Card and publish to the MCP registry, fix a server whose tools the model cannot
+  use correctly, or build the 10-question evaluation that proves it works.
+  Requires confirmation before running an evaluation harness that spends API
+  credits or calls a live service. Owns the retired `mcp-server-design` name.
+  Route consuming an existing MCP server to that server's own skill, and generic
+  API contract design to `api-design`.
 allowed-tools: Bash Read Write Edit Glob Grep
 compatibility: >
   TypeScript path needs Node.js and the MCP SDK; Python path needs Python and
@@ -208,6 +210,7 @@ read-only against non-production data. Then run and report the pass count.
 - [Design and implementation](references/design-and-implementation.md)
 - [Evaluation](references/evaluation.md)
 - [Upstream and licensing](references/upstream-and-licensing.md)
+- [Capability primitives, Server Card, and registry publishing](references/server-card-and-registry.md) (jeo catalog addition, merged from `mcp-server-design`)
 - [MCP specification](https://modelcontextprotocol.io/)
 - [Upstream skill](https://github.com/anthropics/skills/tree/main/skills/mcp-builder)
 - [Audited pin `3b3fad9`](https://github.com/anthropics/skills/commit/3b3fad96af16a10759d930941b4520ba0c40edae)

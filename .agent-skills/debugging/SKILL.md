@@ -190,7 +190,7 @@ Always return a concise debugging brief or debugging plan.
 - Regression guard: ...
 
 ## Handoff
-- Stay in `debugging` | route to `log-analysis` | route to `testing-strategies` | route to `code-review` | route to `performance-optimization`
+- Stay in `debugging` | route to `diagnosing-bugs` (hard/flaky bug needing a HITL feedback loop) | route to `log-analysis` | route to `testing-strategies` | route to `code-review` | route to `performance-optimization`
 ```
 
 ## Examples

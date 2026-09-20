@@ -252,3 +252,11 @@ path: auth, generation submit/poll, result rendering, common Quanta components),
 `references/containers.md`, `references/cover-animator.md` (permission-gated
 ~5s cover video → `og_video_url`), `references/contest.md` (the $100k app
 contest — the entry auto-publishes the app; submit with social links).
+
+<!-- jeo-skills catalog addition (not upstream): merged from the retired
+     higgsfield-game-generation compatibility alias on 2026-09-19 -->
+**Legacy name (jeo catalog):** if a prompt, installed catalog, or stale
+`higgsfield game ...` command names `higgsfield-game-generation`, that name is
+retired and resolves here; ordinary game work is `--type game` above. Only when
+ownership itself is in doubt, run the read-only auditor documented in
+`references/game-alias/README.md` and hand off to the resolved owner.

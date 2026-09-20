@@ -13,7 +13,7 @@ description: >
   on: goalflow, goal-flow, dify to langgraph, dify transpiler, dify DSL
   export, BaseWorkflow, agent_kit, AgentBaseNode, DataAdapter, chunk
   processor, HITL interrupt, dify2langgraph. Route plain graph-API questions
-  to `langgraph-fundamentals` and `langgraph-workflow`.
+  to `langgraph-fundamentals`.
 allowed-tools: Bash Read Write Edit Glob Grep
 compatibility: >
   Python 3.12, plus Redis (cache, conversation variables, stop flags) and
@@ -60,11 +60,11 @@ Two things shape almost every answer about this project:
 ## When not to use this skill
 
 - Plain LangGraph graph/state/checkpointer API questions →
-  `langgraph-fundamentals`, `langgraph-workflow`, `langgraph-persistence`
+  `langgraph-fundamentals`, `langgraph-persistence`
 - Generic LangChain chains, retrievers, or RAG design → `langchain-fundamentals`,
   `langchain-rag`
 - Generic HITL patterns not tied to this engine → `langgraph-human-in-the-loop`
-- `deepagents` used directly, outside `agent_kit`'s wrapper → `deepagents`
+- `deepagents` used directly, outside `agent_kit`'s wrapper → `deep-agents-core`
 - Authoring skills for *this* repo's agent catalog rather than goalflow's
   runtime → `skill-standardization`, `write-a-skill`
 - LLM tracing/eval platform selection → `langsmith`, `opik`

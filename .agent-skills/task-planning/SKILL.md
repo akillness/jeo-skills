@@ -6,11 +6,13 @@ description: >
   separating discovery from delivery, and making blockers, dependencies, and the next
   move explicit. Use when the user needs backlog cleanup, feature slicing, sprint or
   milestone prep, release planning, or roadmap-to-delivery translation across
-  developer workflow, web/fullstack, product/ops, marketing/GTM, or game work. Route
-  sizing to `task-estimation`, issue-state governance to `triage`, plan review
-  to `plannotator`, daily syncs to `standup-meeting`, retros to
-  `sprint-retrospective`, and pre-planning concept framing to `bmad`, `bmad-idea`, or
-  `bmad-gds`.
+  developer workflow, web/fullstack, product/ops, marketing/GTM, or game work. Also
+  owns the retired `sprint-plan` name: sprint capacity from velocity and
+  availability, Definition-of-Ready story selection, dependency and critical-path
+  mapping, sprint goal, sprint plan summary. Route sizing to `task-estimation`,
+  issue-state governance to `triage`, plan review to `plannotator`, daily syncs to
+  `standup-meeting`, retros to `sprint-retrospective`, and pre-planning concept
+  framing to `bmad`, `bmad-idea`, or `bmad-gds`.
 allowed-tools: Bash Read Write Edit Glob Grep
 compatibility: >
   Best for repositories, issue lists, specs, PRDs, GDDs, launch notes, playtest
@@ -38,6 +40,7 @@ Core references:
 - [references/packet-shapes.md](references/packet-shapes.md)
 - [references/readiness-checklist.md](references/readiness-checklist.md)
 - [references/planning-patterns.md](references/planning-patterns.md)
+- [references/sprint-planning-recipe.md](references/sprint-planning-recipe.md) — when the packet is a sprint candidate and the team has velocity history
 
 ## When to use this skill
 - The request is too vague, too large, or too mixed to hand straight to implementation.

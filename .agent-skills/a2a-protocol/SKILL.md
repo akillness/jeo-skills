@@ -19,7 +19,7 @@ MCP exposes *tools* to an agent. A2A connects *agents* to *agents*. The 2026 Lin
 ## Don't use when
 
 - Both agents share a runtime (just call a function or use orchestrator)
-- One-direction tool call → use MCP (`mcp-server-design`)
+- One-direction tool call → use MCP (`mcp-builder`)
 
 ## Core concepts
 

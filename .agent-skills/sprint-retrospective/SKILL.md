@@ -6,9 +6,12 @@ description: >
   another stale template ritual. Use when the user needs a retrospective mode,
   remote or hybrid facilitation plan, action-item follow-through reset, or help
   reviewing what the team should change after a sprint, release, milestone, or
-  rough delivery cycle. Route backlog planning to `task-planning`, sizing to
-  `task-estimation`, daily coordination to `standup-meeting`, and deep incident
-  forensics to debugging/incident-specific skills.
+  rough delivery cycle. Also owns the retired `retro` name: run a retro,
+  start/stop/continue, 4Ls, sailboat, action items with owners and deadlines,
+  compact sprint summary with velocity vs commitment and carry-over. Route
+  backlog planning to `task-planning`, sizing to `task-estimation`, daily
+  coordination to `standup-meeting`, and deep incident forensics to
+  debugging/incident-specific skills.
 allowed-tools: Bash Read Write Edit Glob Grep
 compatibility: >
   Best for software, product, design, ops, and game-delivery teams running

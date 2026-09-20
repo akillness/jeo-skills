@@ -1,6 +1,13 @@
 ---
 name: agent-principles
-description: Core principles for collaborative development with AI agents. Defines divide-and-conquer, context management, abstraction-level selection, automation philosophy, and verification/retrospectives. Apply optimal collaboration patterns when using any AI agent.
+description: >
+  Core principles for collaborative development with AI agents. Defines
+  divide-and-conquer, context management, abstraction-level selection, automation
+  philosophy, and verification/retrospectives. Apply optimal collaboration patterns
+  when using any AI agent. Also the owner of the retired
+  `agent-development-principles` name (merged 2026-09-19). Triggers on: agent
+  principles, agentic development principles, AI collaboration principles,
+  context-management strategy, how to work with coding agents.
 allowed-tools: Read Write Bash Grep Glob
 metadata:
   tags: agentic-development, principles, context-management, automation, multi-agent

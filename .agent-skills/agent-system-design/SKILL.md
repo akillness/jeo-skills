@@ -96,7 +96,7 @@ When upstream fails, degrade rather than crash:
 ## Retry policy
 
 - Exponential backoff with jitter, max 3 attempts
-- Idempotency keys on all state-changing tools (see `mcp-server-design`)
+- Idempotency keys on all state-changing tools (see `mcp-builder`)
 - Never retry guardrail blocks (they're decisions, not failures)
 
 ## Reference dataclass

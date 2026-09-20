@@ -60,7 +60,7 @@ Do not use this skill for:
 - Generic programmable-video planning without an OpenMontage checkout: use
   `video-production`
 - A narrow Remotion implementation independent of OpenMontage: use
-  `video-production` or `remotion-video-production`
+  `video-production`
 - Manual timeline editing: use `opencut` or `palmier-pro`
 - Reconstructing a reference video's design as a prompt only: use
   `video-to-superprompt`; use this skill when OpenMontage will analyze and produce it

@@ -37,7 +37,7 @@ file that fits.
 Use a narrower skill instead when:
 
 - the user already knows the exact framework problem and does not need BMAD
-  phase routing: use `langgraph-workflow`, `deepagents`, or the specific
+  phase routing: use `langgraph-fundamentals`, `deep-agents-core`, or the specific
   LangChain skill directly
 - the user mainly needs BMAD phase routing without framework-specific guidance:
   use `bmad`

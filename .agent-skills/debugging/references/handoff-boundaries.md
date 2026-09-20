@@ -14,6 +14,13 @@ Examples:
 - browser/network/server evidence that still needs initial correlation
 - repeated retry storms where the first blocker is still unknown
 
+## Route to `diagnosing-bugs`
+Use `diagnosing-bugs` (mattpocock/skills) when the bug resists one-pass isolation and the
+job becomes a **feedback-loop-first, human-in-the-loop** hunt: hard bugs, deep performance
+regressions, or flakes that need repeated instrumented runs with the user confirming each
+observation. `debugging` stays the front door and the mode chooser; `diagnosing-bugs`
+owns the long loop (it ships `scripts/hitl-loop.template.sh`).
+
 ## Route to `testing-strategies`
 Use `testing-strategies` when the main task becomes **coverage design, test-layer planning, or broad flaky-test prevention policy** rather than debugging one concrete failure.
 

@@ -441,3 +441,12 @@ agent = create_deep_agent(
 ```
 </python>
 </fix-subagent-skills>
+
+<!-- jeo-skills catalog addition (not upstream): merged from the retired
+     `deepagents` wrapper skill on 2026-09-19 -->
+## Operator notes (jeo catalog)
+
+For install commands, the full `create_deep_agent()` signature, `LocalShellBackend` /
+`FilesystemBackend(virtual_mode=True)` trust boundaries, the `interrupt_on` + checkpointer
+resume pattern, and the Deep Agents vs LangGraph vs `create_agent` selection table, read
+[references/quickstart-and-backends.md](references/quickstart-and-backends.md).

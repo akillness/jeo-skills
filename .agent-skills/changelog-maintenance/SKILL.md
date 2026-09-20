@@ -1,8 +1,8 @@
 ---
 name: changelog-maintenance
-description: "Write and maintain release-history artifacts for shipped changes: `CHANGELOG.md` updates, release notes, migration/deprecation updates, and lightweight game patch notes. Use when the main job is turning shipped evidence into the smallest truthful release-writing packet for developers, customers, internal stakeholders, or players. Triggers on: changelog, release notes, patch notes, migration update, deprecation notice, version notes, what shipped, what changed, and what's new. Route internal specs/runbooks to `technical-writing`, API portals to `api-documentation`, end-user tutorials to `technical-writing`, rollout execution to `deployment-automation`, and launch messaging to `marketing-automation`."
+description: "Write and maintain release-history artifacts for shipped changes: `CHANGELOG.md` updates, release notes, migration/deprecation updates, and lightweight game patch notes. Use when the main job is turning shipped evidence into the smallest truthful release-writing packet for developers, customers, internal stakeholders, or players. Also owns the retired `release-notes` name: turn tickets, PRDs, or Git logs into user-facing notes that lead with the benefit. Triggers on: changelog, release notes, patch notes, migration update, deprecation notice, version notes, what shipped, what changed, what's new, announce product updates. Route internal specs/runbooks to `technical-writing`, API portals to `api-documentation`, end-user tutorials to `technical-writing`, rollout execution to `deployment-automation`, and launch messaging to `marketing-automation`."
 license: MIT
-compatibility: ">"
+compatibility: "Prompt-only; reads repository history, ticket exports, and existing changelog files. Works with Release Drafter / Changesets output as draft input."
 allowed-tools: Read Write Edit Glob Grep
 metadata:
   tags: changelog, release-notes, patch-notes, migration, semantic-versioning, documentation, release-communication

@@ -52,6 +52,34 @@ Start with the smallest honest ledger you can make:
 4. choose at most 1-2 new actions
 5. add the next review hook immediately
 
+### Compact sprint summary (merged from the former `retro` skill, 2026-09-19)
+Use when the team wants a one-screen record instead of the full brief: it keeps the
+velocity-vs-commitment fact and the carry-over ledger visible in the same place as the
+new actions.
+
+```markdown
+## Sprint <n> Retrospective — <date>
+
+### Sprint performance
+- Goal: Achieved / Partially / Missed
+- Committed: <x> pts | Completed: <y> pts
+- Blockers hit and how they were resolved
+
+### Key themes
+1. <theme> — <one-line summary>
+
+### Action items (2-3 max)
+| # | Action | Owner | Due | Success signal |
+|---|--------|-------|-----|----------------|
+
+### Carry-over from last retro
+- <previous action> — Done / In progress / Not started
+```
+
+Group raw input (sticky notes, survey answers, chat threads) into themes and note
+sentiment patterns (frustration, energy, confusion) before filling the table; keep the tone
+constructive — improvement, not blame.
+
 ## Prompt starters
 - What repeated friction cost us the most this cycle?
 - Which action from the last retro actually changed behavior?

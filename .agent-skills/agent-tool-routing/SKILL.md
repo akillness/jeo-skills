@@ -112,5 +112,5 @@ async with Client("http://billing-mcp:8080") as c:
 
 - Anthropic tool-use best practices
 - BFCL / Tool-Bench — router benchmarks (2026)
-- MCP capability discovery (`mcp-server-design`)
+- MCP capability discovery (`mcp-builder`)
 - Fallback patterns (resilience4j, polly)

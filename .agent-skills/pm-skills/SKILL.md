@@ -64,6 +64,12 @@ The skill routes your request to the appropriate plugin and framework automatica
 
 Start with `/discover` for new features, `/write-prd` for specs, or `/north-star` for strategy.
 
+**Catalog note (jeo-skills, 2026-09-19):** three upstream plugin skills are merged into the
+catalog's canonical project-management skills instead of shipping twice — `/retro` →
+`sprint-retrospective`, release notes → `changelog-maintenance`, `/sprint` (`sprint-plan`) →
+`task-planning` (`references/sprint-planning-recipe.md`). The old names are listed in
+`skills.json` `retired_skills` and still resolve at `jeo-skill install` time.
+
 ## Installation
 
 ### Option A: Claude Marketplace (recommended)

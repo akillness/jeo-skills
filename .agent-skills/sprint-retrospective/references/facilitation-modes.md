@@ -20,7 +20,8 @@ Use this note when the request is ambiguous or the team keeps reaching for the w
 - **Simple reflection:** went well / didn’t go well / change next
 - **Classic:** start / stop / continue
 - **Emotion-aware:** mad / sad / glad
-- **Broad reflection:** 4Ls
+- **Broad reflection:** 4Ls (liked / learned / lacked / longed for)
+- **Forward-looking metaphor:** Sailboat — wind (what propels us) / anchor (what holds us back) / rocks (risks ahead) / island (the goal). Good when a team keeps re-litigating the past and needs to name the destination.
 - **Milestone/game variant:** pipeline friction / QA timing / asset dependency / player feedback / release readiness
 
 ## Anti-patterns

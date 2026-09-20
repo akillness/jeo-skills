@@ -19,7 +19,7 @@ description: |
   higgsfield-brandkit), photoshoots, cards, YouTube thumbnails
   (use higgsfield-youtube-thumbnail), explainers (use
   higgsfield-video-explainer), playable games/assets (use
-  higgsfield-game-generation), or TTS.
+  higgsfield-websites), or TTS.
 argument-hint: "[prompt-or-analysis-request] [--model <name>] [--image|--video <path-or-id>]"
 allowed-tools: Bash
 ---
@@ -109,7 +109,7 @@ If the user says "analyze this video", "score this ad", "evaluate the hook", or 
    - Rate a finished video's hook, virality potential, attention, retention, or distraction risk → Virality Predictor (`brain_activity`). This is a video analysis model that returns a text score/report, not a generated media asset.
 
    **3D:**
-   - A 3D asset within a playable game or game-wide asset system → use `higgsfield-game-generation`.
+   - A 3D asset within a playable game or game-wide asset system → use `higgsfield-websites` (`--type game`; the retired `higgsfield-game-generation` name resolves there).
    - Create an actual 3D mesh/model/GLB from one or more object/product reference images → Multi-Image to 3D (`multi_image_to_3d`). Pass 1–4 images with repeated `--image`; use `--should_texture true` when the asset needs texture. If the user only asks for a 3D-rendered picture, use an image model instead.
 
    **Audio:**

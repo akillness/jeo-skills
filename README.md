@@ -2,14 +2,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-359-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-350-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![GJC](https://img.shields.io/badge/GJC-gajae--code-181717?style=for-the-badge&logo=github)](https://github.com/akillness/gajae-code)
 [![jeo-code](https://img.shields.io/badge/jeo--code-jeo-181717?style=for-the-badge&logo=github)](https://github.com/akillness/jeo-code)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**359 categorized skills · lightweight selective install · compact TOON catalog · cross-platform**
+**350 categorized skills · lightweight selective install · compact TOON catalog · cross-platform**
 
 A curated collection for spec-first, multi-agent LLM workflows. Delegate a complete setup
 with one prompt, or install the `jeo-skill` router first and add only the web,
@@ -78,7 +78,7 @@ The agent runs a **full install by default** (say “core only” or “minimal�
 
 ### Lightweight selective install (manual / CI)
 
-Install the **`jeo-skill` router first**, not all 359 skill folders. It provides category,
+Install the **`jeo-skill` router first**, not all 350 skill folders. It provides category,
 subcategory, interface, bundle, and relationship discovery while keeping heavy apps,
 models, MCP servers, and runtimes on demand.
 
@@ -131,7 +131,7 @@ video-motion-previs check
 
 ## 📚 Skills List
 
-> Central manifest: `.agent-skills/skills.json` · 359 skills · 10 primary categories · subcategory/interface/relationship metadata
+> Central manifest: `.agent-skills/skills.json` · 350 skills · 10 primary categories · subcategory/interface/relationship metadata
 
 ### 🌐 Web (49)
 
@@ -209,9 +209,9 @@ Subcategories: `deployment` (2), `environment` (2), `observability` (3), `securi
 | `genkit` |
 | `looker-studio-bigquery` |
 
-### 🎮 Game (29)
+### 🎮 Game (28)
 
-Subcategories: `client` (3), `web` (2), `server` (1), `design-ui` (7), `audio` (1), `animation` (2), `motion-vfx` (2), `sprite-image` (1), `art-resources` (0), `storytelling` (0), `tooling` (4), `qa-performance` (4), `release` (2)
+Subcategories: `client` (3), `web` (2), `server` (1), `design-ui` (7), `audio` (1), `animation` (2), `motion-vfx` (2), `sprite-image` (1), `art-resources` (0), `storytelling` (0), `tooling` (3), `qa-performance` (4), `release` (2)
 
 | Skill |
 |---|
@@ -240,14 +240,13 @@ Subcategories: `client` (3), `web` (2), `server` (1), `design-ui` (7), `audio` (
 | `steam-store-launch-ops` |
 | `unity-technologies-skills` |
 | `multiplayer-game-architecture` |
-| `higgsfield-game-generation` |
 | `game-design-theory` |
 | `game-feel` |
 | `game-ui-ux` |
 
-### 🎬 Creative Media (33)
+### 🎬 Creative Media (32)
 
-Subcategories: `image` (10), `video` (14), `motion` (1), `audio` (1), `presentation` (1), `diagram` (1), `design` (3), `capture` (0), `storytelling` (2)
+Subcategories: `image` (10), `video` (13), `motion` (1), `audio` (1), `presentation` (1), `diagram` (1), `design` (3), `capture` (0), `storytelling` (2)
 
 | Skill |
 |---|
@@ -259,7 +258,6 @@ Subcategories: `image` (10), `video` (14), `motion` (1), `audio` (1), `presentat
 | `browser-video-recording` |
 | `gbro-collage-broll` |
 | `opencut` |
-| `remotion-video-production` |
 | `video-production` |
 | `video-shotcraft` |
 | `video-to-superprompt` |
@@ -326,9 +324,9 @@ Subcategories: `developer-cli` (9), `ai-cli` (11), `media-cli` (1), `automation-
 | `zeroshot` |
 | `k-skill-setup` |
 
-### 🤖 AI & Agents (65)
+### 🤖 AI & Agents (61)
 
-Subcategories: `orchestration` (11), `agent-frameworks` (20), `skill-authoring` (5), `evaluation` (7), `memory` (2), `planning-review` (14), `discovery` (3), `prompting` (3)
+Subcategories: `orchestration` (11), `agent-frameworks` (17), `skill-authoring` (5), `evaluation` (7), `memory` (2), `planning-review` (13), `discovery` (3), `prompting` (3)
 
 | Skill |
 |---|
@@ -385,18 +383,14 @@ Subcategories: `orchestration` (11), `agent-frameworks` (20), `skill-authoring` 
 | `deep-agents-core` |
 | `deep-agents-memory` |
 | `deep-agents-orchestration` |
-| `deepagents` |
-| `langgraph-workflow` |
 | `langchain-bmad` |
 | `a2a-protocol` |
-| `mcp-server-design` |
 | `agent-benchmarking` |
 | `agent-observability` |
 | `multi-agent-eval-harness` |
 | `agent-memory-architecture` |
 | `agent-workflow` |
 | `agent-principles` |
-| `agent-development-principles` |
 
 ### 🧰 Engineering (24)
 
@@ -448,9 +442,9 @@ Subcategories: `academic` (3), `web-research` (3), `data-analysis` (2), `experim
 | `research` |
 | `korean-patent-search` |
 
-### 📣 Business (73)
+### 📣 Business (70)
 
-Subcategories: `marketing` (4), `support` (2), `publishing` (1), `pm-toolkit` (5), `pm-discovery` (13), `pm-strategy` (12), `pm-execution` (15), `pm-market-research` (7), `pm-analytics` (3), `pm-go-to-market` (6), `pm-growth` (5)
+Subcategories: `marketing` (4), `support` (2), `publishing` (1), `pm-toolkit` (5), `pm-discovery` (13), `pm-strategy` (12), `pm-execution` (12), `pm-market-research` (7), `pm-analytics` (3), `pm-go-to-market` (6), `pm-growth` (5)
 
 | Skill |
 |---|
@@ -498,9 +492,6 @@ Subcategories: `marketing` (4), `support` (2), `publishing` (1), `pm-toolkit` (5
 | `outcome-roadmap` |
 | `pre-mortem` |
 | `prioritization-frameworks` |
-| `release-notes` |
-| `retro` |
-| `sprint-plan` |
 | `stakeholder-map` |
 | `summarize-meeting` |
 | `test-scenarios` |
@@ -820,7 +811,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 
 ```text
 .
-├── .agent-skills/          ← 359 skill folders (SKILL.md + optional support files)
+├── .agent-skills/          ← 350 skill folders (SKILL.md + optional support files)
 ├── docs/                   ← detailed guides (bmad, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
@@ -900,16 +891,23 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 | `eli5` | [DreambigOu/ELI5](https://github.com/DreambigOu/ELI5) | MIT |
 | `openocta` | [openocta/openocta](https://github.com/openocta/openocta) | Apache-2.0 wrapper |
 | `open-code-review` | [alibaba/open-code-review](https://github.com/alibaba/open-code-review) | Apache-2.0 |
-| `pm-skills` + 65 `pm-*` skills | [phuryn/pm-skills @ 8607e3b](https://github.com/phuryn/pm-skills) | MIT |
-| `langchain-*`, `langgraph-*`, `deep-agents-*` | [langchain-ai/langchain-skills @ 88df7d9](https://github.com/langchain-ai/langchain-skills) | MIT |
+| `pm-skills` + 62 `pm-*` skills | [phuryn/pm-skills @ 8607e3b](https://github.com/phuryn/pm-skills) | MIT |
+| `langchain-*`, `langgraph-*`, `deep-agents-*` (10) | [langchain-ai/langchain-skills @ 88df7d9](https://github.com/langchain-ai/langchain-skills) | MIT |
 | `higgsfield-*` (8) | [higgsfield-ai/skills 0.12.0 @ d071406](https://github.com/higgsfield-ai/skills) | MIT |
 | `hwp`, `rhwp-edit`, `rhwp-advanced`, `korean-patent-search`, `k-skill-setup` | [NomaDamas/k-skill @ 783d3c3](https://github.com/NomaDamas/k-skill) | MIT (proxy dirs AGPL-3.0, not vendored) |
-| `a2a-protocol`, `agent-*`, `multi-agent-eval-harness`, `reflexion-pattern`, `mcp-server-design`, `deepagents`, `langgraph-workflow`, `langchain-bmad` | [akillness/oh-my-gods @ 1b2779a](https://github.com/akillness/oh-my-gods) | MIT |
+| `a2a-protocol`, `agent-*`, `multi-agent-eval-harness`, `reflexion-pattern`, `langchain-bmad` (+4 merged into canonical skills, see `retired_skills`) | [akillness/oh-my-gods @ 1b2779a](https://github.com/akillness/oh-my-gods) | MIT |
 | Agent Skills Spec | [agentskills.io](https://agentskills.io/specification) | — |
 
 ---
 
 <!-- WHATS-NEW:START -->
+
+## 🆕 What's New in v2026-09-19
+
+| Change | Details |
+|--------|---------|
+| **Nine duplicate skills merged (359 → 350)** | A full-catalog duplicate audit (explicit alias markers, TF-IDF over descriptions and bodies, trigger overlap, and a manual same-job pass) found nine pairs doing the same job. Each was merged, never just deleted: the canonical skill absorbed the duplicate's unique content and trigger phrases, the folder was removed, and the old name went into `skills.json` `retired_skills` so `jeo-skill install <old-name>` answers with the replacement. Pure aliases: `agent-development-principles` → `agent-principles`, `remotion-video-production` → `video-production` (which also got its three long-missing `references/` files restored from `108fbaa^` plus `remotion-route-outs.md`), `higgsfield-game-generation` → `higgsfield-websites` (drift auditor now at `references/game-alias/`). oh-my-gods wrappers folded into the official skills: `deepagents` → `deep-agents-core` (`references/quickstart-and-backends.md`), `langgraph-workflow` → `langgraph-fundamentals` (`references/production-patterns.md`), `mcp-server-design` → `mcp-builder` (`references/server-card-and-registry.md`). pm-skills templates folded into the routing-first canonicals: `retro` → `sprint-retrospective` (Sailboat prompt family, compact sprint summary), `release-notes` → `changelog-maintenance` (technical → user-facing rewrite table), `sprint-plan` → `task-planning` (`references/sprint-planning-recipe.md`). Every route-out in other skills that named a merged skill was repointed. |
+| **Three routing groups instead of merges** | Skills that overlap but are not the same job are now declared rather than duplicated: `llm-observability` (`agent-observability` platform-neutral layer → `langsmith` / `opik` operators → `monitoring-observability`), `bug-diagnosis` (`log-analysis` → `debugging` → `diagnosing-bugs`, and `debugging` now routes hard/flaky HITL hunts to `diagnosing-bugs`), `product-analytics` (`data-analysis` → `ab-test-analysis` / `cohort-analysis` → `looker-studio-bigquery`). Upstream sibling splits inside vendored families (pm-skills, mattpocock, langchain-skills) and provider choices (`aura-asset-images` / `unsplash-asset-images`) were deliberately left alone. |
 
 ## 🆕 What's New in v2026-09-18
 

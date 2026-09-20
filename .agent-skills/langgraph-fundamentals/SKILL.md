@@ -162,3 +162,10 @@ If writing, modifying, or debugging LangGraph code, determine the project's lang
 - For TypeScript, read [references/typescript.md](references/typescript.md).
 
 Read both only when the task covers both languages. For conceptual questions that require no code, do not load either reference.
+
+<!-- jeo-skills catalog addition (not upstream): merged from the retired
+     `langgraph-workflow` wrapper skill on 2026-09-19 -->
+For disk-backed checkpointers, `interrupt_before` approval gates, subgraph composition,
+error-in-state routing, and LangSmith tracing / streaming set-up, read
+[references/production-patterns.md](references/production-patterns.md) after the
+language reference above.

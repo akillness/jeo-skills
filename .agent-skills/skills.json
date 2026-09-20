@@ -1,7 +1,7 @@
 {
   "version": "2.0.0",
-  "generated": "2026-09-18",
-  "skill_count": 359,
+  "generated": "2026-09-19",
+  "skill_count": 350,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -220,7 +220,6 @@
       "steam-store-launch-ops",
       "unity-technologies-skills",
       "multiplayer-game-architecture",
-      "higgsfield-game-generation",
       "game-design-theory",
       "game-feel",
       "game-ui-ux"
@@ -234,7 +233,6 @@
       "browser-video-recording",
       "gbro-collage-broll",
       "opencut",
-      "remotion-video-production",
       "video-production",
       "video-shotcraft",
       "video-to-superprompt",
@@ -350,18 +348,14 @@
       "deep-agents-core",
       "deep-agents-memory",
       "deep-agents-orchestration",
-      "deepagents",
-      "langgraph-workflow",
       "langchain-bmad",
       "a2a-protocol",
-      "mcp-server-design",
       "agent-benchmarking",
       "agent-observability",
       "multi-agent-eval-harness",
       "agent-memory-architecture",
       "agent-workflow",
-      "agent-principles",
-      "agent-development-principles"
+      "agent-principles"
     ],
     "engineering": [
       "audit-reference-originality",
@@ -448,9 +442,6 @@
       "outcome-roadmap",
       "pre-mortem",
       "prioritization-frameworks",
-      "release-notes",
-      "retro",
-      "sprint-plan",
       "stakeholder-map",
       "summarize-meeting",
       "test-scenarios",
@@ -651,8 +642,7 @@
       "tooling": [
         "game-studio-harness",
         "underworld-overseer-save-mapper",
-        "godogen",
-        "higgsfield-game-generation"
+        "godogen"
       ],
       "qa-performance": [
         "game-build-log-triage",
@@ -682,7 +672,6 @@
         "browser-video-recording",
         "gbro-collage-broll",
         "opencut",
-        "remotion-video-production",
         "video-production",
         "video-shotcraft",
         "video-to-superprompt",
@@ -795,11 +784,8 @@
         "deep-agents-core",
         "deep-agents-memory",
         "deep-agents-orchestration",
-        "deepagents",
-        "langgraph-workflow",
         "langchain-bmad",
-        "a2a-protocol",
-        "mcp-server-design"
+        "a2a-protocol"
       ],
       "skill-authoring": [
         "article-prompts-to-skills",
@@ -834,8 +820,7 @@
         "to-questionnaire",
         "wayfinder",
         "agent-workflow",
-        "agent-principles",
-        "agent-development-principles"
+        "agent-principles"
       ],
       "discovery": [
         "openspace",
@@ -968,9 +953,6 @@
         "outcome-roadmap",
         "pre-mortem",
         "prioritization-frameworks",
-        "release-notes",
-        "retro",
-        "sprint-plan",
         "stakeholder-map",
         "summarize-meeting",
         "test-scenarios",
@@ -1106,7 +1088,6 @@
       "video-production",
       "video-shotcraft",
       "video-motion-previs",
-      "remotion-video-production",
       "shopping-shorts"
     ],
     "skill-authoring": [
@@ -1127,14 +1108,12 @@
       "create-prd",
       "user-stories",
       "opportunity-solution-tree",
-      "north-star-metric",
-      "sprint-plan"
+      "north-star-metric"
     ],
     "langchain": [
       "langchain-fundamentals",
       "langgraph-fundamentals",
       "deep-agents-core",
-      "deepagents",
       "langsmith"
     ]
   },
@@ -1164,6 +1143,51 @@
       "replacement": "to-tickets",
       "replacement_type": "skill",
       "reason": "Merged upstream with to-plan into to-tickets, which declares blocking edges per ticket."
+    },
+    "agent-development-principles": {
+      "replacement": "agent-principles",
+      "replacement_type": "skill",
+      "reason": "Pure compatibility alias; agent-principles now carries its trigger phrases."
+    },
+    "remotion-video-production": {
+      "replacement": "video-production",
+      "replacement_type": "skill",
+      "reason": "Compatibility alias merged; video-production owns Remotion requests directly and keeps references/remotion-route-outs.md."
+    },
+    "higgsfield-game-generation": {
+      "replacement": "higgsfield-websites",
+      "replacement_type": "skill",
+      "reason": "Compatibility alias merged; the read-only owner auditor now lives at higgsfield-websites/references/game-alias/ and games are `--type game`."
+    },
+    "deepagents": {
+      "replacement": "deep-agents-core",
+      "replacement_type": "skill",
+      "reason": "oh-my-gods wrapper merged into the langchain-ai/langchain-skills trio; operator notes moved to deep-agents-core/references/quickstart-and-backends.md."
+    },
+    "langgraph-workflow": {
+      "replacement": "langgraph-fundamentals",
+      "replacement_type": "skill",
+      "reason": "oh-my-gods wrapper merged; production patterns moved to langgraph-fundamentals/references/production-patterns.md."
+    },
+    "mcp-server-design": {
+      "replacement": "mcp-builder",
+      "replacement_type": "skill",
+      "reason": "Same job as mcp-builder; primitives, Server Card, and registry publishing moved to mcp-builder/references/server-card-and-registry.md."
+    },
+    "retro": {
+      "replacement": "sprint-retrospective",
+      "replacement_type": "skill",
+      "reason": "pm-skills facilitation template merged; Sailboat prompt family and the compact sprint summary now live in sprint-retrospective/references/."
+    },
+    "release-notes": {
+      "replacement": "changelog-maintenance",
+      "replacement_type": "skill",
+      "reason": "pm-skills generator merged; technical-to-user-facing rewrite examples now live in changelog-maintenance/references/release-note-quality-checklist.md."
+    },
+    "sprint-plan": {
+      "replacement": "task-planning",
+      "replacement_type": "skill",
+      "reason": "pm-skills recipe merged; capacity math, Definition-of-Ready gate, and the sprint summary now live in task-planning/references/sprint-planning-recipe.md."
     }
   },
   "relationship_groups": {
@@ -1258,10 +1282,10 @@
         "video-production",
         "video-shotcraft",
         "video-motion-previs",
-        "remotion-video-production",
         "video-to-superprompt",
         "shopping-shorts"
-      ]
+      ],
+      "note": "video-production is the canonical programmable-video entry point; the former remotion-video-production alias was merged into it on 2026-09-19."
     },
     "image-sources": {
       "mode": "provider-choice",
@@ -1436,11 +1460,8 @@
         "product-name",
         "product-strategy",
         "product-vision",
-        "release-notes",
-        "retro",
         "review-resume",
         "sentiment-analysis",
-        "sprint-plan",
         "sql-queries",
         "stakeholder-map",
         "startup-canvas",
@@ -1455,7 +1476,7 @@
         "value-proposition",
         "wwas"
       ],
-      "note": "pm-skills is the routing front door; the 65 plugin skills are phuryn/pm-skills vendored at 8607e3b and grouped by upstream plugin in the pm-* subcategories."
+      "note": "pm-skills is the routing front door; the plugin skills are phuryn/pm-skills vendored at 8607e3b and grouped by upstream plugin in the pm-* subcategories. retro, release-notes, and sprint-plan were merged into sprint-retrospective, changelog-maintenance, and task-planning on 2026-09-19 (see retired_skills)."
     },
     "langchain-skills": {
       "mode": "layered",
@@ -1470,13 +1491,11 @@
         "langgraph-fundamentals",
         "langgraph-human-in-the-loop",
         "langgraph-persistence",
-        "deepagents",
-        "langgraph-workflow",
         "langchain-bmad",
         "goalflow",
         "langsmith"
       ],
-      "note": "langchain-ai/langchain-skills tracks (LangChain, LangGraph, Deep Agents) vendored at 88df7d9, plus the oh-my-gods wrappers and the in-catalog goalflow/langsmith skills that build on them."
+      "note": "langchain-ai/langchain-skills tracks (LangChain, LangGraph, Deep Agents) vendored at 88df7d9, plus the in-catalog goalflow/langsmith skills and langchain-bmad that build on them. The oh-my-gods deepagents and langgraph-workflow wrappers were merged into deep-agents-core and langgraph-fundamentals on 2026-09-19."
     },
     "higgsfield-cli": {
       "mode": "adjacent",
@@ -1488,10 +1507,9 @@
         "higgsfield-soul-id",
         "higgsfield-video-explainer",
         "higgsfield-websites",
-        "higgsfield-youtube-thumbnail",
-        "higgsfield-game-generation"
+        "higgsfield-youtube-thumbnail"
       ],
-      "note": "higgsfield-ai/skills 0.12.0 vendored at d071406; higgsfield-game-generation stays the compatibility alias that now resolves to the in-catalog higgsfield-websites."
+      "note": "higgsfield-ai/skills 0.12.0 vendored at d071406. The former higgsfield-game-generation alias was merged into higgsfield-websites (references/game-alias/) on 2026-09-19; games are `higgsfield-websites --type game`."
     },
     "k-skill": {
       "mode": "layered",
@@ -1517,13 +1535,40 @@
         "agent-tool-routing",
         "multi-agent-eval-harness",
         "reflexion-pattern",
-        "mcp-server-design",
         "agent-manager",
         "agent-workflow",
-        "agent-principles",
-        "agent-development-principles"
+        "agent-principles"
       ],
-      "note": "akillness/oh-my-gods .god-skills vendored at 1b2779a so they install standalone via jeo-skill; agenticskills remains the whole-bundle installer."
+      "note": "akillness/oh-my-gods .god-skills vendored at 1b2779a so they install standalone via jeo-skill; agenticskills remains the whole-bundle installer. agent-development-principles, mcp-server-design, deepagents, and langgraph-workflow were merged into their canonical skills on 2026-09-19."
+    },
+    "llm-observability": {
+      "mode": "layered",
+      "members": [
+        "agent-observability",
+        "langsmith",
+        "opik",
+        "monitoring-observability"
+      ],
+      "note": "agent-observability is the platform-neutral instrumentation and platform-selection layer for LLM agents; langsmith and opik are the per-platform operator skills; monitoring-observability owns service-level telemetry and alerting."
+    },
+    "bug-diagnosis": {
+      "mode": "layered",
+      "members": [
+        "debugging",
+        "diagnosing-bugs",
+        "log-analysis"
+      ],
+      "note": "log-analysis finds the first actionable failure, debugging is the reproduce-isolate-verify front door and mode chooser, diagnosing-bugs (mattpocock/skills) owns the long human-in-the-loop feedback loop for hard or flaky bugs."
+    },
+    "product-analytics": {
+      "mode": "layered",
+      "members": [
+        "data-analysis",
+        "ab-test-analysis",
+        "cohort-analysis",
+        "looker-studio-bigquery"
+      ],
+      "note": "data-analysis is the generic dataset-to-insight workflow; ab-test-analysis and cohort-analysis (pm-skills) are the specific product-analytics methods; looker-studio-bigquery turns the result into stakeholder dashboards."
     }
   },
   "skills": [
@@ -4335,38 +4380,8 @@
       "source": "OpenCut-app/OpenCut"
     },
     {
-      "name": "remotion-video-production",
-      "description": "Compatibility alias for `video-production` when a prompt, setup surface, or legacy workflow explicitly asks for Remotion video production. Use when the request names Remotion, React-based video rendering, compositions, scene components, or a legacy `remotion-video-production` catalog entry, but the real workflow is still the canonical programmable-video lane. Prefer `video-production` for general use. Triggers on: remotion-video-production, Remotion render pipeline, React video composition, migrate old Remotion skill.",
-      "category": "creative-media",
-      "subcategory": "video",
-      "interface": "library",
-      "path": "remotion-video-production/SKILL.md",
-      "tags": [
-        "video",
-        "remotion",
-        "alias",
-        "compatibility",
-        "automation"
-      ],
-      "platforms": [
-        "Claude",
-        "ChatGPT",
-        "Gemini",
-        "Codex"
-      ],
-      "allowed_tools": [
-        "Write",
-        "Read",
-        "WebSearch",
-        "WebFetch",
-        "Task"
-      ],
-      "keyword": "remotion-video-production",
-      "version": "2.0"
-    },
-    {
       "name": "video-production",
-      "description": "Plan and route programmable or automated video production across code-first, template-first, and hybrid content pipelines. Use when the user needs repeatable video generation, branded short-form content, personalized videos, social clip batches, captioned/localized variants, video APIs, or video creation from data and templates — even if they only say video production. Triggers on: Remotion, programmatic video, automated video creation, video API, personalized video, batch-create shorts, render videos from code, repurpose content into clips.",
+      "description": "Plan and route programmable or automated video production across code-first, template-first, and hybrid content pipelines. Use when the user needs repeatable video generation, branded short-form content, personalized videos, social clip batches, captioned/localized variants, video APIs, or video creation from data and templates — even if they only say video production. Also the direct owner of explicit Remotion requests (React video compositions, scenes, render workers) and of the retired `remotion-video-production` name. Triggers on: Remotion, Remotion render pipeline, React video composition, programmatic video, automated video creation, video API, personalized video, batch-create shorts, render videos from code, repurpose content into clips.",
       "category": "creative-media",
       "subcategory": "video",
       "interface": "library",
@@ -5874,7 +5889,7 @@
     },
     {
       "name": "goalflow",
-      "description": "Route goalflow (wanmol/goal-flow) work — a LangGraph framework that combines workflow graphs with agent loops — into exactly one mode: fit check, transpiling a Dify DSL export into runnable LangGraph Python, authoring workflow nodes and edges, building an `agent_kit` loop with middleware and a harness, wiring the serving layer (data adapters, SSE streaming, HITL, Redis/MySQL, API-key registration), or running the pre-publish security gate. Use when the user wants Dify's visual design without Dify's runtime, a graph node that hosts an agent loop, an OpenAI-compatible wire protocol over their own workflows, or prompt-injected `SKILL.md` capabilities. Triggers on: goalflow, goal-flow, dify to langgraph, dify transpiler, dify DSL export, BaseWorkflow, agent_kit, AgentBaseNode, DataAdapter, chunk processor, HITL interrupt, dify2langgraph. Route plain graph-API questions to `langgraph-fundamentals` and `langgraph-workflow`.",
+      "description": "Route goalflow (wanmol/goal-flow) work — a LangGraph framework that combines workflow graphs with agent loops — into exactly one mode: fit check, transpiling a Dify DSL export into runnable LangGraph Python, authoring workflow nodes and edges, building an `agent_kit` loop with middleware and a harness, wiring the serving layer (data adapters, SSE streaming, HITL, Redis/MySQL, API-key registration), or running the pre-publish security gate. Use when the user wants Dify's visual design without Dify's runtime, a graph node that hosts an agent loop, an OpenAI-compatible wire protocol over their own workflows, or prompt-injected `SKILL.md` capabilities. Triggers on: goalflow, goal-flow, dify to langgraph, dify transpiler, dify DSL export, BaseWorkflow, agent_kit, AgentBaseNode, DataAdapter, chunk processor, HITL interrupt, dify2langgraph. Route plain graph-API questions to `langgraph-fundamentals`.",
       "category": "ai-agents",
       "subcategory": "agent-frameworks",
       "interface": "workflow",
@@ -7078,7 +7093,7 @@
     },
     {
       "name": "changelog-maintenance",
-      "description": "Write and maintain release-history artifacts for shipped changes: `CHANGELOG.md` updates, release notes, migration/deprecation updates, and lightweight game patch notes. Use when the main job is turning shipped evidence into the smallest truthful release-writing packet for developers, customers, internal stakeholders, or players. Triggers on: changelog, release notes, patch notes, migration update, deprecation notice, version notes, what shipped, what changed, and what's new. Route internal specs/runbooks to `technical-writing`, API portals to `api-documentation`, end-user tutorials to `technical-writing`, rollout execution to `deployment-automation`, and launch messaging to `marketing-automation`.",
+      "description": "Write and maintain release-history artifacts for shipped changes: `CHANGELOG.md` updates, release notes, migration/deprecation updates, and lightweight game patch notes. Use when the main job is turning shipped evidence into the smallest truthful release-writing packet for developers, customers, internal stakeholders, or players. Also owns the retired `release-notes` name: turn tickets, PRDs, or Git logs into user-facing notes that lead with the benefit. Triggers on: changelog, release notes, patch notes, migration update, deprecation notice, version notes, what shipped, what changed, what's new, announce product updates. Route internal specs/runbooks to `technical-writing`, API portals to `api-documentation`, end-user tutorials to `technical-writing`, rollout execution to `deployment-automation`, and launch messaging to `marketing-automation`.",
       "category": "engineering",
       "subcategory": "documentation",
       "interface": "workflow",
@@ -8056,7 +8071,7 @@
     },
     {
       "name": "sprint-retrospective",
-      "description": "Facilitate sprint retrospectives, milestone postmortems, or iteration reviews that turn completed work into a few owned process improvements instead of another stale template ritual. Use when the user needs a retrospective mode, remote or hybrid facilitation plan, action-item follow-through reset, or help reviewing what the team should change after a sprint, release, milestone, or rough delivery cycle. Route backlog planning to `task-planning`, sizing to `task-estimation`, daily coordination to `standup-meeting`, and deep incident forensics to debugging/incident-specific skills.",
+      "description": "Facilitate sprint retrospectives, milestone postmortems, or iteration reviews that turn completed work into a few owned process improvements instead of another stale template ritual. Use when the user needs a retrospective mode, remote or hybrid facilitation plan, action-item follow-through reset, or help reviewing what the team should change after a sprint, release, milestone, or rough delivery cycle. Also owns the retired `retro` name: run a retro, start/stop/continue, 4Ls, sailboat, action items with owners and deadlines, compact sprint summary with velocity vs commitment and carry-over. Route backlog planning to `task-planning`, sizing to `task-estimation`, daily coordination to `standup-meeting`, and deep incident forensics to debugging/incident-specific skills.",
       "category": "utilities",
       "subcategory": "project-management",
       "interface": "workflow",
@@ -8156,7 +8171,7 @@
     },
     {
       "name": "task-planning",
-      "description": "Turn vague features, bug clusters, roadmap items, launch work, or playtest findings into one execution-ready planning packet by choosing the right packet type, separating discovery from delivery, and making blockers, dependencies, and the next move explicit. Use when the user needs backlog cleanup, feature slicing, sprint or milestone prep, release planning, or roadmap-to-delivery translation across developer workflow, web/fullstack, product/ops, marketing/GTM, or game work. Route sizing to `task-estimation`, issue-state governance to `triage`, plan review to `plannotator`, daily syncs to `standup-meeting`, retros to `sprint-retrospective`, and pre-planning concept framing to `bmad`, `bmad-idea`, or `bmad-gds`.",
+      "description": "Turn vague features, bug clusters, roadmap items, launch work, or playtest findings into one execution-ready planning packet by choosing the right packet type, separating discovery from delivery, and making blockers, dependencies, and the next move explicit. Use when the user needs backlog cleanup, feature slicing, sprint or milestone prep, release planning, or roadmap-to-delivery translation across developer workflow, web/fullstack, product/ops, marketing/GTM, or game work. Also owns the retired `sprint-plan` name: sprint capacity from velocity and availability, Definition-of-Ready story selection, dependency and critical-path mapping, sprint goal, sprint plan summary. Route sizing to `task-estimation`, issue-state governance to `triage`, plan review to `plannotator`, daily syncs to `standup-meeting`, retros to `sprint-retrospective`, and pre-planning concept framing to `bmad`, `bmad-idea`, or `bmad-gds`.",
       "category": "utilities",
       "subcategory": "project-management",
       "interface": "workflow",
@@ -8795,7 +8810,7 @@
     },
     {
       "name": "mcp-builder",
-      "description": "Build production MCP (Model Context Protocol) servers that let LLMs drive an external API through well-designed tools, in TypeScript (MCP SDK) or Python (FastMCP). Route one request to research and planning, tool design, transport choice, implementation, security review, or evaluation. Use when the user wants to wrap an API as MCP tools, name and shape those tools, choose between stdio and streamable HTTP, fix a server whose tools the model cannot use correctly, or build the 10-question evaluation that proves it works. Requires confirmation before running an evaluation harness that spends API credits or calls a live service. Route consuming an existing MCP server to that server's own skill, and generic API contract design to `api-design`.",
+      "description": "Build production MCP (Model Context Protocol) servers that let LLMs drive an external API through well-designed tools, in TypeScript (MCP SDK) or Python (FastMCP). Route one request to research and planning, tool design, transport choice, implementation, security review, or evaluation. Use when the user wants to wrap an API as MCP tools, name and shape those tools, choose between stdio and streamable HTTP, decide tools vs resources vs prompts, write a Server Card and publish to the MCP registry, fix a server whose tools the model cannot use correctly, or build the 10-question evaluation that proves it works. Requires confirmation before running an evaluation harness that spends API credits or calls a live service. Owns the retired `mcp-server-design` name. Route consuming an existing MCP server to that server's own skill, and generic API contract design to `api-design`.",
       "category": "ai-agents",
       "subcategory": "agent-frameworks",
       "interface": "workflow",
@@ -9139,36 +9154,6 @@
       "keyword": "multiplayer-game-architecture",
       "version": "1.0",
       "source": "akillness/jeo-skills"
-    },
-    {
-      "name": "higgsfield-game-generation",
-      "description": "Compatibility alias and read-only drift auditor for Higgsfield's retired or missing `higgsfield-game-generation` name. Use when, and only when, a prompt, search result, installed catalog, or stale command explicitly names that skill; when `higgsfield game ...` conflicts with the checked-in tree; or when ownership between the exact skill and `higgsfield-websites --type game` must be resolved. Audit the upstream tree, record the commit and evidence, then hand ordinary game planning, creation, editing, testing, asset generation, deployment, and marketplace publication to the current checked-in owner. Prefer `higgsfield-websites` for ordinary Higgsfield game work. Route provider-neutral browser games to `web-game-development` and multiplayer authority design to `multiplayer-game-architecture`.",
-      "category": "game",
-      "subcategory": "tooling",
-      "interface": "workflow",
-      "path": "higgsfield-game-generation/SKILL.md",
-      "tags": [
-        "higgsfield",
-        "higgsfield-game-generation",
-        "compatibility-alias",
-        "owner-resolution",
-        "upstream-drift",
-        "retired-command",
-        "browser-game"
-      ],
-      "platforms": [
-        "Higgsfield"
-      ],
-      "allowed_tools": [
-        "Bash",
-        "Read",
-        "Glob",
-        "Grep",
-        "WebFetch"
-      ],
-      "keyword": "higgsfield-game-generation",
-      "version": "1.1",
-      "source": "https://github.com/higgsfield-ai/skills"
     },
     {
       "name": "game-design-theory",
@@ -9843,7 +9828,7 @@
     },
     {
       "name": "higgsfield-generate",
-      "description": "Generate images/videos/3D assets/audio via Higgsfield AI. Defaults: GPT Image 2.5 for image/design/text, Seedance 2.5 for video, Nano Banana 2/Lite/Pro for character/reference images, Marketing Studio for ads, Seed Audio 1.0 for audio. Use when: \"generate an image\", \"make a video\", \"animate this photo\", \"image-to-video\", \"edit/stylize/remix this image\", \"reframe this video\", \"edit this video from a sketch\", \"create a 3D model/GLB\", \"create a sound effect\", \"make music\", \"text-to-audio\", \"create an ad\", \"make a UGC video\", \"unboxing\", \"presenter video\", \"import product from URL\", or \"analyze video virality\". Supports generic generation, workflows, Marketing Studio, and Virality Predictor. Chain with higgsfield-soul-id for face/identity consistency. NOT for: Soul training, brand systems/brandbooks (use higgsfield-brandkit), photoshoots, cards, YouTube thumbnails (use higgsfield-youtube-thumbnail), explainers (use higgsfield-video-explainer), playable games/assets (use higgsfield-game-generation), or TTS.",
+      "description": "Generate images/videos/3D assets/audio via Higgsfield AI. Defaults: GPT Image 2.5 for image/design/text, Seedance 2.5 for video, Nano Banana 2/Lite/Pro for character/reference images, Marketing Studio for ads, Seed Audio 1.0 for audio. Use when: \"generate an image\", \"make a video\", \"animate this photo\", \"image-to-video\", \"edit/stylize/remix this image\", \"reframe this video\", \"edit this video from a sketch\", \"create a 3D model/GLB\", \"create a sound effect\", \"make music\", \"text-to-audio\", \"create an ad\", \"make a UGC video\", \"unboxing\", \"presenter video\", \"import product from URL\", or \"analyze video virality\". Supports generic generation, workflows, Marketing Studio, and Virality Predictor. Chain with higgsfield-soul-id for face/identity consistency. NOT for: Soul training, brand systems/brandbooks (use higgsfield-brandkit), photoshoots, cards, YouTube thumbnails (use higgsfield-youtube-thumbnail), explainers (use higgsfield-video-explainer), playable games/assets (use higgsfield-websites), or TTS.",
       "category": "creative-media",
       "subcategory": "image",
       "interface": "cli",
@@ -10513,82 +10498,6 @@
       "source": "https://github.com/langchain-ai/langchain-skills"
     },
     {
-      "name": "deepagents",
-      "description": "Build file-aware, tool-calling agents with LangChain Deep Agents. Use when you need `create_deep_agent()`, subagent delegation, pluggable backends, skills, long-term memory, or human approval with `interrupt_on`. Triggers on: deepagents, deep agent harness, create_deep_agent, subagent middleware, StateBackend, StoreBackend, CompositeBackend, LocalShellBackend, interrupt_on, long-term memory, agent skills, file-aware agent, durable coding agent.",
-      "category": "ai-agents",
-      "subcategory": "agent-frameworks",
-      "interface": "library",
-      "path": "deepagents/SKILL.md",
-      "tags": [
-        "deepagents",
-        "oh-my-gods",
-        "agent-engineering",
-        "deep-agents",
-        "langchain",
-        "langgraph",
-        "ai-agent",
-        "middleware",
-        "subagents",
-        "backends",
-        "python"
-      ],
-      "platforms": [
-        "Claude",
-        "ChatGPT",
-        "Gemini",
-        "Codex"
-      ],
-      "allowed_tools": [
-        "Bash",
-        "Read",
-        "Write",
-        "Edit",
-        "Glob",
-        "Grep"
-      ],
-      "keyword": "deepagents",
-      "version": "1.1",
-      "source": "https://github.com/akillness/oh-my-gods"
-    },
-    {
-      "name": "langgraph-workflow",
-      "description": "Design and implement stateful multi-agent workflows using LangGraph StateGraph. Use when building production AI pipelines that need checkpointing, conditional branching, Human-in-the-Loop gates, parallel node execution, or long-running agent coordination. Even if the user doesn't explicitly mention \"LangGraph\" — also triggers on: state graph, stateful agent, agent checkpoint, agent loop, HITL approval gate, multi-step AI workflow, agent retry logic, langgraph studio, conditional edges, persistent agent memory, agentic pipeline, agent branching, agent orchestration with state, LangGraph NVIDIA deep agents.",
-      "category": "ai-agents",
-      "subcategory": "agent-frameworks",
-      "interface": "library",
-      "path": "langgraph-workflow/SKILL.md",
-      "tags": [
-        "langgraph-workflow",
-        "oh-my-gods",
-        "agent-engineering",
-        "langgraph",
-        "stategraph",
-        "multi-agent",
-        "checkpointing",
-        "hitl",
-        "workflow",
-        "orchestration",
-        "python"
-      ],
-      "platforms": [
-        "Claude",
-        "ChatGPT",
-        "Gemini",
-        "Codex"
-      ],
-      "allowed_tools": [
-        "Bash",
-        "Read",
-        "Write",
-        "Edit",
-        "Glob",
-        "Grep"
-      ],
-      "keyword": "langgraph-workflow",
-      "version": "1.0",
-      "source": "https://github.com/akillness/oh-my-gods"
-    },
-    {
       "name": "langchain-bmad",
       "description": "Use when the user needs BMAD-style phased delivery for a LangChain, LangGraph, or Deep Agents project and wants the right framework skill at the right BMAD phase. Triggers on: langchain bmad, bmad langchain, langgraph bmad, deep agents bmad, structured agent development, phase-gated langchain workflow, framework-aware bmad, and BMAD for agent frameworks.",
       "category": "ai-agents",
@@ -10651,37 +10560,6 @@
         "Bash"
       ],
       "keyword": "a2a-protocol",
-      "version": "1.0",
-      "source": "https://github.com/akillness/oh-my-gods"
-    },
-    {
-      "name": "mcp-server-design",
-      "description": "Build and publish production MCP servers — capability primitives, Streamable HTTP transport, Server Cards, registry compliance. Use when you're exposing tools/resources/prompts to multiple agent runtimes via Model Context Protocol.",
-      "category": "ai-agents",
-      "subcategory": "agent-frameworks",
-      "interface": "library",
-      "path": "mcp-server-design/SKILL.md",
-      "tags": [
-        "mcp-server-design",
-        "oh-my-gods",
-        "agent-engineering",
-        "mcp",
-        "server",
-        "design"
-      ],
-      "platforms": [
-        "Claude",
-        "ChatGPT",
-        "Gemini",
-        "Codex"
-      ],
-      "allowed_tools": [
-        "Read",
-        "Grep",
-        "Glob",
-        "Bash"
-      ],
-      "keyword": "mcp-server-design",
       "version": "1.0",
       "source": "https://github.com/akillness/oh-my-gods"
     },
@@ -10846,7 +10724,7 @@
     },
     {
       "name": "agent-principles",
-      "description": "Core principles for collaborative development with AI agents. Defines divide-and-conquer, context management, abstraction-level selection, automation philosophy, and verification/retrospectives. Apply optimal collaboration patterns when using any AI agent.",
+      "description": "Core principles for collaborative development with AI agents. Defines divide-and-conquer, context management, abstraction-level selection, automation philosophy, and verification/retrospectives. Apply optimal collaboration patterns when using any AI agent. Also the owner of the retired `agent-development-principles` name (merged 2026-09-19). Triggers on: agent principles, agentic development principles, AI collaboration principles, context-management strategy, how to work with coding agents.",
       "category": "ai-agents",
       "subcategory": "planning-review",
       "interface": "workflow",
@@ -10877,43 +10755,6 @@
       ],
       "keyword": "agent-principles",
       "version": "2.0.0",
-      "source": "https://github.com/akillness/oh-my-gods"
-    },
-    {
-      "name": "agent-development-principles",
-      "description": "Compatibility alias for `agent-principles`. Use when an existing workflow, install surface, or exact-name request still references `agent-development-principles`; the substantive collaboration-principles work should route to `agent-principles`. Triggers on: legacy agent-development-principles, old install docs, exact-name compatibility.",
-      "category": "ai-agents",
-      "subcategory": "planning-review",
-      "interface": "workflow",
-      "path": "agent-development-principles/SKILL.md",
-      "tags": [
-        "agent-development-principles",
-        "oh-my-gods",
-        "agent-engineering",
-        "agentic-development",
-        "principles",
-        "context-management",
-        "automation",
-        "ai-collaboration",
-        "universal",
-        "agent",
-        "development"
-      ],
-      "platforms": [
-        "Claude",
-        "ChatGPT",
-        "Gemini",
-        "Codex"
-      ],
-      "allowed_tools": [
-        "Read",
-        "Write",
-        "Bash",
-        "Grep",
-        "Glob"
-      ],
-      "keyword": "agent-development-principles",
-      "version": "1.1.0",
       "source": "https://github.com/akillness/oh-my-gods"
     },
     {
@@ -12139,97 +11980,6 @@
         "Bash"
       ],
       "keyword": "prioritization-frameworks",
-      "version": "1.0",
-      "source": "https://github.com/phuryn/pm-skills"
-    },
-    {
-      "name": "release-notes",
-      "description": "Generate user-facing release notes from tickets, PRDs, or changelogs. Creates clear, engaging summaries organized by category (new features, improvements, fixes). Use when writing release notes, creating changelogs, announcing product updates, or summarizing what shipped.",
-      "category": "business",
-      "subcategory": "pm-execution",
-      "interface": "workflow",
-      "path": "release-notes/SKILL.md",
-      "tags": [
-        "release-notes",
-        "pm-skills",
-        "product-management",
-        "pm-execution",
-        "release",
-        "notes"
-      ],
-      "platforms": [
-        "Claude",
-        "ChatGPT",
-        "Gemini",
-        "Codex"
-      ],
-      "allowed_tools": [
-        "Read",
-        "Grep",
-        "Glob",
-        "Bash"
-      ],
-      "keyword": "release-notes",
-      "version": "1.0",
-      "source": "https://github.com/phuryn/pm-skills"
-    },
-    {
-      "name": "retro",
-      "description": "Facilitate a structured sprint retrospective — what went well, what didn't, and prioritized action items with owners and deadlines. Use when running a retrospective, reflecting on a sprint, creating action items from team feedback, or learning how to run effective retros.",
-      "category": "business",
-      "subcategory": "pm-execution",
-      "interface": "workflow",
-      "path": "retro/SKILL.md",
-      "tags": [
-        "retro",
-        "pm-skills",
-        "product-management",
-        "pm-execution"
-      ],
-      "platforms": [
-        "Claude",
-        "ChatGPT",
-        "Gemini",
-        "Codex"
-      ],
-      "allowed_tools": [
-        "Read",
-        "Grep",
-        "Glob",
-        "Bash"
-      ],
-      "keyword": "retro",
-      "version": "1.0",
-      "source": "https://github.com/phuryn/pm-skills"
-    },
-    {
-      "name": "sprint-plan",
-      "description": "Plan a sprint with capacity estimation, story selection, dependency mapping, and risk identification. Use when preparing for sprint planning, estimating team capacity, selecting stories, or balancing sprint scope against velocity.",
-      "category": "business",
-      "subcategory": "pm-execution",
-      "interface": "workflow",
-      "path": "sprint-plan/SKILL.md",
-      "tags": [
-        "sprint-plan",
-        "pm-skills",
-        "product-management",
-        "pm-execution",
-        "sprint",
-        "plan"
-      ],
-      "platforms": [
-        "Claude",
-        "ChatGPT",
-        "Gemini",
-        "Codex"
-      ],
-      "allowed_tools": [
-        "Read",
-        "Grep",
-        "Glob",
-        "Bash"
-      ],
-      "keyword": "sprint-plan",
       "version": "1.0",
       "source": "https://github.com/phuryn/pm-skills"
     },

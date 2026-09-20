@@ -5,14 +5,17 @@ description: >
   template-first, and hybrid content pipelines. Use when the user needs repeatable
   video generation, branded short-form content, personalized videos, social clip
   batches, captioned/localized variants, video APIs, or video creation from data
-  and templates — even if they only say video production. Triggers on: Remotion,
-  programmatic video, automated video creation, video API, personalized video,
-  batch-create shorts, render videos from code, repurpose content into clips.
+  and templates — even if they only say video production. Also the direct owner of
+  explicit Remotion requests (React video compositions, scenes, render workers) and
+  of the retired `remotion-video-production` name. Triggers on: Remotion, Remotion
+  render pipeline, React video composition, programmatic video, automated video
+  creation, video API, personalized video, batch-create shorts, render videos from
+  code, repurpose content into clips.
 allowed-tools: Write Read WebSearch WebFetch Task
 compatibility: >
-  Canonical programmable-video / automated-video skill for the repo. Use this as
-  the main entry point; `remotion-video-production` is the compatibility alias for
-  legacy or explicitly Remotion-named requests.
+  Canonical programmable-video / automated-video skill for the repo and the single
+  entry point for Remotion-named requests; the former `remotion-video-production`
+  alias was merged here and is listed in `skills.json` retired_skills.
 metadata:
   tags: video, automation, remotion, short-form, content-ops, templates, react
   platforms: Claude, ChatGPT, Gemini, Codex
@@ -129,7 +132,7 @@ Every output must include:
 If the user names Remotion or clearly needs code-first composition:
 - say that the request fits the **code-first programmable video** mode,
 - structure the output around Remotion scenes/templates/components/rendering,
-- optionally note that `remotion-video-production` is the compatibility alias for the same lane.
+- read [references/remotion-route-outs.md](references/remotion-route-outs.md) and route back to a template/API, repurposing, or manual-finish mode when the Remotion naming hides a better fit.
 
 ### Step 6: Use this output structure
 
@@ -223,3 +226,4 @@ Required qualities:
 - [references/production-modes.md](references/production-modes.md)
 - [references/asset-and-qa-checklist.md](references/asset-and-qa-checklist.md)
 - [references/handoff-boundaries.md](references/handoff-boundaries.md)
+- [references/remotion-route-outs.md](references/remotion-route-outs.md)

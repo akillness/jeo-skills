@@ -2,14 +2,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-359-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-350-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![GJC](https://img.shields.io/badge/GJC-gajae--code-181717?style=for-the-badge&logo=github)](https://github.com/akillness/gajae-code)
 [![jeo-code](https://img.shields.io/badge/jeo--code-jeo-181717?style=for-the-badge&logo=github)](https://github.com/akillness/jeo-code)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**카테고리형 스킬 359개 · 경량 선택 설치 · 압축 TOON 카탈로그 · 멀티플랫폼**
+**카테고리형 스킬 350개 · 경량 선택 설치 · 압축 TOON 카탈로그 · 멀티플랫폼**
 
 스펙 우선 멀티 에이전트 LLM 워크플로우 컬렉션입니다. 프롬프트 하나로 전체 설정을
 위임하거나, `jeo-skill` 라우터부터 설치해 필요한 웹, 인프라, 게임, 미디어, CLI,
@@ -79,7 +79,7 @@ curl -s https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-sk
 
 ### 경량 선택 설치(수동 / CI)
 
-359개 스킬 폴더 전체가 아니라 **`jeo-skill` 라우터부터 설치**합니다. 카테고리,
+350개 스킬 폴더 전체가 아니라 **`jeo-skill` 라우터부터 설치**합니다. 카테고리,
 하위 분류, 인터페이스, 번들, 연관 스킬을 탐색할 수 있으며 앱·모델·MCP 서버·런타임은
 실제 선택된 작업에서만 온디맨드로 설치합니다.
 
@@ -132,7 +132,7 @@ video-motion-previs check
 
 ## 📚 스킬 목록
 
-> 중앙 매니페스트: `.agent-skills/skills.json` · 359개 스킬 · 10개 기본 카테고리 · 하위 카테고리/인터페이스/관계 그룹 지원
+> 중앙 매니페스트: `.agent-skills/skills.json` · 350개 스킬 · 10개 기본 카테고리 · 하위 카테고리/인터페이스/관계 그룹 지원
 
 ### 🌐 웹 (49개)
 
@@ -210,9 +210,9 @@ video-motion-previs check
 | `genkit` |
 | `looker-studio-bigquery` |
 
-### 🎮 게임 (29개)
+### 🎮 게임 (28개)
 
-하위 분류: `client` (3), `web` (2), `server` (1), `design-ui` (7), `audio` (1), `animation` (2), `motion-vfx` (2), `sprite-image` (1), `art-resources` (0), `storytelling` (0), `tooling` (4), `qa-performance` (4), `release` (2)
+하위 분류: `client` (3), `web` (2), `server` (1), `design-ui` (7), `audio` (1), `animation` (2), `motion-vfx` (2), `sprite-image` (1), `art-resources` (0), `storytelling` (0), `tooling` (3), `qa-performance` (4), `release` (2)
 
 | Skill |
 |---|
@@ -241,14 +241,13 @@ video-motion-previs check
 | `steam-store-launch-ops` |
 | `unity-technologies-skills` |
 | `multiplayer-game-architecture` |
-| `higgsfield-game-generation` |
 | `game-design-theory` |
 | `game-feel` |
 | `game-ui-ux` |
 
-### 🎬 크리에이티브 미디어 (33개)
+### 🎬 크리에이티브 미디어 (32개)
 
-하위 분류: `image` (10), `video` (14), `motion` (1), `audio` (1), `presentation` (1), `diagram` (1), `design` (3), `capture` (0), `storytelling` (2)
+하위 분류: `image` (10), `video` (13), `motion` (1), `audio` (1), `presentation` (1), `diagram` (1), `design` (3), `capture` (0), `storytelling` (2)
 
 | Skill |
 |---|
@@ -260,7 +259,6 @@ video-motion-previs check
 | `browser-video-recording` |
 | `gbro-collage-broll` |
 | `opencut` |
-| `remotion-video-production` |
 | `video-production` |
 | `video-shotcraft` |
 | `video-to-superprompt` |
@@ -327,9 +325,9 @@ video-motion-previs check
 | `zeroshot` |
 | `k-skill-setup` |
 
-### 🤖 AI 및 에이전트 (65개)
+### 🤖 AI 및 에이전트 (61개)
 
-하위 분류: `orchestration` (11), `agent-frameworks` (20), `skill-authoring` (5), `evaluation` (7), `memory` (2), `planning-review` (14), `discovery` (3), `prompting` (3)
+하위 분류: `orchestration` (11), `agent-frameworks` (17), `skill-authoring` (5), `evaluation` (7), `memory` (2), `planning-review` (13), `discovery` (3), `prompting` (3)
 
 | Skill |
 |---|
@@ -386,18 +384,14 @@ video-motion-previs check
 | `deep-agents-core` |
 | `deep-agents-memory` |
 | `deep-agents-orchestration` |
-| `deepagents` |
-| `langgraph-workflow` |
 | `langchain-bmad` |
 | `a2a-protocol` |
-| `mcp-server-design` |
 | `agent-benchmarking` |
 | `agent-observability` |
 | `multi-agent-eval-harness` |
 | `agent-memory-architecture` |
 | `agent-workflow` |
 | `agent-principles` |
-| `agent-development-principles` |
 
 ### 🧰 엔지니어링 (24개)
 
@@ -449,9 +443,9 @@ video-motion-previs check
 | `research` |
 | `korean-patent-search` |
 
-### 📣 비즈니스 (73개)
+### 📣 비즈니스 (70개)
 
-하위 분류: `marketing` (4), `support` (2), `publishing` (1), `pm-toolkit` (5), `pm-discovery` (13), `pm-strategy` (12), `pm-execution` (15), `pm-market-research` (7), `pm-analytics` (3), `pm-go-to-market` (6), `pm-growth` (5)
+하위 분류: `marketing` (4), `support` (2), `publishing` (1), `pm-toolkit` (5), `pm-discovery` (13), `pm-strategy` (12), `pm-execution` (12), `pm-market-research` (7), `pm-analytics` (3), `pm-go-to-market` (6), `pm-growth` (5)
 
 | Skill |
 |---|
@@ -499,9 +493,6 @@ video-motion-previs check
 | `outcome-roadmap` |
 | `pre-mortem` |
 | `prioritization-frameworks` |
-| `release-notes` |
-| `retro` |
-| `sprint-plan` |
 | `stakeholder-map` |
 | `summarize-meeting` |
 | `test-scenarios` |
@@ -807,7 +798,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 ## 📁 구조
 
 ```text
-├── .agent-skills/          ← 359개 스킬 폴더 (SKILL.md + 선택적 지원 파일)
+├── .agent-skills/          ← 350개 스킬 폴더 (SKILL.md + 선택적 지원 파일)
 ├── docs/                   ← 상세 가이드 (bmad, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
@@ -882,16 +873,23 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 | `eli5` | [DreambigOu/ELI5](https://github.com/DreambigOu/ELI5) | MIT |
 | `openocta` | [openocta/openocta](https://github.com/openocta/openocta) | Apache-2.0 래퍼 |
 | `open-code-review` | [alibaba/open-code-review](https://github.com/alibaba/open-code-review) | Apache-2.0 |
-| `pm-skills` + `pm-*` 스킬 65개 | [phuryn/pm-skills @ 8607e3b](https://github.com/phuryn/pm-skills) | MIT |
-| `langchain-*`, `langgraph-*`, `deep-agents-*` | [langchain-ai/langchain-skills @ 88df7d9](https://github.com/langchain-ai/langchain-skills) | MIT |
+| `pm-skills` + `pm-*` 스킬 62개 | [phuryn/pm-skills @ 8607e3b](https://github.com/phuryn/pm-skills) | MIT |
+| `langchain-*`, `langgraph-*`, `deep-agents-*` (10개) | [langchain-ai/langchain-skills @ 88df7d9](https://github.com/langchain-ai/langchain-skills) | MIT |
 | `higgsfield-*` (8개) | [higgsfield-ai/skills 0.12.0 @ d071406](https://github.com/higgsfield-ai/skills) | MIT |
 | `hwp`, `rhwp-edit`, `rhwp-advanced`, `korean-patent-search`, `k-skill-setup` | [NomaDamas/k-skill @ 783d3c3](https://github.com/NomaDamas/k-skill) | MIT (프록시 디렉터리는 AGPL-3.0, 미포함) |
-| `a2a-protocol`, `agent-*`, `multi-agent-eval-harness`, `reflexion-pattern`, `mcp-server-design`, `deepagents`, `langgraph-workflow`, `langchain-bmad` | [akillness/oh-my-gods @ 1b2779a](https://github.com/akillness/oh-my-gods) | MIT |
+| `a2a-protocol`, `agent-*`, `multi-agent-eval-harness`, `reflexion-pattern`, `langchain-bmad` (+4개는 정본 스킬로 병합, `retired_skills` 참조) | [akillness/oh-my-gods @ 1b2779a](https://github.com/akillness/oh-my-gods) | MIT |
 | Agent Skills Spec | [agentskills.io](https://agentskills.io/specification) | — |
 
 ---
 
 <!-- WHATS-NEW:START -->
+
+## 🆕 v2026-09-19 업데이트
+
+| 변경 | 내용 |
+|------|------|
+| **중복 스킬 9쌍 병합 (359 → 350)** | 카탈로그 전수 중복 감사(명시적 별칭 표시, 설명·본문 TF-IDF, 트리거 겹침, 동일 JTBD 수동 검토)로 같은 일을 하는 9쌍을 찾아 삭제가 아니라 **병합**했습니다: 정본 스킬이 중복본의 고유 내용과 트리거 문구를 흡수하고, 폴더를 제거한 뒤, 옛 이름을 `skills.json` `retired_skills`에 등록해 `jeo-skill install <옛이름>`이 대체 스킬을 안내합니다. 순수 별칭: `agent-development-principles` → `agent-principles`, `remotion-video-production` → `video-production`(오래 비어 있던 `references/` 3개를 `108fbaa^`에서 복원하고 `remotion-route-outs.md` 추가), `higgsfield-game-generation` → `higgsfield-websites`(드리프트 감사기는 `references/game-alias/`). oh-my-gods 래퍼를 공식 스킬로: `deepagents` → `deep-agents-core`(`references/quickstart-and-backends.md`), `langgraph-workflow` → `langgraph-fundamentals`(`references/production-patterns.md`), `mcp-server-design` → `mcp-builder`(`references/server-card-and-registry.md`). pm-skills 템플릿을 라우팅형 정본으로: `retro` → `sprint-retrospective`(Sailboat 프롬프트, 스프린트 요약 템플릿), `release-notes` → `changelog-maintenance`(기술→사용자 문장 변환표), `sprint-plan` → `task-planning`(`references/sprint-planning-recipe.md`). 병합된 이름을 가리키던 다른 스킬의 라우팅도 모두 재연결했습니다. |
+| **병합 대신 연관 그룹 3개** | 겹치지만 같은 일은 아닌 스킬은 중복 대신 관계로 선언했습니다: `llm-observability`(`agent-observability` 플랫폼 중립 계층 → `langsmith` / `opik` 운영 → `monitoring-observability`), `bug-diagnosis`(`log-analysis` → `debugging` → `diagnosing-bugs`, `debugging`이 어려운/불안정 버그의 HITL 추적을 `diagnosing-bugs`로 라우팅), `product-analytics`(`data-analysis` → `ab-test-analysis` / `cohort-analysis` → `looker-studio-bigquery`). 벤더링 패밀리 내부의 업스트림 분할(pm-skills, mattpocock, langchain-skills)과 공급자 선택(`aura-asset-images` / `unsplash-asset-images`)은 의도적으로 그대로 두었습니다. |
 
 ## 🆕 v2026-09-18 업데이트
 
