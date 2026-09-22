@@ -2,14 +2,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-350-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-351-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![GJC](https://img.shields.io/badge/GJC-gajae--code-181717?style=for-the-badge&logo=github)](https://github.com/akillness/gajae-code)
 [![jeo-code](https://img.shields.io/badge/jeo--code-jeo-181717?style=for-the-badge&logo=github)](https://github.com/akillness/jeo-code)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**카테고리형 스킬 350개 · 경량 선택 설치 · 압축 TOON 카탈로그 · 멀티플랫폼**
+**카테고리형 스킬 351개 · 경량 선택 설치 · 압축 TOON 카탈로그 · 멀티플랫폼**
 
 스펙 우선 멀티 에이전트 LLM 워크플로우 컬렉션입니다. 프롬프트 하나로 전체 설정을
 위임하거나, `jeo-skill` 라우터부터 설치해 필요한 웹, 인프라, 게임, 미디어, CLI,
@@ -79,7 +79,7 @@ curl -s https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-sk
 
 ### 경량 선택 설치(수동 / CI)
 
-350개 스킬 폴더 전체가 아니라 **`jeo-skill` 라우터부터 설치**합니다. 카테고리,
+351개 스킬 폴더 전체가 아니라 **`jeo-skill` 라우터부터 설치**합니다. 카테고리,
 하위 분류, 인터페이스, 번들, 연관 스킬을 탐색할 수 있으며 앱·모델·MCP 서버·런타임은
 실제 선택된 작업에서만 온디맨드로 설치합니다.
 
@@ -132,11 +132,11 @@ video-motion-previs check
 
 ## 📚 스킬 목록
 
-> 중앙 매니페스트: `.agent-skills/skills.json` · 350개 스킬 · 10개 기본 카테고리 · 하위 카테고리/인터페이스/관계 그룹 지원
+> 중앙 매니페스트: `.agent-skills/skills.json` · 351개 스킬 · 10개 기본 카테고리 · 하위 카테고리/인터페이스/관계 그룹 지원
 
-### 🌐 웹 (49개)
+### 🌐 웹 (50개)
 
-하위 분류: `frontend` (7), `backend` (3), `design` (12), `api` (2), `auth` (1), `data` (4), `testing` (3), `accessibility` (1), `performance` (1), `graphics` (10), `capture` (5)
+하위 분류: `frontend` (7), `backend` (3), `design` (12), `api` (2), `auth` (1), `data` (4), `testing` (4), `accessibility` (1), `performance` (1), `graphics` (10), `capture` (5)
 
 | Skill |
 |---|
@@ -189,6 +189,7 @@ video-motion-previs check
 | `moli` |
 | `design-taste-frontend` |
 | `higgsfield-websites` |
+| `stagehand` |
 
 ### 🏗 인프라 (13개)
 
@@ -798,7 +799,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 ## 📁 구조
 
 ```text
-├── .agent-skills/          ← 350개 스킬 폴더 (SKILL.md + 선택적 지원 파일)
+├── .agent-skills/          ← 351개 스킬 폴더 (SKILL.md + 선택적 지원 파일)
 ├── docs/                   ← 상세 가이드 (bmad, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
@@ -878,11 +879,19 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 | `higgsfield-*` (8개) | [higgsfield-ai/skills 0.12.0 @ d071406](https://github.com/higgsfield-ai/skills) | MIT |
 | `hwp`, `rhwp-edit`, `rhwp-advanced`, `korean-patent-search`, `k-skill-setup` | [NomaDamas/k-skill @ 783d3c3](https://github.com/NomaDamas/k-skill) | MIT (프록시 디렉터리는 AGPL-3.0, 미포함) |
 | `a2a-protocol`, `agent-*`, `multi-agent-eval-harness`, `reflexion-pattern`, `langchain-bmad` (+4개는 정본 스킬로 병합, `retired_skills` 참조) | [akillness/oh-my-gods @ 1b2779a](https://github.com/akillness/oh-my-gods) | MIT |
+| `stagehand` | [browserbase/stagehand](https://github.com/browserbase/stagehand) | MIT |
 | Agent Skills Spec | [agentskills.io](https://agentskills.io/specification) | — |
 
 ---
 
 <!-- WHATS-NEW:START -->
+
+## 🆕 v2026-09-22 업데이트
+
+| 변경 | 내용 |
+|------|------|
+| **Stagehand 브라우저 에이전트 스킬** | 고정한 `browserbase/stagehand` v4 SDK와 `browse` CLI를 위한 `stagehand`를 추가했습니다. 로컬·Browserbase·CDP 브라우저 선택, `act` / `observe` / `extract`, typed WebMCP, Search/Fetch, Playwright route-out, 읽기 전용 preflight, eval, 업스트림 근거 해시를 포함합니다. |
+| **온디맨드 런타임 경계** | 설치 가이드가 SDK·CLI·Chromium·Browserbase MCP·자격증명·유료 클라우드 서비스를 일괄 설치하지 않도록 갱신됐습니다. 현재 트리와 매니페스트에 `agent-browser`가 없어서 삭제할 대상은 없었습니다. |
 
 ## 🆕 v2026-09-19 업데이트
 
@@ -914,16 +923,6 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 | **Three.js 구현 스킬 10개 추가** | [CloudAI-X/threejs-skills](https://github.com/CloudAI-X/threejs-skills)를 바탕으로 `threejs-fundamentals`, `threejs-geometry`, `threejs-materials`, `threejs-lighting`, `threejs-textures`, `threejs-loaders`, `threejs-animation`, `threejs-interaction`, `threejs-shaders`, `threejs-postprocessing`을 추가했습니다. 각 스킬은 집중된 구현 계약, TOON 검색 표면, eval, 업스트림/공식 레퍼런스를 제공하며, 직접 렌더링 작업은 `web-game-development`의 게임 시스템 라우팅과 분리합니다. |
 | **Open Design 게임 UI 스킬 추가** | 콘셉트 검토, 증거 기반 handoff, 승인된 런타임 통합을 위한 `open-design-game-ui-concept`, `open-design-game-ui-handoff`, `open-design-game-ui-takeover`을 추가했습니다. |
 | **카탈로그와 설치 가이드 동기화** | `skills.json` 1.4.0, `skills.toon`, 양쪽 README 카탈로그, `setup-all-skills-prompt.md`를 187개 스킬 기준으로 업데이트했습니다. |
-
-## 🆕 v2026-07-28 업데이트
-
-| 변경 | 내용 |
-|------|------|
-| **카탈로그 152개 스킬** | 스킬 폴더 16개 제거(`lmstudio-cli`, `ohmg`, `omc`, `omx`, `prompt-repetition`, `setup-pre-commit`, `spec-stack`, `team`, `ui-component-patterns`, `ultraqa`, `ultrawork`, `user-guide-writing`, `vibe-kanban`, `video-production`, `web-design-guidelines`, `workflow-automation`), 3개 추가(`obsidian-mind`, `openspace`, `web-game-development`). `skills.json`, `skills.toon`, `skills-lock.json`, 양쪽 README 카탈로그 표를 재생성했고 `scripts/validate-catalog-projections.py`가 152개 기준으로 통과합니다. |
-| **플랫폼 전용 스킬 폐지** | `omc` / `ohmg` / `omx`가 사라지면서 매니페스트는 단일 공유 카탈로그가 되었습니다. `setup-all-skills-prompt.md`의 Step 1이 전체를 설치하고, Step 2의 플랫폼 설치 블록은 잔여 사본 감사로 교체되었으며, Step 4의 플랫폼 중복 검사는 공유 루트 그림자 검사로 바뀌었습니다. |
-| **Step 3g는 OpenCode 플러그인 설정만 유지** | `oh-my-claudecode`, `oh-my-codex`(OMX), `oh-my-agent`(OMA) 설치 블록은 제거된 라우팅 스킬을 위해서만 존재했으므로 삭제했습니다. `oh-my-openagent`(OMO) 블록은 그대로이며, `scripts/test-runtime-config-writers.sh`는 OMX 핸드오프 케이스를 "설정 미변경" 검증으로 교체하고 25개 케이스를 모두 통과합니다. |
-| **obsidian-mind / web-game-development 설명 축소** | 두 스킬의 frontmatter description이 1024자 제한을 넘겨 `skills add`에서 검색되지 않는 상태였습니다. 트리거 키워드를 유지한 채 제한 이내로 다시 작성했습니다. |
-| **끊긴 route-out 재배선** | 제거된 스킬로 라우팅하던 생존 스킬을 전부 재지정했습니다. `autopilot`은 `$team` / `$ultrawork` / `$ultraqa` exact-name shim 4형제의 마지막 고아라 함께 제거하고, `video-production`은 복구했습니다. `ui-component-patterns` 범위는 `design-system`이, `web-design-guidelines`는 `web-accessibility`(broad-review 모드)가, `user-guide-writing`은 `technical-writing`(end-user guide 모드)가, `workflow-automation`은 `deployment-automation`(CI/릴리스 잡 작성)이 흡수했고, `vibe-kanban`은 `task-planning` / `triage`로, `omc` / `omx` / `ohmg`는 외부 제품명(`oh-my-claudecode` / `oh-my-codex` / `oh-my-agent`)으로 바꿨습니다. `deep-dive`, `deepinit`의 `.omc` / `.omx`는 런타임 상태 경로라 그대로 뒀습니다. |
 
 > 📜 이전 기록: [`changelog/ko/`](changelog/ko/) (월별 파일, 최신순).
 

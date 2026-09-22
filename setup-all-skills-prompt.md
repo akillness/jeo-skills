@@ -1549,6 +1549,36 @@ setup or verification; it stays a task-triggered, user-confirmed action. See
 `mex/references/commands.md` for the full command reference.
 
 
+### Stagehand browser-agent SDK and `browse` CLI (on demand)
+
+The `stagehand` skill installs as prompt documents plus a read-only
+`stagehand-preflight.mjs` helper. Blanket setup never installs the upstream npm,
+Python, or Go SDK, never installs the global `browse` CLI, never launches
+Chromium, and never registers Browserbase MCP. Prepare it only when a task
+actually needs Stagehand v4, a `browse` session, WebMCP, or Browserbase cloud:
+
+```bash
+# 1. read-only prerequisite report; no credentials or values are printed
+node "$SKILLS_ROOT/stagehand/scripts/stagehand-preflight.mjs" --json
+
+# 2. choose one surface only after the user confirms the install boundary
+pnpm add @browserbasehq/stagehand@4.1.0 'zod@~4.4.3'   # TypeScript SDK
+pip install stagehand                             # Python SDK
+npm install -g browse                             # browse CLI
+# Go: go get github.com/browserbase/stagehand/packages/sdk-go/v4@v4.0.0
+```
+
+Use Node `>=22.18.0` for the v4 TypeScript SDK, Python `>=3.11` for the
+Python SDK, and Go `>=1.26` for the Go SDK. The audited `browse` CLI accepts
+Node `^20.19.0 || >=22.12.0`. Local SDK runs need Chromium and an explicit
+model-provider key; cloud runs need `BROWSERBASE_API_KEY` and may
+spend Browserbase, model, Search/Fetch, proxy, or context quota. Never put
+passwords, cookies, API keys, persistent profiles, network captures, or
+recordings in the repo. Read `stagehand/references/commands.md` for the
+local/cloud/CDP matrix and `stagehand/references/upstream-and-safety.md` for
+route-outs. The Browserbase MCP endpoint remains a user-approved manual client
+configuration, not part of blanket setup.
+
 ### ScrapingAnt MCP web fetch (ask once in full mode, needs a key)
 
 The `scrapingant-web-fetch` skill installs as documents plus

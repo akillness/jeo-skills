@@ -1,0 +1,80 @@
+{
+  "repository": "https://github.com/browserbase/stagehand",
+  "audited_commit": "4146eeaf1b3ecf73a8bc29c9bb97dbe0633c01f2",
+  "audited_at": "2026-09-22",
+  "license": {
+    "path": "LICENSE",
+    "spdx": "MIT",
+    "sha256": "fac7e7cd1cfc504054ee1fc53c38e0f3099d7357917e85a73792f6511fe0ea96"
+  },
+  "package_manifests": [
+    {
+      "path": "packages/sdk-ts/package.json",
+      "surface": "TypeScript SDK",
+      "version": "4.1.0",
+      "sha256": "d1487d001d48506e09122c3f4ca1016d3a042a52bd7e3290a93ae1f6232c4757"
+    },
+    {
+      "path": "packages/cli/package.json",
+      "surface": "browse CLI",
+      "version": "0.9.6",
+      "sha256": "944e6e9ddd7ebb14f4306128ed8d6052a8251ca9ae27f0c41d2c29bb653bcc5e"
+    }
+  ],
+  "evidence_files": [
+    {
+      "path": "packages/docs/v4/first-steps/quickstart.mdx",
+      "proves": "local, Browserbase, and CDP browser factories plus SDK setup",
+      "sha256": "b096000d0858147f4fb0a7dd95454e465ff1a74d0e7bfd5bbe8624b4380b0103"
+    },
+    {
+      "path": "packages/docs/v4/basics/act.mdx",
+      "proves": "act primitive and deterministic action replay",
+      "sha256": "dc04fdbaf1f45eef1f3a6d65333082789b20fa64578f86a47a34c48e43731b10"
+    },
+    {
+      "path": "packages/docs/v4/basics/observe.mdx",
+      "proves": "observe primitive and returned actions",
+      "sha256": "57ea2a94726881d1155e268351038b0027443025f8271f2cef639449049ae1ac"
+    },
+    {
+      "path": "packages/docs/v4/basics/extract.mdx",
+      "proves": "schema-backed extraction",
+      "sha256": "93707284858dd57786e846b60281922840b312f9bbdf7858afd2265bea50fd6c"
+    },
+    {
+      "path": "packages/docs/v4/basics/webmcp.mdx",
+      "proves": "page tools, schemas, annotations, invocation, and cancellation",
+      "sha256": "00438d74ba7add22bae308cfc6e94dc64e51cd2037d0106a6fedb96e6d80583f"
+    },
+    {
+      "path": "packages/docs/v4/configuration/browser.mdx",
+      "proves": "browser configuration boundaries",
+      "sha256": "597f83e7cdb884bee6123b1705485d61ebc935988ae0506e10ff3b1ed0a3d640"
+    },
+    {
+      "path": "packages/docs/v4/configuration/models.mdx",
+      "proves": "model and provider configuration",
+      "sha256": "ca9481364bfefcd32887713224db7e37fa2c077c6ec720d3730bce4f78240062"
+    },
+    {
+      "path": "packages/docs/v4/add-ons/search.mdx",
+      "proves": "Browserbase cloud Search helper",
+      "sha256": "5a8179ca3f659404063b51601c3be5fdc886f9908578cfb8145fb7eeca8c60d3"
+    },
+    {
+      "path": "packages/docs/v4/add-ons/fetch.mdx",
+      "proves": "Browserbase cloud Fetch helper",
+      "sha256": "459cee566e7f7fc87f569d6633029c11efaaba2320ff4892274f2382c7d36aca"
+    },
+    {
+      "path": "packages/docs/v4/migrations/playwright.mdx",
+      "proves": "migration limits and missing Playwright interop",
+      "sha256": "8e172a177ebbebe5342c86cfdb0ad5163066dcfdcfa94b61772f24ea4530103d"
+    }
+  ],
+  "notes": [
+    "Hashes identify the audited evidence snapshot; they do not replace reading the source.",
+    "The skill intentionally does not vendor upstream code or install packages during setup."
+  ]
+}

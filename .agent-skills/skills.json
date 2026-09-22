@@ -1,7 +1,7 @@
 {
-  "version": "2.0.0",
-  "generated": "2026-09-19",
-  "skill_count": 350,
+  "version": "2.1.0",
+  "generated": "2026-09-22",
+  "skill_count": 351,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -177,7 +177,8 @@
       "airship",
       "moli",
       "design-taste-frontend",
-      "higgsfield-websites"
+      "higgsfield-websites",
+      "stagehand"
     ],
     "infrastructure": [
       "deployment-automation",
@@ -545,7 +546,8 @@
       "testing": [
         "backend-testing",
         "browser-harness",
-        "playwriter"
+        "playwriter",
+        "stagehand"
       ],
       "accessibility": [
         "web-accessibility"
@@ -1328,7 +1330,8 @@
         "playwriter",
         "react-grab",
         "stitched-full-page-capture",
-        "browser-video-recording"
+        "browser-video-recording",
+        "stagehand"
       ]
     },
     "firebase-ai-stack": {
@@ -1346,7 +1349,8 @@
         "scrapling",
         "agent-reach",
         "x-twitter-scraper",
-        "ax"
+        "ax",
+        "stagehand"
       ]
     },
     "code-context-policy": {
@@ -12917,6 +12921,47 @@
       "keyword": "shopping-shorts",
       "version": "1.0.0",
       "source": "akillness/jeo-skills"
+    },
+    {
+      "name": "stagehand",
+      "description": "Operate Browserbase Stagehand, the MIT-licensed browser-agent SDK and `browse` CLI for local or Browserbase Chromium automation, natural-language `act`, `observe`, and `extract`, typed WebMCP calls, cloud Search/Fetch, Playwright migrations, and Browserbase MCP integration. Use when a user wants to build, run, debug, or migrate a Stagehand browser agent, choose local versus cloud browser execution, or configure the `browse` command surface. Triggers on: stagehand, @browserbasehq/stagehand, browserbase.launch, localBrowser.launch, act(), observe(), extract(), WebMCP, browse CLI, Browserbase MCP.",
+      "category": "web",
+      "subcategory": "testing",
+      "interface": "workflow",
+      "path": "stagehand/SKILL.md",
+      "tags": [
+        "stagehand",
+        "browserbase",
+        "browser-agents",
+        "browser-automation",
+        "act",
+        "observe",
+        "extract",
+        "webmcp",
+        "mcp",
+        "typescript",
+        "python",
+        "go",
+        "playwright-migration"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
+      ],
+      "keyword": "stagehand",
+      "version": "1.0.0",
+      "source": "https://github.com/browserbase/stagehand"
     }
   ]
 }
