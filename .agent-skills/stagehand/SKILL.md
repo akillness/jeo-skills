@@ -1,20 +1,8 @@
 ---
 name: "stagehand"
-description: >
-  Operate Browserbase Stagehand, the MIT-licensed browser-agent SDK and `browse`
-  CLI for local or Browserbase Chromium automation, natural-language `act`,
-  `observe`, and `extract`, typed WebMCP calls, cloud Search/Fetch, Playwright
-  migrations, and Browserbase MCP integration. Use when a user wants to build,
-  run, debug, or migrate a Stagehand browser agent, choose local versus cloud
-  browser execution, or configure the `browse` command surface. Triggers on:
-  stagehand, @browserbasehq/stagehand, browserbase.launch, localBrowser.launch,
-  act(), observe(), extract(), WebMCP, browse CLI, Browserbase MCP.
+description: "Operate Browserbase Stagehand, the MIT-licensed browser-agent SDK and `browse` CLI for local or Browserbase Chromium automation, natural-language `act`, `observe`, and `extract`, typed WebMCP calls, cloud Search/Fetch, Playwright migrations, and Browserbase MCP integration. Use when a user wants to build, run, debug, or migrate a Stagehand browser agent, choose local versus cloud browser execution, or configure the `browse` command surface. Triggers on: stagehand, @browserbasehq/stagehand, browserbase.launch, localBrowser.launch, act(), observe(), extract(), WebMCP, browse CLI, Browserbase MCP."
 license: "MIT"
-compatibility: >
-  Stagehand v4 local runs need Chromium and an explicitly supplied model provider
-  key; Browserbase cloud, Model Gateway, Search/Fetch, and MCP need a Browserbase
-  key and may incur usage charges. The bundled preflight is read-only and uses
-  only the standard Node.js library.
+compatibility: "Stagehand v4 local runs need Chromium and an explicitly supplied model provider key; Browserbase cloud, Model Gateway, Search/Fetch, and MCP need a Browserbase key and may incur usage charges. The bundled preflight is read-only and uses only the standard Node.js library. In Aside session sandboxes, use Browserbase cloud or remote CDP."
 allowed-tools: Bash Read Write Edit Glob Grep WebFetch
 ---
 
@@ -45,9 +33,14 @@ browser sessions and Browserbase resource operations.
 - Use the `browse` CLI for snapshot-driven navigation, cloud sessions, Fetch/
   Search, network diagnostics, Functions, templates, or Browse.sh skills.
 - Port a Playwright flow to Stagehand v4 and identify unsupported assumptions.
+- Execute Stagehand browser agents or automated tests within Aside sessions
+  using Browserbase cloud or an external CDP endpoint.
 
 ## Do not use this skill when
 
+- The task is running inside an Aside agent session and the user wants to inspect
+  or control Aside's own browser tabs -> use Aside's native `repl` (Playwright-
+  style `page`, `openTab`, `snapshot(page)`).
 - The task must reuse the user's already-open authenticated browser profile and
   live tabs -> use `playwriter`.
 - The task is repeatable clean-browser/CDP verification without the Stagehand
@@ -200,6 +193,17 @@ const stagehand = await Stagehand.create({
 Use an explicit CDP endpoint only when attaching to a browser the user asked you
 to reuse. Do not silently import cookies or browser profiles.
 
+**Execution environments & Aside sandbox note:**
+
+- **Host CLI (Claude Code, Codex, Cursor):** Local Chromium (`localBrowser.launch()`)
+  runs directly when Chromium or Chrome is installed on the host.
+- **Aside session sandbox:** In Aside, direct local Chromium display/window
+  launching is restricted by macOS/Aside sandbox policies. To run Stagehand
+  within an Aside agent session, use **Browserbase cloud** (`browserbase.launch({ apiKey })`)
+  or connect to an existing running Chrome instance via **CDP** (`localBrowser.connect({ cdpUrl })`).
+  For inspecting or driving Aside's own browser tabs, use Aside's native `repl`
+  tools (`page`, `snapshot(page)`) instead of Stagehand.
+
 ### 5. Drive the page in small, verifiable steps
 
 A robust Stagehand loop is navigation, inspect, one action, verify, then extract:
@@ -346,6 +350,30 @@ node scripts/stagehand-preflight.mjs --language ts --local --model --json
 
 Then use `localBrowser.launch()`, a narrow `zod/v4` schema, and an explicit
 post-action assertion before writing the extracted result.
+
+### Aside session execution (Browserbase cloud or remote CDP)
+
+Inside an Aside session or sandbox where local window creation is restricted,
+prefer cloud execution or an explicit CDP endpoint:
+
+```typescript
+import { browserbase, localBrowser, Stagehand } from "@browserbasehq/stagehand";
+
+// Option A: Browserbase Cloud execution
+const browser = await browserbase.launch({
+  apiKey: process.env.BROWSERBASE_API_KEY,
+});
+const stagehand = await Stagehand.create({ browser, cache: true });
+
+// Option B: Attach to an existing Chrome over CDP
+const cdpBrowser = await localBrowser.connect({
+  cdpUrl: "http://127.0.0.1:9222",
+});
+const cdpStagehand = await Stagehand.create({
+  browser: cdpBrowser,
+  model: { modelName: "openai/gpt-4o", apiKey: process.env.OPENAI_API_KEY },
+});
+```
 
 ### Existing live browser
 

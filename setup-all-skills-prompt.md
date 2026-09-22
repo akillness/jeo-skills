@@ -1572,7 +1572,10 @@ Use Node `>=22.18.0` for the v4 TypeScript SDK, Python `>=3.11` for the
 Python SDK, and Go `>=1.26` for the Go SDK. The audited `browse` CLI accepts
 Node `^20.19.0 || >=22.12.0`. Local SDK runs need Chromium and an explicit
 model-provider key; cloud runs need `BROWSERBASE_API_KEY` and may
-spend Browserbase, model, Search/Fetch, proxy, or context quota. Never put
+spend Browserbase, model, Search/Fetch, proxy, or context quota. In Aside
+sessions, direct local Chromium window launching is restricted by sandbox
+policies; run Stagehand via Browserbase cloud or remote CDP, and use Aside's
+native REPL tools (`page`, `snapshot`) for Aside's own browser tabs. Never put
 passwords, cookies, API keys, persistent profiles, network captures, or
 recordings in the repo. Read `stagehand/references/commands.md` for the
 local/cloud/CDP matrix and `stagehand/references/upstream-and-safety.md` for

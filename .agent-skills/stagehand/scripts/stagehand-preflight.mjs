@@ -194,7 +194,12 @@ if (target === "local" || hasFlag("--local")) {
       break;
     }
   }
-  check(checks, "local-chromium", Boolean(browser), browser || "Chrome/Chromium not found", true);
+  const isAside = Boolean(process.env.ASIDE_SKILL_RUNTIME || process.env.ASIDE_SESSION_ID);
+  let browserDetail = browser || "Chrome/Chromium not found";
+  if (isAside && browser) {
+    browserDetail += " (Aside sandbox: local display launch restricted; use --remote cloud or CDP attach)";
+  }
+  check(checks, "local-chromium", Boolean(browser), browserDetail, true);
 }
 
 if (target === "remote" || hasFlag("--remote")) {

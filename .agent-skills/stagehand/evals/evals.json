@@ -143,6 +143,18 @@
         "Clone and build the whole upstream monorepo by default.",
         "Install a package merely because the skill was loaded."
       ]
+    },
+    {
+      "id": "aside-session-route-out",
+      "prompt": "Control the browser tabs currently open in my Aside browser window.",
+      "expected": [
+        "Route to Aside's native repl tools (page, snapshot, openTab) or playwriter instead of launching an isolated Stagehand browser.",
+        "Explain that Stagehand in Aside sessions is for external/cloud browser tasks or Stagehand SDK code, not for direct control of Aside's internal UI."
+      ],
+      "must_not": [
+        "Try to launch local Chromium inside the Aside sandbox without cloud or CDP configuration.",
+        "Claim Stagehand can directly attach to Aside's internal page object without CDP."
+      ]
     }
   ]
 }

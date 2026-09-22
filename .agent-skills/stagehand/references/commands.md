@@ -78,6 +78,19 @@ Omit `model` only when the cloud project is intentionally configured to use
 Browserbase Model Gateway. Model Gateway and `cache: true` are not evidence that
 a flow is correct; verify the returned page state and extraction.
 
+## Aside session execution notes
+
+When running from an Aside agent session:
+
+- **Local Chromium launch:** The Aside sandbox environment does not permit
+  direct Chromium window/display spawning. `localBrowser.launch()` will fail or
+  hang inside the sandbox.
+- **Recommended path in Aside:** Use Browserbase cloud (`browserbase.launch()`)
+  or attach to an external running Chrome via CDP (`localBrowser.connect({ cdpUrl })`).
+- **Aside live browser tabs:** If the user wants to drive or inspect Aside's own
+  open tabs, do not use Stagehand; route to Aside's native `repl` tools (`page`,
+  `snapshot(page)`, `listBrowserTabs()`).
+
 ## `browse` CLI quick path
 
 Use a named session when multiple agents or tasks may run at once:
