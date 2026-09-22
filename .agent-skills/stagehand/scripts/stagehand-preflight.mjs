@@ -122,6 +122,21 @@ const language = valueFor("--language") || (
 const target = hasFlag("--remote") ? "remote" : hasFlag("--local") ? "local" : "unspecified";
 const checks = [];
 
+// Verified Aside-runtime signals: the daemon exports ASIDE_SKILL_RUNTIME and runs
+// the tool node from <home>/.aside/runtime/. Neither is set by a host CLI shell.
+const asideMarker = `${path.sep}.aside${path.sep}runtime${path.sep}`;
+const inAsideSandbox = Boolean(process.env.ASIDE_SKILL_RUNTIME)
+  || process.execPath.includes(asideMarker);
+if (inAsideSandbox) {
+  check(
+    checks,
+    "runtime-sandbox",
+    true,
+    "aside-session: local browser launch is unavailable; prefer Browserbase cloud or an external CDP endpoint",
+    false,
+  );
+}
+
 const nodeVersion = process.versions.node;
 const nodeRequired = language === "ts" || language === "all";
 check(
@@ -194,12 +209,18 @@ if (target === "local" || hasFlag("--local")) {
       break;
     }
   }
-  const isAside = Boolean(process.env.ASIDE_SKILL_RUNTIME || process.env.ASIDE_SESSION_ID);
+  // An Aside session runs bash inside a sandbox where launching Chrome aborts
+  // (SIGABRT / exit 134) even though the binary is present, so binary presence
+  // alone must not be reported as a usable local browser.
   let browserDetail = browser || "Chrome/Chromium not found";
-  if (isAside && browser) {
-    browserDetail += " (Aside sandbox: local display launch restricted; use --remote cloud or CDP attach)";
+  let localOk = Boolean(browser);
+  if (inAsideSandbox) {
+    localOk = false;
+    browserDetail = browser
+      ? `${browser} found, but launching it inside the Aside session sandbox aborts (SIGABRT/exit 134) — use --remote (Browserbase) or attach to an externally started CDP endpoint`
+      : "Chrome/Chromium not found, and the Aside session sandbox cannot launch one — use --remote (Browserbase) or an externally started CDP endpoint";
   }
-  check(checks, "local-chromium", Boolean(browser), browserDetail, true);
+  check(checks, "local-chromium", localOk, browserDetail, true);
 }
 
 if (target === "remote" || hasFlag("--remote")) {

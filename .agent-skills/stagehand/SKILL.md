@@ -2,7 +2,7 @@
 name: "stagehand"
 description: "Operate Browserbase Stagehand, the MIT-licensed browser-agent SDK and `browse` CLI for local or Browserbase Chromium automation, natural-language `act`, `observe`, and `extract`, typed WebMCP calls, cloud Search/Fetch, Playwright migrations, and Browserbase MCP integration. Use when a user wants to build, run, debug, or migrate a Stagehand browser agent, choose local versus cloud browser execution, or configure the `browse` command surface. Triggers on: stagehand, @browserbasehq/stagehand, browserbase.launch, localBrowser.launch, act(), observe(), extract(), WebMCP, browse CLI, Browserbase MCP."
 license: "MIT"
-compatibility: "Stagehand v4 local runs need Chromium and an explicitly supplied model provider key; Browserbase cloud, Model Gateway, Search/Fetch, and MCP need a Browserbase key and may incur usage charges. The bundled preflight is read-only and uses only the standard Node.js library. In Aside session sandboxes, use Browserbase cloud or remote CDP."
+compatibility: "Stagehand v4 local runs need Chromium and an explicitly supplied model provider key; Browserbase cloud, Model Gateway, Search/Fetch, and MCP need a Browserbase key and may incur usage charges. The bundled preflight is read-only and uses only the standard Node.js library. Inside an Aside session sandbox a local Chromium launch aborts, so the preflight blocks the local target there and the working paths are Browserbase cloud or an externally started CDP endpoint."
 allowed-tools: Bash Read Write Edit Glob Grep WebFetch
 ---
 
@@ -193,16 +193,20 @@ const stagehand = await Stagehand.create({
 Use an explicit CDP endpoint only when attaching to a browser the user asked you
 to reuse. Do not silently import cookies or browser profiles.
 
-**Execution environments & Aside sandbox note:**
+**Execution environments and the Aside sandbox:**
 
-- **Host CLI (Claude Code, Codex, Cursor):** Local Chromium (`localBrowser.launch()`)
-  runs directly when Chromium or Chrome is installed on the host.
-- **Aside session sandbox:** In Aside, direct local Chromium display/window
-  launching is restricted by macOS/Aside sandbox policies. To run Stagehand
-  within an Aside agent session, use **Browserbase cloud** (`browserbase.launch({ apiKey })`)
-  or connect to an existing running Chrome instance via **CDP** (`localBrowser.connect({ cdpUrl })`).
-  For inspecting or driving Aside's own browser tabs, use Aside's native `repl`
-  tools (`page`, `snapshot(page)`) instead of Stagehand.
+- **Host CLI (Claude Code, Codex, Cursor, Gemini CLI, OpenCode):** `localBrowser.launch()`
+  works when Chromium or Chrome is installed on the host.
+- **Aside session sandbox:** the Chrome binary is visible but launching it from the
+  session shell aborts immediately (`SIGABRT`, exit 134), including `--headless=new`.
+  Binary presence is therefore not proof of a usable local browser, and
+  `stagehand-preflight.mjs` reports `local-chromium` as a blocker when it detects the
+  Aside runtime. Use **Browserbase cloud** (`browserbase.launch({ apiKey })`) or attach
+  to a **CDP endpoint started outside the sandbox** (`localBrowser.connect({ cdpUrl })`).
+  Outbound HTTPS and loopback TCP both work from the sandbox, so either path is
+  reachable once the endpoint exists; no debugging port is open by default.
+- **Aside's own browser tabs:** Stagehand cannot attach to them. Use Aside's native
+  `repl` tools (`page`, `snapshot(page)`, `openTab`, `listBrowserTabs`) instead.
 
 ### 5. Drive the page in small, verifiable steps
 
@@ -353,8 +357,8 @@ post-action assertion before writing the extracted result.
 
 ### Aside session execution (Browserbase cloud or remote CDP)
 
-Inside an Aside session or sandbox where local window creation is restricted,
-prefer cloud execution or an explicit CDP endpoint:
+Inside an Aside session, where a local browser launch aborts, use cloud execution
+or a CDP endpoint that was started outside the sandbox:
 
 ```typescript
 import { browserbase, localBrowser, Stagehand } from "@browserbasehq/stagehand";
@@ -371,9 +375,12 @@ const cdpBrowser = await localBrowser.connect({
 });
 const cdpStagehand = await Stagehand.create({
   browser: cdpBrowser,
-  model: { modelName: "openai/gpt-4o", apiKey: process.env.OPENAI_API_KEY },
+  model: { modelName: "<provider/model>", apiKey: process.env.OPENAI_API_KEY },
 });
 ```
+
+Confirm the endpoint before connecting; nothing listens on `9222` unless the user
+started Chrome with `--remote-debugging-port` from a normal terminal.
 
 ### Existing live browser
 

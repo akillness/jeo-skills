@@ -80,16 +80,27 @@ a flow is correct; verify the returned page state and extraction.
 
 ## Aside session execution notes
 
-When running from an Aside agent session:
+Observed behaviour when running from an Aside agent session on macOS:
 
-- **Local Chromium launch:** The Aside sandbox environment does not permit
-  direct Chromium window/display spawning. `localBrowser.launch()` will fail or
-  hang inside the sandbox.
-- **Recommended path in Aside:** Use Browserbase cloud (`browserbase.launch()`)
-  or attach to an external running Chrome via CDP (`localBrowser.connect({ cdpUrl })`).
-- **Aside live browser tabs:** If the user wants to drive or inspect Aside's own
-  open tabs, do not use Stagehand; route to Aside's native `repl` tools (`page`,
-  `snapshot(page)`, `listBrowserTabs()`).
+| Capability | Observed result |
+| --- | --- |
+| `Google Chrome --headless=new --dump-dom` from the session shell | aborts with `SIGABRT` / exit `134`, empty stdout and stderr |
+| Loopback TCP (`http://127.0.0.1:<port>`) | reachable |
+| Outbound HTTPS to a cloud browser API | reachable (auth-rejected response, not a network failure) |
+| `http://127.0.0.1:9222/json/version` | `ECONNREFUSED` unless the user started Chrome with `--remote-debugging-port` |
+
+Consequences:
+
+- **Do not treat binary presence as a usable local browser.** `which`-style checks
+  pass while the launch still aborts. `scripts/stagehand-preflight.mjs` detects the
+  Aside runtime (`ASIDE_SKILL_RUNTIME`, or a tool `node` under `~/.aside/runtime/`)
+  and reports `local-chromium` as a blocker instead of a pass.
+- **Working paths in Aside:** Browserbase cloud (`browserbase.launch()`), or
+  `localBrowser.connect({ cdpUrl })` against a Chrome started outside the sandbox.
+- **Aside live browser tabs:** Stagehand cannot attach to them. Route to Aside's
+  native `repl` tools (`page`, `snapshot(page)`, `openTab`, `listBrowserTabs()`).
+- The preflight stays read-only: this detection is environment-based and never
+  launches a browser to test it.
 
 ## `browse` CLI quick path
 
