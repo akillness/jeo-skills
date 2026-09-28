@@ -1,7 +1,7 @@
 {
   "version": "2.1.0",
-  "generated": "2026-09-22",
-  "skill_count": 351,
+  "generated": "2026-09-28",
+  "skill_count": 352,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -356,7 +356,8 @@
       "multi-agent-eval-harness",
       "agent-memory-architecture",
       "agent-workflow",
-      "agent-principles"
+      "agent-principles",
+      "paperclip"
     ],
     "engineering": [
       "audit-reference-originality",
@@ -768,7 +769,8 @@
         "agent-system-design",
         "agent-tool-routing",
         "reflexion-pattern",
-        "agent-manager"
+        "agent-manager",
+        "paperclip"
       ],
       "agent-frameworks": [
         "microsoft-agent-framework",
@@ -1573,6 +1575,16 @@
         "looker-studio-bigquery"
       ],
       "note": "data-analysis is the generic dataset-to-insight workflow; ab-test-analysis and cohort-analysis (pm-skills) are the specific product-analytics methods; looker-studio-bigquery turns the result into stakeholder dashboards."
+    },
+    "paperclip-agent-orchestration": {
+      "mode": "adjacent",
+      "members": [
+        "paperclip",
+        "agent-manager",
+        "openexecutive",
+        "harness"
+      ],
+      "note": "Paperclip is the agent-company control plane; agent-manager is local tmux lifecycle management; openexecutive is a fixed virtual-executive application; harness owns agent-team architecture. These are adjacent surfaces, not aliases. Paperclip references were audited at paperclipai/paperclip 0f14d261233c545aa6a8a38ec253c498a5130fff (2026-09-27)."
     }
   },
   "skills": [
@@ -12962,6 +12974,40 @@
       "keyword": "stagehand",
       "version": "1.0.0",
       "source": "https://github.com/browserbase/stagehand"
+    },
+    {
+      "name": "paperclip",
+      "description": "Operate Paperclip's agent-company control plane: inspect and configure companies, agents, projects, workspaces, issues, company skills, routines, heartbeats, artifacts, and integrations. Use when the user names Paperclip or paperclipai, asks to manage a Paperclip company, agent, task, skill, routine, or run, or needs Paperclip setup or troubleshooting. Also triggers on agent company, Paperclip heartbeat, or Paperclip control plane. Route local tmux lifecycle work to agent-manager, executive-team app operations to openexecutive, and team architecture to harness.",
+      "category": "ai-agents",
+      "subcategory": "orchestration",
+      "interface": "cli",
+      "path": "paperclip/SKILL.md",
+      "tags": [
+        "paperclip",
+        "paperclipai",
+        "agent-company",
+        "agent-orchestration",
+        "control-plane",
+        "agent-operations",
+        "heartbeats",
+        "routines",
+        "skills"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit"
+      ],
+      "keyword": "paperclip, paperclipai, agent company, control plane",
+      "version": "1.0",
+      "source": "https://github.com/paperclipai/paperclip"
     }
   ]
 }

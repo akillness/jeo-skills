@@ -914,6 +914,25 @@ double-fire, and keep `packages/core/company/` and `.env` out of Git. See
 `openexecutive/references/operations-and-safety.md` for the full risk tiers and
 `openexecutive/references/setup-and-providers.md` for provider and cost control.
 
+### Paperclip agent-company control plane (on demand, performs live writes)
+
+`paperclip` installs as a local routing guide only. Blanket setup must not install or
+run the Paperclip app/CLI, start `test-drive` or a service, connect a provider/chat
+channel, create a company/agent/routine, start a heartbeat, call APIs, or upload
+artifacts.
+
+- Load `.agent-skills/paperclip/SKILL.md` only for an explicit Paperclip task; read
+  `references/upstream-map.md` and `references/operator-playbook.md` before live
+  operations.
+- Do not execute Paperclip's upstream shell helpers during setup; they make authenticated
+  API calls. If a user requests a helper later, inspect the actual checkout/commit, run
+  its supported `--dry-run`, confirm the target, and verify state by read-back.
+  `--retry-unknown-upload` accepts duplicate-file risk and is never automatic.
+- Never copy credentials into chat or files. Keep server/network exposure and paid-provider
+  configuration separate and confirmation-gated.
+- Route local tmux lifecycle work to `agent-manager`, executive-suite app operations to
+  `openexecutive`, and team design to `harness`.
+
 ### OpenOcta AIOps desktop and service agent (on demand, can operate production)
 
 The `openocta` skill installs as routing and safety documents plus two offline,

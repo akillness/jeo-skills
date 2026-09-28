@@ -1,0 +1,80 @@
+{
+  "skill_name": "paperclip",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "In Paperclip, install the browser skill for my company and make it available to the QA agent without removing its current skills.",
+      "expected_output": "A Paperclip company-skill workflow that checks the company and agent, inspects the built-in catalog first, installs the skill to the company library, then uses additive agent sync and verifies the assignment.",
+      "assertions": [
+        "Response keeps the operation on Paperclip rather than using a generic skills CLI",
+        "Response distinguishes company-library installation from agent assignment",
+        "Response uses additive mode `add` and does not replace the full desired-skill set",
+        "Response verifies the resulting library entry and agent assignment"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Create a Paperclip routine for my agent every 15 minutes. If an earlier run is still open or the server was offline, I don't want a pile-up.",
+      "expected_output": "A routine setup response that resolves the target agent/project and timezone, chooses a non-overlapping concurrency policy and explicit missed-run policy, and verifies the created routine. It must not guess missing IDs or create a routine before required values are known.",
+      "assertions": [
+        "Response selects Paperclip routine management",
+        "Response asks for or verifies the required agent and project identifiers",
+        "Response explicitly addresses concurrency and catch-up behavior",
+        "Response does not use `always_enqueue` or `enqueue_missed_with_cap` without a user need",
+        "Response verifies the routine and its next-run or run state after creation"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "I'm inside a Paperclip heartbeat. I PATCHed an issue to done, but curl timed out. Should I send the PATCH again?",
+      "expected_output": "A reconciliation-first answer: preserve the actual heartbeat run ID, read the issue back before retrying, and only retry if the write is proven absent and the operation is safe. Do not infer success or failure from the timeout alone.",
+      "assertions": [
+        "Response keeps the task in the Paperclip heartbeat/API context",
+        "Response says to read the issue state before retrying",
+        "Response requires the actual `X-Paperclip-Run-Id` for the heartbeat mutation",
+        "Response does not claim the update succeeded or failed without read-back evidence"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Use agent-manager to start three local tmux workers and monitor them; I do not have Paperclip installed.",
+      "expected_output": "The request routes to agent-manager for local tmux lifecycle work and does not install or set up Paperclip.",
+      "assertions": [
+        "Response routes to `agent-manager`",
+        "Response does not propose installing, launching, or configuring Paperclip"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Help me design the roles and handoffs for a new multi-agent team before I choose a runtime.",
+      "expected_output": "The request routes to harness for team architecture rather than configuring Paperclip prematurely.",
+      "assertions": [
+        "Response routes to `harness` for agent-team design",
+        "Response does not create Paperclip agents or a Paperclip company"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "The Paperclip artifact uploader lost its connection after upload. Add --retry-unknown-upload automatically so the next run succeeds.",
+      "expected_output": "The answer refuses to add the duplicate-risk retry automatically, reconciles the attachment list first, and requires explicit acceptance of duplicate risk if a retry remains necessary.",
+      "assertions": [
+        "Response identifies `--retry-unknown-upload` as a duplicate-risk override",
+        "Response checks Paperclip attachments before retrying",
+        "Response does not add the override automatically",
+        "Response separates upload/attachment success from external chat delivery"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Add the Paperclip skill to jeo-skills, sync the catalog and setup guide, validate the projections, and push. Preserve my pre-existing untracked files.",
+      "expected_output": "A scoped repository change that adds only the Paperclip skill, updates the manifest and generated README/TOON projections plus the setup guide, validates the result, and pushes only intended repository files while leaving unrelated untracked files untouched.",
+      "assertions": [
+        "The skill is locally authored and does not vendor or execute Paperclip upstream scripts",
+        "The manifest, generated projections, and setup guide are synchronized",
+        "The catalog count changes by exactly one",
+        "Pre-existing untracked files are neither deleted nor staged",
+        "Validation runs before commit and push"
+      ]
+    }
+  ]
+}
