@@ -1,18 +1,19 @@
 ---
 name: jev-control-plane
 description: Runbook for the Jev System One runtime harness that routes the jeo-skills catalog, prunes context, and gates memory/commit actions.
-last_updated: 2026-10-02
+last_updated: 2026-10-03
 ---
 
 # Jev Control Plane Runbook
 
-The jeo runtime enforces TypeSafe Jev (System One) decisions via a global harness that lives OUTSIDE this repo but reads this repo's catalog:
+The jeo runtime enforces TypeSafe Jev (System One) decisions via a harness whose source of truth now lives IN this repo and is installed globally by the setup guide:
 
-- Harness: `~/.agents/jev/jev-harness.mjs` (Node ESM + CLI) — canonical README with structure/flow/list + animated GIF at `~/.agents/jev/README.md`
-- Global rule: `~/.agents/rules/jev-control-plane.md`
-- Catalog source (read-only): `.agent-skills/skills.json` (resolved at `/Users/jangyoung/.superset/projects/jeo-skills/.agent-skills/skills.json`; fallback path in the harness)
+- Source of truth: `jev/` in this repo (`jev-harness.mjs`, `README.md`, `jev-control-plane.rule.md`)
+- Installed by: `setup-all-skills-prompt.md` Step 5 ("Jev control-plane harness") → `~/.agents/jev/jev-harness.mjs` + `~/.agents/rules/jev-control-plane.md`; verified with `self-test --mock` (8/8)
+- Catalog resolution (first VALID wins, stale candidates fall through): `$JEV_CATALOG_PATH` → `~/.agents/jeo-skills-repo/.agent-skills/skills.json` → `$PWD/.agent-skills/skills.json`
 - Discovery split: local catalog → `route-skills`/`jeo-skill`; weak local match emits `publicRegistryFallback` → use the `find-skills` skill (`npx skills find`, public skills.sh registry)
 - Provenance: verified contract runner at `~/.aside/u/0/sessions/2026-10-01_Drjt4MX2KkktQp3o/tmp/jev_runner.mjs` (`~/Desktop/JEV_HARNESS_README.md` is now a pointer stub)
+
 
 ## Commands
 - `node ~/.agents/jev/jev-harness.mjs route-skills [--mock] [--top-k N] "<task>"` — Top-K skill selection over catalog category families (~99% token savings vs full 352-skill catalog)

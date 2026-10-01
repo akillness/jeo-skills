@@ -415,6 +415,36 @@ command -v rtk >/dev/null 2>&1 && rtk init -g
 
 Do not use `cargo install rtk`; crates.io contains an unrelated package with that name.
 
+### Jev control-plane harness (System One)
+
+Install the fail-closed decision harness that routes the catalog (`route-skills`), prunes
+context (`prune-context`), and gates memory/commit actions (`review`). The source of truth
+ships in this repo under `jev/`; install it to the global agents dir. Idempotent: existing
+files are overwritten only from the repo copy, never hand-edited in place.
+
+```bash
+JEV_RAW="https://raw.githubusercontent.com/akillness/jeo-skills/main/jev"
+mkdir -p "$USER_HOME/.agents/jev" "$USER_HOME/.agents/rules"
+if [ -d "$PWD/jev" ]; then
+  # Running from a jeo-skills checkout: copy locally
+  cp "$PWD/jev/jev-harness.mjs" "$USER_HOME/.agents/jev/jev-harness.mjs"
+  cp "$PWD/jev/README.md"       "$USER_HOME/.agents/jev/README.md"
+  cp "$PWD/jev/jev-control-plane.rule.md" "$USER_HOME/.agents/rules/jev-control-plane.md"
+else
+  curl -fsSL "$JEV_RAW/jev-harness.mjs" -o "$USER_HOME/.agents/jev/jev-harness.mjs"
+  curl -fsSL "$JEV_RAW/README.md"       -o "$USER_HOME/.agents/jev/README.md"
+  curl -fsSL "$JEV_RAW/jev-control-plane.rule.md" -o "$USER_HOME/.agents/rules/jev-control-plane.md"
+fi
+
+# Verify: 8/8 mock contract checks must pass (requires Node 18+; no API key needed in mock)
+node "$USER_HOME/.agents/jev/jev-harness.mjs" self-test --mock
+```
+
+Live (non-mock) calls additionally require `JEV_API_KEY` in the environment; without it the
+harness fails closed to `unavailable` — that is expected, not an installation error. The
+harness reads the installed catalog's `skills.json` read-only and must never mutate it.
+
+
 ### Semble CLI and MCP server
 
 ```bash

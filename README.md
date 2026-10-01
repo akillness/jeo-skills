@@ -50,7 +50,7 @@ skills can be grouped without duplicating wrapper folders or moving runtime-faci
 
 ### 🧭 Jev Control Plane (System One)
 
-The jeo runtime routes this catalog through a fail-closed control-plane harness (`~/.agents/jev/jev-harness.mjs`, installed per machine — see its README for structure/flow):
+The jeo runtime routes this catalog through a fail-closed control-plane harness (source of truth in this repo at `jev/`, installed to `~/.agents/jev/jev-harness.mjs` by `setup-all-skills-prompt.md` Step 5 — see `jev/README.md` for structure/flow):
 
 | Stage | Command | Role |
 | :--- | :--- | :--- |

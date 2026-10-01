@@ -49,7 +49,7 @@
 
 ### 🧭 Jev 컨트롤 플레인 (System One)
 
-jeo 런타임은 이 카탈로그를 fail-closed 컨트롤 플레인 하네스(`~/.agents/jev/jev-harness.mjs`, 머신별 설치)로 라우팅합니다:
+jeo 런타임은 이 카탈로그를 fail-closed 컨트롤 플레인 하네스(소스는 이 리포의 `jev/`, `setup-all-skills-prompt.md` Step 5가 `~/.agents/jev/jev-harness.mjs`로 설치)로 라우팅합니다:
 
 | 단계 | 커맨드 | 역할 |
 | :--- | :--- | :--- |
