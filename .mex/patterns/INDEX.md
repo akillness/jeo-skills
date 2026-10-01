@@ -14,6 +14,7 @@ Lookup table for all pattern files in this directory. Check here before starting
 | [catalog-metadata-changes.md#task-import-an-upstream-family](catalog-metadata-changes.md#task-import-an-upstream-family) | Vendoring a whole upstream skill family (pinned commit, license, provenance, setup-prompt boundary, changelog) |
 | [catalog-metadata-changes.md#task-merge-a-duplicate-skill](catalog-metadata-changes.md#task-merge-a-duplicate-skill) | Two skills do the same job: absorb one into the canonical skill, retire the name, repoint route-outs |
 | [catalog-metadata-changes.md#task-update-an-existing-skills-metadata](catalog-metadata-changes.md#task-update-an-existing-skills-metadata) | Changing an existing skill's category, subcategory, description, or retiring it |
+| [context-layer-lifecycle.md](context-layer-lifecycle.md) | Operating, verifying, or extending the `ctx` tool that refreshes/GCs the mex, zvec-grep, llm-wiki and graphify context layers on hooks and pre-push |
 | [debug-catalog-ci-failures.md](debug-catalog-ci-failures.md) | Diagnosing a `.github/workflows/ci.yml` failure (manifest/README/TOON/frontmatter/flatten checks) |
 | [headroom-code-policy-install.md](headroom-code-policy-install.md) | Installing or repairing Headroom routing with Graphify preflights and the Claude Code source-mutation policy |
 | [jeo-skill-install-flow.md](jeo-skill-install-flow.md) | Understanding or debugging how `jeo-skill install` resolves a selection and delegates to `npx skills add` |

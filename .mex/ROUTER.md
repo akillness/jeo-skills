@@ -96,17 +96,22 @@ Then read this file fully before doing anything else in this session.
   config-writer24 passed locally. Real pinned npm transport passed six isolated
   runtime/scope placements (not runtime activation). This is a GitHub-distributed
   catalog, with no root npm build/publish target; nested manifests are templates.
-- Context-layer lifecycle policy (2026-10-01): decided via a Path B Socratic
-  interview (Ouroboros MCP timed out; CLI upgraded 0.50.5 → 0.55.3) plus six
-  parallel research reports. Seed `.ouroboros/seeds/seed_ctx_lifecycle_20261001.yaml`
-  validates against the installed `Seed` model (12 ACs, 12 constraints); reports in
-  `.ouroboros/research/{mex,zvec-grep,graphify,llm-wiki,patterns,audit}.md`.
-  Policy: hybrid triggers (TaskCompleted inline + SessionEnd detached `ctx refresh`;
-  per-repo `pre-push` `ctx checkpoint` chained before git-lfs), regenerable caches
-  deleted+rebuilt, authored pages archive→30d TTL, `raw/` exempt, per-layer locks
-  shared with ingest producers, single vault SSoT `~/vaults/llm-wiki`,
-  `graphify-out/` canonical with deletion-aware reconciliation, mex-agent 0.8.3.
-  Nothing has been implemented or deleted yet — next step is executing the seed.
+- Context-layer lifecycle (2026-10-01) — IMPLEMENTED. Seed
+  `.ouroboros/seeds/seed_ctx_lifecycle_20261001.yaml` (v1.0.1, 12 ACs) executed
+  directly after the Ouroboros run was cancelled (its worktree containment drops every
+  out-of-repo context reference, so it could never reach the vault/hooks). Global
+  `ctx` tool at `~/.agents/hooks/ctx/` + `~/.local/bin/ctx`; triggers wired
+  (Claude `TaskCompleted`/`SessionEnd`, this repo's `pre-push` chained before git-lfs);
+  vault consolidated onto `~/vaults/llm-wiki` (settings/jeo/jeopi/Codex repointed, dead
+  hooks removed, per-turn `graphify update` retired everywhere); mex-agent 0.8.3 with a
+  schema-v4 rebuilt graph.db. Three real checkpoints ran (two push-triggered, one
+  evidenced): 42.6 MB of regenerable legacy deleted, 27 authored pages + 2 foreign roots
+  archived under `wiki/archive/`, 650 MB zvec daemon log rotated, graphify dead-source
+  nodes 2867 → 0, raw/ byte-identical (1,440 files). 12/12 ACs pass
+  (`.ouroboros/evidence/acceptance-run.txt`); hermetic `ctx test dryrun-noop` proves a
+  dry-run changes zero bytes. Runbook: `patterns/context-layer-lifecycle.md`.
+  `.ouroboros/` is gitignored by the user's `/.ouroboros/` rule — seed/research/evidence
+  are not under version control.
 - Published router hardening as `fef4b525` to origin/main. GitHub Actions run
   `36867473636` passed catalog and Ubuntu/macOS installer jobs. A fresh isolated
   remote bootstrap fetched the published router byte-for-byte, passed doctor, and

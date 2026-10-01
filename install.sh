@@ -37,6 +37,8 @@ if [ "$DRY_RUN" = true ]; then
   fi
   info "Dry run: shared router destination $ROOT; bootstrap resolves target $AGENT; no changes made."
   info 'Runtime support, account selection, and catalog selections are validated during execution, not by this bootstrap preview.'
+  info 'After install, the optional Jev control plane TUI runs (jev/jev-setup.sh); set JEO_SKILLS_JEV=skip|api|local|ollama|lmstudio to force a mode.'
+
   exit 0
 fi
 
@@ -73,3 +75,17 @@ if [ "$GLOBAL" = true ] && ! command -v jeo-skill >/dev/null 2>&1; then
   info 'Add $HOME/.local/bin to PATH to use jeo-skill.'
 fi
 info 'Selected installation completed; runtime activation may require a reload.'
+
+# Optional Jev control plane (interactive TUI; JEO_SKILLS_JEV=skip|api|local|ollama|lmstudio to force).
+if [ "${JEO_SKILLS_JEV:-}" != skip ]; then
+  SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" 2>/dev/null && pwd || echo "$PWD")"
+  if [ -f "$SCRIPT_DIR/jev/jev-setup.sh" ]; then
+    bash "$SCRIPT_DIR/jev/jev-setup.sh" || info 'Jev setup did not complete; re-run jev/jev-setup.sh later.'
+  else
+    JEV_SETUP_URL="${JEO_SKILLS_RAW_BASE:-https://raw.githubusercontent.com/akillness/jeo-skills/main/jev}/jev-setup.sh"
+    curl -fsSL "$JEV_SETUP_URL" -o /tmp/jev-setup.$$ 2>/dev/null \
+      && bash /tmp/jev-setup.$$ || info 'Jev setup unavailable; run jev/jev-setup.sh from the repo later.'
+    rm -f /tmp/jev-setup.$$
+  fi
+fi
+
