@@ -28,7 +28,11 @@ mark_incomplete() {
 config_mode() {
   local config="$1"
 
-  stat -f '%Lp' "$config" 2>/dev/null || stat -c '%a' "$config" 2>/dev/null
+  if [ "$(uname)" = "Darwin" ]; then
+    stat -f '%Lp' "$config" 2>/dev/null
+  else
+    stat -c '%a' "$config" 2>/dev/null
+  fi
 }
 
 config_temp() {
