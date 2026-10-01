@@ -3,6 +3,9 @@ name: CI
 on:
   pull_request:
     branches: [ "main" ]
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
   test:
@@ -43,6 +46,14 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
+      - name: Verify required runtime tools
+        run: |
+          node --version
+          bun --version
+          python3 --version
+          jq --version
+      - name: Isolated runtime configuration writer regressions
+        run: /bin/bash scripts/test-runtime-config-writers.sh
       - name: Isolated runtime installation regressions
         run: python3 scripts/test_installer_regressions.py -v
       - name: Isolated runtime loader probe regressions

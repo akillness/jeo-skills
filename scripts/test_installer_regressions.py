@@ -177,6 +177,60 @@ class InstallerRegressions(unittest.TestCase):
             self.assert_skill(self.project / ".agents/skills", name)
         self.assertEqual(stale.read_text(), "raise SystemExit('STALE GLOBAL ROUTER EXECUTED')\n")
 
+    def test_global_bootstrap_upgrades_legacy_shared_router_and_keeps_cli_usable(self):
+        shared = self.home / ".agents/skills"
+        native = self.home / ".gjc/agent/skills"
+        router = shared / "jeo-skill/scripts/jeo-skill.py"
+        router.parent.mkdir(parents=True)
+        (router.parent.parent / "SKILL.md").write_text(
+            "---\nname: jeo-skill\ndescription: legacy standalone router\n---\nLegacy router\n")
+        router.write_text(
+            "#!/usr/bin/env python3\n"
+            "import argparse\n"
+            "parser = argparse.ArgumentParser(description='Legacy standalone router')\n"
+            "parser.add_argument('--version', action='version', version='legacy')\n"
+            "parser.parse_args()\n")
+        router.chmod(0o700)
+        link = self.home / ".local/bin/jeo-skill"
+        link.parent.mkdir(parents=True)
+        link.symlink_to(router)
+        for root in (shared, native):
+            old = root / "alpha"
+            old.mkdir(parents=True)
+            (old / "SKILL.md").write_text(
+                "---\nname: alpha\ndescription: legacy skill\n---\nOld alpha payload\n")
+        preserved = ((shared / "shared-private", "shared private skill\n"),
+                     (native / "native-private", "native private skill\n"))
+        for directory, content in preserved:
+            directory.mkdir()
+            (directory / "SKILL.md").write_text(content)
+
+        self.successful(self.bootstrap(INSTALL_GLOBAL="true", JEO_SKILLS_AGENT="gjc",
+                                       JEO_SKILLS_SELECTION="bundle", JEO_SKILLS_BUNDLE="pair"))
+
+        for root in (shared, native):
+            for name in ("jeo-skill", "alpha", "beta"):
+                self.assert_skill(root, name)
+            for script in ("jeo-skill.py", "install_support.py"):
+                self.assertEqual((root / "jeo-skill/scripts" / script).read_bytes(),
+                                 (self.source / ".agent-skills/jeo-skill/scripts" / script).read_bytes())
+        self.assertTrue(link.is_symlink())
+        self.assertEqual(link.resolve(), router.resolve())
+
+        # Exercise the installed executable, not the checkout CLI: aliases and its
+        # newly introduced helper must work through the original shared symlink.
+        self.successful(self.execute([str(link), "install", "alpha", "--agent", "agy",
+                                      "--global", "--yes", "--source", str(self.source)]))
+        cli_native = self.home / ".gemini/antigravity-cli/skills"
+        self.assert_skill(cli_native, "alpha")
+        self.assertFalse((cli_native / "beta").exists())
+        self.assertTrue(link.is_symlink())
+        self.assertEqual(link.resolve(), router.resolve())
+        for directory, content in preserved:
+            self.assertEqual((directory / "SKILL.md").read_text(), content)
+        self.assertFalse((native / "shared-private").exists())
+        self.assertFalse((shared / "native-private").exists())
+
     def test_successful_transport_without_output_is_not_success(self):
         result = self.cli("install", "alpha", "--agent", "universal", "--yes", "--source", str(self.source),
                           extra_env={"TRANSPORT_NO_OUTPUT": "1"})
@@ -232,6 +286,75 @@ class InstallerRegressions(unittest.TestCase):
                                        JEO_SKILLS_SELECTION="bundle", JEO_SKILLS_BUNDLE="pair",
                                        JEO_SKILLS_DRY_RUN="true"))
         self.assertEqual(self.snapshot(), before)
+
+    def test_documented_upgrade_previews_never_install_or_invoke_transport(self):
+        self.project = self.source
+        shutil.copy2(ROOT / "install.sh", self.project / "install.sh")
+        (self.bin / "npx").write_text(
+            f"#!{sys.executable}\n"
+            "import os\n"
+            "with open(os.path.join(os.environ['HOME'], 'npx-calls'), 'a') as calls:\n"
+            "    calls.write('invoked\\n')\n" + NPX)
+        cases = ((".agent-skills/jeo-skill/SKILL.md", "### Upgrade from Old PATH-Based Router"),
+                 ("setup-all-skills-prompt.md", "**Upgrade note:**"))
+        for document, heading in cases:
+            with self.subTest(document=document):
+                section = (ROOT / document).read_text().split(heading, 1)[1]
+                block = section.split("```bash\n", 1)[1].split("```", 1)[0]
+                # The first installer command is the preview; navigation is
+                # supplied by the isolated checkout used as the working directory.
+                preview = next(line for line in block.splitlines()
+                               if "./install.sh" in line and not line.lstrip().startswith("#"))
+                before = self.snapshot()
+                result = self.execute(["/bin/bash", "-c", preview])
+                self.successful(result)
+                self.assertEqual(self.snapshot(), before)
+                self.assertIn("Dry run:", result.stdout)
+
+    def test_documented_runtime_projections_preview_and_apply_exact_mode_selection(self):
+        guide = (ROOT / "setup-all-skills-prompt.md").read_text()
+        headings = ("### Step 4B — Materialize skills for GJC",
+                    "#### Antigravity CLI (agy)", "#### Antigravity IDE (desktop editor)")
+        blocks = [guide.split(heading, 1)[1].split("```bash\n", 1)[1].split("```", 1)[0]
+                  for heading in headings]
+        # The docs fetch the public catalog source; serve that one URL from the
+        # fixture at the transport boundary without rewriting the shell examples.
+        (self.bin / "npx").write_text(
+            f"#!{sys.executable}\nimport os, sys\n"
+            "if sys.argv[1:5] == ['--yes', 'skills@1.7.0', 'add', "
+            "'https://github.com/akillness/jeo-skills']:\n"
+            "    sys.argv[4] = os.environ['JEO_SKILLS_SOURCE']\n" + NPX)
+        for runtime in ("gjc", "agy", "antigravity"):
+            executable = self.bin / runtime
+            executable.write_text("#!/bin/sh\nexit 0\n")
+            executable.chmod(0o700)
+        catalog = json.loads(self.catalog.read_text())
+        catalog["bundles"]["starter"] = ["jeo-skill", "alpha"]
+        self.catalog.write_text(json.dumps(catalog))
+        cases = (("minimal", ["jeo-skill"]),
+                 ("core", ["jeo-skill", "alpha"]),
+                 ("full", ["jeo-skill", "alpha", "beta"]))
+        for mode, selected in cases:
+            with self.subTest(mode=mode):
+                home = self.home / mode
+                shared = home / ".agents/skills"
+                shutil.copytree(self.source / ".agent-skills/jeo-skill", shared / "jeo-skill")
+                result = self.execute(["/bin/bash", "-c", "\n".join(blocks)], extra_env={
+                    "HOME": str(home), "USER_HOME": str(home), "SKILLS_ROOT": str(shared),
+                    "ASIDE_MODE": mode,
+                })
+                self.successful(result)
+                # Each runtime must preview and apply the same resolved selection,
+                # not skip a branch or silently continue after selection failure.
+                announcements = [line for line in result.stdout.splitlines() if line.startswith("Selected ")]
+                self.assertEqual(announcements,
+                                 [f"Selected {len(selected)} skill(s): {', '.join(selected)}"] * 6)
+                for destination in (home / ".gjc/agent/skills",
+                                    home / ".gemini/antigravity-cli/skills",
+                                    home / ".gemini/config/skills"):
+                    self.assertEqual({path.name for path in destination.iterdir()}, set(selected))
+                    for name in selected:
+                        self.assert_skill(destination, name)
 
     def test_bootstrap_missing_router_does_not_fall_back_to_global(self):
         stale = self.home / ".agents/skills/jeo-skill/scripts/jeo-skill.py"
