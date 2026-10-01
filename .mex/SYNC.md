@@ -1,0 +1,64 @@
+# Sync — Realign This Scaffold
+
+> Last updated: 2026-10-01 — the helper shell script this file used to recommend was
+> never shipped with the scaffold; the commands below are the real CLI surface. The
+> binary is `~/.local/bin/mex-agent` (bare `mex` on this machine is TeX Live, never use it).
+
+## Recommended: drift check, then a dry-run sync
+
+```bash
+~/.local/bin/mex-agent check              # full drift report
+~/.local/bin/mex-agent check --quiet      # one-liner: "drift score 85/100 (1 error)"
+~/.local/bin/mex-agent sync --dry-run     # preview the targeted fix prompts, write nothing
+```
+
+`check` shows exactly what's wrong; `sync` (without `--dry-run`) then offers:
+1. **Targeted sync** — AI fixes only the flagged files (fastest, cheapest)
+2. **Full resync** — AI re-reads everything and updates all scaffold files
+3. **Prompt export** — shows the prompts for manual paste
+4. **Exit** — fix it yourself
+
+> **Version note:** mex-agent 0.7.x `check` has a side effect — it writes `.mex/graph.db`
+> (fixed in 0.7.3+). On 0.7.x, rebuild the graph explicitly with `~/.local/bin/mex-agent graph`
+> instead; the global `ctx checkpoint` (git pre-push) does this for you once mex-agent ≥ 0.8.3.
+
+## Manual Resync
+
+If you prefer to paste a prompt manually, or don't have the CLI built:
+
+---
+
+**SYNC PROMPT — copy everything between the lines:**
+
+```
+You are going to resync the AI context scaffold for this project.
+The scaffold may be out of date — the codebase has changed since it was last populated.
+
+First, read all files in context/ to understand the current scaffold state.
+Then explore what has changed in the codebase since the scaffold was last updated.
+Check the last_updated dates in the YAML frontmatter of each file.
+
+For each context/ file:
+1. Compare the current scaffold content to the actual codebase
+2. Identify what has changed, been added, or been removed
+3. Update the file to reflect the current state
+
+Critical rules for updating:
+- Use surgical, targeted edits — NOT full file rewrites. Read the existing content,
+  identify what changed, and update only those sections.
+- PRESERVE YAML frontmatter structure. Never delete or rewrite the entire frontmatter block.
+  Edit individual fields only. The edges, triggers, name, and description fields must
+  survive every sync. If you need to update edges, add or remove individual entries —
+  do not replace the entire array.
+- In context/decisions.md: NEVER delete existing decisions.
+  If a decision has changed, mark the old entry as "Superseded by [new decision title]"
+  and add the new decision above it with today's date.
+- In all other files: update content to reflect current reality
+- Update last_updated in the YAML frontmatter of every file you change
+- After updating each file, update ROUTER.md Current Project State
+
+When done, report:
+- Which files were updated and what changed
+- Any decisions that were superseded
+- Any slots that could not be filled with confidence
+```

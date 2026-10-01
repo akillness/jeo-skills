@@ -111,3 +111,14 @@ graphify-out/
 
 # llm-wiki / graphify hook output (project-scoped, generated per prompt)
 .graphify/
+
+# agent context layers (regenerable)
+# Managed by `ctx` (~/.local/bin/ctx): rebuilt at checkpoint, GC'd by TTL.
+# Keep the curated mex scaffold tracked-able: .mex/*.md, .mex/context/, .mex/patterns/, .mex/events/ are NOT ignored.
+.zvec-grep/
+.mex/graph.db*
+.mex/wiki.db*
+.mex/local/
+graphify-out/
+llm-wiki/
+.ouroboros/evidence/
