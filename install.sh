@@ -1,95 +1,75 @@
 #!/usr/bin/env bash
-# Lightweight jeo-skills installer. Default: install only the jeo-skill router.
+# Bootstrap one shared router, then let that router resolve the requested target.
 set -euo pipefail
 
 REPO_URL="${JEO_SKILLS_SOURCE:-https://github.com/akillness/jeo-skills}"
-SELECTION="${JEO_SKILLS_SELECTION:-router}" # router | bundle | category | all
-BUNDLE="${JEO_SKILLS_BUNDLE:-starter}"
-CATEGORY="${JEO_SKILLS_CATEGORY:-}"
-SUBCATEGORY="${JEO_SKILLS_SUBCATEGORY:-}"
+SELECTION="${JEO_SKILLS_SELECTION:-router}"
 AGENT="${JEO_SKILLS_AGENT:-universal}"
 GLOBAL="${INSTALL_GLOBAL:-true}"
-
+DRY_RUN="${JEO_SKILLS_DRY_RUN:-false}"
 info() { printf '[jeo-skills] %s\n' "$*"; }
 fail() { printf '[jeo-skills] ERROR: %s\n' "$*" >&2; exit 1; }
 
-# `command -v` only proves a name resolves, not that it runs. macOS ships
-# /usr/bin/python3 and /usr/bin/git as Xcode Command Line Tools stubs that
-# resolve fine but exit non-zero with "You have not agreed to the Xcode
-# license agreements" until `sudo xcodebuild -license accept` is run. Execute
-# each prerequisite once so a broken toolchain fails here with a clear reason
-# instead of midway through the install.
-command -v python3 >/dev/null 2>&1 || fail "Python 3.9+ is required"
-python3 -c 'import sys; sys.exit(0 if sys.version_info >= (3, 9) else 1)' >/dev/null 2>&1 \
-  || fail "python3 resolves to $(command -v python3) but is not a usable Python 3.9+. On macOS, run 'sudo xcodebuild -license accept' or install a real Python 3."
-command -v npx >/dev/null 2>&1 || fail "Node.js/npx is required"
-npx --version >/dev/null 2>&1 \
-  || fail "npx resolves to $(command -v npx) but does not run. Reinstall Node.js."
+case "$GLOBAL:$DRY_RUN" in true:true|true:false|false:true|false:false) ;; *) fail 'INSTALL_GLOBAL and JEO_SKILLS_DRY_RUN must be true or false' ;; esac
+case "$SELECTION" in router|bundle|all) ;; category) [ -n "${JEO_SKILLS_CATEGORY:-}" ] || fail 'JEO_SKILLS_CATEGORY is required' ;; *) fail 'JEO_SKILLS_SELECTION must be router, bundle, category, or all' ;; esac
+if [ "$AGENT" = aside ] && [ "$GLOBAL" != true ]; then fail 'Aside is account-scoped; INSTALL_GLOBAL=true is required'; fi
 
-ADD_ARGS=(--skill jeo-skill --agent "$AGENT" --yes --copy --full-depth)
-if [ "$GLOBAL" = "true" ]; then
-  ADD_ARGS+=(--global)
-fi
-
-info "Installing the lightweight jeo-skill router only"
-npx --yes skills add "$REPO_URL" "${ADD_ARGS[@]}"
-
-find_cli() {
-  local candidate
-  for candidate in \
-    "$HOME/.agents/skills/jeo-skill/scripts/jeo-skill.py" \
-    "$HOME/.claude/skills/jeo-skill/scripts/jeo-skill.py" \
-    "$PWD/.agents/skills/jeo-skill/scripts/jeo-skill.py" \
-    "$PWD/.claude/skills/jeo-skill/scripts/jeo-skill.py"; do
-    if [ -f "$candidate" ]; then
-      printf '%s\n' "$candidate"
-      return 0
-    fi
-  done
-  return 1
-}
-
-CLI_PATH="$(find_cli)" || fail "jeo-skill installed, but its CLI path was not found"
-python3 "$CLI_PATH" link
-
-# `link` drops a symlink in ~/.local/bin, which is NOT on the default macOS
-# PATH (/etc/paths has no ~/.local/bin). Invoking a bare `jeo-skill` here would
-# abort the whole installer under `set -e` on a clean machine, after the
-# install already succeeded. Always drive the CLI through its resolved path.
-run_cli() { python3 "$CLI_PATH" "$@"; }
-
-run_cli doctor
-
-if ! command -v jeo-skill >/dev/null 2>&1; then
-  info "Note: $HOME/.local/bin is not on your PATH, so the 'jeo-skill' command"
-  info "      is not callable yet. Add this to your shell profile:"
-  info "        export PATH=\"\$HOME/.local/bin:\$PATH\""
-fi
-
+ROOT="$PWD/.agents/skills"
+if [ "$GLOBAL" = true ]; then ROOT="$HOME/.agents/skills"; fi
+CLI_PATH="$ROOT/jeo-skill/scripts/jeo-skill.py"
+TARGET_ARGS=(--source "$REPO_URL" --agent "$AGENT")
+if [ -n "${JEO_SKILLS_ASIDE_HOME:-}" ]; then TARGET_ARGS+=(--aside-home "$JEO_SKILLS_ASIDE_HOME"); fi
+if [ -n "${JEO_SKILLS_ASIDE_ACCOUNT:-}" ]; then TARGET_ARGS+=(--aside-account "$JEO_SKILLS_ASIDE_ACCOUNT"); fi
+ADD_ARGS=(--skill jeo-skill --agent universal --yes --copy --full-depth)
+if [ "$GLOBAL" = true ]; then ADD_ARGS+=(--global); TARGET_ARGS+=(--global); fi
+SELECT_ARGS=()
 case "$SELECTION" in
-  router)
-    info "Router ready. No catalog skills or heavy dependencies were installed."
-    ;;
-  bundle)
-    info "Installing curated bundle: $BUNDLE"
-    SELECT_ARGS=(--bundle "$BUNDLE" --agent "$AGENT" --yes)
-    if [ "$GLOBAL" = "true" ]; then SELECT_ARGS+=(--global); fi
-    run_cli install "${SELECT_ARGS[@]}"
-    ;;
-  category)
-    [ -n "$CATEGORY" ] || fail "JEO_SKILLS_CATEGORY is required for category mode"
-    SELECT_ARGS=(--category "$CATEGORY" --agent "$AGENT" --yes)
-    if [ "$GLOBAL" = "true" ]; then SELECT_ARGS+=(--global); fi
-    if [ -n "$SUBCATEGORY" ]; then SELECT_ARGS+=(--subcategory "$SUBCATEGORY"); fi
-    run_cli install "${SELECT_ARGS[@]}"
-    ;;
-  all)
-    info "Explicit full install selected"
-    FULL_ARGS=(--skill '*' --agent "$AGENT" --yes --copy --full-depth)
-    if [ "$GLOBAL" = "true" ]; then FULL_ARGS+=(--global); fi
-    npx --yes skills add "$REPO_URL" "${FULL_ARGS[@]}"
-    ;;
-  *)
-    fail "JEO_SKILLS_SELECTION must be router, bundle, category, or all"
-    ;;
+  bundle) SELECT_ARGS=(--bundle "${JEO_SKILLS_BUNDLE:-starter}") ;;
+  category) SELECT_ARGS=(--category "$JEO_SKILLS_CATEGORY"); if [ -n "${JEO_SKILLS_SUBCATEGORY:-}" ]; then SELECT_ARGS+=(--subcategory "$JEO_SKILLS_SUBCATEGORY"); fi ;;
+  all) SELECT_ARGS=(--all) ;;
 esac
+
+if [ "$DRY_RUN" = true ]; then
+  printf 'Command: '; printf '%q ' npx --yes skills@1.7.0 add "$REPO_URL" "${ADD_ARGS[@]}"; printf '\n'
+  printf 'Command: '; printf '%q ' python3 "$CLI_PATH" bootstrap "${TARGET_ARGS[@]}"; printf '\n'
+  if [ "$SELECTION" != router ]; then
+    printf 'Command: '; printf '%q ' python3 "$CLI_PATH" install "${TARGET_ARGS[@]}" "${SELECT_ARGS[@]}" --yes; printf '\n'
+  fi
+  info "Dry run: shared router destination $ROOT; bootstrap resolves target $AGENT; no changes made."
+  info 'Runtime support, account selection, and catalog selections are validated during execution, not by this bootstrap preview.'
+  exit 0
+fi
+
+command -v python3 >/dev/null 2>&1 || fail 'Python 3.9+ is required'
+python3 -c 'import sys; sys.exit(0 if sys.version_info >= (3, 9) else 1)' >/dev/null 2>&1 || fail 'python3 is not usable; check your Python installation or Xcode license'
+command -v node >/dev/null 2>&1 || fail 'Node.js 22.20+ is required by skills@1.7.0'
+node -e 'const v=process.versions.node.split(".").map(Number);process.exit(v[0]>22||(v[0]===22&&v[1]>=20)?0:1)' || fail 'Node.js 22.20+ is required by skills@1.7.0'
+command -v npx >/dev/null 2>&1 || fail 'Node.js/npx is required'
+npx --version >/dev/null 2>&1 || fail 'npx does not run; reinstall Node.js'
+# Do not allow the bootstrap transport to replace linked user installations.
+python3 - "$ROOT" "$HOME" "$PWD" <<'PY'
+import pathlib, sys
+root = pathlib.Path(sys.argv[1])
+scope = pathlib.Path(sys.argv[2]) if pathlib.Path(sys.argv[2]) in root.parents else pathlib.Path(sys.argv[3])
+parents = list(root.parents)
+parents = parents[:parents.index(scope) + 1] if scope in parents else []
+for path in (root, *parents, root / 'jeo-skill'):
+    if path.is_symlink():
+        sys.exit(f'Refusing symlink destination: {path}')
+if (root / 'jeo-skill').is_dir():
+    for path in (root / 'jeo-skill').rglob('*'):
+        if path.is_symlink():
+            sys.exit(f'Refusing symlink in router tree: {path}')
+PY
+
+info 'Installing the lightweight shared jeo-skill router'
+npx --yes skills@1.7.0 add "$REPO_URL" "${ADD_ARGS[@]}"
+[ -f "$CLI_PATH" ] && [ -f "$ROOT/jeo-skill/SKILL.md" ] && [ -f "$ROOT/jeo-skill/scripts/install_support.py" ] || fail "Router verification failed at $ROOT"
+python3 "$CLI_PATH" bootstrap "${TARGET_ARGS[@]}"
+if [ "$SELECTION" != router ]; then
+  python3 "$CLI_PATH" install "${TARGET_ARGS[@]}" "${SELECT_ARGS[@]}" --yes
+fi
+if [ "$GLOBAL" = true ] && ! command -v jeo-skill >/dev/null 2>&1; then
+  info 'Add $HOME/.local/bin to PATH to use jeo-skill.'
+fi
+info 'Selected installation completed; runtime activation may require a reload.'

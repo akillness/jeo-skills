@@ -7,6 +7,7 @@ import argparse
 import json
 import os
 import re
+import shlex
 import shutil
 import subprocess
 import sys
@@ -14,6 +15,9 @@ import urllib.error
 import urllib.request
 from pathlib import Path
 from typing import Any, Iterable
+
+sys.dont_write_bytecode = True
+from install_support import copy_tree, require_safe_path, require_safe_tree, resolve_aside_user
 
 DEFAULT_SOURCE = "https://github.com/akillness/jeo-skills"
 DEFAULT_CATALOG_URL = (
@@ -23,6 +27,8 @@ DEFAULT_CATALOG_URL = (
 CACHE_PATH = Path.home() / ".cache" / "jeo-skill" / "skills.json"
 BIN_PATH = Path.home() / ".local" / "bin" / "jeo-skill"
 TOKEN_RE = re.compile(r"[a-z0-9]+")
+SKILLS_PACKAGE = "skills@1.7.0"
+AGENT_ALIASES = {"jeopi": "universal", "jeo": "universal", "omp": "universal", "gjc": "universal", "aside": "universal", "agy": "antigravity-cli"}
 
 
 class JeoSkillError(RuntimeError):
@@ -65,7 +71,7 @@ def read_json(path: Path) -> dict[str, Any]:
         raise JeoSkillError(f"Cannot read catalog {path}: {error}") from error
 
 
-def download_catalog() -> dict[str, Any]:
+def download_catalog(cache: bool = True) -> dict[str, Any]:
     request = urllib.request.Request(
         DEFAULT_CATALOG_URL,
         headers={"User-Agent": "jeo-skill/1.0"},
@@ -82,12 +88,13 @@ def download_catalog() -> dict[str, Any]:
             f"{error}"
         ) from error
 
-    CACHE_PATH.parent.mkdir(parents=True, exist_ok=True)
-    CACHE_PATH.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    if cache:
+        CACHE_PATH.parent.mkdir(parents=True, exist_ok=True)
+        CACHE_PATH.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     return data
 
 
-def load_catalog() -> tuple[dict[str, Any], str]:
+def load_catalog(cache: bool = True) -> tuple[dict[str, Any], str]:
     seen: set[Path] = set()
     for candidate in local_catalog_candidates():
         candidate = candidate.resolve()
@@ -96,7 +103,7 @@ def load_catalog() -> tuple[dict[str, Any], str]:
         seen.add(candidate)
         if candidate.is_file():
             return read_json(candidate), str(candidate)
-    return download_catalog(), DEFAULT_CATALOG_URL
+    return download_catalog(cache=cache), DEFAULT_CATALOG_URL
 
 
 def skill_index(catalog: dict[str, Any]) -> dict[str, dict[str, Any]]:
@@ -275,6 +282,8 @@ def resolve_install_selection(
 ) -> list[str]:
     index = skill_index(catalog)
     selected = list(args.names)
+    if args.all:
+        selected.extend(index)
 
     if args.bundle:
         bundles = catalog.get("bundles", {})
@@ -318,36 +327,164 @@ def resolve_install_selection(
 
 
 def install_command(args: argparse.Namespace, selected: list[str]) -> list[str]:
-    command = ["npx", "--yes", "skills", "add", args.source, "--skill", *selected]
+    command = ["npx", "--yes", SKILLS_PACKAGE, "add", args.source, "--skill", *selected,
+               "--agent", AGENT_ALIASES.get(args.agent, args.agent), "--copy", "--full-depth"]
     if args.global_install:
         command.append("--global")
-    if args.agent:
-        command.extend(["--agent", args.agent])
     if args.yes:
         command.append("--yes")
     return command
 
 
+def install_root(args: argparse.Namespace) -> Path | None:
+    agent = AGENT_ALIASES.get(args.agent, args.agent)
+    home = Path.home()
+    base = home if args.global_install else Path.cwd()
+    shared = {"universal", "cline", "codex", "cursor", "gemini-cli", "opencode", "antigravity", "antigravity-cli"}
+    if not args.global_install:
+        relative = ".agents/skills" if agent in shared else {
+            "claude-code": ".claude/skills", "pi": ".pi/skills", "crush": ".crush/skills"
+        }.get(agent)
+        return base / relative if relative else None
+    if agent in shared:
+        return home / ".agents/skills"
+    roots = {
+        "claude-code": Path(os.environ.get("CLAUDE_CONFIG_DIR", "").strip() or str(home / ".claude")) / "skills",
+        "pi": home / ".pi/agent/skills", "crush": home / ".config/crush/skills",
+    }
+    return roots.get(agent)
+
+
+def projection_root(args: argparse.Namespace) -> Path | None:
+    if args.agent == "aside":
+        if not args.global_install:
+            raise JeoSkillError("Aside is account-scoped; pass --global")
+        return resolve_aside_user(Path(args.aside_home), args.aside_account)
+    if args.aside_account or args.aside_home != str(Path.home() / ".aside"):
+        raise JeoSkillError("Aside options require --agent aside")
+    if args.agent == "gjc":
+        if not args.global_install:
+            return Path.cwd() / ".gjc/skills"
+        return Path.home() / gjc_config_name().lstrip("/") / "agent/skills"
+    if args.global_install:
+        agent = AGENT_ALIASES.get(args.agent, args.agent)
+        if agent == "antigravity-cli":
+            return Path.home() / ".gemini/antigravity-cli/skills"
+        if agent == "antigravity":
+            return Path.home() / ".gemini/config/skills"
+    return None
+
+
+def gjc_config_name() -> str:
+    # Match GJC's native scanner, including its project-dotenv trust guard.
+    local_values = {}
+    try:
+        for line in (Path.cwd() / ".env").read_text(encoding="utf-8").splitlines():
+            key, separator, value = line.strip().partition("=")
+            if separator and key.strip() in {"GJC_CONFIG_DIR", "PI_CONFIG_DIR"}:
+                value = value.strip()
+                if len(value) >= 2 and value[0] == value[-1] and value[0] in "\"'":
+                    value = value[1:-1]
+                local_values[key.strip()] = value
+    except (OSError, UnicodeError):
+        pass
+    for key in ("GJC_CONFIG_DIR", "PI_CONFIG_DIR"):
+        raw = os.environ.get(key)
+        value = (raw or "").strip()
+        if value and local_values.get(key) != raw and ".." not in re.split(r"[/\\]", os.path.normpath(value)):
+            return value
+    return ".gjc"
+
+
+def preflight_destination(root: Path, selected: list[str]) -> None:
+    # Ignore OS aliases above the explicit HOME/cwd boundary (e.g. macOS /var),
+    # but never follow a linked installation root or selected skill tree.
+    boundary = root
+    for scope in (Path.home(), Path.cwd()):
+        if scope == root or scope in root.parents:
+            boundary = scope
+            break
+    require_safe_path(root, boundary)
+    for name in selected:
+        if not re.fullmatch(r"[a-z0-9][a-z0-9._-]*", name):
+            raise JeoSkillError(f"Unsafe skill name: {name}")
+        require_safe_tree(root / name)
+
+
+def verify_installed(root: Path, selected: list[str]) -> None:
+    missing = [str(root / name / "SKILL.md") for name in selected if not (root / name / "SKILL.md").is_file()]
+    if "jeo-skill" in selected:
+        missing.extend(str(root / "jeo-skill/scripts" / filename) for filename in ("jeo-skill.py", "install_support.py")
+                       if not (root / "jeo-skill/scripts" / filename).is_file())
+    if missing:
+        raise JeoSkillError("Installation verification failed; missing: " + ", ".join(missing))
+    preflight_destination(root, selected)
+    print(f"Verified {len(selected)} skill(s) at {root}")
+
+
+def finish_install(args: argparse.Namespace, selected: list[str]) -> None:
+    root = install_root(args)
+    projection = projection_root(args)
+    if root is None:
+        print(f"Upstream installer completed for {args.agent}; destination verification unavailable for this runtime.")
+        return
+    verify_installed(root, selected)
+    if projection:
+        preflight_destination(projection, selected)
+        for name in selected:
+            copy_tree(root / name, projection / name)
+        verify_installed(projection, selected)
+
+
 def command_install(args: argparse.Namespace, catalog: dict[str, Any]) -> None:
     selected = resolve_install_selection(args, catalog)
+    root = install_root(args)
+    projection = projection_root(args)
+    for destination in (root, projection):
+        if destination:
+            preflight_destination(destination, selected)
+            print(f"Destination: {destination}")
+    if root is None:
+        print(f"Unverified passthrough target: {args.agent}; npx validates runtime support during installation, not during dry-run.")
     command = install_command(args, selected)
     print(f"Selected {len(selected)} skill(s): {', '.join(selected)}")
-    print("Command: " + " ".join(command))
+    print("Command: " + shlex.join(command))
+    if projection:
+        print(f"Copy selected skills: {root} -> {projection}")
     if args.dry_run:
         return
     if shutil.which("npx") is None:
         raise JeoSkillError("npx is required to install skills")
     if len(selected) > 12 and not args.yes:
-        raise JeoSkillError(
-            "Selection is larger than 12 skills. Review with --dry-run, then pass --yes."
-        )
+        raise JeoSkillError("Selection is larger than 12 skills. Review with --dry-run, then pass --yes.")
+    version = subprocess.run(["node", "--version"], capture_output=True, text=True, check=False)
+    match = re.fullmatch(r"v(\d+)\.(\d+)\.(\d+)\s*", version.stdout)
+    if version.returncode or not match or tuple(map(int, match.groups())) < (22, 20, 0):
+        raise JeoSkillError("Node.js 22.20+ is required by skills@1.7.0")
     completed = subprocess.run(command, check=False)
     if completed.returncode:
         raise JeoSkillError(f"skills installer exited with {completed.returncode}")
+    finish_install(args, selected)
+
+
+def command_bootstrap(args: argparse.Namespace) -> None:
+    shared = (Path.home() if args.global_install else Path.cwd()) / ".agents/skills"
+    verify_installed(shared, ["jeo-skill"])
+    if AGENT_ALIASES.get(args.agent, args.agent) == "universal":
+        finish_install(args, ["jeo-skill"])
+    else:
+        command_install(args, {"skills": [{"name": "jeo-skill"}]})
+    if not args.global_install:
+        return
+    source = shared / "jeo-skill/scripts/jeo-skill.py"
+    result = subprocess.run([sys.executable, str(source), "link"], check=False)
+    if result.returncode:
+        raise JeoSkillError("Router installed, but CLI link failed")
 
 
 def command_link(args: argparse.Namespace) -> None:
     source = Path(__file__).resolve()
+    require_safe_path(BIN_PATH.parent, Path.home())
     BIN_PATH.parent.mkdir(parents=True, exist_ok=True)
     if os.path.lexists(BIN_PATH):
         if BIN_PATH.is_symlink() and BIN_PATH.resolve() == source:
@@ -410,9 +547,21 @@ def build_parser() -> argparse.ArgumentParser:
     install.add_argument("--interface")
     install.add_argument("--source", default=DEFAULT_SOURCE)
     install.add_argument("-g", "--global", dest="global_install", action="store_true")
-    install.add_argument("-a", "--agent")
+    install.add_argument("-a", "--agent", default="universal")
     install.add_argument("--dry-run", action="store_true")
     install.add_argument("-y", "--yes", action="store_true")
+    install.add_argument("--all", action="store_true")
+    install.add_argument("--aside-home", default=str(Path.home() / ".aside"))
+    install.add_argument("--aside-account")
+
+    bootstrap = sub.add_parser("bootstrap", help="Finish a shared-router bootstrap")
+    bootstrap.add_argument("--source", default=DEFAULT_SOURCE)
+    bootstrap.add_argument("-g", "--global", dest="global_install", action="store_true")
+    bootstrap.add_argument("-a", "--agent", default="universal")
+    bootstrap.add_argument("--aside-home", default=str(Path.home() / ".aside"))
+    bootstrap.add_argument("--aside-account")
+    bootstrap.set_defaults(names=["jeo-skill"], all=False, bundle=None, category=None,
+                           subcategory=None, interface=None, yes=True, dry_run=False)
 
     link = sub.add_parser("link", help=f"Link the CLI at {BIN_PATH}")
     link.add_argument("--force", action="store_true")
@@ -428,7 +577,22 @@ def main() -> int:
         if args.command == "link":
             command_link(args)
             return 0
-        catalog, source = load_catalog()
+        if args.command == "bootstrap":
+            command_bootstrap(args)
+            return 0
+        source_catalog = Path(getattr(args, "source", "")).expanduser() / ".agent-skills/skills.json"
+        configured_catalog = os.environ.get("JEO_SKILLS_CATALOG")
+        if args.command == "install" and configured_catalog:
+            catalog_path = Path(configured_catalog).expanduser()
+            catalog, source = read_json(catalog_path), str(catalog_path)
+        elif args.command == "install" and source_catalog.is_file():
+            catalog, source = read_json(source_catalog), str(source_catalog)
+        elif args.command == "install" and args.all and args.source != DEFAULT_SOURCE:
+            raise JeoSkillError("Custom-source --all requires a source-matched JEO_SKILLS_CATALOG or a local source .agent-skills/skills.json; the default catalog cannot establish every skill in that source.")
+        else:
+            catalog, source = load_catalog(cache=not getattr(args, "dry_run", False))
+            if args.command == "install" and args.source != DEFAULT_SOURCE:
+                print(f"Warning: selection uses catalog {source}, not a catalog verified for {args.source}; set JEO_SKILLS_CATALOG to a source-matched catalog if it differs.", file=sys.stderr)
         if args.command == "categories":
             command_categories(args, catalog)
         elif args.command == "list":
@@ -442,7 +606,7 @@ def main() -> int:
         elif args.command == "doctor":
             command_doctor(args, catalog, source)
         return 0
-    except JeoSkillError as error:
+    except (JeoSkillError, ValueError, OSError) as error:
         print(f"jeo-skill: {error}", file=sys.stderr)
         return 1
 

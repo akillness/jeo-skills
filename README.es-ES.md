@@ -63,9 +63,13 @@ O simplemente pega la URL en el chat del agente:
 El agente ejecuta una **instalación completa por defecto** (di "solo núcleo" o "mínimo" para restringirla) y hará:
 
 - detectar macOS / Linux / Windows y seleccionar `brew` / `snap` / `winget` + las rutas de instalación correctas,
-- instalar la CLI `skills` y añadir habilidades con el objetivo de agente correcto `-a` (sin exposición duplicada de plataforma),
-- registrar herramientas MCP (`ooo`, `semble`), herramientas shell (`rtk`) y el complemento `oh-my-claudecode`,
+- instalar la CLI `skills@1.7.0` y añadir habilidades a la raíz compartida universal (`~/.agents/skills`), que jeopi, jeo-code, oh-my-pi, Claude Code, Codex, Gemini CLI y OpenCode detectan y cargan automáticamente,
+- **GJC requiere proyección nativa** a `~/.gjc/agent/skills` (global) o `.gjc/skills` (proyecto) ya que no carga proveedores compartidos; la guía de configuración lo maneja automáticamente,
+- **Antigravity IDE y CLI requieren proyección nativa** (consulta la guía de configuración Paso 4C) ya que `skills@1.7.0` instala en la raíz compartida independientemente del flag `--agent`,
+- registrar herramientas MCP (`ooo`, `semble`), herramientas shell (`rtk`) e integraciones específicas de plataforma,
 - **preservar cualquier habilidad preexistente**: solo añade o actualiza, nunca elimina.
+> [!NOTE]
+>
 
 > [!NOTE]
 > Incluido en el catálogo: **`scrapingant-web-fetch`** ofrece a los agentes una herramienta
@@ -80,7 +84,7 @@ Instala primero el **enrutador `jeo-skill`**, no las 352 carpetas de habilidades
 
 ```bash
 # One lightweight skill, shared globally
-npx --yes skills add https://github.com/akillness/jeo-skills \
+npx --yes skills@1.7.0 add https://github.com/akillness/jeo-skills \
   --skill jeo-skill --global --agent universal --yes --copy --full-depth
 
 python3 "$HOME/.agents/skills/jeo-skill/scripts/jeo-skill.py" link

@@ -66,10 +66,11 @@ curl -s https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-sk
 에이전트는 기본적으로 **전체 설치**를 실행합니다. 범위를 줄이려면 “core only” 또는 “minimal”이라고 요청하세요. 에이전트가 수행하는 작업은 다음과 같습니다.
 
 - macOS / Linux / Windows를 감지하고 `brew` / `snap` / `winget`과 올바른 설치 경로를 선택합니다.
-- `skills` CLI를 설치하고 올바른 `-a` 에이전트 대상으로 스킬을 추가해 플랫폼별 중복 노출을 방지합니다.
-- MCP 도구(`ooo`, `semble`), 셸 도구(`rtk`), `oh-my-claudecode` 플러그인을 등록합니다.
+- `skills@1.7.0` CLI를 설치하고 universal 공유 루트(`~/.agents/skills`)에 스킬을 추가하며, jeopi, jeo-code, oh-my-pi, Claude Code, Codex, Gemini CLI, OpenCode가 자동으로 감지하고 로드합니다.
+- **GJC는 native 투영이 필요**하므로 `~/.gjc/agent/skills`(글로벌) 또는 `.gjc/skills`(프로젝트)에 스킬을 추가하며, 설정 가이드가 자동으로 처리합니다.
+- **Antigravity IDE와 CLI는 native 투영이 필요**합니다. `skills@1.7.0`이 `--agent` 플래그를 무시하고 공유 루트에 설치하므로, 설정 가이드 Step 4C를 참조하세요.
+- MCP 도구(`ooo`, `semble`), 셸 도구(`rtk`), 플랫폼별 통합을 등록합니다.
 - 기존 스킬을 보존하며 추가 또는 업데이트만 수행하고 삭제하지 않습니다.
-
 > [!NOTE]
 > 카탈로그 포함 항목: **`scrapingant-web-fetch`** 는 호스팅 MCP fetch 도구를 제공해
 > Cloudflare/봇 차단과 JS 전용 페이지를 처리하고 LLM이 바로 쓸 수 있는 Markdown을
@@ -85,8 +86,7 @@ curl -s https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-sk
 
 ```bash
 # 공유 글로벌 경로에 가벼운 스킬 하나만 설치
-npx --yes skills add https://github.com/akillness/jeo-skills \
-  --skill jeo-skill --global --agent universal --yes --copy --full-depth
+npx --yes skills@1.7.0 add https://github.com/akillness/jeo-skills \
 
 python3 "$HOME/.agents/skills/jeo-skill/scripts/jeo-skill.py" link
 jeo-skill doctor
@@ -888,6 +888,17 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 
 <!-- WHATS-NEW:START -->
 
+## 🆕 v2026-10-01 업데이트
+
+| 변경 사항 | 상세 내용 |
+|--------|---------|
+| **설치 문서: 런타임 매핑 검증 완료** | `setup-all-skills-prompt.md`, `README.md`, `README.ko.md`, `README.es-ES.md`, `jeo-skill` SKILL.md를 업데이트해 정확한 런타임 지원 경로와 native 투영 요구사항을 명확히 했습니다. 설치 프로그램 12가지 케이스 + 7가지 연결된 선택적 설치 + 8가지 실제 세션 로더 모두 스모크 테스트 통과. |
+| **Antigravity IDE/CLI 경로 수정** | Antigravity IDE native 루트를 `~/.gemini/config/skills`로 수정 (레거시 `~/.gemini/antigravity/skills` 경로 보존, 삭제 안 함). Antigravity CLI (`agy`)는 `~/.gemini/antigravity-cli/skills`로 유지. 두 모드 모두 native 투영 필요 (`skills@1.7.0`이 `--agent` 플래그 무시하고 공유 루트에 설치하므로); 설정 가이드 Step 4C가 자동으로 처리. |
+| **OMP → oh-my-pi 명명 수정** | 모든 README 및 설치 가이드 섹션에서 OpenMP 참조를 oh-my-pi (실제 런타임 이름)로 수정. |
+| **Native 투영 참조 테이블 추가** | 새로운 `jeo-skill` SKILL.md 섹션에서 모든 지원 런타임 (jeopi, jeo-code, oh-my-pi, Claude Code, Codex, Gemini CLI, OpenCode, GJC, Antigravity IDE, Antigravity CLI, Aside)을 CLI 인자, 공유 루트, native 루트, 범위, 투영 필요성과 함께 문서화. 수동/CI 투영 패턴 예제 및 계정별 Aside 가이드 포함. |
+| **공유 프로바이더 및 계정 안전성** | jeopi/jeo-code/oh-my-pi가 공유 universal 프로바이더를 통해 `~/.agents/skills` 자동 로드 확인; ECC 어댑터 필요 없음. GJC는 `~/.gjc/agent/skills` (글로벌 또는 프로젝트)로 native 투영 필요. Aside는 계정별 `~/.aside/u/<id>/skills/user/` 경로 사용; 자격증명 계정 간 공유 안 함. |
+| **설치 필수 요소 검증** | 문서 명시: Bash 3+, Node.js >= 22.20, `skills@1.7.0` CLI 고정. 검증 범위는 정확함: 거짓 end-to-end 데스크톱 테스트 주장 없음; 모든 보장은 자동화된 설치 프로그램 회귀 테스트 스위트로 뒷받침. |
+
 ## 🆕 v2026-09-22 업데이트
 
 | 변경 | 내용 |
@@ -917,14 +928,6 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 |------|------|
 | **goalflow LangGraph 프레임워크** | [wanmol/goal-flow](https://github.com/wanmol/goal-flow)를 위한 `goalflow`를 추가했습니다. 워크플로우 그래프와 에이전트 루프를 결합하고 Dify DSL 익스포트를 실행 가능한 LangGraph 파이썬 코드로 트랜스파일하는 Graph-Orchestrated Agent Loop 프레임워크입니다. 6개 모드(`orient`, `transpile`, `build`, `agent`, `serve`, `harden`)로 라우팅합니다. 읽기 전용 `goalflow.sh doctor`(패키지·프로젝트 임포트 확인, `.env`는 **키 이름만** 보고), 업스트림 배포 전 체크리스트를 그대로 구현한 stdlib 전용 `preflight_audit.py`(git 히스토리에 남은 `.env*` 블롭, RFC1918 내부 IP, 자격증명 허용 상태의 와일드카드 CORS, MD5 API 키 인증, `CodeNode`의 `exec`), 런타임 `SKILL.md` 프런트매터를 검증하고 프롬프트에 원문 그대로 주입되는 비용을 경고하는 `check_goalflow_skill.py`를 포함합니다. 레퍼런스는 트랜스파일러, `BaseNode` 계약, `agent_kit`, 스킬 엔진, 어댑터·스트리밍·HITL 계층, 보안 게이트를 다룹니다. |
 | **WAI Play 웹게임 자동 플레이테스트** | [waiterve/wai-play](https://github.com/waiterve/wai-play)를 위한 `wai-play`를 추가했습니다. 실제 브라우저로 실행 중인 웹게임을 직접 플레이하고, 재현 가능한 문제 카드와 5개 차원 품질 점수를 돌려주는 에이전트입니다. 스킬은 6개 모드(`testability`, `integration`, `run`, `report`, `scenario-gap`, `ops`)로 라우팅하며, 어떤 실행보다 테스트 가능성 확인을 먼저 둡니다. 읽기 전용 `wai-play.sh doctor`(Python·Playwright Chromium 확인, `.env`는 **키 이름만** 보고), `GameFlowAgentAPI` 파일의 누락 메서드·미구현 throw 스텁·템플릿 자리표시자를 정적으로 점검하는 stdlib 전용 `check_integration.py`, 그리고 API 계약·5개 게임 타입 프로필과 핵심 노드·점수 가중치와 증거 규칙·설치와 대안 경로 레퍼런스를 포함합니다. 게임 품질 점수와 테스트 신뢰도 진단을 분리해 보고하고, 로컬 전용이라는 운영 경계를 배포 가능한 것처럼 포장하지 않고 그대로 밝힙니다. |
-
-## 🆕 v2026-07-29 업데이트
-
-| 변경 | 내용 |
-|------|------|
-| **Three.js 구현 스킬 10개 추가** | [CloudAI-X/threejs-skills](https://github.com/CloudAI-X/threejs-skills)를 바탕으로 `threejs-fundamentals`, `threejs-geometry`, `threejs-materials`, `threejs-lighting`, `threejs-textures`, `threejs-loaders`, `threejs-animation`, `threejs-interaction`, `threejs-shaders`, `threejs-postprocessing`을 추가했습니다. 각 스킬은 집중된 구현 계약, TOON 검색 표면, eval, 업스트림/공식 레퍼런스를 제공하며, 직접 렌더링 작업은 `web-game-development`의 게임 시스템 라우팅과 분리합니다. |
-| **Open Design 게임 UI 스킬 추가** | 콘셉트 검토, 증거 기반 handoff, 승인된 런타임 통합을 위한 `open-design-game-ui-concept`, `open-design-game-ui-handoff`, `open-design-game-ui-takeover`을 추가했습니다. |
-| **카탈로그와 설치 가이드 동기화** | `skills.json` 1.4.0, `skills.toon`, 양쪽 README 카탈로그, `setup-all-skills-prompt.md`를 187개 스킬 기준으로 업데이트했습니다. |
 
 > 📜 이전 기록: [`changelog/ko/`](changelog/ko/) (월별 파일, 최신순).
 

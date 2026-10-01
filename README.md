@@ -62,15 +62,17 @@ Or just paste the URL into the agent chat:
 
 > Read https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-skills-prompt.md in full and follow it to install the jeo-skills.
 
-The agent runs a **full install by default** (say “core only” or “minimal” to narrow it) and will:
+The agent runs a **full install by default** (say "core only" or "minimal" to narrow it) and will:
 
-- detect macOS / Linux / Windows and select `brew` / `snap` / `winget` + the right install paths,
-- install the `skills` CLI and add skills with correct `-a` agent targeting (no duplicate platform exposure),
-- register MCP tools (`ooo`, `semble`), shell tooling (`rtk`), and the `oh-my-claudecode` plugin,
+- detect macOS / Linux / Windows and select the native package manager,
+- install the `skills@1.7.0` CLI and add skills to the universal shared root (`~/.agents/skills`), which jeopi, jeo-code, oh-my-pi, Claude Code, Codex, Gemini CLI, and OpenCode automatically discover and load,
+- **GJC requires native projection** to `~/.gjc/agent/skills` (global) or `.gjc/skills` (project) since it does not load shared providers; the setup guide handles this automatically,
+- **Antigravity IDE and CLI require native projection** (see setup guide Step 4C) since `skills@1.7.0` installs to shared root regardless of `--agent` flag,
+- register MCP tools (`ooo`, `semble`), shell tooling (`rtk`), and platform-specific integrations,
 - **preserve any pre-existing skills** — it only adds or updates, never deletes.
-
 > [!NOTE]
-> Included in the catalog: **`scrapingant-web-fetch`** gives agents a hosted MCP fetch tool
+>
+> **Included in the catalog:** **`scrapingant-web-fetch`** gives agents a hosted MCP fetch tool
 > that handles Cloudflare/bot-checks and JS-only pages and returns LLM-ready Markdown, with
 > no local browser. It needs your own API key, so the setup guide only configures it on
 > explicit request. Details:
@@ -84,7 +86,9 @@ models, MCP servers, and runtimes on demand.
 
 ```bash
 # One lightweight skill, shared globally
-npx --yes skills add https://github.com/akillness/jeo-skills \
+# Automatically discovered by jeopi, jeo-code, oh-my-pi, Claude Code, Codex, Gemini CLI, OpenCode
+# (GJC receives native projection to ~/.gjc/agent/skills automatically)
+npx --yes skills@1.7.0 add https://github.com/akillness/jeo-skills \
   --skill jeo-skill --global --agent universal --yes --copy --full-depth
 
 python3 "$HOME/.agents/skills/jeo-skill/scripts/jeo-skill.py" link
@@ -108,15 +112,36 @@ jeo-skill install responsive-design react-best-practices --global --yes
 jeo-skill install --bundle game-web --global --yes
 ```
 
-The one-line installer uses the same lightweight default:
+**Project-local install** (install skills only for the current project):
+
+```bash
+npx --yes skills@1.7.0 add https://github.com/akillness/jeo-skills \
+  --skill jeo-skill --agent universal --yes --copy --full-depth
+
+python3 "$PWD/.agents/skills/jeo-skill/scripts/jeo-skill.py" link --project
+jeo-skill install responsive-design --project --yes
+```
+
+The one-line installer uses the lightweight default:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/akillness/jeo-skills/main/install.sh | bash
 ```
 
-Set `JEO_SKILLS_SELECTION=bundle`, `category`, or `all` only when that wider shell-installer
-scope is intentional. See [setup-all-skills-prompt.md](setup-all-skills-prompt.md) for the
-LLM-driven full default and the narrower “core only” and “minimal” modes.
+To control scope and selection, set environment variables:
+
+```bash
+# Install core bundle instead of router only
+JEO_SKILLS_SELECTION=bundle bash -c 'curl -fsSL https://raw.githubusercontent.com/akillness/jeo-skills/main/install.sh | bash'
+
+# Project-local instead of global
+INSTALL_GLOBAL=false JEO_SKILLS_SELECTION=bundle bash -c 'curl -fsSL https://raw.githubusercontent.com/akillness/jeo-skills/main/install.sh | bash'
+```
+
+Available modes:
+- `JEO_SKILLS_SELECTION=router` (default) — install the jeo-skill catalog router only
+- `JEO_SKILLS_SELECTION=bundle` — install the `starter` bundle through jeo-skill
+- `JEO_SKILLS_SELECTION=all` — install every skill in the catalog
 
 ### On-demand video motion previs
 
@@ -906,6 +931,17 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 
 <!-- WHATS-NEW:START -->
 
+## 🆕 What's New in v2026-10-01
+
+| Change | Details |
+|--------|---------|
+| **Installation docs: runtime mapping verified** | Updated `setup-all-skills-prompt.md`, `README.md`, `README.ko.md`, `README.es-ES.md`, and `jeo-skill` SKILL.md to clarify accurate runtime support paths and native projection requirements. All 12 installer cases + 7 linked selective installs + 8 actual session loaders passed smoke tests. |
+| **Antigravity IDE/CLI paths corrected** | Fixed Antigravity IDE native root to `~/.gemini/config/skills` (legacy `~/.gemini/antigravity/skills` paths preserved, never deleted). Antigravity CLI (`agy`) remains at `~/.gemini/antigravity-cli/skills`. Both require native materialization since `skills@1.7.0` installs to shared root regardless of `--agent` flag; setup guide Step 4C handles this automatically. |
+| **OMP → oh-my-pi naming fixed** | Corrected all references from OpenMP to oh-my-pi (the actual runtime name) across all README and installation guide sections. |
+| **Native projection reference table added** | New `jeo-skill` SKILL.md section documents all supported runtimes (jeopi, jeo-code, oh-my-pi, Claude Code, Codex, Gemini CLI, OpenCode, GJC, Antigravity IDE, Antigravity CLI, Aside) with CLI args, shared root, native root, scope, and projection requirements. Includes manual/CI projection pattern examples and per-account Aside guidance. |
+| **Shared provider and account safety** | Confirmed jeopi/jeo-code/oh-my-pi load `~/.agents/skills` automatically via shared universal provider; no ECC adapter needed. GJC requires native projection to `~/.gjc/agent/skills` (global or project). Aside uses account-scoped `~/.aside/u/<id>/skills/user/` paths; credentials never shared across accounts. |
+| **Installation prerequisites validated** | Documentation specifies: Bash 3+, Node.js >= 22.20, and `skills@1.7.0` CLI pinned. Verification scope is honest: no false end-to-end desktop test claims; all guarantees backed by automated installer regression suite. |
+
 ## 🆕 What's New in v2026-09-22
 
 | Change | Details |
@@ -935,14 +971,6 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 |--------|---------|
 | **goalflow LangGraph framework** | Added `goalflow` for [wanmol/goal-flow](https://github.com/wanmol/goal-flow), a Graph-Orchestrated Agent Loop that combines workflow graphs with agent loops and transpiles Dify DSL exports into runnable LangGraph Python. Six modes (`orient`, `transpile`, `build`, `agent`, `serve`, `harden`). Ships a read-only `goalflow.sh doctor` (packages, project imports, `.env` key **names** only), a stdlib-only `preflight_audit.py` implementing the upstream pre-publish checklist (`.env*` blobs reachable in git history, RFC1918 hosts, open-CORS-with-credentials, MD5 API-key auth, `CodeNode` `exec`), and a `check_goalflow_skill.py` that validates runtime `SKILL.md` frontmatter and flags verbatim-injection prompt cost. References cover the transpiler, the `BaseNode` contract, `agent_kit`, the skills engine, the adapter/streaming/HITL layer, and the security gate. |
 | **WAI Play web-game auto-playtesting** | Added `wai-play` for [waiterve/wai-play](https://github.com/waiterve/wai-play): an agent that drives a real browser against a running web game and returns a five-dimension quality score with reproducible problem cards. The skill routes six modes (`testability`, `integration`, `run`, `report`, `scenario-gap`, `ops`) and puts testability before any run. Ships a read-only `wai-play.sh doctor` (Python, Playwright Chromium, `.env` key **names** only), a stdlib-only `check_integration.py` that statically checks a `GameFlowAgentAPI` file for missing methods, leftover throw-stubs, and template placeholders, plus references for the API contract, the five game-type profiles and key nodes, the scoring weights and evidence rules, and setup/route-outs. Keeps game quality and test credibility separate, and states the local-only operating boundary rather than implying it is deploy-ready. |
-
-## 🆕 What's New in v2026-07-29
-
-| Change | Details |
-|--------|---------|
-| **Ten Three.js implementation skills** | Added `threejs-fundamentals`, `threejs-geometry`, `threejs-materials`, `threejs-lighting`, `threejs-textures`, `threejs-loaders`, `threejs-animation`, `threejs-interaction`, `threejs-shaders`, and `threejs-postprocessing`, adapted from [CloudAI-X/threejs-skills](https://github.com/CloudAI-X/threejs-skills). Each has a focused implementation contract, compact TOON discovery surface, evals, and upstream/official references; direct rendering work stays distinct from `web-game-development` game-system routing. |
-| **Open Design game UI skills** | Added `open-design-game-ui-concept`, `open-design-game-ui-handoff`, and `open-design-game-ui-takeover` for concept review, evidence-backed handoffs, and approved runtime integration. |
-| **Catalog and install guide synchronized** | Updated `skills.json` 1.4.0, `skills.toon`, both README catalogs, and `setup-all-skills-prompt.md` to 187 skills. |
 
 > 📜 Older entries: [`changelog/en/`](changelog/en/) (monthly files, newest first).
 

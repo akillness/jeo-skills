@@ -16,78 +16,14 @@ Usage:
 from __future__ import annotations
 
 import argparse
-import hashlib
-import os
-import shutil
 import sys
 from pathlib import Path
 
-
-def resolve_user_home() -> Path:
-    """Resolve the real user home directory, even inside an Aside runtime sandbox."""
-    if sys.platform == "win32":
-        return Path(os.environ.get("USERPROFILE", Path.home()))
-    # On macOS, dscl gives the real user home even if HOME is pointed to Aside runtime
-    if sys.platform == "darwin":
-        import subprocess
-        try:
-            user = subprocess.check_output(["id", "-un"], text=True).strip()
-            out = subprocess.check_output(["dscl", ".", "-read", f"/Users/{user}", "NFSHomeDirectory"], text=True)
-            for line in out.splitlines():
-                parts = line.split()
-                if len(parts) >= 2 and parts[0] == "NFSHomeDirectory:":
-                    p = Path(parts[1])
-                    if p.is_dir():
-                        return p
-        except Exception:
-            pass
-    try:
-        import pwd
-        return Path(pwd.getpwuid(os.getuid()).pw_dir)
-    except Exception:
-        return Path.home()
+sys.dont_write_bytecode = True
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / ".agent-skills/jeo-skill/scripts"))
+from install_support import copy_tree, dir_manifest, require_safe_path, require_safe_tree, resolve_aside_user
 
 
-def file_sha256(path: Path) -> str:
-    h = hashlib.sha256()
-    with path.open("rb") as f:
-        while chunk := f.read(65536):
-            h.update(chunk)
-    return h.hexdigest()
-
-
-def dir_manifest(root: Path) -> dict[str, str]:
-    """Compute relative-path -> sha256 for all non-hidden files in directory."""
-    result = {}
-    if not root.is_dir():
-        return result
-    for p in root.rglob("*"):
-        # Ignore dotfiles (.DS_Store, .skill_id, etc.) and __pycache__ / .pyc
-        parts = p.relative_to(root).parts
-        if any(part.startswith(".") or part == "__pycache__" for part in parts):
-            continue
-        if p.is_file() and not p.name.endswith(".pyc"):
-            rel = str(p.relative_to(root))
-            result[rel] = file_sha256(p)
-    return result
-
-
-def copy_tree(src: Path, dst: Path) -> int:
-    """Recursively copy src directory to dst directory, creating dirs as needed."""
-    copied = 0
-    dst.mkdir(parents=True, exist_ok=True)
-    for p in src.rglob("*"):
-        if p.name.startswith(".DS_Store"):
-            continue
-        rel = p.relative_to(src)
-        target = dst / rel
-        if p.is_dir():
-            target.mkdir(parents=True, exist_ok=True)
-        elif p.is_file():
-            target.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copy2(p, target)
-            copied += 1
-    return copied
 
 
 def main() -> int:
@@ -96,6 +32,9 @@ def main() -> int:
     parser.add_argument("--skill", dest="skill_opt", help="Single skill name to sync")
     parser.add_argument("--all", action="store_true", help="Sync all canonical skills from .agent-skills/")
     parser.add_argument("--check", action="store_true", help="Check status without modifying anything")
+    parser.add_argument("--home", type=Path, default=Path.home(), help="Host home (defaults to HOME; never inferred from OS account records)")
+    parser.add_argument("--aside-home", type=Path)
+    parser.add_argument("--aside-account", help="Required when more than one Aside account exists")
     args = parser.parse_args()
 
     repo_root = Path(__file__).resolve().parents[1]
@@ -104,18 +43,12 @@ def main() -> int:
         print(f"Error: {agent_skills_root} not found", file=sys.stderr)
         return 1
 
-    user_home = resolve_user_home()
-    aside_root = user_home / ".aside"
+    user_home = args.home.expanduser().absolute()
+    aside_root = args.aside_home or user_home / ".aside"
     host_agents_root = user_home / ".agents" / "skills"
     proj_agents_root = repo_root / ".agents" / "skills"
 
-    aside_accounts = []
-    if aside_root.is_dir():
-        u_dir = aside_root / "u"
-        if u_dir.is_dir():
-            for entry in u_dir.iterdir():
-                if entry.is_dir() and (entry / "skills").is_dir():
-                    aside_accounts.append(entry / "skills" / "user")
+    aside_accounts = [resolve_aside_user(aside_root, args.aside_account)]
 
     # Resolve target skill names
     requested = list(args.names)
@@ -137,6 +70,19 @@ def main() -> int:
             if d.is_dir() and (d / "SKILL.md").is_file()
         )
 
+    # Validate every selected tree before the first copy. Never replace symlinks
+    # or route writes outside the explicitly chosen host/account roots.
+    for root, boundary in ((host_agents_root, user_home), (proj_agents_root, repo_root)):
+        require_safe_path(root, boundary)
+    for name in target_skills:
+        if not name or name in {".", ".."} or any(c in name for c in "/\\"):
+            raise ValueError(f"Unsafe skill name: {name}")
+        source = agent_skills_root / name
+        require_safe_tree(source)
+        if not (source / "SKILL.md").is_file():
+            raise ValueError(f"Missing skill: {name}")
+        for root in (host_agents_root, proj_agents_root, *aside_accounts):
+            require_safe_tree(root / name)
     print(f"jeo-skills sync target: {len(target_skills)} skill(s)")
     print(f"  User home:   {user_home}")
     print(f"  Host agents: {host_agents_root}")
@@ -202,4 +148,8 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    try:
+        sys.exit(main())
+    except (ValueError, OSError) as error:
+        print(f"sync-aside-skills: {error}", file=sys.stderr)
+        sys.exit(1)

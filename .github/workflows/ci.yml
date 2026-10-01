@@ -27,3 +27,23 @@ jobs:
         run: python3 scripts/repair-skill-frontmatter.py --check
       - name: Skill tree stays flat (no rewrite)
         run: python3 flatten_skills.py --dry-run
+
+  installer:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: oven-sh/setup-bun@v1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Isolated runtime installation regressions
+        run: python3 scripts/test_installer_regressions.py -v
+      - name: Isolated runtime loader probe regressions
+        run: python3 scripts/test_runtime_skill_loader.py -v

@@ -123,37 +123,61 @@ vanish; tools already installed on the host run fine once `PATH` is set.
 
 ## Step 2 — Install the skills CLI
 
+Requires Node 22.20+. Install the pinned stable version:
+
 ```bash
 if ! command -v skills >/dev/null 2>&1; then
-  npm install -g skills
+  npm install -g skills@1.7.0
 fi
 skills --version
 ```
 
+**Upgrade note:** If `skills` is already installed but points elsewhere (check with `which skills`), inspect the target before replacing. If the current link is intentional and you want to keep it, skip this step. To replace it with the shared installed version after confirming replacement is safe:
+
+```bash
+# Only after confirming symlink replacement is intended:
+jeo-skill.py link --force
+```
+
+Regular and foreign command entries are preserved by default. No automatic migration of custom links is performed.
+
+Pin avoids compatibility issues with older installed versions (e.g., skills 1.4.5).
 ## Step 3 — Build non-duplicating agent targets
 
 The skills CLI accepts runtime IDs, not executable names. Always target `universal`; it
-populates `~/.agents/skills`, which Codex, Gemini CLI, OpenCode, Cursor, jeo-code, GJC,
-and jeopi can share. Add a dedicated target only when that runtime uses a distinct root.
-Do **not** pass unsupported IDs such as `jeo`, `gjc`, `jeopi`, or `aside`.
+populates `~/.agents/skills`, which jeopi, jeo-code, Claude Code, Codex, Gemini CLI,
+OpenCode, and Cursor automatically discover and load via provider shadowing.
+
+**GJC requires separate handling** (Step 4B materializes skills to `~/.gjc/agent/skills`
+after installation) because GJC does not load shared providers.
+
+Add a dedicated target only when that runtime uses a distinct root:
 
 ```bash
 SKILLS_AGENT_ARGS=(-a universal)
+
+# Claude Code IDE
 command -v claude >/dev/null 2>&1 && SKILLS_AGENT_ARGS+=(-a claude-code)
-(command -v agy >/dev/null 2>&1 || command -v antigravity >/dev/null 2>&1) \
-  && SKILLS_AGENT_ARGS+=(-a antigravity)
+
+# Antigravity IDE only (CLI/agy requires manual projection; see Step 4C)
+command -v antigravity >/dev/null 2>&1 && SKILLS_AGENT_ARGS+=(-a antigravity)
+
+# Pi and Crush (when their native agent roots are present)
 (command -v pi >/dev/null 2>&1 && [ -d "$USER_HOME/.pi/agent" ]) \
   && SKILLS_AGENT_ARGS+=(-a pi)
 command -v crush >/dev/null 2>&1 && SKILLS_AGENT_ARGS+=(-a crush)
+
 printf 'skills targets:'; printf ' %q' "${SKILLS_AGENT_ARGS[@]}"; printf '\n'
 ```
+
+**Do not pass unsupported IDs** such as `jeo`, `gjc`, `jeopi`, or `aside`. These are not
+recognized by the `skills` CLI:
+- `jeopi`, `jeo`, `gjc`, `omp` are runtimes that load from shared or native paths, not CLI targets
+- `aside` is handled separately (Step 4A mirrors to account directories)
 
 `codex`, `gemini-cli`, `opencode`, and `cursor` also map to the shared root, so adding
 all of those alongside `universal` would create redundant platform exposure rather than
 additional skills.
-
-Aside is not a skills CLI runtime at all and does not read the shared root; it loads
-per-account skills from its own directory. Step 4 mirrors the installed skills there.
 
 ## Step 4 — Install the requested scope
 
@@ -162,13 +186,13 @@ per-account skills from its own directory. Step 4 mirrors the installed skills t
 Unless the user said “core only” or “minimal”, install every live skill:
 
 ```bash
-HOME="$USER_HOME" skills add -g "$REPO_URL" --skill '*' "${SKILLS_AGENT_ARGS[@]}" --yes --copy --full-depth
+HOME="$USER_HOME" skills@1.7.0 add -g "$REPO_URL" --skill '*' "${SKILLS_AGENT_ARGS[@]}" --yes --copy --full-depth
 ```
 
 ### Core only
 
 ```bash
-HOME="$USER_HOME" skills add -g "$REPO_URL" --skill jeo-skill "${SKILLS_AGENT_ARGS[@]}" --yes --copy --full-depth
+HOME="$USER_HOME" skills@1.7.0 add -g "$REPO_URL" --skill jeo-skill "${SKILLS_AGENT_ARGS[@]}" --yes --copy --full-depth
 HOME="$USER_HOME" python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" link
 HOME="$USER_HOME" jeo-skill install --bundle starter --global --yes
 ```
@@ -176,7 +200,7 @@ HOME="$USER_HOME" jeo-skill install --bundle starter --global --yes
 ### Minimal
 
 ```bash
-HOME="$USER_HOME" skills add -g "$REPO_URL" --skill jeo-skill "${SKILLS_AGENT_ARGS[@]}" --yes --copy --full-depth
+HOME="$USER_HOME" skills@1.7.0 add -g "$REPO_URL" --skill jeo-skill "${SKILLS_AGENT_ARGS[@]}" --yes --copy --full-depth
 HOME="$USER_HOME" python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" link
 HOME="$USER_HOME" jeo-skill doctor
 ```
@@ -186,7 +210,7 @@ Outside Aside it is a harmless no-op, since `USER_HOME` already equals `$HOME`. 
 Aside session, a bare `skills add` would install into `~/.aside/runtime/home/.agents/skills`
 and the Aside mirror below would then find nothing to copy.
 
-### Mirror the installed skills into Aside (all modes)
+### Step 4A — Mirror the installed skills into Aside (all modes)
 
 Run this in every mode, including minimal, whenever Aside is present. The `skills` CLI has
 no Aside runtime ID, and Aside loads account skills from:
@@ -256,8 +280,135 @@ Constraints for this step:
 - Inside an Aside session, apply the Step 1 preamble first, and prefix the router with
   `HOME="$USER_HOME"` if a command's output path depends on the home directory.
 
+### Step 4B — Materialize skills for GJC (all modes when GJC is detected)
+
+GJC does not load shared providers and requires native skill materialization to its
+native root `${GJC_CONFIG_DIR:-$HOME/.gjc}/agent/skills`. The `skills` CLI has no GJC
+runtime ID, so you must copy installed skills manually. Skip this step if GJC is not
+installed or you do not use it.
+
+```bash
+# Detect GJC and resolve its native root
+if command -v gjc >/dev/null 2>&1; then
+  GJC_CONFIG_DIR="${GJC_CONFIG_DIR:-${PI_CONFIG_DIR:-$HOME/.gjc}}"
+  GJC_SKILLS_ROOT="$GJC_CONFIG_DIR/agent/skills"
+  
+  # Scope the name set to the mode you just installed
+  JEO_ROUTER="$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py"
+  case "$ASIDE_MODE" in
+    minimal) GJC_NAMES="jeo-skill" ;;
+    core)    GJC_NAMES=$(HOME="$USER_HOME" python3 "$JEO_ROUTER" install -b starter --dry-run 2>/dev/null \
+               | sed -n 's/^Selected [0-9]* skill(s): //p' | tr ',' '\n' | tr -d ' ') ;;
+    *)       GJC_NAMES=$(HOME="$USER_HOME" python3 "$JEO_ROUTER" list --json 2>/dev/null \
+               | python3 -c 'import json,sys; print("\n".join(s["name"] for s in json.load(sys.stdin)))') ;;
+  esac
+  
+  if [ -n "${GJC_NAMES:-}" ]; then
+    mkdir -p "$GJC_SKILLS_ROOT"
+    synced=0
+    while IFS= read -r name; do
+      [ -n "$name" ] || continue
+      [ -f "$SKILLS_ROOT/$name/SKILL.md" ] || continue
+      mkdir -p "$GJC_SKILLS_ROOT/$name"
+      cp -R "$SKILLS_ROOT/$name/." "$GJC_SKILLS_ROOT/$name/" && synced=$((synced + 1))
+    done <<EOF
+$GJC_NAMES
+EOF
+    printf 'gjc_synced=%s -> %s\n' "$synced" "$GJC_SKILLS_ROOT"
+  fi
+fi
+```
+
+Constraints for GJC materialization:
+
+- GJC respects `GJC_CONFIG_DIR` (or `PI_CONFIG_DIR` for legacy) for native skill discovery.
+- GJC_CODING_AGENT_DIR and PI_CODING_AGENT_DIR do NOT affect skill discovery; do not rely on them.
+- Copy only names that are both in the jeo-skills catalog and actually present in `$SKILLS_ROOT`.
+- Never delete anything under `$GJC_SKILLS_ROOT`. Unrelated skills must survive; the copy
+  refreshes jeo-skills entries in place and is safe to re-run.
+
+
 Stop here in minimal mode. In core mode, install only dependencies explicitly required
 by the selected starter skills; do not continue into the full shared-tool setup by default.
+### Step 4C — Materialize skills for Antigravity CLI and IDE (all modes when detected)
+
+Both Antigravity CLI (`agy` command) and Antigravity IDE (`antigravity` editor) require native skill
+materialization because the `skills@1.7.0` CLI installs all targets to the shared `~/.agents/skills`
+root, ignoring `--agent antigravity` and `--agent antigravity-cli` flags. You must copy installed
+skills to the native AGY paths manually. Skip subsections if those tools are not installed.
+
+```bash
+# Detect Antigravity CLI and materialize to its native root
+if command -v agy >/dev/null 2>&1; then
+  AGY_SKILLS_ROOT="$USER_HOME/.gemini/antigravity-cli/skills"
+  
+  # Scope the name set to the mode you just installed
+  JEO_ROUTER="$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py"
+  
+  case "$ASIDE_MODE" in
+    minimal) AGY_NAMES="jeo-skill" ;;
+    core)    AGY_NAMES=$(HOME="$USER_HOME" python3 "$JEO_ROUTER" install -b starter --dry-run 2>/dev/null \
+               | sed -n 's/^Selected [0-9]* skill(s): //p' | tr ',' '\n' | tr -d ' ') ;;
+    *)       AGY_NAMES=$(HOME="$USER_HOME" python3 "$JEO_ROUTER" list --json 2>/dev/null \
+               | python3 -c 'import json,sys; print("\n".join(s["name"] for s in json.load(sys.stdin)))') ;;
+  esac
+  
+  if [ -n "${AGY_NAMES:-}" ]; then
+    mkdir -p "$AGY_SKILLS_ROOT"
+    synced=0
+    while IFS= read -r name; do
+      [ -n "$name" ] || continue
+      [ -f "$SKILLS_ROOT/$name/SKILL.md" ] || continue
+      mkdir -p "$AGY_SKILLS_ROOT/$name"
+      cp -R "$SKILLS_ROOT/$name/." "$AGY_SKILLS_ROOT/$name/" && synced=$((synced + 1))
+    done <<EOF
+$AGY_NAMES
+EOF
+    printf 'agy_cli_synced=%s -> %s\n' "$synced" "$AGY_SKILLS_ROOT"
+  fi
+fi
+```
+
+Constraints for AGY CLI materialization:
+
+- The `skills@1.7.0` CLI has a known issue: `--agent antigravity-cli` does not install to its native root (uses shared root instead).
+- Copy only names that are both in the jeo-skills catalog and actually present in `$SKILLS_ROOT`.
+- Never delete anything under `~/.gemini/antigravity-cli/skills`. Unrelated skills must survive; the copy
+  refreshes jeo-skills entries in place and is safe to re-run.
+- The native AGY CLI root is `~/.gemini/antigravity-cli/skills` (distinct from IDE root `~/.gemini/antigravity/skills`).
+
+#### Antigravity IDE (desktop editor)
+
+If Antigravity IDE is installed, also materialize the same selected skills to `~/.gemini/config/skills`:
+
+```bash
+# Detect Antigravity IDE and materialize to its native root
+if command -v antigravity >/dev/null 2>&1; then
+  ANTIGRAVITY_SKILLS_ROOT="$USER_HOME/.gemini/config/skills"
+  # Reuse AGY_NAMES from CLI block above if it was set, otherwise resolve independently
+  if [ -z "${AGY_NAMES:-}" ]; then
+    JEO_ROUTER="$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py"
+    case "$ASIDE_MODE" in
+      minimal) AGY_NAMES="jeo-skill" ;;
+      core)    AGY_NAMES=$(HOME="$USER_HOME" python3 "$JEO_ROUTER" install -b starter --dry-run 2>/dev/null \
+                 | sed -n 's/^Selected [0-9]* skill(s): //p' | tr ',' '\n' | tr -d ' ') ;;
+      *)       AGY_NAMES=$(HOME="$USER_HOME" python3 "$JEO_ROUTER" list --json 2>/dev/null \
+                 | python3 -c 'import json,sys; print("\n".join(s["name"] for s in json.load(sys.stdin)))') ;;
+    esac
+  fi
+  
+  # Use the shared router to materialize skills to native root
+  installed router --agent antigravity --global --yes $AGY_NAMES
+  fi
+```
+
+Constraints for Antigravity IDE materialization:
+
+- The `skills@1.7.0` CLI has a known issue: `--agent antigravity` does not install to its native root (uses shared root instead).
+- Copy only the same names already selected above; share the name list between CLI and IDE.
+- Never delete anything under `~/.gemini/config/skills`. Unrelated skills must survive; the copy
+  refreshes jeo-skills entries in place and is safe to re-run.
+- The native IDE root is `~/.gemini/config/skills` (legacy `~/.gemini/antigravity/skills` path/symlink remains untouched).
 
 ## Step 5 — Full-mode shared tools
 
@@ -1797,3 +1948,25 @@ existing canonical skills on 2026-09-19 and are listed in `skills.json` `retired
 into an evidence-checked 90-day plan using YouTube Studio only, needs no API key, and never
 posts or edits a channel. Its Korean trigger words (떡상, 유튜브 성장, 죽음의 계곡) are part
 of the description on purpose.
+
+---
+
+## Guard Boundaries
+
+### Custom remote sources
+
+When installing from a custom remote source (not the default canonical catalog), the
+**`--all` selection requires an explicit source-matched `JEO_SKILLS_CATALOG` environment
+variable or local `.agent-skills/skills.json` file**. This guard prevents claiming "all" skills
+from a remote source without verifying the actual catalog contents first.
+
+- **Local source**: If `.agent-skills/skills.json` exists in the current repo, `--all` uses it
+  automatically (no catalog env needed).
+- **Remote source with explicit catalog**: Set `JEO_SKILLS_CATALOG=/path/to/remote/skills.json`
+  before running the install to verify all selected skills exist in that source.
+- **Bundle, category, or explicit names**: Warning-only; these narrower selections remain safe
+  without catalog matching.
+- **Default canonical catalog**: Always available; no env variable required.
+
+This boundary ensures selections are honest and verifiable before materializing skills from
+any source.

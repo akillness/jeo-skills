@@ -117,6 +117,35 @@ jeo-skill install game-vfx rfxgen --global --yes
 jeo-skill list -c cli-tools --interface cli
 ```
 
+## Native Projections and Account Access
+
+Some runtimes do not load skills from the universal shared root (`~/.agents/skills`) and require
+native materialization. The `setup-all-skills-prompt.md` guide handles these automatically;
+here is a reference for manual or CI workflows:
+
+| Runtime | CLI Arg | Shared Root | Native Root | Scope | Needs Projection |
+|---------|---------|-------------|------------|-------|------------------|
+| jeopi, jeo-code, oh-my-pi, Claude Code, Codex, Gemini CLI, OpenCode | `universal` | `~/.agents/skills` | — | global/project | No (auto-loaded) |
+| GJC | `gjc` | ignored | `~/.gjc/agent/skills` (global) or `.gjc/skills` (project) | both | Yes (copy manually) |
+| Antigravity IDE | `antigravity` | `~/.agents/skills` | `~/.gemini/config/skills` | global only | Yes (copy manually) |
+| Antigravity CLI (agy) | `antigravity-cli` | `~/.agents/skills` | `~/.gemini/antigravity-cli/skills` | global only | Yes (copy manually) |
+| Aside (account-scoped) | — | `~/.agents/skills` | `~/.aside/u/<id>/skills/user/` | per-account | Yes (copy per-account) |
+
+### Projection Pattern
+
+After installing selected skills globally with `skills add -g`, copy skill folders to native roots:
+
+```bash
+# Example: GJC global
+cp -R ~/.agents/skills/code-review ~/.gjc/agent/skills/code-review
+```
+
+### Account Access (Aside)
+
+Aside discovers skills from per-account paths. Use account-scoped discovery only; do not share
+credentials between accounts or store tokens in global skill folders.
+
+
 ## Best practices
 
 - Install by name or curated bundle before installing an entire category.
