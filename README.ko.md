@@ -45,6 +45,20 @@
 ## 🏗 워크플로우 및 아키텍처
 
 <img src="assets/workflow.svg" alt="jeo-skills Workflow & Architecture" width="100%">
+<img src="assets/architecture.svg" alt="jeo-skills Catalog Architecture" width="100%">
+
+### 🧭 Jev 컨트롤 플레인 (System One)
+
+jeo 런타임은 이 카탈로그를 fail-closed 컨트롤 플레인 하네스(`~/.agents/jev/jev-harness.mjs`, 머신별 설치)로 라우팅합니다:
+
+| 단계 | 커맨드 | 역할 |
+| :--- | :--- | :--- |
+| 스킬 라우팅 | `route-skills "<task>"` | `skills.json`(352개) 대상 Top-K 선택 (전체 카탈로그 대비 ~99% 토큰 절감) |
+| 컨텍스트 프루닝 | `prune-context` | JSONL `{id,text}` 블록 → keep/drop 판정 |
+| 액션 게이트 | `review "<task>" '<proposal>'` | `permit` / `proposal_only` / `reject` / `unavailable` + SHA-256 영수증 |
+
+발견 표면은 2개로 엄격히 분리됩니다: **로컬 카탈로그** 우선(`route-skills` / `jeo-skill`), 확신 있는 로컬 매치가 없으면 `publicRegistryFallback`을 통해 `find-skills` 스킬(`npx skills find "<query>"`, 공개 skills.sh 레지스트리)로 넘어가며, 공개 레지스트리 설치는 항상 사용자 승인이 필요합니다. 하네스는 `skills.json`을 읽기 전용으로만 사용하고, 키 누락/타임아웃/비정상 응답 시 `unavailable`로 fail-closed 됩니다.
+
 
 ---
 

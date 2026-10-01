@@ -85,7 +85,7 @@
 
   <!-- Platform badges (y=78, h=22) -->
   <rect x="344" y="78" width="88" height="22" fill="#111827" rx="11" stroke="#1F3A5C" stroke-width="1"/>
-  <text x="388" y="93" font-family="sans-serif" font-size="11" font-weight="700" fill="#60A5FA" text-anchor="middle">136 Skills</text>
+  <text x="388" y="93" font-family="sans-serif" font-size="11" font-weight="700" fill="#60A5FA" text-anchor="middle">352 Skills</text>
   <rect x="440" y="78" width="68" height="22" fill="#111827" rx="11" stroke="#1F3A5C" stroke-width="1"/>
   <text x="474" y="93" font-family="sans-serif" font-size="11" fill="#A78BFA" text-anchor="middle">Claude</text>
   <rect x="516" y="78" width="68" height="22" fill="#111827" rx="11" stroke="#1F3A5C" stroke-width="1"/>
@@ -171,91 +171,91 @@
         text-anchor="middle" letter-spacing="1.5">RESULTS FEED BACK</text>
 
   <!-- ═══════════════ SKILL CATEGORIES (y: 252–406) ═══════════════ -->
-  <text x="60" y="252" font-family="sans-serif" font-size="9" fill="#334155" letter-spacing="2.5" font-weight="600">SKILL CATEGORIES  ·  10 DOMAINS  ·  136 SKILLS</text>
+  <text x="60" y="252" font-family="sans-serif" font-size="9" fill="#334155" letter-spacing="2.5" font-weight="600">SKILL CATEGORIES  ·  10 DOMAINS  ·  352 SKILLS</text>
   <line x1="60" y1="256" x2="1140" y2="256" stroke="#1A2E4A" stroke-width="1"/>
 
   <!-- Row 1 (y=262, h=60) — W=206, G=12, x: 60, 278, 496, 714, 932 -->
   <g transform="translate(60, 262)">
     <rect width="206" height="60" fill="#0B1526" rx="8" stroke="#1A2E4A" stroke-width="1"/>
     <rect width="4" height="60" fill="#3B82F6" rx="2"/>
-    <text x="16" y="26" font-family="sans-serif" font-size="17">🎯</text>
-    <text x="42" y="22" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#E2E8F0">Core Orchestration</text>
-    <text x="42" y="37" font-family="sans-serif" font-size="10" fill="#4B5563">ooo · bmad · omc · omx · ohmg</text>
-    <text x="198" y="54" font-family="sans-serif" font-size="19" font-weight="800" fill="#3B82F6" text-anchor="end">15</text>
+    <text x="16" y="26" font-family="sans-serif" font-size="17">💼</text>
+    <text x="42" y="22" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#E2E8F0">Business</text>
+    <text x="42" y="37" font-family="sans-serif" font-size="10" fill="#4B5563">finance · legal · docs · workflows</text>
+    <text x="198" y="54" font-family="sans-serif" font-size="19" font-weight="800" fill="#3B82F6" text-anchor="end">70</text>
   </g>
   <g transform="translate(278, 262)">
     <rect width="206" height="60" fill="#0B1526" rx="8" stroke="#1A2E4A" stroke-width="1"/>
     <rect width="4" height="60" fill="#8B5CF6" rx="2"/>
-    <text x="16" y="26" font-family="sans-serif" font-size="17">📋</text>
-    <text x="42" y="22" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#E2E8F0">Planning &amp; Review</text>
-    <text x="42" y="37" font-family="sans-serif" font-size="10" fill="#4B5563">plannotator · vibe-kanban · triage</text>
-    <text x="198" y="54" font-family="sans-serif" font-size="19" font-weight="800" fill="#8B5CF6" text-anchor="end">12</text>
+    <text x="16" y="26" font-family="sans-serif" font-size="17">🤖</text>
+    <text x="42" y="22" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#E2E8F0">AI Agents</text>
+    <text x="42" y="37" font-family="sans-serif" font-size="10" fill="#4B5563">ooo · orchestration · memory · RAG</text>
+    <text x="198" y="54" font-family="sans-serif" font-size="19" font-weight="800" fill="#8B5CF6" text-anchor="end">62</text>
   </g>
   <g transform="translate(496, 262)">
     <rect width="206" height="60" fill="#0B1526" rx="8" stroke="#1A2E4A" stroke-width="1"/>
     <rect width="4" height="60" fill="#EC4899" rx="2"/>
-    <text x="16" y="26" font-family="sans-serif" font-size="17">🎨</text>
-    <text x="42" y="22" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#E2E8F0">Frontend</text>
-    <text x="42" y="37" font-family="sans-serif" font-size="10" fill="#4B5563">react · design-system · a11y · UI</text>
-    <text x="198" y="54" font-family="sans-serif" font-size="19" font-weight="800" fill="#EC4899" text-anchor="end">12</text>
+    <text x="16" y="26" font-family="sans-serif" font-size="17">🌐</text>
+    <text x="42" y="22" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#E2E8F0">Web</text>
+    <text x="42" y="37" font-family="sans-serif" font-size="10" fill="#4B5563">react · frontend · backend · supabase</text>
+    <text x="198" y="54" font-family="sans-serif" font-size="19" font-weight="800" fill="#EC4899" text-anchor="end">50</text>
   </g>
   <g transform="translate(714, 262)">
     <rect width="206" height="60" fill="#0B1526" rx="8" stroke="#1A2E4A" stroke-width="1"/>
     <rect width="4" height="60" fill="#06B6D4" rx="2"/>
-    <text x="16" y="26" font-family="sans-serif" font-size="17">⚙️</text>
-    <text x="42" y="22" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#E2E8F0">Backend</text>
-    <text x="42" y="37" font-family="sans-serif" font-size="10" fill="#4B5563">api · auth · database · supabase</text>
-    <text x="198" y="54" font-family="sans-serif" font-size="19" font-weight="800" fill="#06B6D4" text-anchor="end">7</text>
+    <text x="16" y="26" font-family="sans-serif" font-size="17">⌨️</text>
+    <text x="42" y="22" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#E2E8F0">CLI Tools</text>
+    <text x="42" y="37" font-family="sans-serif" font-size="10" fill="#4B5563">cli-anything · rtk · git · shells</text>
+    <text x="198" y="54" font-family="sans-serif" font-size="19" font-weight="800" fill="#06B6D4" text-anchor="end">34</text>
   </g>
   <g transform="translate(932, 262)">
     <rect width="206" height="60" fill="#0B1526" rx="8" stroke="#1A2E4A" stroke-width="1"/>
     <rect width="4" height="60" fill="#10B981" rx="2"/>
-    <text x="16" y="26" font-family="sans-serif" font-size="17">🔍</text>
-    <text x="42" y="22" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#E2E8F0">Code Quality</text>
-    <text x="42" y="37" font-family="sans-serif" font-size="10" fill="#4B5563">review · tdd · debug · refactor</text>
-    <text x="198" y="54" font-family="sans-serif" font-size="19" font-weight="800" fill="#10B981" text-anchor="end">10</text>
+    <text x="16" y="26" font-family="sans-serif" font-size="17">🎬</text>
+    <text x="42" y="22" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#E2E8F0">Creative Media</text>
+    <text x="42" y="37" font-family="sans-serif" font-size="10" fill="#4B5563">video · imagen · audio · slides</text>
+    <text x="198" y="54" font-family="sans-serif" font-size="19" font-weight="800" fill="#10B981" text-anchor="end">32</text>
   </g>
 
   <!-- Row 2 (y=334) -->
   <g transform="translate(60, 334)">
     <rect width="206" height="60" fill="#0B1526" rx="8" stroke="#1A2E4A" stroke-width="1"/>
     <rect width="4" height="60" fill="#F59E0B" rx="2"/>
-    <text x="16" y="26" font-family="sans-serif" font-size="17">🏗</text>
-    <text x="42" y="22" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#E2E8F0">Infrastructure</text>
-    <text x="42" y="37" font-family="sans-serif" font-size="10" fill="#4B5563">deploy · firebase · monitoring</text>
-    <text x="198" y="54" font-family="sans-serif" font-size="19" font-weight="800" fill="#F59E0B" text-anchor="end">18</text>
+    <text x="16" y="26" font-family="sans-serif" font-size="17">🎮</text>
+    <text x="42" y="22" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#E2E8F0">Game</text>
+    <text x="42" y="37" font-family="sans-serif" font-size="10" fill="#4B5563">unity · godot · steam · motion-vfx</text>
+    <text x="198" y="54" font-family="sans-serif" font-size="19" font-weight="800" fill="#F59E0B" text-anchor="end">28</text>
   </g>
   <g transform="translate(278, 334)">
     <rect width="206" height="60" fill="#0B1526" rx="8" stroke="#1A2E4A" stroke-width="1"/>
     <rect width="4" height="60" fill="#94A3B8" rx="2"/>
-    <text x="16" y="26" font-family="sans-serif" font-size="17">📝</text>
-    <text x="42" y="22" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#E2E8F0">Documentation</text>
-    <text x="42" y="37" font-family="sans-serif" font-size="10" fill="#4B5563">changelog · slides · writing</text>
-    <text x="198" y="54" font-family="sans-serif" font-size="19" font-weight="800" fill="#94A3B8" text-anchor="end">6</text>
+    <text x="16" y="26" font-family="sans-serif" font-size="17">🛠</text>
+    <text x="42" y="22" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#E2E8F0">Utilities</text>
+    <text x="42" y="37" font-family="sans-serif" font-size="10" fill="#4B5563">drawio · converters · automation</text>
+    <text x="198" y="54" font-family="sans-serif" font-size="19" font-weight="800" fill="#94A3B8" text-anchor="end">27</text>
   </g>
   <g transform="translate(496, 334)">
     <rect width="206" height="60" fill="#0B1526" rx="8" stroke="#1A2E4A" stroke-width="1"/>
     <rect width="4" height="60" fill="#0EA5E9" rx="2"/>
-    <text x="16" y="26" font-family="sans-serif" font-size="17">🔭</text>
-    <text x="42" y="22" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#E2E8F0">Search &amp; Analysis</text>
-    <text x="42" y="37" font-family="sans-serif" font-size="10" fill="#4B5563">semble · opik · data-analysis</text>
-    <text x="198" y="54" font-family="sans-serif" font-size="19" font-weight="800" fill="#0EA5E9" text-anchor="end">11</text>
+    <text x="16" y="26" font-family="sans-serif" font-size="17">🔍</text>
+    <text x="42" y="22" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#E2E8F0">Engineering</text>
+    <text x="42" y="37" font-family="sans-serif" font-size="10" fill="#4B5563">review · tdd · debug · refactor</text>
+    <text x="198" y="54" font-family="sans-serif" font-size="19" font-weight="800" fill="#0EA5E9" text-anchor="end">24</text>
   </g>
   <g transform="translate(714, 334)">
     <rect width="206" height="60" fill="#0B1526" rx="8" stroke="#1A2E4A" stroke-width="1"/>
     <rect width="4" height="60" fill="#A855F7" rx="2"/>
-    <text x="16" y="26" font-family="sans-serif" font-size="17">🎮</text>
-    <text x="42" y="22" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#E2E8F0">Game Development</text>
-    <text x="42" y="37" font-family="sans-serif" font-size="10" fill="#4B5563">unity · steam · game-ci · profiler</text>
-    <text x="198" y="54" font-family="sans-serif" font-size="19" font-weight="800" fill="#A855F7" text-anchor="end">6</text>
+    <text x="16" y="26" font-family="sans-serif" font-size="17">🏗</text>
+    <text x="42" y="22" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#E2E8F0">Infrastructure</text>
+    <text x="42" y="37" font-family="sans-serif" font-size="10" fill="#4B5563">deploy · firebase · monitoring</text>
+    <text x="198" y="54" font-family="sans-serif" font-size="19" font-weight="800" fill="#A855F7" text-anchor="end">13</text>
   </g>
   <g transform="translate(932, 334)">
     <rect width="206" height="60" fill="#0B1526" rx="8" stroke="#1A2E4A" stroke-width="1"/>
     <rect width="4" height="60" fill="#F97316" rx="2"/>
-    <text x="16" y="26" font-family="sans-serif" font-size="17">🛠</text>
-    <text x="42" y="22" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#E2E8F0">Utilities &amp; Creative</text>
-    <text x="42" y="37" font-family="sans-serif" font-size="10" fill="#4B5563">drawio · video · git · fabric</text>
-    <text x="198" y="54" font-family="sans-serif" font-size="19" font-weight="800" fill="#F97316" text-anchor="end">23</text>
+    <text x="16" y="26" font-family="sans-serif" font-size="17">🔭</text>
+    <text x="42" y="22" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#E2E8F0">Research</text>
+    <text x="42" y="37" font-family="sans-serif" font-size="10" fill="#4B5563">deep-research · papers · analysis</text>
+    <text x="198" y="54" font-family="sans-serif" font-size="19" font-weight="800" fill="#F97316" text-anchor="end">12</text>
   </g>
 
   <!-- ═══════════════ HARNESSES PANEL (y: 408–546) ═══════════════ -->

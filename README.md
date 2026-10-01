@@ -46,6 +46,20 @@ skills can be grouped without duplicating wrapper folders or moving runtime-faci
 ## 🏗 Workflow & Architecture
 
 <img src="assets/workflow.svg" alt="jeo-skills Workflow & Architecture" width="100%">
+<img src="assets/architecture.svg" alt="jeo-skills Catalog Architecture" width="100%">
+
+### 🧭 Jev Control Plane (System One)
+
+The jeo runtime routes this catalog through a fail-closed control-plane harness (`~/.agents/jev/jev-harness.mjs`, installed per machine — see its README for structure/flow):
+
+| Stage | Command | Role |
+| :--- | :--- | :--- |
+| Skill routing | `route-skills "<task>"` | Top-K selection over `skills.json` (352 skills, ~99% token savings vs full catalog) |
+| Context pruning | `prune-context` | JSONL `{id,text}` blocks → keep/drop verdicts for compaction |
+| Action gate | `review "<task>" '<proposal>'` | `permit` / `proposal_only` / `reject` / `unavailable` + SHA-256 receipt |
+
+Two discovery surfaces, strictly ordered: the **local catalog** first (`route-skills` / `jeo-skill`); when no confident local match exists, the harness emits `publicRegistryFallback` and discovery moves to the **public skills.sh registry** via the `find-skills` skill (`npx skills find "<query>"`) — installs from the public registry always require explicit user approval. The harness reads `skills.json` read-only and fails closed: missing key, timeout, or malformed response → `unavailable`, never autonomous action.
+
 
 ## 📦 Installation
 
