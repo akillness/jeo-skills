@@ -215,7 +215,17 @@ jeo-skill doctor
 jeo-skill categories --json  # Verify catalog is accessible
 ```
 
-Both commands must succeed and report Python/npx availability and valid catalog metadata.
+`doctor` reports `ok: false`, includes actionable `errors`, and exits nonzero when
+`npx` is missing or Node.js is unavailable, unsupported (below 22.20), or fails its
+version check. `linked` is reported separately: an unlinked checkout CLI can still
+pass the prerequisite check. Browsing requires only Python; `categories` does not
+check installation tools. Search accepts non-negative `--limit` values (`0` returns
+no matches); negative values are rejected.
+
+`JEO_SKILLS_CATALOG=/path/to/skills.json` overrides catalog discovery for all browse,
+install, and doctor commands. An explicit path must be readable and valid: a missing
+file or directory is an error, never a silent fallback to the checkout or remote
+catalog. Unset the variable to restore automatic discovery.
 
 ## Examples
 

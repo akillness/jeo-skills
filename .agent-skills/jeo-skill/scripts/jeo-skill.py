@@ -36,10 +36,6 @@ class JeoSkillError(RuntimeError):
 
 
 def local_catalog_candidates() -> Iterable[Path]:
-    configured = os.environ.get("JEO_SKILLS_CATALOG")
-    if configured:
-        yield Path(configured).expanduser()
-
     # Source checkout: <repo>/.agent-skills/jeo-skill/scripts/jeo-skill.py.
     # Installed copy: ~/.agents/skills/jeo-skill/scripts/jeo-skill.py; its
     # parents[2] has no catalog, so fall through to the remote/cache path. Do
@@ -95,6 +91,10 @@ def download_catalog(cache: bool = True) -> dict[str, Any]:
 
 
 def load_catalog(cache: bool = True) -> tuple[dict[str, Any], str]:
+    configured = os.environ.get("JEO_SKILLS_CATALOG")
+    if configured:
+        path = Path(configured).expanduser().resolve()
+        return read_json(path), str(path)
     seen: set[Path] = set()
     for candidate in local_catalog_candidates():
         candidate = candidate.resolve()
@@ -195,6 +195,8 @@ def tokenize(text: str) -> set[str]:
 
 
 def command_search(args: argparse.Namespace, catalog: dict[str, Any]) -> None:
+    if args.limit < 0:
+        raise JeoSkillError("--limit must be non-negative")
     query_tokens = tokenize(args.query)
     scored: list[tuple[int, dict[str, Any]]] = []
     phrase = args.query.lower()
@@ -436,6 +438,22 @@ def finish_install(args: argparse.Namespace, selected: list[str]) -> None:
         verify_installed(projection, selected)
 
 
+def installer_prerequisite_errors() -> list[str]:
+    errors = []
+    if shutil.which("npx") is None:
+        errors.append("npx is required to install skills")
+    try:
+        version = subprocess.run(["node", "--version"], capture_output=True,
+                                 text=True, check=False, timeout=10)
+    except (OSError, subprocess.TimeoutExpired) as error:
+        errors.append(f"Cannot check Node.js 22.20+ prerequisite: {error}")
+    else:
+        match = re.fullmatch(r"v(\d+)\.(\d+)\.(\d+)\s*", version.stdout)
+        if version.returncode or not match or tuple(map(int, match.groups())) < (22, 20, 0):
+            errors.append(f"Node.js 22.20+ is required by {SKILLS_PACKAGE}")
+    return errors
+
+
 def command_install(args: argparse.Namespace, catalog: dict[str, Any]) -> None:
     selected = resolve_install_selection(args, catalog)
     root = install_root(args)
@@ -453,14 +471,11 @@ def command_install(args: argparse.Namespace, catalog: dict[str, Any]) -> None:
         print(f"Copy selected skills: {root} -> {projection}")
     if args.dry_run:
         return
-    if shutil.which("npx") is None:
-        raise JeoSkillError("npx is required to install skills")
     if len(selected) > 12 and not args.yes:
         raise JeoSkillError("Selection is larger than 12 skills. Review with --dry-run, then pass --yes.")
-    version = subprocess.run(["node", "--version"], capture_output=True, text=True, check=False)
-    match = re.fullmatch(r"v(\d+)\.(\d+)\.(\d+)\s*", version.stdout)
-    if version.returncode or not match or tuple(map(int, match.groups())) < (22, 20, 0):
-        raise JeoSkillError("Node.js 22.20+ is required by skills@1.7.0")
+    errors = installer_prerequisite_errors()
+    if errors:
+        raise JeoSkillError("; ".join(errors))
     completed = subprocess.run(command, check=False)
     if completed.returncode:
         raise JeoSkillError(f"skills installer exited with {completed.returncode}")
@@ -500,9 +515,10 @@ def command_link(args: argparse.Namespace) -> None:
     print(f"Linked: {BIN_PATH} -> {source}")
 
 
-def command_doctor(_args: argparse.Namespace, catalog: dict[str, Any], source: str) -> None:
+def command_doctor(_args: argparse.Namespace, catalog: dict[str, Any], source: str) -> bool:
+    errors = installer_prerequisite_errors()
     report = {
-        "ok": True,
+        "ok": not errors,
         "catalog": source,
         "catalog_version": catalog.get("version"),
         "skills": len(catalog["skills"]),
@@ -510,8 +526,10 @@ def command_doctor(_args: argparse.Namespace, catalog: dict[str, Any], source: s
         "python": sys.version.split()[0],
         "npx": shutil.which("npx"),
         "linked": BIN_PATH.is_symlink() and BIN_PATH.resolve() == Path(__file__).resolve(),
+        "errors": errors,
     }
     print_json(report)
+    return not errors
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -582,9 +600,8 @@ def main() -> int:
             return 0
         source_catalog = Path(getattr(args, "source", "")).expanduser() / ".agent-skills/skills.json"
         configured_catalog = os.environ.get("JEO_SKILLS_CATALOG")
-        if args.command == "install" and configured_catalog:
-            catalog_path = Path(configured_catalog).expanduser()
-            catalog, source = read_json(catalog_path), str(catalog_path)
+        if configured_catalog:
+            catalog, source = load_catalog(cache=not getattr(args, "dry_run", False))
         elif args.command == "install" and source_catalog.is_file():
             catalog, source = read_json(source_catalog), str(source_catalog)
         elif args.command == "install" and args.all and args.source != DEFAULT_SOURCE:
@@ -604,7 +621,7 @@ def main() -> int:
         elif args.command == "install":
             command_install(args, catalog)
         elif args.command == "doctor":
-            command_doctor(args, catalog, source)
+            return 0 if command_doctor(args, catalog, source) else 1
         return 0
     except (JeoSkillError, ValueError, OSError) as error:
         print(f"jeo-skill: {error}", file=sys.stderr)

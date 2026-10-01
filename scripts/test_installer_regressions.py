@@ -147,6 +147,97 @@ class InstallerRegressions(unittest.TestCase):
                 else ("file", path.read_bytes()) if path.is_file() else ("directory",)
                 for path in self.work.rglob("*")}
 
+    def test_doctor_bounds_a_hung_node_version_check(self):
+        node = self.bin / "node"
+        node.unlink()
+        node.write_text(f"#!{sys.executable}\nimport time\ntime.sleep(60)\n")
+        node.chmod(0o700)
+        result = self.cli("doctor")
+        self.assertEqual(result.returncode, 1, result.stdout)
+        report = json.loads(result.stdout)
+        self.assertFalse(report["ok"])
+        self.assertIn("timed out", " ".join(report["errors"]))
+        self.assertNotIn("Traceback", result.stdout)
+
+    def test_search_limit_rejects_negative_and_honors_boundaries(self):
+        result = self.cli("search", "fixture", "--limit", "-1", "--json")
+        self.assertNotEqual(result.returncode, 0, result.stdout)
+        self.assertIn("--limit must be non-negative", result.stdout)
+        for limit, expected in ((0, []), (1, ["alpha"]),
+                                (3, ["alpha", "beta", "jeo-skill"]),
+                                (10, ["alpha", "beta", "jeo-skill"])):
+            with self.subTest(limit=limit):
+                result = self.cli("search", "fixture", "--limit", str(limit), "--json")
+                self.successful(result)
+                self.assertEqual([row["name"] for row in json.loads(result.stdout)], expected)
+
+    def test_doctor_checks_installer_prerequisites(self):
+        # Restrict PATH to fixture tools so host executables cannot mask omissions.
+        env = {"PATH": str(self.bin)}
+        npx = self.bin / "npx"
+        node = self.bin / "node"
+        node.unlink()
+        for version, exit_code, supported in (("v22.19.9", 0, False),
+                                               ("v22.20.0", 0, True),
+                                               ("v24.0.0", 0, True),
+                                               ("garbage", 0, False),
+                                               ("v24.0.0", 1, False)):
+            with self.subTest(version=version, exit_code=exit_code):
+                node.write_text(f"#!/bin/sh\nprintf '%s\\n' '{version}'\nexit {exit_code}\n")
+                node.chmod(0o700)
+                result = self.cli("doctor", extra_env=env)
+                report = json.loads(result.stdout)
+                self.assertEqual(report["ok"], supported)
+                self.assertEqual(result.returncode, 0 if supported else 1)
+                if not supported:
+                    self.assertIn("22.20", " ".join(report["errors"]))
+                    before = self.snapshot()
+                    result = self.cli("install", "alpha", "--source", str(self.source),
+                                      "--yes", extra_env=env)
+                    self.assertEqual(result.returncode, 1, result.stdout)
+                    self.assertIn("22.20", result.stdout)
+                    self.assertEqual(self.snapshot(), before)
+        node.unlink()
+        result = self.cli("doctor", extra_env=env)
+        self.assertEqual(result.returncode, 1, result.stdout)
+        self.assertIn("node", " ".join(json.loads(result.stdout)["errors"]).lower())
+        npx.unlink()
+        result = self.cli("doctor", extra_env=env)
+        report = json.loads(result.stdout)
+        self.assertEqual(result.returncode, 1, result.stdout)
+        self.assertFalse(report["ok"])
+        self.assertIsNone(report["npx"])
+        self.assertIn("npx", " ".join(report["errors"]))
+        # Browsing still needs only Python, even when installer tooling is absent.
+        self.successful(self.cli("list", "--json", extra_env=env))
+
+    def test_explicit_catalog_errors_never_fall_back_to_checkout(self):
+        missing = self.work / "missing-catalog.json"
+        invalid = self.work / "invalid-catalog.json"
+        invalid.write_text("not JSON")
+        commands = (("categories", "--json"), ("list", "--json"),
+                    ("search", "alpha", "--json"), ("related", "alpha", "--json"),
+                    ("doctor",), ("install", "alpha", "--dry-run"))
+        for path in (missing, self.work, invalid):
+            for command in commands:
+                with self.subTest(path=path.name, command=command):
+                    before = self.snapshot()
+                    result = self.cli(*command, extra_env={"JEO_SKILLS_CATALOG": str(path)})
+                    self.assertNotEqual(result.returncode, 0, result.stdout)
+                    self.assertIn("Cannot read catalog", result.stdout)
+                    self.assertIn(str(path), result.stdout)
+                    self.assertNotIn("Traceback", result.stdout)
+                    self.assertEqual(self.snapshot(), before)
+
+    def test_explicit_catalog_is_used_by_browse_and_doctor(self):
+        result = self.cli("list", "--json")
+        self.successful(result)
+        self.assertEqual([row["name"] for row in json.loads(result.stdout)],
+                         ["alpha", "beta", "jeo-skill"])
+        result = self.cli("doctor")
+        self.successful(result)
+        self.assertEqual(json.loads(result.stdout)["catalog"], str(self.catalog.resolve()))
+
     def test_shared_aliases_materialize_copied_skills_in_requested_scope(self):
         for alias in ("jeopi", "jeo", "omp"):
             for global_install in (False, True):
