@@ -58,7 +58,7 @@ The jeo runtime routes this catalog through a fail-closed control-plane harness 
 | Context pruning | `prune-context` | JSONL `{id,text}` blocks → keep/drop verdicts for compaction |
 | Action gate | `review "<task>" '<proposal>'` | `permit` / `proposal_only` / `reject` / `unavailable` + SHA-256 receipt |
 
-Two discovery surfaces, strictly ordered: the **local catalog** first (`route-skills` / `jeo-skill`); when no confident local match exists, the harness emits `publicRegistryFallback` and discovery moves to the **public skills.sh registry** via the `find-skills` skill (`npx skills find "<query>"`) — installs from the public registry always require explicit user approval. The harness reads `skills.json` read-only and fails closed: missing key, timeout, or malformed response → `unavailable`, never autonomous action.
+Two discovery surfaces, strictly ordered: the **local catalog** first (`route-skills` / `jeo-skill`); when no confident local match exists, the harness emits `publicRegistryFallback` and discovery moves to the **public skills.sh registry** via the `find-skills` skill (`npx skills find "<query>"`) — installs from the public registry always require explicit user approval. The harness reads `skills.json` read-only and operates on live data by default (`--mock` is a test-only contract mode whose verdicts never authorize real action) and fails closed: missing key, timeout, or malformed response → `unavailable`, never autonomous action. Credentials: `JEV_API_KEY` env var or `~/.agents/jev/.env`.
 
 
 ## 📦 Installation

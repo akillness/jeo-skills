@@ -436,13 +436,25 @@ else
   curl -fsSL "$JEV_RAW/jev-control-plane.rule.md" -o "$USER_HOME/.agents/rules/jev-control-plane.md"
 fi
 
-# Verify: 8/8 mock contract checks must pass (requires Node 18+; no API key needed in mock)
+# Contract check (offline, test-only — mock never authorizes real action): must print 8/8
 node "$USER_HOME/.agents/jev/jev-harness.mjs" self-test --mock
+
+# Credentials for LIVE operation (required — Jev operates on real data, mock is test-only).
+# Provision JEV_API_KEY from the TypeSafe console and persist it for the harness:
+if [ -z "$JEV_API_KEY" ] && [ ! -f "$USER_HOME/.agents/jev/.env" ]; then
+  printf '%s\n' 'ACTION REQUIRED: set JEV_API_KEY (TypeSafe System One API key), then re-run this block.'
+else
+  [ -n "$JEV_API_KEY" ] && { umask 177; printf 'JEV_API_KEY=%s\n' "$JEV_API_KEY" > "$USER_HOME/.agents/jev/.env"; }
+  # Live smoke test against the real catalog + real API (no --mock):
+  node "$USER_HOME/.agents/jev/jev-harness.mjs" route-skills --top-k 3 'smoke test: route a react performance task'
+fi
 ```
 
-Live (non-mock) calls additionally require `JEV_API_KEY` in the environment; without it the
-harness fails closed to `unavailable` — that is expected, not an installation error. The
-harness reads the installed catalog's `skills.json` read-only and must never mutate it.
+The harness loads `JEV_API_KEY` from the environment or `~/.agents/jev/.env`. Without
+valid credentials every live call fails closed to `unavailable` and must never be
+substituted with mock output in real workflows. The harness reads the installed catalog's
+`skills.json` read-only and must never mutate it.
+
 
 
 ### Semble CLI and MCP server

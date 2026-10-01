@@ -57,7 +57,7 @@ jeo 런타임은 이 카탈로그를 fail-closed 컨트롤 플레인 하네스(�
 | 컨텍스트 프루닝 | `prune-context` | JSONL `{id,text}` 블록 → keep/drop 판정 |
 | 액션 게이트 | `review "<task>" '<proposal>'` | `permit` / `proposal_only` / `reject` / `unavailable` + SHA-256 영수증 |
 
-발견 표면은 2개로 엄격히 분리됩니다: **로컬 카탈로그** 우선(`route-skills` / `jeo-skill`), 확신 있는 로컬 매치가 없으면 `publicRegistryFallback`을 통해 `find-skills` 스킬(`npx skills find "<query>"`, 공개 skills.sh 레지스트리)로 넘어가며, 공개 레지스트리 설치는 항상 사용자 승인이 필요합니다. 하네스는 `skills.json`을 읽기 전용으로만 사용하고, 키 누락/타임아웃/비정상 응답 시 `unavailable`로 fail-closed 됩니다.
+발견 표면은 2개로 엄격히 분리됩니다: **로컬 카탈로그** 우선(`route-skills` / `jeo-skill`), 확신 있는 로컬 매치가 없으면 `publicRegistryFallback`을 통해 `find-skills` 스킬(`npx skills find "<query>"`, 공개 skills.sh 레지스트리)로 넘어가며, 공개 레지스트리 설치는 항상 사용자 승인이 필요합니다. 하네스는 `skills.json`을 읽기 전용으로만 사용하고, 실데이터 라이브 동작이 기본이며(`--mock`은 테스트 전용 계약 검증 모드, mock 판정은 실제 액션 권한 없음), 키 누락/타임아웃/비정상 응답 시 `unavailable`로 fail-closed 됩니다. 자격 증명은 `JEV_API_KEY` 환경 변수 또는 `~/.agents/jev/.env`에서 로드됩니다.
 
 
 ---

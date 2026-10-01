@@ -15,6 +15,17 @@ const CATALOG_CANDIDATES = [
 const API_URL = 'https://api.typesafe.ai/v1/systemone';
 const THRESHOLD = 0.8;
 
+// Live mode is the default and requires real credentials. If JEV_API_KEY is not
+// already in the environment, load it from ~/.agents/jev/.env (KEY=VALUE lines).
+if (!process.env.JEV_API_KEY) {
+  try {
+    const envText = await readFile(join(homedir(), '.agents', 'jev', '.env'), 'utf8');
+    const match = envText.match(/^\s*JEV_API_KEY\s*=\s*["']?([^"'\n]+)["']?\s*$/m);
+    if (match) process.env.JEV_API_KEY = match[1];
+  } catch { /* no env file — fail-closed behavior in requestJev handles it */ }
+}
+
+
 // Contract logic adapted verbatim from the verified session runner.
 export function evaluateNoul(prob) {
   const clamped = Math.max(0, Math.min(1, prob));
