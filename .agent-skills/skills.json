@@ -1,7 +1,7 @@
 {
   "version": "2.1.0",
   "generated": "2026-09-28",
-  "skill_count": 352,
+  "skill_count": 353,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -293,7 +293,8 @@
       "mole",
       "mcp-server-sv-number",
       "zeroshot",
-      "k-skill-setup"
+      "k-skill-setup",
+      "jevgrep"
     ],
     "ai-agents": [
       "bmad",
@@ -751,7 +752,8 @@
         "scrapingant-web-fetch",
         "semble",
         "zvec-grep",
-        "x-twitter-scraper"
+        "x-twitter-scraper",
+        "jevgrep"
       ],
       "benchmark-cli": [
         "hyperfine-benchmarking"
@@ -1378,9 +1380,10 @@
       "members": [
         "codebase-search",
         "semble",
-        "zvec-grep"
+        "zvec-grep",
+        "jevgrep"
       ],
-      "note": "codebase-search routes repository-navigation work, semble provides lightweight code search including remote Git and find-related, and zvec-grep provides local mixed-workspace hybrid/vector/BM25 retrieval with explicit index state."
+      "note": "codebase-search routes repository-navigation work, semble provides lightweight code search including remote Git and find-related, zvec-grep provides local mixed-workspace hybrid/vector/BM25 retrieval with explicit index state, and Jevgrep adds explicitly approved remote-agent discovery over scoped skills, wiki and graph source documents without replacing native graph traversal."
     },
     "matt-pocock-engineering-flow": {
       "mode": "related",
@@ -13008,6 +13011,38 @@
       "keyword": "paperclip, paperclipai, agent company, control plane",
       "version": "1.0",
       "source": "https://github.com/paperclipai/paperclip"
+    },
+    {
+      "name": "jevgrep",
+      "description": "Operate Jevgrep (`jg`) as optional remote-agent discovery over explicitly scoped skills, wiki pages, or graph source documents. Use only when the user explicitly requests Jevgrep and separately approves transmitting source content and queries to the configured provider with potential cost. Preserve native catalog, exact/LSP/zvec retrieval and Graphify query/path/explain as defaults; Jevgrep does not query or rebuild durable graphs.",
+      "category": "cli-tools",
+      "subcategory": "search-cli",
+      "interface": "cli",
+      "path": "jevgrep/SKILL.md",
+      "tags": [
+        "jevgrep",
+        "jg",
+        "optional-discovery",
+        "remote-search",
+        "skills",
+        "wiki",
+        "graph-sources"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex CLI",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Grep",
+        "Glob"
+      ],
+      "keyword": "jevgrep, jg, optional exploration",
+      "version": "1.0.0",
+      "source": "https://github.com/dzhng/jevgrep"
     }
   ]
 }

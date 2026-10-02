@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import os
 import re
 import shlex
@@ -497,6 +498,52 @@ def command_bootstrap(args: argparse.Namespace) -> None:
         raise JeoSkillError("Router installed, but CLI link failed")
 
 
+def command_explore(args: argparse.Namespace) -> int:
+    if not args.query.strip():
+        raise JeoSkillError("Exploration query must not be blank")
+    if args.query in {"auth", "skill", "doctor", "files", "cache"}:
+        raise JeoSkillError(f"Reserved jevgrep query: {args.query}")
+    if not args.root.strip():
+        raise JeoSkillError("--root must name an existing directory")
+    root = Path(args.root).expanduser().resolve()
+    if not root.is_dir():
+        raise JeoSkillError(f"Exploration root is not an existing directory: {root}")
+    if not 0 < args.max_requests <= 9007199254740991:
+        raise JeoSkillError("--max-requests must be a positive safe integer")
+    if not 256 <= args.max_output_bytes <= 9007199254740991:
+        raise JeoSkillError("--max-output-bytes must be a safe integer of at least 256")
+    if not math.isfinite(args.timeout) or args.timeout <= 0:
+        raise JeoSkillError("--timeout must be positive and finite")
+    command = [
+        "jg", "--no-cache", "--concurrency", "1",
+        "--max-requests", str(args.max_requests),
+        "--max-output-bytes", str(args.max_output_bytes),
+    ]
+    if args.hidden:
+        command.append("--hidden")
+    command.extend("--exclude=" + pattern for pattern in args.exclude)
+    command.extend(["--", args.query, str(root)])
+    if args.dry_run:
+        print(shlex.join(command))
+        return 0
+    if not args.allow_remote:
+        raise JeoSkillError(
+            "Exploration sends the query and eligible source content to the configured "
+            "remote provider and can incur costs; pass --allow-remote only after approval"
+        )
+    if not shutil.which("jg"):
+        raise JeoSkillError(
+            "Optional jg executable not found on PATH. Install separately with Node.js "
+            ">=22: npm install --global @dzhng/jevgrep@0.8.0"
+        )
+    try:
+        return subprocess.run(command, check=False, timeout=args.timeout).returncode
+    except subprocess.TimeoutExpired as error:
+        raise JeoSkillError(
+            f"jevgrep exploration timed out after {args.timeout:g} seconds"
+        ) from error
+
+
 def command_link(args: argparse.Namespace) -> None:
     source = Path(__file__).resolve()
     require_safe_path(BIN_PATH.parent, Path.home())
@@ -525,6 +572,7 @@ def command_doctor(_args: argparse.Namespace, catalog: dict[str, Any], source: s
         "categories": len(catalog["categories"]),
         "python": sys.version.split()[0],
         "npx": shutil.which("npx"),
+        "jg": shutil.which("jg"),
         "linked": BIN_PATH.is_symlink() and BIN_PATH.resolve() == Path(__file__).resolve(),
         "errors": errors,
     }
@@ -552,6 +600,17 @@ def build_parser() -> argparse.ArgumentParser:
     search.add_argument("query")
     search.add_argument("--limit", type=int, default=10)
     search.add_argument("--json", action="store_true")
+
+    explore = sub.add_parser("explore", help="Optionally explore source documents with remote jevgrep")
+    explore.add_argument("query")
+    explore.add_argument("--root", required=True, help="Existing source directory")
+    explore.add_argument("--allow-remote", action="store_true", help="Approve query/source upload and possible provider costs")
+    explore.add_argument("--hidden", action="store_true")
+    explore.add_argument("--exclude", action="append", default=[])
+    explore.add_argument("--max-requests", type=int, default=8)
+    explore.add_argument("--max-output-bytes", type=int, default=24000)
+    explore.add_argument("--timeout", type=float, default=120)
+    explore.add_argument("--dry-run", action="store_true")
 
     related = sub.add_parser("related", help="Show explicit overlap/sequence groups")
     related.add_argument("name")
@@ -592,6 +651,8 @@ def main() -> int:
     parser = build_parser()
     args = parser.parse_args()
     try:
+        if args.command == "explore":
+            return command_explore(args)
         if args.command == "link":
             command_link(args)
             return 0

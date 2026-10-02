@@ -61,11 +61,25 @@ El descubrimiento empieza por el **catálogo local** (`route-skills` / `jeo-skil
 
 Elige `api`, `local`, `ollama` o `lmstudio` solo tras aprobar credenciales, descargas y efectos sobre los servidores; `skip` conserva el estado existente de Jev. Sin TTY y sin selección, Jev se omite sin descargar su script. Una instalación de catálogo de proyecto nunca configura Jev global. `status` distingue configuración de comprobaciones limitadas de disponibilidad: tener una clave API no demuestra autenticación ni salud del servicio alojado. Un backend configurado que falla bloquea la acción, no permite omitir la revisión. `--mock` valida contratos sin conexión y nunca autoriza acciones reales. Consulta [`jev/README.md`](jev/README.md) para ajustes, códigos de salida y límites de validación.
 
+### Jevgrep (descubrimiento remoto opcional de fuentes)
+
+[Jevgrep](.agent-skills/jevgrep/SKILL.md) es una CLI `jg` independiente del arnés de control Jev. Las rutas predeterminadas siguen siendo los metadatos locales del catálogo, la búsqueda exacta nativa/LSP, la recuperación de zvec-grep y Graphify `query` / `path` / `explain` para relaciones del grafo. Puede buscar como texto documentos de habilidades, Markdown de la wiki y documentos fuente del grafo seleccionados explícitamente; no recorre binarios del grafo, modifica fuentes ni reconstruye grafos.
+
+Previsualiza una raíz acotada de documentación pública sin invocar Jevgrep:
+
+```bash
+jeo-skill explore "Which document explains checkpoint ownership?" --root /path/to/jeo-skills/docs --dry-run
+# Solo tras aprobar por separado consulta, envío de fuentes y coste, con jg y credenciales guardadas ya configurados:
+jeo-skill explore "Which document explains checkpoint ownership?" --root /path/to/jeo-skills/docs --allow-remote
+```
+
+La ejecución remota envía la consulta y el contenido fuente elegible al proveedor configurado y puede generar costes; las credenciales guardadas no son consentimiento. La configuración general no instala ni autentica Jevgrep. Consulta la [guía de activación manual](setup-all-skills-prompt.md#jevgrep-optional-remote-source-discovery) para la instalación fijada y sus límites. Dry-run es un plan inerte; `jg files -- ROOT` es local y muestra solo recuentos, no nombres de archivos ni una certificación de privacidad. Ninguno demuestra la calidad de búsquedas reales del proveedor; esas búsquedas no se han ejecutado aquí.
+
 ## 📦 Instalación
 
 ### ✨ Recomendado: Instalación impulsada por LLM (un solo prompt, todas las plataformas)
 
-Entrega el prompt de configuración a tu agente de programación (Claude Code, Codex, Gemini CLI, …). Lee la guía, detecta tu SO, instala la CLI `skills`, añade cada habilidad a las rutas correctas por agente y registra las herramientas MCP/shell: sin pasos manuales.
+Entrega el prompt de configuración a tu agente de programación (Claude Code, Codex, Gemini CLI, …). Lee la guía, detecta tu SO, instala la CLI `skills`, añade cada habilidad a las rutas correctas por agente y registra las herramientas MCP/shell compartidas indicadas. La configuración opcional de los runtimes Jev y Jevgrep sigue requiriendo aprobación por separado.
 
 ```bash
 # Fetch the delegation guide and hand it to your agent
@@ -146,7 +160,7 @@ video-motion-previs check
 
 ## 📚 Lista de Habilidades
 
-> Manifiesto central: `.agent-skills/skills.json` · 352 habilidades · 10 categorías principales · metadatos de subcategoría/interfaz/relación
+> Manifiesto central: `.agent-skills/skills.json` · 353 habilidades · 10 categorías principales · metadatos de subcategoría/interfaz/relación
 
 ### 🌐 Web (50)
 
@@ -299,9 +313,9 @@ Subcategorías: `image` (10), `video` (13), `motion` (1), `audio` (1), `presenta
 | `higgsfield-brandkit` |
 | `shopping-shorts` |
 
-### ⌨️ Herramientas CLI (34)
+### ⌨️ Herramientas CLI (35)
 
-Subcategorías: `developer-cli` (9), `ai-cli` (11), `media-cli` (1), `automation-cli` (6), `search-cli` (6), `benchmark-cli` (1)
+Subcategorías: `developer-cli` (9), `ai-cli` (11), `media-cli` (1), `automation-cli` (6), `search-cli` (7), `benchmark-cli` (1)
 
 | Skill |
 |---|
@@ -339,6 +353,7 @@ Subcategorías: `developer-cli` (9), `ai-cli` (11), `media-cli` (1), `automation
 | `mcp-server-sv-number` |
 | `zeroshot` |
 | `k-skill-setup` |
+| `jevgrep` |
 
 ### 🤖 IA y Agentes (62)
 

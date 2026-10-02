@@ -28,7 +28,7 @@ Then read this file fully before doing anything else in this session.
 ## Current Project State
 
 **Working:**
-- The catalog manifest (`.agent-skills/skills.json`, 350 skills) and its three
+- The catalog manifest (`.agent-skills/skills.json`, 353 skills) and its three
   projections (`.agent-skills/skills.toon`, `README.md`/`README.ko.md`/`README.es-ES.md`
   category tables, each skill's own SKILL.md frontmatter) are validated end-to-end by
   `scripts/validate-catalog-projections.py`, wired into `.github/workflows/ci.yml`
@@ -127,6 +127,16 @@ Then read this file fully before doing anything else in this session.
   Host integration remains rule-driven, not automatic native-hook registration.
   README locales and both SVGs document that boundary; current commands live in
   `jev/README.md`. Existing user Jev installation and ECC settings were not updated.
+- Jevgrep discovery (2026-10-02): `jeo-skill explore` is a separate opt-in over an
+  explicit source-document root; metadata search and native exact/LSP/zvec/Graphify
+  routes remain defaults. Dry-run works before catalog loading without `jg` or
+  credentials; execution requires per-call `--allow-remote` and manually installed
+  `@dzhng/jevgrep@0.8.0`. Request/output bounds, no-cache and timeout are enforced.
+  Twelve regressions passed; the published package completed skills/wiki/graph-source
+  transport against deterministic loopback responses (12 POSTs, no cache/source writes).
+  This proves transport, not live-provider retrieval quality. README locales, setup
+  guide and both SVGs describe the boundary; `patterns/jeo-skill-install-flow.md`
+  records recurring checks. No global install, authentication or graph rebuild occurred.
 
 **Not yet built:**
 - `validate_links()` (dangling relative markdown link check) is implemented but not

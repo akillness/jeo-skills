@@ -61,6 +61,20 @@ Jev는 기본 카탈로그 설치에 포함되지 않는 별도의 홈 범위 �
 
 자격 증명, 다운로드, 서버 실행에 동의한 경우에만 `api`, `local`, `ollama`, `lmstudio`를 선택하세요. `skip`은 기존 Jev 상태를 보존하며, TTY 없이 선택값이 없으면 설정 스크립트 다운로드 없이 건너뜁니다. 프로젝트 카탈로그 설치는 글로벌 Jev를 구성하지 않습니다. `status`는 설정된 선택 상태와 제한적인 백엔드 준비 상태를 구분합니다. API 키 존재만으로 호스팅 인증이나 정상 동작을 증명하지 않습니다. 설정된 백엔드 장애는 리뷰 우회가 아닌 fail-closed 처리 대상입니다. `--mock`은 오프라인 계약 검증용이며 실제 동작을 승인하지 않습니다. 설정, 종료 코드, 검증 범위는 [`jev/README.md`](jev/README.md)를 참조하세요.
 
+### Jevgrep (선택적 원격 소스 탐색)
+
+[Jevgrep](.agent-skills/jevgrep/SKILL.md)는 Jev 컨트롤 플레인 하네스와 별개인 `jg` CLI입니다. 기본 경로는 로컬 카탈로그 메타데이터, 네이티브 정확 검색/LSP, zvec-grep 워크스페이스 검색, 그래프 관계용 Graphify `query` / `path` / `explain`입니다. 명시적으로 선택한 스킬 문서, 위키 Markdown, 그래프 소스 문서를 텍스트로 검색할 수 있지만 그래프 바이너리를 탐색하거나 소스를 수정하거나 그래프를 재생성하지 않습니다.
+
+범위를 좁힌 공개 문서 루트로 Jevgrep 호출 없이 실행 계획을 미리 확인합니다.
+
+```bash
+jeo-skill explore "Which document explains checkpoint ownership?" --root /path/to/jeo-skills/docs --dry-run
+# 쿼리·소스 업로드·비용을 별도로 승인하고, jg와 저장된 자격 증명이 이미 구성된 경우에만:
+jeo-skill explore "Which document explains checkpoint ownership?" --root /path/to/jeo-skills/docs --allow-remote
+```
+
+원격 실행은 쿼리와 검색 대상 소스 내용을 설정된 제공자에게 전송하며 비용이 발생할 수 있습니다. 저장된 자격 증명은 전송 동의가 아닙니다. 일괄 설정은 Jevgrep을 설치하거나 인증하지 않습니다. 고정 버전 설치와 제한은 [수동 선택 가이드](setup-all-skills-prompt.md#jevgrep-optional-remote-source-discovery)를 참조하세요. Dry-run은 실행하지 않는 계획이며 로컬 `jg files -- ROOT`는 파일명이나 개인정보 보호 인증이 아닌 개수만 반환합니다. 어느 쪽도 실제 제공자의 검색 품질을 증명하지 않으며, 여기서는 해당 검색을 실행하지 않았습니다.
+
 
 ---
 
@@ -68,7 +82,7 @@ Jev는 기본 카탈로그 설치에 포함되지 않는 별도의 홈 범위 �
 
 ### ✨ 권장: LLM 위임 설치(프롬프트 하나로 모든 플랫폼 지원)
 
-설정 프롬프트를 코딩 에이전트(Claude Code, Codex, Gemini CLI 등)에게 전달하세요. 에이전트가 가이드를 읽고 OS를 감지한 뒤 `skills` CLI를 설치하고, 각 에이전트의 올바른 경로에 모든 스킬을 추가하며, MCP/셸 도구까지 등록하므로 수동 단계가 필요 없습니다.
+설정 프롬프트를 코딩 에이전트(Claude Code, Codex, Gemini CLI 등)에게 전달하세요. 에이전트가 가이드를 읽고 OS를 감지한 뒤 `skills` CLI를 설치하고, 각 에이전트의 올바른 경로에 모든 스킬을 추가하며, 명시된 공유 MCP/셸 도구를 등록합니다. 선택적 Jev·Jevgrep 런타임 설정은 별도 승인이 필요합니다.
 
 ```bash
 # 위임 가이드를 가져와 에이전트에게 전달
@@ -150,7 +164,7 @@ video-motion-previs check
 
 ## 📚 스킬 목록
 
-> 중앙 매니페스트: `.agent-skills/skills.json` · 352개 스킬 · 10개 기본 카테고리 · 하위 카테고리/인터페이스/관계 그룹 지원
+> 중앙 매니페스트: `.agent-skills/skills.json` · 353개 스킬 · 10개 기본 카테고리 · 하위 카테고리/인터페이스/관계 그룹 지원
 
 ### 🌐 웹 (50개)
 
@@ -303,9 +317,9 @@ video-motion-previs check
 | `higgsfield-brandkit` |
 | `shopping-shorts` |
 
-### ⌨️ CLI 도구 (34개)
+### ⌨️ CLI 도구 (35개)
 
-하위 분류: `developer-cli` (9), `ai-cli` (11), `media-cli` (1), `automation-cli` (6), `search-cli` (6), `benchmark-cli` (1)
+하위 분류: `developer-cli` (9), `ai-cli` (11), `media-cli` (1), `automation-cli` (6), `search-cli` (7), `benchmark-cli` (1)
 
 | Skill |
 |---|
@@ -343,6 +357,7 @@ video-motion-previs check
 | `mcp-server-sv-number` |
 | `zeroshot` |
 | `k-skill-setup` |
+| `jevgrep` |
 
 ### 🤖 AI 및 에이전트 (62개)
 

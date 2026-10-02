@@ -96,6 +96,16 @@ never infer runtime loading solely from an upstream agent label or successful ex
   (normal host policies), exit 3 is invalid/configured unavailable (fail closed).
   Health/model-list success is not inference or native-hook enforcement proof.
   Use `jev/README.md` and `scripts/test_jev_regressions.py` for the current contract.
+- Jevgrep is independent of Jev and is not a metadata-search dependency. The optional
+  `explore` subcommand requires an explicit root and per-call `--allow-remote` before
+  invoking manually installed `@dzhng/jevgrep@0.8.0`; credentials alone are not consent.
+  Dry-run dispatches before catalog loading and needs neither `jg` nor credentials.
+  Preserve literal query/root/exclude argv, reserved-subcommand rejection, no-cache,
+  bounded concurrency/requests/output, timeout and child stream/status propagation.
+  Keep graph traversal and checkpoint writes with their existing owners. `jg files`
+  is a local counts-only preview; `jg doctor` calls a provider and must not run implicitly.
+  Verification: `python3 scripts/test_jevgrep_regressions.py -v` covers the wrapper;
+  a real pinned-package loopback smoke covers transport, not live model quality.
 
 ## Verify
 - [ ] `jeo-skill doctor` reports `"ok": true`, a resolved `catalog` path/URL, and

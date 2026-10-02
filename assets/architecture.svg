@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 850" width="100%" height="100%" role="img" aria-labelledby="architecture-title architecture-desc">
-  <title id="architecture-title">jeo-skills: shared catalog distribution and optional Jev runtime</title>
-  <desc id="architecture-desc">The shared catalog and jeo-skill router distribute selected skills to host agents; catalog installation is not execution. Jev is a separate optional setup branch that can be skipped. Its status distinguishes opt-in configuration from backend readiness. Only a host that adopts the installed rule invokes the harness for skill routing, context pruning, or proposal review. The harness calls a separately available API, local server, Ollama, or LM Studio backend. Installed files, an API key, and mock checks do not prove live integration. Inactive Jev is bypassed; configured backend failures do not permit autonomous action.</desc>
+  <title id="architecture-title">jeo-skills: shared catalog, optional Jevgrep discovery and optional Jev runtime</title>
+  <desc id="architecture-desc">The 353-skill shared catalog and jeo-skill router distribute selected skills to host agents; catalog installation is not execution. Local metadata, native exact search, LSP and zvec retrieval remain the defaults, as do Graphify query, path and explain. Jevgrep is a separate optional source-discovery CLI, not the Jev decision harness. jeo-skill explore requires an explicit root; dry-run is inert, and provider requests require separate --allow-remote approval plus preinstalled jg and saved credentials. It searches skills, wiki markdown and graph source text, not graph databases or binary traversal; it does not mutate or rebuild graphs. Jev is a separate optional setup branch that can be skipped. Its status distinguishes opt-in configuration from backend readiness. Only a host that adopts the installed rule invokes the harness for skill routing, context pruning, or proposal review. The harness calls a separately available API, local server, Ollama, or LM Studio backend. Installed files, an API key, and mock checks do not prove live integration. Inactive Jev is bypassed; configured backend failures do not permit autonomous action.</desc>
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="#060B14"/><stop offset="50%" stop-color="#0A1525"/><stop offset="100%" stop-color="#0D1B2E"/>
@@ -28,14 +28,14 @@
   <rect width="1200" height="850" rx="18" fill="url(#dots)"/>
   <rect width="1200" height="3" rx="2" fill="url(#topBar)"/>
   <text x="600" y="52" class="title" text-anchor="middle">jeo-skills Architecture</text>
-  <text x="600" y="79" class="body" text-anchor="middle">Shared catalog distribution · optional Jev configuration · host-driven execution</text>
+  <text x="600" y="79" class="body" text-anchor="middle">Shared catalog · optional Jevgrep source discovery · separate optional Jev decision harness</text>
 
   <text x="60" y="119" class="section" fill="#60A5FA">CATALOG DISTRIBUTION — NOT BACKEND EXECUTION</text>
   <line x1="60" y1="130" x2="1140" y2="130" stroke="#1E3A5F"/>
   <rect x="60" y="150" width="320" height="122" rx="12" class="card" stroke="#3B82F6"/>
   <text x="80" y="179" class="heading">Catalog source</text>
   <text x="80" y="205" class="mono">SKILL.md + skills.json</text>
-  <text x="80" y="229" class="body">Categories, bundles, selected skills</text>
+  <text x="80" y="229" class="body">353 skills · categories · bundles</text>
   <text x="80" y="252" class="note">Metadata and instructions, not a live service</text>
   <path d="M 380 211 H 420" class="connector"/>
   <rect x="420" y="150" width="320" height="122" rx="12" class="card" stroke="#8B5CF6"/>
@@ -49,8 +49,10 @@
   <text x="800" y="205" class="body">Discover and invoke relevant skills</text>
   <text x="800" y="229" class="body">Claude · Codex · Gemini · other targets</text>
   <text x="800" y="252" class="note">Target support / reload checked separately</text>
+  <text x="60" y="287" class="note">Default: local metadata / native exact / LSP / zvec; Graphify query / path / explain.</text>
   <path d="M 960 272 V 299 H 790" class="connector"/>
-  <text x="760" y="305" class="body" text-anchor="end" fill="#6EE7B7">Direct host workflow remains available without Jev</text>
+  <text x="760" y="305" class="body" text-anchor="end" fill="#6EE7B7">Direct host workflow requires neither Jev nor Jevgrep</text>
+  <text x="60" y="325" class="body">Optional Jevgrep (not Jev): --root + --allow-remote; --dry-run is inert; graph source text only, no traversal / rebuild.</text>
 
   <text x="60" y="346" class="section" fill="#F87171">OPTIONAL JEV SETUP — SEPARATE FROM CATALOG INSTALL</text>
   <line x1="60" y1="357" x2="1140" y2="357" stroke="#1E3A5F"/>

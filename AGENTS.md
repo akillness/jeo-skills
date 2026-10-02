@@ -1,13 +1,13 @@
 ---
 name: agents
 description: Always-loaded project anchor. Read this first. Contains project identity, non-negotiables, commands, and pointer to ROUTER.md for full context.
-last_updated: 2026-09-18
+last_updated: 2026-10-02
 ---
 
 # jeo-skills
 
 ## What This Is
-A curated, cross-platform catalog of 350 categorized AI agent skills (`.agent-skills/<name>/SKILL.md`), with all taxonomy/relationship metadata centralized once in `.agent-skills/skills.json` and installable selectively via the `jeo-skill` router CLI.
+A curated, cross-platform catalog of 353 categorized AI agent skills (`.agent-skills/<name>/SKILL.md`), with all taxonomy/relationship metadata centralized once in `.agent-skills/skills.json` and installable selectively via the `jeo-skill` router CLI.
 
 ## Non-Negotiables
 - Never duplicate a skill's category/subcategory/tags/relationships in its own `SKILL.md` — that metadata lives once in `.agent-skills/skills.json`

@@ -58,5 +58,7 @@ jobs:
         run: python3 scripts/test_installer_regressions.py -v
       - name: Optional Jev setup and backend contract regressions
         run: python3 scripts/test_jev_regressions.py -v
+      - name: Optional Jevgrep discovery contract regressions
+        run: python3 scripts/test_jevgrep_regressions.py -v
       - name: Isolated runtime loader probe regressions
         run: python3 scripts/test_runtime_skill_loader.py -v

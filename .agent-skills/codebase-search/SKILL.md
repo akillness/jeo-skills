@@ -82,6 +82,11 @@ Packet rules:
 - Prefer `hosted-search` when local context is missing.
 - Prefer `graph-path` only when ordinary search is no longer enough.
 
+For an explicit Jevgrep request over scoped source documents, follow
+[jevgrep](../jevgrep/SKILL.md) for its separate remote-content/cost gate and bounded
+discovery. Exact-text, LSP/indexed, structural, and existing zvec routes remain
+default and authoritative; this optional route does not replace graph queries.
+
 ### Step 3: Narrow scope before reading everything
 Apply at least one narrowing move before reading files:
 - limit by directory or package

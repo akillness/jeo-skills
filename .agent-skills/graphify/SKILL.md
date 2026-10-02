@@ -199,6 +199,11 @@ When that happens, say the graph is structurally complete but unlabeled/undescri
 - `opencontext` — searchable decisions, manifests, stable links, project-memory handoff
 - `survey` — tool/platform comparison before committing to Graphify
 
+For an explicit Jevgrep source-discovery request, follow
+[jevgrep](../jevgrep/SKILL.md) over `.mex/context` or a scoped source tree, with its
+separate remote-content/cost gate. Keep `query` / `path` / `explain` here for graph
+relations; Jevgrep neither uploads graph artifacts by default nor owns graph rebuilds.
+
 If the user asks "build or query the graph," stay here. If they ask "find the file fast," "file
 this as a wiki note," or "store this as project memory," route out.
 

@@ -52,6 +52,11 @@ search backend, or a durable project-memory store.
 - A hosted application search backend, faceting, or production serving layer:
   route to `typesense` or the application's search owner.
 
+For an explicit Jevgrep request, follow [jevgrep](../jevgrep/SKILL.md) for optional
+remote-agent discovery over scoped source documents and its separate content/cost
+gate. Native exact search and existing zvec retrieval remain defaults; zvec Remote
+Embedding authorization is not consent for Jevgrep provider calls.
+
 ## Instructions
 
 ### 1. Verify the current runtime before copying commands

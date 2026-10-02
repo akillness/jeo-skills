@@ -24,7 +24,7 @@ last_updated: 2026-10-02
 
 ## System Overview
 jeo-skills primarily distributes a catalog, not a running agent application.
-The optional `jev/` harness and local backend are separate from catalog installation:
+Optional Jev decision execution and Jevgrep source discovery are separate flows:
 
 **Authoring flow (source of truth):** a skill lives at `.agent-skills/<name>/SKILL.md`
 (instructions an agent reads). Its category, subcategory, interface, tags, bundle
@@ -57,6 +57,16 @@ The host must load and follow that rule to invoke route/prune/review at task eve
 `status` separates configured `active` from `ready` (health/model-list probe only);
 API credentials alone leave readiness unverified. Configured failures fail closed,
 while inactivity returns to normal host policies. See `jev/README.md` for commands.
+
+**Optional Jevgrep discovery:** `jeo-skill explore QUERY --root DIR` delegates source
+text discovery to manually installed `@dzhng/jevgrep@0.8.0` only with explicit
+`--allow-remote`. It dispatches before catalog loading; dry-run invokes neither the
+binary nor a provider. Default catalog metadata search and native exact/LSP/zvec
+retrieval remain unchanged. Graph-source text is eligible, but graph query/path/explain
+and checkpoint ownership remain authoritative: no graph binary traversal or rebuild.
+The wrapper enforces no-cache, concurrency/request/output bounds and a subprocess
+timeout; these bounds are not monetary or upload-size limits. See
+`.agent-skills/jevgrep/SKILL.md` for authorization and the pinned CLI contract.
 
 ## Key Components
 - **`.agent-skills/skills.json`** — the manifest / single source of truth for all

@@ -118,6 +118,11 @@ When answering questions:
 4. Cite page paths and raw source paths explicitly
 5. File durable outputs back into the vault
 
+For an explicit Jevgrep request, follow [jevgrep](../jevgrep/SKILL.md) over the
+chosen vault's `wiki/` source documents with its separate remote-content/cost gate.
+The index-first reading, citation, and durable filing steps above remain unchanged;
+raw-source ingestion and graph refresh are not part of this optional search.
+
 Create a reusable note stub for high-value answers:
 
 ```bash

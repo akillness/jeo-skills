@@ -70,6 +70,13 @@ separate skills when their runtime or job differs—for example, human code-revi
 versus the `ocr` CLI. Use a canonical alias only when ordinary prompts truly compete and
 backward-compatible exact-name installation is required.
 
+### Optional Jevgrep source discovery
+
+For an explicit Jevgrep request, follow [jevgrep](../jevgrep/SKILL.md) for scoped
+skill-document discovery through `jeo-skill explore` with an inert `--dry-run` and
+a separate remote-content/cost gate. Catalog metadata search and selection remain
+the default; the canonical skill owns setup, consent, and snippet verification.
+
 ## Runtime Installation Guide
 
 Follow `setup-all-skills-prompt.md` for guided installation. The installer writes files;

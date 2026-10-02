@@ -62,12 +62,26 @@ Discovery starts with the **local catalog** (`route-skills` / `jeo-skill`). A we
 
 Choose `api`, `local`, `ollama`, or `lmstudio` only after approving credentials, downloads, and server side effects; `skip` preserves existing Jev state. An unset choice with no TTY skips Jev without fetching its setup script. Project catalog installs never configure global Jev. `status` distinguishes configured opt-in from limited backend readiness: API key presence does not prove hosted authentication or health. Configured outages fail closed, rather than bypassing review. `--mock` validates offline contracts only and never authorizes real actions. See [`jev/README.md`](jev/README.md) for settings, exit codes, and validation limits.
 
+### Jevgrep (optional remote source discovery)
+
+[Jevgrep](.agent-skills/jevgrep/SKILL.md) is a separate `jg` CLI, not the Jev control-plane harness. Defaults remain local catalog metadata, native exact search/LSP, zvec-grep workspace retrieval, and Graphify `query` / `path` / `explain` for graph relationships. Explicitly selected skill documents, wiki Markdown, and graph source documents can be searched as text; Jevgrep does not traverse graph binaries, mutate sources, or rebuild graphs.
+
+Preview a narrowly scoped public documentation root without invoking Jevgrep:
+
+```bash
+jeo-skill explore "Which document explains checkpoint ownership?" --root /path/to/jeo-skills/docs --dry-run
+# Only after separate query/source-upload/cost approval, with jg and saved credentials already configured:
+jeo-skill explore "Which document explains checkpoint ownership?" --root /path/to/jeo-skills/docs --allow-remote
+```
+
+Remote execution sends the query and eligible source content to the configured provider and may incur charges; saved credentials are not consent. Blanket setup does not install or authenticate Jevgrep. See the [manual opt-in guide](setup-all-skills-prompt.md#jevgrep-optional-remote-source-discovery) for the pinned install and limits. Dry-run is an inert plan, and local `jg files -- ROOT` reports counts only, not filenames or a privacy certification. Neither proves live provider search quality; that has not been exercised here.
+
 
 ## 📦 Installation
 
 ### ✨ Recommended: LLM-driven install (one prompt, all platforms)
 
-Hand the setup prompt to your coding agent (Claude Code, Codex, Gemini CLI, …). It reads the guide, detects your OS, installs the `skills` CLI, adds every skill into the correct per-agent paths, and registers the MCP/shell tools — no manual steps.
+Hand the setup prompt to your coding agent (Claude Code, Codex, Gemini CLI, …). It reads the guide, detects your OS, installs the `skills` CLI, adds every skill into the correct per-agent paths, and registers the listed shared MCP/shell tools. Optional Jev and Jevgrep runtime setup still requires separate approval.
 
 ```bash
 # Fetch the delegation guide and hand it to your agent
@@ -174,7 +188,7 @@ video-motion-previs check
 
 ## 📚 Skills List
 
-> Central manifest: `.agent-skills/skills.json` · 352 skills · 10 primary categories · subcategory/interface/relationship metadata
+> Central manifest: `.agent-skills/skills.json` · 353 skills · 10 primary categories · subcategory/interface/relationship metadata
 
 ### 🌐 Web (50)
 
@@ -327,9 +341,9 @@ Subcategories: `image` (10), `video` (13), `motion` (1), `audio` (1), `presentat
 | `higgsfield-brandkit` |
 | `shopping-shorts` |
 
-### ⌨️ CLI Tools (34)
+### ⌨️ CLI Tools (35)
 
-Subcategories: `developer-cli` (9), `ai-cli` (11), `media-cli` (1), `automation-cli` (6), `search-cli` (6), `benchmark-cli` (1)
+Subcategories: `developer-cli` (9), `ai-cli` (11), `media-cli` (1), `automation-cli` (6), `search-cli` (7), `benchmark-cli` (1)
 
 | Skill |
 |---|
@@ -367,6 +381,7 @@ Subcategories: `developer-cli` (9), `ai-cli` (11), `media-cli` (1), `automation-
 | `mcp-server-sv-number` |
 | `zeroshot` |
 | `k-skill-setup` |
+| `jevgrep` |
 
 ### 🤖 AI & Agents (62)
 

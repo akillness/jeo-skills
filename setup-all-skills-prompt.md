@@ -26,6 +26,10 @@ Jev rules/hooks. Ask for explicit approval of a backend and its side effects bef
 setting `JEO_SKILLS_JEV=api|local|ollama|lmstudio`; `skip` leaves existing Jev state unchanged.
 Project catalog installation (`INSTALL_GLOBAL=false`) must stay separate from Jev setup.
 
+Jevgrep is a separate optional remote source-discovery CLI (`jg`), not the Jev harness.
+Catalog setup may install its skill document, but must not install/authenticate `jg`,
+run provider checks, or infer source-upload/cost consent from any installation mode.
+
 Every mode also mirrors the skills it installed into any detected Aside account, since the
 `skills` CLI cannot target Aside. Minimal mirrors just `jeo-skill`, core mirrors the starter
 bundle, full mirrors the whole catalog.
@@ -474,6 +478,49 @@ mechanism and verify loading separately.
 readiness probes, not end-to-end enforcement or hosted API health. Offline
 `self-test --mock` validates deterministic contracts only. Never replace live approval
 evidence with mock output or call a paid provider during default catalog setup.
+
+### Jevgrep (optional remote source discovery)
+
+Keep local catalog metadata, native exact search/LSP, zvec-grep retrieval, and Graphify
+`query` / `path` / `explain` as the defaults. Use [the Jevgrep skill](.agent-skills/jevgrep/SKILL.md)
+only for an explicit request over an approved source-document root. Skill documents,
+wiki Markdown, and graph source documents are text-search surfaces, not permission
+to traverse graph binaries, mutate sources, or rebuild graphs. Existing vault and
+checkpoint ownership stays unchanged.
+
+Skip this opt-in during blanket setup, including `full`. If the user separately
+approves installation, require Node.js 22+ and show the manual pinned command:
+
+```bash
+npm install -g @dzhng/jevgrep@0.8.0
+```
+
+Reuse a working installation. The user handles upstream `jg auth` privately after
+separate authentication approval; do not collect keys or automate credential entry.
+`jg doctor` makes provider requests and may incur charges: never run it as an
+automatic setup or readiness check. Saved credentials do not authorize uploads.
+
+Review a narrow public source root with native tools, keeping secrets, personal raw
+sources, graph artifacts, and databases outside it or explicitly excluded. Preview
+without invoking Jevgrep, then execute only after separate approval of the query,
+eligible source content, configured provider, and possible charges:
+
+```bash
+jeo-skill explore "Which document explains checkpoint ownership?" --root /path/to/jeo-skills/docs --dry-run
+# Only with existing jg, saved credentials, and the separate remote approval:
+jeo-skill explore "Which document explains checkpoint ownership?" --root /path/to/jeo-skills/docs --allow-remote
+```
+
+`--allow-remote` is a per-invocation wrapper gate, not an upstream `jg` flag or a
+persistent grant. Default wrapper bounds are 8 provider requests, 24,000 output
+bytes, concurrency 1, `--no-cache`, and a 120-second outer timeout. These bounds
+are not a monetary cap or an upload-size limit. Optional exclusions use repeatable
+`--exclude=PATTERN`; prefer a narrower root before widening scope.
+
+Local `jg files -- ROOT` returns counts and directory groups, not filenames, a
+secrets audit, or privacy certification. Dry-run is an inert command plan. Local
+files previews succeeded over three isolated roots; real provider search was not
+executed, so no live retrieval-quality or provider-readiness claim follows.
 
 
 
