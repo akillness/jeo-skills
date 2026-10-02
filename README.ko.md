@@ -2,14 +2,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-352-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-353-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![GJC](https://img.shields.io/badge/GJC-gajae--code-181717?style=for-the-badge&logo=github)](https://github.com/akillness/gajae-code)
 [![jeo-code](https://img.shields.io/badge/jeo--code-jeo-181717?style=for-the-badge&logo=github)](https://github.com/akillness/jeo-code)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**카테고리형 스킬 352개 · 경량 선택 설치 · 압축 TOON 카탈로그 · 멀티플랫폼**
+**카테고리형 스킬 353개 · 경량 선택 설치 · 압축 TOON 카탈로그 · 멀티플랫폼**
 
 스펙 우선 멀티 에이전트 LLM 워크플로우 컬렉션입니다. 프롬프트 하나로 전체 설정을
 위임하거나, `jeo-skill` 라우터부터 설치해 필요한 웹, 인프라, 게임, 미디어, CLI,
@@ -112,7 +112,7 @@ curl -s https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-sk
 
 ### 경량 선택 설치(수동 / CI)
 
-352개 스킬 폴더 전체가 아니라 **`jeo-skill` 라우터부터 설치**합니다. 카테고리,
+353개 스킬 폴더 전체가 아니라 **`jeo-skill` 라우터부터 설치**합니다. 카테고리,
 하위 분류, 인터페이스, 번들, 연관 스킬을 탐색할 수 있으며 앱·모델·MCP 서버·런타임은
 실제 선택된 작업에서만 온디맨드로 설치합니다.
 
@@ -833,7 +833,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 ## 📁 구조
 
 ```text
-├── .agent-skills/          ← 352개 스킬 폴더 (SKILL.md + 선택적 지원 파일)
+├── .agent-skills/          ← 353개 스킬 폴더 (SKILL.md + 선택적 지원 파일)
 ├── docs/                   ← 상세 가이드 (bmad, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md

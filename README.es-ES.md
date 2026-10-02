@@ -4,14 +4,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-352-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-353-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![GJC](https://img.shields.io/badge/GJC-gajae--code-181717?style=for-the-badge&logo=github)](https://github.com/akillness/gajae-code)
 [![jeo-code](https://img.shields.io/badge/jeo--code-jeo-181717?style=for-the-badge&logo=github)](https://github.com/akillness/jeo-code)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**352 habilidades categorizadas · instalación selectiva ligera · catálogo TOON compacto · multiplataforma**
+**353 habilidades categorizadas · instalación selectiva ligera · catálogo TOON compacto · multiplataforma**
 
 Una colección curada para flujos de trabajo LLM multi-agente y centrados en especificaciones. Delega una configuración completa con un solo prompt, o instala primero el enrutador `jeo-skill` y añade solo las habilidades de web, infraestructura, juegos, medios, CLI o utilidades que necesites.
 
@@ -112,7 +112,7 @@ Jev sigue siendo opcional en todos los modos del catálogo: la configuración pr
 
 ### Instalación selectiva ligera (manual / CI)
 
-Instala primero el **enrutador `jeo-skill`**, no las 352 carpetas de habilidades. Proporciona descubrimiento de categoría, subcategoría, interfaz, paquete y relación, manteniendo aplicaciones pesadas, modelos, servidores MCP y tiempos de ejecución bajo demanda.
+Instala primero el **enrutador `jeo-skill`**, no las 353 carpetas de habilidades. Proporciona descubrimiento de categoría, subcategoría, interfaz, paquete y relación, manteniendo aplicaciones pesadas, modelos, servidores MCP y tiempos de ejecución bajo demanda.
 
 ```bash
 # One lightweight skill, shared globally
@@ -843,7 +843,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 
 ```text
 .
-├── .agent-skills/          ← 352 skill folders (SKILL.md + optional support files)
+├── .agent-skills/          ← 353 skill folders (SKILL.md + optional support files)
 ├── docs/                   ← detailed guides (bmad, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
