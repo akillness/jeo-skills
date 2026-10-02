@@ -16,6 +16,19 @@ import os
 import sys
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
+try:
+    with open(os.path.expanduser("~/.agents/jev/.env"), encoding="utf-8") as env_file:
+        for line in env_file:
+            key, separator, value = line.partition("=")
+            key = key.strip()
+            if separator and key.startswith("JEV_") and key not in os.environ:
+                value = value.strip()
+                if len(value) >= 2 and value[0] == value[-1] and value[0] in "\"'":
+                    value = value[1:-1]
+                os.environ[key] = value
+except FileNotFoundError:
+    pass
+
 HOST = os.environ.get("JEV_LOCAL_HOST", "127.0.0.1")
 PORT = int(os.environ.get("JEV_LOCAL_PORT", "8763"))
 MODEL_DIR = os.environ.get("JEV_LOCAL_MODEL_DIR") or os.path.expanduser("~/.agents/jev/models/JEV-9B")
@@ -35,8 +48,8 @@ def load_model():
     import torch  # noqa: F401
     from transformers import AutoModelForCausalLM, AutoTokenizer
     print(f"[jev-local] loading {MODEL_DIR} ...", flush=True)
-    _tokenizer = AutoTokenizer.from_pretrained(MODEL_DIR)
-    _model = AutoModelForCausalLM.from_pretrained(MODEL_DIR, dtype="auto", device_map="auto")
+    _tokenizer = AutoTokenizer.from_pretrained(MODEL_DIR, local_files_only=True)
+    _model = AutoModelForCausalLM.from_pretrained(MODEL_DIR, dtype="auto", device_map="auto", local_files_only=True)
     _model.eval()
     print(f"[jev-local] ready on http://{HOST}:{PORT}/v1/systemone", flush=True)
 

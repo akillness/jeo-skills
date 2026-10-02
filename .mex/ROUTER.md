@@ -16,7 +16,7 @@ edges:
     condition: when the task touches skills.json, SKILL.md frontmatter, README/TOON projections, or CI catalog validation
   - target: patterns/INDEX.md
     condition: when starting a task — check the pattern index for a matching pattern file
-last_updated: 2026-10-01
+last_updated: 2026-10-02
 ---
 
 # Session Bootstrap
@@ -118,6 +118,15 @@ Then read this file fully before doing anything else in this session.
   installed responsive-design through real skills@1.7.0 into shared/GJC roots.
   Existing Actions Node20 deprecation warnings remain; npm registry publishing is
   not configured for this repository.
+- Jev optionality (2026-10-02): root bootstrap and full-mode guide use canonical
+  home-scoped setup only after opt-in. Skip/no-TTY unset performs no Jev fetch/write;
+  explicit project-scoped Jev setup fails before catalog installation writes.
+  Status distinguishes configured opt-in from health/model-list readiness; outages
+  and malformed decisions fail closed, uncertain context stays intact. A real
+  source-harness Ollama prune returned `keep` without mock, downloads or setup changes.
+  Host integration remains rule-driven, not automatic native-hook registration.
+  README locales and both SVGs document that boundary; current commands live in
+  `jev/README.md`. Existing user Jev installation and ECC settings were not updated.
 
 **Not yet built:**
 - `validate_links()` (dangling relative markdown link check) is implemented but not

@@ -1,189 +1,123 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 800" width="100%" height="100%">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1120" width="100%" height="100%" role="img" aria-labelledby="workflow-title workflow-desc">
+  <title id="workflow-title">jeo-skills workflow with an optional Jev setup and invocation branch</title>
+  <desc id="workflow-desc">Catalog distribution installs the shared jeo-skill router and selected skills for a host agent. The direct host workflow does not require Jev. Home-scoped Jev setup is optional: skip, decline, or an unset non-interactive mode bypasses setup without fetching Jev. Approved setup selects API, local, Ollama, or LM Studio, installs configuration and rule artifacts, then status reports configuration and limited backend readiness. Host adoption of the rule is separate. An adopting host can invoke route-skills at task discovery, prune-context before compaction, and review before memory writes or agent-authored commits; these are separate lifecycle calls, not mandatory sequential stages. Weak local matches route to find-skills and require approval before installing public skills. Inactive Jev is bypassed under normal host permission and confirmation policies; configured backend errors fail closed. Mock checks and API key presence do not establish live readiness.</desc>
   <defs>
-    <!-- Background Gradient -->
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#050B14"/>
-      <stop offset="50%" stop-color="#0A1527"/>
-      <stop offset="100%" stop-color="#0D1E36"/>
+      <stop offset="0%" stop-color="#050B14"/><stop offset="50%" stop-color="#0A1527"/><stop offset="100%" stop-color="#0D1E36"/>
     </linearGradient>
-
-    <!-- Grid Pattern -->
-    <pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse">
-      <circle cx="15" cy="15" r="1" fill="#1E3E66" opacity="0.3"/>
-    </pattern>
-
-    <!-- Box Gradients -->
-    <linearGradient id="g-install" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#2563EB"/><stop offset="100%" stop-color="#1D4ED8"/>
+    <pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse"><circle cx="15" cy="15" r="1" fill="#1E3E66" opacity="0.3"/></pattern>
+    <linearGradient id="topBar" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#2563EB"/><stop offset="35%" stop-color="#7C3AED"/><stop offset="65%" stop-color="#059669"/><stop offset="100%" stop-color="#EC4899"/>
     </linearGradient>
-    <linearGradient id="g-ooo" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#7C3AED"/><stop offset="100%" stop-color="#6D28D9"/>
-    </linearGradient>
-    <linearGradient id="g-spec" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#DB2777"/><stop offset="100%" stop-color="#C11F5E"/>
-    </linearGradient>
-    <linearGradient id="g-cli" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#059669"/><stop offset="100%" stop-color="#047857"/>
-    </linearGradient>
-    <linearGradient id="g-eval" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#D97706"/><stop offset="100%" stop-color="#B45309"/>
-    </linearGradient>
-    <linearGradient id="g-wiki" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#0891B2"/><stop offset="100%" stop-color="#0E7490"/>
-    </linearGradient>
-    <linearGradient id="g-jev" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#DC2626"/><stop offset="100%" stop-color="#B91C1C"/>
-    </linearGradient>
-    <linearGradient id="g-jev2" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#9F1239"/><stop offset="100%" stop-color="#881337"/>
-    </linearGradient>
-
-    <!-- Arrow Markers -->
-    <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-      <path d="M 0 1 L 10 5 L 0 9 z" fill="#475569"/>
-    </marker>
-    <marker id="arrow-loop" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-      <path d="M 0 1 L 10 5 L 0 9 z" fill="#D97706"/>
-    </marker>
-    <marker id="arrow-jev" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-      <path d="M 0 1 L 10 5 L 0 9 z" fill="#F87171"/>
-    </marker>
-
-    <!-- Drop Shadow -->
-    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
-      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.6"/>
-    </filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9 z" fill="#94A3B8"/></marker>
+    <marker id="optional-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9 z" fill="#F87171"/></marker>
+    <style>
+      text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+      .title { font-size: 29px; font-weight: 800; fill: #F1F5F9; }
+      .section { font-size: 12px; font-weight: 700; letter-spacing: 1.6px; }
+      .heading { font-size: 17px; font-weight: 700; fill: #F1F5F9; }
+      .body { font-size: 14px; fill: #CBD5E1; }
+      .note { font-size: 12px; fill: #94A3B8; }
+      .mono { font-family: 'SFMono-Regular', Consolas, monospace; font-size: 13px; fill: #E2E8F0; }
+      .card { fill: #0B1526; stroke-width: 1.5; }
+      .connector { fill: none; stroke: #94A3B8; stroke-width: 2; marker-end: url(#arrow); }
+      .optional { fill: none; stroke: #F87171; stroke-width: 2; stroke-dasharray: 6 5; marker-end: url(#optional-arrow); }
+    </style>
   </defs>
+  <rect width="1000" height="1120" rx="16" fill="url(#bg)"/>
+  <rect width="1000" height="1120" rx="16" fill="url(#grid)"/>
+  <rect width="1000" height="3" rx="2" fill="url(#topBar)"/>
+  <text x="500" y="50" class="title" text-anchor="middle">jeo-skills Workflow</text>
+  <text x="500" y="78" class="body" text-anchor="middle">Install catalog content; invoke skills through the host. Jev remains optional.</text>
 
-  <!-- Background -->
-  <rect width="1000" height="800" fill="url(#bg)" rx="16"/>
-  <rect width="1000" height="800" fill="url(#grid)" rx="16"/>
+  <text x="60" y="117" class="section" fill="#60A5FA">1. SHARED CATALOG DISTRIBUTION</text>
+  <line x1="60" y1="128" x2="940" y2="128" stroke="#1E3A5F"/>
+  <rect x="60" y="147" width="260" height="98" rx="10" class="card" stroke="#2563EB"/>
+  <text x="80" y="177" class="heading">Install shared router</text>
+  <text x="80" y="204" class="mono">npx skills add → jeo-skill</text>
+  <text x="80" y="227" class="body">Bootstrap requested agent target</text>
+  <path d="M 320 196 H 365" class="connector"/>
+  <rect x="365" y="147" width="270" height="98" rx="10" class="card" stroke="#2563EB"/>
+  <text x="385" y="177" class="heading">Select catalog content</text>
+  <text x="385" y="204" class="body">Skills · categories · bundles · all</text>
+  <text x="385" y="227" class="note">Catalog files are not backend execution</text>
+  <path d="M 635 196 H 680" class="connector"/>
+  <rect x="680" y="147" width="260" height="98" rx="10" class="card" stroke="#059669"/>
+  <text x="700" y="177" class="heading">Install into host target</text>
+  <text x="700" y="204" class="body">Resolve support / reload as needed</text>
+  <text x="700" y="227" class="note">Invoke relevant skills, not the full catalog</text>
+  <path d="M 940 196 H 966 V 624 H 40 V 561 H 60" class="connector"/>
+  <text x="940" y="269" class="body" text-anchor="end" fill="#6EE7B7">DIRECT PATH — NO JEV REQUIRED</text>
 
-  <!-- Header -->
-  <text x="500" y="50" font-family="-apple-system, sans-serif" font-size="28" font-weight="800" fill="#F1F5F9" text-anchor="middle" letter-spacing="1">jeo-skills Workflow &amp; Architecture</text>
-  <text x="500" y="75" font-family="-apple-system, sans-serif" font-size="13" fill="#64748B" text-anchor="middle" letter-spacing="2">SPEC-FIRST INSTALL · OPERATING RAIL · JEV CONTROL PLANE</text>
+  <text x="60" y="298" class="section" fill="#F87171">2. OPTIONAL HOME-SCOPED JEV SETUP</text>
+  <line x1="60" y1="309" x2="940" y2="309" stroke="#1E3A5F"/>
+  <rect x="60" y="328" width="260" height="122" rx="10" class="card" stroke="#F87171" stroke-dasharray="6 5"/>
+  <text x="80" y="358" class="heading">Install Jev? [y/N]</text>
+  <text x="80" y="384" class="body">Explicit approval / backend mode</text>
+  <text x="80" y="408" class="body">Skip / decline / no TTY + unset</text>
+  <text x="80" y="431" class="note">No Jev fetch or install on skip</text>
+  <path d="M 320 389 H 365" class="optional"/>
+  <text x="343" y="377" class="note" text-anchor="middle">yes</text>
+  <rect x="365" y="328" width="270" height="122" rx="10" class="card" stroke="#F87171"/>
+  <text x="385" y="358" class="heading">Choose backend; configure</text>
+  <text x="385" y="384" class="body">API · local · Ollama · LM Studio</text>
+  <text x="385" y="408" class="body">Harness + config + rule artifact</text>
+  <text x="385" y="431" class="note">Host adoption is a separate step</text>
+  <path d="M 635 389 H 680" class="optional"/>
+  <rect x="680" y="328" width="260" height="122" rx="10" class="card" stroke="#D97706"/>
+  <text x="700" y="358" class="heading">Check status, not inference</text>
+  <text x="700" y="384" class="mono">jev-harness.mjs status</text>
+  <text x="700" y="408" class="body">active = configured opt-in</text>
+  <text x="700" y="431" class="note">ready = true / false / null (unprobed)</text>
+  <path d="M 190 450 V 475 H 40 V 561 H 60" class="connector"/>
+  <text x="211" y="477" class="note">skip / inactive</text>
 
-  <!-- ================= SECTION 1: INSTALLATION FLOW (y: 110-240) ================= -->
-  <text x="60" y="125" font-family="-apple-system, sans-serif" font-size="11" font-weight="700" fill="#38BDF8" letter-spacing="2.5">1. INSTALLATION FLOW (setup-all-skills-prompt.md)</text>
-  <line x1="60" y1="135" x2="940" y2="135" stroke="#1E293B" stroke-width="2"/>
+  <text x="60" y="498" class="section" fill="#A78BFA">3. HOST WORKFLOW — WITH OR WITHOUT JEV</text>
+  <rect x="60" y="514" width="260" height="94" rx="10" class="card" stroke="#7C3AED"/>
+  <text x="80" y="544" class="heading">Clarify and plan</text>
+  <text x="80" y="571" class="body">Choose the task's relevant skills</text>
+  <text x="80" y="593" class="note">Spec-first tools when appropriate</text>
+  <path d="M 320 561 H 365" class="connector"/>
+  <rect x="365" y="514" width="270" height="94" rx="10" class="card" stroke="#059669"/>
+  <text x="385" y="544" class="heading">Execute through host tools</text>
+  <text x="385" y="571" class="body">Use installed skills as instructions</text>
+  <text x="385" y="593" class="note">Host permissions still apply</text>
+  <path d="M 635 561 H 680" class="connector"/>
+  <rect x="680" y="514" width="260" height="94" rx="10" class="card" stroke="#D97706"/>
+  <text x="700" y="544" class="heading">Verify outcomes</text>
+  <text x="700" y="571" class="body">Tests / browser / exact evidence</text>
+  <text x="700" y="593" class="note">Installed files do not prove behavior</text>
 
-  <!-- Step 1: npx skills add -->
-  <rect x="60" y="155" width="240" height="75" rx="10" fill="url(#g-install)" filter="url(#shadow)"/>
-  <text x="180" y="185" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#FFFFFF" text-anchor="middle">Step 1 — npx skills add</text>
-  <text x="180" y="205" font-family="Courier, monospace" font-size="10.5" fill="#E2E8F0" text-anchor="middle">skills@1.7.0 → ~/.agents/skills (universal)</text>
+  <text x="60" y="652" class="section" fill="#F87171">4. IF THE HOST ADOPTS THE RULE: LIFECYCLE-SPECIFIC JEV CALLS</text>
+  <text x="60" y="678" class="body">Separate optional calls, not a required route → prune → review pipeline.</text>
+  <line x1="60" y1="692" x2="940" y2="692" stroke="#1E3A5F"/>
+  <rect x="60" y="711" width="260" height="149" rx="10" class="card" stroke="#F87171" stroke-dasharray="6 5"/>
+  <text x="80" y="740" class="heading">route-skills</text>
+  <text x="80" y="765" class="body">At task discovery: local catalog first</text>
+  <text x="80" y="789" class="body">Return relevant Top-K skills</text>
+  <text x="80" y="813" class="body">Weak match → find-skills</text>
+  <text x="80" y="837" class="note">Public registry install requires approval</text>
+  <rect x="365" y="711" width="270" height="149" rx="10" class="card" stroke="#F87171" stroke-dasharray="6 5"/>
+  <text x="385" y="740" class="heading">prune-context</text>
+  <text x="385" y="765" class="body">Before long-session compaction</text>
+  <text x="385" y="789" class="body">JSONL blocks → keep / drop</text>
+  <text x="385" y="813" class="body">Preserve uncertain / keep blocks</text>
+  <text x="385" y="837" class="note">Only confident drop proposals remove text</text>
+  <rect x="680" y="711" width="260" height="149" rx="10" class="card" stroke="#EC4899" stroke-dasharray="6 5"/>
+  <text x="700" y="740" class="heading">review</text>
+  <text x="700" y="765" class="body">Before memory writes / commits</text>
+  <text x="700" y="789" class="body">permit · proposal_only · reject</text>
+  <text x="700" y="813" class="mono">unavailable + SHA-256 receipt</text>
+  <text x="700" y="837" class="note">Only a real permit allows autonomy</text>
+  <path d="M 190 860 V 880 H 810 V 860" class="optional" marker-start="url(#optional-arrow)"/>
+  <path d="M 500 860 V 880" fill="none" stroke="#F87171" stroke-width="2" stroke-dasharray="6 5"/>
+  <text x="500" y="907" class="body" text-anchor="middle">Harness ↔ optional external API / local / Ollama / LM Studio backend</text>
 
-  <!-- Connect 1 -> 2 -->
-  <path d="M 300 192.5 L 375 192.5" stroke="#475569" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
-
-  <!-- Step 2: jeo-skill router -->
-  <rect x="380" y="155" width="240" height="75" rx="10" fill="url(#g-install)" filter="url(#shadow)"/>
-  <text x="500" y="185" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#FFFFFF" text-anchor="middle">Step 2 — jeo-skill router</text>
-  <text x="500" y="205" font-family="Courier, monospace" font-size="10.5" fill="#E2E8F0" text-anchor="middle">link · categories · bundles · selective install</text>
-
-  <!-- Connect 2 -> 3 -->
-  <path d="M 620 192.5 L 695 192.5" stroke="#475569" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
-
-  <!-- Step 3: agent targets + projections -->
-  <rect x="700" y="155" width="240" height="75" rx="10" fill="url(#g-install)" filter="url(#shadow)"/>
-  <text x="820" y="185" font-family="-apple-system, sans-serif" font-size="14" font-weight="700" fill="#FFFFFF" text-anchor="middle">Step 3 — agent targets</text>
-  <text x="820" y="205" font-family="Courier, monospace" font-size="10.5" fill="#E2E8F0" text-anchor="middle">GJC/Antigravity projection · MCP (ooo, semble) · rtk</text>
-
-  <!-- ================= SECTION 2: DEFAULT OPERATING RAIL (y: 290-460) ================= -->
-  <text x="60" y="305" font-family="-apple-system, sans-serif" font-size="11" font-weight="700" fill="#A78BFA" letter-spacing="2.5">2. DEFAULT OPERATING RAIL (TOOL FLOW)</text>
-  <line x1="60" y1="315" x2="940" y2="315" stroke="#1E293B" stroke-width="2"/>
-
-  <!-- 1. ooo (Clarify & Seed) -->
-  <rect x="60" y="360" width="140" height="90" rx="10" fill="url(#g-ooo)" filter="url(#shadow)"/>
-  <text x="130" y="395" font-family="-apple-system, sans-serif" font-size="16" font-weight="800" fill="#FFFFFF" text-anchor="middle">ooo</text>
-  <text x="130" y="415" font-family="-apple-system, sans-serif" font-size="11" fill="#E9D5FF" text-anchor="middle">Socratic Interview</text>
-  <text x="130" y="430" font-family="-apple-system, sans-serif" font-size="10" fill="#C084FC" text-anchor="middle">(Git-Grounded Context)</text>
-
-  <!-- Connect 1 -> 2 -->
-  <path d="M 200 405 L 235 405" stroke="#475569" stroke-width="2.5" fill="none" marker-end="url(#arrow)"/>
-
-  <!-- 2. spec-kit (Plan & Tasks) -->
-  <rect x="240" y="360" width="140" height="90" rx="10" fill="url(#g-spec)" filter="url(#shadow)"/>
-  <text x="310" y="395" font-family="-apple-system, sans-serif" font-size="16" font-weight="800" fill="#FFFFFF" text-anchor="middle">spec-kit</text>
-  <text x="310" y="415" font-family="-apple-system, sans-serif" font-size="11" fill="#FCE7F3" text-anchor="middle">Execution Plan</text>
-  <text x="310" y="430" font-family="-apple-system, sans-serif" font-size="10" fill="#F472B6" text-anchor="middle">(/speckit.plan &amp; tasks)</text>
-
-  <!-- Connect 2 -> 3 -->
-  <path d="M 380 405 L 415 405" stroke="#475569" stroke-width="2.5" fill="none" marker-end="url(#arrow)"/>
-
-  <!-- 3. cli-anything (Execute) -->
-  <rect x="420" y="360" width="140" height="90" rx="10" fill="url(#g-cli)" filter="url(#shadow)"/>
-  <text x="490" y="395" font-family="-apple-system, sans-serif" font-size="15" font-weight="800" fill="#FFFFFF" text-anchor="middle">cli-anything</text>
-  <text x="490" y="415" font-family="-apple-system, sans-serif" font-size="11" fill="#D1FAE5" text-anchor="middle">Harness Execution</text>
-  <text x="490" y="430" font-family="-apple-system, sans-serif" font-size="10" fill="#34D399" text-anchor="middle">(cli-hub search/install)</text>
-
-  <!-- Connect 3 -> 4 -->
-  <path d="M 560 405 L 595 405" stroke="#475569" stroke-width="2.5" fill="none" marker-end="url(#arrow)"/>
-
-  <!-- 4. evaluate (Verify & Drift) -->
-  <rect x="600" y="360" width="140" height="90" rx="10" fill="url(#g-eval)" filter="url(#shadow)"/>
-  <text x="670" y="395" font-family="-apple-system, sans-serif" font-size="16" font-weight="800" fill="#FFFFFF" text-anchor="middle">evaluate</text>
-  <text x="670" y="415" font-family="-apple-system, sans-serif" font-size="11" fill="#FEF3C7" text-anchor="middle">Verification Gate</text>
-  <text x="670" y="430" font-family="-apple-system, sans-serif" font-size="10" fill="#FBBF24" text-anchor="middle">(--json artifact checks)</text>
-
-  <!-- Loop back from 4 to 3 (ooo ralph loop) -->
-  <path d="M 670 360 C 670 320, 490 320, 490 355" stroke="#D97706" stroke-width="2" stroke-dasharray="4,4" fill="none" marker-end="url(#arrow-loop)"/>
-  <text x="580" y="333" font-family="-apple-system, sans-serif" font-size="9.5" fill="#FBBF24" text-anchor="middle">ooo ralph completion loop (on failure)</text>
-
-  <!-- Connect 4 -> 5 -->
-  <path d="M 740 405 L 775 405" stroke="#10B981" stroke-width="2.5" fill="none" marker-end="url(#arrow)"/>
-
-  <!-- 5. llm-wiki / graphify (Durable Memory) -->
-  <rect x="780" y="360" width="160" height="90" rx="10" fill="url(#g-wiki)" filter="url(#shadow)"/>
-  <text x="860" y="390" font-family="-apple-system, sans-serif" font-size="14" font-weight="800" fill="#FFFFFF" text-anchor="middle">llm-wiki &amp; graphify</text>
-  <text x="860" y="410" font-family="-apple-system, sans-serif" font-size="10.5" fill="#CFFAFE" text-anchor="middle">Durable Memory Graph</text>
-  <text x="860" y="425" font-family="-apple-system, sans-serif" font-size="9.5" fill="#22D3EE" text-anchor="middle">(Obsidian Wiki &amp; post-turn hooks)</text>
-
-  <!-- ================= SECTION 3: JEV CONTROL PLANE (y: 490-650) ================= -->
-  <text x="60" y="505" font-family="-apple-system, sans-serif" font-size="11" font-weight="700" fill="#F87171" letter-spacing="2.5">3. JEV CONTROL PLANE (SYSTEM ONE · ~/.agents/jev)</text>
-  <line x1="60" y1="515" x2="940" y2="515" stroke="#1E293B" stroke-width="2"/>
-
-  <!-- 1. route-skills -->
-  <rect x="60" y="535" width="200" height="90" rx="10" fill="url(#g-jev)" filter="url(#shadow)"/>
-  <text x="160" y="565" font-family="-apple-system, sans-serif" font-size="15" font-weight="800" fill="#FFFFFF" text-anchor="middle">route-skills</text>
-  <text x="160" y="585" font-family="-apple-system, sans-serif" font-size="10.5" fill="#FECACA" text-anchor="middle">Top-K over skills.json (352)</text>
-  <text x="160" y="601" font-family="-apple-system, sans-serif" font-size="9.5" fill="#FCA5A5" text-anchor="middle">~99% token savings vs full catalog</text>
-
-  <!-- Connect 1 -> 2 -->
-  <path d="M 260 580 L 315 580" stroke="#475569" stroke-width="2.5" fill="none" marker-end="url(#arrow)"/>
-
-  <!-- 2. prune-context -->
-  <rect x="320" y="535" width="200" height="90" rx="10" fill="url(#g-jev)" filter="url(#shadow)"/>
-  <text x="420" y="565" font-family="-apple-system, sans-serif" font-size="15" font-weight="800" fill="#FFFFFF" text-anchor="middle">prune-context</text>
-  <text x="420" y="585" font-family="-apple-system, sans-serif" font-size="10.5" fill="#FECACA" text-anchor="middle">JSONL blocks → keep / drop</text>
-  <text x="420" y="601" font-family="-apple-system, sans-serif" font-size="9.5" fill="#FCA5A5" text-anchor="middle">context compaction verdicts</text>
-
-  <!-- Connect 2 -> 3 -->
-  <path d="M 520 580 L 575 580" stroke="#475569" stroke-width="2.5" fill="none" marker-end="url(#arrow)"/>
-
-  <!-- 3. review gate -->
-  <rect x="580" y="535" width="200" height="90" rx="10" fill="url(#g-jev2)" filter="url(#shadow)"/>
-  <text x="680" y="563" font-family="-apple-system, sans-serif" font-size="15" font-weight="800" fill="#FFFFFF" text-anchor="middle">review gate</text>
-  <text x="680" y="582" font-family="-apple-system, sans-serif" font-size="10" fill="#FECDD3" text-anchor="middle">permit · proposal_only · reject</text>
-  <text x="680" y="597" font-family="-apple-system, sans-serif" font-size="10" fill="#FECDD3" text-anchor="middle">· unavailable (fail-closed)</text>
-  <text x="680" y="614" font-family="-apple-system, sans-serif" font-size="9" fill="#FDA4AF" text-anchor="middle">SHA-256 receipt · threshold 0.8</text>
-
-  <!-- Fallback: weak local match -> find-skills -->
-  <rect x="810" y="535" width="130" height="90" rx="10" fill="#0B132B" stroke="#F87171" stroke-width="1.5" stroke-dasharray="5,4"/>
-  <text x="875" y="565" font-family="-apple-system, sans-serif" font-size="13" font-weight="800" fill="#F87171" text-anchor="middle">find-skills</text>
-  <text x="875" y="583" font-family="-apple-system, sans-serif" font-size="9.5" fill="#FCA5A5" text-anchor="middle">npx skills find</text>
-  <text x="875" y="598" font-family="-apple-system, sans-serif" font-size="9.5" fill="#FCA5A5" text-anchor="middle">public skills.sh registry</text>
-  <text x="875" y="614" font-family="-apple-system, sans-serif" font-size="8.5" fill="#94A3B8" text-anchor="middle">(install needs user approval)</text>
-  <path d="M 160 535 C 160 500, 875 495, 875 530" stroke="#F87171" stroke-width="1.5" stroke-dasharray="4,4" fill="none" marker-end="url(#arrow-jev)"/>
-  <text x="520" y="493" font-family="-apple-system, sans-serif" font-size="9.5" fill="#F87171" text-anchor="middle">publicRegistryFallback (weak local match)</text>
-
-  <!-- Gate arrow up to operating rail -->
-  <path d="M 680 535 C 680 490, 490 490, 490 455" stroke="#475569" stroke-width="2" stroke-dasharray="2,4" fill="none" marker-end="url(#arrow)"/>
-
-  <!-- ================= Legend / Info Box ================= -->
-  <rect x="60" y="665" width="880" height="110" rx="8" fill="#0B132B" stroke="#1E293B" stroke-width="1.5"/>
-  <text x="80" y="688" font-family="-apple-system, sans-serif" font-size="11.5" font-weight="700" fill="#94A3B8">✦ Operating Principle:</text>
-  <text x="80" y="708" font-family="-apple-system, sans-serif" font-size="11" fill="#E2E8F0">1. Socratic Ambiguity Gate blocks mutation tools until ambiguity score is &lt;= 20% (locks codebase, protects code).</text>
-  <text x="80" y="726" font-family="-apple-system, sans-serif" font-size="11" fill="#E2E8F0">2. Planning blueprint (spec-kit) is generated one-way from the frozen seed; execution drives agent-native harnesses with --json evidence.</text>
-  <text x="80" y="744" font-family="-apple-system, sans-serif" font-size="11" fill="#E2E8F0">3. Jev routes the local catalog read-only and fails closed: no key / timeout / malformed → unavailable, never autonomous action.</text>
-  <text x="80" y="762" font-family="-apple-system, sans-serif" font-size="11" fill="#E2E8F0">4. Two discovery surfaces: local catalog (route-skills / jeo-skill) first; public skills.sh registry (find-skills) only as fallback.</text>
+  <rect x="60" y="935" width="880" height="160" rx="10" class="card" stroke="#1E3A5F"/>
+  <text x="80" y="963" class="heading">Configuration, readiness and permission are different checks</text>
+  <text x="80" y="988" class="body">status exits: 0 = configured, not known unavailable; 2 = inactive; 3 = configured unavailable / invalid.</text>
+  <text x="80" y="1011" class="body">Readiness probes local health / selected-model listing only. An API key leaves readiness unverified.</text>
+  <text x="80" y="1034" class="body">Inactive → bypass Jev; normal host permission/confirmation policies apply. Configured outages → fail closed.</text>
+  <text x="80" y="1057" class="body">proposal_only → ask the user; reject / unavailable → no autonomous action. Mock is not activation.</text>
+  <text x="80" y="1080" class="note">Rule-driven integration, not automatic native hooks. Solid = host path; dashed = optional Jev calls.</text>
 </svg>

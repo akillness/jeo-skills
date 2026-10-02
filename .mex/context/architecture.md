@@ -17,14 +17,14 @@ edges:
   - target: patterns/catalog-metadata-changes.md
     condition: when adding a new skill or editing an existing skill's metadata
 grounds_to: []
-last_updated: 2026-10-01
+last_updated: 2026-10-02
 ---
 
 # Architecture
 
 ## System Overview
-jeo-skills is a catalog repository, not a running application — there is no server or
-client at runtime. Two independent flows exist:
+jeo-skills primarily distributes a catalog, not a running agent application.
+The optional `jev/` harness and local backend are separate from catalog installation:
 
 **Authoring flow (source of truth):** a skill lives at `.agent-skills/<name>/SKILL.md`
 (instructions an agent reads). Its category, subcategory, interface, tags, bundle
@@ -48,6 +48,15 @@ and IDE need separate native global roots. `install_support.py` centralizes safe
 copying for these projections and the existing `scripts/sync-aside-skills.py` entrypoint.
 Post-install checks verify selected skill files. No provider settings or hooks change.
 These scripts remain outside the current mex index; claims are source/smoke-grounded.
+
+**Optional Jev flow:** `jev/jev-setup.sh` is the canonical home-scoped installer.
+Skipped and non-interactive unset modes bypass Jev; project-scoped catalog installs
+never configure global Jev. Explicit project opt-in fails before installation writes.
+Opt-in installs configuration and a rule artifact, not native hooks or plugins.
+The host must load and follow that rule to invoke route/prune/review at task events.
+`status` separates configured `active` from `ready` (health/model-list probe only);
+API credentials alone leave readiness unverified. Configured failures fail closed,
+while inactivity returns to normal host policies. See `jev/README.md` for commands.
 
 ## Key Components
 - **`.agent-skills/skills.json`** — the manifest / single source of truth for all
@@ -88,10 +97,9 @@ These scripts remain outside the current mex index; claims are source/smoke-grou
   coverage uses `python3 scripts/test_installer_regressions.py`; the optional Bun
   runtime-loader probe requires explicit external module and isolated fixture paths.
   Catalog governance remains standalone read-only Python commands.
-- No runtime execution of skills — this repo only stores and validates the markdown
-  instruction sets; the actual agent runtimes (Claude, Codex, Gemini, OpenCode, jeopi)
-  that read and act on a `SKILL.md` live outside this repo.
+- No agent runtime execution of skills — the actual hosts (Claude, Codex, Gemini,
+  OpenCode, jeopi) that interpret `SKILL.md` live outside this repo. Optional Jev
+  provides a callable decision harness/local server, not automatic host enforcement.
 - No category subfolders under `.agent-skills/` — taxonomy is manifest-only metadata,
   enforced by `flatten_skills.py --dry-run` in CI.
-- No secondary skill-code sandbox/execution layer — a skill is documentation an agent
-  interprets, not code this repo runs.
+- No secondary skill-code sandbox: catalog skills remain instructions, not applications.

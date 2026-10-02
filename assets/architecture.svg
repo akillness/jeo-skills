@@ -1,311 +1,102 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-     viewBox="0 0 1200 570" width="100%" height="100%">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 850" width="100%" height="100%" role="img" aria-labelledby="architecture-title architecture-desc">
+  <title id="architecture-title">jeo-skills: shared catalog distribution and optional Jev runtime</title>
+  <desc id="architecture-desc">The shared catalog and jeo-skill router distribute selected skills to host agents; catalog installation is not execution. Jev is a separate optional setup branch that can be skipped. Its status distinguishes opt-in configuration from backend readiness. Only a host that adopts the installed rule invokes the harness for skill routing, context pruning, or proposal review. The harness calls a separately available API, local server, Ollama, or LM Studio backend. Installed files, an API key, and mock checks do not prove live integration. Inactive Jev is bypassed; configured backend failures do not permit autonomous action.</desc>
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1" gradientUnits="objectBoundingBox">
-      <stop offset="0%" stop-color="#060B14"/>
-      <stop offset="50%" stop-color="#0A1525"/>
-      <stop offset="100%" stop-color="#0D1B2E"/>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#060B14"/><stop offset="50%" stop-color="#0A1525"/><stop offset="100%" stop-color="#0D1B2E"/>
     </linearGradient>
-    <pattern id="dots" x="0" y="0" width="28" height="28" patternUnits="userSpaceOnUse">
-      <circle cx="14" cy="14" r="1" fill="#1E3A5F" opacity="0.3"/>
-    </pattern>
-    <!-- Pipeline step gradients -->
-    <linearGradient id="g1" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%" stop-color="#1D4ED8"/><stop offset="100%" stop-color="#3B82F6"/>
-    </linearGradient>
-    <linearGradient id="g2" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%" stop-color="#5B21B6"/><stop offset="100%" stop-color="#8B5CF6"/>
-    </linearGradient>
-    <linearGradient id="g3" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%" stop-color="#065F46"/><stop offset="100%" stop-color="#10B981"/>
-    </linearGradient>
-    <linearGradient id="g4" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%" stop-color="#92400E"/><stop offset="100%" stop-color="#F59E0B"/>
-    </linearGradient>
-    <linearGradient id="g5" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%" stop-color="#831843"/><stop offset="100%" stop-color="#EC4899"/>
-    </linearGradient>
-    <!-- Rainbow top bar -->
+    <pattern id="dots" width="28" height="28" patternUnits="userSpaceOnUse"><circle cx="14" cy="14" r="1" fill="#1E3A5F" opacity="0.3"/></pattern>
     <linearGradient id="topBar" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%" stop-color="#1D4ED8" stop-opacity="0"/>
-      <stop offset="20%" stop-color="#3B82F6"/>
-      <stop offset="40%" stop-color="#8B5CF6"/>
-      <stop offset="60%" stop-color="#10B981"/>
-      <stop offset="80%" stop-color="#F59E0B"/>
-      <stop offset="100%" stop-color="#EC4899" stop-opacity="0"/>
+      <stop offset="0%" stop-color="#1D4ED8"/><stop offset="25%" stop-color="#8B5CF6"/><stop offset="50%" stop-color="#10B981"/><stop offset="75%" stop-color="#F59E0B"/><stop offset="100%" stop-color="#EC4899"/>
     </linearGradient>
-    <!-- Harness card gradients -->
-    <linearGradient id="hOmc" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%" stop-color="#1D4ED8"/><stop offset="100%" stop-color="#2563EB"/>
-    </linearGradient>
-    <linearGradient id="hOmx" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%" stop-color="#92400E"/><stop offset="100%" stop-color="#D97706"/>
-    </linearGradient>
-    <linearGradient id="hOhmg" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%" stop-color="#065F46"/><stop offset="100%" stop-color="#059669"/>
-    </linearGradient>
-    <!-- Filters -->
-    <filter id="titleGlow" x="-10%" y="-40%" width="120%" height="180%">
-      <feGaussianBlur stdDeviation="4" result="blur"/>
-      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-    </filter>
-    <filter id="shadow" x="-4%" y="-4%" width="108%" height="116%">
-      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#000000" flood-opacity="0.55"/>
-    </filter>
-    <filter id="stepGlow" x="-3%" y="-5%" width="106%" height="115%">
-      <feGaussianBlur stdDeviation="2" result="blur"/>
-      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-    </filter>
-    <!-- Arrow markers -->
-    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
-      <path d="M 0 1 L 9 5 L 0 9 z" fill="#334155"/>
-    </marker>
-    <marker id="arrC" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
-      <path d="M 0 1 L 9 5 L 0 9 z" fill="#10B981"/>
-    </marker>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9 z" fill="#94A3B8"/></marker>
+    <marker id="optional-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9 z" fill="#F87171"/></marker>
+    <style>
+      text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+      .title { font-size: 30px; font-weight: 800; fill: #F1F5F9; }
+      .section { font-size: 12px; font-weight: 700; letter-spacing: 2px; }
+      .heading { font-size: 17px; font-weight: 700; fill: #F1F5F9; }
+      .body { font-size: 14px; fill: #CBD5E1; }
+      .note { font-size: 12px; fill: #94A3B8; }
+      .mono { font-family: 'SFMono-Regular', Consolas, monospace; font-size: 13px; fill: #E2E8F0; }
+      .card { fill: #0B1526; stroke-width: 1.5; }
+      .connector { fill: none; stroke: #94A3B8; stroke-width: 2; marker-end: url(#arrow); }
+      .optional { fill: none; stroke: #F87171; stroke-width: 2; stroke-dasharray: 6 5; marker-end: url(#optional-arrow); }
+    </style>
   </defs>
+  <rect width="1200" height="850" rx="18" fill="url(#bg)"/>
+  <rect width="1200" height="850" rx="18" fill="url(#dots)"/>
+  <rect width="1200" height="3" rx="2" fill="url(#topBar)"/>
+  <text x="600" y="52" class="title" text-anchor="middle">jeo-skills Architecture</text>
+  <text x="600" y="79" class="body" text-anchor="middle">Shared catalog distribution · optional Jev configuration · host-driven execution</text>
 
-  <!-- Background -->
-  <rect width="1200" height="570" fill="url(#bg)" rx="18"/>
-  <rect width="1200" height="570" fill="url(#dots)" rx="18" opacity="0.6"/>
-  <!-- Rainbow top accent bar -->
-  <rect x="0" y="0" width="1200" height="3" fill="url(#topBar)" rx="2"/>
+  <text x="60" y="119" class="section" fill="#60A5FA">CATALOG DISTRIBUTION — NOT BACKEND EXECUTION</text>
+  <line x1="60" y1="130" x2="1140" y2="130" stroke="#1E3A5F"/>
+  <rect x="60" y="150" width="320" height="122" rx="12" class="card" stroke="#3B82F6"/>
+  <text x="80" y="179" class="heading">Catalog source</text>
+  <text x="80" y="205" class="mono">SKILL.md + skills.json</text>
+  <text x="80" y="229" class="body">Categories, bundles, selected skills</text>
+  <text x="80" y="252" class="note">Metadata and instructions, not a live service</text>
+  <path d="M 380 211 H 420" class="connector"/>
+  <rect x="420" y="150" width="320" height="122" rx="12" class="card" stroke="#8B5CF6"/>
+  <text x="440" y="179" class="heading">Shared jeo-skill router</text>
+  <text x="440" y="205" class="mono">npx skills add → bootstrap</text>
+  <text x="440" y="229" class="body">Resolve target; install selected content</text>
+  <text x="440" y="252" class="note">Transport into shared skills / target surfaces</text>
+  <path d="M 740 211 H 780" class="connector"/>
+  <rect x="780" y="150" width="360" height="122" rx="12" class="card" stroke="#10B981"/>
+  <text x="800" y="179" class="heading">Host agent / runtime</text>
+  <text x="800" y="205" class="body">Discover and invoke relevant skills</text>
+  <text x="800" y="229" class="body">Claude · Codex · Gemini · other targets</text>
+  <text x="800" y="252" class="note">Target support / reload checked separately</text>
+  <path d="M 960 272 V 299 H 790" class="connector"/>
+  <text x="760" y="305" class="body" text-anchor="end" fill="#6EE7B7">Direct host workflow remains available without Jev</text>
 
-  <!-- ═══════════════ TITLE (y: 14–100) ═══════════════ -->
-  <ellipse cx="600" cy="52" rx="140" ry="32" fill="#10B981" opacity="0.04"/>
-  <text x="600" y="50"
-        font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
-        font-size="34" font-weight="800" fill="#F1F5F9" text-anchor="middle"
-        letter-spacing="2" filter="url(#titleGlow)">✦ Agent Skills</text>
-  <text x="600" y="70"
-        font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
-        font-size="11.5" fill="#4B5563" text-anchor="middle" letter-spacing="3">
-    SPEC-FIRST · MULTI-AGENT · CROSS-PLATFORM · TOON FORMAT
-  </text>
+  <text x="60" y="346" class="section" fill="#F87171">OPTIONAL JEV SETUP — SEPARATE FROM CATALOG INSTALL</text>
+  <line x1="60" y1="357" x2="1140" y2="357" stroke="#1E3A5F"/>
+  <rect x="60" y="378" width="320" height="145" rx="12" class="card" stroke="#F87171" stroke-dasharray="6 5"/>
+  <text x="80" y="407" class="heading">Opt-in setup branch</text>
+  <text x="80" y="433" class="mono">jev/jev-setup.sh</text>
+  <text x="80" y="457" class="body">API · local · Ollama · LM Studio</text>
+  <text x="80" y="481" class="body">Skip / decline / no TTY + unset → bypass</text>
+  <text x="80" y="505" class="note">Installs harness, config and rule artifact</text>
+  <path d="M 380 450 H 420" class="optional"/>
+  <rect x="420" y="378" width="320" height="145" rx="12" class="card" stroke="#F59E0B"/>
+  <text x="440" y="407" class="heading">Configuration ≠ readiness</text>
+  <text x="440" y="433" class="mono">jev-harness.mjs status</text>
+  <text x="440" y="457" class="body">active: configured opt-in</text>
+  <text x="440" y="481" class="body">ready: true / false / null (unprobed)</text>
+  <text x="440" y="505" class="note">API key presence is not an inference test</text>
+  <path d="M 740 450 H 780" class="optional"/>
+  <rect x="780" y="378" width="360" height="145" rx="12" class="card" stroke="#EC4899"/>
+  <text x="800" y="407" class="heading">Host adopts the rule</text>
+  <text x="800" y="433" class="body">Host must load and follow instructions</text>
+  <text x="800" y="457" class="body">Then invoke Jev at relevant task events</text>
+  <text x="800" y="481" class="body">No default enforced native hooks</text>
+  <text x="800" y="505" class="note">Installed rule file alone proves no integration</text>
 
-  <!-- Platform badges (y=78, h=22) -->
-  <rect x="344" y="78" width="88" height="22" fill="#111827" rx="11" stroke="#1F3A5C" stroke-width="1"/>
-  <text x="388" y="93" font-family="sans-serif" font-size="11" font-weight="700" fill="#60A5FA" text-anchor="middle">352 Skills</text>
-  <rect x="440" y="78" width="68" height="22" fill="#111827" rx="11" stroke="#1F3A5C" stroke-width="1"/>
-  <text x="474" y="93" font-family="sans-serif" font-size="11" fill="#A78BFA" text-anchor="middle">Claude</text>
-  <rect x="516" y="78" width="68" height="22" fill="#111827" rx="11" stroke="#1F3A5C" stroke-width="1"/>
-  <text x="550" y="93" font-family="sans-serif" font-size="11" fill="#34D399" text-anchor="middle">Gemini</text>
-  <rect x="592" y="78" width="66" height="22" fill="#111827" rx="11" stroke="#1F3A5C" stroke-width="1"/>
-  <text x="625" y="93" font-family="sans-serif" font-size="11" fill="#FBBF24" text-anchor="middle">Codex</text>
-  <rect x="666" y="78" width="84" height="22" fill="#111827" rx="11" stroke="#1F3A5C" stroke-width="1"/>
-  <text x="708" y="93" font-family="sans-serif" font-size="11" fill="#FB923C" text-anchor="middle">OpenCode</text>
-  <rect x="758" y="78" width="66" height="22" fill="#111827" rx="11" stroke="#1F3A5C" stroke-width="1"/>
-  <text x="791" y="93" font-family="sans-serif" font-size="11" fill="#F87171" text-anchor="middle">Cursor</text>
-  <rect x="832" y="78" width="54" height="22" fill="#111827" rx="11" stroke="#1F3A5C" stroke-width="1"/>
-  <text x="859" y="93" font-family="sans-serif" font-size="11" fill="#6EE7B7" text-anchor="middle">MIT</text>
+  <text x="60" y="567" class="section" fill="#A78BFA">RULE-DRIVEN CALLS — OPTIONAL EXTERNAL BACKENDS</text>
+  <line x1="60" y1="578" x2="1140" y2="578" stroke="#1E3A5F"/>
+  <path d="M 960 523 V 588 H 220 V 602" class="optional"/>
+  <rect x="60" y="602" width="320" height="124" rx="12" class="card" stroke="#EC4899"/>
+  <text x="80" y="632" class="heading">Jev harness</text>
+  <text x="80" y="660" class="mono">route-skills · prune-context · review</text>
+  <text x="80" y="684" class="body">Read-only catalog; keep/drop proposals</text>
+  <text x="80" y="708" class="body">Review verdict + SHA-256 receipt</text>
+  <path d="M 380 664 H 420" class="optional" marker-start="url(#optional-arrow)"/>
+  <rect x="420" y="602" width="320" height="124" rx="12" class="card" stroke="#8B5CF6"/>
+  <text x="440" y="632" class="heading">Hosted API / local server</text>
+  <text x="440" y="660" class="body">TypeSafe System One (API)</text>
+  <text x="440" y="684" class="body">JEV-9B via jev_local_server.py</text>
+  <text x="440" y="708" class="note">Local model is a third-party distillation</text>
+  <path d="M 380 714 V 741 H 960 V 726" class="optional" marker-start="url(#optional-arrow)"/>
+  <rect x="780" y="602" width="360" height="124" rx="12" class="card" stroke="#059669"/>
+  <text x="800" y="632" class="heading">Ollama / LM Studio</text>
+  <text x="800" y="660" class="body">Quantized JEV-9B-GGUF</text>
+  <text x="800" y="684" class="body">Harness adapts generative responses</text>
+  <text x="800" y="708" class="note">Server and selected model must be available</text>
 
-  <!-- ═══════════════ WORKFLOW PIPELINE (y: 106–242) ═══════════════ -->
-  <text x="60" y="112" font-family="sans-serif" font-size="9" fill="#334155" letter-spacing="2.5" font-weight="600">WORKFLOW PIPELINE</text>
-  <line x1="60" y1="116" x2="1140" y2="116" stroke="#1A2E4A" stroke-width="1"/>
-  <!-- Connector track -->
-  <line x1="60" y1="159" x2="1140" y2="159" stroke="#1A2E4A" stroke-width="1.5" stroke-dasharray="3,5"/>
-
-  <!-- Step 1 — Search & Context (x=60, w=200, y=118, h=82) -->
-  <g transform="translate(60, 118)" filter="url(#stepGlow)">
-    <rect width="200" height="82" fill="#0B1526" rx="10" stroke="#1D4ED8" stroke-width="1.5"/>
-    <rect width="200" height="30" fill="url(#g1)" rx="10"/>
-    <rect y="20" width="200" height="10" fill="url(#g1)"/>
-    <text x="100" y="21" font-family="sans-serif" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">🔎 Search &amp; Context</text>
-    <text x="100" y="46" font-family="sans-serif" font-size="11" fill="#93C5FD" text-anchor="middle">semble · rtk</text>
-    <text x="100" y="61" font-family="sans-serif" font-size="11" fill="#93C5FD" text-anchor="middle">codebase-search</text>
-    <text x="100" y="76" font-family="sans-serif" font-size="9" fill="#334155" text-anchor="middle" letter-spacing="1.5">DISCOVER</text>
-  </g>
-  <line x1="262" y1="159" x2="278" y2="159" stroke="#3B82F6" stroke-width="2" marker-end="url(#arrC)"/>
-
-  <!-- Step 2 — Durable Knowledge (x=280) -->
-  <g transform="translate(280, 118)" filter="url(#stepGlow)">
-    <rect width="200" height="82" fill="#0B1526" rx="10" stroke="#6D28D9" stroke-width="1.5"/>
-    <rect width="200" height="30" fill="url(#g2)" rx="10"/>
-    <rect y="20" width="200" height="10" fill="url(#g2)"/>
-    <text x="100" y="21" font-family="sans-serif" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">🧠 Durable Knowledge</text>
-    <text x="100" y="46" font-family="sans-serif" font-size="11" fill="#C4B5FD" text-anchor="middle">llm-wiki · graphify</text>
-    <text x="100" y="61" font-family="sans-serif" font-size="11" fill="#C4B5FD" text-anchor="middle">obsidian · okf</text>
-    <text x="100" y="76" font-family="sans-serif" font-size="9" fill="#334155" text-anchor="middle" letter-spacing="1.5">PERSIST</text>
-  </g>
-  <line x1="482" y1="159" x2="498" y2="159" stroke="#8B5CF6" stroke-width="2" marker-end="url(#arrC)"/>
-
-  <!-- Step 3 — Spec-First Core (x=500) -->
-  <g transform="translate(500, 118)" filter="url(#stepGlow)">
-    <rect width="200" height="82" fill="#0B1526" rx="10" stroke="#10B981" stroke-width="2"/>
-    <rect width="200" height="30" fill="url(#g3)" rx="10"/>
-    <rect y="20" width="200" height="10" fill="url(#g3)"/>
-    <text x="100" y="21" font-family="sans-serif" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">📐 Spec-First Core</text>
-    <text x="100" y="46" font-family="sans-serif" font-size="11" fill="#6EE7B7" text-anchor="middle">ooo · bmad · spec-kit</text>
-    <text x="100" y="61" font-family="sans-serif" font-size="11" fill="#6EE7B7" text-anchor="middle">plannotator · spec-stack</text>
-    <text x="100" y="76" font-family="sans-serif" font-size="9" fill="#334155" text-anchor="middle" letter-spacing="1.5">PLAN &amp; FREEZE</text>
-  </g>
-  <line x1="702" y1="159" x2="718" y2="159" stroke="#10B981" stroke-width="2" marker-end="url(#arrC)"/>
-
-  <!-- Step 4 — Execute (x=720) -->
-  <g transform="translate(720, 118)" filter="url(#stepGlow)">
-    <rect width="200" height="82" fill="#0B1526" rx="10" stroke="#F59E0B" stroke-width="1.5"/>
-    <rect width="200" height="30" fill="url(#g4)" rx="10"/>
-    <rect y="20" width="200" height="10" fill="url(#g4)"/>
-    <text x="100" y="21" font-family="sans-serif" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">🚀 Execute</text>
-    <text x="100" y="46" font-family="sans-serif" font-size="11" fill="#FCD34D" text-anchor="middle">autopilot · team</text>
-    <text x="100" y="61" font-family="sans-serif" font-size="11" fill="#FCD34D" text-anchor="middle">ultrawork · deep-dive</text>
-    <text x="100" y="76" font-family="sans-serif" font-size="9" fill="#334155" text-anchor="middle" letter-spacing="1.5">BUILD</text>
-  </g>
-  <line x1="922" y1="159" x2="938" y2="159" stroke="#F59E0B" stroke-width="2" marker-end="url(#arrC)"/>
-
-  <!-- Step 5 — Verify & Ship (x=940) -->
-  <g transform="translate(940, 118)" filter="url(#stepGlow)">
-    <rect width="200" height="82" fill="#0B1526" rx="10" stroke="#EC4899" stroke-width="1.5"/>
-    <rect width="200" height="30" fill="url(#g5)" rx="10"/>
-    <rect y="20" width="200" height="10" fill="url(#g5)"/>
-    <text x="100" y="21" font-family="sans-serif" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle">✅ Verify &amp; Ship</text>
-    <text x="100" y="46" font-family="sans-serif" font-size="11" fill="#FBCFE8" text-anchor="middle">ultraqa · browser-harness</text>
-    <text x="100" y="61" font-family="sans-serif" font-size="11" fill="#FBCFE8" text-anchor="middle">agentation · tdd</text>
-    <text x="100" y="76" font-family="sans-serif" font-size="9" fill="#334155" text-anchor="middle" letter-spacing="1.5">SHIP</text>
-  </g>
-
-  <!-- Feedback arc -->
-  <path d="M 1040 200 L 1040 220 L 160 220 L 160 200"
-        fill="none" stroke="#1A2E4A" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#arr)"/>
-  <text x="600" y="235" font-family="sans-serif" font-size="9" fill="#334155"
-        text-anchor="middle" letter-spacing="1.5">RESULTS FEED BACK</text>
-
-  <!-- ═══════════════ SKILL CATEGORIES (y: 252–406) ═══════════════ -->
-  <text x="60" y="252" font-family="sans-serif" font-size="9" fill="#334155" letter-spacing="2.5" font-weight="600">SKILL CATEGORIES  ·  10 DOMAINS  ·  352 SKILLS</text>
-  <line x1="60" y1="256" x2="1140" y2="256" stroke="#1A2E4A" stroke-width="1"/>
-
-  <!-- Row 1 (y=262, h=60) — W=206, G=12, x: 60, 278, 496, 714, 932 -->
-  <g transform="translate(60, 262)">
-    <rect width="206" height="60" fill="#0B1526" rx="8" stroke="#1A2E4A" stroke-width="1"/>
-    <rect width="4" height="60" fill="#3B82F6" rx="2"/>
-    <text x="16" y="26" font-family="sans-serif" font-size="17">💼</text>
-    <text x="42" y="22" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#E2E8F0">Business</text>
-    <text x="42" y="37" font-family="sans-serif" font-size="10" fill="#4B5563">finance · legal · docs · workflows</text>
-    <text x="198" y="54" font-family="sans-serif" font-size="19" font-weight="800" fill="#3B82F6" text-anchor="end">70</text>
-  </g>
-  <g transform="translate(278, 262)">
-    <rect width="206" height="60" fill="#0B1526" rx="8" stroke="#1A2E4A" stroke-width="1"/>
-    <rect width="4" height="60" fill="#8B5CF6" rx="2"/>
-    <text x="16" y="26" font-family="sans-serif" font-size="17">🤖</text>
-    <text x="42" y="22" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#E2E8F0">AI Agents</text>
-    <text x="42" y="37" font-family="sans-serif" font-size="10" fill="#4B5563">ooo · orchestration · memory · RAG</text>
-    <text x="198" y="54" font-family="sans-serif" font-size="19" font-weight="800" fill="#8B5CF6" text-anchor="end">62</text>
-  </g>
-  <g transform="translate(496, 262)">
-    <rect width="206" height="60" fill="#0B1526" rx="8" stroke="#1A2E4A" stroke-width="1"/>
-    <rect width="4" height="60" fill="#EC4899" rx="2"/>
-    <text x="16" y="26" font-family="sans-serif" font-size="17">🌐</text>
-    <text x="42" y="22" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#E2E8F0">Web</text>
-    <text x="42" y="37" font-family="sans-serif" font-size="10" fill="#4B5563">react · frontend · backend · supabase</text>
-    <text x="198" y="54" font-family="sans-serif" font-size="19" font-weight="800" fill="#EC4899" text-anchor="end">50</text>
-  </g>
-  <g transform="translate(714, 262)">
-    <rect width="206" height="60" fill="#0B1526" rx="8" stroke="#1A2E4A" stroke-width="1"/>
-    <rect width="4" height="60" fill="#06B6D4" rx="2"/>
-    <text x="16" y="26" font-family="sans-serif" font-size="17">⌨️</text>
-    <text x="42" y="22" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#E2E8F0">CLI Tools</text>
-    <text x="42" y="37" font-family="sans-serif" font-size="10" fill="#4B5563">cli-anything · rtk · git · shells</text>
-    <text x="198" y="54" font-family="sans-serif" font-size="19" font-weight="800" fill="#06B6D4" text-anchor="end">34</text>
-  </g>
-  <g transform="translate(932, 262)">
-    <rect width="206" height="60" fill="#0B1526" rx="8" stroke="#1A2E4A" stroke-width="1"/>
-    <rect width="4" height="60" fill="#10B981" rx="2"/>
-    <text x="16" y="26" font-family="sans-serif" font-size="17">🎬</text>
-    <text x="42" y="22" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#E2E8F0">Creative Media</text>
-    <text x="42" y="37" font-family="sans-serif" font-size="10" fill="#4B5563">video · imagen · audio · slides</text>
-    <text x="198" y="54" font-family="sans-serif" font-size="19" font-weight="800" fill="#10B981" text-anchor="end">32</text>
-  </g>
-
-  <!-- Row 2 (y=334) -->
-  <g transform="translate(60, 334)">
-    <rect width="206" height="60" fill="#0B1526" rx="8" stroke="#1A2E4A" stroke-width="1"/>
-    <rect width="4" height="60" fill="#F59E0B" rx="2"/>
-    <text x="16" y="26" font-family="sans-serif" font-size="17">🎮</text>
-    <text x="42" y="22" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#E2E8F0">Game</text>
-    <text x="42" y="37" font-family="sans-serif" font-size="10" fill="#4B5563">unity · godot · steam · motion-vfx</text>
-    <text x="198" y="54" font-family="sans-serif" font-size="19" font-weight="800" fill="#F59E0B" text-anchor="end">28</text>
-  </g>
-  <g transform="translate(278, 334)">
-    <rect width="206" height="60" fill="#0B1526" rx="8" stroke="#1A2E4A" stroke-width="1"/>
-    <rect width="4" height="60" fill="#94A3B8" rx="2"/>
-    <text x="16" y="26" font-family="sans-serif" font-size="17">🛠</text>
-    <text x="42" y="22" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#E2E8F0">Utilities</text>
-    <text x="42" y="37" font-family="sans-serif" font-size="10" fill="#4B5563">drawio · converters · automation</text>
-    <text x="198" y="54" font-family="sans-serif" font-size="19" font-weight="800" fill="#94A3B8" text-anchor="end">27</text>
-  </g>
-  <g transform="translate(496, 334)">
-    <rect width="206" height="60" fill="#0B1526" rx="8" stroke="#1A2E4A" stroke-width="1"/>
-    <rect width="4" height="60" fill="#0EA5E9" rx="2"/>
-    <text x="16" y="26" font-family="sans-serif" font-size="17">🔍</text>
-    <text x="42" y="22" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#E2E8F0">Engineering</text>
-    <text x="42" y="37" font-family="sans-serif" font-size="10" fill="#4B5563">review · tdd · debug · refactor</text>
-    <text x="198" y="54" font-family="sans-serif" font-size="19" font-weight="800" fill="#0EA5E9" text-anchor="end">24</text>
-  </g>
-  <g transform="translate(714, 334)">
-    <rect width="206" height="60" fill="#0B1526" rx="8" stroke="#1A2E4A" stroke-width="1"/>
-    <rect width="4" height="60" fill="#A855F7" rx="2"/>
-    <text x="16" y="26" font-family="sans-serif" font-size="17">🏗</text>
-    <text x="42" y="22" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#E2E8F0">Infrastructure</text>
-    <text x="42" y="37" font-family="sans-serif" font-size="10" fill="#4B5563">deploy · firebase · monitoring</text>
-    <text x="198" y="54" font-family="sans-serif" font-size="19" font-weight="800" fill="#A855F7" text-anchor="end">13</text>
-  </g>
-  <g transform="translate(932, 334)">
-    <rect width="206" height="60" fill="#0B1526" rx="8" stroke="#1A2E4A" stroke-width="1"/>
-    <rect width="4" height="60" fill="#F97316" rx="2"/>
-    <text x="16" y="26" font-family="sans-serif" font-size="17">🔭</text>
-    <text x="42" y="22" font-family="sans-serif" font-size="11.5" font-weight="700" fill="#E2E8F0">Research</text>
-    <text x="42" y="37" font-family="sans-serif" font-size="10" fill="#4B5563">deep-research · papers · analysis</text>
-    <text x="198" y="54" font-family="sans-serif" font-size="19" font-weight="800" fill="#F97316" text-anchor="end">12</text>
-  </g>
-
-  <!-- ═══════════════ HARNESSES PANEL (y: 408–546) ═══════════════ -->
-  <text x="60" y="412" font-family="sans-serif" font-size="9" fill="#334155" letter-spacing="2.5" font-weight="600">RECOMMENDED HARNESSES</text>
-  <line x1="60" y1="416" x2="1140" y2="416" stroke="#1A2E4A" stroke-width="1"/>
-
-  <!-- OMC card (x=60, w=346, y=422, h=122) -->
-  <a xlink:href="https://github.com/Yeachan-Heo/oh-my-claudecode" target="_blank">
-    <g transform="translate(60, 422)" filter="url(#shadow)">
-      <rect width="346" height="122" fill="#0B1526" rx="12" stroke="#2563EB" stroke-width="1.5"/>
-      <rect width="346" height="34" fill="url(#hOmc)" rx="12"/>
-      <rect y="22" width="346" height="12" fill="url(#hOmc)"/>
-      <text x="173" y="24" font-family="sans-serif" font-size="14" font-weight="700" fill="#FFF" text-anchor="middle">omc · oh-my-claudecode</text>
-      <text x="173" y="54" font-family="sans-serif" font-size="12" fill="#93C5FD" text-anchor="middle">Claude Code Native Harness</text>
-      <text x="173" y="74" font-family="sans-serif" font-size="11" fill="#475569" text-anchor="middle">/autopilot · /team · /ralph · /ultrawork</text>
-      <text x="173" y="92" font-family="sans-serif" font-size="11" fill="#475569" text-anchor="middle">/ultraqa · hooks · HUD · marketplace</text>
-      <text x="173" y="114" font-family="sans-serif" font-size="10" fill="#3B82F6" text-anchor="middle">v4.14.7 · npm i -g oh-my-claude-sisyphus</text>
-    </g>
-  </a>
-
-  <!-- OMX card (x=426, w=346, y=422) -->
-  <a xlink:href="https://github.com/Yeachan-Heo/oh-my-codex" target="_blank">
-    <g transform="translate(426, 422)" filter="url(#shadow)">
-      <rect width="346" height="122" fill="#0B1526" rx="12" stroke="#D97706" stroke-width="1.5"/>
-      <rect width="346" height="34" fill="url(#hOmx)" rx="12"/>
-      <rect y="22" width="346" height="12" fill="url(#hOmx)"/>
-      <text x="173" y="24" font-family="sans-serif" font-size="14" font-weight="700" fill="#FFF" text-anchor="middle">omx · oh-my-codex</text>
-      <text x="173" y="54" font-family="sans-serif" font-size="12" fill="#FCD34D" text-anchor="middle">OpenAI Codex CLI Harness</text>
-      <text x="173" y="74" font-family="sans-serif" font-size="11" fill="#475569" text-anchor="middle">$autopilot · $team · $ralph · $ultrawork</text>
-      <text x="173" y="92" font-family="sans-serif" font-size="11" fill="#475569" text-anchor="middle">$ralplan · $prometheus-strict · sparkshell</text>
-      <text x="173" y="114" font-family="sans-serif" font-size="10" fill="#F59E0B" text-anchor="middle">v0.18.14 · npm i -g oh-my-codex</text>
-    </g>
-  </a>
-
-  <!-- OHMG card (x=792, w=346, y=422) -->
-  <a xlink:href="https://github.com/first-fluke/oh-my-agent" target="_blank">
-    <g transform="translate(792, 422)" filter="url(#shadow)">
-      <rect width="346" height="122" fill="#0B1526" rx="12" stroke="#059669" stroke-width="1.5"/>
-      <rect width="346" height="34" fill="url(#hOhmg)" rx="12"/>
-      <rect y="22" width="346" height="12" fill="url(#hOhmg)"/>
-      <text x="173" y="24" font-family="sans-serif" font-size="14" font-weight="700" fill="#FFF" text-anchor="middle">ohmg · oh-my-agent</text>
-      <text x="173" y="54" font-family="sans-serif" font-size="12" fill="#6EE7B7" text-anchor="middle">Cross-Vendor Portable Harness</text>
-      <text x="173" y="74" font-family="sans-serif" font-size="11" fill="#475569" text-anchor="middle">Claude · Codex · Gemini · Cursor · Grok</text>
-      <text x="173" y="92" font-family="sans-serif" font-size="11" fill="#475569" text-anchor="middle">OpenCode · Kiro · Amp · Copilot · +</text>
-      <text x="173" y="114" font-family="sans-serif" font-size="10" fill="#10B981" text-anchor="middle">v10.4.1 · bunx oh-my-agent@latest</text>
-    </g>
-  </a>
-
-  <!-- Footer -->
-  <text x="600" y="560" font-family="sans-serif" font-size="9" fill="#1E3A5F" text-anchor="middle">
-    github.com/akillness/jeo-skills  ·  MIT License  ·  TOON Format  ·  40–50% token savings  ·  npx skills add https://github.com/akillness/jeo-skills
-  </text>
+  <text x="60" y="779" class="body">Solid arrows: catalog / host path. Dashed arrows: optional Jev setup and calls, not a mandatory stage.</text>
+  <text x="60" y="803" class="body">Inactive → bypass Jev; normal host permission/confirmation policies apply. Configured failures → fail closed.</text>
+  <text x="60" y="827" class="note">Mock checks validate offline contracts only. Live backend success and host invocation require separate evidence.</text>
 </svg>

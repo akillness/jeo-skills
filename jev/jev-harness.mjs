@@ -7,93 +7,101 @@ import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
 
-// Catalog resolution (first readable wins): explicit env override, the shared
-// router checkout created by setup-all-skills-prompt.md, then a local checkout cwd.
+
+const DEFAULT_API_URL = 'https://api.typesafe.ai/v1/systemone';
+const DEFAULT_LOCAL_URL = 'http://127.0.0.1:8763/v1/systemone';
+const THRESHOLD = 0.8;
+const MODES = ['api', 'local', 'ollama', 'lmstudio'];
+const ENV_CONFIGURED = MODES.includes(process.env.JEV_MODE || 'api') && (process.env.JEV_MODE && process.env.JEV_MODE !== 'api' || Boolean(process.env.JEV_API_KEY));
+
+// Live mode is the default. Configuration (JEV_MODE=api|local, JEV_API_KEY,
+// JEV_ENDPOINT, JEV_LOCAL_MODEL_DIR) comes from the environment, with
+// ~/.agents/jev/.env (KEY=VALUE lines) as fallback for unset keys.
+let envReadError = null;
+let fileConfig = null;
+try {
+  const envText = await readFile(join(homedir(), '.agents', 'jev', '.env'), 'utf8');
+  fileConfig = {};
+  for (const line of envText.split(/\r?\n/)) {
+    const match = line.match(/^\s*(JEV_[A-Z_]+)\s*=(.*)$/);
+    if (match) {
+      const value = match[2].trim();
+      fileConfig[match[1]] = /^(".*"|'.*')$/.test(value) ? value.slice(1, -1) : value;
+      if (process.env[match[1]] === undefined) process.env[match[1]] = fileConfig[match[1]];
+    }
+  }
+} catch (error) {
+  if (error.code !== 'ENOENT') envReadError = `Cannot read Jev configuration: ${error.code || error.message}`;
+}
+
+// Catalog resolution (first readable wins): env/dotenv override, shared router
+// checkout, then a local checkout cwd.
 const CATALOG_CANDIDATES = [
   process.env.JEV_CATALOG_PATH,
   join(homedir(), '.agents', 'jeo-skills-repo', '.agent-skills', 'skills.json'),
   join(process.cwd(), '.agent-skills', 'skills.json'),
 ].filter(Boolean);
 
-const DEFAULT_API_URL = 'https://api.typesafe.ai/v1/systemone';
-const DEFAULT_LOCAL_URL = 'http://127.0.0.1:8763/v1/systemone';
-const THRESHOLD = 0.8;
-
-// Live mode is the default. Configuration (JEV_MODE=api|local, JEV_API_KEY,
-// JEV_ENDPOINT, JEV_LOCAL_MODEL_DIR) comes from the environment, with
-// ~/.agents/jev/.env (KEY=VALUE lines) as fallback for unset keys.
-try {
-  const envText = await readFile(join(homedir(), '.agents', 'jev', '.env'), 'utf8');
-  for (const line of envText.split(/\r?\n/)) {
-    const match = line.match(/^\s*(JEV_[A-Z_]+)\s*=\s*["']?([^"'\n]+)["']?\s*$/);
-    if (match && !process.env[match[1]]) process.env[match[1]] = match[2];
-  }
-} catch { /* no env file — fail-closed behavior in requestJev handles it */ }
-
-const MODES = ['api', 'local', 'ollama', 'lmstudio'];
-const MODE = MODES.includes(process.env.JEV_MODE) ? process.env.JEV_MODE : 'api';
+const MODE = process.env.JEV_MODE || 'api';
 const GENERATIVE = MODE === 'ollama' || MODE === 'lmstudio';
+const FILE_CONFIGURED = fileConfig && MODES.includes(fileConfig.JEV_MODE || 'api') && ((fileConfig.JEV_MODE || 'api') !== 'api' || Boolean(fileConfig.JEV_API_KEY));
+const CONFIG_ERROR = ENV_CONFIGURED ? null : envReadError || (fileConfig && (!FILE_CONFIGURED || (MODE === 'api' && !process.env.JEV_API_KEY && (fileConfig.JEV_MODE || 'api') !== 'api')) ? 'Incomplete or invalid Jev configuration file' : null);
 // Generative backends (quantized GGUF) speak the OpenAI-compatible API; the
 // harness implements the systemone contract on top of chat completions.
 const GEN_DEFAULTS = {
   ollama: { endpoint: 'http://127.0.0.1:11434', model: 'hf.co/mradermacher/JEV-9B-GGUF:Q4_K_M', start: 'ollama serve' },
   lmstudio: { endpoint: 'http://127.0.0.1:1234', model: null, start: 'lms server start (or LM Studio → Developer → Start Server), then load JEV-9B-GGUF' },
 };
-const GEN_BASE = GENERATIVE ? (process.env.JEV_ENDPOINT || GEN_DEFAULTS[MODE].endpoint).replace(/\/+$/, '') : null;
+const GEN_BASE = GENERATIVE ? (process.env.JEV_ENDPOINT || GEN_DEFAULTS[MODE].endpoint).replace(/\/+$/, '').replace(/\/v1$/, '') : null;
 const API_URL = GENERATIVE ? `${GEN_BASE}/v1/chat/completions`
   : process.env.JEV_ENDPOINT || (MODE === 'local' ? DEFAULT_LOCAL_URL : DEFAULT_API_URL);
 
 
-async function fetchWithTimeout(url, options = {}, timeoutMs = 3000) {
+async function fetchJsonWithTimeout(url, options = {}, timeoutMs = 3000) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
-  try { return await fetch(url, { ...options, signal: controller.signal }); }
-  finally { clearTimeout(timer); }
+  try {
+    const response = await fetch(url, { ...options, signal: controller.signal });
+    const payload = response.ok ? await response.json() : null;
+    return { response, payload };
+  }
+  finally { controller.abort(); clearTimeout(timer); }
 }
 
 // lmstudio exposes whatever model the user loaded; resolve its id lazily.
 async function resolveGenModel({ timeoutMs = 3000 } = {}) {
-  if (process.env.JEV_LOCAL_MODEL) return process.env.JEV_LOCAL_MODEL;
-  if (GEN_DEFAULTS[MODE].model) return GEN_DEFAULTS[MODE].model;
-  const res = await fetchWithTimeout(`${GEN_BASE}/v1/models`, {}, timeoutMs);
-  if (!res.ok) throw new Error(`model list responded ${res.status}`);
-  const { data } = await res.json();
-  const ids = (data || []).map(m => m.id).filter(Boolean);
-  const pick = ids.find(id => /jev/i.test(id)) || ids[0];
-  if (!pick) throw new Error('no model loaded on the server');
+  const { response, payload } = await fetchJsonWithTimeout(`${GEN_BASE}/v1/models`, {}, timeoutMs);
+  if (!response.ok) throw new Error(`model list responded ${response.status}`);
+  const data = payload?.data;
+  if (!Array.isArray(data)) throw new Error('malformed model list');
+  const ids = data.map(m => m.id).filter(id => typeof id === 'string');
+  const pick = process.env.JEV_LOCAL_MODEL || GEN_DEFAULTS[MODE].model || ids.find(id => /jev/i.test(id));
+  if (!pick || !ids.includes(pick)) throw new Error(`Jev model not available${pick ? `: ${pick}` : '; load JEV-9B or explicitly pin JEV_LOCAL_MODEL'}`);
   return pick;
 }
 
 export async function jevStatus({ timeoutMs = 3000 } = {}) {
-  if (GENERATIVE) {
-    const status = { active: false, mode: MODE, endpoint: GEN_BASE, model: process.env.JEV_LOCAL_MODEL || GEN_DEFAULTS[MODE].model, hint: null };
-    try {
-      const res = await fetchWithTimeout(`${GEN_BASE}/v1/models`, {}, timeoutMs);
-      if (!res.ok) throw new Error(`server responded ${res.status}`);
-      status.model = await resolveGenModel({ timeoutMs });
-      status.active = true;
-    } catch (err) {
-      status.hint = `${MODE} server unavailable (${err.message}); start it with: ${GEN_DEFAULTS[MODE].start}`;
-    }
-    return status;
+  const active = MODE === 'api' ? Boolean(process.env.JEV_API_KEY) : MODES.includes(MODE);
+  const status = { active, ready: null, mode: MODE, endpoint: GENERATIVE ? GEN_BASE : API_URL, hint: null };
+  if (CONFIG_ERROR) return { ...status, ready: false, hint: CONFIG_ERROR };
+  if (!MODES.includes(MODE)) {
+    return { ...status, ready: false, hint: `Invalid JEV_MODE: ${MODE}` };
   }
-  if (MODE === 'local') {
-
-    const status = { active: false, mode: 'local', endpoint: API_URL, modelDir: process.env.JEV_LOCAL_MODEL_DIR || null, hint: null };
-    try {
-      const controller = new AbortController();
-      const timer = setTimeout(() => controller.abort(), timeoutMs);
-      const res = await fetch(API_URL.replace(/\/v1\/systemone$/, '/healthz'), { signal: controller.signal }).finally(() => clearTimeout(timer));
-      status.active = res.ok;
-      if (!res.ok) status.hint = `local server responded ${res.status}; start it with: ~/.agents/jev/venv/bin/python ~/.agents/jev/jev_local_server.py`;
-    } catch {
-      status.hint = 'local server not running; start it with: ~/.agents/jev/venv/bin/python ~/.agents/jev/jev_local_server.py';
+  if (!active) return { ...status, hint: 'Jev inactive: set JEV_API_KEY or run jev-setup.sh to opt in' };
+  if (MODE === 'api') return { ...status, keySource: 'env-or-dotenv', hint: 'API configured; credentials and inference readiness have not been verified' };
+  try {
+    if (GENERATIVE) status.model = await resolveGenModel({ timeoutMs });
+    else {
+      const { response, payload } = await fetchJsonWithTimeout(API_URL.replace(/\/v1\/systemone\/?$/, '/healthz'), {}, timeoutMs);
+      if (!response.ok || payload?.ok !== true) throw new Error(`local health check failed (${response.status})`);
+      status.modelDir = process.env.JEV_LOCAL_MODEL_DIR || null;
     }
-    return status;
+    status.ready = true;
+  } catch (err) {
+    status.ready = false;
+    status.hint = `${MODE} backend unavailable (${err.message}); ${GENERATIVE ? GEN_DEFAULTS[MODE].start : 'start ~/.agents/jev/venv/bin/python ~/.agents/jev/jev_local_server.py'}`;
   }
-  return process.env.JEV_API_KEY
-    ? { active: true, mode: 'api', endpoint: API_URL, keySource: 'env-or-dotenv', hint: null }
-    : { active: false, mode: 'api', endpoint: API_URL, keySource: null, hint: 'Set JEV_API_KEY in env or ~/.agents/jev/.env, or run jev-setup.sh' };
+  return status;
 }
 
 
@@ -140,6 +148,8 @@ export const QUESTION_SET_V4 = {
 
 export async function requestJev(state, questions, { mock = false, timeoutMs } = {}) {
   if (mock) return { model: 'jev-mock', source: 'mock', error: null, latencyMs: 0, answers: simulateAnswers(state, questions) };
+  if (CONFIG_ERROR) return { model: null, source: MODE, error: CONFIG_ERROR, latencyMs: 0, answers: null };
+  if (!MODES.includes(MODE)) return { model: null, source: MODE, error: `Invalid JEV_MODE: ${MODE}`, latencyMs: 0, answers: null };
   if (GENERATIVE) return requestJevGenerative(state, questions, { timeoutMs: timeoutMs ?? 180000 });
   timeoutMs = timeoutMs ?? 5000;
   if (MODE === 'api' && !process.env.JEV_API_KEY) return { model: null, source: 'upstream', error: 'Missing JEV_API_KEY', latencyMs: 0, answers: null };
@@ -149,7 +159,7 @@ export async function requestJev(state, questions, { mock = false, timeoutMs } =
   const started = Date.now();
   try {
     const headers = { 'Content-Type': 'application/json' };
-    if (process.env.JEV_API_KEY) headers.Authorization = `Bearer ${process.env.JEV_API_KEY}`;
+    if (MODE === 'api' && process.env.JEV_API_KEY) headers.Authorization = `Bearer ${process.env.JEV_API_KEY}`;
     const response = await fetch(API_URL, {
       method: 'POST',
       headers,
@@ -161,34 +171,35 @@ export async function requestJev(state, questions, { mock = false, timeoutMs } =
     return { ...payload, model: payload.model || (MODE === 'local' ? 'jev-9b-local' : 'jev-latest'), source: MODE === 'local' ? 'local' : 'upstream', error: null, latencyMs: Date.now() - started, answers: normalizeAnswers(payload, questions) };
 
   } catch (error) {
-    return { model: null, source: 'upstream', error: error.name === 'AbortError' ? `Timeout after ${timeoutMs}ms` : String(error.message || error), latencyMs: Date.now() - started, answers: null };
+    return { model: null, source: MODE === 'local' ? 'local' : 'upstream', error: error.name === 'AbortError' ? `Timeout after ${timeoutMs}ms` : String(error.message || error), latencyMs: Date.now() - started, answers: null };
   } finally {
     clearTimeout(timer);
   }
+}
 async function chatOnce(system, user, timeoutMs, model) {
   const messages = [{ role: 'system', content: system }, { role: 'user', content: user }];
   let content;
   if (MODE === 'ollama') {
     // Native ollama API: think:false suppresses Qwen3.5 reasoning entirely,
     // so the answer arrives in a few tokens instead of a long think trace.
-    const res = await fetchWithTimeout(`${GEN_BASE}/api/chat`, {
+    const { response, payload } = await fetchJsonWithTimeout(`${GEN_BASE}/api/chat`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ model, stream: false, think: false, options: { temperature: 0, num_predict: 400 }, messages }),
     }, timeoutMs);
-    if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
-    content = (await res.json()).message?.content;
+    if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
+    content = payload?.message?.content;
   } else {
     // OpenAI-compatible path (LM Studio). Reasoning models may spend tokens
     // thinking first, so allow enough budget to reach the final JSON.
-    const res = await fetchWithTimeout(API_URL, {
+    const { response, payload } = await fetchJsonWithTimeout(API_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ model, temperature: 0, max_tokens: 2048, messages }),
     }, timeoutMs);
-    if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
-    const message = (await res.json()).choices?.[0]?.message || {};
-    content = message.content || message.reasoning_content || message.reasoning;
+    if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
+    const message = payload?.choices?.[0]?.message || {};
+    content = message.content;
   }
   if (typeof content !== 'string') throw new Error('Malformed chat completion (no message content)');
   const match = content.match(/\{[\s\S]*\}/);
@@ -202,7 +213,7 @@ async function chatOnce(system, user, timeoutMs, model) {
 async function requestJevGenerative(state, questions, { timeoutMs }) {
   const started = Date.now();
   try {
-    const model = await resolveGenModel();
+    const model = await resolveGenModel({ timeoutMs });
     const stateJSON = JSON.stringify(state);
     const answers = {};
     for (const [id, q] of Object.entries(questions)) {
@@ -212,8 +223,9 @@ async function requestJevGenerative(state, questions, { timeoutMs }) {
         const parsed = await chatOnce(system, user, timeoutMs, model);
         const probabilities = {};
         for (const opt of q.options || []) {
-          const p = Number(parsed.probabilities?.[opt]);
-          probabilities[opt] = Number.isFinite(p) ? Math.max(0, Math.min(1, p)) : 0;
+          const p = parsed.probabilities?.[opt];
+          if (!Number.isFinite(p) || p < 0 || p > 1) throw new Error(`Model returned invalid probability for ${id}/${opt}`);
+          probabilities[opt] = p;
         }
         const best = Object.entries(probabilities).sort((a, b) => b[1] - a[1])[0];
         answers[id] = { choice: best && best[1] > 0 ? best[0] : undefined, probabilities };
@@ -221,8 +233,8 @@ async function requestJevGenerative(state, questions, { timeoutMs }) {
         const system = 'You are JEV System One, a calibrated decision model. Respond ONLY with a JSON object {"probability": <0..1>} — the probability that the answer to the question is yes. No prose.';
         const user = `Question: ${q.instructions}\nState: ${stateJSON}`;
         const parsed = await chatOnce(system, user, timeoutMs, model);
-        const p = Number(parsed.probability ?? parsed.prob ?? parsed.yes_probability);
-        if (!Number.isFinite(p)) throw new Error(`Model returned no probability for ${id}`);
+        const p = parsed.probability ?? parsed.prob ?? parsed.yes_probability;
+        if (!Number.isFinite(p) || p < 0 || p > 1) throw new Error(`Model returned invalid probability for ${id}`);
         answers[id] = evaluateNoul(p);
       }
     }
@@ -232,7 +244,6 @@ async function requestJevGenerative(state, questions, { timeoutMs }) {
   }
 }
 
-}
 
 function normalizeAnswers(payload, questions) {
   const raw = payload.answers || payload.results || payload;
@@ -241,11 +252,22 @@ function normalizeAnswers(payload, questions) {
     const item = raw[id];
     if (questions[id]?.type === 'choice') {
       if (!item || (item.choice === undefined && !item.probabilities)) throw new Error(`Malformed Jev response: missing choice for ${id}`);
+      const options = questions[id].options || [];
+      if (item.choice !== undefined) {
+        const choices = Array.isArray(item.choice) ? item.choice : [item.choice];
+        if (choices.some(choice => !options.includes(choice))) throw new Error(`Malformed Jev response: invalid choice for ${id}`);
+      }
+      if (item.probabilities !== undefined && (!item.probabilities || options.some(option => !Number.isFinite(item.probabilities[option]) || item.probabilities[option] < 0 || item.probabilities[option] > 1))) {
+        throw new Error(`Malformed Jev response: invalid choice probabilities for ${id}`);
+      }
+      if ((item.choice === undefined || (Array.isArray(item.choice) && item.choice.length === 0)) && !options.some(option => item.probabilities?.[option] >= 0.2)) {
+        throw new Error(`Malformed Jev response: no selected choice for ${id}`);
+      }
       result[id] = { choice: item.choice, probabilities: item.probabilities };
       continue;
     }
     const prob = typeof item === 'number' ? item : item?.probability ?? item?.prob ?? item?.yes_probability;
-    if (!Number.isFinite(prob)) throw new Error(`Malformed Jev response: missing probability for ${id}`);
+    if (!Number.isFinite(prob) || prob < 0 || prob > 1) throw new Error(`Malformed Jev response: invalid probability for ${id}`);
     result[id] = evaluateNoul(prob);
   }
   return result;
@@ -321,6 +343,7 @@ export async function routeSkills(task, { mock = false, topK = 3 } = {}) {
     const choice = envelope.answers.family?.choice;
     selected = Array.isArray(choice) ? choice : choice ? [choice] : [];
     if (!selected.length) selected = families.filter(f => envelope.answers.family?.probabilities?.[f] >= 0.2);
+    if (!selected.length) throw new Error('Jev unavailable for skill routing: no category selected');
   }
   if (!selected.length) selected = families;
   const selectedSkills = catalog.skills.filter(s => selected.includes(s.category));
@@ -331,7 +354,7 @@ export async function routeSkills(task, { mock = false, topK = 3 } = {}) {
   // ponytail: weak-match fallback routes to the find-skills skill (public skills.sh registry) instead of re-querying
   const localMatch = top.length > 0 && scoreSkill(top[0], task) > 0;
   const result = { task, mode: mock ? 'mock' : 'jev', families: selected, topK: top.map(s => ({ name: s.name, category: s.category, description: s.description })), fullCatalogSkills: catalog.skills.length, estimatedFullTokens: fullTokens, estimatedTopKTokens: leanTokens, estimatedTokensSaved: fullTokens - leanTokens, estimatedSavingsPercent: fullTokens ? Math.round((fullTokens - leanTokens) / fullTokens * 100) : 0 };
-  if (!localMatch) result.publicRegistryFallback = { skill: 'find-skills', command: `npx skills find "${task.replace(/"/g, '')}"`, note: 'No confident local catalog match; use the find-skills skill to search the public skills.sh registry (triage installs/source/stars before installing).' };
+  if (!localMatch) result.publicRegistryFallback = { skill: 'find-skills', command: `npx skills find '${task.replace(/'/g, "'\\''")}'`, note: 'No confident local catalog match; use the find-skills skill to search the public skills.sh registry (triage installs/source/stars before installing).' };
   return result;
 }
 
@@ -348,7 +371,7 @@ export async function pruneContext(blocks, { mock = false } = {}) {
     else {
       const envelope = await requestJev({ id: block.id, text: block.text }, { essential: { type: 'noul', instructions: 'Does this block contain facts essential for future steps?' } });
       if (envelope.error || !envelope.answers) throw new Error(`Jev unavailable for context pruning: ${envelope.error}`);
-      keep = envelope.answers.essential.answer === 'yes' && envelope.answers.essential.confidence >= THRESHOLD;
+      keep = !(envelope.answers.essential.answer === 'no' && envelope.answers.essential.confidence >= THRESHOLD);
     }
     out.push({ id: block.id, verdict: keep ? 'keep' : 'drop' });
   }
@@ -419,7 +442,7 @@ async function main() {
   else if (command === 'status') {
     const status = await jevStatus();
     console.log(JSON.stringify(status, null, 2));
-    process.exitCode = status.active ? 0 : 2;
+    process.exitCode = status.ready === false ? 3 : status.active ? 0 : 2;
   }
   else if (command === 'route-skills') console.log(JSON.stringify(await routeSkills(rest.join(' '), flags), null, 2));
   else if (command === 'prune-context') {

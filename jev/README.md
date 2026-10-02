@@ -1,87 +1,137 @@
 # Jev Control Plane Harness
 
-TypeSafe Jev (System One) runtime enforcement for the `jeo` agent runtime: skill routing, context pruning, and a memory/commit gate — all fail-closed.
+Optional TypeSafe System One decision harness for skill routing, context pruning, and proposal review. This repository provides the CLI and a host rule, not a native interception hook: a host must load and follow the rule for those decisions to gate its actions.
 
 ![Jev control-plane flow](./assets/jev-flow.gif)
 
-## Setup (optional, TUI)
+## Optional setup
 
-Jev is an opt-in feature. The jeo-skills installer (`install.sh`) ends with an interactive prompt; you can also run it directly:
+Jev is separate from catalog installation in **every** mode, including `full`. The root `install.sh` offers a default-no prompt only for an interactive home-scoped install. With no TTY and no `JEO_SKILLS_JEV` selection, or with `JEO_SKILLS_JEV=skip`, it does not fetch or install Jev. Skipping preserves existing Jev files and settings; it is not an uninstall or disable command.
 
-```sh
-bash jev/jev-setup.sh                                     # interactive: install? → mode (API / Local / Ollama / LM Studio)
-JEO_SKILLS_JEV=api JEV_API_KEY=... bash jev/jev-setup.sh  # non-interactive API mode
-JEO_SKILLS_JEV=local bash jev/jev-setup.sh                # non-interactive local (full-precision) mode
-JEO_SKILLS_JEV=ollama bash jev/jev-setup.sh               # non-interactive quantized mode via ollama
-JEO_SKILLS_JEV=lmstudio bash jev/jev-setup.sh             # non-interactive LM Studio mode (macOS)
-JEO_SKILLS_JEV=skip bash install.sh                       # skip entirely
-```
-
-- **API mode** — prompts for your TypeSafe `JEV_API_KEY` (hidden input) and writes `~/.agents/jev/.env` (mode 600). Uses `https://api.typesafe.ai/v1/systemone`.
-- **Local mode** — creates `~/.agents/jev/venv` (torch/transformers/huggingface_hub), downloads the open-weight **`autotrust/JEV-9B`** from Hugging Face (~18 GB) to `~/.agents/jev/models/JEV-9B`, and sets `JEV_MODE=local`. Start the backend with `~/.agents/jev/venv/bin/python ~/.agents/jev/jev_local_server.py` (same `/v1/systemone` contract on `127.0.0.1:8763`; override with `JEV_ENDPOINT`). Needs ~18 GB RAM. Note: JEV-9B is a third-party distillation of Jev 1.13, **not** TypeSafe's original hosted model.
-- **Ollama mode** — pulls the quantized **`hf.co/mradermacher/JEV-9B-GGUF:Q4_K_M`** (~5.6 GB download, ~6 GB RAM; recommended on 16 GB machines). The harness speaks ollama's native API (`127.0.0.1:11434`, `think:false` to skip Qwen3.5 reasoning traces) and implements the systemone contract (noul probability / choice distribution) on top of chat completions. Pin with `JEV_LOCAL_MODEL`, override endpoint with `JEV_ENDPOINT`.
-- **LM Studio mode (macOS)** — same quantized GGUF served by LM Studio's OpenAI-compatible server (`127.0.0.1:1234`). If the `lms` CLI is present, setup downloads/loads the model; otherwise load it in the UI and start the server (Developer → Start Server). The harness auto-resolves the loaded model id from `/v1/models` (pin with `JEV_LOCAL_MODEL`).
-
-
-Check activation any time: `node ~/.agents/jev/jev-harness.mjs status` (exit 0 = active, 2 = inactive). When inactive, agents skip all Jev gates and ask the user instead.
-
-## Structure
-
-```
-~/.agents/jev/
-├── jev-harness.mjs        # Node ESM harness + CLI (zero deps)
-├── jev-setup.sh           # install-time TUI (mode select, API key entry, model download)
-├── jev_local_server.py    # local backend serving /v1/systemone from JEV-9B
-├── .env                   # JEV_MODE / JEV_API_KEY / JEV_ENDPOINT / JEV_LOCAL_MODEL(_DIR) (600)
-├── venv/ + models/JEV-9B/ # local (full-precision) mode only
-
-├── README.md              # this file
-└── assets/
-    ├── jev-flow.gif       # animated flow (route → prune → review)
-    └── frames/f1..f3.png  # source frames (god-tibo-imagen)
-
-~/.agents/rules/jev-control-plane.md   # always-applied runtime rule
-~/.claude/skills/                      # globally installed interview skills
-.agent-skills/skills.json              # local catalog (read-only input, 352+ skills)
-```
-
-
-## Flow
-
-1. **route-skills** — task → Jev Choice over catalog category families → Top-K skills (default 3) injected into context instead of the full 352-skill catalog (~99% token savings). No confident local match → `publicRegistryFallback` routes discovery to the **find-skills** skill (`npx skills find "<query>"`, public skills.sh registry, triage before install).
-2. **prune-context** — JSONL `{id,text}` blocks on stdin → `keep`/`drop` verdicts for long-session compaction. Only Jev-marked `drop` blocks may be removed.
-3. **review** — task + proposal → Question Set v4 → `permit` / `proposal_only` / `reject` / `unavailable` + SHA-256 receipt (threshold 0.8). Gates `.jeo/memory`, llm-wiki writes, and agent-authored commits.
-4. **self-test** — 8 offline contract checks; must print `8/8 checks passed`.
-
-## Commands
+Use the canonical setup script after approving a backend and its side effects:
 
 ```sh
-node ~/.agents/jev/jev-harness.mjs route-skills [--mock] [--top-k N] "<task>"
-cat blocks.jsonl | node ~/.agents/jev/jev-harness.mjs prune-context [--mock]
-node ~/.agents/jev/jev-harness.mjs review [--mock] "<task>" '<proposal-json>'
-node ~/.agents/jev/jev-harness.mjs self-test --mock
-node ~/.agents/jev/jev-harness.mjs status   # exit 0 active, 2 inactive
-
+bash jev/jev-setup.sh                              # interactive, default-no consent
+JEO_SKILLS_JEV=api bash jev/jev-setup.sh             # JEV_API_KEY must already be set without a TTY
+JEO_SKILLS_JEV=local bash jev/jev-setup.sh           # Python dependencies + full-precision model download
+JEO_SKILLS_JEV=ollama bash jev/jev-setup.sh          # may start server + pull quantized model
+JEO_SKILLS_JEV=lmstudio bash jev/jev-setup.sh        # may download/load model + start server via lms
+JEO_SKILLS_JEV=skip bash install.sh                 # catalog install only; existing Jev unchanged
 ```
 
-## Decision table (review)
+Explicit modes also work without a TTY. API mode requires a nonempty `JEV_API_KEY` from the environment or hidden interactive input; enter secrets privately, not in shared prompts or command history. Setup writes `~/.agents/jev/.env` with mode `600`. The root `install.sh` rejects explicit Jev selection with `INSTALL_GLOBAL=false` before installation writes: Jev is home-scoped only. The standalone setup always targets the home directory, not the project; invoke it separately after explicit approval rather than adding Jev to a project install.
 
-| Verdict | Meaning | Agent behavior |
+### Backend alternatives
+
+| Mode | Canonical setup side effects and prerequisites | Runtime transport |
 |---|---|---|
-| `permit` | All 4 questions favorable ≥ 0.8 | Proceed autonomously |
-| `proposal_only` | Any question below threshold | Stop, ask the user |
-| `reject` | Validation failure (e.g. path traversal) | Do not proceed |
-| `unavailable` | No key / timeout / malformed response | Fail closed — no autonomous action |
+| `api` | Requires a TypeSafe API key; persists configuration. Hosted inference may incur charges. Setup/status do not validate the key through inference. | Typed state/questions at `https://api.typesafe.ai/v1/systemone` |
+| `local` | Requires Python 3; creates a venv with torch, transformers, accelerate, and huggingface_hub; downloads `autotrust/JEV-9B` unless `JEV_SKIP_MODEL_DOWNLOAD=true`. Backend must be started separately. | `jev_local_server.py` at `http://127.0.0.1:8763/v1/systemone` |
+| `ollama` | Requires the `ollama` CLI; may start `ollama serve` and pull `hf.co/mradermacher/JEV-9B-GGUF:Q4_K_M` if missing. | Native `/api/chat`, `think:false`, default `http://127.0.0.1:11434` |
+| `lmstudio` | Interactive choice is exposed on macOS. With `lms`, attempts model download/load and server startup; otherwise configure them in the app. Setup alone does not prove readiness. | OpenAI-compatible `/v1/chat/completions`, default `http://127.0.0.1:1234` |
 
-## Invariants
+The local model and GGUF are third-party alternatives, not TypeSafe's hosted model. Full-precision setup describes an approximately 18 GB download; quantized setup describes approximately 5.6 GB. These are planning estimates, not measured resource guarantees. Local inference requires sufficient memory and compatible dependencies. Model quality, calibration, and parity with the hosted service have not been established by offline checks. Ollama/LM Studio adapt generated JSON into the decision contract; that is not evidence of native hosted-model probability calibration.
 
-- **Fail-closed**: transport errors never permit action.
-- **Mock never permits**: a mock `permit` is downgraded to `proposal_only`; real autonomy requires an active backend — `JEV_API_KEY` → `https://api.typesafe.ai/v1/systemone` (api mode) or a running local backend (`jev_local_server.py`, ollama, or LM Studio serving JEV-9B).
+Start the full-precision backend after setup. It loads weights from the configured local directory only; startup does not fetch missing weights:
 
-- **Catalog is read-only**: the harness only reads `skills.json`, never mutates it.
-- **Receipts are binding**: keep the SHA-256 receipt with each decision as the audit record.
-- **Two discovery surfaces**: local catalog → `route-skills` / `jeo-skill`; public registry → `find-skills` skill. Never mix them.
+```sh
+~/.agents/jev/venv/bin/python ~/.agents/jev/jev_local_server.py
+```
 
-## Provenance
+### Settings
 
-Contract logic ported from the verified Aside session runner (`2026-10-01_Drjt4MX2KkktQp3o/tmp/jev_runner.mjs`). Runbook: `jeo-skills/.mex/patterns/jev-control-plane.md`. Flow frames generated with the `god-tibo-imagen` skill (`gti`), assembled with ffmpeg.
+The harness and local Python server use environment variables first and `~/.agents/jev/.env` as fallback for unset keys. Setup reconfigures that file; use the canonical script rather than maintaining a second installer or credential-writing recipe.
+
+| Setting | Purpose |
+|---|---|
+| `JEO_SKILLS_JEV` | Setup choice: `skip`, `api`, `local`, `ollama`, `lmstudio`; this is not the runtime mode |
+| `JEV_MODE` | Runtime backend; absent mode defaults to `api` |
+| `JEV_API_KEY` | Hosted API credential; key presence is not an authentication check |
+| `JEV_ENDPOINT` | Full System One URL for `api`/`local`, server base URL for `ollama`/`lmstudio` |
+| `JEV_LOCAL_MODEL` | Explicit generative model identifier; LM Studio otherwise resolves a Jev model from `/v1/models` and rejects unrelated-only listings |
+| `JEV_LOCAL_MODEL_DIR` | Full-precision backend model directory |
+| `JEV_CATALOG_PATH` | Explicit read-only `skills.json` location |
+| `JEV_SKIP_MODEL_DOWNLOAD=true` | Local setup only: skip weight download; does not skip dependencies or prove inference readiness |
+
+The local Python server also accepts `JEV_LOCAL_HOST` and `JEV_LOCAL_PORT`. Keep the harness endpoint consistent if changing either. Routing searches `JEV_CATALOG_PATH`, then `~/.agents/jeo-skills-repo/.agent-skills/skills.json`, then the current checkout's `.agent-skills/skills.json`; installed skill folders alone are not a catalog. Set an explicit catalog path when running outside a checkout/cache.
+
+## Configuration, readiness, and host integration
+
+```sh
+node ~/.agents/jev/jev-harness.mjs status
+```
+
+`active` means configured opt-in, **not** demonstrated host enforcement. `ready` is `true`/`false` after a limited local probe, or `null` when unverified. Local mode probes `/healthz`; generative modes inspect `/v1/models` for the selected model. API mode with a key reports `ready:null`: no hosted authentication or inference request is made.
+
+| Exit | Meaning | Host rule behavior |
+|---|---|---|
+| `0` | Configured and not known unavailable; API readiness can still be unverified | Use live routing/pruning/review; proceed autonomously only for a live `permit` |
+| `2` | Inactive/unconfigured | Skip Jev gates; continue under the host's normal permission and confirmation policies |
+| `3` | Configured but unavailable, or invalid configuration | Fail closed; do not treat an outage as permission to bypass gates |
+
+A readiness probe does not establish successful inference, correct model judgments, or host rule adoption. Setup installs `~/.agents/rules/jev-control-plane.md`; verify that the chosen host loads it through its supported rule mechanism. No native hook installation is supplied by this setup.
+
+## Actual structure
+
+```text
+jev/                                  # source in this repository
+├── jev-harness.mjs                    # Node ESM CLI, built-in modules only
+├── jev-setup.sh                       # canonical optional installer
+├── jev_local_server.py                # full-precision Python backend
+├── jev-control-plane.rule.md          # host integration instructions
+├── README.md
+└── assets/                           # repository illustrations
+
+~/.agents/jev/                        # installed runtime files + README
+├── jev-harness.mjs
+├── jev-setup.sh
+├── jev_local_server.py
+├── jev-control-plane.rule.md
+├── README.md
+├── .env                              # private runtime configuration
+├── venv/                             # local mode only
+└── models/JEV-9B/                     # local mode weights, when downloaded
+
+~/.agents/rules/jev-control-plane.md   # host rule copy, not a native hook
+.agent-skills/skills.json              # catalog in checkout, read-only input
+```
+
+Assets are repository illustrations, not installed runtime dependencies. Setup syntax-checks the harness; it does not require routing a catalog or performing a paid live smoke test to persist configuration.
+
+## Runtime flow and commands
+
+1. **Route:** backend selects category families; local keyword scoring ranks skills in those families. Top-K defaults to three. Token savings in the result are estimates for returned metadata, not measured whole-session savings.
+2. **Discover locally first:** a weak catalog match emits `publicRegistryFallback` pointing to `find-skills` and the public skills.sh registry. The harness does not execute that search or install anything. Review candidates and obtain explicit user approval before installation.
+3. **Prune:** `{id,text}` JSONL blocks receive `keep`/`drop` verdicts. Live pruning preserves uncertain blocks; a host may remove only live-approved `drop` blocks.
+4. **Review:** task and proposal receive `permit`, `proposal_only`, `reject`, or `unavailable` with a SHA-256 receipt binding the decision. The host rule applies this before `.jeo/memory`, llm-wiki writes, and agent-authored commits; the CLI itself does not intercept those actions.
+
+```sh
+node ~/.agents/jev/jev-harness.mjs route-skills --top-k 3 "<task>"
+node ~/.agents/jev/jev-harness.mjs prune-context < blocks.jsonl
+node ~/.agents/jev/jev-harness.mjs review "<task>" '<proposal-json>'
+```
+
+These commands use the configured live backend and may send task/context/proposal data to it. Hosted API calls require separate approval of data sharing and costs. A SHA-256 receipt records a binding, not a signature or independent proof that the proposal is safe.
+
+| Review verdict | Meaning | Host action |
+|---|---|---|
+| `permit` | Four review questions favorable at confidence ≥ 0.8 | Proceed only with live evidence |
+| `proposal_only` | Insufficient favorable confidence, or simulated permit | Ask the user |
+| `reject` | Supplied validation fails | Do not proceed |
+| `unavailable` | Missing credentials, request error, timeout, or malformed response | No autonomous action |
+
+Proposal JSON is not itself a sandbox or path validator. `review` accepts caller-supplied validation through its exported API; the host remains responsible for validating real actions.
+
+## Offline validation limits
+
+From a checkout with its catalog available:
+
+```sh
+node jev/jev-harness.mjs self-test --mock
+node jev/jev-harness.mjs route-skills --mock --top-k 3 "React performance task"
+node jev/jev-harness.mjs review --mock "Review a patch" '{"summary":"Example proposal"}'
+```
+
+`self-test` exercises eight deterministic contract checks and should print `8/8 checks passed`. Mock routing/pruning use local heuristics; a mock review that would permit is downgraded to `proposal_only`. These checks cannot prove provider authentication, model downloads, model loading, inference quality, probability calibration, backend compatibility, or runtime rule enforcement. The local server's `--check` is structural only and does not load model weights.
+
+For live use, first inspect `status`, then verify host rule loading and run an explicitly approved live task against the chosen backend. Preserve real decision receipts; never substitute `--mock` output for real authorization.

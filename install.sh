@@ -13,6 +13,10 @@ fail() { printf '[jeo-skills] ERROR: %s\n' "$*" >&2; exit 1; }
 case "$GLOBAL:$DRY_RUN" in true:true|true:false|false:true|false:false) ;; *) fail 'INSTALL_GLOBAL and JEO_SKILLS_DRY_RUN must be true or false' ;; esac
 case "$SELECTION" in router|bundle|all) ;; category) [ -n "${JEO_SKILLS_CATEGORY:-}" ] || fail 'JEO_SKILLS_CATEGORY is required' ;; *) fail 'JEO_SKILLS_SELECTION must be router, bundle, category, or all' ;; esac
 if [ "$AGENT" = aside ] && [ "$GLOBAL" != true ]; then fail 'Aside is account-scoped; INSTALL_GLOBAL=true is required'; fi
+case "${JEO_SKILLS_JEV:-}" in ''|skip|api|local|ollama|lmstudio) ;; *) fail 'JEO_SKILLS_JEV must be skip, api, local, ollama, or lmstudio' ;; esac
+if [ "$GLOBAL" != true ] && [ -n "${JEO_SKILLS_JEV:-}" ] && [ "${JEO_SKILLS_JEV:-}" != skip ]; then
+  fail 'Jev is home-scoped; use JEO_SKILLS_JEV=skip for project installation, then run JEO_SKILLS_JEV=<mode> bash jev/jev-setup.sh separately.'
+fi
 
 ROOT="$PWD/.agents/skills"
 if [ "$GLOBAL" = true ]; then ROOT="$HOME/.agents/skills"; fi
@@ -77,15 +81,18 @@ fi
 info 'Selected installation completed; runtime activation may require a reload.'
 
 # Optional Jev control plane (interactive TUI; JEO_SKILLS_JEV=skip|api|local|ollama|lmstudio to force).
-if [ "${JEO_SKILLS_JEV:-}" != skip ]; then
+if [ "$GLOBAL" = true ] && [ "${JEO_SKILLS_JEV:-}" != skip ] && { [ -n "${JEO_SKILLS_JEV:-}" ] || [ -t 0 ]; }; then
   SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" 2>/dev/null && pwd || echo "$PWD")"
   if [ -f "$SCRIPT_DIR/jev/jev-setup.sh" ]; then
     bash "$SCRIPT_DIR/jev/jev-setup.sh" || info 'Jev setup did not complete; re-run jev/jev-setup.sh later.'
   else
     JEV_SETUP_URL="${JEO_SKILLS_RAW_BASE:-https://raw.githubusercontent.com/akillness/jeo-skills/main/jev}/jev-setup.sh"
-    curl -fsSL "$JEV_SETUP_URL" -o /tmp/jev-setup.$$ 2>/dev/null \
-      && bash /tmp/jev-setup.$$ || info 'Jev setup unavailable; run jev/jev-setup.sh from the repo later.'
-    rm -f /tmp/jev-setup.$$
+    JEV_SETUP_TMP="$(mktemp -d "${TMPDIR:-/tmp}/jev-setup.XXXXXX")" || fail 'Cannot create private Jev setup directory'
+    trap 'rm -rf "$JEV_SETUP_TMP"' EXIT
+    curl -fsSL "$JEV_SETUP_URL" -o "$JEV_SETUP_TMP/jev-setup.sh" 2>/dev/null \
+      && bash "$JEV_SETUP_TMP/jev-setup.sh" || info 'Jev setup unavailable; run jev/jev-setup.sh from the repo later.'
+    rm -rf "$JEV_SETUP_TMP"
+    trap - EXIT
   fi
 fi
 

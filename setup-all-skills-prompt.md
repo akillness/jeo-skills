@@ -20,6 +20,12 @@ A full install installs the skill documents plus the explicitly listed shared to
 It does **not** download every app, model weight, media runtime, SDK, or service mentioned
 inside all skills. Those remain on demand when a real task selects the corresponding skill.
 
+Jev is a separate, home-scoped opt-in in every catalog mode, including `full`.
+Default catalog installation does not configure Jev, download Jev models, or install
+Jev rules/hooks. Ask for explicit approval of a backend and its side effects before
+setting `JEO_SKILLS_JEV=api|local|ollama|lmstudio`; `skip` leaves existing Jev state unchanged.
+Project catalog installation (`INSTALL_GLOBAL=false`) must stay separate from Jev setup.
+
 Every mode also mirrors the skills it installed into any detected Aside account, since the
 `skills` CLI cannot target Aside. Minimal mirrors just `jeo-skill`, core mirrors the starter
 bundle, full mirrors the whole catalog.
@@ -417,43 +423,57 @@ Do not use `cargo install rtk`; crates.io contains an unrelated package with tha
 
 ### Jev control-plane harness (System One)
 
-Install the fail-closed decision harness that routes the catalog (`route-skills`), prunes
-context (`prune-context`), and gates memory/commit actions (`review`). The source of truth
-ships in this repo under `jev/`; install it to the global agents dir. Idempotent: existing
-files are overwritten only from the repo copy, never hand-edited in place.
+Jev is optional even in full mode. Leave `JEO_SKILLS_JEV` unset (or set it to `skip`)
+unless the user explicitly approves a backend: `api` uses a hosted paid service and
+requires `JEV_API_KEY`; `local` installs Python dependencies and downloads full-precision
+JEV-9B; `ollama` may start its server and pull a quantized model; `lmstudio` may
+download/load a model and start its server when `lms` is available. Read
+[jev/README.md](jev/README.md) for settings, prerequisites, and validation limits.
+Never infer Jev consent from “full install”.
+
+Use the canonical setup script rather than copying runtime files or writing credentials
+by hand. The block below is a no-op without an explicit backend selection, including
+in a no-TTY session; no remote Jev script is fetched in that case.
 
 ```bash
-JEV_RAW="https://raw.githubusercontent.com/akillness/jeo-skills/main/jev"
-mkdir -p "$USER_HOME/.agents/jev" "$USER_HOME/.agents/rules"
-if [ -d "$PWD/jev" ]; then
-  # Running from a jeo-skills checkout: copy locally
-  cp "$PWD/jev/jev-harness.mjs" "$USER_HOME/.agents/jev/jev-harness.mjs"
-  cp "$PWD/jev/README.md"       "$USER_HOME/.agents/jev/README.md"
-  cp "$PWD/jev/jev-control-plane.rule.md" "$USER_HOME/.agents/rules/jev-control-plane.md"
-else
-  curl -fsSL "$JEV_RAW/jev-harness.mjs" -o "$USER_HOME/.agents/jev/jev-harness.mjs"
-  curl -fsSL "$JEV_RAW/README.md"       -o "$USER_HOME/.agents/jev/README.md"
-  curl -fsSL "$JEV_RAW/jev-control-plane.rule.md" -o "$USER_HOME/.agents/rules/jev-control-plane.md"
-fi
-
-# Contract check (offline, test-only — mock never authorizes real action): must print 8/8
-node "$USER_HOME/.agents/jev/jev-harness.mjs" self-test --mock
-
-# Credentials for LIVE operation (required — Jev operates on real data, mock is test-only).
-# Provision JEV_API_KEY from the TypeSafe console and persist it for the harness:
-if [ -z "$JEV_API_KEY" ] && [ ! -f "$USER_HOME/.agents/jev/.env" ]; then
-  printf '%s\n' 'ACTION REQUIRED: set JEV_API_KEY (TypeSafe System One API key), then re-run this block.'
-else
-  [ -n "$JEV_API_KEY" ] && { umask 177; printf 'JEV_API_KEY=%s\n' "$JEV_API_KEY" > "$USER_HOME/.agents/jev/.env"; }
-  # Live smoke test against the real catalog + real API (no --mock):
-  node "$USER_HOME/.agents/jev/jev-harness.mjs" route-skills --top-k 3 'smoke test: route a react performance task'
-fi
+(
+case "${JEO_SKILLS_JEV:-skip}" in
+  skip) printf '%s\n' 'Optional Jev setup skipped; existing configuration unchanged.' ;;
+  api|local|ollama|lmstudio)
+    if [ "${INSTALL_GLOBAL:-true}" != true ]; then
+      printf '%s\n' 'Jev is home-scoped. Run approved standalone setup separately from the project catalog install.' >&2
+      exit 1
+    elif [ -f "$PWD/jev/jev-setup.sh" ]; then
+      HOME="$USER_HOME" JEO_SKILLS_JEV="$JEO_SKILLS_JEV" bash "$PWD/jev/jev-setup.sh"
+    else
+      JEV_SETUP=$(mktemp "${TMPDIR:-/tmp}/jev-setup.XXXXXX") || exit 1
+      if curl -fsSL "${JEO_SKILLS_RAW_BASE:-https://raw.githubusercontent.com/akillness/jeo-skills/main/jev}/jev-setup.sh" -o "$JEV_SETUP"; then
+        HOME="$USER_HOME" JEO_SKILLS_JEV="$JEO_SKILLS_JEV" bash "$JEV_SETUP"
+        JEV_SETUP_STATUS=$?
+      else
+        printf '%s\n' 'Jev setup unavailable; use jev/jev-setup.sh from a trusted checkout.' >&2
+        JEV_SETUP_STATUS=1
+      fi
+      rm -f "$JEV_SETUP"
+      exit "$JEV_SETUP_STATUS"
+    fi
+    ;;
+  *) printf '%s\n' 'JEO_SKILLS_JEV must be skip, api, local, ollama, or lmstudio.' >&2; exit 1 ;;
+esac
+)
 ```
 
-The harness loads `JEV_API_KEY` from the environment or `~/.agents/jev/.env`. Without
-valid credentials every live call fails closed to `unavailable` and must never be
-substituted with mock output in real workflows. The harness reads the installed catalog's
-`skills.json` read-only and must never mutate it.
+The root `install.sh` offers a default-no prompt only for an interactive home-scoped
+install; no-TTY unset and explicit `skip` bypass Jev setup. Explicit backend modes are
+also available through standalone `bash jev/jev-setup.sh` in any catalog mode. Setup
+places a rule at `~/.agents/rules/jev-control-plane.md`; it does not install a native
+hook or prove that a host loads that rule. Adopt it through the host's supported rule
+mechanism and verify loading separately.
+
+`node ~/.agents/jev/jev-harness.mjs status` reports configuration and limited local
+readiness probes, not end-to-end enforcement or hosted API health. Offline
+`self-test --mock` validates deterministic contracts only. Never replace live approval
+evidence with mock output or call a paid provider during default catalog setup.
 
 
 

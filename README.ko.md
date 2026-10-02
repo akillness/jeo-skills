@@ -47,17 +47,19 @@
 <img src="assets/workflow.svg" alt="jeo-skills Workflow & Architecture" width="100%">
 <img src="assets/architecture.svg" alt="jeo-skills Catalog Architecture" width="100%">
 
-### 🧭 Jev 컨트롤 플레인 (System One)
+### Jev 컨트롤 플레인 (선택적 System One 통합)
 
-jeo 런타임은 이 카탈로그를 fail-closed 컨트롤 플레인 하네스(소스는 이 리포의 `jev/`, `setup-all-skills-prompt.md` Step 5가 `~/.agents/jev/jev-harness.mjs`로 설치)로 라우팅합니다:
+Jev는 기본 카탈로그 설치에 포함되지 않는 별도의 홈 범위 선택 기능이며, 전체 설치에서도 동일합니다. 소스와 상세 안내는 [`jev/`](jev/README.md)에 있습니다. 표준 `jev/jev-setup.sh`가 선택한 백엔드, 하네스, 호스트 규칙을 구성합니다. 규칙 파일 배치는 네이티브 훅 설치나 런타임 강제 적용의 증거가 아닙니다. 호스트가 규칙을 로드하고 따라야 합니다.
 
 | 단계 | 커맨드 | 역할 |
 | :--- | :--- | :--- |
-| 스킬 라우팅 | `route-skills "<task>"` | `skills.json`(352개) 대상 Top-K 선택 (전체 카탈로그 대비 ~99% 토큰 절감) |
+| 스킬 라우팅 | `route-skills "<task>"` | 백엔드가 카탈로그 분류를 선택하고 로컬 점수로 읽기 전용 `skills.json`의 Top-K 스킬 반환 |
 | 컨텍스트 프루닝 | `prune-context` | JSONL `{id,text}` 블록 → keep/drop 판정 |
 | 액션 게이트 | `review "<task>" '<proposal>'` | `permit` / `proposal_only` / `reject` / `unavailable` + SHA-256 영수증 |
 
-발견 표면은 2개로 엄격히 분리됩니다: **로컬 카탈로그** 우선(`route-skills` / `jeo-skill`), 확신 있는 로컬 매치가 없으면 `publicRegistryFallback`을 통해 `find-skills` 스킬(`npx skills find "<query>"`, 공개 skills.sh 레지스트리)로 넘어가며, 공개 레지스트리 설치는 항상 사용자 승인이 필요합니다. 하네스는 `skills.json`을 읽기 전용으로만 사용하고, 실데이터 라이브 동작이 기본이며(`--mock`은 테스트 전용 계약 검증 모드, mock 판정은 실제 액션 권한 없음), 키 누락/타임아웃/비정상 응답 시 `unavailable`로 fail-closed 됩니다. 자격 증명은 `JEV_API_KEY` 환경 변수 또는 `~/.agents/jev/.env`에서 로드됩니다.
+발견은 **로컬 카탈로그**(`route-skills` / `jeo-skill`)에서 시작합니다. 로컬 매치가 약하면 `publicRegistryFallback`으로 `find-skills`의 **공개 skills.sh 레지스트리** 탐색을 안내합니다. 후보를 검토하고 명시적인 승인을 받은 뒤 설치하세요. 하네스 자체는 공개 스킬을 검색하거나 설치하지 않습니다.
+
+자격 증명, 다운로드, 서버 실행에 동의한 경우에만 `api`, `local`, `ollama`, `lmstudio`를 선택하세요. `skip`은 기존 Jev 상태를 보존하며, TTY 없이 선택값이 없으면 설정 스크립트 다운로드 없이 건너뜁니다. 프로젝트 카탈로그 설치는 글로벌 Jev를 구성하지 않습니다. `status`는 설정된 선택 상태와 제한적인 백엔드 준비 상태를 구분합니다. API 키 존재만으로 호스팅 인증이나 정상 동작을 증명하지 않습니다. 설정된 백엔드 장애는 리뷰 우회가 아닌 fail-closed 처리 대상입니다. `--mock`은 오프라인 계약 검증용이며 실제 동작을 승인하지 않습니다. 설정, 종료 코드, 검증 범위는 [`jev/README.md`](jev/README.md)를 참조하세요.
 
 
 ---
@@ -85,6 +87,8 @@ curl -s https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-sk
 - **Antigravity IDE와 CLI는 native 투영이 필요**합니다. `skills@1.7.0`이 `--agent` 플래그를 무시하고 공유 루트에 설치하므로, 설정 가이드 Step 4C를 참조하세요.
 - MCP 도구(`ooo`, `semble`), 셸 도구(`rtk`), 플랫폼별 통합을 등록합니다.
 - 기존 스킬을 보존하며 추가 또는 업데이트만 수행하고 삭제하지 않습니다.
+
+모든 카탈로그 모드에서 Jev는 선택 사항입니다. 기본 설정은 Jev 모델을 다운로드하거나 Jev 규칙/훅을 설치하지 않습니다. 루트 설치 프로그램은 대화형 홈 범위 세션에서만 기본값이 ‘아니요’인 질문을 표시하며, 위임 가이드는 명시적으로 승인된 선택이 있을 때만 Jev 설정을 실행합니다.
 > [!NOTE]
 > 카탈로그 포함 항목: **`scrapingant-web-fetch`** 는 호스팅 MCP fetch 도구를 제공해
 > Cloudflare/봇 차단과 JS 전용 페이지를 처리하고 LLM이 바로 쓸 수 있는 Markdown을

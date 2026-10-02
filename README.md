@@ -48,17 +48,19 @@ skills can be grouped without duplicating wrapper folders or moving runtime-faci
 <img src="assets/workflow.svg" alt="jeo-skills Workflow & Architecture" width="100%">
 <img src="assets/architecture.svg" alt="jeo-skills Catalog Architecture" width="100%">
 
-### 🧭 Jev Control Plane (System One)
+### Jev Control Plane (optional System One integration)
 
-The jeo runtime routes this catalog through a fail-closed control-plane harness (source of truth in this repo at `jev/`, installed to `~/.agents/jev/jev-harness.mjs` by `setup-all-skills-prompt.md` Step 5 — see `jev/README.md` for structure/flow):
+Jev is a separate, home-scoped opt-in, not part of default catalog installation, even in full mode. Source lives in [`jev/`](jev/README.md); the canonical `jev/jev-setup.sh` configures the chosen backend and installs the harness plus a host rule. Rule placement is not a native hook or proof of runtime enforcement: the host must load and follow it.
 
 | Stage | Command | Role |
 | :--- | :--- | :--- |
-| Skill routing | `route-skills "<task>"` | Top-K selection over `skills.json` (352 skills, ~99% token savings vs full catalog) |
+| Skill routing | `route-skills "<task>"` | Backend selects catalog families; local scoring returns Top-K skills from read-only `skills.json` |
 | Context pruning | `prune-context` | JSONL `{id,text}` blocks → keep/drop verdicts for compaction |
 | Action gate | `review "<task>" '<proposal>'` | `permit` / `proposal_only` / `reject` / `unavailable` + SHA-256 receipt |
 
-Two discovery surfaces, strictly ordered: the **local catalog** first (`route-skills` / `jeo-skill`); when no confident local match exists, the harness emits `publicRegistryFallback` and discovery moves to the **public skills.sh registry** via the `find-skills` skill (`npx skills find "<query>"`) — installs from the public registry always require explicit user approval. The harness reads `skills.json` read-only and operates on live data by default (`--mock` is a test-only contract mode whose verdicts never authorize real action) and fails closed: missing key, timeout, or malformed response → `unavailable`, never autonomous action. Credentials: `JEV_API_KEY` env var or `~/.agents/jev/.env`.
+Discovery starts with the **local catalog** (`route-skills` / `jeo-skill`). A weak local match emits `publicRegistryFallback` for the **public skills.sh registry** through `find-skills`; review candidates and obtain explicit approval before installation. The harness does not search or install public skills itself.
+
+Choose `api`, `local`, `ollama`, or `lmstudio` only after approving credentials, downloads, and server side effects; `skip` preserves existing Jev state. An unset choice with no TTY skips Jev without fetching its setup script. Project catalog installs never configure global Jev. `status` distinguishes configured opt-in from limited backend readiness: API key presence does not prove hosted authentication or health. Configured outages fail closed, rather than bypassing review. `--mock` validates offline contracts only and never authorizes real actions. See [`jev/README.md`](jev/README.md) for settings, exit codes, and validation limits.
 
 
 ## 📦 Installation
@@ -84,6 +86,8 @@ The agent runs a **full install by default** (say "core only" or "minimal" to na
 - **Antigravity IDE and CLI require native projection** (see setup guide Step 4C) since `skills@1.7.0` installs to shared root regardless of `--agent` flag,
 - register MCP tools (`ooo`, `semble`), shell tooling (`rtk`), and platform-specific integrations,
 - **preserve any pre-existing skills** — it only adds or updates, never deletes.
+
+Jev remains optional in all catalog modes: default setup does not download Jev models or install Jev rules/hooks. The root installer offers a default-no prompt only in an interactive home-scoped session; the delegation guide requires explicit approved opt-in before running Jev setup.
 > [!NOTE]
 >
 > **Included in the catalog:** **`scrapingant-web-fetch`** gives agents a hosted MCP fetch tool

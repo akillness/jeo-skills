@@ -11,10 +11,10 @@ set -euo pipefail
 JEV_HOME="$HOME/.agents/jev"
 RULES_DIR="$HOME/.agents/rules"
 MODEL_REPO="autotrust/JEV-9B"
-MODEL_DIR="$JEV_HOME/models/JEV-9B"
+MODEL_DIR="${JEV_LOCAL_MODEL_DIR:-$JEV_HOME/models/JEV-9B}"
 RAW_BASE="${JEO_SKILLS_RAW_BASE:-https://raw.githubusercontent.com/akillness/jeo-skills/main/jev}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-FILES=(jev-harness.mjs jev_local_server.py README.md jev-control-plane.rule.md)
+FILES=(jev-setup.sh jev-harness.mjs jev_local_server.py README.md jev-control-plane.rule.md)
 
 bold=$(tput bold 2>/dev/null || true); dim=$(tput dim 2>/dev/null || true); reset=$(tput sgr0 2>/dev/null || true)
 info() { printf '%s[jev-setup]%s %s\n' "$bold" "$reset" "$*"; }
@@ -46,6 +46,35 @@ if [ -z "$MODE" ]; then
   case "$pick" in 1) MODE=api ;; 2) MODE=local ;; 3) MODE=ollama ;; 4) [ "$(uname -s)" = Darwin ] && MODE=lmstudio || fail 'LM Studio option is macOS-only here' ;; *) fail 'Pick a listed number' ;; esac
 fi
 case "$MODE" in skip) info 'JEO_SKILLS_JEV=skip — not installing Jev.'; exit 0 ;; api|local|ollama|lmstudio) ;; *) fail "JEO_SKILLS_JEV must be skip, api, local, ollama, or lmstudio (got '$MODE')" ;; esac
+if [ "$MODE" = api ]; then
+  KEY="${JEV_API_KEY:-}"
+  if [ -z "$KEY" ]; then
+    [ -t 0 ] || fail 'api mode without TTY requires JEV_API_KEY in the environment'
+    printf 'Enter your JEV API key (input hidden): '
+    read -rs KEY; printf '\n'
+  fi
+  [ -n "$KEY" ] || fail 'Empty API key'
+fi
+for value in "${KEY:-}" "${JEV_ENDPOINT:-}" "${JEV_LOCAL_MODEL:-}" "$MODEL_DIR"; do
+  case "$value" in *$'\n'*|*$'\r'*) fail 'Jev configuration values must be single-line' ;; esac
+done
+command -v node >/dev/null 2>&1 || fail 'Node.js is required for the Jev harness'
+for destination in "$HOME/.agents" "$JEV_HOME" "$RULES_DIR" "$JEV_HOME/.env" "$RULES_DIR/jev-control-plane.md"; do
+  [ ! -L "$destination" ] || fail "Refusing symlink destination: $destination"
+done
+for f in "${FILES[@]}"; do
+  [ ! -L "$JEV_HOME/$f" ] || fail "Refusing symlink destination: $JEV_HOME/$f"
+done
+if [ "$MODE" = local ]; then
+  for destination in "$JEV_HOME/venv" "$JEV_HOME/venv/bin" "$JEV_HOME/models" "$MODEL_DIR"; do
+    [ ! -L "$destination" ] || fail "Refusing symlink destination: $destination"
+  done
+  destination="$MODEL_DIR"
+  while [[ "$destination" == "$HOME/"* ]]; do
+    [ ! -L "$destination" ] || fail "Refusing symlink destination: $destination"
+    destination="$(dirname "$destination")"
+  done
+fi
 
 
 # ── Install harness files (local checkout first, raw GitHub fallback) ─────────
@@ -57,25 +86,22 @@ for f in "${FILES[@]}"; do
 
 done
 cp "$JEV_HOME/jev-control-plane.rule.md" "$RULES_DIR/jev-control-plane.md"
-command -v node >/dev/null 2>&1 || fail 'Node.js is required for the Jev harness'
-node "$JEV_HOME/jev-harness.mjs" self-test --mock >/dev/null || fail 'Harness self-test failed'
-info "Harness installed at $JEV_HOME (self-test 8/8 passed)"
+node --check "$JEV_HOME/jev-harness.mjs" >/dev/null || fail 'Harness syntax check failed'
+info "Harness installed at $JEV_HOME (syntax check passed; no backend inference performed)"
 
 write_env() { # write_env KEY=VALUE lines on stdin
+  local env_tmp
+  [ ! -d "$JEV_HOME/.env" ] || fail 'Jev .env destination is a directory'
   umask 177
-  cat > "$JEV_HOME/.env"
-  chmod 600 "$JEV_HOME/.env"
+  env_tmp="$(mktemp "$JEV_HOME/.env.XXXXXX")" || fail 'Cannot create Jev configuration temporary file'
+  if ! cat > "$env_tmp" || ! chmod 600 "$env_tmp" || ! mv -f "$env_tmp" "$JEV_HOME/.env"; then
+    rm -f "$env_tmp"
+    fail 'Cannot replace Jev configuration'
+  fi
 }
 
 if [ "$MODE" = api ]; then
-  KEY="${JEV_API_KEY:-}"
-  if [ -z "$KEY" ]; then
-    [ -t 0 ] || fail 'api mode without TTY requires JEV_API_KEY in the environment'
-    printf 'Enter your JEV API key (input hidden): '
-    read -rs KEY; printf '\n'
-  fi
-  [ -n "$KEY" ] || fail 'Empty API key'
-  printf 'JEV_MODE=api\nJEV_API_KEY=%s\n' "$KEY" | write_env
+  printf 'JEV_MODE=api\nJEV_API_KEY=%s\nJEV_ENDPOINT=%s\n' "$KEY" "${JEV_ENDPOINT:-https://api.typesafe.ai/v1/systemone}" | write_env
   info 'API mode configured (~/.agents/jev/.env, mode 600).'
 elif [ "$MODE" = ollama ]; then
   GGUF_MODEL="${JEV_LOCAL_MODEL:-hf.co/mradermacher/JEV-9B-GGUF:Q4_K_M}"
@@ -88,42 +114,45 @@ elif [ "$MODE" = ollama ]; then
     info "Pulling $GGUF_MODEL (quantized JEV-9B, ~5.6 GB)..."
     ollama pull "$GGUF_MODEL" || fail 'ollama pull failed'
   fi
-  printf 'JEV_MODE=ollama\nJEV_LOCAL_MODEL=%s\nJEV_ENDPOINT=http://127.0.0.1:11434\n' "$GGUF_MODEL" | write_env
+  printf 'JEV_MODE=ollama\nJEV_LOCAL_MODEL=%s\nJEV_ENDPOINT=%s\n' "$GGUF_MODEL" "${JEV_ENDPOINT:-http://127.0.0.1:11434}" | write_env
   info 'Ollama mode configured (Q4_K_M quantization, ~6 GB RAM at inference).'
-  info 'Note: quantized third-party distillation — slightly less calibrated than the hosted model.'
+  info 'Note: this is a quantized third-party distillation, not the original hosted model.'
 elif [ "$MODE" = lmstudio ]; then
   [ "$(uname -s)" = Darwin ] || info 'Warning: lmstudio mode is intended for macOS.'
   if command -v lms >/dev/null 2>&1; then
     info 'Downloading quantized JEV-9B via LM Studio CLI (Q4_K_M, ~5.6 GB)...'
-    lms get mradermacher/JEV-9B-GGUF --yes || info 'lms get failed — download JEV-9B-GGUF (Q4_K_M) in the LM Studio UI instead.'
-    lms server start >/dev/null 2>&1 || true
-    lms load mradermacher/JEV-9B-GGUF --yes >/dev/null 2>&1 || info 'Could not auto-load — load JEV-9B-GGUF manually in LM Studio.'
+    lms get mradermacher/JEV-9B-GGUF@q4_k_m --gguf || info 'lms get failed — download JEV-9B-GGUF (Q4_K_M) in the LM Studio UI instead.'
+    lms server start >/dev/null 2>&1 || info 'Could not start the LM Studio server — start it manually in Developer → Start Server.'
+    lms load mradermacher/JEV-9B-GGUF >/dev/null 2>&1 || info 'Could not auto-load — find the exact model key with lms ls, then run lms load <model_key>.'
   else
     info 'LM Studio CLI (lms) not found. Install LM Studio (https://lmstudio.ai),'
     info 'download mradermacher/JEV-9B-GGUF (Q4_K_M), and start the server (Developer → Start Server).'
   fi
   # Model id is resolved at runtime from /v1/models (set JEV_LOCAL_MODEL to pin it).
-  printf 'JEV_MODE=lmstudio\nJEV_ENDPOINT=http://127.0.0.1:1234\n' | write_env
+  printf 'JEV_MODE=lmstudio\nJEV_ENDPOINT=%s\nJEV_LOCAL_MODEL=%s\n' "${JEV_ENDPOINT:-http://127.0.0.1:1234}" "${JEV_LOCAL_MODEL:-}" | write_env
   info 'LM Studio mode configured (harness auto-detects the loaded model id).'
 else
   PYBIN="$(command -v python3 || true)"; [ -n "$PYBIN" ] || fail 'python3 is required for local mode'
   VENV="$JEV_HOME/venv"
-  if [ ! -x "$VENV/bin/python" ]; then
-    info 'Creating Python venv and installing torch/transformers/huggingface_hub (one-time)...'
+  if [ ! -x "$VENV/bin/python" ] || ! "$VENV/bin/python" -c 'import sys; sys.exit(sys.prefix == sys.base_prefix)' >/dev/null 2>&1 || ! "$VENV/bin/python" -m pip --version >/dev/null 2>&1; then
+    info 'Creating/repairing Python venv (one-time)...'
     "$PYBIN" -m venv "$VENV"
-    "$VENV/bin/pip" install --quiet --upgrade pip
-    "$VENV/bin/pip" install --quiet torch transformers accelerate "huggingface_hub[cli]" || fail 'pip install failed'
   fi
-  if [ "${JEV_SKIP_MODEL_DOWNLOAD:-false}" != true ] && [ ! -d "$MODEL_DIR" ]; then
-    info "Downloading $MODEL_REPO to $MODEL_DIR (~18 GB — this can take a while)..."
+  if ! "$VENV/bin/python" -c 'import torch, transformers, accelerate, huggingface_hub' >/dev/null 2>&1; then
+    info 'Installing missing local backend dependencies...'
+    "$VENV/bin/python" -m pip install --quiet --upgrade pip
+    "$VENV/bin/python" -m pip install --quiet torch transformers accelerate "huggingface_hub[cli]" || fail 'pip install failed'
+  fi
+  if [ "${JEV_SKIP_MODEL_DOWNLOAD:-false}" != true ]; then
+    info "Downloading/resuming $MODEL_REPO to $MODEL_DIR (~18 GB; cached files are reused)..."
     "$VENV/bin/python" - "$MODEL_REPO" "$MODEL_DIR" <<'PY' || fail 'Model download failed'
 import sys
 from huggingface_hub import snapshot_download
 snapshot_download(repo_id=sys.argv[1], local_dir=sys.argv[2])
 PY
   fi
-  printf 'JEV_MODE=local\nJEV_LOCAL_MODEL_DIR=%s\nJEV_ENDPOINT=http://127.0.0.1:8763/v1/systemone\n' "$MODEL_DIR" | write_env
-  "$VENV/bin/python" "$JEV_HOME/jev_local_server.py" --check >/dev/null || fail 'Local server smoke check failed'
+  printf 'JEV_MODE=local\nJEV_LOCAL_MODEL_DIR=%s\nJEV_ENDPOINT=%s\n' "$MODEL_DIR" "${JEV_ENDPOINT:-http://127.0.0.1:8763/v1/systemone}" | write_env
+  "$VENV/bin/python" "$JEV_HOME/jev_local_server.py" --check >/dev/null || fail 'Local server structural check failed'
   info 'Local mode configured. Start the backend with:'
   info "  $VENV/bin/python $JEV_HOME/jev_local_server.py"
   info 'Note: JEV-9B is a third-party distillation of Jev 1.13, not the original hosted model.'
@@ -131,4 +160,4 @@ fi
 
 
 node "$JEV_HOME/jev-harness.mjs" status || true
-info 'Done. Check activation any time with: node ~/.agents/jev/jev-harness.mjs status'
+info 'Setup complete; status distinguishes configuration from backend readiness: node ~/.agents/jev/jev-harness.mjs status'

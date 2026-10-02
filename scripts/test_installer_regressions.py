@@ -730,5 +730,72 @@ class InstallerRegressions(unittest.TestCase):
         self.assertEqual(self.snapshot(), before)
 
 
+    def test_optional_setup_does_not_fetch_or_install_without_opt_in(self):
+        installer = self.work / "install.sh"
+        shutil.copyfile(ROOT / "install.sh", installer)
+        curl_log = self.work / "curl.log"
+        curl = self.bin / "curl"
+        curl.write_text(f"#!/bin/sh\nprintf '%s\\n' \"$*\" >> '{curl_log}'\nexit 91\n")
+        curl.chmod(0o700)
+        for mode in (None, "skip"):
+            with self.subTest(mode=mode):
+                curl_log.unlink(missing_ok=True)
+                options = {} if mode is None else {"JEO_SKILLS_JEV": mode}
+                result = self.execute(["/bin/bash", str(installer)], options)
+                self.successful(result)
+                self.assertFalse(curl_log.exists(), result.stdout)
+                self.assertFalse((self.home / ".agents/jev").exists())
+                self.assertFalse((self.home / ".agents/rules/jev-control-plane.md").exists())
+
+    def test_project_scope_rejects_explicit_jev_before_any_installation(self):
+        for mode in ("api", "local", "ollama", "lmstudio"):
+            with self.subTest(mode=mode):
+                before = self.snapshot()
+                result = self.bootstrap(INSTALL_GLOBAL="false", JEO_SKILLS_JEV=mode,
+                                        JEV_API_KEY="fixture-secret")
+                self.assertNotEqual(result.returncode, 0, result.stdout)
+                self.assertEqual(self.snapshot(), before)
+
+    def test_project_scope_unset_and_skip_remain_catalog_only(self):
+        for mode in (None, "skip"):
+            with self.subTest(mode=mode):
+                options = {} if mode is None else {"JEO_SKILLS_JEV": mode}
+                self.successful(self.bootstrap(INSTALL_GLOBAL="false", **options))
+                self.assert_skill(self.project / ".agents/skills", "jeo-skill")
+                self.assertFalse((self.home / ".agents/jev").exists())
+                self.assertFalse((self.home / ".agents/rules/jev-control-plane.md").exists())
+
+
+
+
+    def test_remote_jev_setup_is_downloaded_privately_executed_and_cleaned(self):
+        installer = self.work / "install.sh"
+        shutil.copyfile(ROOT / "install.sh", installer)
+        record = self.work / "download.json"
+        curl = self.bin / "curl"
+        curl.write_text(f"#!{sys.executable}\n" +
+                        "import json, os, pathlib, sys\n"
+                        "args = sys.argv[1:]\n"
+                        "destination = pathlib.Path(args[args.index('-o') + 1])\n"
+                        "parent = destination.parent.stat()\n"
+                        "private_dir = parent.st_uid == os.getuid() and parent.st_mode & 0o077 == 0\n"
+                        "private_file = (destination.is_file() and not destination.is_symlink()\n"
+                        "                and destination.stat().st_uid == os.getuid()\n"
+                        "                and destination.stat().st_mode & 0o077 == 0)\n"
+                        f"pathlib.Path({str(record)!r}).write_text(json.dumps({{'path': str(destination), 'private': private_dir or private_file}}))\n"
+                        "if not (private_dir or private_file): raise SystemExit(91)\n"
+                        "destination.write_text('#!/bin/bash\\nprintf remote-setup-executed > \"$HOME/remote-setup.fixture\"\\n')\n")
+        curl.chmod(0o700)
+        result = self.execute(["/bin/bash", str(installer)],
+                              {"JEO_SKILLS_JEV": "api", "JEV_API_KEY": "fixture-secret"})
+        self.successful(result)
+        download = json.loads(record.read_text())
+        self.assertTrue(download["private"], result.stdout)
+        self.assertEqual((self.home / "remote-setup.fixture").read_text(), "remote-setup-executed")
+        self.assertFalse(Path(download["path"]).exists())
+        if Path(download["path"]).parent != self.work:
+            self.assertFalse(Path(download["path"]).parent.exists())
+
+
 if __name__ == "__main__":
     unittest.main()

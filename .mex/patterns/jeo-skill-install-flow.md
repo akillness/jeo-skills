@@ -15,7 +15,7 @@ edges:
   - target: "patterns/catalog-metadata-changes.md"
     condition: "when a bundle/category referenced here needs a metadata change instead"
 grounds_to: []
-last_updated: 2026-10-01
+last_updated: 2026-10-02
 ---
 
 # jeo-skill Install Flow
@@ -87,6 +87,15 @@ never infer runtime loading solely from an upstream agent label or successful ex
   documented preview in an isolated, no-network fixture with a no-write assertion.
   Public upgrade examples must use a documented checkout root, not a maintainer's
   absolute or `~/.superset` workspace path.
+- Jev is a separate home-scoped opt-in, not a catalog installation prerequisite.
+  `JEO_SKILLS_JEV=skip` and unset non-interactive bootstraps never fetch/configure it.
+  `INSTALL_GLOBAL=false` never writes global Jev; an explicit backend mode fails
+  preflight and points to standalone `jev/jev-setup.sh`. The full-mode guide uses
+  that same guarded installer rather than hand-copying a second implementation.
+- Jev `status` distinguishes configuration from readiness: exit 2 is inactive
+  (normal host policies), exit 3 is invalid/configured unavailable (fail closed).
+  Health/model-list success is not inference or native-hook enforcement proof.
+  Use `jev/README.md` and `scripts/test_jev_regressions.py` for the current contract.
 
 ## Verify
 - [ ] `jeo-skill doctor` reports `"ok": true`, a resolved `catalog` path/URL, and

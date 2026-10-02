@@ -45,6 +45,22 @@ Cada habilidad permanece descubreable como `.\agent-skills/<name>/SKILL.md`. Los
 
 <img src="assets/workflow.svg" alt="jeo-skills Workflow & Architecture" width="100%">
 
+<img src="assets/architecture.svg" alt="Arquitectura del catálogo jeo-skills" width="100%">
+
+### Jev Control Plane (integración opcional de System One)
+
+Jev es una opción separada, limitada al directorio personal; no forma parte de la instalación predeterminada del catálogo, ni siquiera en modo completo. El código y la guía están en [`jev/`](jev/README.md). El script canónico `jev/jev-setup.sh` configura el backend elegido e instala el arnés y una regla para el anfitrión. Colocar la regla no instala un hook nativo ni demuestra aplicación efectiva: el anfitrión debe cargarla y seguirla.
+
+| Etapa | Comando | Función |
+| :--- | :--- | :--- |
+| Enrutamiento | `route-skills "<task>"` | El backend elige familias; la puntuación local devuelve Top-K desde `skills.json` de solo lectura |
+| Poda de contexto | `prune-context` | Bloques JSONL `{id,text}` → decisiones keep/drop |
+| Revisión de acciones | `review "<task>" '<proposal>'` | `permit` / `proposal_only` / `reject` / `unavailable` y recibo SHA-256 |
+
+El descubrimiento empieza por el **catálogo local** (`route-skills` / `jeo-skill`). Una coincidencia débil emite `publicRegistryFallback` hacia el **registro público skills.sh** mediante `find-skills`; revisa los candidatos y obtén aprobación explícita antes de instalarlos. El arnés no busca ni instala habilidades públicas por sí mismo.
+
+Elige `api`, `local`, `ollama` o `lmstudio` solo tras aprobar credenciales, descargas y efectos sobre los servidores; `skip` conserva el estado existente de Jev. Sin TTY y sin selección, Jev se omite sin descargar su script. Una instalación de catálogo de proyecto nunca configura Jev global. `status` distingue configuración de comprobaciones limitadas de disponibilidad: tener una clave API no demuestra autenticación ni salud del servicio alojado. Un backend configurado que falla bloquea la acción, no permite omitir la revisión. `--mock` valida contratos sin conexión y nunca autoriza acciones reales. Consulta [`jev/README.md`](jev/README.md) para ajustes, códigos de salida y límites de validación.
+
 ## 📦 Instalación
 
 ### ✨ Recomendado: Instalación impulsada por LLM (un solo prompt, todas las plataformas)
@@ -68,6 +84,8 @@ El agente ejecuta una **instalación completa por defecto** (di "solo núcleo" o
 - **Antigravity IDE y CLI requieren proyección nativa** (consulta la guía de configuración Paso 4C) ya que `skills@1.7.0` instala en la raíz compartida independientemente del flag `--agent`,
 - registrar herramientas MCP (`ooo`, `semble`), herramientas shell (`rtk`) e integraciones específicas de plataforma,
 - **preservar cualquier habilidad preexistente**: solo añade o actualiza, nunca elimina.
+
+Jev sigue siendo opcional en todos los modos del catálogo: la configuración predeterminada no descarga modelos Jev ni instala reglas/hooks de Jev. El instalador raíz solo ofrece una pregunta con respuesta predeterminada «no» en una sesión interactiva de ámbito personal; la guía de delegación exige consentimiento explícito para ejecutar Jev.
 > [!NOTE]
 >
 
