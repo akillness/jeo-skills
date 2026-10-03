@@ -1,0 +1,49 @@
+{
+  "skill_name": "jev-control-plane",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Install Jev for GJC only, use my existing local backend, and give me commands to disable and re-enable it without losing settings.",
+      "expected_output": "Uses the GJC-specific profile, gives install/configure and status/toggle commands, and explains that disabling retains settings without revoking credentials or stopping a separate backend.",
+      "assertions": [
+        "Targets a profile such as `gjc` rather than the legacy shared `.env`",
+        "Uses `jev-setup.sh --profile gjc --mode local` or an equivalent explicit local profile setup",
+        "Includes profile-specific `--disable`, `--enable`, and `--status` commands",
+        "Does not start a model download or inference without explicit approval"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Our Codex and GJC agents both have Jev. Switch only GJC from API to Ollama and keep Codex unchanged.",
+      "expected_output": "Selects only the GJC profile for the backend switch, explains that per-mode files preserve the Codex profile and GJC's API settings, and notes the Ollama setup may start a server or pull a model so approval is required first.",
+      "assertions": [
+        "Targets only `--profile gjc`",
+        "Does not suggest editing the shared legacy `.env`",
+        "Mentions that switching backends preserves mode-specific settings",
+        "Flags Ollama server/model setup as a side effect requiring approval"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Make Jev automatically intercept every commit and block unsafe actions even if the host agent ignores the skill.",
+      "expected_output": "Corrects the premise: Jev is prompt-driven, not a native hook or guaranteed enforcement layer. Offers the explicit Jev rule/skill flow and routes native commit blocking to a hook-specific solution when appropriate.",
+      "assertions": [
+        "Explicitly says Jev does not guarantee automatic interception or enforcement",
+        "Does not claim that installing the Agent Skill creates a native hook",
+        "Names host-rule/skill adoption as required for Jev decisions to gate behavior",
+        "Routes native Git command blocking to a hook-focused skill such as `git-guardrails-claude-code`"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Run Jev's live review on this proposal right now; it may send task context to the hosted API.",
+      "expected_output": "Checks the selected profile's status, then requests separate explicit approval before any hosted call because the operation can transmit context and incur charges. Does not substitute mock results for a live review.",
+      "assertions": [
+        "Requires a profile-specific status check before use",
+        "Requests explicit approval for hosted data transmission and potential cost before making the call",
+        "Does not use `--mock` as a substitute for a live decision",
+        "Does not treat a Jev `permit` as proof of safety or automatic enforcement"
+      ]
+    }
+  ]
+}

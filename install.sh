@@ -5,6 +5,7 @@ set -euo pipefail
 REPO_URL="${JEO_SKILLS_SOURCE:-https://github.com/akillness/jeo-skills}"
 SELECTION="${JEO_SKILLS_SELECTION:-router}"
 AGENT="${JEO_SKILLS_AGENT:-universal}"
+JEV_PROFILE="${JEO_SKILLS_JEV_PROFILE:-$AGENT}"
 GLOBAL="${INSTALL_GLOBAL:-true}"
 DRY_RUN="${JEO_SKILLS_DRY_RUN:-false}"
 info() { printf '[jeo-skills] %s\n' "$*"; }
@@ -41,7 +42,7 @@ if [ "$DRY_RUN" = true ]; then
   fi
   info "Dry run: shared router destination $ROOT; bootstrap resolves target $AGENT; no changes made."
   info 'Runtime support, account selection, and catalog selections are validated during execution, not by this bootstrap preview.'
-  info 'After install, the optional Jev control plane TUI runs (jev/jev-setup.sh); set JEO_SKILLS_JEV=skip|api|local|ollama|lmstudio to force a mode.'
+  info "After install, optional Jev setup targets profile '$JEV_PROFILE'; set JEO_SKILLS_JEV_PROFILE for an independent profile when AGENT=universal."
 
   exit 0
 fi
@@ -84,13 +85,13 @@ info 'Selected installation completed; runtime activation may require a reload.'
 if [ "$GLOBAL" = true ] && [ "${JEO_SKILLS_JEV:-}" != skip ] && { [ -n "${JEO_SKILLS_JEV:-}" ] || [ -t 0 ]; }; then
   SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" 2>/dev/null && pwd || echo "$PWD")"
   if [ -f "$SCRIPT_DIR/jev/jev-setup.sh" ]; then
-    bash "$SCRIPT_DIR/jev/jev-setup.sh" || info 'Jev setup did not complete; re-run jev/jev-setup.sh later.'
+    bash "$SCRIPT_DIR/jev/jev-setup.sh" --profile "$JEV_PROFILE" --agent "$AGENT" || info "Jev setup did not complete; re-run jev/jev-setup.sh --profile $JEV_PROFILE --agent $AGENT later."
   else
     JEV_SETUP_URL="${JEO_SKILLS_RAW_BASE:-https://raw.githubusercontent.com/akillness/jeo-skills/main/jev}/jev-setup.sh"
     JEV_SETUP_TMP="$(mktemp -d "${TMPDIR:-/tmp}/jev-setup.XXXXXX")" || fail 'Cannot create private Jev setup directory'
     trap 'rm -rf "$JEV_SETUP_TMP"' EXIT
     curl -fsSL "$JEV_SETUP_URL" -o "$JEV_SETUP_TMP/jev-setup.sh" 2>/dev/null \
-      && bash "$JEV_SETUP_TMP/jev-setup.sh" || info 'Jev setup unavailable; run jev/jev-setup.sh from the repo later.'
+      && bash "$JEV_SETUP_TMP/jev-setup.sh" --profile "$JEV_PROFILE" --agent "$AGENT" || info "Jev setup unavailable; run jev/jev-setup.sh --profile $JEV_PROFILE --agent $AGENT from the repo later."
     rm -rf "$JEV_SETUP_TMP"
     trap - EXIT
   fi

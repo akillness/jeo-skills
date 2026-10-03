@@ -12,26 +12,72 @@ const DEFAULT_API_URL = 'https://api.typesafe.ai/v1/systemone';
 const DEFAULT_LOCAL_URL = 'http://127.0.0.1:8763/v1/systemone';
 const THRESHOLD = 0.8;
 const MODES = ['api', 'local', 'ollama', 'lmstudio'];
-const ENV_CONFIGURED = MODES.includes(process.env.JEV_MODE || 'api') && (process.env.JEV_MODE && process.env.JEV_MODE !== 'api' || Boolean(process.env.JEV_API_KEY));
 
-// Live mode is the default. Configuration (JEV_MODE=api|local, JEV_API_KEY,
-// JEV_ENDPOINT, JEV_LOCAL_MODEL_DIR) comes from the environment, with
-// ~/.agents/jev/.env (KEY=VALUE lines) as fallback for unset keys.
-let envReadError = null;
-let fileConfig = null;
-try {
-  const envText = await readFile(join(homedir(), '.agents', 'jev', '.env'), 'utf8');
-  fileConfig = {};
-  for (const line of envText.split(/\r?\n/)) {
-    const match = line.match(/^\s*(JEV_[A-Z_]+)\s*=(.*)$/);
-    if (match) {
-      const value = match[2].trim();
-      fileConfig[match[1]] = /^(".*"|'.*')$/.test(value) ? value.slice(1, -1) : value;
-      if (process.env[match[1]] === undefined) process.env[match[1]] = fileConfig[match[1]];
-    }
+function extractProfileArgs(args, envProfile) {
+  const rest = [];
+  let profile = (envProfile || '').trim() || null;
+  for (let i = 0; i < args.length; i++) {
+    if (args[i] === '--profile') {
+      if (!args[i + 1]) throw new Error('--profile requires a profile id');
+      profile = args[++i];
+    } else if (args[i].startsWith('--profile=')) {
+      profile = args[i].slice('--profile='.length);
+      if (!profile) throw new Error('--profile requires a non-empty profile id');
+    } else rest.push(args[i]);
   }
-} catch (error) {
-  if (error.code !== 'ENOENT') envReadError = `Cannot read Jev configuration: ${error.code || error.message}`;
+  return { profile, rest };
+}
+
+const profileArgs = extractProfileArgs(process.argv.slice(2), process.env.JEV_PROFILE);
+const PROFILE = profileArgs.profile;
+const CLI_ARGS = profileArgs.rest;
+const PROFILE_ERROR = PROFILE && !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(PROFILE)
+  ? 'Profile id must contain lowercase letters, digits, and single hyphens only'
+  : null;
+
+function parseEnv(text) {
+  const config = {};
+  for (const line of text.split(/\r?\n/)) {
+    const match = line.match(/^\s*(JEV_[A-Z_]+)\s*=(.*)$/);
+    if (!match) continue;
+    const value = match[2].trim();
+    config[match[1]] = /^(".*"|'.*')$/.test(value) ? value.slice(1, -1) : value;
+  }
+  return config;
+}
+
+async function readEnvFile(path, optional = true) {
+  try { return parseEnv(await readFile(path, 'utf8')); }
+  catch (error) {
+    if (optional && error.code === 'ENOENT') return {};
+    throw error;
+  }
+}
+
+// Live mode is the default. Legacy installs use ~/.agents/jev/.env; a selected
+// profile reads only its own <profile>.env and <profile>.<mode>.env files.
+// Environment variables can override backend settings; profile opt-in is owned
+// by the base file so ambient JEV_ENABLED cannot re-enable a disabled profile.
+let envReadError = null;
+let fileConfig = {};
+let profileBaseConfig = {};
+if (!PROFILE_ERROR) {
+  try {
+    if (PROFILE) {
+      const profileDir = join(homedir(), '.agents', 'jev', 'profiles');
+      profileBaseConfig = await readEnvFile(join(profileDir, `${PROFILE}.env`));
+      fileConfig = profileBaseConfig;
+      const modeHint = process.env.JEV_MODE || profileBaseConfig.JEV_MODE || 'api';
+      if (MODES.includes(modeHint)) {
+        fileConfig = { ...profileBaseConfig, ...await readEnvFile(join(profileDir, `${PROFILE}.${modeHint}.env`)) };
+      }
+    } else fileConfig = await readEnvFile(join(homedir(), '.agents', 'jev', '.env'));
+    for (const [key, value] of Object.entries(fileConfig)) {
+      if (process.env[key] === undefined) process.env[key] = value;
+    }
+  } catch (error) {
+    envReadError = `Cannot read Jev configuration: ${error.code || error.message}`;
+  }
 }
 
 // Catalog resolution (first readable wins): env/dotenv override, shared router
@@ -44,17 +90,31 @@ const CATALOG_CANDIDATES = [
 
 const MODE = process.env.JEV_MODE || 'api';
 const GENERATIVE = MODE === 'ollama' || MODE === 'lmstudio';
-const FILE_CONFIGURED = fileConfig && MODES.includes(fileConfig.JEV_MODE || 'api') && ((fileConfig.JEV_MODE || 'api') !== 'api' || Boolean(fileConfig.JEV_API_KEY));
-const CONFIG_ERROR = ENV_CONFIGURED ? null : envReadError || (fileConfig && (!FILE_CONFIGURED || (MODE === 'api' && !process.env.JEV_API_KEY && (fileConfig.JEV_MODE || 'api') !== 'api')) ? 'Incomplete or invalid Jev configuration file' : null);
+const PROFILE_ENABLED_VALUE = PROFILE ? String(profileBaseConfig.JEV_ENABLED || '').toLowerCase() : 'true';
+const PROFILE_ENABLED = PROFILE_ENABLED_VALUE === 'true';
+const PROFILE_ENABLED_INVALID = Boolean(PROFILE && profileBaseConfig.JEV_ENABLED !== undefined && !/^(true|false)$/i.test(profileBaseConfig.JEV_ENABLED));
+const PROFILE_DISABLED = Boolean(PROFILE && !PROFILE_ENABLED && !PROFILE_ENABLED_INVALID);
+const ENV_CONFIGURED = MODES.includes(MODE) && (MODE !== 'api' || Boolean(process.env.JEV_API_KEY));
+const FILE_MODE = fileConfig.JEV_MODE || 'api';
+const FILE_CONFIGURED = MODES.includes(FILE_MODE) && (FILE_MODE !== 'api' || Boolean(fileConfig.JEV_API_KEY));
+const CONFIG_ERROR = PROFILE_ENABLED_INVALID
+  ? 'JEV_ENABLED must be true or false'
+  : (ENV_CONFIGURED ? null : envReadError || (Object.keys(fileConfig).length > 0 && !FILE_CONFIGURED ? 'Incomplete or invalid Jev configuration file' : null));
 // Generative backends (quantized GGUF) speak the OpenAI-compatible API; the
 // harness implements the systemone contract on top of chat completions.
 const GEN_DEFAULTS = {
   ollama: { endpoint: 'http://127.0.0.1:11434', model: 'hf.co/mradermacher/JEV-9B-GGUF:Q4_K_M', start: 'ollama serve' },
   lmstudio: { endpoint: 'http://127.0.0.1:1234', model: null, start: 'lms server start (or LM Studio → Developer → Start Server), then load JEV-9B-GGUF' },
 };
-const GEN_BASE = GENERATIVE ? (process.env.JEV_ENDPOINT || GEN_DEFAULTS[MODE].endpoint).replace(/\/+$/, '').replace(/\/v1$/, '') : null;
+const MODE_ENDPOINTS = {
+  api: process.env.JEV_API_ENDPOINT || DEFAULT_API_URL,
+  local: process.env.JEV_LOCAL_ENDPOINT || DEFAULT_LOCAL_URL,
+  ollama: process.env.JEV_OLLAMA_ENDPOINT || GEN_DEFAULTS.ollama.endpoint,
+  lmstudio: process.env.JEV_LMSTUDIO_ENDPOINT || GEN_DEFAULTS.lmstudio.endpoint,
+};
+const GEN_BASE = GENERATIVE ? (process.env.JEV_ENDPOINT || MODE_ENDPOINTS[MODE] || GEN_DEFAULTS[MODE].endpoint).replace(/\/+$/, '').replace(/\/v1$/, '') : null;
 const API_URL = GENERATIVE ? `${GEN_BASE}/v1/chat/completions`
-  : process.env.JEV_ENDPOINT || (MODE === 'local' ? DEFAULT_LOCAL_URL : DEFAULT_API_URL);
+  : process.env.JEV_ENDPOINT || MODE_ENDPOINTS[MODE] || DEFAULT_API_URL;
 
 
 async function fetchJsonWithTimeout(url, options = {}, timeoutMs = 3000) {
@@ -81,12 +141,24 @@ async function resolveGenModel({ timeoutMs = 3000 } = {}) {
 }
 
 export async function jevStatus({ timeoutMs = 3000 } = {}) {
-  const active = MODE === 'api' ? Boolean(process.env.JEV_API_KEY) : MODES.includes(MODE);
-  const status = { active, ready: null, mode: MODE, endpoint: GENERATIVE ? GEN_BASE : API_URL, hint: null };
-  if (CONFIG_ERROR) return { ...status, ready: false, hint: CONFIG_ERROR };
-  if (!MODES.includes(MODE)) {
-    return { ...status, ready: false, hint: `Invalid JEV_MODE: ${MODE}` };
+  const active = PROFILE
+    ? PROFILE_ENABLED || PROFILE_ENABLED_INVALID
+    : MODE === 'api' ? Boolean(process.env.JEV_API_KEY) : MODES.includes(MODE);
+  const status = {
+    active,
+    ready: null,
+    mode: MODE,
+    endpoint: GENERATIVE ? GEN_BASE : API_URL,
+    profile: PROFILE || null,
+    ...(PROFILE ? { enabled: PROFILE_ENABLED } : {}),
+    hint: null,
+  };
+  if (PROFILE_ERROR) return { ...status, ready: false, hint: PROFILE_ERROR };
+  if (PROFILE && !PROFILE_ENABLED && !PROFILE_ENABLED_INVALID) {
+    return { ...status, ready: null, hint: `Jev profile '${PROFILE}' is disabled; enable it with jev-setup.sh --profile ${PROFILE} --enable` };
   }
+  if (!MODES.includes(MODE)) return { ...status, ready: false, hint: `Invalid JEV_MODE: ${MODE}` };
+  if (CONFIG_ERROR) return { ...status, ready: false, hint: CONFIG_ERROR };
   if (!active) return { ...status, hint: 'Jev inactive: set JEV_API_KEY or run jev-setup.sh to opt in' };
   if (MODE === 'api') return { ...status, keySource: 'env-or-dotenv', hint: 'API configured; credentials and inference readiness have not been verified' };
   try {
@@ -99,7 +171,10 @@ export async function jevStatus({ timeoutMs = 3000 } = {}) {
     status.ready = true;
   } catch (err) {
     status.ready = false;
-    status.hint = `${MODE} backend unavailable (${err.message}); ${GENERATIVE ? GEN_DEFAULTS[MODE].start : 'start ~/.agents/jev/venv/bin/python ~/.agents/jev/jev_local_server.py'}`;
+    const start = PROFILE
+      ? `JEV_PROFILE=${PROFILE} ~/.agents/jev/venv/bin/python ~/.agents/jev/jev_local_server.py --profile ${PROFILE}`
+      : 'start ~/.agents/jev/venv/bin/python ~/.agents/jev/jev_local_server.py';
+    status.hint = `${MODE} backend unavailable (${err.message}); ${GENERATIVE ? GEN_DEFAULTS[MODE].start : start}`;
   }
   return status;
 }
@@ -148,6 +223,8 @@ export const QUESTION_SET_V4 = {
 
 export async function requestJev(state, questions, { mock = false, timeoutMs } = {}) {
   if (mock) return { model: 'jev-mock', source: 'mock', error: null, latencyMs: 0, answers: simulateAnswers(state, questions) };
+  if (PROFILE_ERROR) return { model: null, source: MODE, error: PROFILE_ERROR, latencyMs: 0, answers: null };
+  if (PROFILE_DISABLED) return { model: null, source: MODE, error: `Jev profile '${PROFILE}' is disabled`, latencyMs: 0, answers: null };
   if (CONFIG_ERROR) return { model: null, source: MODE, error: CONFIG_ERROR, latencyMs: 0, answers: null };
   if (!MODES.includes(MODE)) return { model: null, source: MODE, error: `Invalid JEV_MODE: ${MODE}`, latencyMs: 0, answers: null };
   if (GENERATIVE) return requestJevGenerative(state, questions, { timeoutMs: timeoutMs ?? 180000 });
@@ -436,7 +513,8 @@ export async function selfTest() {
 }
 
 async function main() {
-  const [command, ...args] = process.argv.slice(2);
+  if (PROFILE_ERROR) throw new Error(PROFILE_ERROR);
+  const [command, ...args] = CLI_ARGS;
   const { flags, rest } = parseArgs(args);
   if (command === 'self-test') process.exitCode = await selfTest();
   else if (command === 'status') {
@@ -454,7 +532,7 @@ async function main() {
     const [task, proposalJSON] = rest;
     if (!task || !proposalJSON) throw new Error('Usage: review [--mock] <task> <proposal-json>');
     console.log(JSON.stringify(await review(task, JSON.parse(proposalJSON), flags), null, 2));
-  } else throw new Error('Usage: jev-harness.mjs <status|route-skills|prune-context|review|self-test> [--mock]');
+  } else throw new Error('Usage: jev-harness.mjs [--profile <id>] <status|route-skills|prune-context|review|self-test> [--mock]');
 
 }
 

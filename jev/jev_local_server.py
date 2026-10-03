@@ -13,21 +13,70 @@ Health:   GET /healthz
 import json
 import math
 import os
+import re
 import sys
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
-try:
-    with open(os.path.expanduser("~/.agents/jev/.env"), encoding="utf-8") as env_file:
-        for line in env_file:
-            key, separator, value = line.partition("=")
-            key = key.strip()
-            if separator and key.startswith("JEV_") and key not in os.environ:
+
+def selected_profile(args):
+    profile = os.environ.get("JEV_PROFILE") or None
+    i = 0
+    while i < len(args):
+        if args[i] == "--profile":
+            i += 1
+            if i >= len(args):
+                sys.exit("--profile requires a profile id")
+            profile = args[i]
+            if not profile:
+                sys.exit("--profile requires a non-empty profile id")
+        elif args[i].startswith("--profile="):
+            profile = args[i].split("=", 1)[1]
+            if not profile:
+                sys.exit("--profile requires a non-empty profile id")
+        i += 1
+    if profile and not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", profile):
+        sys.exit("Profile id must contain lowercase letters, digits, and single hyphens only")
+    return profile
+
+
+def load_env_file(path):
+    config = {}
+    try:
+        with open(path, encoding="utf-8") as env_file:
+            for line in env_file:
+                key, separator, value = line.partition("=")
+                key = key.strip()
+                if not separator or not re.fullmatch(r"JEV_[A-Z_]+", key):
+                    continue
                 value = value.strip()
                 if len(value) >= 2 and value[0] == value[-1] and value[0] in "\"'":
                     value = value[1:-1]
-                os.environ[key] = value
-except FileNotFoundError:
-    pass
+                config[key] = value
+    except FileNotFoundError:
+        pass
+    return config
+
+
+PROFILE = selected_profile(sys.argv[1:])
+CHECK_ONLY = "--check" in sys.argv[1:]
+profile_base_config = {}
+if PROFILE:
+    config_dir = os.path.expanduser("~/.agents/jev/profiles")
+    profile_base_config = load_env_file(os.path.join(config_dir, f"{PROFILE}.env"))
+    config = profile_base_config.copy()
+    mode = os.environ.get("JEV_MODE") or profile_base_config.get("JEV_MODE", "api")
+    if mode == "local":
+        config.update(load_env_file(os.path.join(config_dir, f"{PROFILE}.local.env")))
+else:
+    config = load_env_file(os.path.expanduser("~/.agents/jev/.env"))
+for key, value in config.items():
+    os.environ.setdefault(key, value)
+if PROFILE:
+    os.environ["JEV_PROFILE"] = PROFILE
+    if profile_base_config.get("JEV_ENABLED", "").lower() != "true" and not CHECK_ONLY:
+        sys.exit(f"Jev profile '{PROFILE}' is disabled; enable it with jev-setup.sh --profile {PROFILE} --enable")
+    if os.environ.get("JEV_MODE") != "local":
+        sys.exit(f"Jev profile '{PROFILE}' is not configured for local mode")
 
 HOST = os.environ.get("JEV_LOCAL_HOST", "127.0.0.1")
 PORT = int(os.environ.get("JEV_LOCAL_PORT", "8763"))

@@ -1,25 +1,26 @@
 # Jev Control Plane Harness
 
-Optional TypeSafe System One decision harness for skill routing, context pruning, and proposal review. This repository provides the CLI and a host rule, not a native interception hook: a host must load and follow the rule for those decisions to gate its actions.
+Optional TypeSafe System One decision harness for skill routing, context pruning, and proposal review. The catalog also provides a portable Agent Skill plugin and per-agent profiles. This repository provides instructions and a CLI, not a native interception hook: a host must load and follow the rule or skill for those decisions to gate its actions.
 
 ![Jev control-plane flow](./assets/jev-flow.gif)
 
 ## Optional setup
 
-Jev is separate from catalog installation in **every** mode, including `full`. The root `install.sh` offers a default-no prompt only for an interactive home-scoped install. With no TTY and no `JEO_SKILLS_JEV` selection, or with `JEO_SKILLS_JEV=skip`, it does not fetch or install Jev. Skipping preserves existing Jev files and settings; it is not an uninstall or disable command.
+Jev is optional and separate from catalog installation in **every** mode, including `full`. The root `install.sh` offers a default-no prompt only for an interactive home-scoped install. With no TTY and no `JEO_SKILLS_JEV` selection, or with `JEO_SKILLS_JEV=skip`, it does not fetch or install Jev. Skipping preserves existing Jev files and settings; it is not an uninstall or disable command.
 
-Use the canonical setup script after approving a backend and its side effects:
+Use one lowercase profile ID per independent agent environment; it can differ from the runtime install target. `--profile` selects isolated Jev state, while `--agent` selects where the Agent Skill is installed. Root `install.sh` defaults the profile ID to `JEO_SKILLS_AGENT`; when several runtimes share a `universal` skill root, set `JEO_SKILLS_JEV_PROFILE` to keep their state separate. For example, use `--profile aside-u0 --agent aside` with `JEO_SKILLS_ASIDE_ACCOUNT=u/0` when an Aside account needs its own profile. Jev setup installs the Agent Skill for the requested runtime when the router is available.
 
 ```sh
-bash jev/jev-setup.sh                              # interactive, default-no consent
-JEO_SKILLS_JEV=api bash jev/jev-setup.sh             # JEV_API_KEY must already be set without a TTY
-JEO_SKILLS_JEV=local bash jev/jev-setup.sh           # Python dependencies + full-precision model download
-JEO_SKILLS_JEV=ollama bash jev/jev-setup.sh          # may start server + pull quantized model
-JEO_SKILLS_JEV=lmstudio bash jev/jev-setup.sh        # may download/load model + start server via lms
-JEO_SKILLS_JEV=skip bash install.sh                 # catalog install only; existing Jev unchanged
+JEO_SKILLS_AGENT=jeopi JEO_SKILLS_JEV=api bash install.sh  # profile jeopi; hosted API setup
+bash jev/jev-setup.sh --profile gjc --agent gjc --mode local # separate profile for GJC
+bash jev/jev-setup.sh --profile jeopi --agent jeopi --mode ollama # switch only jeopi's backend
+bash jev/jev-setup.sh --profile gjc --disable                # disable and retain gjc settings
+bash jev/jev-setup.sh --profile gjc --enable                 # re-enable an existing profile
+bash jev/jev-setup.sh --profile gjc --status                 # inspect profile, no inference
+JEO_SKILLS_JEV=skip bash install.sh                          # catalog install only; existing Jev unchanged
 ```
 
-Explicit modes also work without a TTY. API mode requires a nonempty `JEV_API_KEY` from the environment or hidden interactive input; enter secrets privately, not in shared prompts or command history. Setup writes `~/.agents/jev/.env` with mode `600`. The root `install.sh` rejects explicit Jev selection with `INSTALL_GLOBAL=false` before installation writes: Jev is home-scoped only. The standalone setup always targets the home directory, not the project; invoke it separately after explicit approval rather than adding Jev to a project install.
+Explicit modes also work without a TTY. API mode requires a nonempty `JEV_API_KEY` from the environment or hidden interactive input; enter secrets privately, not in shared prompts or command history. Profile configuration is stored under `~/.agents/jev/profiles/` in mode-600 base and backend-specific files. A missing/disabled profile does not fall back to another profile or to the legacy config. Setup without `--profile` retains the legacy `~/.agents/jev/.env` behavior. The root `install.sh` rejects explicit Jev selection with `INSTALL_GLOBAL=false` before installation writes: Jev is home-scoped only. The standalone setup always targets the home directory, not the project; invoke it separately after explicit approval rather than adding Jev to a project install.
 
 ### Backend alternatives
 
@@ -32,22 +33,31 @@ Explicit modes also work without a TTY. API mode requires a nonempty `JEV_API_KE
 
 The local model and GGUF are third-party alternatives, not TypeSafe's hosted model. Full-precision setup describes an approximately 18 GB download; quantized setup describes approximately 5.6 GB. These are planning estimates, not measured resource guarantees. Local inference requires sufficient memory and compatible dependencies. Model quality, calibration, and parity with the hosted service have not been established by offline checks. Ollama/LM Studio adapt generated JSON into the decision contract; that is not evidence of native hosted-model probability calibration.
 
-Start the full-precision backend after setup. It loads weights from the configured local directory only; startup does not fetch missing weights:
+Start the full-precision backend after setup. It loads weights from the configured local directory only; startup does not fetch missing weights. Pass the same profile used by the harness:
 
 ```sh
-~/.agents/jev/venv/bin/python ~/.agents/jev/jev_local_server.py
+~/.agents/jev/venv/bin/python ~/.agents/jev/jev_local_server.py                 # legacy unprofiled setup
+JEV_PROFILE=gjc ~/.agents/jev/venv/bin/python ~/.agents/jev/jev_local_server.py --profile gjc
 ```
 
 ### Settings
 
-The harness and local Python server use environment variables first and `~/.agents/jev/.env` as fallback for unset keys. Setup reconfigures that file; use the canonical script rather than maintaining a second installer or credential-writing recipe.
+The harness and local Python server let environment variables override backend settings. With `--profile <id>`, they read only that profile's base file and selected backend file under `~/.agents/jev/profiles/`; there is no fallback to another profile or the legacy shared file. Profile opt-in (`JEV_ENABLED`) is owned by the base file and cannot be overridden by an ambient environment variable, so a missing or disabled profile stays inactive. Without a profile, the legacy `~/.agents/jev/.env` behavior remains. Setup writes private mode-600 files; use the canonical script rather than maintaining a second installer or credential-writing recipe.
 
 | Setting | Purpose |
 |---|---|
 | `JEO_SKILLS_JEV` | Setup choice: `skip`, `api`, `local`, `ollama`, `lmstudio`; this is not the runtime mode |
+| `JEO_SKILLS_AGENT` | Root installer runtime target; used as the default Jev profile ID unless `JEO_SKILLS_JEV_PROFILE` is set |
+| `JEO_SKILLS_JEV_PROFILE` | Root installer override for Jev's isolated profile ID |
+| `--agent <runtime>` | `jev-setup.sh` Agent Skill install destination; independent of `--profile` |
+| `--profile <id>` / `JEV_PROFILE` | Select one profile for setup or harness/server operations; never falls back to another profile |
+| `JEV_ENABLED` | Profile opt-in state in the base file; ambient environment values cannot enable a profile |
 | `JEV_MODE` | Runtime backend; absent mode defaults to `api` |
 | `JEV_API_KEY` | Hosted API credential; key presence is not an authentication check |
-| `JEV_ENDPOINT` | Full System One URL for `api`/`local`, server base URL for `ollama`/`lmstudio` |
+| `JEV_API_ENDPOINT` | Profile-specific API endpoint; `JEV_ENDPOINT` remains supported for legacy setup and explicit overrides |
+| `JEV_LOCAL_ENDPOINT` | Profile-specific full-precision server URL |
+| `JEV_OLLAMA_ENDPOINT` / `JEV_LMSTUDIO_ENDPOINT` | Profile-specific local generative server URLs |
+| `JEV_ENDPOINT` | Legacy shared endpoint and temporary explicit endpoint override |
 | `JEV_LOCAL_MODEL` | Explicit generative model identifier; LM Studio otherwise resolves a Jev model from `/v1/models` and rejects unrelated-only listings |
 | `JEV_LOCAL_MODEL_DIR` | Full-precision backend model directory |
 | `JEV_CATALOG_PATH` | Explicit read-only `skills.json` location |
@@ -58,7 +68,8 @@ The local Python server also accepts `JEV_LOCAL_HOST` and `JEV_LOCAL_PORT`. Keep
 ## Configuration, readiness, and host integration
 
 ```sh
-node ~/.agents/jev/jev-harness.mjs status
+node ~/.agents/jev/jev-harness.mjs status                 # legacy unprofiled config
+node ~/.agents/jev/jev-harness.mjs --profile gjc status    # only profile gjc
 ```
 
 `active` means configured opt-in, **not** demonstrated host enforcement. `ready` is `true`/`false` after a limited local probe, or `null` when unverified. Local mode probes `/healthz`; generative modes inspect `/v1/models` for the selected model. API mode with a key reports `ready:null`: no hosted authentication or inference request is made.
@@ -88,11 +99,16 @@ jev/                                  # source in this repository
 ├── jev_local_server.py
 ├── jev-control-plane.rule.md
 ├── README.md
-├── .env                              # private runtime configuration
+├── .env                              # legacy private runtime configuration
+├── profiles/
+│   ├── gjc.env                        # profile opt-in and backend selection
+│   ├── gjc.api.env                    # API key and endpoint for this mode only
+│   └── jeopi.local.env                # local backend settings for another profile
 ├── venv/                             # local mode only
 └── models/JEV-9B/                     # local mode weights, when downloaded
 
 ~/.agents/rules/jev-control-plane.md   # host rule copy, not a native hook
+~/.agents/skills/jev-control-plane/   # portable Agent Skill (when installed)
 .agent-skills/skills.json              # catalog in checkout, read-only input
 ```
 
@@ -128,10 +144,11 @@ From a checkout with its catalog available:
 
 ```sh
 node jev/jev-harness.mjs self-test --mock
+node --test jev/profile.test.mjs
 node jev/jev-harness.mjs route-skills --mock --top-k 3 "React performance task"
 node jev/jev-harness.mjs review --mock "Review a patch" '{"summary":"Example proposal"}'
 ```
 
-`self-test` exercises eight deterministic contract checks and should print `8/8 checks passed`. Mock routing/pruning use local heuristics; a mock review that would permit is downgraded to `proposal_only`. These checks cannot prove provider authentication, model downloads, model loading, inference quality, probability calibration, backend compatibility, or runtime rule enforcement. The local server's `--check` is structural only and does not load model weights.
+`self-test` exercises eight deterministic contract checks and should print `8/8 checks passed`. The isolated profile tests use a temporary HOME and cover API config permissions, profile/install-target separation, legacy non-fallback, empty-profile rejection, enable/disable, disabled-state persistence, and disabled local-server start/check behavior; they make no hosted calls, inference requests, or model downloads. Mock routing/pruning use local heuristics; a mock review that would permit is downgraded to `proposal_only`. These checks cannot prove provider authentication, model downloads, model loading, inference quality, probability calibration, backend compatibility, or runtime rule enforcement. The local server's `--check` is structural only, does not load model weights, and may validate a disabled profile without activating it.
 
 For live use, first inspect `status`, then verify host rule loading and run an explicitly approved live task against the chosen backend. Preserve real decision receipts; never substitute `--mock` output for real authorization.

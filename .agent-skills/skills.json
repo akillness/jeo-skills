@@ -1,7 +1,7 @@
 {
   "version": "2.1.0",
-  "generated": "2026-09-28",
-  "skill_count": 353,
+  "generated": "2026-10-03",
+  "skill_count": 354,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -358,7 +358,8 @@
       "agent-memory-architecture",
       "agent-workflow",
       "agent-principles",
-      "paperclip"
+      "paperclip",
+      "jev-control-plane"
     ],
     "engineering": [
       "audit-reference-originality",
@@ -772,7 +773,8 @@
         "agent-tool-routing",
         "reflexion-pattern",
         "agent-manager",
-        "paperclip"
+        "paperclip",
+        "jev-control-plane"
       ],
       "agent-frameworks": [
         "microsoft-agent-framework",
@@ -13011,6 +13013,35 @@
       "keyword": "paperclip, paperclipai, agent company, control plane",
       "version": "1.0",
       "source": "https://github.com/paperclipai/paperclip"
+    },
+    {
+      "name": "jev-control-plane",
+      "description": "Configure and operate Jev independently for each coding-agent environment, including enable/disable, status checks, and API or local backend selection. Use when installing the Jev Agent Skill plugin, changing a Jev profile, or routing, pruning, or reviewing work with Jev. Jev remains prompt-driven; this skill does not install a native hook or guarantee automatic enforcement.",
+      "category": "ai-agents",
+      "subcategory": "orchestration",
+      "interface": "skill",
+      "path": "jev-control-plane/SKILL.md",
+      "tags": [
+        "jev",
+        "profile-management",
+        "agent-skills-plugin",
+        "agent-runtime",
+        "api-backend",
+        "local-backend"
+      ],
+      "platforms": [
+        "JEO/jeopi/OMP",
+        "GJC",
+        "Antigravity",
+        "Aside"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read"
+      ],
+      "keyword": "jev, Jev profile, per-agent control plane, Agent Skill",
+      "version": "1.0.0",
+      "source": "https://github.com/akillness/jeo-skills"
     },
     {
       "name": "jevgrep",
