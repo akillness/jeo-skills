@@ -10,87 +10,75 @@ description: >
 
 # Jev Control Plane
 
-Use this skill to operate Jev for the coding-agent environment that loaded it. The Jev harness is a callable decision service, not an automatic interception hook. A host must follow these instructions and its Jev rule; do not claim that an action was automatically blocked or approved.
+Use this skill to operate Jev for the coding-agent environment that loaded it. The harness is a callable decision service, not an automatic interception hook. This Agent Skill is instruction-only: do not claim that a host automatically blocked or approved an action, and do not promise native hooks.
 
 ## When to use this skill
 
-Use it when installing or configuring Jev for a specific coding-agent runtime, checking or toggling that runtime's profile, switching its backend, or invoking an approved Jev routing/pruning/review command. Do not use it to promise native hooks, automatic enforcement, or unapproved hosted/local execution.
+Use it when installing or configuring Jev for one runtime, checking or toggling that runtime's profile, selecting a backend, or invoking an approved routing, pruning, or review command. Jev is optional. Keep each profile isolated and fail closed when a selected operation has no usable backend.
 
-## Instructions
+## Select the current agent profile
 
-### Select the current agent profile
+Use a unique lower-kebab-case profile ID for each independent agent environment, such as `jeopi`, `gjc`, or `aside-u0`. `--profile` selects Jev state; `--agent` selects the Agent Skill destination. Never silently switch profiles or fall back to another profile or the legacy shared config.
 
-Use a unique lower-kebab-case profile ID for each independent agent environment, such as `jeopi`, `gjc`, or `aside-u0`. Keep profiles separate even when the skill itself is installed in a shared `universal` root. The profile ID can differ from the runtime install target: `--profile` selects state, while `--agent` selects the Jev skill destination. If the correct profile is unclear, ask rather than using another profile or falling back to the legacy shared config.
-
-Check the profile before using any live Jev operation:
+Check the exact profile before every live operation:
 
 ```sh
 node ~/.agents/jev/jev-harness.mjs --profile jeopi status
 ```
 
-The command returns exit 2 when that profile is disabled or unconfigured. Skip Jev gates in that case and follow the host's normal permission policies. Exit 3 means enabled but unavailable or invalid; fail closed and do not treat an outage as permission to proceed. Exit 0 means configured and not known unavailable, not that host enforcement or model quality has been proven. API status is unverified (`ready: null`) and does not test authentication or make an inference request.
+Status exit `2` means inactive or unconfigured; skip Jev gates and follow the host's normal permission policies. Exit `3` means an enabled operation chain has no usable backend; fail closed. Exit `3` occurs only when an operation has no usable backend. Exit `0` means the requested chain is not known unavailable, not that model quality or host enforcement is proven. Use `--operation route-skills|prune-context|review` for one operation; otherwise all three chains are evaluated.
 
-### Install and configure one environment
+## Configure one environment
 
-For a root checkout install, select the agent target explicitly:
+For a root checkout install, select the runtime target explicitly:
 
 ```sh
 JEO_SKILLS_AGENT=jeopi JEO_SKILLS_JEV=api bash install.sh
+bash ~/.agents/jev/jev-setup.sh --profile jeopi --agent jeopi --mode systemone
 ```
 
-The optional Jev setup installs this skill for that target and writes that target's profile. Or install only the skill with the router, then configure Jev separately:
+Setup writes mode-600 base and backend files under `~/.agents/jev/profiles/`. Obtain approval before hosted calls or downloads. Never put credentials in prompts, source control, or command history.
+
+The backend registry has exactly five kinds: `api`, `local`, `ollama`, `lmstudio`, and `systemone`.
+
+- `api`: TypeSafe `POST <JEV_API_ENDPOINT>` with `{state, model, questions}` and `Authorization: Bearer JEV_API_KEY`.
+- `local`: existing Python `/v1/systemone` server reading base-model logits.
+- `ollama`: native `/api/chat` JSON-from-chat adapter.
+- `lmstudio`: OpenAI-compatible `/v1/chat/completions` JSON-from-chat adapter.
+- `systemone`: `JEV_SYSTEMONE_DRIVER=typesafe` (default), `decide` (`<endpoint>/v1/decide`), or `vllm-jev-decision` (`<endpoint>/v1/completions` with logprobs).
+
+Every kind defaults to tier `unvalidated`. A response or loopback fixture proves transport only. Tier `validated` requires an exact served-model attestation in the kind env file, `JEV_<KIND>_VALIDATED_MODEL=<model id>`, and is honored only for calibrated decision-head drivers: `api` and `systemone` (`typesafe`, `decide`, `vllm-jev-decision`). `local`, Ollama, and LM Studio are System 2 paths and can never be validated (`attestation.eligible: false`), so they can never permit. Stale or mismatched attestations are `unvalidated`. Oversized review input is rejected as `unavailable` rather than trimmed.
+
+## Per-operation policy and resolution
+
+The base profile stores `JEV_ENABLED`, `JEV_MODE`, and optional operation keys:
+
+- `JEV_ROUTE_SKILLS_BACKEND`, `JEV_PRUNE_CONTEXT_BACKEND`, `JEV_REVIEW_BACKEND`
+- `JEV_ROUTE_SKILLS_FALLBACK`, `JEV_PRUNE_CONTEXT_FALLBACK`, `JEV_REVIEW_FALLBACK`
+
+Each fallback is an ordered comma-separated allow-list; only those kinds may be attempted. Resolution is CLI `--backend <kind>` (must be eligible), then the operation backend, then `JEV_MODE`, then `api`. `--model <id>` overrides the resolved model for that invocation. No cross-profile fallback is allowed. Envelopes report `backend: {kind, model, tier}` and attempted kinds.
+
+## Run approved operations
 
 ```sh
-jeo-skill install jev-control-plane --agent jeopi --global --yes
-bash ~/.agents/jev/jev-setup.sh --profile jeopi --agent jeopi --mode api
-JEO_SKILLS_ASIDE_ACCOUNT=u/0 bash ~/.agents/jev/jev-setup.sh --profile aside-u0 --agent aside --mode api
-```
-
-Choose a backend only after the user approves its setup effects:
-
-- `api`: stores a TypeSafe API key in a mode-600 file. Live inference may transmit task/context data and incur charges; obtain separate approval for hosted calls.
-- `local`: may install Python dependencies and download the full-precision third-party `autotrust/JEV-9B` model (about 18 GB). Do not start this download or inference without explicit approval.
-- `ollama`: may start Ollama and download a quantized third-party model (about 5.6 GB).
-- `lmstudio`: may download/load a model and start the local server.
-
-Noninteractive API setup requires `JEV_API_KEY` in the environment. Do not place credentials in prompts, source control, or command history. Setup/status are not inference tests.
-
-### Switch or toggle a profile
-
-```sh
-bash ~/.agents/jev/jev-setup.sh --profile jeopi --agent jeopi --mode local
-bash ~/.agents/jev/jev-setup.sh --profile jeopi --agent jeopi --mode api
-bash ~/.agents/jev/jev-setup.sh --profile jeopi --disable
-bash ~/.agents/jev/jev-setup.sh --profile jeopi --enable
-```
-
-Each profile has a base file and a mode-specific file under `~/.agents/jev/profiles/`. Switching modes preserves the other mode's settings, including an API key; profile files are private. `--disable` turns off only that profile and retains its settings and credentials for later use. It does not revoke a hosted key or stop a separately running local backend. Use status after a change. Start a full-precision local server with the same profile ID:
-
-```sh
-JEV_PROFILE=jeopi ~/.agents/jev/venv/bin/python ~/.agents/jev/jev_local_server.py --profile jeopi
-```
-
-A backend can be configured but unavailable. Local/generative status probes only local health/model-list endpoints; they do not prove inference quality. Do not run model downloads, hosted calls, or live tasks just to check the configuration.
-
-### Run an approved Jev operation
-
-After status and any required per-operation approval, pass the same profile to every harness command:
-
-```sh
-node ~/.agents/jev/jev-harness.mjs --profile jeopi route-skills "<task>"
+node ~/.agents/jev/jev-harness.mjs --profile jeopi route-skills --top-k 3 "<task>"
 node ~/.agents/jev/jev-harness.mjs --profile jeopi prune-context < blocks.jsonl
 node ~/.agents/jev/jev-harness.mjs --profile jeopi review "<task>" '<proposal-json>'
 ```
 
-These commands may send task, context, or proposal data to the configured API and may incur charges. Do not substitute `--mock` results for live authorization. Treat Jev's output as a proposal; preserve uncertainty and apply the host's own permissions and confirmation rules. A `permit` is not proof that code is safe or that a hook enforced the result.
+`route-skills` adds `selection` and advisory `routing`. Gate and fit thresholds are both `0.30`. Gate failure is explicit none (`topK: []`, `selection.reason: "gate"`) with `publicRegistryFallback`; fit failure is explicit none with `selection.reason: "fits"`. The strategy is `sharded` when `ceil(catalogSize / choiceCap) <= 4`, otherwise `shortlist`. `routing` reads optional `skills.json` `model_policies` and uses `provider/model` vocabulary (for example `openai/gpt-6.1-sol`); it is advisory only, with the resolved `policy` and `provenance: {backend: {kind, driver, model, tier}}`, and no host adapter is installed.
 
-### Keep the legacy boundary
+`prune-context` sends `{blocks:[{id,text}...]}` with position-keyed questions `essential::<index>` per request, so duplicate block IDs are safe. Blocks are batched within the answering backend's state limit so none is judged unseen; an oversized single block is returned as `keep` with a `reason`. Batch-capable drivers send one request per batch; other drivers loop. Keep blocks unless the answer is `no` with confidence at least `0.8`.
 
-An install without `--profile` continues to use `~/.agents/jev/.env` for backward compatibility. Never use that shared legacy profile as an implicit fallback when a selected agent profile is missing or disabled. This Agent Skill provides instructions only; it does not install native hooks or guarantee that a host runtime loads or obeys the skill.
+Review results bind `backend: {kind, model, tier}`. Any proposed `permit` on a non-validated tier becomes `proposal_only` with reason `Backend tier 'unvalidated' cannot authorize autonomous execution`. Receipt v2 is the SHA-256 of `JSON.stringify({v:2, task, proposal, decision, backend:{kind, model, tier}})`; preserve it as the audit binding.
 
-## Examples
+Every command accepts `--backend <kind>` and `--model <id>`. `smoke [--backend <kind>] [--task "<text>"]` runs route/prune/review with three golden tasks, never permits, and warns for unvalidated tiers. `self-test --mock` remains offline and must print `N/N checks passed`; `--mock` never permits autonomous action.
 
-Keep separate state for two runtimes, even if they share a skill root:
+Missing credentials, unreachable backends, contract errors, malformed responses, and timeouts are `unavailable`. Request approval before transmitting task/context/proposal data to hosted services or downloading models. Treat output as a proposal and apply the host's own confirmation policies.
+
+## Profile boundaries and examples
+
+An install without `--profile` may use the intentional legacy `~/.agents/jev/.env`; a selected profile never falls back to it. Keep profile files private and out of source control.
 
 ```sh
 bash ~/.agents/jev/jev-setup.sh --profile jeopi --agent jeopi --mode api
@@ -99,14 +87,7 @@ node ~/.agents/jev/jev-harness.mjs --profile jeopi status
 node ~/.agents/jev/jev-harness.mjs --profile gjc status
 ```
 
-## Best practices
-
-- Check the exact profile before any live operation; never silently switch profiles. Its `JEV_ENABLED` state is stored in the base file, and ambient environment values cannot enable it.
-- Request approval before hosted calls that may transmit context or incur cost, and before model downloads or local execution.
-- Keep `~/.agents/jev/.env` only for intentional legacy use; profile files must stay private and out of source control.
-- Treat status and model-list health as configuration evidence, not proof of inference quality or host enforcement.
-
 ## References
 
-- Jev setup and backend limits: `jev/README.md` in the `jeo-skills` checkout.
-- Host rule contract: `jev/jev-control-plane.rule.md` in the `jeo-skills` checkout.
+- Backend setup and limits: `jev/README.md` in the `jeo-skills` checkout.
+- Host integration contract: `jev/jev-control-plane.rule.md` in the `jeo-skills` checkout.

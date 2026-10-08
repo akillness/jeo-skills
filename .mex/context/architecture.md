@@ -17,7 +17,7 @@ edges:
   - target: patterns/catalog-metadata-changes.md
     condition: when adding a new skill or editing an existing skill's metadata
 grounds_to: []
-last_updated: 2026-10-02
+last_updated: 2026-10-08
 ---
 
 # Architecture
@@ -54,9 +54,21 @@ Skipped and non-interactive unset modes bypass Jev; project-scoped catalog insta
 never configure global Jev. Explicit project opt-in fails before installation writes.
 Opt-in installs configuration and a rule artifact, not native hooks or plugins.
 The host must load and follow that rule to invoke route/prune/review at task events.
-`status` separates configured `active` from `ready` (health/model-list probe only);
-API credentials alone leave readiness unverified. Configured failures fail closed,
-while inactivity returns to normal host policies. See `jev/README.md` for commands.
+Since 2026-10-08 the harness is a backend registry of five kinds (`api`, `local`,
+`ollama`, `lmstudio`, `systemone` with `typesafe`/`decide`/`vllm-jev-decision` drivers)
+resolved per operation from the profile base file (`JEV_<OP>_BACKEND` + ordered
+`_FALLBACK` allow-list, `--backend/--model` overrides), never across profiles. A
+request is bounded by the answering backend's state limit before I/O and rejected
+rather than trimmed. Tiers: every kind is `unvalidated`; `validated` requires a
+served-model attestation and a calibrated-head driver (`api`/`systemone` only), and
+`review` can `permit` only on `validated`. Skill selection is cap-aware (sharded
+Choice + gate Nouls, or lexical shortlist + Noul rerank) with an explicit none outcome;
+`skills.json` `model_policies` (manifest-only, never projected) drives an advisory
+`routing` field no host consumes yet. Setup also installs a validated catalog snapshot
+(`~/.agents/jev/skills.json`) so `route-skills` works outside a checkout; a working
+checkout's catalog still wins. `status` reports per-operation chains and exits
+3 only when a chain has no usable backend; API credentials alone leave readiness
+unverified. Runbook: `patterns/jev-control-plane.md`; commands in `jev/README.md`.
 
 **Optional Jevgrep discovery:** `jeo-skill explore QUERY --root DIR` delegates source
 text discovery to manually installed `@dzhng/jevgrep@0.8.0` only with explicit

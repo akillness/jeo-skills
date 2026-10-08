@@ -1,7 +1,7 @@
 import test, { after } from 'node:test';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { chmodSync, copyFileSync, mkdirSync, mkdtempSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
+import { chmodSync, copyFileSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -20,6 +20,9 @@ mkdirSync(isolatedJev, { recursive: true });
 for (const file of ['jev-setup.sh', 'jev-harness.mjs', 'jev_local_server.py', 'README.md', 'jev-control-plane.rule.md']) {
   copyFileSync(join(here, file), join(isolatedJev, file));
 }
+// A checkout catalog keeps setup's catalog snapshot local (no network fetch).
+mkdirSync(join(isolatedSource, '.agent-skills'), { recursive: true });
+copyFileSync(join(repoRoot, '.agent-skills', 'skills.json'), join(isolatedSource, '.agent-skills', 'skills.json'));
 
 after(() => rmSync(source, { recursive: true, force: true }));
 
@@ -201,4 +204,72 @@ test('disable and enable mutate only the selected profile and preserve backend s
   const emptyProfile = spawnSync('bash', [setup, '--profile', '', '--status'], { env: cleanEnv(), encoding: 'utf8' });
   assert.notEqual(emptyProfile.status, 0);
   assert.match(`${emptyProfile.stdout}\n${emptyProfile.stderr}`, /non-empty profile id/);
+});
+
+test('systemone mode and per-operation policy flags write isolated private files and preserve foreign keys', () => {
+  const setup = join(isolatedJev, 'jev-setup.sh');
+  const systemone = spawnSync('bash', [setup, '--profile', 'systemone', '--mode', 'systemone', '--route-backend', 'ollama', '--review-backend', 'systemone', '--fallback', 'review=api,ollama', '--validated-model', 'systemone-model'], {
+    cwd: isolatedSource,
+    env: cleanEnv({
+      JEV_SYSTEMONE_ENDPOINT: 'https://systemone.example.test/v1',
+      JEV_SYSTEMONE_DRIVER: 'typesafe',
+      JEV_SYSTEMONE_MODEL: 'systemone-model',
+      JEV_SYSTEMONE_API_KEY: 'systemone-secret-test-value',
+      JEV_SYSTEMONE_HEAD_JSON: '/tmp/head.json',
+      JEV_SYSTEMONE_CALIBRATION_JSON: '/tmp/calibration.json',
+      JEV_SYSTEMONE_CHOICE_CAP: '12',
+    }),
+    encoding: 'utf8',
+    timeout: 15_000,
+  });
+  assert.equal(systemone.status, 0, `${systemone.stdout}\n${systemone.stderr}`);
+  assert.equal(systemone.stdout.includes('systemone-secret-test-value'), false, 'setup output must not reveal the System One API key');
+
+  const basePath = join(profiles, 'systemone.env');
+  const systemonePath = join(profiles, 'systemone.systemone.env');
+  const base = readFileSync(basePath, 'utf8');
+  const backend = readFileSync(systemonePath, 'utf8');
+  assert.match(base, /JEV_MODE=systemone/);
+  assert.match(base, /JEV_ROUTE_SKILLS_BACKEND=ollama/);
+  assert.match(base, /JEV_REVIEW_BACKEND=systemone/);
+  assert.match(base, /JEV_REVIEW_FALLBACK=api,ollama/);
+  assert.match(backend, /JEV_SYSTEMONE_ENDPOINT=https:\/\/systemone\.example\.test\/v1/);
+  assert.match(backend, /JEV_SYSTEMONE_DRIVER=typesafe/);
+  assert.match(backend, /JEV_SYSTEMONE_MODEL=systemone-model/);
+  assert.match(backend, /JEV_SYSTEMONE_API_KEY=systemone-secret-test-value/);
+  assert.match(backend, /JEV_SYSTEMONE_HEAD_JSON=\/tmp\/head\.json/);
+  assert.match(backend, /JEV_SYSTEMONE_CALIBRATION_JSON=\/tmp\/calibration\.json/);
+  assert.match(backend, /JEV_SYSTEMONE_CHOICE_CAP=12/);
+  assert.match(backend, /JEV_SYSTEMONE_VALIDATED_MODEL=systemone-model/);
+  assert.equal(statSync(basePath).mode & 0o777, 0o600);
+  assert.equal(statSync(systemonePath).mode & 0o777, 0o600);
+
+  const api = spawnSync('bash', [setup, '--profile', 'systemone', '--mode', 'api'], {
+    cwd: isolatedSource,
+    env: cleanEnv({ JEV_API_KEY: 'api-rerun-secret-test-value' }),
+    encoding: 'utf8',
+    timeout: 15_000,
+  });
+  assert.equal(api.status, 0, `${api.stdout}\n${api.stderr}`);
+  const rerunBase = readFileSync(basePath, 'utf8');
+  assert.match(rerunBase, /JEV_MODE=api/);
+  assert.match(rerunBase, /JEV_ROUTE_SKILLS_BACKEND=ollama/);
+  assert.match(rerunBase, /JEV_REVIEW_BACKEND=systemone/);
+  assert.match(rerunBase, /JEV_REVIEW_FALLBACK=api,ollama/);
+  assert.match(readFileSync(join(profiles, 'systemone.api.env'), 'utf8'), /JEV_API_KEY=api-rerun-secret-test-value/);
+
+  const invalidKind = spawnSync('bash', [setup, '--profile', 'badkind', '--mode', 'systemone', '--route-backend', 'unknown'], {
+    cwd: isolatedSource,
+    env: cleanEnv({ JEV_SYSTEMONE_ENDPOINT: 'https://systemone.example.test/v1', JEV_SYSTEMONE_MODEL: 'systemone-model' }),
+    encoding: 'utf8',
+  });
+  assert.notEqual(invalidKind.status, 0);
+  assert.equal(existsSync(join(profiles, 'badkind.env')), false, 'invalid backend must fail before writing');
+  const invalidOperation = spawnSync('bash', [setup, '--profile', 'badop', '--mode', 'systemone', '--fallback', 'unknown=api'], {
+    cwd: isolatedSource,
+    env: cleanEnv({ JEV_SYSTEMONE_ENDPOINT: 'https://systemone.example.test/v1', JEV_SYSTEMONE_MODEL: 'systemone-model' }),
+    encoding: 'utf8',
+  });
+  assert.notEqual(invalidOperation.status, 0);
+  assert.equal(existsSync(join(profiles, 'badop.env')), false, 'invalid operation must fail before writing');
 });

@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 # Interactive (TUI) optional setup for the Jev control plane, run from install.sh
-# or standalone. Non-interactive override: JEO_SKILLS_JEV=skip|api|local|ollama|lmstudio
+# or standalone. Non-interactive override: JEO_SKILLS_JEV=skip|api|local|ollama|lmstudio|systemone
 #   api      also reads JEV_API_KEY from the environment
 #   local    also downloads autotrust/JEV-9B unless JEV_SKIP_MODEL_DOWNLOAD=true
 #   ollama   pulls the quantized GGUF (Q4_K_M, ~5.6 GB) via the ollama CLI
 #   lmstudio points the harness at LM Studio's OpenAI server (macOS)
-
+#   systemone configures an operator-provided System One endpoint (no downloads or server start)
 set -euo pipefail
 
 JEV_HOME="$HOME/.agents/jev"
@@ -22,6 +22,36 @@ PROFILE="${JEV_PROFILE:-}"
 AGENT_TARGET="${JEO_SKILLS_AGENT:-}"
 ACTION=configure
 MODE="${JEO_SKILLS_JEV:-}"
+ROUTE_BACKEND=""
+PRUNE_BACKEND=""
+REVIEW_BACKEND=""
+ROUTE_FALLBACK=""
+PRUNE_FALLBACK=""
+REVIEW_FALLBACK=""
+VALIDATED_MODEL=""
+validate_kind() {
+  case "$1" in api|local|ollama|lmstudio|systemone) ;; *) fail "Unknown backend kind '$1'; expected api, local, ollama, lmstudio, or systemone" ;; esac
+}
+validate_operation() {
+  case "$1" in route-skills|prune-context|review) ;; *) fail "Unknown fallback operation '$1'; expected route-skills, prune-context, or review" ;; esac
+}
+parse_fallback() {
+  local spec="$1" operation kinds kind old_ifs
+  case "$spec" in *=*) ;; *) fail '--fallback requires <op>=<kind[,kind]>' ;; esac
+  operation="${spec%%=*}"
+  kinds="${spec#*=}"
+  validate_operation "$operation"
+  [ -n "$kinds" ] || fail '--fallback requires at least one backend kind'
+  case "$kinds" in ,*|*,|*,,*) fail '--fallback backend list contains an empty kind' ;; esac
+  old_ifs="$IFS"; IFS=','
+  for kind in $kinds; do validate_kind "$kind"; done
+  IFS="$old_ifs"
+  case "$operation" in
+    route-skills) ROUTE_FALLBACK="$kinds" ;;
+    prune-context) PRUNE_FALLBACK="$kinds" ;;
+    review) REVIEW_FALLBACK="$kinds" ;;
+  esac
+}
 while [ "$#" -gt 0 ]; do
   case "$1" in
     --profile)
@@ -31,13 +61,30 @@ while [ "$#" -gt 0 ]; do
       [ "$#" -ge 2 ] || fail '--agent requires a runtime target'
       AGENT_TARGET="$2"; shift 2 ;;
     --mode)
-      [ "$#" -ge 2 ] || fail '--mode requires api, local, ollama, or lmstudio'
+      [ "$#" -ge 2 ] || fail '--mode requires api, local, ollama, lmstudio, or systemone'
       MODE="$2"; shift 2 ;;
+    --route-backend)
+      [ "$#" -ge 2 ] || fail '--route-backend requires a backend kind'
+      validate_kind "$2"; ROUTE_BACKEND="$2"; shift 2 ;;
+    --prune-backend)
+      [ "$#" -ge 2 ] || fail '--prune-backend requires a backend kind'
+      validate_kind "$2"; PRUNE_BACKEND="$2"; shift 2 ;;
+    --review-backend)
+      [ "$#" -ge 2 ] || fail '--review-backend requires a backend kind'
+      validate_kind "$2"; REVIEW_BACKEND="$2"; shift 2 ;;
+    --fallback)
+      [ "$#" -ge 2 ] || fail '--fallback requires <op>=<kind[,kind]>'
+      parse_fallback "$2"; shift 2 ;;
+    --validated-model)
+      [ "$#" -ge 2 ] && [ -n "$2" ] || fail '--validated-model requires a non-empty model id'
+      VALIDATED_MODEL="$2"; shift 2 ;;
     --enable) ACTION=enable; shift ;;
     --disable) ACTION=disable; shift ;;
     --status) ACTION=status; shift ;;
     --help|-h)
-      printf 'Usage: jev-setup.sh [--profile <id>] [--agent <runtime>] [--mode api|local|ollama|lmstudio]\n'
+      printf 'Usage: jev-setup.sh [--profile <id>] [--agent <runtime>] [--mode api|local|ollama|lmstudio|systemone]\n'
+      printf '       [--route-backend <kind>] [--prune-backend <kind>] [--review-backend <kind>]\n'
+      printf '       [--fallback <op>=<kind[,kind]>] [--validated-model <id>]\n'
       printf '       jev-setup.sh --profile <id> --enable|--disable|--status\n'
       exit 0 ;;
     *) fail "Unknown option: $1" ;;
@@ -120,14 +167,20 @@ if [ -z "$MODE" ]; then
   printf '              runs offline; recommended on 16 GB machines)\n'
   if [ "$(uname -s)" = Darwin ]; then
     printf '  %s4)%s LMStudio — same quantized GGUF served by the LM Studio app (macOS)\n' "$bold" "$reset"
-    printf 'Select [1/2/3/4]: '
+    printf '  %s5)%s System One — operator-provided endpoint (no download or server start)\n' "$bold" "$reset"
+    printf 'Select [1/2/3/4/5]: '
   else
-    printf 'Select [1/2/3]: '
+    printf '  %s4)%s System One — operator-provided endpoint (no download or server start)\n' "$bold" "$reset"
+    printf 'Select [1/2/3/4]: '
   fi
   read -r pick
-  case "$pick" in 1) MODE=api ;; 2) MODE=local ;; 3) MODE=ollama ;; 4) [ "$(uname -s)" = Darwin ] && MODE=lmstudio || fail 'LM Studio option is macOS-only here' ;; *) fail 'Pick a listed number' ;; esac
+  if [ "$(uname -s)" = Darwin ]; then
+    case "$pick" in 1) MODE=api ;; 2) MODE=local ;; 3) MODE=ollama ;; 4) MODE=lmstudio ;; 5) MODE=systemone ;; *) fail 'Pick a listed number' ;; esac
+  else
+    case "$pick" in 1) MODE=api ;; 2) MODE=local ;; 3) MODE=ollama ;; 4) MODE=systemone ;; *) fail 'Pick a listed number' ;; esac
+  fi
 fi
-case "$MODE" in skip) info 'JEO_SKILLS_JEV=skip — not installing Jev.'; exit 0 ;; api|local|ollama|lmstudio) ;; *) fail "JEO_SKILLS_JEV must be skip, api, local, ollama, or lmstudio (got '$MODE')" ;; esac
+case "$MODE" in skip) info 'JEO_SKILLS_JEV=skip — not installing Jev.'; exit 0 ;; api|local|ollama|lmstudio|systemone) ;; *) fail "JEO_SKILLS_JEV must be skip, api, local, ollama, lmstudio, or systemone (got '$MODE')" ;; esac
 export JEV_MODE="$MODE"
 if [ -n "$PROFILE" ]; then
   load_profile_defaults "$PROFILE_DIR/$PROFILE.$MODE.env"
@@ -144,11 +197,45 @@ if [ "$MODE" = api ]; then
   fi
   [ -n "$KEY" ] || fail 'Empty API key'
 fi
-for value in "${KEY:-}" "${JEV_ENDPOINT:-}" "${JEV_API_ENDPOINT:-}" "${JEV_LOCAL_ENDPOINT:-}" "${JEV_OLLAMA_ENDPOINT:-}" "${JEV_LMSTUDIO_ENDPOINT:-}" "${JEV_LOCAL_MODEL:-}" "$MODEL_DIR"; do
+if [ "$MODE" = systemone ]; then
+  SYSTEMONE_ENDPOINT="${JEV_SYSTEMONE_ENDPOINT:-}"
+  SYSTEMONE_DRIVER="${JEV_SYSTEMONE_DRIVER:-typesafe}"
+  SYSTEMONE_MODEL="${JEV_SYSTEMONE_MODEL:-}"
+  SYSTEMONE_API_KEY="${JEV_SYSTEMONE_API_KEY:-}"
+  SYSTEMONE_HEAD_JSON="${JEV_SYSTEMONE_HEAD_JSON:-}"
+  SYSTEMONE_CALIBRATION_JSON="${JEV_SYSTEMONE_CALIBRATION_JSON:-}"
+  SYSTEMONE_CHOICE_CAP="${JEV_SYSTEMONE_CHOICE_CAP:-}"
+  if [ -z "$SYSTEMONE_ENDPOINT" ]; then
+    [ -t 0 ] || fail 'systemone mode without TTY requires JEV_SYSTEMONE_ENDPOINT in the environment'
+    printf 'Enter the System One endpoint: '
+    read -r SYSTEMONE_ENDPOINT
+  fi
+  [ -n "$SYSTEMONE_ENDPOINT" ] || fail 'Empty System One endpoint'
+  if [ -z "$SYSTEMONE_MODEL" ]; then
+    [ -t 0 ] || fail 'systemone mode without TTY requires JEV_SYSTEMONE_MODEL in the environment'
+    printf 'Enter the System One model id: '
+    read -r SYSTEMONE_MODEL
+  fi
+  [ -n "$SYSTEMONE_MODEL" ] || fail 'Empty System One model id'
+  case "$SYSTEMONE_DRIVER" in typesafe|decide|vllm-jev-decision) ;; *) fail 'JEV_SYSTEMONE_DRIVER must be typesafe, decide, or vllm-jev-decision' ;; esac
+  if [ -t 0 ] && [ -z "$SYSTEMONE_API_KEY" ]; then
+    printf 'Enter the optional System One API key (input hidden; press Enter to skip): '
+    read -rs SYSTEMONE_API_KEY; printf '\n'
+  fi
+  if [ -t 0 ] && [ -z "$SYSTEMONE_HEAD_JSON" ]; then
+    printf 'Enter optional head JSON path (press Enter to skip): '
+    read -r SYSTEMONE_HEAD_JSON
+  fi
+  if [ -t 0 ] && [ -z "$SYSTEMONE_CALIBRATION_JSON" ]; then
+    printf 'Enter optional calibration JSON path (press Enter to skip): '
+    read -r SYSTEMONE_CALIBRATION_JSON
+  fi
+fi
+for value in "${KEY:-}" "${JEV_ENDPOINT:-}" "${JEV_API_ENDPOINT:-}" "${JEV_LOCAL_ENDPOINT:-}" "${JEV_OLLAMA_ENDPOINT:-}" "${JEV_LMSTUDIO_ENDPOINT:-}" "${JEV_LOCAL_MODEL:-}" "${SYSTEMONE_ENDPOINT:-}" "${SYSTEMONE_DRIVER:-}" "${SYSTEMONE_MODEL:-}" "${SYSTEMONE_API_KEY:-}" "${SYSTEMONE_HEAD_JSON:-}" "${SYSTEMONE_CALIBRATION_JSON:-}" "${SYSTEMONE_CHOICE_CAP:-}" "${VALIDATED_MODEL:-}" "$ROUTE_BACKEND" "$PRUNE_BACKEND" "$REVIEW_BACKEND" "$ROUTE_FALLBACK" "$PRUNE_FALLBACK" "$REVIEW_FALLBACK" "$MODEL_DIR"; do
   case "$value" in *$'\n'*|*$'\r'*) fail 'Jev configuration values must be single-line' ;; esac
 done
 command -v node >/dev/null 2>&1 || fail 'Node.js is required for the Jev harness'
-CONFIG_DESTINATIONS=("$HOME/.agents" "$JEV_HOME" "$RULES_DIR" "$RULES_DIR/jev-control-plane.md")
+CONFIG_DESTINATIONS=("$HOME/.agents" "$JEV_HOME" "$RULES_DIR" "$RULES_DIR/jev-control-plane.md" "$JEV_HOME/skills.json")
 if [ -n "$PROFILE" ]; then CONFIG_DESTINATIONS+=("$PROFILE_DIR" "$PROFILE_CONFIG" "$PROFILE_MODE_CONFIG")
 else CONFIG_DESTINATIONS+=("$JEV_HOME/.env")
 fi
@@ -183,6 +270,26 @@ cp "$JEV_HOME/jev-control-plane.rule.md" "$RULES_DIR/jev-control-plane.md"
 node --check "$JEV_HOME/jev-harness.mjs" >/dev/null || fail 'Harness syntax check failed'
 info "Harness installed at $JEV_HOME (syntax check passed; no backend inference performed)"
 
+# ── Skills catalog snapshot (route-skills outside a jeo-skills checkout) ──────
+# The harness reads JEV_CATALOG_PATH, then a checkout's .agent-skills/skills.json,
+# then this snapshot. Source: JEO_SKILLS_CATALOG, the checkout this script runs
+# from, else the catalog published beside RAW_BASE. Only a valid catalog replaces
+# an existing snapshot; an unavailable one never fails setup (prune/review need none).
+CATALOG_SOURCE="${JEO_SKILLS_CATALOG:-$SCRIPT_DIR/../.agent-skills/skills.json}"
+catalog_tmp="$(mktemp "$JEV_HOME/.skills.json.XXXXXX")" || fail 'Cannot create catalog temporary file'
+if [ -f "$CATALOG_SOURCE" ]; then cp "$CATALOG_SOURCE" "$catalog_tmp"
+else curl -fsSL "${RAW_BASE%/jev}/.agent-skills/skills.json" -o "$catalog_tmp" 2>/dev/null || : > "$catalog_tmp"
+fi
+if node -e 'const c = JSON.parse(require("fs").readFileSync(process.argv[1], "utf8")); process.exit(Array.isArray(c.skills) && c.skills.length && c.categories && typeof c.categories === "object" ? 0 : 1)' "$catalog_tmp" 2>/dev/null; then
+  mv -f "$catalog_tmp" "$JEV_HOME/skills.json"
+  info "Skills catalog snapshot installed at $JEV_HOME/skills.json"
+else
+  rm -f "$catalog_tmp"
+  if [ -f "$JEV_HOME/skills.json" ]; then info 'Could not refresh the skills catalog snapshot; keeping the existing one.'
+  else info 'No skills catalog snapshot: route-skills needs JEV_CATALOG_PATH or a jeo-skills checkout until setup is re-run online.'
+  fi
+fi
+
 write_env_file() { # write_env_file <path>; KEY=VALUE lines on stdin
   local destination="$1" directory env_tmp
   directory="$(dirname "$destination")"
@@ -196,15 +303,64 @@ write_env_file() { # write_env_file <path>; KEY=VALUE lines on stdin
     fail "Cannot replace Jev configuration: $destination"
   fi
 }
-write_env() { write_env_file "$JEV_HOME/.env"; }
+write_env() {
+  if [ -z "$ROUTE_BACKEND$PRUNE_BACKEND$REVIEW_BACKEND$ROUTE_FALLBACK$PRUNE_FALLBACK$REVIEW_FALLBACK$VALIDATED_MODEL" ]; then
+    write_env_file "$JEV_HOME/.env"
+    return
+  fi
+  {
+    cat
+    [ -z "$VALIDATED_MODEL" ] || printf '%s=%s\n' "$VALIDATED_KEY" "$VALIDATED_MODEL"
+    [ -z "$ROUTE_BACKEND" ] || printf 'JEV_ROUTE_SKILLS_BACKEND=%s\n' "$ROUTE_BACKEND"
+    [ -z "$PRUNE_BACKEND" ] || printf 'JEV_PRUNE_CONTEXT_BACKEND=%s\n' "$PRUNE_BACKEND"
+    [ -z "$REVIEW_BACKEND" ] || printf 'JEV_REVIEW_BACKEND=%s\n' "$REVIEW_BACKEND"
+    [ -z "$ROUTE_FALLBACK" ] || printf 'JEV_ROUTE_SKILLS_FALLBACK=%s\n' "$ROUTE_FALLBACK"
+    [ -z "$PRUNE_FALLBACK" ] || printf 'JEV_PRUNE_CONTEXT_FALLBACK=%s\n' "$PRUNE_FALLBACK"
+    [ -z "$REVIEW_FALLBACK" ] || printf 'JEV_REVIEW_FALLBACK=%s\n' "$REVIEW_FALLBACK"
+  } | write_env_file "$JEV_HOME/.env"
+}
 write_profile_base() {
-  local enabled=true stored
+  local enabled=true stored temp
   if [ -f "$PROFILE_CONFIG" ]; then
     stored="$(awk -F= '/^[[:space:]]*JEV_ENABLED[[:space:]]*=/ { value = $2; gsub(/^[[:space:]]+|[[:space:]]+$/, "", value) } END { print tolower(value) }' "$PROFILE_CONFIG")"
     case "$stored" in ''|true) enabled=true ;; false) enabled=false ;; *) fail 'Invalid JEV_ENABLED value in existing profile' ;; esac
   fi
-  printf 'JEV_ENABLED=%s\nJEV_MODE=%s\n' "$enabled" "$MODE" | write_env_file "$PROFILE_CONFIG"
+  umask 177
+  temp="$(mktemp "$PROFILE_DIR/.$PROFILE.env.XXXXXX")" || fail 'Cannot create profile config temporary file'
+  {
+    printf 'JEV_ENABLED=%s\nJEV_MODE=%s\n' "$enabled" "$MODE"
+    if [ -f "$PROFILE_CONFIG" ]; then
+      awk -v route="$ROUTE_BACKEND" -v prune="$PRUNE_BACKEND" -v review="$REVIEW_BACKEND" -v route_fallback="$ROUTE_FALLBACK" -v prune_fallback="$PRUNE_FALLBACK" -v review_fallback="$REVIEW_FALLBACK" '
+        /^[[:space:]]*JEV_ENABLED[[:space:]]*=/ { next }
+        /^[[:space:]]*JEV_MODE[[:space:]]*=/ { next }
+        /^[[:space:]]*JEV_ROUTE_SKILLS_BACKEND[[:space:]]*=/ && route != "" { next }
+        /^[[:space:]]*JEV_PRUNE_CONTEXT_BACKEND[[:space:]]*=/ && prune != "" { next }
+        /^[[:space:]]*JEV_REVIEW_BACKEND[[:space:]]*=/ && review != "" { next }
+        /^[[:space:]]*JEV_ROUTE_SKILLS_FALLBACK[[:space:]]*=/ && route_fallback != "" { next }
+        /^[[:space:]]*JEV_PRUNE_CONTEXT_FALLBACK[[:space:]]*=/ && prune_fallback != "" { next }
+        /^[[:space:]]*JEV_REVIEW_FALLBACK[[:space:]]*=/ && review_fallback != "" { next }
+        { print }
+      ' "$PROFILE_CONFIG"
+    fi
+    [ -z "$ROUTE_BACKEND" ] || printf 'JEV_ROUTE_SKILLS_BACKEND=%s\n' "$ROUTE_BACKEND"
+    [ -z "$PRUNE_BACKEND" ] || printf 'JEV_PRUNE_CONTEXT_BACKEND=%s\n' "$PRUNE_BACKEND"
+    [ -z "$REVIEW_BACKEND" ] || printf 'JEV_REVIEW_BACKEND=%s\n' "$REVIEW_BACKEND"
+    [ -z "$ROUTE_FALLBACK" ] || printf 'JEV_ROUTE_SKILLS_FALLBACK=%s\n' "$ROUTE_FALLBACK"
+    [ -z "$PRUNE_FALLBACK" ] || printf 'JEV_PRUNE_CONTEXT_FALLBACK=%s\n' "$PRUNE_FALLBACK"
+    [ -z "$REVIEW_FALLBACK" ] || printf 'JEV_REVIEW_FALLBACK=%s\n' "$REVIEW_FALLBACK"
+  } > "$temp"
+  if ! chmod 600 "$temp" || ! mv -f "$temp" "$PROFILE_CONFIG"; then
+    rm -f "$temp"
+    fail 'Cannot update Jev profile base'
+  fi
 }
+case "$MODE" in
+  api) VALIDATED_KEY=JEV_API_VALIDATED_MODEL ;;
+  local) VALIDATED_KEY=JEV_LOCAL_VALIDATED_MODEL ;;
+  ollama) VALIDATED_KEY=JEV_OLLAMA_VALIDATED_MODEL ;;
+  lmstudio) VALIDATED_KEY=JEV_LMSTUDIO_VALIDATED_MODEL ;;
+  systemone) VALIDATED_KEY=JEV_SYSTEMONE_VALIDATED_MODEL ;;
+esac
 write_selected_config() {
   if [ -n "$PROFILE" ]; then
     local payload
@@ -212,6 +368,7 @@ write_selected_config() {
     payload="$(mktemp "$PROFILE_DIR/.$PROFILE.mode.XXXXXX")" || fail 'Cannot create profile config temporary file'
     trap 'rm -f "$payload"' EXIT
     if ! cat > "$payload"; then fail 'Cannot read Jev backend profile input'; fi
+    [ -z "$VALIDATED_MODEL" ] || printf '%s=%s\n' "$VALIDATED_KEY" "$VALIDATED_MODEL" >> "$payload"
     write_env_file "$PROFILE_MODE_CONFIG" < "$payload"
     rm -f "$payload"
     trap - EXIT
@@ -265,6 +422,25 @@ elif [ "$MODE" = lmstudio ]; then
     printf 'JEV_MODE=lmstudio\nJEV_ENDPOINT=%s\nJEV_LOCAL_MODEL=%s\n' "${JEV_ENDPOINT:-http://127.0.0.1:1234}" "${JEV_LOCAL_MODEL:-}" | write_env
   fi
   info "LM Studio mode configured${PROFILE:+ for profile '$PROFILE'} (harness auto-detects the loaded model id)."
+elif [ "$MODE" = systemone ]; then
+  if [ -n "$PROFILE" ]; then
+    {
+      printf 'JEV_SYSTEMONE_ENDPOINT=%s\nJEV_SYSTEMONE_DRIVER=%s\nJEV_SYSTEMONE_MODEL=%s\n' "$SYSTEMONE_ENDPOINT" "$SYSTEMONE_DRIVER" "$SYSTEMONE_MODEL"
+      [ -z "$SYSTEMONE_API_KEY" ] || printf 'JEV_SYSTEMONE_API_KEY=%s\n' "$SYSTEMONE_API_KEY"
+      [ -z "$SYSTEMONE_HEAD_JSON" ] || printf 'JEV_SYSTEMONE_HEAD_JSON=%s\n' "$SYSTEMONE_HEAD_JSON"
+      [ -z "$SYSTEMONE_CALIBRATION_JSON" ] || printf 'JEV_SYSTEMONE_CALIBRATION_JSON=%s\n' "$SYSTEMONE_CALIBRATION_JSON"
+      [ -z "$SYSTEMONE_CHOICE_CAP" ] || printf 'JEV_SYSTEMONE_CHOICE_CAP=%s\n' "$SYSTEMONE_CHOICE_CAP"
+    } | write_selected_config
+  else
+    {
+      printf 'JEV_MODE=systemone\nJEV_SYSTEMONE_ENDPOINT=%s\nJEV_SYSTEMONE_DRIVER=%s\nJEV_SYSTEMONE_MODEL=%s\n' "$SYSTEMONE_ENDPOINT" "$SYSTEMONE_DRIVER" "$SYSTEMONE_MODEL"
+      [ -z "$SYSTEMONE_API_KEY" ] || printf 'JEV_SYSTEMONE_API_KEY=%s\n' "$SYSTEMONE_API_KEY"
+      [ -z "$SYSTEMONE_HEAD_JSON" ] || printf 'JEV_SYSTEMONE_HEAD_JSON=%s\n' "$SYSTEMONE_HEAD_JSON"
+      [ -z "$SYSTEMONE_CALIBRATION_JSON" ] || printf 'JEV_SYSTEMONE_CALIBRATION_JSON=%s\n' "$SYSTEMONE_CALIBRATION_JSON"
+      [ -z "$SYSTEMONE_CHOICE_CAP" ] || printf 'JEV_SYSTEMONE_CHOICE_CAP=%s\n' "$SYSTEMONE_CHOICE_CAP"
+    } | write_env
+  fi
+  info "System One mode configured${PROFILE:+ for profile '$PROFILE'} (operator endpoint; no downloads or server start)."
 else
   PYBIN="$(command -v python3 || true)"; [ -n "$PYBIN" ] || fail 'python3 is required for local mode'
   VENV="$JEV_HOME/venv"

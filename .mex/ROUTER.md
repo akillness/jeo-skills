@@ -16,7 +16,7 @@ edges:
     condition: when the task touches skills.json, SKILL.md frontmatter, README/TOON projections, or CI catalog validation
   - target: patterns/INDEX.md
     condition: when starting a task — check the pattern index for a matching pattern file
-last_updated: 2026-10-02
+last_updated: 2026-10-08
 ---
 
 # Session Bootstrap
@@ -137,6 +137,26 @@ Then read this file fully before doing anything else in this session.
   This proves transport, not live-provider retrieval quality. README locales, setup
   guide and both SVGs describe the boundary; `patterns/jeo-skill-install-flow.md`
   records recurring checks. No global install, authentication or graph rebuild occurred.
+- Jev routing (2026-10-08, interview-approved): the harness is now a five-kind backend
+  registry (`api`, `local`, `ollama`, `lmstudio`, `systemone` with `typesafe`/`decide`/
+  `vllm-jev-decision` drivers) resolved per operation from profile keys with ordered
+  allow-list fallback and `--backend/--model` overrides; every kind is `unvalidated`
+  and `permit` needs a served-model attestation on a calibrated-head driver only.
+  Hosted `api` wire contract fixed (`model`/`criteria`/`noul`); selection is cap-aware
+  (sharded Choice + gate / shortlist + Noul) with explicit none; prune batches are
+  position-keyed and state-bounded; oversized review input is rejected, never trimmed;
+  `skills.json` gains manifest-only `model_policies` feeding an advisory `routing` field.
+  `route-skills` now works outside a checkout: setup installs a validated catalog snapshot
+  (`~/.agents/jev/skills.json`) and excerpts are realpath-confined to the catalog root.
+  Evidence: `self-test --mock` 20/20, `scripts/test_jev_regressions.py` 51/51 (also on
+  Python 3.11 + Node 24, the CI versions), `profile.test.mjs` 3/3, all catalog gates, a
+  live Ollama `smoke`, and an isolated-HOME setup whose installed harness routed from an
+  empty cwd (354-skill snapshot), pruned via `local`→`ollama` fallback, and failed closed
+  on a forced unconfigured backend (transport only, tier `unvalidated`). Research +
+  decisions are in gitignored `.survey/jev-model-routing/`; runbook
+  `patterns/jev-control-plane.md`.
+  The installed `~/.agents/jev/` copy (hand-patched on 2026-10-01) is now stale and
+  was NOT resynced; the user re-runs `jev/jev-setup.sh` when ready.
 
 **Not yet built:**
 - `validate_links()` (dangling relative markdown link check) is implemented but not

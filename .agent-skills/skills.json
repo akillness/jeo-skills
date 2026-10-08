@@ -1592,6 +1592,26 @@
       "note": "Paperclip is the agent-company control plane; agent-manager is local tmux lifecycle management; openexecutive is a fixed virtual-executive application; harness owns agent-team architecture. These are adjacent surfaces, not aliases. Paperclip references were audited at paperclipai/paperclip 0f14d261233c545aa6a8a38ec253c498a5130fff (2026-09-27)."
     }
   },
+  "model_policies": {
+    "default": {
+      "candidates": [
+        {
+          "provider": "openai",
+          "model": "gpt-6.1-sol"
+        },
+        {
+          "provider": "anthropic",
+          "model": "claude-fable-5-1"
+        },
+        {
+          "provider": "ollama",
+          "model": "qwen2.5:7b"
+        }
+      ],
+      "fallback": "next",
+      "constraints": {}
+    }
+  },
   "skills": [
     {
       "name": "ax",

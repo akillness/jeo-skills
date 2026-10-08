@@ -89,6 +89,7 @@ _tokenizer = None
 
 
 def load_model():
+    # Loads base AutoModelForCausalLM and reads chat-template logits (System 2), not the jev-decision head; tier is unvalidated.
     global _model, _tokenizer
     if _model is not None:
         return

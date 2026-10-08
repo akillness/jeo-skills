@@ -50,8 +50,29 @@ def load_manifest(repo_root: Path) -> tuple[dict[str, Any], list[dict[str, Any]]
     categories = manifest.get("categories")
     require(isinstance(skills, list), "manifest.skills must be a list")
     require(isinstance(categories, dict), "manifest.categories must be an object")
+    if "model_policies" in manifest:
+        require(isinstance(manifest["model_policies"], dict), "manifest.model_policies must be an object")
     require(isinstance(manifest.get("skill_count"), int), "manifest.skill_count must be an integer")
     return manifest, skills, categories
+
+
+def validate_model_policies(model_policies: Any, skill_names: set[str]) -> None:
+    if model_policies is None:
+        return
+    for policy_name, policy in model_policies.items():
+        require(isinstance(policy_name, str) and policy_name, "manifest.model_policies has an invalid key")
+        require(policy_name == "default" or policy_name in skill_names, f"manifest.model_policies references unknown skill {policy_name!r}")
+        require(isinstance(policy, dict), f"manifest.model_policies[{policy_name!r}] must be an object")
+        candidates = policy.get("candidates")
+        require(isinstance(candidates, list) and candidates, f"manifest.model_policies[{policy_name!r}].candidates must be a non-empty list")
+        for index, candidate in enumerate(candidates, start=1):
+            require(isinstance(candidate, dict), f"manifest.model_policies[{policy_name!r}].candidates[{index}] must be an object")
+            provider = candidate.get("provider")
+            model = candidate.get("model")
+            require(isinstance(provider, str) and provider, f"manifest.model_policies[{policy_name!r}].candidates[{index}].provider must be a non-empty string")
+            require(isinstance(model, str) and model, f"manifest.model_policies[{policy_name!r}].candidates[{index}].model must be a non-empty string")
+        require(policy.get("fallback") in {"next", "none"}, f"manifest.model_policies[{policy_name!r}].fallback must be 'next' or 'none'")
+        require(isinstance(policy.get("constraints"), dict), f"manifest.model_policies[{policy_name!r}].constraints must be an object")
 
 
 def manifest_descriptions(repo_root: Path) -> dict[str, str]:
@@ -107,6 +128,7 @@ def validate_manifest(repo_root: Path) -> tuple[list[str], dict[str, list[str]]]
     duplicate_members = {name for name, count in Counter(category_members).items() if count > 1}
     require(not duplicate_members, f"manifest.categories lists skills more than once: {sorted_names(duplicate_members)}")
     name_set = set(names)
+    validate_model_policies(manifest.get("model_policies"), name_set)
     category_set = set(category_members)
     require(category_set == name_set, "manifest category coverage differs from manifest.skills: " + _set_difference_message(name_set, category_set))
 

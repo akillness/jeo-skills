@@ -18,3 +18,4 @@ Lookup table for all pattern files in this directory. Check here before starting
 | [debug-catalog-ci-failures.md](debug-catalog-ci-failures.md) | Diagnosing a `.github/workflows/ci.yml` failure (manifest/README/TOON/frontmatter/flatten checks) |
 | [headroom-code-policy-install.md](headroom-code-policy-install.md) | Installing or repairing Headroom routing with Graphify preflights and the Claude Code source-mutation policy |
 | [jeo-skill-install-flow.md](jeo-skill-install-flow.md) | Understanding or debugging how `jeo-skill install` resolves a selection and delegates to `npx skills add` |
+| [jev-control-plane.md](jev-control-plane.md) | Operating, extending, or debugging the Jev harness: backend kinds, per-operation routing/fallback, attestation tiers, cap-aware selection, `model_policies` routing, and the self-test/regression/smoke evidence gates |
