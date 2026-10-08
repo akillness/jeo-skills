@@ -26,7 +26,7 @@ Check the exact profile before every live operation:
 node ~/.agents/jev/jev-harness.mjs --profile jeopi status
 ```
 
-Status exit `2` means inactive or unconfigured; skip Jev gates and follow the host's normal permission policies. Exit `3` means an enabled operation chain has no usable backend; fail closed. Exit `3` occurs only when an operation has no usable backend. Exit `0` means the requested chain is not known unavailable, not that model quality or host enforcement is proven. Use `--operation route-skills|prune-context|review` for one operation; otherwise all three chains are evaluated.
+Status exit `2` means inactive or unconfigured; skip Jev gates and follow the host's normal permission policies. Exit `3` means fail closed: the configuration is invalid, or an evaluated operation chain has no usable backend; a down backend that no evaluated chain references never causes it. Exit `0` means the requested chain is not known unavailable, not that model quality or host enforcement is proven. Use `--operation route-skills|prune-context|review` for one operation; otherwise all three chains are evaluated.
 
 ## Configure one environment
 

@@ -44,7 +44,7 @@ Source of truth is `jev/` in this repo: `jev-harness.mjs` (Node ESM, built-ins o
 ```sh
 node jev/jev-harness.mjs self-test --mock                     # 20/20 offline contract checks
 node --test jev/profile.test.mjs                               # 3 isolated-HOME setup tests
-python3 scripts/test_jev_regressions.py                        # 51 loopback regressions (documented wire shapes)
+python3 scripts/test_jev_regressions.py                        # 52 loopback regressions (documented wire shapes)
 node jev/jev-harness.mjs status [--operation review]           # exit 0/2/3
 node jev/jev-harness.mjs route-skills [--backend K] [--model M] [--top-k N] "<task>"
 node jev/jev-harness.mjs prune-context < blocks.jsonl
@@ -67,7 +67,7 @@ node jev/jev-harness.mjs smoke [--backend K] [--task "<text>"]  # live, never au
 
 ## Verify
 - [ ] `self-test --mock` prints `20/20 checks passed` (exit 0)
-- [ ] `python3 scripts/test_jev_regressions.py` → `Ran 51 tests … OK` (exit 0)
+- [ ] `python3 scripts/test_jev_regressions.py` → `Ran 52 tests … OK` (exit 0)
 - [ ] `node --test jev/profile.test.mjs` → 3 pass
 - [ ] Isolated-HOME live install from a temp checkout copy: `status` ready, `route-skills` from an empty cwd reports `fullCatalogSkills` = manifest size
 - [ ] Catalog gates: validator, `generate --check`, frontmatter `--check`, `flatten --dry-run` all exit 0 (SKILL.md frontmatter is frozen; body edits only)

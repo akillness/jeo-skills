@@ -54,13 +54,15 @@ Jev is a separate, home-scoped opt-in, not part of default catalog installation,
 
 | Stage | Command | Role |
 | :--- | :--- | :--- |
-| Skill routing | `route-skills "<task>"` | Backend selects catalog families; local scoring returns Top-K skills from read-only `skills.json` |
-| Context pruning | `prune-context` | JSONL `{id,text}` blocks → keep/drop verdicts for compaction |
-| Action gate | `review "<task>" '<proposal>'` | `permit` / `proposal_only` / `reject` / `unavailable` + SHA-256 receipt |
+| Skill routing | `route-skills "<task>"` | Cap-aware selection over read-only `skills.json`: gate Nouls, then sharded Choice or a lexical shortlist reranked by fit Nouls → Top-K skills or an explicit "none"; advisory `provider/model` routing from `model_policies` |
+| Context pruning | `prune-context` | JSONL `{id,text}` blocks → keep/drop verdicts, batched within the answering backend's state limit |
+| Action gate | `review "<task>" '<proposal>'` | `permit` / `proposal_only` / `reject` / `unavailable` + SHA-256 receipt bound to backend, model, and tier |
 
 Discovery starts with the **local catalog** (`route-skills` / `jeo-skill`). A weak local match emits `publicRegistryFallback` for the **public skills.sh registry** through `find-skills`; review candidates and obtain explicit approval before installation. The harness does not search or install public skills itself.
 
-Choose `api`, `local`, `ollama`, or `lmstudio` only after approving credentials, downloads, and server side effects; `skip` preserves existing Jev state. An unset choice with no TTY skips Jev without fetching its setup script. Project catalog installs never configure global Jev. `status` distinguishes configured opt-in from limited backend readiness: API key presence does not prove hosted authentication or health. Configured outages fail closed, rather than bypassing review. `--mock` validates offline contracts only and never authorizes real actions. See [`jev/README.md`](jev/README.md) for settings, exit codes, and validation limits.
+**Backends and per-operation routing.** Five backend kinds share one decision contract: `api` (hosted TypeSafe), `local` (full-precision JEV-9B server), `ollama` / `lmstudio` (quantized GGUF over chat), and `systemone` (an operator-run endpoint: TypeSafe-compatible, AutoTrust `/v1/decide`, or a vLLM `jev-decision` head). Each operation resolves its own backend from the profile — `JEV_ROUTE_SKILLS_BACKEND`, `JEV_PRUNE_CONTEXT_BACKEND`, `JEV_REVIEW_BACKEND` — with an ordered `_FALLBACK` allow-list; setup writes them with `--route-backend`, `--prune-backend`, `--review-backend`, and `--fallback <op>=<kind[,kind]>`, and `--backend` / `--model` override a single call. Every backend is tier `unvalidated` unless an attestation (`--validated-model`) matches the model it reports serving, and only calibrated decision-head drivers (`api`, `systemone`) can be validated: `review` permits only on a validated tier, so `local`, `ollama`, and `lmstudio` recommend but never authorize. Optional `skills.json` `model_policies` add advisory per-skill `provider/model` routing to `route-skills` output; hosts are not adapted yet. Setup also installs a catalog snapshot so `route-skills` works outside a checkout.
+
+Choose `api`, `local`, `ollama`, `lmstudio`, or `systemone` only after approving credentials, downloads, and server side effects; `skip` preserves existing Jev state. An unset choice with no TTY skips Jev without fetching its setup script. Project catalog installs never configure global Jev. `status [--operation <op>]` reports each operation's backend chain and distinguishes configured opt-in from limited backend readiness: API key presence does not prove hosted authentication or health. Configured outages fail closed, rather than bypassing review. `--mock` validates offline contracts only and never authorizes real actions. See [`jev/README.md`](jev/README.md) for settings, exit codes, and validation limits.
 
 ### Jevgrep (optional remote source discovery)
 
@@ -965,6 +967,17 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 
 <!-- WHATS-NEW:START -->
 
+## 🆕 What's New in v2026-10-08
+
+| Change | Details |
+|--------|---------|
+| **Jev per-operation backend routing** | `route-skills`, `prune-context`, and `review` each resolve their own backend from the profile (`JEV_<OP>_BACKEND` plus an ordered `_FALLBACK` allow-list; setup flags `--route-backend`, `--prune-backend`, `--review-backend`, `--fallback <op>=<kind[,kind]>`). `--backend` / `--model` override one call and `status --operation` reports each chain. Fallback tries only listed kinds and never crosses profiles. |
+| **System One backend kind** | New `systemone` mode targets an operator-run System One endpoint with three drivers: TypeSafe-compatible, AutoTrust `serve_decide.py` `/v1/decide` (pure System 1 with `thinking: "off"`), and a vLLM `jev-decision` head read from token logprobs. It downloads and starts nothing. |
+| **Attestation-bound tiers** | Every backend is `unvalidated` unless `--validated-model` matches the model it reports serving, and only calibrated decision-head drivers (`api`, `systemone`) can be validated. `review` permits only on a validated tier, so `local`, Ollama, and LM Studio recommend (`proposal_only`) but never authorize. Receipts (v2) bind backend, model, and tier. |
+| **Cap-aware skill selection and provider/model policies** | Selection runs gate Nouls, then sharded Choice or a lexical shortlist reranked by fit Nouls, and can answer "no skill fits" explicitly. Optional `skills.json` `model_policies` add advisory per-skill `provider/model` routing (for example `openai/gpt-6.1-sol` or `ollama/qwen2.5:7b`); hosts are not adapted yet. |
+| **Fixes** | The hosted `api` request now matches the documented `/v1/systemone` body (`model`, Choice `criteria`, `noul` answers); prune batches are position-keyed and bounded by each backend's state limit; oversized input is rejected before any request instead of being truncated server-side; setup installs a validated catalog snapshot so `route-skills` works outside a checkout, and skill excerpts sent to a backend stay inside the catalog root (`../` and outbound symlinks refused). |
+| **Verification** | 52 loopback regressions (also on Python 3.11 + Node 24), 20/20 offline self-test checks, 3 isolated profile tests, CI green on Linux and macOS, and a live isolated-HOME run on Ollama JEV-9B-GGUF: routing from an empty directory over the 354-skill snapshot, `local`→`ollama` prune fallback, and a fail-closed `review --backend local`. The live run proves transport, not calibration (tier `unvalidated`). |
+
 ## 🆕 What's New in v2026-10-01
 
 | Change | Details |
@@ -1000,13 +1013,6 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 | **Knowledge-pipeline hooks are back in the install guide** | The lightweight rewrite of `setup-all-skills-prompt.md` had dropped the `llm-wiki` + graphify hook wiring even though the `llm-wiki` skill still claimed it was there. Step 5 now bootstraps the per-repo vault, installs `hooks/ingest-prompt.py` at `~/.agents/hooks/`, and registers the vault-path-free `llm-wiki-ingest.sh` wrapper for Claude Code (`UserPromptSubmit`/`Stop`), Codex (`UserPromptSubmit`/`Stop`), and Gemini/Antigravity (`BeforeAgent`/`AfterAgent`) idempotently — existing hooks and unrelated settings keys are preserved. |
 | **`scripts/generate-catalog-projections.py`** | New inverse of the validator: regenerates `skills.toon` and the three README skills-list sections surgically from `skills.json` (headings, subcategory counts, table rows, intro count only; everything else byte-preserved). `--check` asserts a regeneration is a no-op, so "fix the manifest, not the projections" now has a mechanical follow-through. The August README entries were also moved into `changelog/` so `changelog.py check` passes again. |
 | **Not imported on purpose** | Six unattributed single-file skills that shipped alongside pm-skills globally (`blog-post`, `data-visualization`, `query-writing`, `schema-exploration`, `social-media`, `web-research`), the stale `framework-selection` / `langgraph-docs` (no longer in upstream), and everything previously removed or retired from this catalog (OMC/OMX/ooo command shims, `jeo`, `ralph`, `agent-browser`, `obsidian`, ...) stay out. |
-
-## 🆕 What's New in v2026-08-09
-
-| Change | Details |
-|--------|---------|
-| **goalflow LangGraph framework** | Added `goalflow` for [wanmol/goal-flow](https://github.com/wanmol/goal-flow), a Graph-Orchestrated Agent Loop that combines workflow graphs with agent loops and transpiles Dify DSL exports into runnable LangGraph Python. Six modes (`orient`, `transpile`, `build`, `agent`, `serve`, `harden`). Ships a read-only `goalflow.sh doctor` (packages, project imports, `.env` key **names** only), a stdlib-only `preflight_audit.py` implementing the upstream pre-publish checklist (`.env*` blobs reachable in git history, RFC1918 hosts, open-CORS-with-credentials, MD5 API-key auth, `CodeNode` `exec`), and a `check_goalflow_skill.py` that validates runtime `SKILL.md` frontmatter and flags verbatim-injection prompt cost. References cover the transpiler, the `BaseNode` contract, `agent_kit`, the skills engine, the adapter/streaming/HITL layer, and the security gate. |
-| **WAI Play web-game auto-playtesting** | Added `wai-play` for [waiterve/wai-play](https://github.com/waiterve/wai-play): an agent that drives a real browser against a running web game and returns a five-dimension quality score with reproducible problem cards. The skill routes six modes (`testability`, `integration`, `run`, `report`, `scenario-gap`, `ops`) and puts testability before any run. Ships a read-only `wai-play.sh doctor` (Python, Playwright Chromium, `.env` key **names** only), a stdlib-only `check_integration.py` that statically checks a `GameFlowAgentAPI` file for missing methods, leftover throw-stubs, and template placeholders, plus references for the API contract, the five game-type profiles and key nodes, the scoring weights and evidence rules, and setup/route-outs. Keeps game quality and test credibility separate, and states the local-only operating boundary rather than implying it is deploy-ready. |
 
 > 📜 Older entries: [`changelog/en/`](changelog/en/) (monthly files, newest first).
 

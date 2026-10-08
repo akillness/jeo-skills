@@ -741,12 +741,31 @@ class JevRegressions(unittest.TestCase):
         text = (ROOT / "setup-all-skills-prompt.md").read_text()
         section = text.split("### Jev control-plane harness (System One)", 1)[1].split("\n### ", 1)[0]
         block = re.search(r"```(?:bash|sh)\n(.*?)\n```", section, re.S).group(1)
-        result = self.execute(["/bin/bash"], {"USER_HOME": str(self.home),
-                              "INSTALL_GLOBAL": "false", "JEO_SKILLS_JEV": "api",
-                              "JEV_API_KEY": "fixture-secret"}, block, ROOT)
-        self.assertNotEqual(result.returncode, 0, result.stdout + result.stderr)
-        self.assertEqual(list(self.home.iterdir()), [])
-        self.assertFalse(self.external_log.exists())
+        for mode in ("api", "local", "ollama", "lmstudio", "systemone"):
+            with self.subTest(mode=mode):
+                result = self.execute(["/bin/bash"], {"USER_HOME": str(self.home),
+                                      "INSTALL_GLOBAL": "false", "JEO_SKILLS_JEV": mode,
+                                      "JEV_API_KEY": "fixture-secret"}, block, ROOT)
+                self.assertNotEqual(result.returncode, 0, result.stdout + result.stderr)
+                # The home-scope refusal proves the block accepts the mode (not the invalid-mode branch).
+                self.assertIn("Jev is home-scoped", result.stderr)
+                self.assertEqual(list(self.home.iterdir()), [])
+                self.assertFalse(self.external_log.exists())
+
+    def test_setup_guide_block_configures_systemone_from_a_checkout(self):
+        text = (ROOT / "setup-all-skills-prompt.md").read_text()
+        section = text.split("### Jev control-plane harness (System One)", 1)[1].split("\n### ", 1)[0]
+        block = re.search(r"```(?:bash|sh)\n(.*?)\n```", section, re.S).group(1)
+        result = self.execute(["/bin/bash"], {"USER_HOME": str(self.home), "JEO_SKILLS_JEV": "systemone",
+                                              "JEV_SYSTEMONE_ENDPOINT": "http://127.0.0.1:1/v1/systemone",
+                                              "JEV_SYSTEMONE_MODEL": "fixture-JEV-9B"}, block, ROOT)
+        self.successful(result)
+        saved = self.home / ".agents/jev/.env"
+        self.assertEqual(saved.stat().st_mode & 0o777, 0o600)
+        self.assertIn("JEV_MODE=systemone", saved.read_text())
+        self.assertIn("JEV_SYSTEMONE_MODEL=fixture-JEV-9B", saved.read_text())
+        self.assertTrue((self.home / ".agents/jev/skills.json").is_file())
+        self.assertFalse(self.external_log.exists())  # no downloads, fetches, or server starts
 
     def test_deadlines_cover_stalled_response_bodies_not_just_headers(self):
         scenarios = [(mode, "request") for mode in ("api", "local", "ollama", "lmstudio")]

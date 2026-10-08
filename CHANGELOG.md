@@ -46,6 +46,10 @@ All notable changes to **jeo-skills** are documented here.
   apply only to the `jev-decision` head these adapters do not use.
 - Rule, README, and the `jev-control-plane` skill describe five kinds, tiers, per-operation
   keys, selection/routing output, receipt v2, and `smoke`.
+- `README.md`, `README.ko.md`, `README.es-ES.md`, and `setup-all-skills-prompt.md` document
+  per-operation routing, the `systemone` mode, attestation tiers, `model_policies`, and the
+  catalog snapshot; the setup guide's consent-gated block now accepts `systemone`. Exit-code
+  docs now state that invalid configuration also exits `3` (fail closed), as the harness does.
 
 ## 2026-10-02
 

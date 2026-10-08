@@ -148,7 +148,7 @@ Then read this file fully before doing anything else in this session.
   `skills.json` gains manifest-only `model_policies` feeding an advisory `routing` field.
   `route-skills` now works outside a checkout: setup installs a validated catalog snapshot
   (`~/.agents/jev/skills.json`) and excerpts are realpath-confined to the catalog root.
-  Evidence: `self-test --mock` 20/20, `scripts/test_jev_regressions.py` 51/51 (also on
+  Evidence: `self-test --mock` 20/20, `scripts/test_jev_regressions.py` 52/52 (also on
   Python 3.11 + Node 24, the CI versions), `profile.test.mjs` 3/3, all catalog gates, a
   live Ollama `smoke`, and an isolated-HOME setup whose installed harness routed from an
   empty cwd (354-skill snapshot), pruned via `local`→`ollama` fallback, and failed closed

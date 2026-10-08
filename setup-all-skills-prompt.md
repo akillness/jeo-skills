@@ -23,7 +23,7 @@ inside all skills. Those remain on demand when a real task selects the correspon
 Jev is a separate, home-scoped opt-in in every catalog mode, including `full`.
 Default catalog installation does not configure Jev, download Jev models, or install
 Jev rules/hooks. Ask for explicit approval of a backend and its side effects before
-setting `JEO_SKILLS_JEV=api|local|ollama|lmstudio`; `skip` leaves existing Jev state unchanged.
+setting `JEO_SKILLS_JEV=api|local|ollama|lmstudio|systemone`; `skip` leaves existing Jev state unchanged.
 Project catalog installation (`INSTALL_GLOBAL=false`) must stay separate from Jev setup.
 
 Jevgrep is a separate optional remote source-discovery CLI (`jg`), not the Jev harness.
@@ -431,9 +431,11 @@ Jev is optional even in full mode. Leave `JEO_SKILLS_JEV` unset (or set it to `s
 unless the user explicitly approves a backend: `api` uses a hosted paid service and
 requires `JEV_API_KEY`; `local` installs Python dependencies and downloads full-precision
 JEV-9B; `ollama` may start its server and pull a quantized model; `lmstudio` may
-download/load a model and start its server when `lms` is available. Read
-[jev/README.md](jev/README.md) for settings, prerequisites, and validation limits.
-Never infer Jev consent from “full install”.
+download/load a model and start its server when `lms` is available; `systemone` points
+at an operator-run System One endpoint (driver `typesafe`, `decide`, or
+`vllm-jev-decision`; `JEV_SYSTEMONE_ENDPOINT` and `JEV_SYSTEMONE_MODEL` are required
+without a TTY) and downloads or starts nothing. Read [jev/README.md](jev/README.md) for
+settings, prerequisites, and validation limits. Never infer Jev consent from “full install”.
 
 Use the canonical setup script rather than copying runtime files or writing credentials
 by hand. The block below is a no-op without an explicit backend selection, including
@@ -443,7 +445,7 @@ in a no-TTY session; no remote Jev script is fetched in that case.
 (
 case "${JEO_SKILLS_JEV:-skip}" in
   skip) printf '%s\n' 'Optional Jev setup skipped; existing configuration unchanged.' ;;
-  api|local|ollama|lmstudio)
+  api|local|ollama|lmstudio|systemone)
     if [ "${INSTALL_GLOBAL:-true}" != true ]; then
       printf '%s\n' 'Jev is home-scoped. Run approved standalone setup separately from the project catalog install.' >&2
       exit 1
@@ -462,7 +464,7 @@ case "${JEO_SKILLS_JEV:-skip}" in
       exit "$JEV_SETUP_STATUS"
     fi
     ;;
-  *) printf '%s\n' 'JEO_SKILLS_JEV must be skip, api, local, ollama, or lmstudio.' >&2; exit 1 ;;
+  *) printf '%s\n' 'JEO_SKILLS_JEV must be skip, api, local, ollama, lmstudio, or systemone.' >&2; exit 1 ;;
 esac
 )
 ```
@@ -474,8 +476,26 @@ places a rule at `~/.agents/rules/jev-control-plane.md`; it does not install a n
 hook or prove that a host loads that rule. Adopt it through the host's supported rule
 mechanism and verify loading separately.
 
-`node ~/.agents/jev/jev-harness.mjs status` reports configuration and limited local
-readiness probes, not end-to-end enforcement or hosted API health. Offline
+Each operation can use its own backend. Setup flags `--route-backend`, `--prune-backend`,
+and `--review-backend` write `JEV_ROUTE_SKILLS_BACKEND`, `JEV_PRUNE_CONTEXT_BACKEND`, and
+`JEV_REVIEW_BACKEND`; `--fallback <op>=<kind[,kind]>` writes that operation's ordered
+`_FALLBACK` allow-list. Only listed kinds are tried, never another profile, and a call
+may override with `--backend <kind>` / `--model <id>`. Every backend reports tier
+`unvalidated` unless `--validated-model <id>` records an attestation that matches the
+model the backend reports serving, and only calibrated decision-head drivers (`api`,
+`systemone`) can be validated. `review` returns `permit` only on a validated tier, so
+`local`, `ollama`, and `lmstudio` recommend (`proposal_only`) but never authorize.
+Optional `skills.json` `model_policies` add advisory per-skill `provider/model` routing
+to `route-skills` output; no host adapter consumes it yet.
+
+Setup also installs a validated catalog snapshot at `~/.agents/jev/skills.json` (from the
+checkout, otherwise the published catalog) so `route-skills` works outside a checkout; a
+working checkout's `.agent-skills/skills.json` still takes precedence.
+
+`node ~/.agents/jev/jev-harness.mjs [--profile <id>] status [--operation <op>]` reports
+each operation's backend chain, configuration, and limited readiness probes, not
+end-to-end enforcement or hosted API health. It exits 2 when Jev is inactive and 3 (fail
+closed) for invalid configuration or a chain with no usable backend. Offline
 `self-test --mock` validates deterministic contracts only. Never replace live approval
 evidence with mock output or call a paid provider during default catalog setup.
 

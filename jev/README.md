@@ -73,7 +73,7 @@ Status reports per-operation `policies` with primary backend, ordered fallback, 
 |---|---|---|
 | `0` | Requested operation chain is not known unavailable; some readiness may be unverified. | Continue under host permissions; only a validated live `permit` may authorize autonomous action. |
 | `2` | Inactive or unconfigured profile. | Skip Jev gates and use normal host permission policies. |
-| `3` | An enabled operation chain has no usable backend, or invalid configuration. | Fail closed; never bypass the gate. Exit `3` is only for a chain with no usable backend. |
+| `3` | Invalid configuration, or an evaluated operation chain has no usable backend. | Fail closed; never bypass the gate. A down backend that no evaluated chain references never causes `3`. |
 
 No native hook installation is supplied. Readiness probes do not establish inference quality, calibration, authentication, or host rule adoption. Verify that the host loads `~/.agents/rules/jev-control-plane.md` through its supported rule mechanism.
 

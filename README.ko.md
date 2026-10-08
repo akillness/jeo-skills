@@ -53,13 +53,15 @@ Jev는 기본 카탈로그 설치에 포함되지 않는 별도의 홈 범위 �
 
 | 단계 | 커맨드 | 역할 |
 | :--- | :--- | :--- |
-| 스킬 라우팅 | `route-skills "<task>"` | 백엔드가 카탈로그 분류를 선택하고 로컬 점수로 읽기 전용 `skills.json`의 Top-K 스킬 반환 |
-| 컨텍스트 프루닝 | `prune-context` | JSONL `{id,text}` 블록 → keep/drop 판정 |
-| 액션 게이트 | `review "<task>" '<proposal>'` | `permit` / `proposal_only` / `reject` / `unavailable` + SHA-256 영수증 |
+| 스킬 라우팅 | `route-skills "<task>"` | 읽기 전용 `skills.json`에 대한 용량 인식 선택: 게이트 Noul 뒤 샤딩된 Choice 또는 어휘 숏리스트를 적합도 Noul로 재정렬 → Top-K 스킬 또는 명시적 "없음". `model_policies`에서 `provider/model` 권고 라우팅 |
+| 컨텍스트 프루닝 | `prune-context` | JSONL `{id,text}` 블록 → keep/drop 판정, 응답 백엔드의 상태 한도 안에서 배치 처리 |
+| 액션 게이트 | `review "<task>" '<proposal>'` | `permit` / `proposal_only` / `reject` / `unavailable` + 백엔드·모델·티어에 묶인 SHA-256 영수증 |
 
 발견은 **로컬 카탈로그**(`route-skills` / `jeo-skill`)에서 시작합니다. 로컬 매치가 약하면 `publicRegistryFallback`으로 `find-skills`의 **공개 skills.sh 레지스트리** 탐색을 안내합니다. 후보를 검토하고 명시적인 승인을 받은 뒤 설치하세요. 하네스 자체는 공개 스킬을 검색하거나 설치하지 않습니다.
 
-자격 증명, 다운로드, 서버 실행에 동의한 경우에만 `api`, `local`, `ollama`, `lmstudio`를 선택하세요. `skip`은 기존 Jev 상태를 보존하며, TTY 없이 선택값이 없으면 설정 스크립트 다운로드 없이 건너뜁니다. 프로젝트 카탈로그 설치는 글로벌 Jev를 구성하지 않습니다. `status`는 설정된 선택 상태와 제한적인 백엔드 준비 상태를 구분합니다. API 키 존재만으로 호스팅 인증이나 정상 동작을 증명하지 않습니다. 설정된 백엔드 장애는 리뷰 우회가 아닌 fail-closed 처리 대상입니다. `--mock`은 오프라인 계약 검증용이며 실제 동작을 승인하지 않습니다. 설정, 종료 코드, 검증 범위는 [`jev/README.md`](jev/README.md)를 참조하세요.
+**백엔드와 작업별 라우팅.** 다섯 가지 백엔드 종류가 하나의 결정 계약을 공유합니다: `api`(호스팅 TypeSafe), `local`(풀 프리시전 JEV-9B 서버), `ollama` / `lmstudio`(채팅 기반 양자화 GGUF), `systemone`(운영자가 띄운 엔드포인트: TypeSafe 호환, AutoTrust `/v1/decide`, vLLM `jev-decision` 헤드). 각 작업은 프로필의 `JEV_ROUTE_SKILLS_BACKEND`, `JEV_PRUNE_CONTEXT_BACKEND`, `JEV_REVIEW_BACKEND`와 순서가 있는 `_FALLBACK` 허용 목록으로 자기 백엔드를 해석합니다. 설정은 `--route-backend`, `--prune-backend`, `--review-backend`, `--fallback <op>=<kind[,kind]>`로 기록하고, `--backend` / `--model`은 한 번의 호출만 덮어씁니다. 모든 백엔드는 증명(`--validated-model`)이 실제 서빙 모델과 일치하지 않는 한 티어 `unvalidated`이며, 보정된 결정 헤드 드라이버(`api`, `systemone`)만 검증될 수 있습니다. `review`는 검증된 티어에서만 `permit`을 내리므로 `local`, `ollama`, `lmstudio`는 추천만 하고 승인하지 않습니다. 선택적인 `skills.json` `model_policies`는 스킬별 `provider/model` 권고 라우팅을 `route-skills` 출력에 추가하며, 호스트 어댑터는 아직 없습니다. 설정은 카탈로그 스냅샷도 설치하므로 체크아웃 밖에서도 `route-skills`가 동작합니다.
+
+자격 증명, 다운로드, 서버 실행에 동의한 경우에만 `api`, `local`, `ollama`, `lmstudio`, `systemone`을 선택하세요. `skip`은 기존 Jev 상태를 보존하며, TTY 없이 선택값이 없으면 설정 스크립트 다운로드 없이 건너뜁니다. 프로젝트 카탈로그 설치는 글로벌 Jev를 구성하지 않습니다. `status [--operation <op>]`는 작업별 백엔드 체인을 보고하고, 설정된 선택 상태와 제한적인 백엔드 준비 상태를 구분합니다. API 키 존재만으로 호스팅 인증이나 정상 동작을 증명하지 않습니다. 설정된 백엔드 장애는 리뷰 우회가 아닌 fail-closed 처리 대상입니다. `--mock`은 오프라인 계약 검증용이며 실제 동작을 승인하지 않습니다. 설정, 종료 코드, 검증 범위는 [`jev/README.md`](jev/README.md)를 참조하세요.
 
 ### Jevgrep (선택적 원격 소스 탐색)
 
@@ -922,6 +924,17 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 
 <!-- WHATS-NEW:START -->
 
+## 🆕 v2026-10-08 업데이트
+
+| 변경 사항 | 상세 내용 |
+|--------|---------|
+| **Jev 작업별 백엔드 라우팅** | `route-skills`, `prune-context`, `review`가 각각 프로필에서 자기 백엔드(`JEV_<OP>_BACKEND`와 순서가 있는 `_FALLBACK` 허용 목록)를 해석합니다. 설정 플래그는 `--route-backend`, `--prune-backend`, `--review-backend`, `--fallback <op>=<kind[,kind]>`입니다. `--backend` / `--model`은 한 번의 호출만 덮어쓰고, `status --operation`이 각 체인을 보고합니다. 폴백은 목록에 있는 종류만 시도하며 다른 프로필로 넘어가지 않습니다. |
+| **System One 백엔드 종류** | 새 `systemone` 모드는 운영자가 띄운 System One 엔드포인트를 세 가지 드라이버로 사용합니다: TypeSafe 호환, AutoTrust `serve_decide.py` `/v1/decide`(`thinking: "off"`로 순수 System 1), 토큰 logprob에서 읽는 vLLM `jev-decision` 헤드. 다운로드나 서버 시작은 하지 않습니다. |
+| **증명 기반 티어** | 모든 백엔드는 `--validated-model`이 실제 서빙 모델과 일치하지 않는 한 `unvalidated`이며, 보정된 결정 헤드 드라이버(`api`, `systemone`)만 검증될 수 있습니다. `review`는 검증된 티어에서만 `permit`을 내리므로 `local`, Ollama, LM Studio는 추천(`proposal_only`)만 하고 승인하지 않습니다. 영수증(v2)은 백엔드·모델·티어에 묶입니다. |
+| **용량 인식 스킬 선택과 프로바이더/모델 정책** | 게이트 Noul 뒤 샤딩된 Choice 또는 어휘 숏리스트를 적합도 Noul로 재정렬하며, "맞는 스킬 없음"을 명시적으로 답할 수 있습니다. 선택적인 `skills.json` `model_policies`는 스킬별 `provider/model` 권고 라우팅(예: `openai/gpt-6.1-sol`, `ollama/qwen2.5:7b`)을 추가합니다. 호스트 어댑터는 아직 없습니다. |
+| **수정** | 호스팅 `api` 요청이 문서화된 `/v1/systemone` 본문(`model`, Choice `criteria`, `noul` 응답)과 일치합니다. 프루닝 배치는 위치 키를 쓰고 각 백엔드의 상태 한도로 제한되며, 한도를 넘는 입력은 서버에서 잘리는 대신 요청 전에 거부됩니다. 설정이 검증된 카탈로그 스냅샷을 설치해 체크아웃 밖에서도 `route-skills`가 동작하고, 백엔드로 보내는 스킬 발췌는 카탈로그 루트 안으로 제한됩니다(`../`와 외부를 가리키는 심볼릭 링크 거부). |
+| **검증** | 루프백 회귀 52개(Python 3.11 + Node 24에서도 통과), 오프라인 self-test 20/20, 격리 프로필 테스트 3개, Linux·macOS CI 통과, Ollama JEV-9B-GGUF 대상 격리 HOME 실사용 검증: 빈 디렉터리에서 354개 스킬 스냅샷으로 라우팅, `local`→`ollama` 프루닝 폴백, `review --backend local`의 fail-closed. 이 실행은 전송 경로를 증명할 뿐 보정을 증명하지 않습니다(티어 `unvalidated`). |
+
 ## 🆕 v2026-10-01 업데이트
 
 | 변경 사항 | 상세 내용 |
@@ -957,13 +970,6 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 | **설치 가이드에 지식 파이프라인 훅 복원** | `setup-all-skills-prompt.md`의 경량화 개편 때 `llm-wiki` + graphify 훅 배선이 빠졌지만 `llm-wiki` 스킬은 여전히 있다고 안내하고 있었습니다. Step 5가 이제 레포별 볼트를 부트스트랩하고, `hooks/ingest-prompt.py`를 `~/.agents/hooks/`에 설치하며, 볼트 경로를 담지 않는 `llm-wiki-ingest.sh` 래퍼를 Claude Code(`UserPromptSubmit`/`Stop`), Codex(`UserPromptSubmit`/`Stop`), Gemini/Antigravity(`BeforeAgent`/`AfterAgent`)에 멱등하게 등록합니다 — 기존 훅과 무관한 설정 키는 그대로 보존됩니다. |
 | **`scripts/generate-catalog-projections.py`** | 검증기의 역함수: `skills.json`에서 `skills.toon`과 README 3종의 스킬 목록 섹션(제목 카운트, 하위 분류 카운트, 표 행, 소개 카운트만)을 외과적으로 재생성하고 나머지는 바이트 단위로 보존합니다. `--check`는 재생성이 no-op임을 단언하므로 "프로젝션 대신 매니페스트를 고쳐라"에 이제 기계적 후속 수단이 생겼습니다. README에만 있던 8월 항목도 `changelog/`로 옮겨 `changelog.py check`가 다시 통과합니다. |
 | **의도적으로 미포함** | pm-skills와 함께 글로벌에 설치돼 있던 출처 불명 단일 파일 스킬 6개(`blog-post`, `data-visualization`, `query-writing`, `schema-exploration`, `social-media`, `web-research`), 업스트림에서 사라진 `framework-selection` / `langgraph-docs`, 그리고 이 카탈로그에서 이전에 제거·은퇴한 모든 스킬(OMC/OMX/ooo 명령 shim, `jeo`, `ralph`, `agent-browser`, `obsidian` 등)은 그대로 제외했습니다. |
-
-## 🆕 v2026-08-09 업데이트
-
-| 변경 | 내용 |
-|------|------|
-| **goalflow LangGraph 프레임워크** | [wanmol/goal-flow](https://github.com/wanmol/goal-flow)를 위한 `goalflow`를 추가했습니다. 워크플로우 그래프와 에이전트 루프를 결합하고 Dify DSL 익스포트를 실행 가능한 LangGraph 파이썬 코드로 트랜스파일하는 Graph-Orchestrated Agent Loop 프레임워크입니다. 6개 모드(`orient`, `transpile`, `build`, `agent`, `serve`, `harden`)로 라우팅합니다. 읽기 전용 `goalflow.sh doctor`(패키지·프로젝트 임포트 확인, `.env`는 **키 이름만** 보고), 업스트림 배포 전 체크리스트를 그대로 구현한 stdlib 전용 `preflight_audit.py`(git 히스토리에 남은 `.env*` 블롭, RFC1918 내부 IP, 자격증명 허용 상태의 와일드카드 CORS, MD5 API 키 인증, `CodeNode`의 `exec`), 런타임 `SKILL.md` 프런트매터를 검증하고 프롬프트에 원문 그대로 주입되는 비용을 경고하는 `check_goalflow_skill.py`를 포함합니다. 레퍼런스는 트랜스파일러, `BaseNode` 계약, `agent_kit`, 스킬 엔진, 어댑터·스트리밍·HITL 계층, 보안 게이트를 다룹니다. |
-| **WAI Play 웹게임 자동 플레이테스트** | [waiterve/wai-play](https://github.com/waiterve/wai-play)를 위한 `wai-play`를 추가했습니다. 실제 브라우저로 실행 중인 웹게임을 직접 플레이하고, 재현 가능한 문제 카드와 5개 차원 품질 점수를 돌려주는 에이전트입니다. 스킬은 6개 모드(`testability`, `integration`, `run`, `report`, `scenario-gap`, `ops`)로 라우팅하며, 어떤 실행보다 테스트 가능성 확인을 먼저 둡니다. 읽기 전용 `wai-play.sh doctor`(Python·Playwright Chromium 확인, `.env`는 **키 이름만** 보고), `GameFlowAgentAPI` 파일의 누락 메서드·미구현 throw 스텁·템플릿 자리표시자를 정적으로 점검하는 stdlib 전용 `check_integration.py`, 그리고 API 계약·5개 게임 타입 프로필과 핵심 노드·점수 가중치와 증거 규칙·설치와 대안 경로 레퍼런스를 포함합니다. 게임 품질 점수와 테스트 신뢰도 진단을 분리해 보고하고, 로컬 전용이라는 운영 경계를 배포 가능한 것처럼 포장하지 않고 그대로 밝힙니다. |
 
 > 📜 이전 기록: [`changelog/ko/`](changelog/ko/) (월별 파일, 최신순).
 

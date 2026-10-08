@@ -13,7 +13,7 @@ Before any live operation, inspect the profile:
 node ~/.agents/jev/jev-harness.mjs --profile jeopi status
 ```
 
-`active` means configured, not proven inference readiness. Status exit `2` means inactive/unconfigured and the host continues with its normal permission policies. Exit `3` means an enabled profile has no usable backend for the requested operation; fail closed. Exit `3` is emitted only when an operation chain has no usable backend. Exit `0` means the requested operation chain is not known unavailable. Use `--operation route-skills|prune-context|review` to inspect one chain; without it, status evaluates all three.
+`active` means configured, not proven inference readiness. Status exit `2` means inactive/unconfigured and the host continues with its normal permission policies. Exit `3` means fail closed: the configuration is invalid, or an evaluated operation chain has no usable backend. A down backend that no evaluated chain references never causes exit `3`. Exit `0` means the requested operation chain is not known unavailable. Use `--operation route-skills|prune-context|review` to inspect one chain; without it, status evaluates all three.
 
 ## Backends and tiers
 
