@@ -1,0 +1,9 @@
+{
+  "name": "jev-pi-extension",
+  "version": "0.1.0",
+  "description": "Jev advisory routing extension for Pi",
+  "type": "module",
+  "pi": {
+    "extensions": ["./index.mjs"]
+  }
+}

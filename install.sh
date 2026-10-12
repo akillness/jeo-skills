@@ -14,9 +14,10 @@ fail() { printf '[jeo-skills] ERROR: %s\n' "$*" >&2; exit 1; }
 case "$GLOBAL:$DRY_RUN" in true:true|true:false|false:true|false:false) ;; *) fail 'INSTALL_GLOBAL and JEO_SKILLS_DRY_RUN must be true or false' ;; esac
 case "$SELECTION" in router|bundle|all) ;; category) [ -n "${JEO_SKILLS_CATEGORY:-}" ] || fail 'JEO_SKILLS_CATEGORY is required' ;; *) fail 'JEO_SKILLS_SELECTION must be router, bundle, category, or all' ;; esac
 if [ "$AGENT" = aside ] && [ "$GLOBAL" != true ]; then fail 'Aside is account-scoped; INSTALL_GLOBAL=true is required'; fi
-case "${JEO_SKILLS_JEV:-}" in ''|skip|api|local|ollama|lmstudio|systemone) ;; *) fail 'JEO_SKILLS_JEV must be skip, api, local, ollama, lmstudio, or systemone' ;; esac
+case "${JEO_SKILLS_JEV:-}" in ''|skip|api|local|ollama|lmstudio|systemone) ;; *) info 'WARNING: Invalid optional JEO_SKILLS_JEV; skipping Jev. JEO_SKILLS_JEV must be skip, api, local, ollama, lmstudio, or systemone. Continuing skill installation.'; JEO_SKILLS_JEV=skip ;; esac
 if [ "$GLOBAL" != true ] && [ -n "${JEO_SKILLS_JEV:-}" ] && [ "${JEO_SKILLS_JEV:-}" != skip ]; then
-  fail 'Jev is home-scoped; use JEO_SKILLS_JEV=skip for project installation, then run JEO_SKILLS_JEV=<mode> bash jev/jev-setup.sh separately.'
+  info 'WARNING: Jev is home-scoped; skipping optional Jev for project installation. Run approved standalone setup separately.'
+  JEO_SKILLS_JEV=skip
 fi
 
 ROOT="$PWD/.agents/skills"
@@ -85,15 +86,18 @@ info 'Selected installation completed; runtime activation may require a reload.'
 if [ "$GLOBAL" = true ] && [ "${JEO_SKILLS_JEV:-}" != skip ] && { [ -n "${JEO_SKILLS_JEV:-}" ] || [ -t 0 ]; }; then
   SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" 2>/dev/null && pwd || echo "$PWD")"
   if [ -f "$SCRIPT_DIR/jev/jev-setup.sh" ]; then
-    bash "$SCRIPT_DIR/jev/jev-setup.sh" --profile "$JEV_PROFILE" --agent "$AGENT" || info "Jev setup did not complete; re-run jev/jev-setup.sh --profile $JEV_PROFILE --agent $AGENT later."
+    bash "$SCRIPT_DIR/jev/jev-setup.sh" --profile "$JEV_PROFILE" --agent "$AGENT" || info "WARNING: Jev setup did not complete; installed skills remain available. Re-run approved standalone setup later."
   else
     JEV_SETUP_URL="${JEO_SKILLS_RAW_BASE:-https://raw.githubusercontent.com/akillness/jeo-skills/main/jev}/jev-setup.sh"
-    JEV_SETUP_TMP="$(mktemp -d "${TMPDIR:-/tmp}/jev-setup.XXXXXX")" || fail 'Cannot create private Jev setup directory'
-    trap 'rm -rf "$JEV_SETUP_TMP"' EXIT
-    curl -fsSL "$JEV_SETUP_URL" -o "$JEV_SETUP_TMP/jev-setup.sh" 2>/dev/null \
-      && bash "$JEV_SETUP_TMP/jev-setup.sh" --profile "$JEV_PROFILE" --agent "$AGENT" || info "Jev setup unavailable; run jev/jev-setup.sh --profile $JEV_PROFILE --agent $AGENT from the repo later."
-    rm -rf "$JEV_SETUP_TMP"
-    trap - EXIT
+    if JEV_SETUP_TMP="$(mktemp -d "${TMPDIR:-/tmp}/jev-setup.XXXXXX")"; then
+      trap 'rm -rf "$JEV_SETUP_TMP" || info "WARNING: Optional Jev temporary setup cleanup failed."' EXIT
+      curl -fsSL "$JEV_SETUP_URL" -o "$JEV_SETUP_TMP/jev-setup.sh" 2>/dev/null \
+        && bash "$JEV_SETUP_TMP/jev-setup.sh" --profile "$JEV_PROFILE" --agent "$AGENT" || info 'WARNING: Optional Jev setup unavailable; installed skills remain available. Run approved standalone setup later.'
+      rm -rf "$JEV_SETUP_TMP" || info 'WARNING: Optional Jev temporary setup cleanup failed.'
+      trap - EXIT
+    else
+      info 'WARNING: Cannot create private Jev setup directory; skipping optional Jev. Installed skills remain available.'
+    fi
   fi
 fi
 

@@ -28,17 +28,29 @@ node ~/.agents/jev/jev-harness.mjs --profile jeopi status
 
 Status exit `2` means inactive or unconfigured; skip Jev gates and follow the host's normal permission policies. Exit `3` means fail closed: the configuration is invalid, or an evaluated operation chain has no usable backend; a down backend that no evaluated chain references never causes it. Exit `0` means the requested chain is not known unavailable, not that model quality or host enforcement is proven. Use `--operation route-skills|prune-context|review` for one operation; otherwise all three chains are evaluated.
 
-## Configure one environment
+## Configure one environment with jev-plugin.mjs
 
-For a root checkout install, select the runtime target explicitly:
+For initial setup or updates, use jev-plugin.mjs with preview-then-apply pattern:
 
 ```sh
-JEO_SKILLS_AGENT=jeopi JEO_SKILLS_JEV=api bash install.sh
-bash ~/.agents/jev/jev-setup.sh --profile jeopi --agent jeopi --mode systemone
+# Preview configuration (shows what will be set, no changes)
+node ~/.agents/jev/jev-plugin.mjs configure --agent jeopi --profile jeopi --backend api --key-env JEV_API_KEY
+
+# Apply configuration (invokes setup and writes files)
+node ~/.agents/jev/jev-plugin.mjs configure --agent jeopi --profile jeopi --backend api --key-env JEV_API_KEY --apply
+
+# Enable profile (preview then apply)
+node ~/.agents/jev/jev-plugin.mjs enable --agent jeopi --profile jeopi
+node ~/.agents/jev/jev-plugin.mjs enable --agent jeopi --profile jeopi --apply
+
+# Disable profile  
+node ~/.agents/jev/jev-plugin.mjs disable --agent jeopi --profile jeopi --apply
+
+# Check profile status (always read-only)
+node ~/.agents/jev/jev-plugin.mjs status --agent jeopi --profile jeopi
 ```
 
-Setup writes mode-600 base and backend files under `~/.agents/jev/profiles/`. Obtain approval before hosted calls or downloads. Never put credentials in prompts, source control, or command history.
-
+`configure` with `--agent` and `--backend` prepares or updates a profile. Without `--apply`, it validates the request and returns a preview without changes. With `--apply`, it invokes configuration-only setup and writes files without downloads or inference; new profiles start OFF. API configuration requires `--key-env` naming an existing non-empty environment variable in the invoking process unless the selected profile's API backend already has a saved key; omit `--key-env` to preserve that key. Use the variable name, never a literal credential. `enable` and `disable` toggle `JEV_ENABLED`; without `--apply` they preview the change, with `--apply` they write it. `status` shows saved configuration without reaching any backend.
 The backend registry has exactly five kinds: `api`, `local`, `ollama`, `lmstudio`, and `systemone`.
 
 - `api`: TypeSafe `POST <JEV_API_ENDPOINT>` with `{state, model, questions}` and `Authorization: Bearer JEV_API_KEY`.
@@ -46,6 +58,18 @@ The backend registry has exactly five kinds: `api`, `local`, `ollama`, `lmstudio
 - `ollama`: native `/api/chat` JSON-from-chat adapter.
 - `lmstudio`: OpenAI-compatible `/v1/chat/completions` JSON-from-chat adapter.
 - `systemone`: `JEV_SYSTEMONE_DRIVER=typesafe` (default), `decide` (`<endpoint>/v1/decide`), or `vllm-jev-decision` (`<endpoint>/v1/completions` with logprobs).
+
+### Optional native session integration
+
+```sh
+# Read-only session-load plan; does not install, register, load, or enable anything
+node ~/.agents/jev/jev-plugin.mjs host-plan --agent claude --profile claude
+
+# Advisory model argv only; never executes the plan
+node ~/.agents/jev/jev-plugin.mjs model-plan --agent jeopi --profile jeopi --advice advice.json
+```
+
+Native session loading is available for Claude, jeopi, omp, and pi; other hosts are adapter-only. `host-plan` reports `lifecycle: "session-only"` for native hosts and `executed: false`. Its `package-load` argv loads only a session. Claude/jeopi persistent package-toggle proposals are `status: "unsupported"` until the operator verifies registration; copying package assets is not registration. Omp/pi have no verified persistent targeted package toggle. Package registration, session loading, and profile ON/OFF are independent: only the controller's `enable`/`disable --apply` changes `JEV_ENABLED`. A session-loaded hook remains registered when the profile is OFF but returns neutral before stdin, catalog, or backend work. An ON hook supplies advisory context only, never host permission enforcement. `model-plan` requires an enabled profile and approved advice candidates, returns advisory argv, and never changes the host model.
 
 Every kind defaults to tier `unvalidated`. A response or loopback fixture proves transport only. Tier `validated` requires an exact served-model attestation in the kind env file, `JEV_<KIND>_VALIDATED_MODEL=<model id>`, and is honored only for calibrated decision-head drivers: `api` and `systemone` (`typesafe`, `decide`, `vllm-jev-decision`). `local`, Ollama, and LM Studio are System 2 paths and can never be validated (`attestation.eligible: false`), so they can never permit. Stale or mismatched attestations are `unvalidated`. Oversized review input is rejected as `unavailable` rather than trimmed.
 

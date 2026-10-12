@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
-"""Local Jev backend: serves the same /v1/systemone contract as the hosted API.
+"""Local Jev legacy backend for the harness's local adapter.
 
 Backed by the open-weight distillation `autotrust/JEV-9B` (a third-party student
 of TypeSafe Jev 1.13 — NOT the original hosted model). Requires the model to be
 downloaded first (jev-setup.sh does this) and `torch` + `transformers` in the
 running Python environment (jev-setup.sh creates ~/.agents/jev/venv for this).
+
+The /v1/systemone path does not imply the current TypeSafe SDK or pg-jev wire
+contract: this server uses options, probability, and array-choice legacy fields.
+Direct consumers need a compatible gateway; model output remains unvalidated.
 
 Request:  POST /v1/systemone  {"state": ..., "questions": {id: {type, instructions, options?}}}
 Response: {"model": ..., "answers": {id: {"probability": p} | {"choice": [...], "probabilities": {...}}}}
@@ -64,18 +68,34 @@ if PROFILE:
     config_dir = os.path.expanduser("~/.agents/jev/profiles")
     profile_base_config = load_env_file(os.path.join(config_dir, f"{PROFILE}.env"))
     config = profile_base_config.copy()
-    mode = os.environ.get("JEV_MODE") or profile_base_config.get("JEV_MODE", "api")
-    if mode == "local":
-        config.update(load_env_file(os.path.join(config_dir, f"{PROFILE}.local.env")))
+    mode = profile_base_config.get("JEV_MODE", "api")
+    local_config_path = os.path.join(config_dir, f"{PROFILE}.local.env")
+    local_configured = mode == "local" or (
+        os.path.isfile(local_config_path) and any(
+            "local" in (value.strip() for value in profile_base_config.get(f"JEV_{operation}_{policy}", "").split(","))
+            for operation in ("ROUTE_SKILLS", "PRUNE_CONTEXT", "REVIEW")
+            for policy in ("BACKEND", "FALLBACK")
+        )
+    )
+    if local_configured:
+        config.update(load_env_file(local_config_path))
 else:
     config = load_env_file(os.path.expanduser("~/.agents/jev/.env"))
+if PROFILE:
+    # Selected profiles own local server settings; inherited values cannot expose it.
+    for key in tuple(os.environ):
+        if key == "JEV_MODE" or key.startswith("JEV_LOCAL_"):
+            os.environ.pop(key)
 for key, value in config.items():
-    os.environ.setdefault(key, value)
+    if PROFILE:
+        os.environ[key] = value
+    else:
+        os.environ.setdefault(key, value)
 if PROFILE:
     os.environ["JEV_PROFILE"] = PROFILE
     if profile_base_config.get("JEV_ENABLED", "").lower() != "true" and not CHECK_ONLY:
         sys.exit(f"Jev profile '{PROFILE}' is disabled; enable it with jev-setup.sh --profile {PROFILE} --enable")
-    if os.environ.get("JEV_MODE") != "local":
+    if not local_configured:
         sys.exit(f"Jev profile '{PROFILE}' is not configured for local mode")
 
 HOST = os.environ.get("JEV_LOCAL_HOST", "127.0.0.1")

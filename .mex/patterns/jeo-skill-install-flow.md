@@ -15,7 +15,7 @@ edges:
   - target: "patterns/catalog-metadata-changes.md"
     condition: "when a bundle/category referenced here needs a metadata change instead"
 grounds_to: []
-last_updated: 2026-10-02
+last_updated: 2026-10-12
 ---
 
 # jeo-skill Install Flow
@@ -89,9 +89,21 @@ never infer runtime loading solely from an upstream agent label or successful ex
   absolute or `~/.superset` workspace path.
 - Jev is a separate home-scoped opt-in, not a catalog installation prerequisite.
   `JEO_SKILLS_JEV=skip` and unset non-interactive bootstraps never fetch/configure it.
-  `INSTALL_GLOBAL=false` never writes global Jev; an explicit backend mode fails
-  preflight and points to standalone `jev/jev-setup.sh`. The full-mode guide uses
+  `INSTALL_GLOBAL=false` never writes global Jev; an explicit backend mode warns,
+  skips optional Jev, and points to approved standalone `jev/jev-setup.sh`. The full-mode guide uses
   that same guarded installer rather than hand-copying a second implementation.
+- Jev non-blocking behavior (2026-10-12): invalid modes, project-scoped opt-in,
+  temporary-file allocation, download, and optional setup failures warn without
+  rolling back verified skills. Genuine skill transport or verification failures remain errors.
+  Packaged Claude, jeopi, OMP, and Pi hooks use independent private profiles;
+  copying assets is not provider registration. New config-only profiles start OFF,
+  while ordinary approved setup retains its explicit opt-in semantics. Native hooks
+  use a trusted installed snapshot, never an arbitrary working-directory catalog.
+  Evidence: `test_installer_regressions.py` 48/48, `test_jev_regressions.py` 64/64,
+  isolated-HOME plugin integration (not runtime activation), fail-closed unavailable
+  backends, and catalog preservation. Session-load plans use verified host argv;
+  persistent package toggles require registration, separate from `JEV_ENABLED`.
+  Provider/model advice does not grant permissions or replace a host model automatically.
 - Jev `status` distinguishes configuration from readiness: exit 2 is inactive
   (normal host policies), exit 3 is invalid/configured unavailable (fail closed).
   Health/model-list success is not inference or native-hook enforcement proof.

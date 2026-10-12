@@ -252,10 +252,10 @@ class JevRegressions(unittest.TestCase):
                             else:
                                 probability = probability_for(state_text + " " + instructions, identifier, body.get("state"))
                                 answers[identifier] = ({"probability": probability} if legacy
-                                                       else {"type": "noul", "noul": probability,
-                                                             "confidence": max(probability, 1 - probability)})
-                        payload = {"model": body["model"], "usage": {"prompt_tokens": 1, "completion_tokens": 1},
-                                   "answers": answers}
+                                                       else {"type": "noul", "noul": probability})
+                        payload = {"model": body["model"], "answers": answers}
+                        if not legacy:
+                            payload["usage"] = {"input_tokens": 1, "output_tokens": 1}
                     self.send_response(code)
                     self.send_header("Content-Type", "application/json")
                     encoded = raw if raw is not None else json.dumps(payload).encode()
@@ -525,7 +525,7 @@ class JevRegressions(unittest.TestCase):
                     requests.clear()
 
     def test_process_env_overrides_dotenv_routing_and_credentials(self):
-        with self.backend(response={"model": "fixture-JEV-9B", "answers": {"family": {"type": "choice", "choice": "web", "probabilities": {"web": .97, "infrastructure": .03}, "confidence": .94}}}) as (stored, stored_requests):
+        with self.backend(response={"model": "fixture-JEV-9B", "usage": {"input_tokens": 1, "output_tokens": 1}, "answers": {"family": {"type": "choice", "choice": "web", "probabilities": {"web": .97, "infrastructure": .03}, "confidence": .94}}}) as (stored, stored_requests):
             with self.backend() as (explicit, explicit_requests):
                 self.config(JEV_MODE="api", JEV_ENDPOINT=stored + "/v1/systemone", JEV_API_KEY="stored-secret")
                 result = self.run_cli("route-skills", "--top-k", "1", TASK,
@@ -578,6 +578,195 @@ class JevRegressions(unittest.TestCase):
             self.assertEqual(json.loads(result.stdout)["verdict"], "unavailable")
             self.assertEqual(requests, [])
 
+    def test_selected_profile_owns_ambient_mode_endpoint_model_attestation_and_fallback(self):
+        with self.backend() as (stored, stored_requests):
+            with self.backend() as (ambient, ambient_requests):
+                offline = "http://127.0.0.1:1/v1/systemone"
+                self.write_profile(
+                    base={"JEV_MODE": "local", "JEV_REVIEW_BACKEND": "local", "JEV_REVIEW_FALLBACK": "api"},
+                    kinds={
+                        "local": {"JEV_LOCAL_ENDPOINT": offline},
+                        "api": {"JEV_API_ENDPOINT": stored + "/v1/systemone", "JEV_API_KEY": "stored-key",
+                                "JEV_API_MODEL": "stored-model", "JEV_API_VALIDATED_MODEL": "stored-model"},
+                    },
+                )
+                result = self.run_cli(
+                    "review", TASK, json.dumps(PROPOSAL),
+                    env={"JEV_PROFILE": "fixture", "JEV_MODE": "api",
+                         "JEV_ENDPOINT": ambient + "/v1/systemone", "JEV_API_ENDPOINT": ambient + "/v1/systemone",
+                         "JEV_API_KEY": "ambient-key", "JEV_API_MODEL": "ambient-model",
+                         "JEV_API_VALIDATED_MODEL": "ambient-model", "JEV_REVIEW_BACKEND": "api",
+                         "JEV_REVIEW_FALLBACK": "local"},
+                )
+                self.successful(result)
+                report = json.loads(result.stdout)
+                self.assertEqual(report["attempted"], ["local", "api"])
+                self.assertEqual(report["backend"]["kind"], "api")
+                self.assertEqual(report["backend"]["configuredModel"], "stored-model")
+                self.assertEqual(report["backend"]["attestation"]["model"], "stored-model")
+                self.assertEqual([row[1] for row in stored_requests if row[0] == "POST"], ["/v1/systemone"])
+                self.assertEqual(stored_requests[-1][2].get("Authorization"), "Bearer stored-key")
+                self.assertEqual(stored_requests[-1][3]["model"], "stored-model")
+                self.assertEqual(ambient_requests, [])
+
+    def test_selected_profile_keeps_explicit_backend_and_model_override(self):
+        with self.backend() as (stored, stored_requests):
+            with self.backend() as (ambient, ambient_requests):
+                self.write_profile(
+                    base={"JEV_MODE": "local"},
+                    kinds={
+                        "local": {"JEV_LOCAL_ENDPOINT": stored + "/v1/systemone"},
+                        "api": {"JEV_API_ENDPOINT": stored + "/v1/systemone", "JEV_API_KEY": "stored-key"},
+                    },
+                )
+                result = self.run_cli(
+                    "route-skills", "--backend", "api", "--model", "cli-model", "--top-k", "1", TASK,
+                    env={"JEV_PROFILE": "fixture", "JEV_MODE": "lmstudio", "JEV_API_ENDPOINT": ambient + "/v1/systemone",
+                         "JEV_API_KEY": "ambient-key", "JEV_API_MODEL": "ambient-model"},
+                )
+                self.successful(result)
+                report = json.loads(result.stdout)
+                self.assertEqual(report["backend"]["kind"], "api")
+                self.assertEqual(report["backend"]["configuredModel"], "cli-model")
+                posts = [row for row in stored_requests if row[0] == "POST"]
+                self.assertGreaterEqual(len(posts), 1)
+                self.assertTrue(all(row[2].get("Authorization") == "Bearer stored-key" for row in posts))
+                self.assertTrue(all(row[3]["model"] == "cli-model" for row in posts))
+                self.assertEqual(ambient_requests, [])
+
+
+    def test_profileless_legacy_environment_still_overrides_saved_configuration(self):
+        with self.backend() as (stored, stored_requests):
+            with self.backend() as (ambient, ambient_requests):
+                self.config(JEV_MODE="local", JEV_ENDPOINT=stored + "/v1/systemone")
+                result = self.run_cli(
+                    "review", TASK, json.dumps(PROPOSAL),
+                    env={"JEV_MODE": "api", "JEV_ENDPOINT": ambient + "/v1/systemone", "JEV_API_KEY": "ambient-key"},
+                )
+                self.successful(result)
+                report = json.loads(result.stdout)
+                self.assertEqual(report["backend"]["kind"], "api")
+                self.assertEqual([row[1] for row in ambient_requests if row[0] == "POST"], ["/v1/systemone"])
+                self.assertEqual(ambient_requests[-1][2].get("Authorization"), "Bearer ambient-key")
+                self.assertEqual(stored_requests, [])
+
+
+    def test_disabled_or_missing_selected_profile_stops_before_catalog_and_backend_even_in_mock_mode(self):
+        invalid_catalog = self.work / "unreadable-catalog"
+        invalid_catalog.mkdir()
+        with self.backend() as (base, requests):
+            self.write_profile(
+                base={"JEV_ENABLED": "false", "JEV_MODE": "api"},
+                kinds={"api": {"JEV_API_ENDPOINT": base + "/v1/systemone", "JEV_API_KEY": "stored-key"}},
+            )
+            cases = (("fixture", False), ("fixture", True), ("missing", False), ("missing", True))
+            for profile, mock in cases:
+                with self.subTest(profile=profile, mock=mock):
+                    args = ["route-skills"] + (["--mock"] if mock else []) + [TASK]
+                    result = self.run_cli(args[0], *args[1:], env={
+                        "JEV_PROFILE": profile, "JEV_ENABLED": "true", "JEV_MODE": "api",
+                        "JEV_API_ENDPOINT": base + "/v1/systemone", "JEV_API_KEY": "ambient-key",
+                        "JEV_CATALOG_PATH": str(invalid_catalog),
+                    })
+                    self.assertNotEqual(result.returncode, 0, result.stdout + result.stderr)
+                    self.assertEqual(result.stdout, "")
+                    self.assertIn(f"Jev profile '{profile}' is disabled", result.stderr)
+                    self.assertEqual(requests, [])
+
+    def test_disabled_or_missing_selected_profile_blocks_review_and_prune_mock_and_live(self):
+        with self.backend() as (base, requests):
+            self.write_profile(
+                base={"JEV_ENABLED": "false", "JEV_MODE": "api"},
+                kinds={"api": {"JEV_API_ENDPOINT": base + "/v1/systemone", "JEV_API_KEY": "stored-key"}},
+            )
+            for profile in ("fixture", "missing"):
+                for mock in (False, True):
+                    with self.subTest(operation="review", profile=profile, mock=mock):
+                        args = ["review"] + (["--mock"] if mock else []) + [TASK, json.dumps(PROPOSAL)]
+                        result = self.run_cli(args[0], *args[1:], env={
+                            "JEV_PROFILE": profile, "JEV_ENABLED": "true", "JEV_MODE": "api",
+                            "JEV_API_ENDPOINT": base + "/v1/systemone", "JEV_API_KEY": "ambient-key",
+                        })
+                        self.successful(result)
+                        report = json.loads(result.stdout)
+                        self.assertIn(f"Jev profile '{profile}' is disabled", report["review"]["error"])
+                        self.assertEqual(report["attempted"], [])
+                        self.assertEqual(requests, [])
+                    with self.subTest(operation="prune-context", profile=profile, mock=mock):
+                        args = ["prune-context"] + (["--mock"] if mock else [])
+                        result = self.run_cli(args[0], *args[1:], env={
+                            "JEV_PROFILE": profile, "JEV_ENABLED": "true", "JEV_MODE": "api",
+                            "JEV_API_ENDPOINT": base + "/v1/systemone", "JEV_API_KEY": "ambient-key",
+                        }, input=json.dumps({"id": "keep", "text": "Decision: keep this"}))
+                        self.assertNotEqual(result.returncode, 0, result.stdout + result.stderr)
+                        self.assertEqual(result.stdout, "")
+                        self.assertIn(f"Jev profile '{profile}' is disabled", result.stderr)
+                        self.assertEqual(requests, [])
+
+    def test_local_server_selected_profile_owns_mode_host_port_and_model_dir(self):
+        model_dir = self.work / "profile-model"
+        self.write_profile(
+            base={"JEV_ENABLED": "true", "JEV_MODE": "local"},
+            kinds={"local": {"JEV_LOCAL_HOST": "127.0.0.1", "JEV_LOCAL_PORT": "18888",
+                              "JEV_LOCAL_MODEL_DIR": str(model_dir)}},
+        )
+        result = self.execute(
+            [sys.executable, str(ROOT / "jev/jev_local_server.py"), "--profile", "fixture", "--check"],
+            env={"JEV_PROFILE": "fixture", "JEV_MODE": "api", "JEV_LOCAL_HOST": "0.0.0.0",
+                 "JEV_LOCAL_PORT": "1", "JEV_LOCAL_MODEL_DIR": str(self.work / "ambient-model")},
+        )
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        report = json.loads(result.stdout)
+        self.assertEqual(report["host"], "127.0.0.1")
+        self.assertEqual(report["port"], 18888)
+        self.assertEqual(report["modelDir"], str(model_dir))
+        self.assertFalse(report["modelPresent"])
+    def test_local_server_selected_profile_loads_local_fallback_from_api_mode(self):
+        model_dir = self.work / "fallback-profile-model"
+        self.write_profile(
+            base={"JEV_MODE": "api", "JEV_REVIEW_BACKEND": "api", "JEV_REVIEW_FALLBACK": "local"},
+            kinds={"local": {"JEV_LOCAL_HOST": "127.0.0.1", "JEV_LOCAL_PORT": "18889",
+                              "JEV_LOCAL_MODEL_DIR": str(model_dir)}},
+        )
+        result = self.execute(
+            [sys.executable, str(ROOT / "jev/jev_local_server.py"), "--profile", "fixture", "--check"],
+            env={"JEV_PROFILE": "fixture", "JEV_MODE": "api", "JEV_REVIEW_FALLBACK": "api",
+                 "JEV_LOCAL_HOST": "0.0.0.0", "JEV_LOCAL_PORT": "1",
+                 "JEV_LOCAL_MODEL_DIR": str(self.work / "ambient-fallback-model")},
+        )
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        report = json.loads(result.stdout)
+        self.assertEqual(report["host"], "127.0.0.1")
+        self.assertEqual(report["port"], 18889)
+        self.assertEqual(report["modelDir"], str(model_dir))
+        self.assertFalse(report["modelPresent"])
+
+        self.write_profile(
+            base={"JEV_MODE": "api", "JEV_REVIEW_BACKEND": "api", "JEV_REVIEW_FALLBACK": "api"},
+            kinds={"local": {"JEV_LOCAL_HOST": "127.0.0.1", "JEV_LOCAL_PORT": "18890",
+                              "JEV_LOCAL_MODEL_DIR": str(self.work / "unreferenced-model")}},
+        )
+        unreferenced = self.execute(
+            [sys.executable, str(ROOT / "jev/jev_local_server.py"), "--profile", "fixture", "--check"],
+            env={"JEV_PROFILE": "fixture", "JEV_MODE": "api", "JEV_REVIEW_FALLBACK": "local",
+                 "JEV_LOCAL_HOST": "127.0.0.1", "JEV_LOCAL_PORT": "18890",
+                 "JEV_LOCAL_MODEL_DIR": str(self.work / "ambient-unreferenced-model")},
+        )
+        self.assertNotEqual(unreferenced.returncode, 0, unreferenced.stdout + unreferenced.stderr)
+        self.assertIn("not configured for local mode", unreferenced.stderr)
+    def test_local_server_selected_profile_preserves_default_local_config_without_child_file(self):
+        self.write_profile(base={"JEV_MODE": "local"})
+        result = self.execute(
+            [sys.executable, str(ROOT / "jev/jev_local_server.py"), "--profile", "fixture", "--check"],
+            env={"JEV_PROFILE": "fixture", "JEV_MODE": "api", "JEV_LOCAL_HOST": "0.0.0.0",
+                 "JEV_LOCAL_PORT": "1", "JEV_LOCAL_MODEL_DIR": str(self.work / "ambient-model")},
+        )
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        report = json.loads(result.stdout)
+        self.assertEqual(report["host"], "127.0.0.1")
+        self.assertEqual(report["port"], 8763)
+        self.assertEqual(report["modelDir"], str(self.home / ".agents/jev/models/JEV-9B"))
+        self.assertFalse(report["modelPresent"])
     def test_setup_rejects_symlink_destinations_before_any_writes(self):
         (self.bin / "python3").unlink()
         self.stub("python3", "exit 91")
@@ -737,20 +926,33 @@ class JevRegressions(unittest.TestCase):
             self.assertEqual([json.loads(line)["verdict"] for line in result.stdout.splitlines()],
                              ["drop", "keep", "keep", "keep", "keep"])
 
-    def test_setup_guide_explicit_project_opt_in_rejects_without_side_effects(self):
+    def test_setup_guide_explicit_project_opt_in_warns_without_jev_side_effects_and_continues(self):
         text = (ROOT / "setup-all-skills-prompt.md").read_text()
         section = text.split("### Jev control-plane harness (System One)", 1)[1].split("\n### ", 1)[0]
         block = re.search(r"```(?:bash|sh)\n(.*?)\n```", section, re.S).group(1)
+        continuation = "set -e\n" + block + "\nprintf '%s\\n' guide-after-jev\n"
+
+        def assert_optional_skip(mode, warning):
+            env = {"USER_HOME": str(self.home), "INSTALL_GLOBAL": "false", "JEO_SKILLS_JEV": mode,
+                   "JEV_API_KEY": "fixture-secret"}
+            standalone = self.execute(["/bin/bash"], env, block, ROOT)
+            self.assertEqual(standalone.returncode, 0, standalone.stdout + standalone.stderr)
+            self.assertIn(warning, standalone.stderr)
+            self.assertEqual(list(self.home.iterdir()), [])
+            self.assertFalse(self.external_log.exists())
+
+            continued = self.execute(["/bin/bash"], env, continuation, ROOT)
+            self.assertEqual(continued.returncode, 0, continued.stdout + continued.stderr)
+            self.assertIn(warning, continued.stderr)
+            self.assertIn("guide-after-jev", continued.stdout)
+            self.assertEqual(list(self.home.iterdir()), [])
+            self.assertFalse(self.external_log.exists())
+
         for mode in ("api", "local", "ollama", "lmstudio", "systemone"):
             with self.subTest(mode=mode):
-                result = self.execute(["/bin/bash"], {"USER_HOME": str(self.home),
-                                      "INSTALL_GLOBAL": "false", "JEO_SKILLS_JEV": mode,
-                                      "JEV_API_KEY": "fixture-secret"}, block, ROOT)
-                self.assertNotEqual(result.returncode, 0, result.stdout + result.stderr)
-                # The home-scope refusal proves the block accepts the mode (not the invalid-mode branch).
-                self.assertIn("Jev is home-scoped", result.stderr)
-                self.assertEqual(list(self.home.iterdir()), [])
-                self.assertFalse(self.external_log.exists())
+                assert_optional_skip(mode, "Jev is home-scoped")
+        with self.subTest(mode="invalid"):
+            assert_optional_skip("invalid", "JEO_SKILLS_JEV must be skip, api, local, ollama, lmstudio, or systemone")
 
     def test_setup_guide_block_configures_systemone_from_a_checkout(self):
         text = (ROOT / "setup-all-skills-prompt.md").read_text()
@@ -847,6 +1049,147 @@ class JevRegressions(unittest.TestCase):
             self.assertEqual(posted["model"], "jev-latest")
             self.assertEqual(posted["questions"]["family"]["criteria"], {"web": "web"})
             self.assertNotIn("options", posted["questions"]["family"])
+
+    def test_typesafe_api_accepts_official_typed_answers_and_binds_questions(self):
+        response = {
+            "model": "fixture-JEV-9B",
+            "answers": {
+                "check": {"type": "noul", "noul": .81},
+                "family": {"type": "choice", "choice": "web",
+                            "probabilities": {"web": .7000001, "infrastructure": .2999999},
+                            "confidence": .87},
+            },
+            "usage": {"input_tokens": 2, "output_tokens": 3},
+        }
+        with self.backend(response=response) as (base, requests):
+            self.config(JEV_MODE="api", JEV_ENDPOINT=base + "/v1/systemone", JEV_API_KEY="fixture-secret")
+            script = self.work / "typed-response.mjs"
+            script.write_text(f"import {{requestJev}} from {json.dumps(HARNESS.as_uri())};\n"
+                              "console.log(JSON.stringify(await requestJev({task:'React'}, {"
+                              "check:{type:'noul',instructions:'Does this work?'}, "
+                              "family:{type:'choice',instructions:'Pick one',criteria:{web:'web',infrastructure:'infra'}}})));\n")
+            result = self.execute([self.node, str(script)])
+            self.successful(result)
+            envelope = json.loads(result.stdout)
+            self.assertIsNone(envelope["error"])
+            self.assertEqual(envelope["source"], "api")
+            self.assertEqual(envelope["backend"]["kind"], "api")
+            self.assertEqual(envelope["model"], "fixture-JEV-9B")
+            self.assertEqual(envelope["answers"]["check"]["probability"], .81)
+            self.assertEqual(envelope["answers"]["check"]["answer"], "yes")
+            self.assertEqual(envelope["answers"]["family"]["choice"], "web")
+            self.assertAlmostEqual(sum(envelope["answers"]["family"]["probabilities"].values()), 1.0, places=6)
+            self.assertEqual(envelope["answers"]["family"]["confidence"], .87)
+            self.assertEqual(envelope["usage"], {"input_tokens": 2, "output_tokens": 3})
+            posted = requests[-1][3]
+            self.assertEqual(posted["model"], "jev-latest")
+            self.assertEqual(posted["questions"]["family"]["criteria"], {"web": "web", "infrastructure": "infra"})
+            self.assertNotIn("options", posted["questions"]["family"])
+
+    def test_typesafe_api_rejects_noncanonical_answer_shapes(self):
+        valid = {
+            "model": "fixture-JEV-9B",
+            "answers": {
+                "check": {"type": "noul", "noul": .81},
+                "family": {"type": "choice", "choice": "web",
+                            "probabilities": {"web": .7, "infrastructure": .3}, "confidence": .8},
+            },
+            "usage": {"input_tokens": 2, "output_tokens": 3},
+        }
+
+        def altered(change):
+            payload = json.loads(json.dumps(valid))
+            change(payload)
+            return payload
+
+        cases = (
+            ("missing-model", altered(lambda p: p.pop("model")), None),
+            ("wrong-model-type", altered(lambda p: p.__setitem__("model", 7)), None),
+            ("missing-answers", altered(lambda p: p.pop("answers")), None),
+            ("wrong-answers-type", altered(lambda p: p.__setitem__("answers", [])), None),
+            ("missing-usage", altered(lambda p: p.pop("usage")), None),
+            ("wrong-usage-type", altered(lambda p: p.__setitem__("usage", [])), None),
+            ("noul-wrong-type", altered(lambda p: p["answers"]["check"].__setitem__("type", "choice")), None),
+            ("noul-raw-numeric", altered(lambda p: p["answers"].__setitem__("check", .81)), None),
+            ("noul-legacy-alias", altered(lambda p: p["answers"].__setitem__("check", {"probability": .81})), None),
+            ("choice-array", altered(lambda p: p["answers"]["family"].__setitem__("choice", ["web"])), None),
+            ("answers-unrequested-id", altered(lambda p: p["answers"].__setitem__("rogue", {"type": "noul", "noul": .5})), None),
+            ("choice-unknown-probability-key", altered(lambda p: p["answers"]["family"]["probabilities"].__setitem__("other", 0.0)), None),
+            ("choice-probabilities-not-one", altered(lambda p: p["answers"]["family"].__setitem__("probabilities", {"web": .6, "infrastructure": .3})), None),
+            ("choice-confidence-negative", altered(lambda p: p["answers"]["family"].__setitem__("confidence", -.1)), None),
+            ("choice-confidence-too-large", altered(lambda p: p["answers"]["family"].__setitem__("confidence", 1.1)), None),
+            ("nan-probability", None, b'{"model":"fixture-JEV-9B","answers":{"check":{"type":"noul","noul":NaN},"family":{"type":"choice","choice":"web","probabilities":{"web":0.7,"infrastructure":0.3},"confidence":0.8}},"usage":{"input_tokens":2,"output_tokens":3}}'),
+        )
+        for name, response, raw in cases:
+            with self.subTest(case=name):
+                with self.backend(response=response, raw=raw) as (base, requests):
+                    self.config(JEV_MODE="api", JEV_ENDPOINT=base + "/v1/systemone", JEV_API_KEY="fixture-secret")
+                    script = self.work / f"malformed-{name}.mjs"
+                    script.write_text(f"import {{requestJev}} from {json.dumps(HARNESS.as_uri())};\n"
+                                      "console.log(JSON.stringify(await requestJev({task:'React'}, {"
+                                      "check:{type:'noul',instructions:'Does this work?'}, "
+                                      "family:{type:'choice',instructions:'Pick one',criteria:{web:'web',infrastructure:'infra'}}})));\n")
+                    result = self.execute([self.node, str(script)])
+                    self.successful(result)
+                    envelope = json.loads(result.stdout)
+                    self.assertIsNone(envelope["answers"])
+                    self.assertEqual(envelope["source"], "api")
+                    self.assertIn("api:", envelope["error"])
+                    self.assertGreaterEqual(len(requests), 1)
+
+    def test_malformed_typesafe_response_cannot_authorize_or_rank(self):
+        response = {"model": "fixture-JEV-9B", "answers": {"addresses_task": {"type": "noul", "noul": .99}},
+                    "usage": {"input_tokens": 1, "output_tokens": 1}}
+        with self.backend(response=response) as (base, requests):
+            self.config(JEV_MODE="api", JEV_ENDPOINT=base + "/v1/systemone", JEV_API_KEY="fixture-secret")
+            review = self.run_cli("review", TASK, json.dumps(PROPOSAL))
+            self.successful(review)
+            review_report = json.loads(review.stdout)
+            self.assertEqual(review_report["verdict"], "unavailable")
+            self.assertEqual(review_report["backend"]["kind"], "api")
+            self.assertNotEqual(review_report["verdict"], "permit")
+            route = self.run_cli("route-skills", TASK)
+            self.assertNotEqual(route.returncode, 0, route.stdout)
+            self.assertEqual(route.stdout, "")
+            self.assertGreaterEqual(len(requests), 2)
+
+    def test_driver_local_keeps_explicit_legacy_answer_aliases(self):
+        response = {"model": "fixture-JEV-9B", "answers": {
+            "check": {"probability": .81},
+            "family": {"choice": ["web"], "probabilities": {"web": .7, "infrastructure": .3}},
+        }}
+        with self.backend(response=response) as (base, requests):
+            self.config(JEV_MODE="local", JEV_ENDPOINT=base + "/v1/systemone", JEV_LOCAL_MODEL="fixture-JEV-9B")
+            script = self.work / "legacy-local-response.mjs"
+            script.write_text(f"import {{requestJev}} from {json.dumps(HARNESS.as_uri())};\n"
+                              "console.log(JSON.stringify(await requestJev({task:'React'}, {"
+                              "check:{type:'noul',instructions:'Does this work?'}, "
+                              "family:{type:'choice',instructions:'Pick one',criteria:{web:'web',infrastructure:'infra'}}})));\n")
+            result = self.execute([self.node, str(script)])
+            self.successful(result)
+            envelope = json.loads(result.stdout)
+            self.assertIsNone(envelope["error"])
+            self.assertEqual(envelope["answers"]["check"]["probability"], .81)
+            self.assertEqual(envelope["answers"]["family"]["choice"], ["web"])
+            self.assertEqual(envelope["source"], "local")
+            self.assertGreaterEqual(len(requests), 1)
+
+        with self.backend() as (base, requests):
+            self.config(JEV_MODE="local", JEV_ENDPOINT=base + "/v1/systemone", JEV_LOCAL_MODEL="fixture-JEV-9B")
+            script = self.work / "legacy-local-producer.mjs"
+            script.write_text(f"import {{requestJev}} from {json.dumps(HARNESS.as_uri())};\n"
+                              "console.log(JSON.stringify(await requestJev({task:'React'}, {"
+                              "check:{type:'noul',instructions:'Does this work?'}, "
+                              "family:{type:'choice',instructions:'Pick one',criteria:{web:'web',infrastructure:'infra'}}})));\n")
+            result = self.execute([self.node, str(script)])
+            self.successful(result)
+            envelope = json.loads(result.stdout)
+            self.assertIsNone(envelope["error"])
+            self.assertEqual(envelope["answers"]["family"]["choice"], ["web"])
+            self.assertEqual(envelope["answers"]["check"]["probability"], .94)
+            posted = requests[-1][3]
+            self.assertEqual(posted["questions"]["family"]["options"], ["web", "infrastructure"])
+            self.assertNotIn("criteria", posted["questions"]["family"])
 
     def test_per_operation_backend_keys_resolve_independently(self):
         with self.backend() as (base, requests):
@@ -1123,7 +1466,7 @@ class JevRegressions(unittest.TestCase):
             self.assertEqual(posted[0]["state"]["proposal"]["patch"], big["patch"])
 
     def test_attested_backend_without_served_model_cannot_permit(self):
-        favorable = {"model": "", "answers": {key: {"type": "noul", "noul": value, "confidence": max(value, 1 - value)}
+        favorable = {"model": "", "usage": {"input_tokens": 1, "output_tokens": 1}, "answers": {key: {"type": "noul", "noul": value}
                                               for key, value in FAVORABLE.items()}}
         with self.backend(response=favorable) as (base, requests):
             self.systemone_profile(base, JEV_SYSTEMONE_VALIDATED_MODEL="fixture-JEV-9B")

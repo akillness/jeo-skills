@@ -52,6 +52,10 @@ jobs:
           bun --version
           python3 --version
           jq --version
+      - name: Native Jev install, profile, and plugin regressions
+        env:
+          JEV_LIVE_SMOKE: '0'
+        run: node --test jev/install.test.mjs jev/plugin.test.mjs jev/profile.test.mjs
       - name: Isolated runtime configuration writer regressions
         run: /bin/bash scripts/test-runtime-config-writers.sh
       - name: Isolated runtime installation regressions

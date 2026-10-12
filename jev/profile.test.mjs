@@ -273,3 +273,98 @@ test('systemone mode and per-operation policy flags write isolated private files
   assert.notEqual(invalidOperation.status, 0);
   assert.equal(existsSync(join(profiles, 'badop.env')), false, 'invalid operation must fail before writing');
 });
+
+test('config-only setup writes disabled private backend profiles without dependencies or downloads', () => {
+  const setup = join(isolatedJev, 'jev-setup.sh');
+  const forbidden = join(source, 'forbidden-config-only-bin');
+  mkdirSync(forbidden, { recursive: true });
+  for (const command of ['python3', 'ollama', 'lms', 'curl']) {
+    const stub = join(forbidden, command);
+    writeFileSync(stub, `#!/bin/sh\nprintf 'FORBIDDEN_${command}\\n' >> "$HOME/jev-config-only-forbidden.log"\nexit 97\n`);
+    chmodSync(stub, 0o755);
+  }
+  const modes = ['api', 'local', 'ollama', 'lmstudio', 'systemone'];
+  for (const mode of modes) {
+    const profile = `config-only-${mode}`;
+    const endpoint = `http://127.0.0.1:18${String(modes.indexOf(mode)).padStart(2, '0')}/v1/systemone`;
+    const model = mode === 'local' ? 'jev-9b-local' : `jev-${mode}-test-model`;
+    const result = spawnSync('bash', [
+      setup, '--profile', profile, '--mode', mode, '--config-only',
+      '--endpoint', endpoint, '--model', model, '--key-env', 'JEV_TEST_KEY',
+    ], {
+      cwd: isolatedSource,
+      env: cleanEnv({
+        PATH: `${forbidden}:${process.env.PATH}`,
+        JEV_TEST_KEY: `${profile}-secret-value`,
+      }),
+      encoding: 'utf8',
+      timeout: 15_000,
+    });
+    assert.equal(result.status, 0, `${mode}: ${result.stdout}\n${result.stderr}`);
+    assert.equal(existsSync(join(home, 'jev-config-only-forbidden.log')), false, `${mode} invoked a dependency/download command`);
+    assert.equal(result.stdout.includes(`${profile}-secret-value`), false, `${mode} leaked the key value`);
+    const basePath = join(profiles, `${profile}.env`);
+    const modePath = join(profiles, `${profile}.${mode}.env`);
+    assert.equal(existsSync(basePath), true, `${mode} did not create its profile file`);
+    assert.equal(existsSync(modePath), true, `${mode} did not create its backend file`);
+    const base = readFileSync(basePath, 'utf8');
+    const backend = readFileSync(modePath, 'utf8');
+    assert.match(base, /JEV_ENABLED=false/);
+    assert.match(base, new RegExp(`JEV_MODE=${mode}`));
+    assert.match(backend, new RegExp(`(?:JEV_${mode.toUpperCase()}_ENDPOINT|JEV_SYSTEMONE_ENDPOINT|JEV_LOCAL_ENDPOINT|JEV_OLLAMA_ENDPOINT|JEV_LMSTUDIO_ENDPOINT)=${endpoint.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&')}`));
+    assert.match(backend, new RegExp(`(?:JEV_${mode.toUpperCase()}_MODEL|JEV_${mode.toUpperCase()}_VALIDATED_MODEL|JEV_LOCAL_MODEL|JEV_SYSTEMONE_MODEL)=${model}`));
+    assert.equal(statSync(basePath).mode & 0o777, 0o600);
+    assert.equal(statSync(modePath).mode & 0o777, 0o600);
+  }
+});
+
+test('ordinary profile setup preserves saved API ownership against conflicting ambient values', () => {
+  const setup = join(isolatedJev, 'jev-setup.sh');
+  const profile = 'work';
+  const storedEndpoint = 'https://stored.example.test/v1/systemone';
+  const storedModel = 'stored-model';
+  const initial = spawnSync('bash', [setup, '--profile', profile, '--mode', 'api', '--config-only', '--endpoint', storedEndpoint, '--model', storedModel, '--key-env', 'JEV_STORED_KEY'], {
+    cwd: isolatedSource,
+    env: cleanEnv({ JEV_STORED_KEY: 'stored-secret-value' }),
+    encoding: 'utf8',
+    timeout: 15_000,
+  });
+  assert.equal(initial.status, 0, `${initial.stdout}\n${initial.stderr}`);
+  const apiPath = join(profiles, `${profile}.api.env`);
+  writePrivate(apiPath, `${readFileSync(apiPath, 'utf8')}JEV_API_ATTESTATION_JSON=stored-attestation.json\n`);
+
+  const rerun = spawnSync('bash', [setup, '--profile', profile, '--mode', 'api'], {
+    cwd: isolatedSource,
+    env: cleanEnv({
+      JEV_API_KEY: 'ambient-conflicting-secret',
+      JEV_API_ENDPOINT: 'https://ambient.example.test/v1/systemone',
+      JEV_API_MODEL: 'ambient-model',
+      JEV_API_ATTESTATION_JSON: 'ambient-attestation.json',
+    }),
+    encoding: 'utf8',
+    timeout: 15_000,
+  });
+  assert.equal(rerun.status, 0, `${rerun.stdout}\n${rerun.stderr}`);
+  const api = readFileSync(apiPath, 'utf8');
+  assert.match(api, /JEV_API_KEY=stored-secret-value/);
+  assert.match(api, /JEV_API_ENDPOINT=https:\/\/stored\.example\.test\/v1\/systemone/);
+  assert.match(api, /JEV_API_MODEL=stored-model/);
+  assert.match(api, /JEV_API_ATTESTATION_JSON=stored-attestation\.json/);
+  assert.doesNotMatch(api, /ambient-conflicting-secret|ambient\.example\.test|ambient-model|ambient-attestation/);
+});
+test('ordinary API selection accepts an ambient key when no saved API backend exists', () => {
+  const setup = join(isolatedJev, 'jev-setup.sh');
+  const profile = 'saved-local-without-api';
+  const basePath = join(profiles, `${profile}.env`);
+  writePrivate(basePath, 'JEV_ENABLED=true\nJEV_MODE=local\n');
+  const result = spawnSync('bash', [setup, '--profile', profile, '--mode', 'api'], {
+    cwd: isolatedSource,
+    env: cleanEnv({ JEV_API_KEY: 'legacy-ambient-secret' }),
+    encoding: 'utf8',
+    timeout: 15_000,
+  });
+  assert.equal(result.status, 0, `${result.stdout}\n${result.stderr}`);
+  assert.equal(existsSync(join(profiles, `${profile}.api.env`)), true);
+  assert.equal(readFileSync(basePath, 'utf8').includes('JEV_MODE=api'), true);
+  assert.match(readFileSync(join(profiles, `${profile}.api.env`), 'utf8'), /JEV_API_KEY=legacy-ambient-secret/);
+});

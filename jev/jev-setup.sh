@@ -13,6 +13,26 @@ RULES_DIR="$HOME/.agents/rules"
 RAW_BASE="${JEO_SKILLS_RAW_BASE:-https://raw.githubusercontent.com/akillness/jeo-skills/main/jev}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 FILES=(jev-setup.sh jev-harness.mjs jev_local_server.py README.md jev-control-plane.rule.md)
+[ -f "$SCRIPT_DIR/jev-plugin.mjs" ] && FILES+=(jev-plugin.mjs)
+NATIVE_PLUGIN_DIR="$SCRIPT_DIR/plugins"
+NATIVE_PLUGIN_FILES=(
+  plugins/shared/jev-controller.mjs
+  plugins/claude/shared/jev-controller.mjs
+  plugins/claude/hooks/jev-hook.mjs
+  plugins/claude/hooks/hooks.json
+  plugins/claude/.claude-plugin/plugin.json
+  plugins/omp/index.mjs
+  plugins/omp/package.json
+  plugins/omp/shared/jev-controller.mjs
+  plugins/pi/index.mjs
+  plugins/pi/package.json
+  plugins/pi/shared/jev-controller.mjs
+  plugins/jeopi/index.mjs
+  plugins/jeopi/package.json
+  plugins/jeopi/shared/jev-controller.mjs
+)
+STANDALONE_SETUP=false
+[ -f "$SCRIPT_DIR/jev-harness.mjs" ] || STANDALONE_SETUP=true
 
 bold=$(tput bold 2>/dev/null || true); dim=$(tput dim 2>/dev/null || true); reset=$(tput sgr0 2>/dev/null || true)
 info() { printf '%s[jev-setup]%s %s\n' "$bold" "$reset" "$*"; }
@@ -22,6 +42,16 @@ PROFILE="${JEV_PROFILE:-}"
 AGENT_TARGET="${JEO_SKILLS_AGENT:-}"
 ACTION=configure
 MODE="${JEO_SKILLS_JEV:-}"
+MODE_CLI_SET=false
+CONFIG_ONLY=false
+ENDPOINT_OVERRIDE=""
+ENDPOINT_OVERRIDE_SET=false
+MODEL_OVERRIDE=""
+MODEL_OVERRIDE_SET=false
+MODEL_DIR_OVERRIDE=""
+MODEL_DIR_OVERRIDE_SET=false
+KEY_ENV=""
+KEY_ENV_SET=false
 ROUTE_BACKEND=""
 PRUNE_BACKEND=""
 REVIEW_BACKEND=""
@@ -62,7 +92,21 @@ while [ "$#" -gt 0 ]; do
       AGENT_TARGET="$2"; shift 2 ;;
     --mode)
       [ "$#" -ge 2 ] || fail '--mode requires api, local, ollama, lmstudio, or systemone'
-      MODE="$2"; shift 2 ;;
+      MODE="$2"; MODE_CLI_SET=true; shift 2 ;;
+    --config-only)
+      CONFIG_ONLY=true; shift ;;
+    --endpoint)
+      [ "$#" -ge 2 ] && [ -n "$2" ] || fail '--endpoint requires a non-empty URL'
+      ENDPOINT_OVERRIDE="$2"; ENDPOINT_OVERRIDE_SET=true; shift 2 ;;
+    --model)
+      [ "$#" -ge 2 ] && [ -n "$2" ] || fail '--model requires a non-empty model id'
+      MODEL_OVERRIDE="$2"; MODEL_OVERRIDE_SET=true; shift 2 ;;
+    --model-dir)
+      [ "$#" -ge 2 ] && [ -n "$2" ] || fail '--model-dir requires a non-empty path'
+      MODEL_DIR_OVERRIDE="$2"; MODEL_DIR_OVERRIDE_SET=true; shift 2 ;;
+    --key-env)
+      [ "$#" -ge 2 ] && [ -n "$2" ] || fail '--key-env requires a non-empty environment variable name'
+      KEY_ENV="$2"; KEY_ENV_SET=true; shift 2 ;;
     --route-backend)
       [ "$#" -ge 2 ] || fail '--route-backend requires a backend kind'
       validate_kind "$2"; ROUTE_BACKEND="$2"; shift 2 ;;
@@ -83,6 +127,7 @@ while [ "$#" -gt 0 ]; do
     --status) ACTION=status; shift ;;
     --help|-h)
       printf 'Usage: jev-setup.sh [--profile <id>] [--agent <runtime>] [--mode api|local|ollama|lmstudio|systemone]\n'
+      printf '       [--config-only] [--endpoint <url>] [--model <id>] [--model-dir <path>] [--key-env <ENVNAME>]\n'
       printf '       [--route-backend <kind>] [--prune-backend <kind>] [--review-backend <kind>]\n'
       printf '       [--fallback <op>=<kind[,kind]>] [--validated-model <id>]\n'
       printf '       jev-setup.sh --profile <id> --enable|--disable|--status\n'
@@ -90,6 +135,70 @@ while [ "$#" -gt 0 ]; do
     *) fail "Unknown option: $1" ;;
   esac
 done
+validate_env_name() {
+  [[ "$1" =~ ^[A-Za-z_][A-Za-z0-9_]*$ ]] || fail 'Secret environment name must match [A-Za-z_][A-Za-z0-9_]*'
+}
+validate_flag_value() {
+  local value="$1" label="$2"
+  case "$value" in *$'\n'*|*$'\r'*) fail "$label must be single-line" ;; esac
+  case "$value" in *'='*) fail "$label must not contain '='" ;; esac
+}
+validate_endpoint_url() {
+  local url="$1" label="${2:-Endpoint}" authority host port
+  [ -n "$url" ] || fail "$label must be a non-empty URL"
+  validate_flag_value "$url" "$label"
+  case "$url" in http://*|https://*) ;; *) fail "$label must use http:// or https://" ;; esac
+  case "$url" in *'@'*|*'?'*|*'#'*|*' '*) fail "$label must not contain userinfo, query, hash, or spaces" ;; esac
+  authority="${url#*://}"; authority="${authority%%/*}"
+  [ -n "$authority" ] || fail "$label must include a host"
+  case "$authority" in
+    \[*\]:*) host="${authority%%]*}]"; host="${host#\[}"; host="${host%]}"; port="${authority##*]:}" ;;
+    \[*\]) host="${authority#\[}"; host="${host%]}"; port="" ;;
+    *:*) host="${authority%%:*}"; port="${authority##*:}" ;;
+    *) host="$authority"; port="" ;;
+  esac
+  [ -n "$host" ] || fail "$label must include a host"
+  if [ -n "$port" ]; then
+    [[ "$port" =~ ^[0-9]+$ ]] || fail "$label port must be numeric"
+    [ "$port" -ge 1 ] && [ "$port" -le 65535 ] || fail "$label port must be 1-65535"
+  fi
+}
+validate_local_endpoint() {
+  local url="$1" authority host port
+  validate_endpoint_url "$url" 'Local endpoint'
+  case "$url" in http://*) ;; *) fail 'Local endpoint must use http://' ;; esac
+  authority="${url#*://}"; authority="${authority%%/*}"
+  case "$authority" in
+    \[*\]:*) host="${authority%%]*}]"; host="${host#\[}"; host="${host%]}"; port="${authority##*]:}" ;;
+    \[*\]) host="${authority#\[}"; host="${host%]}"; port="" ;;
+    *:*) host="${authority%%:*}"; port="${authority##*:}" ;;
+    *) host="$authority"; port="" ;;
+  esac
+  case "$host" in 127.0.0.1|localhost|::1) ;; *) fail 'Local endpoint host must be loopback' ;; esac
+  [ -n "$port" ] || port=8763
+  printf '%s\n%s\n' "$host" "$port"
+}
+if [ "$CONFIG_ONLY" = true ]; then
+  [ -n "$PROFILE" ] || fail '--config-only requires --profile <id>'
+  [ -n "$MODE" ] || fail '--config-only requires --mode <backend>'
+  case "$MODE" in api|local|ollama|lmstudio|systemone) ;; *) fail "Unknown config-only backend '$MODE'" ;; esac
+  [ -z "$AGENT_TARGET" ] || { validate_flag_value "$AGENT_TARGET" 'Agent id'; case "$AGENT_TARGET" in *[!a-z0-9-]*|-*|*-|*--*) fail 'Agent id must contain lowercase letters, digits, and single hyphens only' ;; esac; }
+  [ "$ENDPOINT_OVERRIDE_SET" = false ] || validate_endpoint_url "$ENDPOINT_OVERRIDE"
+  [ "$MODEL_OVERRIDE_SET" = false ] || { validate_flag_value "$MODEL_OVERRIDE" 'Model id'; case "$MODEL_OVERRIDE" in *[[:space:]]*) fail 'Model id must not contain whitespace' ;; esac; }
+  [ "$MODEL_DIR_OVERRIDE_SET" = false ] || validate_flag_value "$MODEL_DIR_OVERRIDE" 'Model directory'
+  [ "$KEY_ENV_SET" = false ] || validate_env_name "$KEY_ENV"
+  if [ "$KEY_ENV_SET" = true ]; then
+    [ "${!KEY_ENV+x}" = x ] || fail "Secret environment variable '$KEY_ENV' is not set"
+    CONFIG_SECRET_VALUE="${!KEY_ENV}"
+    [ -n "$CONFIG_SECRET_VALUE" ] || fail 'Secret environment variable is empty'
+    validate_flag_value "$CONFIG_SECRET_VALUE" 'Secret value'
+  else
+    CONFIG_SECRET_VALUE=""
+  fi
+  [ "$MODEL_DIR_OVERRIDE_SET" = false ] || [ "$MODE" = local ] || fail '--model-dir is only valid with local backend'
+  if [ "$MODE" = local ] && [ "$ENDPOINT_OVERRIDE_SET" = true ]; then validate_local_endpoint "$ENDPOINT_OVERRIDE" >/dev/null; fi
+  if [ "$MODE" = local ] && [ "$MODEL_OVERRIDE_SET" = true ] && [ "$MODEL_OVERRIDE" != 'jev-9b-local' ]; then fail 'Local model id must be jev-9b-local'; fi
+ fi
 if [ -n "$PROFILE" ]; then
   case "$PROFILE" in *[!a-z0-9-]*|-*|*-|*--*) fail 'Profile id must contain lowercase letters, digits, and single hyphens only' ;; esac
   PROFILE_DIR="$JEV_HOME/profiles"
@@ -97,6 +206,10 @@ if [ -n "$PROFILE" ]; then
 else
   PROFILE_DIR=""
   PROFILE_CONFIG="$JEV_HOME/.env"
+fi
+if [ -n "$PROFILE" ] && [ "$MODE_CLI_SET" = false ] && [ -f "$PROFILE_CONFIG" ]; then
+  saved_mode="$(awk -F= '$1 == "JEV_MODE" { value = $2; gsub(/^[[:space:]]+|[[:space:]]+$/, "", value); print value; exit }' "$PROFILE_CONFIG")"
+  [ -z "$saved_mode" ] || MODE="$saved_mode"
 fi
 
 if [ "$ACTION" = status ]; then
@@ -140,13 +253,29 @@ if [ "$ACTION" = enable ] || [ "$ACTION" = disable ]; then
 fi
 
 load_profile_defaults() {
-  local file="$1" line key value
+  local file="$1" line key value wanted
+  if [ "$KEY_ENV_SET" = false ] && [ -n "$PROFILE" ] && [ -f "$PROFILE_CONFIG" ] && [ -f "$file" ]; then
+    case "$MODE" in
+      api) wanted=JEV_API_KEY ;;
+      systemone) wanted=JEV_SYSTEMONE_API_KEY ;;
+      *) wanted="" ;;
+    esac
+    if [ -n "$wanted" ] && ! awk -F= -v wanted="$wanted" '{ lhs = $1; gsub(/^[[:space:]]+|[[:space:]]+$/, "", lhs); if (lhs == wanted) found = 1 } END { exit found ? 0 : 1 }' "$file" 2>/dev/null; then
+      printf -v "$wanted" '%s' ''
+      export "$wanted"
+    fi
+  fi
   [ -f "$file" ] || return 0
   while IFS= read -r line || [ -n "$line" ]; do
     [[ "$line" =~ ^[[:space:]]*(JEV_[A-Z_]+)[[:space:]]*=(.*)$ ]] || continue
     key="${BASH_REMATCH[1]}"; value="${BASH_REMATCH[2]}"
     case "$value" in "\""*"\"") value="${value#\"}"; value="${value%\"}" ;; "'"*"'") value="${value#\'}"; value="${value%\'}" ;; esac
-    if [ -z "${!key:-}" ]; then printf -v "$key" '%s' "$value"; export "$key"; fi
+    case "$key" in
+      JEV_*_ENDPOINT|JEV_ENDPOINT) [ "$ENDPOINT_OVERRIDE_SET" = false ] || continue ;;
+      JEV_*_MODEL|JEV_MODEL) [ "$MODEL_OVERRIDE_SET" = false ] || continue ;;
+      JEV_*_KEY) [ "$KEY_ENV_SET" = false ] || continue ;;
+    esac
+    printf -v "$key" '%s' "$value"; export "$key"
   done < "$file"
 }
 
@@ -182,13 +311,47 @@ if [ -z "$MODE" ]; then
 fi
 case "$MODE" in skip) info 'JEO_SKILLS_JEV=skip — not installing Jev.'; exit 0 ;; api|local|ollama|lmstudio|systemone) ;; *) fail "JEO_SKILLS_JEV must be skip, api, local, ollama, lmstudio, or systemone (got '$MODE')" ;; esac
 export JEV_MODE="$MODE"
-if [ -n "$PROFILE" ]; then
+if [ -n "$PROFILE" ] && [ "$CONFIG_ONLY" != true ]; then
   load_profile_defaults "$PROFILE_DIR/$PROFILE.$MODE.env"
 fi
+if [ "$CONFIG_ONLY" != true ]; then
+  if [ "$KEY_ENV_SET" = true ]; then
+    validate_env_name "$KEY_ENV"
+    [ "${!KEY_ENV+x}" = x ] || fail "Secret environment variable '$KEY_ENV' is not set"
+    EXPLICIT_KEY="${!KEY_ENV}"
+    [ -n "$EXPLICIT_KEY" ] || fail 'Secret environment variable is empty'
+    validate_flag_value "$EXPLICIT_KEY" 'Secret value'
+    case "$MODE" in
+      api) JEV_API_KEY="$EXPLICIT_KEY"; export JEV_API_KEY ;;
+      systemone) JEV_SYSTEMONE_API_KEY="$EXPLICIT_KEY"; export JEV_SYSTEMONE_API_KEY ;;
+    esac
+  fi
+  if [ "$ENDPOINT_OVERRIDE_SET" = true ]; then
+    if [ "$MODE" = local ]; then validate_local_endpoint "$ENDPOINT_OVERRIDE" >/dev/null; else validate_endpoint_url "$ENDPOINT_OVERRIDE"; fi
+    case "$MODE" in
+      api) JEV_API_ENDPOINT="$ENDPOINT_OVERRIDE"; JEV_ENDPOINT="$ENDPOINT_OVERRIDE" ;;
+      local) JEV_LOCAL_ENDPOINT="$ENDPOINT_OVERRIDE"; JEV_ENDPOINT="$ENDPOINT_OVERRIDE" ;;
+      ollama) JEV_OLLAMA_ENDPOINT="$ENDPOINT_OVERRIDE"; JEV_ENDPOINT="$ENDPOINT_OVERRIDE" ;;
+      lmstudio) JEV_LMSTUDIO_ENDPOINT="$ENDPOINT_OVERRIDE"; JEV_ENDPOINT="$ENDPOINT_OVERRIDE" ;;
+      systemone) JEV_SYSTEMONE_ENDPOINT="$ENDPOINT_OVERRIDE"; export JEV_SYSTEMONE_ENDPOINT ;;
+    esac
+  fi
+  if [ "$MODEL_OVERRIDE_SET" = true ]; then
+    validate_flag_value "$MODEL_OVERRIDE" 'Model id'
+    case "$MODEL_OVERRIDE" in *[[:space:]]*) fail 'Model id must not contain whitespace' ;; esac
+    if [ "$MODE" = local ] && [ "$MODEL_OVERRIDE" != 'jev-9b-local' ]; then fail 'Local model id must be jev-9b-local'; fi
+    case "$MODE" in
+      api) JEV_API_MODEL="$MODEL_OVERRIDE" ;;
+      local) JEV_LOCAL_MODEL="$MODEL_OVERRIDE" ;;
+      ollama|lmstudio) JEV_LOCAL_MODEL="$MODEL_OVERRIDE" ;;
+      systemone) JEV_SYSTEMONE_MODEL="$MODEL_OVERRIDE"; export JEV_SYSTEMONE_MODEL ;;
+    esac
+  fi
+fi
 MODEL_REPO="autotrust/JEV-9B"
-MODEL_DIR="${JEV_LOCAL_MODEL_DIR:-$JEV_HOME/models/JEV-9B}"
+if [ "$CONFIG_ONLY" = true ]; then MODEL_DIR="${MODEL_DIR_OVERRIDE:-$JEV_HOME/models/JEV-9B}"; else MODEL_DIR="${JEV_LOCAL_MODEL_DIR:-$JEV_HOME/models/JEV-9B}"; fi
 PROFILE_MODE_CONFIG="${PROFILE_DIR:+$PROFILE_DIR/$PROFILE.$MODE.env}"
-if [ "$MODE" = api ]; then
+if [ "$CONFIG_ONLY" != true ] && [ "$MODE" = api ]; then
   KEY="${JEV_API_KEY:-}"
   if [ -z "$KEY" ]; then
     [ -t 0 ] || fail 'api mode without TTY requires JEV_API_KEY in the environment'
@@ -197,7 +360,7 @@ if [ "$MODE" = api ]; then
   fi
   [ -n "$KEY" ] || fail 'Empty API key'
 fi
-if [ "$MODE" = systemone ]; then
+if [ "$CONFIG_ONLY" != true ] && [ "$MODE" = systemone ]; then
   SYSTEMONE_ENDPOINT="${JEV_SYSTEMONE_ENDPOINT:-}"
   SYSTEMONE_DRIVER="${JEV_SYSTEMONE_DRIVER:-typesafe}"
   SYSTEMONE_MODEL="${JEV_SYSTEMONE_MODEL:-}"
@@ -235,13 +398,16 @@ for value in "${KEY:-}" "${JEV_ENDPOINT:-}" "${JEV_API_ENDPOINT:-}" "${JEV_LOCAL
   case "$value" in *$'\n'*|*$'\r'*) fail 'Jev configuration values must be single-line' ;; esac
 done
 command -v node >/dev/null 2>&1 || fail 'Node.js is required for the Jev harness'
-CONFIG_DESTINATIONS=("$HOME/.agents" "$JEV_HOME" "$RULES_DIR" "$RULES_DIR/jev-control-plane.md" "$JEV_HOME/skills.json")
+CONFIG_DESTINATIONS=("$HOME/.agents" "$JEV_HOME" "$JEV_HOME/plugins" "$RULES_DIR" "$RULES_DIR/jev-control-plane.md" "$JEV_HOME/skills.json")
 if [ -n "$PROFILE" ]; then CONFIG_DESTINATIONS+=("$PROFILE_DIR" "$PROFILE_CONFIG" "$PROFILE_MODE_CONFIG")
 else CONFIG_DESTINATIONS+=("$JEV_HOME/.env")
 fi
 for destination in "${CONFIG_DESTINATIONS[@]}"; do
   [ ! -L "$destination" ] || fail "Refusing symlink destination: $destination"
 done
+[ ! -e "$HOME/.agents" ] || [ -d "$HOME/.agents" ] || fail "Refusing non-directory destination: $HOME/.agents"
+[ ! -e "$JEV_HOME" ] || [ -d "$JEV_HOME" ] || fail "Refusing non-directory destination: $JEV_HOME"
+[ ! -e "$RULES_DIR" ] || [ -d "$RULES_DIR" ] || fail "Refusing non-directory destination: $RULES_DIR"
 for f in "${FILES[@]}"; do
   [ ! -L "$JEV_HOME/$f" ] || fail "Refusing symlink destination: $JEV_HOME/$f"
 done
@@ -256,39 +422,162 @@ if [ "$MODE" = local ]; then
   done
 fi
 
+native_destination_guard() {
+  [ ! -L "$JEV_HOME/plugins" ] || fail "Refusing symlink destination: $JEV_HOME/plugins"
+  [ ! -e "$JEV_HOME/plugins" ] || [ -d "$JEV_HOME/plugins" ] || fail "Refusing non-directory destination: $JEV_HOME/plugins"
+  if [ -d "$JEV_HOME/plugins" ]; then
+    [ -z "$(find "$JEV_HOME/plugins" -type l -print -quit)" ] || fail "Refusing nested symlink in destination: $JEV_HOME/plugins"
+  fi
+}
 
-# ── Install harness files (local checkout first, raw GitHub fallback) ─────────
+native_parent_guard() {
+  local destination parent
+  destination="$1"
+  parent="$(dirname "$destination")"
+  while [ "$parent" != "$JEV_HOME" ] && [ "$parent" != "/" ]; do
+    [ ! -e "$parent" ] || [ -d "$parent" ] || fail "Refusing non-directory destination parent: $parent"
+    parent="$(dirname "$parent")"
+  done
+}
+
+native_collision_guard() {
+  local source_path relative destination
+  while IFS= read -r -d '' source_path; do
+    relative="${source_path#"$NATIVE_PLUGIN_DIR/"}"
+    destination="$JEV_HOME/plugins/$relative"
+    native_parent_guard "$destination"
+    if [ -d "$source_path" ]; then
+      [ ! -e "$destination" ] || [ -d "$destination" ] || fail "Refusing non-directory native collision: $destination"
+    else
+      [ ! -e "$destination" ] || [ -f "$destination" ] || fail "Refusing non-file native collision: $destination"
+    fi
+  done < <(find "$NATIVE_PLUGIN_DIR" -mindepth 1 -print0)
+}
+
+native_preflight() {
+  if [ "$STANDALONE_SETUP" = true ] && [ ! -d "$NATIVE_PLUGIN_DIR" ] && [ "$CONFIG_ONLY" != true ]; then
+    native_destination_guard
+    for native_file in "${NATIVE_PLUGIN_FILES[@]}"; do
+      native_destination="$JEV_HOME/$native_file"
+      [ ! -L "$native_destination" ] || fail "Refusing symlink destination: $native_destination"
+      native_parent_guard "$native_destination"
+    done
+  fi
+  if [ -e "$NATIVE_PLUGIN_DIR" ] || [ -L "$NATIVE_PLUGIN_DIR" ]; then
+    [ -d "$NATIVE_PLUGIN_DIR" ] || fail "Refusing non-directory native plugin source: $NATIVE_PLUGIN_DIR"
+    [ ! -L "$NATIVE_PLUGIN_DIR" ] || fail "Refusing symlink native plugin source: $NATIVE_PLUGIN_DIR"
+    native_destination_guard
+    [ -z "$(find "$NATIVE_PLUGIN_DIR" -type l -print -quit)" ] || fail "Refusing symlink in native plugin source: $NATIVE_PLUGIN_DIR"
+    native_collision_guard
+  fi
+}
+
+native_preflight
+SETUP_STAGE="$(mktemp -d "${TMPDIR:-/tmp}/jev-setup.XXXXXX")" || fail 'Cannot create Jev setup staging directory'
+trap 'rm -rf "$SETUP_STAGE"' EXIT
+mkdir -p "$SETUP_STAGE/files"
+PUBLISH_FILES=()
+PUBLISH_NATIVE=false
+PUBLISH_CATALOG=false
+
+# ── Stage managed runtime assets before publishing any installed bytes ────────
+for f in "${FILES[@]}"; do
+  staged="$SETUP_STAGE/files/$f"
+  source="$SCRIPT_DIR/$f"
+  mkdir -p "$(dirname "$staged")"
+  if [ -f "$source" ]; then
+    cp "$source" "$staged"
+    if [ ! -f "$JEV_HOME/$f" ] || [ ! "$source" -ef "$JEV_HOME/$f" ]; then PUBLISH_FILES+=("$f"); fi
+  elif [ "$CONFIG_ONLY" = true ] && [ -f "$JEV_HOME/$f" ]; then
+    cp "$JEV_HOME/$f" "$staged"
+  elif [ "$CONFIG_ONLY" = true ]; then
+    fail "Cannot install $f in config-only mode: no local copy"
+  else
+    curl -fsSL "$RAW_BASE/$f" -o "$staged" || fail "Cannot fetch $f (no local copy, download failed)"
+    PUBLISH_FILES+=("$f")
+  fi
+done
+if [ "$STANDALONE_SETUP" = true ] && [ ! -f "$SCRIPT_DIR/jev-plugin.mjs" ] && [ "$CONFIG_ONLY" != true ]; then
+  curl -fsSL "$RAW_BASE/jev-plugin.mjs" -o "$SETUP_STAGE/files/jev-plugin.mjs" || fail 'Cannot fetch jev-plugin.mjs (no local copy, download failed)'
+  PUBLISH_FILES+=(jev-plugin.mjs)
+fi
+
+if [ "$STANDALONE_SETUP" = true ] && [ ! -d "$NATIVE_PLUGIN_DIR" ] && [ "$CONFIG_ONLY" != true ]; then
+  for native_file in "${NATIVE_PLUGIN_FILES[@]}"; do
+    staged="$SETUP_STAGE/$native_file"
+    mkdir -p "$(dirname "$staged")"
+    curl -fsSL "$RAW_BASE/$native_file" -o "$staged" || fail "Cannot fetch $native_file (no local copy, download failed)"
+  done
+  PUBLISH_NATIVE=true
+elif [ -d "$NATIVE_PLUGIN_DIR" ]; then
+  mkdir -p "$SETUP_STAGE/plugins"
+  cp -R "$NATIVE_PLUGIN_DIR/." "$SETUP_STAGE/plugins/"
+  if [ ! -d "$JEV_HOME/plugins" ] || [ ! "$NATIVE_PLUGIN_DIR" -ef "$JEV_HOME/plugins" ]; then PUBLISH_NATIVE=true; fi
+fi
+
+# The catalog is staged and validated before any replacement is published.
+CATALOG_SOURCE="${JEO_SKILLS_CATALOG:-$SCRIPT_DIR/../.agent-skills/skills.json}"
+catalog_is_valid() {
+  local candidate="$1"
+  [ -f "$candidate" ] || return 1
+  node -e 'const c = JSON.parse(require("fs").readFileSync(process.argv[1], "utf8")); process.exit(Array.isArray(c.skills) && c.skills.length && c.categories && typeof c.categories === "object" ? 0 : 1)' "$candidate" 2>/dev/null
+}
+catalog_keep_existing_or_warn() {
+  local reason="$1"
+  if catalog_is_valid "$JEV_HOME/skills.json"; then
+    info "$reason; keeping the existing one."
+  else
+    info "$reason; no valid installed skills catalog remains, continuing without a snapshot."
+  fi
+}
+if [ -f "$CATALOG_SOURCE" ]; then
+  if [ "$CATALOG_SOURCE" -ef "$JEV_HOME/skills.json" ]; then
+    if catalog_is_valid "$JEV_HOME/skills.json"; then
+      :
+    else
+      info 'Configured skills catalog source is invalid; continuing without a catalog snapshot.'
+    fi
+  elif cp "$CATALOG_SOURCE" "$SETUP_STAGE/skills.json" && catalog_is_valid "$SETUP_STAGE/skills.json"; then
+    PUBLISH_CATALOG=true
+  else
+    rm -f "$SETUP_STAGE/skills.json"
+    catalog_keep_existing_or_warn 'Could not refresh the skills catalog snapshot'
+  fi
+elif [ "$CONFIG_ONLY" = true ]; then
+  if [ -f "$JEV_HOME/skills.json" ] && ! catalog_is_valid "$JEV_HOME/skills.json"; then
+    info 'Existing skills catalog snapshot is invalid; continuing without a snapshot.'
+  fi
+elif curl -fsSL "${RAW_BASE%/jev}/.agent-skills/skills.json" -o "$SETUP_STAGE/skills.json" 2>/dev/null && catalog_is_valid "$SETUP_STAGE/skills.json"; then
+  PUBLISH_CATALOG=true
+else
+  rm -f "$SETUP_STAGE/skills.json"
+  catalog_keep_existing_or_warn 'Could not refresh the skills catalog snapshot'
+fi
+
+node --check "$SETUP_STAGE/files/jev-harness.mjs" >/dev/null || fail 'Harness syntax check failed'
 mkdir -p "$JEV_HOME" "$RULES_DIR"
 if [ -n "$PROFILE" ]; then mkdir -p "$PROFILE_DIR"; fi
-for f in "${FILES[@]}"; do
-  if [ "$SCRIPT_DIR/$f" -ef "$JEV_HOME/$f" ]; then : # running from the installed copy
-  elif [ -f "$SCRIPT_DIR/$f" ]; then cp "$SCRIPT_DIR/$f" "$JEV_HOME/$f"
-  else curl -fsSL "$RAW_BASE/$f" -o "$JEV_HOME/$f" || fail "Cannot fetch $f (no local copy, download failed)"; fi
-
+for f in "${PUBLISH_FILES[@]}"; do
+  destination="$JEV_HOME/$f"
+  mkdir -p "$(dirname "$destination")"
+  cp "$SETUP_STAGE/files/$f" "$destination"
 done
+if [ "$PUBLISH_NATIVE" = true ]; then
+  mkdir -p "$JEV_HOME/plugins"
+  cp -R "$SETUP_STAGE/plugins/." "$JEV_HOME/plugins/"
+fi
+if [ "$PUBLISH_CATALOG" = true ]; then
+  cp "$SETUP_STAGE/skills.json" "$JEV_HOME/skills.json"
+  info "Skills catalog snapshot installed at $JEV_HOME/skills.json"
+elif [ -f "$JEV_HOME/skills.json" ]; then
+  info 'Skills catalog snapshot retained'
+else
+  info 'No skills catalog snapshot: route-skills needs JEV_CATALOG_PATH or a jeo-skills checkout until setup is re-run online.'
+fi
 cp "$JEV_HOME/jev-control-plane.rule.md" "$RULES_DIR/jev-control-plane.md"
 node --check "$JEV_HOME/jev-harness.mjs" >/dev/null || fail 'Harness syntax check failed'
 info "Harness installed at $JEV_HOME (syntax check passed; no backend inference performed)"
 
-# ── Skills catalog snapshot (route-skills outside a jeo-skills checkout) ──────
-# The harness reads JEV_CATALOG_PATH, then a checkout's .agent-skills/skills.json,
-# then this snapshot. Source: JEO_SKILLS_CATALOG, the checkout this script runs
-# from, else the catalog published beside RAW_BASE. Only a valid catalog replaces
-# an existing snapshot; an unavailable one never fails setup (prune/review need none).
-CATALOG_SOURCE="${JEO_SKILLS_CATALOG:-$SCRIPT_DIR/../.agent-skills/skills.json}"
-catalog_tmp="$(mktemp "$JEV_HOME/.skills.json.XXXXXX")" || fail 'Cannot create catalog temporary file'
-if [ -f "$CATALOG_SOURCE" ]; then cp "$CATALOG_SOURCE" "$catalog_tmp"
-else curl -fsSL "${RAW_BASE%/jev}/.agent-skills/skills.json" -o "$catalog_tmp" 2>/dev/null || : > "$catalog_tmp"
-fi
-if node -e 'const c = JSON.parse(require("fs").readFileSync(process.argv[1], "utf8")); process.exit(Array.isArray(c.skills) && c.skills.length && c.categories && typeof c.categories === "object" ? 0 : 1)' "$catalog_tmp" 2>/dev/null; then
-  mv -f "$catalog_tmp" "$JEV_HOME/skills.json"
-  info "Skills catalog snapshot installed at $JEV_HOME/skills.json"
-else
-  rm -f "$catalog_tmp"
-  if [ -f "$JEV_HOME/skills.json" ]; then info 'Could not refresh the skills catalog snapshot; keeping the existing one.'
-  else info 'No skills catalog snapshot: route-skills needs JEV_CATALOG_PATH or a jeo-skills checkout until setup is re-run online.'
-  fi
-fi
 
 write_env_file() { # write_env_file <path>; KEY=VALUE lines on stdin
   local destination="$1" directory env_tmp
@@ -320,10 +609,14 @@ write_env() {
   } | write_env_file "$JEV_HOME/.env"
 }
 write_profile_base() {
-  local enabled=true stored temp
+  local enabled stored temp
   if [ -f "$PROFILE_CONFIG" ]; then
     stored="$(awk -F= '/^[[:space:]]*JEV_ENABLED[[:space:]]*=/ { value = $2; gsub(/^[[:space:]]+|[[:space:]]+$/, "", value) } END { print tolower(value) }' "$PROFILE_CONFIG")"
     case "$stored" in ''|true) enabled=true ;; false) enabled=false ;; *) fail 'Invalid JEV_ENABLED value in existing profile' ;; esac
+  elif [ "$CONFIG_ONLY" = true ]; then
+    enabled=false
+  else
+    enabled=true
   fi
   umask 177
   temp="$(mktemp "$PROFILE_DIR/.$PROFILE.env.XXXXXX")" || fail 'Cannot create profile config temporary file'
@@ -365,22 +658,95 @@ write_selected_config() {
   if [ -n "$PROFILE" ]; then
     local payload
     umask 177
-    payload="$(mktemp "$PROFILE_DIR/.$PROFILE.mode.XXXXXX")" || fail 'Cannot create profile config temporary file'
-    trap 'rm -f "$payload"' EXIT
+    payload="$(mktemp "$SETUP_STAGE/profile-payload.XXXXXX")" || fail 'Cannot create profile config temporary file'
     if ! cat > "$payload"; then fail 'Cannot read Jev backend profile input'; fi
     [ -z "$VALIDATED_MODEL" ] || printf '%s=%s\n' "$VALIDATED_KEY" "$VALIDATED_MODEL" >> "$payload"
-    write_env_file "$PROFILE_MODE_CONFIG" < "$payload"
+    write_config_only_selected < "$payload"
     rm -f "$payload"
-    trap - EXIT
-    write_profile_base
   else
     write_env
   fi
 }
 
+profile_value() {
+  local key="$1"
+  [ -f "$PROFILE_MODE_CONFIG" ] || return 0
+  awk -v key="$key" 'index($0, "=") > 0 { lhs = substr($0, 1, index($0, "=") - 1); gsub(/^[[:space:]]+|[[:space:]]+$/, "", lhs); if (lhs == key) { value = substr($0, index($0, "=") + 1); gsub(/^[[:space:]]+|[[:space:]]+$/, "", value); print value; exit } }' "$PROFILE_MODE_CONFIG"
+}
+write_config_only_selected() {
+  local updates merged
+  umask 177
+  updates="$(mktemp "$SETUP_STAGE/profile-update.XXXXXX")" || fail 'Cannot create profile config temporary file'
+  cat > "$updates" || { rm -f "$updates"; fail 'Cannot read Jev config-only profile input'; }
+  if [ -f "$PROFILE_MODE_CONFIG" ]; then
+    merged="$(mktemp "$SETUP_STAGE/profile-merge.XXXXXX")" || { rm -f "$updates"; fail 'Cannot create profile merge temporary file'; }
+    awk -F= 'NR == FNR { key = $1; gsub(/^[[:space:]]+|[[:space:]]+$/, "", key); replace[key] = 1; next } { key = $1; gsub(/^[[:space:]]+|[[:space:]]+$/, "", key); if (!(key in replace)) print }' "$updates" "$PROFILE_MODE_CONFIG" > "$merged"
+    cat "$updates" >> "$merged"
+    write_env_file "$PROFILE_MODE_CONFIG" < "$merged"
+    rm -f "$merged"
+  else
+    write_env_file "$PROFILE_MODE_CONFIG" < "$updates"
+  fi
+  rm -f "$updates"
+  write_profile_base
+}
+if [ "$CONFIG_ONLY" = true ]; then
+  SECRET_VALUE=""
+  if [ "$KEY_ENV_SET" = true ]; then
+    [ "${!KEY_ENV+x}" = x ] || fail "Secret environment variable '$KEY_ENV' is not set"
+    SECRET_VALUE="${!KEY_ENV}"
+    [ -n "$SECRET_VALUE" ] || fail 'Secret environment variable is empty'
+    validate_flag_value "$SECRET_VALUE" 'Secret value'
+  fi
+  endpoint=""; model=""
+  case "$MODE" in
+    api)
+      endpoint="${ENDPOINT_OVERRIDE:-$(profile_value JEV_API_ENDPOINT)}"; [ -n "$endpoint" ] || endpoint='https://api.typesafe.ai/v1/systemone'
+      validate_endpoint_url "$endpoint" 'API endpoint'
+      model="${MODEL_OVERRIDE:-$(profile_value JEV_API_MODEL)}"; [ -n "$model" ] || model='jev-latest'
+      { printf 'JEV_API_ENDPOINT=%s\nJEV_API_MODEL=%s\n' "$endpoint" "$model"; [ "$KEY_ENV_SET" = true ] && printf 'JEV_API_KEY=%s\n' "$SECRET_VALUE" || :; } | write_config_only_selected
+      ;;
+    local)
+      [ "$MODEL_DIR_OVERRIDE_SET" = false ] || :
+      endpoint="${ENDPOINT_OVERRIDE:-$(profile_value JEV_LOCAL_ENDPOINT)}"; [ -n "$endpoint" ] || endpoint='http://127.0.0.1:8763/v1/systemone'
+      local_info="$(validate_local_endpoint "$endpoint")"
+      local_host="${local_info%%$'\n'*}"; local_port="${local_info#*$'\n'}"
+      model="${MODEL_OVERRIDE:-$(profile_value JEV_LOCAL_MODEL)}"; [ -n "$model" ] || model='jev-9b-local'
+      [ "$model" = 'jev-9b-local' ] || fail 'Local model id must be jev-9b-local'
+      model_dir="${MODEL_DIR_OVERRIDE:-$(profile_value JEV_LOCAL_MODEL_DIR)}"; [ -n "$model_dir" ] || model_dir="$JEV_HOME/models/JEV-9B"
+      validate_flag_value "$model_dir" 'Model directory'
+      printf 'JEV_LOCAL_ENDPOINT=%s\nJEV_LOCAL_HOST=%s\nJEV_LOCAL_PORT=%s\nJEV_LOCAL_MODEL=%s\nJEV_LOCAL_MODEL_DIR=%s\n' "$endpoint" "$local_host" "$local_port" "$model" "$model_dir" | write_config_only_selected
+      ;;
+    ollama)
+      [ "$MODEL_DIR_OVERRIDE_SET" = false ] || fail '--model-dir is only valid with local backend'
+      endpoint="${ENDPOINT_OVERRIDE:-$(profile_value JEV_OLLAMA_ENDPOINT)}"; [ -n "$endpoint" ] || endpoint='http://127.0.0.1:11434'
+      validate_endpoint_url "$endpoint" 'Ollama endpoint'
+      model="${MODEL_OVERRIDE:-$(profile_value JEV_OLLAMA_MODEL)}"; [ -n "$model" ] || model="$(profile_value JEV_LOCAL_MODEL)"; [ -n "$model" ] || model='hf.co/mradermacher/JEV-9B-GGUF:Q4_K_M'
+      printf 'JEV_OLLAMA_ENDPOINT=%s\nJEV_OLLAMA_MODEL=%s\n' "$endpoint" "$model" | write_config_only_selected
+      ;;
+    lmstudio)
+      [ "$MODEL_DIR_OVERRIDE_SET" = false ] || fail '--model-dir is only valid with local backend'
+      endpoint="${ENDPOINT_OVERRIDE:-$(profile_value JEV_LMSTUDIO_ENDPOINT)}"; [ -n "$endpoint" ] || endpoint='http://127.0.0.1:1234'
+      validate_endpoint_url "$endpoint" 'LM Studio endpoint'
+      model="${MODEL_OVERRIDE:-$(profile_value JEV_LMSTUDIO_MODEL)}"; [ -n "$model" ] || model="$(profile_value JEV_LOCAL_MODEL)"; [ -n "$model" ] || model='mradermacher/JEV-9B-GGUF'
+      printf 'JEV_LMSTUDIO_ENDPOINT=%s\nJEV_LMSTUDIO_MODEL=%s\n' "$endpoint" "$model" | write_config_only_selected
+      ;;
+    systemone)
+      [ "$MODEL_DIR_OVERRIDE_SET" = false ] || fail '--model-dir is only valid with local backend'
+      endpoint="${ENDPOINT_OVERRIDE:-$(profile_value JEV_SYSTEMONE_ENDPOINT)}"; [ -n "$endpoint" ] || endpoint='https://api.typesafe.ai/v1/systemone'
+      validate_endpoint_url "$endpoint" 'System One endpoint'
+      model="${MODEL_OVERRIDE:-$(profile_value JEV_SYSTEMONE_MODEL)}"; [ -n "$model" ] || model='jev-latest'
+      driver="$(profile_value JEV_SYSTEMONE_DRIVER)"; [ -n "$driver" ] || driver='typesafe'
+      case "$driver" in typesafe|decide|vllm-jev-decision) ;; *) fail 'JEV_SYSTEMONE_DRIVER must be typesafe, decide, or vllm-jev-decision' ;; esac
+      { printf 'JEV_SYSTEMONE_ENDPOINT=%s\nJEV_SYSTEMONE_DRIVER=%s\nJEV_SYSTEMONE_MODEL=%s\n' "$endpoint" "$driver" "$model"; [ "$KEY_ENV_SET" = true ] && printf 'JEV_SYSTEMONE_API_KEY=%s\n' "$SECRET_VALUE" || :; } | write_config_only_selected
+      ;;
+  esac
+  info "Config-only $MODE profile '$PROFILE' written (disabled by default; no backend activation performed)."
+  exit 0
+fi
 if [ "$MODE" = api ]; then
   if [ -n "$PROFILE" ]; then
-    printf 'JEV_API_KEY=%s\nJEV_API_ENDPOINT=%s\n' "$KEY" "${JEV_ENDPOINT:-${JEV_API_ENDPOINT:-https://api.typesafe.ai/v1/systemone}}" | write_selected_config
+    printf 'JEV_API_KEY=%s\nJEV_API_ENDPOINT=%s\nJEV_API_MODEL=%s\n' "$KEY" "${JEV_API_ENDPOINT:-${JEV_ENDPOINT:-https://api.typesafe.ai/v1/systemone}}" "${JEV_API_MODEL:-jev-latest}" | write_selected_config
     info "API mode configured for profile '$PROFILE' (private mode-600 files)."
   else
     printf 'JEV_MODE=api\nJEV_API_KEY=%s\nJEV_ENDPOINT=%s\n' "$KEY" "${JEV_ENDPOINT:-https://api.typesafe.ai/v1/systemone}" | write_env
@@ -398,7 +764,7 @@ elif [ "$MODE" = ollama ]; then
     ollama pull "$GGUF_MODEL" || fail 'ollama pull failed'
   fi
   if [ -n "$PROFILE" ]; then
-    printf 'JEV_LOCAL_MODEL=%s\nJEV_OLLAMA_ENDPOINT=%s\n' "$GGUF_MODEL" "${JEV_ENDPOINT:-${JEV_OLLAMA_ENDPOINT:-http://127.0.0.1:11434}}" | write_selected_config
+    printf 'JEV_LOCAL_MODEL=%s\nJEV_OLLAMA_ENDPOINT=%s\n' "$GGUF_MODEL" "${JEV_OLLAMA_ENDPOINT:-${JEV_ENDPOINT:-http://127.0.0.1:11434}}" | write_selected_config
   else
     printf 'JEV_MODE=ollama\nJEV_LOCAL_MODEL=%s\nJEV_ENDPOINT=%s\n' "$GGUF_MODEL" "${JEV_ENDPOINT:-http://127.0.0.1:11434}" | write_env
   fi
@@ -417,7 +783,7 @@ elif [ "$MODE" = lmstudio ]; then
   fi
   # Model id is resolved at runtime from /v1/models (set JEV_LOCAL_MODEL to pin it).
   if [ -n "$PROFILE" ]; then
-    printf 'JEV_LMSTUDIO_ENDPOINT=%s\nJEV_LOCAL_MODEL=%s\n' "${JEV_ENDPOINT:-${JEV_LMSTUDIO_ENDPOINT:-http://127.0.0.1:1234}}" "${JEV_LOCAL_MODEL:-}" | write_selected_config
+    printf 'JEV_LMSTUDIO_ENDPOINT=%s\nJEV_LOCAL_MODEL=%s\n' "${JEV_LMSTUDIO_ENDPOINT:-${JEV_ENDPOINT:-http://127.0.0.1:1234}}" "${JEV_LOCAL_MODEL:-}" | write_selected_config
   else
     printf 'JEV_MODE=lmstudio\nJEV_ENDPOINT=%s\nJEV_LOCAL_MODEL=%s\n' "${JEV_ENDPOINT:-http://127.0.0.1:1234}" "${JEV_LOCAL_MODEL:-}" | write_env
   fi
@@ -462,7 +828,7 @@ snapshot_download(repo_id=sys.argv[1], local_dir=sys.argv[2])
 PY
   fi
   if [ -n "$PROFILE" ]; then
-    printf 'JEV_LOCAL_MODEL_DIR=%s\nJEV_LOCAL_ENDPOINT=%s\nJEV_LOCAL_HOST=%s\nJEV_LOCAL_PORT=%s\n' "$MODEL_DIR" "${JEV_ENDPOINT:-${JEV_LOCAL_ENDPOINT:-http://127.0.0.1:8763/v1/systemone}}" "${JEV_LOCAL_HOST:-127.0.0.1}" "${JEV_LOCAL_PORT:-8763}" | write_selected_config
+    printf 'JEV_LOCAL_MODEL_DIR=%s\nJEV_LOCAL_ENDPOINT=%s\nJEV_LOCAL_HOST=%s\nJEV_LOCAL_PORT=%s\n' "$MODEL_DIR" "${JEV_LOCAL_ENDPOINT:-${JEV_ENDPOINT:-http://127.0.0.1:8763/v1/systemone}}" "${JEV_LOCAL_HOST:-127.0.0.1}" "${JEV_LOCAL_PORT:-8763}" | write_selected_config
     JEV_MODE=local "$VENV/bin/python" "$JEV_HOME/jev_local_server.py" --check --profile "$PROFILE" >/dev/null || fail 'Local server structural check failed'
     info "Local mode configured for profile '$PROFILE'. Start the backend with:"
     info "  JEV_PROFILE=$PROFILE $VENV/bin/python $JEV_HOME/jev_local_server.py --profile $PROFILE"

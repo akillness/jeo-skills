@@ -1,0 +1,11 @@
+{
+  "name": "jev-omp-extension",
+  "version": "0.1.0",
+  "description": "Jev advisory routing extension for OMP",
+  "type": "module",
+  "omp": {
+    "version": "0.1.0",
+    "name": "jev-omp-extension",
+    "extensions": ["./index.mjs"]
+  }
+}

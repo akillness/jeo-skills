@@ -1,0 +1,10 @@
+{
+  "name": "jev-control-plane",
+  "version": "0.1.0",
+  "description": "Jev advisory routing hook for Claude Code",
+  "author": {
+    "name": "jeo-skills"
+  },
+  "license": "MIT",
+  "hooks": "./hooks/hooks.json"
+}

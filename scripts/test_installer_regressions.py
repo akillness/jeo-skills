@@ -743,19 +743,98 @@ class InstallerRegressions(unittest.TestCase):
                 options = {} if mode is None else {"JEO_SKILLS_JEV": mode}
                 result = self.execute(["/bin/bash", str(installer)], options)
                 self.successful(result)
+                self.assert_skill(self.home / ".agents/skills", "jeo-skill")
                 self.assertFalse(curl_log.exists(), result.stdout)
                 self.assertFalse((self.home / ".agents/jev").exists())
                 self.assertFalse((self.home / ".agents/rules/jev-control-plane.md").exists())
 
-    def test_project_scope_rejects_explicit_jev_before_any_installation(self):
-        for mode in ("api", "local", "ollama", "lmstudio"):
+    def test_project_scope_explicit_jev_warns_after_installing_selected_skill(self):
+        for mode in ("api", "local", "ollama", "lmstudio", "systemone"):
             with self.subTest(mode=mode):
-                before = self.snapshot()
                 result = self.bootstrap(INSTALL_GLOBAL="false", JEO_SKILLS_JEV=mode,
                                         JEV_API_KEY="fixture-secret")
-                self.assertNotEqual(result.returncode, 0, result.stdout)
-                self.assertEqual(self.snapshot(), before)
+                self.successful(result)
+                self.assert_skill(self.project / ".agents/skills", "jeo-skill")
+                self.assertIn("Jev", result.stdout)
+                self.assertRegex(result.stdout.lower(), r"skip|scope|home")
+                self.assertFalse((self.home / ".agents/jev").exists())
+                self.assertFalse((self.home / ".agents/rules/jev-control-plane.md").exists())
+                self.assertNotIn("fixture-secret", result.stdout)
 
+    def test_invalid_jev_mode_warns_after_installing_selected_skill(self):
+        before = self.home / ".agents/rules/jev-control-plane.md"
+        for global_install in ("true", "false"):
+            with self.subTest(global_install=global_install):
+                result = self.bootstrap(INSTALL_GLOBAL=global_install,
+                                        JEO_SKILLS_JEV="invalid-mode",
+                                        JEV_API_KEY="fixture-secret")
+                self.successful(result)
+                root = self.home if global_install == "true" else self.project
+                self.assert_skill(root / ".agents/skills", "jeo-skill")
+                self.assertIn("Jev", result.stdout)
+                self.assertRegex(result.stdout.lower(), r"invalid|skip|unsupported")
+                self.assertFalse(before.exists())
+                self.assertNotIn("fixture-secret", result.stdout)
+
+    def test_optional_jev_failures_never_rollback_verified_skill_install(self):
+        cases = (
+            ("script", "printf 'fixture Jev script failed\\n' >&2; exit 17"),
+            ("missing-dependency", "command -v fixture-jev-missing >/dev/null 2>&1 || { printf 'missing Jev dependency\\n' >&2; exit 127; }") ,
+            ("model-server", "printf 'fixture model server unavailable\\n' >&2; exit 31"),
+        )
+        for name, body in cases:
+            with self.subTest(case=name):
+                installer = self.work / f"{name}-install.sh"
+                shutil.copyfile(ROOT / "install.sh", installer)
+                jev = self.work / "jev"
+                jev.mkdir(exist_ok=True)
+                setup = jev / "jev-setup.sh"
+                setup.write_text("#!/bin/bash\nset -u\n" + body + "\n")
+                setup.chmod(0o700)
+                result = self.execute(["/bin/bash", str(installer)],
+                                      {"JEO_SKILLS_JEV": "api", "JEV_API_KEY": "fixture-secret"})
+                self.successful(result)
+                self.assert_skill(self.home / ".agents/skills", "jeo-skill")
+                self.assertIn("Jev", result.stdout)
+                self.assertRegex(result.stdout.lower(), r"did not complete|failed|unavailable|later")
+                self.assertFalse((self.home / ".agents/rules/jev-control-plane.md").exists())
+                self.assertNotIn("fixture-secret", result.stdout)
+
+    def test_remote_jev_download_failure_still_installs_selected_skill(self):
+        installer = self.work / "download-failure-install.sh"
+        shutil.copyfile(ROOT / "install.sh", installer)
+        curl = self.bin / "curl"
+        curl.write_text("#!/bin/sh\nprintf 'fixture download failed\n' >&2\nexit 91\n")
+        curl.chmod(0o700)
+        result = self.execute(["/bin/bash", str(installer)],
+                              {"JEO_SKILLS_JEV": "api", "JEV_API_KEY": "fixture-secret"})
+        self.successful(result)
+        self.assert_skill(self.home / ".agents/skills", "jeo-skill")
+        self.assertIn("Jev", result.stdout)
+        self.assertRegex(result.stdout.lower(), r"unavailable|later|download")
+        self.assertFalse((self.home / ".agents/rules/jev-control-plane.md").exists())
+        self.assertNotIn("fixture-secret", result.stdout)
+
+    def test_remote_jev_temp_allocation_failure_still_installs_selected_skill(self):
+        installer = self.work / "temp-failure-install.sh"
+        shutil.copyfile(ROOT / "install.sh", installer)
+        mktemp = self.bin / "mktemp"
+        mktemp.write_text("#!/bin/sh\nprintf 'fixture temp allocation failed\n' >&2\nexit 91\n")
+        mktemp.chmod(0o700)
+        result = self.execute(["/bin/bash", str(installer)],
+                              {"JEO_SKILLS_JEV": "api", "JEV_API_KEY": "fixture-secret"})
+        self.successful(result)
+        self.assert_skill(self.home / ".agents/skills", "jeo-skill")
+        self.assertIn("Jev", result.stdout)
+        self.assertRegex(result.stdout.lower(), r"unavailable|later|temp")
+        self.assertFalse((self.home / ".agents/rules/jev-control-plane.md").exists())
+        self.assertNotIn("fixture-secret", result.stdout)
+
+    def test_core_skill_cli_failure_remains_nonzero_and_does_not_fake_success(self):
+        before = self.snapshot()
+        result = self.bootstrap(TRANSPORT_FAILURE="1", JEO_SKILLS_JEV="skip")
+        self.assertNotEqual(result.returncode, 0, result.stdout)
+        self.assertEqual(self.snapshot(), before)
     def test_project_scope_unset_and_skip_remain_catalog_only(self):
         for mode in (None, "skip"):
             with self.subTest(mode=mode):

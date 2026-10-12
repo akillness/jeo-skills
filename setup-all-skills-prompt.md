@@ -447,24 +447,25 @@ case "${JEO_SKILLS_JEV:-skip}" in
   skip) printf '%s\n' 'Optional Jev setup skipped; existing configuration unchanged.' ;;
   api|local|ollama|lmstudio|systemone)
     if [ "${INSTALL_GLOBAL:-true}" != true ]; then
-      printf '%s\n' 'Jev is home-scoped. Run approved standalone setup separately from the project catalog install.' >&2
-      exit 1
+      printf '%s\n' 'WARNING: Jev is home-scoped; skipping optional Jev for project installation. Run approved standalone setup separately.' >&2
+      exit 0
     elif [ -f "$PWD/jev/jev-setup.sh" ]; then
-      HOME="$USER_HOME" JEO_SKILLS_JEV="$JEO_SKILLS_JEV" bash "$PWD/jev/jev-setup.sh"
+      HOME="$USER_HOME" JEO_SKILLS_JEV="$JEO_SKILLS_JEV" bash "$PWD/jev/jev-setup.sh" || printf '%s\n' 'WARNING: Optional Jev setup did not complete; installed skills remain available.' >&2
     else
-      JEV_SETUP=$(mktemp "${TMPDIR:-/tmp}/jev-setup.XXXXXX") || exit 1
-      if curl -fsSL "${JEO_SKILLS_RAW_BASE:-https://raw.githubusercontent.com/akillness/jeo-skills/main/jev}/jev-setup.sh" -o "$JEV_SETUP"; then
-        HOME="$USER_HOME" JEO_SKILLS_JEV="$JEO_SKILLS_JEV" bash "$JEV_SETUP"
-        JEV_SETUP_STATUS=$?
-      else
-        printf '%s\n' 'Jev setup unavailable; use jev/jev-setup.sh from a trusted checkout.' >&2
-        JEV_SETUP_STATUS=1
+      if ! JEV_SETUP=$(mktemp "${TMPDIR:-/tmp}/jev-setup.XXXXXX"); then
+        printf '%s\n' 'WARNING: Cannot create private Jev setup file; skipping optional Jev. Installed skills remain available.' >&2
+        exit 0
       fi
-      rm -f "$JEV_SETUP"
-      exit "$JEV_SETUP_STATUS"
+      if curl -fsSL "${JEO_SKILLS_RAW_BASE:-https://raw.githubusercontent.com/akillness/jeo-skills/main/jev}/jev-setup.sh" -o "$JEV_SETUP"; then
+        HOME="$USER_HOME" JEO_SKILLS_JEV="$JEO_SKILLS_JEV" bash "$JEV_SETUP" || printf '%s\n' 'WARNING: Optional Jev setup did not complete; installed skills remain available.' >&2
+      else
+        printf '%s\n' 'WARNING: Jev setup unavailable; installed skills remain available. Use approved standalone setup from a trusted checkout later.' >&2
+      fi
+      rm -f "$JEV_SETUP" || printf '%s\n' 'WARNING: Optional Jev temporary setup cleanup failed.' >&2
+      exit 0
     fi
     ;;
-  *) printf '%s\n' 'JEO_SKILLS_JEV must be skip, api, local, ollama, lmstudio, or systemone.' >&2; exit 1 ;;
+  *) printf '%s\n' 'WARNING: Invalid optional JEO_SKILLS_JEV; skipping Jev. JEO_SKILLS_JEV must be skip, api, local, ollama, lmstudio, or systemone. Installed skills remain available.' >&2; exit 0 ;;
 esac
 )
 ```
@@ -498,6 +499,70 @@ end-to-end enforcement or hosted API health. It exits 2 when Jev is inactive and
 closed) for invalid configuration or a chain with no usable backend. Offline
 `self-test --mock` validates deterministic contracts only. Never replace live approval
 evidence with mock output or call a paid provider during default catalog setup.
+#### Configure: per-operation routing and decision backends
+
+Each operation (skill routing, context pruning, proposal review) resolves its own backend from the profile. The **decision backend** is advisory for routing/pruning but gates autonomous execution in `review` (only `api` and `systemone` calibrated drivers can return `permit`). The **coding model** is separate application state, never used by Jev.
+
+```bash
+# Configure per-operation backends (one at a time)
+bash jev/jev-setup.sh --profile gjc --mode api --config-only --key-env JEV_API_KEY --route-backend api --review-backend api
+bash jev/jev-setup.sh --profile gjc --mode local --config-only --prune-backend local
+
+# Or configure a single backend for all operations, with fallbacks
+bash jev/jev-setup.sh --profile jeopi --mode local --config-only --fallback route-skills=ollama,lmstudio
+
+# Per-invocation override (does not change stored config)
+node ~/.agents/jev/jev-harness.mjs --profile gjc route-skills --backend ollama "<task>"
+
+# Check configured state
+node ~/.agents/jev/jev-harness.mjs --profile gjc status
+node ~/.agents/jev/jev-harness.mjs --profile gjc status --operation route-skills
+```
+
+#### Backend kinds and side effects
+
+| Kind | Setup cost | Runtime | Decision capability |
+|---|---|---|---|
+| `api` | TypeSafe key required; configuration is free | Hosted (may incur charges) | Calibrated decision-head (can authorize) |
+| `local` | Approved ordinary setup installs Python dependencies and downloads a full-precision model; config-only does neither | Full-precision inference | Logits-based (unvalidated; proposal_only) |
+| `ollama` | Ollama service; quantized model pull | Chat adapter over quantized GGUF | Unvalidated; proposal_only |
+| `lmstudio` | LM Studio service; model load/download | Chat adapter | Unvalidated; proposal_only |
+| `systemone` | Endpoint URL + optional key; no downloads | Points to operator-run System One | Calibrated (can authorize if driver matches) |
+
+**Native advisory packages**: setup copies Claude, jeopi, OMP, and Pi packages and the rule artifact. Copying is not provider registration. Use verified session-load argv from read-only `host-plan`; registration-dependent maintenance is separate from the profile's `JEV_ENABLED` switch. No native hook grants permissions or automatically replaces a coding model.
+
+**Plan-only hosts** (analysis or browser-only environments): Receive advisory routing output but cannot enforce gating. Jev remains available as read-only reference.
+
+#### ON/OFF and private profile files
+
+```bash
+# Enable Jev for a specific profile
+bash jev/jev-setup.sh --profile gjc --mode api --route-backend api
+
+# Check status (0=usable, 2=inactive, 3=fail-closed)
+node ~/.agents/jev/jev-harness.mjs --profile gjc status
+
+# Disable Jev (preserves config, exits 2 on next status call)
+bash jev/jev-setup.sh --profile gjc --disable
+
+# Private profile files (mode 600)
+ls -la ~/.agents/jev/profiles/
+# gjc.env, gjc.api.env, gjc.local.env, gjc.systemone.env, …
+```
+
+#### Configuration-only mode (free, no side effects)
+
+Validate configuration offline without approving downloads, service startup, or hosted inference:
+
+```bash
+# Read-only offline check
+node ~/.agents/jev/jev-harness.mjs --profile gjc --mock self-test
+```
+
+#### Local Legacy wiring
+
+The intentional `~/.agents/jev/.env` (no profile) is supported for backward compatibility. Ambient environment variables override matching file keys but cannot enable a missing/disabled profile. Profiles (`--profile <id>`) are isolated and never fall back.
+
 
 ### Jevgrep (optional remote source discovery)
 

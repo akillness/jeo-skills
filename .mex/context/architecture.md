@@ -17,7 +17,7 @@ edges:
   - target: patterns/catalog-metadata-changes.md
     condition: when adding a new skill or editing an existing skill's metadata
 grounds_to: []
-last_updated: 2026-10-08
+last_updated: 2026-10-12
 ---
 
 # Architecture
@@ -50,10 +50,16 @@ Post-install checks verify selected skill files. No provider settings or hooks c
 These scripts remain outside the current mex index; claims are source/smoke-grounded.
 
 **Optional Jev flow:** `jev/jev-setup.sh` is the canonical home-scoped installer.
-Skipped and non-interactive unset modes bypass Jev; project-scoped catalog installs
-never configure global Jev. Explicit project opt-in fails before installation writes.
-Opt-in installs configuration and a rule artifact, not native hooks or plugins.
-The host must load and follow that rule to invoke route/prune/review at task events.
+Unset non-interactive and explicit `skip` modes bypass Jev. Invalid Jev modes and
+project-scoped opt-in warn and skip only Jev; successful skill installation stays successful.
+Approved setup installs private configuration, runtime assets, a rule, and native package
+assets; copying those assets does not register or activate a provider-owned plugin.
+Optional Jev errors do not block skill installation or catalog availability.
+The controller maps independent agent profiles onto packaged Claude, jeopi, OMP,
+and Pi advisory hooks. Other hosts receive truthful adapter or unsupported plans.
+New config-only profiles start OFF; approved ordinary setup retains its explicit opt-in
+semantics. OFF hooks skip stdin, catalogs, backends, and host commands; status still
+reads private configuration. Native session loading and persistent registration are distinct.
 Since 2026-10-08 the harness is a backend registry of five kinds (`api`, `local`,
 `ollama`, `lmstudio`, `systemone` with `typesafe`/`decide`/`vllm-jev-decision` drivers)
 resolved per operation from the profile base file (`JEV_<OP>_BACKEND` + ordered
@@ -63,8 +69,8 @@ rather than trimmed. Tiers: every kind is `unvalidated`; `validated` requires a
 served-model attestation and a calibrated-head driver (`api`/`systemone` only), and
 `review` can `permit` only on `validated`. Skill selection is cap-aware (sharded
 Choice + gate Nouls, or lexical shortlist + Noul rerank) with an explicit none outcome;
-`skills.json` `model_policies` (manifest-only, never projected) drives an advisory
-`routing` field no host consumes yet. Setup also installs a validated catalog snapshot
+`skills.json` `model_policies` (manifest-only, never projected) drives advisory
+provider/model launch plans; no host model is switched automatically. Setup installs a validated catalog snapshot
 (`~/.agents/jev/skills.json`) so `route-skills` works outside a checkout; a working
 checkout's catalog still wins. `status` reports per-operation chains and exits
 3 only when a chain has no usable backend; API credentials alone leave readiness

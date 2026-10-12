@@ -18,7 +18,7 @@ edges:
   - target: "patterns/jeo-skill-install-flow.md"
     condition: "when Jev setup interacts with the catalog installer"
 grounds_to: []
-last_updated: 2026-10-08
+last_updated: 2026-10-12
 ---
 
 # Jev Control Plane Runbook
@@ -37,14 +37,14 @@ Source of truth is `jev/` in this repo: `jev-harness.mjs` (Node ESM, built-ins o
 - **State bounds** (`maxStateChars`, enforced in the dispatcher *before* I/O; never trims): local/ollama/lmstudio 6,000; decide/vllm 3,000; api/typesafe 100,000. Oversized ⇒ that kind fails ⇒ only the explicit chain may try a bigger backend. `prune-context` plans batches under the limit (oversized single block ⇒ `keep` + `reason`).
 - **Scoped question state.** A question may carry `state`; batch drivers send one request with the shared state, per-question drivers and `local` are called once per distinct scoped state (`groupByScope`). Gate Nouls see `{request}`, each `fits::<name>` sees only its candidate, `which` sees the budgeted full set (`budgetCandidates` shrinks excerpts→descriptions by measurement; irreducible overflow throws).
 - **Selection** (`route-skills`): strategy = `ceil(N/choiceCap) ≤ 4 ? sharded : shortlist`. Sharded: per-shard Choice + 3 gate Nouls (gate enforced **once**), top-3 finalists per shard (shard probabilities are never compared across shards), then Choice over finalists + `fits::` Nouls. Shortlist: stopword-filtered lexical top-12 → gate + `which` + `fits`. Thresholds `GATE_THRESHOLD=FITS_THRESHOLD=0.30` (cookbook defaults, uncalibrated here). Empty ⇒ `topK: []` + `selection.reason` (`gate|fits|shortlist-empty`) + `publicRegistryFallback`.
-- **Advisory host routing** (`routing` field): `skills.json` top-level `model_policies` (`default` or skill-name keys → `{candidates:[{provider, model}], fallback, constraints}`), Jev Choice over `provider/model` + `other`, output `{skill, policy, candidates[rank, probability], chosen, confidence, provenance:{backend:{kind, driver, model, tier}}}`. No host adapter consumes it yet. Not projected into TOON/README; `validate_manifest` checks the shape.
+- **Advisory host routing** (`routing` field): manifest-only `model_policies` provides approved provider/model candidates. The controller can render host-specific launch argv from that advice, but never executes it or replaces the host model. It remains separate from decision-model attestation and is not projected into TOON/README.
 - **Status**: per-operation chains with `usable`; exit 3 only when a chain has no usable backend; `--operation <op>`; probe timeouts are `state:"warming"`, refused/5xx `unavailable`, malformed discovery JSON `unavailable`. Compatibility fields `mode`/`endpoint` retained.
 
 ## Commands
 ```sh
 node jev/jev-harness.mjs self-test --mock                     # 20/20 offline contract checks
 node --test jev/profile.test.mjs                               # 3 isolated-HOME setup tests
-python3 scripts/test_jev_regressions.py                        # 52 loopback regressions (documented wire shapes)
+python3 scripts/test_jev_regressions.py                        # 64 loopback regressions (documented wire shapes)
 node jev/jev-harness.mjs status [--operation review]           # exit 0/2/3
 node jev/jev-harness.mjs route-skills [--backend K] [--model M] [--top-k N] "<task>"
 node jev/jev-harness.mjs prune-context < blocks.jsonl
@@ -61,13 +61,14 @@ node jev/jev-harness.mjs smoke [--backend K] [--task "<text>"]  # live, never au
 - Two legacy tests (`empty/partial saved config ⇒ exit 3`, `ambient JEV_MODE switch cannot deactivate a saved opt-in`) were already failing at HEAD before this work; the rewrite satisfies them instead of weakening them.
 - HF model-card reads: use `read(...:raw)` for source files (`vl/serve_decide.py`); a non-raw child URL returns the card.
 - Residual (unvalidated generative tier only): the Q4 chat path still answers polarity-negative review questions "yes/0.95" (same as the 2026-10-02 audit). Safe by construction (`permit` impossible on that tier) but the `proposal_only` reasons are noisy. The 2026-10-01 installed-copy "ask positively and invert" workaround was deliberately not ported — calibration work belongs with a validated head.
-- `route-skills` needs a catalog. Order: `JEV_CATALOG_PATH` → the cwd checkout → the setup-installed snapshot `~/.agents/jev/skills.json` → a legacy `~/.agents/jeo-skills-repo` clone (last: the 2026-10-01 clone is stale, 352 skills, no `model_policies`). Before 2026-10-08 setup installed no catalog, so the installed harness only routed from inside a checkout. Verify "standalone" from an empty cwd with `JEV_CATALOG_PATH` unset — a run from the repo hides this.
+- `route-skills` needs a catalog. An explicit `JEV_CATALOG_PATH` is authoritative and fails closed when invalid; native hooks pin the trusted installed snapshot and never fall back to an arbitrary CWD. Standalone CLI discovery may otherwise use the checkout, installed snapshot, or legacy clone. Verify installed routing from an empty CWD rather than hiding missing assets with the repo's catalog.
 - Excerpts are sent to the backend: `skillExcerpt` checks containment on `realpath` (catalog `../` paths and in-root symlinks to outside files are both refused). The user's `~/.agents/skills` has ~93 symlinked dirs (other sources) that resolve outside the root; none are catalog skills, so no excerpt is lost.
 - An isolated-HOME live install must not symlink the real `~/.agents/skills`: setup then finds the real `jeo-skill` router and runs `npx skills add --agent <profile>` (network; fails for a non-agent profile id). Copy SKILL.md files instead.
+- Native advisory packages exist for Claude, jeopi, OMP, and Pi. Session loading does not register a persistent plugin; `host-plan` emits literal session argv and reports registration prerequisites without executing them. `JEV_ENABLED` alone controls profile ON/OFF; an OFF registered hook short-circuits before stdin/catalog/backend/host work. Other hosts receive adapter or unsupported plans, not invented native package paths.
 
 ## Verify
 - [ ] `self-test --mock` prints `20/20 checks passed` (exit 0)
-- [ ] `python3 scripts/test_jev_regressions.py` → `Ran 52 tests … OK` (exit 0)
+- [ ] `python3 scripts/test_jev_regressions.py` → `Ran 64 tests … OK` (exit 0)
 - [ ] `node --test jev/profile.test.mjs` → 3 pass
 - [ ] Isolated-HOME live install from a temp checkout copy: `status` ready, `route-skills` from an empty cwd reports `fullCatalogSkills` = manifest size
 - [ ] Catalog gates: validator, `generate --check`, frontmatter `--check`, `flatten --dry-run` all exit 0 (SKILL.md frontmatter is frozen; body edits only)
