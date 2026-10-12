@@ -66,3 +66,5 @@ jobs:
         run: python3 scripts/test_jevgrep_regressions.py -v
       - name: Isolated runtime loader probe regressions
         run: python3 scripts/test_runtime_skill_loader.py -v
+      - name: Offline repository preflight regressions
+        run: python3 scripts/test_repository_preflight_regressions.py -v

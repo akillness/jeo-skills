@@ -256,9 +256,21 @@ FilmCraft 빌드, MCP 등록, 앱 시작, 폰트 다운로드, 미디어 가져�
 
 `openrig`, `anyjev`, `typesafe-computer-use`, `zurp`, `helix-foundry`, `uzu`,
 `context-mode`, `rea`, `fineenvs`, `llmfit`, `pg-jev`의 원문 커밋을 고정한
-운영 스킬 11개를 제공합니다. 카탈로그 설치는 지침 문서만 추가합니다. 앱·모델·키,
+운영 스킬 11개를 제공합니다. 각 v1.1.0 패키지는 표준 `SKILL.md`, 커밋 고정
+레퍼런스, 실행 가능한 표준 라이브러리 기반 오프라인 점검 스크립트와 평가 사례를 포함합니다. 앱·모델·키,
 MCP/훅 등록, 데스크톱 제어, 데이터베이스 쓰기는 각각 별도 승인이 필요합니다.
-[setup 가이드](setup-all-skills-prompt.md#repository-operators-on-demand-documents-only)를 참고하세요.
+[setup 가이드](setup-all-skills-prompt.md#repository-operators-on-demand-offline-support)를 참고하세요.
+
+이 저장소에서 선택한 패키지의 사전 조건만 점검할 수 있습니다. 원본 앱은 실행하지 않습니다.
+
+```bash
+python3 .agent-skills/openrig/scripts/preflight.py --json
+```
+
+11개 스크립트 모두 `--help`, `--json`, 선택적 `--repo`와 `--expect-commit`을 지원하며,
+스킬 설치 후에도 다른 스킬 없이 독립 실행됩니다. 결과는 항상 `runtime_verified: false`입니다.
+종료 코드 0은 오프라인 점검 통과, 1은 누락·불일치, 2는 잘못된 입력을 뜻합니다.
+도구 경로나 소스 HEAD 일치는 실제 런타임 작동 증명이 아닙니다.
 
 
 ## 📚 스킬 목록
@@ -1050,7 +1062,8 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 
 | 변경 사항 | 상세 내용 |
 |--------|---------|
-| **MI 오케스트레이션** | `mi-orchestration`을 추가했습니다. 모바일 게임 시장정보의 데이터 계보, weekly/backfill 건강성 게이트, 후보와 인간 결정 원장 분리, 1차 출처 참고자료, 오프라인 읽기 전용 감사·재개 계획 CLI를 포함합니다. 합성 테스트는 실제 벤더 수집을 인증하지 않으며 계정 권한·AI 처리·보존·외부 공유는 별도 게이트입니다. 카탈로그: 366개 → 367개. |
+| **레포 운영 스킬의 독립 지원 파일** | 요청한 운영 스킬 11개를 v1.1.0으로 표준화하고 짧은 SKILL.md, 원문 커밋 고정 레퍼런스, 실행 가능한 표준 라이브러리 기반 오프라인 점검 스크립트를 구성했습니다. 매니페스트 버전·변경된 설명, README 번역본, TOON과 setup 가이드를 동기화하며 기존 367개 카탈로그는 유지합니다. |
+| **오프라인 동작·안전성 검증** | 회귀 테스트 12개와 Ubuntu/macOS 설치 CI 실행 단계를 추가했습니다. 로컬에서 소스·커밋, 도구 누락, 특수문자 경로, 독립 실행, 파일·비밀값 보호, 자식 프로세스 자격증명 차단, Git 대상 바꿔치기·trace 검사가 통과했습니다. Git 검사는 요청한 루트에 결속하고 OS 실행에 필요한 환경만 허용하며 상속 설정·프롬프트·네트워크 프로토콜을 차단합니다. Zurp는 Burp/MCP 사전 조건을 따로 선택합니다. 스크립트 평가 사례 11개로 작성된 시나리오는 44개에서 55개가 됩니다. 원본 런타임·프로바이더·모델·데스크톱·DB 실행을 검증한 것은 아닙니다. |
 | **FilmCraft 스킬** | Rust 영상 편집기의 headless CLI/MCP와 데스크톱 loopback 제어 bridge를 위한 `filmcraft`를 추가했습니다. 원본 커밋 `1fdfd8324db4aa23b08c69f518b086e632f75f84`에 근거해 프로젝트 보존, 명령 탐색, 미디어 누락 오류와 승인된 출력 경로를 안내합니다. |
 | **선택 설치와 카탈로그** | 스킬 1개를 등록해 354개에서 355개로 갱신하고 README 번역본, TOON, setup 문서를 동기화했습니다. 스킬 설치는 FilmCraft 앱 설치·빌드, MCP 등록, 미디어 수정을 수행하지 않습니다. 다른 작업의 로컬 스킬 추가는 이번 공개 변경에서 제외했습니다. |
 | **검증 범위** | 스킬 형식 검증, 카탈로그 검색, 선택 설치 dry-run이 통과했습니다. 행동 평가 시나리오 10개를 포함했으며 FilmCraft 빌드, GUI/MCP 실행, 편집과 export는 실행하지 않았습니다. |

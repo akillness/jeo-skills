@@ -42,6 +42,16 @@
         "The response says `ctx_stats` proves MCP reachability, not hook execution or session continuity",
         "The response says Zed has no hooks and requires a context-server plus routing guidance, without claiming lifecycle enforcement"
       ]
+    },
+    {
+      "id": 5,
+      "prompt": "Run `.agent-skills/context-mode/scripts/preflight.py --json` with no PATH tools, then inspect a literal checkout containing package metadata, public source markers, and a matching Git HEAD. Do not run context-mode, ctx, npm, hooks, indexing, or config writes.",
+      "expected_output": "The response reports Node/Bun path inventory and source/commit evidence without conflating presence with runtime readiness, and keeps the JSON/exit contract and runtime_verified=false.",
+      "assertions": [
+        "The response marks missing runtime prerequisites as blocked and emits one parseable offline-preflight object",
+        "The response uses only bounded local Git for a supplied checkout and rejects malformed, missing, or mismatched pins",
+        "The response does not upgrade, purge, index, read credentials, mutate hooks/config, or invoke upstream executables"
+      ]
     }
   ]
 }

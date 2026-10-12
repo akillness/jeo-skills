@@ -177,3 +177,24 @@ OpenStreetMap/terrain assets have ODbL/attribution obligations; code is Apache-2
   imagery/scorer sync, dependency installs, and deployment are side effects. Inventory and dry-run
   first, but do not call SmolDataEnvs dry-run flags local: they still create Sandboxes/download data
   or graders and may write result files. Obtain explicit approval before use.
+
+## Offline preflight helper
+
+`scripts/preflight.py` is an inspection gate, not a runtime or quality check. Invoke it from the
+repository root as `python3 .agent-skills/fineenvs/scripts/preflight.py --json`, or from an
+installed root as `python3 "$SKILLS_ROOT/fineenvs/scripts/preflight.py" --json`. A checkout may
+be supplied with `--repo PATH`; `--expect-commit FULL_SHA` is accepted only with that checkout
+and compares a bounded local `git rev-parse --show-toplevel HEAD` result after using an explicit host-environment allowlist, disabling inherited Git-selection variables and Git protocols/config fetches, and requiring the reported root to match `--repo`. Paths are passed literally.
+
+The helper reports the current Python (3.11+ required), host OS/architecture, `uv` and `git`
+paths, and optional installed distribution metadata for the six framework families without
+importing upstream modules. With `--repo`, it checks public root/matrix markers, at least one
+audited project tree, the checkout HEAD, optional framework dialect trees, and source-branch
+requirements (multi-harness upstream `main`; NeMo Gym's Git source and Python 3.12+ when selected).
+Missing optional dialects do not block a selected project. It never reads `.env` or tokens, makes
+HTTP/GPU queries, starts apps, creates Ray/HF/E2B/Daytona sandboxes, downloads data or graders,
+or runs evaluations. JSON stdout is exactly one object with `skill`, `scope:
+offline-preflight`, `status` (`ok`, `blocked`, or `error`), `checks`, and `runtime_verified:false`.
+Exit status is 0 for passing required checks, 1 for missing/mismatched prerequisites, and 2 for
+invalid input or an internal preflight error. A passing result does not imply framework activation,
+model quality, cloud approval, or license clearance.

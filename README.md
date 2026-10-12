@@ -281,10 +281,22 @@ or a new destructive action is unclear. For programmable/template video generati
 
 Eleven source-pinned operator skills cover `openrig`, `anyjev`,
 `typesafe-computer-use`, `zurp`, `helix-foundry`, `uzu`, `context-mode`, `rea`,
-`fineenvs`, `llmfit`, and `pg-jev`. Catalog installation adds instructions only;
+`fineenvs`, `llmfit`, and `pg-jev`. Each v1.1.0 package ships a router-first
+`SKILL.md`, a pinned reference, an executable stdlib offline preflight and evals;
 applications, models, credentials, MCP/hook registration, desktop authority and
 database writes remain separately approved operations. See the
-[setup guide](setup-all-skills-prompt.md#repository-operators-on-demand-documents-only).
+[setup guide](setup-all-skills-prompt.md#repository-operators-on-demand-offline-support).
+
+From this repository, inspect a selected package without activating its upstream app:
+
+```bash
+python3 .agent-skills/openrig/scripts/preflight.py --json
+```
+
+All eleven helpers support `--help`, `--json`, optional `--repo` and `--expect-commit`.
+They remain standalone after installation and report `runtime_verified: false`.
+Exit 0 means offline checks pass, 1 reports missing/mismatched prerequisites, and 2
+rejects invalid input. A tool path or matching source HEAD is not runtime readiness.
 
 
 ## 📚 Skills List
@@ -1094,13 +1106,25 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 
 | Change | Details |
 |--------|---------|
-| **MI orchestration** | Added `mi-orchestration`: mobile-game intelligence data lineage, weekly/backfill health gates, candidate-to-human-decision separation, primary-source references, and an offline read-only artifact audit/resume-plan CLI. Synthetic regressions do not certify live vendor collection; account entitlement, permitted AI use, retention and report sharing remain separate gates. Catalog: 366 → 367. |
+| **Portable repository operator support** | Standardized all eleven requested operator packages to v1.1.0 with router-first SKILL.md, independent commit-pinned references and executable stdlib offline preflights. Manifest versions and changed discovery descriptions, README locales, TOON and setup guidance are synchronized; the 367-skill baseline is unchanged. |
+| **Offline behavior and safety** | Added a dedicated twelve-method regression suite and explicit Ubuntu/macOS installer CI step. The local suite passes source/pin, missing-tool, literal-path, copied-helper, no-write/secret-output, child credential exclusion and hostile Git selector/trace checks. Git inspection binds the requested root and allowlists only portable host environment keys, with inherited configuration, prompts and network protocols disabled; Zurp can select Burp or MCP prerequisites separately. Eleven helper eval cases extend the authored scenarios from 44 to 55; no upstream runtime, provider, model, desktop or database execution is claimed. |
 | **FilmCraft skill** | Added `filmcraft` for the Rust editor's headless CLI/MCP and desktop loopback control bridge, pinned to upstream commit `1fdfd8324db4aa23b08c69f518b086e632f75f84`. Guidance covers project preservation, command discovery, missing-media failures and approved export paths. |
 | **Selective setup and catalog** | Registered one new skill (354 → 355) and refreshed README locales, TOON and setup guidance. Installing the skill does not install/build FilmCraft, register MCP, or modify media. Concurrent local skill additions are excluded from this publication. |
 | **Verification boundary** | Skill-format validation, catalog search and selective-install dry-run pass. Ten behavioral evaluation fixtures are included; FilmCraft build, GUI/MCP execution, editing and export were not run. |
 | **Eleven source-pinned repository operators** | Added `openrig`, `anyjev`, `typesafe-computer-use`, `zurp`, `helix-foundry`, `uzu`, `context-mode`, `rea`, `fineenvs`, `llmfit`, and `pg-jev` as original operating guides with audited commits, primary-source commands, license evidence and explicit side-effect boundaries. This batch extends the published catalog from 355 to 366 skills. |
 | **Selective setup and discovery** | Updated English/Korean/Spanish README catalog projections and source references, the setup guide, and meaningful Jev/local-model/context-tool relationships. Catalog installation adds documents only; it does not install upstream applications, download models, register hooks/MCP, use credentials, control a desktop or mutate a database. Context Mode subprocesses are not an OS/security sandbox and its npm postinstall can modify Claude configuration. |
 | **Verification boundaries** | Added 44 behavioral evaluation scenarios. Eleven skill documents load with valid frontmatter and the selective-install dry-run resolves all eleven. Upstream runtimes, model quality, desktop actions, live targets and databases were not executed or certified by this documentation change. |
+
+## 🆕 What's New in v2026-10-12b
+
+| Change | Details |
+|--------|---------|
+| **Non-blocking optional Jev setup** | Invalid modes, project-scoped opt-in, temporary-file allocation, download, and Jev setup failures warn and skip only Jev. Verified skill installation remains successful; genuine skill installation errors still fail. |
+| **Per-agent advisory controls** | Added independent private profiles, config-only setup, and packaged Claude, jeopi, OMP, and Pi hooks. New config-only profiles start OFF. Copying assets does not register a plugin; session-load plans and registration-gated package maintenance remain separate from profile ON/OFF. jeopi/OMP/Pi actual-OFF callbacks recover from 1 MiB stdin `EPIPE` and return `{}` without changing prior host context. |
+| **Backend and model contracts** | Enabling requires structurally complete saved backend configuration. Host-specific model argv stays advisory. TypeSafe responses use the strict typed contract; local legacy wire support remains isolated. Backend error bodies never enter native advisory context. |
+| **Trusted assets and credentials** | Native hooks pin a trusted catalog and refuse working-directory substitutions. Setup stages required runtime assets before publication, preserves valid catalog snapshots on refresh failure, and cleans private payloads. Standalone root-controller symlink/non-file and raw-native non-file leaf collisions are preflighted before staging/publication; collision regressions preserve core/native/catalog/private-profile bytes and outside targets. Saved matching API keys remain authoritative; local-only computer-use writer plans cannot borrow ambient hosted credentials. |
+| **Verification** | 48 installer regressions and 64 Jev regressions pass. With `JEV_LIVE_SMOKE=0`, the Node install/plugin/profile run reports 54 total, 53 pass, and 1 opt-in live skip; the prior mock self-test passed 20/20. Catalog projections, frontmatter, and flat layout checks pass. The source catalog has 367 skills due to the concurrent MI addition; this Jev update adds no catalog entry. |
+| **Boundaries** | Host plans are not executed automatically. Live Ollama reached HTTP 200 but returned `selectedSkill:null` / `errorCategory:backend_unavailable`: transport and fail-closed output only, not successful routing, model quality/calibration, or native package registration. Paid API, database, and desktop execution remain unverified. Config-only setup downloads no models; approved ordinary backend setup may do so. |
 
 ## 🆕 What's New in v2026-10-08
 

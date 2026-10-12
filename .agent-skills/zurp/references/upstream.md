@@ -95,3 +95,52 @@ This integration pass did not clone the repository, install dependencies, run Gr
 start an MCP server, load Burp, or call Meta APIs. It verified commands and support claims by
 reading the commit-pinned source and documentation only. Re-run the narrow source-owned checks
 in `SKILL.md` after an approved checkout exists.
+
+## Operator matrix retained from the front door
+
+These source-owned checks and limits remain here so the compact router can disclose them
+only for the matching branch:
+
+- Inspect an existing checkout with `git -C /path/to/Zurp rev-parse HEAD` and
+  `git -C /path/to/Zurp status --short`; re-read `README.md`, `build.gradle.kts`,
+  `bug-bounty-research/package.json`, `bug-bounty-research/README.md`, and `.mcp.json`
+  before using commands from a different revision.
+- Java source commands are `gradle jar` (writes `build/libs/zurp.jar`) and optional
+  `gradle test`. The build file warns that Montoya resolution was not verified end to end;
+  report that upstream failure rather than bundling or inventing a dependency.
+- Node source commands are `npm install`, `npm run build`, `npm run typecheck`, and `npm test`.
+  Starts are `npm run start:meta-context`, `npm run start:fbdl`, and
+  `npm run start:sparta`; entry points are the three `dist/*/index.js` paths listed above.
+  `npm install` can write the lockfile and `node_modules` and use the network.
+- Absolute registration uses `node /absolute/path/bug-bounty-research/dist/<server>/index.js`.
+  Resolve `${CLAUDE_PLUGIN_ROOT}` in Claude-compatible hosts; Muse Code uses an explicit
+  `type: "stdio"`, `command: "node"`, absolute `args`, and `env` map.
+
+### Per-tool scope and replay gates
+
+- Meta Context uses `meta_context_scan` for captures/reports/HAR/logs,
+  `meta_context_resolve_batch` for up to 200 known identifiers, and
+  `meta_context_resolve` for one vanity-name lookup. Results are symbols, not source paths,
+  line numbers, or ownership proof.
+- FBDL language/reference operations (`list_entities`, `list_actions`, `validate_fbdl`,
+  `explain_fbdl`, and `fbdl://reference`) come first. `create_fbdl_run` is an approved,
+  metered action with one run in flight and 30-second success or 60-second failure cooldown;
+  poll with `get_fbdl_run`, and archive with `archive_fbdl_run` only when asked.
+- SPARTA operations are `sparta_list_findings`, `sparta_scan_traffic`,
+  `sparta_get_finding`, and `sparta_build_poc`. Findings are leads, and PoCs are templates;
+  replace placeholders with controlled FBDL identifiers and a live `fb_dtsg` only during
+  human-approved testing.
+- Burp CSRF/sprinkle substitution and FBDL placeholders are extension behavior, not MCP
+  tools. Preserve control-versus-test evidence and ask before state-changing GraphQL replay.
+
+### Endpoint and failure handling
+
+Resolve a server-specific `FBDL_API_BASE_URL`, `ZURP_API_BASE_URL`, or
+`SPARTA_API_BASE_URL`, then shared `BB_RESEARCH_API_BASE_URL`, then the server default.
+Normalize and inspect scheme/host because the pinned source accepts arbitrary URLs. Send a
+real bearer token only to documented `https://api.facebook.com`; custom/test hosts need
+separate approval and a non-production credential. Do not retry latched `401`/`403`, hourly
+budgets, cooldowns, or transient failures already covered by client backoff. Empty SPARTA
+results can be normal outside an enabled private engagement. Follow the pinned TLS guidance
+for `SSLProtocolException`: prefer `NODE_EXTRA_CA_CERTS`, and use the approved
+`-Djdk.tls.maxHandshakeMessageSize=131072` workaround only with explicit approval.

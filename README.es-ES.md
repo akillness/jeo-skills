@@ -255,10 +255,23 @@ Para generación de vídeo programable o con plantillas, usa `video-production`.
 
 Once habilidades fijadas a commits upstream cubren `openrig`, `anyjev`,
 `typesafe-computer-use`, `zurp`, `helix-foundry`, `uzu`, `context-mode`, `rea`,
-`fineenvs`, `llmfit` y `pg-jev`. Instalar el catálogo añade solo instrucciones;
+`fineenvs`, `llmfit` y `pg-jev`. Cada paquete v1.1.0 incluye un `SKILL.md` de enrutamiento,
+una referencia fijada al commit, un diagnóstico offline ejecutable con la biblioteca
+estándar de Python y escenarios de evaluación;
 las aplicaciones, modelos, claves, registros MCP/hooks, control del escritorio y
 escrituras en bases de datos requieren aprobación independiente. Consulta la
-[guía de configuración](setup-all-skills-prompt.md#repository-operators-on-demand-documents-only).
+[guía de configuración](setup-all-skills-prompt.md#repository-operators-on-demand-offline-support).
+
+Desde este repositorio, inspecciona un paquete sin activar su aplicación upstream:
+
+```bash
+python3 .agent-skills/openrig/scripts/preflight.py --json
+```
+
+Los once scripts admiten `--help`, `--json`, `--repo` y `--expect-commit` opcionales,
+funcionan sin otras habilidades y mantienen `runtime_verified: false`.
+El código 0 indica comprobaciones offline superadas, 1 requisitos ausentes o distintos,
+y 2 entrada inválida. Una ruta de ejecutable o un HEAD coincidente no demuestra que el runtime funcione.
 
 
 ## 📚 Lista de Habilidades

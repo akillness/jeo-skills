@@ -228,6 +228,45 @@ Used 2026-09-19 for nine pairs (aliases, oh-my-gods wrappers, pm-skills template
 - [ ] If category/subcategory changed: old membership removed, new membership added,
       in the same commit
 
+## Task: Add offline repository operator support
+
+### Steps
+1. Use an isolated worktree when the primary checkout contains another author's work.
+   Read/write/edit tools require absolute worktree paths; bash `cwd` does not retarget
+   them. Undo only a confirmed task-owned accidental change from its pre-edit snapshot.
+2. Keep SKILL.md router-first with When to use, Instructions, Examples, Best practices
+   and References. Move detailed commands, limits, failure handling and source/license
+   evidence into `references/upstream.md`; retain mandatory safety gates inline.
+3. Add a standalone stdlib `scripts/preflight.py` with executable Git mode and no
+   sibling dependency. Support `--help`, `--json`, optional `--repo` and full-SHA
+   `--expect-commit` (requires repo). JSON includes skill, offline-preflight scope,
+   status, checks and `runtime_verified: false`; exits 0/1/2 mean offline checks pass,
+   prerequisites mismatch/missing, or invalid input. Unchecked versions remain explicit
+   warnings, not manufactured readiness or an always-blocked success gate.
+4. Default inspection must not invoke upstream programs, use network, read secrets or
+   change configuration. With an explicit repo, bound Git calls, resolve the binary,
+   allowlist only PATH and portable OS loader/temp variables, add fixed Git controls
+   disabling prompts/optional locks/global-system configuration and protocols, and
+   compare resolved `--show-toplevel` with the requested root before
+   accepting HEAD. Public metadata reads reject symlinks and are size-bounded.
+5. Have Tester author real subprocess regressions for absent tools, malformed arguments,
+   literal paths, source shape/pins, standalone copies, no writes/secret output, and
+   hostile Git selectors/trace variables and child credential exclusion. Register the
+   exact new test command in CI; explicit file lists do not discover a new file.
+   Use subprocess probes or context-managed mocks: eval module state is shared across
+   agents, so an un-restored subprocess mock can corrupt later verification.
+6. Synchronize manifest description, version and allowed_tools explicitly; existing
+   catalog gates do not enforce the latter two. Run the projection generator, skill
+   validators, new tests and catalog/frontmatter/flat-layout gates. Count authored eval
+   scenarios separately from executed tests and never claim live runtime proof.
+
+### Verify
+- [ ] All target packages contain SKILL.md, a pinned reference and executable helper
+- [ ] Standalone helper/status/exit/hostile-Git regressions pass
+- [ ] Manifest discovery/version/tool fields match the target frontmatter
+- [ ] Generated projections and existing catalog gates pass without weakening checks
+- [ ] Independent Python/code/security review has no unresolved blockers
+
 ## Update Scaffold
 - [ ] Update `.mex/ROUTER.md` "Current Project State" if what's working/not built has changed
 - [ ] Update `.mex/context/catalog-pipeline.md` if a validation stage's behavior changed

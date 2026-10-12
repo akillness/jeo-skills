@@ -41,5 +41,15 @@
         "The response does not propose a native Windows install or claim the environment variable isolates provider settings"
       ]
     }
+    ,{
+      "id": 5,
+      "prompt": "Run `.agent-skills/openrig/scripts/preflight.py --json` with an empty PATH, then inspect an isolated Git fixture with the public OpenRig markers and an exact HEAD pin. Do not start rig, tmux, Node, npm, or any provider.",
+      "expected_output": "The response uses the standalone offline helper as a subprocess, reports blocked missing prerequisites without executing upstream tools, and reports literal local source/commit evidence with runtime_verified false.",
+      "assertions": [
+        "The response parses the helper JSON envelope and agrees status with exit 1 for absent required tools, while retaining runtime_verified=false",
+        "The response uses only a bounded local Git inspection for --repo/--expect-commit and rejects a mismatched pin",
+        "The response records no upstream executable, network, configuration, secret, or provider invocation"
+      ]
+    }
   ]
 }

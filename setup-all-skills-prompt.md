@@ -2191,11 +2191,13 @@ into an evidence-checked 90-day plan using YouTube Studio only, needs no API key
 posts or edits a channel. Its Korean trigger words (떡상, 유튜브 성장, 죽음의 계곡) are part
 of the description on purpose.
 
-### Repository operators (on demand, documents only)
+### Repository operators (on demand, offline support)
 
-The eleven repository operator skills below are original instruction wrappers, not
-vendored applications. Catalog installation adds their `SKILL.md`, references and
-eval scenarios only. Even in `full` mode, do not clone/build these projects, install
+The eleven repository operator skills below are original instruction packages, not
+vendored applications. Each v1.1.0 package includes a router-first `SKILL.md`, a
+pinned `references/upstream.md`, an executable stdlib `scripts/preflight.py`, and
+behavioral eval scenarios. Catalog installation copies these files; it does not run
+the helpers or upstream applications. Even in `full` mode, do not clone/build these projects, install
 their dependencies, download models/data, register MCP servers/plugins/hooks, start
 services, read credentials, grant desktop authority, submit training jobs, scan live
 targets, or mutate databases. Select one real task and approve its exact target,
@@ -2215,13 +2217,41 @@ data disclosure, side effects and rollback before following that skill's setup b
 | [llmfit](.agent-skills/llmfit/SKILL.md) | An intentionally installed llmfit binary can inspect hardware and estimate model fit. Profiles/overrides, storage, downloads and benchmark/share operations are distinct. Recommendations and throughput estimates are not measured inference or Uzu compatibility. |
 | [pg-jev](.agent-skills/pg-jev/SKILL.md) | PostgreSQL 14–17 CI coverage, matching PGXS/`pg_config`, `plpython3u` and privileged extension installation. Provider keys belong to the server process/configuration, not a client shell. Confirm row disclosure, endpoint and per-database writes before installs or inference SQL. |
 
-Preview document selection without installing any of those upstream runtimes:
+Preview instruction/support-file selection without installing any upstream runtime:
 
 ```bash
 python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" install \
   openrig anyjev typesafe-computer-use zurp helix-foundry uzu \
   context-mode rea fineenvs llmfit pg-jev --global --dry-run
 ```
+
+For a selected skill, use its offline helper before the separately approved setup:
+
+```bash
+python3 "$SKILLS_ROOT/openrig/scripts/preflight.py" --help
+python3 "$SKILLS_ROOT/openrig/scripts/preflight.py" --json
+python3 "$SKILLS_ROOT/openrig/scripts/preflight.py" --json \
+  --repo "/path/to/openrig" \
+  --expect-commit 3001cc436656c435e54425443e708e3e2d8c7d68
+```
+
+All eleven helpers support `--help`, `--json`, optional `--repo PATH`, and optional
+`--expect-commit FULL_SHA` (requires `--repo`). Zurp also accepts `--surface burp|mcp|all`
+so one selected surface does not require the other toolchain. Run the helper from
+the installed skill directory or use its absolute path; it needs no sibling skill.
+JSON reports `skill`, `scope: offline-preflight`, `status`, `checks`, and
+`runtime_verified: false`. Exit 0 means the reported offline checks pass, 1 means a
+missing/mismatched prerequisite, and 2 means invalid input. An unavailable optional
+application is not a reason to install it during blanket setup.
+
+Default checks inspect host facts, tool paths and permitted package metadata only.
+`--repo` adds public source-marker checks and bounded local Git inspection; a HEAD
+pin match does not attest uncommitted working-tree contents. Tool presence and
+`status: ok` do not prove runtime versions, provider authorization, hooks, desktop
+permissions, service health, model quality or measured inference. Record unchecked
+versions and missing prerequisites; do not silently repair them or run upstream
+commands to force a green result. Read each skill's reference for its actual setup,
+operation, failure and approval contract.
 
 Each skill records its audited upstream commit and license evidence. These local
 wrappers do not relicense upstream software or model/data assets: Context Mode is

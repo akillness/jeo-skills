@@ -43,5 +43,15 @@
         "The response says the pinned CI matrix covers PostgreSQL 14–17 and does not claim PostgreSQL 18 support"
       ]
     }
+    ,{
+      "id": 5,
+      "prompt": "Run `.agent-skills/pg-jev/scripts/preflight.py --json` with an empty PATH, then inspect a literal Git fixture containing the public pg-jev control/SQL/Makefile markers and a matching HEAD. Do not invoke PostgreSQL, pg_config, make, provider, or secret paths.",
+      "expected_output": "The response inventories pg_config/make/psql/git by path only, checks the public source shape and exact local pin with bounded Git, and keeps runtime_verified false.",
+      "assertions": [
+        "The response reports absent PostgreSQL/build tools as blocked with exit 1 and one parseable JSON report",
+        "The response accepts a matching 40-hex local HEAD but blocks a mismatched or malformed pin before any database or provider action",
+        "The response does not open a PostgreSQL session, read API keys/config, access network, or mutate the checkout"
+      ]
+    }
   ]
 }

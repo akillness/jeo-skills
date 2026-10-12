@@ -41,5 +41,15 @@
         "The response says Too Tight rows are not runnable claims and keeps estimated tok/s/TTFT separate from measured benchmark evidence"
       ]
     }
+    ,{
+      "id": 5,
+      "prompt": "Run `.agent-skills/llmfit/scripts/preflight.py --json` with no PATH tools, then inspect a literal llmfit checkout with the public Rust/docs markers and a matching Git HEAD. Do not run llmfit, benchmarks, providers, downloads, or servers.",
+      "expected_output": "The response reports host facts and path-only llmfit/source evidence, keeps estimates separate from runtime measurements, and enforces the offline JSON/exit contract without mutation.",
+      "assertions": [
+        "The response reports absent llmfit as blocked and does not invoke the executable to learn a version",
+        "The response accepts a matching local pin, rejects a mismatch or malformed input, and treats path names literally",
+        "The response preserves runtime_verified=false and performs no benchmark, provider, model, network, secret, or config action"
+      ]
+    }
   ]
 }

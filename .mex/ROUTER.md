@@ -49,7 +49,7 @@ Then read this file fully before doing anything else in this session.
   No public guide/README patch or push was made by this audit; deployment/model
   execution and fresh Linux/Windows setup are not claimed.
 
-- The catalog manifest (`.agent-skills/skills.json`, 366 skills) and its three
+- The catalog manifest (`.agent-skills/skills.json`, 367 skills) and its three
   projections (`.agent-skills/skills.toon`, `README.md`/`README.ko.md`/`README.es-ES.md`
   category tables, each skill's own SKILL.md frontmatter) are validated end-to-end by
   `scripts/validate-catalog-projections.py`, wired into `.github/workflows/ci.yml`
@@ -70,13 +70,19 @@ Then read this file fully before doing anything else in this session.
   `flatten_skills.py --dry-run` in CI (no category subfolders)
 - Repository operators (2026-10-12): eleven source-pinned guides for Openrig, AnyJev,
   TypeSafe computer use, Zurp, Helix Foundry, Uzu, Context Mode, REA, FineEnvs,
-  llmfit and pg-jev, with 44 behavioral eval scenarios. Exact discovery and selective
-  install dry-run resolve all eleven; source review does not certify upstream runtime
-  execution. README locales/setup separate document installation from model/data
-  downloads, provider costs, desktop authority and MCP/hook activation. Context Mode
-  is subprocess execution, not an OS/security sandbox; npm postinstall can rewrite
-  Claude configuration. FilmCraft is inherited unchanged from the remote baseline;
-  this publication adds only the eleven requested operators (355 to 366 skills).
+  llmfit and pg-jev, now standardized as v1.1.0 packages with router-first SKILL.md,
+  independent pinned `references/upstream.md`, standalone executable stdlib
+  `scripts/preflight.py`, and 55 authored behavioral eval scenarios. New helper
+  regressions pass across all eleven, including missing prerequisites, literal paths,
+  source pins, copied-package portability, and hostile Git environment/trace guards.
+  Git inspection binds the resolved source root and disables inherited selectors,
+  prompts, global/system configuration and network protocols. CI runs the new suite
+  on its Ubuntu/macOS installer matrix. Offline status is not runtime activation,
+  model quality, provider authorization or desktop/database execution proof.
+  README locales/setup distinguish support-file copying from separately approved
+  upstream operations. Context Mode is not an OS/security sandbox; npm postinstall
+  can rewrite Claude configuration. FilmCraft and unrelated catalog entries are
+  inherited unchanged; this support upgrade adds no skill to the 367-skill baseline.
 - The `headroom` skill packages durable context routing with Graphify preflight and
   Ponytail policy guidance. Full delegated setup reuses healthy Headroom deployments;
   its source-mutation adapter is explicitly Claude Code-only.
