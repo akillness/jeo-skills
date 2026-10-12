@@ -119,6 +119,34 @@ never infer runtime loading solely from an upstream agent label or successful ex
   Verification: `python3 scripts/test_jevgrep_regressions.py -v` covers the wrapper;
   a real pinned-package loopback smoke covers transport, not live model quality.
 
+## Live public setup verification
+
+- Execute exact published fences with real pinned npm/Git transport in an isolated
+  HOME/XDG/NPM/UV environment and OS write containment; never inherit provider secrets.
+  Private npm/UV bin paths are isolation adaptations, not permission to silently add
+  the router's new `~/.local/bin` to PATH. Preserve fence bytes and ordinary-shell status.
+- Judge installation by file/hash parity, hooks/config preservation and fresh real
+  loader/MCP responses, not exit 0. Label reused tools, absent-account skips, blocked
+  deployment branches and separately corrected diagnostic runs individually.
+- Prove GJC shared-only rejection before native projection. Seed synthetic Aside
+  account directories only for mirror-placement tests; they are not authenticated accounts.
+- macOS system Python 3.9 satisfies the guide's baseline but not fresh Semble/Ouroboros
+  dependencies. Explicit `--python 3.13` installations were verified. Ouroboros 0.55.7
+  `[all]` pins MCP 1.28.1 while its server needs MCP 2; a separate `[mcp]` environment
+  initialized successfully. Do not combine contradictory `[all,mcp]` requirements.
+  The `python3 -m pip install --user` fallback also cannot satisfy this release on
+  system Python 3.9; require a compatible interpreter instead of treating it as recovery.
+- The 2026-10-12 audit reproduced `rtk init -g` leaving the hook unregistered without
+  `--auto-patch`, Step 7 bare-router PATH errors, and unsupported README `--project` flags.
+  Corrected diagnostics do not turn the original published guide into a pass.
+  Core/minimal fences contain the same link-then-bare-router pattern; their failure
+  under the same missing-PATH condition is inferred from source, not a separately executed mode.
+- Semble CLI `--help` selects CLI mode; no-argument `semble` selects MCP. Test the
+  exact registered argv with initialize/tools-list; this does not prove search/model readiness.
+
+- Durable audit report: `~/vaults/llm-wiki/wiki/reports/2026-10-12-public-full-setup-audit-81131733.md`;
+  verbatim logs and hashes: `~/vaults/llm-wiki/raw/sources/audits/2026-10-12-public-full-setup-81131733/`.
+
 ## Verify
 - [ ] `jeo-skill doctor` reports `"ok": true`, a resolved `catalog` path/URL, and
       `"linked": true`

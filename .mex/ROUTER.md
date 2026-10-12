@@ -28,6 +28,19 @@ Then read this file fully before doing anything else in this session.
 ## Current Project State
 
 **Working:**
+- Public FULL setup audit (2026-10-12): public ref `81131733` stayed unchanged;
+  authentic GitHub/npx transport installed 367 manifest-matching SKILL.md files in
+  isolated HOME. Actual jeopi/jeo/OMP loaders passed; GJC rejected shared-only skills
+  and passed after native projection. Synthetic Aside-account mirroring preserved
+  its unrelated sentinel; this proves placement, not authenticated app activation.
+  Original guide is not an end-to-end pass: PATH, non-interactive RTK hook,
+  Python selection and Ouroboros `[all]`/MCP 2 incompatibilities were reproduced;
+  separate diagnostic corrections passed. Step 6 GJC guidance and README `--project`
+  examples remain inconsistent. Durable report: `~/vaults/llm-wiki/wiki/reports/2026-10-12-public-full-setup-audit-81131733.md`;
+  original evidence: `~/vaults/llm-wiki/raw/sources/audits/2026-10-12-public-full-setup-81131733/`.
+  No public guide/README patch or push was made by this audit; deployment/model
+  execution and fresh Linux/Windows setup are not claimed.
+
 - The catalog manifest (`.agent-skills/skills.json`, 366 skills) and its three
   projections (`.agent-skills/skills.toon`, `README.md`/`README.ko.md`/`README.es-ES.md`
   category tables, each skill's own SKILL.md frontmatter) are validated end-to-end by
