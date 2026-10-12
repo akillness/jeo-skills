@@ -34,6 +34,11 @@ function privateWrite(path, content) {
   writeFileSync(path, content, { mode: 0o600 });
   chmodSync(path, 0o600);
 }
+function hostModelsFixture(f, { agent = 'jeopi', profile = f.profile, observedAt = new Date().toISOString(), inventory }) {
+  const path = join(f.root, 'host-models.json');
+  writeFileSync(path, JSON.stringify({ agent, profile, observedAt, inventory }));
+  return path;
+}
 
 function fixture({ profile = 'alpha', enabled = true } = {}) {
   const root = mkdtempSync(join(tmpdir(), 'jev-plugin-test-'));
@@ -954,7 +959,11 @@ test('model advice becomes a host launch argv plan and refuses unsupported provi
     confidence: 0.99,
     provenance: { backend: { kind: 'api', driver: 'typesafe', model: 'jev-1.13' } },
   }]));
-  const planned = runPlugin(f, ['model-plan', '--agent', 'claude', '--profile', f.profile, '--advice', advicePath]);
+  const hostModelsPath = hostModelsFixture(f, {
+    agent: 'claude',
+    inventory: { anthropic: { authenticated: true, models: ['claude-sonnet-4-5'] } },
+  });
+  const planned = runPlugin(f, ['model-plan', '--agent', 'claude', '--profile', f.profile, '--advice', advicePath, '--host-models', hostModelsPath]);
   assert.equal(planned.status, 0, `${planned.stdout}\n${planned.stderr}`);
   const plan = jsonResult(planned);
   assert.equal(plan.ok, true);
@@ -962,7 +971,7 @@ test('model advice becomes a host launch argv plan and refuses unsupported provi
   assert.equal(JSON.stringify(plan).includes('hotSwap'), false);
   const unsupportedPath = join(f.root, 'unsupported-advice.json');
   writeFileSync(unsupportedPath, JSON.stringify([{ skill: 'x', candidates: [{ provider: 'ollama', model: 'local-model' }], chosen: 'ollama/local-model' }]));
-  const unsupported = runPlugin(f, ['model-plan', '--agent', 'claude', '--profile', f.profile, '--advice', unsupportedPath]);
+  const unsupported = runPlugin(f, ['model-plan', '--agent', 'claude', '--profile', f.profile, '--advice', unsupportedPath, '--host-models', hostModelsPath]);
   assert.notEqual(unsupported.status, 0);
   assert.match(`${unsupported.stdout}\n${unsupported.stderr}`, /unsupported|provider|refus/i);
 });
@@ -981,7 +990,11 @@ test('model advice maps only host-compatible providers into host-native launch a
       candidates: [{ provider, model, probability: 1, rank: 1 }],
       chosen: `${provider}/${model}`,
     }]));
-    const result = runPlugin(f, ['model-plan', '--agent', agent, '--profile', f.profile, '--advice', advicePath]);
+    const hostModelsPath = hostModelsFixture(f, {
+      agent,
+      inventory: { [provider]: { authenticated: true, models: [model] } },
+    });
+    const result = runPlugin(f, ['model-plan', '--agent', agent, '--profile', f.profile, '--advice', advicePath, '--host-models', hostModelsPath]);
     assert.equal(result.status, 0, `${agent}/${provider}: ${result.stdout}\n${result.stderr}`);
     const plan = jsonResult(result);
     assert.equal(plan.host, agent);
@@ -999,11 +1012,253 @@ test('model advice maps only host-compatible providers into host-native launch a
     const f = fixture({ profile: `model-reject-${agent}-${provider}`, enabled: true });
     const advicePath = join(f.root, 'rejected-advice.json');
     writeFileSync(advicePath, JSON.stringify([{ skill: 'x', candidates: [{ provider, model }], chosen: `${provider}/${model}` }]));
-    const result = runPlugin(f, ['model-plan', '--agent', agent, '--profile', f.profile, '--advice', advicePath]);
+    const hostModelsPath = hostModelsFixture(f, {
+      agent,
+      inventory: { [provider]: { authenticated: true, models: [model] } },
+    });
+    const result = runPlugin(f, ['model-plan', '--agent', agent, '--profile', f.profile, '--advice', advicePath, '--host-models', hostModelsPath]);
     assert.notEqual(result.status, 0, `${agent} must reject arbitrary ${provider} switching`);
     assert.match(`${result.stdout}\n${result.stderr}`, /unsupported|provider|host|refus/i);
   }
 });
+test('model-plan refuses advice when host has no authenticated provider inventory', () => {
+  const f = fixture({ profile: 'no-host-inventory', enabled: true });
+  const advicePath = join(f.root, 'routing-advice.json');
+  writeFileSync(advicePath, JSON.stringify([{
+    skill: 'frontend-patterns',
+    candidates: [{ provider: 'anthropic', model: 'claude-sonnet-4-5' }],
+    chosen: 'anthropic/claude-sonnet-4-5',
+  }]));
+
+  // The isolated host fixture deliberately has no provider-owned auth/status
+  // inventory. Advice alone must not authorize a host model before inference.
+  const result = runPlugin(f, [
+    'model-plan', '--agent', 'claude', '--profile', f.profile, '--advice', advicePath,
+  ]);
+  assert.notEqual(result.status, 0, `${result.stdout}\n${result.stderr}`);
+  assert.match(`${result.stdout}\n${result.stderr}`, /authenticated|inventory|available|provider|unavailable|refus/i);
+});
+test('model-plan intersects advice with authenticated exact-model host inventory', () => {
+  const f = fixture({ profile: 'inventory-intersection', enabled: true });
+  const advicePath = join(f.root, 'routing-advice.json');
+  writeFileSync(advicePath, JSON.stringify([{
+    skill: 'frontend-patterns',
+    candidates: [
+      { provider: 'openai-codex', model: 'gpt-5-codex', probability: 0.91, rank: 1 },
+      { provider: 'anthropic', model: 'claude-sonnet-4-5', probability: 0.88, rank: 2 },
+      { provider: 'google', model: 'gemini-2.5-pro', probability: 0.87, rank: 3 },
+      { provider: 'openai-codex', model: 'not-authorized', probability: 0.86, rank: 4 },
+    ],
+    chosen: 'openai-codex/gpt-5-codex',
+  }]));
+  const hostModelsPath = hostModelsFixture(f, {
+    inventory: {
+      'openai-codex': { authenticated: true, models: ['gpt-5-codex'], limitedUntil: null },
+      anthropic: { authenticated: null, models: ['claude-sonnet-4-5'], limitedUntil: null },
+      google: { authenticated: false, models: ['gemini-2.5-pro'], limitedUntil: null },
+    },
+  });
+  const result = runPlugin(f, [
+    'model-plan', '--agent', 'jeopi', '--profile', f.profile,
+    '--advice', advicePath, '--host-models', hostModelsPath,
+  ]);
+  assert.equal(result.status, 0, `${result.stdout}\n${result.stderr}`);
+  const plan = jsonResult(result);
+  assert.equal(plan.plans[0].provider, 'openai-codex');
+  assert.equal(plan.plans[0].model, 'gpt-5-codex');
+  assert.equal(plan.plans[0].executed, false);
+  assert.deepEqual(plan.plans[0].fallbacks, []);
+});
+test('model-plan keeps OAuth provider identity distinct from the API provider', () => {
+  const f = fixture({ profile: 'oauth-provider-distinct', enabled: true });
+  const advicePath = join(f.root, 'routing-advice.json');
+  writeFileSync(advicePath, JSON.stringify([{
+    skill: 'backend-patterns',
+    candidates: [
+      { provider: 'openai-codex', model: 'gpt-5-codex', probability: 0.95, rank: 1 },
+      { provider: 'openai', model: 'gpt-5-codex', probability: 0.80, rank: 2 },
+    ],
+    chosen: 'openai-codex/gpt-5-codex',
+  }]));
+  const hostModelsPath = hostModelsFixture(f, {
+    inventory: {
+      openai: { authenticated: true, models: ['gpt-5-codex'], limitedUntil: null },
+    },
+  });
+  const result = runPlugin(f, [
+    'model-plan', '--agent', 'jeopi', '--profile', f.profile,
+    '--advice', advicePath, '--host-models', hostModelsPath,
+  ]);
+  assert.equal(result.status, 0, `${result.stdout}\n${result.stderr}`);
+  const plan = jsonResult(result);
+  assert.equal(plan.plans[0].provider, 'openai');
+  assert.equal(plan.plans[0].model, 'gpt-5-codex');
+  assert.notEqual(plan.plans[0].provider, 'openai-codex');
+  assert.equal(plan.plans[0].executed, false);
+});
+
+
+test('model-plan advances a quota-limited choice to an ordered eligible fallback', () => {
+  const f = fixture({ profile: 'quota-fallback', enabled: true });
+  const advicePath = join(f.root, 'routing-advice.json');
+  writeFileSync(advicePath, JSON.stringify([{
+    skill: 'backend-patterns',
+    candidates: [
+      { provider: 'openai-codex', model: 'gpt-5-codex', probability: 0.95, rank: 1 },
+      { provider: 'anthropic', model: 'claude-sonnet-4-5', probability: 0.80, rank: 2 },
+      { provider: 'google', model: 'gemini-2.5-pro', probability: 0.70, rank: 3 },
+    ],
+    chosen: 'openai-codex/gpt-5-codex',
+  }]));
+  const hostModelsPath = hostModelsFixture(f, {
+    inventory: {
+      'openai-codex': { authenticated: true, models: ['gpt-5-codex'], limitedUntil: '2099-01-01T00:00:00.000Z' },
+      anthropic: { authenticated: true, models: ['claude-sonnet-4-5'], limitedUntil: null },
+      google: { authenticated: true, models: ['gemini-2.5-pro'], limitedUntil: null },
+    },
+  });
+  const result = runPlugin(f, [
+    'model-plan', '--agent', 'jeopi', '--profile', f.profile,
+    '--advice', advicePath, '--host-models', hostModelsPath,
+  ]);
+  assert.equal(result.status, 0, `${result.stdout}\n${result.stderr}`);
+  const plan = jsonResult(result);
+  assert.equal(plan.plans[0].provider, 'anthropic');
+  assert.equal(plan.plans[0].model, 'claude-sonnet-4-5');
+  assert.deepEqual(plan.plans[0].fallbacks.map(({ provider, model }) => `${provider}/${model}`), ['google/gemini-2.5-pro']);
+  assert.equal(plan.plans[0].executed, false);
+});
+
+test('model-plan permits an elapsed quota reset and rejects only the model-specific future limit', () => {
+  const f = fixture({ profile: 'quota-reset', enabled: true });
+  const advicePath = join(f.root, 'routing-advice.json');
+  writeFileSync(advicePath, JSON.stringify([{
+    skill: 'testing-strategies',
+    candidates: [
+      { provider: 'openai-codex', model: 'gpt-5-codex', probability: 0.95, rank: 1 },
+      { provider: 'openai-codex', model: 'gpt-5-mini', probability: 0.75, rank: 2 },
+    ],
+    chosen: 'openai-codex/gpt-5-codex',
+  }]));
+  const hostModelsPath = hostModelsFixture(f, {
+    inventory: {
+      'openai-codex': {
+        authenticated: true,
+        models: ['gpt-5-codex', 'gpt-5-mini'],
+        limitedUntil: '2020-01-01T00:00:00.000Z',
+        modelLimits: { 'gpt-5-codex': '2099-01-01T00:00:00.000Z' },
+      },
+    },
+  });
+  const result = runPlugin(f, [
+    'model-plan', '--agent', 'jeopi', '--profile', f.profile,
+    '--advice', advicePath, '--host-models', hostModelsPath,
+  ]);
+  assert.equal(result.status, 0, `${result.stdout}\n${result.stderr}`);
+  const plan = jsonResult(result);
+  assert.equal(plan.plans[0].provider, 'openai-codex');
+  assert.equal(plan.plans[0].model, 'gpt-5-mini');
+  assert.equal(plan.plans[0].executed, false);
+});
+test('model-plan fails closed with bounded output when every authorized candidate is exhausted', () => {
+  const f = fixture({ profile: 'all-exhausted', enabled: true });
+  const advicePath = join(f.root, 'routing-advice.json');
+  writeFileSync(advicePath, JSON.stringify([{
+    skill: 'testing-strategies',
+    candidates: [
+      { provider: 'openai', model: 'gpt-5.1', probability: 0.91, rank: 1 },
+      { provider: 'anthropic', model: 'claude-sonnet-4-5', probability: 0.80, rank: 2 },
+    ],
+    chosen: 'openai/gpt-5.1',
+  }]));
+  const hostModelsPath = hostModelsFixture(f, {
+    inventory: {
+      openai: { authenticated: true, models: ['gpt-5.1'], limitedUntil: '2099-01-01T00:00:00.000Z' },
+      anthropic: { authenticated: true, models: ['claude-sonnet-4-5'], modelLimits: { 'claude-sonnet-4-5': '2099-01-01T00:00:00.000Z' } },
+    },
+  });
+  const result = runPlugin(f, [
+    'model-plan', '--agent', 'jeopi', '--profile', f.profile,
+    '--advice', advicePath, '--host-models', hostModelsPath,
+  ]);
+  assert.notEqual(result.status, 0, `${result.stdout}\n${result.stderr}`);
+  const text = `${result.stdout}\n${result.stderr}`;
+  assert.doesNotMatch(text, /unknown option '--host-models'/);
+  assert.match(text, /unavailable|exhausted|supported|eligible|inventory/i);
+});
+
+test('model-plan rejects a host-model snapshot from another profile or host', () => {
+  const f = fixture({ profile: 'isolated-profile', enabled: true });
+  const advicePath = join(f.root, 'routing-advice.json');
+  writeFileSync(advicePath, JSON.stringify([{
+    skill: 'frontend-patterns',
+    candidates: [{ provider: 'openai', model: 'gpt-5.1', probability: 1, rank: 1 }],
+    chosen: 'openai/gpt-5.1',
+  }]));
+  const hostModelsPath = hostModelsFixture(f, {
+    agent: 'omp',
+    profile: 'different-profile',
+    inventory: { openai: { authenticated: true, models: ['gpt-5.1'] } },
+  });
+  const result = runPlugin(f, [
+    'model-plan', '--agent', 'jeopi', '--profile', f.profile,
+    '--advice', advicePath, '--host-models', hostModelsPath,
+  ]);
+  assert.notEqual(result.status, 0, `${result.stdout}\n${result.stderr}`);
+  const text = `${result.stdout}\n${result.stderr}`;
+  assert.doesNotMatch(text, /unknown option '--host-models'/);
+  assert.match(text, /profile|agent|host|snapshot|unavailable|mismatch/i);
+});
+
+
+test('model-plan rejects stale or malformed host snapshots before ranking', () => {
+  const f = fixture({ profile: 'invalid-host-snapshot', enabled: true });
+  const advicePath = join(f.root, 'routing-advice.json');
+  writeFileSync(advicePath, JSON.stringify([{
+    skill: 'frontend-patterns',
+    candidates: [{ provider: 'openai', model: 'gpt-5.1', probability: 1, rank: 1 }],
+    chosen: 'openai/gpt-5.1',
+  }]));
+  const stalePath = hostModelsFixture(f, {
+    observedAt: new Date(Date.now() - 120_000).toISOString(),
+    inventory: { openai: { authenticated: true, models: ['gpt-5.1'] } },
+  });
+  const stale = runPlugin(f, [
+    'model-plan', '--agent', 'jeopi', '--profile', f.profile,
+    '--advice', advicePath, '--host-models', stalePath,
+  ]);
+  assert.notEqual(stale.status, 0, `${stale.stdout}\n${stale.stderr}`);
+  const staleText = `${stale.stdout}\n${stale.stderr}`;
+  assert.doesNotMatch(staleText, /unknown option '--host-models'/);
+  assert.match(staleText, /stale|fresh|snapshot|available|unavailable/i);
+
+  const malformedPath = join(f.root, 'malformed-host-models.json');
+  writeFileSync(malformedPath, '{not-json');
+  const malformed = runPlugin(f, [
+    'model-plan', '--agent', 'jeopi', '--profile', f.profile,
+    '--advice', advicePath, '--host-models', malformedPath,
+  ]);
+  assert.notEqual(malformed.status, 0, `${malformed.stdout}\n${malformed.stderr}`);
+  const malformedText = `${malformed.stdout}\n${malformed.stderr}`;
+  assert.doesNotMatch(malformedText, /unknown option '--host-models'/);
+  assert.match(malformedText, /json|malformed|snapshot|available|unavailable/i);
+});
+
+test('OFF model-plan skips host inventory reads and auth probes', () => {
+  const f = fixture({ profile: 'off-host-models', enabled: false });
+  const advicePath = join(f.root, 'routing-advice.json');
+  writeFileSync(advicePath, JSON.stringify([{ chosen: 'openai-codex/gpt-5-codex', candidates: [] }]));
+  const missingHostModelsPath = join(f.root, 'does-not-exist-host-models.json');
+  const result = runPlugin(f, [
+    'model-plan', '--agent', 'jeopi', '--profile', f.profile,
+    '--advice', advicePath, '--host-models', missingHostModelsPath,
+  ]);
+  assert.equal(result.status, 0, `${result.stdout}\n${result.stderr}`);
+  const body = jsonResult(result);
+  assert.equal(body.inactive, true);
+  assert.equal(body.enabled, false);
+});
+
 
 
 test('consumer integration plan preserves URL prefixes, scrubs writer secrets, and refuses unsafe protocols/remote local-only endpoints', () => {
