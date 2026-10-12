@@ -2,14 +2,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-354-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-355-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![GJC](https://img.shields.io/badge/GJC-gajae--code-181717?style=for-the-badge&logo=github)](https://github.com/akillness/gajae-code)
 [![jeo-code](https://img.shields.io/badge/jeo--code-jeo-181717?style=for-the-badge&logo=github)](https://github.com/akillness/jeo-code)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**카테고리형 스킬 354개 · 경량 선택 설치 · 압축 TOON 카탈로그 · 멀티플랫폼**
+**카테고리형 스킬 355개 · 경량 선택 설치 · 압축 TOON 카탈로그 · 멀티플랫폼**
 
 스펙 우선 멀티 에이전트 LLM 워크플로우 컬렉션입니다. 프롬프트 하나로 전체 설정을
 위임하거나, `jeo-skill` 라우터부터 설치해 필요한 웹, 인프라, 게임, 미디어, CLI,
@@ -114,7 +114,7 @@ curl -s https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-sk
 
 ### 경량 선택 설치(수동 / CI)
 
-354개 스킬 폴더 전체가 아니라 **`jeo-skill` 라우터부터 설치**합니다. 카테고리,
+355개 스킬 폴더 전체가 아니라 **`jeo-skill` 라우터부터 설치**합니다. 카테고리,
 하위 분류, 인터페이스, 번들, 연관 스킬을 탐색할 수 있으며 앱·모델·MCP 서버·런타임은
 실제 선택된 작업에서만 온디맨드로 설치합니다.
 
@@ -162,11 +162,41 @@ curl -fsSL https://raw.githubusercontent.com/akillness/jeo-skills/main/install.s
 jeo-skill install video-motion-previs --global --yes
 video-motion-previs check
 ```
+
+### 온디맨드 FilmCraft 레포 운영 스킬
+
+[`filmcraft`](https://github.com/storytold/filmcraft/tree/1fdfd8324db4aa23b08c69f518b086e632f75f84)는
+순수 Rust로 작성된 오픈소스 비선형 동영상 편집기 FilmCraft를 위한 소스 고정 운영 스킬입니다.
+스킬 설치는 지침 문서만 추가하며 FilmCraft, Rust/Cargo, 데스크톱 앱, `filmcraft-cli`, 선택
+폰트, 미디어, MCP/클라이언트 등록을 설치하지 않습니다.
+
+먼저 미리보기한 뒤 스킬 설치를 명시적으로 적용합니다.
+
+```bash
+jeo-skill install filmcraft --global --dry-run
+jeo-skill install filmcraft --global --yes
+```
+
+FilmCraft는 로컬 프로젝트/시퀀스 검사, 편집, 프리뷰 렌더링, 내보내기, 자동화에만 사용합니다.
+소스 설정은 별도 작업이며, 사용자가 작업을 명시적으로 요청하고 범위가 분명하면 진행할 수 있습니다 (`cargo build --release -p filmcraft-cli -p filmcraft`;
+데스크톱 데모/제어는 `cargo run --release -p filmcraft` 또는
+`cargo run --release -p filmcraft -- --control 9876`). 헤드리스 MCP는
+`filmcraft-cli mcp --project /abs/project.fcproj`, 데스크톱 브리지는 앱 제어 채널과
+`filmcraft-cli mcp --bridge 127.0.0.1:9876`가 필요합니다. 브리지 모드에서는 앱에서 현재 선택한
+프로젝트가 기준입니다. `--bridge`와 `--project` 또는 `--demo`를 함께 쓰지 마세요(브리지에서는
+해당 옵션이 무시됩니다). 검증된 `filmcraft doctor` 명령이나 폴더 제한 플래그는 없으며 경로는
+사용자 권한 범위에서 제한 없이 동작합니다.
+선택 폰트에는 별도 `craft-fonts` 체크아웃과 `CRAFT_FONTS_DIR`가 필요합니다. 일괄 설정에서는
+FilmCraft 빌드, MCP 등록, 앱 시작, 폰트 다운로드, 미디어 가져오기를 실행하지 않습니다.
+사용자가 작업과 목적지를 명시적으로 요청하면 중복 승인을 요구하지 않습니다. 범위·동의·목적지 또는
+새 파괴적 작업이 불분명할 때만 되묻습니다. 프로그래밍/템플릿 동영상 생성은 `video-production`을 사용하세요.
+
+
 ---
 
 ## 📚 스킬 목록
 
-> 중앙 매니페스트: `.agent-skills/skills.json` · 354개 스킬 · 10개 기본 카테고리 · 하위 카테고리/인터페이스/관계 그룹 지원
+> 중앙 매니페스트: `.agent-skills/skills.json` · 355개 스킬 · 10개 기본 카테고리 · 하위 카테고리/인터페이스/관계 그룹 지원
 
 ### 🌐 웹 (50개)
 
@@ -280,9 +310,9 @@ video-motion-previs check
 | `game-feel` |
 | `game-ui-ux` |
 
-### 🎬 크리에이티브 미디어 (32개)
+### 🎬 크리에이티브 미디어 (33개)
 
-하위 분류: `image` (10), `video` (13), `motion` (1), `audio` (1), `presentation` (1), `diagram` (1), `design` (3), `capture` (0), `storytelling` (2)
+하위 분류: `image` (10), `video` (14), `motion` (1), `audio` (1), `presentation` (1), `diagram` (1), `design` (3), `capture` (0), `storytelling` (2)
 
 | Skill |
 |---|
@@ -295,6 +325,7 @@ video-motion-previs check
 | `gbro-collage-broll` |
 | `opencut` |
 | `video-production` |
+| `filmcraft` |
 | `video-shotcraft` |
 | `video-to-superprompt` |
 | `vox-director` |
@@ -836,7 +867,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 ## 📁 구조
 
 ```text
-├── .agent-skills/          ← 354개 스킬 폴더 (SKILL.md + 선택적 지원 파일)
+├── .agent-skills/          ← 355개 스킬 폴더 (SKILL.md + 선택적 지원 파일)
 ├── docs/                   ← 상세 가이드 (bmad, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
@@ -855,6 +886,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 | `ooo` | `ooo`, `ouroboros` | [docs/ooo/README.md](docs/ooo/README.md) |
 | `stitch-skills` | `stitch`, `stitch-design`, `enhance-prompt` | [docs/stitch-skills/README.md](docs/stitch-skills/README.md) |
 | `compresso` | `compresso`, `compress video`, `batch compression` | [docs/compresso/README.md](docs/compresso/README.md) |
+| `filmcraft` | `filmcraft`, `filmcraft-cli`, `.fcproj`, `FilmCraft MCP` | [.agent-skills/filmcraft/SKILL.md](.agent-skills/filmcraft/SKILL.md) |
 | `open-design` | `open-design`, `local design tool`, `prototype generation` | [.agent-skills/open-design/SKILL.md](.agent-skills/open-design/SKILL.md) |
 | `codeflow` | `codeflow`, `visualize codebase`, `dependency graph` | [.agent-skills/codeflow/SKILL.md](.agent-skills/codeflow/SKILL.md) |
 | `slides-grab` | `slides-grab`, `slides grab`, `generate slides` | [.agent-skills/slides-grab/SKILL.md](.agent-skills/slides-grab/SKILL.md) |
@@ -924,6 +956,14 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 
 <!-- WHATS-NEW:START -->
 
+## 🆕 v2026-10-12 업데이트
+
+| 변경 사항 | 상세 내용 |
+|--------|---------|
+| **FilmCraft 스킬** | Rust 영상 편집기의 headless CLI/MCP와 데스크톱 loopback 제어 bridge를 위한 `filmcraft`를 추가했습니다. 원본 커밋 `1fdfd8324db4aa23b08c69f518b086e632f75f84`에 근거해 프로젝트 보존, 명령 탐색, 미디어 누락 오류와 승인된 출력 경로를 안내합니다. |
+| **선택 설치와 카탈로그** | 스킬 1개를 등록해 354개에서 355개로 갱신하고 README 번역본, TOON, setup 문서를 동기화했습니다. 스킬 설치는 FilmCraft 앱 설치·빌드, MCP 등록, 미디어 수정을 수행하지 않습니다. 다른 작업의 로컬 스킬 추가는 이번 공개 변경에서 제외했습니다. |
+| **검증 범위** | 스킬 형식 검증, 카탈로그 검색, 선택 설치 dry-run이 통과했습니다. 행동 평가 시나리오 10개를 포함했으며 FilmCraft 빌드, GUI/MCP 실행, 편집과 export는 실행하지 않았습니다. |
+
 ## 🆕 v2026-10-08 업데이트
 
 | 변경 사항 | 상세 내용 |
@@ -961,15 +1001,6 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 |------|------|
 | **중복 스킬 9쌍 병합 (359 → 350)** | 카탈로그 전수 중복 감사(명시적 별칭 표시, 설명·본문 TF-IDF, 트리거 겹침, 동일 JTBD 수동 검토)로 같은 일을 하는 9쌍을 찾아 삭제가 아니라 **병합**했습니다: 정본 스킬이 중복본의 고유 내용과 트리거 문구를 흡수하고, 폴더를 제거한 뒤, 옛 이름을 `skills.json` `retired_skills`에 등록해 `jeo-skill install <옛이름>`이 대체 스킬을 안내합니다. 순수 별칭: `agent-development-principles` → `agent-principles`, `remotion-video-production` → `video-production`(오래 비어 있던 `references/` 3개를 `108fbaa^`에서 복원하고 `remotion-route-outs.md` 추가), `higgsfield-game-generation` → `higgsfield-websites`(드리프트 감사기는 `references/game-alias/`). oh-my-gods 래퍼를 공식 스킬로: `deepagents` → `deep-agents-core`(`references/quickstart-and-backends.md`), `langgraph-workflow` → `langgraph-fundamentals`(`references/production-patterns.md`), `mcp-server-design` → `mcp-builder`(`references/server-card-and-registry.md`). pm-skills 템플릿을 라우팅형 정본으로: `retro` → `sprint-retrospective`(Sailboat 프롬프트, 스프린트 요약 템플릿), `release-notes` → `changelog-maintenance`(기술→사용자 문장 변환표), `sprint-plan` → `task-planning`(`references/sprint-planning-recipe.md`). 병합된 이름을 가리키던 다른 스킬의 라우팅도 모두 재연결했습니다. |
 | **병합 대신 연관 그룹 3개** | 겹치지만 같은 일은 아닌 스킬은 중복 대신 관계로 선언했습니다: `llm-observability`(`agent-observability` 플랫폼 중립 계층 → `langsmith` / `opik` 운영 → `monitoring-observability`), `bug-diagnosis`(`log-analysis` → `debugging` → `diagnosing-bugs`, `debugging`이 어려운/불안정 버그의 HITL 추적을 `diagnosing-bugs`로 라우팅), `product-analytics`(`data-analysis` → `ab-test-analysis` / `cohort-analysis` → `looker-studio-bigquery`). 벤더링 패밀리 내부의 업스트림 분할(pm-skills, mattpocock, langchain-skills)과 공급자 선택(`aura-asset-images` / `unsplash-asset-images`)은 의도적으로 그대로 두었습니다. |
-
-## 🆕 v2026-09-18 업데이트
-
-| 변경 | 내용 |
-|------|------|
-| **카탈로그 359개 스킬 (+108)** | 글로벌에 설치된 스킬 세트와 카탈로그를 동기화했습니다. 다섯 개 업스트림 패밀리를 고정 커밋으로 벤더링: [phuryn/pm-skills](https://github.com/phuryn/pm-skills)의 PM 스킬 65개와 `pm-skills` 라우터(`8607e3b`, MIT — `business` 하위 분류 `pm-toolkit`, `pm-discovery`, `pm-strategy`, `pm-execution`, `pm-market-research`, `pm-analytics`, `pm-go-to-market`, `pm-growth` 신설); [langchain-ai/langchain-skills](https://github.com/langchain-ai/langchain-skills)의 LangChain / LangGraph / Deep Agents 스킬 10개(`88df7d9`, MIT); [higgsfield-ai/skills](https://github.com/higgsfield-ai/skills)의 `higgsfield-*` CLI 스킬 8개(0.12.0, `d071406`, MIT — `higgsfield-game-generation` 별칭이 드디어 카탈로그 내부 대상을 가리킴); [NomaDamas/k-skill](https://github.com/NomaDamas/k-skill)의 `hwp`, `rhwp-edit`, `rhwp-advanced`, `korean-patent-search`, `k-skill-setup`(`783d3c3`, MIT); [akillness/oh-my-gods](https://github.com/akillness/oh-my-gods)의 에이전트 엔지니어링 스킬 17개(`1b2779a`) — `agenticskills`는 번들 전체 설치기로 유지되고, 이 17개는 `jeo-skill install`로 단독 설치 가능. `youtube-growth-playbook-2026`은 로컬 작성 스킬. 글로벌에만 있던 근거 중심 세로형 커머스 영상 하네스 `shopping-shorts`도 79개 미디어 회귀 테스트 통과 후 카탈로그로 승격해 `media-video` 번들과 `video-production` 연관 그룹에 추가. 연관 그룹 5개(`pm-skills`, `langchain-skills`, `higgsfield-cli`, `k-skill`, `oh-my-gods-agent-engineering`)와 번들 2개(`product-management`, `langchain`) 추가. |
-| **설치 가이드에 지식 파이프라인 훅 복원** | `setup-all-skills-prompt.md`의 경량화 개편 때 `llm-wiki` + graphify 훅 배선이 빠졌지만 `llm-wiki` 스킬은 여전히 있다고 안내하고 있었습니다. Step 5가 이제 레포별 볼트를 부트스트랩하고, `hooks/ingest-prompt.py`를 `~/.agents/hooks/`에 설치하며, 볼트 경로를 담지 않는 `llm-wiki-ingest.sh` 래퍼를 Claude Code(`UserPromptSubmit`/`Stop`), Codex(`UserPromptSubmit`/`Stop`), Gemini/Antigravity(`BeforeAgent`/`AfterAgent`)에 멱등하게 등록합니다 — 기존 훅과 무관한 설정 키는 그대로 보존됩니다. |
-| **`scripts/generate-catalog-projections.py`** | 검증기의 역함수: `skills.json`에서 `skills.toon`과 README 3종의 스킬 목록 섹션(제목 카운트, 하위 분류 카운트, 표 행, 소개 카운트만)을 외과적으로 재생성하고 나머지는 바이트 단위로 보존합니다. `--check`는 재생성이 no-op임을 단언하므로 "프로젝션 대신 매니페스트를 고쳐라"에 이제 기계적 후속 수단이 생겼습니다. README에만 있던 8월 항목도 `changelog/`로 옮겨 `changelog.py check`가 다시 통과합니다. |
-| **의도적으로 미포함** | pm-skills와 함께 글로벌에 설치돼 있던 출처 불명 단일 파일 스킬 6개(`blog-post`, `data-visualization`, `query-writing`, `schema-exploration`, `social-media`, `web-research`), 업스트림에서 사라진 `framework-selection` / `langgraph-docs`, 그리고 이 카탈로그에서 이전에 제거·은퇴한 모든 스킬(OMC/OMX/ooo 명령 shim, `jeo`, `ralph`, `agent-browser`, `obsidian` 등)은 그대로 제외했습니다. |
 
 > 📜 이전 기록: [`changelog/ko/`](changelog/ko/) (월별 파일, 최신순).
 

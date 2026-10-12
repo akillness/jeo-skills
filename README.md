@@ -2,14 +2,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-354-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-355-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![GJC](https://img.shields.io/badge/GJC-gajae--code-181717?style=for-the-badge&logo=github)](https://github.com/akillness/gajae-code)
 [![jeo-code](https://img.shields.io/badge/jeo--code-jeo-181717?style=for-the-badge&logo=github)](https://github.com/akillness/jeo-code)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**354 categorized skills · lightweight selective install · compact TOON catalog · cross-platform**
+**355 categorized skills · lightweight selective install · compact TOON catalog · cross-platform**
 
 A curated collection for spec-first, multi-agent LLM workflows. Delegate a complete setup
 with one prompt, or install the `jeo-skill` router first and add only the web,
@@ -114,7 +114,7 @@ Jev remains optional in all catalog modes: default setup does not download Jev m
 
 ### Lightweight selective install (manual / CI)
 
-Install the **`jeo-skill` router first**, not all 354 skill folders. It provides category,
+Install the **`jeo-skill` router first**, not all 355 skill folders. It provides category,
 subcategory, interface, bundle, and relationship discovery while keeping heavy apps,
 models, MCP servers, and runtimes on demand.
 
@@ -186,11 +186,42 @@ model/runtime assets are installed only when a real motion task needs them.
 jeo-skill install video-motion-previs --global --yes
 video-motion-previs check
 ```
+
+### On-demand FilmCraft repository operator
+
+[`filmcraft`](https://github.com/storytold/filmcraft/tree/1fdfd8324db4aa23b08c69f518b086e632f75f84)
+is a source-pinned operator for FilmCraft, an open-source nonlinear video editor written in
+pure Rust. Installing the skill adds instructions only; it does **not** install FilmCraft,
+Rust/Cargo, the desktop app, `filmcraft-cli`, optional fonts, media, or MCP/client registration.
+
+Preview and then explicitly apply the skill install:
+
+```bash
+jeo-skill install filmcraft --global --dry-run
+jeo-skill install filmcraft --global --yes
+```
+
+Use FilmCraft only for local project/sequence inspection, editing, preview rendering, export,
+or automation. Source setup is separate; proceed when the user explicitly requests the operation and
+its scope is clear (`cargo build --release -p filmcraft-cli -p filmcraft`;
+desktop demo/control uses `cargo run --release -p filmcraft` or `cargo run --release -p filmcraft -- --control 9876`).
+Headless MCP uses `filmcraft-cli mcp --project /abs/project.fcproj`; a desktop bridge requires the
+app control channel plus `filmcraft-cli mcp --bridge 127.0.0.1:9876`. No `filmcraft doctor` command
+or folder-confinement flag is verified, and paths remain unrestricted under user permissions.
+When using the desktop bridge, the app's currently selected project is authoritative; do not combine
+`--bridge` with `--project` or `--demo`, which are silently ignored in bridge mode.
+Optional fonts require a separate `craft-fonts` checkout and `CRAFT_FONTS_DIR`. Blanket setup never
+builds FilmCraft, registers MCP, starts the app, downloads fonts, or imports media; an explicit user
+request naming the operation and destination is sufficient. Ask only when scope, consent, destination,
+or a new destructive action is unclear. For programmable/template video generation, use
+`video-production` instead.
+
+
 ---
 
 ## 📚 Skills List
 
-> Central manifest: `.agent-skills/skills.json` · 354 skills · 10 primary categories · subcategory/interface/relationship metadata
+> Central manifest: `.agent-skills/skills.json` · 355 skills · 10 primary categories · subcategory/interface/relationship metadata
 
 ### 🌐 Web (50)
 
@@ -304,9 +335,9 @@ Subcategories: `client` (3), `web` (2), `server` (1), `design-ui` (7), `audio` (
 | `game-feel` |
 | `game-ui-ux` |
 
-### 🎬 Creative Media (32)
+### 🎬 Creative Media (33)
 
-Subcategories: `image` (10), `video` (13), `motion` (1), `audio` (1), `presentation` (1), `diagram` (1), `design` (3), `capture` (0), `storytelling` (2)
+Subcategories: `image` (10), `video` (14), `motion` (1), `audio` (1), `presentation` (1), `diagram` (1), `design` (3), `capture` (0), `storytelling` (2)
 
 | Skill |
 |---|
@@ -319,6 +350,7 @@ Subcategories: `image` (10), `video` (13), `motion` (1), `audio` (1), `presentat
 | `gbro-collage-broll` |
 | `opencut` |
 | `video-production` |
+| `filmcraft` |
 | `video-shotcraft` |
 | `video-to-superprompt` |
 | `vox-director` |
@@ -873,8 +905,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 ## 📁 Structure
 
 ```text
-.
-├── .agent-skills/          ← 354 skill folders (SKILL.md + optional support files)
+├── .agent-skills/          ← 355 skill folders (SKILL.md + optional support files)
 ├── docs/                   ← detailed guides (bmad, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
@@ -894,6 +925,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 | `ooo` | `ooo`, `ouroboros` | [docs/ooo/README.md](docs/ooo/README.md) |
 | `stitch-skills` | `stitch`, `stitch-design`, `enhance-prompt` | [docs/stitch-skills/README.md](docs/stitch-skills/README.md) |
 | `compresso` | `compresso`, `compress video`, `batch compression` | [docs/compresso/README.md](docs/compresso/README.md) |
+| `filmcraft` | `filmcraft`, `filmcraft-cli`, `.fcproj`, `FilmCraft MCP` | [.agent-skills/filmcraft/SKILL.md](.agent-skills/filmcraft/SKILL.md) |
 | `open-design` | `open-design`, `local design tool`, `prototype generation` | [.agent-skills/open-design/SKILL.md](.agent-skills/open-design/SKILL.md) |
 | `codeflow` | `codeflow`, `visualize codebase`, `dependency graph` | [.agent-skills/codeflow/SKILL.md](.agent-skills/codeflow/SKILL.md) |
 | `slides-grab` | `slides-grab`, `slides grab`, `generate slides` | [.agent-skills/slides-grab/SKILL.md](.agent-skills/slides-grab/SKILL.md) |
@@ -967,6 +999,14 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 
 <!-- WHATS-NEW:START -->
 
+## 🆕 What's New in v2026-10-12
+
+| Change | Details |
+|--------|---------|
+| **FilmCraft skill** | Added `filmcraft` for the Rust editor's headless CLI/MCP and desktop loopback control bridge, pinned to upstream commit `1fdfd8324db4aa23b08c69f518b086e632f75f84`. Guidance covers project preservation, command discovery, missing-media failures and approved export paths. |
+| **Selective setup and catalog** | Registered one new skill (354 → 355) and refreshed README locales, TOON and setup guidance. Installing the skill does not install/build FilmCraft, register MCP, or modify media. Concurrent local skill additions are excluded from this publication. |
+| **Verification boundary** | Skill-format validation, catalog search and selective-install dry-run pass. Ten behavioral evaluation fixtures are included; FilmCraft build, GUI/MCP execution, editing and export were not run. |
+
 ## 🆕 What's New in v2026-10-08
 
 | Change | Details |
@@ -1004,15 +1044,6 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 |--------|---------|
 | **Nine duplicate skills merged (359 → 350)** | A full-catalog duplicate audit (explicit alias markers, TF-IDF over descriptions and bodies, trigger overlap, and a manual same-job pass) found nine pairs doing the same job. Each was merged, never just deleted: the canonical skill absorbed the duplicate's unique content and trigger phrases, the folder was removed, and the old name went into `skills.json` `retired_skills` so `jeo-skill install <old-name>` answers with the replacement. Pure aliases: `agent-development-principles` → `agent-principles`, `remotion-video-production` → `video-production` (which also got its three long-missing `references/` files restored from `108fbaa^` plus `remotion-route-outs.md`), `higgsfield-game-generation` → `higgsfield-websites` (drift auditor now at `references/game-alias/`). oh-my-gods wrappers folded into the official skills: `deepagents` → `deep-agents-core` (`references/quickstart-and-backends.md`), `langgraph-workflow` → `langgraph-fundamentals` (`references/production-patterns.md`), `mcp-server-design` → `mcp-builder` (`references/server-card-and-registry.md`). pm-skills templates folded into the routing-first canonicals: `retro` → `sprint-retrospective` (Sailboat prompt family, compact sprint summary), `release-notes` → `changelog-maintenance` (technical → user-facing rewrite table), `sprint-plan` → `task-planning` (`references/sprint-planning-recipe.md`). Every route-out in other skills that named a merged skill was repointed. |
 | **Three routing groups instead of merges** | Skills that overlap but are not the same job are now declared rather than duplicated: `llm-observability` (`agent-observability` platform-neutral layer → `langsmith` / `opik` operators → `monitoring-observability`), `bug-diagnosis` (`log-analysis` → `debugging` → `diagnosing-bugs`, and `debugging` now routes hard/flaky HITL hunts to `diagnosing-bugs`), `product-analytics` (`data-analysis` → `ab-test-analysis` / `cohort-analysis` → `looker-studio-bigquery`). Upstream sibling splits inside vendored families (pm-skills, mattpocock, langchain-skills) and provider choices (`aura-asset-images` / `unsplash-asset-images`) were deliberately left alone. |
-
-## 🆕 What's New in v2026-09-18
-
-| Change | Details |
-|--------|---------|
-| **Catalog now 359 skills (+108)** | Synced the catalog with the globally installed skill set. Five upstream families are vendored at pinned commits: 65 product-management skills plus the `pm-skills` router from [phuryn/pm-skills](https://github.com/phuryn/pm-skills) (`8607e3b`, MIT — new `business` subcategories `pm-toolkit`, `pm-discovery`, `pm-strategy`, `pm-execution`, `pm-market-research`, `pm-analytics`, `pm-go-to-market`, `pm-growth`); ten LangChain / LangGraph / Deep Agents skills from [langchain-ai/langchain-skills](https://github.com/langchain-ai/langchain-skills) (`88df7d9`, MIT); the eight `higgsfield-*` CLI skills from [higgsfield-ai/skills](https://github.com/higgsfield-ai/skills) (0.12.0, `d071406`, MIT), which finally gives `higgsfield-game-generation` an in-catalog target; `hwp`, `rhwp-edit`, `rhwp-advanced`, `korean-patent-search`, and `k-skill-setup` from [NomaDamas/k-skill](https://github.com/NomaDamas/k-skill) (`783d3c3`, MIT); and 17 agent-engineering skills from [akillness/oh-my-gods](https://github.com/akillness/oh-my-gods) (`1b2779a`) so `jeo-skill install` can place them standalone while `agenticskills` stays the whole-bundle installer. `youtube-growth-playbook-2026` is a locally authored addition. The global-only `shopping-shorts` evidence-first vertical-commerce video harness was also promoted into the catalog after its 79-case media regression suite passed; it joins the `media-video` bundle and the `video-production` relationship group. Five relationship groups (`pm-skills`, `langchain-skills`, `higgsfield-cli`, `k-skill`, `oh-my-gods-agent-engineering`) and two bundles (`product-management`, `langchain`) were added. |
-| **Knowledge-pipeline hooks are back in the install guide** | The lightweight rewrite of `setup-all-skills-prompt.md` had dropped the `llm-wiki` + graphify hook wiring even though the `llm-wiki` skill still claimed it was there. Step 5 now bootstraps the per-repo vault, installs `hooks/ingest-prompt.py` at `~/.agents/hooks/`, and registers the vault-path-free `llm-wiki-ingest.sh` wrapper for Claude Code (`UserPromptSubmit`/`Stop`), Codex (`UserPromptSubmit`/`Stop`), and Gemini/Antigravity (`BeforeAgent`/`AfterAgent`) idempotently — existing hooks and unrelated settings keys are preserved. |
-| **`scripts/generate-catalog-projections.py`** | New inverse of the validator: regenerates `skills.toon` and the three README skills-list sections surgically from `skills.json` (headings, subcategory counts, table rows, intro count only; everything else byte-preserved). `--check` asserts a regeneration is a no-op, so "fix the manifest, not the projections" now has a mechanical follow-through. The August README entries were also moved into `changelog/` so `changelog.py check` passes again. |
-| **Not imported on purpose** | Six unattributed single-file skills that shipped alongside pm-skills globally (`blog-post`, `data-visualization`, `query-writing`, `schema-exploration`, `social-media`, `web-research`), the stale `framework-selection` / `langgraph-docs` (no longer in upstream), and everything previously removed or retired from this catalog (OMC/OMX/ooo command shims, `jeo`, `ralph`, `agent-browser`, `obsidian`, ...) stay out. |
 
 > 📜 Older entries: [`changelog/en/`](changelog/en/) (monthly files, newest first).
 

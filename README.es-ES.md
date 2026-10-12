@@ -4,14 +4,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-354-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-355-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![GJC](https://img.shields.io/badge/GJC-gajae--code-181717?style=for-the-badge&logo=github)](https://github.com/akillness/gajae-code)
 [![jeo-code](https://img.shields.io/badge/jeo--code-jeo-181717?style=for-the-badge&logo=github)](https://github.com/akillness/jeo-code)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**354 habilidades categorizadas · instalación selectiva ligera · catálogo TOON compacto · multiplataforma**
+**355 habilidades categorizadas · instalación selectiva ligera · catálogo TOON compacto · multiplataforma**
 
 Una colección curada para flujos de trabajo LLM multi-agente y centrados en especificaciones. Delega una configuración completa con un solo prompt, o instala primero el enrutador `jeo-skill` y añade solo las habilidades de web, infraestructura, juegos, medios, CLI o utilidades que necesites.
 
@@ -114,7 +114,7 @@ Jev sigue siendo opcional en todos los modos del catálogo: la configuración pr
 
 ### Instalación selectiva ligera (manual / CI)
 
-Instala primero el **enrutador `jeo-skill`**, no las 354 carpetas de habilidades. Proporciona descubrimiento de categoría, subcategoría, interfaz, paquete y relación, manteniendo aplicaciones pesadas, modelos, servidores MCP y tiempos de ejecución bajo demanda.
+Instala primero el **enrutador `jeo-skill`**, no las 355 carpetas de habilidades. Proporciona descubrimiento de categoría, subcategoría, interfaz, paquete y relación, manteniendo aplicaciones pesadas, modelos, servidores MCP y tiempos de ejecución bajo demanda.
 
 ```bash
 # One lightweight skill, shared globally
@@ -158,11 +158,44 @@ Establece `JEO_SKILLS_SELECTION=bundle`, `category` o `all` solo cuando ese alca
 jeo-skill install video-motion-previs --global --yes
 video-motion-previs check
 ```
+
+### Operador de repositorio FilmCraft bajo demanda
+
+[`filmcraft`](https://github.com/storytold/filmcraft/tree/1fdfd8324db4aa23b08c69f518b086e632f75f84)
+es un operador fijado a un commit para FilmCraft, un editor de vídeo no lineal de código abierto
+escrito en Rust puro. Instalar la habilidad solo añade instrucciones; no instala FilmCraft,
+Rust/Cargo, la aplicación de escritorio, `filmcraft-cli`, fuentes opcionales, medios ni registra
+MCP/clientes.
+
+Previsualiza y aplica explícitamente la instalación de la habilidad:
+
+```bash
+jeo-skill install filmcraft --global --dry-run
+jeo-skill install filmcraft --global --yes
+```
+
+Usa FilmCraft solo para inspeccionar proyectos/secuencias locales, editar, renderizar previsualizaciones,
+exportar o automatizar. La configuración desde código es una operación separada; una solicitud explícita
+del usuario basta para proceder cuando el alcance y el destino están claros (`cargo build --release
+-p filmcraft-cli -p filmcraft`; la demo/control de escritorio usa `cargo run --release -p filmcraft` o
+`cargo run --release -p filmcraft -- --control 9876`). MCP sin interfaz usa
+`filmcraft-cli mcp --project /abs/project.fcproj`; el puente de escritorio requiere el canal de control
+de la aplicación y `filmcraft-cli mcp --bridge 127.0.0.1:9876`. En modo puente, el proyecto seleccionado
+actualmente en la aplicación es la fuente de verdad; no combines `--bridge` con `--project` o `--demo`,
+porque esas opciones se ignoran silenciosamente en modo puente. No se ha verificado ningún comando
+`filmcraft doctor` ni una bandera de confinamiento de carpetas: las rutas quedan sin restringir dentro de
+los permisos del usuario. Las fuentes opcionales requieren un checkout separado de `craft-fonts` y
+`CRAFT_FONTS_DIR`. La configuración general nunca compila FilmCraft, registra MCP, inicia la aplicación,
+descarga fuentes ni importa medios. Una solicitud explícita que nombre la operación y el destino basta;
+pregunta solo si el alcance, el consentimiento, el destino o una nueva acción destructiva no están claros.
+Para generación de vídeo programable o con plantillas, usa `video-production`.
+
+
 ---
 
 ## 📚 Lista de Habilidades
 
-> Manifiesto central: `.agent-skills/skills.json` · 354 habilidades · 10 categorías principales · metadatos de subcategoría/interfaz/relación
+> Manifiesto central: `.agent-skills/skills.json` · 355 habilidades · 10 categorías principales · metadatos de subcategoría/interfaz/relación
 
 ### 🌐 Web (50)
 
@@ -276,9 +309,9 @@ Subcategorías: `client` (3), `web` (2), `server` (1), `design-ui` (7), `audio` 
 | `game-feel` |
 | `game-ui-ux` |
 
-### 🎬 Medios Creativos (32)
+### 🎬 Medios Creativos (33)
 
-Subcategorías: `image` (10), `video` (13), `motion` (1), `audio` (1), `presentation` (1), `diagram` (1), `design` (3), `capture` (0), `storytelling` (2)
+Subcategorías: `image` (10), `video` (14), `motion` (1), `audio` (1), `presentation` (1), `diagram` (1), `design` (3), `capture` (0), `storytelling` (2)
 
 | Skill |
 |---|
@@ -291,6 +324,7 @@ Subcategorías: `image` (10), `video` (13), `motion` (1), `audio` (1), `presenta
 | `gbro-collage-broll` |
 | `opencut` |
 | `video-production` |
+| `filmcraft` |
 | `video-shotcraft` |
 | `video-to-superprompt` |
 | `vox-director` |
@@ -846,7 +880,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 
 ```text
 .
-├── .agent-skills/          ← 354 skill folders (SKILL.md + optional support files)
+├── .agent-skills/          ← 355 skill folders (SKILL.md + optional support files)
 ├── docs/                   ← detailed guides (bmad, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
@@ -866,6 +900,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 | `ooo` | `ooo`, `ouroboros` | [docs/ooo/README.md](docs/ooo/README.md) |
 | `stitch-skills` | `stitch`, `stitch-design`, `enhance-prompt` | [docs/stitch-skills/README.md](docs/stitch-skills/README.md) |
 | `compresso` | `compresso`, `compress video`, `batch compression` | [docs/compresso/README.md](docs/compresso/README.md) |
+| `filmcraft` | `filmcraft`, `filmcraft-cli`, `.fcproj`, `FilmCraft MCP` | [.agent-skills/filmcraft/SKILL.md](.agent-skills/filmcraft/SKILL.md) |
 | `open-design` | `open-design`, `local design tool`, `prototype generation` | [.agent-skills/open-design/SKILL.md](.agent-skills/open-design/SKILL.md) |
 | `codeflow` | `codeflow`, `visualize codebase`, `dependency graph` | [.agent-skills/codeflow/SKILL.md](.agent-skills/codeflow/SKILL.md) |
 | `slides-grab` | `slides-grab`, `slides grab`, `generate slides` | [.agent-skills/slides-grab/SKILL.md](.agent-skills/slides-grab/SKILL.md) |

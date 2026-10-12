@@ -16,7 +16,7 @@ edges:
     condition: when the task touches skills.json, SKILL.md frontmatter, README/TOON projections, or CI catalog validation
   - target: patterns/INDEX.md
     condition: when starting a task — check the pattern index for a matching pattern file
-last_updated: 2026-10-08
+last_updated: 2026-10-12
 ---
 
 # Session Bootstrap
@@ -28,11 +28,16 @@ Then read this file fully before doing anything else in this session.
 ## Current Project State
 
 **Working:**
-- The catalog manifest (`.agent-skills/skills.json`, 353 skills) and its three
+- The catalog manifest (`.agent-skills/skills.json`, 355 skills) and its three
   projections (`.agent-skills/skills.toon`, `README.md`/`README.ko.md`/`README.es-ES.md`
   category tables, each skill's own SKILL.md frontmatter) are validated end-to-end by
   `scripts/validate-catalog-projections.py`, wired into `.github/workflows/ci.yml`
   on every PR into `main`
+- `filmcraft` adds source-pinned guidance for the Rust editor's headless CLI/MCP and
+  desktop loopback bridge, with project-preservation, export and installer boundaries.
+  Catalog search and selective-install dry-run resolve it; application build, editing,
+  rendering and MCP operation were not exercised. Upstream pin and ten behavioral
+  evaluation fixtures live in `.agent-skills/filmcraft/`.
 - The frontmatter-freeze exception ledger ("Rule F") — `scripts/build_exception_ledger.py`
   builds it, `validate_frontmatter_frozen()` + a dedicated `--self-test-rule-f` CI step
   enforce it fail-closed

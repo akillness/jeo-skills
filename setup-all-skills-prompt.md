@@ -1383,6 +1383,50 @@ revision, and review source-offer obligations before distributing or serving a m
 version. See `openmontage/references/upstream-and-setup.md` for install and licensing
 boundaries and `openmontage/references/production-contract.md` before a real production.
 
+
+### FilmCraft Rust video editor (on demand; local build and MCP)
+
+The `filmcraft` skill installs as source-pinned routing documents only. Blanket setup must not
+clone or build FilmCraft, install Rust/Cargo or optional fonts, start the desktop app, register
+an MCP/client entry, import media, or write projects/renders/exports. The operator is pinned to
+[`storytold/filmcraft@1fdfd8324db4aa23b08c69f518b086e632f75f84`](https://github.com/storytold/filmcraft/tree/1fdfd8324db4aa23b08c69f518b086e632f75f84).
+When a task explicitly chooses FilmCraft, preview and apply the skill installation separately:
+
+```bash
+jeo-skill install filmcraft --global --dry-run
+jeo-skill install filmcraft --global --yes
+```
+
+When a task explicitly requests an operation and its scope and destination are clear, use the installed release or source checkout:
+
+```bash
+# read-only binary check
+filmcraft-cli --version
+
+# source checkout build and desktop demo/control
+cargo build --release -p filmcraft-cli -p filmcraft
+cargo run --release -p filmcraft
+cargo run --release -p filmcraft -- --control 9876
+
+# headless CLI/MCP or loopback desktop bridge
+filmcraft-cli --project /abs/project.fcproj commands
+filmcraft-cli mcp --project /abs/project.fcproj
+filmcraft-cli mcp --bridge 127.0.0.1:9876
+```
+
+The CLI smoke command is `cargo run --release -p filmcraft-cli -- commands`; headless MCP may
+also use `filmcraft-cli mcp --demo` or an empty session. A desktop bridge requires the running
+app's loopback `--control 9876` channel, and the app's currently selected project is authoritative.
+Do not combine `--bridge` with `--project` or `--demo`, which are silently ignored in bridge mode.
+No `filmcraft doctor` command or folder-confinement flag is verified, so paths remain unrestricted under
+user permissions. macOS releases ship the CLI as a separate `filmcraft-cli-<version>-macos-<arch>.zip`;
+the app bundle does not contain it.
+Optional fonts require a separate `craft-fonts` checkout and `CRAFT_FONTS_DIR`. Do not register MCP
+clients, download fonts, import media, save `.fcproj`, render output, or export files during blanket setup.
+An explicit user request naming the operation and destination is sufficient; ask only when scope, consent,
+destination, or a new destructive action is unclear. Use `video-production` for programmable
+or templated video generation instead.
+
 ### Open Generative AI studio (on demand, spends money and installs unsigned binaries)
 
 The `open-generative-ai` skill installs as routing documents plus two read-only helpers.

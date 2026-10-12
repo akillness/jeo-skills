@@ -1,7 +1,7 @@
 {
   "version": "2.1.0",
   "generated": "2026-10-03",
-  "skill_count": 354,
+  "skill_count": 355,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -235,6 +235,7 @@
       "gbro-collage-broll",
       "opencut",
       "video-production",
+      "filmcraft",
       "video-shotcraft",
       "video-to-superprompt",
       "vox-director",
@@ -682,6 +683,7 @@
         "video-to-superprompt",
         "vox-director",
         "palmier-pro",
+        "filmcraft",
         "openstory",
         "openmontage",
         "open-generative-ai",
@@ -1096,7 +1098,8 @@
       "video-production",
       "video-shotcraft",
       "video-motion-previs",
-      "shopping-shorts"
+      "shopping-shorts",
+      "filmcraft"
     ],
     "skill-authoring": [
       "skill-standardization",
@@ -13094,6 +13097,36 @@
       "keyword": "jevgrep, jg, optional exploration",
       "version": "1.0.0",
       "source": "https://github.com/dzhng/jevgrep"
+    },
+    {
+      "name": "filmcraft",
+      "description": "Operate the FilmCraft open-source Rust video editor through its installed `filmcraft-cli` headless CLI/MCP server or desktop loopback control bridge: inspect projects and sequences, import media, run undoable commands, render previews, save `.fcproj` projects, and export media or interchange files. Use when a user asks to edit, automate, inspect, or troubleshoot FilmCraft. Route programmable or templated video generation to `video-production`, OpenCut repository work to `opencut`, and Palmier Pro timeline work to `palmier-pro`.",
+      "category": "creative-media",
+      "subcategory": "video",
+      "interface": "workflow",
+      "path": "filmcraft/SKILL.md",
+      "tags": [
+        "filmcraft",
+        "video-editing",
+        "non-linear-editor",
+        "rust",
+        "cli",
+        "mcp",
+        "control-bridge",
+        "media-automation"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Bash",
+        "Grep",
+        "Glob"
+      ],
+      "keyword": "filmcraft",
+      "version": "1.0",
+      "source": "https://github.com/storytold/filmcraft"
     }
   ]
 }
