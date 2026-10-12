@@ -498,6 +498,69 @@ end-to-end enforcement or hosted API health. It exits 2 when Jev is inactive and
 closed) for invalid configuration or a chain with no usable backend. Offline
 `self-test --mock` validates deterministic contracts only. Never replace live approval
 evidence with mock output or call a paid provider during default catalog setup.
+#### Configure: per-operation routing and decision backends
+
+Each operation (skill routing, context pruning, proposal review) resolves its own backend from the profile. The **decision backend** is advisory for routing/pruning but gates autonomous execution in `review` (only `api` and `systemone` calibrated drivers can return `permit`). The **coding model** is separate application state, never used by Jev.
+
+```bash
+# Configure per-operation backends (one at a time)
+bash jev/jev-setup.sh --profile gjc --route-backend api --prune-backend local --review-backend api
+
+# Or configure a single backend for all operations, with fallbacks
+bash jev/jev-setup.sh --profile jeopi --backend local --fallback local=ollama,lmstudio
+
+# Per-invocation override (does not change stored config)
+node ~/.agents/jev/jev-harness.mjs --profile gjc route-skills --backend ollama "<task>"
+
+# Check configured state
+node ~/.agents/jev/jev-harness.mjs --profile gjc status
+node ~/.agents/jev/jev-harness.mjs --profile gjc status --operation route-skills
+```
+
+#### Backend kinds and side effects
+
+| Kind | Setup cost | Runtime | Decision capability |
+|---|---|---|---|
+| `api` | TypeSafe key required; configuration is free | Hosted (may incur charges) | Calibrated decision-head (can authorize) |
+| `local` | Python 3 + dependencies + model download (~6 GB JEV-9B) | Full-precision inference | Logits-based (unvalidated; proposal_only) |
+| `ollama` | Ollama service; quantized model pull | Chat adapter over quantized GGUF | Unvalidated; proposal_only |
+| `lmstudio` | LM Studio service; model load/download | Chat adapter | Unvalidated; proposal_only |
+| `systemone` | Endpoint URL + optional key; no downloads | Points to operator-run System One | Calibrated (can authorize if driver matches) |
+
+**Native rule loading (Claude Code, Codex, Gemini CLI, Pi code family)**: The rule at `~/.agents/rules/jev-control-plane.md` is loaded by the host's native rule mechanism and enforced directly.
+
+**Plan-only hosts** (analysis or browser-only environments): Receive advisory routing output but cannot enforce gating. Jev remains available as read-only reference.
+
+#### ON/OFF and private profile files
+
+```bash
+# Enable Jev for a specific profile
+bash jev/jev-setup.sh --profile gjc --mode api --route-backend api
+
+# Check status (0=usable, 2=inactive, 3=fail-closed)
+node ~/.agents/jev/jev-harness.mjs --profile gjc status
+
+# Disable Jev (preserves config, exits 2 on next status call)
+bash jev/jev-setup.sh --profile gjc --disable
+
+# Private profile files (mode 600)
+ls -la ~/.agents/jev/profiles/
+# gjc.env, gjc.api.env, gjc.local.env, gjc.systemone.env, …
+```
+
+#### Configuration-only mode (free, no side effects)
+
+Validate configuration offline without approving downloads, service startup, or hosted inference:
+
+```bash
+# Read-only offline check
+node ~/.agents/jev/jev-harness.mjs --profile gjc --mock self-test
+```
+
+#### Local Legacy wiring
+
+The intentional `~/.agents/jev/.env` (no profile) is supported for backward compatibility. Ambient environment variables override matching file keys but cannot enable a missing/disabled profile. Profiles (`--profile <id>`) are isolated and never fall back.
+
 
 ### Jevgrep (optional remote source discovery)
 

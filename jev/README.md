@@ -37,9 +37,48 @@ The registry has exactly five backend kinds: `api`, `local`, `ollama`, `lmstudio
 
 All five kinds default to tier `unvalidated`. A response format or passing loopback fixture proves transport, not calibration. Tier `validated` requires an explicit attestation `JEV_<KIND>_VALIDATED_MODEL=<model id>` in that kind's env file that matches the model id the backend **reports serving in its response** (a response without a served model never matches). Attestation is honored **only for calibrated decision-head drivers**: `api` and `systemone` (`typesafe` `/v1/systemone`, `decide` `/v1/decide`, `vllm-jev-decision` logprobs). `local` (base-model logits), `ollama`, and `lmstudio` (JSON-from-chat) are System 2 paths and remain `unvalidated` permanently — an attestation on those kinds is reported as `eligible: false` and ignored, so no flag can promote them. `permit` is allowed only on `validated`; a stale or mismatched attestation is `unvalidated` with `state: "stale"`. Every request is also bounded by the answering backend's serialized-state limit before any network I/O (`local`/`ollama`/`lmstudio` 6,000 chars, AutoTrust `decide`/`vllm-jev-decision` 3,000, hosted `api`/`systemone` `typesafe` 100,000); an oversized `review` proposal is rejected as `unavailable` and never trimmed, and only the operation's explicit fallback chain may route it to a larger-context backend.
 
+## Native advisory integration
+
+For Claude, jeopi, omp, and pi coding-agent runtimes, Jev provides optional native advisory hooks that receive `UserPromptSubmit` or equivalent events and return skill routing candidates and host model suggestions. These are advisory-only proposals and do not enforce host permissions or change what the agent actually executes. Installation and enablement are explicit:
+
+```sh
+# Install native package for Claude (executed once per machine)
+node ~/.agents/jev/jev-plugin.mjs --agent claude host-plan
+
+# Load and enable profile for Claude (enables advisory callbacks)
+node ~/.agents/jev/jev-plugin.mjs --agent claude --profile jeopi enable
+
+# Check advisory status
+node ~/.agents/jev/jev-plugin.mjs --agent claude --profile jeopi status
+```
+
+When a native profile is enabled, the CodeUI loads the Jev advisory callback that examines the current task, returns suggested skills and optional host model routing, and annotates the context—without changing the host's own permission policies. The host is responsible for deciding whether to apply advisory suggestions. Disabled profiles do not load callbacks, and the host continues with its normal operation. The advisory context is always prefixed with `Jev advisory only` and cannot authorize autonomous action.
+
+## Configuration and setup
+
+```sh
+# Preview configuration (no --apply: shows what will be set)
+node ~/.agents/jev/jev-plugin.mjs --agent jeopi --profile jeopi --mode api configure
+
+# Apply configuration (--apply: writes profile files and environment)
+node ~/.agents/jev/jev-plugin.mjs --agent jeopi --profile jeopi --mode api configure --apply
+
+# Enable profile (default: preview; --apply: changes JEV_ENABLED=true)
+node ~/.agents/jev/jev-plugin.mjs --profile jeopi enable
+node ~/.agents/jev/jev-plugin.mjs --profile jeopi enable --apply
+
+# Disable profile (prevents advisory callbacks and operations)
+node ~/.agents/jev/jev-plugin.mjs --profile jeopi disable --apply
+
+# Status (always read-only, never reaches backend)
+node ~/.agents/jev/jev-plugin.mjs --profile jeopi status
+```
+
+`configure` with `--agent` and `--mode` prepares a new profile or updates an existing one. Without `--apply`, it shows what would change. With `--apply`, it invokes `jev-setup.sh` and writes the profile configuration files. `enable` and `disable` toggle `JEV_ENABLED` in the profile's base file; without `--apply` they show what would change, with `--apply` they write the change. `status` shows the current profile configuration, backend state, and any validation errors.
+
 ## Settings
 
-With `--profile <id>`, the harness reads only that profile's base file and selected backend files under `~/.agents/jev/profiles/`; ambient values override matching file keys but cannot enable a missing/disabled profile. Without a profile, the intentional legacy `~/.agents/jev/.env` behavior remains.
+With `--profile <id>`, the harness reads only that profile's base file and selected backend files under `~/.agents/jev/profiles/`. Profile file values are authoritative; environment variables from the host do not override selected profile configuration. A selected profile never falls back to another profile or the legacy `~/.agents/jev/.env`, even if disabled. Without a profile, the intentional legacy `~/.agents/jev/.env` behavior remains.
 
 | Setting | Purpose |
 |---|---|
@@ -59,8 +98,27 @@ With `--profile <id>`, the harness reads only that profile's base file and selec
 | `--profile <id>` / `JEV_PROFILE` | Select isolated profile; never falls back to another profile. |
 | `--backend <kind>` / `--model <id>` | Per-invocation backend and model overrides; backend must be eligible. |
 | `--operation <route-skills, prune-context, or review>` | Status filter for one operation chain. |
+## Readiness and host integration
 
-## Configuration, readiness, and host integration
+### Host plan
+
+```sh
+# Check whether a host has native Jev capability
+node ~/.agents/jev/jev-plugin.mjs --agent claude --profile jeopi host-plan
+```
+
+Outputs installation steps and supported lifecycle (`native-lifecycle` for Claude/jeopi/omp/pi; `adapter-only` for other hosts). Native hosts support explicit install, load, enable, disable actions. Adapter-only hosts have UI-only toggles or no advertised control.
+
+### Model plan
+
+```sh
+# Generate model routing plan from advice
+node ~/.agents/jev/jev-plugin.mjs --profile jeopi --advice advice.json model-plan
+```
+
+Requires `--advice` pointing to a JSON file containing `routing` or `advice` array with `{chosen: "provider/model", candidates: [{provider, model}...]}` entries. Returns approved candidate list with `{skill, provider, model, advisory: true}` for safe model execution. Advisory flag indicates that the host and Jev model are separate—the host makes its own execution choice.
+
+### Status and configuration
 
 ```sh
 node ~/.agents/jev/jev-harness.mjs --profile gjc status
@@ -81,7 +139,8 @@ No native hook installation is supplied. Readiness probes do not establish infer
 
 ```text
 jev/                                  # source in this repository
-├── jev-harness.mjs                    # Node ESM CLI, built-in modules only
+├── jev-harness.mjs                    # Node ESM CLI, built-in modules only (route/prune/review operations)
+├── jev-plugin.mjs                     # Node ESM native plugin and configuration CLI
 ├── jev-setup.sh                       # canonical optional installer
 ├── jev_local_server.py                # full-precision Python backend
 ├── jev-control-plane.rule.md          # host integration instructions
@@ -90,6 +149,7 @@ jev/                                  # source in this repository
 
 ~/.agents/jev/                        # installed runtime files + README
 ├── jev-harness.mjs
+├── jev-plugin.mjs
 ├── jev-setup.sh
 ├── jev_local_server.py
 ├── jev-control-plane.rule.md
@@ -110,6 +170,7 @@ jev/                                  # source in this repository
 ~/.agents/skills/jev-control-plane/   # portable Agent Skill (when installed)
 .agent-skills/skills.json              # catalog input in checkout (wins over the snapshot)
 ```
+
 
 ## Runtime flow and commands
 

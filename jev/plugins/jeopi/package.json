@@ -1,0 +1,11 @@
+{
+  "name": "jev-jeopi-extension",
+  "version": "0.1.0",
+  "description": "Jev advisory routing extension for jeopi",
+  "type": "module",
+  "jeopi": {
+    "version": "0.1.0",
+    "name": "jev-jeopi-extension",
+    "extensions": ["./index.mjs"]
+  }
+}

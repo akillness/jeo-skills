@@ -59,10 +59,61 @@ Jev는 기본 카탈로그 설치에 포함되지 않는 별도의 홈 범위 �
 
 발견은 **로컬 카탈로그**(`route-skills` / `jeo-skill`)에서 시작합니다. 로컬 매치가 약하면 `publicRegistryFallback`으로 `find-skills`의 **공개 skills.sh 레지스트리** 탐색을 안내합니다. 후보를 검토하고 명시적인 승인을 받은 뒤 설치하세요. 하네스 자체는 공개 스킬을 검색하거나 설치하지 않습니다.
 
-**백엔드와 작업별 라우팅.** 다섯 가지 백엔드 종류가 하나의 결정 계약을 공유합니다: `api`(호스팅 TypeSafe), `local`(풀 프리시전 JEV-9B 서버), `ollama` / `lmstudio`(채팅 기반 양자화 GGUF), `systemone`(운영자가 띄운 엔드포인트: TypeSafe 호환, AutoTrust `/v1/decide`, vLLM `jev-decision` 헤드). 각 작업은 프로필의 `JEV_ROUTE_SKILLS_BACKEND`, `JEV_PRUNE_CONTEXT_BACKEND`, `JEV_REVIEW_BACKEND`와 순서가 있는 `_FALLBACK` 허용 목록으로 자기 백엔드를 해석합니다. 설정은 `--route-backend`, `--prune-backend`, `--review-backend`, `--fallback <op>=<kind[,kind]>`로 기록하고, `--backend` / `--model`은 한 번의 호출만 덮어씁니다. 모든 백엔드는 증명(`--validated-model`)이 실제 서빙 모델과 일치하지 않는 한 티어 `unvalidated`이며, 보정된 결정 헤드 드라이버(`api`, `systemone`)만 검증될 수 있습니다. `review`는 검증된 티어에서만 `permit`을 내리므로 `local`, `ollama`, `lmstudio`는 추천만 하고 승인하지 않습니다. 선택적인 `skills.json` `model_policies`는 스킬별 `provider/model` 권고 라우팅을 `route-skills` 출력에 추가하며, 호스트 어댑터는 아직 없습니다. 설정은 카탈로그 스냅샷도 설치하므로 체크아웃 밖에서도 `route-skills`가 동작합니다.
+#### 구성: 백엔드, 작업별 라우팅, 결정 모델 분리
 
-자격 증명, 다운로드, 서버 실행에 동의한 경우에만 `api`, `local`, `ollama`, `lmstudio`, `systemone`을 선택하세요. `skip`은 기존 Jev 상태를 보존하며, TTY 없이 선택값이 없으면 설정 스크립트 다운로드 없이 건너뜁니다. 프로젝트 카탈로그 설치는 글로벌 Jev를 구성하지 않습니다. `status [--operation <op>]`는 작업별 백엔드 체인을 보고하고, 설정된 선택 상태와 제한적인 백엔드 준비 상태를 구분합니다. API 키 존재만으로 호스팅 인증이나 정상 동작을 증명하지 않습니다. 설정된 백엔드 장애는 리뷰 우회가 아닌 fail-closed 처리 대상입니다. `--mock`은 오프라인 계약 검증용이며 실제 동작을 승인하지 않습니다. 설정, 종료 코드, 검증 범위는 [`jev/README.md`](jev/README.md)를 참조하세요.
+**백엔드 종류** — 하나 또는 다섯 개 모두를 선택합니다(`api`, `local`, `ollama`, `lmstudio`, `systemone`). 각 작업(스킬 라우팅, 컨텍스트 프루닝, 제안 검토)은 프로필의 각 백엔드를 해석합니다. **결정 백엔드**는 스킬 라우팅과 프루닝에서는 권고용이지만, **검토**에서는 자율 조치 게이팅을 위한 결정 헤드 백엔드를 실행합니다(`api`와 `systemone` 보정 드라이버만 `permit`을 반환 가능). **코딩 모델**은 주변 애플리케이션 상태이며 Jev가 절대 사용하지 않습니다. 이 둘은 별개 개념입니다:
 
+```bash
+# 구성: 작업별 백엔드를 한 번에 하나씩 명시적으로 설정
+bash jev/jev-setup.sh --profile gjc --route-backend api --prune-backend local --review-backend api
+
+# 폴백 체인(주 백엔드 미사용 시 순서대로 시도)
+bash jev/jev-setup.sh --profile jeopi --backend local --fallback local=ollama,lmstudio
+
+# 호출당 오버라이드(저장된 설정 변경 없음)
+node ~/.agents/jev/jev-harness.mjs --profile gjc route-skills --backend ollama --model qwen2.5:7b "<task>"
+
+# 각 작업별 설정 상태 확인
+node ~/.agents/jev/jev-harness.mjs --profile gjc status
+node ~/.agents/jev/jev-harness.mjs --profile gjc status --operation route-skills
+```
+
+**백엔드 전제 조건 및 부작용**:
+- `api` — TypeSafe API 키(`JEV_API_KEY`) 필요; 호스팅 추론은 비용 발생 가능; 설정만 무료.
+- `local` — Python 3 및 의존성 필요; 모델 다운로드(JEV-9B 풀 프리시전 ~6 GB)는 명시적이고 설정과 별개.
+- `ollama` / `lmstudio` — 해당 서비스 실행 필요; 양자화 모델 풀은 명시적.
+- `systemone` — 운영자가 띄운 System One 엔드포인트 지정(다운로드, 서비스 시작 없음).
+
+**네이티브 Claude/Pi 패밀리 호스트 vs. 플랜 전용 호스트**. Jev 하네스는 규칙 파일(`~/.agents/rules/jev-control-plane.md`)을 통해 통합되며, 호스트의 지원되는 규칙 메커니즘을 통해 로드되어야 합니다. 네이티브 규칙 로드(Claude Code, Codex 플러그인, Gemini CLI, Pi 코드 패밀리)를 지원하는 호스트는 규칙을 직접 로드하고 강제할 수 있습니다. 플랜 전용 호스트(예: 코딩 환경 없는 분석 또는 브라우저 기반 플랜)는 문서화된 권고 라우팅을 받지만 게이팅을 강제할 수 없습니다. 설정은 홈 범위이며 그 프로필의 모든 에이전트에 적용됩니다.
+
+**ON/OFF 및 공유 프로필**:
+```bash
+# 프로필의 Jev 활성화
+bash jev/jev-setup.sh --profile gjc --mode api --route-backend api
+
+# 활성화 상태 확인
+node ~/.agents/jev/jev-harness.mjs --profile gjc status
+# Exit 0 = 사용 가능, 2 = 비활성화/미구성, 3 = fail-closed
+
+# Jev 비활성화(설정 보존; 다음 상태 호출에서 2로 종료)
+bash jev/jev-setup.sh --profile gjc --disable
+
+# 개인정보 프로필 파일(모드 600)
+ls -la ~/.agents/jev/profiles/
+# gjc.env, gjc.api.env, gjc.local.env, gjc.systemone.env, …
+```
+
+**설정 전용 모드(무료)**. 백엔드 다운로드, 추론 호출, 호스팅 서비스를 승인하지 않고 설정:
+```bash
+# 읽기 전용 설정 확인, 부작용 없음
+node ~/.agents/jev/jev-setup.sh --profile gjc --mock
+```
+
+**로컬 레거시 구성**: 의도적인 `~/.agents/jev/.env`(프로필 없음)는 하위 호환성을 위해 지원됩니다. 주변 환경 변수는 매칭되는 파일 키를 오버라이드하지만 누락된/비활성화된 프로필을 활성화할 수는 없습니다. 프로필(`--profile <id>`)은 격리됩니다. 누락된 프로필은 절대 다른 프로필로 폴백되지 않습니다.
+
+Jev 작업은 목적에 따라 다른 백엔드를 통해 라우팅될 수 있습니다. `route-skills`와 `prune-context`는 권고용(자율 조치 없음)인 반면, `review`는 자율 실행을 게이트하고 검증된 백엔드로부터 명시적인 허가가 필요합니다. 모든 응답은 백엔드 종류, 모델, 티어(명시적으로 `--validated-model <id>`를 증명하지 않는 한 `unvalidated`)를 바인드합니다. `--mock`은 오프라인 계약을 검증하고 자율 조치를 절대 허가하지 않습니다.
+
+자세한 설정, 종료 코드, 검증 범위, local/Ollama/LM Studio 설정 전제 조건은 [`jev/README.md`](jev/README.md)를 참조하세요.
 ### Jevgrep (선택적 원격 소스 탐색)
 
 [Jevgrep](.agent-skills/jevgrep/SKILL.md)는 Jev 컨트롤 플레인 하네스와 별개인 `jg` CLI입니다. 기본 경로는 로컬 카탈로그 메타데이터, 네이티브 정확 검색/LSP, zvec-grep 워크스페이스 검색, 그래프 관계용 Graphify `query` / `path` / `explain`입니다. 명시적으로 선택한 스킬 문서, 위키 Markdown, 그래프 소스 문서를 텍스트로 검색할 수 있지만 그래프 바이너리를 탐색하거나 소스를 수정하거나 그래프를 재생성하지 않습니다.

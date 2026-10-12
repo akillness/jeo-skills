@@ -78,8 +78,8 @@ async function readEnvFile(path, optional = true) {
 
 // A selected profile reads only its own <profile>.env plus every existing
 // <profile>.<kind>.env; nothing else is consulted. Legacy installs read
-// ~/.agents/jev/.env, which serves every kind. Ambient environment variables
-// override file values key by key; profile opt-in is owned by the base file.
+// ~/.agents/jev/.env, which serves every kind. Ambient JEV_* values are
+// ignored for selected profiles; legacy installs retain ambient overrides.
 const PROFILE_DIR = join(homedir(), '.agents', 'jev', 'profiles');
 let envReadError = null;
 let baseConfig = {};
@@ -109,7 +109,7 @@ if (!PROFILE_ERROR) {
 }
 
 function cfg(kind, key) {
-  if (process.env[key] !== undefined) return process.env[key];
+  if (!PROFILE && process.env[key] !== undefined) return process.env[key];
   return cfgFile(kind, key);
 }
 // File-only view: what the saved configuration says, ignoring ambient env.
@@ -124,17 +124,18 @@ const PROFILE_ENABLED = PROFILE_ENABLED_VALUE === 'true';
 const PROFILE_ENABLED_INVALID = Boolean(PROFILE && baseConfig.JEV_ENABLED !== undefined && !/^(true|false)$/i.test(baseConfig.JEV_ENABLED));
 const PROFILE_DISABLED = Boolean(PROFILE && !PROFILE_ENABLED && !PROFILE_ENABLED_INVALID);
 
-// Catalog resolution: an explicit path, then the checkout the host is working in,
-// then the version-matched snapshot jev-setup.sh installs beside the harness, and
-// only last a legacy side clone (which may be stale and must not shadow the others).
+// Catalog resolution: an explicit path is authoritative. When it is absent,
+// use the checkout the host is working in, then the version-matched snapshot
+// jev-setup.sh installs beside the harness, and only last a legacy side clone.
 const CATALOG_SNAPSHOT = join(homedir(), '.agents', 'jev', 'skills.json');
 const SHARED_SKILLS_ROOT = join(homedir(), '.agents', 'skills');
-const CATALOG_CANDIDATES = [
-  process.env.JEV_CATALOG_PATH,
-  join(process.cwd(), '.agent-skills', 'skills.json'),
-  CATALOG_SNAPSHOT,
-  join(homedir(), '.agents', 'jeo-skills-repo', '.agent-skills', 'skills.json'),
-].filter(Boolean);
+const CATALOG_CANDIDATES = process.env.JEV_CATALOG_PATH !== undefined
+  ? [process.env.JEV_CATALOG_PATH]
+  : [
+    join(process.cwd(), '.agent-skills', 'skills.json'),
+    CATALOG_SNAPSHOT,
+    join(homedir(), '.agents', 'jeo-skills-repo', '.agent-skills', 'skills.json'),
+  ];
 
 // ── Backend registry ─────────────────────────────────────────────────────────
 function kindConfiguredWith(read, kind, defaultKind) {
@@ -192,12 +193,10 @@ export function describeBackend(kind, { model: modelOverride } = {}) {
   return desc;
 }
 
-// Configuration validity. The saved file is judged on its own contents: a
-// present file that configures no valid backend is invalid (exit 3), never
-// silently inactive. Ambient env may fully configure a backend on its own
-// (then file errors are ignored) or suppress a saved key (then inactive), but
-// switching JEV_MODE away from a saved opt-in without configuring the new
-// kind is invalid, not a bypass.
+// Configuration validity. Selected profiles are judged from their saved files
+// alone; ambient JEV_* values cannot configure, suppress, or switch a profile.
+// Legacy no-profile installs preserve ambient environment behavior, including
+// switching JEV_MODE when the selected legacy backend is configured.
 const DEFAULT_KIND_VALID = BACKEND_KINDS.includes(DEFAULT_KIND);
 const FILE_KIND_VALID = BACKEND_KINDS.includes(FILE_KIND);
 function opKeys(op) {
@@ -220,7 +219,7 @@ function policyErrors() {
 const POLICY_ERRORS = policyErrors();
 const MERGED_CONFIGURED = DEFAULT_KIND_VALID && kindConfigured(DEFAULT_KIND);
 const FILE_CONFIGURED = FILE_KIND_VALID && kindConfiguredInFile(FILE_KIND);
-const ENV_MODE_SWITCHED = Boolean(process.env.JEV_MODE) && process.env.JEV_MODE !== FILE_KIND;
+const ENV_MODE_SWITCHED = !PROFILE && Boolean(process.env.JEV_MODE) && process.env.JEV_MODE !== FILE_KIND;
 const CONFIG_ERROR = PROFILE_ENABLED_INVALID
   ? 'JEV_ENABLED must be true or false'
   : MERGED_CONFIGURED
@@ -576,10 +575,10 @@ async function dispatchGroups(driver, backend, state, questions, budget) {
 
 // ── Dispatcher: resolves the operation chain and tries each eligible kind ────
 export async function requestJev(state, questions, { op = 'review', mock = false, timeoutMs, override = null, kinds = null, model = null } = {}) {
-  if (mock) return { model: 'jev-mock', source: 'mock', backend: { kind: 'mock', driver: 'mock', model: 'jev-mock', tier: 'mock', attestation: null }, attempted: [], error: null, latencyMs: 0, answers: simulateAnswers(state, questions) };
   const fail = (error, kind = DEFAULT_KIND) => ({ model: null, source: kind, backend: { kind, driver: null, model: null, configuredModel: null, tier: 'unvalidated', attestation: null }, attempted: [], attemptDetails: [], error, latencyMs: 0, answers: null });
   if (PROFILE_ERROR) return fail(PROFILE_ERROR);
   if (PROFILE_DISABLED) return fail(`Jev profile '${PROFILE}' is disabled`);
+  if (mock) return { model: 'jev-mock', source: 'mock', backend: { kind: 'mock', driver: 'mock', model: 'jev-mock', tier: 'mock', attestation: null }, attempted: [], error: null, latencyMs: 0, answers: simulateAnswers(state, questions) };
   if (CONFIG_ERROR) return fail(CONFIG_ERROR);
   const chain = kinds ? kinds : resolveChain(op, { override }).chain;
   const attemptDetails = [];
@@ -608,6 +607,47 @@ export async function requestJev(state, questions, { op = 'review', mock = false
 
 // ── Answer normalization (documented TypeSafe shape; legacy for `local`) ────
 function normalizeAnswers(payload, questions, { legacy = false } = {}) {
+  if (!legacy) {
+    if (!payload || typeof payload !== 'object' || Array.isArray(payload)) throw new Error('Malformed Jev response: expected an object');
+    if (!Object.prototype.hasOwnProperty.call(payload, 'model') || typeof payload.model !== 'string') throw new Error('Malformed Jev response: missing model');
+    if (!payload.answers || typeof payload.answers !== 'object' || Array.isArray(payload.answers)) throw new Error('Malformed Jev response: answers must be an object');
+    if (!payload.usage || typeof payload.usage !== 'object' || Array.isArray(payload.usage)) throw new Error('Malformed Jev response: usage must be an object');
+    for (const field of ['input_tokens', 'output_tokens']) {
+      if (!Number.isFinite(payload.usage[field]) || payload.usage[field] < 0) throw new Error(`Malformed Jev response: usage.${field} must be a non-negative number`);
+    }
+    const raw = payload.answers;
+    const ids = Object.keys(questions);
+    const answerIds = Object.keys(raw);
+    if (answerIds.length !== ids.length || answerIds.some(id => !Object.prototype.hasOwnProperty.call(questions, id))) throw new Error('Malformed Jev response: answers do not match requested questions');
+    const result = {};
+    for (const id of ids) {
+      const question = questions[id];
+      const item = raw[id];
+      if (!item || typeof item !== 'object' || Array.isArray(item)) throw new Error(`Malformed Jev response: invalid answer for ${id}`);
+      if (question?.type === 'choice') {
+        const options = optionsOf(question);
+        if (item.type !== 'choice') throw new Error(`Malformed Jev response: invalid type for ${id}`);
+        if (typeof item.choice !== 'string' || !options.includes(item.choice)) throw new Error(`Malformed Jev response: invalid choice for ${id}`);
+        const probabilities = item.probabilities;
+        if (!probabilities || typeof probabilities !== 'object' || Array.isArray(probabilities)) throw new Error(`Malformed Jev response: invalid choice probabilities for ${id}`);
+        const probabilityKeys = Object.keys(probabilities);
+        if (probabilityKeys.length !== options.length || probabilityKeys.some(option => !options.includes(option))) throw new Error(`Malformed Jev response: invalid choice probabilities for ${id}`);
+        let total = 0;
+        for (const option of options) {
+          const probability = probabilities[option];
+          if (!Number.isFinite(probability) || probability < 0 || probability > 1) throw new Error(`Malformed Jev response: invalid choice probabilities for ${id}`);
+          total += probability;
+        }
+        if (Math.abs(total - 1) > 1e-6) throw new Error(`Malformed Jev response: choice probabilities must sum to 1 for ${id}`);
+        if (!Number.isFinite(item.confidence) || item.confidence < 0 || item.confidence > 1) throw new Error(`Malformed Jev response: invalid confidence for ${id}`);
+        result[id] = { choice: item.choice, probabilities: Object.fromEntries(options.map(option => [option, probabilities[option]])), confidence: item.confidence };
+      } else {
+        if (item.type !== 'noul' || !Number.isFinite(item.noul) || item.noul < 0 || item.noul > 1) throw new Error(`Malformed Jev response: invalid noul for ${id}`);
+        result[id] = evaluateNoul(item.noul);
+      }
+    }
+    return result;
+  }
   const raw = payload?.answers || payload?.results || payload || {};
   const result = {};
   for (const id of Object.keys(questions)) {
@@ -895,6 +935,8 @@ function registryFallback(task, note) {
 export async function routeSkills(task, { mock = false, topK = 3, override = null, model = null } = {}) {
   if (!task?.trim()) throw new Error('route-skills requires a task string');
   if (!Number.isInteger(topK) || topK < 1 || topK > 50) throw new Error('--top-k must be an integer from 1 to 50');
+  if (PROFILE_ERROR) throw new Error(PROFILE_ERROR);
+  if (PROFILE_DISABLED) throw new Error(`Jev profile '${PROFILE}' is disabled`);
   const catalog = await loadCatalog();
   const byName = Object.fromEntries(catalog.skills.map(s => [s.name, s]));
   const fullTokens = catalog.skills.reduce((n, s) => n + tokenEstimate(`${s.name} ${s.description}`), 0);
@@ -1025,6 +1067,8 @@ export async function pruneContext(blocks, { mock = false, override = null, mode
   for (const block of blocks) {
     if (!block || typeof block.id !== 'string' || typeof block.text !== 'string') throw new Error('Each input line must be JSON {"id": string, "text": string}');
   }
+  if (PROFILE_ERROR) throw new Error(PROFILE_ERROR);
+  if (PROFILE_DISABLED) throw new Error(`Jev profile '${PROFILE}' is disabled`);
   if (mock) return blocks.map(block => ({ id: block.id, verdict: mockKeep(block.text) ? 'keep' : 'drop' }));
   if (!blocks.length) return [];
   const chain = resolveChain('prune-context', { override }).chain;

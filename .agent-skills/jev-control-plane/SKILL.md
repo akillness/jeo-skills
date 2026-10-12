@@ -28,17 +28,29 @@ node ~/.agents/jev/jev-harness.mjs --profile jeopi status
 
 Status exit `2` means inactive or unconfigured; skip Jev gates and follow the host's normal permission policies. Exit `3` means fail closed: the configuration is invalid, or an evaluated operation chain has no usable backend; a down backend that no evaluated chain references never causes it. Exit `0` means the requested chain is not known unavailable, not that model quality or host enforcement is proven. Use `--operation route-skills|prune-context|review` for one operation; otherwise all three chains are evaluated.
 
-## Configure one environment
+## Configure one environment with jev-plugin.mjs
 
-For a root checkout install, select the runtime target explicitly:
+For initial setup or updates, use jev-plugin.mjs with preview-then-apply pattern:
 
 ```sh
-JEO_SKILLS_AGENT=jeopi JEO_SKILLS_JEV=api bash install.sh
-bash ~/.agents/jev/jev-setup.sh --profile jeopi --agent jeopi --mode systemone
+# Preview configuration (shows what will be set, no changes)
+node ~/.agents/jev/jev-plugin.mjs --agent jeopi --profile jeopi --mode api configure
+
+# Apply configuration (invokes setup and writes files)
+node ~/.agents/jev/jev-plugin.mjs --agent jeopi --profile jeopi --mode api configure --apply
+
+# Enable profile (preview then apply)
+node ~/.agents/jev/jev-plugin.mjs --profile jeopi enable
+node ~/.agents/jev/jev-plugin.mjs --profile jeopi enable --apply
+
+# Disable profile  
+node ~/.agents/jev/jev-plugin.mjs --profile jeopi disable --apply
+
+# Check profile status (always read-only)
+node ~/.agents/jev/jev-plugin.mjs --profile jeopi status
 ```
 
-Setup writes mode-600 base and backend files under `~/.agents/jev/profiles/`. Obtain approval before hosted calls or downloads. Never put credentials in prompts, source control, or command history.
-
+`configure` with `--agent` and `--mode` prepares or updates a profile. Without `--apply`, it shows what would change. With `--apply`, it writes configuration files. `enable` and `disable` toggle `JEV_ENABLED`; without `--apply` they show what would change, with `--apply` they write the change. `status` shows current configuration without reaching any backend.
 The backend registry has exactly five kinds: `api`, `local`, `ollama`, `lmstudio`, and `systemone`.
 
 - `api`: TypeSafe `POST <JEV_API_ENDPOINT>` with `{state, model, questions}` and `Authorization: Bearer JEV_API_KEY`.

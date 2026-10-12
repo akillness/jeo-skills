@@ -1,0 +1,645 @@
+#!/usr/bin/env node
+import {
+  accessSync,
+  chmodSync,
+  constants as fsConstants,
+  existsSync,
+  lstatSync,
+  mkdirSync,
+  readFileSync,
+  realpathSync,
+  renameSync,
+  unlinkSync,
+  writeFileSync,
+} from 'node:fs';
+import { spawnSync } from 'node:child_process';
+import { homedir } from 'node:os';
+import { basename, dirname, join, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const HERE = dirname(fileURLToPath(import.meta.url));
+const REPO_ROOT = resolve(HERE, '..');
+const SETUP = join(HERE, 'jev-setup.sh');
+const BACKENDS = ['api', 'local', 'ollama', 'lmstudio', 'systemone'];
+const AGENT_ID = /^[a-z][a-z0-9_-]*$/;
+const PROFILE_ID = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+const ENV_ID = /^[A-Z_][A-Z0-9_]*$/;
+const MODEL_ID = /^[A-Za-z0-9][A-Za-z0-9_.:/@+-]*$/;
+const HOST_PROVIDERS = new Set(['anthropic', 'openai', 'google', 'gemini', 'openrouter']);
+const WRITER_PROVIDERS = new Set(['anthropic', 'openai']);
+const SKILL_ID = /^[a-z0-9-]+$/;
+const NATIVE_HOSTS = new Set(['claude', 'jeopi', 'omp', 'pi']);
+const OPERATORS = new Set(['claude', 'jeopi', 'omp', 'pi', 'codex', 'gemini', 'opencode', 'jEO', 'aside']);
+
+function homes() {
+  const home = homedir();
+  const jev = join(home, '.agents', 'jev');
+  return { home, jev, profiles: join(jev, 'profiles'), legacy: join(jev, '.env'), mapping: join(jev, 'agents.json') };
+}
+
+function parseEnv(text) {
+  const values = {};
+  for (const line of String(text || '').split(/\r?\n/)) {
+    const match = line.match(/^\s*(JEV_[A-Z0-9_]+)\s*=\s*(.*)$/);
+    if (!match) continue;
+    let value = match[2].trim();
+    if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) value = value.slice(1, -1);
+    values[match[1]] = value;
+  }
+  return values;
+}
+
+function readText(path) {
+  try { return readFileSync(path, 'utf8'); }
+  catch (error) { if (error.code === 'ENOENT') return null; throw error; }
+}
+
+function readEnv(path) {
+  const text = readText(path);
+  return { text, values: text === null ? {} : parseEnv(text) };
+}
+
+function ensureRegular(path) {
+  if (!existsSync(path)) return;
+  const info = lstatSync(path);
+  if (info.isSymbolicLink()) throw new Error(`Refusing symlink destination: ${path}`);
+  if (!info.isFile()) throw new Error(`Configuration destination is not a file: ${path}`);
+}
+
+function ensureParent(path) {
+  const parent = dirname(path);
+  mkdirSync(parent, { recursive: true, mode: 0o700 });
+  const info = lstatSync(parent);
+  if (info.isSymbolicLink() || !info.isDirectory()) throw new Error(`Invalid configuration directory: ${parent}`);
+}
+
+function atomicWrite(path, content) {
+  ensureParent(path);
+  ensureRegular(path);
+  const temp = join(dirname(path), `.${basename(path)}.${process.pid}.${Math.random().toString(16).slice(2)}.tmp`);
+  try {
+    writeFileSync(temp, content, { encoding: 'utf8', mode: 0o600, flag: 'wx' });
+    chmodSync(temp, 0o600);
+    renameSync(temp, path);
+    chmodSync(path, 0o600);
+  } catch (error) {
+    try { unlinkSync(temp); } catch {}
+    throw error;
+  }
+}
+
+function profilePath(profile) {
+  const paths = homes();
+  return profile ? join(paths.profiles, `${profile}.env`) : paths.legacy;
+}
+
+function backendPath(profile, backend) {
+  const paths = homes();
+  return profile ? join(paths.profiles, `${profile}.${backend}.env`) : paths.legacy;
+}
+
+function readMapping() {
+  const path = homes().mapping;
+  const text = readText(path);
+  if (text === null) return { path, value: {}, text: null };
+  let value;
+  try { value = JSON.parse(text); } catch { throw new Error('agents.json is not valid JSON'); }
+  if (!value || Array.isArray(value) || typeof value !== 'object') throw new Error('agents.json must contain an object');
+  return { path, value, text };
+}
+
+function nativeFor(agent) {
+  if (agent === 'claude') return 'claude';
+  if (agent === 'jeopi' || agent === 'omp') return 'jeopi-omp';
+  if (agent === 'pi') return 'pi';
+  return 'adapter';
+}
+
+function mappingFor(agent, profile, old) {
+  const previous = old && typeof old === 'object' ? old : {};
+  return {
+    ...previous,
+    [agent]: {
+      profile,
+      native: typeof previous[agent]?.native === 'string' ? previous[agent].native : nativeFor(agent),
+      scope: typeof previous[agent]?.scope === 'string' ? previous[agent].scope : 'user',
+    },
+  };
+}
+
+function mappingText(value) {
+  return `${JSON.stringify(value, null, 2)}\n`;
+}
+
+function validateAgent(agent, optional = false) {
+  if (optional && agent === undefined) return null;
+  if (typeof agent !== 'string' || !AGENT_ID.test(agent)) throw new Error('agent must contain lowercase letters, digits, underscores, or hyphens');
+  return agent;
+}
+
+function validateProfile(profile, optional = true) {
+  if (profile === undefined || profile === null || profile === '') {
+    if (optional) return null;
+    throw new Error('profile requires a non-empty profile id');
+  }
+  if (typeof profile !== 'string' || !PROFILE_ID.test(profile)) throw new Error('profile id must contain lowercase letters, digits, and single hyphens only');
+  return profile;
+}
+
+function validateEnvName(name, required = false) {
+  if (name === undefined || name === null || name === '') {
+    if (required) throw new Error('key-env requires an environment variable name');
+    return null;
+  }
+  if (!ENV_ID.test(name)) throw new Error('key-env must be a valid uppercase environment variable name');
+  return name;
+}
+
+function validateModel(model) {
+  if (model === undefined || model === null || model === '') return null;
+  if (!MODEL_ID.test(model)) throw new Error('model must be a safe model identifier');
+  return model;
+}
+
+function parseURL(value, label = 'endpoint') {
+  if (typeof value !== 'string' || !value) throw new Error(`${label} is required`);
+  let url;
+  try { url = new URL(value); } catch { throw new Error(`${label} must be a valid URL`); }
+  if (url.protocol !== 'http:' && url.protocol !== 'https:') throw new Error(`${label} uses an unsupported URL scheme`);
+  if (url.username || url.password || url.search || url.hash) throw new Error(`${label} must not contain credentials, query, or hash`);
+  return url;
+}
+
+function isLoopback(hostname) {
+  const host = String(hostname || '').toLowerCase().replace(/[\[\]]/g, '');
+  if (host === 'localhost' || host === '::1') return true;
+  const parts = host.split('.');
+  return parts.length === 4 && parts.every(p => /^\d+$/.test(p) && Number(p) >= 0 && Number(p) <= 255) && Number(parts[0]) === 127;
+}
+
+function stripTypeSafeSuffix(url) {
+  const path = url.pathname.replace(/\/+$/, '');
+  if (!path.endsWith('/v1/systemone')) throw new Error('endpoint must be a TypeSafe /v1/systemone URL');
+  const prefix = path.slice(0, -'/v1/systemone'.length).replace(/\/+$/, '');
+  return `${url.origin}${prefix || ''}`;
+}
+
+function readState(profile) {
+  const base = readEnv(profilePath(profile));
+  const values = base.values;
+  const hasProfile = Boolean(profile);
+  let enabled = hasProfile ? String(values.JEV_ENABLED || '').toLowerCase() === 'true' : true;
+  let invalidEnabled = hasProfile && values.JEV_ENABLED !== undefined && !/^(true|false)$/i.test(values.JEV_ENABLED);
+  const backend = values.JEV_MODE || null;
+  const backendFile = backend && BACKENDS.includes(backend) ? readEnv(backendPath(profile, backend)) : { text: null, values: {} };
+  const b = backendFile.values;
+  let configured = false;
+  if (BACKENDS.includes(backend)) {
+    if (backend === 'api') configured = Boolean(b.JEV_API_KEY || b.JEV_API_ENDPOINT);
+    else if (backend === 'systemone') configured = Boolean(b.JEV_SYSTEMONE_ENDPOINT);
+    else if (backend === 'local') configured = Boolean(backendFile.text || b.JEV_LOCAL_ENDPOINT || b.JEV_LOCAL_MODEL_DIR);
+    else if (backend === 'ollama') configured = Boolean(backendFile.text || b.JEV_OLLAMA_ENDPOINT || b.JEV_LOCAL_MODEL);
+    else if (backend === 'lmstudio') configured = Boolean(backendFile.text || b.JEV_LMSTUDIO_ENDPOINT || b.JEV_LOCAL_MODEL);
+  }
+  return { base, backendFile, values, backend, configured, enabled, invalidEnabled, present: base.text !== null };
+}
+
+function resolveHookContext(flags) {
+  const agent = validateAgent(flags.agent, false);
+  const mappings = readMapping();
+  const mapped = mappings.value[agent];
+  const requested = flags.profile !== undefined ? flags.profile : mapped?.profile;
+  const profile = validateProfile(requested, true);
+  const base = readEnv(profilePath(profile));
+  const values = base.values;
+  const hasProfile = Boolean(profile);
+  const enabled = hasProfile ? String(values.JEV_ENABLED || '').toLowerCase() === 'true' : true;
+  const invalidEnabled = hasProfile && values.JEV_ENABLED !== undefined && !/^(true|false)$/i.test(values.JEV_ENABLED);
+  return { agent, profile, mappings, state: { base, backendFile: { text: null, values: {} }, values, backend: values.JEV_MODE || null, configured: false, enabled, invalidEnabled, present: base.text !== null } };
+}
+
+function resolveContext(flags, { allowMissingProfile = true } = {}) {
+  const agent = validateAgent(flags.agent, false);
+  const mappings = readMapping();
+  const mapped = mappings.value[agent];
+  const requested = flags.profile !== undefined ? flags.profile : mapped?.profile;
+  const profile = validateProfile(requested, allowMissingProfile);
+  return { agent, profile, mappings, state: readState(profile) };
+}
+
+function replaceEnabled(text, enabled) {
+  const lines = String(text || '').split(/\r?\n/);
+  const out = [];
+  let seen = false;
+  for (const line of lines) {
+    if (/^\s*JEV_ENABLED\s*=/.test(line)) {
+      if (!seen) out.push(`JEV_ENABLED=${enabled}`);
+      seen = true;
+    } else if (line !== '' || out.length) out.push(line);
+  }
+  if (!seen) out.unshift(`JEV_ENABLED=${enabled}`);
+  return `${out.join('\n').replace(/\n+$/, '')}\n`;
+}
+
+function common(action, ctx, applied, enabled) {
+  return { ok: true, action, agent: ctx.agent, profile: ctx.profile, applied: Boolean(applied), enabled: Boolean(enabled) };
+}
+
+function inactive(action, ctx) {
+  return { ...common(action, ctx, false, false), inactive: true, plan: { active: false, reason: 'selected Jev profile is disabled or missing' } };
+}
+
+function runSetup(ctx, flags) {
+  if (!existsSync(SETUP)) throw new Error('canonical Jev setup script is unavailable');
+  const args = ['--config-only'];
+  if (ctx.profile) args.push('--profile', ctx.profile);
+  args.push('--agent', ctx.agent, '--mode', flags.backend);
+  if (flags.endpoint !== undefined) args.push('--endpoint', flags.endpoint);
+  if (flags.model !== undefined) args.push('--model', flags.model);
+  if (flags.keyEnv !== undefined) args.push('--key-env', flags.keyEnv);
+  if (flags.modelDir !== undefined) args.push('--model-dir', flags.modelDir);
+  const result = spawnSync('bash', [SETUP, ...args], {
+    cwd: REPO_ROOT,
+    env: { ...process.env },
+    encoding: 'utf8',
+    stdio: ['ignore', 'pipe', 'pipe'],
+    timeout: 15_000,
+  });
+  if (result.error) throw new Error(`canonical setup failed: ${result.error.message}`);
+  if (result.status !== 0) throw new Error(`canonical setup failed with exit ${result.status}`);
+}
+
+function validateConfigure(flags, ctx) {
+  if (!BACKENDS.includes(flags.backend)) throw new Error(`unsupported backend '${flags.backend || ''}'; expected ${BACKENDS.join(', ')}`);
+  if (flags.endpoint !== undefined) parseURL(flags.endpoint);
+  validateModel(flags.model);
+  validateEnvName(flags.keyEnv, flags.backend === 'api');
+  if (flags.modelDir !== undefined && (typeof flags.modelDir !== 'string' || !flags.modelDir || /[\0\r\n]/.test(flags.modelDir))) throw new Error('model-dir must be a non-empty path');
+  if (ctx.state.invalidEnabled) throw new Error('JEV_ENABLED must be true or false');
+  if (ctx.profile && ctx.state.present && !ctx.state.backend && flags.backend !== undefined) return;
+}
+
+async function configure(flags) {
+  const ctx = resolveContext(flags);
+  validateConfigure(flags, ctx);
+  if (!flags.apply) return common('configure', ctx, false, ctx.state.enabled);
+  // Validate the mapping before invoking setup so a malformed mapping cannot leave a configured profile half-updated.
+  const nextMapping = ctx.profile ? mappingFor(ctx.agent, ctx.profile, ctx.mappings.value) : ctx.mappings.value;
+  if (ctx.profile) ensureRegular(ctx.mappings.path);
+  runSetup(ctx, flags);
+  if (ctx.profile) atomicWrite(ctx.mappings.path, mappingText(nextMapping));
+  const after = readState(ctx.profile);
+  return common('configure', ctx, true, after.enabled);
+}
+
+function validateToggle(ctx, desired) {
+  if (!ctx.profile) throw new Error('enable/disable requires --profile or an existing agent mapping');
+  if (!ctx.state.present) throw new Error(`profile '${ctx.profile}' is not configured`);
+  if (ctx.state.invalidEnabled) throw new Error('JEV_ENABLED must be true or false');
+  if (!BACKENDS.includes(ctx.state.backend) || !ctx.state.configured) throw new Error(`profile '${ctx.profile}' has no valid configured backend`);
+  if (desired && !ctx.state.configured) throw new Error(`profile '${ctx.profile}' has no valid configured backend`);
+}
+
+async function toggle(flags, desired) {
+  const ctx = resolveContext(flags, { allowMissingProfile: false });
+  validateToggle(ctx, desired);
+  if (!flags.apply) return common(desired ? 'enable' : 'disable', ctx, false, ctx.state.enabled);
+  atomicWrite(profilePath(ctx.profile), replaceEnabled(ctx.state.base.text, desired));
+  return common(desired ? 'enable' : 'disable', ctx, true, desired);
+}
+
+function safeMapping(entry) {
+  if (!entry || typeof entry !== 'object' || Array.isArray(entry)) return null;
+  return {
+    profile: typeof entry.profile === 'string' ? entry.profile : null,
+    native: typeof entry.native === 'string' ? entry.native : null,
+    scope: typeof entry.scope === 'string' ? entry.scope : null,
+  };
+}
+async function status(flags) {
+  const ctx = resolveContext(flags);
+  const body = common('status', ctx, false, ctx.state.enabled);
+  body.backend = ctx.state.backend;
+  body.configured = ctx.state.configured;
+  body.mapping = safeMapping(ctx.mappings.value[ctx.agent]);
+  body.profilePresent = ctx.state.present;
+  if (ctx.state.invalidEnabled) throw new Error('JEV_ENABLED must be true or false');
+  return body;
+}
+
+function commandPath(command) {
+  const pathValue = process.env.PATH || '';
+  for (const dir of pathValue.split(':')) {
+    if (!dir) continue;
+    const path = join(dir, command);
+    try { accessSync(path, fsConstants.X_OK); return path; } catch {}
+  }
+  return null;
+}
+
+async function detect(flags) {
+  const ctx = resolveContext(flags);
+  const hosts = {};
+  for (const host of ['claude', 'jeopi', 'omp', 'pi', 'codex', 'gemini', 'opencode', 'jEO', 'aside']) {
+    const binary = commandPath(host);
+    const native = NATIVE_HOSTS.has(host);
+    hosts[host] = {
+      binary,
+      present: Boolean(binary),
+      runnable: Boolean(binary),
+      capability: native ? 'native-lifecycle' : binary ? 'adapter-only' : 'unknown',
+      readiness: binary ? 'unverified' : 'unknown',
+      activation: 'not-run',
+    };
+  }
+  return { ...common('detect', ctx, false, ctx.state.enabled), capabilities: hosts };
+}
+
+async function hostPlan(flags) {
+  const ctx = resolveContext(flags);
+  const host = flags.host || ctx.agent;
+  validateAgent(host);
+  const installed = Boolean(commandPath(host));
+  let capability = 'adapter-only';
+  let lifecycle = 'unsupported';
+  let steps;
+  if (NATIVE_HOSTS.has(host)) {
+    capability = 'native-lifecycle';
+    lifecycle = 'supported';
+    steps = [
+      { action: 'install', command: `install Jev native package for ${host}`, executed: false },
+      { action: 'load', command: `load profile ${ctx.profile || '<legacy>'} advisory callback`, executed: false },
+      { action: 'enable', command: `enable Jev profile ${ctx.profile || '<legacy>'}`, executed: false },
+      { action: 'disable', command: `disable Jev profile ${ctx.profile || '<legacy>'}`, executed: false },
+    ];
+  } else if (host === 'codex') {
+    capability = 'adapter-only';
+    lifecycle = 'ui-only';
+    steps = [{ action: 'provider-toggle', status: 'ui-only', note: 'Codex CLI has no verified noninteractive enable/disable surface', executed: false }];
+  } else {
+    steps = [{ action: 'adapter', status: installed ? 'present' : 'unknown', note: 'No native Jev lifecycle is advertised for this host', executed: false }];
+  }
+  return { ...common('host-plan', ctx, false, ctx.state.enabled), host, installed, capability, lifecycle, verified: false, executed: false, steps };
+}
+
+function adviceEntries(payload) {
+  if (Array.isArray(payload)) return payload;
+  if (Array.isArray(payload?.routing)) return payload.routing;
+  if (Array.isArray(payload?.advice)) return payload.advice;
+  throw new Error('advice must be a routing array or an object containing routing/advice');
+}
+
+async function modelPlan(flags) {
+  const ctx = resolveContext(flags, { allowMissingProfile: false });
+  if (!ctx.state.enabled) return inactive('model-plan', ctx);
+  if (!flags.advice) throw new Error('model-plan requires --advice <path>');
+  let payload;
+  try { payload = JSON.parse(readFileSync(resolve(flags.advice), 'utf8')); } catch { throw new Error('advice file is not readable JSON'); }
+  const entries = adviceEntries(payload);
+  const plans = [];
+  for (const entry of entries) {
+    const chosen = typeof entry?.chosen === 'string' ? entry.chosen : null;
+    if (!chosen || !chosen.includes('/')) throw new Error('routing advice has no provider/model choice');
+    const separator = chosen.indexOf('/');
+    const provider = chosen.slice(0, separator);
+    const model = chosen.slice(separator + 1);
+    if (!HOST_PROVIDERS.has(provider)) throw new Error(`unsupported host provider '${provider}'`);
+    if (!MODEL_ID.test(model)) throw new Error('routing advice contains an unsafe model id');
+    const candidates = [...(entry?.policy?.candidates || []), ...(entry?.candidates || [])];
+    const listed = candidates.some(candidate => candidate?.provider === provider && candidate?.model === model);
+    if (!listed) throw new Error(`provider/model '${chosen}' was not an approved routing candidate`);
+    plans.push({ skill: entry.skill || null, provider, model, argv: ['--model', model], advisory: true, executed: false });
+  }
+  if (!plans.length) throw new Error('routing advice contains no supported candidates');
+  return { ...common('model-plan', ctx, false, ctx.state.enabled), host: ctx.agent, plans, executed: false, advisory: true };
+}
+
+function savedEndpoint(ctx) {
+  const vals = ctx.state.backendFile.values;
+  if (ctx.state.backend === 'api') return vals.JEV_API_ENDPOINT || null;
+  if (ctx.state.backend === 'systemone') return vals.JEV_SYSTEMONE_ENDPOINT || null;
+  if (ctx.state.backend === 'local') return vals.JEV_LOCAL_ENDPOINT || null;
+  if (ctx.state.backend === 'ollama') return vals.JEV_OLLAMA_ENDPOINT || null;
+  if (ctx.state.backend === 'lmstudio') return vals.JEV_LMSTUDIO_ENDPOINT || null;
+  return null;
+}
+
+async function integrationPlan(flags) {
+  const ctx = resolveContext(flags, { allowMissingProfile: false });
+  if (!ctx.state.enabled) return inactive('integration-plan', ctx);
+  if (flags.integration !== 'pg-jev' && flags.integration !== 'computer-use') throw new Error('integration must be pg-jev or computer-use');
+  const driver = ctx.state.backend === 'systemone' ? (ctx.state.backendFile.values.JEV_SYSTEMONE_DRIVER || 'typesafe') : null;
+  if (ctx.state.backend !== 'api' && !(ctx.state.backend === 'systemone' && driver === 'typesafe')) {
+    throw new Error(`incompatible Jev backend '${ctx.state.backend || 'unknown'}'; a TypeSafe-compatible gateway is required`);
+  }
+  const endpoint = flags.endpoint || savedEndpoint(ctx);
+  if (!endpoint) throw new Error('integration endpoint is required');
+  const url = parseURL(endpoint, 'integration endpoint');
+  if (flags.localOnly && !isLoopback(url.hostname)) throw new Error('local-only classifier must use an exact loopback endpoint');
+  const baseUrl = stripTypeSafeSuffix(url);
+  // Local-only never implies a hosted JEV credential: the operator supplies their
+  // own local auth reference, or omits it entirely for a no-auth local service.
+  // A remote (non-local-only) classifier always requires an explicit key
+  // reference - it must never auto-borrow one.
+  const keyEnv = validateEnvName(flags.keyEnv, !flags.localOnly);
+  const model = validateModel(flags.model);
+  if (flags.writerKeyEnv !== undefined) validateEnvName(flags.writerKeyEnv, true);
+  let writerApi = null;
+  if (flags.writerApi !== undefined) {
+    if (!WRITER_PROVIDERS.has(flags.writerApi)) throw new Error(`unsupported writer-api '${flags.writerApi}'; expected ${[...WRITER_PROVIDERS].join(' or ')}`);
+    writerApi = flags.writerApi;
+  }
+  const writerModel = validateModel(flags.writerModel);
+  if (!flags.localOnly && flags.writerEndpoint === undefined && (flags.writerKeyEnv || writerApi || writerModel)) {
+    throw new Error('writer endpoint is required when writer credentials, API, or model are supplied');
+  }
+  let writer;
+  if (flags.writerEndpoint !== undefined) {
+    const writerUrl = parseURL(flags.writerEndpoint, 'writer-endpoint');
+    if (flags.localOnly && !isLoopback(writerUrl.hostname)) throw new Error('local-only writer must use an exact loopback endpoint or be disabled');
+    const writerBaseUrl = writerUrl.toString().replace(/\/$/, '');
+    writer = {
+      enabled: true,
+      mode: flags.localOnly ? 'loopback' : 'configured',
+      endpoint: writerBaseUrl,
+      // Plan-only env-name -> value/credential-ref mapping so a handoff is
+      // directly usable: names match the actual writer consumer (CLICKER_*),
+      // never WRITER_ENDPOINT or an invented CLICKER_WRITER_ENABLED flag.
+      // Secret *values* are never placed here, only the env-var name holding
+      // them (`ref`); the classifier and writer models are kept distinct so
+      // routing/classification config is never conflated with the coding LLM.
+      envVars: {
+        CLICKER_WRITER_BASE_URL: writerBaseUrl,
+        CLICKER_WRITER_API: writerApi,
+        CLICKER_WRITER_API_KEY: { ref: flags.writerKeyEnv || null },
+        CLICKER_WRITER_MODEL: writerModel,
+      },
+    };
+  } else {
+    // Disabled writer: force-blank the vars a writer client would read,
+    // including the ambient Anthropic SDK vars, rather than rely on an
+    // enable flag the real consumer never reads. Omitting a key instead of
+    // blanking it would let a later dotenv reload silently repopulate it
+    // from the ambient environment, defeating the disablement.
+    writer = {
+      enabled: false,
+      mode: 'disabled',
+      envVars: {
+        CLICKER_WRITER_BASE_URL: '',
+        CLICKER_WRITER_API_KEY: { ref: null },
+        ANTHROPIC_API_KEY: '',
+        ANTHROPIC_AUTH_TOKEN: '',
+      },
+    };
+  }
+  // A local-only classifier with no explicit --key-env has no credential to
+  // reference by name; some TypeSafe-SDK-compatible clients still require a
+  // non-empty key string to be set. Surface a fixed, non-secret placeholder
+  // literal instead of a `ref` in that one case only - never for a remote
+  // endpoint, which always has `keyEnv` set or has already thrown above.
+  const classifierKey = keyEnv ? { ref: keyEnv } : { ref: null, literal: 'not-needed' };
+  const classifier = {
+    protocol: 'typesafe-sdk',
+    baseUrl,
+    keyEnv,
+    localOnly: Boolean(flags.localOnly),
+    // `localOnly` only reflects the operator's requested constraint and the
+    // loopback-hostname check above; it is not a claim that downstream
+    // gateway egress has been verified.
+    envVars: {
+      TYPESAFE_BASE_URL: baseUrl,
+      TYPESAFE_API_KEY: classifierKey,
+      TYPESAFE_DEFAULT_MODEL: model,
+    },
+  };
+  if (flags.integration === 'pg-jev') {
+    return { ...common('integration-plan', ctx, false, ctx.state.enabled), integration: 'pg-jev', classifier, writer, database: { execution: 'plan-only', scope: 'database-server', rowEgress: 'explicit-only', apiKeyGuc: 'server-process-only', extensionStateIndependent: true }, executed: false };
+  }
+  return { ...common('integration-plan', ctx, false, ctx.state.enabled), integration: 'computer-use', classifier, writer, capture: 'separate-consent-required', act: 'separate-consent-required', executed: false };
+}
+
+async function readStdin() {
+  let value = '';
+  for await (const chunk of process.stdin) value += chunk;
+  return value;
+}
+
+function isApprovedModelChoice(chosen) {
+  if (typeof chosen !== 'string' || !chosen.includes('/')) return false;
+  const separator = chosen.indexOf('/');
+  return HOST_PROVIDERS.has(chosen.slice(0, separator)) && MODEL_ID.test(chosen.slice(separator + 1));
+}
+
+async function hook(flags) {
+  const activation = resolveHookContext(flags);
+  if (!activation.profile || !activation.state.present || !activation.state.enabled || activation.state.invalidEnabled) {
+    return common('hook', activation, false, false);
+  }
+  const ctx = { ...activation, state: readState(activation.profile) };
+  const input = await readStdin();
+  let event;
+  try { event = input.trim() ? JSON.parse(input) : {}; } catch { throw new Error('hook input must be JSON'); }
+  const prompt = typeof event.prompt === 'string' ? event.prompt : typeof event.userPrompt === 'string' ? event.userPrompt : '';
+  let advice = 'Jev advisory context unavailable.';
+  try {
+    process.env.JEV_PROFILE = ctx.profile;
+    // A native hook's child process inherits whatever cwd the host coding
+    // agent is running in (the live, untrusted workspace), and the harness's
+    // catalog seam tries process.cwd()'s .agent-skills/skills.json before the
+    // setup-installed snapshot. Pin JEV_CATALOG_PATH before importing the
+    // harness so an untrusted workspace can never supply its own catalog:
+    // honor an already-set caller-trusted value (profile/operator concern),
+    // otherwise default to the installed snapshot - never process.cwd().
+    if (!process.env.JEV_CATALOG_PATH) process.env.JEV_CATALOG_PATH = join(homes().jev, 'skills.json');
+    const harness = await import('./jev-harness.mjs');
+    const routed = await harness.routeSkills(prompt || 'Review the current task', { topK: 3 });
+    // Defense in depth even if a catalog candidate still resolves to
+    // untrusted content: only pass through skill names and host
+    // provider/model choices that match the approved identifier patterns,
+    // so hostile catalog text can never be transmitted as advisory context.
+    const names = routed.topK.map(item => item.name).filter(name => SKILL_ID.test(name)).join(', ') || 'no confident catalog match';
+    const models = (routed.routing || []).map(item => item.chosen).filter(isApprovedModelChoice).join(', ');
+    advice = `Jev advisory only (profile ${ctx.profile}): suggested skills: ${names}${models ? `; host model candidates: ${models}` : ''}. This does not change host permissions or the host model.`;
+  } catch (error) {
+    advice = `Jev advisory only (profile ${ctx.profile}): routing unavailable (${String(error.message || error).slice(0, 160)}). This does not change host permissions or the host model.`;
+  }
+  if (ctx.agent === 'claude') {
+    return { ...common('hook', ctx, false, true), hookSpecificOutput: { hookEventName: 'UserPromptSubmit', additionalContext: advice } };
+  }
+  return { ...common('hook', ctx, false, true), context: advice };
+}
+
+function parseArgs(argv) {
+  const [action, ...rest] = argv;
+  const flags = { action, agent: undefined, profile: undefined, host: undefined, apply: false, backend: undefined, endpoint: undefined, model: undefined, keyEnv: undefined, modelDir: undefined, advice: undefined, integration: undefined, writerEndpoint: undefined, writerKeyEnv: undefined, writerApi: undefined, writerModel: undefined, localOnly: false };
+  const valueFlags = new Map([
+    ['--agent', 'agent'], ['--profile', 'profile'], ['--host', 'host'], ['--backend', 'backend'], ['--endpoint', 'endpoint'], ['--model', 'model'],
+    ['--key-env', 'keyEnv'], ['--model-dir', 'modelDir'], ['--advice', 'advice'], ['--integration', 'integration'],
+    ['--writer-endpoint', 'writerEndpoint'], ['--writer-key-env', 'writerKeyEnv'], ['--writer-api', 'writerApi'], ['--writer-model', 'writerModel'],
+  ]);
+  for (let i = 0; i < rest.length; i++) {
+    const arg = rest[i];
+    if (arg === '--apply') { flags.apply = true; continue; }
+    if (arg === '--local-only') { flags.localOnly = true; continue; }
+    const equal = arg.indexOf('=');
+    const key = equal >= 0 ? arg.slice(0, equal) : arg;
+    const field = valueFlags.get(key);
+    if (!field) throw new Error(`unknown option '${arg}'`);
+    const value = equal >= 0 ? arg.slice(equal + 1) : rest[++i];
+    if (value === undefined || value === '') throw new Error(`${key} requires a value`);
+    flags[field] = value;
+  }
+  validateAgent(flags.agent, false);
+  return flags;
+}
+
+function emitError(action, agent, profile, error) {
+  const message = String(error?.message || error || 'unknown error').replace(/(?:JEV_[A-Z0-9_]+)=\S+/g, '$1=<redacted>');
+  const body = { ok: false, action: action || null, agent: agent || null, profile: profile || null, applied: false, error: message, code: 'JEV_PLUGIN_ERROR' };
+  console.log(JSON.stringify(body));
+  process.exitCode = 1;
+}
+
+async function main() {
+  let flags;
+  try {
+    flags = parseArgs(process.argv.slice(2));
+    const action = flags.action;
+    let result;
+    if (action === 'configure') result = await configure(flags);
+    else if (action === 'enable') result = await toggle(flags, true);
+    else if (action === 'disable') result = await toggle(flags, false);
+    else if (action === 'status') result = await status(flags);
+    else if (action === 'detect') result = await detect(flags);
+    else if (action === 'host-plan') result = await hostPlan(flags);
+    else if (action === 'model-plan') result = await modelPlan(flags);
+    else if (action === 'integration-plan') result = await integrationPlan(flags);
+    else if (action === 'hook') result = await hook(flags);
+    else throw new Error(`unknown action '${action}'`);
+    console.log(JSON.stringify(result));
+  } catch (error) {
+    emitError(flags?.action || process.argv[2], flags?.agent, flags?.profile, error);
+  }
+}
+
+// Entry-point guard: only auto-run the CLI when this file is the directly
+// invoked script, never on `import`/`import()` (tests, native hook wrappers).
+// Comparing raw resolve() output is not enough: on macOS TMPDIR/`/var` is a
+// symlink to `/private/var`, and installed controllers are frequently reached
+// through another symlink (package alias, `.agents/jev/jev-plugin.mjs`).
+// realpathSync() collapses both sides to the same canonical filesystem path
+// so the guard still recognizes itself as the entry point. If a side cannot
+// be realpath'd (e.g. argv[1] is not a real file), fall back to resolve() so
+// the comparison fails closed instead of throwing.
+function canonicalEntryPath(path) {
+  try {
+    return realpathSync(path);
+  } catch {
+    return resolve(path);
+  }
+}
+
+const invokedArg = process.argv[1] ? resolve(process.argv[1]) : null;
+const invoked = invokedArg ? canonicalEntryPath(invokedArg) : null;
+const modulePath = canonicalEntryPath(fileURLToPath(import.meta.url));
+if (invoked === modulePath) main();

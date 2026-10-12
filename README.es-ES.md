@@ -59,10 +59,61 @@ Jev es una opción separada, limitada al directorio personal; no forma parte de 
 
 El descubrimiento empieza por el **catálogo local** (`route-skills` / `jeo-skill`). Una coincidencia débil emite `publicRegistryFallback` hacia el **registro público skills.sh** mediante `find-skills`; revisa los candidatos y obtén aprobación explícita antes de instalarlos. El arnés no busca ni instala habilidades públicas por sí mismo.
 
-**Backends y enrutamiento por operación.** Cinco tipos de backend comparten un mismo contrato de decisión: `api` (TypeSafe alojado), `local` (servidor JEV-9B de precisión completa), `ollama` / `lmstudio` (GGUF cuantizado vía chat) y `systemone` (un endpoint operado por ti: compatible con TypeSafe, AutoTrust `/v1/decide` o una cabeza vLLM `jev-decision`). Cada operación resuelve su propio backend desde el perfil —`JEV_ROUTE_SKILLS_BACKEND`, `JEV_PRUNE_CONTEXT_BACKEND`, `JEV_REVIEW_BACKEND`— con una lista ordenada de respaldo `_FALLBACK`; la configuración los escribe con `--route-backend`, `--prune-backend`, `--review-backend` y `--fallback <op>=<kind[,kind]>`, y `--backend` / `--model` sustituyen una sola llamada. Todo backend tiene nivel `unvalidated` salvo que una atestación (`--validated-model`) coincida con el modelo que declara servir, y solo los controladores con cabeza de decisión calibrada (`api`, `systemone`) pueden validarse: `review` solo concede `permit` en un nivel validado, así que `local`, `ollama` y `lmstudio` recomiendan pero nunca autorizan. Los `model_policies` opcionales de `skills.json` añaden enrutamiento `provider/model` orientativo por habilidad a la salida de `route-skills`; los anfitriones aún no lo consumen. La configuración también instala una instantánea del catálogo para que `route-skills` funcione fuera de un checkout.
+#### Configurar: backends, enrutamiento por operación, separación del modelo de decisión
 
-Elige `api`, `local`, `ollama`, `lmstudio` o `systemone` solo tras aprobar credenciales, descargas y efectos sobre los servidores; `skip` conserva el estado existente de Jev. Sin TTY y sin selección, Jev se omite sin descargar su script. Una instalación de catálogo de proyecto nunca configura Jev global. `status [--operation <op>]` informa la cadena de backends de cada operación y distingue configuración de comprobaciones limitadas de disponibilidad: tener una clave API no demuestra autenticación ni salud del servicio alojado. Un backend configurado que falla bloquea la acción, no permite omitir la revisión. `--mock` valida contratos sin conexión y nunca autoriza acciones reales. Consulta [`jev/README.md`](jev/README.md) para ajustes, códigos de salida y límites de validación.
+**Tipos de backend** — Elige uno o configura los cinco (`api`, `local`, `ollama`, `lmstudio`, `systemone`). Cada operación (enrutamiento de habilidades, poda de contexto, revisión de propuesta) resuelve su propio backend desde el perfil; el **backend de decisión** es solo asesor para enrutamiento y poda, pero la **revisión** invoca el backend de cabeza de decisión para hacer puerta de acción autónoma (solo los drivers calibrados de `api` y `systemone` pueden devolver `permit`). El **modelo de codificación** es estado de aplicación ambiente y nunca lo usa Jev — son preocupaciones separadas:
 
+```bash
+# Configurar: backends explícitos por operación, uno a la vez
+bash jev/jev-setup.sh --profile gjc --route-backend api --prune-backend local --review-backend api
+
+# Cadenas de respaldo (se intentan en orden si el primario no está disponible)
+bash jev/jev-setup.sh --profile jeopi --backend local --fallback local=ollama,lmstudio
+
+# Anulación por invocación (no cambia la configuración almacenada)
+node ~/.agents/jev/jev-harness.mjs --profile gjc route-skills --backend ollama --model qwen2.5:7b "<task>"
+
+# Verificar el estado configurado para cada operación
+node ~/.agents/jev/jev-harness.mjs --profile gjc status
+node ~/.agents/jev/jev-harness.mjs --profile gjc status --operation route-skills
+```
+
+**Requisitos previos y efectos secundarios del backend**:
+- `api` — requiere clave de API TypeSafe (`JEV_API_KEY`); la inferencia alojada puede generar costos; la configuración es gratuita.
+- `local` — requiere Python 3 y dependencias; la descarga del modelo (JEV-9B de precisión completa ~6 GB) es explícita y separada de la configuración.
+- `ollama` / `lmstudio` — requiere que el servicio esté ejecutándose; la extracción de modelo cuantizado es explícita.
+- `systemone` — apunta a un endpoint de System One operado por el operador (sin descargas, sin arranque de servicio).
+
+**Hosts nativos de Claude/Pi familia vs. hosts solo plan**. El arnés Jev se integra a través de un archivo de regla (`~/.agents/rules/jev-control-plane.md`), que debe cargarse mediante el mecanismo de regla compatible del host. Los hosts con carga de regla nativa (Claude Code, plugins de Codex, Gemini CLI, familia Pi code) pueden cargar y hacer cumplir la regla directamente. Los hosts solo plan (p. ej., análisis solo o planes basados en navegador sin entornos de codificación) reciben enrutamiento asesor documentado pero no pueden hacer cumplir puerta de enlace. La configuración es de alcance hogar y se aplica a todos los agentes en ese perfil.
+
+**ON/OFF y perfiles compartidos**:
+```bash
+# Habilitar Jev para un perfil
+bash jev/jev-setup.sh --profile gjc --mode api --route-backend api
+
+# Verificar si está habilitado
+node ~/.agents/jev/jev-harness.mjs --profile gjc status
+# Exit 0 = utilizable, 2 = inactivo/no configurado, 3 = fail-closed
+
+# Deshabilitar Jev (preserva la configuración; sale 2 en la siguiente llamada de estado)
+bash jev/jev-setup.sh --profile gjc --disable
+
+# Archivos de perfil privado (modo 600)
+ls -la ~/.agents/jev/profiles/
+# gjc.env, gjc.api.env, gjc.local.env, gjc.systemone.env, …
+```
+
+**Modo solo configuración (gratuito)**. Configuración sin aprobar descargas de backend, llamadas de inferencia ni servicios alojados:
+```bash
+# Verificación de configuración de solo lectura, sin efectos secundarios
+node ~/.agents/jev/jev-harness.mjs --profile gjc --mock self-test
+```
+
+**Cableado heredado local**. El `.env` intencionado de `~/.agents/jev/` (sin perfil) se soporta para retrocompatibilidad. Las variables de entorno ambiente anula claves de archivo coincidentes pero no pueden habilitar un perfil faltante/deshabilitado. Los perfiles (`--profile <id>`) están aislados: un perfil faltante nunca se revierte a otro.
+
+Las operaciones de Jev pueden enrutarse a través de backends diferentes según el propósito: `route-skills` y `prune-context` son asesoras (sin acción autónoma), mientras que `review` hace puerta de acción autónoma y requiere permiso explícito de un backend validado. Cada respuesta vincula el tipo de backend, modelo y nivel (no validado a menos que `--validated-model <id>` atestigüe que el backend realmente sirve ese modelo). `--mock` valida contratos sin conexión y nunca permite acciones autónomas.
+
+Consulte [`jev/README.md`](jev/README.md) para obtener configuraciones detalladas, códigos de salida, límites de validación y requisitos previos de configuración de local/Ollama/LM Studio.
 ### Jevgrep (descubrimiento remoto opcional de fuentes)
 
 [Jevgrep](.agent-skills/jevgrep/SKILL.md) es una CLI `jg` independiente del arnés de control Jev. Las rutas predeterminadas siguen siendo los metadatos locales del catálogo, la búsqueda exacta nativa/LSP, la recuperación de zvec-grep y Graphify `query` / `path` / `explain` para relaciones del grafo. Puede buscar como texto documentos de habilidades, Markdown de la wiki y documentos fuente del grafo seleccionados explícitamente; no recorre binarios del grafo, modifica fuentes ni reconstruye grafos.
