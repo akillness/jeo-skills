@@ -10,6 +10,8 @@ Jev is optional and separate from catalog installation in every mode, including 
 
 Use one lowercase profile ID per independent agent environment. `--profile` selects isolated Jev state, while `--agent` selects where the Agent Skill is installed. A missing or disabled selected profile never falls back to another profile or the legacy shared config. Profile and backend files are mode-600. Setup is home-scoped and must be explicitly approved before it performs hosted calls, model downloads, or local execution.
 
+Standalone setup preflights the root `~/.agents/jev/jev-plugin.mjs` destination and raw-native file leaves before staging or publication. Root-controller symlinks/non-files and native non-file leaf collisions are refused. The collision regressions preserve existing core/native/catalog/profile bytes and outside targets; resolve the conflicting destination before rerunning approved setup.
+
 ```sh
 JEO_SKILLS_AGENT=jeopi JEO_SKILLS_JEV=api bash install.sh
 bash jev/jev-setup.sh --profile gjc --agent gjc --mode local
@@ -53,6 +55,8 @@ node ~/.agents/jev/jev-plugin.mjs status --agent claude --profile claude
 ```
 
 When the host session loads the native package, its advisory callback remains registered whether the selected profile is ON or OFF. An OFF profile returns a neutral result before reading stdin, loading the catalog, or reaching a backend. `JEV_ENABLED` is the single profile activation switch; copying package assets or registering/loading them with a host does not change it. An ON callback examines the current task and returns advisory context prefixed with `Jev advisory only`. The host decides whether to use suggestions under its own permission policies; Jev cannot authorize autonomous action.
+
+For jeopi, OMP, and Pi, helpers tolerate subprocess stdin `EPIPE` only after a parsed `enabled:false` response. Actual-OFF registered callbacks with a 1 MiB prompt return `{}` without changing prior host context, exit 0, and emit no unhandled-error/EPIPE stderr; other stdin errors remain `CONTROLLER_INPUT_ERROR`.
 
 ## Configuration and setup
 
@@ -216,5 +220,9 @@ node ~/.agents/jev/jev-harness.mjs route-skills --mock --top-k 3 "React performa
 ```
 
 `smoke` runs route/prune/review against the resolved backend with three golden tasks, never permits, and warns for an unvalidated tier. `self-test --mock` is offline and must print `N/N checks passed`; `--mock` never permits autonomous action. The harness does not execute public registry searches or install skills. Obtain explicit user approval before installing anything.
+
+Recorded 2026-10-12 verification: `python3 -m unittest scripts.test_installer_regressions` passed 48 tests; `python3 -m unittest scripts.test_jev_regressions` passed 64. `JEV_LIVE_SMOKE=0 node --test jev/install.test.mjs jev/plugin.test.mjs jev/profile.test.mjs` reported 54 total, 53 pass, and 1 opt-in live skip. The prior offline mock self-test passed 20/20. The source catalog has 367 skills because of a concurrent MI skill addition; this Jev update adds no catalog entry.
+
+The live Ollama check reached HTTP 200 but returned `selectedSkill:null` / `errorCategory:backend_unavailable`. It establishes transport and fail-closed output, not successful routing, model quality/calibration, or native package registration.
 
 These checks cannot prove provider authentication, model loading, inference quality, probability calibration, backend parity, or runtime rule enforcement. For live use, inspect status, verify host rule loading, obtain approval for data sharing/costs, and preserve real receipts.

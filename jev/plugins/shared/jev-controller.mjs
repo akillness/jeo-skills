@@ -63,6 +63,7 @@ export function invokeControllerHook({ agent, profile, input, inputStream, contr
     const timeout = normalizeControllerTimeout(timeoutMs);
     let stdout = '';
     let stderr = '';
+    let stdinError;
     let settled = false;
     let timedOut = false;
     let forceKillTimer;
@@ -84,11 +85,14 @@ export function invokeControllerHook({ agent, profile, input, inputStream, contr
       settled = true;
       clearTimeout(timeoutTimer);
       clearTimeout(forceKillTimer);
+      if (inputStream && typeof inputStream.unpipe === 'function') inputStream.unpipe(child.stdin);
+      child.stdin.destroy();
       resolveResult(result);
     };
     child.once('spawn', () => { timeoutTimer = setTimeout(onTimeout, timeout + CONTROLLER_TIMEOUT_STARTUP_GRACE_MS); });
     child.stdout.on('data', (chunk) => { stdout += chunk; });
     child.stderr.on('data', (chunk) => { stderr += chunk; });
+    child.stdin.on('error', (error) => { stdinError = error; });
     child.on('error', (error) => {
       if (timedOut) finish(timeoutResult);
       else finish({ ok: false, error: error.message, code: 'CONTROLLER_SPAWN_ERROR' });
@@ -99,6 +103,11 @@ export function invokeControllerHook({ agent, profile, input, inputStream, contr
         return;
       }
       const parsed = parseControllerOutput(stdout);
+      // OFF controllers intentionally exit without consuming their input.
+      if (stdinError && !(stdinError.code === 'EPIPE' && parsed.enabled === false)) {
+        finish({ ok: false, error: 'Cannot write Jev controller input', code: 'CONTROLLER_INPUT_ERROR' });
+        return;
+      }
       if (code && parsed.ok !== false) {
         finish({ ok: false, error: stderr.trim() || `Jev controller exited with status ${code}`, code: 'CONTROLLER_ERROR' });
       } else if (stderr.trim() && parsed.ok === undefined) {

@@ -152,8 +152,10 @@ Then read this file fully before doing anything else in this session.
   are advisory and never executed automatically. Native hooks pin a trusted catalog;
   strict TypeSafe answers remain separate from local legacy wire support. Saved API
   keys are preserved; local-only writer plans cannot borrow ambient hosted secrets.
-  Final evidence: installer 48/48, Jev 64/64, native install 12/12, profile 6/6,
-  plugin 27 passed plus one opt-in skip, and offline self-test 20/20. The separate
+  Final evidence: installer 48/48, Jev 64/64, native/profile/plugin tests 53 passed
+  plus one explicit live opt-in skip, and offline self-test 20/20. Standalone root
+  controller and raw native leaf collisions preserve prior private bytes; actual
+  OFF callbacks accept 1 MiB prompts without an unhandled EPIPE. The separate
   live Ollama smoke passed with probe status 200 and `backend_unavailable`, not a
   selected skill or model-quality claim. Paid API/DB/desktop execution is unverified.
   Commands and boundaries: `jev/README.md`, `patterns/jev-control-plane.md`.

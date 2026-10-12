@@ -408,8 +408,9 @@ done
 [ ! -e "$HOME/.agents" ] || [ -d "$HOME/.agents" ] || fail "Refusing non-directory destination: $HOME/.agents"
 [ ! -e "$JEV_HOME" ] || [ -d "$JEV_HOME" ] || fail "Refusing non-directory destination: $JEV_HOME"
 [ ! -e "$RULES_DIR" ] || [ -d "$RULES_DIR" ] || fail "Refusing non-directory destination: $RULES_DIR"
-for f in "${FILES[@]}"; do
+for f in "${FILES[@]}" jev-plugin.mjs; do
   [ ! -L "$JEV_HOME/$f" ] || fail "Refusing symlink destination: $JEV_HOME/$f"
+  [ ! -e "$JEV_HOME/$f" ] || [ -f "$JEV_HOME/$f" ] || fail "Refusing non-file destination: $JEV_HOME/$f"
 done
 if [ "$MODE" = local ]; then
   for destination in "$JEV_HOME/venv" "$JEV_HOME/venv/bin" "$JEV_HOME/models" "$MODEL_DIR"; do
@@ -461,6 +462,7 @@ native_preflight() {
       native_destination="$JEV_HOME/$native_file"
       [ ! -L "$native_destination" ] || fail "Refusing symlink destination: $native_destination"
       native_parent_guard "$native_destination"
+      [ ! -e "$native_destination" ] || [ -f "$native_destination" ] || fail "Refusing non-file native collision: $native_destination"
     done
   fi
   if [ -e "$NATIVE_PLUGIN_DIR" ] || [ -L "$NATIVE_PLUGIN_DIR" ]; then

@@ -135,6 +135,66 @@ test('non-regular native destination collision fails and preserves all prior hos
 });
 
 
+test('script-only raw root controller collision rejects before outside or managed writes', async (t) => {
+  for (const installSafety_kind of ['symlink', 'directory']) {
+    await t.test(installSafety_kind, () => {
+      const installSafety_fixture = installSafety_root('jev-raw-root-collision-');
+      mkdirSync(join(installSafety_fixture.installSafety_source, 'jev'), { recursive: true });
+      copyFileSync(join(installSafety_here, 'jev-setup.sh'), join(installSafety_fixture.installSafety_source, 'jev', 'jev-setup.sh'));
+      const installSafety_existing = installSafety_seedExisting(installSafety_fixture, { installSafety_skip: ['jev-plugin.mjs'] });
+      const installSafety_destination = join(installSafety_existing.installSafety_installed, 'jev-plugin.mjs');
+      const installSafety_outside = join(installSafety_fixture.installSafety_rootDir, 'outside-controller.mjs');
+      writeFileSync(installSafety_outside, 'outside controller must survive\n');
+      if (installSafety_kind === 'symlink') symlinkSync(installSafety_outside, installSafety_destination);
+      else {
+        mkdirSync(installSafety_destination);
+        writeFileSync(join(installSafety_destination, 'host-owned'), 'root directory must survive\n');
+      }
+      const installSafety_profiles = readdirSync(join(installSafety_existing.installSafety_installed, 'profiles')).sort();
+      const installSafety_curl = installSafety_rawCurl(installSafety_fixture.installSafety_rootDir);
+      const installSafety_result = installSafety_run(installSafety_fixture, installSafety_systemone('sentinel'), {
+        ...installSafety_systemoneEnv, installSafety_bin: installSafety_curl.installSafety_bin, JEO_SKILLS_RAW_BASE: 'https://raw.fixture.test/jev',
+      });
+      assert.ok(readFileSync(installSafety_outside).equals(Buffer.from('outside controller must survive\n')), 'external controller sentinel changed');
+      for (const [installSafety_relative, installSafety_bytes] of installSafety_existing.installSafety_before) {
+        assert.ok(readFileSync(join(installSafety_existing.installSafety_installed, installSafety_relative)).equals(installSafety_bytes), `${installSafety_relative} changed before rejection`);
+      }
+      assert.deepEqual(readdirSync(join(installSafety_existing.installSafety_installed, 'profiles')).sort(), installSafety_profiles);
+      if (installSafety_kind === 'directory') {
+        assert.deepEqual(readdirSync(installSafety_destination), ['host-owned']);
+        assert.equal(readFileSync(join(installSafety_destination, 'host-owned'), 'utf8'), 'root directory must survive\n');
+      }
+      assert.notEqual(installSafety_result.status, 0, `${installSafety_result.stdout}\n${installSafety_result.stderr}`);
+      assert.match(`${installSafety_result.stdout}\n${installSafety_result.stderr}`, /symlink|non-file|non.?regular|not.*(?:regular )?file/i);
+      assert.doesNotMatch(installSafety_result.stdout, /Setup complete/);
+    });
+  }
+});
+
+test('raw native leaf directory collision preserves prior core native catalog and profile bytes', () => {
+  const installSafety_fixture = installSafety_root('jev-raw-native-leaf-collision-');
+  mkdirSync(join(installSafety_fixture.installSafety_source, 'jev'), { recursive: true });
+  copyFileSync(join(installSafety_here, 'jev-setup.sh'), join(installSafety_fixture.installSafety_source, 'jev', 'jev-setup.sh'));
+  const installSafety_existing = installSafety_seedExisting(installSafety_fixture, { installSafety_skip: ['plugins/pi/index.mjs'] });
+  const installSafety_collision = join(installSafety_existing.installSafety_installed, 'plugins', 'pi', 'index.mjs');
+  mkdirSync(installSafety_collision);
+  writeFileSync(join(installSafety_collision, 'host-owned'), 'native directory must survive\n');
+  const installSafety_profiles = readdirSync(join(installSafety_existing.installSafety_installed, 'profiles')).sort();
+  const installSafety_curl = installSafety_rawCurl(installSafety_fixture.installSafety_rootDir);
+  const installSafety_result = installSafety_run(installSafety_fixture, installSafety_systemone('sentinel'), {
+    ...installSafety_systemoneEnv, installSafety_bin: installSafety_curl.installSafety_bin, JEO_SKILLS_RAW_BASE: 'https://raw.fixture.test/jev',
+  });
+  for (const [installSafety_relative, installSafety_bytes] of installSafety_existing.installSafety_before) {
+    assert.ok(readFileSync(join(installSafety_existing.installSafety_installed, installSafety_relative)).equals(installSafety_bytes), `${installSafety_relative} changed before rejection`);
+  }
+  assert.deepEqual(readdirSync(join(installSafety_existing.installSafety_installed, 'profiles')).sort(), installSafety_profiles);
+  assert.deepEqual(readdirSync(installSafety_collision), ['host-owned']);
+  assert.equal(readFileSync(join(installSafety_collision, 'host-owned'), 'utf8'), 'native directory must survive\n');
+  assert.notEqual(installSafety_result.status, 0, `${installSafety_result.stdout}\n${installSafety_result.stderr}`);
+  assert.match(`${installSafety_result.stdout}\n${installSafety_result.stderr}`, /non-file|non.?regular|not.*(?:regular )?file|directory/i);
+  assert.doesNotMatch(installSafety_result.stdout, /Setup complete/);
+});
+
 test('raw no-checkout setup installs trusted controller, package metadata, CLI, and private catalog snapshot', () => {
   const installSafety_fixture = installSafety_root('jev-raw-install-test-'); mkdirSync(join(installSafety_fixture.installSafety_source, 'jev'), { recursive: true }); copyFileSync(join(installSafety_here, 'jev-setup.sh'), join(installSafety_fixture.installSafety_source, 'jev', 'jev-setup.sh'));
   const installSafety_curl = installSafety_rawCurl(installSafety_fixture.installSafety_rootDir); const installSafety_result = installSafety_run(installSafety_fixture, installSafety_systemone('raw'), { ...installSafety_systemoneEnv, installSafety_bin: installSafety_curl.installSafety_bin, JEO_SKILLS_RAW_BASE: 'https://raw.fixture.test/jev' }); installSafety_ok(installSafety_result);

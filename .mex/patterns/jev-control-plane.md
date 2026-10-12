@@ -43,8 +43,9 @@ Source of truth is `jev/` in this repo: `jev-harness.mjs` (Node ESM, built-ins o
 ## Commands
 ```sh
 node jev/jev-harness.mjs self-test --mock                     # 20/20 offline contract checks
-node --test jev/profile.test.mjs                               # 3 isolated-HOME setup tests
-python3 scripts/test_jev_regressions.py                        # 64 loopback regressions (documented wire shapes)
+JEV_LIVE_SMOKE=0 node --test jev/install.test.mjs jev/plugin.test.mjs jev/profile.test.mjs # 54 total: 53 pass, 1 opt-in live skip
+python3 -m unittest scripts.test_jev_regressions               # 64 loopback regressions (documented wire shapes)
+python3 -m unittest scripts.test_installer_regressions         # 48 installer regressions
 node jev/jev-harness.mjs status [--operation review]           # exit 0/2/3
 node jev/jev-harness.mjs route-skills [--backend K] [--model M] [--top-k N] "<task>"
 node jev/jev-harness.mjs prune-context < blocks.jsonl
@@ -65,14 +66,18 @@ node jev/jev-harness.mjs smoke [--backend K] [--task "<text>"]  # live, never au
 - Excerpts are sent to the backend: `skillExcerpt` checks containment on `realpath` (catalog `../` paths and in-root symlinks to outside files are both refused). The user's `~/.agents/skills` has ~93 symlinked dirs (other sources) that resolve outside the root; none are catalog skills, so no excerpt is lost.
 - An isolated-HOME live install must not symlink the real `~/.agents/skills`: setup then finds the real `jeo-skill` router and runs `npx skills add --agent <profile>` (network; fails for a non-agent profile id). Copy SKILL.md files instead.
 - Native advisory packages exist for Claude, jeopi, OMP, and Pi. Session loading does not register a persistent plugin; `host-plan` emits literal session argv and reports registration prerequisites without executing them. `JEV_ENABLED` alone controls profile ON/OFF; an OFF registered hook short-circuits before stdin/catalog/backend/host work. Other hosts receive adapter or unsupported plans, not invented native package paths.
+- Standalone setup preflights the root `~/.agents/jev/jev-plugin.mjs` destination and raw-native file leaves before staging or publication. Root-controller symlinks/non-files and native non-file leaf collisions are refused; the focused collision regressions preserve seeded core/native/catalog/profile bytes and outside targets. Resolve the conflicting destination before rerunning approved setup.
+- jeopi/OMP/Pi helpers tolerate subprocess stdin `EPIPE` only after a parsed `enabled:false` response. Actual-OFF callbacks with a 1 MiB prompt return `{}` without changing prior host context, exit 0, and emit no unhandled-error/EPIPE stderr; other stdin errors remain `CONTROLLER_INPUT_ERROR`.
 
 ## Verify
-- [ ] `self-test --mock` prints `20/20 checks passed` (exit 0)
-- [ ] `python3 scripts/test_jev_regressions.py` → `Ran 64 tests … OK` (exit 0)
-- [ ] `node --test jev/profile.test.mjs` → 3 pass
+- [x] Prior offline `self-test --mock`: `20/20 checks passed` (exit 0)
+- [x] `python3 -m unittest scripts.test_jev_regressions` → 64 pass (exit 0)
+- [x] `python3 -m unittest scripts.test_installer_regressions` → 48 pass (exit 0)
+- [x] `JEV_LIVE_SMOKE=0 node --test jev/install.test.mjs jev/plugin.test.mjs jev/profile.test.mjs` → 54 total, 53 pass, 1 opt-in live skip (exit 0)
 - [ ] Isolated-HOME live install from a temp checkout copy: `status` ready, `route-skills` from an empty cwd reports `fullCatalogSkills` = manifest size
 - [ ] Catalog gates: validator, `generate --check`, frontmatter `--check`, `flatten --dry-run` all exit 0 (SKILL.md frontmatter is frozen; body edits only)
-- [ ] `smoke` against the only live backend here (Ollama JEV-9B-GGUF) completes with tier `unvalidated` and review `proposal_only`
+- [x] Live Ollama reached HTTP 200; routing returned `selectedSkill:null` / `errorCategory:backend_unavailable`. This proves transport and fail-closed output, not successful routing, model quality/calibration, or native package registration.
+- Current source catalog: 367 skills, including the concurrent MI skill addition; this Jev update adds no catalog entry.
 
 ## Update Scaffold
 - [ ] Bump `.mex/ROUTER.md` Current Project State when backend kinds, tiers, or output fields change

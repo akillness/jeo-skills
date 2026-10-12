@@ -482,6 +482,44 @@ test('jeopi OMP and Pi native wrappers register and execute before_agent_start a
     else process.env.JEV_AGENT_ID = previousAgent;
   }
 });
+test('actual OFF registered callback accepts a 1MiB prompt without crashing the host', async (t) => {
+  for (const host of ['jeopi', 'omp', 'pi']) {
+    await t.test(host, () => {
+      const f = fixture({ enabled: false });
+      const moduleUrl = pathToFileURL(join(here, 'plugins', host, 'index.mjs')).href;
+      const helperUrl = pathToFileURL(join(here, 'plugins', host, 'shared', 'jev-controller.mjs')).href;
+      const script = [
+        `const mod = await import(${JSON.stringify(moduleUrl)});`,
+        `const helper = await import(${JSON.stringify(helperUrl)});`,
+        `let callback;`,
+        `const api = { on(event, fn) { if (event === 'before_agent_start') callback = fn; } };`,
+        `const options = { profile: ${JSON.stringify(f.profile)}, controllerPath: ${JSON.stringify(plugin)} };`,
+        `const registration = await (mod.createJevExtension || mod.default)(api, options);`,
+        `if (!callback) throw new Error('before_agent_start callback was not registered');`,
+        `const prompt = 'x'.repeat(1024 * 1024);`,
+        `const result = await callback({ prompt, systemPrompt: ${JSON.stringify(host === 'pi' ? 'prior' : ['prior'])} });`,
+        `const inactive = await helper.invokeControllerHook({ ...options, agent: ${JSON.stringify(host)}, input: { type: 'UserPromptSubmit', prompt } });`,
+        `process.stdout.write(JSON.stringify({ registration, result, inactive }));`,
+      ].join('\n');
+      const env = { ...process.env, HOME: f.home, PATH: `${f.bin}:${process.env.PATH}` };
+      for (const key of Object.keys(env)) if (key.startsWith('JEV_')) delete env[key];
+      const child = spawnSync(process.execPath, ['--input-type=module', '-e', script], {
+        cwd: f.root, env, encoding: 'utf8', timeout: 15_000,
+      });
+      assert.equal(child.status, 0, `${child.stdout}\n${child.stderr}`);
+      const body = jsonResult(child);
+      assert.equal(body.registration.registered, true);
+      assert.deepEqual(body.result, {}, 'OFF callback must not replace or append host context');
+      assert.equal(body.inactive.ok, true);
+      assert.equal(body.inactive.enabled, false);
+      assert.equal(body.inactive.applied, false);
+      assert.equal(body.inactive.agent, host);
+      assert.equal(body.inactive.profile, f.profile);
+      assert.doesNotMatch(child.stderr, /EPIPE|Unhandled.*error/i);
+    });
+  }
+});
+
 test('native controller timeout escalates a TERM-ignoring child to SIGKILL without an orphan', async () => {
   const f = fixture({ enabled: true });
   const sharedPath = join(here, 'plugins', 'shared', 'jev-controller.mjs');
