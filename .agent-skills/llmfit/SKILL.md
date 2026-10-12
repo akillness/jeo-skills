@@ -3,6 +3,7 @@ name: llmfit
 description: Operate AlexsJones/llmfit to inspect detected hardware, rank model fit, estimate plans and storage, run the local REST API, and separate formula-based estimates from measured inference. Use when a user asks what LLMs fit a machine, how much RAM/VRAM a model needs, which runtime is plausible, or whether a result is measured versus estimated. Do not use this skill to install binaries, pull models, benchmark a provider, or submit community results without explicit approval.
 allowed-tools: Bash Read
 compatibility: Requires a llmfit binary or source checkout; GPU/runtime availability is host-dependent.
+license: MIT
 metadata:
   version: "1.0"
   source: https://github.com/AlexsJones/llmfit

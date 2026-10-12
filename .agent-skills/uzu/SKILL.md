@@ -33,7 +33,7 @@ and several cross-platform targets as “in progress”, and its target matrix s
 ## Instructions
 
 
-## Prerequisites and platform gate
+### Prerequisites and platform gate
 
 1. Confirm the host before installing anything:
    ```sh
@@ -65,7 +65,7 @@ and several cross-platform targets as “in progress”, and its target matrix s
    cargo tools build rust --targets apple
    ```
 
-## Lowest-friction macOS install
+### Lowest-friction macOS install
 
 On Apple Silicon macOS, the model cards document the Homebrew package path:
 
@@ -79,7 +79,7 @@ Hugging Face model card. The first run downloads the checkpoint. Treat download 
 space, RAM/unified-memory pressure, bandwidth, and provider/model terms as explicit costs;
 do not start a download merely to probe availability.
 
-## Source CLI: chat and server
+### Source CLI: chat and server
 
 From the pinned checkout, the README's CLI uses the workspace package `cli`:
 
@@ -112,7 +112,7 @@ curl http://127.0.0.1:8000/v1/chat/completions \
 The documented request parameters include `temperature`, `top_p`, `top_k`, and `max_tokens`.
 Keep the server bound to localhost unless remote access is an explicit, secured requirement.
 
-## Benchmarking
+### Benchmarking
 
 Run the repository command against a **downloaded model path**, benchmark task file, and
 output path:
@@ -126,7 +126,7 @@ cross-machine throughput claim. Record host, uzu commit, model revision/quantiza
 task file, generation settings, and output path. Do not copy benchmark numbers from Mirai's
 model pages into a local result: those pages identify their own hardware and date.
 
-## Model, license, and resource checks
+### Model, license, and resource checks
 
 Before downloading or shipping a checkpoint:
 
@@ -152,7 +152,7 @@ Reviewed license evidence:
 ## Best practices
 
 
-## Troubleshooting boundaries
+### Troubleshooting boundaries
 
 - Model not found: verify the repository ID, branch/revision, and whether the model belongs
   to uzu's own format/catalog. Uzu uses a custom model format; arbitrary GGUF is not implied.
