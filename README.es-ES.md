@@ -4,14 +4,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-366-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-367-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![GJC](https://img.shields.io/badge/GJC-gajae--code-181717?style=for-the-badge&logo=github)](https://github.com/akillness/gajae-code)
 [![jeo-code](https://img.shields.io/badge/jeo--code-jeo-181717?style=for-the-badge&logo=github)](https://github.com/akillness/jeo-code)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**366 habilidades categorizadas · instalación selectiva ligera · catálogo TOON compacto · multiplataforma**
+**367 habilidades categorizadas · instalación selectiva ligera · catálogo TOON compacto · multiplataforma**
 
 Una colección curada para flujos de trabajo LLM multi-agente y centrados en especificaciones. Delega una configuración completa con un solo prompt, o instala primero el enrutador `jeo-skill` y añade solo las habilidades de web, infraestructura, juegos, medios, CLI o utilidades que necesites.
 
@@ -114,7 +114,7 @@ Jev sigue siendo opcional en todos los modos del catálogo: la configuración pr
 
 ### Instalación selectiva ligera (manual / CI)
 
-Instala primero el **enrutador `jeo-skill`**, no las 366 carpetas de habilidades. Proporciona descubrimiento de categoría, subcategoría, interfaz, paquete y relación, manteniendo aplicaciones pesadas, modelos, servidores MCP y tiempos de ejecución bajo demanda.
+Instala primero el **enrutador `jeo-skill`**, no las 367 carpetas de habilidades. Proporciona descubrimiento de categoría, subcategoría, interfaz, paquete y relación, manteniendo aplicaciones pesadas, modelos, servidores MCP y tiempos de ejecución bajo demanda.
 
 ```bash
 # One lightweight skill, shared globally
@@ -205,7 +205,7 @@ escrituras en bases de datos requieren aprobación independiente. Consulta la
 
 ## 📚 Lista de Habilidades
 
-> Manifiesto central: `.agent-skills/skills.json` · 366 habilidades · 10 categorías principales · metadatos de subcategoría/interfaz/relación
+> Manifiesto central: `.agent-skills/skills.json` · 367 habilidades · 10 categorías principales · metadatos de subcategoría/interfaz/relación
 
 ### 🌐 Web (52)
 
@@ -512,9 +512,9 @@ Subcategorías: `code-quality` (11), `testing` (4), `architecture` (6), `documen
 | `implement` |
 | `prototype` |
 
-### 🔭 Investigación y Análisis (13)
+### 🔭 Investigación y Análisis (14)
 
-Subcategorías: `academic` (3), `web-research` (3), `data-analysis` (2), `experimentation` (2), `benchmarking` (1), `intelligence` (2)
+Subcategorías: `academic` (3), `web-research` (3), `data-analysis` (2), `experimentation` (2), `benchmarking` (1), `intelligence` (3)
 
 | Skill |
 |---|
@@ -531,6 +531,7 @@ Subcategorías: `academic` (3), `web-research` (3), `data-analysis` (2), `experi
 | `research` |
 | `korean-patent-search` |
 | `fineenvs` |
+| `mi-orchestration` |
 
 ### 📣 Negocios (70)
 
@@ -901,7 +902,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 
 ```text
 .
-├── .agent-skills/          ← 366 skill folders (SKILL.md + optional support files)
+├── .agent-skills/          ← 367 skill folders (SKILL.md + optional support files)
 ├── docs/                   ← detailed guides (bmad, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
@@ -999,6 +1000,12 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 ---
 
 <!-- WHATS-NEW:START -->
+
+## Novedades en v2026-10-12
+
+| Cambio | Detalles |
+|--------|---------|
+| **Orquestación MI** | Añadida `mi-orchestration` para el linaje de datos de inteligencia de juegos móviles, controles weekly/backfill, candidatos separados de decisiones humanas, referencias primarias y una CLI offline de auditoría y planificación de reanudación de solo lectura. Las pruebas sintéticas no certifican la recolección real; los permisos de datos y de IA, retención y publicación siguen siendo controles separados. Catálogo: 366 → 367. |
 
 ## 🆕 Novedades en v2026-09-22
 

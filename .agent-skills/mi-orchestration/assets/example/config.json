@@ -1,0 +1,7 @@
+{
+  "min_coverage": 0.75,
+  "max_previous_week_flips": 3,
+  "retry_limit": 1,
+  "illustrative_only": true,
+  "note": "Illustrative configuration, not universal numeric thresholds."
+}

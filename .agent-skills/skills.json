@@ -1,7 +1,7 @@
 {
   "version": "2.1.0",
   "generated": "2026-10-12",
-  "skill_count": 366,
+  "skill_count": 367,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -411,7 +411,8 @@
       "agent-pulse",
       "research",
       "korean-patent-search",
-      "fineenvs"
+      "fineenvs",
+      "mi-orchestration"
     ],
     "business": [
       "marketing-automation",
@@ -924,7 +925,8 @@
       ],
       "intelligence": [
         "agent-pulse",
-        "korean-patent-search"
+        "korean-patent-search",
+        "mi-orchestration"
       ]
     },
     "business": {
@@ -13561,6 +13563,43 @@
       "keyword": "pg-jev",
       "version": "1.0.0",
       "source": "https://github.com/realZachi/pg-jev"
+    },
+    {
+      "name": "mi-orchestration",
+      "description": "Design, audit, and safely resume mobile-game market-intelligence pipelines across licensed collection, immutable raw snapshots, normalized core, analytical marts, health gates, candidate signals, report rendering, and human decision records. Use when the user names MI orchestration, asks about Sensor Tower or Playliner data flow, weekly/backfill runs, stale artifacts, quarantine, right-censored signals, report slots, or a human-only decision ledger. Route Agent Pulse itself to agent-pulse, general dataset interpretation to data-analysis, and generic service telemetry to monitoring-observability.",
+      "category": "research",
+      "subcategory": "intelligence",
+      "interface": "workflow",
+      "path": "mi-orchestration/SKILL.md",
+      "tags": [
+        "market-intelligence",
+        "mobile-games",
+        "sensor-tower",
+        "playliner",
+        "data-lineage",
+        "reproducibility",
+        "health-gates",
+        "backfill",
+        "human-decisions"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex CLI",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
+      ],
+      "keyword": "mi-orchestration",
+      "version": "1.0",
+      "source": "akillness/jeo-skills"
     }
   ]
 }

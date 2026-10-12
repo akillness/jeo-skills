@@ -2075,6 +2075,29 @@ npx -y @nomadamas/k-skill@0 instruct hwp
   skill copies in place; run it only on an explicit request, and never inside this
   catalog's checkout.
 
+### MI orchestration (offline audit; vendor/AI access is separately gated)
+
+`mi-orchestration` is an original workflow skill derived from a user-provided MI flowchart.
+Installing it only places the skill, primary-source references, synthetic fixtures, and a
+Node.js 20+ stdlib-only read-only audit/resume-plan CLI. It does not install vendor clients,
+start schedules, fetch paid data, modify a database or human ledger, register Slack/MCP,
+or certify a Sensor Tower/Playliner or AI provider account.
+
+```bash
+# Installed skill directory, synthetic data only; no package install or network call
+cd "$SKILLS_ROOT/mi-orchestration"
+node scripts/mi-audit.mjs check --root assets/example --manifest manifest.json
+node scripts/mi-audit.mjs plan --root assets/example --manifest manifest.json
+node --test scripts/mi-audit.test.mjs
+```
+
+Real collection needs current Order Form entitlement, an approved API/MCP interface, and
+a scope-matched call/credit budget. Web UI automation and private endpoint fallback are
+not API alternatives. Service Data AI use additionally requires a qualifying Permitted AI
+Tool under the current AI Supplement; consumer/free/shared AI offerings, training,
+fine-tuning and distillation are not permitted. Raw retention, report sharing, AI-environment
+deletion and human decision events remain separate rights and approval gates.
+
 ### oh-my-gods agent-engineering pack (prompt-only; `agent-manager` needs tmux)
 
 Ten agent-engineering skills are vendored from `akillness/oh-my-gods`

@@ -1,0 +1,2 @@
+# Synthetic fixtures contain byte-level hashes. Preserve bytes on every checkout.
+assets/example/** -text

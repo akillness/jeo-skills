@@ -1,0 +1,16 @@
+{
+  "synthetic": true,
+  "note": "All rows are synthetic, not measured market evidence.",
+  "rows": [
+    {
+      "id": "synthetic-1",
+      "synthetic": true,
+      "value": 1
+    },
+    {
+      "id": "synthetic-2",
+      "synthetic": true,
+      "value": 2
+    }
+  ]
+}

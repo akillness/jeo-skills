@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "synthetic": true,
+  "run_id": "synthetic-demo",
+  "period": "2026-W42",
+  "mode": "weekly",
+  "pipeline_version": "synthetic-v1",
+  "config_path": "config.json",
+  "retry_count": 0,
+  "sources": [
+    {
+      "path": "raw-source.json",
+      "sha256": "8051e0325e24f364c5a02577b47ef32f745180b22f473799bb3896be9057bf7b"
+    }
+  ],
+  "stages": {
+    "collect": {
+      "status": "pass",
+      "input_sha256": "33a2186187701f4489e183934c8b78b6d4723c497390f62fff708ac252c830ac",
+      "outputs": [
+        {
+          "path": "collect.json",
+          "sha256": "8051e0325e24f364c5a02577b47ef32f745180b22f473799bb3896be9057bf7b"
+        }
+      ]
+    },
+    "build_core": {
+      "status": "pass",
+      "input_sha256": "2a24309b27718a559331efd625220ea1fe8a487c7c250514ccdaf0e4b0650ef5",
+      "outputs": [
+        {
+          "path": "core.json",
+          "sha256": "53015c03ac86d640e774e3f9c43b78db2198011412d37fb49865bd6d4a91ab32"
+        }
+      ]
+    },
+    "build_mart": {
+      "status": "pass",
+      "input_sha256": "56e465f2e457d6911445479d51a09cfe50f505ae26122239df11ff139783e694",
+      "outputs": [
+        {
+          "path": "mart.json",
+          "sha256": "53015c03ac86d640e774e3f9c43b78db2198011412d37fb49865bd6d4a91ab32"
+        }
+      ]
+    },
+    "health": {
+      "status": "pass",
+      "input_sha256": "4ea17a8fab915e4920c85b574085dc5d8a16c731d9d14587a030d81c648865ef",
+      "outputs": [
+        {
+          "path": "health.json",
+          "sha256": "e8ce423fc5f01589417d1407c4c124a2727685452b4ff820acd2042b63b7de61"
+        }
+      ]
+    },
+    "signals": {
+      "status": "pass",
+      "input_sha256": "e52899239ae52ab5e66f1f163f5e45958bc7719206223b5ed7e348e1ccec3cad",
+      "outputs": [
+        {
+          "path": "signals.json",
+          "sha256": "6d08e7107d47aee9fef5170f7becc6a8a9639a878566bf30e7e26d6222cb4d32"
+        }
+      ]
+    },
+    "render": {
+      "status": "pass",
+      "input_sha256": "492275122bc0cee046d721da3a980ceac2685a4bdfd024e4103cad0f52de7fa3",
+      "outputs": [
+        {
+          "path": "report.html",
+          "sha256": "44c02599f4fda407ed0ed4632c8ab6e0eea8f6508896781be89a53da20762e4c"
+        }
+      ]
+    },
+    "inbox": {
+      "status": "pass",
+      "input_sha256": "68e3e34f4be7e6394078989da58e525e8169acada11dd63cbb1660d6ed63dde5",
+      "outputs": [
+        {
+          "path": "inbox.md",
+          "sha256": "62419b221fa07784c8770accfffc9bb8018c13c68a9f4decc0397868d8dff224"
+        }
+      ]
+    }
+  }
+}

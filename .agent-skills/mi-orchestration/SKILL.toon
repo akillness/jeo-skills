@@ -1,0 +1,24 @@
+N:mi-orchestration
+D:Design, audit, and safely resume mobile-game market-intelligence data flow from licensed raw snapshots through core, mart, health, candidate signals, report slots, and separate human decision records.
+G:mi-orchestration market-intelligence mobile-games Sensor-Tower Playliner data-lineage weekly backfill quarantine right-censoring human-ledger
+U[6]:
+  Design a versioned MI data-flow contract without inventing an upstream implementation
+  Audit existing artifact bytes and dependency fingerprints with the offline Node CLI
+  Plan the smallest safe resume boundary without running collectors or rebuilding state
+  Distinguish weekly health holds from limited backfill window exceptions
+  Review evidence-linked candidate signals and human-only decision handoffs
+  Separate authorized vendor access, content quality, integrity, and observed completion
+R[10]:
+  Default to read-only audit or resume planning
+  Do not turn API=0 into free data, UI automation, or permission exemption
+  Do not automate vendor web UI downloads or reuse unofficial endpoints
+  Require a qualifying Permitted AI Tool before licensed data inference; never train or distill it
+  Treat flowchart counts, dates, quotas, and thresholds as unverified examples
+  Preserve raw snapshots and keep human decisions out of core rebuilds
+  Block normal signals and render on failure or hold; preserve partial evidence in inbox
+  Mark only defined follow-up outcomes cut at observation end as right-censored; other gaps are incomplete/missing
+  Do not promote censored candidates or peer reviews into human decisions
+  Offline fixture PASS verifies integrity and structure, not live collection or business correctness
+E[2]{desc,in,out}:
+  "Resume a stale MI weekly report","existing run manifest, raw/config bytes, and read-only plan command","first stale stage, downstream dependency blockers, no executed rebuild"
+  "Backfill a partial month and accept its signal","incomplete window and candidate evidence","incomplete/missing reason, censor only a defined cut-off follow-up outcome, validity checks retained, human decision required"

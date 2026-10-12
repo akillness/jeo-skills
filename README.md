@@ -2,14 +2,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-366-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-367-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![GJC](https://img.shields.io/badge/GJC-gajae--code-181717?style=for-the-badge&logo=github)](https://github.com/akillness/gajae-code)
 [![jeo-code](https://img.shields.io/badge/jeo--code-jeo-181717?style=for-the-badge&logo=github)](https://github.com/akillness/jeo-code)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**366 categorized skills · lightweight selective install · compact TOON catalog · cross-platform**
+**367 categorized skills · lightweight selective install · compact TOON catalog · cross-platform**
 
 A curated collection for spec-first, multi-agent LLM workflows. Delegate a complete setup
 with one prompt, or install the `jeo-skill` router first and add only the web,
@@ -114,7 +114,7 @@ Jev remains optional in all catalog modes: default setup does not download Jev m
 
 ### Lightweight selective install (manual / CI)
 
-Install the **`jeo-skill` router first**, not all 366 skill folders. It provides category,
+Install the **`jeo-skill` router first**, not all 367 skill folders. It provides category,
 subcategory, interface, bundle, and relationship discovery while keeping heavy apps,
 models, MCP servers, and runtimes on demand.
 
@@ -231,7 +231,7 @@ database writes remain separately approved operations. See the
 
 ## 📚 Skills List
 
-> Central manifest: `.agent-skills/skills.json` · 366 skills · 10 primary categories · subcategory/interface/relationship metadata
+> Central manifest: `.agent-skills/skills.json` · 367 skills · 10 primary categories · subcategory/interface/relationship metadata
 
 ### 🌐 Web (52)
 
@@ -538,9 +538,9 @@ Subcategories: `code-quality` (11), `testing` (4), `architecture` (6), `document
 | `implement` |
 | `prototype` |
 
-### 🔭 Research & Analysis (13)
+### 🔭 Research & Analysis (14)
 
-Subcategories: `academic` (3), `web-research` (3), `data-analysis` (2), `experimentation` (2), `benchmarking` (1), `intelligence` (2)
+Subcategories: `academic` (3), `web-research` (3), `data-analysis` (2), `experimentation` (2), `benchmarking` (1), `intelligence` (3)
 
 | Skill |
 |---|
@@ -557,6 +557,7 @@ Subcategories: `academic` (3), `web-research` (3), `data-analysis` (2), `experim
 | `research` |
 | `korean-patent-search` |
 | `fineenvs` |
+| `mi-orchestration` |
 
 ### 📣 Business (70)
 
@@ -926,7 +927,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 ## 📁 Structure
 
 ```text
-├── .agent-skills/          ← 366 skill folders (SKILL.md + optional support files)
+├── .agent-skills/          ← 367 skill folders (SKILL.md + optional support files)
 ├── docs/                   ← detailed guides (bmad, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
@@ -1035,6 +1036,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 
 | Change | Details |
 |--------|---------|
+| **MI orchestration** | Added `mi-orchestration`: mobile-game intelligence data lineage, weekly/backfill health gates, candidate-to-human-decision separation, primary-source references, and an offline read-only artifact audit/resume-plan CLI. Synthetic regressions do not certify live vendor collection; account entitlement, permitted AI use, retention and report sharing remain separate gates. Catalog: 366 → 367. |
 | **FilmCraft skill** | Added `filmcraft` for the Rust editor's headless CLI/MCP and desktop loopback control bridge, pinned to upstream commit `1fdfd8324db4aa23b08c69f518b086e632f75f84`. Guidance covers project preservation, command discovery, missing-media failures and approved export paths. |
 | **Selective setup and catalog** | Registered one new skill (354 → 355) and refreshed README locales, TOON and setup guidance. Installing the skill does not install/build FilmCraft, register MCP, or modify media. Concurrent local skill additions are excluded from this publication. |
 | **Verification boundary** | Skill-format validation, catalog search and selective-install dry-run pass. Ten behavioral evaluation fixtures are included; FilmCraft build, GUI/MCP execution, editing and export were not run. |

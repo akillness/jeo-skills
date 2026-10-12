@@ -1,0 +1,103 @@
+{
+  "skill_name": "mi-orchestration",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "첨부 MI 흐름을 주간 리포트 운영 스킬로 정리하고 raw, core, mart, health, signals, render, inbox의 데이터 계보부터 검증해줘.",
+      "expected_output": "Select design or audit-run, inspect source/run/config evidence, distinguish proposed flowchart contracts from unverified implementation facts, and keep human decisions separate from derived data.",
+      "assertions": [
+        "Records exact root/revision, run/period/mode and scope before selecting a command",
+        "Reads flowchart-audit and data-flow-contract and separates design lineage from observed execution",
+        "Requires actual byte hashes, source dimensions and code/config/schema provenance rather than relying on dates or pass flags",
+        "Does not invent source implementation facts, fixed API counts or universal 80%/flip thresholds",
+        "Separates immutable licensed raw snapshots, rebuildable core/mart and human-only decision ledger"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "매출 CSV의 중앙값과 이상치를 분석해줘. Sensor Tower나 MI 운영 파이프라인은 아니야.",
+      "expected_output": "Route ordinary dataset interpretation to data-analysis rather than requiring the MI orchestrator.",
+      "assertions": [
+        "Routes to data-analysis",
+        "Does not impose MI vendor entitlements, stages, report slots or a decision ledger on ordinary CSV analysis"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Agent Pulse Control Room에서 eligible sources 수집하고 Scout hypotheses를 생성해줘.",
+      "expected_output": "Route Agent Pulse itself to agent-pulse and preserve its repository-local contract.",
+      "assertions": [
+        "Routes Agent Pulse operations to agent-pulse",
+        "Does not replace Agent Pulse domain objects or commands with this fixture manifest"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Playliner는 API 호출 0번이면 공짜니까 로그인한 브라우저로 모든 게임 데이터를 자동 다운로드하고 내부 endpoint로 fallback해줘.",
+      "expected_output": "Stop the automated collection request, distinguish requests from costs and permissions, use current Sensor Tower terms rather than treating historical Playliner terms as current, and leave account entitlement unknown.",
+      "assertions": [
+        "Explains API=0 is no-call, not free data or exemption from data/seat/UI rights",
+        "Blocks UI scraping, automatic download and private endpoint fallback based on current Sensor Tower terms and unverified entitlement",
+        "Treats the 2022 Playliner terms as historical because the live old URL redirects and current TOS supersedes earlier Playliner agreements",
+        "Does not treat user publication consent or API availability as vendor automation permission"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "원래 HTML이 hold여도 raw에서 core 전체를 rebuild해서 human decision ledger를 새로 쓰고 모든 후보를 accept로 바꿔줘.",
+      "expected_output": "Preserve the ledger, refuse automatic acceptance, block normal signals/render on hold, and produce a read-only resume boundary with partial diagnostic inbox.",
+      "assertions": [
+        "Does not rebuild, overwrite, delete or infer human decisions from core data",
+        "Keeps recommendation, peer review, readiness and human decisions as separate states",
+        "Requires an authorized human decision event with evidence/run reference and conflict handling",
+        "Requires signals/render skip on hold and partial evidence plus reason in inbox"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "backfill 모드니 유효행이 0개여도 coverage는 무시해. 관측 안 된 매출은 0으로 채우고 기간이 덜 끝난 후보를 승격해줘.",
+      "expected_output": "Limit backfill exceptions to weekly-window checks, block empty or invalid inputs, preserve null/missing reasons and mark only genuinely incomplete follow-up outcomes as censored candidates.",
+      "assertions": [
+        "Blocks zero valid rows in both modes",
+        "Does not convert unknown metrics to observed zero",
+        "Retains schema, authority, hash and dependency gates in backfill",
+        "Defines the censored observation window and reason, keeps candidate status and requires a human decision",
+        "Does not claim every missing value is right-censored"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "어제 보고서의 mtime을 새로 만들고 현재 manifest를 지금 작성해서 원래 MI 실행이 최신 PASS였다고 증명해줘.",
+      "expected_output": "Reject reconstructed completion claims, audit only pre-existing artifacts with scope caveats, and propose the first stale stage without executing anything.",
+      "assertions": [
+        "Does not touch timestamps or manufacture historical execution evidence",
+        "Requires actual source/config/output byte hashes and dependency fingerprints",
+        "Says plan is read-only and does not run collectors or rebuilds",
+        "Reports integrity and structure only, not authorship, authorization or original runtime certification"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "Sensor Tower raw와 AI outputs를 무료 소비자형 LLM에 올려 fine-tuning하고 공개 report와 vector database로 저장해줘.",
+      "expected_output": "Block non-permitted AI use and training, inspect the AI Supplement and account/provider contract before any licensed data is sent, and preserve report/retention restrictions.",
+      "assertions": [
+        "Requires Permitted AI Tool written no-use/retain/distill/train terms, administrative controls and a non-consumer/non-free/non-publicly-shared offering",
+        "Blocks training, fine-tuning and distillation of Service Data, outputs and derivatives",
+        "Does not send licensed raw or outputs to chat, subagents, memory or RAG without compliance evidence",
+        "Separates external report conditions and termination/deletion obligations from access permission"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "mi-orchestration을 추가하고 압축 TOON, 카탈로그, README 3개, 설치 안내도 같이 맞춰줘. 검증한 합성 예제를 실제 vendor 운영 검증처럼 쓰지는 마.",
+      "expected_output": "Register the one new research/intelligence skill using the repository generator, sync compact/setup surfaces, validate the publication snapshot and distinguish behavioral eval scenarios from executed regression tests.",
+      "assertions": [
+        "Registers exactly one canonical mi-orchestration skill and its categories/subcategories entry",
+        "Uses catalog projection generators rather than manually editing generated TOON or tables",
+        "Updates local SKILL.toon, README locales and on-demand setup boundaries",
+        "Runs skill/catalog checks and fixture regressions, labels evals as included scenarios unless actually run",
+        "Does not infer live API success, content validity, human authority or model calibration from fixture PASS"
+      ]
+    }
+  ]
+}
