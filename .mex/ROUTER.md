@@ -28,6 +28,14 @@ Then read this file fully before doing anything else in this session.
 ## Current Project State
 
 **Working:**
+- Funded TypeSafe review (2026-10-12): one real API-only POST returned HTTP 200
+  through the current source harness; `jev-latest` served `jev-1.13.0`, four Noul
+  answers passed strict validation, usage was 435 input / 80 output tokens, and
+  caller-visible latency was 340 ms. Result `proposal_only` reflects two
+  below-threshold answers; this is transport/contract evidence, not calibration,
+  skill-routing quality, or an autonomous-permission attestation. Keychain secret
+  stayed in child environment/private memory; profiles were unchanged. Evidence:
+  `~/vaults/llm-wiki/raw/sources/audits/2026-10-12-typesafe-live-review-a9bf469a/evidence.json`.
 - Public FULL setup audit (2026-10-12): public ref `81131733` stayed unchanged;
   authentic GitHub/npx transport installed 367 manifest-matching SKILL.md files in
   isolated HOME. Actual jeopi/jeo/OMP loaders passed; GJC rejected shared-only skills
@@ -170,7 +178,8 @@ Then read this file fully before doing anything else in this session.
   controller and raw native leaf collisions preserve prior private bytes; actual
   OFF callbacks accept 1 MiB prompts without an unhandled EPIPE. The separate
   live Ollama smoke passed with probe status 200 and `backend_unavailable`, not a
-  selected skill or model-quality claim. Paid API/DB/desktop execution is unverified.
+  selected skill or model-quality claim. Release checks did not exercise paid API,
+  DB or desktop execution; the later single hosted review is recorded above.
   Commands and boundaries: `jev/README.md`, `patterns/jev-control-plane.md`.
 - Jevgrep discovery (2026-10-02): `jeo-skill explore` is a separate opt-in over an
   explicit source-document root; metadata search and native exact/LSP/zvec/Graphify

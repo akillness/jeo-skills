@@ -62,6 +62,10 @@ node jev/jev-harness.mjs smoke [--backend K] [--task "<text>"]  # live, never au
 - Two legacy tests (`empty/partial saved config ⇒ exit 3`, `ambient JEV_MODE switch cannot deactivate a saved opt-in`) were already failing at HEAD before this work; the rewrite satisfies them instead of weakening them.
 - HF model-card reads: use `read(...:raw)` for source files (`vl/serve_decide.py`); a non-raw child URL returns the card.
 - Residual (unvalidated generative tier only): the Q4 chat path still answers polarity-negative review questions "yes/0.95" (same as the 2026-10-02 audit). Safe by construction (`permit` impossible on that tier) but the `proposal_only` reasons are noisy. The 2026-10-01 installed-copy "ask positively and invert" workaround was deliberately not ported — calibration work belongs with a validated head.
+- Hosted live checks: capture CLI stdout/stderr privately before emitting a safe
+  whitelist. Non-2xx provider text can appear in the harness error envelope; never
+  print it unfiltered. A disposable fetch observer must disable redirects and persist
+  its attempt count before I/O, so a killed process cannot leave a false zero count.
 - `route-skills` needs a catalog. An explicit `JEV_CATALOG_PATH` is authoritative and fails closed when invalid; native hooks pin the trusted installed snapshot and never fall back to an arbitrary CWD. Standalone CLI discovery may otherwise use the checkout, installed snapshot, or legacy clone. Verify installed routing from an empty CWD rather than hiding missing assets with the repo's catalog.
 - Excerpts are sent to the backend: `skillExcerpt` checks containment on `realpath` (catalog `../` paths and in-root symlinks to outside files are both refused). The user's `~/.agents/skills` has ~93 symlinked dirs (other sources) that resolve outside the root; none are catalog skills, so no excerpt is lost.
 - An isolated-HOME live install must not symlink the real `~/.agents/skills`: setup then finds the real `jeo-skill` router and runs `npx skills add --agent <profile>` (network; fails for a non-agent profile id). Copy SKILL.md files instead.
@@ -78,6 +82,22 @@ node jev/jev-harness.mjs smoke [--backend K] [--task "<text>"]  # live, never au
 - [ ] Catalog gates: validator, `generate --check`, frontmatter `--check`, `flatten --dry-run` all exit 0 (SKILL.md frontmatter is frozen; body edits only)
 - [x] Live Ollama reached HTTP 200; routing returned `selectedSkill:null` / `errorCategory:backend_unavailable`. This proves transport and fail-closed output, not successful routing, model quality/calibration, or native package registration.
 - Current source catalog: 367 skills, including the concurrent MI skill addition; this Jev update adds no catalog entry.
+
+## Hosted review follow-up (2026-10-12)
+- One actual `node jev/jev-harness.mjs review --backend api <task> <proposal-json>`
+  invocation used isolated HOME and a Keychain credential in the child environment
+  only. A disposable preloaded fetch observer allowed one POST to the official
+  endpoint and disabled redirects; no profile, fallback, retry, or attestation was used.
+- Observed HTTP 200, four exact Noul answer IDs, `jev-latest` -> `jev-1.13.0`,
+  usage 435/80, end-to-end 340 ms, `attempted: [api]`, and `error: null`.
+- Result was `proposal_only` because evidence support (0.69) and clarification
+  confidence (0.58) were below 0.8. This sample does not independently prove the
+  favorable-answer unvalidated-tier downgrade; no routing/pruning or calibration
+  claim follows from it. Sanitized evidence omits `attemptDetails`; the observer's
+  completed count of one plus `attempted: [api]` establishes the request boundary.
+- Secret scan was clean. Owned observer/evidence files and empty HOME were removed;
+  unrelated earlier probe artifacts with unconfirmed ownership were preserved.
+- Proof: `~/vaults/llm-wiki/raw/sources/audits/2026-10-12-typesafe-live-review-a9bf469a/evidence.json`.
 
 ## Update Scaffold
 - [ ] Bump `.mex/ROUTER.md` Current Project State when backend kinds, tiers, or output fields change
