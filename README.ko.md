@@ -2,14 +2,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-355-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-366-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![GJC](https://img.shields.io/badge/GJC-gajae--code-181717?style=for-the-badge&logo=github)](https://github.com/akillness/gajae-code)
 [![jeo-code](https://img.shields.io/badge/jeo--code-jeo-181717?style=for-the-badge&logo=github)](https://github.com/akillness/jeo-code)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**카테고리형 스킬 355개 · 경량 선택 설치 · 압축 TOON 카탈로그 · 멀티플랫폼**
+**카테고리형 스킬 366개 · 경량 선택 설치 · 압축 TOON 카탈로그 · 멀티플랫폼**
 
 스펙 우선 멀티 에이전트 LLM 워크플로우 컬렉션입니다. 프롬프트 하나로 전체 설정을
 위임하거나, `jeo-skill` 라우터부터 설치해 필요한 웹, 인프라, 게임, 미디어, CLI,
@@ -114,7 +114,7 @@ curl -s https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-sk
 
 ### 경량 선택 설치(수동 / CI)
 
-355개 스킬 폴더 전체가 아니라 **`jeo-skill` 라우터부터 설치**합니다. 카테고리,
+366개 스킬 폴더 전체가 아니라 **`jeo-skill` 라우터부터 설치**합니다. 카테고리,
 하위 분류, 인터페이스, 번들, 연관 스킬을 탐색할 수 있으며 앱·모델·MCP 서버·런타임은
 실제 선택된 작업에서만 온디맨드로 설치합니다.
 
@@ -194,13 +194,22 @@ FilmCraft 빌드, MCP 등록, 앱 시작, 폰트 다운로드, 미디어 가져�
 
 ---
 
+### 온디맨드 레포 운영 스킬
+
+`openrig`, `anyjev`, `typesafe-computer-use`, `zurp`, `helix-foundry`, `uzu`,
+`context-mode`, `rea`, `fineenvs`, `llmfit`, `pg-jev`의 원문 커밋을 고정한
+운영 스킬 11개를 제공합니다. 카탈로그 설치는 지침 문서만 추가합니다. 앱·모델·키,
+MCP/훅 등록, 데스크톱 제어, 데이터베이스 쓰기는 각각 별도 승인이 필요합니다.
+[setup 가이드](setup-all-skills-prompt.md#repository-operators-on-demand-documents-only)를 참고하세요.
+
+
 ## 📚 스킬 목록
 
-> 중앙 매니페스트: `.agent-skills/skills.json` · 355개 스킬 · 10개 기본 카테고리 · 하위 카테고리/인터페이스/관계 그룹 지원
+> 중앙 매니페스트: `.agent-skills/skills.json` · 366개 스킬 · 10개 기본 카테고리 · 하위 카테고리/인터페이스/관계 그룹 지원
 
-### 🌐 웹 (50개)
+### 🌐 웹 (52개)
 
-하위 분류: `frontend` (7), `backend` (3), `design` (12), `api` (2), `auth` (1), `data` (4), `testing` (4), `accessibility` (1), `performance` (1), `graphics` (10), `capture` (5)
+하위 분류: `frontend` (7), `backend` (3), `design` (12), `api` (2), `auth` (1), `data` (6), `testing` (4), `accessibility` (1), `performance` (1), `graphics` (10), `capture` (5)
 
 | Skill |
 |---|
@@ -254,10 +263,12 @@ FilmCraft 빌드, MCP 등록, 앱 시작, 폰트 다운로드, 미디어 가져�
 | `design-taste-frontend` |
 | `higgsfield-websites` |
 | `stagehand` |
+| `helix-foundry` |
+| `pg-jev` |
 
-### 🏗 인프라 (13개)
+### 🏗 인프라 (14개)
 
-하위 분류: `deployment` (2), `environment` (2), `observability` (3), `security` (2), `cloud-data` (3), `automation` (0), `tooling` (1)
+하위 분류: `deployment` (2), `environment` (2), `observability` (3), `security` (3), `cloud-data` (3), `automation` (0), `tooling` (1)
 
 | Skill |
 |---|
@@ -274,6 +285,7 @@ FilmCraft 빌드, MCP 등록, 앱 시작, 폰트 다운로드, 미디어 가져�
 | `unity-cli` |
 | `genkit` |
 | `looker-studio-bigquery` |
+| `zurp` |
 
 ### 🎮 게임 (28개)
 
@@ -350,9 +362,9 @@ FilmCraft 빌드, MCP 등록, 앱 시작, 폰트 다운로드, 미디어 가져�
 | `higgsfield-brandkit` |
 | `shopping-shorts` |
 
-### ⌨️ CLI 도구 (35개)
+### ⌨️ CLI 도구 (40개)
 
-하위 분류: `developer-cli` (9), `ai-cli` (11), `media-cli` (1), `automation-cli` (6), `search-cli` (7), `benchmark-cli` (1)
+하위 분류: `developer-cli` (10), `ai-cli` (15), `media-cli` (1), `automation-cli` (6), `search-cli` (7), `benchmark-cli` (1)
 
 | Skill |
 |---|
@@ -391,10 +403,15 @@ FilmCraft 빌드, MCP 등록, 앱 시작, 폰트 다운로드, 미디어 가져�
 | `zeroshot` |
 | `k-skill-setup` |
 | `jevgrep` |
+| `openrig` |
+| `uzu` |
+| `context-mode` |
+| `rea` |
+| `llmfit` |
 
-### 🤖 AI 및 에이전트 (63개)
+### 🤖 AI 및 에이전트 (65개)
 
-하위 분류: `orchestration` (13), `agent-frameworks` (17), `skill-authoring` (5), `evaluation` (7), `memory` (2), `planning-review` (13), `discovery` (3), `prompting` (3)
+하위 분류: `orchestration` (14), `agent-frameworks` (18), `skill-authoring` (5), `evaluation` (7), `memory` (2), `planning-review` (13), `discovery` (3), `prompting` (3)
 
 | Skill |
 |---|
@@ -461,6 +478,8 @@ FilmCraft 빌드, MCP 등록, 앱 시작, 폰트 다운로드, 미디어 가져�
 | `agent-principles` |
 | `paperclip` |
 | `jev-control-plane` |
+| `anyjev` |
+| `typesafe-computer-use` |
 
 ### 🧰 엔지니어링 (24개)
 
@@ -493,9 +512,9 @@ FilmCraft 빌드, MCP 등록, 앱 시작, 폰트 다운로드, 미디어 가져�
 | `implement` |
 | `prototype` |
 
-### 🔭 연구 및 분석 (12개)
+### 🔭 연구 및 분석 (13개)
 
-하위 분류: `academic` (3), `web-research` (3), `data-analysis` (2), `experimentation` (1), `benchmarking` (1), `intelligence` (2)
+하위 분류: `academic` (3), `web-research` (3), `data-analysis` (2), `experimentation` (2), `benchmarking` (1), `intelligence` (2)
 
 | Skill |
 |---|
@@ -511,6 +530,7 @@ FilmCraft 빌드, MCP 등록, 앱 시작, 폰트 다운로드, 미디어 가져�
 | `agent-pulse` |
 | `research` |
 | `korean-patent-search` |
+| `fineenvs` |
 
 ### 📣 비즈니스 (70개)
 
@@ -867,7 +887,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 ## 📁 구조
 
 ```text
-├── .agent-skills/          ← 355개 스킬 폴더 (SKILL.md + 선택적 지원 파일)
+├── .agent-skills/          ← 366개 스킬 폴더 (SKILL.md + 선택적 지원 파일)
 ├── docs/                   ← 상세 가이드 (bmad, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
@@ -950,6 +970,17 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 | `a2a-protocol`, `agent-*`, `multi-agent-eval-harness`, `reflexion-pattern`, `langchain-bmad` (+4개는 정본 스킬로 병합, `retired_skills` 참조) | [akillness/oh-my-gods @ 1b2779a](https://github.com/akillness/oh-my-gods) | MIT |
 | `paperclip` (운영 안내; 업스트림 파일 미포함) | [paperclipai/paperclip @ 0f14d26](https://github.com/paperclipai/paperclip/tree/0f14d261233c545aa6a8a38ec253c498a5130fff) | MIT (upstream) |
 | `stagehand` | [browserbase/stagehand](https://github.com/browserbase/stagehand) | MIT |
+| `openrig` | [mvschwarz/openrig @ 3001cc4](https://github.com/mvschwarz/openrig/tree/3001cc436656c435e54425443e708e3e2d8c7d68) | Apache-2.0 (upstream) |
+| `anyjev` | [nokia-applied-research/AnyJev @ d458d13](https://github.com/nokia-applied-research/AnyJev/tree/d458d13968eec0e2cfa8c81b64629b96cf5cb4a9) | Apache-2.0 (upstream) |
+| `typesafe-computer-use` | [awlevin/typesafe-computer-use @ 44ca11f](https://github.com/awlevin/typesafe-computer-use/tree/44ca11f0935b021b73020825da054b5c92cc1288) | MIT (upstream) |
+| `zurp` | [facebookincubator/Zurp @ c30c04e](https://github.com/facebookincubator/Zurp/tree/c30c04edd8a0a85f3ee980324b7edc8e814fadb3) | MIT (project; FBDL provenance includes ISC) |
+| `helix-foundry` | [HelixDB/helix-foundry @ 8489985](https://github.com/HelixDB/helix-foundry/tree/84899851d845d1db98f9e328634f14e0ed4ad7b7) | Apache-2.0 (upstream) |
+| `uzu` | [trymirai/uzu @ d76d468](https://github.com/trymirai/uzu/tree/d76d468a1898cacc9c4920accf8f5ff099967107) | MIT (upstream) |
+| `context-mode` | [mksglu/context-mode @ abb1048](https://github.com/mksglu/context-mode/tree/abb104847cbb66c2182816a72bb69455bc778b5e) | Elastic-2.0 (upstream; not OSI-approved) |
+| `rea` | [morluto/rea @ ee50ed1](https://github.com/morluto/rea/tree/ee50ed121e38cc6e1a2ff0dc8b789f15f71c5402) | MIT (upstream) |
+| `fineenvs` | [adithya-s-k/FineEnvs @ 5e0b46e](https://github.com/adithya-s-k/FineEnvs/tree/5e0b46e96bfd20105976e50a06a3b79c9c62f076) | Apache-2.0 (code; PortSim data terms differ) |
+| `llmfit` | [AlexsJones/llmfit @ 4b9fdd9](https://github.com/AlexsJones/llmfit/tree/4b9fdd9c5d1da3aa38ee5f7de872a5555c029a3e) | MIT (upstream) |
+| `pg-jev` | [realZachi/pg-jev @ e3450d4](https://github.com/realZachi/pg-jev/tree/e3450d44f7f6745aa2d728c9289b9ca4a6feda9a) | PostgreSQL License (upstream) |
 | Agent Skills Spec | [agentskills.io](https://agentskills.io/specification) | — |
 
 ---
@@ -963,6 +994,9 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 | **FilmCraft 스킬** | Rust 영상 편집기의 headless CLI/MCP와 데스크톱 loopback 제어 bridge를 위한 `filmcraft`를 추가했습니다. 원본 커밋 `1fdfd8324db4aa23b08c69f518b086e632f75f84`에 근거해 프로젝트 보존, 명령 탐색, 미디어 누락 오류와 승인된 출력 경로를 안내합니다. |
 | **선택 설치와 카탈로그** | 스킬 1개를 등록해 354개에서 355개로 갱신하고 README 번역본, TOON, setup 문서를 동기화했습니다. 스킬 설치는 FilmCraft 앱 설치·빌드, MCP 등록, 미디어 수정을 수행하지 않습니다. 다른 작업의 로컬 스킬 추가는 이번 공개 변경에서 제외했습니다. |
 | **검증 범위** | 스킬 형식 검증, 카탈로그 검색, 선택 설치 dry-run이 통과했습니다. 행동 평가 시나리오 10개를 포함했으며 FilmCraft 빌드, GUI/MCP 실행, 편집과 export는 실행하지 않았습니다. |
+| **원문 커밋을 고정한 레포 운영 스킬 11개** | `openrig`, `anyjev`, `typesafe-computer-use`, `zurp`, `helix-foundry`, `uzu`, `context-mode`, `rea`, `fineenvs`, `llmfit`, `pg-jev` 운영 지침을 추가했습니다. 실제 소스 명령, 커밋, 라이선스 근거와 부작용 승인 경계를 기록했습니다. 이번 묶음은 배포 카탈로그를 355개에서 366개로 늘립니다. |
+| **선택 설정과 탐색** | 영어·한국어·스페인어 README 카탈로그와 출처, setup 가이드, Jev·로컬 모델·컨텍스트 도구의 관계를 갱신했습니다. 카탈로그 설치는 문서만 추가하며 앱·모델·MCP/훅·키·데스크톱 제어·DB 쓰기를 자동 실행하지 않습니다. Context Mode 프로세스 실행은 OS 보안 샌드박스가 아니며 npm postinstall은 Claude 설정을 변경할 수 있습니다. |
+| **검증 범위** | 행동 평가 시나리오 44개를 추가했습니다. 스킬 11개의 frontmatter 로딩과 11개 선택 설치 dry-run을 확인했습니다. 실제 업스트림 런타임, 모델 품질, 데스크톱 액션, 라이브 대상·DB 실행을 검증했다는 뜻은 아닙니다. |
 
 ## 🆕 v2026-10-08 업데이트
 

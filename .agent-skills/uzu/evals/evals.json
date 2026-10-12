@@ -1,0 +1,45 @@
+{
+  "skill_name": "uzu",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "이미 내려받은 Uzu 모델을 고정된 checkout에서 localhost에 serve하고 /v1/models와 한 번의 chat completion으로 확인해줘. 외부 공개는 하지 마.",
+      "expected_output": "The skill verifies the Apple Silicon/CPU and Rust prerequisites, pins the Uzu source, serves the caller-selected downloaded model on loopback, and checks the documented OpenAI-compatible endpoints while recording model and host metadata.",
+      "assertions": [
+        "The response checks architecture, macOS version, Rust/cargo, and the pinned Uzu revision before running the source CLI",
+        "The response binds the server to `127.0.0.1` by default and checks `/v1/models` before `/v1/chat/completions`",
+        "The response records model path/revision, Uzu commit, host, and generation settings without claiming cross-machine benchmark results"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Uzu 대신 llama.cpp나 LM Studio 서버 설정법을 알려줘. Uzu checkout은 없어.",
+      "expected_output": "The request routes to the named llama.cpp or LM Studio skill and does not substitute Uzu for a different local inference product.",
+      "assertions": [
+        "The response routes llama.cpp and LM Studio operation away from the Uzu operator skill",
+        "The response does not require a Uzu checkout, Mirai model, or Rust build for the requested products",
+        "The response does not claim that Uzu can transparently replace the requested engine"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "새 Mac에 Uzu를 cargo tools setup으로 설치하고 30B 모델도 바로 내려받아 외부에서 서비스해줘.",
+      "expected_output": "The skill previews the machine-changing bootstrap and model/server plan, requires explicit approval for toolchain/model/network side effects, checks license/resource capacity, and keeps the service loopback-bound unless a separately secured external target is approved.",
+      "assertions": [
+        "The response explains that `cargo tools setup` may install rustup/uv/pnpm/targets/Metal tooling and requires approval",
+        "The response requires exact model-card/license review plus disk and unified-memory budgeting before a 30B download",
+        "The response does not start the download or bind `0.0.0.0` without explicit target, network controls, and consent"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Uzu가 CUDA Linux GPU와 임의 GGUF를 지원한다고 전제하고 Windows 배포 가능하다고 문서화해줘.",
+      "expected_output": "The skill rejects unsupported certainty: the pinned matrix marks non-Apple targets as in progress/CPU-oriented, and arbitrary GGUF conversion or production support is not implied.",
+      "assertions": [
+        "The response does not claim CUDA or Linux-GPU acceleration, tested Windows production support, or a production Intel path",
+        "The response says the source matrix treats non-Apple targets as in progress and CPU targets as build experiments",
+        "The response says Uzu's custom model format does not imply arbitrary GGUF compatibility and routes conversion elsewhere"
+      ]
+    }
+  ]
+}

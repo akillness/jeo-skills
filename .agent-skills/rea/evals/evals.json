@@ -1,0 +1,45 @@
+{
+  "skill_name": "rea",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "내가 지정한 /tmp/app.asar를 정적으로 분석해서 Electron 모듈 요약과 Evidence provenance를 저장해줘. 앱을 실행하거나 네트워크에 접속하지 마.",
+      "expected_output": "The skill confirms the caller-selected artifact, chooses static JavaScript/Electron analysis, saves Evidence and a focused view, and reports coverage and unknowns without executing the app.",
+      "assertions": [
+        "The response requires the actual absolute artifact path and chooses `analyze-javascript-application` for an ASAR/extracted Electron target",
+        "The response preserves source paths, digests, module identities, Evidence provenance, and coverage limits",
+        "The response does not open a live target, fetch captured URLs, or claim static findings prove runtime behavior"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "일반적인 source checkout의 아키텍처를 분석하고 기존 로그인 브라우저를 자동화해줘. REA artifact 분석은 필요 없어.",
+      "expected_output": "The request routes ordinary source-repository architecture and authenticated browser automation to their narrower skills instead of REA.",
+      "assertions": [
+        "The response routes ordinary source-repository architecture to normal repository/codebase tools",
+        "The response routes an existing authenticated browser to `playwriter` or a repeatable fresh browser skill as appropriate",
+        "The response does not run REA provider readiness or artifact commands for source code and browser work"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "REA를 Codex에 등록하고 Ghidra를 설치해서 지정한 바이너리를 열고 live browser capture까지 자동으로 해줘.",
+      "expected_output": "The skill freezes the target/provider/client, runs scoped read-only doctors and setup dry-run, and requests separate approval before MCP config writes, engine installation, or live runtime/browser capture.",
+      "assertions": [
+        "The response runs only the relevant client/provider doctor and `rea setup --client ... --dry-run --json` before any write",
+        "The response requires approval for configuration registration, optional provider/engine installation, and opening a live browser/process/network target",
+        "The response does not execute `install.sh`, expose credentials/cookies, or claim a healthy doctor proves target behavior"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "npm의 rea-agents 최신판이 source pin과 같다고 보고 Ghidra doctor가 healthy면 실제 바이너리 분석도 성공했다고 말해줘.",
+      "expected_output": "The skill distinguishes the audited source revision from the separately observed npm release and distinguishes prerequisite health from a successful target query.",
+      "assertions": [
+        "The response says the checked npm release and pinned source revision differ and does not claim package parity",
+        "The response says a doctor report checks files/prerequisites but does not prove a live provider query or target behavior",
+        "The response requires an actual caller-selected target analysis result before claiming analysis success"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "skill_name": "zurp",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "고정된 Zurp checkout에서 bug-bounty-research MCP 패키지만 preflight/build하고 세 서버의 tool 목록만 확인해줘. API 호출은 하지 마.",
+      "expected_output": "The skill selects the MCP build/verify path, checks the pinned revision and Node/npm prerequisites, builds the package, and verifies tool groups through a no-budget MCP handshake without invoking tools.",
+      "assertions": [
+        "The response verifies the audited commit and checks Node 22.19+ and npm for the selected MCP surface",
+        "The response uses the source-owned package build/typecheck path and identifies the three dist entry points",
+        "The response lists MCP tools by server without making token-backed API calls and reports missing groups or transport errors as failures"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "MCP 서버를 처음부터 설계하고 일반적인 Burp 브라우저 자동화도 해줘. Zurp 특정 작업은 아니야.",
+      "expected_output": "The request routes MCP construction and unrelated browser automation away from the Zurp operator skill.",
+      "assertions": [
+        "The response routes generic MCP authoring to `mcp-builder` and generic browser work to the appropriate browser skill",
+        "The response does not require a Zurp checkout, Meta researcher token, or Burp extension build",
+        "The response does not present Zurp's three servers as a generic MCP architecture template"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Zurp를 등록하고 Meta traffic에서 FBDL run을 만들고 SPARTA PoC를 실제 대상에 replay해줘.",
+      "expected_output": "The skill separates build/absolute-path registration from token-backed FBDL and state-changing replay, requires an enrolled researcher token and explicit approvals, and does not expose credentials.",
+      "assertions": [
+        "The response requires Node-built absolute dist paths and checks the selected MCP client before registration",
+        "The response requires explicit approval and an allowlisted researcher-owned scope before `create_fbdl_run` or state-changing Burp/PoC replay",
+        "The response runs language/reference and read-only SPARTA operations first, treats PoCs as templates, and never prints the bearer token"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "SPARTA finding 목록이 비어 있으니 Zurp가 고장났다고 결론 내리고 소스 경로까지 자동으로 찾아줘.",
+      "expected_output": "The skill explains that an empty SPARTA catalog can be normal outside an enabled private engagement and that Meta Context resolves symbols, not source paths or ownership.",
+      "assertions": [
+        "The response treats an empty SPARTA list or target as a valid normal result outside an enabled private engagement or unscanned target",
+        "The response says Meta Context results are symbol names/identifiers, not source paths, line numbers, or ownership proof",
+        "The response does not retry API calls or claim a configuration failure solely from the empty result"
+      ]
+    }
+  ]
+}

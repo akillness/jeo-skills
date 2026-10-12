@@ -2,14 +2,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-355-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-366-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![GJC](https://img.shields.io/badge/GJC-gajae--code-181717?style=for-the-badge&logo=github)](https://github.com/akillness/gajae-code)
 [![jeo-code](https://img.shields.io/badge/jeo--code-jeo-181717?style=for-the-badge&logo=github)](https://github.com/akillness/jeo-code)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**355 categorized skills · lightweight selective install · compact TOON catalog · cross-platform**
+**366 categorized skills · lightweight selective install · compact TOON catalog · cross-platform**
 
 A curated collection for spec-first, multi-agent LLM workflows. Delegate a complete setup
 with one prompt, or install the `jeo-skill` router first and add only the web,
@@ -114,7 +114,7 @@ Jev remains optional in all catalog modes: default setup does not download Jev m
 
 ### Lightweight selective install (manual / CI)
 
-Install the **`jeo-skill` router first**, not all 355 skill folders. It provides category,
+Install the **`jeo-skill` router first**, not all 366 skill folders. It provides category,
 subcategory, interface, bundle, and relationship discovery while keeping heavy apps,
 models, MCP servers, and runtimes on demand.
 
@@ -219,13 +219,23 @@ or a new destructive action is unclear. For programmable/template video generati
 
 ---
 
+### On-demand repository operators
+
+Eleven source-pinned operator skills cover `openrig`, `anyjev`,
+`typesafe-computer-use`, `zurp`, `helix-foundry`, `uzu`, `context-mode`, `rea`,
+`fineenvs`, `llmfit`, and `pg-jev`. Catalog installation adds instructions only;
+applications, models, credentials, MCP/hook registration, desktop authority and
+database writes remain separately approved operations. See the
+[setup guide](setup-all-skills-prompt.md#repository-operators-on-demand-documents-only).
+
+
 ## 📚 Skills List
 
-> Central manifest: `.agent-skills/skills.json` · 355 skills · 10 primary categories · subcategory/interface/relationship metadata
+> Central manifest: `.agent-skills/skills.json` · 366 skills · 10 primary categories · subcategory/interface/relationship metadata
 
-### 🌐 Web (50)
+### 🌐 Web (52)
 
-Subcategories: `frontend` (7), `backend` (3), `design` (12), `api` (2), `auth` (1), `data` (4), `testing` (4), `accessibility` (1), `performance` (1), `graphics` (10), `capture` (5)
+Subcategories: `frontend` (7), `backend` (3), `design` (12), `api` (2), `auth` (1), `data` (6), `testing` (4), `accessibility` (1), `performance` (1), `graphics` (10), `capture` (5)
 
 | Skill |
 |---|
@@ -279,10 +289,12 @@ Subcategories: `frontend` (7), `backend` (3), `design` (12), `api` (2), `auth` (
 | `design-taste-frontend` |
 | `higgsfield-websites` |
 | `stagehand` |
+| `helix-foundry` |
+| `pg-jev` |
 
-### 🏗 Infrastructure (13)
+### 🏗 Infrastructure (14)
 
-Subcategories: `deployment` (2), `environment` (2), `observability` (3), `security` (2), `cloud-data` (3), `automation` (0), `tooling` (1)
+Subcategories: `deployment` (2), `environment` (2), `observability` (3), `security` (3), `cloud-data` (3), `automation` (0), `tooling` (1)
 
 | Skill |
 |---|
@@ -299,6 +311,7 @@ Subcategories: `deployment` (2), `environment` (2), `observability` (3), `securi
 | `unity-cli` |
 | `genkit` |
 | `looker-studio-bigquery` |
+| `zurp` |
 
 ### 🎮 Game (28)
 
@@ -375,9 +388,9 @@ Subcategories: `image` (10), `video` (14), `motion` (1), `audio` (1), `presentat
 | `higgsfield-brandkit` |
 | `shopping-shorts` |
 
-### ⌨️ CLI Tools (35)
+### ⌨️ CLI Tools (40)
 
-Subcategories: `developer-cli` (9), `ai-cli` (11), `media-cli` (1), `automation-cli` (6), `search-cli` (7), `benchmark-cli` (1)
+Subcategories: `developer-cli` (10), `ai-cli` (15), `media-cli` (1), `automation-cli` (6), `search-cli` (7), `benchmark-cli` (1)
 
 | Skill |
 |---|
@@ -416,10 +429,15 @@ Subcategories: `developer-cli` (9), `ai-cli` (11), `media-cli` (1), `automation-
 | `zeroshot` |
 | `k-skill-setup` |
 | `jevgrep` |
+| `openrig` |
+| `uzu` |
+| `context-mode` |
+| `rea` |
+| `llmfit` |
 
-### 🤖 AI & Agents (63)
+### 🤖 AI & Agents (65)
 
-Subcategories: `orchestration` (13), `agent-frameworks` (17), `skill-authoring` (5), `evaluation` (7), `memory` (2), `planning-review` (13), `discovery` (3), `prompting` (3)
+Subcategories: `orchestration` (14), `agent-frameworks` (18), `skill-authoring` (5), `evaluation` (7), `memory` (2), `planning-review` (13), `discovery` (3), `prompting` (3)
 
 | Skill |
 |---|
@@ -486,6 +504,8 @@ Subcategories: `orchestration` (13), `agent-frameworks` (17), `skill-authoring` 
 | `agent-principles` |
 | `paperclip` |
 | `jev-control-plane` |
+| `anyjev` |
+| `typesafe-computer-use` |
 
 ### 🧰 Engineering (24)
 
@@ -518,9 +538,9 @@ Subcategories: `code-quality` (11), `testing` (4), `architecture` (6), `document
 | `implement` |
 | `prototype` |
 
-### 🔭 Research & Analysis (12)
+### 🔭 Research & Analysis (13)
 
-Subcategories: `academic` (3), `web-research` (3), `data-analysis` (2), `experimentation` (1), `benchmarking` (1), `intelligence` (2)
+Subcategories: `academic` (3), `web-research` (3), `data-analysis` (2), `experimentation` (2), `benchmarking` (1), `intelligence` (2)
 
 | Skill |
 |---|
@@ -536,6 +556,7 @@ Subcategories: `academic` (3), `web-research` (3), `data-analysis` (2), `experim
 | `agent-pulse` |
 | `research` |
 | `korean-patent-search` |
+| `fineenvs` |
 
 ### 📣 Business (70)
 
@@ -905,7 +926,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 ## 📁 Structure
 
 ```text
-├── .agent-skills/          ← 355 skill folders (SKILL.md + optional support files)
+├── .agent-skills/          ← 366 skill folders (SKILL.md + optional support files)
 ├── docs/                   ← detailed guides (bmad, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
@@ -993,6 +1014,17 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 | `hwp`, `rhwp-edit`, `rhwp-advanced`, `korean-patent-search`, `k-skill-setup` | [NomaDamas/k-skill @ 783d3c3](https://github.com/NomaDamas/k-skill) | MIT (proxy dirs AGPL-3.0, not vendored) |
 | `a2a-protocol`, `agent-*`, `multi-agent-eval-harness`, `reflexion-pattern`, `langchain-bmad` (+4 merged into canonical skills, see `retired_skills`) | [akillness/oh-my-gods @ 1b2779a](https://github.com/akillness/oh-my-gods) | MIT |
 | `paperclip` (operator guide; no upstream files vendored) | [paperclipai/paperclip @ 0f14d26](https://github.com/paperclipai/paperclip/tree/0f14d261233c545aa6a8a38ec253c498a5130fff) | MIT (upstream) |
+| `openrig` | [mvschwarz/openrig @ 3001cc4](https://github.com/mvschwarz/openrig/tree/3001cc436656c435e54425443e708e3e2d8c7d68) | Apache-2.0 (upstream) |
+| `anyjev` | [nokia-applied-research/AnyJev @ d458d13](https://github.com/nokia-applied-research/AnyJev/tree/d458d13968eec0e2cfa8c81b64629b96cf5cb4a9) | Apache-2.0 (upstream) |
+| `typesafe-computer-use` | [awlevin/typesafe-computer-use @ 44ca11f](https://github.com/awlevin/typesafe-computer-use/tree/44ca11f0935b021b73020825da054b5c92cc1288) | MIT (upstream) |
+| `zurp` | [facebookincubator/Zurp @ c30c04e](https://github.com/facebookincubator/Zurp/tree/c30c04edd8a0a85f3ee980324b7edc8e814fadb3) | MIT (project; FBDL provenance includes ISC) |
+| `helix-foundry` | [HelixDB/helix-foundry @ 8489985](https://github.com/HelixDB/helix-foundry/tree/84899851d845d1db98f9e328634f14e0ed4ad7b7) | Apache-2.0 (upstream) |
+| `uzu` | [trymirai/uzu @ d76d468](https://github.com/trymirai/uzu/tree/d76d468a1898cacc9c4920accf8f5ff099967107) | MIT (upstream) |
+| `context-mode` | [mksglu/context-mode @ abb1048](https://github.com/mksglu/context-mode/tree/abb104847cbb66c2182816a72bb69455bc778b5e) | Elastic-2.0 (upstream; not OSI-approved) |
+| `rea` | [morluto/rea @ ee50ed1](https://github.com/morluto/rea/tree/ee50ed121e38cc6e1a2ff0dc8b789f15f71c5402) | MIT (upstream) |
+| `fineenvs` | [adithya-s-k/FineEnvs @ 5e0b46e](https://github.com/adithya-s-k/FineEnvs/tree/5e0b46e96bfd20105976e50a06a3b79c9c62f076) | Apache-2.0 (code; PortSim data terms differ) |
+| `llmfit` | [AlexsJones/llmfit @ 4b9fdd9](https://github.com/AlexsJones/llmfit/tree/4b9fdd9c5d1da3aa38ee5f7de872a5555c029a3e) | MIT (upstream) |
+| `pg-jev` | [realZachi/pg-jev @ e3450d4](https://github.com/realZachi/pg-jev/tree/e3450d44f7f6745aa2d728c9289b9ca4a6feda9a) | PostgreSQL License (upstream) |
 | Agent Skills Spec | [agentskills.io](https://agentskills.io/specification) | — |
 
 ---
@@ -1006,6 +1038,9 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 | **FilmCraft skill** | Added `filmcraft` for the Rust editor's headless CLI/MCP and desktop loopback control bridge, pinned to upstream commit `1fdfd8324db4aa23b08c69f518b086e632f75f84`. Guidance covers project preservation, command discovery, missing-media failures and approved export paths. |
 | **Selective setup and catalog** | Registered one new skill (354 → 355) and refreshed README locales, TOON and setup guidance. Installing the skill does not install/build FilmCraft, register MCP, or modify media. Concurrent local skill additions are excluded from this publication. |
 | **Verification boundary** | Skill-format validation, catalog search and selective-install dry-run pass. Ten behavioral evaluation fixtures are included; FilmCraft build, GUI/MCP execution, editing and export were not run. |
+| **Eleven source-pinned repository operators** | Added `openrig`, `anyjev`, `typesafe-computer-use`, `zurp`, `helix-foundry`, `uzu`, `context-mode`, `rea`, `fineenvs`, `llmfit`, and `pg-jev` as original operating guides with audited commits, primary-source commands, license evidence and explicit side-effect boundaries. This batch extends the published catalog from 355 to 366 skills. |
+| **Selective setup and discovery** | Updated English/Korean/Spanish README catalog projections and source references, the setup guide, and meaningful Jev/local-model/context-tool relationships. Catalog installation adds documents only; it does not install upstream applications, download models, register hooks/MCP, use credentials, control a desktop or mutate a database. Context Mode subprocesses are not an OS/security sandbox and its npm postinstall can modify Claude configuration. |
+| **Verification boundaries** | Added 44 behavioral evaluation scenarios. Eleven skill documents load with valid frontmatter and the selective-install dry-run resolves all eleven. Upstream runtimes, model quality, desktop actions, live targets and databases were not executed or certified by this documentation change. |
 
 ## 🆕 What's New in v2026-10-08
 

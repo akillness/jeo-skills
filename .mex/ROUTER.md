@@ -28,7 +28,7 @@ Then read this file fully before doing anything else in this session.
 ## Current Project State
 
 **Working:**
-- The catalog manifest (`.agent-skills/skills.json`, 355 skills) and its three
+- The catalog manifest (`.agent-skills/skills.json`, 366 skills) and its three
   projections (`.agent-skills/skills.toon`, `README.md`/`README.ko.md`/`README.es-ES.md`
   category tables, each skill's own SKILL.md frontmatter) are validated end-to-end by
   `scripts/validate-catalog-projections.py`, wired into `.github/workflows/ci.yml`
@@ -47,6 +47,15 @@ Then read this file fully before doing anything else in this session.
   repo checkout; delegates real installs to `npx skills add`
 - The flat `.agent-skills/<name>/SKILL.md` layout is enforced by
   `flatten_skills.py --dry-run` in CI (no category subfolders)
+- Repository operators (2026-10-12): eleven source-pinned guides for Openrig, AnyJev,
+  TypeSafe computer use, Zurp, Helix Foundry, Uzu, Context Mode, REA, FineEnvs,
+  llmfit and pg-jev, with 44 behavioral eval scenarios. Exact discovery and selective
+  install dry-run resolve all eleven; source review does not certify upstream runtime
+  execution. README locales/setup separate document installation from model/data
+  downloads, provider costs, desktop authority and MCP/hook activation. Context Mode
+  is subprocess execution, not an OS/security sandbox; npm postinstall can rewrite
+  Claude configuration. FilmCraft is inherited unchanged from the remote baseline;
+  this publication adds only the eleven requested operators (355 to 366 skills).
 - The `headroom` skill packages durable context routing with Graphify preflight and
   Ponytail policy guidance. Full delegated setup reuses healthy Headroom deployments;
   its source-mutation adapter is explicitly Claude Code-only.

@@ -1,0 +1,46 @@
+{
+  "skill_name": "fineenvs",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "고정된 FineEnvs checkout에서 Wordle Verifiers의 가장 싼 로컬 smoke만 실행하고, 학습 성능이라고 과장하지 말고 결과를 정리해줘.",
+      "expected_output": "The skill pins the audited commit, reads the project-local contract, runs the no-backend Wordle smoke path, and reports execution evidence without claiming learning or quality improvement.",
+      "assertions": [
+        "The response pins or verifies commit `5e0b46e96bfd20105976e50a06a3b79c9c62f076` and reads the Wordle project instructions",
+        "The response chooses `uv sync && uv run python rollout.py` from the Wordle Verifiers directory as the low-cost local path",
+        "The response labels the smoke as execution/checkpoint evidence and does not call it training or quality evidence"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "FineEnvs와 무관하게 일반적인 GRPO fine-tuning recipe와 serving 구성을 설계해줘.",
+      "expected_output": "The request routes generic model fine-tuning or serving to the appropriate generic skill rather than FineEnvs.",
+      "assertions": [
+        "The response routes generic fine-tuning to `soup` or the appropriate model-training skill and generic serving to its serving owner",
+        "The response does not require a FineEnvs checkout, project matrix, or environment rollout",
+        "The response does not invent FineEnvs as a general-purpose training or serving framework"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "FineEnvs GeoGuesser imagery 22GB를 받고 HF Jobs에서 H200 training과 Space deployment를 바로 시작해줘.",
+      "expected_output": "The skill inventories the requested project and dependencies first, names provider/model/data/hardware/cost side effects, and waits for explicit approval before downloads, GPU Jobs, or deployment.",
+      "assertions": [
+        "The response identifies imagery sync, HF Jobs, H200/GPU, model/data downloads, and Space deployment as separate opt-in side effects",
+        "The response asks for the exact project, split, model/checkpoint, hardware, output location, provider credentials, and expected spend before execution",
+        "The response does not silently downgrade to local hardware or start a download, Job, or deployment",
+        "The response does not treat SmolDataEnvs `scripts/train_grpo.py --dry-run` or `scripts/eval_pass1.py --dry-run` as side-effect-free and warns that they can create HF Sandboxes, download artifacts, or write state"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "NeMo Gym 환경을 로컬에서 검증했다고 보고하고 LaTeX OCR reward가 수학적으로 동등한지 단정해줘.",
+      "expected_output": "The skill corrects both source-specific claims: NeMo Gym is marked deployed-only with possible local Ray failures, and LaTeX OCR reward is string-based rather than proof of mathematical equivalence.",
+      "assertions": [
+        "The response says NeMo Gym is marked deployed-only and does not present a local startup as verified without an observed supported path",
+        "The response says LaTeX OCR reward uses normalized string/edit-distance and exact-match terms and does not prove rendered mathematical equivalence",
+        "The response reports a concrete prerequisite blocker or evidence gap instead of inventing a successful local result"
+      ]
+    }
+  ]
+}

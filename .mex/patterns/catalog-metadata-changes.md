@@ -86,6 +86,16 @@ declared `path` is exactly `<name>/SKILL.md` inside a folder named `name`. Read
   uncommitted skill folders; do not publish their manifest entries without their files
   or stage another task's README/setup changes to make your own gates pass.
 
+- Verify route-out membership with an exact manifest `"name": "<skill>"` match;
+  a description/tag match or a runtime-installed skill is not catalog membership.
+- Pin registry package examples to the audited version. A pinned shell installer
+  may still install a moving package; inspect that inner behavior separately.
+- Treat upstream `--dry-run` and "sandbox" claims as hypotheses: verify whether
+  they start paid remote sandboxes, write outputs, or retain normal host privileges.
+- For concurrent unrelated catalog additions, preserve working-tree files/hunks.
+  Stage only task-owned changes and run unchanged validators on the complete
+  isolated publication snapshot; report a live-tree failure separately.
+
 ### Verify
 - [ ] `python3 scripts/generate-catalog-projections.py --check` passes
 - [ ] `python3 scripts/validate-catalog-projections.py` passes

@@ -2103,6 +2103,47 @@ into an evidence-checked 90-day plan using YouTube Studio only, needs no API key
 posts or edits a channel. Its Korean trigger words (떡상, 유튜브 성장, 죽음의 계곡) are part
 of the description on purpose.
 
+### Repository operators (on demand, documents only)
+
+The eleven repository operator skills below are original instruction wrappers, not
+vendored applications. Catalog installation adds their `SKILL.md`, references and
+eval scenarios only. Even in `full` mode, do not clone/build these projects, install
+their dependencies, download models/data, register MCP servers/plugins/hooks, start
+services, read credentials, grant desktop authority, submit training jobs, scan live
+targets, or mutate databases. Select one real task and approve its exact target,
+data disclosure, side effects and rollback before following that skill's setup branch.
+
+| Skill | Task-triggered prerequisites and setup boundary |
+|---|---|
+| [openrig](.agent-skills/openrig/SKILL.md) | Node.js 22/24 and tmux; Apple Silicon uses Node 22. `rig setup` can install provider CLIs and write tmux/trust/runtime settings. Preview the selected providers; daemon/kernel/seat readiness and sending work are separate checks. Native Windows uses the documented WSL2 path. |
+| [anyjev](.agent-skills/anyjev/SKILL.md) | Python 3.10+; choose only the required backend extras. Model downloads, server endpoints and evaluation data are opt-in. Self-hosted next-token logprob readout is not TypeSafe affiliation, calibrated authorization, or a guarantee of model quality. |
+| [typesafe-computer-use](.agent-skills/typesafe-computer-use/SKILL.md) | Python 3.12+, uv, macOS 14+ primary support; Windows is experimental. Decisions need a TypeSafe key; writer calls have separate configuration/cost. Live desktop permissions, screenshots/DOM egress and actions are separate approvals; fixture/replay is not performed-action proof. |
+| [zurp](.agent-skills/zurp/SKILL.md) | Burp Suite 2024.7+, Java 17+/Gradle for its extension; Node 22.19+ for three stdio MCP servers. Live Meta bug-bounty access needs an authorized researcher token and allowlisted scope. Register nothing and send no live request during blanket setup. |
+| [helix-foundry](.agent-skills/helix-foundry/SKILL.md) | Docker/Compose v2, git, Bash and OpenSSL; local dev uses Node 24+/pnpm 10.7. Select bundled/native Ollama, hosted inference or no AI explicitly; keep access loopback-scoped. Initial identity lookup may provision an owner/workspace. Preserve volumes; `down -v` deletes data. |
+| [uzu](.agent-skills/uzu/SKILL.md) | Apple Silicon macOS/Metal is the primary runtime. Mirai/Uzu installation, model license/download and source toolchain setup are separate decisions. Other targets include in-progress support; arbitrary GGUF compatibility and estimated hardware fit are not inference proof. |
+| [context-mode](.agent-skills/context-mode/SKILL.md) | Node 22.5+; choose one host and one source-pinned package/plugin surface. Global npm postinstall can also rewrite Claude plugin/settings/cache files and compatibility links, so preview and back up all affected hosts before approving it. Inspect existing Headroom/RTK/MCP/hook ownership; MCP reachability is not hook activation. Upgrade, statusline and purge remain separate mutations. |
+| [rea](.agent-skills/rea/SKILL.md) | Node/npm; static JavaScript analysis does not need native engines. Preview setup for the named client; select provider engines only for an actual native/runtime task. Keep authorization, artifact provenance and static-versus-live evidence explicit. |
+| [fineenvs](.agent-skills/fineenvs/SKILL.md) | Pin the environment and choose the framework first. The Wordle path is a small no-backend smoke; NeMo Gym has stricter Python/Ray constraints. HF Jobs/Hub, E2B/Daytona, paid Spaces, training and scorer/model/data downloads require separate approval. |
+| [llmfit](.agent-skills/llmfit/SKILL.md) | An intentionally installed llmfit binary can inspect hardware and estimate model fit. Profiles/overrides, storage, downloads and benchmark/share operations are distinct. Recommendations and throughput estimates are not measured inference or Uzu compatibility. |
+| [pg-jev](.agent-skills/pg-jev/SKILL.md) | PostgreSQL 14–17 CI coverage, matching PGXS/`pg_config`, `plpython3u` and privileged extension installation. Provider keys belong to the server process/configuration, not a client shell. Confirm row disclosure, endpoint and per-database writes before installs or inference SQL. |
+
+Preview document selection without installing any of those upstream runtimes:
+
+```bash
+python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" install \
+  openrig anyjev typesafe-computer-use zurp helix-foundry uzu \
+  context-mode rea fineenvs llmfit pg-jev --global --dry-run
+```
+
+Each skill records its audited upstream commit and license evidence. These local
+wrappers do not relicense upstream software or model/data assets: Context Mode is
+Elastic License 2.0 (not OSI-approved), FineEnvs PortSim assets have separate data
+terms, and Zurp's FBDL provenance includes ISC. Read those limits before copying or
+redistributing upstream material. The repository-specific Jev tools are separate
+from `jev-control-plane`; installing their documents neither configures that harness
+nor makes them interchangeable calibrated backends. Installing `ecc` documents also
+does not install ECC plugins, activate hooks, or grant provider trust.
+
 ---
 
 ## Guard Boundaries

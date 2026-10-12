@@ -1,0 +1,45 @@
+{
+  "skill_name": "anyjev",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "AnyJev checkout에서 FakeBackend로 모델 다운로드 없이 choice 질문을 L0로 한 번 검증해줘.",
+      "expected_output": "The skill chooses the no-download Decider path, constructs a valid Question and FakeBackend, and reports the Decision distribution and explicit L0 level as fixture evidence rather than model-quality evidence.",
+      "assertions": [
+        "The response pins or verifies the AnyJev checkout and selects the synthetic FakeBackend path",
+        "The response uses a choice question with valid unique options and checks the returned distribution and explicit `level`",
+        "The response states that the fake-backend smoke proves the prompt/readout path, not model accuracy, and downloads no weights"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "TypeSafe System One/Jev hosted API에 연결해서 AnyJev 대신 상용 서비스 사용법을 알려줘.",
+      "expected_output": "The request routes to TypeSafe's external documentation or an appropriate hosted-service skill instead of treating AnyJev as the TypeSafe service.",
+      "assertions": [
+        "The response distinguishes the self-hosted AnyJev repository from hosted TypeSafe AI/Jev",
+        "The response routes credentials, billing, and hosted API usage away from AnyJev",
+        "The response does not install AnyJev or claim that its manifest contains a `typesafe-ai` dependency"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Tacit-9B를 내려받고 vLLM gateway를 열어 팀이 바로 /v1/decide를 쓰게 해줘.",
+      "expected_output": "The skill freezes the checkpoint, engine, endpoint, hardware, and network scope; previews the smallest install/server path; and requests explicit approval before model downloads, server use, or non-loopback exposure.",
+      "assertions": [
+        "The response names the exact Tacit checkpoint and engine and requests approval for the weight download and compute cost",
+        "The response keeps the gateway loopback-bound by default and requires authentication plus network policy before non-loopback binding",
+        "The response verifies `/health`, `/v1/stats`, and one `/v1/decide` only after the target and side effects are approved"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "LlamaCppBackend에 임의 GGUF와 Hugging Face tokenizer를 넣으면 AnyJev가 알아서 맞춰주겠지? 그리고 Tacit 결과를 L0 보정 결과로 보고해도 돼?",
+      "expected_output": "The skill rejects both unsupported assumptions: tokenizer disagreement must fail safely, and Tacit's one-forward output is not an L0-averaged decision.",
+      "assertions": [
+        "The response says a supplied Hugging Face tokenizer must agree token-for-token with the GGUF vocabulary or `TokenMismatchError` is the safe result",
+        "The response says arbitrary GGUF compatibility is not implied by AnyJev's custom model format",
+        "The response distinguishes Tacit's order-sensitive one-forward path from Decider L0 rotation/prior correction and does not call Tacit output L0"
+      ]
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 {
   "version": "2.1.0",
-  "generated": "2026-10-03",
-  "skill_count": 355,
+  "generated": "2026-10-12",
+  "skill_count": 366,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -178,7 +178,9 @@
       "moli",
       "design-taste-frontend",
       "higgsfield-websites",
-      "stagehand"
+      "stagehand",
+      "helix-foundry",
+      "pg-jev"
     ],
     "infrastructure": [
       "deployment-automation",
@@ -193,7 +195,8 @@
       "firebase-cli",
       "unity-cli",
       "genkit",
-      "looker-studio-bigquery"
+      "looker-studio-bigquery",
+      "zurp"
     ],
     "game": [
       "implement-fog-of-war",
@@ -295,7 +298,12 @@
       "mcp-server-sv-number",
       "zeroshot",
       "k-skill-setup",
-      "jevgrep"
+      "jevgrep",
+      "openrig",
+      "uzu",
+      "context-mode",
+      "rea",
+      "llmfit"
     ],
     "ai-agents": [
       "bmad",
@@ -360,7 +368,9 @@
       "agent-workflow",
       "agent-principles",
       "paperclip",
-      "jev-control-plane"
+      "jev-control-plane",
+      "anyjev",
+      "typesafe-computer-use"
     ],
     "engineering": [
       "audit-reference-originality",
@@ -400,7 +410,8 @@
       "scientific-llm-benchmarks",
       "agent-pulse",
       "research",
-      "korean-patent-search"
+      "korean-patent-search",
+      "fineenvs"
     ],
     "business": [
       "marketing-automation",
@@ -545,7 +556,9 @@
         "database-schema-design",
         "payloadcms",
         "supabase-agent-skills",
-        "typesense"
+        "typesense",
+        "helix-foundry",
+        "pg-jev"
       ],
       "testing": [
         "backend-testing",
@@ -595,7 +608,8 @@
       ],
       "security": [
         "security-best-practices",
-        "strix"
+        "strix",
+        "zurp"
       ],
       "cloud-data": [
         "firebase-cli",
@@ -723,7 +737,8 @@
         "pretext",
         "codeburn",
         "mole",
-        "k-skill-setup"
+        "k-skill-setup",
+        "rea"
       ],
       "ai-cli": [
         "aider-cli-workflow",
@@ -736,7 +751,11 @@
         "zeude",
         "soup",
         "mcp-server-sv-number",
-        "zeroshot"
+        "zeroshot",
+        "openrig",
+        "uzu",
+        "context-mode",
+        "llmfit"
       ],
       "media-cli": [
         "compresso"
@@ -776,7 +795,8 @@
         "reflexion-pattern",
         "agent-manager",
         "paperclip",
-        "jev-control-plane"
+        "jev-control-plane",
+        "typesafe-computer-use"
       ],
       "agent-frameworks": [
         "microsoft-agent-framework",
@@ -795,7 +815,8 @@
         "deep-agents-memory",
         "deep-agents-orchestration",
         "langchain-bmad",
-        "a2a-protocol"
+        "a2a-protocol",
+        "anyjev"
       ],
       "skill-authoring": [
         "article-prompts-to-skills",
@@ -895,7 +916,8 @@
         "pattern-detection"
       ],
       "experimentation": [
-        "autoresearch"
+        "autoresearch",
+        "fineenvs"
       ],
       "benchmarking": [
         "scientific-llm-benchmarks"
@@ -1593,6 +1615,33 @@
         "harness"
       ],
       "note": "Paperclip is the agent-company control plane; agent-manager is local tmux lifecycle management; openexecutive is a fixed virtual-executive application; harness owns agent-team architecture. These are adjacent surfaces, not aliases. Paperclip references were audited at paperclipai/paperclip 0f14d261233c545aa6a8a38ec253c498a5130fff (2026-09-27)."
+    },
+    "jev-project-operators": {
+      "mode": "related",
+      "members": [
+        "jev-control-plane",
+        "anyjev",
+        "typesafe-computer-use",
+        "pg-jev"
+      ],
+      "note": "Jev control-plane operates this catalog harness; AnyJev reads logprobs from self-hosted models, typesafe-computer-use runs the separate TypeSafe-driven clicker, and pg-jev adds server-side PostgreSQL decisions. These are distinct projects, not interchangeable calibrated backends; each owns its setup and data-disclosure approval."
+    },
+    "local-model-fit": {
+      "mode": "layered",
+      "members": [
+        "llmfit",
+        "uzu"
+      ],
+      "note": "llmfit estimates hardware/model fit before a separately approved Uzu/Mirai inference run. Fit estimates are not measured latency or a guarantee that a listed model converts to Uzu."
+    },
+    "context-runtime-choices": {
+      "mode": "adjacent",
+      "members": [
+        "context-mode",
+        "headroom",
+        "rtk"
+      ],
+      "note": "Context Mode executes subprocesses and indexes tool output with host-specific MCP/hook support, Headroom compresses transport, and RTK filters shell output. Context Mode is not an OS/security sandbox. Inspect existing ownership before enabling any combination; catalog installation does not activate these runtimes or hooks."
     }
   },
   "model_policies": {
@@ -13127,6 +13176,391 @@
       "keyword": "filmcraft",
       "version": "1.0",
       "source": "https://github.com/storytold/filmcraft"
+    },
+    {
+      "name": "openrig",
+      "description": "Operate mvschwarz/openrig, the Apache-2.0 OpenRig CLI, daemon, TUI and persistent multi-agent rig system for Claude Code, Codex and Pi. Use when a user names OpenRig, the `rig` CLI, @openrig/cli, rig specs, kernel/operator sessions, tmux/Herdr views, or the mvschwarz/openrig repository and needs a fit check, pinned install/setup, preflight, rig launch, status, capture, messaging, teardown, bundle/spec work, or troubleshooting. Do not use for generic agent-team design, generic environment setup, or ordinary log triage.",
+      "category": "cli-tools",
+      "subcategory": "ai-cli",
+      "interface": "cli",
+      "path": "openrig/SKILL.md",
+      "tags": [
+        "openrig",
+        "rig",
+        "multi-agent",
+        "agent-harness",
+        "claude-code",
+        "codex",
+        "tmux",
+        "herdr",
+        "tui",
+        "daemon",
+        "rigspec"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex CLI",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "openrig",
+      "version": "1.0",
+      "source": "https://github.com/mvschwarz/openrig"
+    },
+    {
+      "name": "anyjev",
+      "description": "Operate nokia-applied-research/AnyJev, the Apache-2.0 Python library that turns open causal LLMs into typed choice, yes/no, and score decisions with next-token probabilities. Use when pinning or installing AnyJev, selecting its training-free Decider (raw/L0), running Tacit self-distilled checkpoints, configuring the transformers/vLLM/SGLang/llama.cpp backends, or exposing the local HTTP gateway. Triggers on AnyJev, Tacit, L0 readout, permutation debiasing, llama.cpp logprob backend, SGLang /generate scoring, or a request to compare AnyJev with TypeSafe AI/Jev without changing the existing TypeSafe skill or Jev harness.",
+      "category": "ai-agents",
+      "subcategory": "agent-frameworks",
+      "interface": "library",
+      "path": "anyjev/SKILL.md",
+      "tags": [
+        "anyjev",
+        "tacit",
+        "typed-decisions",
+        "logprobs",
+        "l0",
+        "vllm",
+        "sglang",
+        "llama.cpp",
+        "open-llm"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex CLI",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "anyjev",
+      "version": "1.0",
+      "source": "https://github.com/nokia-applied-research/AnyJev"
+    },
+    {
+      "name": "typesafe-computer-use",
+      "description": "Operate or integrate awlevin/typesafe-computer-use (jev): inspect its deterministic OCR/accessibility plus TypeSafe Choice loop, configure macOS/Windows/browser prerequisites, run dry-run, replay, inspection, or benchmark commands, and gate real mouse/keyboard control, screen capture, remote writer/model calls, and provider spend. Use when the request names typesafe-computer-use, jev, clicker, clicker-inspect, clicker-bench, TypeSafe computer use, or this repository's run folders. This is an exact-project operator, not a generic desktop-automation or TypeSafe SDK skill.",
+      "category": "ai-agents",
+      "subcategory": "orchestration",
+      "interface": "cli",
+      "path": "typesafe-computer-use/SKILL.md",
+      "tags": [
+        "typesafe-computer-use",
+        "jev",
+        "computer-use",
+        "desktop-automation",
+        "ocr",
+        "accessibility",
+        "typesafe",
+        "macos",
+        "windows-experimental",
+        "browser-cdp",
+        "safety"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex CLI",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read"
+      ],
+      "keyword": "typesafe-computer-use",
+      "version": "1.0",
+      "source": "https://github.com/awlevin/typesafe-computer-use"
+    },
+    {
+      "name": "zurp",
+      "description": "Operate facebookincubator/Zurp, the MIT-licensed Meta bug-bounty research toolkit combining a Burp Suite Java extension with three standalone stdio MCP servers: meta-context, fbdl, and sparta. Use when fitting or preflighting a checkout, building the Jar or MCP package, registering servers, configuring researcher-token/proxy/TLS settings, running controlled FBDL/Meta-context/SPARTA workflows, or troubleshooting 403, token, rate-limit, startup, or SSL failures. Triggers on Zurp, bug-bounty-research, FBDL MCP, Meta Context, SPARTA, zurp.jar, or BB_RESEARCH_TOKEN.",
+      "category": "infrastructure",
+      "subcategory": "security",
+      "interface": "mcp",
+      "path": "zurp/SKILL.md",
+      "tags": [
+        "zurp",
+        "meta-bug-bounty",
+        "burp-suite",
+        "mcp",
+        "fbdl",
+        "meta-context",
+        "sparta",
+        "security-research"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex CLI",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "zurp",
+      "version": "1.0",
+      "source": "https://github.com/facebookincubator/Zurp"
+    },
+    {
+      "name": "helix-foundry",
+      "description": "Operate HelixDB/helix-foundry, the local-first company-data workspace that connects databases, hosted providers, APIs, files, Stripe, WorkOS and PostHog into an ontology backed by HelixDB and DuckDB. Use when the user names Helix Foundry, asks to install/start/diagnose its Docker Compose stack, inspect its local API or SDK, connect a source, run a sync/query/pipeline, review an ontology proposal, or back up/restore/upgrade an installation. Keep setup local and loopback-only; distinguish read-only inspection from data, credential, network, cloud-cost, and destructive operations.",
+      "category": "web",
+      "subcategory": "data",
+      "interface": "workflow",
+      "path": "helix-foundry/SKILL.md",
+      "tags": [
+        "helix-foundry",
+        "helixdb",
+        "duckdb",
+        "ontology",
+        "local-first",
+        "docker-compose",
+        "data-connectors"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex CLI",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "helix-foundry",
+      "version": "1.0",
+      "source": "https://github.com/HelixDB/helix-foundry"
+    },
+    {
+      "name": "uzu",
+      "description": "Operate trymirai/uzu, Mirai's Rust native local-inference engine, on supported Apple Silicon or CPU targets. Use when a user needs to install/build uzu, run the `mirai` CLI or Rust CLI, download and serve a supported model, call its OpenAI-compatible HTTP API, run a benchmark, or assess model-license/resource/platform constraints. Do not use for llama.cpp or LM Studio operation, arbitrary model conversion, or claims that uzu runs on unsupported targets. For those separate products, consult their upstream documentation rather than routing this skill to an unlisted catalog entry.",
+      "category": "cli-tools",
+      "subcategory": "ai-cli",
+      "interface": "cli",
+      "path": "uzu/SKILL.md",
+      "tags": [
+        "uzu",
+        "trymirai",
+        "local-inference",
+        "apple-silicon",
+        "metal",
+        "rust",
+        "openai-compatible",
+        "benchmarking",
+        "model-licenses"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex CLI",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read"
+      ],
+      "keyword": "uzu",
+      "version": "0.1",
+      "source": "https://github.com/trymirai/uzu"
+    },
+    {
+      "name": "context-mode",
+      "description": "Operate mksglu/context-mode, the Elastic License 2.0 MCP and hook/plugin system for temporary-script subprocess execution (not an OS/security sandbox), FTS5 indexing, context-savings telemetry, and session recovery. Use for install, inventory, verification, diagnosis, or measurement on Claude Code, Codex CLI, Gemini, Copilot, Cursor, OpenCode, KiloCode, OpenClaw, Pi, OMP, or another listed client. Also triggers on context-mode, ctx_execute, ctx_search, ctx_doctor, ctx_stats, or MCP/hook routing for this project.",
+      "category": "cli-tools",
+      "subcategory": "ai-cli",
+      "interface": "mcp",
+      "path": "context-mode/SKILL.md",
+      "tags": [
+        "context-mode",
+        "mcp",
+        "hooks",
+        "subprocess-execution",
+        "fts5",
+        "session-recovery",
+        "context-savings",
+        "claude-code",
+        "codex",
+        "gemini",
+        "cursor",
+        "opencode"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex CLI",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "context-mode",
+      "version": "1.0.169",
+      "source": "https://github.com/mksglu/context-mode"
+    },
+    {
+      "name": "rea",
+      "description": "Operate morluto/rea (Reverse Engineer Anything), the local CLI and MCP server for evidence-backed inspection of native binaries, JavaScript/Electron apps, managed artifacts, Android packages, browser targets, firmware, archives, crashes, and saved captures. Use when the user names REA, rea-agents, reverse-engineer-anything, REA evidence/snapshots, provider selection, `rea doctor`, or REA setup. Route ordinary source-repository analysis and generic browser/debugging work to the narrower project skills instead.",
+      "category": "cli-tools",
+      "subcategory": "developer-cli",
+      "interface": "cli",
+      "path": "rea/SKILL.md",
+      "tags": [
+        "reverse-engineering",
+        "binary-analysis",
+        "javascript-analysis",
+        "electron",
+        "decompilation",
+        "evidence",
+        "snapshots",
+        "mcp",
+        "cli"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex CLI",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "rea",
+      "version": "1.0",
+      "source": "https://github.com/morluto/rea"
+    },
+    {
+      "name": "fineenvs",
+      "description": "Operate adithya-s-k/FineEnvs, a source-verified collection of RL environments, datasets, OpenEnv/ORS/NeMo Gym/Verifiers/SkyRL/GEM ports, reward evidence, and GRPO training recipes. Use when the user names FineEnvs, asks to run or inspect one of its environment projects, wants its deterministic graders or evaluation evidence, or wants to author a new environment from a description with the bundled framework skills. Route generic model fine-tuning, RL algorithm, or serving work to the appropriate generic skill instead.",
+      "category": "research",
+      "subcategory": "experimentation",
+      "interface": "library",
+      "path": "fineenvs/SKILL.md",
+      "tags": [
+        "fineenvs",
+        "reinforcement-learning",
+        "rl-environments",
+        "openenv",
+        "openreward",
+        "nemo-gym",
+        "verifiers",
+        "smoldataenvs",
+        "grpo",
+        "hugging-face"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex CLI",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "fineenvs",
+      "version": "1.0",
+      "source": "https://github.com/adithya-s-k/FineEnvs"
+    },
+    {
+      "name": "llmfit",
+      "description": "Operate AlexsJones/llmfit to inspect detected hardware, rank model fit, estimate plans and storage, run the local REST API, and separate formula-based estimates from measured inference. Use when a user asks what LLMs fit a machine, how much RAM/VRAM a model needs, which runtime is plausible, or whether a result is measured versus estimated. Do not use this skill to install binaries, pull models, benchmark a provider, or submit community results without explicit approval.",
+      "category": "cli-tools",
+      "subcategory": "ai-cli",
+      "interface": "cli",
+      "path": "llmfit/SKILL.md",
+      "tags": [
+        "llm",
+        "hardware-fit",
+        "gpu-detection",
+        "model-selection",
+        "inference-estimation",
+        "benchmark-boundary",
+        "rust-cli"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex CLI",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read"
+      ],
+      "keyword": "llmfit",
+      "version": "1.0",
+      "source": "https://github.com/AlexsJones/llmfit"
+    },
+    {
+      "name": "pg-jev",
+      "description": "Operate realZachi/pg-jev, the `jev` PostgreSQL extension for plain-language row predicates, probabilities, choices, and scores backed by TypeSafe Jev. Use when a user mentions pg-jev, pgjev, `CREATE EXTENSION jev`, `jev()`, `jev_prob`, `jev_choice`, `jev_score`, `jev_eval`, natural-language SQL filters, or asks to install, configure, query, cost-check, or troubleshoot this extension. Keep database mutation, provider calls, and secret handling explicitly approved.",
+      "category": "web",
+      "subcategory": "data",
+      "interface": "library",
+      "path": "pg-jev/SKILL.md",
+      "tags": [
+        "pg-jev",
+        "pgjev",
+        "postgresql",
+        "extension",
+        "plpython3u",
+        "typesafe",
+        "jev",
+        "natural-language-sql",
+        "database-operator"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex CLI",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Grep",
+        "Glob"
+      ],
+      "keyword": "pg-jev",
+      "version": "1.0.0",
+      "source": "https://github.com/realZachi/pg-jev"
     }
   ]
 }

@@ -1,0 +1,45 @@
+{
+  "skill_name": "llmfit",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "현재 머신에서 llmfit의 hardware evidence와 coding 모델 추천만 읽기 전용으로 확인하고, 특정 모델 하나의 plan도 같은 context로 계산해줘. 설치나 다운로드는 하지 마.",
+      "expected_output": "The skill verifies the existing llmfit binary, captures JSON hardware evidence, runs a bounded recommendation, and compares a named model plan while labeling all throughput values as estimates unless measured evidence exists.",
+      "assertions": [
+        "The response starts with `llmfit --version`/`--help` and uses `llmfit system --json` before recommendation",
+        "The response uses `recommend --json --use-case coding --limit N` and a named `plan` with fixed context/quantization when comparing",
+        "The response reports host/profile/model/context, fit level, estimate basis/confidence, and explicitly distinguishes estimates from measured inference"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "llmfit 없이 실행 중인 vLLM 서비스의 p95 latency를 줄이고 일반적인 성능 튜닝 계획을 세워줘.",
+      "expected_output": "The request routes measured service performance tuning to the performance specialist rather than llmfit's model-fit estimator.",
+      "assertions": [
+        "The response routes generic latency/performance tuning to `performance-optimization`",
+        "The response does not require llmfit hardware-fit commands, model catalog estimates, or an llmfit install",
+        "The response does not present a fit estimate as a measured p95 benchmark"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "llmfit을 설치하고 모델을 provider에서 내려받아 bench --all --share --yes로 측정한 뒤 GitHub PR도 올려줘.",
+      "expected_output": "The skill freezes the binary/source and provider scope, previews installation and benchmark/share payloads, and requires explicit approval for package/model/provider work, benchmark execution, credentials/network, and PR creation.",
+      "assertions": [
+        "The response does not run an installer, package manager, cargo build, container pull, or model download without explicit approval",
+        "The response identifies provider pulls and `llmfit bench` as real runtime side effects and uses `--dry-run` for a share payload preview",
+        "The response requires separate approval for credentials/network and `--share` PR creation and does not use `--yes` implicitly"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "recommended_ram_gb가 충분하니 어떤 모델이든 Perfect라고 하고 Too Tight 모델도 실행 가능하다고 보고해줘.",
+      "expected_output": "The skill rejects the incorrect fit interpretation: the verdict uses memory_required/memory_available thresholds, recommended RAM does not change it, and Too Tight is not a runnable claim.",
+      "assertions": [
+        "The response states the source thresholds: Perfect at <=0.60, Good at <=0.85, Marginal at <=0.98, and Too Tight above 0.98",
+        "The response says `recommended_ram_gb` does not determine the fit verdict and does not upgrade every model to Perfect",
+        "The response says Too Tight rows are not runnable claims and keeps estimated tok/s/TTFT separate from measured benchmark evidence"
+      ]
+    }
+  ]
+}

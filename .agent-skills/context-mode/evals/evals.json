@@ -1,0 +1,47 @@
+{
+  "skill_name": "context-mode",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Codex의 기존 context-mode 설치를 읽기 전용으로 inventory하고 doctor, MCP reachability, stats만 확인해줘. 설정은 바꾸지 마.",
+      "expected_output": "The skill identifies the named Codex host and inventory mode, checks the pinned runtime and relevant registration/doctor surfaces, and reports MCP reachability and stats without writing configuration or indexing sensitive data.",
+      "assertions": [
+        "The response checks Node >=22.5 or Bun and inspects only the Codex-specific registration and hook surfaces",
+        "The response uses `context-mode doctor`, host MCP listing, and `ctx stats` as separate evidence gates",
+        "The response does not run upgrade, install, purge, hook/config writes, or a data-indexing smoke merely because a binary exists"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "rtk로 shell output을 줄이거나 zvec-grep으로 workspace를 검색하고 graphify knowledge graph도 갱신해줘. context-mode는 아니야.",
+      "expected_output": "The request routes shell token wrapping, workspace search, and graph construction to their dedicated skills rather than context-mode.",
+      "assertions": [
+        "The response routes shell-output rewriting to `rtk`, local workspace search to `zvec-grep`, and graph construction to `graphify`",
+        "The response says context-mode is not a general proxy, workspace search index, graph, or durable wiki",
+        "The response does not combine or silently rewrite the other tools' configuration as context-mode setup"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "모든 지원 클라이언트에 context-mode를 upgrade하고 오래된 SQLite index를 purge해서 hook도 전부 켜줘.",
+      "expected_output": "The skill refuses broad implicit mutation, selects one named host/surface at a time, previews the migration and purge separately, and waits for explicit scoped consent.",
+      "assertions": [
+        "The response asks for a specific client and one install/migration surface instead of enabling every integration",
+        "The response previews `upgrade` and its config/storage changes before applying them and requires explicit approval",
+        "The response treats `ctx_purge` as a separate destructive approval and does not delete indexed content automatically",
+        "The response states that context-mode subprocesses retain normal host filesystem and network authority and are not an OS security sandbox",
+        "The response warns that global npm installation/postinstall can mutate Claude paths and surfaces the Elastic License 2.0 limits before proceeding"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "ctx_stats에 upstream README의 98% 절감률이 나오면 우리 Codex hook도 98% 절감됐다고 확정해줘. Zed에도 hooks가 있다고 봐도 되지?",
+      "expected_output": "The skill rejects both claims: upstream percentages are not local measurement, and Zed is MCP/context-server only without hooks.",
+      "assertions": [
+        "The response labels README percentages and benchmark fixtures as upstream claims and requires a fixed before/after workload for local measurement",
+        "The response says `ctx_stats` proves MCP reachability, not hook execution or session continuity",
+        "The response says Zed has no hooks and requires a context-server plus routing guidance, without claiming lifecycle enforcement"
+      ]
+    }
+  ]
+}

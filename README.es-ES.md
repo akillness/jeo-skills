@@ -4,14 +4,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-355-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-366-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![GJC](https://img.shields.io/badge/GJC-gajae--code-181717?style=for-the-badge&logo=github)](https://github.com/akillness/gajae-code)
 [![jeo-code](https://img.shields.io/badge/jeo--code-jeo-181717?style=for-the-badge&logo=github)](https://github.com/akillness/jeo-code)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**355 habilidades categorizadas · instalación selectiva ligera · catálogo TOON compacto · multiplataforma**
+**366 habilidades categorizadas · instalación selectiva ligera · catálogo TOON compacto · multiplataforma**
 
 Una colección curada para flujos de trabajo LLM multi-agente y centrados en especificaciones. Delega una configuración completa con un solo prompt, o instala primero el enrutador `jeo-skill` y añade solo las habilidades de web, infraestructura, juegos, medios, CLI o utilidades que necesites.
 
@@ -114,7 +114,7 @@ Jev sigue siendo opcional en todos los modos del catálogo: la configuración pr
 
 ### Instalación selectiva ligera (manual / CI)
 
-Instala primero el **enrutador `jeo-skill`**, no las 355 carpetas de habilidades. Proporciona descubrimiento de categoría, subcategoría, interfaz, paquete y relación, manteniendo aplicaciones pesadas, modelos, servidores MCP y tiempos de ejecución bajo demanda.
+Instala primero el **enrutador `jeo-skill`**, no las 366 carpetas de habilidades. Proporciona descubrimiento de categoría, subcategoría, interfaz, paquete y relación, manteniendo aplicaciones pesadas, modelos, servidores MCP y tiempos de ejecución bajo demanda.
 
 ```bash
 # One lightweight skill, shared globally
@@ -193,13 +193,23 @@ Para generación de vídeo programable o con plantillas, usa `video-production`.
 
 ---
 
+### Operadores de repositorios bajo demanda
+
+Once habilidades fijadas a commits upstream cubren `openrig`, `anyjev`,
+`typesafe-computer-use`, `zurp`, `helix-foundry`, `uzu`, `context-mode`, `rea`,
+`fineenvs`, `llmfit` y `pg-jev`. Instalar el catálogo añade solo instrucciones;
+las aplicaciones, modelos, claves, registros MCP/hooks, control del escritorio y
+escrituras en bases de datos requieren aprobación independiente. Consulta la
+[guía de configuración](setup-all-skills-prompt.md#repository-operators-on-demand-documents-only).
+
+
 ## 📚 Lista de Habilidades
 
-> Manifiesto central: `.agent-skills/skills.json` · 355 habilidades · 10 categorías principales · metadatos de subcategoría/interfaz/relación
+> Manifiesto central: `.agent-skills/skills.json` · 366 habilidades · 10 categorías principales · metadatos de subcategoría/interfaz/relación
 
-### 🌐 Web (50)
+### 🌐 Web (52)
 
-Subcategorías: `frontend` (7), `backend` (3), `design` (12), `api` (2), `auth` (1), `data` (4), `testing` (4), `accessibility` (1), `performance` (1), `graphics` (10), `capture` (5)
+Subcategorías: `frontend` (7), `backend` (3), `design` (12), `api` (2), `auth` (1), `data` (6), `testing` (4), `accessibility` (1), `performance` (1), `graphics` (10), `capture` (5)
 
 | Skill |
 |---|
@@ -253,10 +263,12 @@ Subcategorías: `frontend` (7), `backend` (3), `design` (12), `api` (2), `auth` 
 | `design-taste-frontend` |
 | `higgsfield-websites` |
 | `stagehand` |
+| `helix-foundry` |
+| `pg-jev` |
 
-### 🏗 Infraestructura (13)
+### 🏗 Infraestructura (14)
 
-Subcategorías: `deployment` (2), `environment` (2), `observability` (3), `security` (2), `cloud-data` (3), `automation` (0), `tooling` (1)
+Subcategorías: `deployment` (2), `environment` (2), `observability` (3), `security` (3), `cloud-data` (3), `automation` (0), `tooling` (1)
 
 | Skill |
 |---|
@@ -273,6 +285,7 @@ Subcategorías: `deployment` (2), `environment` (2), `observability` (3), `secur
 | `unity-cli` |
 | `genkit` |
 | `looker-studio-bigquery` |
+| `zurp` |
 
 ### 🎮 Juego (28)
 
@@ -349,9 +362,9 @@ Subcategorías: `image` (10), `video` (14), `motion` (1), `audio` (1), `presenta
 | `higgsfield-brandkit` |
 | `shopping-shorts` |
 
-### ⌨️ Herramientas CLI (35)
+### ⌨️ Herramientas CLI (40)
 
-Subcategorías: `developer-cli` (9), `ai-cli` (11), `media-cli` (1), `automation-cli` (6), `search-cli` (7), `benchmark-cli` (1)
+Subcategorías: `developer-cli` (10), `ai-cli` (15), `media-cli` (1), `automation-cli` (6), `search-cli` (7), `benchmark-cli` (1)
 
 | Skill |
 |---|
@@ -390,10 +403,15 @@ Subcategorías: `developer-cli` (9), `ai-cli` (11), `media-cli` (1), `automation
 | `zeroshot` |
 | `k-skill-setup` |
 | `jevgrep` |
+| `openrig` |
+| `uzu` |
+| `context-mode` |
+| `rea` |
+| `llmfit` |
 
-### 🤖 IA y Agentes (63)
+### 🤖 IA y Agentes (65)
 
-Subcategorías: `orchestration` (13), `agent-frameworks` (17), `skill-authoring` (5), `evaluation` (7), `memory` (2), `planning-review` (13), `discovery` (3), `prompting` (3)
+Subcategorías: `orchestration` (14), `agent-frameworks` (18), `skill-authoring` (5), `evaluation` (7), `memory` (2), `planning-review` (13), `discovery` (3), `prompting` (3)
 
 | Skill |
 |---|
@@ -460,6 +478,8 @@ Subcategorías: `orchestration` (13), `agent-frameworks` (17), `skill-authoring`
 | `agent-principles` |
 | `paperclip` |
 | `jev-control-plane` |
+| `anyjev` |
+| `typesafe-computer-use` |
 
 ### 🧰 Ingeniería (24)
 
@@ -492,9 +512,9 @@ Subcategorías: `code-quality` (11), `testing` (4), `architecture` (6), `documen
 | `implement` |
 | `prototype` |
 
-### 🔭 Investigación y Análisis (12)
+### 🔭 Investigación y Análisis (13)
 
-Subcategorías: `academic` (3), `web-research` (3), `data-analysis` (2), `experimentation` (1), `benchmarking` (1), `intelligence` (2)
+Subcategorías: `academic` (3), `web-research` (3), `data-analysis` (2), `experimentation` (2), `benchmarking` (1), `intelligence` (2)
 
 | Skill |
 |---|
@@ -510,6 +530,7 @@ Subcategorías: `academic` (3), `web-research` (3), `data-analysis` (2), `experi
 | `agent-pulse` |
 | `research` |
 | `korean-patent-search` |
+| `fineenvs` |
 
 ### 📣 Negocios (70)
 
@@ -880,7 +901,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 
 ```text
 .
-├── .agent-skills/          ← 355 skill folders (SKILL.md + optional support files)
+├── .agent-skills/          ← 366 skill folders (SKILL.md + optional support files)
 ├── docs/                   ← detailed guides (bmad, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
@@ -962,6 +983,17 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 | `hwp`, `rhwp-edit`, `rhwp-advanced`, `korean-patent-search`, `k-skill-setup` | [NomaDamas/k-skill @ 783d3c3](https://github.com/NomaDamas/k-skill) | MIT (directorios proxy AGPL-3.0, no incluidos) |
 | `a2a-protocol`, `agent-*`, `multi-agent-eval-harness`, `reflexion-pattern`, `langchain-bmad` (+4 fusionadas en habilidades canónicas, ver `retired_skills`) | [akillness/oh-my-gods @ 1b2779a](https://github.com/akillness/oh-my-gods) | MIT |
 | `paperclip` (guía operativa; sin archivos upstream incluidos) | [paperclipai/paperclip @ 0f14d26](https://github.com/paperclipai/paperclip/tree/0f14d261233c545aa6a8a38ec253c498a5130fff) | MIT (upstream) |
+| `openrig` | [mvschwarz/openrig @ 3001cc4](https://github.com/mvschwarz/openrig/tree/3001cc436656c435e54425443e708e3e2d8c7d68) | Apache-2.0 (upstream) |
+| `anyjev` | [nokia-applied-research/AnyJev @ d458d13](https://github.com/nokia-applied-research/AnyJev/tree/d458d13968eec0e2cfa8c81b64629b96cf5cb4a9) | Apache-2.0 (upstream) |
+| `typesafe-computer-use` | [awlevin/typesafe-computer-use @ 44ca11f](https://github.com/awlevin/typesafe-computer-use/tree/44ca11f0935b021b73020825da054b5c92cc1288) | MIT (upstream) |
+| `zurp` | [facebookincubator/Zurp @ c30c04e](https://github.com/facebookincubator/Zurp/tree/c30c04edd8a0a85f3ee980324b7edc8e814fadb3) | MIT (project; FBDL provenance includes ISC) |
+| `helix-foundry` | [HelixDB/helix-foundry @ 8489985](https://github.com/HelixDB/helix-foundry/tree/84899851d845d1db98f9e328634f14e0ed4ad7b7) | Apache-2.0 (upstream) |
+| `uzu` | [trymirai/uzu @ d76d468](https://github.com/trymirai/uzu/tree/d76d468a1898cacc9c4920accf8f5ff099967107) | MIT (upstream) |
+| `context-mode` | [mksglu/context-mode @ abb1048](https://github.com/mksglu/context-mode/tree/abb104847cbb66c2182816a72bb69455bc778b5e) | Elastic-2.0 (upstream; not OSI-approved) |
+| `rea` | [morluto/rea @ ee50ed1](https://github.com/morluto/rea/tree/ee50ed121e38cc6e1a2ff0dc8b789f15f71c5402) | MIT (upstream) |
+| `fineenvs` | [adithya-s-k/FineEnvs @ 5e0b46e](https://github.com/adithya-s-k/FineEnvs/tree/5e0b46e96bfd20105976e50a06a3b79c9c62f076) | Apache-2.0 (code; PortSim data terms differ) |
+| `llmfit` | [AlexsJones/llmfit @ 4b9fdd9](https://github.com/AlexsJones/llmfit/tree/4b9fdd9c5d1da3aa38ee5f7de872a5555c029a3e) | MIT (upstream) |
+| `pg-jev` | [realZachi/pg-jev @ e3450d4](https://github.com/realZachi/pg-jev/tree/e3450d44f7f6745aa2d728c9289b9ca4a6feda9a) | PostgreSQL License (upstream) |
 | Especificación de Habilidades de Agente | [agentskills.io](https://agentskills.io/specification) | — |
 
 ---
