@@ -201,7 +201,9 @@ recognized by the `skills` CLI:
 
 `codex`, `gemini-cli`, `opencode`, and `cursor` also map to the shared root, so adding
 all of those alongside `universal` would create redundant platform exposure rather than
-additional skills.
+additional skills. For an opencode-only install, `-a opencode` (or
+`jeo-skill install ... --agent opencode`) is valid and targets the same shared root
+that sst/opencode reads natively — see Step 4D. No separate projection is needed.
 
 ## Step 4 — Install the requested scope
 
@@ -397,6 +399,50 @@ fi
 
 **Important:** Do not use manual `cp -R` for Antigravity projection. Always use
 `jeo-skill install --agent antigravity-cli` or `jeo-skill install --agent antigravity`.
+
+### Step 4D — OpenCode (all modes when detected)
+
+sst/opencode (opencode.ai) reads the shared root natively — global
+`~/.agents/skills` and project `.agents/skills` — alongside its own
+`~/.config/opencode/skills`, `~/.claude/skills`, and the project `.opencode/skills`
+compat paths ([skills docs](https://opencode.ai/docs/skills/)). No native projection
+step is needed: the Step 4 install already placed everything opencode loads. Prefer
+the shared root over `~/.config/opencode/skills` so one install also serves Claude
+Code, Codex, and Pi; a same-ID skill copied into `~/.config/opencode/skills` would
+shadow the shared copy at higher precedence. Verified live on opencode 1.18.18:
+`skills add -a opencode` and `jeo-skill install ... --agent opencode` both land in
+the shared root in an isolated HOME, and `jeo-skill doctor` reports zero errors there.
+For the Aside browser integration, Aside CLI's `aside-browser` skill is installed
+directly to `~/.config/opencode/skills/aside-browser/SKILL.md` (and the shared root)
+via `aside skills install --target opencode` (or `--target general`) in Step 5.
+
+```bash
+if command -v opencode >/dev/null 2>&1; then
+  opencode --version
+
+  # Preview an opencode-scoped selection without making changes
+  HOME="$USER_HOME" python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" \
+    install "${RUNTIME_SELECTION[@]}" --agent opencode --global --dry-run || exit 1
+
+  # Install the same selected skills to the shared root opencode reads
+  HOME="$USER_HOME" python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" \
+    install "${RUNTIME_SELECTION[@]}" --agent opencode --global --yes || exit 1
+
+  # Prove the shared root is readable (no model call, no config write)
+  [ -f "$SKILLS_ROOT/jeo-skill/SKILL.md" ] \
+    && printf 'opencode: shared root readable at %s\n' "$SKILLS_ROOT"
+  opencode mcp list
+
+  printf 'opencode: shared-root install completed\n'
+fi
+```
+
+**Two products, one binary name:** the archived Go TUI (`opencode-ai/opencode`,
+continued as `crush`) has **no** skill loader — the steps above do not make skills
+discoverable there. `opencode --version` reporting 1.x indicates sst/opencode.
+For MCP servers opencode consumes, inspect state with `opencode mcp list` only;
+local stdio entries live in `opencode.json` and are never hand-edited during
+blanket setup (same rule as Aside's `mcp.servers` map).
 
 Stop here in minimal mode. In core mode, install only dependencies explicitly required
 by the selected starter skills; do not continue into the full shared-tool setup by default.
@@ -860,20 +906,66 @@ if command -v codex >/dev/null 2>&1 && ! codex mcp list 2>/dev/null | grep -q '^
 fi
 ```
 
-### Aside MCP wiring
+### Aside browser skill and MCP wiring
 
-Aside handles MCP in two directions, and only one of them is scriptable.
+Aside provides two complementary integration surfaces: the `aside-browser` entrypoint
+skill for agent instructions, and the `aside mcp` stdio server for browser automation.
 
-**Aside as an MCP server.** `aside mcp` starts Aside over stdio, letting another agent
-drive its browser session. Register it idempotently:
+**1. `aside-browser` skill installation.** When Aside CLI is installed, register its
+`aside-browser` skill across coding agents (including OpenCode, Claude Code, Codex, and Cursor).
+`aside skills install` targets either `general` (all detected agents plus `~/.agents/skills`)
+or specific runtimes like `opencode`:
 
 ```bash
 if command -v aside >/dev/null 2>&1; then
+  # Install the aside-browser skill to all detected agents (including opencode)
+  if command -v opencode >/dev/null 2>&1; then
+    aside skills install --target opencode
+  fi
+  aside skills install --target general
+fi
+```
+
+If `aside` CLI is not yet installed on macOS or Linux, install it via:
+`curl -fsSL https://releases.aside.com/install.sh | bash`
+
+**2. Aside as an MCP server.** `aside mcp` starts Aside over stdio, letting another agent
+drive its browser session. Register it idempotently across Claude Code, Codex, and OpenCode:
+
+```bash
+if command -v aside >/dev/null 2>&1; then
+  # Claude Code
   if command -v claude >/dev/null 2>&1 && ! claude mcp list 2>/dev/null | grep -q '^aside'; then
     claude mcp add aside -s user -- aside mcp
   fi
+  # Codex CLI
   if command -v codex >/dev/null 2>&1 && ! codex mcp list 2>/dev/null | grep -q '^aside'; then
     codex mcp add aside -- aside mcp
+  fi
+  # OpenCode (merge into ~/.config/opencode/opencode.json)
+  if command -v opencode >/dev/null 2>&1; then
+    OPENCODE_CFG="${XDG_CONFIG_HOME:-$USER_HOME/.config}/opencode/opencode.json"
+    if [ -f "$OPENCODE_CFG" ]; then
+      python3 - "$OPENCODE_CFG" <<'EOF'
+import json, sys
+cfg_path = sys.argv[1]
+try:
+    with open(cfg_path, "r", encoding="utf-8") as f:
+        cfg = json.load(f)
+except Exception:
+    cfg = {}
+mcp = cfg.setdefault("mcp", {})
+if "aside" not in mcp:
+    mcp["aside"] = {
+        "type": "local",
+        "command": ["aside", "mcp"],
+        "enabled": True
+    }
+    with open(cfg_path, "w", encoding="utf-8") as f:
+        json.dump(cfg, f, indent=2)
+    print("opencode: registered aside mcp server")
+EOF
+    fi
   fi
 fi
 ```
@@ -1841,7 +1933,11 @@ configuration and credentials outside the project. See
 ## Step 6 — Runtime-specific shared-root checks
 
 
-- `jeo`, `jeopi`, `opencode`, and `gjc` discover `~/.agents/skills` directly; no skills CLI agent ID is needed.
+- `jeo`, `jeopi`, and `gjc` discover `~/.agents/skills` directly; no skills CLI agent ID is needed.
+- sst/opencode discovers `~/.agents/skills` directly too (`-a opencode` targets the
+  same shared root — see Step 4D), and additionally reads `~/.config/opencode/skills`
+  natively at higher precedence. The archived Go `opencode-ai/opencode` TUI has no
+  skill loader; shared-root installs do not apply there.
 - GJC may require skill discovery to be enabled and `~/.agents/skills` added to its
   `skills.customDirectories`. Inspect its current config and merge only those keys; never
   replace the whole file.
@@ -1862,6 +1958,9 @@ command -v rtk >/dev/null 2>&1 && rtk gain
 command -v semble >/dev/null 2>&1 && semble --help >/dev/null
 command -v claude >/dev/null 2>&1 && claude mcp list
 command -v codex >/dev/null 2>&1 && codex mcp list
+command -v opencode >/dev/null 2>&1 && opencode --version
+command -v opencode >/dev/null 2>&1 && [ -f "$SKILLS_ROOT/jeo-skill/SKILL.md" ] && printf 'opencode: shared root readable at %s\n' "$SKILLS_ROOT"
+command -v opencode >/dev/null 2>&1 && opencode mcp list
 command -v aside >/dev/null 2>&1 && aside --version
 for acct in "$USER_HOME"/.aside/u/*/; do
   [ -d "$acct/skills/user" ] || continue
@@ -1875,9 +1974,12 @@ Finally report:
 1. detected OS and agents;
 2. selected mode and installed skill count;
 3. exact global and per-agent paths used, including each Aside account's
-   `skills/user/` path and how many skills were mirrored there;
+   `skills/user/` path and how many skills were mirrored there; for opencode, the
+   shared `~/.agents/skills` path plus `opencode --version` and the
+   `opencode mcp list` result;
 4. MCP/shell/plugin registrations completed or skipped, with reasons — note whether Aside
-   was registered as an MCP server, and that servers Aside consumes stay a manual UI step;
+   was registered as an MCP server (across Claude Code, Codex, and OpenCode) and its
+   `aside-browser` skill installed, and that servers Aside consumes stay a manual UI step;
 5. verification output and any manual follow-up;
 6. in full mode, if `scrapingant-web-fetch` was not already configured, ask the user once
    whether to set it up now (sponsor skill, free 10,000 credits/month, no card) — see
