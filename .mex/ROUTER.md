@@ -16,7 +16,7 @@ edges:
     condition: when the task touches skills.json, SKILL.md frontmatter, README/TOON projections, or CI catalog validation
   - target: patterns/INDEX.md
     condition: when starting a task — check the pattern index for a matching pattern file
-last_updated: 2026-10-12
+last_updated: 2026-10-14
 ---
 
 # Session Bootstrap
@@ -28,6 +28,39 @@ Then read this file fully before doing anything else in this session.
 ## Current Project State
 
 **Working:**
+
+- Jev CI timeout fixture repair (2026-10-14): latest OpenCode/setup publication
+  `bda3e7c7` exposed an Ubuntu-only race in the native SIGTERM/SIGKILL regression.
+  Fixture readiness now follows handler installation; fake deadline/grace timers
+  verify each stage while real process death remains checked. Production timeout
+  behavior is unchanged. Six-way concurrent targeted repetitions passed 18/18;
+  the 118-case native suite passed with one intentional live skip.
+
+- Jev runtime integration (2026-10-14): Codex profile configured ON with assist
+  skill injection and advisory PreToolUse review; both merged hook definitions
+  are trusted according to the installed Codex app-server. Actual new Codex
+  sessions recognized the selected installed React skill and received a live
+  `proposal_only` review before one successful read-only command. Installed
+  harness now matches source and accepts rounded probabilities. Native Pi-family
+  assist callbacks inject trusted skill bodies and prune only older Jev-owned
+  messages. Explicit Codex enforce mode denies nonvalidated/unavailable reviews
+  and never grants host permissions. See `context/jev-runtime-activation.md`.
+
+- Jev README/source/installed audit (2026-10-14): fresh self-test 20/20,
+  Python Jev 64/64, installer 48/48 and Node 53 pass/1 live skip. Actual installed harness still
+  uses strict probability-sum validation; loopback sum 0.99 succeeds in source
+  but fails installed. Legacy API is configured but unverified/unvalidated;
+  Codex has no saved profile and exposes adapter-only plans. Native callback
+  performs routing advice only, not automatic prune/review/action enforcement.
+  See `context/jev-readme-audit.md`; no installed settings/product code changed.
+- Funded TypeSafe review (2026-10-12): one real API-only POST returned HTTP 200
+  through the current source harness; `jev-latest` served `jev-1.13.0`, four Noul
+  answers passed strict validation, usage was 435 input / 80 output tokens, and
+  caller-visible latency was 340 ms. Result `proposal_only` reflects two
+  below-threshold answers; this is transport/contract evidence, not calibration,
+  skill-routing quality, or an autonomous-permission attestation. Keychain secret
+  stayed in child environment/private memory; profiles were unchanged. Evidence:
+  `~/vaults/llm-wiki/raw/sources/audits/2026-10-12-typesafe-live-review-a9bf469a/evidence.json`.
 - Public FULL setup audit (2026-10-12): public ref `81131733` stayed unchanged;
   authentic GitHub/npx transport installed 367 manifest-matching SKILL.md files in
   isolated HOME. Actual jeopi/jeo/OMP loaders passed; GJC rejected shared-only skills
@@ -41,7 +74,7 @@ Then read this file fully before doing anything else in this session.
   No public guide/README patch or push was made by this audit; deployment/model
   execution and fresh Linux/Windows setup are not claimed.
 
-- The catalog manifest (`.agent-skills/skills.json`, 366 skills) and its three
+- The catalog manifest (`.agent-skills/skills.json`, 367 skills) and its three
   projections (`.agent-skills/skills.toon`, `README.md`/`README.ko.md`/`README.es-ES.md`
   category tables, each skill's own SKILL.md frontmatter) are validated end-to-end by
   `scripts/validate-catalog-projections.py`, wired into `.github/workflows/ci.yml`
@@ -62,13 +95,19 @@ Then read this file fully before doing anything else in this session.
   `flatten_skills.py --dry-run` in CI (no category subfolders)
 - Repository operators (2026-10-12): eleven source-pinned guides for Openrig, AnyJev,
   TypeSafe computer use, Zurp, Helix Foundry, Uzu, Context Mode, REA, FineEnvs,
-  llmfit and pg-jev, with 44 behavioral eval scenarios. Exact discovery and selective
-  install dry-run resolve all eleven; source review does not certify upstream runtime
-  execution. README locales/setup separate document installation from model/data
-  downloads, provider costs, desktop authority and MCP/hook activation. Context Mode
-  is subprocess execution, not an OS/security sandbox; npm postinstall can rewrite
-  Claude configuration. FilmCraft is inherited unchanged from the remote baseline;
-  this publication adds only the eleven requested operators (355 to 366 skills).
+  llmfit and pg-jev, now standardized as v1.1.0 packages with router-first SKILL.md,
+  independent pinned `references/upstream.md`, standalone executable stdlib
+  `scripts/preflight.py`, and 55 authored behavioral eval scenarios. New helper
+  regressions pass across all eleven, including missing prerequisites, literal paths,
+  source pins, copied-package portability, and hostile Git environment/trace guards.
+  Git inspection binds the resolved source root and disables inherited selectors,
+  prompts, global/system configuration and network protocols. CI runs the new suite
+  on its Ubuntu/macOS installer matrix. Offline status is not runtime activation,
+  model quality, provider authorization or desktop/database execution proof.
+  README locales/setup distinguish support-file copying from separately approved
+  upstream operations. Context Mode is not an OS/security sandbox; npm postinstall
+  can rewrite Claude configuration. FilmCraft and unrelated catalog entries are
+  inherited unchanged; this support upgrade adds no skill to the 367-skill baseline.
 - The `headroom` skill packages durable context routing with Graphify preflight and
   Ponytail policy guidance. Full delegated setup reuses healthy Headroom deployments;
   its source-mutation adapter is explicitly Claude Code-only.
@@ -170,7 +209,8 @@ Then read this file fully before doing anything else in this session.
   controller and raw native leaf collisions preserve prior private bytes; actual
   OFF callbacks accept 1 MiB prompts without an unhandled EPIPE. The separate
   live Ollama smoke passed with probe status 200 and `backend_unavailable`, not a
-  selected skill or model-quality claim. Paid API/DB/desktop execution is unverified.
+  selected skill or model-quality claim. Release checks did not exercise paid API,
+  DB or desktop execution; the later single hosted review is recorded above.
   Commands and boundaries: `jev/README.md`, `patterns/jev-control-plane.md`.
 - Jevgrep discovery (2026-10-02): `jeo-skill explore` is a separate opt-in over an
   explicit source-document root; metadata search and native exact/LSP/zvec/Graphify
@@ -179,9 +219,16 @@ Then read this file fully before doing anything else in this session.
   `@dzhng/jevgrep@0.8.0`. Request/output bounds, no-cache and timeout are enforced.
   Twelve regressions passed; the published package completed skills/wiki/graph-source
   transport against deterministic loopback responses (12 POSTs, no cache/source writes).
-  This proves transport, not live-provider retrieval quality. README locales, setup
-  guide and both SVGs describe the boundary; `patterns/jeo-skill-install-flow.md`
-  records recurring checks. No global install, authentication or graph rebuild occurred.
+   This proves transport, not live-provider retrieval quality. README locales, setup
+   guide and both SVGs describe the boundary; `patterns/jeo-skill-install-flow.md`
+   records recurring checks. No global install, authentication or graph rebuild occurred.
+- CI test-job setup trim (2026-10-14): `test` job no longer installs Bun
+   (`oven-sh/setup-bun` was unused — all four steps are pure Python) and pins
+   `pyyaml==6.0.3`. Measured local script time is ~1.2 s total (validator 0.67 s,
+   rule-f 0.08 s, frontmatter 0.42 s, flatten 0.05 s), so setup dominated the job.
+   Installer-job suites measured ~137 s per OS (jev 52 s, installer 40 s, preflight
+   19 s, node 12 s); top waits are intentional contract behavior (10 s hung-node
+   bound, unreachable-backend probe timeouts), left unchanged.
 
 **Not yet built:**
 - `validate_links()` (dangling relative markdown link check) is implemented but not

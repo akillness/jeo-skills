@@ -49,6 +49,7 @@ venv.bak/
 # Agent/runtime state generated at the repository root.
 # Keep source skills under .agent-skills/ tracked; do not commit live session state.
 /.omc/
+/.omo/
 /.omx/
 /.survey/
 /.codex/

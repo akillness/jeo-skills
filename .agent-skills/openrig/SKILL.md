@@ -17,210 +17,114 @@ compatibility: >
   prerequisites and authority boundaries.
 license: Apache-2.0
 metadata:
-  version: "1.0"
+  version: "1.1.0"
   source: https://github.com/mvschwarz/openrig
   upstream_commit: 3001cc436656c435e54425443e708e3e2d8c7d68
 ---
 
 # OpenRig operator
 
-Operate the named `rig` CLI, daemon, TUI and persistent agent teams. This skill
-was audited against commit `3001cc436656c435e54425443e708e3e2d8c7d68`.
-The upstream tree also ships [developing-openrig](https://github.com/mvschwarz/openrig/blob/3001cc436656c435e54425443e708e3e2d8c7d68/.agents/skills/developing-openrig/SKILL.md),
-which was audited but not copied; use it only when changing OpenRig's own source.
+Operate the named `rig` CLI, daemon, TUI, and persistent agent teams. This skill
+was audited against commit `3001cc436656c435e54425443e708e3e2d8c7d68`; the
+audited command and provenance record lives in
+[`references/upstream.md`](references/upstream.md).
 
 ## When to use this skill
 
 - Fit-check, install, upgrade, configure, preflight, operate, recover, or troubleshoot OpenRig.
-- Work with `@openrig/cli`, rig specs/bundles, the kernel/operator, tmux/Herdr views, seats, queues, snapshots, or registered remote hosts.
-
+- Work with `@openrig/cli`, rig specs and bundles, the kernel/operator, tmux/Herdr views, seats, queues, snapshots, or registered remote hosts.
+- Read [`references/upstream.md`](references/upstream.md) when the request reaches daemon/kernel/seat state, installation, RigSpec, host topology, capture/send semantics, teardown, or audited source provenance.
 
 ## Instructions
 
-### 1. Freeze scope and prerequisites
+### 1. Freeze the surface
 
-1. Record one mode (`orient`, `install`, `configure`, `operate`, `recover`, or `build`) and local versus registered remote target.
-2. Check without installing:
+Record one mode (`orient`, `install`, `configure`, `operate`, `recover`, or
+`build`) and one local or registered-remote target. Treat provider CLIs,
+credentials, desktop terminals, network access, and remote hosts as separate
+authority boundaries. Native Windows is unsupported; use the documented WSL2
+route. `OPENRIG_HOME` selects OpenRig instance state only, not provider config.
 
-   ```bash
-   node --version; npm --version; tmux -V; rig --version
-   ```
+### 2. Run the offline gate first
 
-   Require Node 22 or 24; Apple silicon should use Node 22. Native Windows is
-   unsupported; WSL2 is the documented route. Check only the selected provider:
-
-   ```bash
-   claude --version && claude auth status
-   codex --version && codex login status
-   ```
-
-   Ask the user to run the matching login command if needed; never copy credentials.
-3. Explain that setup normally writes instance state under `~/.openrig`, tmux
-   sessions, provider trust/configuration and project files. `OPENRIG_HOME`
-   selects instance state only, not provider config. Back up relevant files.
-
-### 2. Install only after preview and approval
-
-Preview the opt-in installer:
+Use the helper before any install, setup, daemon, TUI, rig, provider, or send
+operation; it never launches OpenRig or executes shell commands:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/mvschwarz/openrig/3001cc436656c435e54425443e708e3e2d8c7d68/scripts/install.sh | sh -s -- --dry-run
+python3 .agent-skills/openrig/scripts/preflight.py --json
+python3 .agent-skills/openrig/scripts/preflight.py --repo /path/to/openrig --expect-commit <FULL_SHA> --json
 ```
 
-For an approved **pinned** install, use the audited CLI version `0.6.10` (the
-version in the pinned `packages/cli/package.json`):
+An installed skill uses:
+`python3 "$SKILLS_ROOT/openrig/scripts/preflight.py" --json`.
+The helper reports host/tool paths and, when `--repo` is supplied, bounded Git
+identity plus public checkout shape. A discovered Node path does not prove the
+required Node version; consult the audited runtime rules in the reference.
 
-```bash
-npm install -g @openrig/cli@0.6.10
-node "$(npm root -g)/@openrig/cli/scripts/check-abi.mjs"
-rig setup --providers claude --dry-run   # or codex; omit to inspect both
-```
+### 3. Gate every side effect
 
-The pinned shell installer is useful for previewing the setup flow, but its
-internal npm install is unversioned; if it is approved, treat the installed
-package as unaudited-current and re-check `rig --version` and the relevant CLI
-source before relying on audited flags. Applying `rig setup` may install a
-provider CLI, tmux (macOS Homebrew path), Herdr, or optional Ghostty; write
-`~/.tmux.conf` and provider/project trust or runtime files. `--no-herdr`,
-`--no-ghostty`, `--providers`, `--full`, and `--dry-run` are source-backed
-controls. The shell installer does not log in, choose permissions, launch a
-team, or open the kernel conversation.
+Start local command flows read-only with `--help`, `--json`, `--plan`, status,
+process, and capture commands. An installer `--dry-run` still fetches and pipes
+remote shell code; it is not a read-only or security boundary. Require separate
+explicit approval for network access and remote-code execution, then for
+installation, provider configuration or credentials, permission policy, bundle
+installation, daemon/kernel launch, live sends, remote writes, and teardown.
+Never copy keys, tokens, resume tokens, or full environment dumps.
 
-### 3. Preflight and start deliberately
+### 4. Follow the matching reference branch
 
-```bash
-rig preflight --json
-rig doctor
-rig daemon status
-```
+- Install/setup or platform questions → **Install and platform** in `references/upstream.md`.
+- Daemon, kernel, seat, terminal, or readiness questions → **Runtime surfaces**.
+- RigSpec, `.rigbundle`, library, target, or host topology → **RigSpec and topology**.
+- Capture, queue, send, restore, teardown, or inconclusive health → **Operate and recover**.
 
-`rig preflight --json` exits non-zero when not ready. After approval, inspect
-daemon and kernel separately:
+Use the exact pinned commands and citations there; do not replace them with
+uncited variants. Keep daemon-up, kernel-started, seat-started, and
+message-rendered as distinct evidence.
 
-```bash
-rig daemon start
-rig status
-rig ps --nodes --rig kernel
-```
+### 5. Verify effects narrowly
 
-Normal startup auto-boots the kernel/operator. Use `rig daemon start --no-kernel`
-only for explicit headless/automation work. Daemon-up is not kernel-seat readiness;
-do not restart a live daemon merely to open its view.
-
-### 4. Open and verify the view
-
-```bash
-rig terminal open saved:kernel --window --json
-rig terminal views --json
-rig terminal status --json                 # optionally --provider herdr|cmux
-```
-
-Herdr is preferred when installed; plain tmux is the fallback. Headless SSH has
-no desktop window: report that limitation and give the exact attach path. If the
-window cannot open, `rig tui --shared` is dashboard-only, not the operator chat.
-
-### 5. Validate, preview and launch
-
-```bash
-rig spec validate ./rig.yaml --json
-rig spec audit ./rig.yaml --json
-rig daemon start
-rig spec preflight ./rig.yaml --rig-root . --json
-rig up ./rig.yaml --plan --json
-```
-
-Audit is advisory; validate is the local validity gate; spec preflight is
-daemon-backed. A valid spec does not prove provider auth, seat health, or the
-correct workspace. For a library entry or `.rigbundle`, inspect declared
-behavior and use `rig up <name> --plan`; use `--target` for a local bundle.
-Treat GitHub bundles and remote hosts as untrusted input. After approval:
-
-```bash
-rig up starter --cwd .
-rig ps --nodes --rig starter
-```
-
-Restore a stopped rig with `rig up <name> --existing`; resolve ambiguity first.
-`--host <id>` uses `~/.openrig/hosts.yaml`; topology YAML uses per-entry `host:`
-and must not be combined with `--host`.
-
-### 6. Operate and verify effects
-
-```bash
-rig status
-rig ps --nodes --rig <rig>
-rig capture --rig <rig> --lines 50
-rig capture <seat-session> --lines 50
-rig send dev-build@starter 'Implement one bounded change; report queue ID and verification.' --verify
-rig queue list --destination dev-build@starter --limit 1000
-```
-
-`--verify` is transport/effect evidence, not permission to invent work. A
-timeout means delivery is unconfirmed; capture before retrying. Use `--raw` or
-`--dangerously-interact` only with explicit approval: they bypass normal message
-envelope/interaction safety and can type into a live session. Fan-out (`--to`,
-`--pod`, `--rig`) requires inspecting every recipient result.
-
-### 7. Stop, restore and troubleshoot
-
-Before teardown, inspect work:
-
-```bash
-rig ps --nodes --rig <rig>
-rig capture --rig <rig> --lines 50
-```
-
-With explicit approval:
-
-```bash
-rig down <rig> --snapshot
-rig up <rig> --existing
-```
-
-`rig down` ends sessions and interrupts work; `--force` kills immediately and
-`--delete` removes the rig record, preventing record-based restoration. Never
-default to either. For an inconclusive probe, inspect daemon status, logs,
-`OPENRIG_HOME`/`OPENRIG_URL`, and the host registry; a failed health probe does
-not prove the daemon is stopped. Fix the named spec/bundle/path error and rerun
-the narrow check before reinstalling or recreating a live rig.
+Inspect every plan/readiness result before approval. A timeout leaves delivery
+unconfirmed: capture before retrying. Fan-out requires inspecting each
+recipient. Fix the named spec, bundle, or path error and rerun the narrow check
+before reinstalling or recreating a live rig.
 
 ## Examples
 
-### Preview, launch, operate, then restore
+### Read-only checkout and host gate
 
 ```bash
-node --version; npm --version; tmux -V; rig --version
-curl -fsSL https://raw.githubusercontent.com/mvschwarz/openrig/3001cc436656c435e54425443e708e3e2d8c7d68/scripts/install.sh | sh -s -- --dry-run
-rig setup --providers claude --dry-run
-rig preflight --json
-rig daemon start
-rig spec validate ./rig.yaml --json
-rig spec preflight ./rig.yaml --rig-root . --json
-rig up ./rig.yaml --plan --json
-rig up starter --cwd .
-rig ps --nodes --rig starter
-rig send dev-build@starter 'Implement one bounded change; report queue ID and verification.' --verify
-rig capture --rig starter --lines 50
-rig down starter --snapshot
-rig up starter --existing
+python3 .agent-skills/openrig/scripts/preflight.py --repo /path/to/openrig --expect-commit <FULL_SHA> --json
 ```
 
-Review each plan/readiness result before side effects. Treat daemon, spec, seat,
-send, capture, snapshot, and restore as separate evidence. Use `--force` or
-`--delete` only after separate explicit approval.
+Read **Runtime surfaces** before using `rig daemon status`, `rig status`,
+`rig ps`, or `rig capture`; no daemon, TUI, provider, or rig is started by the
+helper.
+
+### Approved planning path
+
+Read **RigSpec and topology**, then validate and audit locally, run the
+daemon-backed spec preflight only after daemon approval, and preview `rig up`
+with `--plan --json` before any launch approval.
+
+### Existing rig recovery
+
+Read **Operate and recover**, inspect process and capture evidence first, then
+request separate approval for snapshot teardown and `--existing` restoration.
 
 ## Best practices
 
-- Separate approvals for install, credentials, permission policy, bundle install, live sends, remote hosts, and teardown.
-- Prefer `--dry-run`, `--plan`, and `--json`; preserve output as evidence.
-- Treat daemon-up, kernel-started, seat-started, and message-rendered as distinct facts.
-- Keep tasks bounded; verify uncertain sends by `rig capture` before retrying.
-- Never expose provider keys, bearer tokens, resume tokens, or full env dumps.
-- Confirm host transport/auth/identity before any remote write; check `rig --version` against the pin.
+- Prefer pinned, JSON-producing, dry-run, and plan modes; preserve their output as evidence.
+- Keep daemon, kernel, seat, spec validity, provider auth, and workspace correctness separate.
+- Prefer bounded tasks and verify uncertain sends with capture before retrying.
+- Treat GitHub bundles and remote hosts as untrusted input; confirm transport, auth, and identity before remote writes.
+- Use `--force` and `--delete` only with separate explicit approval.
+- Keep the helper offline and honest: path presence is not runtime activation or model quality.
 
 ## References
 
-- README/install/getting started: https://github.com/mvschwarz/openrig/blob/3001cc436656c435e54425443e708e3e2d8c7d68/README.md and https://github.com/mvschwarz/openrig/blob/3001cc436656c435e54425443e708e3e2d8c7d68/docs/reference/getting-started.md
-- RigSpec/package/installer: https://github.com/mvschwarz/openrig/blob/3001cc436656c435e54425443e708e3e2d8c7d68/docs/reference/rig-spec.md; https://github.com/mvschwarz/openrig/blob/3001cc436656c435e54425443e708e3e2d8c7d68/packages/cli/package.json; https://github.com/mvschwarz/openrig/blob/3001cc436656c435e54425443e708e3e2d8c7d68/scripts/install.sh
-- CLI source at the pin: `packages/cli/src/commands/{setup,preflight,daemon,status,ps,up,down,terminal,capture,send,rig}.ts`; license: https://github.com/mvschwarz/openrig/blob/3001cc436656c435e54425443e708e3d8c7d68/LICENSE (Apache-2.0)
-
+- [Audited OpenRig operations and provenance](references/upstream.md)
+- [OpenRig README/install/getting started](https://github.com/mvschwarz/openrig/blob/3001cc436656c435e54425443e708e3e2d8c7d68/README.md)
+- [OpenRig RigSpec reference](https://github.com/mvschwarz/openrig/blob/3001cc436656c435e54425443e708e3e2d8c7d68/docs/reference/rig-spec.md)
+- [OpenRig Apache-2.0 license](https://github.com/mvschwarz/openrig/blob/3001cc436656c435e54425443e708e3e2d8c7d68/LICENSE)
+- [Offline helper](scripts/preflight.py)

@@ -525,9 +525,27 @@ test('actual OFF registered callback accepts a 1MiB prompt without crashing the 
   }
 });
 
-test('native controller timeout escalates a TERM-ignoring child to SIGKILL without an orphan', async () => {
+test('native controller timeout escalates a TERM-ignoring child to SIGKILL without an orphan', async (t) => {
   const f = fixture({ enabled: true });
   const sharedPath = join(here, 'plugins', 'shared', 'jev-controller.mjs');
+  const stalls = [];
+  t.mock.timers.enable({ apis: ['setTimeout'] });
+  t.after(() => {
+    // A failed readiness/assertion must not strand a fixture after timer reset.
+    for (const { pidFile } of stalls) {
+      if (!existsSync(pidFile)) continue;
+      try { process.kill(Number(readFileSync(pidFile, 'utf8')), 'SIGKILL'); }
+      catch (error) { if (error.code !== 'ESRCH') throw error; }
+    }
+  });
+  const waitFor = async (predicate, label) => {
+    const deadline = Date.now() + 5_000;
+    while (Date.now() < deadline) {
+      if (predicate()) return;
+      await new Promise(resolveTick => setImmediate(resolveTick));
+    }
+    assert.fail(`Timed out waiting for ${label}`);
+  };
   const makeStall = (name) => {
     const marker = join(f.root, `${name}.marker`);
     const pidFile = join(f.root, `${name}.pid`);
@@ -536,33 +554,45 @@ test('native controller timeout escalates a TERM-ignoring child to SIGKILL witho
       `import { writeFileSync } from 'node:fs';`,
       `const marker = ${JSON.stringify(marker)};`,
       `const pidFile = ${JSON.stringify(pidFile)};`,
-      `writeFileSync(marker, 'started');`,
-      `writeFileSync(pidFile, String(process.pid));`,
       `process.on('SIGTERM', () => { writeFileSync(marker, 'term-ignored'); });`,
+      `writeFileSync(pidFile, String(process.pid));`,
+      `writeFileSync(marker, 'ready');`,
       `setInterval(() => {}, 1000);`,
     ].join('\n'));
-    return { marker, pidFile, controller };
+    const stalled = { marker, pidFile, controller };
+    stalls.push(stalled);
+    return stalled;
   };
   const assertDead = async (pidFile, label) => {
     const pid = Number(readFileSync(pidFile, 'utf8'));
     assert.ok(Number.isInteger(pid) && pid > 0, `${label} must publish its pid`);
-    for (let attempt = 0; attempt < 20; attempt += 1) {
+    await waitFor(() => {
       const probe = spawnSync('ps', ['-p', String(pid), '-o', 'stat='], { encoding: 'utf8' });
       const state = probe.status === 0 ? probe.stdout.trim() : '';
-      if (!state || /^Z/.test(state)) return;
-      await new Promise(resolveTick => setImmediate(resolveTick));
-    }
-    assert.fail(`${label} remained alive after timeout escalation`);
+      return !state || /^Z/.test(state);
+    }, `${label} to exit after timeout escalation`);
+  };
+  const advanceTimeout = async (stalled, pending) => {
+    let settled = false;
+    pending.then(() => { settled = true; }, () => { settled = true; });
+    await waitFor(() => existsSync(stalled.marker) && readFileSync(stalled.marker, 'utf8') === 'ready', 'controller signal-handler readiness');
+    assert.equal(settled, false, 'controller must remain pending before its deadline');
+    t.mock.timers.tick(250); // Configured 200ms deadline plus the 50ms startup grace.
+    await waitFor(() => readFileSync(stalled.marker, 'utf8') === 'term-ignored', 'SIGTERM handling');
+    assert.equal(settled, false, 'TERM-ignoring controller must remain pending during kill grace');
+    t.mock.timers.tick(100);
+    return pending;
   };
   const shared = await import(pathToFileURL(sharedPath).href);
   const direct = makeStall('direct-timeout');
-  const directResult = await shared.invokeControllerHook({
+  const directPending = shared.invokeControllerHook({
     agent: 'jeopi',
     profile: f.profile,
     input: { type: 'UserPromptSubmit', prompt: 'timeout regression' },
     controllerPath: direct.controller,
     timeoutMs: 200,
   });
+  const directResult = await advanceTimeout(direct, directPending);
   assert.equal(directResult.ok, false);
   assert.equal(directResult.code, 'CONTROLLER_TIMEOUT');
   assert.equal(readFileSync(direct.marker, 'utf8'), 'term-ignored');
@@ -585,9 +615,8 @@ test('native controller timeout escalates a TERM-ignoring child to SIGKILL witho
       await factory(api, { profile: f.profile, timeoutMs: 200, controllerPath: stalled.controller });
       const registration = registrations.find(item => item.event === 'before_agent_start');
       assert.ok(registration, `${host} did not register before_agent_start`);
-      const started = Date.now();
-      const advisory = await registration.callback({ prompt: 'timeout regression', systemPrompt: host === 'pi' ? 'prior' : ['prior'] });
-      assert.ok(Date.now() - started < 500, `${host} callback waited for stalled controller`);
+      const pending = registration.callback({ prompt: 'timeout regression', systemPrompt: host === 'pi' ? 'prior' : ['prior'] });
+      const advisory = await advanceTimeout(stalled, pending);
       assert.deepEqual(advisory, {}, `${host} timeout must return a neutral advisory envelope`);
       assert.equal(readFileSync(stalled.marker, 'utf8'), 'term-ignored');
       await assertDead(stalled.pidFile, `${host} controller`);
@@ -1524,7 +1553,10 @@ test('status detect and host-plan are truthful read-only operations', async () =
         { action: 'package-load', command: 'pi', argv: ['-e', join(here, 'plugins', 'pi', 'index.mjs')], scope: 'session', executed: false },
         { action: 'package-toggle', status: 'unsupported', note: 'pi has no verified persistent targeted package enable/disable subcommand; the extension is session-scoped only (add/remove -e per launch)', executed: false },
       ]],
-      ['codex', 'adapter-only', 'ui-only', [{ action: 'provider-toggle', status: 'ui-only', note: 'Codex CLI has no verified noninteractive enable/disable surface', executed: false }]],
+    ['codex', 'native-hooks', 'persistent-with-trust', [
+      { action: 'hooks-install', command: process.execPath, argv: [join(here, 'jev-plugin.mjs'), 'hooks-install', '--agent', 'codex', '--profile', f.profile, '--apply'], executed: false },
+      { action: 'hooks-trust', command: 'codex', argv: [], status: 'review-required', note: 'Review the generated UserPromptSubmit and PreToolUse definitions with /hooks. Codex skips untrusted or modified definitions.', executed: false },
+    ]],
       ['gemini', 'adapter-only', 'unsupported', [{ action: 'adapter', status: 'present', note: 'No native Jev lifecycle is advertised for this host', executed: false }]],
       ['opencode', 'adapter-only', 'unsupported', [{ action: 'adapter', status: 'present', note: 'No native Jev lifecycle is advertised for this host', executed: false }]],
     ];

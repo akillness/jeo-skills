@@ -41,5 +41,15 @@
         "The response proposes non-destructive health/status/log evidence before any recovery or restore action"
       ]
     }
+    ,{
+      "id": 5,
+      "prompt": "Run `.agent-skills/helix-foundry/scripts/preflight.py --json` with an empty PATH, then inspect an isolated literal Helix checkout with public app/ops markers and a matching local Git pin. Do not invoke Docker, Compose, APIs, providers, or read `.env`.",
+      "expected_output": "The response inventories Docker/Compose and host tools without invoking them, checks only named public source paths and local Git identity, and keeps runtime_verified false.",
+      "assertions": [
+        "The response reports missing required host tools or source shape as blocked with exit 1 and a parseable JSON envelope",
+        "The response accepts a matching full-SHA local HEAD and blocks mismatched/malformed pins before any daemon or network operation",
+        "The response does not inspect `.env` or secrets, start containers, mutate config/data, or claim daemon/API readiness"
+      ]
+    }
   ]
 }

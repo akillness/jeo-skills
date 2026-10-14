@@ -41,5 +41,15 @@
         "The response says Uzu's custom model format does not imply arbitrary GGUF compatibility and routes conversion elsewhere"
       ]
     }
+    ,{
+      "id": 5,
+      "prompt": "Run `.agent-skills/uzu/scripts/preflight.py --json` with an empty PATH, then inspect an isolated literal Uzu Git worktree with Cargo.toml, platform metadata, and a matching HEAD pin. Do not run mirai, cargo, rustc, model, or server commands.",
+      "expected_output": "The response distinguishes host/source-tool availability from runtime activation, reports unsupported/missing paths as blocked, and preserves the offline no-side-effect boundary.",
+      "assertions": [
+        "The response reports the Darwin/arm64 or documented non-primary host branch and Python/tool presence without executing a tool",
+        "The response accepts only a full lowercase SHA with --repo, compares the literal local HEAD, and rejects mismatch",
+        "The response keeps runtime_verified=false and performs no model download, network, service, secret, or config mutation"
+      ]
+    }
   ]
 }

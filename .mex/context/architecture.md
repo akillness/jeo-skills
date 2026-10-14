@@ -17,7 +17,7 @@ edges:
   - target: patterns/catalog-metadata-changes.md
     condition: when adding a new skill or editing an existing skill's metadata
 grounds_to: []
-last_updated: 2026-10-12
+last_updated: 2026-10-14
 ---
 
 # Architecture
@@ -49,32 +49,35 @@ copying for these projections and the existing `scripts/sync-aside-skills.py` en
 Post-install checks verify selected skill files. No provider settings or hooks change.
 These scripts remain outside the current mex index; claims are source/smoke-grounded.
 
-**Optional Jev flow:** `jev/jev-setup.sh` is the canonical home-scoped installer.
-Unset non-interactive and explicit `skip` modes bypass Jev. Invalid Jev modes and
-project-scoped opt-in warn and skip only Jev; successful skill installation stays successful.
-Approved setup installs private configuration, runtime assets, a rule, and native package
-assets; copying those assets does not register or activate a provider-owned plugin.
-Optional Jev errors do not block skill installation or catalog availability.
-The controller maps independent agent profiles onto packaged Claude, jeopi, OMP,
-and Pi advisory hooks. Other hosts receive truthful adapter or unsupported plans.
-New config-only profiles start OFF; approved ordinary setup retains its explicit opt-in
-semantics. OFF hooks skip stdin, catalogs, backends, and host commands; status still
-reads private configuration. Native session loading and persistent registration are distinct.
-Since 2026-10-08 the harness is a backend registry of five kinds (`api`, `local`,
-`ollama`, `lmstudio`, `systemone` with `typesafe`/`decide`/`vllm-jev-decision` drivers)
-resolved per operation from the profile base file (`JEV_<OP>_BACKEND` + ordered
-`_FALLBACK` allow-list, `--backend/--model` overrides), never across profiles. A
-request is bounded by the answering backend's state limit before I/O and rejected
-rather than trimmed. Tiers: every kind is `unvalidated`; `validated` requires a
-served-model attestation and a calibrated-head driver (`api`/`systemone` only), and
-`review` can `permit` only on `validated`. Skill selection is cap-aware (sharded
-Choice + gate Nouls, or lexical shortlist + Noul rerank) with an explicit none outcome;
-`skills.json` `model_policies` (manifest-only, never projected) drives advisory
-provider/model launch plans; no host model is switched automatically. Setup installs a validated catalog snapshot
-(`~/.agents/jev/skills.json`) so `route-skills` works outside a checkout; a working
-checkout's catalog still wins. `status` reports per-operation chains and exits
-3 only when a chain has no usable backend; API credentials alone leave readiness
-unverified. Runbook: `patterns/jev-control-plane.md`; commands in `jev/README.md`.
+**Optional Jev flow:** `jev/jev-setup.sh` installs isolated named profiles and
+version-matched runtime assets; config-only profiles start OFF. Default catalog
+setup does not activate Jev. `jev-plugin.mjs configure` selects the profile's
+backend and optional `JEV_RUNTIME_MODE=advisory|assist` and
+`JEV_REVIEW_MODE=off|advisory|enforce` (defaults advisory/off).
+
+Codex's `hooks-install` merges UserPromptSubmit and PreToolUse definitions while
+preserving existing hooks. Exact definition trust, enabled profile and host loading
+are separate requirements. Assist injects whole trusted selected skill files.
+Review advisory reports findings; enforce explicitly denies unless the review
+permits on a validated backend, and never emits a host allow decision. Matched
+tools, hook trust, executable availability and host timeout behavior limit enforcement.
+Codex history and coding-model selection remain host-owned.
+
+Claude and jeopi/OMP/Pi session extensions can inject full selected skill instructions
+in assist mode. Pi-family context events prune only older Jev-owned custom messages;
+the newest instructions, user/system/assistant/tool messages and other extensions
+remain intact. These extensions do not enforce tool review or switch host models.
+OFF callbacks skip stdin/catalog/backend work. Bounded input, canonical catalog
+containment and private profile/session files protect local state boundaries.
+
+The five backend kinds remain `api`, `local`, `ollama`, `lmstudio`, and `systemone`,
+with per-operation primary/fallback allow-lists and no cross-profile fallback.
+Only calibrated-head drivers with a matching served-model attestation can be
+validated. Status does not infer quality or calibration from configuration.
+Review does not execute tests/builds. Catalog `model_policies` produce model advice;
+token savings fields estimate names/descriptions rather than measuring total cost.
+Runtime commands and limits: `jev/README.md`; runbook: `patterns/jev-control-plane.md`.
+Fresh application evidence: `context/jev-runtime-activation.md`.
 
 **Optional Jevgrep discovery:** `jeo-skill explore QUERY --root DIR` delegates source
 text discovery to manually installed `@dzhng/jevgrep@0.8.0` only with explicit

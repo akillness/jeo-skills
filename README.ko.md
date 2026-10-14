@@ -61,7 +61,7 @@ Jev는 기본 카탈로그 설치에 포함되지 않는 별도의 홈 범위 �
 
 #### 구성: 백엔드, 작업별 라우팅, 결정 모델 분리
 
-**백엔드 종류** — 하나 또는 다섯 개 모두를 선택합니다(`api`, `local`, `ollama`, `lmstudio`, `systemone`). 각 작업(스킬 라우팅, 컨텍스트 프루닝, 제안 검토)은 프로필의 각 백엔드를 해석합니다. **결정 백엔드**는 스킬 라우팅과 프루닝에서는 권고용이지만, **검토**에서는 자율 조치 게이팅을 위한 결정 헤드 백엔드를 실행합니다(`api`와 `systemone` 보정 드라이버만 `permit`을 반환 가능). **코딩 모델**은 주변 애플리케이션 상태이며 Jev가 절대 사용하지 않습니다. 이 둘은 별개 개념입니다:
+**백엔드 종류** — 하나 또는 다섯 개 모두를 선택합니다(`api`, `local`, `ollama`, `lmstudio`, `systemone`). 각 작업은 프로필에서 결정 백엔드를 선택합니다. 하네스는 스킬 선택, keep/drop 판정, 검토 결과를 반환하며, 활성화된 호스트 통합이 아래 범위에서 결과를 적용합니다. 적격 `api`·`systemone` 드라이버에서 실제 제공 모델과 저장된 검증 모델 증명이 일치해야 `permit`을 반환할 수 있습니다. Jev는 호스트의 코딩 모델을 자동 변경하지 않습니다:
 
 ```bash
 # 구성: 작업별 백엔드를 한 번에 하나씩 명시적으로 설정
@@ -85,7 +85,18 @@ node ~/.agents/jev/jev-harness.mjs --profile gjc status --operation route-skills
 - `ollama` / `lmstudio` — 승인된 일반 설정은 서버를 시작하거나 모델을 내려받고 로드할 수 있습니다. `--config-only`는 설정만 기록합니다.
 - `systemone` — 운영자가 띄운 System One 엔드포인트 지정(다운로드, 서비스 시작 없음).
 
-**Native 권고 훅과 호스트 계획**. 설정은 Claude·jeopi·OMP·Pi 패키지와 규칙 파일을 복사합니다. 호스트의 검증된 세션 방식으로 로드해야 하며, 파일 복사는 영구 플러그인 등록이 아닙니다. `host-plan`은 읽기 전용이며 설치·활성화·실행하지 않습니다. 다른 호스트에는 어댑터 또는 미지원 계획을 제공합니다. Native 권고 훅은 권한을 부여하거나 코딩 모델을 자동 교체하지 않으며, 각 프로필의 `JEV_ENABLED`가 ON/OFF를 제어합니다.
+**결과를 실제 적용하는 호스트 통합**. 기본값은 `JEV_RUNTIME_MODE=advisory`, `JEV_REVIEW_MODE=off`이며, 각 프로필의 `JEV_ENABLED`가 ON/OFF를 제어합니다. `--runtime-mode assist`에서는 로드된 Claude·jeopi·OMP·Pi 통합이 선택한 설치 스킬의 `SKILL.md` 본문과 출처 경로를 모델 문맥에 주입합니다. 신뢰된 카탈로그와 일치하고 스킬 루트 내부에 있는 파일만 읽으며, 크기 초과 파일은 통째로 건너뜁니다(스킬당 64 KiB, 합계 96 KiB). jeopi·OMP·Pi는 오래된 Jev 전용 커스텀 메시지도 모델 입력에서 정리합니다. 최신 스킬 지침과 사용자·시스템·어시스턴트·도구 메시지는 보존합니다. Claude는 현재 스킬 주입만 지원합니다. `model-plan`은 계속 권고 전용이며 호스트 모델을 바꾸지 않습니다.
+
+Codex 0.162.1에서는 네이티브 훅의 `UserPromptSubmit`으로 스킬을 주입하고 `PreToolUse`로 제안된 행동을 검토합니다. 프로필 구성과 훅 정의 등록은 별도 단계입니다:
+
+```bash
+# JEV_API_KEY를 먼저 설정하세요. 기존 프로필의 키를 유지하려면 --key-env를 생략합니다
+node ~/.agents/jev/jev-plugin.mjs configure --agent codex --profile codex --backend api --key-env JEV_API_KEY --runtime-mode assist --review-mode advisory --apply
+node ~/.agents/jev/jev-plugin.mjs enable --agent codex --profile codex --apply
+node ~/.agents/jev/jev-plugin.mjs hooks-install --agent codex --profile codex --apply
+```
+
+Codex `/hooks`에서 설치된 정확한 정의를 검토하고 신뢰해야 합니다. 설치만으로 신뢰가 부여되거나 프로필이 활성화되지는 않습니다. `advisory` 검토는 판정을 알리며, 명시적인 `--review-mode enforce`는 검증된 백엔드의 `permit`이 아니면 제안된 행동을 거부합니다. 호스트의 실행 권한을 허가하는 응답은 반환하지 않습니다. 검토 범위는 등록된 도구 matcher이며, 신뢰되지 않은 훅·호스트 실패·시간 초과에서는 호출이 생략되거나 fail-open할 수 있으므로 OS 보안 경계가 아닙니다. Claude에는 자동 행동 차단이 없고 Codex에는 자동 대화 이력 정리가 없습니다. `host-plan`은 읽기 전용이며 네이티브 패키지 복사는 영구 등록이 아닙니다. 로드·신뢰·검증 범위는 [호스트 통합 안내](jev/README.md)를 참고하세요.
 
 **ON/OFF 및 공유 프로필**:
 ```bash
@@ -118,7 +129,7 @@ node ~/.agents/jev/jev-harness.mjs self-test --mock
 
 **로컬 레거시 구성**: 의도적인 `~/.agents/jev/.env`(프로필 없음)는 하위 호환성을 위해 지원됩니다. 주변 환경 변수는 매칭되는 파일 키를 오버라이드하지만 누락된/비활성화된 프로필을 활성화할 수는 없습니다. 프로필(`--profile <id>`)은 격리됩니다. 누락된 프로필은 절대 다른 프로필로 폴백되지 않습니다.
 
-Jev 작업은 목적에 따라 다른 백엔드를 통해 라우팅될 수 있습니다. `route-skills`와 `prune-context`는 권고용(자율 조치 없음)인 반면, `review`는 자율 실행을 게이트하고 검증된 백엔드로부터 명시적인 허가가 필요합니다. 모든 응답은 백엔드 종류, 모델, 티어(명시적으로 `--validated-model <id>`를 증명하지 않는 한 `unvalidated`)를 바인드합니다. `--mock`은 오프라인 계약을 검증하고 자율 조치를 절대 허가하지 않습니다.
+Jev 작업은 판정을 반환하며, 자동 적용 여부는 위의 호스트와 선택 모드에 달려 있습니다. 모든 응답은 백엔드 종류·모델·티어를 기록합니다(적격 드라이버의 제공 모델과 저장된 증명이 일치하지 않으면 `unvalidated`). 증명 일치나 통신 성공은 보정·판단 품질의 증거가 아닙니다. 토큰 절감량도 호스트 사용량 실측이 아닌 추정치입니다. `--mock`은 오프라인 계약을 검증하며 자율 조치를 허가하지 않습니다.
 
 자세한 설정, 종료 코드, 검증 범위, local/Ollama/LM Studio 설정 전제 조건은 [`jev/README.md`](jev/README.md)를 참조하세요.
 ### Jevgrep (선택적 원격 소스 탐색)
@@ -256,9 +267,21 @@ FilmCraft 빌드, MCP 등록, 앱 시작, 폰트 다운로드, 미디어 가져�
 
 `openrig`, `anyjev`, `typesafe-computer-use`, `zurp`, `helix-foundry`, `uzu`,
 `context-mode`, `rea`, `fineenvs`, `llmfit`, `pg-jev`의 원문 커밋을 고정한
-운영 스킬 11개를 제공합니다. 카탈로그 설치는 지침 문서만 추가합니다. 앱·모델·키,
+운영 스킬 11개를 제공합니다. 각 v1.1.0 패키지는 표준 `SKILL.md`, 커밋 고정
+레퍼런스, 실행 가능한 표준 라이브러리 기반 오프라인 점검 스크립트와 평가 사례를 포함합니다. 앱·모델·키,
 MCP/훅 등록, 데스크톱 제어, 데이터베이스 쓰기는 각각 별도 승인이 필요합니다.
-[setup 가이드](setup-all-skills-prompt.md#repository-operators-on-demand-documents-only)를 참고하세요.
+[setup 가이드](setup-all-skills-prompt.md#repository-operators-on-demand-offline-support)를 참고하세요.
+
+이 저장소에서 선택한 패키지의 사전 조건만 점검할 수 있습니다. 원본 앱은 실행하지 않습니다.
+
+```bash
+python3 .agent-skills/openrig/scripts/preflight.py --json
+```
+
+11개 스크립트 모두 `--help`, `--json`, 선택적 `--repo`와 `--expect-commit`을 지원하며,
+스킬 설치 후에도 다른 스킬 없이 독립 실행됩니다. 결과는 항상 `runtime_verified: false`입니다.
+종료 코드 0은 오프라인 점검 통과, 1은 누락·불일치, 2는 잘못된 입력을 뜻합니다.
+도구 경로나 소스 HEAD 일치는 실제 런타임 작동 증명이 아닙니다.
 
 
 ## 📚 스킬 목록
@@ -1046,11 +1069,22 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 
 <!-- WHATS-NEW:START -->
 
+## 🆕 v2026-10-14 업데이트
+
+<img src="assets/pipeline.png" alt="CI 레인: 카탈로그 test + installer 매트릭스(ubuntu/macos)" width="100%">
+
+| 변경 사항 | 상세 내용 |
+|--------|---------|
+| **Codex Jev 런타임 활성화** | `codex` 프로파일이 `api` 백엔드·assist 스킬 주입·advisory PreToolUse 리뷰로 ON 상태이며, 생성된 훅 정의 2건이 실제 Codex 세션에서 trusted·enabled로 확인됐고 live TypeSafe 라우팅 근거(`jev-1.13.0` 경유 `react-best-practices` 선택)를 확보했습니다. tier는 unvalidated 유지 — 전송 증명이며 캘리브레이션·권한 부여 증명이 아닙니다. |
+| **타임아웃 픽스처 동기화** | 네이티브 SIGTERM/SIGKILL 상승 테스트가 wall-clock 대신 자식 핸들러 준비 상태에 따르도록 수정했습니다. 운영 타임아웃 동작은 불변입니다. |
+| **CI test 잡 설정 축소** | `test` 잡에서 미사용 Bun 설치를 제거하고(4단계 모두 pure Python) `pyyaml==6.0.3`으로 고정했습니다. `flatten_skills.py`의 낡은 다음 단계 힌트는 실제 `generate-catalog-projections.py --check`를 가리킵니다. 설치 스위트의 대기(hung-node 바운드, unreachable probe)는 계약상 의도된 동작이라 유지합니다. 위 다이어그램은 `gti`(Codex 백엔드)로 생성했습니다. |
+
 ## 🆕 v2026-10-12 업데이트
 
 | 변경 사항 | 상세 내용 |
 |--------|---------|
-| **MI 오케스트레이션** | `mi-orchestration`을 추가했습니다. 모바일 게임 시장정보의 데이터 계보, weekly/backfill 건강성 게이트, 후보와 인간 결정 원장 분리, 1차 출처 참고자료, 오프라인 읽기 전용 감사·재개 계획 CLI를 포함합니다. 합성 테스트는 실제 벤더 수집을 인증하지 않으며 계정 권한·AI 처리·보존·외부 공유는 별도 게이트입니다. 카탈로그: 366개 → 367개. |
+| **레포 운영 스킬의 독립 지원 파일** | 요청한 운영 스킬 11개를 v1.1.0으로 표준화하고 짧은 SKILL.md, 원문 커밋 고정 레퍼런스, 실행 가능한 표준 라이브러리 기반 오프라인 점검 스크립트를 구성했습니다. 매니페스트 버전·변경된 설명, README 번역본, TOON과 setup 가이드를 동기화하며 기존 367개 카탈로그는 유지합니다. |
+| **오프라인 동작·안전성 검증** | 회귀 테스트 12개와 Ubuntu/macOS 설치 CI 실행 단계를 추가했습니다. 로컬에서 소스·커밋, 도구 누락, 특수문자 경로, 독립 실행, 파일·비밀값 보호, 자식 프로세스 자격증명 차단, Git 대상 바꿔치기·trace 검사가 통과했습니다. Git 검사는 요청한 루트에 결속하고 OS 실행에 필요한 환경만 허용하며 상속 설정·프롬프트·네트워크 프로토콜을 차단합니다. Zurp는 Burp/MCP 사전 조건을 따로 선택합니다. 스크립트 평가 사례 11개로 작성된 시나리오는 44개에서 55개가 됩니다. 원본 런타임·프로바이더·모델·데스크톱·DB 실행을 검증한 것은 아닙니다. |
 | **FilmCraft 스킬** | Rust 영상 편집기의 headless CLI/MCP와 데스크톱 loopback 제어 bridge를 위한 `filmcraft`를 추가했습니다. 원본 커밋 `1fdfd8324db4aa23b08c69f518b086e632f75f84`에 근거해 프로젝트 보존, 명령 탐색, 미디어 누락 오류와 승인된 출력 경로를 안내합니다. |
 | **선택 설치와 카탈로그** | 스킬 1개를 등록해 354개에서 355개로 갱신하고 README 번역본, TOON, setup 문서를 동기화했습니다. 스킬 설치는 FilmCraft 앱 설치·빌드, MCP 등록, 미디어 수정을 수행하지 않습니다. 다른 작업의 로컬 스킬 추가는 이번 공개 변경에서 제외했습니다. |
 | **검증 범위** | 스킬 형식 검증, 카탈로그 검색, 선택 설치 dry-run이 통과했습니다. 행동 평가 시나리오 10개를 포함했으며 FilmCraft 빌드, GUI/MCP 실행, 편집과 export는 실행하지 않았습니다. |

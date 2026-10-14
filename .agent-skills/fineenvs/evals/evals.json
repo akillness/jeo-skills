@@ -42,5 +42,15 @@
         "The response reports a concrete prerequisite blocker or evidence gap instead of inventing a successful local result"
       ]
     }
+    ,{
+      "id": 5,
+      "prompt": "Run `.agent-skills/fineenvs/scripts/preflight.py --json` with an empty PATH, then inspect a literal FineEnvs fixture containing the required environment-101 files, one audited project tree, and a matching local Git pin. Do not install uv, import frameworks, download data, start GPUs, or run jobs.",
+      "expected_output": "The response distinguishes required uv/git and optional distribution metadata, reports source shape and pin evidence, and keeps the helper offline with runtime_verified=false.",
+      "assertions": [
+        "The response reports absent uv/git or source prerequisites as blocked with exit 1 and parseable JSON",
+        "The response treats optional framework metadata as nonblocking and compares only the caller-supplied full SHA to local HEAD",
+        "The response does not invoke upstream environments, read tokens, access network/provider/GPU services, or write configuration"
+      ]
+    }
   ]
 }

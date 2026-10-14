@@ -41,5 +41,15 @@
         "The response distinguishes Tacit's order-sensitive one-forward path from Decider L0 rotation/prior correction and does not call Tacit output L0"
       ]
     }
+    ,{
+      "id": 5,
+      "prompt": "Run `.agent-skills/anyjev/scripts/preflight.py --json` with an empty PATH, then inspect an isolated AnyJev Git fixture pinned to its HEAD. Do not import models, download weights, or invoke vLLM/SGLang/llama tools.",
+      "expected_output": "The response uses the offline helper to distinguish missing required AnyJev/numpy metadata from optional backends, verifies only public source markers and a literal local Git pin, and keeps runtime_verified false.",
+      "assertions": [
+        "The response reports required metadata/tool absence as blocked with exit 1 and emits the documented JSON envelope",
+        "The response accepts a matching 40-hex local HEAD but blocks a mismatch without running any backend or provider",
+        "The response does not download weights, call model servers, read credentials, or mutate files/configuration"
+      ]
+    }
   ]
 }

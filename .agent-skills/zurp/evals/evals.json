@@ -41,5 +41,15 @@
         "The response does not retry API calls or claim a configuration failure solely from the empty result"
       ]
     }
+    ,{
+      "id": 5,
+      "prompt": "Run `.agent-skills/zurp/scripts/preflight.py --json` with an empty PATH and with an isolated literal checkout carrying the public Zurp markers and an exact local Git pin. Do not run Java, Gradle, Node, npm, MCP, Burp, or Meta traffic.",
+      "expected_output": "The response inventories Java/Gradle/Node/npm and public checkout shape with paths only, agrees status with exit codes, and keeps all runtime, token, network, and configuration operations out of the helper.",
+      "assertions": [
+        "The response reports absent required tools as blocked without invoking their executables or guessing versions",
+        "The response uses bounded local Git only for a literal --repo and blocks a wrong full-SHA pin",
+        "The response preserves runtime_verified=false and does not expose tokens or perform MCP/provider/Burp actions"
+      ]
+    }
   ]
 }

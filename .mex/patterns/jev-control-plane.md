@@ -18,14 +18,42 @@ edges:
   - target: "patterns/jeo-skill-install-flow.md"
     condition: "when Jev setup interacts with the catalog installer"
 grounds_to: []
-last_updated: 2026-10-12
+last_updated: 2026-10-14
 ---
 
 # Jev Control Plane Runbook
 
+README/runtime audits must compare source and installed harness bytes before
+assuming test results cover the active installation. A rounded Choice response
+with probability sum 0.99 is a useful loopback compatibility probe: current
+source renormalizes small drift, while an older installed harness rejects it.
+Check legacy status separately from per-agent controller status; configured API
+credentials and copied rule/package files do not prove readiness, profile ON,
+host registration, or action enforcement. The initial audit found advisory-only
+callbacks; the later runtime integration adds opt-in assist and Codex review modes. Latest evidence: `../context/jev-readme-audit.md`.
+
 Source of truth is `jev/` in this repo: `jev-harness.mjs` (Node ESM, built-ins only), `jev-setup.sh`, `jev_local_server.py`, `jev-control-plane.rule.md`, `README.md`; portable skill `.agent-skills/jev-control-plane/SKILL.md`. Design record: `.survey/jev-model-routing/` (gitignored research + `design-options.md`, interview-approved 2026-10-08).
 
 **Installed copy vs repo.** `jev-setup.sh` copies `jev/` into `~/.agents/jev/`. On 2026-10-01 fixes were applied directly to the *installed* copy and never ported, so the two diverged (sha1 `f835f55…` installed vs repo). The repo rewrite of 2026-10-08 supersedes it; resync with `bash jev/jev-setup.sh --mode <kind>` (home-scoped, user-approved). Never edit `~/.agents/jev/` by hand again.
+
+## Runtime activation verification (2026-10-14)
+
+1. Configure a named profile through the source controller with `--runtime-mode assist`
+   and the intended `--review-mode` (`off`, `advisory`, or explicit `enforce`).
+2. Compare installed/source runtime bytes after setup; test from an empty directory
+   so a working checkout cannot mask a missing installed catalog or skill file.
+3. Codex: merge with `hooks-install`, review exact definitions through `/hooks`, and
+   require `hooks/list` to report trusted+enabled before claiming activation. Trust
+   uses server-computed hashes; never invent them. Preserve unrelated hook indices.
+4. Verify a fresh host session identifies injected source paths without reading files,
+   then run one harmless tool and inspect the actual PreToolUse review context.
+5. Run all six Node suites (install/plugin/profile/runtime/lifecycle/codex) and Python
+   Jev/installer regressions. Include split UTF-8, malformed mapping/config and
+   unavailable/unvalidated enforcement cases. Keep live-provider evidence separate.
+6. Native context pruning must preserve the latest skill message and all non-Jev
+   history, and skip excluded blocks when input bounds are exceeded.
+
+Actual application and current limitations: `../context/jev-runtime-activation.md`.
 
 ## Architecture (2026-10-08)
 - **Backend kinds** `BACKEND_KINDS = api | local | ollama | lmstudio | systemone` — one registry in the harness; `jev-setup.sh` and `install.sh` validate against the same five names.
@@ -54,6 +82,14 @@ node jev/jev-harness.mjs smoke [--backend K] [--task "<text>"]  # live, never au
 ```
 
 ## Gotchas
+
+- Native timeout regressions must not assume a child has installed signal handlers
+  within a short wall-clock deadline. Register SIGTERM handling before publishing
+  a readiness marker, mock only parent `setTimeout`, wait for readiness, advance
+  deadline then wait for TERM receipt, and finally advance kill grace. Keep an
+  independent real-time bound for polling actual process death and register
+  unconditional cleanup for failed assertions. Do not lengthen production
+  timeouts or remove SIGKILL/orphan checks to silence a loaded-CI race.
 - Capture test logs with the runner's exit preserved (`set -o pipefail; cmd > log; echo $?`), then grep the log. Piping into `grep`/`tail` reports the filter's exit, not the runner's.
 - The regression fixture must speak the **documented** shapes (422 without `model`; Choice `criteria`; `noul` answers). A fixture that mirrors the harness's assumptions hides wire mismatches — that is how the `api` path stayed broken for weeks.
 - `/v1/decide` state is sent as the raw object (the server `json.dumps` dicts itself). `thinking` must be `"off"`; a response with `thinking.used: true` is rejected.
@@ -62,6 +98,10 @@ node jev/jev-harness.mjs smoke [--backend K] [--task "<text>"]  # live, never au
 - Two legacy tests (`empty/partial saved config ⇒ exit 3`, `ambient JEV_MODE switch cannot deactivate a saved opt-in`) were already failing at HEAD before this work; the rewrite satisfies them instead of weakening them.
 - HF model-card reads: use `read(...:raw)` for source files (`vl/serve_decide.py`); a non-raw child URL returns the card.
 - Residual (unvalidated generative tier only): the Q4 chat path still answers polarity-negative review questions "yes/0.95" (same as the 2026-10-02 audit). Safe by construction (`permit` impossible on that tier) but the `proposal_only` reasons are noisy. The 2026-10-01 installed-copy "ask positively and invert" workaround was deliberately not ported — calibration work belongs with a validated head.
+- Hosted live checks: capture CLI stdout/stderr privately before emitting a safe
+  whitelist. Non-2xx provider text can appear in the harness error envelope; never
+  print it unfiltered. A disposable fetch observer must disable redirects and persist
+  its attempt count before I/O, so a killed process cannot leave a false zero count.
 - `route-skills` needs a catalog. An explicit `JEV_CATALOG_PATH` is authoritative and fails closed when invalid; native hooks pin the trusted installed snapshot and never fall back to an arbitrary CWD. Standalone CLI discovery may otherwise use the checkout, installed snapshot, or legacy clone. Verify installed routing from an empty CWD rather than hiding missing assets with the repo's catalog.
 - Excerpts are sent to the backend: `skillExcerpt` checks containment on `realpath` (catalog `../` paths and in-root symlinks to outside files are both refused). The user's `~/.agents/skills` has ~93 symlinked dirs (other sources) that resolve outside the root; none are catalog skills, so no excerpt is lost.
 - An isolated-HOME live install must not symlink the real `~/.agents/skills`: setup then finds the real `jeo-skill` router and runs `npx skills add --agent <profile>` (network; fails for a non-agent profile id). Copy SKILL.md files instead.
@@ -78,6 +118,22 @@ node jev/jev-harness.mjs smoke [--backend K] [--task "<text>"]  # live, never au
 - [ ] Catalog gates: validator, `generate --check`, frontmatter `--check`, `flatten --dry-run` all exit 0 (SKILL.md frontmatter is frozen; body edits only)
 - [x] Live Ollama reached HTTP 200; routing returned `selectedSkill:null` / `errorCategory:backend_unavailable`. This proves transport and fail-closed output, not successful routing, model quality/calibration, or native package registration.
 - Current source catalog: 367 skills, including the concurrent MI skill addition; this Jev update adds no catalog entry.
+
+## Hosted review follow-up (2026-10-12)
+- One actual `node jev/jev-harness.mjs review --backend api <task> <proposal-json>`
+  invocation used isolated HOME and a Keychain credential in the child environment
+  only. A disposable preloaded fetch observer allowed one POST to the official
+  endpoint and disabled redirects; no profile, fallback, retry, or attestation was used.
+- Observed HTTP 200, four exact Noul answer IDs, `jev-latest` -> `jev-1.13.0`,
+  usage 435/80, end-to-end 340 ms, `attempted: [api]`, and `error: null`.
+- Result was `proposal_only` because evidence support (0.69) and clarification
+  confidence (0.58) were below 0.8. This sample does not independently prove the
+  favorable-answer unvalidated-tier downgrade; no routing/pruning or calibration
+  claim follows from it. Sanitized evidence omits `attemptDetails`; the observer's
+  completed count of one plus `attempted: [api]` establishes the request boundary.
+- Secret scan was clean. Owned observer/evidence files and empty HOME were removed;
+  unrelated earlier probe artifacts with unconfirmed ownership were preserved.
+- Proof: `~/vaults/llm-wiki/raw/sources/audits/2026-10-12-typesafe-live-review-a9bf469a/evidence.json`.
 
 ## Update Scaffold
 - [ ] Bump `.mex/ROUTER.md` Current Project State when backend kinds, tiers, or output fields change

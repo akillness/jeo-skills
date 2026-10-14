@@ -112,6 +112,15 @@ actually fix a document.
   bundling upstream runtimes. Their evaluation scenarios and setup-guide boundaries
   ship with the skill; installation does not approve upstream downloads, services,
   provider/data access, host configuration or database mutation.
+- Router/reference/helper splits preserve the source pin and operation boundaries.
+  Independently installed helpers must not import sibling/root runtime code.
+  `scripts/preflight.py` reports offline evidence with `runtime_verified: false`;
+  selected-repo Git is bounded, environment-isolated and bound to `--show-toplevel`.
+  The explicit Ubuntu/macOS installer CI step runs
+  `python3 scripts/test_repository_preflight_regressions.py -v`.
+- Catalog projection validation does not compare package `version` or `allowed_tools`.
+  A support upgrade must explicitly synchronize those manifest fields and any changed
+  description with SKILL.md frontmatter before regenerating projections.
 - Concurrent authors can temporarily make the live tree differ from the manifest.
   Preserve their files and metadata; validate the complete intended publication
   snapshot rather than deleting an unrelated folder or weakening coverage checks.

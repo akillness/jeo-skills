@@ -201,7 +201,9 @@ recognized by the `skills` CLI:
 
 `codex`, `gemini-cli`, `opencode`, and `cursor` also map to the shared root, so adding
 all of those alongside `universal` would create redundant platform exposure rather than
-additional skills.
+additional skills. For an opencode-only install, `-a opencode` (or
+`jeo-skill install ... --agent opencode`) is valid and targets the same shared root
+that sst/opencode reads natively — see Step 4D. No separate projection is needed.
 
 ## Step 4 — Install the requested scope
 
@@ -398,6 +400,50 @@ fi
 **Important:** Do not use manual `cp -R` for Antigravity projection. Always use
 `jeo-skill install --agent antigravity-cli` or `jeo-skill install --agent antigravity`.
 
+### Step 4D — OpenCode (all modes when detected)
+
+sst/opencode (opencode.ai) reads the shared root natively — global
+`~/.agents/skills` and project `.agents/skills` — alongside its own
+`~/.config/opencode/skills`, `~/.claude/skills`, and the project `.opencode/skills`
+compat paths ([skills docs](https://opencode.ai/docs/skills/)). No native projection
+step is needed: the Step 4 install already placed everything opencode loads. Prefer
+the shared root over `~/.config/opencode/skills` so one install also serves Claude
+Code, Codex, and Pi; a same-ID skill copied into `~/.config/opencode/skills` would
+shadow the shared copy at higher precedence. Verified live on opencode 1.18.18:
+`skills add -a opencode` and `jeo-skill install ... --agent opencode` both land in
+the shared root in an isolated HOME, and `jeo-skill doctor` reports zero errors there.
+For the Aside browser integration, Aside CLI's `aside-browser` skill is installed
+directly to `~/.config/opencode/skills/aside-browser/SKILL.md` (and the shared root)
+via `aside skills install --target opencode` (or `--target general`) in Step 5.
+
+```bash
+if command -v opencode >/dev/null 2>&1; then
+  opencode --version
+
+  # Preview an opencode-scoped selection without making changes
+  HOME="$USER_HOME" python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" \
+    install "${RUNTIME_SELECTION[@]}" --agent opencode --global --dry-run || exit 1
+
+  # Install the same selected skills to the shared root opencode reads
+  HOME="$USER_HOME" python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" \
+    install "${RUNTIME_SELECTION[@]}" --agent opencode --global --yes || exit 1
+
+  # Prove the shared root is readable (no model call, no config write)
+  [ -f "$SKILLS_ROOT/jeo-skill/SKILL.md" ] \
+    && printf 'opencode: shared root readable at %s\n' "$SKILLS_ROOT"
+  opencode mcp list
+
+  printf 'opencode: shared-root install completed\n'
+fi
+```
+
+**Two products, one binary name:** the archived Go TUI (`opencode-ai/opencode`,
+continued as `crush`) has **no** skill loader — the steps above do not make skills
+discoverable there. `opencode --version` reporting 1.x indicates sst/opencode.
+For MCP servers opencode consumes, inspect state with `opencode mcp list` only;
+local stdio entries live in `opencode.json` and are never hand-edited during
+blanket setup (same rule as Aside's `mcp.servers` map).
+
 Stop here in minimal mode. In core mode, install only dependencies explicitly required
 by the selected starter skills; do not continue into the full shared-tool setup by default.
 
@@ -487,7 +533,7 @@ model the backend reports serving, and only calibrated decision-head drivers (`a
 `systemone`) can be validated. `review` returns `permit` only on a validated tier, so
 `local`, `ollama`, and `lmstudio` recommend (`proposal_only`) but never authorize.
 Optional `skills.json` `model_policies` add advisory per-skill `provider/model` routing
-to `route-skills` output; no host adapter consumes it yet.
+to `route-skills` output. Native hooks present those model suggestions and `model-plan` renders launch arguments; the coding model is not switched automatically.
 
 Setup also installs a validated catalog snapshot at `~/.agents/jev/skills.json` (from the
 checkout, otherwise the published catalog) so `route-skills` works outside a checkout; a
@@ -529,7 +575,19 @@ node ~/.agents/jev/jev-harness.mjs --profile gjc status --operation route-skills
 | `lmstudio` | LM Studio service; model load/download | Chat adapter | Unvalidated; proposal_only |
 | `systemone` | Endpoint URL + optional key; no downloads | Points to operator-run System One | Calibrated (can authorize if driver matches) |
 
-**Native advisory packages**: setup copies Claude, jeopi, OMP, and Pi packages and the rule artifact. Copying is not provider registration. Use verified session-load argv from read-only `host-plan`; registration-dependent maintenance is separate from the profile's `JEV_ENABLED` switch. No native hook grants permissions or automatically replaces a coding model.
+**Native runtime integration**: setup copies Claude and Pi-family packages, but package copying is not host registration. `configure --runtime-mode assist` enables full selected-skill instruction injection when the host loads its extension. jeopi/OMP/Pi additionally prune older Jev-owned custom messages only; their newest skill message and all user/system/assistant/tool messages remain intact. Claude does not automatically prune history or enforce review.
+
+**Codex CLI 0.162.1 hooks**: after explicit Jev activation approval, use the following profile-specific setup. Omit `--key-env` on an existing API profile to preserve its saved credential. No literal key belongs in a prompt or command.
+
+```bash
+node ~/.agents/jev/jev-plugin.mjs configure --agent codex --profile codex --backend api --key-env JEV_API_KEY --runtime-mode assist --review-mode advisory --apply
+node ~/.agents/jev/jev-plugin.mjs enable --agent codex --profile codex --apply
+node ~/.agents/jev/jev-plugin.mjs hooks-install --agent codex --profile codex --apply
+node ~/.agents/jev/jev-plugin.mjs status --agent codex --profile codex
+```
+
+Review and trust the exact generated definitions in Codex `/hooks`, then verify in a fresh session. Installation merges existing hooks and does not grant trust. UserPromptSubmit injects selected full skill files; PreToolUse review modes are `off` (default), `advisory`, and `enforce`. Enforce emits deny unless the verdict is permit on a validated backend; it never emits a host allow decision. Jev does not run tests/builds, switch models, or rewrite Codex history. Codex can skip untrusted hooks and fail open on process failures/timeouts, so retain host permissions. Default catalog setup still performs none of these optional hook/profile changes. See [the runtime guide](jev/README.md#automatic-codex-integration).
+
 
 **Plan-only hosts** (analysis or browser-only environments): Receive advisory routing output but cannot enforce gating. Jev remains available as read-only reference.
 
@@ -848,20 +906,66 @@ if command -v codex >/dev/null 2>&1 && ! codex mcp list 2>/dev/null | grep -q '^
 fi
 ```
 
-### Aside MCP wiring
+### Aside browser skill and MCP wiring
 
-Aside handles MCP in two directions, and only one of them is scriptable.
+Aside provides two complementary integration surfaces: the `aside-browser` entrypoint
+skill for agent instructions, and the `aside mcp` stdio server for browser automation.
 
-**Aside as an MCP server.** `aside mcp` starts Aside over stdio, letting another agent
-drive its browser session. Register it idempotently:
+**1. `aside-browser` skill installation.** When Aside CLI is installed, register its
+`aside-browser` skill across coding agents (including OpenCode, Claude Code, Codex, and Cursor).
+`aside skills install` targets either `general` (all detected agents plus `~/.agents/skills`)
+or specific runtimes like `opencode`:
 
 ```bash
 if command -v aside >/dev/null 2>&1; then
+  # Install the aside-browser skill to all detected agents (including opencode)
+  if command -v opencode >/dev/null 2>&1; then
+    aside skills install --target opencode
+  fi
+  aside skills install --target general
+fi
+```
+
+If `aside` CLI is not yet installed on macOS or Linux, install it via:
+`curl -fsSL https://releases.aside.com/install.sh | bash`
+
+**2. Aside as an MCP server.** `aside mcp` starts Aside over stdio, letting another agent
+drive its browser session. Register it idempotently across Claude Code, Codex, and OpenCode:
+
+```bash
+if command -v aside >/dev/null 2>&1; then
+  # Claude Code
   if command -v claude >/dev/null 2>&1 && ! claude mcp list 2>/dev/null | grep -q '^aside'; then
     claude mcp add aside -s user -- aside mcp
   fi
+  # Codex CLI
   if command -v codex >/dev/null 2>&1 && ! codex mcp list 2>/dev/null | grep -q '^aside'; then
     codex mcp add aside -- aside mcp
+  fi
+  # OpenCode (merge into ~/.config/opencode/opencode.json)
+  if command -v opencode >/dev/null 2>&1; then
+    OPENCODE_CFG="${XDG_CONFIG_HOME:-$USER_HOME/.config}/opencode/opencode.json"
+    if [ -f "$OPENCODE_CFG" ]; then
+      python3 - "$OPENCODE_CFG" <<'EOF'
+import json, sys
+cfg_path = sys.argv[1]
+try:
+    with open(cfg_path, "r", encoding="utf-8") as f:
+        cfg = json.load(f)
+except Exception:
+    cfg = {}
+mcp = cfg.setdefault("mcp", {})
+if "aside" not in mcp:
+    mcp["aside"] = {
+        "type": "local",
+        "command": ["aside", "mcp"],
+        "enabled": True
+    }
+    with open(cfg_path, "w", encoding="utf-8") as f:
+        json.dump(cfg, f, indent=2)
+    print("opencode: registered aside mcp server")
+EOF
+    fi
   fi
 fi
 ```
@@ -1829,7 +1933,11 @@ configuration and credentials outside the project. See
 ## Step 6 — Runtime-specific shared-root checks
 
 
-- `jeo`, `jeopi`, `opencode`, and `gjc` discover `~/.agents/skills` directly; no skills CLI agent ID is needed.
+- `jeo`, `jeopi`, and `gjc` discover `~/.agents/skills` directly; no skills CLI agent ID is needed.
+- sst/opencode discovers `~/.agents/skills` directly too (`-a opencode` targets the
+  same shared root — see Step 4D), and additionally reads `~/.config/opencode/skills`
+  natively at higher precedence. The archived Go `opencode-ai/opencode` TUI has no
+  skill loader; shared-root installs do not apply there.
 - GJC may require skill discovery to be enabled and `~/.agents/skills` added to its
   `skills.customDirectories`. Inspect its current config and merge only those keys; never
   replace the whole file.
@@ -1850,6 +1958,9 @@ command -v rtk >/dev/null 2>&1 && rtk gain
 command -v semble >/dev/null 2>&1 && semble --help >/dev/null
 command -v claude >/dev/null 2>&1 && claude mcp list
 command -v codex >/dev/null 2>&1 && codex mcp list
+command -v opencode >/dev/null 2>&1 && opencode --version
+command -v opencode >/dev/null 2>&1 && [ -f "$SKILLS_ROOT/jeo-skill/SKILL.md" ] && printf 'opencode: shared root readable at %s\n' "$SKILLS_ROOT"
+command -v opencode >/dev/null 2>&1 && opencode mcp list
 command -v aside >/dev/null 2>&1 && aside --version
 for acct in "$USER_HOME"/.aside/u/*/; do
   [ -d "$acct/skills/user" ] || continue
@@ -1863,9 +1974,12 @@ Finally report:
 1. detected OS and agents;
 2. selected mode and installed skill count;
 3. exact global and per-agent paths used, including each Aside account's
-   `skills/user/` path and how many skills were mirrored there;
+   `skills/user/` path and how many skills were mirrored there; for opencode, the
+   shared `~/.agents/skills` path plus `opencode --version` and the
+   `opencode mcp list` result;
 4. MCP/shell/plugin registrations completed or skipped, with reasons — note whether Aside
-   was registered as an MCP server, and that servers Aside consumes stay a manual UI step;
+   was registered as an MCP server (across Claude Code, Codex, and OpenCode) and its
+   `aside-browser` skill installed, and that servers Aside consumes stay a manual UI step;
 5. verification output and any manual follow-up;
 6. in full mode, if `scrapingant-web-fetch` was not already configured, ask the user once
    whether to set it up now (sponsor skill, free 10,000 credits/month, no card) — see
@@ -2191,11 +2305,13 @@ into an evidence-checked 90-day plan using YouTube Studio only, needs no API key
 posts or edits a channel. Its Korean trigger words (떡상, 유튜브 성장, 죽음의 계곡) are part
 of the description on purpose.
 
-### Repository operators (on demand, documents only)
+### Repository operators (on demand, offline support)
 
-The eleven repository operator skills below are original instruction wrappers, not
-vendored applications. Catalog installation adds their `SKILL.md`, references and
-eval scenarios only. Even in `full` mode, do not clone/build these projects, install
+The eleven repository operator skills below are original instruction packages, not
+vendored applications. Each v1.1.0 package includes a router-first `SKILL.md`, a
+pinned `references/upstream.md`, an executable stdlib `scripts/preflight.py`, and
+behavioral eval scenarios. Catalog installation copies these files; it does not run
+the helpers or upstream applications. Even in `full` mode, do not clone/build these projects, install
 their dependencies, download models/data, register MCP servers/plugins/hooks, start
 services, read credentials, grant desktop authority, submit training jobs, scan live
 targets, or mutate databases. Select one real task and approve its exact target,
@@ -2215,13 +2331,41 @@ data disclosure, side effects and rollback before following that skill's setup b
 | [llmfit](.agent-skills/llmfit/SKILL.md) | An intentionally installed llmfit binary can inspect hardware and estimate model fit. Profiles/overrides, storage, downloads and benchmark/share operations are distinct. Recommendations and throughput estimates are not measured inference or Uzu compatibility. |
 | [pg-jev](.agent-skills/pg-jev/SKILL.md) | PostgreSQL 14–17 CI coverage, matching PGXS/`pg_config`, `plpython3u` and privileged extension installation. Provider keys belong to the server process/configuration, not a client shell. Confirm row disclosure, endpoint and per-database writes before installs or inference SQL. |
 
-Preview document selection without installing any of those upstream runtimes:
+Preview instruction/support-file selection without installing any upstream runtime:
 
 ```bash
 python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" install \
   openrig anyjev typesafe-computer-use zurp helix-foundry uzu \
   context-mode rea fineenvs llmfit pg-jev --global --dry-run
 ```
+
+For a selected skill, use its offline helper before the separately approved setup:
+
+```bash
+python3 "$SKILLS_ROOT/openrig/scripts/preflight.py" --help
+python3 "$SKILLS_ROOT/openrig/scripts/preflight.py" --json
+python3 "$SKILLS_ROOT/openrig/scripts/preflight.py" --json \
+  --repo "/path/to/openrig" \
+  --expect-commit 3001cc436656c435e54425443e708e3e2d8c7d68
+```
+
+All eleven helpers support `--help`, `--json`, optional `--repo PATH`, and optional
+`--expect-commit FULL_SHA` (requires `--repo`). Zurp also accepts `--surface burp|mcp|all`
+so one selected surface does not require the other toolchain. Run the helper from
+the installed skill directory or use its absolute path; it needs no sibling skill.
+JSON reports `skill`, `scope: offline-preflight`, `status`, `checks`, and
+`runtime_verified: false`. Exit 0 means the reported offline checks pass, 1 means a
+missing/mismatched prerequisite, and 2 means invalid input. An unavailable optional
+application is not a reason to install it during blanket setup.
+
+Default checks inspect host facts, tool paths and permitted package metadata only.
+`--repo` adds public source-marker checks and bounded local Git inspection; a HEAD
+pin match does not attest uncommitted working-tree contents. Tool presence and
+`status: ok` do not prove runtime versions, provider authorization, hooks, desktop
+permissions, service health, model quality or measured inference. Record unchecked
+versions and missing prerequisites; do not silently repair them or run upstream
+commands to force a green result. Read each skill's reference for its actual setup,
+operation, failure and approval contract.
 
 Each skill records its audited upstream commit and license evidence. These local
 wrappers do not relicense upstream software or model/data assets: Context Mode is

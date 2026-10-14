@@ -35,7 +35,7 @@ def flatten_skills(skills_dir: Path, mode: str = "flat", dry_run: bool = False):
                 )
                 print(f"  {skill_folder.relative_to(skills_dir)} -> {new_name}")
         print(
-            "\n✅ Done! Now run: python3 .agent-skills/scripts/generate_compact_skills.py"
+            "\n✅ Done! Next: python3 scripts/generate-catalog-projections.py --check"
         )
         return
 
@@ -90,7 +90,7 @@ def flatten_skills(skills_dir: Path, mode: str = "flat", dry_run: bool = False):
 
 
     print(
-        "\n✅ Done! Now run: python3 .agent-skills/scripts/generate_compact_skills.py"
+        "\n✅ Done! Next: python3 scripts/generate-catalog-projections.py --check"
     )
 
 

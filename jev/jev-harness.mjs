@@ -606,6 +606,8 @@ export async function requestJev(state, questions, { op = 'review', mock = false
 }
 
 // ── Answer normalization (documented TypeSafe shape; legacy for `local`) ────
+// Allowed |sum - 1| drift for rounded choice probabilities before failing closed.
+const PROBABILITY_SUM_TOLERANCE = 0.02;
 function normalizeAnswers(payload, questions, { legacy = false } = {}) {
   if (!legacy) {
     if (!payload || typeof payload !== 'object' || Array.isArray(payload)) throw new Error('Malformed Jev response: expected an object');
@@ -638,9 +640,11 @@ function normalizeAnswers(payload, questions, { legacy = false } = {}) {
           if (!Number.isFinite(probability) || probability < 0 || probability > 1) throw new Error(`Malformed Jev response: invalid choice probabilities for ${id}`);
           total += probability;
         }
-        if (Math.abs(total - 1) > 1e-6) throw new Error(`Malformed Jev response: choice probabilities must sum to 1 for ${id}`);
+        // The hosted API rounds probabilities (2 decimals), so sums drift slightly from 1.
+        // Accept small drift and renormalize; anything larger still fails closed.
+        if (!(total > 0) || Math.abs(total - 1) > PROBABILITY_SUM_TOLERANCE) throw new Error(`Malformed Jev response: choice probabilities must sum to 1 for ${id}`);
         if (!Number.isFinite(item.confidence) || item.confidence < 0 || item.confidence > 1) throw new Error(`Malformed Jev response: invalid confidence for ${id}`);
-        result[id] = { choice: item.choice, probabilities: Object.fromEntries(options.map(option => [option, probabilities[option]])), confidence: item.confidence };
+        result[id] = { choice: item.choice, probabilities: Object.fromEntries(options.map(option => [option, probabilities[option] / total])), confidence: item.confidence };
       } else {
         if (item.type !== 'noul' || !Number.isFinite(item.noul) || item.noul < 0 || item.noul > 1) throw new Error(`Malformed Jev response: invalid noul for ${id}`);
         result[id] = evaluateNoul(item.noul);
@@ -1374,8 +1378,9 @@ export async function smoke({ backend = null, model = null, task = null } = {}) 
 
 async function main() {
   if (PROFILE_ERROR) throw new Error(PROFILE_ERROR);
-  const [command, ...args] = CLI_ARGS;
-  const { flags, rest } = parseArgs(args);
+  // Flags may precede the command (e.g. `--mock self-test`); the command is the first positional.
+  const { flags, rest: positional } = parseArgs(CLI_ARGS);
+  const [command, ...rest] = positional;
   if (command === 'self-test') process.exitCode = await selfTest();
   else if (command === 'status') {
     const status = await jevStatus({ operation: flags.operation });

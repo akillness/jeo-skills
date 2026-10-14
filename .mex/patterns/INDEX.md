@@ -1,5 +1,7 @@
 # Pattern Index
 
+<!-- last_updated: 2026-10-12 -->
+
 Lookup table for all pattern files in this directory. Check here before starting any task — if a pattern exists, follow it.
 
 <!-- This file is populated during setup (Pass 2) and updated whenever patterns are added.
@@ -11,6 +13,7 @@ Lookup table for all pattern files in this directory. Check here before starting
 | Pattern | Use when |
 |---------|----------|
 | [catalog-metadata-changes.md#task-add-a-new-skill](catalog-metadata-changes.md#task-add-a-new-skill) | Adding a new skill to `.agent-skills/` and registering it in `skills.json` |
+| [catalog-metadata-changes.md#task-add-offline-repository-operator-support](catalog-metadata-changes.md#task-add-offline-repository-operator-support) | Standardizing a repository operator into a portable router, pinned reference and safe offline preflight with CI regressions |
 | [catalog-metadata-changes.md#task-import-an-upstream-family](catalog-metadata-changes.md#task-import-an-upstream-family) | Vendoring a whole upstream skill family (pinned commit, license, provenance, setup-prompt boundary, changelog) |
 | [catalog-metadata-changes.md#task-merge-a-duplicate-skill](catalog-metadata-changes.md#task-merge-a-duplicate-skill) | Two skills do the same job: absorb one into the canonical skill, retire the name, repoint route-outs |
 | [catalog-metadata-changes.md#task-update-an-existing-skills-metadata](catalog-metadata-changes.md#task-update-an-existing-skills-metadata) | Changing an existing skill's category, subcategory, description, or retiring it |

@@ -10,6 +10,7 @@ const DEFAULT_CONTROLLER_CANDIDATES = [
 ].filter(Boolean);
 
 export const JEV_ADVISORY_CUSTOM_TYPE = 'jev-advisory';
+export const JEV_SKILL_CUSTOM_TYPE = 'jev-skill-context';
 export const DEFAULT_CONTROLLER_TIMEOUT_MS = 25_000;
 const CONTROLLER_TIMEOUT_GRACE_MS = 100;
 const CONTROLLER_TIMEOUT_STARTUP_GRACE_MS = 50;
@@ -90,6 +91,8 @@ export function invokeControllerHook({ agent, profile, input, inputStream, contr
       resolveResult(result);
     };
     child.once('spawn', () => { timeoutTimer = setTimeout(onTimeout, timeout + CONTROLLER_TIMEOUT_STARTUP_GRACE_MS); });
+    child.stdout.setEncoding('utf8');
+    child.stderr.setEncoding('utf8');
     child.stdout.on('data', (chunk) => { stdout += chunk; });
     child.stderr.on('data', (chunk) => { stderr += chunk; });
     child.stdin.on('error', (error) => { stdinError = error; });
@@ -147,12 +150,19 @@ export function advisoryMessage(result, context = extractAdvisoryContext(result)
 
 /**
  * Register the provider-owned before_agent_start callback used by jeopi/OMP/Pi.
- * The callback only injects advisory context; it cannot change permissions or
- * select/hot-swap the host coding model.
+ * Advisory remains the default. Explicit assist profiles can also inject skill
+ * instructions and prune only Jev-owned custom messages from LLM input. Neither
+ * callback changes permissions, persisted history, tools, or the host model.
  */
 export function registerBeforeAgentStart(api, { agent, profile, envelope = 'systemPrompt', controllerPath, timeoutMs } = {}) {
   if (!api || typeof api.on !== 'function') return { registered: false, agent, profile: profile || null, advisory: true };
+  let latestPrompt = '';
+  let pruneEnabled = false;
+  let generation = 0;
   api.on('before_agent_start', async (event = {}) => {
+    const currentGeneration = ++generation;
+    latestPrompt = typeof event.prompt === 'string' ? event.prompt : '';
+    pruneEnabled = false;
     const result = await invokeControllerHook({
       agent,
       profile,
@@ -160,18 +170,56 @@ export function registerBeforeAgentStart(api, { agent, profile, envelope = 'syst
       timeoutMs,
       input: { type: 'UserPromptSubmit', prompt: String(event.prompt || ''), agent, profile: profile || null },
     });
+    const assist = result?.ok === true && result?.enabled === true && result?.runtime?.mode === 'assist';
+    if (generation === currentGeneration) pruneEnabled = assist && result.runtime.pruneContext === true;
+    const skillContext = assist && typeof result.runtime.skillContext === 'string' ? result.runtime.skillContext.trim() : '';
+    const skillMessage = skillContext ? {
+      customType: JEV_SKILL_CUSTOM_TYPE,
+      content: skillContext,
+      display: false,
+      details: { agent: result.agent ?? agent, profile: result.profile ?? profile ?? null, applied: true, advisory: false },
+      attribution: 'agent',
+    } : null;
     const context = extractAdvisoryContext(result);
-    if (!context) return {};
+    if (!context) return skillMessage ? { message: skillMessage } : {};
     if (envelope === 'systemPrompt-string') {
       const prior = typeof event.systemPrompt === 'string' && event.systemPrompt.length ? `${event.systemPrompt}\n` : '';
-      return { systemPrompt: `${prior}${context}` };
+      return { systemPrompt: `${prior}${context}`, ...(skillMessage ? { message: skillMessage } : {}) };
     }
     if (envelope === 'message') {
       const message = advisoryMessage(result, context);
       return message ? { message } : {};
     }
     const prior = Array.isArray(event.systemPrompt) ? event.systemPrompt : [];
-    return { systemPrompt: [...prior, context] };
+    return { systemPrompt: [...prior, context], ...(skillMessage ? { message: skillMessage } : {}) };
+  });
+  api.on('context', async (event = {}) => {
+    // Native context events contain a copy of LLM input. Never serialize or
+    // remove user, assistant, system, or tool messages, including tool pairs.
+    if (!pruneEnabled || !latestPrompt.trim() || !Array.isArray(event.messages)) return {};
+    const isSkillMessage = message => message?.role === 'custom' && message.customType === JEV_SKILL_CUSTOM_TYPE && typeof message.content === 'string';
+    let newest = event.messages.length - 1;
+    while (newest >= 0 && !isSkillMessage(event.messages[newest])) newest -= 1;
+    const eligible = [];
+    let chars = 0;
+    // Bound the request before JSON serialization. Excluded messages and the
+    // newest skill instructions stay intact, even if a response names them.
+    for (let index = 0; index < newest && eligible.length < 32; index += 1) {
+      const message = event.messages[index];
+      if (!isSkillMessage(message) || chars + message.content.length > 262_144) continue;
+      eligible.push({ id: `jev-context-${index}`, text: message.content, index });
+      chars += message.content.length;
+    }
+    if (!eligible.length) return {};
+    const currentGeneration = generation;
+    const result = await invokeControllerHook({
+      agent, profile, controllerPath, timeoutMs,
+      input: { type: 'Context', prompt: latestPrompt, agent, profile: profile || null, blocks: eligible.map(({ id, text }) => ({ id, text })) },
+    });
+    if (generation !== currentGeneration || result?.ok !== true || result?.enabled !== true || result?.runtime?.mode !== 'assist' || !Array.isArray(result.runtime.dropContextIds)) return {};
+    const dropIds = new Set(result.runtime.dropContextIds.filter(id => typeof id === 'string'));
+    const dropIndices = new Set(eligible.filter(({ id }) => dropIds.has(id)).map(({ index }) => index));
+    return dropIndices.size ? { messages: event.messages.filter((_message, index) => !dropIndices.has(index)) } : {};
   });
   return { registered: true, agent, profile: profile || null, advisory: true };
 }

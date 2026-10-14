@@ -13214,12 +13214,12 @@
         "Grep"
       ],
       "keyword": "openrig",
-      "version": "1.0",
+      "version": "1.1.0",
       "source": "https://github.com/mvschwarz/openrig"
     },
     {
       "name": "anyjev",
-      "description": "Operate nokia-applied-research/AnyJev, the Apache-2.0 Python library that turns open causal LLMs into typed choice, yes/no, and score decisions with next-token probabilities. Use when pinning or installing AnyJev, selecting its training-free Decider (raw/L0), running Tacit self-distilled checkpoints, configuring the transformers/vLLM/SGLang/llama.cpp backends, or exposing the local HTTP gateway. Triggers on AnyJev, Tacit, L0 readout, permutation debiasing, llama.cpp logprob backend, SGLang /generate scoring, or a request to compare AnyJev with TypeSafe AI/Jev without changing the existing TypeSafe skill or Jev harness.",
+      "description": "Operate nokia-applied-research/AnyJev, the Apache-2.0 Python library for training-free typed choice, yes/no, and score decisions from next-token probabilities. Use when pinning or inspecting a checkout, selecting raw/L0 Decider readouts, running approved Tacit checkpoints, configuring HF/vLLM/ SGLang/llama.cpp backends, checking tokenizer or calibration limits, or using the local gateway. Triggers on AnyJev, Tacit, L0, permutation debiasing, llama.cpp logprob, SGLang /generate, or comparisons with hosted TypeSafe AI/Jev. Do not use for TypeSafe hosted services or a generic Jev harness.",
       "category": "ai-agents",
       "subcategory": "agent-frameworks",
       "interface": "library",
@@ -13250,12 +13250,12 @@
         "Grep"
       ],
       "keyword": "anyjev",
-      "version": "1.0",
+      "version": "1.1.0",
       "source": "https://github.com/nokia-applied-research/AnyJev"
     },
     {
       "name": "typesafe-computer-use",
-      "description": "Operate or integrate awlevin/typesafe-computer-use (jev): inspect its deterministic OCR/accessibility plus TypeSafe Choice loop, configure macOS/Windows/browser prerequisites, run dry-run, replay, inspection, or benchmark commands, and gate real mouse/keyboard control, screen capture, remote writer/model calls, and provider spend. Use when the request names typesafe-computer-use, jev, clicker, clicker-inspect, clicker-bench, TypeSafe computer use, or this repository's run folders. This is an exact-project operator, not a generic desktop-automation or TypeSafe SDK skill.",
+      "description": "Operate or integrate awlevin/typesafe-computer-use (jev): inspect its deterministic OCR/accessibility and TypeSafe Choice loop, run clicker, clicker-inspect, clicker-bench, dry-run, replay, or fixture workflows, and gate desktop authority, screen capture, remote writer/model calls, egress, and spend. Use when the request names typesafe-computer-use, jev, clicker, clicker-inspect, clicker-bench, TypeSafe computer use, or this repository's run folders. This exact-project operator is not a generic desktop-automation or TypeSafe SDK skill.",
       "category": "ai-agents",
       "subcategory": "orchestration",
       "interface": "cli",
@@ -13284,7 +13284,7 @@
         "Read"
       ],
       "keyword": "typesafe-computer-use",
-      "version": "1.0",
+      "version": "1.1.0",
       "source": "https://github.com/awlevin/typesafe-computer-use"
     },
     {
@@ -13319,7 +13319,7 @@
         "Grep"
       ],
       "keyword": "zurp",
-      "version": "1.0",
+      "version": "1.1.0",
       "source": "https://github.com/facebookincubator/Zurp"
     },
     {
@@ -13353,12 +13353,12 @@
         "Grep"
       ],
       "keyword": "helix-foundry",
-      "version": "1.0",
+      "version": "1.1.0",
       "source": "https://github.com/HelixDB/helix-foundry"
     },
     {
       "name": "uzu",
-      "description": "Operate trymirai/uzu, Mirai's Rust native local-inference engine, on supported Apple Silicon or CPU targets. Use when a user needs to install/build uzu, run the `mirai` CLI or Rust CLI, download and serve a supported model, call its OpenAI-compatible HTTP API, run a benchmark, or assess model-license/resource/platform constraints. Do not use for llama.cpp or LM Studio operation, arbitrary model conversion, or claims that uzu runs on unsupported targets. For those separate products, consult their upstream documentation rather than routing this skill to an unlisted catalog entry.",
+      "description": "Operate trymirai/uzu, Mirai's Rust-native local inference engine, on supported Apple Silicon or CPU-oriented source targets. Use when a user needs Uzu preflight, the `mirai` CLI, a pinned source checkout, local model acquisition, chat/server operation, benchmarking, or model-license and platform-fit guidance. Do not route llama.cpp, LM Studio, arbitrary GGUF conversion, CUDA/Linux-GPU claims, or unverified Windows production support here.",
       "category": "cli-tools",
       "subcategory": "ai-cli",
       "interface": "cli",
@@ -13385,7 +13385,7 @@
         "Read"
       ],
       "keyword": "uzu",
-      "version": "0.1",
+      "version": "1.1.0",
       "source": "https://github.com/trymirai/uzu"
     },
     {
@@ -13424,7 +13424,7 @@
         "Grep"
       ],
       "keyword": "context-mode",
-      "version": "1.0.169",
+      "version": "1.1.0",
       "source": "https://github.com/mksglu/context-mode"
     },
     {
@@ -13460,12 +13460,12 @@
         "Grep"
       ],
       "keyword": "rea",
-      "version": "1.0",
+      "version": "1.1.0",
       "source": "https://github.com/morluto/rea"
     },
     {
       "name": "fineenvs",
-      "description": "Operate adithya-s-k/FineEnvs, a source-verified collection of RL environments, datasets, OpenEnv/ORS/NeMo Gym/Verifiers/SkyRL/GEM ports, reward evidence, and GRPO training recipes. Use when the user names FineEnvs, asks to run or inspect one of its environment projects, wants its deterministic graders or evaluation evidence, or wants to author a new environment from a description with the bundled framework skills. Route generic model fine-tuning, RL algorithm, or serving work to the appropriate generic skill instead.",
+      "description": "Inspect and run the source-verified adithya-s-k/FineEnvs environment and dataset projects, including OpenEnv, ORS, NeMo Gym, Verifiers, SkyRL Gym, and GEM dialects. Use when the user names FineEnvs, supplies a checkout, asks for a local smoke or reward-evidence readout, or wants to author an environment against its bundled contracts. Route generic training, RL algorithms, serving, and provider operations to their owning skills.",
       "category": "research",
       "subcategory": "experimentation",
       "interface": "library",
@@ -13497,7 +13497,7 @@
         "Grep"
       ],
       "keyword": "fineenvs",
-      "version": "1.0",
+      "version": "1.1.0",
       "source": "https://github.com/adithya-s-k/FineEnvs"
     },
     {
@@ -13527,7 +13527,7 @@
         "Read"
       ],
       "keyword": "llmfit",
-      "version": "1.0",
+      "version": "1.1.0",
       "source": "https://github.com/AlexsJones/llmfit"
     },
     {
@@ -13561,7 +13561,7 @@
         "Glob"
       ],
       "keyword": "pg-jev",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "source": "https://github.com/realZachi/pg-jev"
     },
     {

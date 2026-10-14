@@ -41,5 +41,15 @@
         "The response requires an actual caller-selected target analysis result before claiming analysis success"
       ]
     }
+    ,{
+      "id": 5,
+      "prompt": "Run `.agent-skills/rea/scripts/preflight.py --json` with an empty PATH, then inspect a literal isolated REA checkout with valid package JSON, public markers, and a matching Git commit. Do not run REA, Ghidra, IDA, browser, or provider commands.",
+      "expected_output": "The response inventories Node/npm and optional analysis tools by path only, validates bounded public metadata and local Git identity, and never treats preflight as target analysis success.",
+      "assertions": [
+        "The response reports missing required paths as blocked without invoking any tool or provider",
+        "The response rejects malformed/missing/mismatched pins and accepts a matching local HEAD without network or shell interpolation",
+        "The response preserves runtime_verified=false and does not read target artifacts, credentials, config, cookies, or execute REA engines"
+      ]
+    }
   ]
 }

@@ -62,7 +62,7 @@ Discovery starts with the **local catalog** (`route-skills` / `jeo-skill`). A we
 
 #### Configure: backends, per-operation routing, and decision model separation
 
-**Backend kinds** — Choose one or configure all five (`api`, `local`, `ollama`, `lmstudio`, `systemone`). Each operation (skill routing, context pruning, proposal review) resolves its own backend from the profile; the **decision backend** is purely advisory for skill routing and pruning, but **review** invokes the decision-head backend for autonomous action gating (only on `api` and `systemone` calibrated drivers can return `permit`). The **coding model** is ambient application state and never used by Jev — they are separate concerns:
+**Backend kinds** — Choose one or configure all five (`api`, `local`, `ollama`, `lmstudio`, `systemone`). Each operation resolves its own decision backend from the profile. The harness returns skill selections, keep/drop decisions, and review verdicts; the enabled host integration applies the supported results described below. Only eligible `api` and `systemone` drivers with a matching validated-model attestation can return `permit`. Jev does not automatically change the host's coding model:
 
 ```bash
 # Configure: explicit per-operation backends, one at a time
@@ -86,7 +86,18 @@ node ~/.agents/jev/jev-harness.mjs --profile gjc status --operation route-skills
 - `ollama` / `lmstudio` — approved ordinary setup may start the service and pull/load a model; `--config-only` records settings only.
 - `systemone` — points to an operator-run System One endpoint (no downloads, no service startup).
 
-**Native advisory hooks and host plans**. Setup copies optional Claude, jeopi, OMP, and Pi packages plus a rule artifact. Assets must be loaded through the host's verified session mechanism; copying them is not persistent registration. `host-plan` is read-only and does not install, enable, or execute anything. Other hosts receive adapter or unsupported plans. Native advisory hooks never grant permissions or automatically replace a coding model; `JEV_ENABLED` controls each profile independently.
+**Host integration that applies decisions**. Profiles default to `JEV_RUNTIME_MODE=advisory` and `JEV_REVIEW_MODE=off`; `JEV_ENABLED` controls each profile independently. With `--runtime-mode assist`, a loaded Claude/jeopi/OMP/Pi integration injects the selected installed `SKILL.md` instructions, including their source paths. Files must match the trusted catalog and remain within its skill root; oversized files are skipped whole (64 KiB per skill, 96 KiB combined). jeopi/OMP/Pi also prune older Jev-owned custom messages from model input. The newest skill instructions and user, system, assistant, and tool messages remain intact. Claude currently injects skills only. `model-plan` remains advisory and never changes the host model.
+
+Codex 0.162.1 supports `UserPromptSubmit` skill injection and `PreToolUse` action review through native hooks. Configure and register the definitions separately:
+
+```bash
+# JEV_API_KEY must already be set; omit --key-env to preserve an existing profile key
+node ~/.agents/jev/jev-plugin.mjs configure --agent codex --profile codex --backend api --key-env JEV_API_KEY --runtime-mode assist --review-mode advisory --apply
+node ~/.agents/jev/jev-plugin.mjs enable --agent codex --profile codex --apply
+node ~/.agents/jev/jev-plugin.mjs hooks-install --agent codex --profile codex --apply
+```
+
+Review and trust the exact installed definitions in Codex `/hooks`; installation does not grant trust or enable the profile. `advisory` review reports the verdict; explicit `--review-mode enforce` denies a proposed action unless the verdict is `permit` from a validated backend. It never returns a host permission grant. Review covers the registered tool matchers; untrusted hooks, host failures, or timeouts can skip execution or fail open, so this is not an OS security boundary. Claude has no automatic action enforcement, and Codex has no automatic history pruning. `host-plan` is read-only; copying native packages does not register them persistently. See [the host integration guide](jev/README.md) for loading, trust, and verification limits.
 
 **ON/OFF and shared profiles**: 
 ```bash
@@ -119,7 +130,7 @@ node ~/.agents/jev/jev-harness.mjs self-test --mock
 
 **Local Legacy wiring**: The intentional `~/.agents/jev/.env` (no profile) is supported for backward compatibility. Ambient environment variables override matching file keys but cannot enable a missing/disabled profile. Profiles (`--profile <id>`) are isolated: a missing profile never falls back to another.
 
-Jev operations may route through different backends for different purposes: `route-skills` and `prune-context` are advisory (no autonomous action), while `review` gates autonomous execution and requires explicit permission from a validated backend. Every response binds the backend kind, model, and tier (`unvalidated` unless `--validated-model <id>` attests that the backend actually serves that model). `--mock` validates contracts offline and never permits autonomous action.
+Jev operations return decisions; automatic application depends on the host and opt-in mode above. Every response binds the backend kind, model, and tier (`unvalidated` unless an eligible driver's served model matches its saved attestation). Attestation and transport checks do not prove calibration or decision quality. Token savings are estimates, not measured host usage. `--mock` validates contracts offline and never permits autonomous action.
 
 See [`jev/README.md`](jev/README.md) for detailed settings, exit codes, validation limits, and local/Ollama/LM Studio setup prerequisites.
 ### Jevgrep (optional remote source discovery)
@@ -281,10 +292,22 @@ or a new destructive action is unclear. For programmable/template video generati
 
 Eleven source-pinned operator skills cover `openrig`, `anyjev`,
 `typesafe-computer-use`, `zurp`, `helix-foundry`, `uzu`, `context-mode`, `rea`,
-`fineenvs`, `llmfit`, and `pg-jev`. Catalog installation adds instructions only;
+`fineenvs`, `llmfit`, and `pg-jev`. Each v1.1.0 package ships a router-first
+`SKILL.md`, a pinned reference, an executable stdlib offline preflight and evals;
 applications, models, credentials, MCP/hook registration, desktop authority and
 database writes remain separately approved operations. See the
-[setup guide](setup-all-skills-prompt.md#repository-operators-on-demand-documents-only).
+[setup guide](setup-all-skills-prompt.md#repository-operators-on-demand-offline-support).
+
+From this repository, inspect a selected package without activating its upstream app:
+
+```bash
+python3 .agent-skills/openrig/scripts/preflight.py --json
+```
+
+All eleven helpers support `--help`, `--json`, optional `--repo` and `--expect-commit`.
+They remain standalone after installation and report `runtime_verified: false`.
+Exit 0 means offline checks pass, 1 reports missing/mismatched prerequisites, and 2
+rejects invalid input. A tool path or matching source HEAD is not runtime readiness.
 
 
 ## 📚 Skills List
@@ -1090,17 +1113,39 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 
 <!-- WHATS-NEW:START -->
 
+## 🆕 What's New in v2026-10-14
+
+<img src="assets/pipeline.png" alt="CI lanes: catalog test plus installer matrix (ubuntu/macos)" width="100%">
+
+| Change | Details |
+|--------|---------|
+| **Jev runtime activation on Codex** | The `codex` profile is ON with `api` backend, assist skill injection and advisory PreToolUse review; both generated hook definitions are trusted and enabled in live Codex sessions, with real TypeSafe routing evidence (`react-best-practices` via served `jev-1.13.0`). Tier stays unvalidated: transport proof, not calibration or permission grants. |
+| **Timeout fixture sync** | The native SIGTERM/SIGKILL escalation test now follows child handler readiness instead of wall-clock deadlines; production timeout behavior is unchanged. |
+| **CI test-job setup trim** | The `test` job drops the unused Bun setup (all four steps are pure Python) and pins `pyyaml==6.0.3`; the stale `flatten_skills.py` next-step hint now points at the real `generate-catalog-projections.py --check`. Installer-suite waits (hung-node bound, unreachable-backend probes) are intentional contract behavior and unchanged. Diagram above generated via `gti` (Codex backend). |
+
 ## 🆕 What's New in v2026-10-12
 
 | Change | Details |
 |--------|---------|
-| **MI orchestration** | Added `mi-orchestration`: mobile-game intelligence data lineage, weekly/backfill health gates, candidate-to-human-decision separation, primary-source references, and an offline read-only artifact audit/resume-plan CLI. Synthetic regressions do not certify live vendor collection; account entitlement, permitted AI use, retention and report sharing remain separate gates. Catalog: 366 → 367. |
+| **Portable repository operator support** | Standardized all eleven requested operator packages to v1.1.0 with router-first SKILL.md, independent commit-pinned references and executable stdlib offline preflights. Manifest versions and changed discovery descriptions, README locales, TOON and setup guidance are synchronized; the 367-skill baseline is unchanged. |
+| **Offline behavior and safety** | Added a dedicated twelve-method regression suite and explicit Ubuntu/macOS installer CI step. The local suite passes source/pin, missing-tool, literal-path, copied-helper, no-write/secret-output, child credential exclusion and hostile Git selector/trace checks. Git inspection binds the requested root and allowlists only portable host environment keys, with inherited configuration, prompts and network protocols disabled; Zurp can select Burp or MCP prerequisites separately. Eleven helper eval cases extend the authored scenarios from 44 to 55; no upstream runtime, provider, model, desktop or database execution is claimed. |
 | **FilmCraft skill** | Added `filmcraft` for the Rust editor's headless CLI/MCP and desktop loopback control bridge, pinned to upstream commit `1fdfd8324db4aa23b08c69f518b086e632f75f84`. Guidance covers project preservation, command discovery, missing-media failures and approved export paths. |
 | **Selective setup and catalog** | Registered one new skill (354 → 355) and refreshed README locales, TOON and setup guidance. Installing the skill does not install/build FilmCraft, register MCP, or modify media. Concurrent local skill additions are excluded from this publication. |
 | **Verification boundary** | Skill-format validation, catalog search and selective-install dry-run pass. Ten behavioral evaluation fixtures are included; FilmCraft build, GUI/MCP execution, editing and export were not run. |
 | **Eleven source-pinned repository operators** | Added `openrig`, `anyjev`, `typesafe-computer-use`, `zurp`, `helix-foundry`, `uzu`, `context-mode`, `rea`, `fineenvs`, `llmfit`, and `pg-jev` as original operating guides with audited commits, primary-source commands, license evidence and explicit side-effect boundaries. This batch extends the published catalog from 355 to 366 skills. |
 | **Selective setup and discovery** | Updated English/Korean/Spanish README catalog projections and source references, the setup guide, and meaningful Jev/local-model/context-tool relationships. Catalog installation adds documents only; it does not install upstream applications, download models, register hooks/MCP, use credentials, control a desktop or mutate a database. Context Mode subprocesses are not an OS/security sandbox and its npm postinstall can modify Claude configuration. |
 | **Verification boundaries** | Added 44 behavioral evaluation scenarios. Eleven skill documents load with valid frontmatter and the selective-install dry-run resolves all eleven. Upstream runtimes, model quality, desktop actions, live targets and databases were not executed or certified by this documentation change. |
+
+## 🆕 What's New in v2026-10-12b
+
+| Change | Details |
+|--------|---------|
+| **Non-blocking optional Jev setup** | Invalid modes, project-scoped opt-in, temporary-file allocation, download, and Jev setup failures warn and skip only Jev. Verified skill installation remains successful; genuine skill installation errors still fail. |
+| **Per-agent advisory controls** | Added independent private profiles, config-only setup, and packaged Claude, jeopi, OMP, and Pi hooks. New config-only profiles start OFF. Copying assets does not register a plugin; session-load plans and registration-gated package maintenance remain separate from profile ON/OFF. jeopi/OMP/Pi actual-OFF callbacks recover from 1 MiB stdin `EPIPE` and return `{}` without changing prior host context. |
+| **Backend and model contracts** | Enabling requires structurally complete saved backend configuration. Host-specific model argv stays advisory. TypeSafe responses use the strict typed contract; local legacy wire support remains isolated. Backend error bodies never enter native advisory context. |
+| **Trusted assets and credentials** | Native hooks pin a trusted catalog and refuse working-directory substitutions. Setup stages required runtime assets before publication, preserves valid catalog snapshots on refresh failure, and cleans private payloads. Standalone root-controller symlink/non-file and raw-native non-file leaf collisions are preflighted before staging/publication; collision regressions preserve core/native/catalog/private-profile bytes and outside targets. Saved matching API keys remain authoritative; local-only computer-use writer plans cannot borrow ambient hosted credentials. |
+| **Verification** | 48 installer regressions and 64 Jev regressions pass. With `JEV_LIVE_SMOKE=0`, the Node install/plugin/profile run reports 54 total, 53 pass, and 1 opt-in live skip; the prior mock self-test passed 20/20. Catalog projections, frontmatter, and flat layout checks pass. The source catalog has 367 skills due to the concurrent MI addition; this Jev update adds no catalog entry. |
+| **Boundaries** | Host plans are not executed automatically. Live Ollama reached HTTP 200 but returned `selectedSkill:null` / `errorCategory:backend_unavailable`: transport and fail-closed output only, not successful routing, model quality/calibration, or native package registration. Paid API, database, and desktop execution remain unverified. Config-only setup downloads no models; approved ordinary backend setup may do so. |
 
 ## 🆕 What's New in v2026-10-08
 
