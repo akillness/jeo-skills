@@ -1374,8 +1374,9 @@ export async function smoke({ backend = null, model = null, task = null } = {}) 
 
 async function main() {
   if (PROFILE_ERROR) throw new Error(PROFILE_ERROR);
-  const [command, ...args] = CLI_ARGS;
-  const { flags, rest } = parseArgs(args);
+  // Flags may precede the command (e.g. `--mock self-test`); the command is the first positional.
+  const { flags, rest: positional } = parseArgs(CLI_ARGS);
+  const [command, ...rest] = positional;
   if (command === 'self-test') process.exitCode = await selfTest();
   else if (command === 'status') {
     const status = await jevStatus({ operation: flags.operation });

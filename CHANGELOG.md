@@ -2,6 +2,13 @@
 
 All notable changes to **jeo-skills** are documented here.
 
+## 2026-10-14
+
+### Fixed
+- `jev-harness.mjs` now treats the first positional argument as the command, so leading
+  flags work: the documented `--profile <id> --mock self-test` (setup guide) no longer
+  fails with a usage error. `self-test --mock` keeps working.
+
 ## 2026-10-08
 
 ### Added
