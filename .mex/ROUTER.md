@@ -29,6 +29,13 @@ Then read this file fully before doing anything else in this session.
 
 **Working:**
 
+- Jev CI timeout fixture repair (2026-10-14): latest OpenCode/setup publication
+  `bda3e7c7` exposed an Ubuntu-only race in the native SIGTERM/SIGKILL regression.
+  Fixture readiness now follows handler installation; fake deadline/grace timers
+  verify each stage while real process death remains checked. Production timeout
+  behavior is unchanged. Six-way concurrent targeted repetitions passed 18/18;
+  the 118-case native suite passed with one intentional live skip.
+
 - Jev runtime integration (2026-10-14): Codex profile configured ON with assist
   skill injection and advisory PreToolUse review; both merged hook definitions
   are trusted according to the installed Codex app-server. Actual new Codex

@@ -82,6 +82,14 @@ node jev/jev-harness.mjs smoke [--backend K] [--task "<text>"]  # live, never au
 ```
 
 ## Gotchas
+
+- Native timeout regressions must not assume a child has installed signal handlers
+  within a short wall-clock deadline. Register SIGTERM handling before publishing
+  a readiness marker, mock only parent `setTimeout`, wait for readiness, advance
+  deadline then wait for TERM receipt, and finally advance kill grace. Keep an
+  independent real-time bound for polling actual process death and register
+  unconditional cleanup for failed assertions. Do not lengthen production
+  timeouts or remove SIGKILL/orphan checks to silence a loaded-CI race.
 - Capture test logs with the runner's exit preserved (`set -o pipefail; cmd > log; echo $?`), then grep the log. Piping into `grep`/`tail` reports the filter's exit, not the runner's.
 - The regression fixture must speak the **documented** shapes (422 without `model`; Choice `criteria`; `noul` answers). A fixture that mirrors the harness's assumptions hides wire mismatches — that is how the `api` path stayed broken for weeks.
 - `/v1/decide` state is sent as the raw object (the server `json.dumps` dicts itself). `thinking` must be `"off"`; a response with `thinking.used: true` is rejected.

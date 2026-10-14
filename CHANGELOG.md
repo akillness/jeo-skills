@@ -14,6 +14,9 @@ All notable changes to **jeo-skills** are documented here.
   malformed configuration, bounded input, and trusted skill-file containment.
 
 ### Fixed
+- Native Jev timeout tests synchronize child signal-handler readiness and advance
+  deadline/grace timers deterministically, preserving SIGTERM/SIGKILL and actual
+  process-exit checks without changing production timeouts.
 - `jev-harness.mjs` now treats the first positional argument as the command, so leading
   flags work: the documented `--profile <id> --mock self-test` (setup guide) no longer
   fails with a usage error. `self-test --mock` keeps working.
