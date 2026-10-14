@@ -55,7 +55,7 @@ jobs:
       - name: Native Jev install, profile, and plugin regressions
         env:
           JEV_LIVE_SMOKE: '0'
-        run: node --test jev/install.test.mjs jev/plugin.test.mjs jev/profile.test.mjs
+        run: node --test jev/install.test.mjs jev/plugin.test.mjs jev/profile.test.mjs jev/runtime.test.mjs jev/lifecycle.test.mjs jev/codex.test.mjs
       - name: Isolated runtime configuration writer regressions
         run: /bin/bash scripts/test-runtime-config-writers.sh
       - name: Isolated runtime installation regressions

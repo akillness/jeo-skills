@@ -62,7 +62,7 @@ Discovery starts with the **local catalog** (`route-skills` / `jeo-skill`). A we
 
 #### Configure: backends, per-operation routing, and decision model separation
 
-**Backend kinds** — Choose one or configure all five (`api`, `local`, `ollama`, `lmstudio`, `systemone`). Each operation (skill routing, context pruning, proposal review) resolves its own backend from the profile; the **decision backend** is purely advisory for skill routing and pruning, but **review** invokes the decision-head backend for autonomous action gating (only on `api` and `systemone` calibrated drivers can return `permit`). The **coding model** is ambient application state and never used by Jev — they are separate concerns:
+**Backend kinds** — Choose one or configure all five (`api`, `local`, `ollama`, `lmstudio`, `systemone`). Each operation resolves its own decision backend from the profile. The harness returns skill selections, keep/drop decisions, and review verdicts; the enabled host integration applies the supported results described below. Only eligible `api` and `systemone` drivers with a matching validated-model attestation can return `permit`. Jev does not automatically change the host's coding model:
 
 ```bash
 # Configure: explicit per-operation backends, one at a time
@@ -86,7 +86,18 @@ node ~/.agents/jev/jev-harness.mjs --profile gjc status --operation route-skills
 - `ollama` / `lmstudio` — approved ordinary setup may start the service and pull/load a model; `--config-only` records settings only.
 - `systemone` — points to an operator-run System One endpoint (no downloads, no service startup).
 
-**Native advisory hooks and host plans**. Setup copies optional Claude, jeopi, OMP, and Pi packages plus a rule artifact. Assets must be loaded through the host's verified session mechanism; copying them is not persistent registration. `host-plan` is read-only and does not install, enable, or execute anything. Other hosts receive adapter or unsupported plans. Native advisory hooks never grant permissions or automatically replace a coding model; `JEV_ENABLED` controls each profile independently.
+**Host integration that applies decisions**. Profiles default to `JEV_RUNTIME_MODE=advisory` and `JEV_REVIEW_MODE=off`; `JEV_ENABLED` controls each profile independently. With `--runtime-mode assist`, a loaded Claude/jeopi/OMP/Pi integration injects the selected installed `SKILL.md` instructions, including their source paths. Files must match the trusted catalog and remain within its skill root; oversized files are skipped whole (64 KiB per skill, 96 KiB combined). jeopi/OMP/Pi also prune older Jev-owned custom messages from model input. The newest skill instructions and user, system, assistant, and tool messages remain intact. Claude currently injects skills only. `model-plan` remains advisory and never changes the host model.
+
+Codex 0.162.1 supports `UserPromptSubmit` skill injection and `PreToolUse` action review through native hooks. Configure and register the definitions separately:
+
+```bash
+# JEV_API_KEY must already be set; omit --key-env to preserve an existing profile key
+node ~/.agents/jev/jev-plugin.mjs configure --agent codex --profile codex --backend api --key-env JEV_API_KEY --runtime-mode assist --review-mode advisory --apply
+node ~/.agents/jev/jev-plugin.mjs enable --agent codex --profile codex --apply
+node ~/.agents/jev/jev-plugin.mjs hooks-install --agent codex --profile codex --apply
+```
+
+Review and trust the exact installed definitions in Codex `/hooks`; installation does not grant trust or enable the profile. `advisory` review reports the verdict; explicit `--review-mode enforce` denies a proposed action unless the verdict is `permit` from a validated backend. It never returns a host permission grant. Review covers the registered tool matchers; untrusted hooks, host failures, or timeouts can skip execution or fail open, so this is not an OS security boundary. Claude has no automatic action enforcement, and Codex has no automatic history pruning. `host-plan` is read-only; copying native packages does not register them persistently. See [the host integration guide](jev/README.md) for loading, trust, and verification limits.
 
 **ON/OFF and shared profiles**: 
 ```bash
@@ -119,7 +130,7 @@ node ~/.agents/jev/jev-harness.mjs self-test --mock
 
 **Local Legacy wiring**: The intentional `~/.agents/jev/.env` (no profile) is supported for backward compatibility. Ambient environment variables override matching file keys but cannot enable a missing/disabled profile. Profiles (`--profile <id>`) are isolated: a missing profile never falls back to another.
 
-Jev operations may route through different backends for different purposes: `route-skills` and `prune-context` are advisory (no autonomous action), while `review` gates autonomous execution and requires explicit permission from a validated backend. Every response binds the backend kind, model, and tier (`unvalidated` unless `--validated-model <id>` attests that the backend actually serves that model). `--mock` validates contracts offline and never permits autonomous action.
+Jev operations return decisions; automatic application depends on the host and opt-in mode above. Every response binds the backend kind, model, and tier (`unvalidated` unless an eligible driver's served model matches its saved attestation). Attestation and transport checks do not prove calibration or decision quality. Token savings are estimates, not measured host usage. `--mock` validates contracts offline and never permits autonomous action.
 
 See [`jev/README.md`](jev/README.md) for detailed settings, exit codes, validation limits, and local/Ollama/LM Studio setup prerequisites.
 ### Jevgrep (optional remote source discovery)

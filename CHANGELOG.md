@@ -4,6 +4,15 @@ All notable changes to **jeo-skills** are documented here.
 
 ## 2026-10-14
 
+### Added
+- Codex lifecycle hook installation that preserves existing definitions, injects selected
+  full skill instructions, and supports optional advisory or enforced tool review.
+  Exact hook trust and host permissions remain separate from profile activation.
+- Opt-in `assist` profiles for Claude and Pi-family hosts. Pi-family callbacks can
+  prune older Jev-owned context while preserving current instructions and host history.
+- Runtime regression coverage for real hook envelopes, UTF-8 streams, profile isolation,
+  malformed configuration, bounded input, and trusted skill-file containment.
+
 ### Fixed
 - `jev-harness.mjs` now treats the first positional argument as the command, so leading
   flags work: the documented `--profile <id> --mock self-test` (setup guide) no longer

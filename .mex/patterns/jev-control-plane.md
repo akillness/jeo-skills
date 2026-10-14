@@ -18,14 +18,42 @@ edges:
   - target: "patterns/jeo-skill-install-flow.md"
     condition: "when Jev setup interacts with the catalog installer"
 grounds_to: []
-last_updated: 2026-10-12
+last_updated: 2026-10-14
 ---
 
 # Jev Control Plane Runbook
 
+README/runtime audits must compare source and installed harness bytes before
+assuming test results cover the active installation. A rounded Choice response
+with probability sum 0.99 is a useful loopback compatibility probe: current
+source renormalizes small drift, while an older installed harness rejects it.
+Check legacy status separately from per-agent controller status; configured API
+credentials and copied rule/package files do not prove readiness, profile ON,
+host registration, or action enforcement. The initial audit found advisory-only
+callbacks; the later runtime integration adds opt-in assist and Codex review modes. Latest evidence: `../context/jev-readme-audit.md`.
+
 Source of truth is `jev/` in this repo: `jev-harness.mjs` (Node ESM, built-ins only), `jev-setup.sh`, `jev_local_server.py`, `jev-control-plane.rule.md`, `README.md`; portable skill `.agent-skills/jev-control-plane/SKILL.md`. Design record: `.survey/jev-model-routing/` (gitignored research + `design-options.md`, interview-approved 2026-10-08).
 
 **Installed copy vs repo.** `jev-setup.sh` copies `jev/` into `~/.agents/jev/`. On 2026-10-01 fixes were applied directly to the *installed* copy and never ported, so the two diverged (sha1 `f835f55…` installed vs repo). The repo rewrite of 2026-10-08 supersedes it; resync with `bash jev/jev-setup.sh --mode <kind>` (home-scoped, user-approved). Never edit `~/.agents/jev/` by hand again.
+
+## Runtime activation verification (2026-10-14)
+
+1. Configure a named profile through the source controller with `--runtime-mode assist`
+   and the intended `--review-mode` (`off`, `advisory`, or explicit `enforce`).
+2. Compare installed/source runtime bytes after setup; test from an empty directory
+   so a working checkout cannot mask a missing installed catalog or skill file.
+3. Codex: merge with `hooks-install`, review exact definitions through `/hooks`, and
+   require `hooks/list` to report trusted+enabled before claiming activation. Trust
+   uses server-computed hashes; never invent them. Preserve unrelated hook indices.
+4. Verify a fresh host session identifies injected source paths without reading files,
+   then run one harmless tool and inspect the actual PreToolUse review context.
+5. Run all six Node suites (install/plugin/profile/runtime/lifecycle/codex) and Python
+   Jev/installer regressions. Include split UTF-8, malformed mapping/config and
+   unavailable/unvalidated enforcement cases. Keep live-provider evidence separate.
+6. Native context pruning must preserve the latest skill message and all non-Jev
+   history, and skip excluded blocks when input bounds are exceeded.
+
+Actual application and current limitations: `../context/jev-runtime-activation.md`.
 
 ## Architecture (2026-10-08)
 - **Backend kinds** `BACKEND_KINDS = api | local | ollama | lmstudio | systemone` — one registry in the harness; `jev-setup.sh` and `install.sh` validate against the same five names.

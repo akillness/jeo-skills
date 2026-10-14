@@ -1,7 +1,7 @@
 <!-- JEV-CONTROL-PLANE:START -->
 # Jev Control Plane
 
-Opt-in runtime policy for a host agent environment, not an automatically enabled hook or provider plugin. The portable Agent Skill is instruction-only; it does not guarantee that a runtime loads or obeys these rules. There is no native hook installation. Every live operation is fail-closed and requires approval before hosted calls or model downloads.
+Opt-in runtime policy for a host agent environment. Loading this rule or the portable Agent Skill alone does not activate hooks. The callable harness returns decisions; optional registered host integrations apply supported results. Use the authorized profile and host permission policies, including existing approval for hosted calls or downloads.
 
 ## Activation and profiles
 
@@ -14,6 +14,25 @@ node ~/.agents/jev/jev-harness.mjs --profile jeopi status
 ```
 
 `active` means configured, not proven inference readiness. Status exit `2` means inactive/unconfigured and the host continues with its normal permission policies. Exit `3` means fail closed: the configuration is invalid, or an evaluated operation chain has no usable backend. A down backend that no evaluated chain references never causes exit `3`. Exit `0` means the requested operation chain is not known unavailable. Use `--operation route-skills|prune-context|review` to inspect one chain; without it, status evaluates all three.
+
+## Host lifecycle integration
+
+Profiles default to `JEV_RUNTIME_MODE=advisory` and `JEV_REVIEW_MODE=off`. Explicit `assist` mode injects selected installed `SKILL.md` instructions, including source paths, into an activated Claude, jeopi, OMP, Pi, or Codex integration. Only files matching the trusted catalog and remaining within its skill root are loaded. Skip oversized files whole: 64 KiB per skill, 96 KiB combined; never truncate instructions.
+
+jeopi/OMP/Pi inject skills as Jev-owned custom messages and use the native context callback to prune only older Jev custom messages from model input. Preserve the newest skill instructions and all user, system, assistant, tool, and other extensions' messages. Do not mutate persisted history. Claude currently supports skill injection only. Codex currently supports skill injection and optional action review, without automatic history pruning. Model selection remains advisory on every host.
+
+After installing the harness, Codex 0.162.1 integration can be configured with:
+
+```sh
+# Existing nonempty environment variable; omit --key-env to preserve a saved profile key
+node ~/.agents/jev/jev-plugin.mjs configure --agent codex --profile codex --backend api --key-env JEV_API_KEY --runtime-mode assist --review-mode advisory --apply
+node ~/.agents/jev/jev-plugin.mjs enable --agent codex --profile codex --apply
+node ~/.agents/jev/jev-plugin.mjs hooks-install --agent codex --profile codex --apply
+```
+
+`hooks-install` writes native `UserPromptSubmit` and `PreToolUse` definitions. Review and trust those exact definitions in Codex `/hooks`; modifications require renewed trust. Installation does not grant trust or enable the profile. `UserPromptSubmit` injects skills; `PreToolUse` reviews the proposed action for registered tool matchers. `JEV_REVIEW_MODE=off` skips review, `advisory` reports the result, and explicit `enforce` denies unless the result is `permit` from a validated backend. Never return a host permission grant, even for `permit`; host authorization still applies. Jev does not run validation commands as part of review.
+
+Package copying, registration, session loading, hook trust, and profile ON/OFF are separate states. A registered OFF hook skips stdin, catalog, and backend access. Host failures, untrusted or skipped hooks, and timeouts can fail open; this integration is not an OS security boundary. Callback or loopback tests do not prove live execution on every host, calibration, or decision quality.
 
 ## Backends and tiers
 
@@ -43,7 +62,7 @@ node ~/.agents/jev/jev-harness.mjs --profile jeopi route-skills --top-k 3 "<task
 
 The result retains `task`, mode, `families`, `topK`, token estimates, and `publicRegistryFallback`, and adds `selection` and advisory `routing`. Gate Nouls use threshold `0.30`; candidate fit uses threshold `0.30`. A gate below threshold returns explicit none (`topK: []`, `selection.reason: "gate"`) and `publicRegistryFallback`. Choice shards are selected by `ceil(catalogSize / choiceCap) <= 4`: sharded routing takes per-shard finalists then a final choice; otherwise a lexical shortlist is used. Candidates below the fit threshold produce explicit none (`selection.reason: "fits"`) and `publicRegistryFallback`.
 
-When `.agent-skills/skills.json` has `model_policies`, `routing` provides advisory provider/model vocabulary such as `openai/gpt-6.1-sol`, `anthropic/claude-fable-5-1`, or `ollama/qwen2.5:7b`, with the resolved `policy`, ranked candidates, the chosen value (or `other`), and `provenance: {backend: {kind, driver, model, tier}}`. It is advisory only; no host adapter is installed this round. `model_policies` is not projected into `skills.toon` or README catalog tables.
+When `.agent-skills/skills.json` has `model_policies`, `routing` provides advisory provider/model vocabulary such as `openai/gpt-6.1-sol`, `anthropic/claude-fable-5-1`, or `ollama/qwen2.5:7b`, with the resolved `policy`, ranked candidates, the chosen value (or `other`), and `provenance: {backend: {kind, driver, model, tier}}`. Model advice does not switch the host model. `model_policies` is not projected into `skills.toon` or README catalog tables. Token savings are estimates, not measured host token usage.
 
 ## Context pruning
 

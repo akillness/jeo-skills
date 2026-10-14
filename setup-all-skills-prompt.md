@@ -487,7 +487,7 @@ model the backend reports serving, and only calibrated decision-head drivers (`a
 `systemone`) can be validated. `review` returns `permit` only on a validated tier, so
 `local`, `ollama`, and `lmstudio` recommend (`proposal_only`) but never authorize.
 Optional `skills.json` `model_policies` add advisory per-skill `provider/model` routing
-to `route-skills` output; no host adapter consumes it yet.
+to `route-skills` output. Native hooks present those model suggestions and `model-plan` renders launch arguments; the coding model is not switched automatically.
 
 Setup also installs a validated catalog snapshot at `~/.agents/jev/skills.json` (from the
 checkout, otherwise the published catalog) so `route-skills` works outside a checkout; a
@@ -529,7 +529,19 @@ node ~/.agents/jev/jev-harness.mjs --profile gjc status --operation route-skills
 | `lmstudio` | LM Studio service; model load/download | Chat adapter | Unvalidated; proposal_only |
 | `systemone` | Endpoint URL + optional key; no downloads | Points to operator-run System One | Calibrated (can authorize if driver matches) |
 
-**Native advisory packages**: setup copies Claude, jeopi, OMP, and Pi packages and the rule artifact. Copying is not provider registration. Use verified session-load argv from read-only `host-plan`; registration-dependent maintenance is separate from the profile's `JEV_ENABLED` switch. No native hook grants permissions or automatically replaces a coding model.
+**Native runtime integration**: setup copies Claude and Pi-family packages, but package copying is not host registration. `configure --runtime-mode assist` enables full selected-skill instruction injection when the host loads its extension. jeopi/OMP/Pi additionally prune older Jev-owned custom messages only; their newest skill message and all user/system/assistant/tool messages remain intact. Claude does not automatically prune history or enforce review.
+
+**Codex CLI 0.162.1 hooks**: after explicit Jev activation approval, use the following profile-specific setup. Omit `--key-env` on an existing API profile to preserve its saved credential. No literal key belongs in a prompt or command.
+
+```bash
+node ~/.agents/jev/jev-plugin.mjs configure --agent codex --profile codex --backend api --key-env JEV_API_KEY --runtime-mode assist --review-mode advisory --apply
+node ~/.agents/jev/jev-plugin.mjs enable --agent codex --profile codex --apply
+node ~/.agents/jev/jev-plugin.mjs hooks-install --agent codex --profile codex --apply
+node ~/.agents/jev/jev-plugin.mjs status --agent codex --profile codex
+```
+
+Review and trust the exact generated definitions in Codex `/hooks`, then verify in a fresh session. Installation merges existing hooks and does not grant trust. UserPromptSubmit injects selected full skill files; PreToolUse review modes are `off` (default), `advisory`, and `enforce`. Enforce emits deny unless the verdict is permit on a validated backend; it never emits a host allow decision. Jev does not run tests/builds, switch models, or rewrite Codex history. Codex can skip untrusted hooks and fail open on process failures/timeouts, so retain host permissions. Default catalog setup still performs none of these optional hook/profile changes. See [the runtime guide](jev/README.md#automatic-codex-integration).
+
 
 **Plan-only hosts** (analysis or browser-only environments): Receive advisory routing output but cannot enforce gating. Jev remains available as read-only reference.
 

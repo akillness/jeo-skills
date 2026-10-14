@@ -16,7 +16,7 @@ edges:
     condition: when the task touches skills.json, SKILL.md frontmatter, README/TOON projections, or CI catalog validation
   - target: patterns/INDEX.md
     condition: when starting a task — check the pattern index for a matching pattern file
-last_updated: 2026-10-12
+last_updated: 2026-10-14
 ---
 
 # Session Bootstrap
@@ -28,6 +28,24 @@ Then read this file fully before doing anything else in this session.
 ## Current Project State
 
 **Working:**
+
+- Jev runtime integration (2026-10-14): Codex profile configured ON with assist
+  skill injection and advisory PreToolUse review; both merged hook definitions
+  are trusted according to the installed Codex app-server. Actual new Codex
+  sessions recognized the selected installed React skill and received a live
+  `proposal_only` review before one successful read-only command. Installed
+  harness now matches source and accepts rounded probabilities. Native Pi-family
+  assist callbacks inject trusted skill bodies and prune only older Jev-owned
+  messages. Explicit Codex enforce mode denies nonvalidated/unavailable reviews
+  and never grants host permissions. See `context/jev-runtime-activation.md`.
+
+- Jev README/source/installed audit (2026-10-14): fresh self-test 20/20,
+  Python Jev 64/64, installer 48/48 and Node 53 pass/1 live skip. Actual installed harness still
+  uses strict probability-sum validation; loopback sum 0.99 succeeds in source
+  but fails installed. Legacy API is configured but unverified/unvalidated;
+  Codex has no saved profile and exposes adapter-only plans. Native callback
+  performs routing advice only, not automatic prune/review/action enforcement.
+  See `context/jev-readme-audit.md`; no installed settings/product code changed.
 - Funded TypeSafe review (2026-10-12): one real API-only POST returned HTTP 200
   through the current source harness; `jev-latest` served `jev-1.13.0`, four Noul
   answers passed strict validation, usage was 435 input / 80 output tokens, and

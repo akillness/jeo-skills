@@ -61,7 +61,7 @@ El descubrimiento empieza por el **catálogo local** (`route-skills` / `jeo-skil
 
 #### Configurar: backends, enrutamiento por operación, separación del modelo de decisión
 
-**Tipos de backend** — Elige uno o configura los cinco (`api`, `local`, `ollama`, `lmstudio`, `systemone`). Cada operación (enrutamiento de habilidades, poda de contexto, revisión de propuesta) resuelve su propio backend desde el perfil; el **backend de decisión** es solo asesor para enrutamiento y poda, pero la **revisión** invoca el backend de cabeza de decisión para hacer puerta de acción autónoma (solo los drivers calibrados de `api` y `systemone` pueden devolver `permit`). El **modelo de codificación** es estado de aplicación ambiente y nunca lo usa Jev — son preocupaciones separadas:
+**Tipos de backend** — Elige uno o configura los cinco (`api`, `local`, `ollama`, `lmstudio`, `systemone`). Cada operación resuelve su backend de decisión desde el perfil. El arnés devuelve habilidades seleccionadas, decisiones keep/drop y veredictos; la integración del host habilitada aplica los resultados compatibles descritos abajo. Solo los drivers elegibles de `api` y `systemone` con una atestación coincidente del modelo validado pueden devolver `permit`. Jev no cambia automáticamente el modelo de programación del host:
 
 ```bash
 # Configurar: backends explícitos por operación, uno a la vez
@@ -85,7 +85,18 @@ node ~/.agents/jev/jev-harness.mjs --profile gjc status --operation route-skills
 - `ollama` / `lmstudio` — la configuración ordinaria aprobada puede iniciar el servicio y descargar/cargar un modelo; `--config-only` solo guarda ajustes.
 - `systemone` — apunta a un endpoint de System One operado por el operador (sin descargas, sin arranque de servicio).
 
-**Hooks asesores nativos y planes del host**. La configuración copia paquetes opcionales de Claude, jeopi, OMP y Pi y un archivo de reglas. Deben cargarse mediante el mecanismo de sesión verificado del host; copiar archivos no registra un plugin persistente. `host-plan` es de solo lectura: no instala, activa ni ejecuta nada. Otros hosts reciben planes de adaptador o no compatibles. Los hooks no conceden permisos ni sustituyen automáticamente el modelo de programación; `JEV_ENABLED` controla cada perfil de forma independiente.
+**Integración del host que aplica decisiones**. Los perfiles usan por defecto `JEV_RUNTIME_MODE=advisory` y `JEV_REVIEW_MODE=off`; `JEV_ENABLED` controla cada perfil. Con `--runtime-mode assist`, la integración cargada de Claude/jeopi/OMP/Pi incorpora las instrucciones del `SKILL.md` instalado seleccionado y su ruta de origen. Los archivos deben coincidir con el catálogo de confianza y permanecer dentro de su raíz; los archivos demasiado grandes se omiten completos (64 KiB por habilidad, 96 KiB en total). jeopi/OMP/Pi también podan mensajes personalizados antiguos de Jev de la entrada del modelo. Conservan las instrucciones más recientes y los mensajes de usuario, sistema, asistente y herramientas. Claude actualmente solo incorpora habilidades. `model-plan` sigue siendo orientativo y no cambia el modelo del host.
+
+Codex 0.162.1 admite la incorporación de habilidades mediante `UserPromptSubmit` y la revisión de acciones mediante `PreToolUse`. Configura el perfil y registra las definiciones por separado:
+
+```bash
+# JEV_API_KEY debe estar definida; omite --key-env para conservar la clave de un perfil existente
+node ~/.agents/jev/jev-plugin.mjs configure --agent codex --profile codex --backend api --key-env JEV_API_KEY --runtime-mode assist --review-mode advisory --apply
+node ~/.agents/jev/jev-plugin.mjs enable --agent codex --profile codex --apply
+node ~/.agents/jev/jev-plugin.mjs hooks-install --agent codex --profile codex --apply
+```
+
+Revisa y confía en las definiciones exactas instaladas en Codex `/hooks`; instalarlas no concede confianza ni habilita el perfil. La revisión `advisory` informa del veredicto; `--review-mode enforce` explícito deniega una acción propuesta salvo que reciba `permit` de un backend validado. Nunca devuelve una concesión de permisos del host. La revisión cubre los matchers de herramientas registrados; los hooks no confiables, fallos del host o tiempos de espera pueden omitir la ejecución o permitir continuar, por lo que no es una barrera de seguridad del sistema operativo. Claude no aplica bloqueo automático de acciones y Codex no poda automáticamente el historial. `host-plan` es de solo lectura; copiar paquetes nativos no los registra de forma persistente. Consulta [la guía de integración](jev/README.md) para carga, confianza y límites de verificación.
 
 **ON/OFF y perfiles compartidos**:
 ```bash
@@ -118,7 +129,7 @@ node ~/.agents/jev/jev-harness.mjs self-test --mock
 
 **Cableado heredado local**. El `.env` intencionado de `~/.agents/jev/` (sin perfil) se soporta para retrocompatibilidad. Las variables de entorno ambiente anula claves de archivo coincidentes pero no pueden habilitar un perfil faltante/deshabilitado. Los perfiles (`--profile <id>`) están aislados: un perfil faltante nunca se revierte a otro.
 
-Las operaciones de Jev pueden enrutarse a través de backends diferentes según el propósito: `route-skills` y `prune-context` son asesoras (sin acción autónoma), mientras que `review` hace puerta de acción autónoma y requiere permiso explícito de un backend validado. Cada respuesta vincula el tipo de backend, modelo y nivel (no validado a menos que `--validated-model <id>` atestigüe que el backend realmente sirve ese modelo). `--mock` valida contratos sin conexión y nunca permite acciones autónomas.
+Las operaciones devuelven decisiones; su aplicación automática depende del host y del modo elegido arriba. Cada respuesta vincula backend, modelo y nivel (`unvalidated` salvo que el modelo servido por un driver elegible coincida con su atestación guardada). La atestación y las comprobaciones de transporte no prueban calibración ni calidad de decisión. El ahorro de tokens es una estimación, no una medición del uso del host. `--mock` valida contratos sin conexión y nunca permite acciones autónomas.
 
 Consulte [`jev/README.md`](jev/README.md) para obtener configuraciones detalladas, códigos de salida, límites de validación y requisitos previos de configuración de local/Ollama/LM Studio.
 ### Jevgrep (descubrimiento remoto opcional de fuentes)

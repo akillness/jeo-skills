@@ -1269,7 +1269,10 @@ test('status detect and host-plan are truthful read-only operations', async () =
         { action: 'package-load', command: 'pi', argv: ['-e', join(here, 'plugins', 'pi', 'index.mjs')], scope: 'session', executed: false },
         { action: 'package-toggle', status: 'unsupported', note: 'pi has no verified persistent targeted package enable/disable subcommand; the extension is session-scoped only (add/remove -e per launch)', executed: false },
       ]],
-      ['codex', 'adapter-only', 'ui-only', [{ action: 'provider-toggle', status: 'ui-only', note: 'Codex CLI has no verified noninteractive enable/disable surface', executed: false }]],
+    ['codex', 'native-hooks', 'persistent-with-trust', [
+      { action: 'hooks-install', command: process.execPath, argv: [join(here, 'jev-plugin.mjs'), 'hooks-install', '--agent', 'codex', '--profile', f.profile, '--apply'], executed: false },
+      { action: 'hooks-trust', command: 'codex', argv: [], status: 'review-required', note: 'Review the generated UserPromptSubmit and PreToolUse definitions with /hooks. Codex skips untrusted or modified definitions.', executed: false },
+    ]],
       ['gemini', 'adapter-only', 'unsupported', [{ action: 'adapter', status: 'present', note: 'No native Jev lifecycle is advertised for this host', executed: false }]],
       ['opencode', 'adapter-only', 'unsupported', [{ action: 'adapter', status: 'present', note: 'No native Jev lifecycle is advertised for this host', executed: false }]],
     ];

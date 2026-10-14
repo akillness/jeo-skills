@@ -61,7 +61,7 @@ Jev는 기본 카탈로그 설치에 포함되지 않는 별도의 홈 범위 �
 
 #### 구성: 백엔드, 작업별 라우팅, 결정 모델 분리
 
-**백엔드 종류** — 하나 또는 다섯 개 모두를 선택합니다(`api`, `local`, `ollama`, `lmstudio`, `systemone`). 각 작업(스킬 라우팅, 컨텍스트 프루닝, 제안 검토)은 프로필의 각 백엔드를 해석합니다. **결정 백엔드**는 스킬 라우팅과 프루닝에서는 권고용이지만, **검토**에서는 자율 조치 게이팅을 위한 결정 헤드 백엔드를 실행합니다(`api`와 `systemone` 보정 드라이버만 `permit`을 반환 가능). **코딩 모델**은 주변 애플리케이션 상태이며 Jev가 절대 사용하지 않습니다. 이 둘은 별개 개념입니다:
+**백엔드 종류** — 하나 또는 다섯 개 모두를 선택합니다(`api`, `local`, `ollama`, `lmstudio`, `systemone`). 각 작업은 프로필에서 결정 백엔드를 선택합니다. 하네스는 스킬 선택, keep/drop 판정, 검토 결과를 반환하며, 활성화된 호스트 통합이 아래 범위에서 결과를 적용합니다. 적격 `api`·`systemone` 드라이버에서 실제 제공 모델과 저장된 검증 모델 증명이 일치해야 `permit`을 반환할 수 있습니다. Jev는 호스트의 코딩 모델을 자동 변경하지 않습니다:
 
 ```bash
 # 구성: 작업별 백엔드를 한 번에 하나씩 명시적으로 설정
@@ -85,7 +85,18 @@ node ~/.agents/jev/jev-harness.mjs --profile gjc status --operation route-skills
 - `ollama` / `lmstudio` — 승인된 일반 설정은 서버를 시작하거나 모델을 내려받고 로드할 수 있습니다. `--config-only`는 설정만 기록합니다.
 - `systemone` — 운영자가 띄운 System One 엔드포인트 지정(다운로드, 서비스 시작 없음).
 
-**Native 권고 훅과 호스트 계획**. 설정은 Claude·jeopi·OMP·Pi 패키지와 규칙 파일을 복사합니다. 호스트의 검증된 세션 방식으로 로드해야 하며, 파일 복사는 영구 플러그인 등록이 아닙니다. `host-plan`은 읽기 전용이며 설치·활성화·실행하지 않습니다. 다른 호스트에는 어댑터 또는 미지원 계획을 제공합니다. Native 권고 훅은 권한을 부여하거나 코딩 모델을 자동 교체하지 않으며, 각 프로필의 `JEV_ENABLED`가 ON/OFF를 제어합니다.
+**결과를 실제 적용하는 호스트 통합**. 기본값은 `JEV_RUNTIME_MODE=advisory`, `JEV_REVIEW_MODE=off`이며, 각 프로필의 `JEV_ENABLED`가 ON/OFF를 제어합니다. `--runtime-mode assist`에서는 로드된 Claude·jeopi·OMP·Pi 통합이 선택한 설치 스킬의 `SKILL.md` 본문과 출처 경로를 모델 문맥에 주입합니다. 신뢰된 카탈로그와 일치하고 스킬 루트 내부에 있는 파일만 읽으며, 크기 초과 파일은 통째로 건너뜁니다(스킬당 64 KiB, 합계 96 KiB). jeopi·OMP·Pi는 오래된 Jev 전용 커스텀 메시지도 모델 입력에서 정리합니다. 최신 스킬 지침과 사용자·시스템·어시스턴트·도구 메시지는 보존합니다. Claude는 현재 스킬 주입만 지원합니다. `model-plan`은 계속 권고 전용이며 호스트 모델을 바꾸지 않습니다.
+
+Codex 0.162.1에서는 네이티브 훅의 `UserPromptSubmit`으로 스킬을 주입하고 `PreToolUse`로 제안된 행동을 검토합니다. 프로필 구성과 훅 정의 등록은 별도 단계입니다:
+
+```bash
+# JEV_API_KEY를 먼저 설정하세요. 기존 프로필의 키를 유지하려면 --key-env를 생략합니다
+node ~/.agents/jev/jev-plugin.mjs configure --agent codex --profile codex --backend api --key-env JEV_API_KEY --runtime-mode assist --review-mode advisory --apply
+node ~/.agents/jev/jev-plugin.mjs enable --agent codex --profile codex --apply
+node ~/.agents/jev/jev-plugin.mjs hooks-install --agent codex --profile codex --apply
+```
+
+Codex `/hooks`에서 설치된 정확한 정의를 검토하고 신뢰해야 합니다. 설치만으로 신뢰가 부여되거나 프로필이 활성화되지는 않습니다. `advisory` 검토는 판정을 알리며, 명시적인 `--review-mode enforce`는 검증된 백엔드의 `permit`이 아니면 제안된 행동을 거부합니다. 호스트의 실행 권한을 허가하는 응답은 반환하지 않습니다. 검토 범위는 등록된 도구 matcher이며, 신뢰되지 않은 훅·호스트 실패·시간 초과에서는 호출이 생략되거나 fail-open할 수 있으므로 OS 보안 경계가 아닙니다. Claude에는 자동 행동 차단이 없고 Codex에는 자동 대화 이력 정리가 없습니다. `host-plan`은 읽기 전용이며 네이티브 패키지 복사는 영구 등록이 아닙니다. 로드·신뢰·검증 범위는 [호스트 통합 안내](jev/README.md)를 참고하세요.
 
 **ON/OFF 및 공유 프로필**:
 ```bash
@@ -118,7 +129,7 @@ node ~/.agents/jev/jev-harness.mjs self-test --mock
 
 **로컬 레거시 구성**: 의도적인 `~/.agents/jev/.env`(프로필 없음)는 하위 호환성을 위해 지원됩니다. 주변 환경 변수는 매칭되는 파일 키를 오버라이드하지만 누락된/비활성화된 프로필을 활성화할 수는 없습니다. 프로필(`--profile <id>`)은 격리됩니다. 누락된 프로필은 절대 다른 프로필로 폴백되지 않습니다.
 
-Jev 작업은 목적에 따라 다른 백엔드를 통해 라우팅될 수 있습니다. `route-skills`와 `prune-context`는 권고용(자율 조치 없음)인 반면, `review`는 자율 실행을 게이트하고 검증된 백엔드로부터 명시적인 허가가 필요합니다. 모든 응답은 백엔드 종류, 모델, 티어(명시적으로 `--validated-model <id>`를 증명하지 않는 한 `unvalidated`)를 바인드합니다. `--mock`은 오프라인 계약을 검증하고 자율 조치를 절대 허가하지 않습니다.
+Jev 작업은 판정을 반환하며, 자동 적용 여부는 위의 호스트와 선택 모드에 달려 있습니다. 모든 응답은 백엔드 종류·모델·티어를 기록합니다(적격 드라이버의 제공 모델과 저장된 증명이 일치하지 않으면 `unvalidated`). 증명 일치나 통신 성공은 보정·판단 품질의 증거가 아닙니다. 토큰 절감량도 호스트 사용량 실측이 아닌 추정치입니다. `--mock`은 오프라인 계약을 검증하며 자율 조치를 허가하지 않습니다.
 
 자세한 설정, 종료 코드, 검증 범위, local/Ollama/LM Studio 설정 전제 조건은 [`jev/README.md`](jev/README.md)를 참조하세요.
 ### Jevgrep (선택적 원격 소스 탐색)
