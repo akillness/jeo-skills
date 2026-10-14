@@ -219,9 +219,16 @@ Then read this file fully before doing anything else in this session.
   `@dzhng/jevgrep@0.8.0`. Request/output bounds, no-cache and timeout are enforced.
   Twelve regressions passed; the published package completed skills/wiki/graph-source
   transport against deterministic loopback responses (12 POSTs, no cache/source writes).
-  This proves transport, not live-provider retrieval quality. README locales, setup
-  guide and both SVGs describe the boundary; `patterns/jeo-skill-install-flow.md`
-  records recurring checks. No global install, authentication or graph rebuild occurred.
+   This proves transport, not live-provider retrieval quality. README locales, setup
+   guide and both SVGs describe the boundary; `patterns/jeo-skill-install-flow.md`
+   records recurring checks. No global install, authentication or graph rebuild occurred.
+- CI test-job setup trim (2026-10-14): `test` job no longer installs Bun
+   (`oven-sh/setup-bun` was unused — all four steps are pure Python) and pins
+   `pyyaml==6.0.3`. Measured local script time is ~1.2 s total (validator 0.67 s,
+   rule-f 0.08 s, frontmatter 0.42 s, flatten 0.05 s), so setup dominated the job.
+   Installer-job suites measured ~137 s per OS (jev 52 s, installer 40 s, preflight
+   19 s, node 12 s); top waits are intentional contract behavior (10 s hung-node
+   bound, unreachable-backend probe timeouts), left unchanged.
 
 **Not yet built:**
 - `validate_links()` (dangling relative markdown link check) is implemented but not
