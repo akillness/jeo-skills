@@ -8,6 +8,9 @@ All notable changes to **jeo-skills** are documented here.
 - `jev-harness.mjs` now treats the first positional argument as the command, so leading
   flags work: the documented `--profile <id> --mock self-test` (setup guide) no longer
   fails with a usage error. `self-test --mock` keeps working.
+- Hosted `api` route-skills no longer fails with "choice probabilities must sum to 1":
+  jev-1.13.0 rounds probabilities to 2 decimals (e.g. sum 0.99), so the harness now accepts
+  drift up to 0.02 and renormalizes; larger deviations still fail closed.
 
 ## 2026-10-08
 
