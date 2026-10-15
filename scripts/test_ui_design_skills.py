@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Offline packaging contracts, not upstream UI or model-executed evaluations.
 
-Adopt as scripts/test_ui_design_skills.py, then run:
+Run from the repository root:
     python3 -B scripts/test_ui_design_skills.py -v
-Before adoption, set JEO_UI_TEST_ROOT to the checkout when running this proposal.
+Set JEO_UI_TEST_ROOT only when checking a different checkout.
 
 Source-map contract: docs/ui-design-repositories.json is an object containing
 schema_version=1 and sources=[{full_name,url,commit,observed_at,skill,
