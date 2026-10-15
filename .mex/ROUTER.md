@@ -29,6 +29,26 @@ Then read this file fully before doing anything else in this session.
 
 **Working:**
 
+- Publication preparation (2026-10-15): reconciled the upstream OKF addition and
+  retained the 368-skill catalog. Focused Python 31, Node 28 and all eight README
+  verification groups pass locally; remote CI is a separate gate. Unattributed
+  Jev plugin and September archive deletions remain outside the publication.
+
+- README/visual refresh (2026-10-14): English, Korean and Spanish authored docs
+  now use the Codex cover and source-accurate catalog/runtime SVGs; eight obsolete
+  README-only assets were removed. Monthly release sources and generated windows
+  are synchronized. Eight focused check groups and fourteen isolated preview
+  commands passed; 850px browser renders had no SVG text overflow. The pre-existing
+  missing root LICENSE remains a licensing open item. Runbook:
+  `patterns/readme-visual-refresh.md`.
+
+- Measured source performance/resource audit (2026-10-14): safe native YAML parsing,
+  fresh bounded query metadata, streaming hashes/env/GLB/log reads, and encoder/browser
+  failure cleanup now have isolated regression coverage. Targeted local suites and
+  catalog gates passed; the new suites are wired into installer CI, not remotely run.
+  Catalog projections and installed/global runtime settings were unchanged.
+  Reproduction and remaining limits: `patterns/performance-resource-audit.md`.
+
 - Jev CI timeout fixture repair (2026-10-14): latest OpenCode/setup publication
   `bda3e7c7` exposed an Ubuntu-only race in the native SIGTERM/SIGKILL regression.
   Fixture readiness now follows handler installation; fake deadline/grace timers

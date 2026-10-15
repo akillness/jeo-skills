@@ -21,36 +21,28 @@ infrastructure, game, media, CLI, or utility skills you need.
 
 ---
 
+<img src="assets/readme-hero.webp" alt="Editorial cover showing the jeo-skills catalog connecting selected agent workflows" width="100%">
+
 ## 💡 What is Agent Skills?
 
 Each skill remains discoverable as `.agent-skills/<name>/SKILL.md`. Category, subcategory,
 interface, bundle, and relationship metadata lives once in `.agent-skills/skills.json`, so
 skills can be grouped without duplicating wrapper folders or moving runtime-facing paths.
 
-## 🎮 Jeo Agent & The Legendary Equipment Set
+## 🧩 Jeo Agent & Composable Workflows
 
-`jeo-skills` acts as a legendary equipment set for the `@../jeo-code` Socratic spec-first AI coding agent, **Jeo** (`jeo`). Each core skill equips Jeo with a powerful tool to conquer complex codebases safely and efficiently:
-
-| Equipment | Item | Core Skill / Hook | Role for Jeo |
-| :--- | :--- | :--- | :--- |
-| **Robe of Clarity** | <img src="assets/jeo-robe.gif" width="64" height="64"><br>Robe | [`ooo`](.agent-skills/ooo/SKILL.md) / `jeo deep-interview` | **Socratic Ambiguity Gate**: Wraps Jeo in wisdom, ensuring requirements are fully crystallized before coding. |
-| **Armor of Lock** | <img src="assets/jeo-armor.gif" width="64" height="64"><br>Armor | [`ooo`](.agent-skills/ooo/SKILL.md) / `MutationGuard` | **Secure Codebase Mutation Guard**: Blocks codebase modifications while the Socratic interview is active. |
-| **Boots of Swiftness** | <img src="assets/jeo-shoes.gif" width="64" height="64"><br>Shoes | [`cli-anything`](.agent-skills/cli-anything/SKILL.md) / `jeo team` | **Bounded Executor**: Drives real software through agent-native CLI harnesses swiftly and safely. |
-| **Staff of Planning** | <img src="assets/jeo-staff.gif" width="64" height="64"><br>Staff | [`spec-kit`](.agent-skills/spec-kit/SKILL.md) / `jeo ralplan` | **Critiqued Planning Blueprint**: Channels architectural direction and planning power from frozen seeds. |
-| **Carpet of Verification** | <img src="assets/jeo-carpet.gif" width="64" height="64"><br>Carpet | [`ooo`](.agent-skills/ooo/SKILL.md) / `jeo ultragoal` | **Durable Checkpoint Verification**: Flies over the codebase to verify success via `--json` output checks. |
-
-*These animated items were generated using `god-tibo-imagen` (Codex ChatGPT backend) and compiled using `PIL`.*
+Compose the catalog with the public [`jeo-code`](https://github.com/akillness/jeo-code) coding agent: clarify with [`ooo`](.agent-skills/ooo/SKILL.md), review with [`plannotator`](.agent-skills/plannotator/SKILL.md), execute through [`cli-anything`](.agent-skills/cli-anything/SKILL.md), and verify with [`browser-harness`](.agent-skills/browser-harness/SKILL.md) or the test skill that fits your project. These are independent `SKILL.md` instructions; jeo-code owns execution, host permissions, and the final verification decision.
 
 ---
 
 ## 🏗 Workflow & Architecture
 
-<img src="assets/workflow.svg" alt="jeo-skills Workflow & Architecture" width="100%">
-<img src="assets/architecture.svg" alt="jeo-skills Catalog Architecture" width="100%">
+<img src="assets/catalog-workflow.svg" alt="Workflow diagram from the central skills manifest through selection and shared or native installation to host-owned execution and optional verification" width="100%">
+<img src="assets/runtime-architecture.svg" alt="Architecture diagram showing catalog projections, host-owned permissions, optional Jev and Jevgrep integrations, and the real coding model" width="100%">
 
 ### Jev Control Plane (optional System One integration)
 
-Jev is a separate, home-scoped opt-in, not part of default catalog installation, even in full mode. Source lives in [`jev/`](jev/README.md); the canonical `jev/jev-setup.sh` configures the chosen backend and installs the harness plus a host rule. Rule placement is not a native hook or proof of runtime enforcement: the host must load and follow it.
+Jev is a separate, home-scoped opt-in, not part of catalog installation, including `full` mode. Source lives in [`jev/README.md`](jev/README.md); the canonical `jev/jev-setup.sh` configures the selected profile/backend under `~/.agents/jev`. Host integration is separate: copying a rule or package is not activation, and native hook registration, profile enablement, and exact-definition trust remain host-owned.
 
 | Stage | Command | Role |
 | :--- | :--- | :--- |
@@ -88,7 +80,7 @@ node ~/.agents/jev/jev-harness.mjs --profile gjc status --operation route-skills
 
 **Host integration that applies decisions**. Profiles default to `JEV_RUNTIME_MODE=advisory` and `JEV_REVIEW_MODE=off`; `JEV_ENABLED` controls each profile independently. With `--runtime-mode assist`, a loaded Claude/jeopi/OMP/Pi integration injects the selected installed `SKILL.md` instructions, including their source paths. Files must match the trusted catalog and remain within its skill root; oversized files are skipped whole (64 KiB per skill, 96 KiB combined). jeopi/OMP/Pi also prune older Jev-owned custom messages from model input. The newest skill instructions and user, system, assistant, and tool messages remain intact. Claude currently injects skills only. `model-plan` remains advisory and never changes the host model.
 
-Codex 0.162.1 supports `UserPromptSubmit` skill injection and `PreToolUse` action review through native hooks. Configure and register the definitions separately:
+Codex CLI 0.162.1 uses the official [hooks interface](https://learn.chatgpt.com/docs/hooks): `UserPromptSubmit` can inject selected skills and `PreToolUse` can review matched tool calls. Configure, register, and trust the definitions separately:
 
 ```bash
 # JEV_API_KEY must already be set; omit --key-env to preserve an existing profile key
@@ -189,8 +181,9 @@ models, MCP servers, and runtimes on demand.
 
 ```bash
 # One lightweight skill, shared globally
-# Automatically discovered by jeopi, jeo-code, oh-my-pi, Claude Code, Codex, Gemini CLI, OpenCode
-# (GJC receives native projection to ~/.gjc/agent/skills automatically)
+# Shared-root hosts discover this install: jeopi, jeo-code, oh-my-pi, Claude Code,
+# Codex, Gemini CLI, and OpenCode. GJC is separate; pass `--agent gjc` when you
+# want the router to copy the selected skills into `~/.gjc/agent/skills`.
 npx --yes skills@1.7.0 add https://github.com/akillness/jeo-skills \
   --skill jeo-skill --global --agent universal --yes --copy --full-depth
 
@@ -221,8 +214,7 @@ jeo-skill install --bundle game-web --global --yes
 npx --yes skills@1.7.0 add https://github.com/akillness/jeo-skills \
   --skill jeo-skill --agent universal --yes --copy --full-depth
 
-python3 "$PWD/.agents/skills/jeo-skill/scripts/jeo-skill.py" link --project
-jeo-skill install responsive-design --project --yes
+python3 "$PWD/.agents/skills/jeo-skill/scripts/jeo-skill.py" install responsive-design --yes
 ```
 
 The one-line installer uses the lightweight default:
@@ -754,18 +746,11 @@ Subcategories: `knowledge` (7), `files` (5), `git` (4), `workspace` (1), `projec
 
 ---
 
-## 🧬 TOON Format Injection
+## 🧬 TOON Catalog Projection
 
-TOON (Token-Oriented Object Notation) compresses the skill catalog and auto-injects it into every prompt. **40-50% token savings** vs JSON/Markdown.
+`.agent-skills/skills.toon` is a generated, pipe-delimited metadata projection of `.agent-skills/skills.json`. Each record is `name|category|subcategory|interface|path|description`; whitespace is collapsed and `|` inside descriptions becomes ` / ` so the record separator stays unambiguous.
 
-| Platform | File | Mechanism |
-|----------|------|-----------|
-| Claude Code | `~/.claude/hooks/toon-inject.mjs` | `UserPromptSubmit` hook — 26-37ms |
-| Antigravity CLI (`agy`) | `~/.gemini/antigravity-cli/hooks/toon-skill-inject.sh` | lifecycle hook (`agy inspect` to verify) |
-| Codex CLI | `~/.codex/skills-toon-catalog.toon` | Static catalog |
-
-- **Tier 1** (always): Skill catalog index (~875-3,500 tokens) — names + descriptions + tags
-- **Tier 2** (on-demand): Individual SKILL.toon content (~292 tokens/skill, max 3)
+TOON is a catalog format, not an automatic prompt-injection hook, host integration, timing guarantee, token-savings claim, or token-budget control. It is regenerated with `python3 scripts/generate-catalog-projections.py` and checked with `python3 scripts/generate-catalog-projections.py --check`; a host or tool must explicitly read it before it can affect a run.
 
 ---
 
@@ -787,7 +772,7 @@ Spec-first development front door: clarify ambiguous requests with a **git-groun
 | Durable knowledge | `llm-wiki` + `graphify` | File significant findings into the wiki and graph |
 
 ### plannotator — Visual Plan Review
-> Keyword: `plan` | [Docs](docs/plannotator/README.md) | [GitHub](https://github.com/backnotprop/plannotator)
+> Keyword: `plan` | [Skill](.agent-skills/plannotator/SKILL.md) | [GitHub](https://github.com/backnotprop/plannotator)
 
 Browser UI for annotating AI plans. Approve or send structured feedback in one click. Works with Claude Code, OpenCode, Gemini CLI, and Codex CLI.
 
@@ -796,7 +781,7 @@ bash scripts/install.sh --all
 ```
 
 ### ooo — Ouroboros Specification-First Development
-> Keyword: `ooo`, `ouroboros`, `ooo ralph` | [Docs](docs/ooo/README.md) | [GitHub](https://github.com/Q00/ouroboros)
+> Keyword: `ooo`, `ouroboros`, `ooo ralph` | [Skill](.agent-skills/ooo/SKILL.md) | [GitHub](https://github.com/Q00/ouroboros)
 
 Socratic interview **grounded in updated git data** → immutable seed/spec → **spec-kit renders the execution plan from the seed** → **execute through cli-anything harnesses** (`--json` output = evaluate evidence) → verify before done → keep looping until completion is actually verified. Installable as a Claude Code plugin or via pip; the skill installer wires all three integrations by default.
 
@@ -825,7 +810,7 @@ ouroboros tui monitor
 ```
 
 ### god-tibo-imagen — AI Image Generation via Codex Backend
-> Keyword: `god-tibo-imagen`, `gti`, `image generation`, `codex image` | [Docs](docs/god-tibo-imagen/README.md) | [GitHub](https://github.com/NomaDamas/god-tibo-imagen)
+> Keyword: `god-tibo-imagen`, `gti`, `image generation`, `codex image` | [Skill](.agent-skills/god-tibo-imagen/SKILL.md) | [GitHub](https://github.com/NomaDamas/god-tibo-imagen)
 
 Zero-dependency image generation using Codex's ChatGPT backend. Reuses existing `~/.codex/auth.json` — no separate API key needed. Supports CLI (`gti`), Node.js library, and Python SDK with optional reference image inputs.
 
@@ -848,7 +833,7 @@ gti --prompt "make it round" --input ./ref.png --output ./out.png
 ```
 
 ### notebooklm — Google NotebookLM Integration for Claude Code
-> Keyword: `notebooklm`, `notebook query`, `google notebooklm` | [Docs](docs/notebooklm/README.md) | [GitHub](https://github.com/PleasePrompto/notebooklm-skill)
+> Keyword: `notebooklm`, `notebook query`, `google notebooklm` | [Skill](.agent-skills/notebooklm/SKILL.md) | [GitHub](https://github.com/PleasePrompto/notebooklm-skill)
 
 Query your Google NotebookLM notebooks directly from Claude Code via Patchright browser automation. Get source-grounded, citation-backed answers from your uploaded documents without leaving the terminal. Supports persistent Google authentication, notebook library management, and multi-notebook research workflows. **Local Claude Code only** (web UI not supported).
 
@@ -871,7 +856,7 @@ python scripts/run.py ask_question.py --question "What are the key findings?"
 ```
 
 ### pretext — Fast Multiline Text Measurement & Layout
-> Keyword: `pretext`, `text measurement`, `text layout`, `paragraph height` | [Docs](docs/pretext/README.md) | [GitHub](https://github.com/chenglou/pretext)
+> Keyword: `pretext`, `text measurement`, `text layout`, `paragraph height` | [Skill](.agent-skills/pretext/SKILL.md) | [GitHub](https://github.com/chenglou/pretext)
 
 Pure JavaScript/TypeScript text measurement and layout without DOM reflow. Calculate paragraph heights, build manual line layouts, handle emoji/CJK/RTL, and render to DOM, Canvas, or SVG — all via pure arithmetic on cached font metrics.
 
@@ -887,7 +872,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill pretext
 ```
 
 ### zeude — Enterprise AI Adoption Platform for Claude Code
-> Keyword: `zeude`, `ai adoption`, `claude code adoption`, `enterprise claude` | [Docs](docs/zeude/README.md) | [GitHub](https://github.com/zep-us/zeude)
+> Keyword: `zeude`, `ai adoption`, `claude code adoption`, `enterprise claude` | [Skill](.agent-skills/zeude/SKILL.md) | [GitHub](https://github.com/zep-us/zeude)
 
 Enterprise platform that solves the Intention-Action Gap in Claude Code adoption. Delivers 3× adoption improvement via OpenTelemetry measurement, centralized skill/MCP/hook sync (Zeude Shim), and context-aware skill suggestions at prompt time. Requires Supabase + ClickHouse.
 
@@ -908,7 +893,7 @@ curl -fsSL https://raw.githubusercontent.com/zep-us/zeude/main/install.sh | bash
 ```
 
 ### compresso — Offline Batch Video & Image Compression
-> Keyword: `compresso`, `compress video`, `compress image`, `batch compression` | [Docs](docs/compresso/README.md) | [GitHub](https://github.com/codeforreal1/compressO)
+> Keyword: `compresso`, `compress video`, `compress image`, `batch compression` | [Skill](.agent-skills/compresso/SKILL.md) | [GitHub](https://github.com/codeforreal1/compressO)
 
 Free, open-source, fully offline desktop compression (Tauri + React). Batch compress videos and images, trim/split, convert formats, embed subtitles, and manage metadata — powered by FFmpeg, pngquant, jpegoptim, and gifski.
 
@@ -924,7 +909,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill compresso
 ```
 
 ### stitch-skills — Agent Skills for Stitch MCP
-> Keyword: `stitch`, `stitch-design`, `stitch-loop`, `enhance-prompt` | [Docs](docs/stitch-skills/README.md) | [GitHub](https://github.com/google-labs-code/stitch-skills)
+> Keyword: `stitch`, `stitch-design`, `stitch-loop`, `enhance-prompt` | [Skill](.agent-skills/stitch-skills/SKILL.md) | [GitHub](https://github.com/google-labs-code/stitch-skills)
 
 AI-powered UI design generation, prompt refinement, and screen-to-code workflows via the Stitch MCP server. Generate high-fidelity screens, multi-page websites, DESIGN.md docs, React/shadcn-ui components, and Remotion walkthrough videos.
 
@@ -958,18 +943,6 @@ pnpm tools-dev run web
 npx skills add https://github.com/akillness/jeo-skills --skill open-design
 ```
 
-### flutter-bloc-clean-architecture-skill — Flutter BLoC + Clean Architecture
-> Keyword: `flutter bloc`, `clean architecture`, `flutter-bloc-development` | [Docs](docs/flutter-bloc-clean-architecture-skill/README.md) | [GitHub](https://github.com/AbdelhakRazi/flutter-bloc-clean-architecture-skill)
-
-Agentic Flutter skill package that enforces strict clean-layer boundaries and BLoC state management patterns. Useful for teams who want architecture-constrained AI codegen and reusable examples.
-
-```bash
-# Direct source install
-npx skills add https://github.com/abdelhakrazi/flutter-bloc-clean-architecture-skill --skill flutter-bloc-development
-
-# Install from jeo-skills
-npx skills add https://github.com/akillness/jeo-skills --skill flutter-bloc-clean-architecture-skill
-```
 
 ### semble — Token-Efficient Code Search for Agents
 > Keyword: `semble`, `code search`, `semble search`, `semantic code search` | [GitHub](https://github.com/MinishLab/semble)
@@ -1002,7 +975,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 | [revfactory/harness](https://github.com/revfactory/harness) | meta-skill | Agent team & skill architect plugin / scaffold |
 | [revfactory/webtoon-harness](https://github.com/revfactory/webtoon-harness) | harness | 27-agent webtoon production team (trend → vertical-scroll viewer) plugin |
 
-> Install & integration notes → [docs/harness/README.md](docs/harness/README.md) · packaged skill → [.agent-skills/harness/SKILL.md](.agent-skills/harness/SKILL.md)
+> Packaged skill and integration instructions → [.agent-skills/harness/SKILL.md](.agent-skills/harness/SKILL.md)
 
 ---
 
@@ -1010,13 +983,16 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 
 ```text
 ├── .agent-skills/          ← 368 skill folders (SKILL.md + optional support files)
-├── docs/                   ← detailed guides (bmad, plannotator, ooo, ...)
-├── install.sh
-├── setup-all-skills-prompt.md
-├── README.md               ← English (this file)
-└── README.ko.md            ← 한국어
-```
-
+├── assets/                ← README hero and catalog/runtime diagrams
+├── changelog/             ← localized monthly source files
+├── docs/                  ← ScrapingAnt partnership and outreach notes
+├── install.sh             ← one-line installer
+├── scripts/               ← catalog and link validation helpers
+├── jev/                   ← optional Jev control-plane source
+├── README.md              ← English (this file)
+├── README.ko.md           ← 한국어
+├── README.es-ES.md        ← Español
+└── CHANGELOG.md           ← release history
 ---
 
 ## 📖 Related Docs
@@ -1024,26 +1000,25 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 | Tool | Keyword | Doc |
 |------|---------|-----|
 | `ooo` | `ooo`, `ouroboros`, `ooo interview` | [.agent-skills/ooo/SKILL.md](.agent-skills/ooo/SKILL.md) |
-| `plannotator` | `plan` | [docs/plannotator/README.md](docs/plannotator/README.md) |
-| `flutter-bloc-clean-architecture-skill` | `flutter bloc`, `clean architecture` | [docs/flutter-bloc-clean-architecture-skill/README.md](docs/flutter-bloc-clean-architecture-skill/README.md) |
-| `ooo` | `ooo`, `ouroboros` | [docs/ooo/README.md](docs/ooo/README.md) |
-| `stitch-skills` | `stitch`, `stitch-design`, `enhance-prompt` | [docs/stitch-skills/README.md](docs/stitch-skills/README.md) |
-| `compresso` | `compresso`, `compress video`, `batch compression` | [docs/compresso/README.md](docs/compresso/README.md) |
+| `plannotator` | `plan` | [.agent-skills/plannotator/SKILL.md](.agent-skills/plannotator/SKILL.md) |
+| `ooo` | `ooo`, `ouroboros` | [.agent-skills/ooo/SKILL.md](.agent-skills/ooo/SKILL.md) |
+| `stitch-skills` | `stitch`, `stitch-design`, `enhance-prompt` | [.agent-skills/stitch-skills/SKILL.md](.agent-skills/stitch-skills/SKILL.md) |
+| `compresso` | `compresso`, `compress video`, `batch compression` | [.agent-skills/compresso/SKILL.md](.agent-skills/compresso/SKILL.md) |
 | `filmcraft` | `filmcraft`, `filmcraft-cli`, `.fcproj`, `FilmCraft MCP` | [.agent-skills/filmcraft/SKILL.md](.agent-skills/filmcraft/SKILL.md) |
 | `open-design` | `open-design`, `local design tool`, `prototype generation` | [.agent-skills/open-design/SKILL.md](.agent-skills/open-design/SKILL.md) |
 | `codeflow` | `codeflow`, `visualize codebase`, `dependency graph` | [.agent-skills/codeflow/SKILL.md](.agent-skills/codeflow/SKILL.md) |
 | `slides-grab` | `slides-grab`, `slides grab`, `generate slides` | [.agent-skills/slides-grab/SKILL.md](.agent-skills/slides-grab/SKILL.md) |
 | `browser-harness` | `browser-harness`, `self-healing browser`, `llm browser automation` | [.agent-skills/browser-harness/SKILL.md](.agent-skills/browser-harness/SKILL.md) |
-| `pretext` | `pretext`, `text measurement`, `text layout` | [docs/pretext/README.md](docs/pretext/README.md) |
-| `god-tibo-imagen` | `god-tibo-imagen`, `gti`, `image generation` | [docs/god-tibo-imagen/README.md](docs/god-tibo-imagen/README.md) |
-| `notebooklm` | `notebooklm`, `notebook query`, `google notebooklm` | [docs/notebooklm/README.md](docs/notebooklm/README.md) |
-| `zeude` | `zeude`, `ai adoption`, `enterprise claude` | [docs/zeude/README.md](docs/zeude/README.md) |
+| `pretext` | `pretext`, `text measurement`, `text layout` | [.agent-skills/pretext/SKILL.md](.agent-skills/pretext/SKILL.md) |
+| `god-tibo-imagen` | `god-tibo-imagen`, `gti`, `image generation` | [.agent-skills/god-tibo-imagen/SKILL.md](.agent-skills/god-tibo-imagen/SKILL.md) |
+| `notebooklm` | `notebooklm`, `notebook query`, `google notebooklm` | [.agent-skills/notebooklm/SKILL.md](.agent-skills/notebooklm/SKILL.md) |
+| `zeude` | `zeude`, `ai adoption`, `enterprise claude` | [.agent-skills/zeude/SKILL.md](.agent-skills/zeude/SKILL.md) |
 | `harness` | `harness` | [.agent-skills/harness/SKILL.md](.agent-skills/harness/SKILL.md) |
 | `webtoon-harness` | `webtoon harness`, `make a webtoon` | [.agent-skills/webtoon-harness/SKILL.md](.agent-skills/webtoon-harness/SKILL.md) |
 | `game-studio-harness` | `game production harness`, `게임 제작 하네스`, `stage gate` | [.agent-skills/game-studio-harness/SKILL.md](.agent-skills/game-studio-harness/SKILL.md) |
 | `heretic` | `heretic`, `abliterate`, `decensor a model` | [.agent-skills/heretic/SKILL.md](.agent-skills/heretic/SKILL.md) |
-| `bmad` | `bmad` | [docs/bmad/README.md](docs/bmad/README.md) |
-| Harness OSS | — | [docs/harness/README.md](docs/harness/README.md) |
+| `bmad` | `bmad` | [.agent-skills/bmad/SKILL.md](.agent-skills/bmad/SKILL.md) |
+| Harness OSS | — | [.agent-skills/harness/SKILL.md](.agent-skills/harness/SKILL.md) |
 | `scrapingant-web-fetch` | `scrapingant`, `mcp web scraping`, `fetch blocked page` | [.agent-skills/scrapingant-web-fetch/SKILL.md](.agent-skills/scrapingant-web-fetch/SKILL.md) |
 
 ---
@@ -1060,7 +1035,6 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 | `god-tibo-imagen` | [NomaDamas/god-tibo-imagen](https://github.com/NomaDamas/god-tibo-imagen) | MIT |
 | `notebooklm` | [PleasePrompto/notebooklm-skill](https://github.com/PleasePrompto/notebooklm-skill) | MIT |
 | `zeude` | [zep-us/zeude](https://github.com/zep-us/zeude) | Apache-2.0 |
-| `flutter-bloc-clean-architecture-skill` | [AbdelhakRazi/flutter-bloc-clean-architecture-skill](https://github.com/AbdelhakRazi/flutter-bloc-clean-architecture-skill) | Apache-2.0 |
 | `plannotator` | [plannotator.ai](https://plannotator.ai) | MIT |
 | `bmad` | [bmad-dev/BMAD-METHOD](https://github.com/bmad-dev/BMAD-METHOD) | MIT |
 | `agentation` | [benjitaylor/agentation](https://github.com/benjitaylor/agentation) | MIT |
@@ -1123,6 +1097,16 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 | **Read-only preflight and regressions** | Added a standalone stdlib preflight bound to the pinned commit and fixed public source markers. It rejects symlinked paths and oversized markers, scopes Git environment variables, and runs no upstream executable. The shared repository-preflight regression suite passes 13/13, including malicious-path, pin, symlink, size, no-write, and credential-isolation cases. |
 | **Known upstream drift and execution boundary** | The pinned `go.mod` requires Go 1.26.0, while the getting-started guide says 1.22+; the skill records the conflict. No upstream installation, build, bootstrap, MCP registration, or target-project write was performed. |
 
+## 🆕 What's New in v2026-10-14
+
+| Change | Details |
+|--------|---------|
+| **Jev runtime activation on Codex** | The `codex` profile is ON with `api` backend, assist skill injection and advisory PreToolUse review; both generated hook definitions are trusted and enabled in live Codex sessions, with real TypeSafe routing evidence (`react-best-practices` via served `jev-1.13.0`). Tier stays unvalidated: transport proof, not calibration or permission grants. |
+| **Timeout fixture sync** | The native SIGTERM/SIGKILL escalation test now follows child handler readiness instead of wall-clock deadlines; production timeout behavior is unchanged. |
+| **CI test-job setup trim** | The `test` job drops the unused Bun setup (all four steps are pure Python) and pins `pyyaml==6.0.3`; the stale `flatten_skills.py` next-step hint now points at the real `generate-catalog-projections.py --check`. Installer-suite waits (hung-node bound, unreachable-backend probes) are intentional contract behavior and unchanged. |
+| **README visual and boundary refresh** | Documentation-only: replaced five GIF equipment items, two retired SVGs, and the serial-CI image with a Codex static cover plus `assets/catalog-workflow.svg` and `assets/runtime-architecture.svg`; corrected current commands, `.agent-skills/<name>/SKILL.md` links, TOON metadata boundaries, and native host boundaries. No runtime or provider behavior is claimed. |
+| **Catalog validation and search** | Local fixture metrics: catalog-validator warm median 268.69 → 126.49 ms and 40 queries on one handler 1134.76 → 157.30 ms, with bounded streaming and failure cleanup. Focused Python (31) and Node (28) cases report zero skips; new CI wiring reports these fixtures. This is not model/GPU, full-browser, remote-action, or global-leak-free proof. |
+
 ## 🆕 What's New in v2026-10-12
 
 | Change | Details |
@@ -1170,13 +1154,6 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 | **Native projection reference table added** | The `jeo-skill` guide documents runtime aliases, shared and native roots, installation scope, automatic selected-skill projection, and per-account Aside selection. Native placement is handled by the installer rather than manual copies. |
 | **Shared provider and account safety** | Confirmed jeopi/jeo-code/oh-my-pi load shared `.agents/skills` roots; no ECC adapter needed. GJC uses `~/.gjc/agent/skills` globally or `.gjc/skills` in a project. Aside uses account-scoped `~/.aside/u/<id>/skills/user/` paths; credentials are never shared across accounts. |
 | **Installation prerequisites validated** | Documentation specifies: Bash 3+, Node.js >= 22.20, and `skills@1.7.0` CLI pinned. Verification scope is honest: no false end-to-end desktop test claims; all guarantees backed by automated installer regression suite. |
-
-## 🆕 What's New in v2026-09-22
-
-| Change | Details |
-|--------|---------|
-| **Stagehand browser-agent skill** | Added `stagehand` for the pinned `browserbase/stagehand` v4 SDK and `browse` CLI: local, Browserbase, and CDP browser selection; `act` / `observe` / `extract`; typed WebMCP; Search/Fetch; Playwright route-outs; a read-only preflight; evals; and pinned upstream evidence. |
-| **On-demand runtime boundary** | Updated the setup guide to keep SDK, CLI, Chromium, Browserbase MCP, credentials, and paid cloud services out of blanket installation. `agent-browser` was not present in the current tree or manifest, so no deletion was required. |
 
 > 📜 Older entries: [`changelog/en/`](changelog/en/) (monthly files, newest first).
 

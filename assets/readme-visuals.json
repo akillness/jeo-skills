@@ -1,0 +1,43 @@
+{
+  "updated": "2026-10-15",
+  "purpose": "Current README cover and source-accurate workflow diagrams",
+  "post_edit": "2026-10-15: Maintainer removed snapshot skill/category counts from the Codex SVGs to avoid drift after catalog additions; no image was regenerated.",
+  "palette": {
+    "paper": "#F7F9F5",
+    "ink": "#12231E",
+    "teal": "#137E73",
+    "optional": "#AC6415"
+  },
+  "hero": {
+    "path": "assets/readme-hero.webp",
+    "generator": "god-tibo-imagen (gti)",
+    "provider": "private-codex",
+    "request_model": "gpt-6-luna",
+    "image_model": "gpt-image-2.5-sunburst",
+    "requested_size": "2048x1152",
+    "returned_size": "1672x941",
+    "returned_format": "WebP",
+    "published_size": "1600x900",
+    "published_format": "WebP",
+    "conversion": "ImageMagick resize into a 1600x900 canvas; WebP quality 86",
+    "selection": "Architectural library-card composition, selected from two generated variants",
+    "prompt": "Create a polished editorial cover image for the open-source project jeo-skills. Wide landscape composition, exact 16:9 canvas, 2048x1152. Subject: a beautifully organized library of modular agent skill cards, illustrated as precise architectural paper-and-ceramic objects rather than a real dashboard. A single central catalog block connects to a small routing hub, which fans out into three distinct groups of selected skill cards; a thin secondary branch represents optional tools, never the main path. Communicate curated knowledge, selective installation, composable workflows, and evidence-based verification. Style: premium restrained architectural 3D editorial illustration with technically precise geometry, crisp edges, gentle tactile paper textures, clean warm-offwhite #F7F9F5 background, forest-ink #12231E, muted jade #137E73, sage green and tiny amber #AC6415 accents. Lighting: soft natural studio light, elegant low shadows, no neon, no glowing purple gradients, no noisy particles. Composition: hero objects on the right two-thirds, generous calm left area with the product wordmark jeo-skills in dark forest ink, sharp, legible, correctly spelled, clean understated sans-serif. Under it ONLY the short phrase Select. Install. Verify. sharp and legible. No other text, numbers, dates, provider logos or fake metrics. No people, wizard, weapons, carpet, fantasy objects, terminal screenshot or real application UI. Make the central objects distinct and the connection pathways clear. This is a static product illustration for a GitHub README, coherent with hand-editable warm-white/teal architecture SVGs.",
+    "boundary": "Illustrative product cover, not a runtime screenshot. Generation uses an undocumented Codex backend; no public API stability guarantee. No account identifiers or credentials are included."
+  },
+  "diagrams": {
+    "paths": [
+      "assets/catalog-workflow.svg",
+      "assets/runtime-architecture.svg"
+    ],
+    "authoring": "Codex app-server",
+    "sandbox": "workspace-write",
+    "thread": "ephemeral; only the two assigned SVG files in write scope",
+    "source_of_truth": [
+      ".agent-skills/skills.json",
+      "install.sh",
+      ".agent-skills/jeo-skill/",
+      "jev/README.md"
+    ],
+    "boundary": "Static editable diagrams; installation, host activation and optional backend execution remain distinct."
+  }
+}

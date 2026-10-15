@@ -1,6 +1,6 @@
 # Pattern Index
 
-<!-- last_updated: 2026-10-12 -->
+<!-- last_updated: 2026-10-14 -->
 
 Lookup table for all pattern files in this directory. Check here before starting any task — if a pattern exists, follow it.
 
@@ -22,3 +22,5 @@ Lookup table for all pattern files in this directory. Check here before starting
 | [headroom-code-policy-install.md](headroom-code-policy-install.md) | Installing or repairing Headroom routing with Graphify preflights and the Claude Code source-mutation policy |
 | [jeo-skill-install-flow.md](jeo-skill-install-flow.md) | Understanding or debugging how `jeo-skill install` resolves a selection and delegates to `npx skills add` |
 | [jev-control-plane.md](jev-control-plane.md) | Operating, extending, or debugging the Jev harness: backend kinds, per-operation routing/fallback, attestation tiers, cap-aware selection, `model_policies` routing, and the self-test/regression/smoke evidence gates |
+| [performance-resource-audit.md](performance-resource-audit.md) | Measuring and optimizing repository executable speed, allocation and resource lifecycles without changing outputs or weakening safety checks |
+| [readme-visual-refresh.md](readme-visual-refresh.md) | Refreshing localized README prose, generated release windows and Codex image/SVG assets with scoped consumer-command and browser verification |

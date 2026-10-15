@@ -21,31 +21,29 @@
 
 ---
 
+<img src="assets/readme-hero.webp" alt="jeo-skills: Claude, Codex, Gemini, OpenCode용 스펙 우선 에이전트 스킬" width="100%">
+
 ## 💡 Agent Skills란?
 
 각 스킬은 `.agent-skills/<name>/SKILL.md` 경로로 그대로 검색됩니다. 카테고리,
 하위 분류, 인터페이스, 번들, 연관 관계는 `.agent-skills/skills.json` 한 곳에서
 관리하므로 중복 래퍼 폴더를 만들거나 런타임 경로를 옮기지 않아도 됩니다.
-## 🎮 Jeo 에이전트와 전설의 장비 세트
+`jeo-skills`는 [`jeo-code`](https://github.com/akillness/jeo-code)와 함께 쓰는 스펙 우선 Socratic AI 코딩 에이전트 스킬 카탈로그입니다. 각 스킬은 필요한 작업 단계에 맞춰 조합하며, 실제 적용 범위는 호스트 통합과 사용자가 선택한 설정에 따라 달라집니다.
 
-`jeo-skills`는 `@../jeo-code` 스펙 우선 Socratic AI 코딩 에이전트인 **Jeo**(`jeo`)의 전설적인 장비 세트 역할을 합니다. 각 핵심 스킬은 복잡한 코드베이스를 안전하고 효율적으로 정복할 수 있도록 Jeo에게 강력한 도구를 장착해 줍니다.
+| 워크플로우 | 실제 구성 |
+| :--- | :--- |
+| 요구사항·스펙 | [`ooo`](.agent-skills/ooo/SKILL.md) · [`spec-kit`](.agent-skills/spec-kit/SKILL.md) |
+| 실행·검증 | [`cli-anything`](.agent-skills/cli-anything/SKILL.md) · [`browser-harness`](.agent-skills/browser-harness/SKILL.md) |
+| 런타임 | 공개 [`jeo-code`](https://github.com/akillness/jeo-code)와 호스트별 통합 |
 
-| 장비명 | 아이콘 | 핵심 스킬 / 훅 | Jeo를 위한 역할 |
-| :--- | :--- | :--- | :--- |
-| **현자의 로브 (Robe of Clarity)** | <img src="assets/jeo-robe.gif" width="64" height="64"><br>로브 | [`ooo`](.agent-skills/ooo/SKILL.md) / `jeo deep-interview` | **Socratic Ambiguity Gate**: Socratic 질문 루프를 통해 코딩 전에 요구사항을 완벽히 결정합니다. |
-| **철벽의 갑옷 (Armor of Lock)** | <img src="assets/jeo-armor.gif" width="64" height="64"><br>갑옷 | [`ooo`](.agent-skills/ooo/SKILL.md) / `MutationGuard` | **Secure Codebase Mutation Guard**: 인터뷰 진행 중에는 코드 수정을 철저히 차단하여 안전을 보장합니다. |
-| **신속의 장화 (Boots of Swiftness)** | <img src="assets/jeo-shoes.gif" width="64" height="64"><br>신발 | [`cli-anything`](.agent-skills/cli-anything/SKILL.md) / `jeo team` | **Bounded Executor**: 에이전트 전용 CLI 하네스를 통해 실제 소프트웨어를 신속하고 정확하게 구동합니다. |
-| **설계의 지팡이 (Staff of Planning)** | <img src="assets/jeo-staff.gif" width="64" height="64"><br>지팡이 | [`spec-kit`](.agent-skills/spec-kit/SKILL.md) / `jeo ralplan` | **Critiqued Planning Blueprint**: 동결된 seed로부터 아키텍처 방향성과 세부 구현 계획을 수립합니다. |
-| **검증의 양탄자 (Carpet of Verification)** | <img src="assets/jeo-carpet.gif" width="64" height="64"><br>양탄자 | [`ooo`](.agent-skills/ooo/SKILL.md) / `jeo ultragoal` | **Durable Checkpoint Verification**: 코드베이스 위를 날아다니며 `--json` 결과를 분석해 완벽한 구현을 검증합니다. |
-
-*위 애니메이션 아이템들은 `god-tibo-imagen`(Codex ChatGPT 백엔드)을 이용해 이미지를 생성하고 `PIL`로 애니메이션을 합성하여 제작되었습니다.*
+필요한 단계만 조합해 사용하세요. 이 카탈로그는 공개 `jeo-code` 런타임과 스킬 문서를 연결하지만, 호스트의 권한·훅 정책을 대신 부여하지 않습니다.
 
 ---
 
 ## 🏗 워크플로우 및 아키텍처
 
-<img src="assets/workflow.svg" alt="jeo-skills Workflow & Architecture" width="100%">
-<img src="assets/architecture.svg" alt="jeo-skills Catalog Architecture" width="100%">
+<img src="assets/catalog-workflow.svg" alt="스킬 카탈로그를 선택·설치·검증하는 jeo-skills 워크플로우" width="100%">
+<img src="assets/runtime-architecture.svg" alt="jeo-skills 런타임 통합과 호스트별 권한 경계" width="100%">
 
 ### Jev 컨트롤 플레인 (선택적 System One 통합)
 
@@ -85,7 +83,7 @@ node ~/.agents/jev/jev-harness.mjs --profile gjc status --operation route-skills
 - `ollama` / `lmstudio` — 승인된 일반 설정은 서버를 시작하거나 모델을 내려받고 로드할 수 있습니다. `--config-only`는 설정만 기록합니다.
 - `systemone` — 운영자가 띄운 System One 엔드포인트 지정(다운로드, 서비스 시작 없음).
 
-**결과를 실제 적용하는 호스트 통합**. 기본값은 `JEV_RUNTIME_MODE=advisory`, `JEV_REVIEW_MODE=off`이며, 각 프로필의 `JEV_ENABLED`가 ON/OFF를 제어합니다. `--runtime-mode assist`에서는 로드된 Claude·jeopi·OMP·Pi 통합이 선택한 설치 스킬의 `SKILL.md` 본문과 출처 경로를 모델 문맥에 주입합니다. 신뢰된 카탈로그와 일치하고 스킬 루트 내부에 있는 파일만 읽으며, 크기 초과 파일은 통째로 건너뜁니다(스킬당 64 KiB, 합계 96 KiB). jeopi·OMP·Pi는 오래된 Jev 전용 커스텀 메시지도 모델 입력에서 정리합니다. 최신 스킬 지침과 사용자·시스템·어시스턴트·도구 메시지는 보존합니다. Claude는 현재 스킬 주입만 지원합니다. `model-plan`은 계속 권고 전용이며 호스트 모델을 바꾸지 않습니다.
+**결과를 실제 적용하는 호스트 통합**. 기본값은 `JEV_RUNTIME_MODE=advisory`, `JEV_REVIEW_MODE=off`이며, 각 프로필의 `JEV_ENABLED`가 ON/OFF를 제어합니다. `--runtime-mode assist`에서는 로드된 Claude·jeopi·oh-my-pi 계열 통합이 선택한 설치 스킬의 `SKILL.md` 본문과 출처 경로를 모델 문맥에 주입합니다. 신뢰된 카탈로그와 일치하고 스킬 루트 내부에 있는 파일만 읽으며, 크기 초과 파일은 통째로 건너뜁니다(스킬당 64 KiB, 합계 96 KiB). jeopi·oh-my-pi 계열은 오래된 Jev 소유 커스텀 메시지만 입력에서 정리합니다. 최신 스킬 지침과 사용자·시스템·어시스턴트·도구 메시지는 보존합니다. Claude는 현재 스킬 주입만 지원합니다. `model-plan`은 계속 권고 전용이며 호스트 모델을 바꾸지 않습니다.
 
 Codex 0.162.1에서는 네이티브 훅의 `UserPromptSubmit`으로 스킬을 주입하고 `PreToolUse`로 제안된 행동을 검토합니다. 프로필 구성과 훅 정의 등록은 별도 단계입니다:
 
@@ -96,7 +94,7 @@ node ~/.agents/jev/jev-plugin.mjs enable --agent codex --profile codex --apply
 node ~/.agents/jev/jev-plugin.mjs hooks-install --agent codex --profile codex --apply
 ```
 
-Codex `/hooks`에서 설치된 정확한 정의를 검토하고 신뢰해야 합니다. 설치만으로 신뢰가 부여되거나 프로필이 활성화되지는 않습니다. `advisory` 검토는 판정을 알리며, 명시적인 `--review-mode enforce`는 검증된 백엔드의 `permit`이 아니면 제안된 행동을 거부합니다. 호스트의 실행 권한을 허가하는 응답은 반환하지 않습니다. 검토 범위는 등록된 도구 matcher이며, 신뢰되지 않은 훅·호스트 실패·시간 초과에서는 호출이 생략되거나 fail-open할 수 있으므로 OS 보안 경계가 아닙니다. Claude에는 자동 행동 차단이 없고 Codex에는 자동 대화 이력 정리가 없습니다. `host-plan`은 읽기 전용이며 네이티브 패키지 복사는 영구 등록이 아닙니다. 로드·신뢰·검증 범위는 [호스트 통합 안내](jev/README.md)를 참고하세요.
+Codex `/hooks`에서 설치된 정확한 정의를 검토하고 신뢰해야 합니다. 설치만으로 신뢰가 부여되거나 프로필이 활성화되지는 않습니다. `advisory` 검토는 판정을 알리며, 명시적인 `--review-mode enforce`는 검증된 백엔드의 `permit`이 아니면 제안된 행동을 거부합니다. 호스트의 실행 권한은 OS·호스트 설정이 결정하며 Jev 응답이 이를 허가하지 않습니다. 검토 범위는 등록된 도구 matcher이며, 신뢰되지 않은 훅·호스트 실패·시간 초과에서는 호출이 생략되거나 fail-open할 수 있으므로 OS 보안 경계가 아닙니다. Claude에는 자동 행동 차단이 없고 Codex에는 자동 대화 이력 정리가 없습니다. `host-plan`은 읽기 전용이며 네이티브 패키지 복사는 영구 등록이 아닙니다. 로드·신뢰·검증 범위는 [호스트 통합 안내](jev/README.md)를 참고하세요.
 
 **ON/OFF 및 공유 프로필**:
 ```bash
@@ -167,9 +165,10 @@ curl -s https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-sk
 에이전트는 기본적으로 **전체 설치**를 실행합니다. 범위를 줄이려면 “core only” 또는 “minimal”이라고 요청하세요. 에이전트가 수행하는 작업은 다음과 같습니다.
 
 - macOS / Linux / Windows를 감지하고 `brew` / `snap` / `winget`과 올바른 설치 경로를 선택합니다.
-- `skills@1.7.0` CLI를 설치하고 universal 공유 루트(`~/.agents/skills`)에 스킬을 추가하며, jeopi, jeo-code, oh-my-pi, Claude Code, Codex, Gemini CLI, OpenCode가 자동으로 감지하고 로드합니다.
-- **GJC는 native 투영이 필요**하므로 `~/.gjc/agent/skills`(글로벌) 또는 `.gjc/skills`(프로젝트)에 스킬을 추가하며, 설정 가이드가 자동으로 처리합니다.
-- **Antigravity IDE와 CLI는 native 투영이 필요**합니다. `skills@1.7.0`이 `--agent` 플래그를 무시하고 공유 루트에 설치하므로, 설정 가이드 Step 4C를 참조하세요.
+- `skills@1.7.0` CLI를 설치하고 universal 공유 루트(`~/.agents/skills`)에 스킬을 추가합니다. 공유 루트를 사용하는 jeopi, jeo-code, oh-my-pi, Claude Code, Codex, Gemini CLI, OpenCode가 이를 읽도록 설정됩니다.
+- **GJC는 native 투영이 필요**하므로 `~/.gjc/agent/skills`(글로벌) 또는 `.gjc/skills`(프로젝트)에 스킬을 따로 배치합니다. 설정 가이드의 target-aware bootstrap이 이를 처리하며, 공유 루트 설치만으로 전용 경로 로드가 완료됐다고 가정하지 않습니다.
+- **Antigravity IDE와 CLI도 native 투영이 필요**합니다. `skills@1.7.0`이 `--agent` 플래그를 무시하고 공유 루트에 설치하므로, 설정 가이드 Step 4C가 올바른 전용 경로를 따로 채웁니다.
+- `--global`은 홈 범위 설치입니다. `--global`을 생략하면 현재 프로젝트 범위가 기본이며, 프로젝트 헬퍼를 직접 실행해 그 범위에 설치합니다.
 - MCP 도구(`ooo`, `semble`), 셸 도구(`rtk`), 플랫폼별 통합을 등록합니다.
 - 기존 스킬을 보존하며 추가 또는 업데이트만 수행하고 삭제하지 않습니다.
 
@@ -188,11 +187,18 @@ curl -s https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-sk
 실제 선택된 작업에서만 온디맨드로 설치합니다.
 
 ```bash
-# 공유 글로벌 경로에 가벼운 스킬 하나만 설치
+# 공유 글로벌 경로에 라우터를 설치하고 native 투영의 기반을 마련
 npx --yes skills@1.7.0 add https://github.com/akillness/jeo-skills \
+ --skill jeo-skill --global --agent universal --yes --copy --full-depth
 
 python3 "$HOME/.agents/skills/jeo-skill/scripts/jeo-skill.py" link
 jeo-skill doctor
+
+# 현재 프로젝트 범위에 선택 설치(--global 생략; 위에서 설치한 홈 라우터 사용)
+python3 "$HOME/.agents/skills/jeo-skill/scripts/jeo-skill.py" install responsive-design --yes
+
+# 홈 범위에 선택 설치
+python3 "$HOME/.agents/skills/jeo-skill/scripts/jeo-skill.py" install responsive-design --global --yes
 ```
 
 필요한 범위를 먼저 탐색하고 미리 확인합니다.
@@ -728,19 +734,9 @@ python3 .agent-skills/openrig/scripts/preflight.py --json
 
 ---
 
-## 🧬 TOON 포맷 주입
+## 🧬 TOON 포맷
 
-TOON(Token-Oriented Object Notation)은 스킬 카탈로그를 압축하여 모든 프롬프트에 자동 주입합니다. **JSON/Markdown 대비 40-50% 토큰 절감**.
-
-| 플랫폼 | 파일 | 메커니즘 |
-|--------|------|---------|
-| Claude Code | `~/.claude/hooks/toon-inject.mjs` | `UserPromptSubmit` 훅 — 26-37ms |
-| Antigravity CLI (`agy`) | `~/.gemini/antigravity-cli/hooks/toon-skill-inject.sh` | 라이프사이클 훅 (`agy inspect` 으로 확인) |
-| Codex CLI | `~/.codex/skills-toon-catalog.toon` | 정적 카탈로그 |
-
-- **Tier 1** (항상): 스킬 카탈로그 인덱스 (~875-3,500 토큰) — 이름 + 설명 + 태그
-- **Tier 2** (온디맨드): 개별 SKILL.toon 전체 내용 (~292 토큰/스킬, 최대 3개)
-
+TOON(Token-Oriented Object Notation)은 카탈로그를 명시적으로 포맷할 때 사용할 수 있는 선택적 표현입니다. 현재 소스에서 확인되는 것은 명시적 포맷 처리뿐이며, 카탈로그 설치만으로 프롬프트 자동 주입이나 특정 토큰 절감률·지연시간이 보장되지는 않습니다. 플랫폼별 훅이나 정적 파일 등록도 이 카탈로그 설치에 포함되지 않습니다. 필요한 경우 사용 중인 로더·도구에서 포맷을 명시적으로 요청하고 해당 환경에서 별도로 측정하세요.
 ---
 
 ## 🔮 주요 도구
@@ -761,7 +757,7 @@ TOON(Token-Oriented Object Notation)은 스킬 카탈로그를 압축하여 모�
 | Cleanup | repo cleanup scripts + `worktree-cleanup.sh` | 요약, follow-up queue, worktree 정리 |
 
 ### plannotator — 시각적 계획 검토
-> 키워드: `plan` | [문서](docs/plannotator/README.md) | [GitHub](https://github.com/backnotprop/plannotator)
+> 키워드: `plan` | [문서](.agent-skills/plannotator/SKILL.md) | [GitHub](https://github.com/backnotprop/plannotator)
 
 AI 계획을 브라우저 UI에서 어노테이션. 클릭 한 번으로 승인 또는 구조화된 피드백 전송. Claude Code, OpenCode, Gemini CLI, Codex CLI 지원.
 
@@ -770,7 +766,7 @@ bash scripts/install.sh --all
 ```
 
 ### ooo — Ouroboros 스펙 우선 개발
-> 키워드: `ooo`, `ouroboros`, `ooo ralph` | [문서](docs/ooo/README.md) | [GitHub](https://github.com/Q00/ouroboros)
+> 키워드: `ooo`, `ouroboros`, `ooo ralph` | [문서](.agent-skills/ooo/SKILL.md) | [GitHub](https://github.com/Q00/ouroboros)
 
 **업데이트되는 git 데이터에 근거한** 소크라테스식 인터뷰 → 불변 seed/spec 고정 → **spec-kit이 seed로부터 실행 계획을 렌더링** → **cli-anything harness로 실행**(`--json` 출력 = evaluate 증거) → 완료 주장 전에 검증 → 실제로 검증될 때까지 반복합니다. Claude Code 플러그인 또는 pip으로 설치 가능하며, 스킬 installer가 세 연동을 기본으로 배선합니다.
 
@@ -799,7 +795,7 @@ ouroboros tui monitor
 ```
 
 ### god-tibo-imagen — Codex 백엔드를 활용한 AI 이미지 생성
-> 키워드: `god-tibo-imagen`, `gti`, `image generation`, `codex image` | [문서](docs/god-tibo-imagen/README.md) | [GitHub](https://github.com/NomaDamas/god-tibo-imagen)
+> 키워드: `god-tibo-imagen`, `gti`, `image generation`, `codex image` | [문서](.agent-skills/god-tibo-imagen/SKILL.md) | [GitHub](https://github.com/NomaDamas/god-tibo-imagen)
 
 의존성 없는 AI 이미지 생성 도구. Codex ChatGPT 백엔드를 활용하며, 기존 `~/.codex/auth.json` 인증을 재사용합니다. CLI(`gti`), Node.js 라이브러리, Python SDK를 지원하며 참조 이미지 입력도 가능합니다.
 
@@ -822,7 +818,7 @@ gti --prompt "둥글게 만들어줘" --input ./ref.png --output ./out.png
 ```
 
 ### notebooklm — Claude Code용 Google NotebookLM 통합
-> 키워드: `notebooklm`, `notebook query`, `google notebooklm` | [문서](docs/notebooklm/README.md) | [GitHub](https://github.com/PleasePrompto/notebooklm-skill)
+> 키워드: `notebooklm`, `notebook query`, `google notebooklm` | [문서](.agent-skills/notebooklm/SKILL.md) | [GitHub](https://github.com/PleasePrompto/notebooklm-skill)
 
 Patchright 브라우저 자동화를 통해 Claude Code에서 직접 Google NotebookLM 노트북을 조회합니다. 에디터를 벗어나지 않고 업로드된 문서로부터 출처 기반, 인용 포함 답변을 받을 수 있습니다. **로컬 Claude Code 전용** (웹 UI 미지원).
 
@@ -845,7 +841,7 @@ python scripts/run.py ask_question.py --question "주요 발견 사항은 무엇
 ```
 
 ### pretext — 빠른 멀티라인 텍스트 측정 & 레이아웃
-> 키워드: `pretext`, `text measurement`, `text layout`, `paragraph height` | [문서](docs/pretext/README.md) | [GitHub](https://github.com/chenglou/pretext)
+> 키워드: `pretext`, `text measurement`, `text layout`, `paragraph height` | [문서](.agent-skills/pretext/SKILL.md) | [GitHub](https://github.com/chenglou/pretext)
 
 DOM 리플로우 없는 순수 JS/TS 텍스트 측정 및 레이아웃 라이브러리. 문단 높이 계산, 라인별 레이아웃, 이모지·CJK·RTL 지원, DOM·Canvas·SVG 출력 — 캐시된 폰트 메트릭 기반 순수 연산.
 
@@ -861,7 +857,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill pretext
 ```
 
 ### zeude — Claude Code 엔터프라이즈 AI 도입 플랫폼
-> 키워드: `zeude`, `ai adoption`, `claude code adoption`, `enterprise claude` | [문서](docs/zeude/README.md) | [GitHub](https://github.com/zep-us/zeude)
+> 키워드: `zeude`, `ai adoption`, `claude code adoption`, `enterprise claude` | [문서](.agent-skills/zeude/SKILL.md) | [GitHub](https://github.com/zep-us/zeude)
 
 Claude Code의 Intention-Action Gap을 해결하는 엔터프라이즈 플랫폼. OpenTelemetry 측정, Zeude Shim을 통한 스킬/MCP/훅 중앙 동기화, 프롬프트 시점 스킬 제안으로 3배 도입률 향상(6%→18%). Supabase + ClickHouse 필요.
 
@@ -882,7 +878,7 @@ curl -fsSL https://raw.githubusercontent.com/zep-us/zeude/main/install.sh | bash
 ```
 
 ### compresso — 오프라인 배치 동영상/이미지 압축
-> 키워드: `compresso`, `compress video`, `batch compression` | [문서](docs/compresso/README.md) | [GitHub](https://github.com/codeforreal1/compressO)
+> 키워드: `compresso`, `compress video`, `batch compression` | [문서](.agent-skills/compresso/SKILL.md) | [GitHub](https://github.com/codeforreal1/compressO)
 
 무료 오픈소스 오프라인 데스크톱 압축 앱 (Tauri+React). 동영상/이미지 배치 압축, 트리밍/분할, 포맷 변환, 자막 삽입, 메타데이터 관리 — FFmpeg/pngquant/jpegoptim/gifski 기반, 네트워크 없이 완전 로컬 처리.
 
@@ -898,7 +894,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill compresso
 ```
 
 ### stitch-skills — Stitch MCP 에이전트 스킬
-> 키워드: `stitch`, `stitch-design`, `stitch-loop`, `enhance-prompt` | [문서](docs/stitch-skills/README.md) | [GitHub](https://github.com/google-labs-code/stitch-skills)
+> 키워드: `stitch`, `stitch-design`, `stitch-loop`, `enhance-prompt` | [문서](.agent-skills/stitch-skills/SKILL.md) | [GitHub](https://github.com/google-labs-code/stitch-skills)
 
 Stitch MCP 서버를 통한 AI 기반 UI 디자인 생성, 프롬프트 정제, 화면-코드 변환 워크플로우. 고품질 화면, 멀티페이지 웹사이트, DESIGN.md 문서, React/shadcn-ui 컴포넌트, Remotion 동영상 생성을 지원합니다.
 
@@ -963,7 +959,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 | [revfactory/harness](https://github.com/revfactory/harness) | meta-skill | 에이전트 팀 · 스킬 하네스 설계 플러그인 |
 | [revfactory/webtoon-harness](https://github.com/revfactory/webtoon-harness) | harness | 27개 에이전트 웹툰 제작 팀(트렌드 → 세로 스크롤 뷰어) 플러그인 |
 
-> 설치 및 연동 가이드 → [docs/harness/README.ko.md](docs/harness/README.ko.md) · 패키징된 스킬 → [.agent-skills/harness/SKILL.md](.agent-skills/harness/SKILL.md)
+> 설치 및 연동 가이드 → [.agent-skills/harness/SKILL.md](.agent-skills/harness/SKILL.md) · 패키징된 스킬 → [.agent-skills/harness/SKILL.md](.agent-skills/harness/SKILL.md)
 
 ---
 
@@ -971,11 +967,16 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 
 ```text
 ├── .agent-skills/          ← 368개 스킬 폴더 (SKILL.md + 선택적 지원 파일)
-├── docs/                   ← 상세 가이드 (bmad, plannotator, ooo, ...)
-├── install.sh
-├── setup-all-skills-prompt.md
-├── README.md               ← English
-└── README.ko.md            ← 한국어 (이 파일)
+├── assets/                ← README hero 및 카탈로그/런타임 다이어그램
+├── changelog/             ← 월별 다국어 릴리스 소스 파일
+├── docs/                  ← ScrapingAnt 파트너십·아웃리치 자료
+├── install.sh             ← 한 줄 설치 스크립트
+├── scripts/               ← 카탈로그 및 링크 검증 도구
+├── jev/                   ← 선택적 Jev 제어 평면 소스
+├── README.md              ← English
+├── README.ko.md           ← 한국어 (이 파일)
+├── README.es-ES.md        ← Español
+└── CHANGELOG.md           ← 릴리스 기록
 ```
 
 ---
@@ -985,24 +986,24 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 | 도구 | 키워드 | 문서 |
 |------|--------|------|
 | `ooo` | `ooo`, `ouroboros`, `ooo interview` | [.agent-skills/ooo/SKILL.md](.agent-skills/ooo/SKILL.md) |
-| `plannotator` | `plan` | [docs/plannotator/README.md](docs/plannotator/README.md) |
-| `ooo` | `ooo`, `ouroboros` | [docs/ooo/README.md](docs/ooo/README.md) |
-| `stitch-skills` | `stitch`, `stitch-design`, `enhance-prompt` | [docs/stitch-skills/README.md](docs/stitch-skills/README.md) |
-| `compresso` | `compresso`, `compress video`, `batch compression` | [docs/compresso/README.md](docs/compresso/README.md) |
+| `plannotator` | `plan` | [.agent-skills/plannotator/SKILL.md](.agent-skills/plannotator/SKILL.md) |
+| `ooo` | `ooo`, `ouroboros` | [.agent-skills/ooo/SKILL.md](.agent-skills/ooo/SKILL.md) |
+| `stitch-skills` | `stitch`, `stitch-design`, `enhance-prompt` | [.agent-skills/stitch-skills/SKILL.md](.agent-skills/stitch-skills/SKILL.md) |
+| `compresso` | `compresso`, `compress video`, `batch compression` | [.agent-skills/compresso/SKILL.md](.agent-skills/compresso/SKILL.md) |
 | `filmcraft` | `filmcraft`, `filmcraft-cli`, `.fcproj`, `FilmCraft MCP` | [.agent-skills/filmcraft/SKILL.md](.agent-skills/filmcraft/SKILL.md) |
 | `open-design` | `open-design`, `local design tool`, `prototype generation` | [.agent-skills/open-design/SKILL.md](.agent-skills/open-design/SKILL.md) |
 | `codeflow` | `codeflow`, `visualize codebase`, `dependency graph` | [.agent-skills/codeflow/SKILL.md](.agent-skills/codeflow/SKILL.md) |
 | `slides-grab` | `slides-grab`, `slides grab`, `generate slides` | [.agent-skills/slides-grab/SKILL.md](.agent-skills/slides-grab/SKILL.md) |
-| `pretext` | `pretext`, `text measurement`, `text layout` | [docs/pretext/README.md](docs/pretext/README.md) |
-| `god-tibo-imagen` | `god-tibo-imagen`, `gti`, `image generation` | [docs/god-tibo-imagen/README.md](docs/god-tibo-imagen/README.md) |
-| `notebooklm` | `notebooklm`, `notebook query`, `google notebooklm` | [docs/notebooklm/README.md](docs/notebooklm/README.md) |
-| `zeude` | `zeude`, `ai adoption`, `enterprise claude` | [docs/zeude/README.md](docs/zeude/README.md) |
+| `pretext` | `pretext`, `text measurement`, `text layout` | [.agent-skills/pretext/SKILL.md](.agent-skills/pretext/SKILL.md) |
+| `god-tibo-imagen` | `god-tibo-imagen`, `gti`, `image generation` | [.agent-skills/god-tibo-imagen/SKILL.md](.agent-skills/god-tibo-imagen/SKILL.md) |
+| `notebooklm` | `notebooklm`, `notebook query`, `google notebooklm` | [.agent-skills/notebooklm/SKILL.md](.agent-skills/notebooklm/SKILL.md) |
+| `zeude` | `zeude`, `ai adoption`, `enterprise claude` | [.agent-skills/zeude/SKILL.md](.agent-skills/zeude/SKILL.md) |
 | `harness` | `harness` | [.agent-skills/harness/SKILL.md](.agent-skills/harness/SKILL.md) |
 | `webtoon-harness` | `웹툰 만들어`, `웹툰 하네스` | [.agent-skills/webtoon-harness/SKILL.md](.agent-skills/webtoon-harness/SKILL.md) |
 | `game-studio-harness` | `게임 제작 하네스`, `게임 제작 사이클`, `stage gate` | [.agent-skills/game-studio-harness/SKILL.md](.agent-skills/game-studio-harness/SKILL.md) |
 | `heretic` | `heretic`, `어블리터레이션`, `모델 검열 제거` | [.agent-skills/heretic/SKILL.md](.agent-skills/heretic/SKILL.md) |
-| `bmad` | `bmad` | [docs/bmad/README.md](docs/bmad/README.md) |
-| Harness OSS | — | [docs/harness/README.ko.md](docs/harness/README.ko.md) |
+| `bmad` | `bmad` | [.agent-skills/bmad/SKILL.md](.agent-skills/bmad/SKILL.md) |
+| Harness OSS | — | [.agent-skills/harness/SKILL.md](.agent-skills/harness/SKILL.md) |
 | `scrapingant-web-fetch` | `scrapingant`, `mcp 웹 스크래핑`, `차단된 페이지 fetch` | [.agent-skills/scrapingant-web-fetch/SKILL.md](.agent-skills/scrapingant-web-fetch/SKILL.md) |
 
 ---
@@ -1079,6 +1080,16 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 | **읽기 전용 사전 점검과 회귀** | 고정 커밋과 공개 소스 경로를 확인하는 표준 라이브러리 기반 단독 preflight를 추가했습니다. 심볼릭 링크 경로와 1 MiB 초과 파일을 거부하고 Git 환경을 allowlist로 제한하며 업스트림 실행 파일은 호출하지 않습니다. 공용 사전 점검 회귀 13/13이 통과했고 악성 경로, 커밋 고정, 링크, 크기, 무변조, 자격증명 격리를 확인했습니다. |
 | **업스트림 문서 충돌 및 실행 범위** | 고정 `go.mod`는 Go 1.26.0을 요구하지만 시작 가이드는 1.22+라고 안내합니다. 스킬에 이 충돌을 기록했습니다. 업스트림 설치·빌드·bootstrap·MCP 등록과 대상 프로젝트 쓰기는 실행하지 않았습니다. |
 
+## 🆕 v2026-10-14 업데이트
+
+| 변경 사항 | 상세 내용 |
+|--------|---------|
+| **Codex Jev 런타임 활성화** | `codex` 프로파일이 `api` 백엔드·assist 스킬 주입·advisory PreToolUse 리뷰로 ON 상태이며, 생성된 훅 정의 2건이 실제 Codex 세션에서 trusted·enabled로 확인됐고 live TypeSafe 라우팅 근거(`jev-1.13.0` 경유 `react-best-practices` 선택)를 확보했습니다. tier는 unvalidated 유지 — 전송 증명이며 캘리브레이션·권한 부여 증명이 아닙니다. |
+| **타임아웃 픽스처 동기화** | 네이티브 SIGTERM/SIGKILL 상승 테스트가 wall-clock 대신 자식 핸들러 준비 상태에 따르도록 수정했습니다. 운영 타임아웃 동작은 불변입니다. |
+| **CI test 잡 설정 축소** | `test` 잡에서 미사용 Bun 설치를 제거하고(4단계 모두 pure Python) `pyyaml==6.0.3`으로 고정했습니다. `flatten_skills.py`의 낡은 다음 단계 힌트는 실제 `generate-catalog-projections.py --check`를 가리킵니다. 설치 스위트의 대기(hung-node 바운드, unreachable probe)는 계약상 의도된 동작이라 유지합니다. |
+| **README 시각 자료 갱신** | 장비 GIF 5개와 구형 SVG 2개, 직렬 CI 파이프라인 이미지를 Codex 정적 커버(`readme-hero.webp`)와 소스에 맞는 SVG 2개(`catalog-workflow.svg`, `runtime-architecture.svg`)로 교체했습니다. 명령·문서 링크·TOON·native 경계와 한국어 대체 텍스트, 실제 스킬·공개 `jeo-code` 링크도 현재 소스에 맞췄습니다. 이는 문서·카탈로그 표현 갱신이며 런타임 동작 보장이 아닙니다. |
+| **카탈로그 검증·검색 최적화** | 카탈로그 검증기 warm median은 268.69ms→126.49ms, 동일 검색 핸들러에서 40개 쿼리 총 실행은 1134.76ms→157.30ms로 개선됐고 스트리밍·실패 정리를 반영했습니다. 집중 검증은 Python 31개와 Node 28개로 skip 0건입니다. 수치는 소스 전용 픽스처·벤치마크이며 CLI 기동 시간이 아닌 CI 배선 검증이지 원격 동작 통과가 아닙니다. 모델·GPU·전체 브라우저·전역 누수 없음은 주장하지 않습니다. |
+
 ## 🆕 v2026-10-12 업데이트
 
 | 변경 사항 | 상세 내용 |
@@ -1115,13 +1126,6 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 | **Native 투영 참조 표 추가** | `jeo-skill` 가이드에 런타임 별칭, 공유·전용 경로, 설치 범위, 선택한 스킬의 자동 배치와 Aside 계정 선택을 문서화했습니다. 전용 경로 배치는 수동 복사가 아닌 설치 프로그램이 처리합니다. |
 | **공유 프로바이더 및 계정 안전성** | jeopi/jeo-code/oh-my-pi의 공유 `.agents/skills` 경로 로드를 확인했습니다. ECC 어댑터는 필요하지 않습니다. GJC는 전역 `~/.gjc/agent/skills` 또는 프로젝트 `.gjc/skills`를 사용합니다. Aside는 계정별 `~/.aside/u/<id>/skills/user/` 경로를 사용하며 자격증명을 계정 간 공유하지 않습니다. |
 | **설치 필수 요소 검증** | 문서 명시: Bash 3+, Node.js >= 22.20, `skills@1.7.0` CLI 고정. 검증 범위는 정확함: 거짓 end-to-end 데스크톱 테스트 주장 없음; 모든 보장은 자동화된 설치 프로그램 회귀 테스트 스위트로 뒷받침. |
-
-## 🆕 v2026-09-22 업데이트
-
-| 변경 | 내용 |
-|------|------|
-| **Stagehand 브라우저 에이전트 스킬** | 고정한 `browserbase/stagehand` v4 SDK와 `browse` CLI를 위한 `stagehand`를 추가했습니다. 로컬·Browserbase·CDP 브라우저 선택, `act` / `observe` / `extract`, typed WebMCP, Search/Fetch, Playwright route-out, 읽기 전용 preflight, eval, 업스트림 근거 해시를 포함합니다. |
-| **온디맨드 런타임 경계** | 설치 가이드가 SDK·CLI·Chromium·Browserbase MCP·자격증명·유료 클라우드 서비스를 일괄 설치하지 않도록 갱신됐습니다. 현재 트리와 매니페스트에 `agent-browser`가 없어서 삭제할 대상은 없었습니다. |
 
 > 📜 이전 기록: [`changelog/ko/`](changelog/ko/) (월별 파일, 최신순).
 
