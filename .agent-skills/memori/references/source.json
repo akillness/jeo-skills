@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "skill": "memori",
+  "repository": "MemoriLabs/Memori",
+  "commit": "574b1ea3e876f100ef82c37817d603eb7e258e59",
+  "observed_at": "2026-10-15T15:08:41Z",
+  "license": {
+    "path": "LICENSE",
+    "conclusion": "The GitHub API reported NOASSERTION, but the inspected complete root LICENSE contains Apache License 2.0 terms; report this file-level evidence rather than relying on the API label.",
+    "url": "https://github.com/MemoriLabs/Memori/blob/574b1ea3e876f100ef82c37817d603eb7e258e59/LICENSE"
+  },
+  "tools": [
+    {
+      "name": "python",
+      "purpose": "Run the selected Python SDK/application only after confirming the chosen mode and effects."
+    },
+    {
+      "name": "psql",
+      "purpose": "Optional PostgreSQL client for a selected BYODB deployment; do not connect or migrate by default."
+    },
+    {
+      "name": "memori",
+      "purpose": "Memori package CLI surface; inspect package/version before assuming a command exists."
+    }
+  ],
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "2461bae179e10e0178ca0dca8e20404f8d68e39a6c97ea7c79abfa3297bff18e",
+      "url": "https://github.com/MemoriLabs/Memori/blob/574b1ea3e876f100ef82c37817d603eb7e258e59/README.md",
+      "purpose": "Project scope and documented architecture/quickstart."
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "68f534038937a461ff428a7463558274ea5eb175cd64bd145afb3bbb1d6d41be",
+      "url": "https://github.com/MemoriLabs/Memori/blob/574b1ea3e876f100ef82c37817d603eb7e258e59/LICENSE",
+      "purpose": "Full root license text; file-level license evidence."
+    },
+    {
+      "path": "pyproject.toml",
+      "sha256": "fde7af837b41cbc20f14f62536aa92af54952f9c5a17e2f1485fab58f8244e23",
+      "url": "https://github.com/MemoriLabs/Memori/blob/574b1ea3e876f100ef82c37817d603eb7e258e59/pyproject.toml",
+      "purpose": "Top-level Python packaging/runtime metadata."
+    },
+    {
+      "path": "memori/_cli.py",
+      "sha256": "8cbf904ef6f005569c1111df3e9968e81b4b08ed9586a12e4c38b75dc1ab05f6",
+      "url": "https://github.com/MemoriLabs/Memori/blob/574b1ea3e876f100ef82c37817d603eb7e258e59/memori/_cli.py",
+      "purpose": "Package CLI implementation."
+    },
+    {
+      "path": "memori/_config.py",
+      "sha256": "f2cfc009c4ecff177561b047c0017de5163c1331243afe939b7591f2e424fd5a",
+      "url": "https://github.com/MemoriLabs/Memori/blob/574b1ea3e876f100ef82c37817d603eb7e258e59/memori/_config.py",
+      "purpose": "Cloud/local and storage/runtime configuration defaults."
+    },
+    {
+      "path": "memori/memory/_manager.py",
+      "sha256": "5c5d49ea92d85dc180a8c94098ee6c179a5e39fb12b39f68a76f57d5c9ff636f",
+      "url": "https://github.com/MemoriLabs/Memori/blob/574b1ea3e876f100ef82c37817d603eb7e258e59/memori/memory/_manager.py",
+      "purpose": "Cloud versus local execution branch."
+    },
+    {
+      "path": "core/src/storage/builder.rs",
+      "sha256": "177e98efb290d26e18fb34ce5f93344f24d2b732f74860e1379f6dab15937042",
+      "url": "https://github.com/MemoriLabs/Memori/blob/574b1ea3e876f100ef82c37817d603eb7e258e59/core/src/storage/builder.rs",
+      "purpose": "Supported SQL dialect/storage builder evidence."
+    }
+  ]
+}

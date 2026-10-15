@@ -73,3 +73,5 @@ jobs:
         run: python3 scripts/test_runtime_skill_loader.py -v
       - name: Offline repository preflight regressions
         run: python3 scripts/test_repository_preflight_regressions.py -v
+      - name: Knowledge repository offline pin regressions
+        run: python3 -B scripts/test_knowledge_repository_skills.py -v

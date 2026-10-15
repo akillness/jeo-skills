@@ -21,6 +21,11 @@ It does **not** download every app, model weight, media runtime, SDK, or service
 inside all skills. Those remain on demand when a real task selects the corresponding skill.
 For example, installing `okf-agent-memory` adds only its operator guide; it does not install
 upstream `okf`, bootstrap a repository, or register the MCP server.
+The `knowledge-repositories` bundle similarly installs 21 guides, not their upstream
+runtimes. Its 18 new helpers inspect selected public-file hashes offline; this does
+not prove Git HEAD, full revision integrity, dependency versions, or live readiness.
+Private-data ingestion, remote embeddings, cloud resources, database/index writes,
+and service or MCP activation each require their own approval.
 
 Jev is a separate, home-scoped opt-in in every catalog mode, including `full`.
 Default catalog installation does not configure Jev, download Jev models, or install

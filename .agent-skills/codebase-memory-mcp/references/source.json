@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "skill": "codebase-memory-mcp",
+  "repository": "DeusData/codebase-memory-mcp",
+  "commit": "8df0639c6268afe9888979e72b9797aa2cc1de7c",
+  "observed_at": "2026-10-15T15:08:41Z",
+  "license": {
+    "path": "LICENSE",
+    "conclusion": "MIT in the inspected LICENSE file; this skill is original operator guidance.",
+    "url": "https://github.com/DeusData/codebase-memory-mcp/blob/8df0639c6268afe9888979e72b9797aa2cc1de7c/LICENSE"
+  },
+  "tools": [
+    {
+      "name": "codebase-memory-mcp",
+      "purpose": "Local code graph/MCP server and index CLI."
+    },
+    {
+      "name": "go",
+      "purpose": "The Go wrapper source documents a first-run release download; installation or execution needs approval."
+    },
+    {
+      "name": "git",
+      "purpose": "Inspect repository identity and files; the offline helper itself does not compare Git HEAD."
+    }
+  ],
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "72cab3ba5a2669b8b37ee038ffb1b47261199945f48295521ce2a695b3cf3c2b",
+      "url": "https://github.com/DeusData/codebase-memory-mcp/blob/8df0639c6268afe9888979e72b9797aa2cc1de7c/README.md",
+      "purpose": "Project scope and documented architecture/quickstart."
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "1f58f9911dc5e3bcb96de28bb28e7b6bb7eb323952d29569c5d7214a152146bb",
+      "url": "https://github.com/DeusData/codebase-memory-mcp/blob/8df0639c6268afe9888979e72b9797aa2cc1de7c/LICENSE",
+      "purpose": "Full root license text; file-level license evidence."
+    },
+    {
+      "path": ".codebase-memory.json",
+      "sha256": "56b338917d8ef41c07472f61d1b422c1d02bad207b167a5f3432d477862e68d1",
+      "url": "https://github.com/DeusData/codebase-memory-mcp/blob/8df0639c6268afe9888979e72b9797aa2cc1de7c/.codebase-memory.json",
+      "purpose": "Project-local sample test-impact configuration."
+    },
+    {
+      "path": "docs/CONFIGURATION.md",
+      "sha256": "88baacfdea5f41ac5920721b93b80534a0d7634ff9ce37430dbe4ebe5894e5da",
+      "url": "https://github.com/DeusData/codebase-memory-mcp/blob/8df0639c6268afe9888979e72b9797aa2cc1de7c/docs/CONFIGURATION.md",
+      "purpose": "Config paths, write behavior and daemon settings."
+    },
+    {
+      "path": "pkg/go/go.mod",
+      "sha256": "6d0ea9043291c2cd407ee68701a40859116d753b66db83adf1a10ec3d10cfa92",
+      "url": "https://github.com/DeusData/codebase-memory-mcp/blob/8df0639c6268afe9888979e72b9797aa2cc1de7c/pkg/go/go.mod",
+      "purpose": "Go wrapper module identity and dependency declaration."
+    },
+    {
+      "path": "pkg/go/cmd/codebase-memory-mcp/main.go",
+      "sha256": "60ebd6874df345fe46f4b2623d79fcd73f9eddef591f4ef93c0fef91967de5e2",
+      "url": "https://github.com/DeusData/codebase-memory-mcp/blob/8df0639c6268afe9888979e72b9797aa2cc1de7c/pkg/go/cmd/codebase-memory-mcp/main.go",
+      "purpose": "Actual installer wrapper and release-download behavior."
+    }
+  ]
+}

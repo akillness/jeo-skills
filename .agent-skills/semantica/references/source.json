@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "skill": "semantica",
+  "repository": "semantica-agi/semantica",
+  "commit": "815527ccca9a00b206dbf6f2cbf866e62d719ed6",
+  "observed_at": "2026-10-15T15:07:11Z",
+  "license": {"path": "LICENSE", "conclusion": "MIT; full pinned license inspected", "url": "https://github.com/semantica-agi/semantica/blob/815527ccca9a00b206dbf6f2cbf866e62d719ed6/LICENSE"},
+  "tools": [{"name": "python3", "purpose": "Run the offline selected-source preflight helper; tool discovery only, no version test"}],
+  "files": [
+    {"path": "README.md", "sha256": "a19ea0dc03c870b746fbbfece7a1f1497f3d9428afed14b046788e1b1e64948a", "url": "https://github.com/semantica-agi/semantica/blob/815527ccca9a00b206dbf6f2cbf866e62d719ed6/README.md", "purpose": "Project scope and user/contributor workflows"},
+    {"path": "LICENSE", "sha256": "7650ef0576603b337c310b9ad9dc051819257213abc44b720d9e678f8e4f4c40", "url": "https://github.com/semantica-agi/semantica/blob/815527ccca9a00b206dbf6f2cbf866e62d719ed6/LICENSE", "purpose": "Full pinned license text"},
+    {"path": "pyproject.toml", "sha256": "59176a5649bfd0acaa8d51e90d02c1996b835e2b1dc468ae8b2ad395a1e4c39a", "url": "https://github.com/semantica-agi/semantica/blob/815527ccca9a00b206dbf6f2cbf866e62d719ed6/pyproject.toml", "purpose": "Python support, dependency extras and executable entrypoints"},
+    {"path": "semantica/cli.py", "sha256": "22c576ce83f4609f98345bb1dfd4b6a721ef28b90d2ac9e7e285e0a48318e915", "url": "https://github.com/semantica-agi/semantica/blob/815527ccca9a00b206dbf6f2cbf866e62d719ed6/semantica/cli.py", "purpose": "CLI entrypoint and implementation context"},
+    {"path": "semantica/mcp_server/__main__.py", "sha256": "5f3a2b61238c4950c32b484450558b569ab375aba6c738b39f17ea68a8c4c183", "url": "https://github.com/semantica-agi/semantica/blob/815527ccca9a00b206dbf6f2cbf866e62d719ed6/semantica/mcp_server/__main__.py", "purpose": "Python module MCP entrypoint"},
+    {"path": "semantica/core/config_manager.py", "sha256": "7372b66f25fadf9b4e75a80d5eff20d871d45bdd621fe66a3a585917e774551c", "url": "https://github.com/semantica-agi/semantica/blob/815527ccca9a00b206dbf6f2cbf866e62d719ed6/semantica/core/config_manager.py", "purpose": "Configuration sources and environment override path"}
+  ]
+}

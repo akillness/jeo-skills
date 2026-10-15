@@ -6,13 +6,13 @@ edges:
     condition: always — read next, before any task
   - target: context/catalog-pipeline.md
     condition: when the task touches skills.json, SKILL.md frontmatter, or catalog CI
-last_updated: 2026-09-18
+last_updated: 2026-10-16
 ---
 
 # jeo-skills
 
 ## What This Is
-A curated, cross-platform catalog of 359 categorized AI agent skills (`.agent-skills/<name>/SKILL.md`), with all taxonomy/relationship metadata centralized once in `.agent-skills/skills.json` and installable selectively via the `jeo-skill` router CLI.
+A curated, cross-platform catalog of 390 categorized AI agent skills (`.agent-skills/<name>/SKILL.md`), with all taxonomy/relationship metadata centralized once in `.agent-skills/skills.json` and installable selectively via the `jeo-skill` router CLI.
 
 ## Non-Negotiables
 - Never duplicate a skill's category/subcategory/tags/relationships in its own `SKILL.md` — that metadata lives once in `.agent-skills/skills.json`

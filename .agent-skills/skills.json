@@ -1,7 +1,7 @@
 {
   "version": "2.1.0",
-  "generated": "2026-10-15",
-  "skill_count": 372,
+  "generated": "2026-10-16",
+  "skill_count": 390,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -180,7 +180,14 @@
       "higgsfield-websites",
       "stagehand",
       "helix-foundry",
-      "pg-jev"
+      "pg-jev",
+      "orionbelt-ontology-builder",
+      "open-ontologies",
+      "semantica",
+      "utopia",
+      "pixeltable",
+      "turbovec",
+      "pixelrag"
     ],
     "infrastructure": [
       "deployment-automation",
@@ -196,7 +203,10 @@
       "unity-cli",
       "genkit",
       "looker-studio-bigquery",
-      "zurp"
+      "zurp",
+      "ai-knowledge-management-platform",
+      "knowledge-catalog",
+      "cocoindex"
     ],
     "game": [
       "implement-fog-of-war",
@@ -306,7 +316,9 @@
       "uzu",
       "context-mode",
       "rea",
-      "llmfit"
+      "llmfit",
+      "hyper-extract",
+      "leann"
     ],
     "ai-agents": [
       "bmad",
@@ -375,7 +387,11 @@
       "jev-control-plane",
       "anyjev",
       "typesafe-computer-use",
-      "jev-ultrafast"
+      "jev-ultrafast",
+      "agentic-graphrag-blueprint",
+      "memmachine",
+      "memori",
+      "memsearch"
     ],
     "engineering": [
       "audit-reference-originality",
@@ -401,7 +417,8 @@
       "codebase-design",
       "domain-modeling",
       "implement",
-      "prototype"
+      "prototype",
+      "codebase-memory-mcp"
     ],
     "research": [
       "academic-research",
@@ -518,7 +535,8 @@
       "wizard",
       "hwp",
       "rhwp-advanced",
-      "rhwp-edit"
+      "rhwp-edit",
+      "rowboat"
     ]
   },
   "subcategories": {
@@ -564,7 +582,14 @@
         "supabase-agent-skills",
         "typesense",
         "helix-foundry",
-        "pg-jev"
+        "pg-jev",
+        "orionbelt-ontology-builder",
+        "open-ontologies",
+        "semantica",
+        "utopia",
+        "pixeltable",
+        "turbovec",
+        "pixelrag"
       ],
       "testing": [
         "backend-testing",
@@ -620,7 +645,10 @@
       "cloud-data": [
         "firebase-cli",
         "genkit",
-        "looker-studio-bigquery"
+        "looker-studio-bigquery",
+        "ai-knowledge-management-platform",
+        "knowledge-catalog",
+        "cocoindex"
       ],
       "automation": [],
       "tooling": [
@@ -764,7 +792,8 @@
         "openrig",
         "uzu",
         "context-mode",
-        "llmfit"
+        "llmfit",
+        "hyper-extract"
       ],
       "media-cli": [
         "compresso"
@@ -784,7 +813,8 @@
         "semble",
         "zvec-grep",
         "x-twitter-scraper",
-        "jevgrep"
+        "jevgrep",
+        "leann"
       ],
       "benchmark-cli": [
         "hyperfine-benchmarking"
@@ -826,7 +856,8 @@
         "deep-agents-orchestration",
         "langchain-bmad",
         "a2a-protocol",
-        "anyjev"
+        "anyjev",
+        "agentic-graphrag-blueprint"
       ],
       "skill-authoring": [
         "article-prompts-to-skills",
@@ -847,7 +878,10 @@
       "memory": [
         "mex",
         "agent-memory-architecture",
-        "okf-agent-memory"
+        "okf-agent-memory",
+        "memmachine",
+        "memori",
+        "memsearch"
       ],
       "planning-review": [
         "bmad-idea",
@@ -908,7 +942,8 @@
         "technical-writing"
       ],
       "code-navigation": [
-        "codebase-search"
+        "codebase-search",
+        "codebase-memory-mcp"
       ]
     },
     "research": {
@@ -1041,7 +1076,8 @@
         "obsidian-mind",
         "obsidian-second-brain",
         "opencontext",
-        "handoff"
+        "handoff",
+        "rowboat"
       ],
       "files": [
         "file-organization",
@@ -1160,6 +1196,29 @@
       "langgraph-fundamentals",
       "deep-agents-core",
       "langsmith"
+    ],
+    "knowledge-repositories": [
+      "orionbelt-ontology-builder",
+      "open-ontologies",
+      "semantica",
+      "utopia",
+      "hyper-extract",
+      "agentic-graphrag-blueprint",
+      "codebase-memory-mcp",
+      "mex",
+      "memmachine",
+      "memori",
+      "memsearch",
+      "okf-agent-memory",
+      "obsidian-second-brain",
+      "rowboat",
+      "ai-knowledge-management-platform",
+      "knowledge-catalog",
+      "pixeltable",
+      "leann",
+      "turbovec",
+      "cocoindex",
+      "pixelrag"
     ]
   },
   "retired_skills": {
@@ -1661,6 +1720,45 @@
         "rtk"
       ],
       "note": "Context Mode executes subprocesses and indexes tool output with host-specific MCP/hook support, Headroom compresses transport, and RTK filters shell output. Context Mode is not an OS/security sandbox. Inspect existing ownership before enabling any combination; catalog installation does not activate these runtimes or hooks."
+    },
+    "ontology-and-code-graphs": {
+      "mode": "related",
+      "members": [
+        "orionbelt-ontology-builder",
+        "open-ontologies",
+        "semantica",
+        "utopia",
+        "hyper-extract",
+        "agentic-graphrag-blueprint",
+        "codebase-memory-mcp",
+        "mex"
+      ],
+      "note": "Separate exact-project operators for ontology workbenches, semantic engines, extraction/GraphRAG applications and code graphs. A graph-shaped index or application is not evidence of a general-purpose graph database; keep upstream licenses and remote-provider/data mutation gates distinct."
+    },
+    "knowledge-and-agent-memory": {
+      "mode": "related",
+      "members": [
+        "memmachine",
+        "memori",
+        "memsearch",
+        "okf-agent-memory",
+        "obsidian-second-brain",
+        "rowboat",
+        "ai-knowledge-management-platform",
+        "knowledge-catalog"
+      ],
+      "note": "Distinct knowledge and memory contracts: agent-memory servers/SDKs, Markdown-backed recall, OKF v0.2 project memory, an Obsidian vault, a desktop work app, AWS document/SQL samples and Google Cloud catalog samples. They are not interchangeable backends; use agent-memory-architecture for product-neutral selection."
+    },
+    "retrieval-storage-indexing": {
+      "mode": "layered",
+      "members": [
+        "pixeltable",
+        "leann",
+        "turbovec",
+        "cocoindex",
+        "pixelrag"
+      ],
+      "note": "Complementary layers, not one database family: Pixeltable multimodal tables, LEANN vector retrieval, turbovec in-process vector indexing, CocoIndex incremental ETL, and PixelRAG screenshot-based retrieval. Approve private data, embeddings/provider costs, service activation and index/database writes separately."
     }
   },
   "model_policies": {
@@ -13802,6 +13900,546 @@
       "keyword": "moneyprinter-turbo",
       "version": "1.3",
       "source": "https://github.com/harry0703/MoneyPrinterTurbo"
+    },
+    {
+      "name": "orionbelt-ontology-builder",
+      "description": "Operate ralforion/orionbelt-ontology-builder, a Python/Streamlit browser workbench for OWL ontologies and SKOS vocabularies: inspect local launch modes, explain editing/import/reasoning/validation workflows, or troubleshoot the app. Use when users name OrionBelt or ask for its browser or desktop ontology workbench. It is an application/workbench, not a general ontology reasoning framework; route general RDF graph pipelines to Semantica or Open Ontologies.",
+      "category": "web",
+      "subcategory": "data",
+      "interface": "workflow",
+      "path": "orionbelt-ontology-builder/SKILL.md",
+      "tags": [
+        "ontology",
+        "owl",
+        "skos",
+        "streamlit",
+        "ontology-workbench"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex CLI",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Grep",
+        "Glob"
+      ],
+      "keyword": "orionbelt-ontology-builder",
+      "version": "1.0.0",
+      "source": "https://github.com/ralforion/orionbelt-ontology-builder"
+    },
+    {
+      "name": "open-ontologies",
+      "description": "Operate fabio-rovai/open-ontologies, the Rust RDF/OWL semantic planning and verification engine: inspect and validate ontologies, plan changes, query/reason, produce certificates, or connect its MCP interface. Use when users name Open Ontologies, `open-ontologies`, `oo-cert`, or ask for change-impact/certified ontology operations. This is an ontology engine and CLI/MCP server, not a visual ontology editor; route visual editing to Protégé or a workbench skill.",
+      "category": "web",
+      "subcategory": "data",
+      "interface": "cli",
+      "path": "open-ontologies/SKILL.md",
+      "tags": [
+        "ontology",
+        "rdf",
+        "owl",
+        "mcp",
+        "certified-planning"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex CLI",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Grep",
+        "Glob"
+      ],
+      "keyword": "open-ontologies",
+      "version": "1.0.0",
+      "source": "https://github.com/fabio-rovai/open-ontologies"
+    },
+    {
+      "name": "semantica",
+      "description": "Operate semantica-agi/semantica, the Python graph-native knowledge engineering toolkit: choose ingestion, parsing, extraction, graph/triplet/vector stores, CLI, server or MCP entrypoints; diagnose optional integrations and backend configuration. Use when users name Semantica or ask for a modular Python pipeline spanning documents, knowledge graphs, provenance or reasoning. It is an application/library framework, not a single graph database; route a dedicated ontology workbench to OrionBelt or certified ontology change planning to Open Ontologies.",
+      "category": "web",
+      "subcategory": "data",
+      "interface": "library",
+      "path": "semantica/SKILL.md",
+      "tags": [
+        "knowledge-graph",
+        "rdf",
+        "graphrag",
+        "provenance",
+        "python"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex CLI",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Grep",
+        "Glob"
+      ],
+      "keyword": "semantica",
+      "version": "1.0.0",
+      "source": "https://github.com/semantica-agi/semantica"
+    },
+    {
+      "name": "utopia",
+      "description": "Operate deeplethe/utopia, the Rust/Postgres bitemporal knowledge application with ontology-driven ingest, review, search/chat, derivation and per-base MCP. Use when users name Utopia/utopia.bi or ask to deploy, configure, inspect, back up or integrate this exact knowledge platform. This is a full application with a database, not a generic ontology library or a local-only graph engine; route standalone RDF/OWL analysis to Open Ontologies or Python pipelines to Semantica.",
+      "category": "web",
+      "subcategory": "data",
+      "interface": "workflow",
+      "path": "utopia/SKILL.md",
+      "tags": [
+        "ontology",
+        "bitemporal",
+        "postgresql",
+        "knowledge-platform",
+        "mcp"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex CLI",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Grep",
+        "Glob"
+      ],
+      "keyword": "utopia",
+      "version": "1.0.0",
+      "source": "https://github.com/deeplethe/utopia"
+    },
+    {
+      "name": "hyper-extract",
+      "description": "Operate yifanfeng97/Hyper-Extract, the Python `he` CLI for extracting structured knowledge from documents with templates, provider configuration, indexing, search and an MCP server. Use when users name Hyper-Extract, `he`, or ask about this document-to-knowledge CLI. It is a configurable extraction workflow, not a general-purpose ontology editor or database; route graph pipeline questions to Semantica and visual OWL/SKOS editing to OrionBelt.",
+      "category": "cli-tools",
+      "subcategory": "ai-cli",
+      "interface": "cli",
+      "path": "hyper-extract/SKILL.md",
+      "tags": [
+        "knowledge-extraction",
+        "document-processing",
+        "mcp",
+        "he",
+        "provider-configuration"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex CLI",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Grep",
+        "Glob"
+      ],
+      "keyword": "hyper-extract",
+      "version": "1.0.0",
+      "source": "https://github.com/yifanfeng97/Hyper-Extract"
+    },
+    {
+      "name": "agentic-graphrag-blueprint",
+      "description": "Operate the sebastianbrzustowicz/Agentic-GraphRAG-Blueprint repository: inspect its FastAPI/React GraphRAG implementation, local Compose stack, ingestion, graph/vector stores and Azure Terraform reference. Use when a task names this exact project or its code. For general memory architecture choices use agent-memory-architecture; for symbol lookup use codebase-search.",
+      "category": "ai-agents",
+      "subcategory": "agent-frameworks",
+      "interface": "workflow",
+      "path": "agentic-graphrag-blueprint/SKILL.md",
+      "tags": [
+        "graphrag",
+        "fastapi",
+        "react",
+        "azure",
+        "knowledge-graph"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex CLI",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Grep",
+        "Glob"
+      ],
+      "keyword": "agentic-graphrag-blueprint",
+      "version": "1.0.0",
+      "source": "https://github.com/sebastianbrzustowicz/Agentic-GraphRAG-Blueprint"
+    },
+    {
+      "name": "codebase-memory-mcp",
+      "description": "Operate DeusData/codebase-memory-mcp, the local code-graph and MCP server: inspect indexing, graph queries, daemon/config behavior, releases and client integration. Use when the user names this exact project or its CLI/MCP. Route plain symbol lookup to codebase-search and narrative/personal memory systems to opencontext, llm-wiki or agent-memory-architecture.",
+      "category": "engineering",
+      "subcategory": "code-navigation",
+      "interface": "mcp",
+      "path": "codebase-memory-mcp/SKILL.md",
+      "tags": [
+        "code-graph",
+        "mcp",
+        "codebase-memory",
+        "indexing",
+        "static-analysis"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex CLI",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Grep",
+        "Glob"
+      ],
+      "keyword": "codebase-memory-mcp",
+      "version": "1.0.0",
+      "source": "https://github.com/DeusData/codebase-memory-mcp"
+    },
+    {
+      "name": "memmachine",
+      "description": "Operate MemMachine/MemMachine, the agent long-term memory server, Python/TypeScript clients and MCP integration. Use when a task names this exact repository, its server, memory APIs, deployment or MCP tools. For general memory architecture selection use agent-memory-architecture; for generic MCP design use mcp-builder.",
+      "category": "ai-agents",
+      "subcategory": "memory",
+      "interface": "workflow",
+      "path": "memmachine/SKILL.md",
+      "tags": [
+        "agent-memory",
+        "long-term-memory",
+        "memory-server",
+        "mcp",
+        "memmachine"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex CLI",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Grep",
+        "Glob"
+      ],
+      "keyword": "memmachine",
+      "version": "1.0.0",
+      "source": "https://github.com/MemMachine/MemMachine"
+    },
+    {
+      "name": "memori",
+      "description": "Operate MemoriLabs/Memori, its agent-memory SDKs, cloud/BYODB modes, runtime configuration and SQL storage integration. Use when the task names this exact project or its code. For product-neutral memory architecture decisions use agent-memory-architecture; route framework-specific agent work to its owner.",
+      "category": "ai-agents",
+      "subcategory": "memory",
+      "interface": "library",
+      "path": "memori/SKILL.md",
+      "tags": [
+        "agent-memory",
+        "sql-memory",
+        "byodb",
+        "memory-sdk",
+        "memori"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex CLI",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Grep",
+        "Glob"
+      ],
+      "keyword": "memori",
+      "version": "1.0.0",
+      "source": "https://github.com/MemoriLabs/Memori"
+    },
+    {
+      "name": "memsearch",
+      "description": "Operate zilliztech/memsearch, the Markdown-canonical agent memory tool with a Milvus search index: CLI, platform plugins, config, indexing, recall and reset. Use when a request names this exact project. For neutral memory-backend choices use agent-memory-architecture; for other memory products use their operator.",
+      "category": "ai-agents",
+      "subcategory": "memory",
+      "interface": "cli",
+      "path": "memsearch/SKILL.md",
+      "tags": [
+        "markdown-memory",
+        "milvus",
+        "semantic-search",
+        "memory-index",
+        "memsearch"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex CLI",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Grep",
+        "Glob"
+      ],
+      "keyword": "memsearch",
+      "version": "1.0.0",
+      "source": "https://github.com/zilliztech/memsearch"
+    },
+    {
+      "name": "rowboat",
+      "description": "Operate or explain rowboatlabs/rowboat, the open-source personal/team AI work app whose local knowledge graph is an Obsidian-style network of Markdown notes. Use for its setup, knowledge ingestion and graph construction, workspace behavior, configuration, or troubleshooting. Do not route generic graph-database or ontology design here.",
+      "category": "utilities",
+      "subcategory": "knowledge",
+      "interface": "desktop",
+      "path": "rowboat/SKILL.md",
+      "tags": [
+        "knowledge-graph",
+        "markdown",
+        "work-app",
+        "desktop",
+        "rowboat"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex CLI",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Grep",
+        "Glob"
+      ],
+      "keyword": "rowboat",
+      "version": "1.0.0",
+      "source": "https://github.com/rowboatlabs/rowboat"
+    },
+    {
+      "name": "ai-knowledge-management-platform",
+      "description": "Operate or explain TOPDEV99999/AI-Knowledge-Management-Platform, the AWS Agentic Documents Assistant sample combining document RAG, extracted relational entities, SQL question answering, and a ReAct-style agent. Use for its CDK architecture, ingestion pipeline, retrieval/SQL routing, setup, or troubleshooting. Do not treat it as a generic knowledge-management SaaS.",
+      "category": "infrastructure",
+      "subcategory": "cloud-data",
+      "interface": "workflow",
+      "path": "ai-knowledge-management-platform/SKILL.md",
+      "tags": [
+        "aws",
+        "cdk",
+        "rag",
+        "sql-agent",
+        "document-ingestion"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex CLI",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Grep",
+        "Glob"
+      ],
+      "keyword": "ai-knowledge-management-platform",
+      "version": "1.0.0",
+      "source": "https://github.com/TOPDEV99999/AI-Knowledge-Management-Platform"
+    },
+    {
+      "name": "knowledge-catalog",
+      "description": "Work with GoogleCloudPlatform/knowledge-catalog, a repository of Google Cloud Knowledge Catalog samples, agents, and tools. Use when inspecting its OKF reference-agent, mdcode/kcmd semantic-model catalog workflows, sample enrichment/governance agents, or their deployment and troubleshooting. This repository is not itself an independent database product or an official Google product.",
+      "category": "infrastructure",
+      "subcategory": "cloud-data",
+      "interface": "workflow",
+      "path": "knowledge-catalog/SKILL.md",
+      "tags": [
+        "google-cloud",
+        "knowledge-catalog",
+        "semantic-model",
+        "governance",
+        "samples"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex CLI",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Grep",
+        "Glob"
+      ],
+      "keyword": "knowledge-catalog",
+      "version": "1.0.0",
+      "source": "https://github.com/GoogleCloudPlatform/knowledge-catalog"
+    },
+    {
+      "name": "pixeltable",
+      "description": "Build or operate applications with pixeltable/pixeltable, the Python multimodal database and `pxt` catalog CLI. Use for tables/views, computed columns and indexes, media ingestion/query workflows, schema reconciliation, local daemon/configuration, or Pixeltable Cloud/service operations. Distinguish its multimodal data model from ontology catalogs and Markdown knowledge graphs.",
+      "category": "web",
+      "subcategory": "data",
+      "interface": "library",
+      "path": "pixeltable/SKILL.md",
+      "tags": [
+        "multimodal-database",
+        "computed-columns",
+        "media",
+        "pxt",
+        "pixeltable"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex CLI",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Grep",
+        "Glob"
+      ],
+      "keyword": "pixeltable",
+      "version": "1.0.0",
+      "source": "https://github.com/pixeltable/pixeltable"
+    },
+    {
+      "name": "leann",
+      "description": "Operate StarTrail-org/LEANN for local document indexing and semantic retrieval: inspect a checkout, configure embeddings/backends, build or incrementally update an index, search it, or troubleshoot index behavior. Use when the task explicitly names LEANN or needs its graph-assisted vector-index workflow. Route code-architecture memory graphs to mex/Graphify, workspace text search to zvec-grep, and other RAG stacks to langchain-rag.",
+      "category": "cli-tools",
+      "subcategory": "search-cli",
+      "interface": "cli",
+      "path": "leann/SKILL.md",
+      "tags": [
+        "vector-search",
+        "graph-index",
+        "document-indexing",
+        "semantic-search",
+        "leann"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex CLI",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Grep",
+        "Glob"
+      ],
+      "keyword": "leann",
+      "version": "1.0.0",
+      "source": "https://github.com/StarTrail-org/LEANN"
+    },
+    {
+      "name": "turbovec",
+      "description": "Use the RyanCodrai/turbovec project when integrating its in-process Python or Rust TurboQuant vector index: create an index, quantize/search vectors, persist/load a file, apply ID filters, or choose its framework adapters. Trigger on turbovec or TurboQuantIndex. Route hosted vector databases and replication needs to a server product such as Typesense; turbovec itself is a library, not a network service.",
+      "category": "web",
+      "subcategory": "data",
+      "interface": "library",
+      "path": "turbovec/SKILL.md",
+      "tags": [
+        "vector-index",
+        "turboquant",
+        "quantization",
+        "python",
+        "rust"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex CLI",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Grep",
+        "Glob"
+      ],
+      "keyword": "turbovec",
+      "version": "1.0.0",
+      "source": "https://github.com/RyanCodrai/turbovec"
+    },
+    {
+      "name": "cocoindex",
+      "description": "Operate cocoindex-io/cocoindex when building or troubleshooting incremental Python data flows: declare sources, transformations, targets, app state, CLI updates, live processing, or connectors for RAG/indexing. Use when the request names CocoIndex or needs its change-aware ETL pipeline. CocoIndex is not itself a database or vector store; route database schema design to database-schema-design and ordinary framework RAG work to langchain-rag.",
+      "category": "infrastructure",
+      "subcategory": "cloud-data",
+      "interface": "library",
+      "path": "cocoindex/SKILL.md",
+      "tags": [
+        "incremental-etl",
+        "dataflow",
+        "connectors",
+        "rag-indexing",
+        "cocoindex"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex CLI",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Grep",
+        "Glob"
+      ],
+      "keyword": "cocoindex",
+      "version": "1.0.0",
+      "source": "https://github.com/cocoindex-io/cocoindex"
+    },
+    {
+      "name": "pixelrag",
+      "description": "Operate StarTrail-org/PixelRAG for screenshot-based visual retrieval: render pages or documents into image tiles, chunk/embed them, build a FAISS index, configure local search, or inspect its search API. Use when the task names PixelRAG, pixelshot, or multimodal visual RAG. It retrieves visual content; it is not a text-only RAG framework, database, or semantic ontology. Route general text-RAG orchestration to langchain-rag.",
+      "category": "web",
+      "subcategory": "data",
+      "interface": "library",
+      "path": "pixelrag/SKILL.md",
+      "tags": [
+        "visual-rag",
+        "faiss",
+        "screenshots",
+        "multimodal-retrieval",
+        "pixelshot"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex CLI",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Grep",
+        "Glob"
+      ],
+      "keyword": "pixelrag",
+      "version": "1.0.0",
+      "source": "https://github.com/StarTrail-org/PixelRAG"
     }
   ]
 }

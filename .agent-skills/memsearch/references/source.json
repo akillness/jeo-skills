@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "skill": "memsearch",
+  "repository": "zilliztech/memsearch",
+  "commit": "09e07d86b31ff81938b4f44a57099b6a9fc8723f",
+  "observed_at": "2026-10-15T15:08:41Z",
+  "license": {
+    "path": "LICENSE",
+    "conclusion": "MIT in the inspected complete root LICENSE; this guide is original.",
+    "url": "https://github.com/zilliztech/memsearch/blob/09e07d86b31ff81938b4f44a57099b6a9fc8723f/LICENSE"
+  },
+  "tools": [
+    {
+      "name": "memsearch",
+      "purpose": "CLI for indexing, search, config, watch, compact and reset operations."
+    },
+    {
+      "name": "python",
+      "purpose": "Run the Python package or plugin setup only after approval."
+    },
+    {
+      "name": "docker",
+      "purpose": "Optional local service runtime; inspect the selected Milvus endpoint/deployment first."
+    }
+  ],
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "c52b5f0576aa0460b0b80abf0f1f59ed8285ebac91607acf27cab3e66f56236a",
+      "url": "https://github.com/zilliztech/memsearch/blob/09e07d86b31ff81938b4f44a57099b6a9fc8723f/README.md",
+      "purpose": "Project scope and documented architecture/quickstart."
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "eef6eabff44f247f1e1d3d35854070e20d4d1604c5ba798dae4f99462fd8abc7",
+      "url": "https://github.com/zilliztech/memsearch/blob/09e07d86b31ff81938b4f44a57099b6a9fc8723f/LICENSE",
+      "purpose": "Full root license text; file-level license evidence."
+    },
+    {
+      "path": "pyproject.toml",
+      "sha256": "55b58a6289a713b2985cdd5b50130fe799a553367f910d483b6ac9bd2811fc31",
+      "url": "https://github.com/zilliztech/memsearch/blob/09e07d86b31ff81938b4f44a57099b6a9fc8723f/pyproject.toml",
+      "purpose": "Top-level Python packaging/runtime metadata."
+    },
+    {
+      "path": "docs/cli.md",
+      "sha256": "3e25b119c8d988b9e5d26cf971fa1b558eaa166f56633453ac3800563a8e3149",
+      "url": "https://github.com/zilliztech/memsearch/blob/09e07d86b31ff81938b4f44a57099b6a9fc8723f/docs/cli.md",
+      "purpose": "Documented CLI operations and data effects."
+    },
+    {
+      "path": "docs/home/configuration.md",
+      "sha256": "10c6347c54ba51003f3796a884378f279cd316894d538a97b3569d9b8f51aba5",
+      "url": "https://github.com/zilliztech/memsearch/blob/09e07d86b31ff81938b4f44a57099b6a9fc8723f/docs/home/configuration.md",
+      "purpose": "Config precedence and project config allowlist."
+    },
+    {
+      "path": "src/memsearch/cli.py",
+      "sha256": "69d59566d76301c912d4359476c2639df36f8576eacfcf1964a246a6332f1af4",
+      "url": "https://github.com/zilliztech/memsearch/blob/09e07d86b31ff81938b4f44a57099b6a9fc8723f/src/memsearch/cli.py",
+      "purpose": "Actual CLI commands including destructive/reset flows."
+    },
+    {
+      "path": "src/memsearch/config.py",
+      "sha256": "3c13ef19964701164f380b953aa22290f3f6229b08a75aa6145b6bda8f3786f6",
+      "url": "https://github.com/zilliztech/memsearch/blob/09e07d86b31ff81938b4f44a57099b6a9fc8723f/src/memsearch/config.py",
+      "purpose": "Config defaults and project-local allowlist."
+    },
+    {
+      "path": "src/memsearch/store.py",
+      "sha256": "03082ecf6194b7180fd8a1cb8769ad5feeea5ac4c4ecafc70a4ab02a9a9f9fa2",
+      "url": "https://github.com/zilliztech/memsearch/blob/09e07d86b31ff81938b4f44a57099b6a9fc8723f/src/memsearch/store.py",
+      "purpose": "Vector-index/storage implementation."
+    }
+  ]
+}

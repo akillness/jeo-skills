@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "skill": "orionbelt-ontology-builder",
+  "repository": "ralforion/orionbelt-ontology-builder",
+  "commit": "af59e2bb564e881739d57a05fc29190d46d921bb",
+  "observed_at": "2026-10-15T15:07:11Z",
+  "license": {"path": "LICENSE", "conclusion": "Business Source License 1.1; production use grant excludes embedding in commercial products/services absent a commercial license; change date 2030-03-30; full text inspected", "url": "https://github.com/ralforion/orionbelt-ontology-builder/blob/af59e2bb564e881739d57a05fc29190d46d921bb/LICENSE"},
+  "tools": [{"name": "python3", "purpose": "Run the offline selected-source preflight helper; tool discovery only, no version test"}],
+  "files": [
+    {"path": "README.md", "sha256": "f8e0f9a15847d2c9331b32b8bd604741f1349b5ca4e9ed2c335eacd3e4fb018c", "url": "https://github.com/ralforion/orionbelt-ontology-builder/blob/af59e2bb564e881739d57a05fc29190d46d921bb/README.md", "purpose": "Workbench capabilities, Python setup and RDFS limitation"},
+    {"path": "LICENSE", "sha256": "a54d371b34c41c724e9faedc558ba1fc195cbd6b7c2763553b0c768f554086b1", "url": "https://github.com/ralforion/orionbelt-ontology-builder/blob/af59e2bb564e881739d57a05fc29190d46d921bb/LICENSE", "purpose": "Full BSL 1.1 terms and Additional Use Grant"},
+    {"path": "pyproject.toml", "sha256": "3de2cb599d64bec696a7b1d0dc61b6f6f4b000eb855d10f9c79c86b34e671dd4", "url": "https://github.com/ralforion/orionbelt-ontology-builder/blob/af59e2bb564e881739d57a05fc29190d46d921bb/pyproject.toml", "purpose": "Python floor, dependencies, entrypoints and optional desktop extras"},
+    {"path": "orionbelt_ontology_builder/cli.py", "sha256": "8c1e8e9149391097ebd925c67cf7b43d71640c5d6b202ff4578bc3de352fe8dc", "url": "https://github.com/ralforion/orionbelt-ontology-builder/blob/af59e2bb564e881739d57a05fc29190d46d921bb/orionbelt_ontology_builder/cli.py", "purpose": "Local Streamlit launcher and persistence behavior"},
+    {"path": "orionbelt_ontology_builder/local_store.py", "sha256": "a7d7b04c0979259a882192361b4cac496fbcb7ec0e0acd52c1797bf00ddd836a", "url": "https://github.com/ralforion/orionbelt-ontology-builder/blob/af59e2bb564e881739d57a05fc29190d46d921bb/orionbelt_ontology_builder/local_store.py", "purpose": "Local persistence opt-in, recovery snapshot and linked-file behavior"}
+  ]
+}

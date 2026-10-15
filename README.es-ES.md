@@ -4,14 +4,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-369-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-390-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![GJC](https://img.shields.io/badge/GJC-gajae--code-181717?style=for-the-badge&logo=github)](https://github.com/akillness/gajae-code)
 [![jeo-code](https://img.shields.io/badge/jeo--code-jeo-181717?style=for-the-badge&logo=github)](https://github.com/akillness/jeo-code)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**369 habilidades categorizadas · instalación selectiva ligera · catálogo TOON compacto · multiplataforma**
+**390 habilidades categorizadas · instalación selectiva ligera · catálogo TOON compacto · multiplataforma**
 
 Una colección curada para flujos de trabajo LLM multi-agente y centrados en especificaciones. Delega una configuración completa con un solo prompt, o instala primero el enrutador `jeo-skill` y añade solo las habilidades de web, infraestructura, juegos, medios, CLI o utilidades que necesites.
 
@@ -185,7 +185,15 @@ Jev sigue siendo opcional en todos los modos del catálogo: la configuración pr
 
 ### Instalación selectiva ligera (manual / CI)
 
-Instala primero el **enrutador `jeo-skill`**, no las 369 carpetas de habilidades. Proporciona descubrimiento de categoría, subcategoría, interfaz, paquete y relación, manteniendo aplicaciones pesadas, modelos, servidores MCP y tiempos de ejecución bajo demanda.
+Instala primero el **enrutador `jeo-skill`**, no las 390 carpetas de habilidades. Proporciona descubrimiento de categoría, subcategoría, interfaz, paquete y relación, manteniendo aplicaciones pesadas, modelos, servidores MCP y tiempos de ejecución bajo demanda.
+
+El paquete `knowledge-repositories` reúne 21 proyectos de ontologías, grafos de
+código, memoria y recuperación: 18 operadores nuevos fijados a commits y tres
+habilidades existentes. Los ayudantes sin conexión solo detectan herramientas
+y comparan hashes de archivos públicos seleccionados; no verifican revisiones
+completas ni disponibilidad operativa. Instalar las guías no autoriza instalar
+aplicaciones, ingerir datos privados, activar MCP, gastar en proveedores ni cambiar bases de datos.
+Previsualiza con `jeo-skill install --bundle knowledge-repositories --dry-run`.
 
 ```bash
 # One lightweight skill, shared globally
@@ -302,11 +310,11 @@ y 2 entrada inválida. Una ruta de ejecutable o un HEAD coincidente no demuestra
 
 ## 📚 Lista de Habilidades
 
-> Manifiesto central: `.agent-skills/skills.json` · 372 habilidades · 10 categorías principales · metadatos de subcategoría/interfaz/relación
+> Manifiesto central: `.agent-skills/skills.json` · 390 habilidades · 10 categorías principales · metadatos de subcategoría/interfaz/relación
 
-### 🌐 Web (52)
+### 🌐 Web (59)
 
-Subcategorías: `frontend` (7), `backend` (3), `design` (12), `api` (2), `auth` (1), `data` (6), `testing` (4), `accessibility` (1), `performance` (1), `graphics` (10), `capture` (5)
+Subcategorías: `frontend` (7), `backend` (3), `design` (12), `api` (2), `auth` (1), `data` (13), `testing` (4), `accessibility` (1), `performance` (1), `graphics` (10), `capture` (5)
 
 | Skill |
 |---|
@@ -362,10 +370,17 @@ Subcategorías: `frontend` (7), `backend` (3), `design` (12), `api` (2), `auth` 
 | `stagehand` |
 | `helix-foundry` |
 | `pg-jev` |
+| `orionbelt-ontology-builder` |
+| `open-ontologies` |
+| `semantica` |
+| `utopia` |
+| `pixeltable` |
+| `turbovec` |
+| `pixelrag` |
 
-### 🏗 Infraestructura (14)
+### 🏗 Infraestructura (17)
 
-Subcategorías: `deployment` (2), `environment` (2), `observability` (3), `security` (3), `cloud-data` (3), `automation` (0), `tooling` (1)
+Subcategorías: `deployment` (2), `environment` (2), `observability` (3), `security` (3), `cloud-data` (6), `automation` (0), `tooling` (1)
 
 | Skill |
 |---|
@@ -383,6 +398,9 @@ Subcategorías: `deployment` (2), `environment` (2), `observability` (3), `secur
 | `genkit` |
 | `looker-studio-bigquery` |
 | `zurp` |
+| `ai-knowledge-management-platform` |
+| `knowledge-catalog` |
+| `cocoindex` |
 
 ### 🎮 Juego (28)
 
@@ -462,9 +480,9 @@ Subcategorías: `image` (10), `video` (17), `motion` (1), `audio` (1), `presenta
 | `autoclip` |
 | `moneyprinter-turbo` |
 
-### ⌨️ Herramientas CLI (40)
+### ⌨️ Herramientas CLI (42)
 
-Subcategorías: `developer-cli` (10), `ai-cli` (15), `media-cli` (1), `automation-cli` (6), `search-cli` (7), `benchmark-cli` (1)
+Subcategorías: `developer-cli` (10), `ai-cli` (16), `media-cli` (1), `automation-cli` (6), `search-cli` (8), `benchmark-cli` (1)
 
 | Skill |
 |---|
@@ -508,10 +526,12 @@ Subcategorías: `developer-cli` (10), `ai-cli` (15), `media-cli` (1), `automatio
 | `context-mode` |
 | `rea` |
 | `llmfit` |
+| `hyper-extract` |
+| `leann` |
 
-### 🤖 IA y Agentes (67)
+### 🤖 IA y Agentes (71)
 
-Subcategorías: `orchestration` (15), `agent-frameworks` (18), `skill-authoring` (5), `evaluation` (7), `memory` (3), `planning-review` (13), `discovery` (3), `prompting` (3)
+Subcategorías: `orchestration` (15), `agent-frameworks` (19), `skill-authoring` (5), `evaluation` (7), `memory` (6), `planning-review` (13), `discovery` (3), `prompting` (3)
 
 | Skill |
 |---|
@@ -582,10 +602,14 @@ Subcategorías: `orchestration` (15), `agent-frameworks` (18), `skill-authoring`
 | `anyjev` |
 | `typesafe-computer-use` |
 | `jev-ultrafast` |
+| `agentic-graphrag-blueprint` |
+| `memmachine` |
+| `memori` |
+| `memsearch` |
 
-### 🧰 Ingeniería (24)
+### 🧰 Ingeniería (25)
 
-Subcategorías: `code-quality` (11), `testing` (4), `architecture` (6), `documentation` (2), `code-navigation` (1)
+Subcategorías: `code-quality` (11), `testing` (4), `architecture` (6), `documentation` (2), `code-navigation` (2)
 
 | Skill |
 |---|
@@ -613,6 +637,7 @@ Subcategorías: `code-quality` (11), `testing` (4), `architecture` (6), `documen
 | `domain-modeling` |
 | `implement` |
 | `prototype` |
+| `codebase-memory-mcp` |
 
 ### 🔭 Investigación y Análisis (14)
 
@@ -712,9 +737,9 @@ Subcategorías: `marketing` (4), `support` (2), `publishing` (1), `pm-toolkit` (
 | `product-name` |
 | `value-prop-statements` |
 
-### 🔧 Utilidades (27)
+### 🔧 Utilidades (28)
 
-Subcategorías: `knowledge` (7), `files` (5), `git` (4), `workspace` (1), `project-management` (4), `productivity` (3), `general` (3)
+Subcategorías: `knowledge` (8), `files` (5), `git` (4), `workspace` (1), `project-management` (4), `productivity` (3), `general` (3)
 
 | Skill |
 |---|
@@ -745,6 +770,7 @@ Subcategorías: `knowledge` (7), `files` (5), `git` (4), `workspace` (1), `proje
 | `hwp` |
 | `rhwp-advanced` |
 | `rhwp-edit` |
+| `rowboat` |
 
 ---
 
@@ -981,7 +1007,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 ## 📁 Estructura
 
 ```text
-├── .agent-skills/          ← 369 carpetas de habilidades (SKILL.md + soporte)
+├── .agent-skills/          ← 390 carpetas de habilidades (SKILL.md + soporte)
 ├── assets/                 ← portada estática y diagramas del catálogo y del runtime
 ├── changelog/              ← fuentes mensuales localizadas
 ├── docs/                   ← colaboración y contacto de ScrapingAnt

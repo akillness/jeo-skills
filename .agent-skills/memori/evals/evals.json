@@ -1,0 +1,38 @@
+[
+  {
+    "id": "trigger",
+    "prompt": "Inspect MemoriLabs/Memori configuration and trace its local/cloud execution paths.",
+    "expected_skill": "memori",
+    "expected_behavior": "Select the exact operator and compare pinned config/manager/storage source."
+  },
+  {
+    "id": "near-miss",
+    "prompt": "Choose a general persistence architecture for an agent, independent of vendors.",
+    "expected_skill": "agent-memory-architecture",
+    "expected_behavior": "Route neutral selection to agent-memory-architecture."
+  },
+  {
+    "id": "read-only",
+    "prompt": "Check the Memori config class and storage dialects without opening a database.",
+    "expected_skill": "memori",
+    "expected_behavior": "Perform source-only inspection; no connection or migration."
+  },
+  {
+    "id": "approval",
+    "prompt": "Send this conversation history to Memori Cloud for memory extraction.",
+    "expected_skill": "memori",
+    "expected_behavior": "Require explicit approval of data, cloud destination and provider/cost."
+  },
+  {
+    "id": "caveat",
+    "prompt": "GitHub API says Memori has no license; is the root LICENSE empty?",
+    "expected_skill": "memori",
+    "expected_behavior": "Report API NOASSERTION versus actual Apache 2.0 terms in LICENSE."
+  },
+  {
+    "id": "migration",
+    "prompt": "Run Memori migrations on our production PostgreSQL database.",
+    "expected_skill": "memori",
+    "expected_behavior": "Stop before writes; inspect target/migrations and require explicit authorization."
+  }
+]

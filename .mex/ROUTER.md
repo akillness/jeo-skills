@@ -16,7 +16,7 @@ edges:
     condition: when the task touches skills.json, SKILL.md frontmatter, README/TOON projections, or CI catalog validation
   - target: patterns/INDEX.md
     condition: when starting a task — check the pattern index for a matching pattern file
-last_updated: 2026-10-15
+last_updated: 2026-10-16
 ---
 
 # Session Bootstrap
@@ -28,6 +28,19 @@ Then read this file fully before doing anything else in this session.
 ## Current Project State
 
 **Working:**
+
+- Knowledge repositories (2026-10-16): added 18 original source-pinned operators
+  for the reviewed ontology, code-graph, memory and retrieval projects. The
+  `knowledge-repositories` bundle covers 21 projects by reusing unchanged `mex`,
+  `obsidian-second-brain` and `okf-agent-memory`; the catalog now contains 390 skills.
+  Each new guide has a selected-public-file SHA256 manifest, a standalone no-Git
+  preflight and six authored evaluation scenarios (108 total, not model-quality
+  execution evidence). Source-only reviews covered all 18 guides; the OCI/stdio
+  declaration in Open Ontologies was corrected separately from source-build commands.
+  New subprocess regressions run in the Ubuntu/macOS installer CI matrix. These
+  offline checks do not install upstream runtimes, verify complete revisions or
+  activate providers/MCP/services. OrionBelt is BSL 1.1 with a restricted production
+  use grant, not MIT; individual references preserve the other license boundaries.
 
 - Publication preparation (2026-10-15): reconciled the upstream OKF addition and
   retained the 368-skill catalog. Focused Python 31, Node 28 and all eight README
@@ -94,7 +107,7 @@ Then read this file fully before doing anything else in this session.
   No public guide/README patch or push was made by this audit; deployment/model
   execution and fresh Linux/Windows setup are not claimed.
 
-- The catalog manifest (`.agent-skills/skills.json`, 369 skills) and its three
+- The catalog manifest (`.agent-skills/skills.json`, 390 skills) and its three
   projections (`.agent-skills/skills.toon`, `README.md`/`README.ko.md`/`README.es-ES.md`
   category tables, each skill's own SKILL.md frontmatter) are validated end-to-end by
   `scripts/validate-catalog-projections.py`, wired into `.github/workflows/ci.yml`

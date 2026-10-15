@@ -2,14 +2,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-369-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-390-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![GJC](https://img.shields.io/badge/GJC-gajae--code-181717?style=for-the-badge&logo=github)](https://github.com/akillness/gajae-code)
 [![jeo-code](https://img.shields.io/badge/jeo--code-jeo-181717?style=for-the-badge&logo=github)](https://github.com/akillness/jeo-code)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**카테고리형 스킬 369개 · 경량 선택 설치 · 압축 TOON 카탈로그 · 멀티플랫폼**
+**카테고리형 스킬 390개 · 경량 선택 설치 · 압축 TOON 카탈로그 · 멀티플랫폼**
 
 스펙 우선 멀티 에이전트 LLM 워크플로우 컬렉션입니다. 프롬프트 하나로 전체 설정을
 위임하거나, `jeo-skill` 라우터부터 설치해 필요한 웹, 인프라, 게임, 미디어, CLI,
@@ -182,9 +182,16 @@ curl -s https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-sk
 
 ### 경량 선택 설치(수동 / CI)
 
-368개 스킬 폴더 전체가 아니라 **`jeo-skill` 라우터부터 설치**합니다. 카테고리,
+390개 스킬 폴더 전체가 아니라 **`jeo-skill` 라우터부터 설치**합니다. 카테고리,
 하위 분류, 인터페이스, 번들, 연관 스킬을 탐색할 수 있으며 앱·모델·MCP 서버·런타임은
 실제 선택된 작업에서만 온디맨드로 설치합니다.
+
+`knowledge-repositories` 번들은 온톨로지·코드 그래프·메모리·검색 프로젝트
+21개를 묶습니다. 커밋 고정 운영 스킬 18개를 추가하고 기존 스킬 3개는
+재사용합니다. 오프라인 헬퍼는 도구 존재와 선택된 공개 파일의 해시만 확인하며,
+Git 전체 리비전이나 실제 실행 준비 상태를 검증하지 않습니다. 스킬 설치는
+업스트림 앱 설치·비공개 데이터 수집·MCP 활성화·유료 호출·DB 변경 승인이 아닙니다.
+`jeo-skill install --bundle knowledge-repositories --dry-run`으로 선택 범위를 미리 확인합니다.
 
 ```bash
 # 공유 글로벌 경로에 라우터를 설치하고 native 투영의 기반을 마련
@@ -292,11 +299,11 @@ python3 .agent-skills/openrig/scripts/preflight.py --json
 
 ## 📚 스킬 목록
 
-> 중앙 매니페스트: `.agent-skills/skills.json` · 372개 스킬 · 10개 기본 카테고리 · 하위 카테고리/인터페이스/관계 그룹 지원
+> 중앙 매니페스트: `.agent-skills/skills.json` · 390개 스킬 · 10개 기본 카테고리 · 하위 카테고리/인터페이스/관계 그룹 지원
 
-### 🌐 웹 (52개)
+### 🌐 웹 (59개)
 
-하위 분류: `frontend` (7), `backend` (3), `design` (12), `api` (2), `auth` (1), `data` (6), `testing` (4), `accessibility` (1), `performance` (1), `graphics` (10), `capture` (5)
+하위 분류: `frontend` (7), `backend` (3), `design` (12), `api` (2), `auth` (1), `data` (13), `testing` (4), `accessibility` (1), `performance` (1), `graphics` (10), `capture` (5)
 
 | Skill |
 |---|
@@ -352,10 +359,17 @@ python3 .agent-skills/openrig/scripts/preflight.py --json
 | `stagehand` |
 | `helix-foundry` |
 | `pg-jev` |
+| `orionbelt-ontology-builder` |
+| `open-ontologies` |
+| `semantica` |
+| `utopia` |
+| `pixeltable` |
+| `turbovec` |
+| `pixelrag` |
 
-### 🏗 인프라 (14개)
+### 🏗 인프라 (17개)
 
-하위 분류: `deployment` (2), `environment` (2), `observability` (3), `security` (3), `cloud-data` (3), `automation` (0), `tooling` (1)
+하위 분류: `deployment` (2), `environment` (2), `observability` (3), `security` (3), `cloud-data` (6), `automation` (0), `tooling` (1)
 
 | Skill |
 |---|
@@ -373,6 +387,9 @@ python3 .agent-skills/openrig/scripts/preflight.py --json
 | `genkit` |
 | `looker-studio-bigquery` |
 | `zurp` |
+| `ai-knowledge-management-platform` |
+| `knowledge-catalog` |
+| `cocoindex` |
 
 ### 🎮 게임 (28개)
 
@@ -452,9 +469,9 @@ python3 .agent-skills/openrig/scripts/preflight.py --json
 | `autoclip` |
 | `moneyprinter-turbo` |
 
-### ⌨️ CLI 도구 (40개)
+### ⌨️ CLI 도구 (42개)
 
-하위 분류: `developer-cli` (10), `ai-cli` (15), `media-cli` (1), `automation-cli` (6), `search-cli` (7), `benchmark-cli` (1)
+하위 분류: `developer-cli` (10), `ai-cli` (16), `media-cli` (1), `automation-cli` (6), `search-cli` (8), `benchmark-cli` (1)
 
 | Skill |
 |---|
@@ -498,10 +515,12 @@ python3 .agent-skills/openrig/scripts/preflight.py --json
 | `context-mode` |
 | `rea` |
 | `llmfit` |
+| `hyper-extract` |
+| `leann` |
 
-### 🤖 AI 및 에이전트 (67개)
+### 🤖 AI 및 에이전트 (71개)
 
-하위 분류: `orchestration` (15), `agent-frameworks` (18), `skill-authoring` (5), `evaluation` (7), `memory` (3), `planning-review` (13), `discovery` (3), `prompting` (3)
+하위 분류: `orchestration` (15), `agent-frameworks` (19), `skill-authoring` (5), `evaluation` (7), `memory` (6), `planning-review` (13), `discovery` (3), `prompting` (3)
 
 | Skill |
 |---|
@@ -572,10 +591,14 @@ python3 .agent-skills/openrig/scripts/preflight.py --json
 | `anyjev` |
 | `typesafe-computer-use` |
 | `jev-ultrafast` |
+| `agentic-graphrag-blueprint` |
+| `memmachine` |
+| `memori` |
+| `memsearch` |
 
-### 🧰 엔지니어링 (24개)
+### 🧰 엔지니어링 (25개)
 
-하위 분류: `code-quality` (11), `testing` (4), `architecture` (6), `documentation` (2), `code-navigation` (1)
+하위 분류: `code-quality` (11), `testing` (4), `architecture` (6), `documentation` (2), `code-navigation` (2)
 
 | Skill |
 |---|
@@ -603,6 +626,7 @@ python3 .agent-skills/openrig/scripts/preflight.py --json
 | `domain-modeling` |
 | `implement` |
 | `prototype` |
+| `codebase-memory-mcp` |
 
 ### 🔭 연구 및 분석 (14개)
 
@@ -702,9 +726,9 @@ python3 .agent-skills/openrig/scripts/preflight.py --json
 | `product-name` |
 | `value-prop-statements` |
 
-### 🔧 유틸리티 (27개)
+### 🔧 유틸리티 (28개)
 
-하위 분류: `knowledge` (7), `files` (5), `git` (4), `workspace` (1), `project-management` (4), `productivity` (3), `general` (3)
+하위 분류: `knowledge` (8), `files` (5), `git` (4), `workspace` (1), `project-management` (4), `productivity` (3), `general` (3)
 
 | Skill |
 |---|
@@ -735,6 +759,7 @@ python3 .agent-skills/openrig/scripts/preflight.py --json
 | `hwp` |
 | `rhwp-advanced` |
 | `rhwp-edit` |
+| `rowboat` |
 
 ---
 
@@ -970,7 +995,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 ## 📁 구조
 
 ```text
-├── .agent-skills/          ← 369개 스킬 폴더 (SKILL.md + 선택적 지원 파일)
+├── .agent-skills/          ← 390개 스킬 폴더 (SKILL.md + 선택적 지원 파일)
 ├── assets/                ← README hero 및 카탈로그/런타임 다이어그램
 ├── changelog/             ← 월별 다국어 릴리스 소스 파일
 ├── docs/                  ← ScrapingAnt 파트너십·아웃리치 자료

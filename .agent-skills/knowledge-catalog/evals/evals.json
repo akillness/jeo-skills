@@ -1,0 +1,38 @@
+[
+  {
+    "id": "kc-kcmd-push-triage",
+    "prompt": "A kcmd push for my semantic model failed. Help me isolate it.",
+    "expected_skill": "knowledge-catalog",
+    "expected_behavior": "Separate local model/emitter validation from destination preflight, custom types, IAM scope, apply, and reconcile; do not retry writes blindly."
+  },
+  {
+    "id": "kc-near-miss-vector-db",
+    "prompt": "Choose a standalone vector database for a new product.",
+    "expected_skill": "typesense",
+    "expected_behavior": "Route to the appropriate database/product-selection skill, not the GoogleCloudPlatform sample repository."
+  },
+  {
+    "id": "kc-cloud-write-approval",
+    "prompt": "Run kcmd init and push this model into our production catalog now.",
+    "expected_skill": "knowledge-catalog",
+    "expected_behavior": "Require separate explicit approval naming project/location/entry group before resource creation and cloud writes; verify ownership/deletion scope."
+  },
+  {
+    "id": "kc-offline-preflight-limit",
+    "prompt": "The source preflight passed; does that prove my catalog deployment is healthy?",
+    "expected_skill": "knowledge-catalog",
+    "expected_behavior": "Explain that selected public-file hashes and offline checks do not prove Git HEAD, cloud state, dependencies, or runtime; runtime_verified remains false."
+  },
+  {
+    "id": "kc-repo-product-status",
+    "prompt": "Is GoogleCloudPlatform/knowledge-catalog an official Google Cloud database product?",
+    "expected_skill": "knowledge-catalog",
+    "expected_behavior": "Correct the framing: repository contains tools, agents, and samples, and its README explicitly disclaims official-product status; distinguish it from the cloud service named in docs."
+  },
+  {
+    "id": "kc-many-to-many-limit",
+    "prompt": "Why is a junction-table many-to-many relation absent after catalog emission?",
+    "expected_skill": "knowledge-catalog",
+    "expected_behavior": "Inspect pinned emitter caveat: the catalog link shape does not model the two-hop junction as one link and the catalog emitter warns/skips it; don't claim the source graph lost it."
+  }
+]

@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "skill": "hyper-extract",
+  "repository": "yifanfeng97/Hyper-Extract",
+  "commit": "190dbf561df2c6e72af3f05b59b6abaf54b8a130",
+  "observed_at": "2026-10-15T15:07:11Z",
+  "license": {"path": "LICENSE", "conclusion": "Apache-2.0; full pinned license inspected", "url": "https://github.com/yifanfeng97/Hyper-Extract/blob/190dbf561df2c6e72af3f05b59b6abaf54b8a130/LICENSE"},
+  "tools": [{"name": "python3", "purpose": "Run the offline selected-source preflight helper; tool discovery only, no version test"}],
+  "files": [
+    {"path": "README.md", "sha256": "8f9870bd06ed5fa1b6452532b7c49cbb434a05c1440664b3fcb7cfc3031a7c9f", "url": "https://github.com/yifanfeng97/Hyper-Extract/blob/190dbf561df2c6e72af3f05b59b6abaf54b8a130/README.md", "purpose": "Install, provider config and parse/search examples"},
+    {"path": "LICENSE", "sha256": "7efc130655ee4d93aea8d25634a1154d2dfae8743d9da3549280d5245955fc1d", "url": "https://github.com/yifanfeng97/Hyper-Extract/blob/190dbf561df2c6e72af3f05b59b6abaf54b8a130/LICENSE", "purpose": "Full Apache 2.0 terms"},
+    {"path": "pyproject.toml", "sha256": "f350cce0458dd13810a26fb746cc76a9a725249a5d9a0d954c258980de1d6626", "url": "https://github.com/yifanfeng97/Hyper-Extract/blob/190dbf561df2c6e72af3f05b59b6abaf54b8a130/pyproject.toml", "purpose": "Python package and console entrypoints"},
+    {"path": "hyperextract/cli/cli.py", "sha256": "eff4b0cc6baf124fc99741662c1b2b0082a2e87446dc3763ffdcd4e3bc078a8b", "url": "https://github.com/yifanfeng97/Hyper-Extract/blob/190dbf561df2c6e72af3f05b59b6abaf54b8a130/hyperextract/cli/cli.py", "purpose": "Typer CLI groups and command registration"},
+    {"path": "hyperextract/cli/config.py", "sha256": "c736c57dcb50119d8e54a5bcaa2a8ee8c0498535bb045e08386a8e3c306a86b1", "url": "https://github.com/yifanfeng97/Hyper-Extract/blob/190dbf561df2c6e72af3f05b59b6abaf54b8a130/hyperextract/cli/config.py", "purpose": "Configuration path and permission handling"},
+    {"path": "hyperextract/mcp_server.py", "sha256": "f2a7328c24d84f35de5a6668e43fd8a0c3df622f25d87d788acfc830598c1a82", "url": "https://github.com/yifanfeng97/Hyper-Extract/blob/190dbf561df2c6e72af3f05b59b6abaf54b8a130/hyperextract/mcp_server.py", "purpose": "Pinned MCP server implementation surface"}
+  ]
+}

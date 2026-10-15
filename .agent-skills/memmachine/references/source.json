@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "skill": "memmachine",
+  "repository": "MemMachine/MemMachine",
+  "commit": "d5a39a8e774e977fb1e6c22efb03555c4e51e05e",
+  "observed_at": "2026-10-15T15:08:41Z",
+  "license": {
+    "path": "LICENSE",
+    "conclusion": "Apache License 2.0 is present in the complete root LICENSE file.",
+    "url": "https://github.com/MemMachine/MemMachine/blob/d5a39a8e774e977fb1e6c22efb03555c4e51e05e/LICENSE"
+  },
+  "tools": [
+    {
+      "name": "memmachine-server",
+      "purpose": "Long-term memory API server; service startup requires explicit approval."
+    },
+    {
+      "name": "memmachine-client",
+      "purpose": "Python SDK command/package used to connect to a running server."
+    },
+    {
+      "name": "docker",
+      "purpose": "Start the pinned multi-service Compose deployment only with explicit approval."
+    }
+  ],
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "ee9e89f147008e7ece5f9d8fb42587e60444fe46ff0f33543decd0acfb3e3edd",
+      "url": "https://github.com/MemMachine/MemMachine/blob/d5a39a8e774e977fb1e6c22efb03555c4e51e05e/README.md",
+      "purpose": "Project scope and documented architecture/quickstart."
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "05f33b1a4f2797532e331898b95db7b1cf51ee06b7cb0d24b87dfe05101e21e3",
+      "url": "https://github.com/MemMachine/MemMachine/blob/d5a39a8e774e977fb1e6c22efb03555c4e51e05e/LICENSE",
+      "purpose": "Full root license text; file-level license evidence."
+    },
+    {
+      "path": "docker-compose.yml",
+      "sha256": "c9b57608196b0cb73a4023dc0146056d3b07d39eb7de8fa6bc92652d543358de",
+      "url": "https://github.com/MemMachine/MemMachine/blob/d5a39a8e774e977fb1e6c22efb03555c4e51e05e/docker-compose.yml",
+      "purpose": "Local service topology, environment inputs, exposed ports and mounted data."
+    },
+    {
+      "path": "pyproject.toml",
+      "sha256": "626cf687b44e566dde03bbc2863f2ca19c9774770abcc65f0cd5c7d845f5c1fe",
+      "url": "https://github.com/MemMachine/MemMachine/blob/d5a39a8e774e977fb1e6c22efb03555c4e51e05e/pyproject.toml",
+      "purpose": "Top-level Python packaging/runtime metadata."
+    },
+    {
+      "path": "packages/server/pyproject.toml",
+      "sha256": "05a469b4ef9633119f6188573410f79350f005cf33aed3fb04a5d6eb32ee0d47",
+      "url": "https://github.com/MemMachine/MemMachine/blob/d5a39a8e774e977fb1e6c22efb03555c4e51e05e/packages/server/pyproject.toml",
+      "purpose": "Server package runtime/dependencies."
+    },
+    {
+      "path": "packages/server/src/memmachine_server/server/api_v2/mcp.py",
+      "sha256": "93ac7f6057f29fc46d4b2578e7995ab42d4d9cb73b3acdc0e92d1639c4113c95",
+      "url": "https://github.com/MemMachine/MemMachine/blob/d5a39a8e774e977fb1e6c22efb03555c4e51e05e/packages/server/src/memmachine_server/server/api_v2/mcp.py",
+      "purpose": "Actual MCP operations and server context implementation."
+    },
+    {
+      "path": "packages/server/src/memmachine_server/server/mcp_stdio.py",
+      "sha256": "e33f1565d0086cf327dbfce0cc17e33010b05387063df8faa3087603e7e3fbbe",
+      "url": "https://github.com/MemMachine/MemMachine/blob/d5a39a8e774e977fb1e6c22efb03555c4e51e05e/packages/server/src/memmachine_server/server/mcp_stdio.py",
+      "purpose": "Actual stdio MCP entrypoint."
+    }
+  ]
+}
