@@ -4,14 +4,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-368-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-369-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![GJC](https://img.shields.io/badge/GJC-gajae--code-181717?style=for-the-badge&logo=github)](https://github.com/akillness/gajae-code)
 [![jeo-code](https://img.shields.io/badge/jeo--code-jeo-181717?style=for-the-badge&logo=github)](https://github.com/akillness/jeo-code)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**368 habilidades categorizadas · instalación selectiva ligera · catálogo TOON compacto · multiplataforma**
+**369 habilidades categorizadas · instalación selectiva ligera · catálogo TOON compacto · multiplataforma**
 
 Una colección curada para flujos de trabajo LLM multi-agente y centrados en especificaciones. Delega una configuración completa con un solo prompt, o instala primero el enrutador `jeo-skill` y añade solo las habilidades de web, infraestructura, juegos, medios, CLI o utilidades que necesites.
 
@@ -185,7 +185,7 @@ Jev sigue siendo opcional en todos los modos del catálogo: la configuración pr
 
 ### Instalación selectiva ligera (manual / CI)
 
-Instala primero el **enrutador `jeo-skill`**, no las 368 carpetas de habilidades. Proporciona descubrimiento de categoría, subcategoría, interfaz, paquete y relación, manteniendo aplicaciones pesadas, modelos, servidores MCP y tiempos de ejecución bajo demanda.
+Instala primero el **enrutador `jeo-skill`**, no las 369 carpetas de habilidades. Proporciona descubrimiento de categoría, subcategoría, interfaz, paquete y relación, manteniendo aplicaciones pesadas, modelos, servidores MCP y tiempos de ejecución bajo demanda.
 
 ```bash
 # One lightweight skill, shared globally
@@ -278,9 +278,9 @@ Para generación de vídeo programable o con plantillas, usa `video-production`.
 
 ### Operadores de repositorios bajo demanda
 
-Once habilidades fijadas a commits upstream cubren `openrig`, `anyjev`,
+Doce habilidades fijadas a commits upstream cubren `openrig`, `anyjev`,
 `typesafe-computer-use`, `zurp`, `helix-foundry`, `uzu`, `context-mode`, `rea`,
-`fineenvs`, `llmfit` y `pg-jev`. Cada paquete v1.1.0 incluye un `SKILL.md` de enrutamiento,
+`fineenvs`, `llmfit`, `pg-jev` y `jev-ultrafast`. Cada paquete v1.1.0 incluye un `SKILL.md` de enrutamiento,
 una referencia fijada al commit, un diagnóstico offline ejecutable con la biblioteca
 estándar de Python y escenarios de evaluación;
 las aplicaciones, modelos, claves, registros MCP/hooks, control del escritorio y
@@ -293,7 +293,7 @@ Desde este repositorio, inspecciona un paquete sin activar su aplicación upstre
 python3 .agent-skills/openrig/scripts/preflight.py --json
 ```
 
-Los once scripts admiten `--help`, `--json`, `--repo` y `--expect-commit` opcionales,
+Los doce scripts admiten `--help`, `--json`, `--repo` y `--expect-commit` opcionales,
 funcionan sin otras habilidades y mantienen `runtime_verified: false`.
 El código 0 indica comprobaciones offline superadas, 1 requisitos ausentes o distintos,
 y 2 entrada inválida. Una ruta de ejecutable o un HEAD coincidente no demuestra que el runtime funcione.
@@ -302,7 +302,7 @@ y 2 entrada inválida. Una ruta de ejecutable o un HEAD coincidente no demuestra
 
 ## 📚 Lista de Habilidades
 
-> Manifiesto central: `.agent-skills/skills.json` · 368 habilidades · 10 categorías principales · metadatos de subcategoría/interfaz/relación
+> Manifiesto central: `.agent-skills/skills.json` · 369 habilidades · 10 categorías principales · metadatos de subcategoría/interfaz/relación
 
 ### 🌐 Web (52)
 
@@ -506,9 +506,9 @@ Subcategorías: `developer-cli` (10), `ai-cli` (15), `media-cli` (1), `automatio
 | `rea` |
 | `llmfit` |
 
-### 🤖 IA y Agentes (66)
+### 🤖 IA y Agentes (67)
 
-Subcategorías: `orchestration` (14), `agent-frameworks` (18), `skill-authoring` (5), `evaluation` (7), `memory` (3), `planning-review` (13), `discovery` (3), `prompting` (3)
+Subcategorías: `orchestration` (15), `agent-frameworks` (18), `skill-authoring` (5), `evaluation` (7), `memory` (3), `planning-review` (13), `discovery` (3), `prompting` (3)
 
 | Skill |
 |---|
@@ -578,6 +578,7 @@ Subcategorías: `orchestration` (14), `agent-frameworks` (18), `skill-authoring`
 | `jev-control-plane` |
 | `anyjev` |
 | `typesafe-computer-use` |
+| `jev-ultrafast` |
 
 ### 🧰 Ingeniería (24)
 
@@ -977,13 +978,14 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 ## 📁 Estructura
 
 ```text
-├── .agent-skills/          ← 368 carpetas de habilidades (SKILL.md + soporte)
+├── .agent-skills/          ← 369 carpetas de habilidades (SKILL.md + soporte)
 ├── assets/                 ← portada estática y diagramas del catálogo y del runtime
 ├── changelog/              ← fuentes mensuales localizadas
 ├── docs/                   ← colaboración y contacto de ScrapingAnt
 ├── install.sh              ← instalador en una línea
 ├── scripts/                ← helpers de validación de catálogo y enlaces
 ├── jev/                    ← fuente opcional del control-plane Jev
+
 ├── README.md               ← English (this file)
 ├── README.ko.md            ← 한국어
 ├── README.es-ES.md         ← Español (este archivo)
@@ -1072,6 +1074,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 | `fineenvs` | [adithya-s-k/FineEnvs @ 5e0b46e](https://github.com/adithya-s-k/FineEnvs/tree/5e0b46e96bfd20105976e50a06a3b79c9c62f076) | Apache-2.0 (code; PortSim data terms differ) |
 | `llmfit` | [AlexsJones/llmfit @ 4b9fdd9](https://github.com/AlexsJones/llmfit/tree/4b9fdd9c5d1da3aa38ee5f7de872a5555c029a3e) | MIT (upstream) |
 | `pg-jev` | [realZachi/pg-jev @ e3450d4](https://github.com/realZachi/pg-jev/tree/e3450d44f7f6745aa2d728c9289b9ca4a6feda9a) | PostgreSQL License (upstream) |
+| `jev-ultrafast` | [browser-use/jev-ultrafast @ 1231850](https://github.com/browser-use/jev-ultrafast/tree/1231850a0bf1a0c0341fe408ef1668dbbfdfac46) | MIT (upstream) |
 | Especificación de Habilidades de Agente | [agentskills.io](https://agentskills.io/specification) | — |
 
 ---

@@ -94,7 +94,7 @@ Then read this file fully before doing anything else in this session.
   No public guide/README patch or push was made by this audit; deployment/model
   execution and fresh Linux/Windows setup are not claimed.
 
-- The catalog manifest (`.agent-skills/skills.json`, 368 skills) and its three
+- The catalog manifest (`.agent-skills/skills.json`, 369 skills) and its three
   projections (`.agent-skills/skills.toon`, `README.md`/`README.ko.md`/`README.es-ES.md`
   category tables, each skill's own SKILL.md frontmatter) are validated end-to-end by
   `scripts/validate-catalog-projections.py`, wired into `.github/workflows/ci.yml`
@@ -113,21 +113,24 @@ Then read this file fully before doing anything else in this session.
   repo checkout; delegates real installs to `npx skills add`
 - The flat `.agent-skills/<name>/SKILL.md` layout is enforced by
   `flatten_skills.py --dry-run` in CI (no category subfolders)
-- Repository operators (2026-10-12): eleven source-pinned guides for Openrig, AnyJev,
-  TypeSafe computer use, Zurp, Helix Foundry, Uzu, Context Mode, REA, FineEnvs,
-  llmfit and pg-jev, now standardized as v1.1.0 packages with router-first SKILL.md,
+- Repository operators (updated 2026-10-15): twelve source-pinned guides for Openrig,
+  AnyJev, TypeSafe computer use, Zurp, Helix Foundry, Uzu, Context Mode, REA, FineEnvs,
+  llmfit, pg-jev, and Jev Ultrafast. The v1.1.0 packages use router-first SKILL.md,
   independent pinned `references/upstream.md`, standalone executable stdlib
-  `scripts/preflight.py`, and 55 authored behavioral eval scenarios. New helper
-  regressions pass across all eleven, including missing prerequisites, literal paths,
-  source pins, copied-package portability, and hostile Git environment/trace guards.
-  Git inspection binds the resolved source root and disables inherited selectors,
-  prompts, global/system configuration and network protocols. CI runs the new suite
-  on its Ubuntu/macOS installer matrix. Offline status is not runtime activation,
-  model quality, provider authorization or desktop/database execution proof.
-  README locales/setup distinguish support-file copying from separately approved
-  upstream operations. Context Mode is not an OS/security sandbox; npm postinstall
-  can rewrite Claude configuration. FilmCraft and unrelated catalog entries are
-  inherited unchanged; this support upgrade adds no skill to the 367-skill baseline.
+  `scripts/preflight.py`, and 60 authored behavioral eval scenarios. The Jev Ultrafast
+  operator is pinned to `browser-use/jev-ultrafast` commit
+  `1231850a0bf1a0c0341fe408ef1668dbbfdfac46`; its preflight distinguishes local source
+  and dependency metadata from browser, provider, and task readiness. The repository
+  preflight suite covers all twelve helpers, including missing prerequisites, literal
+  paths, source pins, copied-package portability, hostile Git environment/trace guards,
+  and Jev Ultrafast symlink rejection. Git inspection binds the resolved source root
+  and disables inherited selectors, prompts, global/system configuration and network
+  protocols. CI runs the suite on its Ubuntu/macOS installer matrix. Offline status is
+  not runtime activation, model quality, provider authorization or desktop/database
+  execution proof. README locales/setup distinguish support-file copying from separately
+  approved upstream operations. Context Mode is not an OS/security sandbox; npm
+  postinstall can rewrite Claude configuration. Other catalog entries are inherited
+  unchanged.
 - OKF Agent Memory (2026-10-15): added a commit-pinned operator for the separate
   OKF v0.2 Go CLI/MCP project-memory tool, with a standalone read-only preflight,
   source-pinned setup/security references, routing evals, and explicit approval

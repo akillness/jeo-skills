@@ -34,6 +34,7 @@ SKILLS = (
     "llmfit",
     "pg-jev",
     "okf-agent-memory",
+    "jev-ultrafast",
 )
 
 # Public source markers used by the twelve helpers.  The superset lets each
@@ -72,6 +73,11 @@ PUBLIC_MARKERS = (
     "scripts/upgrade.sh", "scripts/setup.sh",
     "go.mod", "docs/guides/GETTING_STARTED.md", "docs/guides/CLI.md",
     "docs/security/SECURITY.md", ".agents/skills/okf-memory/SKILL.md",
+    ".env.example", "jev_ultrafast/__init__.py", "jev_ultrafast/agent.py",
+    "jev_ultrafast/browser.py", "jev_ultrafast/model.py",
+    "jev_ultrafast/demo.py", "jev_ultrafast/snapshot.js",
+    "examples/run.py", "examples/flights.py", "scripts/check_guards.py",
+    "tests/test_agent.py",
 )
 
 # Names are deliberately broad: a correct helper may inspect their presence,
@@ -83,6 +89,7 @@ TRAPPED_TOOLS = (
     "ghidra", "ida", "jadx", "binwalk", "unblob", "uv", "mirai", "cargo",
     "rustc", "fineenvs", "llmfit", "pg_config", "make", "psql", "docker",
     "docker-compose", "bash", "openssl", "python", "python3",
+    "browser-harness", "google-chrome", "chromium", "chromium-browser", "chrome",
 )
 
 
@@ -308,6 +315,49 @@ class RepositoryPreflightRegressions(unittest.TestCase):
         invalid_report = self.report(invalid)
         self.assertEqual(invalid.returncode, 2)
         self.assertEqual(invalid_report["status"], "error")
+
+    def test_jev_ultrafast_rejects_symlinked_public_source_paths(self):
+        repo = self.make_git_fixture("symlinked Jev Ultrafast source")
+        outside = self.work / "outside-agent.py"
+        outside.write_text("private fixture content\n")
+        marker = repo / "jev_ultrafast" / "agent.py"
+        marker.unlink()
+        marker.symlink_to(outside)
+
+        result = self.invoke(
+            "jev-ultrafast", "--json", "--repo", str(repo), with_tools=True
+        )
+        report = self.report(result)
+        self.assertEqual(result.returncode, 1, report)
+        self.assertEqual(report["status"], "blocked", report)
+        self.assertTrue(
+            any(
+                check.get("name") == "repo.file:jev_ultrafast/agent.py"
+                and check.get("status") == "mismatch"
+                and "symlink" in str(check.get("detail", ""))
+                for check in report["checks"]
+            ),
+            report,
+        )
+        self.assertEqual(outside.read_text(), "private fixture content\n")
+
+        alias_parent = self.work / "symlinked-parent"
+        alias_parent.symlink_to(self.work, target_is_directory=True)
+        alias = alias_parent / repo.name
+        alias_result = self.invoke(
+            "jev-ultrafast", "--json", "--repo", str(alias), with_tools=True
+        )
+        alias_report = self.report(alias_result)
+        self.assertEqual(alias_result.returncode, 1, alias_report)
+        self.assertTrue(
+            any(
+                check.get("name") == "repo"
+                and check.get("status") == "mismatch"
+                and "symlink" in str(check.get("detail", ""))
+                for check in alias_report["checks"]
+            ),
+            alias_report,
+        )
 
     def test_wrong_expected_pin_blocks_and_does_not_execute_upstream(self):
         repo = self.make_git_fixture("mismatch source")

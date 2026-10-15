@@ -2,14 +2,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-368-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-369-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![GJC](https://img.shields.io/badge/GJC-gajae--code-181717?style=for-the-badge&logo=github)](https://github.com/akillness/gajae-code)
 [![jeo-code](https://img.shields.io/badge/jeo--code-jeo-181717?style=for-the-badge&logo=github)](https://github.com/akillness/jeo-code)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**368 categorized skills · lightweight selective install · compact TOON catalog · cross-platform**
+**369 categorized skills · lightweight selective install · compact TOON catalog · cross-platform**
 
 A curated collection for spec-first, multi-agent LLM workflows. Delegate a complete setup
 with one prompt, or install the `jeo-skill` router first and add only the web,
@@ -175,7 +175,7 @@ Jev remains optional in all catalog modes: default setup does not download Jev m
 
 ### Lightweight selective install (manual / CI)
 
-Install the **`jeo-skill` router first**, not all 368 skill folders. It provides category,
+Install the **`jeo-skill` router first**, not all 369 skill folders. It provides category,
 subcategory, interface, bundle, and relationship discovery while keeping heavy apps,
 models, MCP servers, and runtimes on demand.
 
@@ -282,9 +282,9 @@ or a new destructive action is unclear. For programmable/template video generati
 
 ### On-demand repository operators
 
-Eleven source-pinned operator skills cover `openrig`, `anyjev`,
+Twelve source-pinned operator skills cover `openrig`, `anyjev`,
 `typesafe-computer-use`, `zurp`, `helix-foundry`, `uzu`, `context-mode`, `rea`,
-`fineenvs`, `llmfit`, and `pg-jev`. Each v1.1.0 package ships a router-first
+`fineenvs`, `llmfit`, `pg-jev`, and `jev-ultrafast`. Each v1.1.0 package ships a router-first
 `SKILL.md`, a pinned reference, an executable stdlib offline preflight and evals;
 applications, models, credentials, MCP/hook registration, desktop authority and
 database writes remain separately approved operations. See the
@@ -296,7 +296,7 @@ From this repository, inspect a selected package without activating its upstream
 python3 .agent-skills/openrig/scripts/preflight.py --json
 ```
 
-All eleven helpers support `--help`, `--json`, optional `--repo` and `--expect-commit`.
+All twelve helpers support `--help`, `--json`, optional `--repo` and `--expect-commit`.
 They remain standalone after installation and report `runtime_verified: false`.
 Exit 0 means offline checks pass, 1 reports missing/mismatched prerequisites, and 2
 rejects invalid input. A tool path or matching source HEAD is not runtime readiness.
@@ -304,7 +304,7 @@ rejects invalid input. A tool path or matching source HEAD is not runtime readin
 
 ## 📚 Skills List
 
-> Central manifest: `.agent-skills/skills.json` · 368 skills · 10 primary categories · subcategory/interface/relationship metadata
+> Central manifest: `.agent-skills/skills.json` · 369 skills · 10 primary categories · subcategory/interface/relationship metadata
 
 ### 🌐 Web (52)
 
@@ -508,9 +508,9 @@ Subcategories: `developer-cli` (10), `ai-cli` (15), `media-cli` (1), `automation
 | `rea` |
 | `llmfit` |
 
-### 🤖 AI & Agents (66)
+### 🤖 AI & Agents (67)
 
-Subcategories: `orchestration` (14), `agent-frameworks` (18), `skill-authoring` (5), `evaluation` (7), `memory` (3), `planning-review` (13), `discovery` (3), `prompting` (3)
+Subcategories: `orchestration` (15), `agent-frameworks` (18), `skill-authoring` (5), `evaluation` (7), `memory` (3), `planning-review` (13), `discovery` (3), `prompting` (3)
 
 | Skill |
 |---|
@@ -580,6 +580,7 @@ Subcategories: `orchestration` (14), `agent-frameworks` (18), `skill-authoring` 
 | `jev-control-plane` |
 | `anyjev` |
 | `typesafe-computer-use` |
+| `jev-ultrafast` |
 
 ### 🧰 Engineering (24)
 
@@ -982,7 +983,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 ## 📁 Structure
 
 ```text
-├── .agent-skills/          ← 368 skill folders (SKILL.md + optional support files)
+├── .agent-skills/          ← 369 skill folders (SKILL.md + optional support files)
 ├── assets/                ← README hero and catalog/runtime diagrams
 ├── changelog/             ← localized monthly source files
 ├── docs/                  ← ScrapingAnt partnership and outreach notes
@@ -993,6 +994,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 ├── README.ko.md           ← 한국어
 ├── README.es-ES.md        ← Español
 └── CHANGELOG.md           ← release history
+
 ---
 
 ## 📖 Related Docs
@@ -1082,6 +1084,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 | `fineenvs` | [adithya-s-k/FineEnvs @ 5e0b46e](https://github.com/adithya-s-k/FineEnvs/tree/5e0b46e96bfd20105976e50a06a3b79c9c62f076) | Apache-2.0 (code; PortSim data terms differ) |
 | `llmfit` | [AlexsJones/llmfit @ 4b9fdd9](https://github.com/AlexsJones/llmfit/tree/4b9fdd9c5d1da3aa38ee5f7de872a5555c029a3e) | MIT (upstream) |
 | `pg-jev` | [realZachi/pg-jev @ e3450d4](https://github.com/realZachi/pg-jev/tree/e3450d44f7f6745aa2d728c9289b9ca4a6feda9a) | PostgreSQL License (upstream) |
+| `jev-ultrafast` | [browser-use/jev-ultrafast @ 1231850](https://github.com/browser-use/jev-ultrafast/tree/1231850a0bf1a0c0341fe408ef1668dbbfdfac46) | MIT (upstream) |
 | Agent Skills Spec | [agentskills.io](https://agentskills.io/specification) | — |
 
 ---

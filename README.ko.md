@@ -2,14 +2,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-368-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-369-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![GJC](https://img.shields.io/badge/GJC-gajae--code-181717?style=for-the-badge&logo=github)](https://github.com/akillness/gajae-code)
 [![jeo-code](https://img.shields.io/badge/jeo--code-jeo-181717?style=for-the-badge&logo=github)](https://github.com/akillness/jeo-code)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**카테고리형 스킬 368개 · 경량 선택 설치 · 압축 TOON 카탈로그 · 멀티플랫폼**
+**카테고리형 스킬 369개 · 경량 선택 설치 · 압축 TOON 카탈로그 · 멀티플랫폼**
 
 스펙 우선 멀티 에이전트 LLM 워크플로우 컬렉션입니다. 프롬프트 하나로 전체 설정을
 위임하거나, `jeo-skill` 라우터부터 설치해 필요한 웹, 인프라, 게임, 미디어, CLI,
@@ -272,8 +272,8 @@ FilmCraft 빌드, MCP 등록, 앱 시작, 폰트 다운로드, 미디어 가져�
 ### 온디맨드 레포 운영 스킬
 
 `openrig`, `anyjev`, `typesafe-computer-use`, `zurp`, `helix-foundry`, `uzu`,
-`context-mode`, `rea`, `fineenvs`, `llmfit`, `pg-jev`의 원문 커밋을 고정한
-운영 스킬 11개를 제공합니다. 각 v1.1.0 패키지는 표준 `SKILL.md`, 커밋 고정
+`context-mode`, `rea`, `fineenvs`, `llmfit`, `pg-jev`, `jev-ultrafast`의 원문
+커밋을 고정한 운영 스킬 12개를 제공합니다. 각 v1.1.0 패키지는 표준 `SKILL.md`, 커밋 고정
 레퍼런스, 실행 가능한 표준 라이브러리 기반 오프라인 점검 스크립트와 평가 사례를 포함합니다. 앱·모델·키,
 MCP/훅 등록, 데스크톱 제어, 데이터베이스 쓰기는 각각 별도 승인이 필요합니다.
 [setup 가이드](setup-all-skills-prompt.md#repository-operators-on-demand-offline-support)를 참고하세요.
@@ -284,7 +284,7 @@ MCP/훅 등록, 데스크톱 제어, 데이터베이스 쓰기는 각각 별도 
 python3 .agent-skills/openrig/scripts/preflight.py --json
 ```
 
-11개 스크립트 모두 `--help`, `--json`, 선택적 `--repo`와 `--expect-commit`을 지원하며,
+12개 스크립트 모두 `--help`, `--json`, 선택적 `--repo`와 `--expect-commit`을 지원하며,
 스킬 설치 후에도 다른 스킬 없이 독립 실행됩니다. 결과는 항상 `runtime_verified: false`입니다.
 종료 코드 0은 오프라인 점검 통과, 1은 누락·불일치, 2는 잘못된 입력을 뜻합니다.
 도구 경로나 소스 HEAD 일치는 실제 런타임 작동 증명이 아닙니다.
@@ -292,7 +292,7 @@ python3 .agent-skills/openrig/scripts/preflight.py --json
 
 ## 📚 스킬 목록
 
-> 중앙 매니페스트: `.agent-skills/skills.json` · 368개 스킬 · 10개 기본 카테고리 · 하위 카테고리/인터페이스/관계 그룹 지원
+> 중앙 매니페스트: `.agent-skills/skills.json` · 369개 스킬 · 10개 기본 카테고리 · 하위 카테고리/인터페이스/관계 그룹 지원
 
 ### 🌐 웹 (52개)
 
@@ -496,9 +496,9 @@ python3 .agent-skills/openrig/scripts/preflight.py --json
 | `rea` |
 | `llmfit` |
 
-### 🤖 AI 및 에이전트 (66개)
+### 🤖 AI 및 에이전트 (67개)
 
-하위 분류: `orchestration` (14), `agent-frameworks` (18), `skill-authoring` (5), `evaluation` (7), `memory` (3), `planning-review` (13), `discovery` (3), `prompting` (3)
+하위 분류: `orchestration` (15), `agent-frameworks` (18), `skill-authoring` (5), `evaluation` (7), `memory` (3), `planning-review` (13), `discovery` (3), `prompting` (3)
 
 | Skill |
 |---|
@@ -568,6 +568,7 @@ python3 .agent-skills/openrig/scripts/preflight.py --json
 | `jev-control-plane` |
 | `anyjev` |
 | `typesafe-computer-use` |
+| `jev-ultrafast` |
 
 ### 🧰 엔지니어링 (24개)
 
@@ -966,7 +967,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 ## 📁 구조
 
 ```text
-├── .agent-skills/          ← 368개 스킬 폴더 (SKILL.md + 선택적 지원 파일)
+├── .agent-skills/          ← 369개 스킬 폴더 (SKILL.md + 선택적 지원 파일)
 ├── assets/                ← README hero 및 카탈로그/런타임 다이어그램
 ├── changelog/             ← 월별 다국어 릴리스 소스 파일
 ├── docs/                  ← ScrapingAnt 파트너십·아웃리치 자료
@@ -977,6 +978,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 ├── README.ko.md           ← 한국어 (이 파일)
 ├── README.es-ES.md        ← Español
 └── CHANGELOG.md           ← 릴리스 기록
+
 ```
 
 ---
@@ -1065,6 +1067,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 | `fineenvs` | [adithya-s-k/FineEnvs @ 5e0b46e](https://github.com/adithya-s-k/FineEnvs/tree/5e0b46e96bfd20105976e50a06a3b79c9c62f076) | Apache-2.0 (code; PortSim data terms differ) |
 | `llmfit` | [AlexsJones/llmfit @ 4b9fdd9](https://github.com/AlexsJones/llmfit/tree/4b9fdd9c5d1da3aa38ee5f7de872a5555c029a3e) | MIT (upstream) |
 | `pg-jev` | [realZachi/pg-jev @ e3450d4](https://github.com/realZachi/pg-jev/tree/e3450d44f7f6745aa2d728c9289b9ca4a6feda9a) | PostgreSQL License (upstream) |
+| `jev-ultrafast` | [browser-use/jev-ultrafast @ 1231850](https://github.com/browser-use/jev-ultrafast/tree/1231850a0bf1a0c0341fe408ef1668dbbfdfac46) | MIT (upstream) |
 | Agent Skills Spec | [agentskills.io](https://agentskills.io/specification) | — |
 
 ---

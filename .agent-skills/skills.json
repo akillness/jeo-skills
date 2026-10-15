@@ -1,7 +1,7 @@
 {
   "version": "2.1.0",
   "generated": "2026-10-15",
-  "skill_count": 368,
+  "skill_count": 369,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -371,7 +371,8 @@
       "paperclip",
       "jev-control-plane",
       "anyjev",
-      "typesafe-computer-use"
+      "typesafe-computer-use",
+      "jev-ultrafast"
     ],
     "engineering": [
       "audit-reference-originality",
@@ -798,7 +799,8 @@
         "agent-manager",
         "paperclip",
         "jev-control-plane",
-        "typesafe-computer-use"
+        "typesafe-computer-use",
+        "jev-ultrafast"
       ],
       "agent-frameworks": [
         "microsoft-agent-framework",
@@ -1629,9 +1631,10 @@
         "jev-control-plane",
         "anyjev",
         "typesafe-computer-use",
+        "jev-ultrafast",
         "pg-jev"
       ],
-      "note": "Jev control-plane operates this catalog harness; AnyJev reads logprobs from self-hosted models, typesafe-computer-use runs the separate TypeSafe-driven clicker, and pg-jev adds server-side PostgreSQL decisions. These are distinct projects, not interchangeable calibrated backends; each owns its setup and data-disclosure approval."
+      "note": "Jev control-plane operates this catalog harness; AnyJev reads logprobs from self-hosted models, typesafe-computer-use runs the separate TypeSafe-driven clicker, Jev Ultrafast runs a TypeSafe-driven web agent through Browser Harness, and pg-jev adds server-side PostgreSQL decisions. These are distinct projects, not interchangeable calibrated backends; each owns its setup and data-disclosure approval."
     },
     "local-model-fit": {
       "mode": "layered",
@@ -13640,6 +13643,36 @@
       "keyword": "okf-agent-memory",
       "version": "1.0.0",
       "source": "https://github.com/okf-memory/okf-agent-memory"
+    },
+    {
+      "name": "jev-ultrafast",
+      "description": "Operate browser-use/jev-ultrafast, the MIT-licensed Python browser agent that combines TypeSafe Jev choices with Browser Harness. Use when inspecting or pinning its checkout, running offline tests and browser guards, launching the loopback inspector, or reviewing a library/demo run. Triggers on Jev Ultrafast, jev-ultrafast, `uv run jev`, or its browser-agent loop. Require separate approval for package downloads, provider calls or spend, page/DOM egress, live-site navigation or actions, and recording artifacts. Route generic browser automation to `browser-harness` or `playwriter`, and hosted Jev API work to `typesafe-ai`.",
+      "category": "ai-agents",
+      "subcategory": "orchestration",
+      "interface": "cli",
+      "path": "jev-ultrafast/SKILL.md",
+      "tags": [
+        "jev-ultrafast",
+        "browser-agent",
+        "browser-harness",
+        "typesafe-jev",
+        "python",
+        "local-preflight",
+        "cdp-browser"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex CLI",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read"
+      ],
+      "keyword": "jev-ultrafast",
+      "version": "1.1.0",
+      "source": "https://github.com/browser-use/jev-ultrafast"
     }
   ]
 }

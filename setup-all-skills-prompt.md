@@ -2309,7 +2309,7 @@ of the description on purpose.
 
 ### Repository operators (on demand, offline support)
 
-The eleven repository operator skills below are original instruction packages, not
+The twelve repository operator skills below are original instruction packages, not
 vendored applications. Each v1.1.0 package includes a router-first `SKILL.md`, a
 pinned `references/upstream.md`, an executable stdlib `scripts/preflight.py`, and
 behavioral eval scenarios. Catalog installation copies these files; it does not run
@@ -2332,13 +2332,14 @@ data disclosure, side effects and rollback before following that skill's setup b
 | [fineenvs](.agent-skills/fineenvs/SKILL.md) | Pin the environment and choose the framework first. The Wordle path is a small no-backend smoke; NeMo Gym has stricter Python/Ray constraints. HF Jobs/Hub, E2B/Daytona, paid Spaces, training and scorer/model/data downloads require separate approval. |
 | [llmfit](.agent-skills/llmfit/SKILL.md) | An intentionally installed llmfit binary can inspect hardware and estimate model fit. Profiles/overrides, storage, downloads and benchmark/share operations are distinct. Recommendations and throughput estimates are not measured inference or Uzu compatibility. |
 | [pg-jev](.agent-skills/pg-jev/SKILL.md) | PostgreSQL 14–17 CI coverage, matching PGXS/`pg_config`, `plpython3u` and privileged extension installation. Provider keys belong to the server process/configuration, not a client shell. Confirm row disclosure, endpoint and per-database writes before installs or inference SQL. |
+| [jev-ultrafast](.agent-skills/jev-ultrafast/SKILL.md) | Python 3.12+, `uv`, `browser-harness==0.1.13`, and `httpx[http2]>=0.28,<1`; `uv sync` installs dependencies. Its `data:` guard makes no model calls or external-site requests, but still starts Chrome and performs local browser input. TypeSafe receives goal and page state; `TYPE_TEXT` also sends field/page context to the configured text model. Approve package downloads, provider spend, page-data egress, live URLs/actions, and recordings separately. The Flights example searches and verifies but does not select or book. |
 
 Preview instruction/support-file selection without installing any upstream runtime:
 
 ```bash
 python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" install \
   openrig anyjev typesafe-computer-use zurp helix-foundry uzu \
-  context-mode rea fineenvs llmfit pg-jev --global --dry-run
+  context-mode rea fineenvs llmfit pg-jev jev-ultrafast --global --dry-run
 ```
 
 For a selected skill, use its offline helper before the separately approved setup:
@@ -2349,9 +2350,13 @@ python3 "$SKILLS_ROOT/openrig/scripts/preflight.py" --json
 python3 "$SKILLS_ROOT/openrig/scripts/preflight.py" --json \
   --repo "/path/to/openrig" \
   --expect-commit 3001cc436656c435e54425443e708e3e2d8c7d68
+python3 "$SKILLS_ROOT/jev-ultrafast/scripts/preflight.py" --help
+python3 "$SKILLS_ROOT/jev-ultrafast/scripts/preflight.py" --json \
+  --repo "/path/to/jev-ultrafast" \
+  --expect-commit 1231850a0bf1a0c0341fe408ef1668dbbfdfac46
 ```
 
-All eleven helpers support `--help`, `--json`, optional `--repo PATH`, and optional
+All twelve helpers support `--help`, `--json`, optional `--repo PATH`, and optional
 `--expect-commit FULL_SHA` (requires `--repo`). Zurp also accepts `--surface burp|mcp|all`
 so one selected surface does not require the other toolchain. Run the helper from
 the installed skill directory or use its absolute path; it needs no sibling skill.
