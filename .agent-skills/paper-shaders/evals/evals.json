@@ -1,0 +1,43 @@
+{
+  "skill_name": "paper-shaders",
+  "execution_status": "not-run",
+  "scope": "Authored behavioral fixtures; no agent, browser, package or upstream runtime evaluation was executed",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Use Paper Shaders MeshGradient behind our React heading. Give a source-only adoption brief; no installation or remote assets.",
+      "expected_behavior": [
+        "Select @paper-design/shaders-react and verify its exact version and React peer compatibility against the consuming manifest",
+        "Cite paper-design/shaders at 43cd68db79fa0b1759f72ffc941b3238e2a3954c and distinguish source pin from npm artifact verification",
+        "Specify nonzero container size, semantic HTML, CSS fallback, reduced-motion speed zero, and wrapper-owned disposal",
+        "Do not execute a package manager, upstream runtime, remote texture fetch, or browser service; label runtime checks not executed"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Our vanilla Paper ShaderMount keeps animating after a hidden tab or route change. Review the lifecycle before adding observers.",
+      "expected_behavior": [
+        "Inspect the consumer owner and version before changing lifecycle logic",
+        "Recognize existing document/viewport pause and use supported setSpeed/dispose controls rather than duplicate observers by default",
+        "Distinguish speed zero recurring-RAF cancellation from resize/uniform redraws",
+        "Require observable pause/resume and route-cycle evidence before claiming a leak fixed; do not infer full GPU reclamation"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Build an accessible responsive UI Layouts modal; we are not using Paper Shaders.",
+      "expected_behavior": [
+        "Route to UI Layouts or the existing accessible component owner",
+        "Do not install a shader package or treat modal layout as a ShaderMount integration"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Write a custom Three.js game shader and say it is guaranteed 60fps on every phone.",
+      "expected_behavior": [
+        "Route shader/game authoring to the appropriate owner rather than selecting Paper Shaders solely from the word shader",
+        "Reject the unsupported universal performance claim and require target-device measurement"
+      ]
+    }
+  ]
+}

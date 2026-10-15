@@ -4,14 +4,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-390-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-400-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![GJC](https://img.shields.io/badge/GJC-gajae--code-181717?style=for-the-badge&logo=github)](https://github.com/akillness/gajae-code)
 [![jeo-code](https://img.shields.io/badge/jeo--code-jeo-181717?style=for-the-badge&logo=github)](https://github.com/akillness/jeo-code)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**390 habilidades categorizadas · instalación selectiva ligera · catálogo TOON compacto · multiplataforma**
+**400 habilidades categorizadas · instalación selectiva ligera · catálogo TOON compacto · multiplataforma**
 
 Una colección curada para flujos de trabajo LLM multi-agente y centrados en especificaciones. Delega una configuración completa con un solo prompt, o instala primero el enrutador `jeo-skill` y añade solo las habilidades de web, infraestructura, juegos, medios, CLI o utilidades que necesites.
 
@@ -185,7 +185,15 @@ Jev sigue siendo opcional en todos los modos del catálogo: la configuración pr
 
 ### Instalación selectiva ligera (manual / CI)
 
-Instala primero el **enrutador `jeo-skill`**, no las 390 carpetas de habilidades. Proporciona descubrimiento de categoría, subcategoría, interfaz, paquete y relación, manteniendo aplicaciones pesadas, modelos, servidores MCP y tiempos de ejecución bajo demanda.
+Instala primero el **enrutador `jeo-skill`**, no las 400 carpetas de habilidades. Proporciona descubrimiento de categoría, subcategoría, interfaz, paquete y relación, manteniendo aplicaciones pesadas, modelos, servidores MCP y tiempos de ejecución bajo demanda.
+
+El paquete `ui-design-repositories` añade diez guías UI fijadas a fuentes, no
+componentes ni servicios upstream. La [auditoría de fuentes, licencias y duplicados](docs/ui-design-repositories.md)
+justifica cero eliminaciones y distingue Commons Clause de Canvas UI, los términos
+Effects de Hyperiux y la ausencia de licencia observada en Cursify. Previsualiza con
+`jeo-skill install --bundle ui-design-repositories --dry-run`. Instalaciones, llamadas
+remotas, escrituras de proyecto/CSS y publicación requieren aprobación separada;
+los escenarios son fixtures redactados, no evaluaciones ejecutadas de calidad UI.
 
 El paquete `knowledge-repositories` reúne 21 proyectos de ontologías, grafos de
 código, memoria y recuperación: 18 operadores nuevos fijados a commits y tres
@@ -310,11 +318,11 @@ y 2 entrada inválida. Una ruta de ejecutable o un HEAD coincidente no demuestra
 
 ## 📚 Lista de Habilidades
 
-> Manifiesto central: `.agent-skills/skills.json` · 390 habilidades · 10 categorías principales · metadatos de subcategoría/interfaz/relación
+> Manifiesto central: `.agent-skills/skills.json` · 400 habilidades · 10 categorías principales · metadatos de subcategoría/interfaz/relación
 
-### 🌐 Web (59)
+### 🌐 Web (69)
 
-Subcategorías: `frontend` (7), `backend` (3), `design` (12), `api` (2), `auth` (1), `data` (13), `testing` (4), `accessibility` (1), `performance` (1), `graphics` (10), `capture` (5)
+Subcategorías: `frontend` (12), `backend` (3), `design` (15), `api` (2), `auth` (1), `data` (13), `testing` (4), `accessibility` (1), `performance` (1), `graphics` (12), `capture` (5)
 
 | Skill |
 |---|
@@ -377,6 +385,16 @@ Subcategorías: `frontend` (7), `backend` (3), `design` (12), `api` (2), `auth` 
 | `pixeltable` |
 | `turbovec` |
 | `pixelrag` |
+| `superdesign` |
+| `better-design` |
+| `design-taste` |
+| `canvas-ui` |
+| `paper-shaders` |
+| `ui-layouts` |
+| `hyperiux` |
+| `motion-primitives` |
+| `cursify` |
+| `trickle-ui` |
 
 ### 🏗 Infraestructura (17)
 
@@ -1007,7 +1025,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 ## 📁 Estructura
 
 ```text
-├── .agent-skills/          ← 390 carpetas de habilidades (SKILL.md + soporte)
+├── .agent-skills/          ← 400 carpetas de habilidades (SKILL.md + soporte)
 ├── assets/                 ← portada estática y diagramas del catálogo y del runtime
 ├── changelog/              ← fuentes mensuales localizadas
 ├── docs/                   ← colaboración y contacto de ScrapingAnt
@@ -1055,6 +1073,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 
 | Component | Source | License |
 |-----------|--------|---------|
+| UI design operators (10; original guidance only) | [Pinned ten-source audit](docs/ui-design-repositories.md) | Mixed upstream terms; restricted/missing grants documented |
 | `ooo` | [Q00/ouroboros v0.29.0](https://github.com/Q00/ouroboros/tree/v0.29.0) | MIT |
 | `stitch-skills` | [google-labs-code/stitch-skills](https://github.com/google-labs-code/stitch-skills) | Apache-2.0 |
 | `compresso` | [codeforreal1/compressO](https://github.com/codeforreal1/compressO) | AGPL-3.0 |

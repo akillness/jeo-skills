@@ -129,3 +129,9 @@ actually fix a document.
 - Concurrent authors can temporarily make the live tree differ from the manifest.
   Preserve their files and metadata; validate the complete intended publication
   snapshot rather than deleting an unrelated folder or weakening coverage checks.
+
+- Ten UI-source operators use original prose and pinned references without runtime
+  helpers. `docs/ui-design-repositories.json` binds exact sources, licenses and
+  independent ownership; `python3 -B scripts/test_ui_design_skills.py -v` checks
+  standalone support, metadata, authored-eval status and inert ten-guide dry-run.
+  Restricted/missing grants stay explicit; default setup does not execute upstream.

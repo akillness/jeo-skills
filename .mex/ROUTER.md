@@ -29,6 +29,15 @@ Then read this file fully before doing anything else in this session.
 
 **Working:**
 
+- UI-design repositories (2026-10-16): added ten original exact-source operators and
+  the ui-design-repositories bundle (390 to 400 skills), with immutable source/license
+  references, a ten-source audit and 45 authored scenarios (not executed evaluations).
+  Six offline packaging/router regressions pass; CI runs them on Ubuntu/macOS.
+  No existing skill is superseded or retired; Canvas UI has restricted redistribution,
+  Hyperiux tooling/effects licenses differ, and Cursify has no observed license grant.
+  No upstream runtime was installed or executed. Exact-SHA publication evidence is
+  recorded outside the repo; source/packaging checks are not browser/runtime proof.
+
 - macOS preflight CI fixture repair (2026-10-16): the first post-Jev CI run
   passed catalog/Ubuntu and native Jev checks on both platforms, then exposed
   test-owned `/var` temp aliases rejected by strict source-path guards. Resolve
@@ -125,7 +134,7 @@ Then read this file fully before doing anything else in this session.
   No public guide/README patch or push was made by this audit; deployment/model
   execution and fresh Linux/Windows setup are not claimed.
 
-- The catalog manifest (`.agent-skills/skills.json`, 390 skills) and its three
+- The catalog manifest (`.agent-skills/skills.json`, 400 skills) and its three
   projections (`.agent-skills/skills.toon`, `README.md`/`README.ko.md`/`README.es-ES.md`
   category tables, each skill's own SKILL.md frontmatter) are validated end-to-end by
   `scripts/validate-catalog-projections.py`, wired into `.github/workflows/ci.yml`

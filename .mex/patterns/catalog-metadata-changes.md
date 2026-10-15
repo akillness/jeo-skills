@@ -278,3 +278,15 @@ Used 2026-09-19 for nine pairs (aliases, oh-my-gods wrappers, pm-skills template
 - [ ] Update `.mex/ROUTER.md` "Current Project State" if what's working/not built has changed
 - [ ] Update `.mex/context/catalog-pipeline.md` if a validation stage's behavior changed
 - [ ] If a new recurring catalog-editing gotcha was learned, add it here
+
+## Task: Add named UI-source operators without vendoring
+
+Use `docs/ui-design-repositories.md` and `.json` for the ten-source audit contract.
+Keep complete-license observations and exact source APIs in each package reference,
+not in duplicated runtime helpers. Source-specific triggers preserve generic UI owners;
+newer chores or shared vocabulary are not supersession evidence. Validate copied
+packages and an inert bundle with `python3 -B scripts/test_ui_design_skills.py -v`.
+
+The current manifest contains inherited noncanonical whitespace inside an unrelated
+tag array. A whole-file JSON round-trip changes it; use narrow structural insertions
+for touched properties and append new records without restyling old entries.

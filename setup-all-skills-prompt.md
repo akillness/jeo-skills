@@ -27,6 +27,32 @@ not prove Git HEAD, full revision integrity, dependency versions, or live readin
 Private-data ingestion, remote embeddings, cloud resources, database/index writes,
 and service or MCP activation each require their own approval.
 
+### UI-design repository guides (on demand)
+
+The `ui-design-repositories` bundle installs ten original operator guides and their
+pinned source/license references, not upstream components, CLIs, servers or MCP
+configuration. Preview with `jeo-skill install --bundle ui-design-repositories --dry-run`.
+See [the ten-source audit](docs/ui-design-repositories.md) before selecting a source.
+
+Select `superdesign`, `better-design` or `design-taste` for the named design workflow;
+`canvas-ui`, `paper-shaders`, `ui-layouts`, `hyperiux`, `motion-primitives`, `cursify`
+or `trickle-ui` for that exact effect/component source. Existing `design-system`,
+`design-taste-frontend`, `web-design`, `react-bits`, `responsive-design` and
+`optimize-web-animations` retain their separate jobs; this bundle does not replace them.
+
+Blanket setup must not run npm/npx/Bun installers, registry add commands, upstream
+skill installers, login flows, local servers or remote design/MCP calls from these
+guides. Read `SKILL.md` and `references/upstream.md` first; separately approve dependency
+installation, project/CSS writes, prompt or screenshot uploads, service activation
+and publishing. An upstream `--dry-run` is not necessarily offline.
+
+License gate: Canvas UI has Commons Clause restrictions; Hyperiux's MIT tooling
+license does not grant the separate restricted Effects rights; Cursify has no
+observed license grant. Do not copy or redistribute their components as part of
+catalog setup. The other sources also retain their pinned license and asset scopes.
+Authored `evals/evals.json` scenarios are fixtures, not executed design-quality tests;
+source inspection does not establish browser compatibility, accessibility or runtime readiness.
+
 Jev is a separate, home-scoped opt-in in every catalog mode, including `full`.
 Default catalog installation does not configure Jev, download Jev models, or install
 Jev rules/hooks. Ask for explicit approval of a backend and its side effects before

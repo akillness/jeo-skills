@@ -2,14 +2,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-390-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-400-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![GJC](https://img.shields.io/badge/GJC-gajae--code-181717?style=for-the-badge&logo=github)](https://github.com/akillness/gajae-code)
 [![jeo-code](https://img.shields.io/badge/jeo--code-jeo-181717?style=for-the-badge&logo=github)](https://github.com/akillness/jeo-code)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**390 categorized skills · lightweight selective install · compact TOON catalog · cross-platform**
+**400 categorized skills · lightweight selective install · compact TOON catalog · cross-platform**
 
 A curated collection for spec-first, multi-agent LLM workflows. Delegate a complete setup
 with one prompt, or install the `jeo-skill` router first and add only the web,
@@ -175,9 +175,17 @@ Jev remains optional in all catalog modes: default setup does not download Jev m
 
 ### Lightweight selective install (manual / CI)
 
-Install the **`jeo-skill` router first**, not all 390 skill folders. It provides category,
+Install the **`jeo-skill` router first**, not all 400 skill folders. It provides category,
 subcategory, interface, bundle, and relationship discovery while keeping heavy apps,
 models, MCP servers, and runtimes on demand.
+
+The `ui-design-repositories` bundle adds ten source-pinned UI operators, not upstream
+components or services. [Source/license and duplicate audit](docs/ui-design-repositories.md)
+records zero removals, Canvas UI Commons Clause restrictions, Hyperiux Effects terms,
+and the absent Cursify license grant. Preview with
+`jeo-skill install --bundle ui-design-repositories --dry-run`; installs, remote design
+calls, project/CSS writes and publishing require separate approval. Scenarios are
+authored fixtures, not executed UI-quality evaluations.
 
 The `knowledge-repositories` bundle covers 21 ontology, code-graph, memory, and
 retrieval projects: 18 new source-pinned operators plus three existing skills.
@@ -312,11 +320,11 @@ rejects invalid input. A tool path or matching source HEAD is not runtime readin
 
 ## 📚 Skills List
 
-> Central manifest: `.agent-skills/skills.json` · 390 skills · 10 primary categories · subcategory/interface/relationship metadata
+> Central manifest: `.agent-skills/skills.json` · 400 skills · 10 primary categories · subcategory/interface/relationship metadata
 
-### 🌐 Web (59)
+### 🌐 Web (69)
 
-Subcategories: `frontend` (7), `backend` (3), `design` (12), `api` (2), `auth` (1), `data` (13), `testing` (4), `accessibility` (1), `performance` (1), `graphics` (10), `capture` (5)
+Subcategories: `frontend` (12), `backend` (3), `design` (15), `api` (2), `auth` (1), `data` (13), `testing` (4), `accessibility` (1), `performance` (1), `graphics` (12), `capture` (5)
 
 | Skill |
 |---|
@@ -379,6 +387,16 @@ Subcategories: `frontend` (7), `backend` (3), `design` (12), `api` (2), `auth` (
 | `pixeltable` |
 | `turbovec` |
 | `pixelrag` |
+| `superdesign` |
+| `better-design` |
+| `design-taste` |
+| `canvas-ui` |
+| `paper-shaders` |
+| `ui-layouts` |
+| `hyperiux` |
+| `motion-primitives` |
+| `cursify` |
+| `trickle-ui` |
 
 ### 🏗 Infrastructure (17)
 
@@ -1012,7 +1030,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 ## 📁 Structure
 
 ```text
-├── .agent-skills/          ← 390 skill folders (SKILL.md + optional support files)
+├── .agent-skills/          ← 400 skill folders (SKILL.md + optional support files)
 ├── assets/                ← README hero and catalog/runtime diagrams
 ├── changelog/             ← localized monthly source files
 ├── docs/                  ← ScrapingAnt partnership and outreach notes
@@ -1058,6 +1076,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 
 | Component | Source | License |
 |-----------|--------|---------|
+| UI design operators (10; original guidance only) | [Pinned ten-source audit](docs/ui-design-repositories.md) | Mixed upstream terms; restricted/missing grants documented |
 | `ooo` | [Q00/ouroboros v0.29.0](https://github.com/Q00/ouroboros/tree/v0.29.0) | MIT |
 | `stitch-skills` | [google-labs-code/stitch-skills](https://github.com/google-labs-code/stitch-skills) | Apache-2.0 |
 | `compresso` | [codeforreal1/compressO](https://github.com/codeforreal1/compressO) | AGPL-3.0 |
@@ -1124,6 +1143,9 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 
 | Change | Details |
 |--------|---------|
+| **Ten source-pinned UI operators** | Added Superdesign, Better Design, Design Taste, Canvas UI, Paper Shaders, UI Layouts, Hyperiux, Motion Primitives, Cursify and Trickle UI Kit guides. Exact repository identities, commits, selected source coordinates, complete license observations and duplicate decisions live in `docs/ui-design-repositories.md` and independent skill references. |
+| **Selective setup and rights** | The `ui-design-repositories` bundle adds documents only (390 → 400 skills). Zero existing skills were removed: named-source tooling does not replace system governance, visual recipes or performance diagnosis. Canvas UI redistribution is restricted, Hyperiux Effects has separate terms, and Cursify has no observed license grant; no upstream component code is vendored. |
+| **Offline verification boundary** | Added six passing packaging/router regressions and Ubuntu/macOS CI wiring. Forty-five positive/negative scenarios are authored fixtures, not executed model-quality or browser evaluations. Upstream installs, servers, remote design calls, paid services and UI runtime execution were not performed. |
 | **OKF Agent Memory operator** | Added `okf-agent-memory` for the separate `okf-memory/okf-agent-memory` Go CLI and stdio MCP, pinned to upstream commit `ad7beb01b9d4294d8dd28c25494d274374985b69` (MIT). The guide covers project-local OKF v0.2 workflows, source-pinned commands, security, and approval gates. |
 | **Routing and catalog** | Registered the skill under `ai-agents/memory`, linked it with `okf` and related knowledge-vault skills, and clarified that `okf` remains the Google OKF v0.1 format authoring path. Refreshed manifest projections, all README locale counts, setup guidance, `AGENTS.md`, and `.mex/ROUTER.md`; catalog grows from 367 to 368. Added nine routing/safety evaluation scenarios across the new operator and the `okf` route-out. |
 | **Read-only preflight and regressions** | Added a standalone stdlib preflight bound to the pinned commit and fixed public source markers. It rejects symlinked paths and oversized markers, scopes Git environment variables, and runs no upstream executable. The shared repository-preflight regression suite passes 13/13, including malicious-path, pin, symlink, size, no-write, and credential-isolation cases. |

@@ -1,7 +1,7 @@
 {
   "version": "2.1.0",
   "generated": "2026-10-16",
-  "skill_count": 390,
+  "skill_count": 400,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -187,7 +187,17 @@
       "utopia",
       "pixeltable",
       "turbovec",
-      "pixelrag"
+      "pixelrag",
+      "superdesign",
+      "better-design",
+      "design-taste",
+      "canvas-ui",
+      "paper-shaders",
+      "ui-layouts",
+      "hyperiux",
+      "motion-primitives",
+      "cursify",
+      "trickle-ui"
     ],
     "infrastructure": [
       "deployment-automation",
@@ -548,7 +558,12 @@
         "state-management",
         "chatbot-template",
         "airship",
-        "higgsfield-websites"
+        "higgsfield-websites",
+        "ui-layouts",
+        "hyperiux",
+        "motion-primitives",
+        "cursify",
+        "trickle-ui"
       ],
       "backend": [
         "amrouter",
@@ -567,7 +582,10 @@
         "responsive-design",
         "stitch-skills",
         "web-design",
-        "design-taste-frontend"
+        "design-taste-frontend",
+        "superdesign",
+        "better-design",
+        "design-taste"
       ],
       "api": [
         "api-design",
@@ -613,7 +631,9 @@
         "threejs-materials",
         "threejs-postprocessing",
         "threejs-shaders",
-        "threejs-textures"
+        "threejs-textures",
+        "canvas-ui",
+        "paper-shaders"
       ],
       "capture": [
         "agentation",
@@ -1219,6 +1239,18 @@
       "turbovec",
       "cocoindex",
       "pixelrag"
+    ],
+    "ui-design-repositories": [
+      "superdesign",
+      "better-design",
+      "design-taste",
+      "canvas-ui",
+      "paper-shaders",
+      "ui-layouts",
+      "hyperiux",
+      "motion-primitives",
+      "cursify",
+      "trickle-ui"
     ]
   },
   "retired_skills": {
@@ -1759,6 +1791,28 @@
         "pixelrag"
       ],
       "note": "Complementary layers, not one database family: Pixeltable multimodal tables, LEANN vector retrieval, turbovec in-process vector indexing, CocoIndex incremental ETL, and PixelRAG screenshot-based retrieval. Approve private data, embeddings/provider costs, service activation and index/database writes separately."
+    },
+    "ui-design-repositories": {
+      "mode": "adjacent",
+      "members": [
+        "superdesign",
+        "better-design",
+        "design-taste",
+        "canvas-ui",
+        "paper-shaders",
+        "ui-layouts",
+        "hyperiux",
+        "motion-primitives",
+        "cursify",
+        "trickle-ui",
+        "web-design",
+        "design-taste-frontend",
+        "design-system",
+        "react-bits",
+        "responsive-design",
+        "optimize-web-animations"
+      ],
+      "note": "Ten independent source-specific UI operators; no existing default job is superseded. Complete source/license/history audit: docs/ui-design-repositories.md and each references/upstream.md. Pins: superdesigndev/superdesign-skill@f9f05cd988c247dce6c072eaf9ac6b162f2ffc4b; marvkr/better-design@e146625f3041ef8089a2013587435fc763dc3b15; madebymustafa/design-taste@c4a6bff0871eb4b15371b0e7d2751628b0ed4608; DavidHDev/canvas-ui@a04a99b235299ee79a123a16ccb2e6cf9da74b6b; paper-design/shaders@43cd68db79fa0b1759f72ffc941b3238e2a3954c; ui-layouts/uilayouts@88d827d7ec342917ca06f6894e5add65fabbe5d8; Hyperiux-Immersion-Labs/hyperiux-components@71f73983fa70e56b81de5bdcf6eb49d0a5fcf5ba; ibelick/motion-primitives@120f64f6ca60348e251f929e9c81f11ccbe45eda; ui-layouts/cursify@b3a173c33f12e74550389c9555f9ce85c30c46f6; akaieuan/trickle-UI-kit@41129071f15271046bdca5d2ca332231b59e8d4d. Restricted/absent grants are not permissive reuse rights; no upstream runtime is vendored or activated."
     }
   },
   "model_policies": {
@@ -14440,6 +14494,314 @@
       "keyword": "pixelrag",
       "version": "1.0.0",
       "source": "https://github.com/StarTrail-org/PixelRAG"
+    },
+    {
+      "name": "superdesign",
+      "description": "Operate Superdesign canvas UI drafts through its CLI: prepare approved source context, resume a saved target, reproduce an existing page, refine a selected direction, compare requested alternatives, or extend a confirmed flow. Use when the user names Superdesign, superdesign-skill, a Superdesign draft/canvas URL, or its create-design-draft and iterate-design-draft commands. Route general visual recipes to web-design and shared token/component governance to design-system; this is not the legacy Superdesign VS Code extension.",
+      "category": "web",
+      "subcategory": "design",
+      "interface": "service",
+      "path": "superdesign/SKILL.md",
+      "tags": [
+        "superdesign",
+        "ui-design",
+        "source-pinned"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Bash",
+        "Grep",
+        "Glob",
+        "WebFetch"
+      ],
+      "keyword": "superdesign",
+      "version": "1.0",
+      "source": "https://github.com/superdesigndev/superdesign-skill"
+    },
+    {
+      "name": "better-design",
+      "description": "Operate marvkr/better-design as a schema-checked design MCP and shadcn registry workflow: retrieve focused guidance, choose an approved system, inspect tokens and component payloads, and review a UI with explicit evidence. Use when the user names Better Design, better-design.com, its MCP tools, or a Better Design registry URL. Keep general design-token and primitive API governance in design-system and visual recipe selection in web-design.",
+      "category": "web",
+      "subcategory": "design",
+      "interface": "service",
+      "path": "better-design/SKILL.md",
+      "tags": [
+        "better-design",
+        "ui-design",
+        "source-pinned"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Bash",
+        "Grep",
+        "Glob",
+        "WebFetch"
+      ],
+      "keyword": "better-design",
+      "version": "1.0",
+      "source": "https://github.com/marvkr/better-design"
+    },
+    {
+      "name": "design-taste",
+      "description": "Operate madebymustafa/design-taste as a selective genre-and-craft reference for a brief-led marketing page or portfolio. Use when the user names Mustafa, madebymustafa/design-taste, its corporate-trust or editorial-minimal packs, or asks to choose among that repository's genre identities. Route ordinary anti-generic frontend work and Leonxlnx dial-based taste work to design-taste-frontend; route visual-effect recipe discovery to web-design.",
+      "category": "web",
+      "subcategory": "design",
+      "interface": "workflow",
+      "path": "design-taste/SKILL.md",
+      "tags": [
+        "design-taste",
+        "ui-design",
+        "source-pinned"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Grep",
+        "Glob",
+        "Bash",
+        "Write",
+        "Edit",
+        "WebFetch"
+      ],
+      "keyword": "design-taste",
+      "version": "1.0.0",
+      "source": "https://github.com/madebymustafa/design-taste"
+    },
+    {
+      "name": "canvas-ui",
+      "description": "Operate DavidHDev/canvas-ui for selecting and integrating its live-DOM canvas effects, checking framework/renderer packaging, HTML-in-Canvas fallback, lifecycle and license boundaries. Use when the user names Canvas UI, canvasui.dev, @canvas-ui registry items, or its Liquid/ParticleScroll effects. Route ordinary animated React components to react-bits and custom visual recipe discovery to web-design; this is not a general drawing-canvas toolkit.",
+      "category": "web",
+      "subcategory": "graphics",
+      "interface": "library",
+      "path": "canvas-ui/SKILL.md",
+      "tags": [
+        "canvas-ui",
+        "ui-design",
+        "source-pinned"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Grep",
+        "Glob",
+        "Bash",
+        "Write",
+        "Edit",
+        "WebFetch"
+      ],
+      "keyword": "canvas-ui",
+      "version": "1.0.0",
+      "source": "https://github.com/DavidHDev/canvas-ui"
+    },
+    {
+      "name": "paper-shaders",
+      "description": "Integrate and diagnose Paper Shaders from paper-design/shaders: choose vanilla or React packages, mount a named shader, tune uniforms and rendering bounds, freeze motion, and release its WebGL resources. Use when the request names Paper Shaders, @paper-design/shaders, @paper-design/shaders-react, or asks to adopt their MeshGradient or ShaderMount. Route generic shader authoring, Three.js scenes, and UI Layouts component adoption to their own owners.",
+      "category": "web",
+      "subcategory": "graphics",
+      "interface": "library",
+      "path": "paper-shaders/SKILL.md",
+      "tags": [
+        "paper-shaders",
+        "ui-design",
+        "source-pinned"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Bash",
+        "Grep",
+        "Glob",
+        "WebFetch"
+      ],
+      "keyword": "paper-shaders",
+      "version": "1.0.0",
+      "source": "https://github.com/paper-design/shaders"
+    },
+    {
+      "name": "ui-layouts",
+      "description": "Select and adapt UI Layouts components and blocks from ui-layouts/uilayouts: inspect registry payloads, reconcile imports and dependencies, preserve responsive behavior, and verify interaction semantics. Use when the request names UI Layouts, ui-layouts.com, its responsive modal, or a specific UI Layouts block. Route generic responsive strategy, shared primitive architecture, Paper Shaders runtime integration, and unrelated cursor libraries to their own owners.",
+      "category": "web",
+      "subcategory": "frontend",
+      "interface": "library",
+      "path": "ui-layouts/SKILL.md",
+      "tags": [
+        "ui-layouts",
+        "ui-design",
+        "source-pinned"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Bash",
+        "Grep",
+        "Glob",
+        "WebFetch"
+      ],
+      "keyword": "ui-layouts",
+      "version": "1.0.0",
+      "source": "https://github.com/ui-layouts/uilayouts"
+    },
+    {
+      "name": "hyperiux",
+      "description": "Inspect and integrate Hyperiux Vault effects from Hyperiux-Immersion-Labs/hyperiux-components. Use when the user names Hyperiux, the hyperiux CLI, hyperiux.json, or a Vault effect; choose public-source review, approved project integration, or lifecycle repair. Distinguish MIT tooling from restricted Effects licensing and review installer CSS changes before execution. Not a generic animation library selector or a Pro-access bypass.",
+      "category": "web",
+      "subcategory": "frontend",
+      "interface": "library",
+      "path": "hyperiux/SKILL.md",
+      "tags": [
+        "hyperiux",
+        "ui-design",
+        "source-pinned"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Grep",
+        "Glob",
+        "Bash",
+        "Write",
+        "Edit"
+      ],
+      "keyword": "hyperiux",
+      "version": "1.0.0",
+      "source": "https://github.com/Hyperiux-Immersion-Labs/hyperiux-components"
+    },
+    {
+      "name": "motion-primitives",
+      "description": "Inspect, integrate, and adapt ibelick/motion-primitives React components from their source and registry definitions. Use when the user names Motion Primitives, motion-primitives.com, TextEffect, InView, or its composable dialogs in that library's context; cover component selection, copied-source dependencies, accessibility, reduced motion, and lifecycle checks. Not a general Motion SDK tutorial or a replacement for profiling animation regressions in an existing page.",
+      "category": "web",
+      "subcategory": "frontend",
+      "interface": "library",
+      "path": "motion-primitives/SKILL.md",
+      "tags": [
+        "motion-primitives",
+        "ui-design",
+        "source-pinned"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Grep",
+        "Glob",
+        "Bash",
+        "Write",
+        "Edit"
+      ],
+      "keyword": "motion-primitives",
+      "version": "1.0.0",
+      "source": "https://github.com/ibelick/motion-primitives"
+    },
+    {
+      "name": "cursify",
+      "description": "Inspect ui-layouts/cursify cursor effects, assess reuse permission, and plan or review a scoped React cursor enhancement. Use when the user names Cursify, cursify.ui-layouts.com, a Cursify cursor follower, or its pointer/canvas lifecycle. Route generic visual recipes to web-design, React Bits components to react-bits, and measured animation leak audits to optimize-web-animations.",
+      "category": "web",
+      "subcategory": "frontend",
+      "interface": "library",
+      "path": "cursify/SKILL.md",
+      "tags": [
+        "cursify",
+        "ui-design",
+        "source-pinned"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Grep",
+        "Glob",
+        "Bash",
+        "Write",
+        "Edit",
+        "WebFetch"
+      ],
+      "keyword": "cursify",
+      "version": "1.0",
+      "source": "https://github.com/ui-layouts/cursify"
+    },
+    {
+      "name": "trickle-ui",
+      "description": "Inspect and integrate akaieuan/trickle-UI-kit text animations through its shadcn-style registry, or review TextRoot and Typewriter lifecycle behavior. Use when the user names Trickle UI Kit, tricklekit.dev, its registry JSON, CSS text reveals, or its Typewriter integration. Route unrelated React Bits components to react-bits and page-wide animation profiling to optimize-web-animations.",
+      "category": "web",
+      "subcategory": "frontend",
+      "interface": "library",
+      "path": "trickle-ui/SKILL.md",
+      "tags": [
+        "trickle-ui",
+        "ui-design",
+        "source-pinned"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Grep",
+        "Glob",
+        "Bash",
+        "Write",
+        "Edit",
+        "WebFetch"
+      ],
+      "keyword": "trickle-ui",
+      "version": "1.0",
+      "source": "https://github.com/akaieuan/trickle-UI-kit"
     }
   ]
 }

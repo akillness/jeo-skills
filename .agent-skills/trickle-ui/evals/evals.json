@@ -1,0 +1,49 @@
+{
+  "skill_name": "trickle-ui",
+  "execution_status": "not-run",
+  "execution": {
+    "status": "not_executed",
+    "reason": "Source-grounded scenarios only; no upstream installation/execution or model scenario evaluation authorized."
+  },
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Evaluate Trickle UI Kit Typewriter for our commercial Next.js hero without installing anything. Is it zero JavaScript and visually readable without JS?",
+      "expected_output": "Inspect Typewriter/TextRoot and registry metadata; separate marketing from actual client behavior.",
+      "expectations": [
+        "Resolves akaieuan/trickle-UI-kit and the inspected SHA; reports MIT notice retention and scoped CC0 demos.",
+        "Identifies state/timeouts and empty visual initial text with sr-only fallback rather than promising zero-JS visual readability.",
+        "Reports source-only evidence; executes no upstream runtime/install."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Plan Trickle WordCascade with reduced motion and accessible heading text. Do not change files yet.",
+      "expected_output": "Select the simple CSS primitive and deliver a component/CSS/semantic packet.",
+      "expectations": [
+        "Names animation token, keyframes, reduced-motion override and existing cn alias as integration inputs.",
+        "Preserves a coherent phrase and real heading semantics with ordinary keyboard/touch behavior.",
+        "Does not install the docs app or propose npm install trickle."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Our Trickle view-trigger Typewriter unmounts before its delay ends. Audit cleanup and the installed hook import.",
+      "expected_output": "Review the view timeout separately from observer teardown and verify consumer import rewriting.",
+      "expectations": [
+        "Recognizes TextRoot delayed view timeout is not cancelled by observer disconnect.",
+        "Distinguishes Typewriter per-step timer cleanup from TextRoot pending delay ownership.",
+        "Flags upstream import versus target path as verification need, not a proven CLI failure."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Integrate a named DavidHDev React Bits particle background, not text animation.",
+      "expected_output": "Route to react-bits rather than expanding Trickle scope.",
+      "expectations": [
+        "Does not choose Trickle solely because both libraries animate UI.",
+        "Does not claim a text registry replaces the React Bits catalog."
+      ]
+    }
+  ]
+}

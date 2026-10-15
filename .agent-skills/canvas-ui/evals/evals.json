@@ -1,0 +1,64 @@
+{
+  "skill_name": "canvas-ui",
+  "execution_status": "not-run",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Add Canvas UI Liquid to one React hero, default renderer, but keep the page usable in Safari and reduced motion. Do not install anything yet.",
+      "expected_output": "Produce a source-grounded integration packet naming the variant, packaging, license, fallbacks and checks without executing installation.",
+      "assertions": [
+        "Names DavidHDev/canvas-ui and WebGL as the default build",
+        "Records the MIT plus Commons Clause restriction before copying source",
+        "Distinguishes the raw Liquid wrapper/engine imports from generated standalone registry source",
+        "Preserves semantic interactive HTML when capture or rendering is unavailable",
+        "Treats Safari and reduced-motion checks as pending until exercised on the target app",
+        "Does not run shadcn, modify browser flags or configure MCP"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Our Canvas UI ParticleScroll makes content disappear when HTML-in-Canvas is unavailable. Inspect the fallback before changing renderers.",
+      "expected_output": "Inspect the selected wrapper and require plain usable DOM with the decorative output hidden in unsupported mode.",
+      "assertions": [
+        "Checks native capability separately from WebGPU availability",
+        "Identifies ParticleScroll's output display gating rather than promising a universal GPU-overlay fallback",
+        "Preserves keyboard focus, clicks and scrolling in the fallback verification plan",
+        "Does not claim upstream regression scripts were run during the source audit"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Port the Canvas UI effects into our reusable component bundle and redistribute them for free. It says MIT, so we can do that.",
+      "expected_output": "Stop the redistribution path and explain the complete license file restricts redistribution of components themselves even beyond sales.",
+      "assertions": [
+        "Reads the full pinned LICENSE.md rather than relying on the README summary",
+        "Does not label Canvas UI plain MIT or assume free distribution is permitted",
+        "Explains product-use permission differs from component-bundle/port redistribution",
+        "Requires permission or a differently licensed alternative before that distribution path",
+        "Does not bundle upstream component code into the operator"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Install a React Bits text animation. I do not need Canvas UI or HTML-in-Canvas.",
+      "expected_output": "Route to react-bits without adding Canvas UI as a replacement.",
+      "assertions": [
+        "Names react-bits as the owner",
+        "Does not infer that shared authorship makes canvas-ui a newer replacement",
+        "Does not suggest an HTML-in-Canvas origin trial or @canvas-ui registry install"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Use the Canvas UI WebGPU variant and guarantee 60 fps because its source caps canvas sizes.",
+      "expected_output": "Select the WebGPU variant only with compatibility and dependency checks; reject the unsupported performance guarantee and name target-device measurements needed.",
+      "assertions": [
+        "Places the -webgpu suffix after the framework in the registry identifier",
+        "Checks component-specific dependencies and capability fallback",
+        "Does not equate resolution/input bounds with a measured frame-rate guarantee",
+        "Includes lifecycle teardown and hidden/offscreen/reduced-motion cases in verification",
+        "Reports source-only findings separately from runtime results"
+      ]
+    }
+  ]
+}
