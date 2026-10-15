@@ -302,7 +302,7 @@ y 2 entrada inválida. Una ruta de ejecutable o un HEAD coincidente no demuestra
 
 ## 📚 Lista de Habilidades
 
-> Manifiesto central: `.agent-skills/skills.json` · 369 habilidades · 10 categorías principales · metadatos de subcategoría/interfaz/relación
+> Manifiesto central: `.agent-skills/skills.json` · 372 habilidades · 10 categorías principales · metadatos de subcategoría/interfaz/relación
 
 ### 🌐 Web (52)
 
@@ -419,9 +419,9 @@ Subcategorías: `client` (3), `web` (2), `server` (1), `design-ui` (7), `audio` 
 | `game-feel` |
 | `game-ui-ux` |
 
-### 🎬 Medios Creativos (33)
+### 🎬 Medios Creativos (36)
 
-Subcategorías: `image` (10), `video` (14), `motion` (1), `audio` (1), `presentation` (1), `diagram` (1), `design` (3), `capture` (0), `storytelling` (2)
+Subcategorías: `image` (10), `video` (17), `motion` (1), `audio` (1), `presentation` (1), `diagram` (1), `design` (3), `capture` (0), `storytelling` (2)
 
 | Skill |
 |---|
@@ -458,6 +458,9 @@ Subcategorías: `image` (10), `video` (14), `motion` (1), `audio` (1), `presenta
 | `higgsfield-video-explainer` |
 | `higgsfield-brandkit` |
 | `shopping-shorts` |
+| `video-use` |
+| `autoclip` |
+| `moneyprinter-turbo` |
 
 ### ⌨️ Herramientas CLI (40)
 

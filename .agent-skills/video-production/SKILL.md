@@ -9,8 +9,10 @@ description: >
   explicit Remotion requests (React video compositions, scenes, render workers) and
   of the retired `remotion-video-production` name. Triggers on: Remotion, Remotion
   render pipeline, React video composition, programmatic video, automated video
-  creation, video API, personalized video, batch-create shorts, render videos from
-  code, repurpose content into clips.
+  creation, video API, personalized video, render videos from code. Route
+  conversational raw video editing to `video-use`, long-form video clipping
+  and speaker-tracking to `autoclip`, and one-click topic-to-video generation
+  to `moneyprinter-turbo`.
 allowed-tools: Write Read WebSearch WebFetch Task
 compatibility: >
   Canonical programmable-video / automated-video skill for the repo and the single
@@ -41,6 +43,11 @@ Read [references/production-modes.md](references/production-modes.md), [referenc
 - The workflow needs a production plan that can span generation, asset prep, QA, and a publishing handoff
 
 ## When not to use this skill
+- Conversational raw footage editing with coding agents (cutting filler words, auto color grading, audio fades, animation overlays) → use [`video-use`](../video-use/SKILL.md)
+- Extracting highlights from long-form video into vertical 9:16 clips with speaker tracking & animated captions → use [`autoclip`](../autoclip/SKILL.md)
+- Generating short-form videos from scratch using a topic/keyword with stock media and TTS → use [`moneyprinter-turbo`](../moneyprinter-turbo/SKILL.md)
+- Cinematic product launch promo videos with Remotion 2.5D camera recipe cards → use [`video-shotcraft`](../video-shotcraft/SKILL.md)
+- Offline video compression, trimming, or format conversion without programmable code → use [`compresso`](../compresso/SKILL.md)
 - The job is purely a one-off manual edit in Premiere / After Effects / CapCut with no automation or repeatability goal
 - The task is only final creative polish, color, taste-based pacing, or bespoke motion-design critique
 - The user needs only transcript cleanup, clip selection, or direct publishing with no template/render layer

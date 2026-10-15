@@ -292,7 +292,7 @@ python3 .agent-skills/openrig/scripts/preflight.py --json
 
 ## 📚 스킬 목록
 
-> 중앙 매니페스트: `.agent-skills/skills.json` · 369개 스킬 · 10개 기본 카테고리 · 하위 카테고리/인터페이스/관계 그룹 지원
+> 중앙 매니페스트: `.agent-skills/skills.json` · 372개 스킬 · 10개 기본 카테고리 · 하위 카테고리/인터페이스/관계 그룹 지원
 
 ### 🌐 웹 (52개)
 
@@ -409,9 +409,9 @@ python3 .agent-skills/openrig/scripts/preflight.py --json
 | `game-feel` |
 | `game-ui-ux` |
 
-### 🎬 크리에이티브 미디어 (33개)
+### 🎬 크리에이티브 미디어 (36개)
 
-하위 분류: `image` (10), `video` (14), `motion` (1), `audio` (1), `presentation` (1), `diagram` (1), `design` (3), `capture` (0), `storytelling` (2)
+하위 분류: `image` (10), `video` (17), `motion` (1), `audio` (1), `presentation` (1), `diagram` (1), `design` (3), `capture` (0), `storytelling` (2)
 
 | Skill |
 |---|
@@ -448,6 +448,9 @@ python3 .agent-skills/openrig/scripts/preflight.py --json
 | `higgsfield-video-explainer` |
 | `higgsfield-brandkit` |
 | `shopping-shorts` |
+| `video-use` |
+| `autoclip` |
+| `moneyprinter-turbo` |
 
 ### ⌨️ CLI 도구 (40개)
 

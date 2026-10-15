@@ -304,7 +304,7 @@ rejects invalid input. A tool path or matching source HEAD is not runtime readin
 
 ## 📚 Skills List
 
-> Central manifest: `.agent-skills/skills.json` · 369 skills · 10 primary categories · subcategory/interface/relationship metadata
+> Central manifest: `.agent-skills/skills.json` · 372 skills · 10 primary categories · subcategory/interface/relationship metadata
 
 ### 🌐 Web (52)
 
@@ -421,9 +421,9 @@ Subcategories: `client` (3), `web` (2), `server` (1), `design-ui` (7), `audio` (
 | `game-feel` |
 | `game-ui-ux` |
 
-### 🎬 Creative Media (33)
+### 🎬 Creative Media (36)
 
-Subcategories: `image` (10), `video` (14), `motion` (1), `audio` (1), `presentation` (1), `diagram` (1), `design` (3), `capture` (0), `storytelling` (2)
+Subcategories: `image` (10), `video` (17), `motion` (1), `audio` (1), `presentation` (1), `diagram` (1), `design` (3), `capture` (0), `storytelling` (2)
 
 | Skill |
 |---|
@@ -460,6 +460,9 @@ Subcategories: `image` (10), `video` (14), `motion` (1), `audio` (1), `presentat
 | `higgsfield-video-explainer` |
 | `higgsfield-brandkit` |
 | `shopping-shorts` |
+| `video-use` |
+| `autoclip` |
+| `moneyprinter-turbo` |
 
 ### ⌨️ CLI Tools (40)
 

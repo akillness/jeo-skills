@@ -17,7 +17,7 @@ description: "상품 링크나 권리 확인된 제품 사진을 근거 중심�
 - 레퍼런스 쇼츠의 표현을 복제하지 않고 문제-증거-시연 구조만 연구할 때.
 - 이미 만든 쇼핑 쇼츠의 제품 정확성, AI 표시, 광고 고지, 기술 품질을 검수할 때.
 
-일반적인 자동 영상 제작은 `video-production`, 롱폼 영상에서 하이라이트를 자르는 일은 전용 clipping 스킬, 채널 성장 측정은 `youtube-growth-playbook-2026`가 우선한다.
+일반적인 프로그래머블 영상 제작은 `video-production`, 롱폼 영상에서 하이라이트를 자르는 일은 `autoclip`, 키워드·주제 기반 원클릭 숏폼 자동 생성은 `moneyprinter-turbo`, 대화형 원본 컷 편집은 `video-use`, 채널 성장 측정은 `youtube-growth-playbook-2026`가 우선한다.
 
 ## Instructions
 

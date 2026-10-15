@@ -1,7 +1,7 @@
 {
   "version": "2.1.0",
   "generated": "2026-10-15",
-  "skill_count": 369,
+  "skill_count": 372,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -261,7 +261,10 @@
       "higgsfield-youtube-thumbnail",
       "higgsfield-video-explainer",
       "higgsfield-brandkit",
-      "shopping-shorts"
+      "shopping-shorts",
+      "video-use",
+      "autoclip",
+      "moneyprinter-turbo"
     ],
     "cli-tools": [
       "soup",
@@ -705,7 +708,10 @@
         "openmontage",
         "open-generative-ai",
         "higgsfield-video-explainer",
-        "shopping-shorts"
+        "shopping-shorts",
+        "video-use",
+        "autoclip",
+        "moneyprinter-turbo"
       ],
       "motion": [
         "video-motion-previs"
@@ -1322,7 +1328,10 @@
         "video-shotcraft",
         "video-motion-previs",
         "video-to-superprompt",
-        "shopping-shorts"
+        "shopping-shorts",
+        "video-use",
+        "autoclip",
+        "moneyprinter-turbo"
       ],
       "note": "video-production is the canonical programmable-video entry point; the former remotion-video-production alias was merged into it on 2026-09-19."
     },
@@ -4484,7 +4493,7 @@
     },
     {
       "name": "video-production",
-      "description": "Plan and route programmable or automated video production across code-first, template-first, and hybrid content pipelines. Use when the user needs repeatable video generation, branded short-form content, personalized videos, social clip batches, captioned/localized variants, video APIs, or video creation from data and templates — even if they only say video production. Also the direct owner of explicit Remotion requests (React video compositions, scenes, render workers) and of the retired `remotion-video-production` name. Triggers on: Remotion, Remotion render pipeline, React video composition, programmatic video, automated video creation, video API, personalized video, batch-create shorts, render videos from code, repurpose content into clips.",
+      "description": "Plan and route programmable or automated video production across code-first, template-first, and hybrid content pipelines. Use when the user needs repeatable video generation, branded short-form content, personalized videos, social clip batches, captioned/localized variants, video APIs, or video creation from data and templates — even if they only say video production. Also the direct owner of explicit Remotion requests (React video compositions, scenes, render workers) and of the retired `remotion-video-production` name. Triggers on: Remotion, Remotion render pipeline, React video composition, programmatic video, automated video creation, video API, personalized video, render videos from code. Route conversational raw video editing to `video-use`, long-form video clipping and speaker-tracking to `autoclip`, and one-click topic-to-video generation to `moneyprinter-turbo`.",
       "category": "creative-media",
       "subcategory": "video",
       "interface": "library",
@@ -13673,6 +13682,126 @@
       "keyword": "jev-ultrafast",
       "version": "1.1.0",
       "source": "https://github.com/browser-use/jev-ultrafast"
+    },
+    {
+      "name": "video-use",
+      "description": "Drive browser-use/video-use, the open-source conversational video editor for Claude Code, Codex, and coding agents. Drop raw footage into a directory and edit by natural language chat: transcribe and build packed phrase-level transcripts (takes_packed.md), cut filler words and dead space, auto color grade segments, apply 30ms audio fades at cuts, burn custom styled subtitles last in the filter chain, spawn animation overlays (HyperFrames, Remotion, Manim, PIL) via parallel sub-agents, self-evaluate cut boundaries with timeline_view before presentation, and persist session memory in project.md. Use when the user asks to edit raw video footage with Claude Code, cut filler words, color grade, burn subtitles, generate video overlays, or run conversational video editing. Triggers on: video-use, video use, edit video with Claude, conversational video editor, cut filler words, auto color grade, timeline_view, takes_packed.md, edit/final.mp4.",
+      "category": "creative-media",
+      "subcategory": "video",
+      "interface": "workflow",
+      "path": "video-use/SKILL.md",
+      "tags": [
+        "video-use",
+        "video-editing",
+        "conversational-video",
+        "claude-code",
+        "ffmpeg",
+        "elevenlabs",
+        "transcript",
+        "subtitles",
+        "color-grading",
+        "overlays",
+        "remotion",
+        "hyperframes"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex",
+        "OpenCode",
+        "Terminal"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
+      ],
+      "keyword": "video-use",
+      "version": "1.0",
+      "source": "https://github.com/browser-use/video-use"
+    },
+    {
+      "name": "autoclip",
+      "description": "Operate artbyjazi/autoclip, the MIT-licensed local-first AI video clipper that turns long-form video into ranked, caption-burned, speaker-tracked 9:16 vertical clips. Run autoclip doctor to check ffmpeg-full (libass/libx264) and Python 3.11/3.12 dependencies, run autoclip clip <url|file> for end-to-end ingestion, Whisper transcription, LLM highlight detection (local Ollama or BYOK Anthropic/OpenAI/Gemini), MediaPipe face/speaker-tracked vertical reframing, animated caption styling (bold_pop, karaoke_fill, clean_lower, boxed), and multi-aspect export (9:16, 1:1, 16:9), or serve the local review web app (autoclip serve). Use when the user wants to convert long videos, podcasts, or webinars into vertical Shorts, Reels, or TikTok clips without uploading video to third-party servers. Triggers on: autoclip, auto clip, AI video clipper, podcast clipper, long to short video, vertical reframing, speaker tracking video, burn animated captions, youtube to shorts clipper.",
+      "category": "creative-media",
+      "subcategory": "video",
+      "interface": "cli",
+      "path": "autoclip/SKILL.md",
+      "tags": [
+        "autoclip",
+        "video-clipper",
+        "shorts",
+        "reels",
+        "tiktok",
+        "podcast-clips",
+        "local-first",
+        "whisper",
+        "mediapipe",
+        "speaker-tracking",
+        "captions",
+        "ffmpeg"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex",
+        "OpenCode",
+        "Terminal"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
+      ],
+      "keyword": "autoclip",
+      "version": "1.0",
+      "source": "https://github.com/artbyjazi/autoclip"
+    },
+    {
+      "name": "moneyprinter-turbo",
+      "description": "Operate harry0703/MoneyPrinterTurbo, the open-source one-click AI short video generation engine. Provide a video topic or keyword to automatically generate video scripts, match footage (local media, Pexels, Pixabay, or text-to-video via MiniMax H3, Seedance, Wan, MuAPI), synthesize speech (free Edge TTS, Azure, ElevenLabs, Gemini), generate and style subtitles, add background music, and render high-definition short videos (9:16, 16:9, 1:1) with optional multi-platform upload to TikTok, Instagram, and YouTube Shorts. Run via uv/CLI, WebUI, Docker, or agent automation. Use when the user asks to generate short videos from a topic, prompt, or keyword, batch-create AI video shorts, or automate faceless video channels. Triggers on: moneyprinter-turbo, MoneyPrinterTurbo, moneyprinter, topic to video, text to short video, ai short video generator, 一键短视频, edge-tts video, pexels video generator, batch shorts generation.",
+      "category": "creative-media",
+      "subcategory": "video",
+      "interface": "workflow",
+      "path": "moneyprinter-turbo/SKILL.md",
+      "tags": [
+        "moneyprinter-turbo",
+        "ai-video",
+        "short-video",
+        "text-to-video",
+        "faceless-video",
+        "edge-tts",
+        "pexels",
+        "subtitles",
+        "automated-shorts",
+        "tiktok",
+        "reels",
+        "youtube-shorts"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex",
+        "OpenCode",
+        "Terminal"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
+      ],
+      "keyword": "moneyprinter-turbo",
+      "version": "1.3",
+      "source": "https://github.com/harry0703/MoneyPrinterTurbo"
     }
   ]
 }
