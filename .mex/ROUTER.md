@@ -29,6 +29,14 @@ Then read this file fully before doing anything else in this session.
 
 **Working:**
 
+- macOS preflight CI fixture repair (2026-10-16): the first post-Jev CI run
+  passed catalog/Ubuntu and native Jev checks on both platforms, then exposed
+  test-owned `/var` temp aliases rejected by strict source-path guards. Resolve
+  only the owned TemporaryDirectory base in the regression fixture, not any
+  caller-provided repo path. Added a deterministic aliased-temp-base regression;
+  existing root/parent/leaf symlink rejection tests and production helpers remain
+  unchanged. The new regression failed before the fixture fix.
+
 - Jev host-model planning repair (2026-10-16): implemented the missing
   `--host-models` input rather than weakening the existing CI tests. Plans now
   intersect advice with a same-agent/profile observation no older than 60 seconds,

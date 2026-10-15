@@ -47,6 +47,11 @@ last_updated: 2026-10-16
    not a reason to skip its test. Check the pushed SHA in all three GitHub Actions
    jobs (catalog, Ubuntu installer, macOS installer); local passes are not remote
    evidence. No installed runtime resync, provider call or model launch is implied.
+6. A later macOS gate can expose test-owned temp aliases such as `/var`. Resolve
+   only the trusted `TemporaryDirectory` fixture base before constructing valid
+   control repos. Never resolve caller-supplied repo paths or weaken root/parent/
+   leaf symlink rejection to compensate. Keep a deterministic aliased-temp-base
+   regression so Linux/local runs exercise the same condition.
 
 README/runtime audits must compare source and installed harness bytes before
 assuming test results cover the active installation. A rounded Choice response
