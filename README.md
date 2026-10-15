@@ -2,14 +2,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-367-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-368-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![GJC](https://img.shields.io/badge/GJC-gajae--code-181717?style=for-the-badge&logo=github)](https://github.com/akillness/gajae-code)
 [![jeo-code](https://img.shields.io/badge/jeo--code-jeo-181717?style=for-the-badge&logo=github)](https://github.com/akillness/jeo-code)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**367 categorized skills · lightweight selective install · compact TOON catalog · cross-platform**
+**368 categorized skills · lightweight selective install · compact TOON catalog · cross-platform**
 
 A curated collection for spec-first, multi-agent LLM workflows. Delegate a complete setup
 with one prompt, or install the `jeo-skill` router first and add only the web,
@@ -183,7 +183,7 @@ Jev remains optional in all catalog modes: default setup does not download Jev m
 
 ### Lightweight selective install (manual / CI)
 
-Install the **`jeo-skill` router first**, not all 367 skill folders. It provides category,
+Install the **`jeo-skill` router first**, not all 368 skill folders. It provides category,
 subcategory, interface, bundle, and relationship discovery while keeping heavy apps,
 models, MCP servers, and runtimes on demand.
 
@@ -312,7 +312,7 @@ rejects invalid input. A tool path or matching source HEAD is not runtime readin
 
 ## 📚 Skills List
 
-> Central manifest: `.agent-skills/skills.json` · 367 skills · 10 primary categories · subcategory/interface/relationship metadata
+> Central manifest: `.agent-skills/skills.json` · 368 skills · 10 primary categories · subcategory/interface/relationship metadata
 
 ### 🌐 Web (52)
 
@@ -516,9 +516,9 @@ Subcategories: `developer-cli` (10), `ai-cli` (15), `media-cli` (1), `automation
 | `rea` |
 | `llmfit` |
 
-### 🤖 AI & Agents (65)
+### 🤖 AI & Agents (66)
 
-Subcategories: `orchestration` (14), `agent-frameworks` (18), `skill-authoring` (5), `evaluation` (7), `memory` (2), `planning-review` (13), `discovery` (3), `prompting` (3)
+Subcategories: `orchestration` (14), `agent-frameworks` (18), `skill-authoring` (5), `evaluation` (7), `memory` (3), `planning-review` (13), `discovery` (3), `prompting` (3)
 
 | Skill |
 |---|
@@ -581,6 +581,7 @@ Subcategories: `orchestration` (14), `agent-frameworks` (18), `skill-authoring` 
 | `agent-observability` |
 | `multi-agent-eval-harness` |
 | `agent-memory-architecture` |
+| `okf-agent-memory` |
 | `agent-workflow` |
 | `agent-principles` |
 | `paperclip` |
@@ -1008,7 +1009,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 ## 📁 Structure
 
 ```text
-├── .agent-skills/          ← 367 skill folders (SKILL.md + optional support files)
+├── .agent-skills/          ← 368 skill folders (SKILL.md + optional support files)
 ├── docs/                   ← detailed guides (bmad, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
@@ -1113,15 +1114,14 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 
 <!-- WHATS-NEW:START -->
 
-## 🆕 What's New in v2026-10-14
-
-<img src="assets/pipeline.png" alt="CI lanes: catalog test plus installer matrix (ubuntu/macos)" width="100%">
+## 🆕 What's New in v2026-10-15
 
 | Change | Details |
 |--------|---------|
-| **Jev runtime activation on Codex** | The `codex` profile is ON with `api` backend, assist skill injection and advisory PreToolUse review; both generated hook definitions are trusted and enabled in live Codex sessions, with real TypeSafe routing evidence (`react-best-practices` via served `jev-1.13.0`). Tier stays unvalidated: transport proof, not calibration or permission grants. |
-| **Timeout fixture sync** | The native SIGTERM/SIGKILL escalation test now follows child handler readiness instead of wall-clock deadlines; production timeout behavior is unchanged. |
-| **CI test-job setup trim** | The `test` job drops the unused Bun setup (all four steps are pure Python) and pins `pyyaml==6.0.3`; the stale `flatten_skills.py` next-step hint now points at the real `generate-catalog-projections.py --check`. Installer-suite waits (hung-node bound, unreachable-backend probes) are intentional contract behavior and unchanged. Diagram above generated via `gti` (Codex backend). |
+| **OKF Agent Memory operator** | Added `okf-agent-memory` for the separate `okf-memory/okf-agent-memory` Go CLI and stdio MCP, pinned to upstream commit `ad7beb01b9d4294d8dd28c25494d274374985b69` (MIT). The guide covers project-local OKF v0.2 workflows, source-pinned commands, security, and approval gates. |
+| **Routing and catalog** | Registered the skill under `ai-agents/memory`, linked it with `okf` and related knowledge-vault skills, and clarified that `okf` remains the Google OKF v0.1 format authoring path. Refreshed manifest projections, all README locale counts, setup guidance, `AGENTS.md`, and `.mex/ROUTER.md`; catalog grows from 367 to 368. Added nine routing/safety evaluation scenarios across the new operator and the `okf` route-out. |
+| **Read-only preflight and regressions** | Added a standalone stdlib preflight bound to the pinned commit and fixed public source markers. It rejects symlinked paths and oversized markers, scopes Git environment variables, and runs no upstream executable. The shared repository-preflight regression suite passes 13/13, including malicious-path, pin, symlink, size, no-write, and credential-isolation cases. |
+| **Known upstream drift and execution boundary** | The pinned `go.mod` requires Go 1.26.0, while the getting-started guide says 1.22+; the skill records the conflict. No upstream installation, build, bootstrap, MCP registration, or target-project write was performed. |
 
 ## 🆕 What's New in v2026-10-12
 
@@ -1177,13 +1177,6 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 |--------|---------|
 | **Stagehand browser-agent skill** | Added `stagehand` for the pinned `browserbase/stagehand` v4 SDK and `browse` CLI: local, Browserbase, and CDP browser selection; `act` / `observe` / `extract`; typed WebMCP; Search/Fetch; Playwright route-outs; a read-only preflight; evals; and pinned upstream evidence. |
 | **On-demand runtime boundary** | Updated the setup guide to keep SDK, CLI, Chromium, Browserbase MCP, credentials, and paid cloud services out of blanket installation. `agent-browser` was not present in the current tree or manifest, so no deletion was required. |
-
-## 🆕 What's New in v2026-09-19
-
-| Change | Details |
-|--------|---------|
-| **Nine duplicate skills merged (359 → 350)** | A full-catalog duplicate audit (explicit alias markers, TF-IDF over descriptions and bodies, trigger overlap, and a manual same-job pass) found nine pairs doing the same job. Each was merged, never just deleted: the canonical skill absorbed the duplicate's unique content and trigger phrases, the folder was removed, and the old name went into `skills.json` `retired_skills` so `jeo-skill install <old-name>` answers with the replacement. Pure aliases: `agent-development-principles` → `agent-principles`, `remotion-video-production` → `video-production` (which also got its three long-missing `references/` files restored from `108fbaa^` plus `remotion-route-outs.md`), `higgsfield-game-generation` → `higgsfield-websites` (drift auditor now at `references/game-alias/`). oh-my-gods wrappers folded into the official skills: `deepagents` → `deep-agents-core` (`references/quickstart-and-backends.md`), `langgraph-workflow` → `langgraph-fundamentals` (`references/production-patterns.md`), `mcp-server-design` → `mcp-builder` (`references/server-card-and-registry.md`). pm-skills templates folded into the routing-first canonicals: `retro` → `sprint-retrospective` (Sailboat prompt family, compact sprint summary), `release-notes` → `changelog-maintenance` (technical → user-facing rewrite table), `sprint-plan` → `task-planning` (`references/sprint-planning-recipe.md`). Every route-out in other skills that named a merged skill was repointed. |
-| **Three routing groups instead of merges** | Skills that overlap but are not the same job are now declared rather than duplicated: `llm-observability` (`agent-observability` platform-neutral layer → `langsmith` / `opik` operators → `monitoring-observability`), `bug-diagnosis` (`log-analysis` → `debugging` → `diagnosing-bugs`, and `debugging` now routes hard/flaky HITL hunts to `diagnosing-bugs`), `product-analytics` (`data-analysis` → `ab-test-analysis` / `cohort-analysis` → `looker-studio-bigquery`). Upstream sibling splits inside vendored families (pm-skills, mattpocock, langchain-skills) and provider choices (`aura-asset-images` / `unsplash-asset-images`) were deliberately left alone. |
 
 > 📜 Older entries: [`changelog/en/`](changelog/en/) (monthly files, newest first).
 

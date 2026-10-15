@@ -4,14 +4,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-367-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-368-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![GJC](https://img.shields.io/badge/GJC-gajae--code-181717?style=for-the-badge&logo=github)](https://github.com/akillness/gajae-code)
 [![jeo-code](https://img.shields.io/badge/jeo--code-jeo-181717?style=for-the-badge&logo=github)](https://github.com/akillness/jeo-code)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**367 habilidades categorizadas · instalación selectiva ligera · catálogo TOON compacto · multiplataforma**
+**368 habilidades categorizadas · instalación selectiva ligera · catálogo TOON compacto · multiplataforma**
 
 Una colección curada para flujos de trabajo LLM multi-agente y centrados en especificaciones. Delega una configuración completa con un solo prompt, o instala primero el enrutador `jeo-skill` y añade solo las habilidades de web, infraestructura, juegos, medios, CLI o utilidades que necesites.
 
@@ -183,7 +183,7 @@ Jev sigue siendo opcional en todos los modos del catálogo: la configuración pr
 
 ### Instalación selectiva ligera (manual / CI)
 
-Instala primero el **enrutador `jeo-skill`**, no las 367 carpetas de habilidades. Proporciona descubrimiento de categoría, subcategoría, interfaz, paquete y relación, manteniendo aplicaciones pesadas, modelos, servidores MCP y tiempos de ejecución bajo demanda.
+Instala primero el **enrutador `jeo-skill`**, no las 368 carpetas de habilidades. Proporciona descubrimiento de categoría, subcategoría, interfaz, paquete y relación, manteniendo aplicaciones pesadas, modelos, servidores MCP y tiempos de ejecución bajo demanda.
 
 ```bash
 # One lightweight skill, shared globally
@@ -287,7 +287,7 @@ y 2 entrada inválida. Una ruta de ejecutable o un HEAD coincidente no demuestra
 
 ## 📚 Lista de Habilidades
 
-> Manifiesto central: `.agent-skills/skills.json` · 367 habilidades · 10 categorías principales · metadatos de subcategoría/interfaz/relación
+> Manifiesto central: `.agent-skills/skills.json` · 368 habilidades · 10 categorías principales · metadatos de subcategoría/interfaz/relación
 
 ### 🌐 Web (52)
 
@@ -491,9 +491,9 @@ Subcategorías: `developer-cli` (10), `ai-cli` (15), `media-cli` (1), `automatio
 | `rea` |
 | `llmfit` |
 
-### 🤖 IA y Agentes (65)
+### 🤖 IA y Agentes (66)
 
-Subcategorías: `orchestration` (14), `agent-frameworks` (18), `skill-authoring` (5), `evaluation` (7), `memory` (2), `planning-review` (13), `discovery` (3), `prompting` (3)
+Subcategorías: `orchestration` (14), `agent-frameworks` (18), `skill-authoring` (5), `evaluation` (7), `memory` (3), `planning-review` (13), `discovery` (3), `prompting` (3)
 
 | Skill |
 |---|
@@ -556,6 +556,7 @@ Subcategorías: `orchestration` (14), `agent-frameworks` (18), `skill-authoring`
 | `agent-observability` |
 | `multi-agent-eval-harness` |
 | `agent-memory-architecture` |
+| `okf-agent-memory` |
 | `agent-workflow` |
 | `agent-principles` |
 | `paperclip` |
@@ -984,7 +985,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 
 ```text
 .
-├── .agent-skills/          ← 367 skill folders (SKILL.md + optional support files)
+├── .agent-skills/          ← 368 skill folders (SKILL.md + optional support files)
 ├── docs/                   ← detailed guides (bmad, plannotator, ooo, ...)
 ├── install.sh
 ├── setup-all-skills-prompt.md
@@ -1092,6 +1093,13 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 | **Activación del runtime Jev en Codex** | El perfil `codex` está activado con backend `api`, inyección de skills assist y revisión PreToolUse advisory; ambas definiciones de hooks están verificadas como confiables en sesiones reales de Codex, con evidencia de enrutamiento TypeSafe en vivo (`react-best-practices` vía `jev-1.13.0`). El nivel sigue siendo unvalidated: prueba de transporte, no de calibración ni de permisos. |
 | **Sincronización del fixture de timeout** | La prueba de escalado SIGTERM/SIGKILL ahora sigue la preparación del handler hijo en lugar de plazos de reloj; el comportamiento de timeout en producción no cambia. |
 | **Recorte del setup del job test de CI** | El job `test` elimina la instalación Bun sin uso (los cuatro pasos son Python puro) y fija `pyyaml==6.0.3`; la pista obsoleta de `flatten_skills.py` ahora apunta al verdadero `generate-catalog-projections.py --check`. Las esperas de las suites installer son comportamiento contractual intencional y no cambian. Diagrama generado con `gti` (backend Codex). |
+
+## 🆕 Novedades en v2026-10-15
+
+| Cambio | Detalles |
+|--------|---------|
+| **Operador OKF Agent Memory** | Añadida `okf-agent-memory` para el CLI Go y el servidor MCP stdio de `okf-memory/okf-agent-memory`, fijada al commit upstream `ad7beb01b9d4294d8dd28c25494d274374985b69` (MIT). Separa la operación de memoria de proyecto OKF v0.2 de la autoría de átomos Google OKF v0.1 de `okf`. |
+| **Límites y verificación** | Añadida una preflight de solo lectura con rutas fuente fijadas, guardas de symlink/tamaño y aislamiento del entorno Git. Las regresiones compartidas pasan 13/13; el CLI upstream, bootstrap y MCP no se instalaron ni ejecutaron. El catálogo cambia de 367 a 368 habilidades. |
 
 ## Novedades en v2026-10-12
 

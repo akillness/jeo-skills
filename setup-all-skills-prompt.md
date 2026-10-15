@@ -19,6 +19,8 @@
 A full install installs the skill documents plus the explicitly listed shared tools below.
 It does **not** download every app, model weight, media runtime, SDK, or service mentioned
 inside all skills. Those remain on demand when a real task selects the corresponding skill.
+For example, installing `okf-agent-memory` adds only its operator guide; it does not install
+upstream `okf`, bootstrap a repository, or register the MCP server.
 
 Jev is a separate, home-scoped opt-in in every catalog mode, including `full`.
 Default catalog installation does not configure Jev, download Jev models, or install

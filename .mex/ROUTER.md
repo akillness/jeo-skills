@@ -16,7 +16,7 @@ edges:
     condition: when the task touches skills.json, SKILL.md frontmatter, README/TOON projections, or CI catalog validation
   - target: patterns/INDEX.md
     condition: when starting a task — check the pattern index for a matching pattern file
-last_updated: 2026-10-14
+last_updated: 2026-10-15
 ---
 
 # Session Bootstrap
@@ -74,7 +74,7 @@ Then read this file fully before doing anything else in this session.
   No public guide/README patch or push was made by this audit; deployment/model
   execution and fresh Linux/Windows setup are not claimed.
 
-- The catalog manifest (`.agent-skills/skills.json`, 367 skills) and its three
+- The catalog manifest (`.agent-skills/skills.json`, 368 skills) and its three
   projections (`.agent-skills/skills.toon`, `README.md`/`README.ko.md`/`README.es-ES.md`
   category tables, each skill's own SKILL.md frontmatter) are validated end-to-end by
   `scripts/validate-catalog-projections.py`, wired into `.github/workflows/ci.yml`
@@ -108,6 +108,12 @@ Then read this file fully before doing anything else in this session.
   upstream operations. Context Mode is not an OS/security sandbox; npm postinstall
   can rewrite Claude configuration. FilmCraft and unrelated catalog entries are
   inherited unchanged; this support upgrade adds no skill to the 367-skill baseline.
+- OKF Agent Memory (2026-10-15): added a commit-pinned operator for the separate
+  OKF v0.2 Go CLI/MCP project-memory tool, with a standalone read-only preflight,
+  source-pinned setup/security references, routing evals, and explicit approval
+  gates for install, bootstrap, writes, MCP registration and Git side effects.
+  The generic `okf` skill remains the Google OKF v0.1 atom authoring/validation path;
+  the source guide's Go 1.22+ claim conflicts with pinned `go.mod` Go 1.26.0.
 - The `headroom` skill packages durable context routing with Graphify preflight and
   Ponytail policy guidance. Full delegated setup reuses healthy Headroom deployments;
   its source-mutation adapter is explicitly Claude Code-only.

@@ -1,7 +1,7 @@
 {
   "version": "2.1.0",
-  "generated": "2026-10-12",
-  "skill_count": 367,
+  "generated": "2026-10-15",
+  "skill_count": 368,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -365,6 +365,7 @@
       "agent-observability",
       "multi-agent-eval-harness",
       "agent-memory-architecture",
+      "okf-agent-memory",
       "agent-workflow",
       "agent-principles",
       "paperclip",
@@ -837,7 +838,8 @@
       ],
       "memory": [
         "mex",
-        "agent-memory-architecture"
+        "agent-memory-architecture",
+        "okf-agent-memory"
       ],
       "planning-review": [
         "bmad-idea",
@@ -1345,8 +1347,11 @@
         "llm-wiki",
         "obsidian-mind",
         "obsidian-second-brain",
-        "lapian-notes"
-      ]
+        "lapian-notes",
+        "okf",
+        "okf-agent-memory"
+      ],
+      "note": "Related persistence and knowledge tools with separate contracts: okf authors Google OKF v0.1 atoms; okf-agent-memory operates a separate OKF v0.2 Go CLI/MCP project-memory runtime pinned at ad7beb01b9d4294d8dd28c25494d274374985b69 (upstream MIT); llm-wiki and Obsidian tools own source capture or vault workflows."
     },
     "bmad": {
       "mode": "family",
@@ -5489,7 +5494,7 @@
     },
     {
       "name": "okf",
-      "description": "Create, validate, and consume Google's Open Knowledge Format (OKF) bundles — YAML-frontmatter Markdown files with type / title / description / resource / tags / timestamp fields for portable, interoperable AI-agent knowledge sharing. OKF formalizes the LLM-Wiki pattern into a vendor-neutral open specification so any producer can write and any agent can consume without translation. Routes: use `llm-wiki` for raw source capture + vault maintenance, `obsidian` for Obsidian-vault workflows, `graphify` for durable committed graphs, `scrapling` for web-content extraction into OKF docs. Triggers on: okf, open knowledge format, knowledge bundle, okf document, llm wiki standard, knowledge atom, agent context format, okf frontmatter, okf bundle, knowledge interoperability.",
+      "description": "Create, validate, and consume Google Open Knowledge Format (OKF) v0.1 bundles — YAML-frontmatter Markdown knowledge atoms for portable, interoperable AI-agent sharing. Routes: use `okf-agent-memory` for the separate OKF v0.2 Go CLI/MCP project-memory runtime, `llm-wiki` for raw source capture and vault maintenance, `obsidian` for vault automation, `graphify` for durable committed graphs, and `scrapling` for web-content extraction. Triggers on: Google OKF v0.1, open knowledge format, knowledge bundle, OKF document, LLM wiki standard, knowledge atom, agent context format, OKF frontmatter, OKF bundle, knowledge interoperability.",
       "category": "cli-tools",
       "subcategory": "automation-cli",
       "interface": "cli",
@@ -5526,7 +5531,7 @@
         "WebFetch"
       ],
       "keyword": "okf",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "source": "akillness/jeo-skills"
     },
     {
@@ -13600,6 +13605,41 @@
       "keyword": "mi-orchestration",
       "version": "1.0",
       "source": "akillness/jeo-skills"
+    },
+    {
+      "name": "okf-agent-memory",
+      "description": "Operate okf-memory/okf-agent-memory, the commit-pinned Go CLI and stdio MCP for OKF v0.2 Git-native project memory. Use for `okf bootstrap/search/show/create/update/relate/validate` or MCP setup; route Google OKF v0.1 atoms to `okf` and architecture selection to `agent-memory-architecture`.",
+      "category": "ai-agents",
+      "subcategory": "memory",
+      "interface": "cli",
+      "path": "okf-agent-memory/SKILL.md",
+      "tags": [
+        "okf-memory",
+        "project-memory",
+        "persistent-memory",
+        "mcp",
+        "cli",
+        "knowledge-management",
+        "okf-v0.2"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex CLI",
+        "Gemini CLI",
+        "Cursor",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "okf-agent-memory",
+      "version": "1.0.0",
+      "source": "https://github.com/okf-memory/okf-agent-memory"
     }
   ]
 }

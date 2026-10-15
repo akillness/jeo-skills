@@ -1,29 +1,27 @@
 ---
 name: okf
 description: >
-  Create, validate, and consume Google's Open Knowledge Format (OKF) bundles —
-  YAML-frontmatter Markdown files with type / title / description / resource /
-  tags / timestamp fields for portable, interoperable AI-agent knowledge sharing.
-  OKF formalizes the LLM-Wiki pattern into a vendor-neutral open specification
-  so any producer can write and any agent can consume without translation.
-  Routes: use `llm-wiki` for raw source capture + vault maintenance,
-  `obsidian` for Obsidian-vault workflows, `graphify` for durable committed
-  graphs, `scrapling` for web-content extraction into OKF docs.
-  Triggers on: okf, open knowledge format, knowledge bundle, okf document,
-  llm wiki standard, knowledge atom, agent context format, okf frontmatter,
-  okf bundle, knowledge interoperability.
+  Create, validate, and consume Google Open Knowledge Format (OKF) v0.1 bundles —
+  YAML-frontmatter Markdown knowledge atoms for portable, interoperable AI-agent sharing.
+  Routes: use `okf-agent-memory` for the separate OKF v0.2 Go CLI/MCP project-memory
+  runtime, `llm-wiki` for raw source capture and vault maintenance, `obsidian` for
+  vault automation, `graphify` for durable committed graphs, and `scrapling` for
+  web-content extraction. Triggers on: Google OKF v0.1, open knowledge format,
+  knowledge bundle, OKF document, LLM wiki standard, knowledge atom, agent context
+  format, OKF frontmatter, OKF bundle, knowledge interoperability.
 allowed-tools: Read Write Edit Bash Grep Glob WebFetch
 compatibility: >
   Universal — pure Markdown + YAML, no runtime dependencies. Works in any agent
   that can read and write files (Claude Code, Codex, Gemini CLI, OpenCode,
   Cursor, Copilot). Plugin-installable via `npx skills add`. Routes raw source
   collection to `llm-wiki`, Obsidian vault automation to `obsidian`, durable
-  knowledge graphs to `graphify`, and web scraping into OKF docs to `scrapling`.
+  knowledge graphs to `graphify`, web scraping into OKF docs to `scrapling`, and
+  the separate OKF v0.2 Go CLI/MCP runtime to `okf-agent-memory`.
 metadata:
   tags: okf, open-knowledge-format, knowledge-bundle, llm-wiki, knowledge-graph, metadata, context-engineering, interoperability, yaml-frontmatter, google, agent-context
   platforms: Claude, Codex, Gemini, Cursor, Copilot, OpenCode, All
   keyword: okf
-  version: "1.0.0"
+  version: "1.0.1"
   upstream: https://github.com/google/open-knowledge-format
   source: akillness/jeo-skills
   license: MIT
@@ -60,6 +58,7 @@ special runtime, no lock-in.
 - Obsidian vault automation (plugin dev, CLI, URI handoff) → `obsidian`
 - Durable committed knowledge graphs from code/docs → `graphify`
 - Web scraping to feed knowledge documents → `scrapling`
+- Operating the separate `okf-memory/okf-agent-memory` Go CLI/MCP or bootstrapping its OKF v0.2 project-memory layout → `okf-agent-memory`
 
 ## OKF Structure
 

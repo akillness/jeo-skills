@@ -1,8 +1,10 @@
 # OKF — Field & Section Reference
 
-Companion reference for the `okf` skill. Covers the full OKF v0.1
+Companion reference for the `okf` skill. Covers the Google OKF v0.1
 frontmatter schema, Markdown body section conventions, link semantics,
-distribution options, and the Python consume helper.
+distribution options, and the Python consume helper. This is distinct from
+`okf-memory/okf-agent-memory`, an OKF v0.2 Go CLI/MCP project-memory runtime;
+use `okf-agent-memory` for that tool.
 
 Upstream spec: <https://github.com/google/open-knowledge-format>
 

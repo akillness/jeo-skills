@@ -1,0 +1,14 @@
+[
+  {
+    "id": "okf-v01-atom",
+    "prompt": "Create a plain Google OKF v0.1 atom with YAML frontmatter for this table schema.",
+    "expected_skill": "okf",
+    "expected_behavior": "Author a portable OKF v0.1 knowledge atom; do not introduce an unrelated runtime or project bootstrap."
+  },
+  {
+    "id": "okf-memory-runtime-route",
+    "prompt": "Use okf bootstrap to add project memory and its MCP server to my existing repository.",
+    "expected_skill": "okf-agent-memory",
+    "expected_behavior": "Route to the specific OKF v0.2 Go CLI/MCP operator and ask for approval before bootstrap or configuration changes."
+  }
+]

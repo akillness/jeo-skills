@@ -33,9 +33,10 @@ SKILLS = (
     "fineenvs",
     "llmfit",
     "pg-jev",
+    "okf-agent-memory",
 )
 
-# Public source markers used by the eleven helpers.  The superset lets each
+# Public source markers used by the twelve helpers.  The superset lets each
 # helper enforce its own source contract without the test inventing a fake
 # success condition for one particular implementation.
 PUBLIC_MARKERS = (
@@ -69,12 +70,14 @@ PUBLIC_MARKERS = (
     "docs/OPERATIONS.md", "docs/HOSTING.md", "apps/api/src/app.ts",
     "apps/api/src/store.ts", "scripts/backup.sh", "scripts/restore.sh",
     "scripts/upgrade.sh", "scripts/setup.sh",
+    "go.mod", "docs/guides/GETTING_STARTED.md", "docs/guides/CLI.md",
+    "docs/security/SECURITY.md", ".agents/skills/okf-memory/SKILL.md",
 )
 
 # Names are deliberately broad: a correct helper may inspect their presence,
 # but must never execute them during an offline inventory.
 TRAPPED_TOOLS = (
-    "openrig", "rig", "tmux", "anyjev", "vllm", "sglang", "llama-cli",
+    "openrig", "rig", "tmux", "anyjev", "okf", "go", "vllm", "sglang", "llama-cli",
     "llama-server", "clicker", "clicker-bench", "jev", "java", "gradle",
     "node", "npm", "npx", "bun", "context-mode", "ctx", "rea", "rea-agents",
     "ghidra", "ida", "jadx", "binwalk", "unblob", "uv", "mirai", "cargo",
@@ -317,6 +320,70 @@ class RepositoryPreflightRegressions(unittest.TestCase):
                 self.assertEqual(result.returncode, 1)
                 self.assertEqual(report["status"], "blocked")
                 self.assertEqual(self._read_invocations(), [])
+
+    def test_okf_agent_memory_rejects_symlinked_and_oversized_source_markers(self):
+        repo = self.make_git_fixture("symlink leaf source")
+        pin = self.git(repo, "rev-parse", "HEAD")
+        outside = self.work / "outside-secret-marker"
+        outside.write_text("fixture secret that must not appear in output")
+        marker = repo / ".agents" / "skills" / "okf-memory" / "SKILL.md"
+        marker.unlink()
+        marker.symlink_to(outside)
+        before = self._snapshot()
+        result = self.invoke("okf-agent-memory", "--json", "--repo", str(repo),
+                             "--expect-commit", pin, with_tools=True)
+        report = self.report(result)
+        self.assertEqual(result.returncode, 1, report)
+        leaf = next(check for check in report["checks"] if check["name"] == "structure:.agents/skills/okf-memory/SKILL.md")
+        self.assertEqual(leaf["status"], "unsafe-symlink")
+        self.assertNotIn("fixture secret", result.stdout + result.stderr)
+        self.assertEqual(self._snapshot(), before)
+
+        parent_repo = self.make_git_fixture("symlink parent source")
+        parent_pin = self.git(parent_repo, "rev-parse", "HEAD")
+        outside_agents = self.work / "outside-agents" / ".agents"
+        (outside_agents / "skills" / "okf-memory").mkdir(parents=True)
+        (outside_agents / "skills" / "okf-memory" / "SKILL.md").write_text("do not follow this link")
+        agents = parent_repo / ".agents"
+        agents.rename(parent_repo / ".agents-saved")
+        agents.symlink_to(outside_agents, target_is_directory=True)
+        before = self._snapshot()
+        result = self.invoke("okf-agent-memory", "--json", "--repo", str(parent_repo),
+                             "--expect-commit", parent_pin, with_tools=True)
+        report = self.report(result)
+        self.assertEqual(result.returncode, 1, report)
+        parent_check = next(check for check in report["checks"]
+                            if check["name"] == "structure:.agents/skills/okf-memory/SKILL.md")
+        self.assertEqual(parent_check["status"], "unsafe-symlink")
+        self.assertNotIn("do not follow this link", result.stdout + result.stderr)
+        self.assertEqual(self._snapshot(), before)
+
+        checkout_parent_link = self.work / "checkout-parent-link"
+        checkout_parent_link.symlink_to(self.work, target_is_directory=True)
+        alias_root = checkout_parent_link / parent_repo.name
+        before = self._snapshot()
+        result = self.invoke("okf-agent-memory", "--json", "--repo", str(alias_root),
+                             "--expect-commit", parent_pin, with_tools=True)
+        report = self.report(result)
+        self.assertEqual(result.returncode, 1, report)
+        root_check = next(check for check in report["checks"] if check["name"] == "repo")
+        self.assertEqual(root_check["status"], "unsafe-symlink")
+        self.assertFalse(any(check["name"] == "git-head" for check in report["checks"]))
+        self.assertEqual(self._snapshot(), before)
+        self.assertEqual(self._read_invocations(), [])
+
+        oversized_repo = self.make_git_fixture("oversized source marker")
+        oversized_pin = self.git(oversized_repo, "rev-parse", "HEAD")
+        (oversized_repo / "README.md").write_bytes(b"x" * (1024 * 1024 + 1))
+        before = self._snapshot()
+        result = self.invoke("okf-agent-memory", "--json", "--repo", str(oversized_repo),
+                             "--expect-commit", oversized_pin, with_tools=True)
+        report = self.report(result)
+        self.assertEqual(result.returncode, 1, report)
+        size_check = next(check for check in report["checks"] if check["name"] == "structure:README.md")
+        self.assertEqual(size_check["status"], "oversized")
+        self.assertEqual(self._snapshot(), before)
+        self.assertEqual(self._read_invocations(), [])
 
     def test_git_environment_cannot_forge_repo_or_write_trace_files(self):
         repo_a = self.make_git_fixture("repo A")
