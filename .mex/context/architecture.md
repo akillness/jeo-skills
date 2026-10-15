@@ -70,6 +70,10 @@ remain intact. These extensions do not enforce tool review or switch host models
 OFF callbacks skip stdin/catalog/backend work. Bounded input, canonical catalog
 containment and private profile/session files protect local state boundaries.
 
+The local Python server caps HTTP bodies at 1 MiB, applies a 10-second per-socket
+I/O timeout, and closes its listening socket on exit. These transport guards do
+not impose a total inference deadline or verify model/GPU allocation behavior.
+
 The five backend kinds remain `api`, `local`, `ollama`, `lmstudio`, and `systemone`,
 with per-operation primary/fallback allow-lists and no cross-profile fallback.
 Only calibrated-head drivers with a matching served-model attestation can be

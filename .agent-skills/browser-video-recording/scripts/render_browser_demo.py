@@ -392,8 +392,8 @@ def render(config: dict[str, Any], output_path: Path) -> None:
             "-movflags", "+faststart",
             str(output_path),
         ]
-        process = subprocess.Popen(command, stdin=subprocess.PIPE)
         previous_cursor_x = cursor_keys[0][1]
+        process = subprocess.Popen(command, stdin=subprocess.PIPE)
         previous_time = 0.0
         assert process.stdin is not None
         try:
@@ -419,9 +419,25 @@ def render(config: dict[str, Any], output_path: Path) -> None:
                 process.stdin.write(frame.convert("RGB").tobytes())
                 previous_cursor_x = cursor_xy[0]
                 previous_time = time_s
-        finally:
             process.stdin.close()
-        exit_code = process.wait()
+            exit_code = process.wait()
+        except BaseException:
+            try:
+                if process.poll() is None:
+                    process.terminate()
+                try:
+                    process.wait(timeout=5)
+                except subprocess.TimeoutExpired:
+                    process.kill()
+                    process.wait()
+            except (OSError, subprocess.SubprocessError):
+                pass
+            finally:
+                try:
+                    process.stdin.close()
+                except OSError:
+                    pass
+            raise
         if exit_code != 0:
             raise RuntimeError(f"ffmpeg failed with exit code {exit_code}")
 

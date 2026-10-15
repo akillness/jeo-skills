@@ -6,6 +6,17 @@ import hashlib
 import os
 import shutil
 from pathlib import Path
+def _sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        while True:
+            chunk = handle.read(1024 * 1024)
+            if not chunk:
+                break
+            digest.update(chunk)
+            if len(chunk) < 1024 * 1024:
+                break
+    return digest.hexdigest()
 
 
 def require_safe_tree(path: Path) -> None:
@@ -55,11 +66,12 @@ def resolve_aside_user(aside_home: Path, account: str | None) -> Path:
 
 def dir_manifest(root: Path) -> dict[str, str]:
     return {
-        str(path.relative_to(root)): hashlib.sha256(path.read_bytes()).hexdigest()
+        str(path.relative_to(root)): _sha256_file(path)
         for path in root.rglob("*")
         if path.is_file() and path.name != ".DS_Store"
         and "__pycache__" not in path.parts and path.suffix != ".pyc"
     }
+
 
 
 def copy_tree(src: Path, dst: Path) -> int:

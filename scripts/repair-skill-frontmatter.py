@@ -41,6 +41,11 @@ except ImportError:  # pragma: no cover - environment guard
     print("❌ PyYAML is required: pip install pyyaml", file=sys.stderr)
     raise SystemExit(2)
 
+def _safe_load(text: str) -> Any:
+    """Parse with PyYAML's safe constructor, preferring libyaml when present."""
+    loader = getattr(yaml, "CSafeLoader", yaml.SafeLoader)
+    return yaml.load(text, Loader=loader)
+
 # Anthropic's SKILL.md contract and opencode's loader both cap the description
 # at 1024 characters; a longer value is dropped or truncated by the consumer.
 MAX_DESCRIPTION = 1024
@@ -199,7 +204,12 @@ def load_sources(root: Path) -> dict[str, dict[str, str]]:
     return {"toon": toon, "manifest": manifest_desc, "keyword": keyword, "_manifest": manifest}
 
 
-def repair_document(path: Path, name: str, sources: dict[str, Any]) -> tuple[str | None, list[str]]:
+def repair_document(
+    path: Path,
+    name: str,
+    sources: dict[str, Any],
+    description_cache: dict[str, str] | None = None,
+) -> tuple[str | None, list[str]]:
     """Return (new_text or None when already healthy, list of applied notes)."""
     text = path.read_text(encoding="utf-8")
     notes: list[str] = []
@@ -217,7 +227,7 @@ def repair_document(path: Path, name: str, sources: dict[str, Any]) -> tuple[str
     entries = split_entries(front)
     parses = True
     try:
-        data = yaml.safe_load(front)
+        data = _safe_load(front)
         parses = isinstance(data, dict)
     except yaml.YAMLError:
         parses = False
@@ -225,6 +235,8 @@ def repair_document(path: Path, name: str, sources: dict[str, Any]) -> tuple[str
 
     description = data.get("description") if isinstance(data, dict) else None
     description_text = str(description).strip() if description is not None else ""
+    if description_cache is not None and parses:
+        description_cache[name] = description_text
     # Anthropic's SKILL.md contract and opencode both cap the description at 1024
     # characters, so an over-long value is as broken as a missing one.
     # `---\n\n` means a previous rewrite left a blank first frontmatter line
@@ -255,7 +267,7 @@ def repair_document(path: Path, name: str, sources: dict[str, Any]) -> tuple[str
             head = entry[0].split(":", 1)[1]
             merged = clean(re.sub(r"\s*>\s*$", "", head) + " " + " ".join(entry[1:]))
             try:
-                yaml.safe_load("\n".join(entry))
+                _safe_load("\n".join(entry))
             except yaml.YAMLError:
                 rebuilt.append(render_folded(key, merged))
                 notes.append(f"{name}: folded unparseable key {key!r}")
@@ -271,7 +283,7 @@ def repair_document(path: Path, name: str, sources: dict[str, Any]) -> tuple[str
 
     new_front = "\n".join(line for entry in rebuilt for line in entry)
     try:
-        check = yaml.safe_load(new_front)
+        check = _safe_load(new_front)
         if not isinstance(check, dict) or not usable(str(check.get("description", ""))):
             return None, [f"{name}: repair did not produce a loadable description"]
     except yaml.YAMLError as error:
@@ -291,43 +303,49 @@ def main() -> int:
     manifest = sources["_manifest"]
 
     repaired, failures, synced = [], [], []
+    description_cache: dict[str, str] = {}
     for skill in manifest["skills"]:
         name = skill["name"]
         path = root / ".agent-skills" / skill["path"]
         if not path.is_file():
             failures.append(f"{name}: missing {skill['path']}")
             continue
-        new_text, notes = repair_document(path, name, sources)
+        new_text, notes = repair_document(path, name, sources, description_cache)
         for note in notes:
             (repaired if new_text else failures).append(note)
         if new_text is None:
             continue
-        repaired_description = yaml.safe_load(split_frontmatter(new_text)[0])["description"]
+        repaired_description = _safe_load(split_frontmatter(new_text)[0])["description"]
         if not args.check:
             path.write_text(new_text, encoding="utf-8")
             skill["description"] = repaired_description
+            description_cache[name] = str(repaired_description)
 
     # SKILL.md is the single source of truth: it is what every agent runtime loads.
     # skills.json feeds README/TOON and external consumers, so a manifest description
     # that drifts from it publishes text no agent will ever see — including the
     # "Use this skill when >" fragments an earlier line-based generator cached.
     for skill in manifest["skills"]:
+        name = skill["name"]
         path = root / ".agent-skills" / skill["path"]
         if not path.is_file():
             continue
-        parts = split_frontmatter(path.read_text(encoding="utf-8"))
-        if parts is None:
-            continue
-        try:
-            data = yaml.safe_load(parts[0])
-        except yaml.YAMLError:
-            continue
-        if not isinstance(data, dict):
-            continue
-        source = " ".join(str(data.get("description", "")).split())
+        if name in description_cache:
+            source = " ".join(description_cache[name].split())
+        else:
+            parts = split_frontmatter(path.read_text(encoding="utf-8"))
+            if parts is None:
+                continue
+            try:
+                data = _safe_load(parts[0])
+            except yaml.YAMLError:
+                continue
+            if not isinstance(data, dict):
+                continue
+            source = " ".join(str(data.get("description", "")).split())
         if not source or " ".join(str(skill.get("description", "")).split()) == source:
             continue
-        synced.append(f"{skill['name']}: manifest description synced from SKILL.md")
+        synced.append(f"{name}: manifest description synced from SKILL.md")
         if not args.check:
             skill["description"] = source
 

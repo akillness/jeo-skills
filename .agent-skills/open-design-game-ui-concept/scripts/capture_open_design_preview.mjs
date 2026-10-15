@@ -22,6 +22,7 @@ import {
 } from './contract_helpers.mjs';
 import { readAndValidateGenerationEvidence } from './open_design_generation_evidence.mjs';
 import { readAndValidatePreservationContract } from '../../open-design-game-ui-handoff/scripts/preservation_contract.mjs';
+import { discoverDaemonUrl as discoverDaemonUrlFromLog } from './daemon-log.mjs';
 
 const execFileAsync = promisify(execFile);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -88,13 +89,6 @@ function parseArgs(argv) {
   return out;
 }
 
-async function discoverDaemonUrl() {
-  const text = await fs.readFile(DEFAULT_DAEMON_LOG, 'utf8');
-  const matches = [...text.matchAll(/"url"\s*:\s*"(http:\/\/127\.0\.0\.1:\d+)"/g)];
-  const url = matches.at(-1)?.[1];
-  if (!url) throw new Error(`Could not discover Open Design daemon URL from ${DEFAULT_DAEMON_LOG}`);
-  return url;
-}
 
 async function getJson(url) {
   const response = await fetch(url);
@@ -106,15 +100,34 @@ async function getJson(url) {
 async function screenshotWebp(page, webpPath) {
   const pngPath = `${webpPath}.tmp.png`;
   await fs.mkdir(path.dirname(webpPath), { recursive: true });
-  await page.screenshot({ path: pngPath, fullPage: false, animations: 'disabled' });
-  await execFileAsync('cwebp', ['-quiet', '-q', '86', '-alpha_q', '100', pngPath, '-o', webpPath]);
-  await fs.unlink(pngPath).catch(() => {});
-  const bytes = await fs.readFile(webpPath);
-  return {
-    stat: await fs.stat(webpPath),
-    sha256: createHash('sha256').update(bytes).digest('hex'),
-  };
+  let primaryError;
+  let hasPrimaryError = false;
+  let result;
+  try {
+    await page.screenshot({ path: pngPath, fullPage: false, animations: 'disabled' });
+    await execFileAsync('cwebp', ['-quiet', '-q', '86', '-alpha_q', '100', pngPath, '-o', webpPath]);
+    const bytes = await fs.readFile(webpPath);
+    result = {
+      stat: await fs.stat(webpPath),
+      sha256: createHash('sha256').update(bytes).digest('hex'),
+    };
+  } catch (error) {
+    primaryError = error;
+    hasPrimaryError = true;
+  } finally {
+    try {
+      await fs.unlink(pngPath);
+    } catch (error) {
+      if (error?.code !== 'ENOENT' && !hasPrimaryError) {
+        primaryError = error;
+        hasPrimaryError = true;
+      }
+    }
+  }
+  if (hasPrimaryError) throw primaryError;
+  return result;
 }
+
 
 async function activeFocusEvidence(page) {
   return page.evaluate(() => {
@@ -587,7 +600,7 @@ if (unknownViewports.length) throw new Error(`Unknown viewports: ${unknownViewpo
 let health = {};
 let preview = {};
 if (!args.previewUrl) {
-  args.daemonUrl ||= await discoverDaemonUrl();
+  args.daemonUrl ||= await discoverDaemonUrlFromLog(DEFAULT_DAEMON_LOG);
   health = await getJson(`${args.daemonUrl}/api/health`);
   preview = await getJson(
     `${args.daemonUrl}/api/projects/${encodeURIComponent(args.projectId)}/preview-url${args.file ? `?file=${encodeURIComponent(args.file)}` : ''}`,

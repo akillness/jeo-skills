@@ -15,24 +15,24 @@ edges:
   - target: context/catalog-pipeline.md
     condition: when working with the manifest/TOON/README validation scripts specifically
 grounds_to: []
-last_updated: 2026-08-19
+last_updated: 2026-10-14
 ---
 
 # Stack
 
 ## Core Technologies
-- **Python 3.9+** — the runtime for every catalog tool (`jeo-skill.py`, all
-  `scripts/*.py` validators/repair tools). CI pins `setup-python@v5` to 3.11.
+- **Python** — the router/bootstrap requires 3.9+; individual skill helpers have
+  their own requirements. CI runs Python 3.11; resource regressions were also
+  exercised locally on Python 3.14.
 - **Markdown + YAML frontmatter** — the actual "source" this repo distributes: each
   `.agent-skills/<name>/SKILL.md` is a frontmatter block (`name`, `description`,
   `allowed-tools`, `metadata`) plus prose instructions an agent reads directly.
 - **JSON** — the manifest format: `.agent-skills/skills.json` (catalog) and
   `skills-lock.json` (root-level, tracks installed-skill provenance/hashes).
 - **Bash** — `install.sh`, the curl-able bootstrap installer.
-- **Node.js / npx** (bun in CI) — required only as the runtime for the external `skills`
-  CLI package; there is no JS/TS application source of this repo's own (the two `.js`/
-  `.ts` files at root, `run_python.js` and `test_parse.ts`, are small standalone
-  utilities, not an app).
+- **Node.js / npx** — runs the optional Jev ESM harness/plugins, Node helper scripts,
+  built-in `node:test` regressions, and the external `skills` installer. CI pins
+  Node 24; this audit exercised Node 26 locally. There is no application bundle target.
 
 ## Key Libraries
 - **PyYAML** (not regex/line-based parsing) — used by `scripts/repair-skill-frontmatter.py`
@@ -40,6 +40,9 @@ last_updated: 2026-08-19
   including folded block scalars (`description: >-`). A prior regex-based parser could
   not see block scalars and corrupted 26 skill descriptions in place — see
   `context/decisions.md`.
+- **Pillow** — the browser video renderer's image dependency. The installer CI
+  matrix pins Pillow 12.2.0 alongside PyYAML 6.0.3 so resource regressions do not
+  silently skip missing dependencies; the Python runner rejects skips in CI mode.
 - **`npx skills` (Agent Skills CLI)** — the actual installer used by both `install.sh`
   and `.agent-skills/jeo-skill/scripts/jeo-skill.py`'s
   `install_command()`/`command_install()`. Neither this repo's tooling nor `jeo-skill`
@@ -62,9 +65,10 @@ last_updated: 2026-08-19
   `--dry-run`); a prior CI configuration ran the mutating mode of two of these scripts,
   edited the checkout, and threw the result away every run (see `.github/workflows/ci.yml`
   comment and `context/decisions.md`).
-- **No test framework (pytest/unittest/jest)** — validation is done by standalone
-  scripts with a `main() -> int` entry point and a `--check`/`--self-test-*` flag,
-  invoked directly by CI steps rather than collected by a test runner.
+- **No additional test-runner dependency** — Python regressions use stdlib
+  `unittest`; Node regressions use built-in `node:test`. Catalog gates remain
+  standalone read-only commands. Browser/converter fixtures are hermetic; real
+  FFmpeg/cwebp smoke evidence is distinct from full application verification.
 
 ## Version Constraints
 CI pins Python to 3.11 (`actions/setup-python@v5`); `install.sh` only requires Python

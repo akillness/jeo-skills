@@ -87,14 +87,17 @@ async function main() {
 
   const requireFromWorkspace = createRequire(path.join(process.cwd(), 'package.json'));
   const { chromium } = requireFromWorkspace('playwright');
-  const browser = await chromium.launch({ headless: true });
-  const targets = manifest.items
-    .map((item, index) => ({ item, index }))
-    .filter(({ index }) => !args.item || index === args.item - 1);
-
-  if (!targets.length) throw new Error(`No manifest items matched --item ${args.item}`);
+  let browser;
+  let primaryError;
+  let hasPrimaryError = false;
 
   try {
+    browser = await chromium.launch({ headless: true });
+    const targets = manifest.items
+      .map((item, index) => ({ item, index }))
+      .filter(({ index }) => !args.item || index === args.item - 1);
+
+    if (!targets.length) throw new Error(`No manifest items matched --item ${args.item}`);
     for (const { item, index } of targets) {
       if (!item.pageUrl) throw new Error(`Item ${index + 1} is missing pageUrl`);
       if (!item.fullPageImage) throw new Error(`Item ${index + 1} is missing fullPageImage`);
@@ -176,10 +179,28 @@ async function main() {
         fullPageCaptureSegmentCount: segmentFiles.length
       };
     }
+  } catch (error) {
+    primaryError = error;
+    hasPrimaryError = true;
   } finally {
-    await browser.close();
-    await fs.rm(tempRoot, { recursive: true, force: true });
+    try {
+      await browser?.close();
+    } catch (error) {
+      if (!hasPrimaryError) {
+        primaryError = error;
+        hasPrimaryError = true;
+      }
+    }
+    try {
+      await fs.rm(tempRoot, { recursive: true, force: true });
+    } catch (error) {
+      if (!hasPrimaryError) {
+        primaryError = error;
+        hasPrimaryError = true;
+      }
+    }
   }
+  if (hasPrimaryError) throw primaryError;
 
   await fs.writeFile(manifestPath, JSON.stringify(manifest, null, 2) + '\n');
 }

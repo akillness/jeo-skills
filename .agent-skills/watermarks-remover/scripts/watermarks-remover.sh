@@ -60,7 +60,7 @@ case "$cmd" in
       exit 1
     fi
     shift 3 || true
-    python3 "$scripts_dir/inspect_file.py" "$file" "$@"
+    exec python3 "$scripts_dir/inspect_file.py" "$file" "$@"
     ;;
   clean)
     scripts_dir="$(require_repo)"
@@ -71,7 +71,7 @@ case "$cmd" in
       exit 1
     fi
     shift 4 || true
-    python3 "$scripts_dir/clean_file.py" "$file" -o "$output" "$@"
+    exec python3 "$scripts_dir/clean_file.py" "$file" -o "$output" "$@"
     ;;
   audit)
     scripts_dir="$(require_repo)"
@@ -81,7 +81,7 @@ case "$cmd" in
       exit 1
     fi
     shift 3 || true
-    python3 "$scripts_dir/audit_dir.py" "$dir" "$@"
+    exec python3 "$scripts_dir/audit_dir.py" "$dir" "$@"
     ;;
   *)
     usage

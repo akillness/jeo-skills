@@ -13,6 +13,7 @@ import {
   validateGenerationEvidence,
 } from './open_design_generation_evidence.mjs';
 import { parseOpenDesignPreviewIdentity } from './contract_helpers.mjs';
+import { discoverDaemonUrl as discoverDaemonUrlFromLog } from './daemon-log.mjs';
 
 const execFileAsync = promisify(execFile);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -38,13 +39,6 @@ function parseArgs(argv) {
   return out;
 }
 
-async function discoverDaemonUrl() {
-  const text = await fs.readFile(DEFAULT_DAEMON_LOG, 'utf8');
-  const matches = [...text.matchAll(/"url"\s*:\s*"(http:\/\/127\.0\.0\.1:\d+)"/g)];
-  const url = matches.at(-1)?.[1];
-  if (!url) throw new Error(`Could not discover Open Design daemon URL from ${DEFAULT_DAEMON_LOG}`);
-  return url;
-}
 
 async function getJson(url) {
   const response = await fetch(url);
@@ -67,7 +61,7 @@ const args = parseArgs(process.argv);
 if (!args.runId) throw new Error('--run=<run-id> is required');
 if (!args.artifact) throw new Error('--artifact=<file> is required');
 if (!Number.isFinite(args.timeoutMs) || args.timeoutMs < 1000) throw new Error('--timeout-ms must be >= 1000');
-args.daemonUrl ||= await discoverDaemonUrl();
+args.daemonUrl ||= await discoverDaemonUrlFromLog(DEFAULT_DAEMON_LOG);
 args.out ||= path.join(REPO_ROOT, '.omc/artifacts/open-design-generation-evidence', `${args.runId}.json`);
 
 let processSnapshot = null;

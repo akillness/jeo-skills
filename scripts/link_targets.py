@@ -31,7 +31,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from frontmatter_boundary import body_after_frontmatter  # noqa: E402
+from frontmatter_boundary import body_after_frontmatter, split_frontmatter_text  # noqa: E402
 
 SKILLS_ROOT = Path(".agent-skills")
 ARTIFACT_DIR = Path(".frontmatter")
@@ -150,9 +150,19 @@ def scan(root: Path = SKILLS_ROOT, artifact_dir: Path = ARTIFACT_DIR) -> list[di
         slug = parts[1] if len(parts) > 1 else ""
         in_vendor = any(rel.startswith(v.rstrip("/") + "/") or rel == v for v in vendored)
         in_deferred = slug in deferred
-        offset = _line_offset(path)
+        raw_text = path.read_text(encoding="utf-8")
+        if path.name == "SKILL.md":
+            try:
+                front, body = split_frontmatter_text(raw_text, path)
+                offset = front.count("\n")
+            except Exception:
+                body = raw_text
+                offset = 0
+        else:
+            body = raw_text
+            offset = 0
 
-        for lineno, text in _strip_fences_and_comments(_body_of(path)):
+        for lineno, text in _strip_fences_and_comments(body):
             abs_line = lineno + offset
             candidates: list[tuple[str, str]] = []
             for m in _MD_LINK.finditer(text):

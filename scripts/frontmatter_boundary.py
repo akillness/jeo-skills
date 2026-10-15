@@ -67,6 +67,33 @@ def _split(text: str, path: Path) -> tuple[str, str]:
         raise BoundaryError(f"{path}: frontmatter fence is not terminated")
     end = 3 + match.end()
     return text[:end], text[end:]
+def split_frontmatter_text(text: str, path: Path | str) -> tuple[str, str]:
+    """Split already-read document text without issuing another filesystem read."""
+    return _split(text, Path(path))
+
+
+def _yaml_load(text: str):
+    try:
+        import yaml
+    except ImportError:  # pragma: no cover - PyYAML is a hard dep of the repo tooling
+        raise BoundaryError("PyYAML is required: pip install pyyaml")
+    loader = getattr(yaml, "CSafeLoader", yaml.SafeLoader)
+    return yaml.load(text, Loader=loader)
+
+
+def _description_length_from_block(block: str) -> int:
+    inner = block[3:].rsplit(_FENCE, 1)[0]
+    try:
+        import yaml
+    except ImportError:  # pragma: no cover - PyYAML is a hard dep of the repo tooling
+        raise BoundaryError("PyYAML is required: pip install pyyaml")
+    try:
+        data = _yaml_load(inner)
+    except yaml.YAMLError:
+        return 0
+    if not isinstance(data, dict):
+        return 0
+    return len(" ".join(str(data.get("description", "")).split()))
 
 
 def frontmatter_block(path: Path | str) -> str:
@@ -95,47 +122,42 @@ def description_length(path: Path | str) -> int:
     Returns 0 when the frontmatter does not parse or carries no description;
     callers that need strictness must check separately.
     """
-    try:
-        import yaml
-    except ImportError:  # pragma: no cover - PyYAML is a hard dep of the repo tooling
-        raise BoundaryError("PyYAML is required: pip install pyyaml")
-    block = frontmatter_block(path)
-    inner = block[3:].rsplit(_FENCE, 1)[0]
-    try:
-        data = yaml.safe_load(inner)
-    except yaml.YAMLError:
-        return 0
-    if not isinstance(data, dict):
-        return 0
-    return len(" ".join(str(data.get("description", "")).split()))
+    return _description_length_from_block(frontmatter_block(path))
 
 
 def build_baseline(root: Path | str = DEFAULT_ROOT) -> list[tuple[str, str]]:
-    return [(slug_of(doc), frontmatter_sha256(doc)) for doc in iter_skill_docs(root)]
+    return _build_artifact_rows(root)[0]
 
 
 def build_census(root: Path | str = DEFAULT_ROOT) -> list[tuple[str, int, int, int, int]]:
+    return _build_artifact_rows(root)[1]
+
+
+def _build_artifact_rows(root: Path | str) -> tuple[list[tuple[str, str]], list[tuple[str, int, int, int, int]]]:
+    baseline = []
     rows = []
     for doc in iter_skill_docs(root):
         raw = doc.read_text(encoding="utf-8")
         front, body = _split(raw, doc)
+        slug = slug_of(doc)
+        baseline.append((slug, hashlib.sha256(front.encode("utf-8")).hexdigest()))
         rows.append(
             (
-                slug_of(doc),
+                slug,
                 len(front.encode("utf-8")),
                 len(body.encode("utf-8")),
                 len(raw.encode("utf-8")),
-                description_length(doc),
+                _description_length_from_block(front),
             )
         )
-    return rows
+    return baseline, rows
 
 
 def write_artifacts(root: Path | str = DEFAULT_ROOT, out_dir: Path | str = ARTIFACT_DIR) -> dict:
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    baseline = build_baseline(root)
+    baseline, census = _build_artifact_rows(root)
     slugs = [slug for slug, _ in baseline]
     duplicates = {s for s in slugs if slugs.count(s) > 1}
     if duplicates:
@@ -144,7 +166,6 @@ def write_artifacts(root: Path | str = DEFAULT_ROOT, out_dir: Path | str = ARTIF
         "".join(f"{slug}\t{digest}\n" for slug, digest in baseline), encoding="utf-8"
     )
 
-    census = build_census(root)
     (out_dir / CENSUS_NAME).write_text(
         "slug\tfm_bytes\tbody_bytes\ttotal_bytes\tdesc_len\n"
         + "".join(f"{s}\t{f}\t{b}\t{t}\t{d}\n" for s, f, b, t, d in census),
@@ -166,7 +187,6 @@ def write_artifacts(root: Path | str = DEFAULT_ROOT, out_dir: Path | str = ARTIF
 
 
 def self_test(root: Path | str = DEFAULT_ROOT, sample: int = 3) -> int:
-    import yaml
 
     docs = list(iter_skill_docs(root))
     if not docs:
@@ -179,7 +199,7 @@ def self_test(root: Path | str = DEFAULT_ROOT, sample: int = 3) -> int:
             print(f"self-test FAILED: {doc} block is not fence-delimited", file=sys.stderr)
             return 1
         inner = block[3:].rsplit(_FENCE, 1)[0]
-        if not isinstance(yaml.safe_load(inner), dict):
+        if not isinstance(_yaml_load(inner), dict):
             print(f"self-test FAILED: {doc} frontmatter is not a mapping", file=sys.stderr)
             return 1
         if body_after_frontmatter(doc).startswith(_FENCE):

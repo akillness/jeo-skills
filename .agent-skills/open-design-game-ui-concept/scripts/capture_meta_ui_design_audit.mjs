@@ -356,21 +356,58 @@ async function collectGeometry(page, selector, locale) {
 
 async function convertPngToWebp(pngPath, webpPath, quality = 84) {
   await fs.mkdir(path.dirname(webpPath), { recursive: true });
-  await execFileAsync('cwebp', ['-quiet', '-q', String(quality), '-alpha_q', '100', pngPath, '-o', webpPath]);
-  await fs.unlink(pngPath).catch(() => {});
+  let primaryError;
+  let hasPrimaryError = false;
+  try {
+    await execFileAsync('cwebp', ['-quiet', '-q', String(quality), '-alpha_q', '100', pngPath, '-o', webpPath]);
+  } catch (error) {
+    primaryError = error;
+    hasPrimaryError = true;
+  } finally {
+    try {
+      await fs.unlink(pngPath);
+    } catch (error) {
+      if (error?.code !== 'ENOENT' && !hasPrimaryError) {
+        primaryError = error;
+        hasPrimaryError = true;
+      }
+    }
+  }
+  if (hasPrimaryError) throw primaryError;
 }
+
 
 async function screenshotWebp(page, webpPath) {
   const pngPath = `${webpPath}.tmp.png`;
   await fs.mkdir(path.dirname(webpPath), { recursive: true });
-  await page.screenshot({ path: pngPath, fullPage: false, animations: 'disabled' });
-  await convertPngToWebp(pngPath, webpPath);
-  const header = await fs.readFile(webpPath).then((buffer) => buffer.subarray(0, 12));
-  if (header.toString('ascii', 0, 4) !== 'RIFF' || header.toString('ascii', 8, 12) !== 'WEBP') {
-    throw new Error(`Invalid WebP signature: ${webpPath}`);
+  let primaryError;
+  let hasPrimaryError = false;
+  let result;
+  try {
+    await page.screenshot({ path: pngPath, fullPage: false, animations: 'disabled' });
+    await convertPngToWebp(pngPath, webpPath);
+    const header = await fs.readFile(webpPath).then((buffer) => buffer.subarray(0, 12));
+    if (header.toString('ascii', 0, 4) !== 'RIFF' || header.toString('ascii', 8, 12) !== 'WEBP') {
+      throw new Error(`Invalid WebP signature: ${webpPath}`);
+    }
+    result = await fs.stat(webpPath);
+  } catch (error) {
+    primaryError = error;
+    hasPrimaryError = true;
+  } finally {
+    try {
+      await fs.unlink(pngPath);
+    } catch (error) {
+      if (error?.code !== 'ENOENT' && !hasPrimaryError) {
+        primaryError = error;
+        hasPrimaryError = true;
+      }
+    }
   }
-  return fs.stat(webpPath);
+  if (hasPrimaryError) throw primaryError;
+  return result;
 }
+
 
 async function captureState(browser, args, viewport, locale, state) {
   const context = await browser.newContext({

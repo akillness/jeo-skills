@@ -21,6 +21,7 @@ Usage:
 Verify the result with glb_inspect.py (clip count, skins>=1, root scale 1.0).
 """
 import json
+import os
 import struct
 import sys
 
@@ -34,21 +35,36 @@ SCALE_TOL = 0.02
 
 def read_glb(path):
     with open(path, "rb") as f:
-        data = f.read()
-    magic, version, _ = struct.unpack_from("<III", data, 0)
-    if magic != MAGIC or version != 2:
-        raise SystemExit(f"{path}: not a GLB v2")
-    gltf, binc = None, b""
-    off = 12
-    while off < len(data):
-        clen, ctype = struct.unpack_from("<II", data, off)
-        payload = data[off + 8: off + 8 + clen]
-        if ctype == CHUNK_JSON:
-            gltf = json.loads(payload.decode("utf-8"))
-        elif ctype == CHUNK_BIN:
-            binc = payload
-        off += 8 + clen
-    return gltf, bytearray(binc)
+        size = os.fstat(f.fileno()).st_size
+        header = f.read(12)
+        magic, version, _ = struct.unpack_from("<III", header, 0)
+        if magic != MAGIC or version != 2:
+            raise SystemExit(f"{path}: not a GLB v2")
+        gltf, binc = None, bytearray()
+        while True:
+            chunk_header = f.read(8)
+            if not chunk_header:
+                break
+            clen, ctype = struct.unpack_from("<II", chunk_header, 0)
+            # clen is attacker-controlled file content: never request more than
+            # the bytes actually left in the file, so a forged near-4GiB length
+            # on a tiny/truncated file can't force an oversized read buffer.
+            remaining = max(size - f.tell(), 0)
+            want = min(clen, remaining)
+            if ctype == CHUNK_BIN:
+                # Read straight into the bytearray this function returns instead
+                # of f.read() producing a bytes object that bytearray(binc) then
+                # duplicates — halves peak memory for the BIN payload.
+                buf = bytearray(want)
+                nread = f.readinto(buf)
+                if nread < want:
+                    del buf[nread:]
+                binc = buf
+            else:
+                payload = f.read(want)
+                if ctype == CHUNK_JSON:
+                    gltf = json.loads(payload.decode("utf-8"))
+    return gltf, binc
 
 
 def write_glb(path, gltf, binc):
@@ -56,12 +72,26 @@ def write_glb(path, gltf, binc):
         gltf["buffers"][0]["byteLength"] = len(binc)
     j = json.dumps(gltf, separators=(",", ":")).encode("utf-8")
     j += b" " * ((4 - len(j) % 4) % 4)
-    b = bytes(binc) + b"\x00" * ((4 - len(binc) % 4) % 4)
-    total = 12 + 8 + len(j) + 8 + len(b)
+    # Exact bytearray/bytes (what read_glb actually returns/produces) write directly
+    # with no copy. type() rather than isinstance() so a bytes/bytearray SUBCLASS
+    # that overrides __bytes__/__len__ still falls through to bytes(binc) below —
+    # same as everything else binc was originally allowed to be (iterable of ints,
+    # non-contiguous memoryview, ...) — since a raw f.write() cannot accept those,
+    # and would silently ignore a subclass's override, but bytes() always can't.
+    # Padding count is computed from len(binc) (not len(payload)) to match the
+    # original byte-for-byte even for a pathological subclass whose __bytes__
+    # result length differs from its own __len__.
+    payload = binc if type(binc) in (bytes, bytearray) else bytes(binc)
+    bin_pad = (4 - len(binc) % 4) % 4
+    bin_total = len(payload) + bin_pad
+    total = 12 + 8 + len(j) + 8 + bin_total
     with open(path, "wb") as f:
         f.write(struct.pack("<III", MAGIC, 2, total))
         f.write(struct.pack("<II", len(j), CHUNK_JSON) + j)
-        f.write(struct.pack("<II", len(b), CHUNK_BIN) + b)
+        f.write(struct.pack("<II", bin_total, CHUNK_BIN))
+        f.write(payload)
+        if bin_pad:
+            f.write(b"\x00" * bin_pad)
 
 
 def accessor_bytes(gltf, binc, idx):

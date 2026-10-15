@@ -25,6 +25,11 @@ import yaml  # noqa: E402
 from frontmatter_boundary import frontmatter_block  # noqa: E402
 from routing_harness import trigger_keywords  # noqa: E402
 
+
+def _safe_load(text: str):
+    loader = getattr(yaml, "CSafeLoader", yaml.SafeLoader)
+    return yaml.load(text, Loader=loader)
+
 SKILLS = Path(".agent-skills")
 ART = Path(".frontmatter")
 APPROVAL = "USER-INTENT-GATE-2026-07-28"
@@ -152,7 +157,7 @@ def candidates() -> list[dict]:
 
 
 def _desc(block: str) -> str:
-    data = yaml.safe_load(block[3:].rsplit("---", 1)[0])
+    data = _safe_load(block[3:].rsplit("---", 1)[0])
     return " ".join(str(data.get("description", "")).split())
 
 
@@ -162,7 +167,7 @@ def verify(rec: dict) -> list[str]:
     after_block = rec["after"]
 
     try:
-        data = yaml.safe_load(after_block[3:].rsplit("---", 1)[0])
+        data = _safe_load(after_block[3:].rsplit("---", 1)[0])
         if not isinstance(data, dict):
             problems.append("after frontmatter is not a YAML mapping")
     except yaml.YAMLError as exc:

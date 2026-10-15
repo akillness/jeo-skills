@@ -92,18 +92,20 @@ def strip_value(raw_value: str) -> str:
 
 def parse_env_file(path: Path) -> dict[str, str]:
     values: dict[str, str] = {}
-    for raw in path.read_text(encoding="utf-8", errors="replace").splitlines():
-        line = raw.strip()
-        if not line or line.startswith("#"):
-            continue
-        if line.startswith("export "):
-            line = line[len("export ") :].strip()
-        if "=" not in line:
-            continue
-        key, _, value = line.partition("=")
-        key = key.strip()
-        if key:
-            values[key] = strip_value(value)
+    with path.open("r", encoding="utf-8", errors="replace") as handle:
+        for physical_line in handle:
+            for raw in physical_line.splitlines():
+                line = raw.strip()
+                if not line or line.startswith("#"):
+                    continue
+                if line.startswith("export "):
+                    line = line[len("export ") :].strip()
+                if "=" not in line:
+                    continue
+                key, _, value = line.partition("=")
+                key = key.strip()
+                if key:
+                    values[key] = strip_value(value)
     return values
 
 

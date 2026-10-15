@@ -377,6 +377,11 @@ TRUNCATION_SUFFIXES = ("...", "…")
 # placeholder check while shipping "Use this skill when > Conduct a …" to agents.
 STRAY_INDICATOR_RE = re.compile(r"^\s*use\s+(?:this\s+)?skill\s+when\s*[>|][+-]?\s+", re.I)
 
+def _safe_yaml_load(yaml_module: Any, text: str) -> Any:
+    """Parse with libyaml's safe constructor when available."""
+    loader = getattr(yaml_module, "CSafeLoader", yaml_module.SafeLoader)
+    return yaml_module.load(text, Loader=loader)
+
 
 def validate_skill_documents(repo_root: Path, skill_names: list[str], manifest_descriptions: dict[str, str]) -> int:
     try:
@@ -393,7 +398,7 @@ def validate_skill_documents(repo_root: Path, skill_names: list[str], manifest_d
         end = text.find("\n---", 3)
         require(end > 0, f"{name}: SKILL.md frontmatter is not terminated")
         try:
-            data = yaml.safe_load(text[3:end])
+            data = _safe_yaml_load(yaml, text[3:end])
         except yaml.YAMLError as error:
             raise ValidationError(f"{name}: SKILL.md frontmatter is not valid YAML ({str(error).splitlines()[0]}) — run scripts/repair-skill-frontmatter.py")
         require(isinstance(data, dict), f"{name}: SKILL.md frontmatter must be a mapping")

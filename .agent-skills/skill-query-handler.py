@@ -79,10 +79,14 @@ def tokenize(text: str) -> List[str]:
     return [tok for tok in re.split(r"[^a-z0-9가-힣+.#]+", normalized) if tok]
 
 
+
 class SkillQueryHandler:
     def __init__(self, skills_dir: Optional[str] = None):
         self.skills_dir = Path(skills_dir).expanduser() if skills_dir else Path(__file__).parent
         self.global_skills_dir = Path.home() / ".agent-skills"
+        self._search_metadata_ready = False
+        self._search_metadata_signature = None
+        self._search_metadata: Dict[int, Dict[str, object]] = {}
         self.skill_catalog = self._load_skill_catalog()
 
     def _resolve_skill_base_path(self, skill_path: str) -> List[Path]:
@@ -124,6 +128,53 @@ class SkillQueryHandler:
                     manifest_overlay_applied = True
         return catalog if catalog or manifest_overlay_applied else {}
 
+    def _prepare_search_metadata(self) -> None:
+        signature = (
+            tuple(
+                (id(skill), skill.get("name"), tuple(skill.get("search_terms", ())))
+                for skill in self.skill_catalog.values()
+            ),
+            tuple(sorted(COMMAND_SKILL_ALIASES.items())),
+            tuple(sorted(STOPWORDS)),
+        )
+        if self._search_metadata_ready and signature == self._search_metadata_signature:
+            return
+        metadata: Dict[int, Dict[str, object]] = {}
+        for skill in self.skill_catalog.values():
+            name = skill["name"].lower()
+            name_phrase = name.replace("-", " ")
+            metadata[id(skill)] = {
+                "name": name,
+                "name_phrase": name_phrase,
+                "name_tokens": frozenset(
+                    tok for tok in tokenize(name_phrase) if tok not in STOPWORDS
+                ),
+                "name_pattern": re.compile(
+                    rf"(?<![A-Za-z0-9_-]){re.escape(name)}(?![A-Za-z0-9_-])"
+                ),
+                "alias_patterns": tuple(
+                    (
+                        alias,
+                        normalize_text(alias),
+                        re.compile(
+                            rf"(?<![A-Za-z0-9_-]){re.escape(normalize_text(alias))}(?![A-Za-z0-9_-])"
+                        ),
+                    )
+                    for alias, target_name in COMMAND_SKILL_ALIASES.items()
+                    if target_name == name
+                ),
+                "term_tokens": tuple(
+                    (term, frozenset(tok for tok in tokenize(term) if tok not in STOPWORDS))
+                    for term in skill.get("search_terms", [])
+                    if term
+                ),
+            }
+        self._search_metadata = metadata
+        self._search_metadata_signature = signature
+        self._search_metadata_ready = True
+
+
+
     def _merge_manifest_overlay(self, catalog: Dict[str, Dict], data: Dict) -> Dict[str, Dict]:
         for entry in data.get("skills", []):
             name = str(entry.get("name", "")).strip()
@@ -132,7 +183,8 @@ class SkillQueryHandler:
             description = str(entry.get("description", "")).strip()
             tags = [str(tag).strip() for tag in entry.get("tags", []) if str(tag).strip()]
             search_terms = set(catalog[name].get("search_terms", []))
-            search_terms.update(self._build_search_terms(name, description or catalog[name].get("description", ""), tags, entry))
+            overlay_description = description if description != catalog[name].get("description", "") else ""
+            search_terms.update(self._build_overlay_search_terms(overlay_description, tags, entry))
             catalog[name]["tags"] = sorted({*catalog[name].get("tags", []), *tags})
             if not catalog[name].get("description") and description:
                 catalog[name]["description"] = description
@@ -274,8 +326,32 @@ class SkillQueryHandler:
             for tok in tokenize(description)
             if len(tok) > 3 and tok not in STOPWORDS
         )
-
         return sorted({normalize_text(term) for term in candidates if str(term).strip()})
+
+    def _build_overlay_search_terms(
+        self, description: str, tags: List[str], entry: Dict
+    ) -> List[str]:
+        candidates = set(tags)
+        keyword = entry.get("keyword")
+        if keyword:
+            candidates.add(str(keyword))
+        keywords = entry.get("keywords", [])
+        if isinstance(keywords, list):
+            candidates.update(str(item) for item in keywords if str(item).strip())
+        for command in entry.get("commands", []):
+            if not isinstance(command, dict):
+                continue
+            for field in ("name", "command", "description"):
+                value = command.get(field)
+                if value:
+                    candidates.add(str(value))
+        candidates.update(
+            tok
+            for tok in tokenize(description)
+            if len(tok) > 3 and tok not in STOPWORDS
+        )
+        return sorted({normalize_text(term) for term in candidates if str(term).strip()})
+
 
     def estimate_tokens(self, text: str) -> int:
         return max(1, len(text) // 4)
@@ -303,39 +379,62 @@ class SkillQueryHandler:
             return skill_file.read_text(encoding="utf-8")
         return None
 
-    def _score_skill(self, query: str, query_tokens: set[str], skill: Dict) -> int:
-        query_norm = normalize_text(query)
+    def _score_skill(
+        self,
+        query: str,
+        query_tokens: set[str],
+        skill: Dict,
+        query_norm: Optional[str] = None,
+        *,
+        _metadata_ready: bool = False,
+    ) -> int:
+        if not _metadata_ready:
+            self._prepare_search_metadata()
+        query_norm = normalize_text(query) if query_norm is None else query_norm
         score = 0
-        name = skill["name"].lower()
-        name_phrase = name.replace("-", " ")
+        prepared = self._search_metadata.get(id(skill))
+        name = prepared["name"] if prepared else skill.get("_name_lower", skill["name"].lower())
+        name_phrase = prepared["name_phrase"] if prepared else skill.get("_name_phrase", name.replace("-", " "))
 
-        for alias, target_name in COMMAND_SKILL_ALIASES.items():
-            alias_norm = normalize_text(alias)
-            if (
-                target_name == name
-                and re.search(
-                    rf"(?<![A-Za-z0-9_-]){re.escape(alias_norm)}(?![A-Za-z0-9_-])",
-                    query_norm,
+        alias_patterns = prepared["alias_patterns"] if prepared else skill.get("_alias_patterns")
+        if alias_patterns is None:
+            alias_patterns = tuple(
+                (alias, normalize_text(alias), None)
+                for alias, target_name in COMMAND_SKILL_ALIASES.items()
+                if target_name == name
+            )
+        for _alias, alias_norm, pattern in alias_patterns:
+            if pattern is None:
+                pattern = re.compile(
+                    rf"(?<![A-Za-z0-9_-]){re.escape(alias_norm)}(?![A-Za-z0-9_-])"
                 )
-            ):
+            if pattern.search(query_norm):
                 score += 180
 
-        if re.search(
-            rf"(?<![A-Za-z0-9_-]){re.escape(name)}(?![A-Za-z0-9_-])",
-            query_norm,
-        ):
+        name_pattern = prepared["name_pattern"] if prepared else skill.get("_name_pattern")
+        if name_pattern is None:
+            name_pattern = re.compile(
+                rf"(?<![A-Za-z0-9_-]){re.escape(name)}(?![A-Za-z0-9_-])"
+            )
+        if name_pattern.search(query_norm):
             score += 120
         if name_phrase in query_norm:
             score += 100
 
-        name_tokens = {tok for tok in tokenize(name_phrase) if tok not in STOPWORDS}
+        name_tokens = prepared["name_tokens"] if prepared else skill.get("_name_tokens")
+        if name_tokens is None:
+            name_tokens = frozenset(tok for tok in tokenize(name_phrase) if tok not in STOPWORDS)
         if name_tokens and name_tokens.issubset(query_tokens):
             score += 40
 
-        for term in skill["search_terms"]:
-            if not term:
-                continue
-            term_tokens = {tok for tok in tokenize(term) if tok not in STOPWORDS}
+        term_tokens_list = prepared["term_tokens"] if prepared else skill.get("_term_tokens")
+        if term_tokens_list is None:
+            term_tokens_list = tuple(
+                (term, frozenset(tok for tok in tokenize(term) if tok not in STOPWORDS))
+                for term in skill["search_terms"]
+                if term
+            )
+        for term, term_tokens in term_tokens_list:
             if not term_tokens:
                 continue
             if len(term_tokens) == 1:
@@ -352,12 +451,15 @@ class SkillQueryHandler:
         score += min(8, len(skill["description_tokens"] & query_tokens))
         return score
 
+
     def match_query_to_skills(self, query: str) -> List[Tuple[str, int]]:
+        self._prepare_search_metadata()
+        query_norm = normalize_text(query)
         query_tokens = {tok for tok in tokenize(query) if tok not in STOPWORDS}
         matches = []
 
         for skill_name, skill in self.skill_catalog.items():
-            score = self._score_skill(query, query_tokens, skill)
+            score = self._score_skill(query, query_tokens, skill, query_norm, _metadata_ready=True)
             if score > 0:
                 matches.append((skill_name, score))
 

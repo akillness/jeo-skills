@@ -12,6 +12,8 @@ All notable changes to **jeo-skills** are documented here.
   prune older Jev-owned context while preserving current instructions and host history.
 - Runtime regression coverage for real hook envelopes, UTF-8 streams, profile isolation,
   malformed configuration, bounded input, and trusted skill-file containment.
+- Isolated Python and Node regressions for resource ownership, allocation bounds,
+  cache freshness and error precedence, wired into the installer CI matrix.
 
 ### Fixed
 - Native Jev timeout tests synchronize child signal-handler readiness and advance
@@ -23,6 +25,25 @@ All notable changes to **jeo-skills** are documented here.
 - Hosted `api` route-skills no longer fails with "choice probabilities must sum to 1":
   jev-1.13.0 rounds probabilities to 2 decimals (e.g. sum 0.99), so the harness now accepts
   drift up to 0.02 and renormalizes; larger deviations still fail closed.
+- Failed or interrupted video exports terminate and reap their owned encoder
+  process without replacing the original error. Media capture paths clean temporary
+  PNGs and browser state on failure and report cleanup-only failures.
+- Local Jev HTTP requests reject negative or greater-than-1-MiB lengths before
+  reading, bound idle socket I/O to 10 seconds, and close the server on exit.
+- GLB readers bound forged chunk lengths to physical file bytes; GLB merge output
+  no longer concatenates the complete binary payload with its chunk header/padding.
+
+### Changed
+- Refreshed English, Korean and Spanish README commands, documentation links,
+  TOON boundaries and native Jev integration descriptions. Monthly release sources
+  now preserve the current entry; duplicate generated footer markers were removed.
+- Replaced eight obsolete README illustrations with a Codex-generated static WebP
+  cover and two source-accurate SVGs, with generation provenance and readable
+  850-pixel browser verification. Unrelated partner branding remains intact.
+- Catalog parsing prefers the safe native YAML loader with a safe Python fallback;
+  frontmatter and link scans avoid duplicate reads without changing projections.
+- Query scoring caches reusable metadata while detecting changed inputs. Installer
+  hashing, environment audit reads and daemon-log discovery avoid whole-file copies.
 
 ## 2026-10-08
 

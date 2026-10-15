@@ -157,13 +157,32 @@ async function screenshotBeat(page, dir, beat, elapsedMs, rootSelector) {
   const filename = `${String(Math.round(elapsedMs)).padStart(5, '0')}-${beat}.webp`;
   const target = path.join(dir, filename);
   const temporaryPng = target.replace(/\.webp$/, '.png');
-  await page.screenshot({ path: temporaryPng, type: 'png' });
-  await execFileAsync('cwebp', ['-quiet', '-q', '88', '-alpha_q', '100', temporaryPng, '-o', target]);
-  await fs.rm(temporaryPng, { force: true });
-  const stat = await fs.stat(target);
-  const motion = await inspectMotion(page, rootSelector);
-  return { beat, timestampMs: Math.round(elapsedMs), path: filename, bytes: stat.size, motion, ok: stat.size > 1000 && motion.rootVisible };
+  let primaryError;
+  let hasPrimaryError = false;
+  let result;
+  try {
+    await page.screenshot({ path: temporaryPng, type: 'png' });
+    await execFileAsync('cwebp', ['-quiet', '-q', '88', '-alpha_q', '100', temporaryPng, '-o', target]);
+    const stat = await fs.stat(target);
+    const motion = await inspectMotion(page, rootSelector);
+    result = { beat, timestampMs: Math.round(elapsedMs), path: filename, bytes: stat.size, motion, ok: stat.size > 1000 && motion.rootVisible };
+  } catch (error) {
+    primaryError = error;
+    hasPrimaryError = true;
+  } finally {
+    try {
+      await fs.rm(temporaryPng, { force: true });
+    } catch (error) {
+      if (!hasPrimaryError) {
+        primaryError = error;
+        hasPrimaryError = true;
+      }
+    }
+  }
+  if (hasPrimaryError) throw primaryError;
+  return result;
 }
+
 
 async function runHome(page, dir, baseUrl) {
   await page.goto(`${baseUrl}/#home`, { waitUntil: 'domcontentloaded', timeout: 30000 });

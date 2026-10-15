@@ -103,6 +103,8 @@ PORT = int(os.environ.get("JEV_LOCAL_PORT", "8763"))
 MODEL_DIR = os.environ.get("JEV_LOCAL_MODEL_DIR") or os.path.expanduser("~/.agents/jev/models/JEV-9B")
 MODEL_NAME = "jev-9b-local"
 CHOICE_THRESHOLD = 0.2
+MAX_REQUEST_BYTES = 1024 * 1024
+REQUEST_TIMEOUT_SECONDS = 10.0
 
 _model = None
 _tokenizer = None
@@ -195,6 +197,11 @@ def handle_request(body):
 
 
 class Handler(BaseHTTPRequestHandler):
+    def setup(self):
+        super().setup()
+        # Bound slow or partial request reads so an idle client cannot pin a worker forever.
+        self.connection.settimeout(REQUEST_TIMEOUT_SECONDS)
+
     def _send(self, code, payload):
         data = json.dumps(payload).encode()
         self.send_response(code)
@@ -215,6 +222,10 @@ class Handler(BaseHTTPRequestHandler):
             return
         try:
             length = int(self.headers.get("Content-Length", "0"))
+            if length < 0:
+                raise ValueError("'Content-Length' must be non-negative")
+            if length > MAX_REQUEST_BYTES:
+                raise ValueError(f"request body exceeds {MAX_REQUEST_BYTES} bytes")
             body = json.loads(self.rfile.read(length) or b"{}")
             self._send(200, handle_request(body))
         except Exception as exc:  # noqa: BLE001 — surface every failure as JSON
@@ -229,7 +240,11 @@ def main():
         print(json.dumps({"host": HOST, "port": PORT, "modelDir": MODEL_DIR, "modelPresent": os.path.isdir(MODEL_DIR)}))
         return
     load_model()
-    ThreadingHTTPServer((HOST, PORT), Handler).serve_forever()
+    server = ThreadingHTTPServer((HOST, PORT), Handler)
+    try:
+        server.serve_forever()
+    finally:
+        server.server_close()
 
 
 if __name__ == "__main__":

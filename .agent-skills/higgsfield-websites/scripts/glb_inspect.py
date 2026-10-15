@@ -14,6 +14,7 @@ Usage:
     python3 glb_inspect.py model.glb
 """
 import json
+import os
 import struct
 import sys
 
@@ -27,20 +28,26 @@ TYPE_COUNT = {"SCALAR": 1, "VEC2": 2, "VEC3": 3, "VEC4": 4, "MAT4": 16}
 
 def read_glb(path):
     with open(path, "rb") as f:
-        data = f.read()
-    magic, version, _ = struct.unpack_from("<III", data, 0)
-    if magic != MAGIC or version != 2:
-        raise SystemExit(f"{path}: not a GLB v2 file")
-    gltf, binchunk = None, b""
-    off = 12
-    while off < len(data):
-        clen, ctype = struct.unpack_from("<II", data, off)
-        payload = data[off + 8: off + 8 + clen]
-        if ctype == CHUNK_JSON:
-            gltf = json.loads(payload.decode("utf-8"))
-        elif ctype == CHUNK_BIN:
-            binchunk = payload
-        off += 8 + clen
+        size = os.fstat(f.fileno()).st_size
+        header = f.read(12)
+        magic, version, _ = struct.unpack_from("<III", header, 0)
+        if magic != MAGIC or version != 2:
+            raise SystemExit(f"{path}: not a GLB v2 file")
+        gltf, binchunk = None, b""
+        while True:
+            chunk_header = f.read(8)
+            if not chunk_header:
+                break
+            clen, ctype = struct.unpack_from("<II", chunk_header, 0)
+            # clen is attacker-controlled file content: never request more than
+            # the bytes actually left in the file, so a forged near-4GiB length
+            # on a tiny/truncated file can't force an oversized read buffer.
+            remaining = max(size - f.tell(), 0)
+            payload = f.read(min(clen, remaining))
+            if ctype == CHUNK_JSON:
+                gltf = json.loads(payload.decode("utf-8"))
+            elif ctype == CHUNK_BIN:
+                binchunk = payload
     return gltf, binchunk
 
 
