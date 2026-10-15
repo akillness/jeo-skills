@@ -2,11 +2,15 @@
 import {
   accessSync,
   chmodSync,
+  closeSync,
   constants as fsConstants,
   existsSync,
+  fstatSync,
   lstatSync,
   mkdirSync,
+  openSync,
   readFileSync,
+  readSync,
   readdirSync,
   realpathSync,
   renameSync,
@@ -31,11 +35,14 @@ const AGENT_ID = /^[a-z][a-z0-9_-]*$/;
 const PROFILE_ID = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const ENV_ID = /^[A-Z_][A-Z0-9_]*$/;
 const MODEL_ID = /^[A-Za-z0-9][A-Za-z0-9_.:/@+-]*$/;
-const HOST_PROVIDERS = new Set(['anthropic', 'openai', 'google', 'gemini', 'openrouter']);
+const MODEL_PLAN_INPUT_BYTES = 1024 * 1024;
+const HOST_MODEL_SNAPSHOT_MAX_AGE_MS = 60_000;
+const HOST_PROVIDERS = new Set(['anthropic', 'openai', 'openai-codex', 'google', 'gemini', 'openrouter']);
 // 'gemini' is a known routing-advice provider name but no host's CLI provider
 // alias/model-selector for it was verified (AgentPluginResearch lane-d); keep
 // the matrix conservative and never guess 'google' vs 'gemini' for any host.
-const GENERIC_HOST_PROVIDERS = new Set(['anthropic', 'openai', 'google', 'openrouter']);
+// Preserve OAuth identity: an openai-codex observation never authorizes openai.
+const GENERIC_HOST_PROVIDERS = new Set(['anthropic', 'openai', 'openai-codex', 'google', 'openrouter']);
 // Per-host model-routing contract, grounded in AgentPluginResearch's verified
 // --help captures (lane-d-installed-host-inventory.md:113-125). `providers`
 // is the exact allow-list for that host - never the full generic
@@ -559,15 +566,96 @@ function adviceEntries(payload) {
   throw new Error('advice must be a routing array or an object containing routing/advice');
 }
 
+function planObject(value) {
+  return value !== null && typeof value === 'object' && !Array.isArray(value);
+}
+
+// Explicit inputs only: never discover credentials or invoke a host for auth.
+// Nonblocking/no-follow opens reject FIFOs and leaf symlinks; the bounded read
+// also handles a regular file growing after fstat without unbounded allocation.
+function readPlanJson(path, label) {
+  let fd;
+  try {
+    const file = resolve(path);
+    if (lstatSync(file).isSymbolicLink()) throw new Error('symlink');
+    fd = openSync(file, fsConstants.O_RDONLY | fsConstants.O_NOFOLLOW | fsConstants.O_NONBLOCK);
+    const info = fstatSync(fd);
+    if (!info.isFile() || info.size > MODEL_PLAN_INPUT_BYTES) throw new Error('file type or size');
+    const buffer = Buffer.alloc(MODEL_PLAN_INPUT_BYTES + 1);
+    let length = 0;
+    while (length < buffer.length) {
+      const size = readSync(fd, buffer, length, buffer.length - length, null);
+      if (!size) break;
+      length += size;
+    }
+    if (length > MODEL_PLAN_INPUT_BYTES) throw new Error('input grew');
+    return JSON.parse(buffer.toString('utf8', 0, length));
+  } catch {
+    throw new Error(`${label} must be readable nonsymlink regular JSON of at most 1 MiB`);
+  } finally {
+    if (fd !== undefined) closeSync(fd);
+  }
+}
+
+function requireFreshHostSnapshot(observed) {
+  const now = Date.now();
+  if (!Number.isFinite(observed) || observed > now || now - observed > HOST_MODEL_SNAPSHOT_MAX_AGE_MS) {
+    throw new Error('host-model snapshot must be fresh (at most 60 seconds old), not future-dated');
+  }
+}
+
+function hostModelInventory(flags, ctx) {
+  if (!flags.hostModels) throw new Error('model-plan requires authenticated host inventory via --host-models <path>');
+  const snapshot = readPlanJson(flags.hostModels, 'host-model snapshot');
+  if (!planObject(snapshot) || snapshot.agent !== ctx.agent || snapshot.profile !== ctx.profile) {
+    throw new Error('host-model snapshot agent/profile mismatch');
+  }
+  const observed = planTimestamp(snapshot.observedAt);
+  requireFreshHostSnapshot(observed);
+  if (!planObject(snapshot.inventory)) throw new Error('host-model snapshot has no provider inventory');
+  return { inventory: snapshot.inventory, observedAt: observed };
+}
+
+function planTimestamp(value) {
+  if (typeof value !== 'string') return NaN;
+  const parts = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.\d{1,9})?(?:Z|[+-]\d{2}:\d{2})$/.exec(value);
+  if (!parts) return NaN;
+  const [year, month, day, hour, minute, second] = parts.slice(1).map(Number);
+  const leap = year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
+  const days = [31, leap ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  if (month < 1 || month > 12 || day < 1 || day > days[month - 1] || hour > 23 || minute > 59 || second > 59) return NaN;
+  return Date.parse(value);
+}
+
+function quotaAvailable(limit, now) {
+  if (limit === undefined || limit === null) return true;
+  const reset = planTimestamp(limit);
+  return Number.isFinite(reset) && reset <= now;
+}
+
+function hostModelEligible(inventory, provider, model, now) {
+  if (!Object.hasOwn(inventory, provider)) return false;
+  const state = inventory[provider];
+  if (!planObject(state) || state.authenticated !== true || !Array.isArray(state.models) || !state.models.includes(model)) return false;
+  if (!quotaAvailable(state.limitedUntil, now)) return false;
+  if (state.modelLimits !== undefined && state.modelLimits !== null) {
+    if (!planObject(state.modelLimits)) return false;
+    if (Object.hasOwn(state.modelLimits, model) && !quotaAvailable(state.modelLimits[model], now)) return false;
+  }
+  return true;
+}
+
 async function modelPlan(flags) {
   const ctx = resolveContext(flags, { allowMissingProfile: false });
   if (!ctx.state.enabled) return inactive('model-plan', ctx);
   if (!flags.advice) throw new Error('model-plan requires --advice <path>');
   const policy = HOST_MODEL_POLICY[ctx.agent];
   if (!policy) throw new Error(`unsupported host '${ctx.agent}' for model routing; no verified provider/argv contract`);
-  let payload;
-  try { payload = JSON.parse(readFileSync(resolve(flags.advice), 'utf8')); } catch { throw new Error('advice file is not readable JSON'); }
-  const entries = adviceEntries(payload);
+  const { inventory, observedAt } = hostModelInventory(flags, ctx);
+  const entries = adviceEntries(readPlanJson(flags.advice, 'routing advice'));
+  requireFreshHostSnapshot(observedAt);
+  const now = Date.now();
+  if (!entries.length || entries.length > 64) throw new Error('routing advice requires 1 to 64 entries');
   const plans = [];
   for (const entry of entries) {
     const chosen = typeof entry?.chosen === 'string' ? entry.chosen : null;
@@ -575,17 +663,37 @@ async function modelPlan(flags) {
     const separator = chosen.indexOf('/');
     const provider = chosen.slice(0, separator);
     const model = chosen.slice(separator + 1);
-    // Validate against this host's own allow-list, never the generic
-    // HOST_PROVIDERS set: a provider the classifier may legitimately choose
-    // for some host is still an arbitrary, unverified switch for this one.
-    if (!policy.providers.has(provider)) throw new Error(`host '${ctx.agent}' does not support provider '${provider}'; refusing an unverified provider switch`);
-    if (!MODEL_ID.test(model)) throw new Error('routing advice contains an unsafe model id');
-    const candidates = [...(entry?.policy?.candidates || []), ...(entry?.candidates || [])];
-    const listed = candidates.some(candidate => candidate?.provider === provider && candidate?.model === model);
-    if (!listed) throw new Error(`provider/model '${chosen}' was not an approved routing candidate`);
-    plans.push({ skill: entry.skill || null, provider, model, argv: policy.argv(provider, model), advisory: true, executed: false });
+    if (!policy.providers.has(provider)) throw new Error(`host '${ctx.agent}' refuses an unsupported provider switch`);
+    if (!MODEL_ID.test(model) || model.length > 256) throw new Error('routing advice contains an unsafe model id');
+    const skill = entry.skill ?? null;
+    if (skill !== null && (typeof skill !== 'string' || skill.length > 128 || !SKILL_ID.test(skill))) throw new Error('routing advice contains an unsafe skill id');
+    const candidates = [];
+    // Ranked advice precedes policy-only candidates; preserve supplied ordering.
+    for (const list of [entry.candidates, entry.policy?.candidates]) {
+      if (list !== undefined && !Array.isArray(list)) throw new Error('routing candidates must be arrays');
+      if (list && list.length > 128 - candidates.length) throw new Error('routing advice exceeds 128 candidates per entry');
+      candidates.push(...(list || []));
+    }
+    if (!candidates.some(candidate => candidate?.provider === provider && candidate?.model === model)) {
+      throw new Error('provider/model choice was not an approved routing candidate');
+    }
+    const eligible = [];
+    const seen = new Set();
+    for (const candidate of [{ provider, model }, ...candidates]) {
+      const p = candidate?.provider;
+      const m = candidate?.model;
+      if (!policy.providers.has(p) || typeof m !== 'string' || m.length > 256 || !MODEL_ID.test(m)) continue;
+      const id = `${p}/${m}`;
+      if (seen.has(id)) continue;
+      seen.add(id);
+      if (hostModelEligible(inventory, p, m, now)) eligible.push({ provider: p, model: m });
+    }
+    if (!eligible.length) throw new Error('no eligible host models: inventory unavailable or candidates exhausted');
+    const launch = ({ provider: p, model: m }) => ({ provider: p, model: m, argv: policy.argv(p, m), advisory: true, executed: false });
+    const [selected, ...fallbacks] = eligible;
+    plans.push({ skill, ...launch(selected), fallbacks: fallbacks.map(launch) });
   }
-  if (!plans.length) throw new Error('routing advice contains no supported candidates');
+  requireFreshHostSnapshot(observedAt);
   return { ...common('model-plan', ctx, false, ctx.state.enabled), host: ctx.agent, plans, executed: false, advisory: true };
 }
 
@@ -984,11 +1092,11 @@ async function codexHook(flags) {
 
 function parseArgs(argv) {
   const [action, ...rest] = argv;
-  const flags = { action, agent: undefined, profile: undefined, host: undefined, apply: false, backend: undefined, endpoint: undefined, model: undefined, keyEnv: undefined, modelDir: undefined, advice: undefined, integration: undefined, writerEndpoint: undefined, writerKeyEnv: undefined, writerApi: undefined, writerModel: undefined, localOnly: false };
+  const flags = { action, agent: undefined, profile: undefined, host: undefined, apply: false, backend: undefined, endpoint: undefined, model: undefined, keyEnv: undefined, modelDir: undefined, advice: undefined, hostModels: undefined, integration: undefined, writerEndpoint: undefined, writerKeyEnv: undefined, writerApi: undefined, writerModel: undefined, localOnly: false };
   const valueFlags = new Map([
     ['--runtime-mode', 'runtimeMode'], ['--review-mode', 'reviewMode'],
     ['--agent', 'agent'], ['--profile', 'profile'], ['--host', 'host'], ['--backend', 'backend'], ['--endpoint', 'endpoint'], ['--model', 'model'],
-    ['--key-env', 'keyEnv'], ['--model-dir', 'modelDir'], ['--advice', 'advice'], ['--integration', 'integration'],
+    ['--key-env', 'keyEnv'], ['--model-dir', 'modelDir'], ['--advice', 'advice'], ['--host-models', 'hostModels'], ['--integration', 'integration'],
     ['--writer-endpoint', 'writerEndpoint'], ['--writer-key-env', 'writerKeyEnv'], ['--writer-api', 'writerApi'], ['--writer-model', 'writerModel'],
   ]);
   for (let i = 0; i < rest.length; i++) {

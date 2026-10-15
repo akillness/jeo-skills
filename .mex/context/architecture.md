@@ -17,7 +17,7 @@ edges:
   - target: patterns/catalog-metadata-changes.md
     condition: when adding a new skill or editing an existing skill's metadata
 grounds_to: []
-last_updated: 2026-10-14
+last_updated: 2026-10-16
 ---
 
 # Architecture
@@ -78,8 +78,14 @@ The five backend kinds remain `api`, `local`, `ollama`, `lmstudio`, and `systemo
 with per-operation primary/fallback allow-lists and no cross-profile fallback.
 Only calibrated-head drivers with a matching served-model attestation can be
 validated. Status does not infer quality or calibration from configuration.
-Review does not execute tests/builds. Catalog `model_policies` produce model advice;
-token savings fields estimate names/descriptions rather than measuring total cost.
+Review does not execute tests/builds. Catalog `model_policies` produce model advice.
+The advisory `model-plan` controller requires explicit same-agent/profile host
+observations, fresh through final output, and intersects exact authenticated model
+membership with eligible provider/model quotas. Caller-supplied observations are
+not live authentication proof or execution permission; no host discovery or model
+switch runs implicitly. Token savings fields estimate names/descriptions rather
+than measuring total cost.
+
 Runtime commands and limits: `jev/README.md`; runbook: `patterns/jev-control-plane.md`.
 Fresh application evidence: `context/jev-runtime-activation.md`.
 

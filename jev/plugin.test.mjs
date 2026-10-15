@@ -1577,3 +1577,167 @@ test('status detect and host-plan are truthful read-only operations', async () =
     assert.equal(count(), 0, 'read-only plans must not probe the backend');
   });
 });
+
+
+test('model-plan rejects future, missing-time, and independently mismatched host snapshots', () => {
+  const f = fixture({ profile: 'snapshot-boundaries', enabled: true });
+  const advicePath = join(f.root, 'routing-advice.json');
+  writeFileSync(advicePath, JSON.stringify([{ candidates: [{ provider: 'openai', model: 'gpt-5.1', probability: 1, rank: 1 }], chosen: 'openai/gpt-5.1' }]));
+  const inventory = { openai: { authenticated: true, models: ['gpt-5.1'] } };
+  const cases = [
+    { name: 'future', snapshot: { observedAt: new Date(Date.now() + 60_000).toISOString() } },
+    { name: 'missing time', snapshot: { observedAt: undefined } },
+    { name: 'agent only', snapshot: { agent: 'omp' } },
+    { name: 'profile only', snapshot: { profile: 'other-profile' } },
+  ];
+  for (const { name, snapshot } of cases) {
+    const hostModelsPath = hostModelsFixture(f, { inventory, ...snapshot });
+    if (name === 'missing time') {
+      const missingTime = JSON.parse(readFileSync(hostModelsPath, 'utf8'));
+      delete missingTime.observedAt;
+      writeFileSync(hostModelsPath, JSON.stringify(missingTime));
+    }
+    const result = runPlugin(f, ['model-plan', '--agent', 'jeopi', '--profile', f.profile, '--advice', advicePath, '--host-models', hostModelsPath]);
+    assert.notEqual(result.status, 0, name);
+    assert.doesNotMatch(`${result.stdout}\n${result.stderr}`, /unknown option '--host-models'/, name);
+  }
+});
+
+test('model-plan skips malformed provider and model quotas but may choose an eligible fallback', () => {
+  const f = fixture({ profile: 'malformed-quotas', enabled: true });
+  const advicePath = join(f.root, 'routing-advice.json');
+  writeFileSync(advicePath, JSON.stringify([{ candidates: [
+    { provider: 'openai', model: 'gpt-5.1', probability: 0.99, rank: 1 },
+    { provider: 'anthropic', model: 'claude-sonnet-4-5', probability: 0.90, rank: 2 },
+    { provider: 'google', model: 'gemini-2.5-pro', probability: 0.80, rank: 3 },
+  ], chosen: 'openai/gpt-5.1' }]));
+  const hostModelsPath = hostModelsFixture(f, { inventory: {
+    openai: { authenticated: true, models: ['gpt-5.1'], limitedUntil: 'not-a-timestamp' },
+    anthropic: { authenticated: true, models: ['claude-sonnet-4-5'], modelLimits: { 'claude-sonnet-4-5': '0' } },
+    google: { authenticated: true, models: ['gemini-2.5-pro'], limitedUntil: null, modelLimits: { 'gemini-2.5-pro': null } },
+  } });
+  const result = runPlugin(f, ['model-plan', '--agent', 'jeopi', '--profile', f.profile, '--advice', advicePath, '--host-models', hostModelsPath]);
+  assert.equal(result.status, 0, `${result.stdout}\n${result.stderr}`);
+  const plan = jsonResult(result).plans[0];
+  assert.equal(`${plan.provider}/${plan.model}`, 'google/gemini-2.5-pro');
+  assert.equal(plan.executed, false);
+});
+
+test('model-plan requires boolean authentication and exact model inventory membership', () => {
+  const f = fixture({ profile: 'exact-inventory', enabled: true });
+  const advicePath = join(f.root, 'routing-advice.json');
+  writeFileSync(advicePath, JSON.stringify([{ candidates: [
+    { provider: 'openai-codex', model: 'gpt-5-codex', probability: 1, rank: 1 },
+    { provider: 'openai', model: 'gpt-5.1', probability: 0.99, rank: 2 },
+    { provider: 'mistral', model: 'codestral-latest', probability: 0.98, rank: 3 },
+    { provider: 'google', model: 'gpt-5-codex', probability: 0.97, rank: 4 },
+    { provider: 'anthropic', model: 'claude-sonnet-4-5', probability: 0.80, rank: 5 },
+  ], chosen: 'openai-codex/gpt-5-codex' }]));
+  const hostModelsPath = hostModelsFixture(f, { inventory: {
+    'openai-codex': { authenticated: true, models: ['gpt-5-codex'], limitedUntil: '2099-01-01T00:00:00.000Z' },
+    openai: { authenticated: 'true', models: ['gpt-5.1'] },
+    mistral: { authenticated: null, models: ['codestral-latest'] },
+    google: { authenticated: true, models: ['gpt-5-codex-extra'] },
+    anthropic: { authenticated: true, models: ['claude-sonnet-4-5'], limitedUntil: null },
+  } });
+  const result = runPlugin(f, ['model-plan', '--agent', 'jeopi', '--profile', f.profile, '--advice', advicePath, '--host-models', hostModelsPath]);
+  assert.equal(result.status, 0, `${result.stdout}\n${result.stderr}`);
+  const plan = jsonResult(result).plans[0];
+  assert.equal(`${plan.provider}/${plan.model}`, 'anthropic/claude-sonnet-4-5');
+  assert.equal(plan.executed, false);
+});
+
+test('model-plan rejects oversized, directory, and symlink host inputs without echoing contents', () => {
+  const f = fixture({ profile: 'bounded-host-input', enabled: true });
+  const advicePath = join(f.root, 'routing-advice.json');
+  writeFileSync(advicePath, JSON.stringify([{ candidates: [{ provider: 'openai', model: 'gpt-5.1', probability: 1, rank: 1 }], chosen: 'openai/gpt-5.1' }]));
+  const validPath = hostModelsFixture(f, { inventory: { openai: { authenticated: true, models: ['gpt-5.1'] } } });
+  const oversizedPath = join(f.root, 'oversized-host-models.json');
+  writeFileSync(oversizedPath, JSON.stringify({ privateValue: 'oversized-private-sentinel' }) + ' '.repeat(1024 * 1024));
+  const directoryPath = join(f.root, 'host-models-directory');
+  mkdirSync(directoryPath);
+  const symlinkPath = join(f.root, 'host-models-link.json');
+  symlinkSync(validPath, symlinkPath);
+  for (const badPath of [oversizedPath, directoryPath, symlinkPath]) {
+    const result = runPlugin(f, ['model-plan', '--agent', 'jeopi', '--profile', f.profile, '--advice', advicePath, '--host-models', badPath]);
+    const output = `${result.stdout}\n${result.stderr}`;
+    assert.notEqual(result.status, 0, badPath);
+    assert.ok(output.length < 4096, `unbounded error output (${output.length})`);
+    assert.doesNotMatch(output, /oversized-private-sentinel|plugin-test-secret-value/);
+  }
+});
+
+
+test('model-plan rejects impossible past quota dates but accepts a valid past leap date', () => {
+  const f = fixture({ profile: 'strict-quota-dates', enabled: true });
+  const advicePath = join(f.root, 'routing-advice.json');
+  const model = 'gpt-5.1';
+  writeFileSync(advicePath, JSON.stringify([{ candidates: [{ provider: 'openai', model, probability: 1, rank: 1 }], chosen: 'openai/' + model }]));
+  const cases = [
+    { name: 'overflowed February provider limit', inventory: { openai: { authenticated: true, models: [model], limitedUntil: '2026-02-30T00:00:00.000Z' } }, allowed: false },
+    { name: 'non-leap February model limit', inventory: { openai: { authenticated: true, models: [model], modelLimits: { [model]: '2025-02-29T00:00:00.000Z' } } }, allowed: false },
+    { name: 'overflowed April model limit', inventory: { openai: { authenticated: true, models: [model], modelLimits: { [model]: '2026-04-31T00:00:00.000Z' } } }, allowed: false },
+    { name: 'valid leap-day provider limit', inventory: { openai: { authenticated: true, models: [model], limitedUntil: '2024-02-29T00:00:00.000Z' } }, allowed: true },
+    { name: 'valid leap-day model limit', inventory: { openai: { authenticated: true, models: [model], modelLimits: { [model]: '2024-02-29T00:00:00.000Z' } } }, allowed: true },
+  ];
+  for (const item of cases) {
+    const hostModelsPath = hostModelsFixture(f, { inventory: item.inventory });
+    const result = runPlugin(f, ['model-plan', '--agent', 'jeopi', '--profile', f.profile, '--advice', advicePath, '--host-models', hostModelsPath]);
+    if (item.allowed) {
+      assert.equal(result.status, 0, item.name + ': ' + result.stdout + '\n' + result.stderr);
+      assert.equal(jsonResult(result).plans[0].model, model, item.name);
+    } else {
+      assert.notEqual(result.status, 0, item.name + ': ' + result.stdout + '\n' + result.stderr);
+      assert.doesNotMatch(result.stdout + '\n' + result.stderr, /unknown option '--host-models'/, item.name);
+    }
+  }
+});
+
+test('model-plan rechecks snapshot freshness after reads and candidate evaluation', () => {
+  const variants = [
+    { name: 'after snapshot read', mode: 'read', target: 'snapshot' },
+    { name: 'after advice read', mode: 'read', target: 'advice' },
+    { name: 'during model eligibility', mode: 'includes', target: 'model' },
+  ];
+  for (const variant of variants) {
+    const f = fixture({ profile: 'freshness-after-io', enabled: true });
+    installForbiddenCommand(f, 'jeopi');
+    const model = 'gpt-5.1';
+    const advicePath = join(f.root, 'routing-advice.json');
+    writeFileSync(advicePath, JSON.stringify([{ candidates: [{ provider: 'openai', model, probability: 1, rank: 1 }], chosen: 'openai/' + model }]));
+    const hostModelsPath = hostModelsFixture(f, { inventory: { openai: { authenticated: true, models: [model] } } });
+    const targets = variant.target === 'snapshot' ? [hostModelsPath] : variant.target === 'advice' ? [advicePath] : [];
+    const preloadSource = [
+      "import fs from 'node:fs';",
+      "import { syncBuiltinESMExports } from 'node:module';",
+      'const targetPaths = new Set(' + JSON.stringify(targets) + ');',
+      'const targetModel = ' + JSON.stringify(model) + ';',
+      'const watchedFds = new Set();',
+      'let shifted = false;',
+      'const originalNow = Date.now.bind(Date);',
+      'const advanceClock = () => { if (!shifted) { shifted = true; Date.now = () => originalNow() + 61_000; } };',
+      'if (' + JSON.stringify(variant.mode) + ' === "read") {',
+      '  const originalOpenSync = fs.openSync.bind(fs);',
+      '  const originalReadSync = fs.readSync.bind(fs);',
+      '  fs.openSync = function(path, ...args) { const fd = originalOpenSync(path, ...args); if (targetPaths.has(String(path))) watchedFds.add(fd); return fd; };',
+      '  fs.readSync = function(fd, ...args) { const result = originalReadSync(fd, ...args); const count = typeof result === "number" ? result : result && result.bytesRead; if (watchedFds.has(fd) && count > 0) advanceClock(); return result; };',
+      '} else {',
+      '  const originalIncludes = Array.prototype.includes;',
+      '  Array.prototype.includes = function(value, ...args) { const result = originalIncludes.call(this, value, ...args); if (value === targetModel) advanceClock(); return result; };',
+      '}',
+      'syncBuiltinESMExports();',
+      '',
+    ].join('\n');
+    const preloadPath = join(f.root, 'freshness-preloader.mjs');
+    writeFileSync(preloadPath, preloadSource);
+    const result = runPlugin(f, ['model-plan', '--agent', 'jeopi', '--profile', f.profile, '--advice', advicePath, '--host-models', hostModelsPath], {
+      env: { NODE_OPTIONS: '--import=' + pathToFileURL(preloadPath).href },
+    });
+    const output = result.stdout + '\n' + result.stderr;
+    assert.notEqual(result.status, 0, variant.name + ': stale snapshot unexpectedly passed');
+    assert.ok(output.length < 4096, variant.name + ': unbounded output');
+    assert.doesNotMatch(output, /ENOENT|no such file|plugin-test-secret-value/);
+    assert.match(jsonResult(result).error, /fresh|60 seconds|future-dated/, variant.name + ': expected freshness refusal');
+    assert.equal(existsSync(join(f.home, 'jev-plugin-command.log')), false, variant.name + ': host command ran');
+  }
+});

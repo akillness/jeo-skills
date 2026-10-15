@@ -29,6 +29,16 @@ Then read this file fully before doing anything else in this session.
 
 **Working:**
 
+- Jev host-model planning repair (2026-10-16): implemented the missing
+  `--host-models` input rather than weakening the existing CI tests. Plans now
+  intersect advice with a same-agent/profile observation no older than 60 seconds,
+  exact authenticated model membership and eligible provider/model quotas. OAuth
+  identities remain distinct. Strict calendar validation, post-read/final freshness
+  checks and bounded regular-file JSON inputs cover the review findings. New
+  isolated CLI regressions exercise invalid inputs and deterministic clock advances.
+  This is source/advisory behavior only: no real credentials, providers, installed
+  runtime settings or host models were changed; remote CI remains a separate gate.
+
 - Knowledge repositories (2026-10-16): added 18 original source-pinned operators
   for the reviewed ontology, code-graph, memory and retrieval projects. The
   `knowledge-repositories` bundle covers 21 projects by reusing unchanged `mex`,
