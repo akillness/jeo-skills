@@ -1,7 +1,7 @@
 {
   "version": "2.1.0",
-  "generated": "2026-10-16",
-  "skill_count": 400,
+  "generated": "2026-10-17",
+  "skill_count": 401,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -284,7 +284,8 @@
       "shopping-shorts",
       "video-use",
       "autoclip",
-      "moneyprinter-turbo"
+      "moneyprinter-turbo",
+      "opencreator"
     ],
     "cli-tools": [
       "soup",
@@ -759,7 +760,8 @@
         "shopping-shorts",
         "video-use",
         "autoclip",
-        "moneyprinter-turbo"
+        "moneyprinter-turbo",
+        "opencreator"
       ],
       "motion": [
         "video-motion-previs"
@@ -14802,6 +14804,38 @@
       "keyword": "trickle-ui",
       "version": "1.0",
       "source": "https://github.com/akaieuan/trickle-UI-kit"
+    },
+    {
+      "name": "opencreator",
+      "description": "Operate krillinai/OpenCreator, the Codex CLI-based creator workspace: choose the Desktop, CLI, or Server path; inspect a pinned checkout; configure integrations; use creator tasks; manage Skills, MCP, and schedules; or troubleshoot an output. Use when the user names OpenCreator, KrillinAI, its local Runtime, or its creator/agent workspace. Require separate approval before installers or source dependencies, credentials or provider linking, paid generation or credit purchases, downloads, MCP or scheduled execution, external publication, network exposure, or deletion. Route code-first video production to `video-production`, long-form clipping to `autoclip`, local timeline editing to `opencut`, and general skill authoring to `skill-standardization`.",
+      "category": "creative-media",
+      "subcategory": "video",
+      "interface": "desktop",
+      "path": "opencreator/SKILL.md",
+      "tags": [
+        "opencreator",
+        "krillinai",
+        "codex-cli",
+        "creator-workspace",
+        "skills-mcp",
+        "video-generation"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "WebFetch"
+      ],
+      "keyword": "opencreator",
+      "version": "1.0.0",
+      "source": "https://github.com/krillinai/OpenCreator"
     }
   ]
 }

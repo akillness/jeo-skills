@@ -2,14 +2,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-400-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-401-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![GJC](https://img.shields.io/badge/GJC-gajae--code-181717?style=for-the-badge&logo=github)](https://github.com/akillness/gajae-code)
 [![jeo-code](https://img.shields.io/badge/jeo--code-jeo-181717?style=for-the-badge&logo=github)](https://github.com/akillness/jeo-code)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**카테고리형 스킬 400개 · 경량 선택 설치 · 압축 TOON 카탈로그 · 멀티플랫폼**
+**카테고리형 스킬 401개 · 경량 선택 설치 · 압축 TOON 카탈로그 · 멀티플랫폼**
 
 스펙 우선 멀티 에이전트 LLM 워크플로우 컬렉션입니다. 프롬프트 하나로 전체 설정을
 위임하거나, `jeo-skill` 라우터부터 설치해 필요한 웹, 인프라, 게임, 미디어, CLI,
@@ -182,7 +182,7 @@ curl -s https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-sk
 
 ### 경량 선택 설치(수동 / CI)
 
-400개 스킬 폴더 전체가 아니라 **`jeo-skill` 라우터부터 설치**합니다. 카테고리,
+401개 스킬 폴더 전체가 아니라 **`jeo-skill` 라우터부터 설치**합니다. 카테고리,
 하위 분류, 인터페이스, 번들, 연관 스킬을 탐색할 수 있으며 앱·모델·MCP 서버·런타임은
 실제 선택된 작업에서만 온디맨드로 설치합니다.
 
@@ -306,7 +306,7 @@ python3 .agent-skills/openrig/scripts/preflight.py --json
 
 ## 📚 스킬 목록
 
-> 중앙 매니페스트: `.agent-skills/skills.json` · 400개 스킬 · 10개 기본 카테고리 · 하위 카테고리/인터페이스/관계 그룹 지원
+> 중앙 매니페스트: `.agent-skills/skills.json` · 401개 스킬 · 10개 기본 카테고리 · 하위 카테고리/인터페이스/관계 그룹 지원
 
 ### 🌐 웹 (69개)
 
@@ -443,9 +443,9 @@ python3 .agent-skills/openrig/scripts/preflight.py --json
 | `game-feel` |
 | `game-ui-ux` |
 
-### 🎬 크리에이티브 미디어 (36개)
+### 🎬 크리에이티브 미디어 (37개)
 
-하위 분류: `image` (10), `video` (17), `motion` (1), `audio` (1), `presentation` (1), `diagram` (1), `design` (3), `capture` (0), `storytelling` (2)
+하위 분류: `image` (10), `video` (18), `motion` (1), `audio` (1), `presentation` (1), `diagram` (1), `design` (3), `capture` (0), `storytelling` (2)
 
 | Skill |
 |---|
@@ -485,6 +485,7 @@ python3 .agent-skills/openrig/scripts/preflight.py --json
 | `video-use` |
 | `autoclip` |
 | `moneyprinter-turbo` |
+| `opencreator` |
 
 ### ⌨️ CLI 도구 (42개)
 
@@ -1012,7 +1013,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 ## 📁 구조
 
 ```text
-├── .agent-skills/          ← 400개 스킬 폴더 (SKILL.md + 선택적 지원 파일)
+├── .agent-skills/          ← 401개 스킬 폴더 (SKILL.md + 선택적 지원 파일)
 ├── assets/                ← README hero 및 카탈로그/런타임 다이어그램
 ├── changelog/             ← 월별 다국어 릴리스 소스 파일
 ├── docs/                  ← ScrapingAnt 파트너십·아웃리치 자료
@@ -1119,6 +1120,12 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 ---
 
 <!-- WHATS-NEW:START -->
+
+## 🆕 v2026-10-17 업데이트
+
+| 변경 사항 | 상세 내용 |
+|--------|---------|
+| **OpenCreator 운영 스킬** | `krillinai/OpenCreator` 커밋 `b01a9f71165b9010216e25c462653b0cfa33cbce`에 고정한 `opencreator` 가이드를 추가했습니다. Desktop/CLI/Server 선택, 제작 작업, Codex·provider 설정, Skills/MCP/일정, 릴리스 무결성과 승인 경계를 다룹니다. 오프라인 읽기 전용 사전 점검과 작성된 시나리오 11개, CI에 연결된 전용 회귀 테스트 16개를 추가해 모두 통과했습니다. 카탈로그는 400개에서 401개로 늘었습니다. 업스트림 앱·설치 프로그램·provider·유료 서비스는 실행하지 않았습니다. |
 
 ## 🆕 v2026-10-15 업데이트
 

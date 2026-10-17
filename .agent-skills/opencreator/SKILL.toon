@@ -1,0 +1,31 @@
+skill: opencreator
+version: 1.0.0
+source: https://github.com/krillinai/OpenCreator
+upstream_commit: b01a9f71165b9010216e25c462653b0cfa33cbce
+category: creative-media/video
+interface: desktop
+purpose: Operate the named Codex CLI-based OpenCreator workspace across Desktop, CLI, Server, Skills/MCP/schedules, creator runs, source checks, and troubleshooting.
+routes:
+  - code-first video pipeline -> video-production
+  - long-form clipping -> autoclip
+  - local timeline editing -> opencut
+  - general Skill authoring -> skill-standardization
+safety:
+  - approval before download, installer, source dependencies, provider linking, credentials, paid generation, credit purchase, MCP/schedule activation, external publication, network exposure, or deletion
+  - never read or print credential files; no automatic paid retries
+  - use pinned upstream reference and release-matched checksums
+  - source preflight is offline/read-only and always reports runtime_verified=false
+paths:
+  - orient
+  - install
+  - configure
+  - creator-task
+  - skills-mcp
+  - source-work
+  - troubleshoot
+files:
+  - SKILL.md
+  - references/upstream.md
+  - scripts/preflight.py
+  - evals/evals.json
+  - scripts/test_opencreator_preflight.py

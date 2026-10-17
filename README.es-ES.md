@@ -4,14 +4,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-400-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-401-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![GJC](https://img.shields.io/badge/GJC-gajae--code-181717?style=for-the-badge&logo=github)](https://github.com/akillness/gajae-code)
 [![jeo-code](https://img.shields.io/badge/jeo--code-jeo-181717?style=for-the-badge&logo=github)](https://github.com/akillness/jeo-code)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**400 habilidades categorizadas · instalación selectiva ligera · catálogo TOON compacto · multiplataforma**
+**401 habilidades categorizadas · instalación selectiva ligera · catálogo TOON compacto · multiplataforma**
 
 Una colección curada para flujos de trabajo LLM multi-agente y centrados en especificaciones. Delega una configuración completa con un solo prompt, o instala primero el enrutador `jeo-skill` y añade solo las habilidades de web, infraestructura, juegos, medios, CLI o utilidades que necesites.
 
@@ -185,7 +185,7 @@ Jev sigue siendo opcional en todos los modos del catálogo: la configuración pr
 
 ### Instalación selectiva ligera (manual / CI)
 
-Instala primero el **enrutador `jeo-skill`**, no las 400 carpetas de habilidades. Proporciona descubrimiento de categoría, subcategoría, interfaz, paquete y relación, manteniendo aplicaciones pesadas, modelos, servidores MCP y tiempos de ejecución bajo demanda.
+Instala primero el **enrutador `jeo-skill`**, no las 401 carpetas de habilidades. Proporciona descubrimiento de categoría, subcategoría, interfaz, paquete y relación, manteniendo aplicaciones pesadas, modelos, servidores MCP y tiempos de ejecución bajo demanda.
 
 El paquete `ui-design-repositories` añade diez guías UI fijadas a fuentes, no
 componentes ni servicios upstream. La [auditoría de fuentes, licencias y duplicados](docs/ui-design-repositories.md)
@@ -318,7 +318,7 @@ y 2 entrada inválida. Una ruta de ejecutable o un HEAD coincidente no demuestra
 
 ## 📚 Lista de Habilidades
 
-> Manifiesto central: `.agent-skills/skills.json` · 400 habilidades · 10 categorías principales · metadatos de subcategoría/interfaz/relación
+> Manifiesto central: `.agent-skills/skills.json` · 401 habilidades · 10 categorías principales · metadatos de subcategoría/interfaz/relación
 
 ### 🌐 Web (69)
 
@@ -455,9 +455,9 @@ Subcategorías: `client` (3), `web` (2), `server` (1), `design-ui` (7), `audio` 
 | `game-feel` |
 | `game-ui-ux` |
 
-### 🎬 Medios Creativos (36)
+### 🎬 Medios Creativos (37)
 
-Subcategorías: `image` (10), `video` (17), `motion` (1), `audio` (1), `presentation` (1), `diagram` (1), `design` (3), `capture` (0), `storytelling` (2)
+Subcategorías: `image` (10), `video` (18), `motion` (1), `audio` (1), `presentation` (1), `diagram` (1), `design` (3), `capture` (0), `storytelling` (2)
 
 | Skill |
 |---|
@@ -497,6 +497,7 @@ Subcategorías: `image` (10), `video` (17), `motion` (1), `audio` (1), `presenta
 | `video-use` |
 | `autoclip` |
 | `moneyprinter-turbo` |
+| `opencreator` |
 
 ### ⌨️ Herramientas CLI (42)
 
@@ -1025,7 +1026,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 ## 📁 Estructura
 
 ```text
-├── .agent-skills/          ← 400 carpetas de habilidades (SKILL.md + soporte)
+├── .agent-skills/          ← 401 carpetas de habilidades (SKILL.md + soporte)
 ├── assets/                 ← portada estática y diagramas del catálogo y del runtime
 ├── changelog/              ← fuentes mensuales localizadas
 ├── docs/                   ← colaboración y contacto de ScrapingAnt
@@ -1128,6 +1129,12 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 ---
 
 <!-- WHATS-NEW:START -->
+
+## 🆕 Novedades en v2026-10-17
+
+| Cambio | Detalles |
+|--------|---------|
+| **Operador OpenCreator** | Añadida la guía `opencreator`, fijada al commit `b01a9f71165b9010216e25c462653b0cfa33cbce` de `krillinai/OpenCreator`. Cubre Desktop/CLI/Server, tareas creativas, configuración de Codex/proveedores, Skills/MCP/programación, integridad de releases y límites de aprobación. Incluye una preflight offline de solo lectura, 11 escenarios redactados y 16 regresiones de subprocess que pasan y se ejecutan en CI. Catálogo: 400 → 401. No se ejecutaron la aplicación upstream, instaladores, proveedores ni servicios de pago. |
 
 ## 🆕 Novedades en v2026-10-15
 

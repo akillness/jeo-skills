@@ -16,7 +16,7 @@ edges:
     condition: when the task touches skills.json, SKILL.md frontmatter, README/TOON projections, or CI catalog validation
   - target: patterns/INDEX.md
     condition: when starting a task — check the pattern index for a matching pattern file
-last_updated: 2026-10-16
+last_updated: 2026-10-17
 ---
 
 # Session Bootstrap
@@ -153,6 +153,16 @@ Then read this file fully before doing anything else in this session.
   repo checkout; delegates real installs to `npx skills add`
 - The flat `.agent-skills/<name>/SKILL.md` layout is enforced by
   `flatten_skills.py --dry-run` in CI (no category subfolders)
+- OpenCreator repository operator (2026-10-17): added `.agent-skills/opencreator/` as
+  the 13th source-pinned operator, audited at `krillinai/OpenCreator` commit
+  `b01a9f71165b9010216e25c462653b0cfa33cbce`. It includes a pinned upstream
+  reference, standalone read-only offline preflight, 11 authored eval fixtures, and
+  dedicated subprocess CI regressions (16/16 passing locally). The helper checks
+  source markers and local Git metadata only, makes no network call or configuration
+  write, and always reports
+  `runtime_verified: false`; no upstream runtime or installer was run. This raises
+  the family total to 13 operators and 71 authored scenarios; the existing generic
+  preflight suite still covers the prior twelve.
 - Repository operators (updated 2026-10-15): twelve source-pinned guides for Openrig,
   AnyJev, TypeSafe computer use, Zurp, Helix Foundry, Uzu, Context Mode, REA, FineEnvs,
   llmfit, pg-jev, and Jev Ultrafast. The v1.1.0 packages use router-first SKILL.md,

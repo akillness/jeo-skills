@@ -2,14 +2,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-400-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-401-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![GJC](https://img.shields.io/badge/GJC-gajae--code-181717?style=for-the-badge&logo=github)](https://github.com/akillness/gajae-code)
 [![jeo-code](https://img.shields.io/badge/jeo--code-jeo-181717?style=for-the-badge&logo=github)](https://github.com/akillness/jeo-code)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**400 categorized skills · lightweight selective install · compact TOON catalog · cross-platform**
+**401 categorized skills · lightweight selective install · compact TOON catalog · cross-platform**
 
 A curated collection for spec-first, multi-agent LLM workflows. Delegate a complete setup
 with one prompt, or install the `jeo-skill` router first and add only the web,
@@ -175,7 +175,7 @@ Jev remains optional in all catalog modes: default setup does not download Jev m
 
 ### Lightweight selective install (manual / CI)
 
-Install the **`jeo-skill` router first**, not all 400 skill folders. It provides category,
+Install the **`jeo-skill` router first**, not all 401 skill folders. It provides category,
 subcategory, interface, bundle, and relationship discovery while keeping heavy apps,
 models, MCP servers, and runtimes on demand.
 
@@ -320,7 +320,7 @@ rejects invalid input. A tool path or matching source HEAD is not runtime readin
 
 ## 📚 Skills List
 
-> Central manifest: `.agent-skills/skills.json` · 400 skills · 10 primary categories · subcategory/interface/relationship metadata
+> Central manifest: `.agent-skills/skills.json` · 401 skills · 10 primary categories · subcategory/interface/relationship metadata
 
 ### 🌐 Web (69)
 
@@ -457,9 +457,9 @@ Subcategories: `client` (3), `web` (2), `server` (1), `design-ui` (7), `audio` (
 | `game-feel` |
 | `game-ui-ux` |
 
-### 🎬 Creative Media (36)
+### 🎬 Creative Media (37)
 
-Subcategories: `image` (10), `video` (17), `motion` (1), `audio` (1), `presentation` (1), `diagram` (1), `design` (3), `capture` (0), `storytelling` (2)
+Subcategories: `image` (10), `video` (18), `motion` (1), `audio` (1), `presentation` (1), `diagram` (1), `design` (3), `capture` (0), `storytelling` (2)
 
 | Skill |
 |---|
@@ -499,6 +499,7 @@ Subcategories: `image` (10), `video` (17), `motion` (1), `audio` (1), `presentat
 | `video-use` |
 | `autoclip` |
 | `moneyprinter-turbo` |
+| `opencreator` |
 
 ### ⌨️ CLI Tools (42)
 
@@ -1030,7 +1031,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 ## 📁 Structure
 
 ```text
-├── .agent-skills/          ← 400 skill folders (SKILL.md + optional support files)
+├── .agent-skills/          ← 401 skill folders (SKILL.md + optional support files)
 ├── assets/                ← README hero and catalog/runtime diagrams
 ├── changelog/             ← localized monthly source files
 ├── docs/                  ← ScrapingAnt partnership and outreach notes
@@ -1138,6 +1139,12 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 ---
 
 <!-- WHATS-NEW:START -->
+
+## 🆕 What's New in v2026-10-17
+
+| Change | Details |
+|--------|---------|
+| **OpenCreator operator** | Added the source-pinned `opencreator` guide for `krillinai/OpenCreator` commit `b01a9f71165b9010216e25c462653b0cfa33cbce`, covering Desktop/CLI/Server, creator tasks, Codex/provider setup, Skills/MCP/schedules, release integrity and approval boundaries. Added an offline read-only preflight, 11 authored scenarios, and 16 passing subprocess regressions wired into CI. Catalog: 400 → 401. No upstream app, installer, provider, or paid service was run. |
 
 ## 🆕 What's New in v2026-10-15
 

@@ -2340,10 +2340,11 @@ of the description on purpose.
 
 ### Repository operators (on demand, offline support)
 
-The twelve repository operator skills below are original instruction packages, not
-vendored applications. Each v1.1.0 package includes a router-first `SKILL.md`, a
-pinned `references/upstream.md`, an executable stdlib `scripts/preflight.py`, and
-behavioral eval scenarios. Catalog installation copies these files; it does not run
+The thirteen repository operator skills below are original instruction packages, not
+vendored applications. Twelve existing v1.1.0 packages and the OpenCreator v1.0.0
+package include a router-first `SKILL.md`, a pinned `references/upstream.md`, an
+executable stdlib `scripts/preflight.py`, and behavioral eval scenarios. Catalog
+installation copies these files; it does not run
 the helpers or upstream applications. Even in `full` mode, do not clone/build these projects, install
 their dependencies, download models/data, register MCP servers/plugins/hooks, start
 services, read credentials, grant desktop authority, submit training jobs, scan live
@@ -2364,13 +2365,14 @@ data disclosure, side effects and rollback before following that skill's setup b
 | [llmfit](.agent-skills/llmfit/SKILL.md) | An intentionally installed llmfit binary can inspect hardware and estimate model fit. Profiles/overrides, storage, downloads and benchmark/share operations are distinct. Recommendations and throughput estimates are not measured inference or Uzu compatibility. |
 | [pg-jev](.agent-skills/pg-jev/SKILL.md) | PostgreSQL 14–17 CI coverage, matching PGXS/`pg_config`, `plpython3u` and privileged extension installation. Provider keys belong to the server process/configuration, not a client shell. Confirm row disclosure, endpoint and per-database writes before installs or inference SQL. |
 | [jev-ultrafast](.agent-skills/jev-ultrafast/SKILL.md) | Python 3.12+, `uv`, `browser-harness==0.1.13`, and `httpx[http2]>=0.28,<1`; `uv sync` installs dependencies. Its `data:` guard makes no model calls or external-site requests, but still starts Chrome and performs local browser input. TypeSafe receives goal and page state; `TYPE_TEXT` also sends field/page context to the configured text model. Approve package downloads, provider spend, page-data egress, live URLs/actions, and recordings separately. The Flights example searches and verifies but does not select or book. |
+| [opencreator](.agent-skills/opencreator/SKILL.md) | Choose Desktop, CLI, or Server and verify the matching official release/checksum. At v3.2.7 macOS installers were signed/notarized and the Windows installer was unsigned. Codex/provider readiness, optional rendering components, source dependencies, paid generation, MCP/schedules, and external publication are separate approval gates. The offline helper never verifies runtime readiness. |
 
 Preview instruction/support-file selection without installing any upstream runtime:
 
 ```bash
 python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" install \
   openrig anyjev typesafe-computer-use zurp helix-foundry uzu \
-  context-mode rea fineenvs llmfit pg-jev jev-ultrafast --global --dry-run
+  context-mode rea fineenvs llmfit pg-jev jev-ultrafast opencreator --global --dry-run
 ```
 
 For a selected skill, use its offline helper before the separately approved setup:
@@ -2385,9 +2387,13 @@ python3 "$SKILLS_ROOT/jev-ultrafast/scripts/preflight.py" --help
 python3 "$SKILLS_ROOT/jev-ultrafast/scripts/preflight.py" --json \
   --repo "/path/to/jev-ultrafast" \
   --expect-commit 1231850a0bf1a0c0341fe408ef1668dbbfdfac46
+python3 "$SKILLS_ROOT/opencreator/scripts/preflight.py" --help
+python3 "$SKILLS_ROOT/opencreator/scripts/preflight.py" --json \
+  --repo "/path/to/OpenCreator" \
+  --expect-commit b01a9f71165b9010216e25c462653b0cfa33cbce
 ```
 
-All twelve helpers support `--help`, `--json`, optional `--repo PATH`, and optional
+All thirteen helpers support `--help`, `--json`, optional `--repo PATH`, and optional
 `--expect-commit FULL_SHA` (requires `--repo`). Zurp also accepts `--surface burp|mcp|all`
 so one selected surface does not require the other toolchain. Run the helper from
 the installed skill directory or use its absolute path; it needs no sibling skill.
@@ -2396,9 +2402,10 @@ JSON reports `skill`, `scope: offline-preflight`, `status`, `checks`, and
 missing/mismatched prerequisite, and 2 means invalid input. An unavailable optional
 application is not a reason to install it during blanket setup.
 
-Default checks inspect host facts, tool paths and permitted package metadata only.
-`--repo` adds public source-marker checks and bounded local Git inspection; a HEAD
-pin match does not attest uncommitted working-tree contents. Tool presence and
+Default checks stay offline and report only local host facts, tool paths, or permitted
+package metadata, depending on the helper. `--repo` adds public source-marker checks
+and bounded local Git inspection; a HEAD pin match does not attest uncommitted
+working-tree contents. Tool presence and
 `status: ok` do not prove runtime versions, provider authorization, hooks, desktop
 permissions, service health, model quality or measured inference. Record unchecked
 versions and missing prerequisites; do not silently repair them or run upstream
