@@ -73,15 +73,29 @@ Then read this file fully before doing anything else in this session.
   `purge-quarantine`; maintainer `scripts/retire-unused-skills.py` for catalog retirement.
   Logic lives in `skill_usage.py`/`skill_quarantine.py`/`skill_jev.py`/`skill_usage_cli.py`;
   `jeo-skill.py` only registers/dispatches. Jev hooks append `jev-usage.jsonl` (injected vs
-  routed). Evidence: usage 7, quarantine 15, retirement 7 Python tests and 4 node ledger
-  tests pass; Jev runtime/codex/lifecycle 64 pass; catalog gates pass; installer 63/63. The earlier
-  `/var` TMPDIR failures were a test-fixture alias mismatch, fixed in the merge
-  (`test_installer_regressions.py` resolves its owned temp root); the suite now passes 63/63
-  with the default macOS TMPDIR and in CI run 39569222853 (Ubuntu + macOS). Real-data read-only scan
-  (state in /tmp): 205 of 373 catalog skills used, 168 never; after grace a preview would
-  quarantine 922 provable copies and keep 209. Real tracking state was NOT started and no
-  host hook was installed (user chose docs + snippet). Installed `~/.agents/jev` and the
-  installed router are not updated. Runbook: `patterns/skill-usage-lifecycle.md`.
+  routed). Scans are single-flight (`scan.lock` flock; `usage scan --if-idle` skips) and
+  re-parse live records when the catalog changes, carrying forward rows for skills absent
+  from the current catalog. Claude stores include every `CLAUDE_CONFIG_DIR` profile (active,
+  `JEO_SKILL_CLAUDE_CONFIG_DIRS`, or remembered), merged by max with linked stores read
+  once. Cursor copy-dedup needs size + full SHA-256 (shared 4 KiB headers no longer merge
+  distinct transcripts). `prune-unused --apply` refuses when any present store failed to
+  read. Evidence: usage 13, quarantine 16, retirement 7 Python tests and
+  4 node ledger tests pass; Jev runtime/codex/lifecycle 64 pass; catalog gates pass;
+  installer 63/63. The earlier `/var` TMPDIR failures were a test-fixture alias mismatch, fixed
+  in the merge (`test_installer_regressions.py` resolves its owned temp root); the suite now
+  passes 63/63 with the default macOS TMPDIR and in CI run 39569222853 (Ubuntu + macOS).
+  Applied on this machine (user-approved): installed router reinstalled from the checkout
+  (byte-identical scripts); `~/.agents/jev` assets + catalog snapshot refreshed via
+  `jev-setup.sh --config-only --profile jeopi --mode api` (profile/key preserved); real
+  tracking started at `~/.local/state/jeo-skill` (tracking_started_at 2026-10-21T08:21Z,
+  catalog 405: 221 used, 184 with no observed use, first grace end 2026-11-20); Claude
+  `SessionEnd` scan hook added to `~/.claude/settings.json` and the orca
+  `CLAUDE_CONFIG_DIR` profile (backups `settings.json.bak-jeo-usage-20261021T172420`);
+  daily LaunchAgent `~/Library/LaunchAgents/com.jeo-skills.usage-scan.plist` (03:17,
+  kickstart run exit 0). Both pin `JEO_SKILLS_CATALOG` to this checkout when present.
+  A test-isolation leak once wrote fixture rows into the real state dir; it was wiped
+  before the clean first scan and current suites leave it untouched. Nothing has been
+  quarantined or retired. Runbook: `patterns/skill-usage-lifecycle.md`.
 
 - UI-design repositories (2026-10-16): added ten original exact-source operators and
   the ui-design-repositories bundle (390 to 400 skills), with immutable source/license

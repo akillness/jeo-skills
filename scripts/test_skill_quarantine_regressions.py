@@ -378,6 +378,36 @@ class SkillQuarantineRegressions(unittest.TestCase):
         self.successful(applied)
         self.assertEqual(json.loads(applied.stdout)[0]["action"], "purged")
         self.assertFalse(manifest_path.parent.exists())
+    def test_unreadable_usage_store_refuses_apply_and_control_succeeds(self):
+        self.install_alpha_only()
+        self.write_usage()
+        broken_store = self.home / ".claude.json"
+        broken_store.write_text("{not valid json\n", encoding="utf-8")
+
+        scanned = self.cli("usage", "scan", "--json")
+        self.successful(scanned)
+        scan = json.loads(scanned.stdout)
+        self.assertIn("Expecting property name", scan["sources"]["claude_skillusage"]["error"])
+
+        before = self.runtime_snapshot()
+        preview = self.cli("prune-unused", "--global")
+        self.successful(preview)
+        self.assertIn("usage source claude_skillusage failed:", preview.stderr)
+        self.assertIn("would-quarantine alpha", preview.stdout)
+
+        refused = self.cli("prune-unused", "--global", "--apply", "--skip-jev-review")
+        self.assertNotEqual(refused.returncode, 0, refused.stdout + refused.stderr)
+        self.assertIn("refusing to quarantine", refused.stderr)
+        self.assertIn("claude_skillusage", refused.stderr)
+        self.assertEqual(self.runtime_snapshot(), before)
+        self.assertTrue((self.agents_root / "alpha").exists())
+
+        broken_store.unlink()
+        applied = self.cli("prune-unused", "--global", "--apply", "--skip-jev-review", "--json")
+        self.successful(applied)
+        manifest = json.loads(applied.stdout)
+        self.assertEqual(manifest["items"][0]["state"], "quarantined")
+        self.assertFalse((self.agents_root / "alpha").exists())
     def test_prune_apply_propagates_injected_move_failure(self):
         self.install_alpha_only()
         self.write_usage()

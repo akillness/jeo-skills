@@ -37,7 +37,8 @@ Jev hook ledger: `recordSkillUsage()` in `jev/jev-plugin.mjs`. State:
 `usage-cursor.json`, `policy.json`, `relevance.json`, `quarantine/<batch>/manifest.json`,
 `jev-usage*.jsonl`.
 
-Load events per store: Claude `~/.claude.json` `skillUsage` (cumulative, max not sum) and
+Load events per store: Claude `skillUsage` in `~/.claude.json` and each remembered
+`CLAUDE_CONFIG_DIR` profile's `.claude.json` (cumulative, merged by max, never summed) and
 transcript `Skill` tool_use/`<command-name>`; Codex completed `CommandExecution`
 `parsed_cmd` entries of type `read` only; OpenCode read tool `state.input.filePath`;
 Antigravity `brain/*/.system_generated/logs/transcript.jsonl` `view_file` `AbsolutePath`
@@ -46,8 +47,9 @@ jeopi/GJC/OMP/Pi `custom_message` `skill-prompt` and assistant `read` toolCalls 
 `*/SKILL.md` or `skill://name`; Jev ledger `injected`.
 
 ## Steps
-1. `jeo-skill usage scan` (first run sets `tracking_started_at`; ~60-70 s cold on this
-   machine, ~8-10 s incremental). `jeo-skill usage report [--status candidate] [--json]`.
+1. `jeo-skill usage scan` (first run sets `tracking_started_at`; ~2.5 min cold and ~30 s
+   incremental on this machine under load; hooks/schedulers pass `--if-idle`).
+   `jeo-skill usage report [--status candidate] [--json]`.
 2. Local cleanup: `jeo-skill prune-unused --global` (preview, read-only), then
    `--apply --jev-profile P --allow-remote` or `--apply --skip-jev-review`. Apply rescans.
 3. Undo: `jeo-skill restore --list`, `restore --batch B --apply`. Permanent:
@@ -65,6 +67,12 @@ jeopi/GJC/OMP/Pi `custom_message` `skill-prompt` and assistant `read` toolCalls 
 - Evidence is high-water: vanished/rotated files keep their cursor contribution. A parser
   fix therefore cannot lower counts already recorded in an existing state dir (conservative
   by design: over-counting only protects skills).
+- Cursor identity: key = inode + 4 KiB head hash. History carries over only for the same
+  inode live last scan, the same path whose old inode is gone, or a byte-exact copy (size +
+  full SHA-256). Never dedupe on a shared header alone: transcripts share long headers.
+- `prune-unused --apply` refuses when any present store failed to read (any `error` other
+  than `store not found`): a broken store could hide fresh use. Scans and reports stay
+  failure-isolated.
 - Every Jev call needs `--allow-remote`, checked before any harness subprocess: harness
   `status` itself probes configured endpoints (systemone with its bearer token), which may
   be remote. Unknown harness flags are silently ignored, so do not rely on new status flags.
@@ -78,6 +86,20 @@ jeopi/GJC/OMP/Pi `custom_message` `skill-prompt` and assistant `read` toolCalls 
   retention); the installed `~/.agents/jev` copy changes only after Jev setup is re-run.
 - Previews must write zero bytes: `prune-unused` without `--apply` and `usage report`
   disable the catalog cache download write (`skill_usage_cli.read_only`).
+- Scans hold an exclusive `flock` on `<state>/scan.lock` (never unlinked); `--if-idle` skips
+  when busy. Never add a second lock protocol beside it.
+- Per-file cursor contributions only contain names of the catalog that parsed them; the
+  cursor's `names_sha256` forces a re-parse of live files on catalog change, and usage.json
+  carries forward rows absent from the current catalog. Pin `JEO_SKILLS_CATALOG` for
+  scheduled scans so they do not alternate catalogs (each alternation is a full re-parse).
+- Tests must isolate HOME, JEO_SKILL_STATE_DIR and XDG_STATE_HOME even for in-process
+  calls: an early direct-call test leaked fixture rows into the real state dir.
+- This machine: Claude `SessionEnd` hooks (default and orca `CLAUDE_CONFIG_DIR` profile)
+  plus LaunchAgent `com.jeo-skills.usage-scan` run `usage scan --if-idle` daily at 03:17.
+  `CLAUDE_CONFIG_DIR` profiles may link `skills` back to `~/.claude/skills`, so global
+  quarantine roots always include `~/.claude/skills` explicitly. The orca profile has its
+  own `.claude.json` `skillUsage` (projects link to the default store); the collector reads
+  it and remembers the profile for scheduled scans.
 
 ## Verify
 - `python3 scripts/test_skill_usage_regressions.py -v`

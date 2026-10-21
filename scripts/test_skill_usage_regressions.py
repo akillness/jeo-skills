@@ -7,7 +7,9 @@ Run: python3 scripts/test_skill_usage_regressions.py -v
 import hashlib
 import fcntl
 import json
+import os
 from pathlib import Path
+import shutil
 import sqlite3
 import subprocess
 import sys
@@ -419,6 +421,152 @@ class SkillUsageRegressions(unittest.TestCase):
         self.assertEqual(self._snapshot(), before)
         self.assertTrue((self.home / ".agents/skills/candidate-old/SKILL.md").is_file())
 
+
+    def test_claude_config_profiles_merge_and_dedupe_project_store(self):
+        profile = self.work / "claude-profile"
+        profile.mkdir()
+        (profile / ".claude.json").write_text(
+            json.dumps({
+                "skillUsage": {
+                    "ns:bundle-skill": {"usageCount": 3, "lastUsedAt": 1767225600000},
+                    "ns:claude-skill": {"usageCount": 5, "lastUsedAt": 1767225600000},
+                }
+            }),
+            encoding="utf-8",
+        )
+        (profile / "projects").symlink_to(self.home / ".claude" / "projects", target_is_directory=True)
+
+        self.env["CLAUDE_CONFIG_DIR"] = str(profile)
+        self.successful(self.cli("usage", "scan", "--json"))
+        rows = self._rows(self._report())
+        self.assertEqual(rows["bundle-skill"]["count"], 3)
+        self.assertEqual(rows["bundle-skill"]["by_source"], {"claude_skillusage": 3})
+        self.assertEqual(rows["claude-skill"]["count"], 5)
+        self.assertEqual(rows["claude-skill"]["by_source"], {"claude_skillusage": 5})
+        self.assertEqual(rows["claude-project"]["count"], 1)
+        self.assertEqual(rows["claude-project"]["by_source"], {"claude_projects": 1})
+
+        profile_data = json.loads((profile / ".claude.json").read_text(encoding="utf-8"))
+        profile_data["skillUsage"]["ns:late-skill"] = {"usageCount": 1, "lastUsedAt": 1767225600000}
+        (profile / ".claude.json").write_text(json.dumps(profile_data), encoding="utf-8")
+        self.env.pop("CLAUDE_CONFIG_DIR")
+        self.successful(self.cli("usage", "scan", "--json"))
+        rows = self._rows(self._report())
+        self.assertEqual(rows["late-skill"]["count"], 1)
+        self.assertEqual(rows["late-skill"]["by_source"], {"claude_skillusage": 1})
+
+        second_profile = self.work / "claude-profile-two"
+        second_profile.mkdir()
+        (second_profile / ".claude.json").write_text(
+            json.dumps({
+                "skillUsage": {
+                    "ns:kept-skill": {"usageCount": 4, "lastUsedAt": 1767225600000},
+                }
+            }),
+            encoding="utf-8",
+        )
+        self.env["JEO_SKILL_CLAUDE_CONFIG_DIRS"] = str(second_profile)
+        self.successful(self.cli("usage", "scan", "--json"))
+        rows = self._rows(self._report())
+        self.assertEqual(rows["kept-skill"]["count"], 4)
+        self.assertEqual(rows["kept-skill"]["by_source"], {"claude_skillusage": 4})
+
+
+    def test_claude_project_cursor_distinguishes_same_head_and_size(self):
+        original = self.home / ".claude/projects/p/s.jsonl"
+        original.unlink()
+        header = b'{"header":"' + (b"H" * 5000) + b'"}\n'
+
+        def transcript(skill):
+            tail = json.dumps(
+                {
+                    "role": "assistant",
+                    "content": [{"type": "tool_use", "name": "Skill", "input": {"skill": skill}}],
+                },
+                separators=(",", ":"),
+            ).encode("utf-8") + b"\n"
+            return header + tail
+
+        session_a = self.home / ".claude/projects/a/session.jsonl"
+        session_b = self.home / ".claude/projects/b/session.jsonl"
+        session_a.parent.mkdir(parents=True)
+        session_b.parent.mkdir(parents=True)
+        bytes_a = transcript("late-skill")
+        bytes_b = transcript("kept-skill")
+        self.assertGreater(len(header), 4096)
+        self.assertEqual(len(bytes_a), len(bytes_b))
+        self.assertNotEqual(bytes_a, bytes_b)
+        session_a.write_bytes(bytes_a)
+        mtime_ns = 1_700_000_000_123_456_789
+        os.utime(session_a, ns=(mtime_ns, mtime_ns))
+        self.successful(self.cli("usage", "scan", "--json"))
+
+        session_b.write_bytes(bytes_b)
+        os.utime(session_b, ns=(mtime_ns, mtime_ns))
+        self.successful(self.cli("usage", "scan", "--json"))
+        first = self._rows(self._report())
+        for skill in ("late-skill", "kept-skill"):
+            with self.subTest(skill=skill):
+                self.assertEqual(first[skill]["count"], 1)
+                self.assertEqual(first[skill]["by_source"], {"claude_projects": 1})
+
+        self.successful(self.cli("usage", "scan", "--json"))
+        second = self._rows(self._report())
+        self.assertEqual(
+            {skill: second[skill] for skill in ("late-skill", "kept-skill")},
+            {skill: first[skill] for skill in ("late-skill", "kept-skill")},
+        )
+
+        session_b.unlink()
+        self.successful(self.cli("usage", "scan", "--json"))
+        retained = self._rows(self._report())
+        self.assertEqual(retained["kept-skill"]["count"], 1)
+        self.assertEqual(retained["kept-skill"]["by_source"], {"claude_projects": 1})
+
+    def test_claude_project_byte_exact_copy_is_counted_once(self):
+        (self.home / ".claude/projects/p/s.jsonl").unlink()
+        source = self.home / ".claude/projects/source/session.jsonl"
+        copy = self.home / ".claude/projects/copy/session.jsonl"
+        source.parent.mkdir(parents=True)
+        copy.parent.mkdir(parents=True)
+        source.write_bytes(
+            json.dumps(
+                {
+                    "role": "assistant",
+                    "content": [{"type": "tool_use", "name": "Skill", "input": {"skill": "late-skill"}}],
+                },
+                separators=(",", ":"),
+            ).encode("utf-8") + b"\n"
+        )
+        shutil.copy2(source, copy)
+        self.successful(self.cli("usage", "scan", "--json"))
+        rows = self._rows(self._report())
+        self.assertEqual(rows["late-skill"]["count"], 1)
+        self.assertEqual(rows["late-skill"]["by_source"], {"claude_projects": 1})
+
+    def test_jev_rotation_with_new_live_file_adds_one_event(self):
+        self.successful(self.cli("usage", "scan", "--json"))
+        before = self._rows(self._report())["jev-skill"]["count"]
+        live = self.state / "jev-usage.jsonl"
+        rotated = self.state / "jev-usage.20261003T000000000Z-1-x.jsonl"
+        live.rename(rotated)
+        self._jsonl(
+            live,
+            [
+                {
+                    "v": 1,
+                    "at": NOW_LATE,
+                    "agent": "fixture",
+                    "profile": "new",
+                    "routed": [],
+                    "injected": ["jev-skill"],
+                    "backend": {"kind": "local"},
+                }
+            ],
+        )
+        self.successful(self.cli("usage", "scan", "--json", now=NOW_LATE))
+        after = self._rows(self._report(now=NOW_LATE))["jev-skill"]["count"]
+        self.assertEqual(after, before + 1)
 
 if __name__ == "__main__":
     unittest.main()

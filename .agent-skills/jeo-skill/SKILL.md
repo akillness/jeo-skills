@@ -88,12 +88,16 @@ used only when an agent invoked or loaded it: a Skill/slash invocation, a read o
 installed `<root>/<name>/SKILL.md` or `skill://<name>`, or a Jev full-body injection.
 Mentions in prompts, Jev routing without injection, and reads of the catalog source
 (`<checkout>/.agent-skills/<name>/SKILL.md`) never count. Evidence survives rotated or
-deleted runtime logs.
+deleted runtime logs. Claude records are read from the default `~/.claude.json` and
+`~/.claude/projects` plus every `CLAUDE_CONFIG_DIR` profile: the active one, those listed
+in `JEO_SKILL_CLAUDE_CONFIG_DIRS`, and any profile an earlier scan saw (remembered, so a
+scheduled scan without the variable still reads it). Linked stores are read once.
 
-A skill becomes a removal candidate only with zero uses across all history and a 30-day
-grace after tracking began (or after it was first seen installed, if later). `jeo-skill`,
-the `starter`, `cli-core`, and `infrastructure-core` bundles, `usage keep` pins, and skills
-protected by `usage relevance` are never candidates.
+A skill becomes a removal candidate only with zero observed uses in all retained records
+and a 30-day grace after tracking began (or after it was first seen installed, if later).
+Zero observed uses is not proof of lifetime non-use: runtimes may have deleted older
+history. `jeo-skill`, the `starter`, `cli-core`, and `infrastructure-core` bundles,
+`usage keep` pins, and skills protected by `usage relevance` are never candidates.
 
 ```bash
 jeo-skill usage scan                     # refresh evidence (writes tracker state only)
@@ -123,15 +127,21 @@ Catalog retirement is a separate maintainer step in a repository checkout:
 regenerates projections, validates, and rolls back on any failure (`--apply` without a review
 choice is rejected).
 
-For periodic reports, run the scan from a host hook or scheduler and apply manually. A
-Claude Code `SessionEnd` hook in `~/.claude/settings.json`:
+For periodic reports, run the scan from a host hook or scheduler and apply manually. Scans
+are single-flight (an OS file lock in the state dir); `--if-idle` makes a hook or scheduler
+skip instead of queueing behind a running scan. A Claude Code `SessionEnd` hook in
+`~/.claude/settings.json` (and in any `CLAUDE_CONFIG_DIR` profile you use):
 
 ```json
-{"hooks": {"SessionEnd": [{"hooks": [{"type": "command",
-  "command": "nohup jeo-skill usage scan >/dev/null 2>&1 &"}]}]}}
+{"hooks": {"SessionEnd": [{"hooks": [{"type": "command", "timeout": 5,
+  "command": "nohup \"$HOME\"/.local/bin/jeo-skill usage scan --if-idle >/dev/null 2>&1 &"}]}]}}
 ```
 
-Or a daily cron entry: `17 3 * * * jeo-skill usage scan >/dev/null 2>&1`.
+Because that hook only fires for Claude sessions, also schedule a daily scan for the other
+runtimes: a cron entry `17 3 * * * $HOME/.local/bin/jeo-skill usage scan --if-idle >/dev/null 2>&1`
+or, on macOS, a LaunchAgent with `StartCalendarInterval` (runs missed jobs after sleep).
+Pin `JEO_SKILLS_CATALOG` to one catalog for every scheduled scan: a catalog change makes
+the next scan re-parse all live records (evidence is never lost, but it is slower).
 
 ## Runtime Installation Guide
 

@@ -410,44 +410,78 @@ _parser_claude_projects.names = set()  # type: ignore[attr-defined]
 # ----------------------------- incremental JSONL cursors -----------------------------
 
 
+def _full_digest(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        while chunk := handle.read(1024 * 1024):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def _previous_entry(all_entries: dict[str, Any], source: str, path: Path, info: os.stat_result, head: str,
+                    live_inodes: set[tuple[int, int]], digest_of: Callable[[], str]) -> tuple[str | None, Any]:
+    """Find this file's history when its cursor key (inode + 4 KiB head) changed.
+
+    Same inode that was live last scan: grown or rewritten in place. Same path whose old
+    inode is no longer live: replaced at that path (a rename-away rotation keeps its inode
+    live elsewhere and is excluded). A different inode is the same file only as a byte-exact
+    copy: equal size and full-content digest, never just an equal header.
+    """
+    dev, ino = int(info.st_dev), int(info.st_ino)
+    candidates = [(key, entry) for key, entry in all_entries.items()
+                  if isinstance(entry, dict) and entry.get("source") == source and not entry.get("superseded")]
+    for key, entry in candidates:
+        if ino and (entry.get("dev"), entry.get("ino")) == (dev, ino) and not entry.get("retired"):
+            return key, entry
+    for key, entry in candidates:
+        old_inode = (entry.get("dev"), entry.get("ino"))
+        if entry.get("path") == str(path) and old_inode not in live_inodes:
+            return key, entry
+    for key, entry in candidates:
+        if (entry.get("digest") and entry.get("head") == head
+                and int(entry.get("size", -1)) == int(info.st_size) and entry["digest"] == digest_of()):
+            return key, entry
+    return None, None
+
+
 def _file_contributions(source: str, files: list[Path], parser: Callable[..., int], names: set[str], cursor: dict[str, Any]) -> tuple[dict[str, dict[str, Any]], int, str | None]:
     all_entries = cursor.setdefault("files", {})
     current_keys: set[str] = set()
     source_error: str | None = None
+    observed: list[tuple[Path, os.stat_result, str]] = []
     for path in files:
         try:
-            info = path.stat()
-            head = _head_hash(path)
-            dev, ino = int(info.st_dev), int(info.st_ino)
+            observed.append((path, path.stat(), _head_hash(path)))
         except OSError as error:
             source_error = str(error)
-            continue
+    live_inodes = {(int(info.st_dev), int(info.st_ino)) for _path, info, _head in observed if info.st_ino}
+    for path, info, head in observed:
+        dev, ino = int(info.st_dev), int(info.st_ino)
         key = f"{source}|{dev}|{ino}|{head}" if ino else f"{source}|{path}|{head}"
-        existing = all_entries.get(key)
-        previous_key: str | None = None
-        if existing is None:
-            # A rewrite or copied rotation may retain the path or exact prefix/size.
-            for candidate_key, candidate in all_entries.items():
-                if candidate.get("source") != source or candidate.get("superseded"):
-                    continue
-                if candidate.get("path") == str(path) or (
-                    candidate.get("head") == head and int(candidate.get("size", -1)) == int(info.st_size)
-                ):
-                    existing = candidate
-                    previous_key = candidate_key
-                    break
-        unchanged = bool(existing and existing.get("size") == info.st_size and existing.get("mtime_ns") == info.st_mtime_ns
-                         and existing.get("head") == head and not existing.get("retired"))
+        digest_cache: list[str] = []
+
+        def digest_of(path: Path = path, cache: list[str] = digest_cache) -> str:
+            if not cache:
+                cache.append(_full_digest(path))
+            return cache[0]
+
         try:
+            existing = all_entries.get(key)
+            previous_key: str | None = None
+            if existing is None:
+                previous_key, existing = _previous_entry(all_entries, source, path, info, head, live_inodes, digest_of)
+            unchanged = bool(existing and existing.get("size") == info.st_size and existing.get("mtime_ns") == info.st_mtime_ns
+                             and existing.get("head") == head and not existing.get("retired"))
             if unchanged:
                 contribution = _deserialise_contrib(existing.get("contribution"))
                 records = int(existing.get("records", 0))
+                digest = existing.get("digest") or digest_of()
             else:
                 # Recompute the changed file; high-water merge preserves evidence on truncation.
-                for fn in ("names",):
-                    if hasattr(parser, fn):
-                        setattr(parser, fn, names)
+                if hasattr(parser, "names"):
+                    parser.names = names  # type: ignore[attr-defined]
                 contribution, records = _parse_jsonl(path, parser, names)
+                digest = digest_of()
                 if existing:
                     old = _deserialise_contrib(existing.get("contribution"))
                     for name, item in old.items():
@@ -456,7 +490,7 @@ def _file_contributions(source: str, files: list[Path], parser: Callable[..., in
             source_error = str(error)
             continue
         entry = {
-            "source": source, "path": str(path), "dev": dev, "ino": ino, "head": head,
+            "source": source, "path": str(path), "dev": dev, "ino": ino, "head": head, "digest": digest,
             "size": int(info.st_size), "mtime_ns": int(info.st_mtime_ns),
             "records": int(records), "contribution": _serialise_contrib(contribution), "retired": False,
         }
@@ -467,17 +501,18 @@ def _file_contributions(source: str, files: list[Path], parser: Callable[..., in
     for key, entry in all_entries.items():
         if entry.get("source") == source and key not in current_keys and not entry.get("superseded"):
             entry["retired"] = True
+    # Distinct files are summed; only byte-identical copies (same full digest and size) are
+    # counted once. Inode numbers are not an identity across scans because they get reused.
     selected: list[dict[str, Any]] = []
-    seen_identity: set[tuple[Any, ...]] = set()
+    seen_copies: set[tuple[Any, ...]] = set()
     for entry in all_entries.values():
         if entry.get("source") != source or entry.get("superseded"):
             continue
-        identity = (entry.get("dev"), entry.get("ino")) if entry.get("ino") else (entry.get("head"), entry.get("size"))
-        copy_identity = (entry.get("head"), entry.get("size"))
-        if identity in seen_identity or copy_identity in seen_identity:
-            continue
-        seen_identity.add(identity)
-        seen_identity.add(copy_identity)
+        if entry.get("digest"):
+            copy_identity = (entry["digest"], entry.get("size"))
+            if copy_identity in seen_copies:
+                continue
+            seen_copies.add(copy_identity)
         selected.append(entry)
     combined: dict[str, dict[str, Any]] = {}
     records_total = 0
@@ -508,48 +543,88 @@ def _window(counts: dict[str, dict[str, Any]]) -> list[str | None]:
 # ----------------------------- source collectors -----------------------------
 
 
-def _collect_claude_skillusage(home: Path, names: set[str], cursor: dict[str, Any]) -> dict[str, Any]:
-    path = home / ".claude.json"
-    cumulative = cursor.setdefault("cumulative", {}).setdefault("claude_skillusage", {})
-    if not path.is_file():
-        counts = _deserialise_contrib(cumulative)
-        return {"available": False, "records": sum(x["count"] for x in counts.values()), "window": _window(counts), "error": "store not found", "counts": counts}
-    try:
-        data = json.loads(path.read_text(encoding="utf-8"))
-        usage = data.get("skillUsage", {})
-        if not isinstance(usage, dict):
-            raise ValueError("skillUsage is not an object")
-        counts: dict[str, dict[str, Any]] = {}
-        for raw_name, info in usage.items():
-            if not isinstance(info, dict):
-                continue
-            name = _name_from_value(raw_name, names)
-            if not name:
-                continue
-            try:
-                count = max(0, int(info.get("usageCount", 0)))
-            except (TypeError, ValueError):
-                continue
-            if count <= 0:
-                continue
+CLAUDE_DIRS_ENV = "JEO_SKILL_CLAUDE_CONFIG_DIRS"
+
+
+def _claude_config_dirs(cursor: dict[str, Any]) -> list[Path]:
+    """CLAUDE_CONFIG_DIR profile roots: the active one, `JEO_SKILL_CLAUDE_CONFIG_DIRS`
+    (os.pathsep-separated), and every profile a previous scan saw. Remembering them lets a
+    scheduled scan without the variable still read profile-only Claude records."""
+    remembered = cursor.get("claude_config_dirs")
+    candidates = [item for item in remembered if isinstance(item, str)] if isinstance(remembered, list) else []
+    configured = [os.environ.get("CLAUDE_CONFIG_DIR", "")] + os.environ.get(CLAUDE_DIRS_ENV, "").split(os.pathsep)
+    for raw in configured:
+        raw = raw.strip()
+        if raw:
+            resolved = os.path.realpath(os.path.expanduser(raw))
+            if resolved not in candidates:
+                candidates.append(resolved)
+    kept = [item for item in candidates if os.path.isdir(item)]
+    cursor["claude_config_dirs"] = kept
+    return [Path(item) for item in kept]
+
+
+def _distinct(paths: Iterable[Path]) -> list[Path]:
+    """Existing paths resolved through links, each physical store once."""
+    seen: set[str] = set()
+    result: list[Path] = []
+    for path in paths:
+        resolved = os.path.realpath(path)
+        if resolved not in seen and os.path.exists(resolved):
+            seen.add(resolved)
+            result.append(Path(resolved))
+    return result
+
+
+def _read_skillusage(path: Path, names: set[str]) -> dict[str, dict[str, Any]]:
+    data = json.loads(path.read_text(encoding="utf-8"))
+    usage = data.get("skillUsage", {})
+    if not isinstance(usage, dict):
+        raise ValueError(f"skillUsage is not an object in {path}")
+    counts: dict[str, dict[str, Any]] = {}
+    for raw_name, info in usage.items():
+        if not isinstance(info, dict):
+            continue
+        name = _name_from_value(raw_name, names)
+        if not name:
+            continue
+        try:
+            count = max(0, int(info.get("usageCount", 0)))
+        except (TypeError, ValueError):
+            continue
+        if count > 0:
             when = _parse_datetime(info.get("lastUsedAt"))
-            current = {"count": count, "first": when, "last": when}
-            previous = _deserialise_contrib({name: cumulative.get(name, {})}).get(name)
-            counts[name] = _merge_highwater(previous or {}, current)
-        for name, item in _deserialise_contrib(cumulative).items():
-            counts[name] = _merge_highwater(item, counts.get(name, {}))
-        cursor["cumulative"]["claude_skillusage"] = _serialise_contrib(counts)
-        return {"available": True, "records": sum(x["count"] for x in counts.values()), "window": _window(counts), "error": None, "counts": counts}
-    except (OSError, ValueError, TypeError, json.JSONDecodeError) as error:
-        counts = _deserialise_contrib(cumulative)
-        return {"available": False, "records": sum(x["count"] for x in counts.values()), "window": _window(counts), "error": str(error), "counts": counts}
+            counts[name] = _merge_highwater(counts.get(name, {}), {"count": count, "first": when, "last": when})
+    return counts
+
+
+def _collect_claude_skillusage(home: Path, names: set[str], cursor: dict[str, Any]) -> dict[str, Any]:
+    """Claude's cumulative `skillUsage` counters from the default `~/.claude.json` and each
+    profile's `<CLAUDE_CONFIG_DIR>/.claude.json`. Profiles may be seeded from the default
+    file, so stores merge by per-skill maximum (never summed); evidence is high-water."""
+    cumulative = cursor.setdefault("cumulative", {}).setdefault("claude_skillusage", {})
+    stores = _distinct([home / ".claude.json"] + [root / ".claude.json" for root in _claude_config_dirs(cursor)])
+    counts = _deserialise_contrib(cumulative)
+    errors: list[str] = []
+    read = 0
+    for path in stores:
+        try:
+            for name, item in _read_skillusage(path, names).items():
+                counts[name] = _merge_highwater(counts.get(name, {}), item)
+            read += 1
+        except (OSError, ValueError, TypeError, json.JSONDecodeError) as error:
+            errors.append(str(error))
+    cursor["cumulative"]["claude_skillusage"] = _serialise_contrib(counts)
+    error = "; ".join(errors) if errors else (None if stores else "store not found")
+    return {"available": read > 0, "records": sum(x["count"] for x in counts.values()),
+            "window": _window(counts), "error": error, "counts": counts}
 
 
 def _collect_claude_projects(home: Path, names: set[str], cursor: dict[str, Any]) -> dict[str, Any]:
-    root = home / ".claude" / "projects"
     _parser_claude_projects.names = names  # type: ignore[attr-defined]
     _parser_claude_projects.prefilter = ('"Skill"', '<command-name>')  # type: ignore[attr-defined]
-    files = _files_under(root, lambda n: n.endswith(".jsonl"))
+    roots = _distinct([home / ".claude" / "projects"] + [root / "projects" for root in _claude_config_dirs(cursor)])
+    files = [path for root in roots for path in _files_under(root, lambda n: n.endswith(".jsonl"))]
     return _file_source("claude_projects", files, _parser_claude_projects, names, cursor)
 
 

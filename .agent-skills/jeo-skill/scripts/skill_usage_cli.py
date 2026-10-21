@@ -89,8 +89,10 @@ def tracked_roots(roots_fn: RootsFn, global_install: bool) -> list[Path]:
     roots = list(roots_fn(global_install))
     if global_install:
         # Antigravity IDE's global root is populated by the setup guide but is not a
-        # retired-skill sweep root.
+        # retired-skill sweep root. A CLAUDE_CONFIG_DIR override (e.g. a per-terminal
+        # profile whose skills dir links back) must not hide the default Claude root.
         roots.append(Path.home() / ".gemini" / "antigravity" / "skills")
+        roots.append(Path.home() / ".claude" / "skills")
     return roots
 
 
@@ -188,6 +190,15 @@ def command_prune_unused(args: argparse.Namespace, catalog: dict[str, Any], sour
     usage = _scan(catalog, roots_fn) if args.apply else skill_usage.read_state("usage.json", None)
     if not isinstance(usage, dict) or not usage.get("scanned_at"):
         raise ValueError("no usage scan recorded; run `jeo-skill usage scan` first")
+    # A store that exists but failed to read could hide fresh use: report it, and never
+    # quarantine on that evidence. Absent stores ("store not found") are ordinary.
+    failed = {name: info.get("error") for name, info in sorted(usage.get("sources", {}).items())
+              if isinstance(info, dict) and info.get("error") and info.get("error") != "store not found"}
+    for name, error in failed.items():
+        print(f"usage source {name} failed: {error}", file=sys.stderr)
+    if args.apply and failed:
+        raise ValueError("refusing to quarantine while usage sources failed to read: "
+                         + ", ".join(failed) + "; fix them and rerun")
     if not args.apply:
         print(f"usage scanned_at={usage['scanned_at']} (run `jeo-skill usage scan` to refresh)", file=sys.stderr)
     report = skill_usage.build_report(catalog, usage)
