@@ -138,6 +138,17 @@ never infer runtime loading solely from an upstream agent label or successful ex
 - Real-HOME dry-run on 2026-10-21 found retired copies in ten roots (shared, Claude, Pi,
   Crush, OpenCode, GJC, both Antigravity roots, Aside) plus one symlinked Crush `harness`
   that is correctly kept; the user's actual installation was not swept by this change.
+- Real-HOME full setup (2026-10-21): `skills list -g` hung past 300 s with no output, while
+  `skills list -g -a universal --json` returned in ~4 s; use the scoped form for Step 7.
+  The sweep does not cover `~/.augment/skills` or `~/.hermes/skills`; both held
+  fingerprint-matched retired copies (`jeo`, `harness`) that `skills list` still reports.
+- On this macOS host, `uv tool install 'semble[mcp]'` (uv-managed CPython 3.13) is blocked
+  by library validation: syspolicyd rejects and then deletes `orjson`'s `.so`, so the CLI and
+  `uvx --from 'semble[mcp]' semble` (Codex's MCP command) fail. The Homebrew-Python venv at
+  `~/.local/share/semble-venv` works. Do not leave a broken semble tool install on PATH.
+- Aside mirror copies keep Aside-owned `.skill_id` files; compare mirrored content
+  excluding them. `~/.config/opencode/skills` can hold older catalog copies that shadow the
+  shared root at higher precedence; the guide does not refresh that root.
 
 ## Live public setup verification
 
