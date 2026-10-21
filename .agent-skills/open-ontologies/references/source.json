@@ -3,7 +3,7 @@
   "skill": "open-ontologies",
   "repository": "fabio-rovai/open-ontologies",
   "commit": "dfb09bf815326913d7d7822fa7228f2602fb4976",
-  "observed_at": "2026-10-15T15:07:11Z",
+  "observed_at": "2026-10-21T12:07:23Z",
   "license": {"path": "LICENSE", "conclusion": "MIT; full pinned license inspected", "url": "https://github.com/fabio-rovai/open-ontologies/blob/dfb09bf815326913d7d7822fa7228f2602fb4976/LICENSE"},
   "tools": [{"name": "python3", "purpose": "Run the offline selected-source preflight helper; tool discovery only, no version test"}],
   "files": [

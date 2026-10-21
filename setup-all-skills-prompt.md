@@ -30,6 +30,25 @@ not prove Git HEAD, full revision integrity, dependency versions, or live readin
 Private-data ingestion, remote embeddings, cloud resources, database/index writes,
 and service or MCP activation each require their own approval.
 
+### Open Ontologies guide (on demand)
+
+[`open-ontologies`](.agent-skills/open-ontologies/SKILL.md) is a member of the `knowledge-repositories` bundle's selected-public-file helpers and a guide-only operator for the pinned [`fabio-rovai/open-ontologies` upstream commit](https://github.com/fabio-rovai/open-ontologies/commit/dfb09bf815326913d7d7822fa7228f2602fb4976). It covers RDF/OWL semantic planning, change-impact/reasoning, and certificate-aware verification; it is not a GUI ontology editor. Use Protégé or another workbench skill for visual editing. Read the [pinned upstream notes](.agent-skills/open-ontologies/references/upstream.md) before choosing commands.
+
+Install only the operator guide, on demand:
+
+```bash
+HOME="$USER_HOME" python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" install open-ontologies --global --yes
+```
+
+Against an approved absolute upstream checkout, run the linked [offline preflight helper](.agent-skills/open-ontologies/scripts/preflight.py):
+
+```bash
+python3 "$HOME/.agents/skills/open-ontologies/scripts/preflight.py" \
+  --repo /absolute/path/to/open-ontologies --json
+```
+
+This performs selected-public-file SHA-256 checks only; `runtime_verified=false` means it is **not** Git HEAD, full-revision, dependency, build, or runtime evidence. Blanket setup MUST NOT build or install the upstream project or activate MCP. The guide does not run binaries/builds or the Lean checker, pull OCI images, register an MCP client, upload or ingest ontology data, make provider calls, or write graph/database artifacts; each such action requires separate approval.
+
 ### UI-design repository guides (on demand)
 
 The `ui-design-repositories` bundle installs ten original operator guides and their
@@ -487,11 +506,11 @@ blanket setup (same rule as Aside's `mcp.servers` map).
 
 ### Step 4E — Remove retired catalog skills (all modes)
 
-The catalog retired `jeo` (replaced by `ooo`) and `harness` (replaced by `harness2`), but
-older installs still carry them in runtime roots — for example `~/.pi/agent/skills/jeo`,
-`~/.config/crush/skills/jeo`, `~/.config/opencode/skills/jeo`, or `~/.agents/skills/harness`
-— where runtimes keep loading them. The Step 4 `skills add` path does not delete anything,
-so sweep every runtime root for the chosen scope with the router, preview first:
+The catalog retired the skill directory `jeo` (replaced by `ooo`) and `harness` (replaced by
+`harness2`), but older installs still carry those catalog copies in runtime roots. The name
+`jeo` here is not the active `jeo-skill` router or the `jeo-code` runtime. The Step 4 `skills add`
+path does not delete anything, so sweep every runtime root for the chosen scope with the router,
+preview first:
 
 ```bash
 JEO_ROUTER="$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py"

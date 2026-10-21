@@ -170,7 +170,7 @@ El agente ejecuta una **instalación completa por defecto** (di "solo núcleo" o
 - **GJC requiere proyección nativa** a `~/.gjc/agent/skills` (global) o `.gjc/skills` (proyecto) ya que no carga proveedores compartidos; la guía de configuración lo maneja automáticamente,
 - **Antigravity IDE y CLI requieren proyección nativa** (consulta la guía de configuración Paso 4C) ya que `skills@1.7.0` instala en la raíz compartida independientemente del flag `--agent`,
 - registrar herramientas MCP (`ooo`, `semble`), herramientas shell (`rtk`) e integraciones específicas de plataforma,
-- **preservar cualquier habilidad preexistente**: nunca elimina otras habilidades; las únicas eliminaciones son copias del catálogo identificadas por huella de las retiradas `jeo`/`harness`.
+- **preservar cualquier habilidad preexistente**: nunca elimina otras habilidades; la limpieza automática es el barrido protegido del Paso 4E y solo retira copias **del catálogo** de `jeo`/`harness` cuya huella coincide (nunca el enrutador activo `jeo-skill` ni el runtime `jeo-code`).
 
 Jev sigue siendo opcional en todos los modos del catálogo: la configuración predeterminada no descarga modelos Jev ni instala reglas/hooks de Jev. El instalador raíz solo ofrece una pregunta con respuesta predeterminada «no» en una sesión interactiva de ámbito personal; la guía de delegación exige consentimiento explícito para ejecutar Jev.
 > [!NOTE]
@@ -203,6 +203,7 @@ completas ni disponibilidad operativa. Instalar las guías no autoriza instalar
 aplicaciones, ingerir datos privados, activar MCP, gastar en proveedores ni cambiar bases de datos.
 Previsualiza con `jeo-skill install --bundle knowledge-repositories --dry-run`.
 
+
 ```bash
 # One lightweight skill, shared globally
 # Los hosts de raíz compartida detectan esta instalación: jeopi, jeo-code, oh-my-pi,
@@ -215,6 +216,20 @@ npx --yes skills@1.7.0 add https://github.com/akillness/jeo-skills \
 python3 "$HOME/.agents/skills/jeo-skill/scripts/jeo-skill.py" link
 jeo-skill doctor
 ```
+
+#### Open Ontologies (bajo demanda)
+
+[`open-ontologies`](.agent-skills/open-ontologies/SKILL.md) es uno de los 18 ayudantes de hashes de archivos públicos seleccionados del paquete `knowledge-repositories` y un operador de solo guía para planificación semántica RDF/OWL, análisis de impacto/cambios y verificación con certificados, fijado a [`fabio-rovai/open-ontologies` commit `dfb09bf815326913d7d7822fa7228f2602fb4976`](https://github.com/fabio-rovai/open-ontologies/commit/dfb09bf815326913d7d7822fa7228f2602fb4976). No es un editor ontológico GUI: usa Protégé u otra habilidad de workbench para editar visualmente. Lee primero las [notas upstream fijadas](.agent-skills/open-ontologies/references/upstream.md).
+
+Instala solo la guía y, contra un checkout upstream absoluto aprobado, ejecuta el [helper preflight offline](.agent-skills/open-ontologies/scripts/preflight.py):
+
+```bash
+jeo-skill install open-ontologies --global --yes
+python3 "$HOME/.agents/skills/open-ontologies/scripts/preflight.py" \
+  --repo /absolute/path/to/open-ontologies --json
+```
+
+El helper compara únicamente hashes de archivos públicos seleccionados (`runtime_verified=false`); no es evidencia de Git HEAD, revisión completa, dependencias, compilación ni runtime. La configuración general **NO DEBE** compilar/instalar el upstream ni activar MCP. Binarios/compilaciones, el comprobador Lean, imágenes OCI, activación/registro de clientes MCP, carga o ingestión de datos ontológicos, llamadas a proveedores y escrituras de grafos/bases de datos requieren aprobación separada.
 
 **Instalación local del proyecto** (instala las habilidades solo para el proyecto actual):
 
@@ -1158,6 +1173,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 | `scientific-agent-skills` | [K-Dense-AI/scientific-agent-skills](https://github.com/K-Dense-AI/scientific-agent-skills) | Wrapper MIT; los términos upstream varían por habilidad |
 | `eli5` | [DreambigOu/ELI5](https://github.com/DreambigOu/ELI5) | MIT |
 | `openocta` | [openocta/openocta](https://github.com/openocta/openocta) | Wrapper Apache-2.0 |
+| `open-ontologies` | [guía operativa](.agent-skills/open-ontologies/SKILL.md) · [fabio-rovai/open-ontologies @ dfb09bf815326913d7d7822fa7228f2602fb4976](https://github.com/fabio-rovai/open-ontologies/tree/dfb09bf815326913d7d7822fa7228f2602fb4976) | MIT (upstream) |
 | `open-code-review` | [alibaba/open-code-review](https://github.com/alibaba/open-code-review) | Apache-2.0 |
 | `pm-skills` + 62 habilidades `pm-*` | [phuryn/pm-skills @ 8607e3b](https://github.com/phuryn/pm-skills) | MIT |
 | `langchain-*`, `langgraph-*`, `deep-agents-*` (10) | [langchain-ai/langchain-skills @ 88df7d9](https://github.com/langchain-ai/langchain-skills) | MIT |
@@ -1187,6 +1203,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 
 | Cambio | Detalles |
 |--------|---------|
+| **Actualización de Open Ontologies** | La guía existente `open-ontologies` pasa a v1.1.0 sin duplicados; el catálogo sigue en 405 habilidades. Se verificaron los SHA256 de seis archivos públicos del commit `dfb09bf815326913d7d7822fa7228f2602fb4976` (MIT), se documentaron la preflight offline y los límites de aprobación/evidencia, y se añadieron referencias de instalación. Las suites modificadas pasan 64/64 y 19/19: la instalación por nombre retira solo el `jeo` identificado como copia del catálogo y conserva habilidades actuales, homónimos ajenos y raíces fuera del alcance. La instalación del catálogo añade solo el paquete del operador, no el motor upstream. |
 | **harness → harness2** | `harness` (revfactory) se sustituye por `harness2`, operador de `google-research/harness2` fijado en `1cfe254e8d25b15f37048c3730134686abe60335` (Apache-2.0): demo sin credenciales, configuración y ejecuciones de pago de LAB/JobBench/WorkBuddy con aprobación, puente Codex y un modo método para aplicar Propose–Probe–Compose a mano (incluye el diseño de equipos de agentes). `harness` pasa a `retired_skills`. |
 | **Cuatro operadores nuevos** | `ruflo` (MIT), `voicestudio` (AGPL-3.0-only), `diagram-design` (MIT) y `artcraft` (MIT OR Apache-2.0), fijados por commit con preflight offline y puertas de aprobación. Con la retirada de `harness`, el catálogo pasa de 401 a 405 habilidades. |
 | **Limpieza de habilidades retiradas** | `jeo-skill install`, `install.sh` y `jeo-skill prune-retired [--global] [--dry-run]` eliminan copias antiguas del catálogo de `jeo` (→ `ooo`) y `harness` (→ `harness2`) solo si nombre y primer encabezado coinciden; un enlace solo se elimina si apunta a una copia eliminada en el mismo barrido. Se conservan homónimos de terceros, enlaces ajenos y raíces tras ancestros enlazados. |

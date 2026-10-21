@@ -162,7 +162,7 @@ The agent runs a **full install by default** (say "core only" or "minimal" to na
 - **GJC requires native projection** to `~/.gjc/agent/skills` (global) or `.gjc/skills` (project) since it does not load shared providers; the setup guide handles this automatically,
 - **Antigravity IDE and CLI require native projection** (see setup guide Step 4C) since `skills@1.7.0` installs to shared root regardless of `--agent` flag,
 - register MCP tools (`ooo`, `semble`), shell tooling (`rtk`), and platform-specific integrations,
-- **preserve any pre-existing skills** — it never deletes other skills; the only removals are fingerprint-matched catalog copies of retired `jeo`/`harness`.
+- **preserve any pre-existing skills** — it never deletes other skills; the only automatic cleanup is Step 4E's guarded removal of fingerprint-matched retired **catalog** copies of `jeo`/`harness` (never the active `jeo-skill` router or `jeo-code` runtime).
 
 Jev remains optional in all catalog modes: default setup does not download Jev models or install Jev rules/hooks. The root installer offers a default-no prompt only in an interactive home-scoped session; the delegation guide requires explicit approved opt-in before running Jev setup.
 > [!NOTE]
@@ -195,6 +195,7 @@ does not install upstream apps, ingest private data, activate MCP, or authorize
 provider spending or database changes. Preview the selection with
 `jeo-skill install --bundle knowledge-repositories --dry-run`.
 
+
 ```bash
 # One lightweight skill, shared globally
 # Shared-root hosts discover this install: jeopi, jeo-code, oh-my-pi, Codex,
@@ -207,6 +208,20 @@ npx --yes skills@1.7.0 add https://github.com/akillness/jeo-skills \
 python3 "$HOME/.agents/skills/jeo-skill/scripts/jeo-skill.py" link
 jeo-skill doctor
 ```
+
+#### Open Ontologies (on demand)
+
+[`open-ontologies`](.agent-skills/open-ontologies/SKILL.md) is one of the `knowledge-repositories` bundle's 18 selected-public-file helpers and a guide-only operator for RDF/OWL semantic planning, change-impact/reasoning, and certificate-aware verification, pinned to [`fabio-rovai/open-ontologies` commit `dfb09bf815326913d7d7822fa7228f2602fb4976`](https://github.com/fabio-rovai/open-ontologies/commit/dfb09bf815326913d7d7822fa7228f2602fb4976). It is not a GUI editor; use Protégé or another workbench skill for visual ontology editing. Read the [pinned upstream notes](.agent-skills/open-ontologies/references/upstream.md) first.
+
+Install the guide only, then (against an approved absolute upstream checkout) run the linked [offline preflight helper](.agent-skills/open-ontologies/scripts/preflight.py):
+
+```bash
+jeo-skill install open-ontologies --global --yes
+python3 "$HOME/.agents/skills/open-ontologies/scripts/preflight.py" \
+  --repo /absolute/path/to/open-ontologies --json
+```
+
+The helper compares selected public-file hashes only (`runtime_verified=false`); it is not Git HEAD, full-revision, dependency, build, or runtime evidence. Blanket setup MUST NOT build/install upstream or activate MCP. Binaries/builds, the Lean checker, OCI images, MCP activation/client registration, ontology-data upload or ingestion, provider calls, and graph/database writes each require separate approval.
 
 Browse and preview the narrowest useful selection:
 
@@ -1188,6 +1203,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 | `scientific-agent-skills` | [K-Dense-AI/scientific-agent-skills](https://github.com/K-Dense-AI/scientific-agent-skills) | MIT wrapper; upstream terms vary by skill |
 | `eli5` | [DreambigOu/ELI5](https://github.com/DreambigOu/ELI5) | MIT |
 | `openocta` | [openocta/openocta](https://github.com/openocta/openocta) | Apache-2.0 wrapper |
+| `open-ontologies` | [operator guide](.agent-skills/open-ontologies/SKILL.md) · [fabio-rovai/open-ontologies @ dfb09bf815326913d7d7822fa7228f2602fb4976](https://github.com/fabio-rovai/open-ontologies/tree/dfb09bf815326913d7d7822fa7228f2602fb4976) | MIT (upstream) |
 | `open-code-review` | [alibaba/open-code-review](https://github.com/alibaba/open-code-review) | Apache-2.0 |
 | `pm-skills` + 62 `pm-*` skills | [phuryn/pm-skills @ 8607e3b](https://github.com/phuryn/pm-skills) | MIT |
 | `langchain-*`, `langgraph-*`, `deep-agents-*` (10) | [langchain-ai/langchain-skills @ 88df7d9](https://github.com/langchain-ai/langchain-skills) | MIT |
@@ -1217,6 +1233,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 
 | Change | Details |
 |--------|---------|
+| **Open Ontologies operator refresh** | Updated the existing `open-ontologies` guide to v1.1.0 without adding a duplicate or changing the 405-skill count. Reverified six selected public-file SHA256s at `dfb09bf815326913d7d7822fa7228f2602fb4976` (MIT), documented offline preflight and approval/evidence boundaries, and added setup/README references. Named-install and standalone-helper regressions pass with the modified suites at 64/64 and 19/19; catalog-fingerprinted `jeo` is removed while current, foreign and out-of-scope skills survive. Catalog installation adds only the operator package, not the upstream runtime. |
 | **harness → harness2** | Replaced the revfactory `harness` skill with `harness2`, an operator for `google-research/harness2` pinned to `1cfe254e8d25b15f37048c3730134686abe60335` (Apache-2.0): credential-free demo, LAB/JobBench/WorkBuddy setup and paid-run gates, Codex bridge, and a method mode that applies Propose–Probe–Compose by hand (agent-team design moved here). `harness` is now in `retired_skills` and every route-out was repointed. |
 | **Four new operators** | Added `ruflo` (ruvnet/ruflo, MIT), `voicestudio` (debpalash/VoiceStudio, AGPL-3.0-only), `diagram-design` (cathrynlavery/diagram-design, MIT), and `artcraft` (storytold/artcraft, MIT OR Apache-2.0), each commit-pinned with an offline preflight and explicit install, model, provider, server, and publishing gates. With `harness` retired, the catalog grows from 401 to 405. |
 | **Retired-skill cleanup on install** | `jeo-skill install` and `install.sh` now remove stale catalog copies of retired `jeo` (→ `ooo`) and `harness` (→ `harness2`) from the roots they write, and `jeo-skill prune-retired [--global] [--dry-run]` sweeps every runtime root. Removal requires the catalog's exact frontmatter name and first heading; links are unlinked only when they point at a copy the same sweep removed. Third-party same-name skills, unrelated links, and roots behind linked ancestors are kept. `.skill-lock.json` is not edited. |

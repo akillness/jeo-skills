@@ -170,7 +170,7 @@ curl -s https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-sk
 - **Antigravity IDE와 CLI도 native 투영이 필요**합니다. `skills@1.7.0`이 `--agent` 플래그를 무시하고 공유 루트에 설치하므로, 설정 가이드 Step 4C가 올바른 전용 경로를 따로 채웁니다.
 - `--global`은 홈 범위 설치입니다. `--global`을 생략하면 현재 프로젝트 범위가 기본이며, 프로젝트 헬퍼를 직접 실행해 그 범위에 설치합니다.
 - MCP 도구(`ooo`, `semble`), 셸 도구(`rtk`), 플랫폼별 통합을 등록합니다.
-- 기존 스킬을 보존하며 추가 또는 업데이트만 수행합니다. 다만 은퇴한 `jeo`(→ `ooo`)와 `harness`(→ `harness2`)의 fingerprint가 일치하는 카탈로그 사본은 제거합니다.
+- 기존 스킬을 보존하며 추가 또는 업데이트만 수행합니다. 자동 정리는 Step 4E의 guarded sweep으로 fingerprint가 일치하는 은퇴 **카탈로그** 사본 `jeo`(→ `ooo`)·`harness`(→ `harness2`)만 제거하며, 활성 `jeo-skill` 라우터나 `jeo-code` 런타임은 삭제하지 않습니다.
 
 모든 카탈로그 모드에서 Jev는 선택 사항입니다. 기본 설정은 Jev 모델을 다운로드하거나 Jev 규칙/훅을 설치하지 않습니다. 루트 설치 프로그램은 대화형 홈 범위 세션에서만 기본값이 ‘아니요’인 질문을 표시하며, 위임 가이드는 명시적으로 승인된 선택이 있을 때만 Jev 설정을 실행합니다.
 > [!NOTE]
@@ -200,6 +200,7 @@ Git 전체 리비전이나 실제 실행 준비 상태를 검증하지 않습니
 업스트림 앱 설치·비공개 데이터 수집·MCP 활성화·유료 호출·DB 변경 승인이 아닙니다.
 `jeo-skill install --bundle knowledge-repositories --dry-run`으로 선택 범위를 미리 확인합니다.
 
+
 ```bash
 # 공유 글로벌 경로에 라우터를 설치합니다. Claude Code 네이티브 투영은 --agent claude-code로 별도 실행
 npx --yes skills@1.7.0 add https://github.com/akillness/jeo-skills \
@@ -218,6 +219,20 @@ python3 "$HOME/.agents/skills/jeo-skill/scripts/jeo-skill.py" install responsive
 # 홈 범위에 선택 설치
 python3 "$HOME/.agents/skills/jeo-skill/scripts/jeo-skill.py" install responsive-design --global --yes
 ```
+
+#### Open Ontologies (온디맨드)
+
+[`open-ontologies`](.agent-skills/open-ontologies/SKILL.md)는 `knowledge-repositories` 번들의 선택된 공개 파일 해시 헬퍼 18개 중 하나인 가이드 전용 운영 스킬입니다. RDF/OWL 의미론 계획·변경 영향 분석·인증서 기반 검증을 다루며, [`fabio-rovai/open-ontologies` 커밋 `dfb09bf815326913d7d7822fa7228f2602fb4976`](https://github.com/fabio-rovai/open-ontologies/commit/dfb09bf815326913d7d7822fa7228f2602fb4976)에 고정되어 있습니다. GUI 온톨로지 편집기가 아니므로 시각 편집은 Protégé나 별도 워크벤치 스킬을 사용하고, 먼저 [고정 업스트림 참고 문서](.agent-skills/open-ontologies/references/upstream.md)를 읽으세요.
+
+가이드만 온디맨드로 설치한 뒤, 승인된 절대 경로 업스트림 체크아웃에 연결된 [오프라인 preflight 헬퍼](.agent-skills/open-ontologies/scripts/preflight.py)를 실행합니다.
+
+```bash
+jeo-skill install open-ontologies --global --yes
+python3 "$HOME/.agents/skills/open-ontologies/scripts/preflight.py" \
+  --repo /absolute/path/to/open-ontologies --json
+```
+
+헬퍼는 선택된 공개 파일의 해시만 비교하며(`runtime_verified=false`), Git HEAD·전체 리비전·의존성·빌드·런타임 증거가 아닙니다. 일괄 설정은 업스트림을 빌드/설치하거나 MCP를 활성화해서는 **안 됩니다**. 바이너리/빌드, Lean checker, OCI 이미지, MCP 활성화·클라이언트 등록, 온톨로지 데이터 업로드·수집, 프로바이더 호출, 그래프/DB 쓰기는 각각 별도 승인이 필요합니다.
 
 필요한 범위를 먼저 탐색하고 미리 확인합니다.
 
@@ -1152,6 +1167,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 | `scientific-agent-skills` | [K-Dense-AI/scientific-agent-skills](https://github.com/K-Dense-AI/scientific-agent-skills) | MIT 래퍼; 업스트림 스킬별 조건 상이 |
 | `eli5` | [DreambigOu/ELI5](https://github.com/DreambigOu/ELI5) | MIT |
 | `openocta` | [openocta/openocta](https://github.com/openocta/openocta) | Apache-2.0 래퍼 |
+| `open-ontologies` | [운영 가이드](.agent-skills/open-ontologies/SKILL.md) · [fabio-rovai/open-ontologies @ dfb09bf815326913d7d7822fa7228f2602fb4976](https://github.com/fabio-rovai/open-ontologies/tree/dfb09bf815326913d7d7822fa7228f2602fb4976) | MIT (업스트림) |
 | `open-code-review` | [alibaba/open-code-review](https://github.com/alibaba/open-code-review) | Apache-2.0 |
 | `pm-skills` + `pm-*` 스킬 62개 | [phuryn/pm-skills @ 8607e3b](https://github.com/phuryn/pm-skills) | MIT |
 | `langchain-*`, `langgraph-*`, `deep-agents-*` (10개) | [langchain-ai/langchain-skills @ 88df7d9](https://github.com/langchain-ai/langchain-skills) | MIT |
@@ -1182,6 +1198,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 
 | 변경 사항 | 상세 내용 |
 |--------|---------|
+| **Open Ontologies 운영 스킬 정비** | 이미 등록된 `open-ontologies`를 v1.1.0으로 정비해 중복 추가 없이 405개를 유지했습니다. 고정 커밋 `dfb09bf815326913d7d7822fa7228f2602fb4976`(MIT)의 선택 공개 파일 6개 해시를 재확인하고 오프라인 preflight, 승인·검증 범위, setup·README 레퍼런스를 보강했습니다. 이름 지정 설치와 독립 helper 회귀를 추가해 수정 스위트 64/64·19/19가 통과했으며 카탈로그 지문이 일치하는 `jeo`만 제거하고 현행·동명 서드파티·범위 밖 스킬을 보존합니다. 카탈로그 설치는 운영 스킬 패키지만 추가하며 업스트림 런타임은 설치하지 않습니다. |
 | **harness → harness2** | revfactory `harness` 스킬을 `google-research/harness2` 운영 스킬 `harness2`로 교체했습니다. `1cfe254e8d25b15f37048c3730134686abe60335`(Apache-2.0)에 고정하고, 크레덴셜 없는 데모, LAB/JobBench/WorkBuddy 설정과 유료 실행 승인 게이트, Codex 브리지, Propose–Probe–Compose를 직접 적용하는 method 모드(에이전트 팀 설계 이관)를 안내합니다. `harness`는 `retired_skills`로 옮기고 모든 라우팅을 새 담당 스킬로 바꿨습니다. |
 | **운영 스킬 4종 추가** | `ruflo`(ruvnet/ruflo, MIT), `voicestudio`(debpalash/VoiceStudio, AGPL-3.0-only), `diagram-design`(cathrynlavery/diagram-design, MIT), `artcraft`(storytold/artcraft, MIT OR Apache-2.0)를 커밋 고정, 오프라인 preflight, 설치·모델·프로바이더·서버·배포 승인 게이트와 함께 추가했습니다. `harness` 은퇴를 반영해 카탈로그가 401개에서 405개가 됐습니다. |
 | **설치 시 은퇴 스킬 정리** | `jeo-skill install`과 `install.sh`가 설치 대상 루트에서 은퇴한 `jeo`(→ `ooo`)·`harness`(→ `harness2`)의 오래된 카탈로그 사본을 제거하며, `jeo-skill prune-retired [--global] [--dry-run]`으로 모든 런타임 루트를 점검합니다. frontmatter 이름과 첫 제목이 카탈로그 사본과 정확히 일치할 때만 지우고, 링크는 같은 정리에서 지운 사본을 가리킬 때만 해제합니다. 다른 출처의 동명 스킬·무관한 링크·링크된 상위 경로는 유지합니다. `.skill-lock.json`은 수정하지 않습니다. |
