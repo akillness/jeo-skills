@@ -274,9 +274,10 @@ Used 2026-09-19 for nine pairs (aliases, oh-my-gods wrappers, pm-skills template
    catalog gates do not enforce the latter two. Run the projection generator, skill
    validators, new tests and catalog/frontmatter/flat-layout gates. Count authored eval
    scenarios separately from executed tests and never claim live runtime proof.
-   On macOS run the preflight suite with a real TMPDIR
-   (`TMPDIR=/private/tmp/<x>`): the default `/var/folders/...` sits under the
-   `/var -> /private/var` link, so whole-path symlink guards (jev-ultrafast) fail locally.
+   Test fixtures must resolve their own TemporaryDirectory base (`Path(...).resolve()`):
+   macOS `/var/folders/...` sits under `/var -> /private/var`, so whole-path symlink guards
+   and canonical `Path.cwd()` comparisons fail otherwise. The preflight and installer suites
+   do this and pass with the default TMPDIR; never resolve caller-provided repo paths.
    Tool checks must not contain `repo/source/shape/structure/commit/git/head/revision` in
    their names, or the generic suite treats them as local-source checks.
 

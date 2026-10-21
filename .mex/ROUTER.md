@@ -74,9 +74,10 @@ Then read this file fully before doing anything else in this session.
   Logic lives in `skill_usage.py`/`skill_quarantine.py`/`skill_jev.py`/`skill_usage_cli.py`;
   `jeo-skill.py` only registers/dispatches. Jev hooks append `jev-usage.jsonl` (injected vs
   routed). Evidence: usage 7, quarantine 15, retirement 7 Python tests and 4 node ledger
-  tests pass; Jev runtime/codex/lifecycle 64 pass; catalog gates pass; installer 63/63 with
-  `TMPDIR=/private/tmp/...` (4 prune-retired assertions fail under macOS `/var` TMPDIR —
-  pre-existing `/private/var` path reporting, not this change). Real-data read-only scan
+  tests pass; Jev runtime/codex/lifecycle 64 pass; catalog gates pass; installer 63/63. The earlier
+  `/var` TMPDIR failures were a test-fixture alias mismatch, fixed in the merge
+  (`test_installer_regressions.py` resolves its owned temp root); the suite now passes 63/63
+  with the default macOS TMPDIR and in CI run 39569222853 (Ubuntu + macOS). Real-data read-only scan
   (state in /tmp): 205 of 373 catalog skills used, 168 never; after grace a preview would
   quarantine 922 provable copies and keep 209. Real tracking state was NOT started and no
   host hook was installed (user chose docs + snippet). Installed `~/.agents/jev` and the
