@@ -29,9 +29,12 @@ Then read this file fully before doing anything else in this session.
 
 **Working:**
 
-- Root `.gitignore` allowlist (2026-10-21, user-chosen): everything at the repository root
-  is ignored unless it has a `!/name` line (`.agent-skills/` plus the published install,
-  docs, CI, changelog, jev, scripts and mex surface). Untracked, local copies kept:
+- Root `.gitignore` allowlist (2026-10-21): the user asked that nothing outside
+  `.agent-skills/` be pushed. Told that untracking everything else would delete the README,
+  install.sh, setup-guide/Jev raw URLs and CI from GitHub, the user picked the option
+  "allowlist + remove junk" over the strict one. So everything at the root is ignored unless
+  it has a `!/name` line (`.agent-skills/` plus the published install, docs, CI, changelog,
+  jev, scripts and mex surface); already-published files stay. Untracked, local copies kept:
   `python/bin/*` (stray venv binaries), `test_parse.ts`, `run_python.js`, `pr-body.md`.
   Side effect: the old unanchored `llm-wiki/` rule matched `.agent-skills/llm-wiki/`, so new
   files there were silently ignored; root `/llm-wiki/` is now covered by `/*` instead.
