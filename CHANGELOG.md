@@ -9,6 +9,7 @@ All notable changes to **jeo-skills** are documented here.
 - Added local skill-usage tracking with candidate reporting, reversible quarantine/restore, permanent quarantine purge, a separate maintainer retirement script, and the Jev injection usage ledger.
 
 ### Changed
+- Rebuilt all three READMEs for readability with new Codex visuals, tables and collapsible category lists; upstream sources and licenses moved to `docs/attribution.md`.
 - Install and `prune-retired` cleanup now remove only fingerprint-matched catalog copies of retired `jeo`/`harness`; third-party copies, unrelated links, linked roots, and `.skill-lock.json` remain untouched.
 - Refreshed README visuals and authored documentation, including the usage lifecycle, host boundaries, commands, and 18-operator preflight guidance.
 - Refined the existing `open-ontologies` operator to v1.1.0 with explicit offline preflight and pinned-source references, setup/README guidance, and named-install/helper regressions; the catalog remains at 405 skills. Retired `jeo` removal reuses the existing fingerprint- and scope-guarded installer behavior.

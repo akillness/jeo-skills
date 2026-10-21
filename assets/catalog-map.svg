@@ -1,0 +1,143 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="520" viewBox="0 0 1200 520" role="img" aria-labelledby="catalog-title catalog-desc">
+  <title id="catalog-title">Skill catalog category map</title>
+  <desc id="catalog-desc">Ten equal tiles in five columns and two rows map the skill categories, each with a geometric icon and three subcategories: Web — frontend, design, data; Infrastructure — deployment, observability, security; Game — design-ui, motion-vfx, qa-performance; Creative Media — image, video, diagram; CLI Tools — ai-cli, search-cli, automation-cli; AI &amp; Agents — orchestration, agent-frameworks, evaluation; Engineering — code-quality, architecture, testing; Research &amp; Analysis — academic, web-research, intelligence; Business — pm-discovery, pm-strategy, marketing; Utilities — knowledge, files, git.</desc>
+  <style>
+    text { font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; fill: #12231E; }
+    .tile { fill: #F7F9F5; stroke: #DCE4DE; stroke-width: 1.5; }
+    .name { font-size: 22px; font-weight: 650; letter-spacing: -0.4px; }
+    .label { font-size: 18px; font-weight: 400; }
+    .icon { fill: none; stroke: #137E73; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+    .command { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+  </style>
+  <rect width="1200" height="520" fill="#F7F9F5"/>
+
+  <g transform="translate(32 32)">
+    <rect class="tile" width="208" height="216" rx="8"/>
+    <g class="icon" transform="translate(16 20)" aria-hidden="true">
+      <rect x="2" y="2" width="40" height="32" rx="3"/>
+      <path d="M2 12h40M14 12v22"/>
+      <path d="M20 19h15M20 26h10"/>
+    </g>
+    <text class="name" x="16" y="94">Web</text>
+    <text class="label" x="16" y="146">frontend</text>
+    <text class="label" x="16" y="174">design</text>
+    <text class="label" x="16" y="202">data</text>
+  </g>
+
+  <g transform="translate(264 32)">
+    <rect class="tile" width="208" height="216" rx="8"/>
+    <g class="icon" transform="translate(16 20)" aria-hidden="true">
+      <rect x="2" y="2" width="40" height="14" rx="3"/>
+      <rect x="2" y="24" width="40" height="14" rx="3"/>
+      <path d="M22 16v8M10 9h3M10 31h3M29 9h5M29 31h5"/>
+    </g>
+    <text class="name" x="16" y="94">Infrastructure</text>
+    <text class="label" x="16" y="146">deployment</text>
+    <text class="label" x="16" y="174">observability</text>
+    <text class="label" x="16" y="202">security</text>
+  </g>
+
+  <g transform="translate(496 32)">
+    <rect class="tile" width="208" height="216" rx="8"/>
+    <g class="icon" transform="translate(16 20)" aria-hidden="true">
+      <path d="M13 8h18c5 0 8 4 9 9l3 13c1 5-3 8-7 5l-7-6H15l-7 6c-4 3-8 0-7-5l3-13c1-5 4-9 9-9Z"/>
+      <path d="M10 19h10M15 14v10"/>
+      <circle cx="30" cy="17" r="1.5"/>
+      <circle cx="35" cy="23" r="1.5"/>
+    </g>
+    <text class="name" x="16" y="94">Game</text>
+    <text class="label" x="16" y="146">design-ui</text>
+    <text class="label" x="16" y="174">motion-vfx</text>
+    <text class="label" x="16" y="202">qa-performance</text>
+  </g>
+
+  <g transform="translate(728 32)">
+    <rect class="tile" width="208" height="216" rx="8"/>
+    <g class="icon" transform="translate(16 20)" aria-hidden="true">
+      <rect x="2" y="2" width="40" height="36" rx="3"/>
+      <circle cx="31" cy="12" r="4"/>
+      <path d="m3 31 12-14 10 11 6-6 10 11"/>
+    </g>
+    <text class="name" x="16" y="94">Creative Media</text>
+    <text class="label" x="16" y="146">image</text>
+    <text class="label" x="16" y="174">video</text>
+    <text class="label" x="16" y="202">diagram</text>
+  </g>
+
+  <g transform="translate(960 32)">
+    <rect class="tile" width="208" height="216" rx="8"/>
+    <g class="icon" transform="translate(16 20)" aria-hidden="true">
+      <rect x="2" y="2" width="40" height="36" rx="3"/>
+      <path d="m11 13 8 7-8 7M25 28h9"/>
+    </g>
+    <text class="name" x="16" y="94">CLI Tools</text>
+    <text class="label" x="16" y="146">ai-cli</text>
+    <text class="label" x="16" y="174">search-cli</text>
+    <text class="label" x="16" y="202">automation-cli</text>
+  </g>
+
+  <g transform="translate(32 272)">
+    <rect class="tile" width="208" height="216" rx="8"/>
+    <g class="icon" transform="translate(16 20)" aria-hidden="true">
+      <path d="M18 12 10 6M26 12l8-6M17 25l-7 9M27 25l7 9"/>
+      <circle cx="22" cy="19" r="8"/>
+      <circle cx="6" cy="4" r="4"/>
+      <circle cx="38" cy="4" r="4"/>
+      <circle cx="6" cy="37" r="4"/>
+      <circle cx="38" cy="37" r="4"/>
+    </g>
+    <text class="name" x="16" y="94">AI &amp; Agents</text>
+    <text class="label" x="16" y="146">orchestration</text>
+    <text class="label" x="16" y="174">agent-frameworks</text>
+    <text class="label" x="16" y="202">evaluation</text>
+  </g>
+
+  <g transform="translate(264 272)">
+    <rect class="tile" width="208" height="216" rx="8"/>
+    <g class="icon" transform="translate(16 20)" aria-hidden="true">
+      <path d="M12 2h20l10 18-10 18H12L2 20Z"/>
+      <circle cx="22" cy="20" r="8"/>
+      <path d="M22 2v10M42 20H30M22 38V28M2 20h12"/>
+    </g>
+    <text class="name" x="16" y="94">Engineering</text>
+    <text class="label" x="16" y="146">code-quality</text>
+    <text class="label" x="16" y="174">architecture</text>
+    <text class="label" x="16" y="202">testing</text>
+  </g>
+
+  <g transform="translate(496 272)">
+    <rect class="tile" width="208" height="216" rx="8"/>
+    <g class="icon" transform="translate(16 20)" aria-hidden="true">
+      <circle cx="18" cy="16" r="14"/>
+      <path d="m28 27 13 13M10 20v-6M18 20V9M26 20v-9"/>
+    </g>
+    <text class="name" x="16" y="94" aria-label="Research &amp; Analysis"><tspan x="16">Research &amp;</tspan><tspan x="16" dy="24">Analysis</tspan></text>
+    <text class="label" x="16" y="158">academic</text>
+    <text class="label" x="16" y="186">web-research</text>
+    <text class="label" x="16" y="214">intelligence</text>
+  </g>
+
+  <g transform="translate(728 272)">
+    <rect class="tile" width="208" height="216" rx="8"/>
+    <g class="icon" transform="translate(16 20)" aria-hidden="true">
+      <rect x="2" y="10" width="40" height="28" rx="3"/>
+      <path d="M14 10V3h16v7M2 21c12 7 28 7 40 0M18 23h8v7h-8Z"/>
+    </g>
+    <text class="name" x="16" y="94">Business</text>
+    <text class="label" x="16" y="146">pm-discovery</text>
+    <text class="label" x="16" y="174">pm-strategy</text>
+    <text class="label" x="16" y="202">marketing</text>
+  </g>
+
+  <g transform="translate(960 272)">
+    <rect class="tile" width="208" height="216" rx="8"/>
+    <g class="icon" transform="translate(16 20)" aria-hidden="true">
+      <path d="M2 10V5h15l5 5h20v28H2Z"/>
+      <path d="M2 16h40M17 26l4 4 8-9"/>
+    </g>
+    <text class="name" x="16" y="94">Utilities</text>
+    <text class="label" x="16" y="146">knowledge</text>
+    <text class="label" x="16" y="174">files</text>
+    <text class="label" x="16" y="202">git</text>
+  </g>
+</svg>

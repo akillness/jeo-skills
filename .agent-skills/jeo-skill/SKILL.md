@@ -82,7 +82,8 @@ the default; the canonical skill owns setup, consent, and snippet verification.
 
 `jeo-skill usage scan` reads local runtime records (Claude `skillUsage` and transcripts,
 Codex rollouts, OpenCode, Antigravity, Aside, jeopi/GJC/OMP/Pi sessions, and the Jev
-injection ledger) and stores only skill names, counts, and timestamps under
+injection ledger) and stores local usage summaries (per-skill counts, first/last use) plus
+incremental scan metadata (record paths, sizes, hashes), never transcript bodies, under
 `${JEO_SKILL_STATE_DIR:-${XDG_STATE_HOME:-~/.local/state}/jeo-skill}`. A skill counts as
 used only when an agent invoked or loaded it: a Skill/slash invocation, a read of an
 installed `<root>/<name>/SKILL.md` or `skill://<name>`, or a Jev full-body injection.
