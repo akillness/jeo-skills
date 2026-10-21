@@ -22,9 +22,8 @@ from pathlib import Path
 from typing import Any
 
 sys.dont_write_bytecode = True
-
-PROTECTED_BUNDLES = ("starter", "cli-core", "infrastructure-core")
-ROUTER_SKILL = "jeo-skill"
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / ".agent-skills/jeo-skill/scripts"))
+from skill_usage import PROTECTED_BUNDLES, ROUTER_SKILL  # type: ignore  # noqa: E402
 PROJECTION_FILES = (
     Path(".agent-skills/skills.json"),
     Path(".agent-skills/skills.toon"),
@@ -132,36 +131,41 @@ def _reason(report: dict[str, Any]) -> str:
     )
 
 
-def _reference_pattern(name: str) -> re.Pattern[str]:
-    escaped = re.escape(name)
-    return re.compile(
-        rf"`{escaped}`|skill://{escaped}(?![A-Za-z0-9_-])|"
-        rf"\]\(\s*(?:\.\./|\.agent-skills/)?{escaped}/SKILL\.md(?:[#?][^)]*)?\s*\)"
-    )
+# One pass per reference form over each SKILL.md (forms are scanned independently so a
+# backtick span cannot swallow a following link): a backtick span (the lookahead leaves
+# the closing backtick free to open the next span), a `skill://name` URI, or a Markdown
+# link to `[../|.agent-skills/]name/SKILL.md`. Captured text equal to a name is a reference.
+_REFERENCES = (
+    re.compile(r"`([^`]+)(?=`)"),
+    re.compile(r"skill://([A-Za-z0-9_-]+)"),
+    re.compile(r"\]\(\s*(?:\.\./|\.agent-skills/)?([^/()\s]+)/SKILL\.md(?:[#?][^)]*)?\s*\)"),
+)
 
 
-def find_live_references(repo_root: Path, name: str) -> list[dict[str, str]]:
-    """Find references to ``name`` in other catalog SKILL.md files."""
+def _reference_index(repo_root: Path) -> dict[str, set[str]]:
+    """Map each referenced name to the catalog skills whose SKILL.md references it."""
     root = repo_root / ".agent-skills"
-    pattern = _reference_pattern(name)
-    references: list[dict[str, str]] = []
+    index: dict[str, set[str]] = {}
     if not root.is_dir():
-        return references
+        return index
     for skill_md in sorted(root.glob("*/SKILL.md")):
-        if skill_md.parent.name == name:
-            continue
         try:
             text = skill_md.read_text(encoding="utf-8")
         except OSError as error:
             raise RetirementError(f"cannot inspect catalog reference file: {skill_md}") from error
-        if pattern.search(text):
-            references.append(
-                {
-                    "skill": skill_md.parent.name,
-                    "path": skill_md.relative_to(repo_root).as_posix(),
-                }
-            )
-    return references
+        for pattern in _REFERENCES:
+            for referenced in pattern.findall(text):
+                index.setdefault(referenced, set()).add(skill_md.parent.name)
+    return index
+
+
+def find_live_references(
+    repo_root: Path, name: str, index: dict[str, set[str]] | None = None
+) -> list[dict[str, str]]:
+    """Find references to ``name`` in other catalog SKILL.md files."""
+    referencing = (_reference_index(repo_root) if index is None else index).get(name, set())
+    return [{"skill": skill, "path": Path(".agent-skills", skill, "SKILL.md").as_posix()}
+            for skill in sorted(referencing - {name})]
 
 
 def _groups_for(manifest: dict[str, Any], name: str) -> list[tuple[str, dict[str, Any]]]:
@@ -179,10 +183,13 @@ def _groups_for(manifest: dict[str, Any], name: str) -> list[tuple[str, dict[str
 
 
 def _replacement(
-    manifest: dict[str, Any], report: dict[str, Any], name: str, head_commit: str
+    manifest: dict[str, Any],
+    name: str,
+    head_commit: str,
+    *,
+    skills: dict[str, dict[str, Any]],
+    report_skills: dict[str, dict[str, Any]],
 ) -> tuple[str, str, list[str]]:
-    skills = _skills_by_name(manifest)
-    report_skills = _usage_rows(report)
     groups: list[str] = []
     siblings: list[str] = []
     for group_name, group in _groups_for(manifest, name):
@@ -209,6 +216,7 @@ def build_proposals(repo_root: Path, manifest: dict[str, Any], report: dict[str,
     protected = protected_reasons(manifest)
     reason = _reason(report)
     head_commit = _head_commit(repo_root)
+    reference_index = _reference_index(repo_root)
     bundles = manifest.get("bundles", {})
     if not isinstance(bundles, dict):
         bundles = {}
@@ -220,11 +228,17 @@ def build_proposals(repo_root: Path, manifest: dict[str, Any], report: dict[str,
         if name in protected:
             continue
         entry = skills[name]
-        replacement, replacement_type, relationship_groups = _replacement(manifest, report, name, head_commit)
+        replacement, replacement_type, relationship_groups = _replacement(
+            manifest,
+            name,
+            head_commit,
+            skills=skills,
+            report_skills=report_skills,
+        )
         bundle_names = sorted(
             bundle for bundle, members in bundles.items() if isinstance(members, list) and name in members
         )
-        references = find_live_references(repo_root, name)
+        references = find_live_references(repo_root, name, reference_index)
         retirement = {
             "replacement": replacement,
             "replacement_type": replacement_type,
@@ -238,9 +252,7 @@ def build_proposals(repo_root: Path, manifest: dict[str, Any], report: dict[str,
                 "bundles": bundle_names,
                 "relationship_groups": relationship_groups,
                 "live_references": references,
-                "live_reference_paths": [item["path"] for item in references],
                 "proposed_retirement": retirement,
-                "retirement": retirement,
             }
         )
     return proposals
@@ -343,12 +355,69 @@ def _run_projection(repo_root: Path, script: str, *extra: str) -> subprocess.Com
     )
 
 
+def _review_evidence(report: dict[str, Any], approved: list[str]) -> dict[str, Any]:
+    tracking = report.get("tracking_started_at")
+    if not isinstance(tracking, str) and tracking is not None:
+        tracking = None
+    grace_days = report.get("grace_days", 30)
+    if not isinstance(grace_days, int) or isinstance(grace_days, bool):
+        grace_days = 30
+    source_data = report.get("sources")
+    sources: dict[str, dict[str, Any]] = {}
+    if isinstance(source_data, dict):
+        for source_name in sorted(source_data):
+            if not isinstance(source_name, str):
+                continue
+            info = source_data[source_name]
+            info = info if isinstance(info, dict) else {}
+            available = info.get("available")
+            records = info.get("records")
+            window = info.get("window")
+            if not isinstance(available, bool):
+                available = False
+            if not isinstance(records, int) or isinstance(records, bool):
+                records = 0
+            if not isinstance(window, (list, tuple)) or len(window) != 2:
+                window = [None, None]
+            else:
+                window = [item if isinstance(item, str) or item is None else None for item in window]
+            sources[source_name] = {
+                "available": available,
+                "records": records,
+                "window": window,
+            }
+    rows = _usage_rows(report)
+    skills: list[dict[str, Any]] = []
+    for name in approved:
+        row = rows.get(name, {})
+        count = row.get("count") if isinstance(row, dict) else 0
+        if not isinstance(count, int) or isinstance(count, bool):
+            count = 0
+        last_used_at = row.get("last_used_at") if isinstance(row, dict) else None
+        grace_ends_at = row.get("grace_ends_at") if isinstance(row, dict) else None
+        skills.append(
+            {
+                "name": name,
+                "count": count,
+                "last_used_at": last_used_at if isinstance(last_used_at, str) or last_used_at is None else None,
+                "grace_ends_at": grace_ends_at if isinstance(grace_ends_at, str) or grace_ends_at is None else None,
+            }
+        )
+    return {
+        "tracking_started_at": tracking,
+        "grace_days": grace_days,
+        "sources": sources,
+        "skills": skills,
+    }
+
+
 def apply_retirements(
     repo_root: Path,
     manifest: dict[str, Any],
     proposals: list[dict[str, Any]],
     approved: list[str],
     *,
+    report: dict[str, Any],
     jev_profile: str | None,
     allow_remote: bool,
     skip_jev_review: bool,
@@ -363,45 +432,26 @@ def apply_retirements(
             raise ImportError("Jev script directory is missing")
         sys.path.insert(0, str(jev_scripts))
         from skill_jev import review_gate
-    except ImportError:
-        review_gate = None
+    except ImportError as error:
+        raise RetirementError("skill_jev.review_gate is unavailable") from error
 
-    reviews: list[dict[str, Any]] = []
-    for name in approved:
-        proposal = {
-            "skill": name,
-            "action": "retire",
-            "replacement": by_name[name]["proposed_retirement"]["replacement"],
-            "replacement_type": by_name[name]["proposed_retirement"]["replacement_type"],
-            "reason": by_name[name]["proposed_retirement"]["reason"],
-            "repo_root": str(repo_root),
-        }
-        if review_gate is None:
-            if not skip_jev_review:
-                raise RetirementError("skill_jev.review_gate is unavailable")
-            review = {"status": "skipped", "receipt": None, "backend": None, "reason": "explicit skip"}
-        else:
-            try:
-                review = review_gate(
-                    proposal,
-                    profile=jev_profile,
-                    allow_remote=allow_remote,
-                    skip=skip_jev_review,
-                )
-            except Exception as error:
-                raise RetirementError(f"Jev review failed for {name!r}: {error}") from error
-        review_record = dict(review)
-        review_record.setdefault("skill", name)
-        reviews.append(review_record)
+    review_payload = {
+        "skills": approved,
+        "scope": "catalog",
+        "evidence": _review_evidence(report, approved),
+    }
+    try:
+        review = review_gate(
+            review_payload,
+            profile=jev_profile,
+            allow_remote=allow_remote,
+            skip=skip_jev_review,
+        )
+    except Exception as error:
+        raise RetirementError(f"Jev review failed: {error}") from error
+    reviews = [dict(review) for _ in approved]
 
     manifest_path = repo_root / ".agent-skills" / "skills.json"
-    file_backup: dict[Path, bytes] = {}
-    for relative in PROJECTION_FILES:
-        path = repo_root / relative
-        if not path.is_file():
-            raise RetirementError(f"required projection is missing: {relative}")
-        file_backup[path] = path.read_bytes()
-
     temporary_root = Path(tempfile.mkdtemp(prefix="jeo-skill-retire-"))
     projection_backups: dict[Path, Path] = {}
     skills_backup_root = Path(tempfile.mkdtemp(prefix="skills-", dir=temporary_root))
@@ -409,16 +459,14 @@ def apply_retirements(
     dir_backups: dict[str, Path] = {}
     cleanup_backup = True
     try:
-        for index, (path, payload) in enumerate(file_backup.items()):
+        for index, relative in enumerate(PROJECTION_FILES):
+            path = repo_root / relative
+            if not path.is_file():
+                raise RetirementError(f"required projection is missing: {relative}")
             backup_file = projection_backup_root / f"{index:02d}-{path.name}"
-            backup_file.write_bytes(payload)
-            shutil.copymode(path, backup_file)
+            shutil.copy2(path, backup_file)
             projection_backups[path] = backup_file
         for name in approved:
-            entry = _skills_by_name(manifest)[name]
-            expected_path = f"{name}/SKILL.md"
-            if entry.get("path") != expected_path:
-                raise RetirementError(f"manifest path for {name!r} is not catalog-shaped")
             skill_dir = repo_root / ".agent-skills" / name
             if skill_dir.is_symlink() or not skill_dir.is_dir() or not (skill_dir / "SKILL.md").is_file():
                 raise RetirementError(f"catalog skill directory is not a safe removable copy: {skill_dir}")
@@ -436,9 +484,9 @@ def apply_retirements(
         retired = updated.setdefault("retired_skills", {})
         if not isinstance(retired, dict):
             raise RetirementError("manifest.retired_skills must be an object")
-        for name in approved:
+        for name, review in zip(approved, reviews):
             retirement = copy.deepcopy(by_name[name]["proposed_retirement"])
-            retirement["review"] = reviews[approved.index(name)]
+            retirement["review"] = review
             retired[name] = retirement
         _atomic_write_json(manifest_path, updated)
         for name in approved:
@@ -460,8 +508,7 @@ def apply_retirements(
         restore_errors: list[str] = []
         for path, backup_file in projection_backups.items():
             try:
-                path.write_bytes(backup_file.read_bytes())
-                shutil.copymode(backup_file, path)
+                shutil.copy2(backup_file, path)
             except BaseException as error:
                 restore_errors.append(f"{path}: {error}")
         for name, backup_dir in dir_backups.items():
@@ -538,6 +585,7 @@ def main(argv: list[str] | None = None) -> int:
             manifest,
             proposals,
             approved,
+            report=report,
             jev_profile=args.jev_profile,
             allow_remote=args.allow_remote,
             skip_jev_review=args.skip_jev_review,

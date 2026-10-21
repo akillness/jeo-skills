@@ -175,13 +175,12 @@ def command_usage(args: argparse.Namespace, catalog: dict[str, Any], roots_fn: R
         if args.json:
             _emit(result)
         else:
-            protect = result.get("protect", {}) if isinstance(result, dict) else {}
+            protect = result.get("protect", {})
             verb = "would score" if args.dry_run else "protected"
             print(f"relevance {verb}: {len(protect) if not args.dry_run else len(unused)} skill(s)")
             for name, info in sorted(protect.items()):
                 print(f"  {name:<40} score={info.get('score')} repo={_label_path(str(info.get('repo')))}")
         return 0
-    raise ValueError(f"unknown usage action {action!r}")
 
 
 def command_prune_unused(args: argparse.Namespace, catalog: dict[str, Any], source: str, roots_fn: RootsFn) -> int:
@@ -204,7 +203,7 @@ def command_prune_unused(args: argparse.Namespace, catalog: dict[str, Any], sour
     report = skill_usage.build_report(catalog, usage)
     names = skill_usage.candidate_names(report)
     roots = tracked_roots(roots_fn, args.global_install)
-    headings = skill_quarantine.reference_headings(catalog, source, names)
+    headings = skill_quarantine.reference_headings(source, names)
     plan = skill_quarantine.plan_quarantine(names, roots, headings)
     selected = [item for item in plan if item.get("action") == "would-quarantine"]
     reason = (f"zero invocation/load events since tracking began {report['tracking_started_at']} "
@@ -230,19 +229,23 @@ def command_prune_unused(args: argparse.Namespace, catalog: dict[str, Any], sour
     for item in selected:
         by_skill.setdefault(item["skill"], []).append(_label_path(item["path"]))
     rows = {row["name"]: row for row in report["skills"]}
+    sources = {
+        source_name: {key: info[key] for key in ("available", "records", "window") if key in info}
+        for source_name, info in report["sources"].items()
+        if isinstance(source_name, str) and isinstance(info, dict)
+    }
     proposal = {
-        "operation": "quarantine-unused-skills",
         "scope": "local-install",
         "skills": sorted(by_skill),
-        "items": [{"skill": name, "roots": paths, "count": rows[name]["count"],
-                   "grace_ends_at": rows[name]["grace_ends_at"]} for name, paths in sorted(by_skill.items())],
         "evidence": {
             "tracking_started_at": report["tracking_started_at"],
             "grace_days": report["grace_days"],
-            "sources": {name: {"available": info.get("available"), "window": info.get("window")}
-                        for name, info in report["sources"].items()},
+            "sources": sources,
+            "skills": [
+                {key: rows[name][key] for key in ("name", "count", "last_used_at", "grace_ends_at")}
+                for name in sorted(by_skill)
+            ],
         },
-        "reversible": True,
     }
     review = skill_jev.review_gate(proposal, profile=args.jev_profile, allow_remote=args.allow_remote,
                                    skip=args.skip_jev_review)
@@ -281,8 +284,8 @@ def command_restore(args: argparse.Namespace) -> int:
         _emit(results)
     else:
         for item in results:
-            print(f"{item.get('action', item.get('state', '?')):<16} {item.get('skill', ''):<36} "
-                  f"{_label_path(str(item.get('original', item.get('path', ''))))} {item.get('reason', '')}")
+            print(f"{item['action']:<16} {item.get('skill', ''):<36} "
+                  f"{_label_path(str(item['path']))} {item.get('reason', '')}")
         if not args.apply:
             print("Preview only; rerun with --apply to restore.")
     if not results:
@@ -319,4 +322,3 @@ def run(args: argparse.Namespace, catalog: dict[str, Any] | None, source: str | 
     except skill_jev.JevGateError as error:
         print(f"jeo-skill: Jev review gate refused: {error}", file=sys.stderr)
         return 2
-    raise ValueError(f"unknown command {args.command!r}")

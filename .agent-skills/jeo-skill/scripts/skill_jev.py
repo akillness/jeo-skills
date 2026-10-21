@@ -76,19 +76,17 @@ def _json_output(text: str) -> Any | None:
         return json.loads(stripped, parse_constant=reject_constant)
     except (json.JSONDecodeError, ValueError):
         decoder = json.JSONDecoder(parse_constant=reject_constant)
-        candidates: list[tuple[int, Any]] = []
         for index, char in enumerate(stripped):
             if char not in "[{":
                 continue
             try:
-                value, end = decoder.raw_decode(stripped[index:])
+                value, end = decoder.raw_decode(stripped, index)
             except (json.JSONDecodeError, ValueError):
                 continue
             # Allow a diagnostic prefix, but reject any trailing output.
-            if stripped[index + end :].strip():
-                continue
-            candidates.append((index + end, value))
-        return max(candidates, key=lambda item: item[0])[1] if candidates else None
+            if end == len(stripped):
+                return value
+    return None
 
 
 def _unique_strings(value: Any) -> list[str]:
@@ -103,135 +101,98 @@ def _unique_strings(value: Any) -> list[str]:
 
 
 def _extract_names(proposal: dict[str, Any]) -> list[str]:
-    names: list[str] = []
-    for key in ("skills", "names", "candidates"):
-        for name in _unique_strings(proposal.get(key)):
-            if name not in names:
-                names.append(name)
-    singular = proposal.get("skill")
-    for name in _unique_strings(singular):
-        if name not in names:
-            names.append(name)
-    items = proposal.get("items")
-    if isinstance(items, list):
-        for item in items:
-            if isinstance(item, dict):
-                name = item.get("skill") or item.get("name")
-                if isinstance(name, str) and name and name not in names:
-                    names.append(name)
-    return sorted(names)
+    return sorted(_unique_strings(proposal.get("skills")))
 
 
-def _extract_scopes(proposal: dict[str, Any]) -> list[str]:
-    scopes: list[str] = []
-    for key in ("scopes", "scope"):
-        value = proposal.get(key)
-        if isinstance(value, dict):
-            value = list(value.keys())
-        for scope in _unique_strings(value):
-            if scope not in scopes:
-                scopes.append(scope)
-    items = proposal.get("items")
-    if isinstance(items, list):
-        for item in items:
-            if isinstance(item, dict):
-                for scope in _unique_strings(item.get("scope")):
-                    if scope not in scopes:
-                        scopes.append(scope)
-    return sorted(scopes)
+_TIMESTAMP = re.compile(r"[0-9T:.+\-Z]{1,40}")
+SCOPES = ("local-install", "catalog")
+
+
+def _timestamp(value: Any) -> bool:
+    """None or an ISO-8601-shaped string; anything else (paths, prose) never crosses."""
+    return value is None or (isinstance(value, str) and _TIMESTAMP.fullmatch(value) is not None)
 
 
 def _window(value: Any) -> list[str | None] | None:
-    if not isinstance(value, (list, tuple)) or len(value) != 2:
-        return None
-    if all(item is None or isinstance(item, str) for item in value):
+    if isinstance(value, list) and len(value) == 2 and all(_timestamp(item) for item in value):
         return [value[0], value[1]]
     return None
 
 
 def _evidence_summary(proposal: dict[str, Any], names: list[str]) -> dict[str, Any]:
-    """Keep only counts/windows/source labels from report-like input."""
+    """Keep only the typed usage evidence accepted across the Jev boundary."""
     source = proposal.get("evidence")
     if not isinstance(source, dict):
-        source = proposal.get("report") if isinstance(proposal.get("report"), dict) else proposal
+        return {}
     result: dict[str, Any] = {}
 
-    summary = source.get("summary") if isinstance(source, dict) else None
-    if isinstance(summary, dict):
-        counts = {key: value for key, value in summary.items() if isinstance(value, int) and not isinstance(value, bool)}
-        if counts:
-            result["counts"] = counts
+    tracking = source.get("tracking_started_at")
+    if "tracking_started_at" in source and _timestamp(tracking):
+        result["tracking_started_at"] = tracking
+    grace_days = source.get("grace_days")
+    if isinstance(grace_days, int) and not isinstance(grace_days, bool):
+        result["grace_days"] = grace_days
 
-    sources = source.get("sources") if isinstance(source, dict) else None
+    sources = source.get("sources")
     if isinstance(sources, dict):
         source_summary: dict[str, Any] = {}
         for name, info in sources.items():
-            if not isinstance(name, str):
+            if not isinstance(name, str) or not re.fullmatch(r"[a-z0-9_]{1,64}", name):
                 continue
-            if isinstance(info, dict):
-                row: dict[str, Any] = {}
-                if isinstance(info.get("records"), int) and not isinstance(info.get("records"), bool):
-                    row["records"] = info["records"]
-                window = _window(info.get("window"))
-                if window is not None:
-                    row["window"] = window
-                if row:
-                    source_summary[name] = row
-            elif isinstance(info, int) and not isinstance(info, bool):
-                source_summary[name] = {"records": info}
+            if not isinstance(info, dict):
+                continue
+            row: dict[str, Any] = {}
+            available = info.get("available")
+            if isinstance(available, bool):
+                row["available"] = available
+            records = info.get("records")
+            if isinstance(records, int) and not isinstance(records, bool):
+                row["records"] = records
+            window = _window(info.get("window"))
+            if window is not None:
+                row["window"] = window
+            if row:
+                source_summary[name] = row
         if source_summary:
             result["sources"] = source_summary
 
-    tracking = source.get("tracking_started_at") if isinstance(source, dict) else None
-    scanned = source.get("scanned_at") if isinstance(source, dict) else None
-    if isinstance(tracking, str) or isinstance(scanned, str):
-        result["window"] = {"tracking_started_at": tracking if isinstance(tracking, str) else None, "scanned_at": scanned if isinstance(scanned, str) else None}
-
-    per_skill: dict[str, Any] = {}
-    skill_rows = source.get("skills") if isinstance(source, dict) else None
-    if isinstance(skill_rows, dict):
-        iterable = ((name, row) for name, row in skill_rows.items())
-    elif isinstance(skill_rows, list):
-        iterable = ((row.get("name"), row) for row in skill_rows if isinstance(row, dict))
-    else:
-        iterable = ()
-    for name, row in iterable:
-        if name not in names or not isinstance(row, dict):
-            continue
-        entry: dict[str, Any] = {}
-        if isinstance(row.get("count"), int) and not isinstance(row.get("count"), bool):
-            entry["count"] = row["count"]
-        first = row.get("first_used_at")
-        last = row.get("last_used_at")
-        if isinstance(first, str) or isinstance(last, str):
-            entry["window"] = [first if isinstance(first, str) else None, last if isinstance(last, str) else None]
-        by_source = row.get("by_source")
-        if isinstance(by_source, dict):
-            entry["sources"] = {key: value for key, value in by_source.items() if isinstance(key, str) and isinstance(value, int) and not isinstance(value, bool)}
-        if entry:
-            per_skill[name] = entry
-    if per_skill:
-        result["skills"] = per_skill
+    skills = source.get("skills")
+    if isinstance(skills, list):
+        skill_summary: list[dict[str, Any]] = []
+        for row in skills:
+            if not isinstance(row, dict):
+                continue
+            name = row.get("name")
+            if not isinstance(name, str) or name not in names:
+                continue
+            entry: dict[str, Any] = {"name": name}
+            count = row.get("count")
+            if isinstance(count, int) and not isinstance(count, bool):
+                entry["count"] = count
+            for key in ("last_used_at", "grace_ends_at"):
+                if key in row and _timestamp(row[key]):
+                    entry[key] = row[key]
+            skill_summary.append(entry)
+        if skill_summary:
+            result["skills"] = skill_summary
     return result
 
 
 def _review_payload(proposal: dict[str, Any]) -> tuple[str, dict[str, Any]]:
     names = _extract_names(proposal)
-    scopes = _extract_scopes(proposal)
+    scope = proposal.get("scope") if proposal.get("scope") in SCOPES else ""
     evidence = _evidence_summary(proposal, names)
-    payload: dict[str, Any] = {"skills": names, "scopes": scopes, "evidence": evidence}
+    payload: dict[str, Any] = {"skills": names, "scope": scope, "evidence": evidence}
     task = (
         "Review this unused-skill removal proposal. "
         f"Skills: {', '.join(names) if names else '(none)'}. "
-        f"Scopes: {', '.join(scopes) if scopes else '(unspecified)'}. "
+        f"Scope: {scope or '(unspecified)'}. "
         "Assess whether the requested quarantine or retirement is safe using only the supplied usage counts, windows, and sources."
     )
     return task, payload
 
 
 def _backend_record(value: Any) -> dict[str, Any] | None:
-    if value is None:
-        return None
     if not isinstance(value, dict):
         return None
     kind = value.get("kind")
@@ -257,7 +218,7 @@ def review_removal(proposal: dict[str, Any], *, profile: str, allow_remote: bool
 
     task, safe_proposal = _review_payload(proposal)
     proposal_json = json.dumps(safe_proposal, ensure_ascii=False, separators=(",", ":"))
-    code, stdout, _stderr, failure = _run(("--profile", profile, "review", task, proposal_json), timeout=timeout, env=os.environ.copy())
+    code, stdout, _stderr, failure = _run(("--profile", profile, "review", task, proposal_json), timeout=timeout)
     if failure:
         return {"status": "unavailable", "receipt": None, "backend": None, "reason": failure}
     if code != 0:
@@ -308,28 +269,20 @@ def _safe_repo_summary(repo: Path) -> tuple[Path, str]:
         raise JevGateError(f"relevance repository is not a directory: {repo}")
     root = repo.resolve()
     chunks: list[str] = []
-    remaining = SUMMARY_LIMIT
     for filename in ("README.md", "AGENTS.md"):
         candidate = root / filename
         try:
             resolved = candidate.resolve()
         except OSError:
             continue
-        if not resolved.is_file() or not resolved.is_relative_to(root) or remaining <= 0:
+        if not resolved.is_file() or not resolved.is_relative_to(root):
             continue
         try:
             with resolved.open("rb") as stream:
-                raw = stream.read(remaining)
+                raw = stream.read(SUMMARY_LIMIT)
         except OSError:
             continue
-        text = raw.decode("utf-8", errors="replace")
-        label = f"## {filename}\n"
-        part = (label + text).encode("utf-8")
-        if len(part) > remaining:
-            part = part[:remaining]
-            text = part.decode("utf-8", errors="ignore")
-        chunks.append(text if text.startswith("## ") else label + text)
-        remaining -= len((chunks[-1]).encode("utf-8"))
+        chunks.append(f"## {filename}\n" + raw.decode("utf-8", errors="replace"))
     summary = "\n".join(chunks)
     encoded = summary.encode("utf-8")[:SUMMARY_LIMIT]
     return root, encoded.decode("utf-8", errors="ignore")
@@ -373,7 +326,6 @@ def relevance(candidates: list[str], catalog: dict[str, Any], repos: list[Path],
 
     protected: dict[str, dict[str, Any]] = {}
     backend: dict[str, Any] | None = None
-    completed_routes = 0
     with tempfile.TemporaryDirectory(prefix="jeo-skill-jev-") as temporary:
         catalog_path = Path(temporary) / "skills.json"
         catalog_path.write_text(json.dumps(restricted, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
@@ -403,14 +355,8 @@ def relevance(candidates: list[str], catalog: dict[str, Any], repos: list[Path],
                     previous = protected.get(item["name"])
                     if previous is None or score > previous["score"]:
                         protected[item["name"]] = {"score": float(score), "repo": str(root)}
-            completed_routes += 1
-    if completed_routes == 0 or backend is None:
-        raise JevGateError("relevance produced no valid route")
 
-    try:
-        from skill_usage import iso, now, write_state
-    except ImportError as error:
-        raise JevGateError("skill_usage module is unavailable") from error
+    from skill_usage import iso, now, write_state
     generated_at = iso(now())
     data = {"version": 1, "generated_at": generated_at, "backend": backend, "repos": [str(root) for root, _summary in normalized], "protect": protected}
     write_state("relevance.json", data)

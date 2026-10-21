@@ -4,12 +4,13 @@ from __future__ import annotations
 
 import hashlib
 import json
+import stat
 import os
 import secrets
 import shutil
 import sys
 import tempfile
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Any, Iterable
 
@@ -20,7 +21,7 @@ from install_support import (  # type: ignore[import-not-found]
     _retired_reason,
     require_safe_path,
 )
-from skill_usage import iso, now, state_dir  # type: ignore[import-not-found]
+from skill_usage import _parse_datetime, iso, now, state_dir  # type: ignore[import-not-found]
 
 
 CATALOG_SOURCE = "akillness/jeo-skills"
@@ -31,10 +32,10 @@ def _absolute(path: Path | str) -> Path:
     return Path(os.path.abspath(os.path.expanduser(str(path))))
 
 
-def _boundary_for(root: Path, home: Path | None = None) -> Path:
+def _boundary_for(root: Path) -> Path:
     """Choose the same lexical boundary used by the router's root sweeps."""
     root = _absolute(root)
-    home_path = _absolute(home or Path.home())
+    home_path = _absolute(Path.home())
     cwd = _absolute(Path.cwd())
     if root == home_path or home_path in root.parents:
         return home_path
@@ -60,14 +61,12 @@ def _first_h1(path: Path) -> str | None:
 
 
 def reference_headings(
-    catalog: dict,
     catalog_source: str,
     names: Iterable[str],
     *,
     home: Path | None = None,
 ) -> dict[str, str | None]:
     """Return provable catalog H1 fingerprints for each requested skill."""
-    del catalog  # names are authoritative for this bounded lookup.
     home_path = _absolute(home or Path.home())
     source_path = _absolute(catalog_source) if not str(catalog_source).startswith(("http://", "https://")) else None
     local_root: Path | None = None
@@ -85,12 +84,7 @@ def reference_headings(
             lock = {}
 
     result: dict[str, str | None] = {}
-    seen: set[str] = set()
-    for raw_name in names:
-        name = str(raw_name)
-        if name in seen:
-            continue
-        seen.add(name)
+    for name in dict.fromkeys(map(str, names)):
         skill_path: Path | None
         if local_root is not None:
             skill_path = local_root / name / "SKILL.md"
@@ -124,21 +118,8 @@ def plan_quarantine(
     headings: dict[str, str | None],
 ) -> list[dict]:
     """Plan safe quarantine candidates without touching the filesystem."""
-    unique_names: list[str] = []
-    seen_names: set[str] = set()
-    for raw_name in names:
-        name = str(raw_name)
-        if name not in seen_names:
-            seen_names.add(name)
-            unique_names.append(name)
-    unique_roots: list[Path] = []
-    seen_roots: set[str] = set()
-    for raw_root in roots:
-        root = _absolute(raw_root)
-        key = str(root)
-        if key not in seen_roots:
-            seen_roots.add(key)
-            unique_roots.append(root)
+    unique_names = list(dict.fromkeys(map(str, names)))
+    unique_roots = list(dict.fromkeys(map(_absolute, roots)))
 
     plan: list[dict] = []
     for root in unique_roots:
@@ -184,16 +165,25 @@ def _tree_hash(root: Path) -> str:
     """Hash sorted relative POSIX entries (directories, including empty ones, and file
     bytes); reject links and special files so a hash proves a complete faithful copy."""
     root = _absolute(root)
-    if root.is_symlink() or not root.is_dir():
+    try:
+        root_info = os.lstat(root)
+    except OSError as error:
+        raise ValueError(f"unsafe skill tree: {root}") from error
+    if stat.S_ISLNK(root_info.st_mode) or not stat.S_ISDIR(root_info.st_mode):
         raise ValueError(f"unsafe skill tree: {root}")
     entries: list[tuple[str, Path | None]] = []
     for path in root.rglob("*"):
-        if path.is_symlink():
+        try:
+            info = os.lstat(path)
+        except OSError as error:
+            raise ValueError(f"unsupported tree entry: {path}") from error
+        mode = info.st_mode
+        if stat.S_ISLNK(mode):
             raise ValueError(f"symlink in skill tree: {path}")
         relative = path.relative_to(root).as_posix()
-        if path.is_file():
+        if stat.S_ISREG(mode):
             entries.append((relative, path))
-        elif path.is_dir():
+        elif stat.S_ISDIR(mode):
             entries.append((relative + "/", None))
         else:
             raise ValueError(f"unsupported tree entry: {path}")
@@ -230,7 +220,6 @@ def _copy_tree_exact(source: Path, destination: Path) -> None:
 
 def _atomic_json(path: Path, data: dict) -> None:
     path = _absolute(path)
-    path.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
     fd, temp_name = tempfile.mkstemp(prefix=f".{path.name}.", dir=str(path.parent))
     temp = Path(temp_name)
     try:
@@ -241,7 +230,6 @@ def _atomic_json(path: Path, data: dict) -> None:
             stream.flush()
             os.fsync(stream.fileno())
         os.replace(temp, path)
-        os.chmod(path, 0o600)
     finally:
         try:
             temp.unlink()
@@ -274,42 +262,19 @@ def _quarantine_root(create: bool) -> Path:
         _reject_linked_ancestors(state)
     root = state / "quarantine"
     _reject_linked_ancestors(root)
-    if root.is_symlink():
-        raise ValueError(f"Refusing symlink quarantine root: {root}")
     if create:
         root.mkdir(parents=True, exist_ok=True, mode=0o700)
         os.chmod(root, 0o700)
     return root
 
 
-def _manifest_template(batch: str, created_at: str, review: dict, items: list[dict]) -> dict:
-    return {
-        "version": 1,
-        "batch": batch,
-        "created_at": created_at,
-        "review": review,
-        "items": items,
-    }
-
-
-def _reserve_destination(destination: Path, *, keep: bool = False) -> None:
-    """Reserve a fresh path name, optionally retaining its empty directory claim."""
-    if os.path.lexists(destination):
-        raise FileExistsError(f"destination exists: {destination}")
-    destination.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
-    os.mkdir(destination, 0o700)
-    if keep:
-        return
-    os.rmdir(destination)
-    if os.path.lexists(destination):
-        raise FileExistsError(f"destination appeared during reservation: {destination}")
 class _SourceCleanupIncomplete(RuntimeError):
     """A verified destination exists, but deleting the source was incomplete."""
 
 def _move_tree_exclusive(source: Path, destination: Path, expected: str) -> None:
     """Move/copy a whole tree without replacing an existing destination."""
     same_device = os.stat(source.parent).st_dev == os.stat(destination.parent).st_dev
-    _reserve_destination(destination, keep=True)
+    os.mkdir(destination, 0o700)
     if same_device:
         # The destination directory itself is the exclusive claim; rename replaces only
         # that empty directory, never an unclaimed path.
@@ -331,7 +296,7 @@ def _move_tree_exclusive(source: Path, destination: Path, expected: str) -> None
     # Cross-device copies are built in a private staging sibling, then published
     # into the reserved empty claim. Never recursively delete a public destination.
     stage = destination.parent / f".{destination.name}.staging-{secrets.token_hex(6)}"
-    _reserve_destination(stage, keep=True)
+    os.mkdir(stage, 0o700)
     try:
         _copy_tree_exact(source, stage)
         if _tree_hash(stage) != expected or _tree_hash(source) != expected:
@@ -412,7 +377,13 @@ def quarantine(plan: list[dict], *, review: dict, apply: bool, reason: str) -> d
         except Exception as error:
             errors.append({"skill": name, "path": str(source), "error": str(error)})
 
-    manifest = _manifest_template(batch, created_at or "", dict(review), manifest_items)
+    manifest = {
+        "version": 1,
+        "batch": batch,
+        "created_at": created_at or "",
+        "review": dict(review),
+        "items": manifest_items,
+    }
     manifest["reason"] = reason
     if errors:
         manifest["errors"] = errors
@@ -441,17 +412,7 @@ def quarantine(plan: list[dict], *, review: dict, apply: bool, reason: str) -> d
                 raise ValueError("source tree changed before move")
             _move_tree_exclusive(source, destination, tree_hash)
             item["state"] = "quarantined"
-            try:
-                _atomic_json(batch_root / "manifest.json", manifest)
-            except Exception as error:
-                errors.append({"skill": item["skill"], "path": item["original"], "error": str(error)})
-                manifest["errors"] = errors
-                # Persisting may be unavailable; the pending item remains discoverable.
-                try:
-                    _atomic_json(batch_root / "manifest.json", manifest)
-                except Exception:
-                    pass
-                break
+            _atomic_json(batch_root / "manifest.json", manifest)
         except Exception as error:
             if isinstance(error, _SourceCleanupIncomplete):
                 item["state"] = "quarantined-source-cleanup-incomplete"
@@ -488,18 +449,23 @@ def _normalize_pending(batch_root: Path, manifest: dict) -> None:
             item["state"] = "not-moved"
 
 
-def list_batches() -> list[dict]:
-    root = _quarantine_root(create=False)
+def _batches(root: Path) -> Iterable[tuple[Path, dict]]:
     if not root.is_dir() or root.is_symlink():
-        return []
-    batches: list[dict] = []
+        return
     for batch_root in sorted(root.iterdir(), key=lambda path: path.name):
         if not batch_root.is_dir() or batch_root.is_symlink():
             continue
         manifest = _read_manifest(batch_root)
         if manifest is not None:
-            _normalize_pending(batch_root, manifest)
-            batches.append(manifest)
+            yield batch_root, manifest
+
+
+def list_batches() -> list[dict]:
+    root = _quarantine_root(create=False)
+    batches: list[dict] = []
+    for batch_root, manifest in _batches(root):
+        _normalize_pending(batch_root, manifest)
+        batches.append(manifest)
     return batches
 
 
@@ -549,11 +515,7 @@ def _restore_item(batch_root: Path, manifest: dict, item: dict, apply: bool) -> 
         original.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
         # This claims original with mkdir and therefore cannot replace a concurrent install.
         _move_tree_exclusive(stored, original, expected)
-        after = _tree_hash(original)
-        if after != expected:
-            raise ValueError("restored tree hash mismatch")
         item["state"] = "restored"
-        item["restored"] = True
         item["restored_at"] = iso(now())
         result["action"] = "restored"
         return result
@@ -571,19 +533,15 @@ def restore(*, batch: str | None = None, skill: str | None = None, apply: bool) 
     """Restore one batch or all matching skill items, refusing overwrite."""
     root = _quarantine_root(create=False)
     selected: list[tuple[Path, dict]] = []
-    if root.is_dir() and not root.is_symlink():
-        for batch_root in sorted(root.iterdir(), key=lambda path: path.name):
-            if not batch_root.is_dir() or batch_root.is_symlink() or (batch and batch_root.name != batch):
-                continue
-            manifest = _read_manifest(batch_root)
-            if manifest is None:
-                continue
-            _normalize_pending(batch_root, manifest)
-            if any(
-                isinstance(item, dict) and (skill is None or item.get("skill") == skill)
-                for item in manifest.get("items", [])
-            ):
-                selected.append((batch_root, manifest))
+    for batch_root, manifest in _batches(root):
+        _normalize_pending(batch_root, manifest)
+        if batch and batch_root.name != batch:
+            continue
+        if any(
+            isinstance(item, dict) and (skill is None or item.get("skill") == skill)
+            for item in manifest.get("items", [])
+        ):
+            selected.append((batch_root, manifest))
     results: list[dict] = []
     changed: set[Path] = set()
     for batch_root, manifest in selected:
@@ -603,14 +561,6 @@ def restore(*, batch: str | None = None, skill: str | None = None, apply: bool) 
     return results
 
 
-def _parse_created_at(value: Any) -> datetime | None:
-    if not isinstance(value, str):
-        return None
-    try:
-        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
-    except ValueError:
-        return None
-    return parsed.astimezone(timezone.utc) if parsed.tzinfo else parsed.replace(tzinfo=timezone.utc)
 
 
 def purge(*, older_than_days: int, apply: bool) -> list[dict]:
@@ -620,16 +570,10 @@ def purge(*, older_than_days: int, apply: bool) -> list[dict]:
     cutoff = now() - timedelta(days=older_than_days)
     root = _quarantine_root(create=False)
     candidates: list[tuple[Path, dict]] = []
-    if root.is_dir() and not root.is_symlink():
-        for batch_root in sorted(root.iterdir(), key=lambda path: path.name):
-            if not batch_root.is_dir() or batch_root.is_symlink():
-                continue
-            manifest = _read_manifest(batch_root)
-            if manifest is None:
-                continue
-            created = _parse_created_at(manifest.get("created_at"))
-            if created is not None and created < cutoff:
-                candidates.append((batch_root, manifest))
+    for batch_root, manifest in _batches(root):
+        created = _parse_datetime(manifest.get("created_at"))
+        if created is not None and created < cutoff:
+            candidates.append((batch_root, manifest))
     results: list[dict] = []
     for batch_root, manifest in candidates:
         item = {
@@ -640,8 +584,6 @@ def purge(*, older_than_days: int, apply: bool) -> list[dict]:
         if apply:
             try:
                 require_safe_path(batch_root, root)
-                if batch_root.is_symlink():
-                    raise ValueError("refusing symlink batch")
                 shutil.rmtree(batch_root)
             except Exception as error:
                 item["action"] = "kept"

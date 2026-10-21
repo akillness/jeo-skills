@@ -32,7 +32,7 @@ ROUTER_SKILL = "jeo-skill"
 PROTECTED_BUNDLES = ("starter", "cli-core", "infrastructure-core")
 DEFAULT_GRACE_DAYS = 30
 MAX_LINE_BYTES = 8 * 1024 * 1024
-MAX_FILES = 10000
+MAX_FILES = 100_000  # per store root; reaching it marks the source incomplete (an error)
 
 
 # ----------------------------- state helpers -----------------------------
@@ -328,25 +328,6 @@ def _files_under(root: Path, predicate: Callable[[str], bool]) -> list[Path]:
     return sorted(found)
 
 
-def _parse_jsonl(path: Path, parser: Callable[[Any, datetime | None, dict[str, dict[str, Any]]], int], names: set[str]) -> tuple[dict[str, dict[str, Any]], int]:
-    events: dict[str, dict[str, Any]] = {}
-    records = 0
-    fallback = datetime.fromtimestamp(path.stat().st_mtime, tz=timezone.utc)
-    with path.open("r", encoding="utf-8", errors="replace") as handle:
-        prefilter = getattr(parser, "prefilter", ())
-        for raw in handle:
-            if prefilter and not any(token in raw for token in prefilter):
-                continue
-            if len(raw.encode("utf-8", errors="ignore")) > MAX_LINE_BYTES:
-                continue
-            try:
-                value = json.loads(raw)
-            except (ValueError, TypeError):
-                continue
-            records += parser(value, _event_time(value, fallback), events)
-    return events, records
-
-
 def _iter_strings(value: Any, limit: int = 1000) -> Iterable[str]:
     seen = 0
     stack = [value]
@@ -410,109 +391,205 @@ _parser_claude_projects.names = set()  # type: ignore[attr-defined]
 # ----------------------------- incremental JSONL cursors -----------------------------
 
 
-def _full_digest(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        while chunk := handle.read(1024 * 1024):
-            digest.update(chunk)
-    return digest.hexdigest()
+READ_CHUNK = 4 * 1024 * 1024
 
 
-def _previous_entry(all_entries: dict[str, Any], source: str, path: Path, info: os.stat_result, head: str,
-                    live_inodes: set[tuple[int, int]], digest_of: Callable[[], str]) -> tuple[str | None, Any]:
-    """Find this file's history when its cursor key (inode + 4 KiB head) changed.
+def _prefilter_tokens(parser: Callable[..., int]) -> tuple[bytes, ...]:
+    """Byte tokens a line must contain to be decoded; empty means every line is decoded."""
+    return tuple(token.encode("utf-8") for token in getattr(parser, "prefilter", ()))
 
-    Same inode that was live last scan: grown or rewritten in place. Same path whose old
-    inode is no longer live: replaced at that path (a rename-away rotation keeps its inode
-    live elsewhere and is excluded). A different inode is the same file only as a byte-exact
-    copy: equal size and full-content digest, never just an equal header.
+
+def _json_line(line: bytes) -> Any:
+    if len(line) > MAX_LINE_BYTES:
+        return None
+    try:
+        return json.loads(line)
+    except UnicodeDecodeError:
+        try:
+            return json.loads(line.decode("utf-8", errors="replace"))
+        except ValueError:
+            return None
+    except ValueError:
+        return None
+
+
+def _parse_jsonl(path: Path, parser: Callable[[Any, datetime | None, dict[str, dict[str, Any]]], int],
+                 prefilter: tuple[bytes, ...], start: int = 0,
+                 prefix_digest: str | None = None) -> tuple[dict[str, dict[str, Any]], int, int, str] | None:
+    """Parse complete lines; returns events, records, the offset after the last consumed
+    line, and the SHA-256 of bytes [0, offset).
+
+    The file is read in large blocks: hashing and the byte prefilter run in C over each
+    block, and only lines containing a prefilter match are sliced out and decoded. With
+    `start` > 0, bytes [0, start) are only hashed and must equal `prefix_digest`, else None
+    is returned and the caller re-parses in full (any earlier rewrite invalidates the
+    offset). A trailing line without a newline is consumed only when it is complete JSON,
+    so a line caught mid-write is re-read next scan. Lines longer than MAX_LINE_BYTES are
+    skipped without being held in memory whole.
     """
-    dev, ino = int(info.st_dev), int(info.st_ino)
-    candidates = [(key, entry) for key, entry in all_entries.items()
-                  if isinstance(entry, dict) and entry.get("source") == source and not entry.get("superseded")]
-    for key, entry in candidates:
-        if ino and (entry.get("dev"), entry.get("ino")) == (dev, ino) and not entry.get("retired"):
-            return key, entry
-    for key, entry in candidates:
-        old_inode = (entry.get("dev"), entry.get("ino"))
-        if entry.get("path") == str(path) and old_inode not in live_inodes:
-            return key, entry
-    for key, entry in candidates:
-        if (entry.get("digest") and entry.get("head") == head
-                and int(entry.get("size", -1)) == int(info.st_size) and entry["digest"] == digest_of()):
-            return key, entry
-    return None, None
+    events: dict[str, dict[str, Any]] = {}
+    fallback = datetime.fromtimestamp(path.stat().st_mtime, tz=timezone.utc)
+    digest = hashlib.sha256()
+
+    def scan_block(block: bytes) -> int:
+        count = 0
+        if not prefilter:
+            for line in block.split(b"\n"):
+                if (value := _json_line(line)) is not None:
+                    count += parser(value, _event_time(value, fallback), events)
+            return count
+        # One bytes.find per token, each advancing monotonically (a regex alternation is
+        # several times slower), and one parse per matching line: the scan resumes after
+        # the line just parsed, so a line repeating a token is not visited match by match.
+        nexts = [block.find(token) for token in prefilter]
+        while (hit := min((n for n in nexts if n >= 0), default=-1)) >= 0:
+            begin = block.rfind(b"\n", 0, hit) + 1
+            position = block.find(b"\n", hit) + 1  # blocks always end with a newline
+            if (value := _json_line(block[begin:position - 1])) is not None:
+                count += parser(value, _event_time(value, fallback), events)
+            nexts = [n if n < 0 or n >= position else block.find(token, position)
+                     for token, n in zip(prefilter, nexts)]
+        return count
+
+    records = 0
+    offset = start
+    with path.open("rb") as handle:
+        remaining = start
+        while remaining and (chunk := handle.read(min(READ_CHUNK, remaining))):
+            digest.update(chunk)
+            remaining -= len(chunk)
+        if start and (remaining or digest.hexdigest() != prefix_digest):
+            return None
+        carry = b""
+        skipping = False  # inside a line longer than MAX_LINE_BYTES
+        while chunk := handle.read(READ_CHUNK):
+            if skipping:
+                newline = chunk.find(b"\n")
+                cut = len(chunk) if newline < 0 else newline + 1
+                digest.update(chunk[:cut])
+                offset += cut
+                chunk, skipping = chunk[cut:], newline < 0
+            data = carry + chunk if carry else chunk
+            last = data.rfind(b"\n")
+            if last < 0:
+                carry = data
+            else:
+                block, carry = data[:last + 1], data[last + 1:]
+                digest.update(block)
+                offset += len(block)
+                records += scan_block(block)
+            if len(carry) > MAX_LINE_BYTES:
+                digest.update(carry)
+                offset += len(carry)
+                carry, skipping = b"", True
+        if carry and (not prefilter or any(token in carry for token in prefilter)) and (value := _json_line(carry)) is not None:
+            digest.update(carry)  # complete final line without a newline
+            offset += len(carry)
+            records += parser(value, _event_time(value, fallback), events)
+    return events, records, offset, digest.hexdigest()
 
 
 def _file_contributions(source: str, files: list[Path], parser: Callable[..., int], names: set[str], cursor: dict[str, Any]) -> tuple[dict[str, dict[str, Any]], int, str | None]:
+    """Per-file contributions with an incremental cursor.
+
+    Unchanged files (same inode, size, mtime) are not opened. A changed file whose bytes
+    before the saved offset still hash to the saved digest has only its new tail parsed.
+    Anything else is re-parsed in full and merged high-water with its history (same inode
+    live last scan, or same path whose old inode is gone). Vanished files keep their
+    contribution.
+    """
     all_entries = cursor.setdefault("files", {})
+    for key in [key for key, entry in all_entries.items() if entry.get("superseded")]:
+        del all_entries[key]  # legacy flag: merged into a successor, carries nothing
+    if hasattr(parser, "names"):
+        parser.names = names  # type: ignore[attr-defined]
+    prefilter = _prefilter_tokens(parser)
+    live_by_inode: dict[tuple[int, int], str] = {}
+    by_path: dict[str, str] = {}
+    for key, entry in all_entries.items():
+        if entry.get("source") != source:
+            continue
+        if not entry.get("retired") and entry.get("ino"):
+            live_by_inode[(entry.get("dev"), entry.get("ino"))] = key
+        by_path[entry.get("path")] = key
     current_keys: set[str] = set()
     source_error: str | None = None
-    observed: list[tuple[Path, os.stat_result, str]] = []
+    observed: list[tuple[Path, os.stat_result]] = []
     for path in files:
         try:
-            observed.append((path, path.stat(), _head_hash(path)))
+            observed.append((path, path.stat()))
         except OSError as error:
             source_error = str(error)
-    live_inodes = {(int(info.st_dev), int(info.st_ino)) for _path, info, _head in observed if info.st_ino}
-    for path, info, head in observed:
+    live_inodes = {(int(info.st_dev), int(info.st_ino)) for _path, info in observed if info.st_ino}
+    for path, info in observed:
         dev, ino = int(info.st_dev), int(info.st_ino)
-        key = f"{source}|{dev}|{ino}|{head}" if ino else f"{source}|{path}|{head}"
-        digest_cache: list[str] = []
-
-        def digest_of(path: Path = path, cache: list[str] = digest_cache) -> str:
-            if not cache:
-                cache.append(_full_digest(path))
-            return cache[0]
-
+        size, mtime_ns = int(info.st_size), int(info.st_mtime_ns)
+        previous_key = live_by_inode.get((dev, ino)) if ino else None
+        if previous_key is None:
+            candidate = by_path.get(str(path))
+            old = all_entries.get(candidate) if candidate else None
+            if old and (old.get("dev"), old.get("ino")) not in live_inodes:
+                previous_key = candidate
+        existing = all_entries.get(previous_key) if previous_key else None
+        if existing is None:
+            previous_key = None  # e.g. a hard link whose entry another path already replaced
+        if (existing and (existing.get("dev"), existing.get("ino")) == (dev, ino)
+                and existing.get("size") == size and existing.get("mtime_ns") == mtime_ns):
+            existing["path"] = str(path)
+            existing["retired"] = False
+            current_keys.add(previous_key)
+            continue
         try:
-            existing = all_entries.get(key)
-            previous_key: str | None = None
-            if existing is None:
-                previous_key, existing = _previous_entry(all_entries, source, path, info, head, live_inodes, digest_of)
-            unchanged = bool(existing and existing.get("size") == info.st_size and existing.get("mtime_ns") == info.st_mtime_ns
-                             and existing.get("head") == head and not existing.get("retired"))
-            if unchanged:
+            head = _head_hash(path)
+            offset = existing.get("offset") if existing else None
+            parsed = None
+            if isinstance(offset, int) and 0 < offset <= size and existing.get("digest"):
+                # Only the bytes after the saved offset are parsed, and only if every byte
+                # before it still hashes to the saved digest.
+                parsed = _parse_jsonl(path, parser, prefilter, offset, existing["digest"])
+            if parsed is not None:
+                events, records, end, digest = parsed
                 contribution = _deserialise_contrib(existing.get("contribution"))
-                records = int(existing.get("records", 0))
-                digest = existing.get("digest") or digest_of()
+                for name, item in events.items():
+                    old = contribution.get(name, {"count": 0, "first": None, "last": None})
+                    contribution[name] = {"count": old["count"] + item["count"],
+                                          "first": min([x for x in (old["first"], item["first"]) if x], default=None),
+                                          "last": max([x for x in (old["last"], item["last"]) if x], default=None)}
+                records += int(existing.get("records", 0))
             else:
-                # Recompute the changed file; high-water merge preserves evidence on truncation.
-                if hasattr(parser, "names"):
-                    parser.names = names  # type: ignore[attr-defined]
-                contribution, records = _parse_jsonl(path, parser, names)
-                digest = digest_of()
+                contribution, records, end, digest = _parse_jsonl(path, parser, prefilter)
                 if existing:
-                    old = _deserialise_contrib(existing.get("contribution"))
-                    for name, item in old.items():
+                    for name, item in _deserialise_contrib(existing.get("contribution")).items():
                         contribution[name] = _merge_highwater(item, contribution.get(name, {}))
         except (OSError, UnicodeError, ValueError, TypeError) as error:
             source_error = str(error)
             continue
-        entry = {
-            "source": source, "path": str(path), "dev": dev, "ino": ino, "head": head, "digest": digest,
-            "size": int(info.st_size), "mtime_ns": int(info.st_mtime_ns),
+        key = f"{source}|{dev}|{ino}|{head}" if ino else f"{source}|{path}|{head}"
+        if previous_key and previous_key != key:
+            del all_entries[previous_key]  # merged into this entry
+        all_entries[key] = {
+            "source": source, "path": str(path), "dev": dev, "ino": ino, "head": head,
+            "digest": digest, "offset": end, "size": size, "mtime_ns": mtime_ns,
             "records": int(records), "contribution": _serialise_contrib(contribution), "retired": False,
         }
-        if previous_key and previous_key != key:
-            all_entries[previous_key]["superseded"] = True
-        all_entries[key] = entry
         current_keys.add(key)
     for key, entry in all_entries.items():
-        if entry.get("source") == source and key not in current_keys and not entry.get("superseded"):
+        if entry.get("source") == source and key not in current_keys:
             entry["retired"] = True
-    # Distinct files are summed; only byte-identical copies (same full digest and size) are
-    # counted once. Inode numbers are not an identity across scans because they get reused.
+    # Distinct files are summed; only byte-identical copies (same whole-file digest and size)
+    # are counted once. Inode numbers are not an identity across scans because they get reused.
     selected: list[dict[str, Any]] = []
     seen_copies: set[tuple[Any, ...]] = set()
     for entry in all_entries.values():
-        if entry.get("source") != source or entry.get("superseded"):
+        if entry.get("source") != source:
             continue
-        if entry.get("digest"):
-            copy_identity = (entry["digest"], entry.get("size"))
-            if copy_identity in seen_copies:
+        digest, size = entry.get("digest"), entry.get("size")
+        # The digest covers bytes [0, offset): it proves a copy only when the whole file was
+        # consumed. Entries without an offset predate incremental parsing and hashed it all.
+        if digest and entry.get("offset", size) == size:
+            if (digest, size) in seen_copies:
                 continue
-            seen_copies.add(copy_identity)
+            seen_copies.add((digest, size))
         selected.append(entry)
     combined: dict[str, dict[str, Any]] = {}
     records_total = 0
@@ -532,6 +609,10 @@ def _file_source(source: str, files: list[Path], parser: Callable[..., int], nam
         historical, records, _ = _file_contributions(source, files, parser, names, cursor)
         return {"available": False, "records": records, "window": _window(historical), "error": "store not found", "counts": historical}
     counts, records, error = _file_contributions(source, files, parser, names, cursor)
+    if len(files) >= MAX_FILES:
+        # A truncated listing could hide later loads; the error makes `--apply` refuse.
+        limit = f"file limit {MAX_FILES} reached; later files were not scanned"
+        error = f"{error}; {limit}" if error else limit
     return {"available": True, "records": records, "window": _window(counts), "error": error, "counts": counts}
 
 
@@ -669,9 +750,11 @@ def _collect_opencode(home: Path, names: set[str], cursor: dict[str, Any]) -> di
     try:
         db = sqlite3.connect(f"file:{path}?mode=ro", uri=True)
         try:
-            rows = db.execute("SELECT data, time_created FROM session_message").fetchall()
+            # Filter inside SQLite and stream rows: the table holds every tool output, so
+            # materializing it (fetchall) costs as much memory as the database itself.
+            rows = db.execute("SELECT data, time_created FROM session_message WHERE instr(data, 'SKILL.md') > 0")
             for raw, created in rows:
-                if not isinstance(raw, str) or "SKILL.md" not in raw:
+                if not isinstance(raw, str):
                     continue
                 try:
                     value = json.loads(raw)
@@ -928,6 +1011,7 @@ def _scan_locked(catalog: dict, roots: Iterable[Path], *, home: Path | None) -> 
         for entry in cursor.get("files", {}).values():
             if isinstance(entry, dict) and not entry.get("retired"):
                 entry["mtime_ns"] = -1
+                entry.pop("offset", None)  # old bytes must be re-read for the new names
         cursor["names_sha256"] = names_digest
     source_data: dict[str, dict[str, Any]] = {}
     collectors: list[tuple[str, Callable[..., dict[str, Any]]]] = [

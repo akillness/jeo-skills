@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import {
+  appendFileSync,
   accessSync,
   chmodSync,
   closeSync,
@@ -9,7 +10,6 @@ import {
   lstatSync,
   mkdirSync,
   openSync,
-  writeSync,
   readFileSync,
   readSync,
   readdirSync,
@@ -118,12 +118,11 @@ function rotateUsageLedger(ledger, directory, measuredIno) {
     const segments = readdirSync(directory, { withFileTypes: true })
       .filter(entry => entry.isFile() && /^jev-usage\..+\.jsonl$/.test(entry.name))
       .map(entry => ({ name: entry.name, path: join(directory, entry.name) }))
-      .sort((left, right) => right.name.localeCompare(left.name));
+      .sort((left, right) => right.name < left.name ? -1 : right.name > left.name ? 1 : 0);
     let retained = 0;
     for (const [index, segment] of segments.entries()) {
       try {
         const size = lstatSync(segment.path).size;
-        chmodSync(segment.path, 0o600);
         retained += size;
         if (index > 0 && retained > USAGE_RETENTION_BYTES) unlinkSync(segment.path);
       } catch {
@@ -135,9 +134,9 @@ function rotateUsageLedger(ledger, directory, measuredIno) {
   }
 }
 
-function recordSkillUsage({ agent, profile, routed, injected, backend, active = true } = {}) {
+function recordSkillUsage({ agent, profile, routed, injected, backend } = {}) {
   try {
-    if (!active || !profile) return;
+    if (!profile) return;
     const routedNames = usageNames(routed);
     if (!routedNames.length) return;
     const directory = usageStateDir();
@@ -146,9 +145,8 @@ function recordSkillUsage({ agent, profile, routed, injected, backend, active = 
     if (directoryInfo.isSymbolicLink() || !directoryInfo.isDirectory()) return;
     chmodSync(directory, 0o700);
     const ledger = join(directory, USAGE_LEDGER_NAME);
-    let ledgerInfo = null;
-    if (existsSync(ledger)) {
-      ledgerInfo = lstatSync(ledger);
+    const ledgerInfo = lstatSync(ledger, { throwIfNoEntry: false });
+    if (ledgerInfo) {
       if (ledgerInfo.isSymbolicLink() || !ledgerInfo.isFile()) return;
       chmodSync(ledger, 0o600);
     }
@@ -166,14 +164,8 @@ function recordSkillUsage({ agent, profile, routed, injected, backend, active = 
         tier: usageValue(backend?.tier),
       },
     };
-    const line = Buffer.from(`${JSON.stringify(event)}\n`, 'utf8');
-    const fd = openSync(ledger, 'a', 0o600);
-    try {
-      writeSync(fd, line);
-    } finally {
-      closeSync(fd);
-    }
-    chmodSync(ledger, 0o600);
+    const line = `${JSON.stringify(event)}\n`;
+    appendFileSync(ledger, line, { mode: 0o600 });
   } catch {
     // Usage telemetry is strictly best effort and must never block the host.
   }
