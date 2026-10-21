@@ -77,7 +77,9 @@ class InstallerRegressions(unittest.TestCase):
     def setUp(self):
         self.temporary = tempfile.TemporaryDirectory(prefix="jeo-installer-test-")
         self.addCleanup(self.temporary.cleanup)
-        self.work = Path(self.temporary.name)
+        # Resolve only the test-owned base: macOS aliases /var to /private/var, and
+        # subprocesses report the canonical Path.cwd() that assertions compare against.
+        self.work = Path(self.temporary.name).resolve()
         self.home = self.work / "home"
         self.project = self.work / "project with spaces"
         self.source = self.work / "source with spaces"

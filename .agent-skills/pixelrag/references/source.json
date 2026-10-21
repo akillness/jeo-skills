@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "skill": "pixelrag",
+  "repository": "StarTrail-org/PixelRAG",
+  "commit": "7fef9d8e8c3db3fd3ef7c1c3cf7d1ab54d106031",
+  "observed_at": "2026-10-16T00:10:45+09:00",
+  "license": {
+    "path": "LICENSE",
+    "conclusion": "Apache License 2.0 present; full pinned license text inspected.",
+    "url": "https://github.com/StarTrail-org/PixelRAG/blob/7fef9d8e8c3db3fd3ef7c1c3cf7d1ab54d106031/LICENSE"
+  },
+  "tools": [
+    { "name": "pixelshot", "purpose": "Render web pages or supported documents into screenshot tiles." },
+    { "name": "pixelrag", "purpose": "Umbrella CLI for visual indexing pipeline stages and search serving; inspect each subcommand before use." }
+  ],
+  "files": [
+    { "path": "README.md", "sha256": "88b1a5202adccf0a5cd5a7bfcb997765cf019e50d1b3eefc228140408cb5aadf", "url": "https://github.com/StarTrail-org/PixelRAG/blob/7fef9d8e8c3db3fd3ef7c1c3cf7d1ab54d106031/README.md", "purpose": "Visual retrieval model, stage commands, extras, device guidance, hosted index/API and scale caveats." },
+    { "path": "LICENSE", "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30", "url": "https://github.com/StarTrail-org/PixelRAG/blob/7fef9d8e8c3db3fd3ef7c1c3cf7d1ab54d106031/LICENSE", "purpose": "Full Apache-2.0 license text." },
+    { "path": "pyproject.toml", "sha256": "ee3c05de81626e649663f6292743b97000f01f5a56e0d5268edde558bd0cc60e", "url": "https://github.com/StarTrail-org/PixelRAG/blob/7fef9d8e8c3db3fd3ef7c1c3cf7d1ab54d106031/pyproject.toml", "purpose": "Python requirement, core dependencies, optional stages and CLI entry points." },
+    { "path": "src/pixelrag/cli.py", "sha256": "2a4eee86a75805bc9a273672146d1a294de9df1ed9a68a09284a5655c99681e0", "url": "https://github.com/StarTrail-org/PixelRAG/blob/7fef9d8e8c3db3fd3ef7c1c3cf7d1ab54d106031/src/pixelrag/cli.py", "purpose": "Actual umbrella CLI stage dispatch and install hints." },
+    { "path": "index/src/pixelrag_index/config.py", "sha256": "28d4d740284048b775bc83b852eba0715949f484b8f4cccd9ca6b8ea46a911df", "url": "https://github.com/StarTrail-org/PixelRAG/blob/7fef9d8e8c3db3fd3ef7c1c3cf7d1ab54d106031/index/src/pixelrag_index/config.py", "purpose": "Default source, embedding model/device and output configuration." },
+    { "path": "index/src/pixelrag_index/pipelines.py", "sha256": "3b7422dbc231ed014a6e4283863681ff01a574e0764c85efeae4bd6f30d69c44", "url": "https://github.com/StarTrail-org/PixelRAG/blob/7fef9d8e8c3db3fd3ef7c1c3cf7d1ab54d106031/index/src/pixelrag_index/pipelines.py", "purpose": "Source-to-index stages, cache validation, cleanup and full pipeline implementation." },
+    { "path": "embed/src/pixelrag_embed/index.py", "sha256": "12e6b8a6e1a81ae932134a56281c805d57268d2496a6fb60e3b5a855ea580bfb", "url": "https://github.com/StarTrail-org/PixelRAG/blob/7fef9d8e8c3db3fd3ef7c1c3cf7d1ab54d106031/embed/src/pixelrag_embed/index.py", "purpose": "Embedding shard merge, memory allocation and local FAISS index construction details." }
+  ]
+}

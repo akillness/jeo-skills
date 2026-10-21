@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "skill": "agentic-graphrag-blueprint",
+  "repository": "sebastianbrzustowicz/Agentic-GraphRAG-Blueprint",
+  "commit": "e33f5f690e3b22efbf4f89d5c273a575699dd6ec",
+  "observed_at": "2026-10-15T15:08:41Z",
+  "license": {
+    "path": "LICENSE.txt",
+    "conclusion": "MIT in the inspected LICENSE.txt; factual descriptions are original, no source code or text is copied.",
+    "url": "https://github.com/sebastianbrzustowicz/Agentic-GraphRAG-Blueprint/blob/e33f5f690e3b22efbf4f89d5c273a575699dd6ec/LICENSE.txt"
+  },
+  "tools": [
+    {
+      "name": "docker",
+      "purpose": "Run the repository-defined local multi-service Compose stack after inspecting its exact services."
+    },
+    {
+      "name": "python",
+      "purpose": "Run the FastAPI backend or inspect its source; package/runtime compatibility must be checked separately."
+    },
+    {
+      "name": "terraform",
+      "purpose": "Operate the documented cloud IaC only when the user explicitly requests it; not part of local Compose."
+    }
+  ],
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "98210f0ff7eea9d89ef7247d5bfa2c069afa0e92ea860705f47f95ab60f70968",
+      "url": "https://github.com/sebastianbrzustowicz/Agentic-GraphRAG-Blueprint/blob/e33f5f690e3b22efbf4f89d5c273a575699dd6ec/README.md",
+      "purpose": "Project scope and documented architecture/quickstart."
+    },
+    {
+      "path": "LICENSE.txt",
+      "sha256": "6831691d23fa04d3e3fa38430540ca5a9ddf36206f8649fb64b0962677f6fd90",
+      "url": "https://github.com/sebastianbrzustowicz/Agentic-GraphRAG-Blueprint/blob/e33f5f690e3b22efbf4f89d5c273a575699dd6ec/LICENSE.txt",
+      "purpose": "Full root license text; file-level license evidence."
+    },
+    {
+      "path": "docker-compose.yml",
+      "sha256": "2071e695d9eeeef02404563ee6c09812fab2a6c908d856237f3ca29ff13860b7",
+      "url": "https://github.com/sebastianbrzustowicz/Agentic-GraphRAG-Blueprint/blob/e33f5f690e3b22efbf4f89d5c273a575699dd6ec/docker-compose.yml",
+      "purpose": "Local service topology, environment inputs, exposed ports and mounted data."
+    },
+    {
+      "path": "backend/pyproject.toml",
+      "sha256": "cd4ddd3db4647c559cc06ffb7484b189bda0b97385213d14f8df8b71eaea8ff7",
+      "url": "https://github.com/sebastianbrzustowicz/Agentic-GraphRAG-Blueprint/blob/e33f5f690e3b22efbf4f89d5c273a575699dd6ec/backend/pyproject.toml",
+      "purpose": "Backend dependency/runtime package declaration."
+    },
+    {
+      "path": "backend/src/config.py",
+      "sha256": "6091160292471facf62853f63d0b4e2cde2ba4f7b9c4d4dc7a00ea95da346d00",
+      "url": "https://github.com/sebastianbrzustowicz/Agentic-GraphRAG-Blueprint/blob/e33f5f690e3b22efbf4f89d5c273a575699dd6ec/backend/src/config.py",
+      "purpose": "Environment-driven model, data, path and reset settings."
+    },
+    {
+      "path": "backend/src/ingestion.py",
+      "sha256": "5a87940b7b4717872c3d25e25d0254908f69c5410a8a4b44f05f1e98cc6333a4",
+      "url": "https://github.com/sebastianbrzustowicz/Agentic-GraphRAG-Blueprint/blob/e33f5f690e3b22efbf4f89d5c273a575699dd6ec/backend/src/ingestion.py",
+      "purpose": "Document ingestion, model calls, chunk processing and retry behavior."
+    },
+    {
+      "path": "backend/src/search.py",
+      "sha256": "d48244a8fa22cbc8e5d2fcaa2c63b18b57b332d956224aaa39cfbeb81365495c",
+      "url": "https://github.com/sebastianbrzustowicz/Agentic-GraphRAG-Blueprint/blob/e33f5f690e3b22efbf4f89d5c273a575699dd6ec/backend/src/search.py",
+      "purpose": "Graph/vector retrieval and response flow."
+    },
+    {
+      "path": "backend/src/storage/graph_store.py",
+      "sha256": "f0ecfebb260590261df7c901e747128aad44b6663246e723031c0dd035b5aa8e",
+      "url": "https://github.com/sebastianbrzustowicz/Agentic-GraphRAG-Blueprint/blob/e33f5f690e3b22efbf4f89d5c273a575699dd6ec/backend/src/storage/graph_store.py",
+      "purpose": "Concrete graph storage behavior."
+    }
+  ]
+}

@@ -5,7 +5,7 @@ All notable changes to **jeo-skills** are documented here.
 ## 2026-10-21
 
 ### Added
-- Added the pinned `harness2` operator plus `ruflo`, `voicestudio`, `diagram-design`, and `artcraft`; the catalog grows from 369 to 373 skills.
+- Added the pinned `harness2` operator plus `ruflo`, `voicestudio`, `diagram-design`, and `artcraft`; with `harness` retired, the catalog grows from 401 to 405 skills.
 - Added local skill-usage tracking with candidate reporting, reversible quarantine/restore, permanent quarantine purge, a separate maintainer retirement script, and the Jev injection usage ledger.
 
 ### Changed

@@ -1,0 +1,38 @@
+[
+  {
+    "id": "pixeltable-computed-errors",
+    "prompt": "A Pixeltable computed column has failures. Diagnose without changing rows.",
+    "expected_skill": "pixeltable",
+    "expected_behavior": "Use read-only health/status/schema/errors/history inspection and defer recompute until target and effect are approved."
+  },
+  {
+    "id": "pixeltable-near-miss-ontology",
+    "prompt": "Model an enterprise ontology and publish it to a data catalog.",
+    "expected_skill": "knowledge-catalog",
+    "expected_behavior": "Route to catalog/ontology tooling; Pixeltable is a multimodal database, not the Knowledge Catalog semantic model workflow."
+  },
+  {
+    "id": "pixeltable-init-write",
+    "prompt": "Run pxt init in my repository now.",
+    "expected_skill": "pixeltable",
+    "expected_behavior": "Inspect cwd, ancestors, existing pixeltable.toml and pyproject first; explain writes/refusal behavior and require approval before creating/appending config."
+  },
+  {
+    "id": "pixeltable-offline-proof",
+    "prompt": "Offline source preflight passed. Does that prove my Cloud database and service are up?",
+    "expected_skill": "pixeltable",
+    "expected_behavior": "Distinguish source-file hashes from daemon/catalog/Cloud/service runtime; `runtime_verified` remains false."
+  },
+  {
+    "id": "pixeltable-drop-gate",
+    "prompt": "Delete every table in the hosted database and remove its API key.",
+    "expected_skill": "pixeltable",
+    "expected_behavior": "Identify destructive database and credential effects, require explicit target/scope approval, and inspect state/dry-run before apply; don't execute now."
+  },
+  {
+    "id": "pixeltable-env-precedence",
+    "prompt": "Pixeltable is ignoring my .env and seems to use an old API key.",
+    "expected_skill": "pixeltable",
+    "expected_behavior": "Use pinned config precedence: Pixeltable does not load .env itself; process env/config/login precedence differs. Inspect source mechanism without printing secrets."
+  }
+]

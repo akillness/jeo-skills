@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "skill": "leann",
+  "repository": "StarTrail-org/LEANN",
+  "commit": "00710edff4aba84c41f4adfc75b79175b28132f2",
+  "observed_at": "2026-10-16T00:10:45+09:00",
+  "license": {
+    "path": "LICENSE",
+    "conclusion": "MIT License present; full pinned license text inspected.",
+    "url": "https://github.com/StarTrail-org/LEANN/blob/00710edff4aba84c41f4adfc75b79175b28132f2/LICENSE"
+  },
+  "tools": [
+    { "name": "leann", "purpose": "CLI for building, incrementally updating, rebuilding, and searching document indexes; inspect exact subcommands before use." }
+  ],
+  "files": [
+    { "path": "README.md", "sha256": "4b99604a506b8f3e897be16c07ba4932a8b80c94806a402b8097eca7511737f4", "url": "https://github.com/StarTrail-org/LEANN/blob/00710edff4aba84c41f4adfc75b79175b28132f2/README.md", "purpose": "Project model, install guidance, platform notes, CLI examples, and benchmark context." },
+    { "path": "LICENSE", "sha256": "523e250e807be4157a8c179489b8a1a4d2c08322c3bc9c4638569ff397533185", "url": "https://github.com/StarTrail-org/LEANN/blob/00710edff4aba84c41f4adfc75b79175b28132f2/LICENSE", "purpose": "Full upstream license text." },
+    { "path": "pyproject.toml", "sha256": "53d2685f9899ce94c87b5b1fd0bdcce0f47c4505698e04d8686caae0d1e60b09", "url": "https://github.com/StarTrail-org/LEANN/blob/00710edff4aba84c41f4adfc75b79175b28132f2/pyproject.toml", "purpose": "Python/workspace dependencies and optional backend groups." },
+    { "path": "packages/leann-core/src/leann/cli.py", "sha256": "1dc53b165f2c558c4add82ad173414f7f66ba9bb81eba35cc746f9feab4b27bf", "url": "https://github.com/StarTrail-org/LEANN/blob/00710edff4aba84c41f4adfc75b79175b28132f2/packages/leann-core/src/leann/cli.py", "purpose": "Actual parser options, backend and embedding defaults, incremental/full rebuild behavior." },
+    { "path": "packages/leann-core/src/leann/api.py", "sha256": "284868c1a5958ee0caea9248cba152dcd0b9f73516835e9ef81db70649fad918", "url": "https://github.com/StarTrail-org/LEANN/blob/00710edff4aba84c41f4adfc75b79175b28132f2/packages/leann-core/src/leann/api.py", "purpose": "Index/search API and implementation boundary." }
+  ]
+}

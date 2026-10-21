@@ -10,6 +10,7 @@ triggers:
   - "JEV_MODE"
   - "systemone"
   - "model_policies"
+  - "model-plan"
 edges:
   - target: "context/architecture.md"
     condition: "for where the optional Jev flow sits next to catalog distribution"
@@ -18,10 +19,39 @@ edges:
   - target: "patterns/jeo-skill-install-flow.md"
     condition: "when Jev setup interacts with the catalog installer"
 grounds_to: []
-last_updated: 2026-10-14
+last_updated: 2026-10-16
 ---
 
 # Jev Control Plane Runbook
+
+## Debugging host model-plan CI failures (2026-10-16)
+
+1. Reproduce the exact failing CLI test with isolated HOME and
+   `JEV_LIVE_SMOKE=0`; preserve runner exit status, Node/Bun versions and source
+   hashes. A missing option can indicate missing policy implementation, not a stale
+   test: never remove inventory/auth/quota tests just to make CI green.
+2. `--host-models` is an explicit observation file, not a collector or permission
+   grant. Match agent/profile, require strict ISO calendar/time values, and check
+   freshness after both inputs and immediately before returning. Never turn a
+   malformed quota into an expired/free quota via permissive date parsing.
+3. Intersect approved advice with exact provider/model observations and
+   `authenticated: true`; keep OAuth identities distinct and skip unavailable or
+   quota-limited candidates in supplied order. Return host-native argv and ordered
+   fallbacks, always advisory and unexecuted. OFF skips both inputs.
+4. Regressions must cover invalid/leap dates, expiration during reads and ranking
+   with a deterministic child-only clock, malformed auth/quotas, oversize files,
+   directories and leaf symlinks. Both JSON inputs are capped at 1 MiB; errors
+   must not echo file contents or credentials.
+5. Run the complete six-file Node command below, then the remaining installer and
+   catalog gates. A missing local Bun PATH is an environment failure to correct,
+   not a reason to skip its test. Check the pushed SHA in all three GitHub Actions
+   jobs (catalog, Ubuntu installer, macOS installer); local passes are not remote
+   evidence. No installed runtime resync, provider call or model launch is implied.
+6. A later macOS gate can expose test-owned temp aliases such as `/var`. Resolve
+   only the trusted `TemporaryDirectory` fixture base before constructing valid
+   control repos. Never resolve caller-supplied repo paths or weaken root/parent/
+   leaf symlink rejection to compensate. Keep a deterministic aliased-temp-base
+   regression so Linux/local runs exercise the same condition.
 
 README/runtime audits must compare source and installed harness bytes before
 assuming test results cover the active installation. A rounded Choice response
@@ -71,7 +101,7 @@ Actual application and current limitations: `../context/jev-runtime-activation.m
 ## Commands
 ```sh
 node jev/jev-harness.mjs self-test --mock                     # 20/20 offline contract checks
-JEV_LIVE_SMOKE=0 node --test jev/install.test.mjs jev/plugin.test.mjs jev/profile.test.mjs # 54 total: 53 pass, 1 opt-in live skip
+JEV_LIVE_SMOKE=0 node --test jev/install.test.mjs jev/plugin.test.mjs jev/profile.test.mjs jev/runtime.test.mjs jev/lifecycle.test.mjs jev/codex.test.mjs # live smoke stays opt-in
 python3 -m unittest scripts.test_jev_regressions               # 64 loopback regressions (documented wire shapes)
 python3 -m unittest scripts.test_installer_regressions         # 48 installer regressions
 node jev/jev-harness.mjs status [--operation review]           # exit 0/2/3

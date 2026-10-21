@@ -5,6 +5,7 @@ Run: python3 scripts/test_skill_usage_regressions.py -v
 """
 
 import hashlib
+import fcntl
 import json
 from pathlib import Path
 import sqlite3
@@ -261,6 +262,84 @@ class SkillUsageRegressions(unittest.TestCase):
         for path in self.state.rglob("*"):
             mode = path.stat().st_mode & 0o777
             self.assertEqual(mode, 0o700 if path.is_dir() else 0o600, path)
+
+    def test_scan_catalog_drift_recomputes_and_retains_usage_evidence(self):
+        skill = "claude-project"
+        session = self.home / ".claude/projects/p/s.jsonl"
+        session_bytes = session.read_bytes()
+        reduced_catalog_path = self.work / "catalog-without-claude-project.json"
+        reduced_catalog = json.loads(json.dumps(self.catalog))
+        reduced_catalog["categories"]["engineering"].remove(skill)
+        reduced_catalog["skills"] = [
+            item for item in reduced_catalog["skills"] if item["name"] != skill
+        ]
+        reduced_catalog_path.write_text(json.dumps(reduced_catalog), encoding="utf-8")
+
+        self.env["JEO_SKILLS_CATALOG"] = str(reduced_catalog_path)
+        self.successful(self.cli("usage", "scan", "--json"))
+        self.assertNotIn(skill, self._rows(self._report()))
+        reduced_usage = json.loads((self.state / "usage.json").read_text(encoding="utf-8"))
+        self.assertNotIn(skill, reduced_usage["skills"])
+
+        self.env["JEO_SKILLS_CATALOG"] = str(self.catalog_path)
+        self.successful(self.cli("usage", "scan", "--json"))
+        full_rows = self._rows(self._report())
+        self.assertEqual(full_rows[skill]["count"], 1)
+        self.assertEqual(full_rows[skill]["by_source"], {"claude_projects": 1})
+        self.assertEqual(session.read_bytes(), session_bytes)
+
+        self.env["JEO_SKILLS_CATALOG"] = str(reduced_catalog_path)
+        self.successful(self.cli("usage", "scan", "--json"))
+        self.assertNotIn(skill, self._rows(self._report()))
+        carried_usage = json.loads((self.state / "usage.json").read_text(encoding="utf-8"))
+        self.assertEqual(carried_usage["skills"][skill]["count"], 1)
+        self.assertEqual(carried_usage["skills"][skill]["by_source"], {"claude_projects": 1})
+
+        session.unlink()
+        self.env["JEO_SKILLS_CATALOG"] = str(self.catalog_path)
+        self.successful(self.cli("usage", "scan", "--json"))
+        retained_rows = self._rows(self._report())
+        self.assertEqual(retained_rows[skill]["count"], 1)
+        self.assertEqual(retained_rows[skill]["by_source"], {"claude_projects": 1})
+
+
+    def test_scan_lock_skips_if_idle_and_blocks_plain_scan(self):
+        lock_path = self.state / "scan.lock"
+        usage_path = self.state / "usage.json"
+        cursor_path = self.state / "usage-cursor.json"
+        with lock_path.open("a+b") as lock:
+            fcntl.flock(lock.fileno(), fcntl.LOCK_EX)
+
+            idle = self.cli("usage", "scan", "--if-idle", "--json")
+            self.successful(idle)
+            self.assertIn("skipped", idle.stderr.lower())
+            self.assertFalse(usage_path.exists())
+            self.assertFalse(cursor_path.exists())
+
+            process = subprocess.Popen(
+                [sys.executable, str(ROUTER), "usage", "scan", "--json"],
+                cwd=self.project,
+                env={**self.env},
+                text=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+            )
+            try:
+                with self.assertRaises(subprocess.TimeoutExpired):
+                    process.wait(timeout=0.5)
+            finally:
+                fcntl.flock(lock.fileno(), fcntl.LOCK_UN)
+
+            try:
+                stdout, stderr = process.communicate(timeout=20)
+            except subprocess.TimeoutExpired:
+                process.kill()
+                process.communicate()
+                self.fail("plain usage scan did not complete after lock release")
+
+        self.assertEqual(process.returncode, 0, stdout + stderr)
+        self.assertTrue(usage_path.exists())
+        self.assertTrue(lock_path.exists())
 
     def test_scan_is_idempotent_and_incremental_events_add_once(self):
         self.successful(self.cli("usage", "scan", "--json"))

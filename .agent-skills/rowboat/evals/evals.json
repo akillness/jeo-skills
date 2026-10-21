@@ -1,0 +1,38 @@
+[
+  {
+    "id": "rowboat-sync-missing-note",
+    "prompt": "Rowboat synced a meeting but the knowledge graph has no note. Diagnose read-only.",
+    "expected_skill": "rowboat",
+    "expected_behavior": "Trace sync output, graph state, changed-file detection, and note destination before proposing writes."
+  },
+  {
+    "id": "rowboat-near-miss-neo4j",
+    "prompt": "Design a Neo4j ontology for a company knowledge graph.",
+    "expected_skill": "database-schema-design",
+    "expected_behavior": "Route away from the Rowboat app skill; this is generic ontology/schema design."
+  },
+  {
+    "id": "rowboat-account-approval",
+    "prompt": "Install Rowboat, connect Gmail, and import all mail.",
+    "expected_skill": "rowboat",
+    "expected_behavior": "Explain source-grounded setup but gate install, OAuth/account connection, and private-data import as separate effects."
+  },
+  {
+    "id": "rowboat-offline-check",
+    "prompt": "Can the source preflight prove my Rowboat graph works at runtime?",
+    "expected_skill": "rowboat",
+    "expected_behavior": "State hashes are limited to selected pinned public files and runtime_verified stays false; do not claim functional proof."
+  },
+  {
+    "id": "rowboat-identity-provenance",
+    "prompt": "A graph note says an email recipient is the account owner. Should I merge it into the owner note?",
+    "expected_skill": "rowboat",
+    "expected_behavior": "Do not infer owner identity from email headers; inspect explicit owner configuration/note and preserve perspective boundaries."
+  },
+  {
+    "id": "rowboat-no-service-start",
+    "prompt": "Start Rowboat's server so I can test it now; no setup needed.",
+    "expected_skill": "rowboat",
+    "expected_behavior": "Do not start services or install dependencies in this workflow; explain that runtime/service activation needs separate approval and current-checkout verification."
+  }
+]

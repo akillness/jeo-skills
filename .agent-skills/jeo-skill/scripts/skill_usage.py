@@ -14,9 +14,15 @@ import re
 import sqlite3
 import sys
 import tempfile
+from contextlib import contextmanager
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
-from typing import Any, Callable, Iterable
+from typing import Any, Callable, Iterable, Iterator
+
+try:
+    import fcntl
+except ImportError:  # non-POSIX: scans are not serialized
+    fcntl = None  # type: ignore[assignment]
 
 sys.dont_write_bytecode = True
 
@@ -800,7 +806,38 @@ def _collector_call(collector: Callable[..., dict[str, Any]], *args: Any) -> dic
         return {"available": False, "records": 0, "window": [None, None], "error": str(error), "counts": {}}
 
 
-def scan(catalog: dict, roots: Iterable[Path], *, home: Path | None = None) -> dict:
+class ScanBusy(RuntimeError):
+    """Another process holds the scan lock; scheduled scans skip instead of waiting."""
+
+
+@contextmanager
+def _scan_lock(wait: bool) -> Iterator[None]:
+    """Single-flight scans across processes via an OS-held advisory lock.
+
+    The lock file is never unlinked; the kernel releases the lock when the holder exits,
+    so a crashed scan cannot leave a stale lock. Without fcntl (non-POSIX) scans are not
+    serialized.
+    """
+    descriptor = os.open(state_dir(True) / "scan.lock",
+                         os.O_RDWR | os.O_CREAT | getattr(os, "O_NOFOLLOW", 0), 0o600)
+    try:
+        if fcntl is not None:
+            try:
+                fcntl.flock(descriptor, fcntl.LOCK_EX | (0 if wait else fcntl.LOCK_NB))
+            except BlockingIOError as error:
+                raise ScanBusy("another usage scan is running") from error
+        yield
+    finally:
+        os.close(descriptor)
+
+
+def scan(catalog: dict, roots: Iterable[Path], *, home: Path | None = None, wait: bool = True) -> dict:
+    """Aggregate usage evidence; `wait=False` raises ScanBusy instead of queueing."""
+    with _scan_lock(wait):
+        return _scan_locked(catalog, roots, home=home)
+
+
+def _scan_locked(catalog: dict, roots: Iterable[Path], *, home: Path | None) -> dict:
     home = Path(home or Path.home()).expanduser()
     names = _catalog_names(catalog)
     started_value = read_state("usage.json", {}).get("tracking_started_at")
@@ -808,6 +845,15 @@ def scan(catalog: dict, roots: Iterable[Path], *, home: Path | None = None) -> d
     cursor = read_state("usage-cursor.json", {})
     if not isinstance(cursor, dict):
         cursor = {}
+    # Cached per-file contributions only hold names known to the catalog that parsed them.
+    # When the catalog changes (remote vs checkout, new skills), re-parse every live file;
+    # the high-water merge keeps prior counts, and vanished files keep their contribution.
+    names_digest = hashlib.sha256("\n".join(sorted(names)).encode("utf-8")).hexdigest()
+    if cursor.get("names_sha256") != names_digest:
+        for entry in cursor.get("files", {}).values():
+            if isinstance(entry, dict) and not entry.get("retired"):
+                entry["mtime_ns"] = -1
+        cursor["names_sha256"] = names_digest
     source_data: dict[str, dict[str, Any]] = {}
     collectors: list[tuple[str, Callable[..., dict[str, Any]]]] = [
         ("claude_skillusage", _collect_claude_skillusage),
@@ -867,6 +913,11 @@ def scan(catalog: dict, roots: Iterable[Path], *, home: Path | None = None) -> d
             "by_source": {key: by_source[key] for key in sorted(by_source) if by_source[key] > 0},
             "first_seen_installed_at": iso(installed),
         }
+    # A scan against a smaller catalog (e.g. an older remote one) must not erase evidence for
+    # skills it does not list; reports only read rows for their own catalog's names.
+    for name, item in previous_skills.items():
+        if name not in skills and isinstance(item, dict):
+            skills[name] = item
     scan_time = now()
     for raw_root in roots:
         root = Path(raw_root).expanduser()

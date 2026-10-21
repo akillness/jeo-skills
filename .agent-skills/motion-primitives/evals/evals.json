@@ -1,0 +1,46 @@
+{
+  "skill_name": "motion-primitives",
+  "execution_status": "not-run",
+  "fixture_type": "authored-behavioral-scenarios",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Use ibelick Motion Primitives TextEffect for a semantic heading in our React app. Inspect before proposing installation.",
+      "expected_output": "Inspect TextEffect types and imports at the pin, adapt the host helper/client boundary, use string children and semantic as, and supply a readable reduced-motion policy.",
+      "expectations": [
+        "Identifies ibelick/motion-primitives and copied component source, not a runtime export from the private root package.",
+        "Explains per=line means newline splitting, and keeps speedReveal/speedSegment positive and finite.",
+        "Preserves sr-only text in word/character modes and does not execute npx during source inspection."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Our controlled Motion Primitives dialog closes visually but keyboard focus and scroll get stuck after route changes. Review its integration.",
+      "expected_output": "Trace host state ownership, portal/native-dialog and exit coordination, helper imports and cleanup, then require focused runtime verification before claiming a fix.",
+      "expectations": [
+        "Accounts for open/onOpenChange, showModal, cancel handling, body scroll classes, and imported usePreventScroll.",
+        "Checks focus restoration, Escape, tab containment, rapid reopen, route unmount, and concurrent dialogs rather than asserting source-level accessibility certification.",
+        "Does not claim no leaks or working behavior without execution evidence."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Add Motion Primitives InView and promise that once=true stops every child animation whenever the card is offscreen.",
+      "expected_output": "Correct the contract: once stores completion state, viewOptions feeds the observer hook, and child resource shutdown is not guaranteed by wrapper visibility.",
+      "expectations": [
+        "Distinguishes InView's once prop from viewOptions behavior.",
+        "Requires explicit ownership/pause policy for descendant loops and a static/reduced-motion outcome.",
+        "Does not equate opacity changes or viewport entry with stopped RAF/timer work."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Teach a custom motion/react spring animation for our own modal; we are not adopting Motion Primitives.",
+      "expected_output": "Use the existing modal semantics and host Motion conventions, not this library's source-copy integration workflow.",
+      "expectations": [
+        "Does not install Motion Primitives or silently replace the modal API.",
+        "Keeps generic SDK guidance distinct from the named library operator."
+      ]
+    }
+  ]
+}

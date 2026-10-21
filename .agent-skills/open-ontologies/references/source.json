@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "skill": "open-ontologies",
+  "repository": "fabio-rovai/open-ontologies",
+  "commit": "dfb09bf815326913d7d7822fa7228f2602fb4976",
+  "observed_at": "2026-10-15T15:07:11Z",
+  "license": {"path": "LICENSE", "conclusion": "MIT; full pinned license inspected", "url": "https://github.com/fabio-rovai/open-ontologies/blob/dfb09bf815326913d7d7822fa7228f2602fb4976/LICENSE"},
+  "tools": [{"name": "python3", "purpose": "Run the offline selected-source preflight helper; tool discovery only, no version test"}],
+  "files": [
+    {"path": "README.md", "sha256": "38e09a08a39b53024109f43076f5dcbfa25d1503ec71d036d388a4a38e698803", "url": "https://github.com/fabio-rovai/open-ontologies/blob/dfb09bf815326913d7d7822fa7228f2602fb4976/README.md", "purpose": "Documented batch, checker and capability boundaries"},
+    {"path": "LICENSE", "sha256": "8aecab11d51f3cf7b43440859eb51e7a256f294a648a11b4ed224e9e91ce18bd", "url": "https://github.com/fabio-rovai/open-ontologies/blob/dfb09bf815326913d7d7822fa7228f2602fb4976/LICENSE", "purpose": "Full pinned license text"},
+    {"path": "Cargo.toml", "sha256": "c481d10ef0a20ccc23cad101baa3cd2482133d75266acea1e1745a0bb99abd6e", "url": "https://github.com/fabio-rovai/open-ontologies/blob/dfb09bf815326913d7d7822fa7228f2602fb4976/Cargo.toml", "purpose": "Binary, dependencies and optional feature manifest"},
+    {"path": ".mcp/server.json", "sha256": "be1cc9164b3bb7f5bbfeb69d6dd7129ea775370bafa004b35b796eb6176df916", "url": "https://github.com/fabio-rovai/open-ontologies/blob/dfb09bf815326913d7d7822fa7228f2602fb4976/.mcp/server.json", "purpose": "Pinned OCI package declaration with stdio MCP transport"},
+    {"path": "src/main.rs", "sha256": "5373869462a1b2c8f945765bfcd8e373d266f4638f25d728bdf3daa5bafd503d", "url": "https://github.com/fabio-rovai/open-ontologies/blob/dfb09bf815326913d7d7822fa7228f2602fb4976/src/main.rs", "purpose": "Runtime defaults and tool filtering/configuration comments"},
+    {"path": "src/server.rs", "sha256": "c88ca8904b234394629147fe0c7fc40a7b134aa3df338fe56796c5ab64d7ef1e", "url": "https://github.com/fabio-rovai/open-ontologies/blob/dfb09bf815326913d7d7822fa7228f2602fb4976/src/server.rs", "purpose": "MCP server implementation and tool surface"}
+  ]
+}

@@ -41,6 +41,8 @@ def add_parsers(sub: argparse._SubParsersAction) -> None:
 
     scan = actions.add_parser("scan", help="Aggregate invocation/load evidence from local runtime records")
     scan.add_argument("--json", action="store_true")
+    scan.add_argument("--if-idle", action="store_true",
+                      help="Exit quietly if another scan is running (for hooks and schedulers)")
 
     report = actions.add_parser("report", help="Show used, protected, in-grace and candidate skills")
     report.add_argument("--status", choices=("used", "protected", "in-grace", "candidate"))
@@ -108,15 +110,19 @@ def _require_catalog_names(catalog: dict[str, Any], names: Iterable[str]) -> Non
         raise ValueError("unknown catalog skills: " + ", ".join(unknown))
 
 
-def _scan(catalog: dict[str, Any], roots_fn: RootsFn) -> dict[str, Any]:
+def _scan(catalog: dict[str, Any], roots_fn: RootsFn, *, wait: bool = True) -> dict[str, Any]:
     # Usage evidence is account-wide; record installs from global and current-project roots.
-    return skill_usage.scan(catalog, tracked_roots(roots_fn, True) + list(roots_fn(False)))
+    return skill_usage.scan(catalog, tracked_roots(roots_fn, True) + list(roots_fn(False)), wait=wait)
 
 
 def command_usage(args: argparse.Namespace, catalog: dict[str, Any], roots_fn: RootsFn) -> int:
     action = args.usage_command
     if action == "scan":
-        usage = _scan(catalog, roots_fn)
+        try:
+            usage = _scan(catalog, roots_fn, wait=not args.if_idle)
+        except skill_usage.ScanBusy:
+            print("Another usage scan is running; skipped.", file=sys.stderr)
+            return 0
         report = skill_usage.build_report(catalog, usage)
         if args.json:
             _emit({"scanned_at": usage.get("scanned_at"), "sources": usage.get("sources", {}),

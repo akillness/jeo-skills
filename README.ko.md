@@ -2,14 +2,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-373-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-405-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![GJC](https://img.shields.io/badge/GJC-gajae--code-181717?style=for-the-badge&logo=github)](https://github.com/akillness/gajae-code)
 [![jeo-code](https://img.shields.io/badge/jeo--code-jeo-181717?style=for-the-badge&logo=github)](https://github.com/akillness/jeo-code)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**카테고리형 스킬 373개 · 경량 선택 설치 · 압축 TOON 카탈로그 · 멀티플랫폼**
+**카테고리형 스킬 405개 · 경량 선택 설치 · 압축 TOON 카탈로그 · 멀티플랫폼**
 
 스펙 우선 멀티 에이전트 LLM 워크플로우 컬렉션입니다. 프롬프트 하나로 전체 설정을
 위임하거나, `jeo-skill` 라우터부터 설치해 필요한 웹, 인프라, 게임, 미디어, CLI,
@@ -182,9 +182,23 @@ curl -s https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-sk
 
 ### 경량 선택 설치(수동 / CI)
 
-373개 스킬 폴더 전체가 아니라 **`jeo-skill` 라우터부터 설치**합니다. 카테고리,
+405개 스킬 폴더 전체가 아니라 **`jeo-skill` 라우터부터 설치**합니다. 카테고리,
 하위 분류, 인터페이스, 번들, 연관 스킬을 탐색할 수 있으며 앱·모델·MCP 서버·런타임은
 실제 선택된 작업에서만 온디맨드로 설치합니다.
+
+`ui-design-repositories` 번들은 고정 소스 기반 UI 운영 가이드 10개를 설치하며,
+업스트림 컴포넌트나 서비스를 실행하지 않습니다. [소스·라이선스·중복 감사](docs/ui-design-repositories.md)에
+삭제 0개 근거, Canvas UI의 Commons Clause, Hyperiux Effects 별도 제한, Cursify의
+라이선스 부재를 기록했습니다. `jeo-skill install --bundle ui-design-repositories --dry-run`으로
+미리 확인하세요. 의존성 설치·원격 디자인 호출·프로젝트/CSS 쓰기·공개 배포는 별도 승인이
+필요하며, 평가 시나리오는 작성된 픽스처이지 실행한 UI 품질 평가가 아닙니다.
+
+`knowledge-repositories` 번들은 온톨로지·코드 그래프·메모리·검색 프로젝트
+21개를 묶습니다. 커밋 고정 운영 스킬 18개를 추가하고 기존 스킬 3개는
+재사용합니다. 오프라인 헬퍼는 도구 존재와 선택된 공개 파일의 해시만 확인하며,
+Git 전체 리비전이나 실제 실행 준비 상태를 검증하지 않습니다. 스킬 설치는
+업스트림 앱 설치·비공개 데이터 수집·MCP 활성화·유료 호출·DB 변경 승인이 아닙니다.
+`jeo-skill install --bundle knowledge-repositories --dry-run`으로 선택 범위를 미리 확인합니다.
 
 ```bash
 # 공유 글로벌 경로에 라우터를 설치합니다. Claude Code 네이티브 투영은 --agent claude-code로 별도 실행
@@ -340,11 +354,11 @@ python3 .agent-skills/openrig/scripts/preflight.py --json
 
 ## 📚 스킬 목록
 
-> 중앙 매니페스트: `.agent-skills/skills.json` · 373개 스킬 · 10개 기본 카테고리 · 하위 카테고리/인터페이스/관계 그룹 지원
+> 중앙 매니페스트: `.agent-skills/skills.json` · 405개 스킬 · 10개 기본 카테고리 · 하위 카테고리/인터페이스/관계 그룹 지원
 
-### 🌐 웹 (52개)
+### 🌐 웹 (69개)
 
-하위 분류: `frontend` (7), `backend` (3), `design` (12), `api` (2), `auth` (1), `data` (6), `testing` (4), `accessibility` (1), `performance` (1), `graphics` (10), `capture` (5)
+하위 분류: `frontend` (12), `backend` (3), `design` (15), `api` (2), `auth` (1), `data` (13), `testing` (4), `accessibility` (1), `performance` (1), `graphics` (12), `capture` (5)
 
 | Skill |
 |---|
@@ -400,10 +414,27 @@ python3 .agent-skills/openrig/scripts/preflight.py --json
 | `stagehand` |
 | `helix-foundry` |
 | `pg-jev` |
+| `orionbelt-ontology-builder` |
+| `open-ontologies` |
+| `semantica` |
+| `utopia` |
+| `pixeltable` |
+| `turbovec` |
+| `pixelrag` |
+| `superdesign` |
+| `better-design` |
+| `design-taste` |
+| `canvas-ui` |
+| `paper-shaders` |
+| `ui-layouts` |
+| `hyperiux` |
+| `motion-primitives` |
+| `cursify` |
+| `trickle-ui` |
 
-### 🏗 인프라 (14개)
+### 🏗 인프라 (17개)
 
-하위 분류: `deployment` (2), `environment` (2), `observability` (3), `security` (3), `cloud-data` (3), `automation` (0), `tooling` (1)
+하위 분류: `deployment` (2), `environment` (2), `observability` (3), `security` (3), `cloud-data` (6), `automation` (0), `tooling` (1)
 
 | Skill |
 |---|
@@ -421,6 +452,9 @@ python3 .agent-skills/openrig/scripts/preflight.py --json
 | `genkit` |
 | `looker-studio-bigquery` |
 | `zurp` |
+| `ai-knowledge-management-platform` |
+| `knowledge-catalog` |
+| `cocoindex` |
 
 ### 🎮 게임 (28개)
 
@@ -457,9 +491,9 @@ python3 .agent-skills/openrig/scripts/preflight.py --json
 | `game-feel` |
 | `game-ui-ux` |
 
-### 🎬 크리에이티브 미디어 (36개)
+### 🎬 크리에이티브 미디어 (40개)
 
-하위 분류: `image` (10), `video` (14), `motion` (1), `audio` (2), `presentation` (1), `diagram` (2), `design` (4), `capture` (0), `storytelling` (2)
+하위 분류: `image` (10), `video` (18), `motion` (1), `audio` (2), `presentation` (1), `diagram` (2), `design` (4), `capture` (0), `storytelling` (2)
 
 | Skill |
 |---|
@@ -496,13 +530,17 @@ python3 .agent-skills/openrig/scripts/preflight.py --json
 | `higgsfield-video-explainer` |
 | `higgsfield-brandkit` |
 | `shopping-shorts` |
+| `video-use` |
+| `autoclip` |
+| `moneyprinter-turbo` |
+| `opencreator` |
 | `voicestudio` |
 | `diagram-design` |
 | `artcraft` |
 
-### ⌨️ CLI 도구 (40개)
+### ⌨️ CLI 도구 (42개)
 
-하위 분류: `developer-cli` (10), `ai-cli` (15), `media-cli` (1), `automation-cli` (6), `search-cli` (7), `benchmark-cli` (1)
+하위 분류: `developer-cli` (10), `ai-cli` (16), `media-cli` (1), `automation-cli` (6), `search-cli` (8), `benchmark-cli` (1)
 
 | Skill |
 |---|
@@ -546,10 +584,12 @@ python3 .agent-skills/openrig/scripts/preflight.py --json
 | `context-mode` |
 | `rea` |
 | `llmfit` |
+| `hyper-extract` |
+| `leann` |
 
-### 🤖 AI 및 에이전트 (69개)
+### 🤖 AI 및 에이전트 (73개)
 
-하위 분류: `orchestration` (16), `agent-frameworks` (18), `skill-authoring` (5), `evaluation` (8), `memory` (3), `planning-review` (13), `discovery` (3), `prompting` (3)
+하위 분류: `orchestration` (16), `agent-frameworks` (19), `skill-authoring` (5), `evaluation` (8), `memory` (6), `planning-review` (13), `discovery` (3), `prompting` (3)
 
 | Skill |
 |---|
@@ -620,12 +660,16 @@ python3 .agent-skills/openrig/scripts/preflight.py --json
 | `anyjev` |
 | `typesafe-computer-use` |
 | `jev-ultrafast` |
+| `agentic-graphrag-blueprint` |
+| `memmachine` |
+| `memori` |
+| `memsearch` |
 | `harness2` |
 | `ruflo` |
 
-### 🧰 엔지니어링 (23개)
+### 🧰 엔지니어링 (24개)
 
-하위 분류: `code-quality` (11), `testing` (3), `architecture` (6), `documentation` (2), `code-navigation` (1)
+하위 분류: `code-quality` (11), `testing` (3), `architecture` (6), `documentation` (2), `code-navigation` (2)
 
 | Skill |
 |---|
@@ -652,6 +696,7 @@ python3 .agent-skills/openrig/scripts/preflight.py --json
 | `domain-modeling` |
 | `implement` |
 | `prototype` |
+| `codebase-memory-mcp` |
 
 ### 🔭 연구 및 분석 (14개)
 
@@ -751,9 +796,9 @@ python3 .agent-skills/openrig/scripts/preflight.py --json
 | `product-name` |
 | `value-prop-statements` |
 
-### 🔧 유틸리티 (27개)
+### 🔧 유틸리티 (28개)
 
-하위 분류: `knowledge` (7), `files` (5), `git` (4), `workspace` (1), `project-management` (4), `productivity` (3), `general` (3)
+하위 분류: `knowledge` (8), `files` (5), `git` (4), `workspace` (1), `project-management` (4), `productivity` (3), `general` (3)
 
 | Skill |
 |---|
@@ -784,6 +829,7 @@ python3 .agent-skills/openrig/scripts/preflight.py --json
 | `hwp` |
 | `rhwp-advanced` |
 | `rhwp-edit` |
+| `rowboat` |
 
 ---
 
@@ -1019,7 +1065,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 ## 📁 구조
 
 ```text
-├── .agent-skills/          ← 373개 스킬 폴더 (SKILL.md + 선택적 지원 파일)
+├── .agent-skills/          ← 405개 스킬 폴더 (SKILL.md + 선택적 지원 파일)
 ├── assets/                ← README 커버와 catalog-install, runtime-boundary, skill-lifecycle 다이어그램
 ├── changelog/             ← 월별 다국어 릴리스 소스 파일
 ├── docs/                  ← ScrapingAnt 파트너십·아웃리치 자료
@@ -1068,6 +1114,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 
 | 컴포넌트 | 출처 | 라이선스 |
 |----------|------|---------|
+| UI design operators (10; original guidance only) | [Pinned ten-source audit](docs/ui-design-repositories.md) | Mixed upstream terms; restricted/missing grants documented |
 | `ooo` | [Q00/ouroboros v0.29.0](https://github.com/Q00/ouroboros/tree/v0.29.0) | MIT |
 | `stitch-skills` | [google-labs-code/stitch-skills](https://github.com/google-labs-code/stitch-skills) | Apache-2.0 |
 | `compresso` | [codeforreal1/compressO](https://github.com/codeforreal1/compressO) | AGPL-3.0 |
@@ -1136,16 +1183,25 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 | 변경 사항 | 상세 내용 |
 |--------|---------|
 | **harness → harness2** | revfactory `harness` 스킬을 `google-research/harness2` 운영 스킬 `harness2`로 교체했습니다. `1cfe254e8d25b15f37048c3730134686abe60335`(Apache-2.0)에 고정하고, 크레덴셜 없는 데모, LAB/JobBench/WorkBuddy 설정과 유료 실행 승인 게이트, Codex 브리지, Propose–Probe–Compose를 직접 적용하는 method 모드(에이전트 팀 설계 이관)를 안내합니다. `harness`는 `retired_skills`로 옮기고 모든 라우팅을 새 담당 스킬로 바꿨습니다. |
-| **운영 스킬 4종 추가** | `ruflo`(ruvnet/ruflo, MIT), `voicestudio`(debpalash/VoiceStudio, AGPL-3.0-only), `diagram-design`(cathrynlavery/diagram-design, MIT), `artcraft`(storytold/artcraft, MIT OR Apache-2.0)를 커밋 고정, 오프라인 preflight, 설치·모델·프로바이더·서버·배포 승인 게이트와 함께 추가했습니다. 카탈로그가 369개에서 373개가 됐습니다. |
+| **운영 스킬 4종 추가** | `ruflo`(ruvnet/ruflo, MIT), `voicestudio`(debpalash/VoiceStudio, AGPL-3.0-only), `diagram-design`(cathrynlavery/diagram-design, MIT), `artcraft`(storytold/artcraft, MIT OR Apache-2.0)를 커밋 고정, 오프라인 preflight, 설치·모델·프로바이더·서버·배포 승인 게이트와 함께 추가했습니다. `harness` 은퇴를 반영해 카탈로그가 401개에서 405개가 됐습니다. |
 | **설치 시 은퇴 스킬 정리** | `jeo-skill install`과 `install.sh`가 설치 대상 루트에서 은퇴한 `jeo`(→ `ooo`)·`harness`(→ `harness2`)의 오래된 카탈로그 사본을 제거하며, `jeo-skill prune-retired [--global] [--dry-run]`으로 모든 런타임 루트를 점검합니다. frontmatter 이름과 첫 제목이 카탈로그 사본과 정확히 일치할 때만 지우고, 링크는 같은 정리에서 지운 사본을 가리킬 때만 해제합니다. 다른 출처의 동명 스킬·무관한 링크·링크된 상위 경로는 유지합니다. `.skill-lock.json`은 수정하지 않습니다. |
 | **검증** | 설치 회귀 63/63(신규 15개, 고정 fixture), 저장소 preflight 회귀 15/15(신규 helper 5종과 harness2 bench/method 사례), 카탈로그 투영·frontmatter·레이아웃·changelog 게이트 통과, 평가 시나리오 25개 추가. 이 머신의 오래된 사본을 그대로 복제한 격리 HOME에서 실제 고정 버전 `skills@1.7.0`으로 문서의 전체 설치(Step 4–4E, 7)를 처음부터 끝까지 실행했습니다. 설치 원본은 이 작업 트리를 커밋한 로컬 스냅숏이며(GitHub URL을 그쪽으로 우회), 공개 HEAD에는 push 전까지 이 변경이 없습니다. 모든 은퇴 사본과 이를 가리키는 링크가 제거되고 무관한 스킬·링크·Aside `builtin/`은 바이트 단위로 유지됐으며, 실제 jeopi/oh-my-pi/GJC 로더가 새 스킬 5종을 찾고 `jeo`/`harness`는 찾지 않음을 확인했습니다. OpenCode는 공유 루트 배치만 확인했고 런타임 활성화는 확인하지 않았습니다. upstream harness2 데모는 두 재귀 모드 모두 2/2 작업이 통과했고 단위 테스트 5개도 통과했습니다. 벤치마크·모델·심사 등 다른 upstream 런타임은 실행하지 않았습니다. |
 | **스킬 사용 추적과 미사용 스킬 정리** | `jeo-skill usage scan`이 Claude·Codex·OpenCode·Antigravity·Aside·jeopi/GJC/OMP/Pi 세션과 Jev의 로컬 기록에서 스킬 이름·횟수·시각만 보존하고, 호출·로드·Jev 전체 본문 주입만 사용으로 집계합니다. 전체 이력 0회와 추적 시작 후 30일 유예를 모두 충족한 항목만 후보로 삼으며 핵심 번들·핀·`usage relevance` 보호는 제외합니다. `prune-unused`는 확인 가능한 카탈로그 사본만 되돌릴 수 있게 격리하고 서드파티 사본·링크는 보존하며, Jev `deny`/사용 불가는 적용을 중단합니다. `restore`/`purge-quarantine`과 관리자용 `retire-unused-skills.py --approve`를 분리했습니다. 설치기와 `install.sh`는 추적이나 훅 등록을 시작하지 않으며, `usage scan`이 집계 트래커 상태와 30일 유예 시계를 만듭니다. 이미 활성화한 Jev 훅은 scan 전에도 같은 상태 디렉터리의 `jev-usage.jsonl`에 라우팅·주입 이벤트를 남기고 주입만 사용으로 셉니다. usage 7·quarantine 15·retirement 7 Python 회귀와 Node ledger 테스트 4개가 통과했으며, 실제 데이터 read-only scan은 `/tmp`에서 실행하고 호스트 추적 상태와 훅은 시작하지 않았습니다. |
 | **README 시각 자료 갱신** | 새 Codex 커버 `assets/readme-cover.webp`와 `catalog-install-flow.svg`, `runtime-boundaries.svg`, `skill-lifecycle.svg` 다이어그램으로 갱신했습니다. `readme-hero.webp`, `catalog-workflow.svg`, `runtime-architecture.svg`, 고아 `assets/scrapingant/` 로고를 더 이상 사용하지 않으며, 중복 `ooo` 문서 병합, god-tibo-imagen·plannotator 명령 수정, 운영 스킬 수 12개→18개를 반영했습니다. 문서 전용 변경입니다. |
 
+## 🆕 v2026-10-17 업데이트
+
+| 변경 사항 | 상세 내용 |
+|--------|---------|
+| **OpenCreator 운영 스킬** | `krillinai/OpenCreator` 커밋 `b01a9f71165b9010216e25c462653b0cfa33cbce`에 고정한 `opencreator` 가이드를 추가했습니다. Desktop/CLI/Server 선택, 제작 작업, Codex·provider 설정, Skills/MCP/일정, 릴리스 무결성과 승인 경계를 다룹니다. 오프라인 읽기 전용 사전 점검과 작성된 시나리오 11개, CI에 연결된 전용 회귀 테스트 16개를 추가해 모두 통과했습니다. 카탈로그는 400개에서 401개로 늘었습니다. 업스트림 앱·설치 프로그램·provider·유료 서비스는 실행하지 않았습니다. |
+
 ## 🆕 v2026-10-15 업데이트
 
 | 변경 사항 | 상세 내용 |
 |--------|---------|
+| **UI 소스 고정 운영 스킬 10개** | Superdesign, Better Design, Design Taste, Canvas UI, Paper Shaders, UI Layouts, Hyperiux, Motion Primitives, Cursify, Trickle UI Kit 가이드를 추가했습니다. 정확한 저장소·커밋·선택 소스·전체 라이선스 관찰·중복 결정을 `docs/ui-design-repositories.md`와 독립 레퍼런스에 기록했습니다. |
+| **선택 설치와 재사용 권한** | `ui-design-repositories` 번들은 문서만 추가합니다(390 → 400개). 기존 스킬 삭제는 0개이며 시스템 거버넌스·레시피·성능 진단 역할을 보존했습니다. Canvas UI 배포 제한, Hyperiux Effects 별도 조건, Cursify 라이선스 부재를 명시하고 업스트림 컴포넌트 코드는 포함하지 않았습니다. |
+| **오프라인 검증 범위** | 패키징·라우터 회귀 6개가 통과했고 Ubuntu/macOS CI에 연결했습니다. 평가 시나리오 45개는 작성된 픽스처이지 실행한 모델 품질·브라우저 평가가 아닙니다. 업스트림 설치·서버·원격 디자인 호출·유료 서비스·UI 런타임은 실행하지 않았습니다. |
 | **OKF Agent Memory 운영 스킬** | 별도 Go CLI·stdio MCP 프로젝트인 `okf-memory/okf-agent-memory`를 위한 `okf-agent-memory`를 추가했습니다. upstream 커밋 `ad7beb01b9d4294d8dd28c25494d274374985b69`(MIT)에 고정하고 OKF v0.2 프로젝트 메모리, 명령, 보안, 승인 경계를 안내합니다. |
 | **라우팅과 카탈로그** | `ai-agents/memory`로 등록하고 `okf` 및 지식 관리 스킬과 연결했습니다. 기존 `okf`는 Google OKF v0.1 문서 작성 경로로 명확히 구분했습니다. 매니페스트 투영, README 3개 언어의 현재 개수, setup 안내, `AGENTS.md`, `.mex/ROUTER.md`를 갱신해 카탈로그가 367개에서 368개가 됐습니다. 새 운영 스킬과 기존 `okf` 경계에 평가 시나리오 9개를 추가했습니다. |
 | **읽기 전용 사전 점검과 회귀** | 고정 커밋과 공개 소스 경로를 확인하는 표준 라이브러리 기반 단독 preflight를 추가했습니다. 심볼릭 링크 경로와 1 MiB 초과 파일을 거부하고 Git 환경을 allowlist로 제한하며 업스트림 실행 파일은 호출하지 않습니다. 공용 사전 점검 회귀 13/13이 통과했고 악성 경로, 커밋 고정, 링크, 크기, 무변조, 자격증명 격리를 확인했습니다. |
@@ -1173,17 +1229,6 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 | **원문 커밋을 고정한 레포 운영 스킬 11개** | `openrig`, `anyjev`, `typesafe-computer-use`, `zurp`, `helix-foundry`, `uzu`, `context-mode`, `rea`, `fineenvs`, `llmfit`, `pg-jev` 운영 지침을 추가했습니다. 실제 소스 명령, 커밋, 라이선스 근거와 부작용 승인 경계를 기록했습니다. 이번 묶음은 배포 카탈로그를 355개에서 366개로 늘립니다. |
 | **선택 설정과 탐색** | 영어·한국어·스페인어 README 카탈로그와 출처, setup 가이드, Jev·로컬 모델·컨텍스트 도구의 관계를 갱신했습니다. 카탈로그 설치는 문서만 추가하며 앱·모델·MCP/훅·키·데스크톱 제어·DB 쓰기를 자동 실행하지 않습니다. Context Mode 프로세스 실행은 OS 보안 샌드박스가 아니며 npm postinstall은 Claude 설정을 변경할 수 있습니다. |
 | **검증 범위** | 행동 평가 시나리오 44개를 추가했습니다. 스킬 11개의 frontmatter 로딩과 11개 선택 설치 dry-run을 확인했습니다. 실제 업스트림 런타임, 모델 품질, 데스크톱 액션, 라이브 대상·DB 실행을 검증했다는 뜻은 아닙니다. |
-
-## 🆕 v2026-10-08 업데이트
-
-| 변경 사항 | 상세 내용 |
-|--------|---------|
-| **Jev 작업별 백엔드 라우팅** | `route-skills`, `prune-context`, `review`가 각각 프로필에서 자기 백엔드(`JEV_<OP>_BACKEND`와 순서가 있는 `_FALLBACK` 허용 목록)를 해석합니다. 설정 플래그는 `--route-backend`, `--prune-backend`, `--review-backend`, `--fallback <op>=<kind[,kind]>`입니다. `--backend` / `--model`은 한 번의 호출만 덮어쓰고, `status --operation`이 각 체인을 보고합니다. 폴백은 목록에 있는 종류만 시도하며 다른 프로필로 넘어가지 않습니다. |
-| **System One 백엔드 종류** | 새 `systemone` 모드는 운영자가 띄운 System One 엔드포인트를 세 가지 드라이버로 사용합니다: TypeSafe 호환, AutoTrust `serve_decide.py` `/v1/decide`(`thinking: "off"`로 순수 System 1), 토큰 logprob에서 읽는 vLLM `jev-decision` 헤드. 다운로드나 서버 시작은 하지 않습니다. |
-| **증명 기반 티어** | 모든 백엔드는 `--validated-model`이 실제 서빙 모델과 일치하지 않는 한 `unvalidated`이며, 보정된 결정 헤드 드라이버(`api`, `systemone`)만 검증될 수 있습니다. `review`는 검증된 티어에서만 `permit`을 내리므로 `local`, Ollama, LM Studio는 추천(`proposal_only`)만 하고 승인하지 않습니다. 영수증(v2)은 백엔드·모델·티어에 묶입니다. |
-| **용량 인식 스킬 선택과 프로바이더/모델 정책** | 게이트 Noul 뒤 샤딩된 Choice 또는 어휘 숏리스트를 적합도 Noul로 재정렬하며, "맞는 스킬 없음"을 명시적으로 답할 수 있습니다. 선택적인 `skills.json` `model_policies`는 스킬별 `provider/model` 권고 라우팅(예: `openai/gpt-6.1-sol`, `ollama/qwen2.5:7b`)을 추가합니다. 호스트 어댑터는 아직 없습니다. |
-| **수정** | 호스팅 `api` 요청이 문서화된 `/v1/systemone` 본문(`model`, Choice `criteria`, `noul` 응답)과 일치합니다. 프루닝 배치는 위치 키를 쓰고 각 백엔드의 상태 한도로 제한되며, 한도를 넘는 입력은 서버에서 잘리는 대신 요청 전에 거부됩니다. 설정이 검증된 카탈로그 스냅샷을 설치해 체크아웃 밖에서도 `route-skills`가 동작하고, 백엔드로 보내는 스킬 발췌는 카탈로그 루트 안으로 제한됩니다(`../`와 외부를 가리키는 심볼릭 링크 거부). |
-| **검증** | 루프백 회귀 52개(Python 3.11 + Node 24에서도 통과), 오프라인 self-test 20/20, 격리 프로필 테스트 3개, Linux·macOS CI 통과, Ollama JEV-9B-GGUF 대상 격리 HOME 실사용 검증: 빈 디렉터리에서 354개 스킬 스냅샷으로 라우팅, `local`→`ollama` 프루닝 폴백, `review --backend local`의 fail-closed. 이 실행은 전송 경로를 증명할 뿐 보정을 증명하지 않습니다(티어 `unvalidated`). |
 
 > 📜 이전 기록: [`changelog/ko/`](changelog/ko/) (월별 파일, 최신순).
 

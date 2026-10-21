@@ -18,6 +18,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -111,10 +112,29 @@ TRAPPED_TOOLS = (
 
 
 class RepositoryPreflightRegressions(unittest.TestCase):
+    def test_fixture_canonicalizes_owned_aliased_temporary_base(self):
+        physical = self.work / "physical-temp-base"
+        physical.mkdir()
+        alias = self.work / "aliased-temp-base"
+        alias.symlink_to(physical, target_is_directory=True)
+        original_tempdir = tempfile.TemporaryDirectory
+        probe = RepositoryPreflightRegressions()
+        self.addCleanup(probe.doCleanups)
+        with patch.object(
+            tempfile, "TemporaryDirectory",
+            side_effect=lambda **kwargs: original_tempdir(dir=alias, **kwargs),
+        ):
+            probe.setUp()
+        self.assertNotEqual(Path(probe.tmp.name), probe.work)
+        self.assertEqual(probe.work, Path(probe.tmp.name).resolve())
+        self.assertFalse(any(path.is_symlink() for path in (probe.work, *probe.work.parents)))
+
     def setUp(self) -> None:
         self.tmp = tempfile.TemporaryDirectory(prefix="preflight-regressions-")
         self.addCleanup(self.tmp.cleanup)
-        self.work = Path(self.tmp.name)
+        # Resolve only the owned fixture base, including macOS /var aliases.
+        # Explicit caller repo paths must remain literal for symlink rejection.
+        self.work = Path(self.tmp.name).resolve()
         self.home = self.work / "home"
         self.bin = self.work / "bin"
         self.home.mkdir()

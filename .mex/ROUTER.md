@@ -44,7 +44,7 @@ Then read this file fully before doing anything else in this session.
   `harness2` (google-research/harness2 @ `1cfe254e`, Apache-2.0; agent-team design moved to
   its method mode, every route-out repointed); added `ruflo`, `voicestudio`,
   `diagram-design`, `artcraft` as commit-pinned operators with offline preflights (catalog
-  369 → 373; new groups `agent-harness-optimization`, `voice-generation`,
+  369 → 373 locally, 405 after merging upstream's 401; new groups `agent-harness-optimization`, `voice-generation`,
   `diagram-authoring`, `generative-scene-studios`, `agent-swarm-runtimes`). Installs now
   remove fingerprint-matched stale catalog copies of retired `jeo`/`harness`
   (`install_support.RETIRED_INSTALLS`, `jeo-skill prune-retired`, `install.sh`, setup guide
@@ -81,6 +81,46 @@ Then read this file fully before doing anything else in this session.
   quarantine 922 provable copies and keep 209. Real tracking state was NOT started and no
   host hook was installed (user chose docs + snippet). Installed `~/.agents/jev` and the
   installed router are not updated. Runbook: `patterns/skill-usage-lifecycle.md`.
+
+- UI-design repositories (2026-10-16): added ten original exact-source operators and
+  the ui-design-repositories bundle (390 to 400 skills), with immutable source/license
+  references, a ten-source audit and 45 authored scenarios (not executed evaluations).
+  Six offline packaging/router regressions pass; CI runs them on Ubuntu/macOS.
+  No existing skill is superseded or retired; Canvas UI has restricted redistribution,
+  Hyperiux tooling/effects licenses differ, and Cursify has no observed license grant.
+  No upstream runtime was installed or executed. Exact-SHA publication evidence is
+  recorded outside the repo; source/packaging checks are not browser/runtime proof.
+
+- macOS preflight CI fixture repair (2026-10-16): the first post-Jev CI run
+  passed catalog/Ubuntu and native Jev checks on both platforms, then exposed
+  test-owned `/var` temp aliases rejected by strict source-path guards. Resolve
+  only the owned TemporaryDirectory base in the regression fixture, not any
+  caller-provided repo path. Added a deterministic aliased-temp-base regression;
+  existing root/parent/leaf symlink rejection tests and production helpers remain
+  unchanged. The new regression failed before the fixture fix.
+
+- Jev host-model planning repair (2026-10-16): implemented the missing
+  `--host-models` input rather than weakening the existing CI tests. Plans now
+  intersect advice with a same-agent/profile observation no older than 60 seconds,
+  exact authenticated model membership and eligible provider/model quotas. OAuth
+  identities remain distinct. Strict calendar validation, post-read/final freshness
+  checks and bounded regular-file JSON inputs cover the review findings. New
+  isolated CLI regressions exercise invalid inputs and deterministic clock advances.
+  This is source/advisory behavior only: no real credentials, providers, installed
+  runtime settings or host models were changed; remote CI remains a separate gate.
+
+- Knowledge repositories (2026-10-16): added 18 original source-pinned operators
+  for the reviewed ontology, code-graph, memory and retrieval projects. The
+  `knowledge-repositories` bundle covers 21 projects by reusing unchanged `mex`,
+  `obsidian-second-brain` and `okf-agent-memory`; the catalog now contains 390 skills.
+  Each new guide has a selected-public-file SHA256 manifest, a standalone no-Git
+  preflight and six authored evaluation scenarios (108 total, not model-quality
+  execution evidence). Source-only reviews covered all 18 guides; the OCI/stdio
+  declaration in Open Ontologies was corrected separately from source-build commands.
+  New subprocess regressions run in the Ubuntu/macOS installer CI matrix. These
+  offline checks do not install upstream runtimes, verify complete revisions or
+  activate providers/MCP/services. OrionBelt is BSL 1.1 with a restricted production
+  use grant, not MIT; individual references preserve the other license boundaries.
 
 - Publication preparation (2026-10-15): reconciled the upstream OKF addition and
   retained the 368-skill catalog. Focused Python 31, Node 28 and all eight README
@@ -147,7 +187,7 @@ Then read this file fully before doing anything else in this session.
   No public guide/README patch or push was made by this audit; deployment/model
   execution and fresh Linux/Windows setup are not claimed.
 
-- The catalog manifest (`.agent-skills/skills.json`, 373 skills) and its three
+- The catalog manifest (`.agent-skills/skills.json`, 405 skills) and its three
   projections (`.agent-skills/skills.toon`, `README.md`/`README.ko.md`/`README.es-ES.md`
   category tables, each skill's own SKILL.md frontmatter) are validated end-to-end by
   `scripts/validate-catalog-projections.py`, wired into `.github/workflows/ci.yml`
@@ -166,6 +206,16 @@ Then read this file fully before doing anything else in this session.
   repo checkout; delegates real installs to `npx skills add`
 - The flat `.agent-skills/<name>/SKILL.md` layout is enforced by
   `flatten_skills.py --dry-run` in CI (no category subfolders)
+- OpenCreator repository operator (2026-10-17): added `.agent-skills/opencreator/` as
+  the 13th source-pinned operator, audited at `krillinai/OpenCreator` commit
+  `b01a9f71165b9010216e25c462653b0cfa33cbce`. It includes a pinned upstream
+  reference, standalone read-only offline preflight, 11 authored eval fixtures, and
+  dedicated subprocess CI regressions (16/16 passing locally). The helper checks
+  source markers and local Git metadata only, makes no network call or configuration
+  write, and always reports
+  `runtime_verified: false`; no upstream runtime or installer was run. This raises
+  the family total to 13 operators and 71 authored scenarios; the existing generic
+  preflight suite still covers the prior twelve.
 - Repository operators (updated 2026-10-15): twelve source-pinned guides for Openrig,
   AnyJev, TypeSafe computer use, Zurp, Helix Foundry, Uzu, Context Mode, REA, FineEnvs,
   llmfit, pg-jev, and Jev Ultrafast. The v1.1.0 packages use router-first SKILL.md,

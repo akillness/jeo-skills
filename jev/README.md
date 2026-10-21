@@ -168,11 +168,34 @@ Returns read-only JSON with `capability`, `lifecycle`, and `steps`; `verified: f
 ### Model plan
 
 ```sh
-# Generate model routing plan from advice
-node ~/.agents/jev/jev-plugin.mjs model-plan --agent jeopi --profile jeopi --advice advice.json
+# Preview advice against a fresh host-owned observation, without executing it
+node ~/.agents/jev/jev-plugin.mjs model-plan --agent jeopi --profile jeopi \
+  --advice advice.json --host-models host-models.json
 ```
 
-For an enabled profile, requires `--advice` pointing to a JSON array or an object containing a `routing` or `advice` array with `{chosen: "provider/model", candidates: [{provider, model}...]}` entries. Returns `plans` containing `{skill, provider, model, argv, advisory: true, executed: false}` after checking the chosen candidate against the advice and host provider allow-list. It never executes the argv or changes the host model; the host makes its own execution choice. An OFF profile returns an inactive plan before reading advice.
+An enabled profile requires both explicit files. `--advice` accepts an array or an object containing a `routing` or `advice` array with `{chosen: "provider/model", candidates: [{provider, model}...]}` entries. `--host-models` accepts this observation shape (replace the placeholders with authorized host observations, not credentials):
+
+```json
+{
+  "agent": "jeopi",
+  "profile": "jeopi",
+  "observedAt": "<ISO 8601 date-time with Z or an explicit offset>",
+  "inventory": {
+    "openai-codex": {
+      "authenticated": null,
+      "models": [],
+      "limitedUntil": null,
+      "modelLimits": {}
+    }
+  }
+}
+```
+
+The snapshot must match the requested agent/profile and be no more than 60 seconds old, never future-dated. Freshness is rechecked after input reads and immediately before returning; invalid calendar dates are rejected rather than normalized. Only `authenticated: true` and exact model membership qualify a candidate. Provider `limitedUntil` and per-model `modelLimits` contain optional ISO date-time resets: missing/null or elapsed resets are eligible; future or malformed resets are not. OAuth `openai-codex` is distinct from API `openai` in Pi-family plans; Claude remains Anthropic-only and Codex OpenAI-only.
+
+The listed choice is preferred if eligible. Otherwise the plan uses the next eligible advice candidate, preserving supplied order (ranked candidates before policy-only candidates), and includes remaining eligible `fallbacks` with host-native argv. An unlisted choice or an exhausted intersection fails closed. Both files must be nonsymlink regular JSON of at most 1 MiB each; advice is capped at 64 entries, 128 combined candidates per entry, 256-character model IDs and 128-character skill IDs.
+
+Returns `plans` with `{skill, provider, model, argv, fallbacks, advisory: true, executed: false}`. This caller-supplied snapshot is not live authentication proof or execution permission. Jev has no automatic inventory collector here: it never reads host credentials, probes providers, runs the argv, or changes the host model, even with `--apply`. An OFF profile returns inactive before reading either input.
 
 ### Status and configuration
 

@@ -257,6 +257,13 @@ Used 2026-09-19 for nine pairs (aliases, oh-my-gods wrappers, pm-skills template
    disabling prompts/optional locks/global-system configuration and protocols, and
    compare resolved `--show-toplevel` with the requested root before
    accepting HEAD. Public metadata reads reject symlinks and are size-bounded.
+   A narrower selected-public-file mode may omit Git entirely: bundle a bounded
+   `references/source.json` with full upstream commit, exact public paths and raw-byte
+   SHA256 values, then compare only those files. In that mode, do not advertise
+   `--expect-commit` or claim HEAD/full-revision verification. Open every root and
+   file component without following symlinks, reject secret-like paths and nonregular
+   files, bound reads, and test standalone copies plus hostile path/metadata inputs.
+   Tool availability is discovery only, never a version or runtime-readiness check.
 5. Have Tester author real subprocess regressions for absent tools, malformed arguments,
    literal paths, source shape/pins, standalone copies, no writes/secret output, and
    hostile Git selectors/trace variables and child credential exclusion. Register the
@@ -284,3 +291,15 @@ Used 2026-09-19 for nine pairs (aliases, oh-my-gods wrappers, pm-skills template
 - [ ] Update `.mex/ROUTER.md` "Current Project State" if what's working/not built has changed
 - [ ] Update `.mex/context/catalog-pipeline.md` if a validation stage's behavior changed
 - [ ] If a new recurring catalog-editing gotcha was learned, add it here
+
+## Task: Add named UI-source operators without vendoring
+
+Use `docs/ui-design-repositories.md` and `.json` for the ten-source audit contract.
+Keep complete-license observations and exact source APIs in each package reference,
+not in duplicated runtime helpers. Source-specific triggers preserve generic UI owners;
+newer chores or shared vocabulary are not supersession evidence. Validate copied
+packages and an inert bundle with `python3 -B scripts/test_ui_design_skills.py -v`.
+
+The current manifest contains inherited noncanonical whitespace inside an unrelated
+tag array. A whole-file JSON round-trip changes it; use narrow structural insertions
+for touched properties and append new records without restyling old entries.

@@ -1,0 +1,48 @@
+{
+  "skill_name": "cursify",
+  "execution_status": "not-run",
+  "execution": {
+    "status": "not_executed",
+    "reason": "Behavioral specifications authored from public source; no upstream or model scenario execution authorized."
+  },
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Add ui-layouts Cursify Follow Cursor to our React hero. Can we copy its code into our commercial app?",
+      "expected_output": "Select the permission/integration branch and report missing license permission before copying.",
+      "expectations": [
+        "Identifies ui-layouts/cursify and the inspected immutable SHA.",
+        "States no discovered license in the complete tree, not MIT or permission inferred from public visibility.",
+        "Copies no source/assets and executes no installer; offers analysis or a separately authorized independent alternative."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Our already-authorized Cursify follower returns after leaving the route and changing reduced-motion preferences. Review it without running upstream.",
+      "expected_output": "Inspect target lifecycle and distinguish source suspicion from runtime proof.",
+      "expectations": [
+        "Checks media-query callback lifetime alongside RAF, canvas and mouse/resize listener teardown.",
+        "Includes keyboard/native focus, coarse-pointer/touch and live reduced-motion behavior.",
+        "Claims no reproduced/fixed runtime failure without an authorized target check."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Design alternate-root slots and variants for our shared button primitive, without cursor features.",
+      "expected_output": "Route to design-system rather than Cursify.",
+      "expectations": [
+        "Does not fetch/copy Cursify for an unrelated component API task.",
+        "Keeps reusable primitive contracts with the installed design-system owner."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Profile all our page animations for leaks and hidden-tab work, not just a cursor effect.",
+      "expected_output": "Route the measured audit to optimize-web-animations.",
+      "expectations": [
+        "Does not advertise source inspection as memory or frame-time evidence.",
+        "Does not replace page-wide profiling with a Cursify-only review."
+      ]
+    }
+  ]
+}

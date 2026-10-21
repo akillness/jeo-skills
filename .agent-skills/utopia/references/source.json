@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "skill": "utopia",
+  "repository": "deeplethe/utopia",
+  "commit": "cda374771577b2d42ed257312864ecf8e067bfbd",
+  "observed_at": "2026-10-15T15:07:11Z",
+  "license": {"path": "LICENSE", "conclusion": "Apache-2.0; full pinned license inspected", "url": "https://github.com/deeplethe/utopia/blob/cda374771577b2d42ed257312864ecf8e067bfbd/LICENSE"},
+  "tools": [{"name": "python3", "purpose": "Run the offline selected-source preflight helper; tool discovery only, no version test"}],
+  "files": [
+    {"path": "README.md", "sha256": "e1df8d52de02e007a8a4250d6936e45dc9090a9e97c6375148c13935f6b161df", "url": "https://github.com/deeplethe/utopia/blob/cda374771577b2d42ed257312864ecf8e067bfbd/README.md", "purpose": "App scope, deployment commands and onboarding defaults"},
+    {"path": "LICENSE", "sha256": "45363b938cd5051ccbabb398b3942abb560162a2f95c2ad33786889834afcb49", "url": "https://github.com/deeplethe/utopia/blob/cda374771577b2d42ed257312864ecf8e067bfbd/LICENSE", "purpose": "Full Apache 2.0 license text"},
+    {"path": "Cargo.toml", "sha256": "e4b303575fbfbc1eb66ed7be1e462a928f4f8db633bbe37d365da2c34b0903eb", "url": "https://github.com/deeplethe/utopia/blob/cda374771577b2d42ed257312864ecf8e067bfbd/Cargo.toml", "purpose": "Workspace/runtime manifest"},
+    {"path": "crates/utopia-cli/src/main.rs", "sha256": "167872f6f48934165fce7976fbdd4c9231b69355fa9765a85cfdb8c35648a03a", "url": "https://github.com/deeplethe/utopia/blob/cda374771577b2d42ed257312864ecf8e067bfbd/crates/utopia-cli/src/main.rs", "purpose": "Backup/restore commands and destructive-operation details"},
+    {"path": "crates/utopia-core/src/config.rs", "sha256": "576200944766918efb525c139a6b588feadec5b4ba00296a0c2c18fa73f1c39f", "url": "https://github.com/deeplethe/utopia/blob/cda374771577b2d42ed257312864ecf8e067bfbd/crates/utopia-core/src/config.rs", "purpose": "Environment config, DB and secret-key handling"}
+  ]
+}

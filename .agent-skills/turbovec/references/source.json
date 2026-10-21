@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "skill": "turbovec",
+  "repository": "RyanCodrai/turbovec",
+  "commit": "c3b043b992290ff223b903046af7f6683768241c",
+  "observed_at": "2026-10-16T00:10:45+09:00",
+  "license": {
+    "path": "LICENSE",
+    "conclusion": "MIT License present; full pinned license text inspected.",
+    "url": "https://github.com/RyanCodrai/turbovec/blob/c3b043b992290ff223b903046af7f6683768241c/LICENSE"
+  },
+  "tools": [],
+  "files": [
+    { "path": "README.md", "sha256": "40d5882026ebf71dd845ad41221f9265d7720ecb0a9fc5ffb0bcf80d4c3ed661", "url": "https://github.com/RyanCodrai/turbovec/blob/c3b043b992290ff223b903046af7f6683768241c/README.md", "purpose": "Installation examples, API usage, constraints, benchmarks and explicit non-goals." },
+    { "path": "LICENSE", "sha256": "e94eb7a09e285805786b74d8cfc535906efd3aabc243636646218314f7b4593c", "url": "https://github.com/RyanCodrai/turbovec/blob/c3b043b992290ff223b903046af7f6683768241c/LICENSE", "purpose": "Full upstream MIT license text." },
+    { "path": "Cargo.toml", "sha256": "6011277e154adf8f68b08d2f406741b4514153c9fa93d0ae3997f922b0382d53", "url": "https://github.com/RyanCodrai/turbovec/blob/c3b043b992290ff223b903046af7f6683768241c/Cargo.toml", "purpose": "Workspace and Rust build configuration." },
+    { "path": "turbovec-python/pyproject.toml", "sha256": "162b29a17c28668699ff6eb3e82b68ed9eb73b0a3a0701fdecc792b64873782a", "url": "https://github.com/RyanCodrai/turbovec/blob/c3b043b992290ff223b903046af7f6683768241c/turbovec-python/pyproject.toml", "purpose": "Python distribution, native maturin build, dependency and optional integration declarations." },
+    { "path": "turbovec/src/lib.rs", "sha256": "5e6d62b07d334189bfeccaf7801f8a4e3d06ec44b8b8e883327606330962a574", "url": "https://github.com/RyanCodrai/turbovec/blob/c3b043b992290ff223b903046af7f6683768241c/turbovec/src/lib.rs", "purpose": "Public Rust API model and enforced 64-bit/dimension bounds." }
+  ]
+}

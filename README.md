@@ -2,14 +2,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-373-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-405-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![GJC](https://img.shields.io/badge/GJC-gajae--code-181717?style=for-the-badge&logo=github)](https://github.com/akillness/gajae-code)
 [![jeo-code](https://img.shields.io/badge/jeo--code-jeo-181717?style=for-the-badge&logo=github)](https://github.com/akillness/jeo-code)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**373 categorized skills · lightweight selective install · compact TOON catalog · cross-platform**
+**405 categorized skills · lightweight selective install · compact TOON catalog · cross-platform**
 
 A curated collection for spec-first, multi-agent LLM workflows. Delegate a complete setup
 with one prompt, or install the `jeo-skill` router first and add only the web,
@@ -175,9 +175,25 @@ Jev remains optional in all catalog modes: default setup does not download Jev m
 
 ### Lightweight selective install (manual / CI)
 
-Install the **`jeo-skill` router first**, not all 373 skill folders. It provides category,
+Install the **`jeo-skill` router first**, not all 405 skill folders. It provides category,
 subcategory, interface, bundle, and relationship discovery while keeping heavy apps,
 models, MCP servers, and runtimes on demand.
+
+The `ui-design-repositories` bundle adds ten source-pinned UI operators, not upstream
+components or services. [Source/license and duplicate audit](docs/ui-design-repositories.md)
+records zero removals, Canvas UI Commons Clause restrictions, Hyperiux Effects terms,
+and the absent Cursify license grant. Preview with
+`jeo-skill install --bundle ui-design-repositories --dry-run`; installs, remote design
+calls, project/CSS writes and publishing require separate approval. Scenarios are
+authored fixtures, not executed UI-quality evaluations.
+
+The `knowledge-repositories` bundle covers 21 ontology, code-graph, memory, and
+retrieval projects: 18 new source-pinned operators plus three existing skills.
+Their offline helpers inventory tools and optionally compare selected public-file
+hashes, not complete Git revisions or runtime readiness. Installing these guides
+does not install upstream apps, ingest private data, activate MCP, or authorize
+provider spending or database changes. Preview the selection with
+`jeo-skill install --bundle knowledge-repositories --dry-run`.
 
 ```bash
 # One lightweight skill, shared globally
@@ -366,11 +382,11 @@ rejects invalid input. A tool path or matching source HEAD is not runtime readin
 
 ## 📚 Skills List
 
-> Central manifest: `.agent-skills/skills.json` · 373 skills · 10 primary categories · subcategory/interface/relationship metadata
+> Central manifest: `.agent-skills/skills.json` · 405 skills · 10 primary categories · subcategory/interface/relationship metadata
 
-### 🌐 Web (52)
+### 🌐 Web (69)
 
-Subcategories: `frontend` (7), `backend` (3), `design` (12), `api` (2), `auth` (1), `data` (6), `testing` (4), `accessibility` (1), `performance` (1), `graphics` (10), `capture` (5)
+Subcategories: `frontend` (12), `backend` (3), `design` (15), `api` (2), `auth` (1), `data` (13), `testing` (4), `accessibility` (1), `performance` (1), `graphics` (12), `capture` (5)
 
 | Skill |
 |---|
@@ -426,10 +442,27 @@ Subcategories: `frontend` (7), `backend` (3), `design` (12), `api` (2), `auth` (
 | `stagehand` |
 | `helix-foundry` |
 | `pg-jev` |
+| `orionbelt-ontology-builder` |
+| `open-ontologies` |
+| `semantica` |
+| `utopia` |
+| `pixeltable` |
+| `turbovec` |
+| `pixelrag` |
+| `superdesign` |
+| `better-design` |
+| `design-taste` |
+| `canvas-ui` |
+| `paper-shaders` |
+| `ui-layouts` |
+| `hyperiux` |
+| `motion-primitives` |
+| `cursify` |
+| `trickle-ui` |
 
-### 🏗 Infrastructure (14)
+### 🏗 Infrastructure (17)
 
-Subcategories: `deployment` (2), `environment` (2), `observability` (3), `security` (3), `cloud-data` (3), `automation` (0), `tooling` (1)
+Subcategories: `deployment` (2), `environment` (2), `observability` (3), `security` (3), `cloud-data` (6), `automation` (0), `tooling` (1)
 
 | Skill |
 |---|
@@ -447,6 +480,9 @@ Subcategories: `deployment` (2), `environment` (2), `observability` (3), `securi
 | `genkit` |
 | `looker-studio-bigquery` |
 | `zurp` |
+| `ai-knowledge-management-platform` |
+| `knowledge-catalog` |
+| `cocoindex` |
 
 ### 🎮 Game (28)
 
@@ -483,9 +519,9 @@ Subcategories: `client` (3), `web` (2), `server` (1), `design-ui` (7), `audio` (
 | `game-feel` |
 | `game-ui-ux` |
 
-### 🎬 Creative Media (36)
+### 🎬 Creative Media (40)
 
-Subcategories: `image` (10), `video` (14), `motion` (1), `audio` (2), `presentation` (1), `diagram` (2), `design` (4), `capture` (0), `storytelling` (2)
+Subcategories: `image` (10), `video` (18), `motion` (1), `audio` (2), `presentation` (1), `diagram` (2), `design` (4), `capture` (0), `storytelling` (2)
 
 | Skill |
 |---|
@@ -522,13 +558,17 @@ Subcategories: `image` (10), `video` (14), `motion` (1), `audio` (2), `presentat
 | `higgsfield-video-explainer` |
 | `higgsfield-brandkit` |
 | `shopping-shorts` |
+| `video-use` |
+| `autoclip` |
+| `moneyprinter-turbo` |
+| `opencreator` |
 | `voicestudio` |
 | `diagram-design` |
 | `artcraft` |
 
-### ⌨️ CLI Tools (40)
+### ⌨️ CLI Tools (42)
 
-Subcategories: `developer-cli` (10), `ai-cli` (15), `media-cli` (1), `automation-cli` (6), `search-cli` (7), `benchmark-cli` (1)
+Subcategories: `developer-cli` (10), `ai-cli` (16), `media-cli` (1), `automation-cli` (6), `search-cli` (8), `benchmark-cli` (1)
 
 | Skill |
 |---|
@@ -572,10 +612,12 @@ Subcategories: `developer-cli` (10), `ai-cli` (15), `media-cli` (1), `automation
 | `context-mode` |
 | `rea` |
 | `llmfit` |
+| `hyper-extract` |
+| `leann` |
 
-### 🤖 AI & Agents (69)
+### 🤖 AI & Agents (73)
 
-Subcategories: `orchestration` (16), `agent-frameworks` (18), `skill-authoring` (5), `evaluation` (8), `memory` (3), `planning-review` (13), `discovery` (3), `prompting` (3)
+Subcategories: `orchestration` (16), `agent-frameworks` (19), `skill-authoring` (5), `evaluation` (8), `memory` (6), `planning-review` (13), `discovery` (3), `prompting` (3)
 
 | Skill |
 |---|
@@ -646,12 +688,16 @@ Subcategories: `orchestration` (16), `agent-frameworks` (18), `skill-authoring` 
 | `anyjev` |
 | `typesafe-computer-use` |
 | `jev-ultrafast` |
+| `agentic-graphrag-blueprint` |
+| `memmachine` |
+| `memori` |
+| `memsearch` |
 | `harness2` |
 | `ruflo` |
 
-### 🧰 Engineering (23)
+### 🧰 Engineering (24)
 
-Subcategories: `code-quality` (11), `testing` (3), `architecture` (6), `documentation` (2), `code-navigation` (1)
+Subcategories: `code-quality` (11), `testing` (3), `architecture` (6), `documentation` (2), `code-navigation` (2)
 
 | Skill |
 |---|
@@ -678,6 +724,7 @@ Subcategories: `code-quality` (11), `testing` (3), `architecture` (6), `document
 | `domain-modeling` |
 | `implement` |
 | `prototype` |
+| `codebase-memory-mcp` |
 
 ### 🔭 Research & Analysis (14)
 
@@ -777,9 +824,9 @@ Subcategories: `marketing` (4), `support` (2), `publishing` (1), `pm-toolkit` (5
 | `product-name` |
 | `value-prop-statements` |
 
-### 🔧 Utilities (27)
+### 🔧 Utilities (28)
 
-Subcategories: `knowledge` (7), `files` (5), `git` (4), `workspace` (1), `project-management` (4), `productivity` (3), `general` (3)
+Subcategories: `knowledge` (8), `files` (5), `git` (4), `workspace` (1), `project-management` (4), `productivity` (3), `general` (3)
 
 | Skill |
 |---|
@@ -810,6 +857,7 @@ Subcategories: `knowledge` (7), `files` (5), `git` (4), `workspace` (1), `projec
 | `hwp` |
 | `rhwp-advanced` |
 | `rhwp-edit` |
+| `rowboat` |
 
 ---
 
@@ -1049,7 +1097,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 ## 📁 Structure
 
 ```text
-├── .agent-skills/          ← 373 skill folders (SKILL.md + optional support files)
+├── .agent-skills/          ← 405 skill folders (SKILL.md + optional support files)
 ├── assets/                ← README cover and catalog-install, runtime-boundary and skill-lifecycle diagrams
 ├── changelog/             ← localized monthly source files
 ├── docs/                  ← ScrapingAnt partnership and outreach notes
@@ -1098,6 +1146,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 
 | Component | Source | License |
 |-----------|--------|---------|
+| UI design operators (10; original guidance only) | [Pinned ten-source audit](docs/ui-design-repositories.md) | Mixed upstream terms; restricted/missing grants documented |
 | `ooo` | [Q00/ouroboros v0.29.0](https://github.com/Q00/ouroboros/tree/v0.29.0) | MIT |
 | `stitch-skills` | [google-labs-code/stitch-skills](https://github.com/google-labs-code/stitch-skills) | Apache-2.0 |
 | `compresso` | [codeforreal1/compressO](https://github.com/codeforreal1/compressO) | AGPL-3.0 |
@@ -1169,16 +1218,25 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 | Change | Details |
 |--------|---------|
 | **harness → harness2** | Replaced the revfactory `harness` skill with `harness2`, an operator for `google-research/harness2` pinned to `1cfe254e8d25b15f37048c3730134686abe60335` (Apache-2.0): credential-free demo, LAB/JobBench/WorkBuddy setup and paid-run gates, Codex bridge, and a method mode that applies Propose–Probe–Compose by hand (agent-team design moved here). `harness` is now in `retired_skills` and every route-out was repointed. |
-| **Four new operators** | Added `ruflo` (ruvnet/ruflo, MIT), `voicestudio` (debpalash/VoiceStudio, AGPL-3.0-only), `diagram-design` (cathrynlavery/diagram-design, MIT), and `artcraft` (storytold/artcraft, MIT OR Apache-2.0), each commit-pinned with an offline preflight and explicit install, model, provider, server, and publishing gates. Catalog grows from 369 to 373. |
+| **Four new operators** | Added `ruflo` (ruvnet/ruflo, MIT), `voicestudio` (debpalash/VoiceStudio, AGPL-3.0-only), `diagram-design` (cathrynlavery/diagram-design, MIT), and `artcraft` (storytold/artcraft, MIT OR Apache-2.0), each commit-pinned with an offline preflight and explicit install, model, provider, server, and publishing gates. With `harness` retired, the catalog grows from 401 to 405. |
 | **Retired-skill cleanup on install** | `jeo-skill install` and `install.sh` now remove stale catalog copies of retired `jeo` (→ `ooo`) and `harness` (→ `harness2`) from the roots they write, and `jeo-skill prune-retired [--global] [--dry-run]` sweeps every runtime root. Removal requires the catalog's exact frontmatter name and first heading; links are unlinked only when they point at a copy the same sweep removed. Third-party same-name skills, unrelated links, and roots behind linked ancestors are kept. `.skill-lock.json` is not edited. |
 | **Verification** | Installer regressions 63/63 (15 new, vendored fixtures), repository preflight regressions 15/15 (five new helpers plus harness2 bench/method cases), catalog projection/frontmatter/layout/changelog gates pass; 25 new eval scenarios. The documented full install (Steps 4–4E, 7) ran end to end with the real pinned `skills@1.7.0` in an isolated HOME seeded with this machine's stale copies, against a committed local snapshot of this working tree (the GitHub URL was redirected to it; public HEAD does not contain these changes until they are pushed): every retired copy and its dependent link was removed, unrelated skills, links, and Aside `builtin/` stayed byte-identical, and real jeopi/oh-my-pi/GJC loaders resolve the five new skills and no `jeo`/`harness`. OpenCode was verified by shared-root placement only, not runtime activation. The upstream harness2 demo passed in both recursion modes (2/2 tasks each) plus its 5 unit tests; no benchmark, model, judge, or other upstream runtime ran. |
 | **Skill usage tracking and unused-skill cleanup** | Added `jeo-skill usage scan`/`report` evidence aggregation across local runtime records and the Jev `jev-usage.jsonl` ledger, zero-use plus 30-day-grace candidate rules, protected bundles/pins, reversible `prune-unused` quarantine with `restore`, permanent `purge-quarantine`, and the separate maintainer `retire-unused-skills.py` lane. Only provable catalog copies move; third-party copies, symlinks, and linked roots stay. Jev `deny`/unavailable aborts apply, `proposal_only` proceeds only with explicit `--apply`, and skipped review is recorded; routed ledger events do not count as use, only injections do. Usage (7), quarantine (15), retirement (7 Python) and Jev ledger (4 Node) regressions pass; a real-data read-only scan used `/tmp`, with no tracking state or host hook started. |
 | **README visual refresh** | Documentation-only: added the Codex cover `assets/readme-cover.webp` and `catalog-install-flow.svg`, `runtime-boundaries.svg`, and `skill-lifecycle.svg`; superseded `readme-hero.webp`, `catalog-workflow.svg`, `runtime-architecture.svg`, and the orphan `assets/scrapingant/` logo; merged duplicate `ooo` docs, corrected god-tibo-imagen and plannotator commands, and updated the operator count from 12 to 18. |
 
+## 🆕 What's New in v2026-10-17
+
+| Change | Details |
+|--------|---------|
+| **OpenCreator operator** | Added the source-pinned `opencreator` guide for `krillinai/OpenCreator` commit `b01a9f71165b9010216e25c462653b0cfa33cbce`, covering Desktop/CLI/Server, creator tasks, Codex/provider setup, Skills/MCP/schedules, release integrity and approval boundaries. Added an offline read-only preflight, 11 authored scenarios, and 16 passing subprocess regressions wired into CI. Catalog: 400 → 401. No upstream app, installer, provider, or paid service was run. |
+
 ## 🆕 What's New in v2026-10-15
 
 | Change | Details |
 |--------|---------|
+| **Ten source-pinned UI operators** | Added Superdesign, Better Design, Design Taste, Canvas UI, Paper Shaders, UI Layouts, Hyperiux, Motion Primitives, Cursify and Trickle UI Kit guides. Exact repository identities, commits, selected source coordinates, complete license observations and duplicate decisions live in `docs/ui-design-repositories.md` and independent skill references. |
+| **Selective setup and rights** | The `ui-design-repositories` bundle adds documents only (390 → 400 skills). Zero existing skills were removed: named-source tooling does not replace system governance, visual recipes or performance diagnosis. Canvas UI redistribution is restricted, Hyperiux Effects has separate terms, and Cursify has no observed license grant; no upstream component code is vendored. |
+| **Offline verification boundary** | Added six passing packaging/router regressions and Ubuntu/macOS CI wiring. Forty-five positive/negative scenarios are authored fixtures, not executed model-quality or browser evaluations. Upstream installs, servers, remote design calls, paid services and UI runtime execution were not performed. |
 | **OKF Agent Memory operator** | Added `okf-agent-memory` for the separate `okf-memory/okf-agent-memory` Go CLI and stdio MCP, pinned to upstream commit `ad7beb01b9d4294d8dd28c25494d274374985b69` (MIT). The guide covers project-local OKF v0.2 workflows, source-pinned commands, security, and approval gates. |
 | **Routing and catalog** | Registered the skill under `ai-agents/memory`, linked it with `okf` and related knowledge-vault skills, and clarified that `okf` remains the Google OKF v0.1 format authoring path. Refreshed manifest projections, all README locale counts, setup guidance, `AGENTS.md`, and `.mex/ROUTER.md`; catalog grows from 367 to 368. Added nine routing/safety evaluation scenarios across the new operator and the `okf` route-out. |
 | **Read-only preflight and regressions** | Added a standalone stdlib preflight bound to the pinned commit and fixed public source markers. It rejects symlinked paths and oversized markers, scopes Git environment variables, and runs no upstream executable. The shared repository-preflight regression suite passes 13/13, including malicious-path, pin, symlink, size, no-write, and credential-isolation cases. |
@@ -1217,17 +1275,6 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 | **Trusted assets and credentials** | Native hooks pin a trusted catalog and refuse working-directory substitutions. Setup stages required runtime assets before publication, preserves valid catalog snapshots on refresh failure, and cleans private payloads. Standalone root-controller symlink/non-file and raw-native non-file leaf collisions are preflighted before staging/publication; collision regressions preserve core/native/catalog/private-profile bytes and outside targets. Saved matching API keys remain authoritative; local-only computer-use writer plans cannot borrow ambient hosted credentials. |
 | **Verification** | 48 installer regressions and 64 Jev regressions pass. With `JEV_LIVE_SMOKE=0`, the Node install/plugin/profile run reports 54 total, 53 pass, and 1 opt-in live skip; the prior mock self-test passed 20/20. Catalog projections, frontmatter, and flat layout checks pass. The source catalog has 367 skills due to the concurrent MI addition; this Jev update adds no catalog entry. |
 | **Boundaries** | Host plans are not executed automatically. Live Ollama reached HTTP 200 but returned `selectedSkill:null` / `errorCategory:backend_unavailable`: transport and fail-closed output only, not successful routing, model quality/calibration, or native package registration. Paid API, database, and desktop execution remain unverified. Config-only setup downloads no models; approved ordinary backend setup may do so. |
-
-## 🆕 What's New in v2026-10-08
-
-| Change | Details |
-|--------|---------|
-| **Jev per-operation backend routing** | `route-skills`, `prune-context`, and `review` each resolve their own backend from the profile (`JEV_<OP>_BACKEND` plus an ordered `_FALLBACK` allow-list; setup flags `--route-backend`, `--prune-backend`, `--review-backend`, `--fallback <op>=<kind[,kind]>`). `--backend` / `--model` override one call and `status --operation` reports each chain. Fallback tries only listed kinds and never crosses profiles. |
-| **System One backend kind** | New `systemone` mode targets an operator-run System One endpoint with three drivers: TypeSafe-compatible, AutoTrust `serve_decide.py` `/v1/decide` (pure System 1 with `thinking: "off"`), and a vLLM `jev-decision` head read from token logprobs. It downloads and starts nothing. |
-| **Attestation-bound tiers** | Every backend is `unvalidated` unless `--validated-model` matches the model it reports serving, and only calibrated decision-head drivers (`api`, `systemone`) can be validated. `review` permits only on a validated tier, so `local`, Ollama, and LM Studio recommend (`proposal_only`) but never authorize. Receipts (v2) bind backend, model, and tier. |
-| **Cap-aware skill selection and provider/model policies** | Selection runs gate Nouls, then sharded Choice or a lexical shortlist reranked by fit Nouls, and can answer "no skill fits" explicitly. Optional `skills.json` `model_policies` add advisory per-skill `provider/model` routing (for example `openai/gpt-6.1-sol` or `ollama/qwen2.5:7b`); hosts are not adapted yet. |
-| **Fixes** | The hosted `api` request now matches the documented `/v1/systemone` body (`model`, Choice `criteria`, `noul` answers); prune batches are position-keyed and bounded by each backend's state limit; oversized input is rejected before any request instead of being truncated server-side; setup installs a validated catalog snapshot so `route-skills` works outside a checkout, and skill excerpts sent to a backend stay inside the catalog root (`../` and outbound symlinks refused). |
-| **Verification** | 52 loopback regressions (also on Python 3.11 + Node 24), 20/20 offline self-test checks, 3 isolated profile tests, CI green on Linux and macOS, and a live isolated-HOME run on Ollama JEV-9B-GGUF: routing from an empty directory over the 354-skill snapshot, `local`→`ollama` prune fallback, and a fail-closed `review --backend local`. The live run proves transport, not calibration (tier `unvalidated`). |
 
 > 📜 Older entries: [`changelog/en/`](changelog/en/) (monthly files, newest first).
 

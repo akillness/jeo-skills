@@ -4,14 +4,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-373-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-405-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![GJC](https://img.shields.io/badge/GJC-gajae--code-181717?style=for-the-badge&logo=github)](https://github.com/akillness/gajae-code)
 [![jeo-code](https://img.shields.io/badge/jeo--code-jeo-181717?style=for-the-badge&logo=github)](https://github.com/akillness/jeo-code)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**373 habilidades categorizadas · instalación selectiva ligera · catálogo TOON compacto · multiplataforma**
+**405 habilidades categorizadas · instalación selectiva ligera · catálogo TOON compacto · multiplataforma**
 
 Una colección curada para flujos de trabajo LLM multi-agente y centrados en especificaciones. Delega una configuración completa con un solo prompt, o instala primero el enrutador `jeo-skill` y añade solo las habilidades de web, infraestructura, juegos, medios, CLI o utilidades que necesites.
 
@@ -185,7 +185,23 @@ Jev sigue siendo opcional en todos los modos del catálogo: la configuración pr
 
 ### Instalación selectiva ligera (manual / CI)
 
-Instala primero el **enrutador `jeo-skill`**, no las 373 carpetas de habilidades. Proporciona descubrimiento de categoría, subcategoría, interfaz, paquete y relación, manteniendo aplicaciones pesadas, modelos, servidores MCP y tiempos de ejecución bajo demanda.
+Instala primero el **enrutador `jeo-skill`**, no las 405 carpetas de habilidades. Proporciona descubrimiento de categoría, subcategoría, interfaz, paquete y relación, manteniendo aplicaciones pesadas, modelos, servidores MCP y tiempos de ejecución bajo demanda.
+
+El paquete `ui-design-repositories` añade diez guías UI fijadas a fuentes, no
+componentes ni servicios upstream. La [auditoría de fuentes, licencias y duplicados](docs/ui-design-repositories.md)
+justifica cero eliminaciones y distingue Commons Clause de Canvas UI, los términos
+Effects de Hyperiux y la ausencia de licencia observada en Cursify. Previsualiza con
+`jeo-skill install --bundle ui-design-repositories --dry-run`. Instalaciones, llamadas
+remotas, escrituras de proyecto/CSS y publicación requieren aprobación separada;
+los escenarios son fixtures redactados, no evaluaciones ejecutadas de calidad UI.
+
+El paquete `knowledge-repositories` reúne 21 proyectos de ontologías, grafos de
+código, memoria y recuperación: 18 operadores nuevos fijados a commits y tres
+habilidades existentes. Los ayudantes sin conexión solo detectan herramientas
+y comparan hashes de archivos públicos seleccionados; no verifican revisiones
+completas ni disponibilidad operativa. Instalar las guías no autoriza instalar
+aplicaciones, ingerir datos privados, activar MCP, gastar en proveedores ni cambiar bases de datos.
+Previsualiza con `jeo-skill install --bundle knowledge-repositories --dry-run`.
 
 ```bash
 # One lightweight skill, shared globally
@@ -343,11 +359,11 @@ y 2 entrada inválida. Una ruta de ejecutable o un HEAD coincidente no demuestra
 
 ## 📚 Lista de Habilidades
 
-> Manifiesto central: `.agent-skills/skills.json` · 373 habilidades · 10 categorías principales · metadatos de subcategoría/interfaz/relación
+> Manifiesto central: `.agent-skills/skills.json` · 405 habilidades · 10 categorías principales · metadatos de subcategoría/interfaz/relación
 
-### 🌐 Web (52)
+### 🌐 Web (69)
 
-Subcategorías: `frontend` (7), `backend` (3), `design` (12), `api` (2), `auth` (1), `data` (6), `testing` (4), `accessibility` (1), `performance` (1), `graphics` (10), `capture` (5)
+Subcategorías: `frontend` (12), `backend` (3), `design` (15), `api` (2), `auth` (1), `data` (13), `testing` (4), `accessibility` (1), `performance` (1), `graphics` (12), `capture` (5)
 
 | Skill |
 |---|
@@ -403,10 +419,27 @@ Subcategorías: `frontend` (7), `backend` (3), `design` (12), `api` (2), `auth` 
 | `stagehand` |
 | `helix-foundry` |
 | `pg-jev` |
+| `orionbelt-ontology-builder` |
+| `open-ontologies` |
+| `semantica` |
+| `utopia` |
+| `pixeltable` |
+| `turbovec` |
+| `pixelrag` |
+| `superdesign` |
+| `better-design` |
+| `design-taste` |
+| `canvas-ui` |
+| `paper-shaders` |
+| `ui-layouts` |
+| `hyperiux` |
+| `motion-primitives` |
+| `cursify` |
+| `trickle-ui` |
 
-### 🏗 Infraestructura (14)
+### 🏗 Infraestructura (17)
 
-Subcategorías: `deployment` (2), `environment` (2), `observability` (3), `security` (3), `cloud-data` (3), `automation` (0), `tooling` (1)
+Subcategorías: `deployment` (2), `environment` (2), `observability` (3), `security` (3), `cloud-data` (6), `automation` (0), `tooling` (1)
 
 | Skill |
 |---|
@@ -424,6 +457,9 @@ Subcategorías: `deployment` (2), `environment` (2), `observability` (3), `secur
 | `genkit` |
 | `looker-studio-bigquery` |
 | `zurp` |
+| `ai-knowledge-management-platform` |
+| `knowledge-catalog` |
+| `cocoindex` |
 
 ### 🎮 Juego (28)
 
@@ -460,9 +496,9 @@ Subcategorías: `client` (3), `web` (2), `server` (1), `design-ui` (7), `audio` 
 | `game-feel` |
 | `game-ui-ux` |
 
-### 🎬 Medios Creativos (36)
+### 🎬 Medios Creativos (40)
 
-Subcategorías: `image` (10), `video` (14), `motion` (1), `audio` (2), `presentation` (1), `diagram` (2), `design` (4), `capture` (0), `storytelling` (2)
+Subcategorías: `image` (10), `video` (18), `motion` (1), `audio` (2), `presentation` (1), `diagram` (2), `design` (4), `capture` (0), `storytelling` (2)
 
 | Skill |
 |---|
@@ -499,13 +535,17 @@ Subcategorías: `image` (10), `video` (14), `motion` (1), `audio` (2), `presenta
 | `higgsfield-video-explainer` |
 | `higgsfield-brandkit` |
 | `shopping-shorts` |
+| `video-use` |
+| `autoclip` |
+| `moneyprinter-turbo` |
+| `opencreator` |
 | `voicestudio` |
 | `diagram-design` |
 | `artcraft` |
 
-### ⌨️ Herramientas CLI (40)
+### ⌨️ Herramientas CLI (42)
 
-Subcategorías: `developer-cli` (10), `ai-cli` (15), `media-cli` (1), `automation-cli` (6), `search-cli` (7), `benchmark-cli` (1)
+Subcategorías: `developer-cli` (10), `ai-cli` (16), `media-cli` (1), `automation-cli` (6), `search-cli` (8), `benchmark-cli` (1)
 
 | Skill |
 |---|
@@ -549,10 +589,12 @@ Subcategorías: `developer-cli` (10), `ai-cli` (15), `media-cli` (1), `automatio
 | `context-mode` |
 | `rea` |
 | `llmfit` |
+| `hyper-extract` |
+| `leann` |
 
-### 🤖 IA y Agentes (69)
+### 🤖 IA y Agentes (73)
 
-Subcategorías: `orchestration` (16), `agent-frameworks` (18), `skill-authoring` (5), `evaluation` (8), `memory` (3), `planning-review` (13), `discovery` (3), `prompting` (3)
+Subcategorías: `orchestration` (16), `agent-frameworks` (19), `skill-authoring` (5), `evaluation` (8), `memory` (6), `planning-review` (13), `discovery` (3), `prompting` (3)
 
 | Skill |
 |---|
@@ -623,12 +665,16 @@ Subcategorías: `orchestration` (16), `agent-frameworks` (18), `skill-authoring`
 | `anyjev` |
 | `typesafe-computer-use` |
 | `jev-ultrafast` |
+| `agentic-graphrag-blueprint` |
+| `memmachine` |
+| `memori` |
+| `memsearch` |
 | `harness2` |
 | `ruflo` |
 
-### 🧰 Ingeniería (23)
+### 🧰 Ingeniería (24)
 
-Subcategorías: `code-quality` (11), `testing` (3), `architecture` (6), `documentation` (2), `code-navigation` (1)
+Subcategorías: `code-quality` (11), `testing` (3), `architecture` (6), `documentation` (2), `code-navigation` (2)
 
 | Skill |
 |---|
@@ -655,6 +701,7 @@ Subcategorías: `code-quality` (11), `testing` (3), `architecture` (6), `documen
 | `domain-modeling` |
 | `implement` |
 | `prototype` |
+| `codebase-memory-mcp` |
 
 ### 🔭 Investigación y Análisis (14)
 
@@ -754,9 +801,9 @@ Subcategorías: `marketing` (4), `support` (2), `publishing` (1), `pm-toolkit` (
 | `product-name` |
 | `value-prop-statements` |
 
-### 🔧 Utilidades (27)
+### 🔧 Utilidades (28)
 
-Subcategorías: `knowledge` (7), `files` (5), `git` (4), `workspace` (1), `project-management` (4), `productivity` (3), `general` (3)
+Subcategorías: `knowledge` (8), `files` (5), `git` (4), `workspace` (1), `project-management` (4), `productivity` (3), `general` (3)
 
 | Skill |
 |---|
@@ -787,6 +834,7 @@ Subcategorías: `knowledge` (7), `files` (5), `git` (4), `workspace` (1), `proje
 | `hwp` |
 | `rhwp-advanced` |
 | `rhwp-edit` |
+| `rowboat` |
 
 ---
 
@@ -1025,7 +1073,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 ## 📁 Estructura
 
 ```text
-├── .agent-skills/          ← 373 carpetas de habilidades (SKILL.md + soporte)
+├── .agent-skills/          ← 405 carpetas de habilidades (SKILL.md + soporte)
 ├── assets/                 ← portada del README y diagramas de instalación del catálogo, límites del runtime y ciclo de vida de habilidades
 ├── changelog/              ← fuentes mensuales localizadas
 ├── docs/                   ← colaboración y contacto de ScrapingAnt
@@ -1075,6 +1123,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 
 | Component | Source | License |
 |-----------|--------|---------|
+| UI design operators (10; original guidance only) | [Pinned ten-source audit](docs/ui-design-repositories.md) | Mixed upstream terms; restricted/missing grants documented |
 | `ooo` | [Q00/ouroboros v0.29.0](https://github.com/Q00/ouroboros/tree/v0.29.0) | MIT |
 | `stitch-skills` | [google-labs-code/stitch-skills](https://github.com/google-labs-code/stitch-skills) | Apache-2.0 |
 | `compresso` | [codeforreal1/compressO](https://github.com/codeforreal1/compressO) | AGPL-3.0 |
@@ -1139,11 +1188,17 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 | Cambio | Detalles |
 |--------|---------|
 | **harness → harness2** | `harness` (revfactory) se sustituye por `harness2`, operador de `google-research/harness2` fijado en `1cfe254e8d25b15f37048c3730134686abe60335` (Apache-2.0): demo sin credenciales, configuración y ejecuciones de pago de LAB/JobBench/WorkBuddy con aprobación, puente Codex y un modo método para aplicar Propose–Probe–Compose a mano (incluye el diseño de equipos de agentes). `harness` pasa a `retired_skills`. |
-| **Cuatro operadores nuevos** | `ruflo` (MIT), `voicestudio` (AGPL-3.0-only), `diagram-design` (MIT) y `artcraft` (MIT OR Apache-2.0), fijados por commit con preflight offline y puertas de aprobación. El catálogo pasa de 369 a 373 habilidades. |
+| **Cuatro operadores nuevos** | `ruflo` (MIT), `voicestudio` (AGPL-3.0-only), `diagram-design` (MIT) y `artcraft` (MIT OR Apache-2.0), fijados por commit con preflight offline y puertas de aprobación. Con la retirada de `harness`, el catálogo pasa de 401 a 405 habilidades. |
 | **Limpieza de habilidades retiradas** | `jeo-skill install`, `install.sh` y `jeo-skill prune-retired [--global] [--dry-run]` eliminan copias antiguas del catálogo de `jeo` (→ `ooo`) y `harness` (→ `harness2`) solo si nombre y primer encabezado coinciden; un enlace solo se elimina si apunta a una copia eliminada en el mismo barrido. Se conservan homónimos de terceros, enlaces ajenos y raíces tras ancestros enlazados. |
 | **Verificación** | Regresiones del instalador 63/63 y de preflight 15/15; validaciones del catálogo correctas. La instalación completa documentada (pasos 4–4E y 7) se ejecutó de principio a fin con `skills@1.7.0` real en un HOME aislado con las copias antiguas de esta máquina, usando una instantánea local confirmada de este árbol (la URL de GitHub se redirigió; el HEAD público no incluye estos cambios hasta el push). Los cargadores reales de jeopi/oh-my-pi/GJC resuelven las cinco habilidades nuevas sin `jeo`/`harness`; OpenCode solo se verificó por ubicación en la raíz compartida. La demo upstream de harness2 pasó en ambos modos (2/2) junto con sus 5 pruebas; no se ejecutaron benchmarks ni modelos. |
 | **Seguimiento de uso y limpieza de habilidades no usadas** | `jeo-skill usage scan` recopila evidencia local solo de habilidades invocadas o cargadas; exige cero usos históricos y 30 días de gracia para proponer una candidata, protege el router, los bundles `starter`/`cli-core`/`infrastructure-core` y las fijaciones de relevancia, y mantiene la cuarentena limitada a copias demostrables del catálogo. `prune-unused` previsualiza y reanaliza antes de aplicar; las decisiones Jev `deny`/no disponible bloquean, `proposal_only` continúa con `--apply` explícito y `--skip-jev-review` queda registrado. `restore`/`purge-quarantine` gestionan la cuarentena y `retire-unused-skills.py --approve` es una fase separada del mantenedor. Los instaladores no inician el seguimiento ni registran hooks; `usage scan` crea el estado agregado y el reloj de gracia de 30 días, mientras los hooks de Jev ya habilitados pueden escribir `jev-usage.jsonl` en `${JEO_SKILL_STATE_DIR:-${XDG_STATE_HOME:-~/.local/state}/jeo-skill}` sin un escaneo previo y solo las inyecciones cuentan como uso. La evidencia disponible pasa 7 regresiones de uso, 15 de cuarentena y 7 de retirada en Python, más 4 pruebas Node del ledger; un escaneo de solo lectura con datos reales se ejecutó con estado en `/tmp`, sin iniciar el estado real ni instalar un hook del host. |
 | **Actualización visual del README** | Nueva portada Codex `assets/readme-cover.webp` y tres diagramas escritos por Codex (`catalog-install-flow.svg`, `runtime-boundaries.svg`, `skill-lifecycle.svg`); se retiraron `readme-hero.webp`, `catalog-workflow.svg`, `runtime-architecture.svg` y el logo huérfano `assets/scrapingant/`; se fusionaron los documentos duplicados de `ooo`, se corrigieron los comandos de god-tibo-imagen y plannotator y el recuento de operadores pasó de 12 a 18. Solo documentación. |
+
+## 🆕 Novedades en v2026-10-17
+
+| Cambio | Detalles |
+|--------|---------|
+| **Operador OpenCreator** | Añadida la guía `opencreator`, fijada al commit `b01a9f71165b9010216e25c462653b0cfa33cbce` de `krillinai/OpenCreator`. Cubre Desktop/CLI/Server, tareas creativas, configuración de Codex/proveedores, Skills/MCP/programación, integridad de releases y límites de aprobación. Incluye una preflight offline de solo lectura, 11 escenarios redactados y 16 regresiones de subprocess que pasan y se ejecutan en CI. Catálogo: 400 → 401. No se ejecutaron la aplicación upstream, instaladores, proveedores ni servicios de pago. |
 
 ## 🆕 Novedades en v2026-10-15
 

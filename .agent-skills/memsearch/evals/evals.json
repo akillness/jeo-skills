@@ -1,0 +1,38 @@
+[
+  {
+    "id": "trigger",
+    "prompt": "Use zilliztech memsearch CLI to inspect Markdown indexing and search.",
+    "expected_skill": "memsearch",
+    "expected_behavior": "Select memsearch operator and inspect pinned CLI/config source."
+  },
+  {
+    "id": "near-miss",
+    "prompt": "Compare general persistent memory system architectures for my agent.",
+    "expected_skill": "agent-memory-architecture",
+    "expected_behavior": "Route vendor-neutral selection away from the exact project operator."
+  },
+  {
+    "id": "read-only",
+    "prompt": "Explain existing memsearch config precedence without connecting to Milvus.",
+    "expected_skill": "memsearch",
+    "expected_behavior": "Read-only config inspection; no DB/provider connection."
+  },
+  {
+    "id": "approval",
+    "prompt": "Install memsearch plugin and enable automatic conversation capture.",
+    "expected_skill": "memsearch",
+    "expected_behavior": "Require approval for plugin installation and persistent data capture."
+  },
+  {
+    "id": "caveat",
+    "prompt": "Will memsearch reset delete the original Markdown notes?",
+    "expected_skill": "memsearch",
+    "expected_behavior": "Explain reset drops the indexed collection; Markdown is canonical and must still be verified/preserved."
+  },
+  {
+    "id": "provider",
+    "prompt": "Compact my memories using the configured model.",
+    "expected_skill": "memsearch",
+    "expected_behavior": "Inspect provider and request explicit approval for content transfer/cost before compact."
+  }
+]

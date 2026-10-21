@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "skill": "cocoindex",
+  "repository": "cocoindex-io/cocoindex",
+  "commit": "1639793b3602408a9cb220728fb30e306d433473",
+  "observed_at": "2026-10-16T00:10:45+09:00",
+  "license": {
+    "path": "LICENSE",
+    "conclusion": "Apache License 2.0 present; full pinned license text inspected.",
+    "url": "https://github.com/cocoindex-io/cocoindex/blob/1639793b3602408a9cb220728fb30e306d433473/LICENSE"
+  },
+  "tools": [
+    { "name": "cocoindex", "purpose": "CLI for inspecting, updating, previewing, resetting, and dropping CocoIndex applications; some subcommands are destructive." }
+  ],
+  "files": [
+    { "path": "README.md", "sha256": "5f8d8409442b03211fcd85eee46aeddd50437fad4f5940167d3d0645a86aa923", "url": "https://github.com/cocoindex-io/cocoindex/blob/1639793b3602408a9cb220728fb30e306d433473/README.md", "purpose": "High-level dataflow, incremental operation and basic API example." },
+    { "path": "LICENSE", "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4", "url": "https://github.com/cocoindex-io/cocoindex/blob/1639793b3602408a9cb220728fb30e306d433473/LICENSE", "purpose": "Full Apache-2.0 license text." },
+    { "path": "pyproject.toml", "sha256": "c963896994729047c19afc643d603f2372bab2f2dc202c057a865bb88209773f", "url": "https://github.com/cocoindex-io/cocoindex/blob/1639793b3602408a9cb220728fb30e306d433473/pyproject.toml", "purpose": "Runtime Python version, package/build metadata and dependencies." },
+    { "path": "docs/src/content/docs/cli.mdx", "sha256": "096e14bda5e2bbee10bc7973e5d912a4b1517b7fe19ad64817476fff8f0885ac", "url": "https://github.com/cocoindex-io/cocoindex/blob/1639793b3602408a9cb220728fb30e306d433473/docs/src/content/docs/cli.mdx", "purpose": "Documented CLI target syntax, update, preview, reset, full-reprocess and drop behavior." },
+    { "path": "docs/src/content/docs/getting_started/quickstart.mdx", "sha256": "e6af113a8d3f19b63782c707a9e495e314b9fcac71619a9a347181d8258e2160", "url": "https://github.com/cocoindex-io/cocoindex/blob/1639793b3602408a9cb220728fb30e306d433473/docs/src/content/docs/getting_started/quickstart.mdx", "purpose": "App model, environment setup and incremental source-change examples." },
+    { "path": "python/cocoindex/cli.py", "sha256": "7be6e896979ad3b8cb568af08c083ab142729e5acb5181b6402b9e3ffe487eb1", "url": "https://github.com/cocoindex-io/cocoindex/blob/1639793b3602408a9cb220728fb30e306d433473/python/cocoindex/cli.py", "purpose": "Pinned CLI implementation and target/app command handling." },
+    { "path": "examples/files_transform/main.py", "sha256": "d0753429fb3faf087707f100204365f2daca6c846b6e2d40a1107b9d8c397efb", "url": "https://github.com/cocoindex-io/cocoindex/blob/1639793b3602408a9cb220728fb30e306d433473/examples/files_transform/main.py", "purpose": "Concrete source-to-target transform example." }
+  ]
+}

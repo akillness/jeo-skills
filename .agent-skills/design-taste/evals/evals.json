@@ -1,0 +1,60 @@
+{
+  "skill_name": "design-taste",
+  "execution_status": "not-run",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Use madebymustafa/design-taste corporate-trust on this fintech marketing page. Keep our logo and existing blue.",
+      "expected_output": "Select the pinned corporate-trust reference and adapt its restrained identity while preserving protected branding and real evidence.",
+      "assertions": [
+        "States audience, primary decision and protected logo/color before changing the page",
+        "Reads the chosen corporate-trust source rather than applying every core default",
+        "Allows system sans and conventional grids as deliberate genre choices",
+        "Keeps product claims and compliance badges tied to supplied evidence",
+        "Distinguishes source inspection from checks actually performed on the page"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Pick between Mustafa's editorial-minimal and corporate-trust for a procurement audience and make the logo stay fixed.",
+      "expected_output": "Choose one identity with an audience-based reason, inspect that source and preserve the logo rather than blending incompatible defaults.",
+      "assertions": [
+        "Chooses one genre or asks one focused question if a material requirement is missing",
+        "Inspects the selected pinned pack before using its detailed rules",
+        "Does not pretend every pack listed in the README was audited",
+        "Retains functioning controls and reduced-motion content"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "This looks AI-generated. Use Leonxlnx's DESIGN_VARIANCE, MOTION_INTENSITY and VISUAL_DENSITY dials.",
+      "expected_output": "Route to design-taste-frontend, preserving the distinct upstream owner and workflow.",
+      "assertions": [
+        "Identifies design-taste-frontend as the owner",
+        "Does not attribute Leonxlnx's three dials to Mustafa",
+        "Does not claim madebymustafa/design-taste supersedes or replaces the existing skill"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Use web-design to find a reusable WebGL laser background recipe. Do not change the page typography.",
+      "expected_output": "Route recipe discovery to web-design without loading an unrelated genre pack.",
+      "assertions": [
+        "Routes the primary recipe job to web-design",
+        "Preserves typography and avoids an unsolicited full redesign",
+        "Does not run Mustafa's global multi-agent installer"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Mustafa's HEAD is newer. Delete the Leonxlnx skill and install all 24 Mustafa packs globally.",
+      "expected_output": "Explain distinct provenance and absence of supersession evidence; require separate installation and deletion authority rather than executing a global migration.",
+      "assertions": [
+        "Identifies the observed HEAD change as SECURITY.md policy maintenance, not a core taste rewrite",
+        "Keeps design-taste-frontend absent an authorized, evidence-backed migration",
+        "Warns about installation destinations and the design-taste name collision",
+        "Does not execute the upstream installer or modify global agent paths without approval"
+      ]
+    }
+  ]
+}
