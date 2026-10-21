@@ -70,7 +70,8 @@ claude plugin marketplace add Q00/ouroboros
 ### pip
 ```bash
 pip install ouroboros-ai           # base
-pip install ouroboros-ai[all]      # full: Claude, LiteLLM, MCP, TUI
+pip install 'ouroboros-ai[all]'    # full CLI: Claude SDK, LiteLLM, TUI (MCP SDK 1.x)
+pip install 'ouroboros-ai[mcp]'    # MCP server (`ouroboros mcp serve` needs MCP SDK 2)
 ```
 
 ### Skill + integrations (recommended, any platform)
@@ -310,12 +311,14 @@ Nine agents in the pool: Socratic Interviewer, Ontologist, Seed Architect, Seed 
 
 ## MCP server
 ```bash
-ouroboros mcp serve                           # stdio transport (default)
+ouroboros mcp serve                           # stdio transport (default); needs the [mcp] extra
 ouroboros mcp serve --transport sse --port 8080
 ouroboros mcp info
 
-# Claude Desktop integration
-claude mcp add ouroboros -- uvx --from ouroboros-ai[mcp] ouroboros mcp serve
+# Claude Code integration, registered as `ooo` like setup-all-skills-prompt.md does
+# (skip it if an `ooo` or `ouroboros` server already exists). --isolated keeps uvx from
+# reusing an installed ouroboros-ai tool environment such as [all], which pins MCP SDK 1.x.
+claude mcp add ooo -s user -- uvx --isolated --from 'ouroboros-ai[mcp]' ouroboros mcp serve
 ```
 
 **Available MCP tools**

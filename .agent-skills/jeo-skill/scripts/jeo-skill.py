@@ -46,7 +46,12 @@ def local_catalog_candidates() -> Iterable[Path]:
     # installation.
     script_catalog = Path(__file__).resolve().parents[2] / "skills.json"
     yield script_catalog
-    yield Path.cwd() / ".agent-skills" / "skills.json"
+    # A checkout in the working directory, except when that directory is HOME:
+    # ~/.agent-skills is the legacy installation (an older, smaller catalog), and
+    # agents often run from HOME.
+    cwd_catalog = Path.cwd() / ".agent-skills" / "skills.json"
+    if cwd_catalog.parent.resolve() != (Path.home() / ".agent-skills").resolve():
+        yield cwd_catalog
 
 
 def validate_catalog(data: Any, source: str) -> dict[str, Any]:

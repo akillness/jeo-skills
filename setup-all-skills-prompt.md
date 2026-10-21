@@ -104,20 +104,37 @@ esac
 if [ "$PLATFORM" = windows ]; then
   USER_HOME="${USERPROFILE:-$HOME}"
 else
-  # Resolve the login home independently of $HOME. An Aside bash session points
-  # $HOME at its own runtime home, which has no ~/.agents/skills.
-  USER_HOME=$(dscl . -read "/Users/$(id -un)" NFSHomeDirectory 2>/dev/null | awk '{print $2}')
-  [ -d "${USER_HOME:-}" ] || USER_HOME=$(python3 -c 'import pwd,os; print(pwd.getpwuid(os.getuid()).pw_dir)' 2>/dev/null)
-  [ -d "${USER_HOME:-}" ] || USER_HOME="$HOME"
+  USER_HOME="$HOME"
+  case "$HOME" in
+    */.aside/runtime/*)
+      # An Aside bash session points $HOME at its own runtime home, which has no
+      # ~/.agents/skills; resolve the login home there. Everywhere else $HOME is
+      # authoritative, so containers, CI, and isolated test homes stay isolated.
+      USER_HOME=$(dscl . -read "/Users/$(id -un)" NFSHomeDirectory 2>/dev/null | awk '{print $2}')
+      [ -d "${USER_HOME:-}" ] || USER_HOME=$(python3 -c 'import pwd,os; print(pwd.getpwuid(os.getuid()).pw_dir)' 2>/dev/null)
+      [ -d "${USER_HOME:-}" ] || USER_HOME="${HOME%%/.aside/runtime/*}" ;;
+  esac
 fi
 SKILLS_ROOT="$USER_HOME/.agents/skills"
 REPO_URL="https://github.com/akillness/jeo-skills"
+
+# `jeo-skill link` and `uv tool install` put commands in ~/.local/bin, which a fresh
+# shell often lacks; later steps call those commands by name.
+case ":$PATH:" in
+  *":$USER_HOME/.local/bin:"*) ;;
+  *) export PATH="$USER_HOME/.local/bin:$PATH" ;;
+esac
 
 printf 'platform=%s\nhome=%s\nskills_root=%s\n' "$PLATFORM" "$USER_HOME" "$SKILLS_ROOT"
 for cmd in node npm npx python3 claude codex gemini opencode cursor agy pi crush jeo gjc jeopi aside; do
   command -v "$cmd" >/dev/null 2>&1 && printf 'found: %s\n' "$cmd"
 done
 ```
+
+`USER_HOME` follows `$HOME` except inside an Aside session, so a container, CI job, or
+isolated test `HOME` receives the installation and the login home is left alone. The PATH
+line only affects this session: if `~/.local/bin` was missing, persist it for new shells
+with `uv tool update-shell` (or the shell profile) and say so in the final report.
 
 Install only missing prerequisites. Prefer the native package manager:
 
@@ -469,9 +486,9 @@ compat paths ([skills docs](https://opencode.ai/docs/skills/)). No native projec
 step is needed: the Step 4 install already placed everything opencode loads. Prefer
 the shared root over `~/.config/opencode/skills` so one install also serves Codex, Gemini
 CLI, and the other shared-root runtimes; a same-ID skill copied into `~/.config/opencode/skills` would
-shadow the shared copy at higher precedence. Verified live on opencode 1.18.18:
-`skills add -a opencode` and `jeo-skill install ... --agent opencode` both land in
-the shared root in an isolated HOME, and `jeo-skill doctor` reports zero errors there.
+shadow the shared copy at higher precedence. Re-verified on opencode 2.0.32 in an
+isolated HOME: the Step 4 install already lands every skill in the shared root, so this
+step only verifies placement and reports stale shadowing copies; it does not reinstall.
 For the Aside browser integration, Aside CLI's `aside-browser` skill is installed
 directly to `~/.config/opencode/skills/aside-browser/SKILL.md` (and the shared root)
 via `aside skills install --target opencode` (or `--target general`) in Step 5.
@@ -479,30 +496,29 @@ via `aside skills install --target opencode` (or `--target general`) in Step 5.
 ```bash
 if command -v opencode >/dev/null 2>&1; then
   opencode --version
-
-  # Preview an opencode-scoped selection without making changes
-  HOME="$USER_HOME" python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" \
-    install "${RUNTIME_SELECTION[@]}" --agent opencode --global --dry-run || exit 1
-
-  # Install the same selected skills to the shared root opencode reads
-  HOME="$USER_HOME" python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" \
-    install "${RUNTIME_SELECTION[@]}" --agent opencode --global --yes || exit 1
-
-  # Prove the shared root is readable (no model call, no config write)
   [ -f "$SKILLS_ROOT/jeo-skill/SKILL.md" ] \
     && printf 'opencode: shared root readable at %s\n' "$SKILLS_ROOT"
-  opencode mcp list
 
-  printf 'opencode: shared-root install completed\n'
+  # opencode's own root wins over the shared root; report differing same-named
+  # copies so the user can refresh or remove them. Nothing here writes.
+  OPENCODE_SKILLS="${XDG_CONFIG_HOME:-$USER_HOME/.config}/opencode/skills"
+  for dir in "$OPENCODE_SKILLS"/*/; do
+    name=$(basename "$dir")
+    [ -f "$dir/SKILL.md" ] && [ -f "$SKILLS_ROOT/$name/SKILL.md" ] || continue
+    cmp -s "$dir/SKILL.md" "$SKILLS_ROOT/$name/SKILL.md" \
+      || printf 'opencode: stale copy shadows the shared root: %s\n' "${dir%/}"
+  done
 fi
 ```
 
 **Two products, one binary name:** the archived Go TUI (`opencode-ai/opencode`,
 continued as `crush`) has **no** skill loader — the steps above do not make skills
-discoverable there. `opencode --version` reporting 1.x indicates sst/opencode.
-For MCP servers opencode consumes, inspect state with `opencode mcp list` only;
-local stdio entries live in `opencode.json` and are never hand-edited during
-blanket setup (same rule as Aside's `mcp.servers` map).
+discoverable there. `opencode --version` reporting 1.x or later indicates sst/opencode.
+`opencode.json` is JSONC (comments and trailing commas are valid), so never rewrite it
+from a script; register servers with `opencode mcp add` (Step 5). On opencode 2.x,
+`opencode mcp list` can report "No MCP servers configured" while `opencode.json` defines
+servers, and it starts opencode's background service, so verify MCP entries by reading
+the config file rather than trusting that listing.
 
 ### Step 4E — Remove retired catalog skills (all modes)
 
@@ -556,10 +572,14 @@ if ! command -v rtk >/dev/null 2>&1; then
     export PATH="$USER_HOME/.local/bin:$PATH"
   fi
 fi
-command -v rtk >/dev/null 2>&1 && rtk init -g
+command -v rtk >/dev/null 2>&1 && rtk init -g --auto-patch
 ```
 
 Do not use `cargo install rtk`; crates.io contains an unrelated package with that name.
+Keep `--auto-patch`: without a TTY, `rtk init -g` answers its settings prompt with "no",
+prints "RTK hook registered" anyway, and leaves the Claude Code hook unregistered.
+`--auto-patch` merges the `PreToolUse` hook into `settings.json` (other keys kept, backup
+written to `settings.json.bak`) and is a no-op once the hook is present.
 
 ### Jev control-plane harness (System One)
 
@@ -773,13 +793,23 @@ if ! command -v uvx >/dev/null 2>&1; then
 fi
 command -v semble >/dev/null 2>&1 || uv tool install 'semble[mcp]'
 
-if command -v claude >/dev/null 2>&1 && ! claude mcp list 2>/dev/null | grep -q '^semble'; then
-  claude mcp add semble -s user -- uvx --from 'semble[mcp]' semble
-fi
-if command -v codex >/dev/null 2>&1 && ! codex mcp list 2>/dev/null | grep -q '^semble'; then
-  codex mcp add semble -- uvx --from 'semble[mcp]' semble
+# Absolute path: MCP clients spawn servers with their own PATH.
+UVX_BIN=$(command -v uvx || true)
+if [ -z "$UVX_BIN" ]; then
+  printf '%s\n' 'semble: uvx not found after installing uv; open a new shell and rerun.' >&2
+else
+  if command -v claude >/dev/null 2>&1 && ! claude mcp get semble >/dev/null 2>&1; then
+    claude mcp add semble -s user -- "$UVX_BIN" --from 'semble[mcp]' semble
+  fi
+  if command -v codex >/dev/null 2>&1 && ! codex mcp get semble >/dev/null 2>&1; then
+    codex mcp add semble -- "$UVX_BIN" --from 'semble[mcp]' semble
+  fi
 fi
 ```
+
+`claude mcp get NAME` and `codex mcp get NAME` exit non-zero only when that one server
+is absent; `claude mcp list` health-checks every registered server first, which is slow
+on a busy configuration. Every registration below uses the same presence check.
 
 ### Zvec-grep local workspace search
 
@@ -898,14 +928,16 @@ if [ ! -f "$KP_INGEST" ]; then
 fi
 
 # 3. Install one vault-path-free wrapper per agent and register it for both events.
-#    Idempotent: an entry whose command already names the wrapper is left alone, and
-#    every other key in the settings file is preserved.
+#    Non-destructive and idempotent: an existing wrapper is kept (and reported when it
+#    differs from this template), any hook command that already invokes the wrapper
+#    counts as registered, and the settings file is rewritten only when an entry is
+#    added, with every other key preserved.
 secure_kp_hooks() {
   local settings="$1" wrapper="$2" before="$3" after="$4"
-  KP_INGEST="$KP_INGEST" python3 - "$settings" "$wrapper" "$before" "$after" <<'PY'
+  KP_INGEST="$KP_INGEST" KP_HOME="$USER_HOME" python3 - "$settings" "$wrapper" "$before" "$after" <<'PY'
 import json, os, pathlib, stat, sys, tempfile
 settings, wrapper, before_event, after_event = pathlib.Path(sys.argv[1]), pathlib.Path(sys.argv[2]), sys.argv[3], sys.argv[4]
-ingest = os.environ["KP_INGEST"]
+ingest, home = os.environ["KP_INGEST"], os.environ["KP_HOME"]
 
 def replace(p, text, validator, default_mode=0o600):
     try:
@@ -938,17 +970,26 @@ printf '%s' "$INPUT" | python3 "$INGEST" >/dev/null 2>&1 || true
 
 exit 0
 '''
-replace(wrapper, wrapper_text, lambda _: None, 0o700)
+if not wrapper.exists():
+    replace(wrapper, wrapper_text, lambda _: None, 0o700)
+elif wrapper.is_symlink() or not wrapper.is_file() or wrapper.read_text(encoding="utf-8") != wrapper_text:
+    print(f"kept existing wrapper {wrapper}; it differs from this guide's template")
 data = json.loads(settings.read_text(encoding="utf-8")) if settings.is_file() else {}
 cmd = f'bash "{wrapper}"'
+def invokes_wrapper(command):
+    command = str(command).replace("${HOME}", home).replace("$HOME", home).replace("~/", home + "/")
+    return str(wrapper) in command
+changed = False
 for event in (before_event, after_event):
     entries = data.setdefault("hooks", {}).setdefault(event, [])
-    if not any(any(h.get("command") in (cmd, str(wrapper)) for h in e.get("hooks", [])) for e in entries):
+    if not any(invokes_wrapper(h.get("command", "")) for e in entries for h in e.get("hooks", [])):
         entry = {"hooks": [{"type": "command", "command": cmd}]}
         if event in ("BeforeAgent", "AfterAgent"):
             entry["matcher"] = ""; entry["hooks"][0]["name"] = "llm-wiki-ingest"
         entries.append(entry)
-replace(settings, json.dumps(data, indent=2) + "\n", json.loads)
+        changed = True
+if changed:
+    replace(settings, json.dumps(data, indent=2, ensure_ascii=False) + "\n", json.loads)
 PY
 }
 
@@ -969,6 +1010,10 @@ fi
 printf '{"hook_event_name":"Stop"}' | python3 "$KP_INGEST" && echo "ingest-prompt.py ok"
 ```
 
+Codex runs new `~/.codex/hooks.json` entries only after the user reviews and trusts them
+in Codex's `/hooks` view; list that as a manual follow-up instead of claiming the Codex
+hooks are active.
+
 `jeo`, `jeopi`, and `gjc` register the same script through their own `post-turn` /
 `wikiRoot` config; read the `llm-wiki` skill's "Vault contract" section before touching
 those files, and merge keys rather than rewriting them. Keep the shared wrapper limited to
@@ -979,22 +1024,41 @@ agent touches.
 
 ### Ouroboros (`ooo`) MCP server
 
+The MCP server needs MCP SDK 2, which only the `[mcp]` extra provides. `[all]`, `[claude]`,
+and `[claude-sdk]` pin MCP SDK 1.x, and `ouroboros mcp serve` refuses to start from them.
+So the server runs from an isolated uvx `[mcp]` environment, registered by absolute path;
+the terminal CLI is installed only when missing and is otherwise left untouched.
+
 ```bash
-if ! command -v ouroboros >/dev/null 2>&1; then
-  if command -v uv >/dev/null 2>&1; then
-    uv tool install 'ouroboros-ai[all]'
-  else
-    python3 -m pip install --user 'ouroboros-ai[all]'
+UVX_BIN=$(command -v uvx || true)
+if [ -z "$UVX_BIN" ]; then
+  printf '%s\n' 'ooo: uv is missing; install it (Semble block above) and rerun this block.' >&2
+else
+  # Terminal CLI (`ouroboros`, `ooo`); reuse an existing install. It cannot serve MCP.
+  command -v ouroboros >/dev/null 2>&1 || uv tool install 'ouroboros-ai[all]'
+  # MCP server: `--isolated` is required. Without it uvx reuses an installed
+  # `ouroboros-ai` tool environment (such as the [all] CLI above, MCP SDK 1.x) and the
+  # server cannot start. Resolve it once so the first client launch is fast.
+  "$UVX_BIN" --isolated --from 'ouroboros-ai[mcp]' ouroboros --version
+  # An existing `ooo` or `ouroboros` registration counts as present (no duplicate server).
+  if command -v claude >/dev/null 2>&1 && ! claude mcp get ooo >/dev/null 2>&1 \
+    && ! claude mcp get ouroboros >/dev/null 2>&1; then
+    claude mcp add ooo -s user -- "$UVX_BIN" --isolated --from 'ouroboros-ai[mcp]' ouroboros mcp serve
+  fi
+  if command -v codex >/dev/null 2>&1 && ! codex mcp get ooo >/dev/null 2>&1 \
+    && ! codex mcp get ouroboros >/dev/null 2>&1; then
+    codex mcp add ooo -- "$UVX_BIN" --isolated --from 'ouroboros-ai[mcp]' ouroboros mcp serve
   fi
 fi
-
-if command -v claude >/dev/null 2>&1 && ! claude mcp list 2>/dev/null | grep -q '^ooo'; then
-  claude mcp add ooo -s user -- ouroboros mcp serve
-fi
-if command -v codex >/dev/null 2>&1 && ! codex mcp list 2>/dev/null | grep -q '^ooo'; then
-  codex mcp add ooo -- ouroboros mcp serve
-fi
 ```
+
+Ouroboros needs Python 3.12+. Do not fall back to `python3 -m pip install --user`: it
+fails on system Python 3.9 and on PEP 668 (externally managed) interpreters. An `ooo`
+registration that `claude mcp get ooo` or `claude mcp list` shows as `Failed to connect`
+(for example `ouroboros mcp serve` over an `[all]` install from an older version of this
+guide, or `uvx --from 'ouroboros-ai[mcp]'` without `--isolated` while the CLI is a uv tool)
+must be reported; only with the user's approval run `claude mcp remove ooo -s user` (or
+`codex mcp remove ooo`) and rerun this block.
 
 ### Aside browser skill and MCP wiring
 
@@ -1024,41 +1088,30 @@ drive its browser session. Register it idempotently across Claude Code, Codex, a
 
 ```bash
 if command -v aside >/dev/null 2>&1; then
-  # Claude Code
-  if command -v claude >/dev/null 2>&1 && ! claude mcp list 2>/dev/null | grep -q '^aside'; then
-    claude mcp add aside -s user -- aside mcp
+  ASIDE_BIN=$(command -v aside)  # absolute: MCP clients spawn servers with their own PATH
+  if command -v claude >/dev/null 2>&1 && ! claude mcp get aside >/dev/null 2>&1; then
+    claude mcp add aside -s user -- "$ASIDE_BIN" mcp
   fi
-  # Codex CLI
-  if command -v codex >/dev/null 2>&1 && ! codex mcp list 2>/dev/null | grep -q '^aside'; then
-    codex mcp add aside -- aside mcp
+  if command -v codex >/dev/null 2>&1 && ! codex mcp get aside >/dev/null 2>&1; then
+    codex mcp add aside -- "$ASIDE_BIN" mcp
   fi
-  # OpenCode (merge into ~/.config/opencode/opencode.json)
+  # OpenCode: opencode.json is JSONC, so let opencode edit it; never rewrite it here.
   if command -v opencode >/dev/null 2>&1; then
-    OPENCODE_CFG="${XDG_CONFIG_HOME:-$USER_HOME/.config}/opencode/opencode.json"
-    if [ -f "$OPENCODE_CFG" ]; then
-      python3 - "$OPENCODE_CFG" <<'EOF'
-import json, sys
-cfg_path = sys.argv[1]
-try:
-    with open(cfg_path, "r", encoding="utf-8") as f:
-        cfg = json.load(f)
-except Exception:
-    cfg = {}
-mcp = cfg.setdefault("mcp", {})
-if "aside" not in mcp:
-    mcp["aside"] = {
-        "type": "local",
-        "command": ["aside", "mcp"],
-        "enabled": True
-    }
-    with open(cfg_path, "w", encoding="utf-8") as f:
-        json.dump(cfg, f, indent=2)
-    print("opencode: registered aside mcp server")
-EOF
+    OPENCODE_DIR="${XDG_CONFIG_HOME:-$USER_HOME/.config}/opencode"
+    if grep -qs '"aside"' "$OPENCODE_DIR/opencode.json" "$OPENCODE_DIR/opencode.jsonc" "$OPENCODE_DIR/config.json"; then
+      printf '%s\n' 'opencode: aside entry already present; left unchanged'
+    else
+      case "$(opencode --version 2>/dev/null)" in
+        *v1.*|1.*) printf '%s\n' 'opencode 1.x: add aside with `opencode mcp add` interactively (manual follow-up)' ;;
+        *) opencode mcp add aside --global -- "$ASIDE_BIN" mcp </dev/null ;;
+      esac
     fi
   fi
 fi
 ```
+
+`opencode mcp add` (2.x) keeps comments, trailing commas, and every other key, and it
+overwrites a same-named entry, so the presence check above must stay in front of it.
 
 **Servers Aside itself consumes.** These live in `<asideHome>/u/<accountId>/settings.json`
 under an app-managed `mcp.servers` map, alongside `mcp.inventories` and a separate
@@ -1149,6 +1202,92 @@ if command -v codex >/dev/null 2>&1 \
 fi
 ```
 
+## Step 6 — Runtime-specific shared-root checks
+
+- `jeo`, `jeopi`, and OMP discover `~/.agents/skills` directly; no skills CLI agent ID is
+  needed. GJC does not: its session loader keeps only skills from its native root
+  (`~/.gjc/agent/skills`, or `$GJC_CONFIG_DIR/agent/skills`), which Step 4B populates.
+  Real loader probes on a fresh install loaded `jeo-skill` there and rejected a
+  shared-root-only skill, so do not substitute a `skills.customDirectories` entry for
+  Step 4B.
+- sst/opencode discovers `~/.agents/skills` directly too (`-a opencode` targets the
+  same shared root — see Step 4D), and additionally reads `~/.config/opencode/skills`
+  natively at higher precedence. The archived Go `opencode-ai/opencode` TUI has no
+  skill loader; shared-root installs do not apply there.
+- If an agent has no native skill loader, report that limitation rather than copying all
+  skill folders into an unverified directory.
+- Aside does not read `~/.agents/skills`. It loads account skills from
+  `~/.aside/u/<accountId>/skills/user/`, populated by the Step 4 mirror. Re-run that mirror
+  after any skill update, and never write into its sibling `builtin/`.
+- Retired catalog skills: `prune-retired --global --dry-run` (Step 4E) should report no
+  `would-remove` lines after the sweep; `kept` and `skipped` lines name roots left untouched.
+
+## Step 7 — Verify and report
+
+```bash
+# Scope the listing: unscoped `skills list -g` can hang for minutes on a home with many
+# agent roots, while the scoped form returns in seconds.
+HOME="$USER_HOME" skills list -g -a universal 2>/dev/null \
+  || HOME="$USER_HOME" npx --yes skills@1.7.0 list -g -a universal
+JEO_ROUTER="$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py"
+HOME="$USER_HOME" python3 "$JEO_ROUTER" link
+HOME="$USER_HOME" python3 "$JEO_ROUTER" doctor
+HOME="$USER_HOME" python3 "$JEO_ROUTER" prune-retired --global --dry-run
+HOME="$USER_HOME" python3 "$JEO_ROUTER" categories --json
+command -v jeo-skill >/dev/null 2>&1 \
+  || printf 'jeo-skill is linked in %s but that directory is not on PATH (see Step 1)\n' "$USER_HOME/.local/bin"
+command -v rtk >/dev/null 2>&1 && rtk gain
+command -v semble >/dev/null 2>&1 && semble --help >/dev/null
+command -v claude >/dev/null 2>&1 && claude mcp list
+command -v codex >/dev/null 2>&1 && codex mcp list
+command -v opencode >/dev/null 2>&1 && opencode --version
+command -v opencode >/dev/null 2>&1 && [ -f "$SKILLS_ROOT/jeo-skill/SKILL.md" ] && printf 'opencode: shared root readable at %s\n' "$SKILLS_ROOT"
+command -v opencode >/dev/null 2>&1 \
+  && grep -ls '"aside"' "${XDG_CONFIG_HOME:-$USER_HOME/.config}"/opencode/opencode.json* \
+  | sed 's/^/opencode: aside MCP entry in /'
+command -v aside >/dev/null 2>&1 && aside --version
+for acct in "$USER_HOME"/.aside/u/*/; do
+  [ -d "$acct/skills/user" ] || continue
+  printf 'aside %s: %s user skills\n' "$(basename "${acct%/}")" \
+    "$(find "$acct/skills/user" -maxdepth 2 -name SKILL.md 2>/dev/null | wc -l | tr -d ' ')"
+done
+```
+
+Finally report:
+
+1. detected OS and agents;
+2. selected mode and installed skill count;
+3. exact global and per-agent paths used, including each Aside account's
+   `skills/user/` path and how many skills were mirrored there; for opencode, the
+   shared `~/.agents/skills` path, `opencode --version`, any stale shadowing copies that
+   Step 4D reported, and whether `opencode.json` holds the aside MCP entry;
+4. MCP/shell/plugin registrations completed or skipped, with reasons — note whether Aside
+   was registered as an MCP server (across Claude Code, Codex, and OpenCode) and its
+   `aside-browser` skill installed, and that servers Aside consumes stay a manual UI step;
+5. verification output and any manual follow-up (for example persisting `~/.local/bin`
+   on PATH, trusting new Codex hooks in `/hooks`, or a pre-existing failing MCP entry);
+6. in full mode, if `scrapingant-web-fetch` was not already configured, ask the user once
+   whether to set it up now (sponsor skill, free 10,000 credits/month, no card) — see
+   "ScrapingAnt MCP web fetch" below; do not set it up without an explicit yes.
+
+Compare pre-existing skill names captured before installation with the final listing. A
+successful run adds or updates jeo-skills targets and leaves every unrelated pre-existing
+skill present; the only removals are Step 4E's fingerprint-matched retired catalog copies,
+which the report lists by path. For Aside, that also means `skills/builtin/` is
+byte-identical and every unrelated `skills/user/` entry is still there.
+
+When comparing installed files byte for byte with the repository, two differences are
+expected and harmless: the skills CLI never copies files named `metadata.json`, and Git
+LFS-tracked `*.gif` demo assets (referenced only by skill READMEs, never by agents)
+arrive as LFS pointer files, because the CLI's clone does not fetch LFS objects.
+
+## Reference — on-demand skill runtimes
+
+Blanket setup ends at Step 7. The sections below are task-triggered reference: run
+nothing from them during installation except commands a section explicitly marks safe
+for installation verification, and keep every install, credential, paid call, service,
+or destructive action behind the approval that section names.
+
 ### Animato animation runtime (on demand)
 
 The `animato` skill installs as documents plus stdlib-only scripts; it never installs Blender,
@@ -1235,19 +1374,20 @@ pip install "soup-cli[train]"   # + torch/transformers/peft/trl for real trainin
 Never auto-run `soup train` (starts a real training job/spends GPU time) as part of setup
 or verification; that step must stay a task-triggered, user-confirmed action. See
 `soup/references/commands.md` for the full command reference.
+
 ### Watermarks Remover heavy backends (on demand)
 
 The `watermarks-remover` skill installs as documents plus a read-only `doctor` wrapper over
 the upstream stdlib scripts; it never clones `guillaumemeyer/watermarks-remover` or installs
 the optional SynthID/CtrlRegen backends during setup:
 
-bash
+```bash
 # 1. clone on demand, never during install
 git clone https://github.com/guillaumemeyer/watermarks-remover.git
 
 # 2. read-only prerequisite report (python, c2patool, exiftool) — installs nothing
 bash "$SKILLS_ROOT/watermarks-remover/scripts/watermarks-remover.sh" doctor watermarks-remover
-
+```
 
 Never auto-run `setup_synthid.sh` / `setup_ctrlregen.sh` (each downloads ~10 GB of model
 weights) as part of setup or verification; those stay a task-triggered, user-confirmed
@@ -1260,10 +1400,10 @@ server or orders a number during setup. Every `order_number` call spends real mo
 the user's SV Number account balance, so treat activation as a task-triggered, user-confirmed
 action, never a setup/verification step:
 
-bash
+```bash
 # 1. clone/install on demand, never during install
 git clone https://github.com/sv-number/mcp-server.git
-
+```
 
 See `mcp-server-sv-number/references/setup.md` for the API-key/config and MCP client
 registration steps, and confirm the target country/service with the user before ordering.
@@ -1275,10 +1415,10 @@ Compose stack during setup. Each generation of a KADATH run spends real OpenAI A
 container compute, so prepare it only when a task actually needs an evolutionary agent-benchmark
 run, and always route the approval gate through the user:
 
-bash
+```bash
 # clone on demand, never during install
 git clone https://github.com/i3T4AN/KADATH.git
-
+```
 
 Never auto-approve a locked benchmark or auto-run `kadath run`/`kadath.sh` as part of setup
 or verification; propose → approve → run must stay explicit, user-confirmed steps. See
@@ -2019,70 +2159,6 @@ require a fresh confirmation after any changed input or started failure. Keep ad
 configuration and credentials outside the project. See
 `drama-skills/references/install-and-operations.md` and
 `drama-skills/references/production-safety.md`.
-
-## Step 6 — Runtime-specific shared-root checks
-
-
-- `jeo`, `jeopi`, and `gjc` discover `~/.agents/skills` directly; no skills CLI agent ID is needed.
-- sst/opencode discovers `~/.agents/skills` directly too (`-a opencode` targets the
-  same shared root — see Step 4D), and additionally reads `~/.config/opencode/skills`
-  natively at higher precedence. The archived Go `opencode-ai/opencode` TUI has no
-  skill loader; shared-root installs do not apply there.
-- GJC may require skill discovery to be enabled and `~/.agents/skills` added to its
-  `skills.customDirectories`. Inspect its current config and merge only those keys; never
-  replace the whole file.
-- If an agent has no native skill loader, report that limitation rather than copying all
-  skill folders into an unverified directory.
-- Aside does not read `~/.agents/skills`. It loads account skills from
-  `~/.aside/u/<accountId>/skills/user/`, populated by the Step 4 mirror. Re-run that mirror
-  after any skill update, and never write into its sibling `builtin/`.
-- Retired catalog skills: `prune-retired --global --dry-run` (Step 4E) should report no
-  `would-remove` lines after the sweep; `kept` and `skipped` lines name roots left untouched.
-
-## Step 7 — Verify and report
-
-```bash
-HOME="$USER_HOME" skills list -g 2>/dev/null || HOME="$USER_HOME" npx --yes skills list --global
-HOME="$USER_HOME" python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" link
-HOME="$USER_HOME" jeo-skill doctor
-HOME="$USER_HOME" python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" prune-retired --global --dry-run
-HOME="$USER_HOME" jeo-skill categories --json
-command -v rtk >/dev/null 2>&1 && rtk gain
-command -v semble >/dev/null 2>&1 && semble --help >/dev/null
-command -v claude >/dev/null 2>&1 && claude mcp list
-command -v codex >/dev/null 2>&1 && codex mcp list
-command -v opencode >/dev/null 2>&1 && opencode --version
-command -v opencode >/dev/null 2>&1 && [ -f "$SKILLS_ROOT/jeo-skill/SKILL.md" ] && printf 'opencode: shared root readable at %s\n' "$SKILLS_ROOT"
-command -v opencode >/dev/null 2>&1 && opencode mcp list
-command -v aside >/dev/null 2>&1 && aside --version
-for acct in "$USER_HOME"/.aside/u/*/; do
-  [ -d "$acct/skills/user" ] || continue
-  printf 'aside %s: %s user skills\n' "$(basename "${acct%/}")" \
-    "$(find "$acct/skills/user" -maxdepth 2 -name SKILL.md 2>/dev/null | wc -l | tr -d ' ')"
-done
-```
-
-Finally report:
-
-1. detected OS and agents;
-2. selected mode and installed skill count;
-3. exact global and per-agent paths used, including each Aside account's
-   `skills/user/` path and how many skills were mirrored there; for opencode, the
-   shared `~/.agents/skills` path plus `opencode --version` and the
-   `opencode mcp list` result;
-4. MCP/shell/plugin registrations completed or skipped, with reasons — note whether Aside
-   was registered as an MCP server (across Claude Code, Codex, and OpenCode) and its
-   `aside-browser` skill installed, and that servers Aside consumes stay a manual UI step;
-5. verification output and any manual follow-up;
-6. in full mode, if `scrapingant-web-fetch` was not already configured, ask the user once
-   whether to set it up now (sponsor skill, free 10,000 credits/month, no card) — see
-   "ScrapingAnt MCP web fetch" below; do not set it up without an explicit yes.
-
-Compare pre-existing skill names captured before installation with the final listing. A
-successful run adds or updates jeo-skills targets and leaves every unrelated pre-existing
-skill present; the only removals are Step 4E's fingerprint-matched retired catalog copies,
-which the report lists by path. For Aside, that also means `skills/builtin/` is
-byte-identical and every unrelated `skills/user/` entry is still there.
 
 ### Agent Reach platform research (on demand, skill-name collision)
 
