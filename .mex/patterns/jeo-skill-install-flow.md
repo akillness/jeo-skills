@@ -15,7 +15,7 @@ edges:
   - target: "patterns/catalog-metadata-changes.md"
     condition: "when a bundle/category referenced here needs a metadata change instead"
 grounds_to: []
-last_updated: 2026-10-12
+last_updated: 2026-10-21
 ---
 
 # jeo-skill Install Flow
@@ -55,6 +55,14 @@ never infer runtime loading solely from an upstream agent label or successful ex
    Multiple Aside accounts require an explicit choice; user/builtin content is preserved.
 5. **Bootstrap** always invokes the router just installed in the requested scope.
    Test macOS Bash 3.2: an empty array expansion under `set -u` can fail even after `=()`.
+6. **Retired-skill cleanup** (2026-10-21): `install_support.RETIRED_INSTALLS` maps each
+   retired catalog name to its replacement and the catalog copy's exact first `# ` heading
+   (`jeo` → `ooo`, `harness` → `harness2`). `finish_install` removes fingerprint-matched
+   copies from the install and projection roots after verification; `install --dry-run`
+   reports `would-remove`; `prune-retired [--global] [--dry-run]` sweeps every runtime root
+   (shared, Claude, Pi, Crush, OpenCode, GJC, Antigravity CLI/IDE, Aside `skills/user`) and
+   `install.sh` calls it after bootstrap. Keep `RETIRED_INSTALLS` and manifest
+   `retired_skills` in sync when retiring a name whose copies were ever installed.
 
 ## Gotchas
 - `--dry-run` only ever proves the *selection* and the *command string* are correct — it
@@ -118,6 +126,18 @@ never infer runtime loading solely from an upstream agent label or successful ex
   is a local counts-only preview; `jg doctor` calls a provider and must not run implicitly.
   Verification: `python3 scripts/test_jevgrep_regressions.py -v` covers the wrapper;
   a real pinned-package loopback smoke covers transport, not live model quality.
+- Retired cleanup must stay fingerprint-gated: same-named third-party skills (revfactory's
+  own `harness` H1 differs), trees containing links, and roots behind a linked ancestor
+  (checked with `require_safe_path` from the HOME/project boundary) are `kept`/`skipped`.
+  A retired-name symlink is unlinked only if its realpath is a dir the same batched sweep
+  removed; `finish_install` therefore sweeps install + projection roots in ONE call (a
+  per-root sweep would delete the target first and then keep the dangling link). Do not
+  recommend `npx skills remove` for
+  stale `.skill-lock.json` entries: skills@1.7.0 deletes same-named dirs across all agent
+  roots without any fingerprint check. Report stale lock entries instead.
+- Real-HOME dry-run on 2026-10-21 found retired copies in ten roots (shared, Claude, Pi,
+  Crush, OpenCode, GJC, both Antigravity roots, Aside) plus one symlinked Crush `harness`
+  that is correctly kept; the user's actual installation was not swept by this change.
 
 ## Live public setup verification
 

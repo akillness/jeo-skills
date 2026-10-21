@@ -16,7 +16,7 @@
       "prompt": "일반적인 멀티 에이전트 팀 구조와 역할 분담을 설계해줘. OpenRig를 설치하거나 실행할 필요는 없어.",
       "expected_output": "The request routes to generic agent-team architecture rather than the OpenRig operator skill.",
       "assertions": [
-        "The response routes the design request to `harness` or another generic agent-architecture skill",
+        "The response routes the design request to `harness2` or another generic agent-architecture skill",
         "The response does not require a rig checkout, tmux, provider CLI, or OpenRig installation",
         "The response does not invent OpenRig commands as the design answer"
       ]

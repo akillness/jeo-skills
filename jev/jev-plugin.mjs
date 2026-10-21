@@ -5,7 +5,11 @@ import {
   constants as fsConstants,
   existsSync,
   lstatSync,
+  fstatSync,
   mkdirSync,
+  openSync,
+  closeSync,
+  writeSync,
   readFileSync,
   readdirSync,
   realpathSync,
@@ -14,7 +18,7 @@ import {
   writeFileSync,
 } from 'node:fs';
 import { spawnSync } from 'node:child_process';
-import { createHash } from 'node:crypto';
+import { createHash, randomUUID } from 'node:crypto';
 import { homedir } from 'node:os';
 import { basename, dirname, isAbsolute, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -64,6 +68,112 @@ const SKILL_ID = /^[a-z0-9-]+$/;
 const NATIVE_HOSTS = new Set(['claude', 'jeopi', 'omp', 'pi']);
 const OPERATORS = new Set(['claude', 'jeopi', 'omp', 'pi', 'codex', 'gemini', 'opencode', 'jeo', 'aside']);
 
+const USAGE_LEDGER_NAME = 'jev-usage.jsonl';
+const USAGE_LEDGER_ROTATE_BYTES = 5 * 1024 * 1024;
+const USAGE_RETENTION_BYTES = 10 * 1024 * 1024;
+const SAFE_USAGE_NAME = /^[a-z0-9-]+$/;
+const SAFE_USAGE_VALUE = /^[A-Za-z0-9][A-Za-z0-9_.:/@+-]*$/;
+const MAX_USAGE_VALUE_LENGTH = 128;
+
+function usagePath(value) {
+  const text = String(value || '');
+  if (text === '~') return homedir();
+  if (text.startsWith('~/')) return join(homedir(), text.slice(2));
+  return text;
+}
+
+function usageStateDir() {
+  const override = process.env.JEO_SKILL_STATE_DIR;
+  if (override) return resolve(usagePath(override));
+  return join(process.env.XDG_STATE_HOME ? resolve(usagePath(process.env.XDG_STATE_HOME)) : join(homedir(), '.local', 'state'), 'jeo-skill');
+}
+
+function usageNames(values) {
+  return [...new Set((Array.isArray(values) ? values : []).filter(value => typeof value === 'string' && SAFE_USAGE_NAME.test(value)))];
+}
+
+function usageValue(value, fallback = 'unknown') {
+  return typeof value === 'string' && value.length <= MAX_USAGE_VALUE_LENGTH && SAFE_USAGE_VALUE.test(value) ? value : fallback;
+}
+
+// Lock-free rotation: the live ledger is renamed to a unique segment name, so no rotation
+// can clobber another. A contender rotates only the inode it measured, and retention is by
+// bytes (newest first, newest always kept) so tiny contender segments never evict a large one.
+function rotateUsageLedger(ledger, directory, measuredIno) {
+  try {
+    const info = lstatSync(ledger);
+    if (info.isSymbolicLink() || !info.isFile() || info.ino !== measuredIno || info.size < USAGE_LEDGER_ROTATE_BYTES) return;
+    const stamp = new Date().toISOString().replace(/[-:]/g, '').replace(/\.(\d{3})Z$/, '$1Z');
+    const rotated = join(directory, `jev-usage.${stamp}-${process.pid}-${randomUUID()}.jsonl`);
+    try {
+      renameSync(ledger, rotated);
+    } catch (error) {
+      if (error?.code === 'ENOENT') return;
+      throw error;
+    }
+    const segments = readdirSync(directory, { withFileTypes: true })
+      .filter(entry => entry.isFile() && /^jev-usage\..+\.jsonl$/.test(entry.name))
+      .map(entry => ({ name: entry.name, path: join(directory, entry.name) }))
+      .sort((left, right) => right.name.localeCompare(left.name));
+    let retained = 0;
+    for (const [index, segment] of segments.entries()) {
+      try {
+        const size = lstatSync(segment.path).size;
+        chmodSync(segment.path, 0o600);
+        retained += size;
+        if (index > 0 && retained > USAGE_RETENTION_BYTES) unlinkSync(segment.path);
+      } catch {
+        // A concurrently removed segment needs no further handling.
+      }
+    }
+  } catch {
+    // Usage telemetry is strictly best effort and must never block the host.
+  }
+}
+
+function recordSkillUsage({ agent, profile, routed, injected, backend, active = true } = {}) {
+  try {
+    if (!active || !profile) return;
+    const routedNames = usageNames(routed);
+    if (!routedNames.length) return;
+    const directory = usageStateDir();
+    mkdirSync(directory, { recursive: true, mode: 0o700 });
+    const directoryInfo = lstatSync(directory);
+    if (directoryInfo.isSymbolicLink() || !directoryInfo.isDirectory()) return;
+    chmodSync(directory, 0o700);
+    const ledger = join(directory, USAGE_LEDGER_NAME);
+    let ledgerInfo = null;
+    if (existsSync(ledger)) {
+      ledgerInfo = lstatSync(ledger);
+      if (ledgerInfo.isSymbolicLink() || !ledgerInfo.isFile()) return;
+      chmodSync(ledger, 0o600);
+    }
+    if (ledgerInfo && ledgerInfo.size >= USAGE_LEDGER_ROTATE_BYTES) rotateUsageLedger(ledger, directory, ledgerInfo.ino);
+    const event = {
+      v: 1,
+      at: new Date().toISOString(),
+      agent: usageValue(agent),
+      profile: usageValue(profile, 'legacy'),
+      routed: routedNames,
+      injected: usageNames(injected),
+      backend: {
+        kind: usageValue(backend?.kind),
+        model: usageValue(backend?.configuredModel),
+        tier: usageValue(backend?.tier),
+      },
+    };
+    const line = Buffer.from(`${JSON.stringify(event)}\n`, 'utf8');
+    const fd = openSync(ledger, 'a', 0o600);
+    try {
+      writeSync(fd, line);
+    } finally {
+      closeSync(fd);
+    }
+    chmodSync(ledger, 0o600);
+  } catch {
+    // Usage telemetry is strictly best effort and must never block the host.
+  }
+}
 function homes() {
   const home = homedir();
   const jev = join(home, '.agents', 'jev');
@@ -731,13 +841,16 @@ async function integrationPlan(flags) {
 }
 
 async function readStdin() {
-  let value = '';
+  const chunks = [];
+  let bytes = 0;
   process.stdin.setEncoding('utf8');
   for await (const chunk of process.stdin) {
-    value += chunk;
-    if (Buffer.byteLength(value) > 2_097_152) throw new Error('hook input exceeds 2 MiB');
+    const chunkBytes = Buffer.byteLength(chunk);
+    if (bytes + chunkBytes > 2_097_152) throw new Error('hook input exceeds 2 MiB');
+    chunks.push(chunk);
+    bytes += chunkBytes;
   }
-  return value;
+  return chunks.join('');
 }
 
 function classifyRoutingError(error) {
@@ -790,6 +903,7 @@ function selectedSkillContext(routed) {
   const catalog = JSON.parse(readFileSync(catalogPath, 'utf8'));
   const root = realpathSync(resolve(catalogPath) === resolve(snapshot) ? join(homedir(), '.agents', 'skills') : dirname(catalogPath));
   const sections = [];
+  const injected = [];
   let size = 0;
   for (const selected of (routed.topK || []).slice(0, 3)) {
     if (!SKILL_ID.test(selected.name || '')) continue;
@@ -803,10 +917,14 @@ function selectedSkillContext(routed) {
       const section = `### Skill: ${skill.name}\nSource: ${path}\nResolve referenced files relative to this source.\n\n${body}`;
       if (Buffer.byteLength(body) > 65_536 || size + Buffer.byteLength(section) > 98_304) continue;
       sections.push(section);
+      injected.push(skill.name);
       size += Buffer.byteLength(section);
     } catch { /* Missing or escaped skills are never injected. */ }
   }
-  return sections.length ? `Jev selected skill instructions. Apply them within the user's task and host permissions.\n\n${sections.join('\n\n')}` : '';
+  return {
+    context: sections.length ? `Jev selected skill instructions. Apply them within the user's task and host permissions.\n\n${sections.join('\n\n')}` : '',
+    injected,
+  };
 }
 
 async function hook(flags, suppliedEvent) {
@@ -857,8 +975,19 @@ async function hook(flags, suppliedEvent) {
     if (!process.env.JEV_CATALOG_PATH) process.env.JEV_CATALOG_PATH = join(homes().jev, 'skills.json');
     const harness = await import('./jev-harness.mjs');
     const routed = await harness.routeSkills(prompt || 'Review the current task', { topK: 3 });
-    if (mode === 'assist') runtime = { mode, skillContext: selectedSkillContext(routed), pruneContext: true };
-    // Defense in depth even if a catalog candidate still resolves to
+    let selected = { context: '', injected: [] };
+    try {
+      if (mode === 'assist') selected = selectedSkillContext(routed);
+    } finally {
+      recordSkillUsage({
+        agent: ctx.agent,
+        profile: ctx.profile,
+        routed: (routed?.topK || []).map(item => item?.name),
+        injected: selected.injected,
+        backend: routed?.backend,
+      });
+    }
+    if (mode === 'assist') runtime = { mode, skillContext: selected.context, pruneContext: true };
     // untrusted content: only pass through skill names and host
     // provider/model choices that match the approved identifier patterns,
     // so hostile catalog text can never be transmitted as advisory context.

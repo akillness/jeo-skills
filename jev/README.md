@@ -95,6 +95,20 @@ When a host loads the native package, its callback remains registered while the 
 
 For jeopi, OMP, and Pi, helpers tolerate subprocess stdin `EPIPE` only after a parsed `enabled:false` response. Actual-OFF registered callbacks with a 1 MiB prompt return `{}` without changing prior host context, exit 0, and emit no unhandled-error/EPIPE stderr; other stdin errors remain `CONTROLLER_INPUT_ERROR`.
 
+### Skill usage ledger
+
+Every native or Codex hook that routes at least one skill for an active profile appends one
+line to `${JEO_SKILL_STATE_DIR:-${XDG_STATE_HOME:-~/.local/state}/jeo-skill}/jev-usage.jsonl`:
+`{v, at, agent, profile, routed, injected, backend: {kind, model, tier}}`. `injected` lists
+only skills whose full instructions were actually injected (assist mode); `jeo-skill usage
+scan` counts `injected` as use and ignores `routed`. Lines hold names, timestamps, and the
+locally configured model only, never task, prompt, or skill text. The directory is mode 700
+and files mode 600. At 5 MiB the live file is renamed to a unique
+`jev-usage.<stamp>-<pid>-<uuid>.jsonl` segment without locks; the newest segments are kept
+up to 10 MiB. OFF or inactive profiles and hooks that route nothing write nothing, and
+ledger failures never affect the hook result. Installed hooks pick this up after re-running
+Jev setup.
+
 ## Configuration and setup
 
 ```sh

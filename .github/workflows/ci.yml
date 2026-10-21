@@ -60,7 +60,8 @@ jobs:
       - name: Native Jev install, profile, and plugin regressions
         env:
           JEV_LIVE_SMOKE: '0'
-        run: node --test jev/install.test.mjs jev/plugin.test.mjs jev/profile.test.mjs jev/runtime.test.mjs jev/lifecycle.test.mjs jev/codex.test.mjs
+          JEO_SKILL_STATE_DIR: ${{ runner.temp }}/jeo-skill-state
+        run: node --test jev/install.test.mjs jev/plugin.test.mjs jev/profile.test.mjs jev/runtime.test.mjs jev/lifecycle.test.mjs jev/codex.test.mjs jev/usage-ledger.test.mjs
       - name: Isolated runtime configuration writer regressions
         run: /bin/bash scripts/test-runtime-config-writers.sh
       - name: Isolated runtime installation regressions
@@ -69,6 +70,11 @@ jobs:
         run: python3 scripts/test_jev_regressions.py -v
       - name: Optional Jevgrep discovery contract regressions
         run: python3 scripts/test_jevgrep_regressions.py -v
+      - name: Skill usage tracking, quarantine, and retirement regressions
+        run: |
+          python3 scripts/test_skill_usage_regressions.py -v
+          python3 scripts/test_skill_quarantine_regressions.py -v
+          python3 scripts/test_retire_unused_regressions.py -v
       - name: Isolated runtime loader probe regressions
         run: python3 scripts/test_runtime_skill_loader.py -v
       - name: Offline repository preflight regressions

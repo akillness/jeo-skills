@@ -18,7 +18,9 @@ from pathlib import Path
 from typing import Any, Iterable
 
 sys.dont_write_bytecode = True
-from install_support import copy_tree, require_safe_path, require_safe_tree, resolve_aside_user
+from install_support import (copy_tree, remove_retired_installs, require_safe_path,
+                             require_safe_tree, resolve_aside_user)
+import skill_usage_cli
 
 DEFAULT_SOURCE = "https://github.com/akillness/jeo-skills"
 DEFAULT_CATALOG_URL = (
@@ -425,6 +427,68 @@ def verify_installed(root: Path, selected: list[str]) -> None:
     print(f"Verified {len(selected)} skill(s) at {root}")
 
 
+def report_retired(report: list[dict[str, str]]) -> None:
+    for item in report:
+        print(f"Retired skill {item['action']}: {item['path']} ({item['reason']})")
+
+
+def _with_boundaries(roots: Iterable[Path | None]) -> list[tuple[Path, Path]]:
+    pairs: list[tuple[Path, Path]] = []
+    seen: set[str] = set()
+    for root in roots:
+        if root is None:
+            continue
+        root = Path(os.path.abspath(root))
+        if str(root) in seen:
+            continue
+        seen.add(str(root))
+        boundary = next((scope for scope in (Path.home(), Path.cwd())
+                         if scope == root or scope in root.parents), Path.home())
+        pairs.append((root, boundary))
+    return pairs
+
+
+def clean_retired(roots: Iterable[Path | None], *, dry_run: bool, global_install: bool) -> None:
+    """Remove stale catalog copies of retired skills (e.g. jeo, harness) from install roots.
+
+    Directories are removed only in `roots`; links pointing at them are checked across every
+    runtime root of the same scope in one call. Cleanup never fails a verified install.
+    """
+    try:
+        report_retired(remove_retired_installs(
+            _with_boundaries(roots), dry_run=dry_run,
+            link_roots=_with_boundaries(retired_sweep_roots(global_install))))
+    except OSError as error:
+        print(f"Warning: retired-skill cleanup did not complete: {error}", file=sys.stderr)
+
+
+def retired_sweep_roots(global_install: bool) -> list[Path]:
+    """Every runtime skill root this router or the delegated setup guide may populate."""
+    home = Path.home()
+    if not global_install:
+        cwd = Path.cwd()
+        return [cwd / ".agents/skills", cwd / ".claude/skills", cwd / ".pi/skills",
+                cwd / ".crush/skills", cwd / ".gjc/skills", cwd / ".opencode/skills"]
+    config = Path(os.environ.get("XDG_CONFIG_HOME", "").strip() or str(home / ".config"))
+    claude = Path(os.environ.get("CLAUDE_CONFIG_DIR", "").strip() or str(home / ".claude"))
+    roots = [home / ".agents/skills", claude / "skills", home / ".pi/agent/skills",
+             home / ".config/crush/skills", config / "crush/skills", config / "opencode/skills",
+             home / gjc_config_name().lstrip("/") / "agent/skills",
+             home / ".gemini/antigravity-cli/skills", home / ".gemini/config/skills"]
+    aside_users = home / ".aside" / "u"
+    if aside_users.is_dir() and not aside_users.is_symlink():
+        roots.extend(account / "skills" / "user" for account in sorted(aside_users.iterdir())
+                     if account.is_dir() and not account.is_symlink())
+    return roots
+
+
+def command_prune_retired(args: argparse.Namespace) -> None:
+    clean_retired(retired_sweep_roots(args.global_install), dry_run=args.dry_run,
+                  global_install=args.global_install)
+    print("Retired-skill sweep " + ("previewed; nothing removed." if args.dry_run else "completed."))
+
+
+
 def finish_install(args: argparse.Namespace, selected: list[str]) -> None:
     root = install_root(args)
     projection = projection_root(args)
@@ -437,6 +501,9 @@ def finish_install(args: argparse.Namespace, selected: list[str]) -> None:
         for name in selected:
             copy_tree(root / name, projection / name)
         verify_installed(projection, selected)
+    # One batched sweep (same as the dry-run preview) so links into a removed shared copy
+    # are judged against the full set of removals.
+    clean_retired((root, projection), dry_run=False, global_install=args.global_install)
 
 
 def installer_prerequisite_errors() -> list[str]:
@@ -471,6 +538,7 @@ def command_install(args: argparse.Namespace, catalog: dict[str, Any]) -> None:
     if projection:
         print(f"Copy selected skills: {root} -> {projection}")
     if args.dry_run:
+        clean_retired((root, projection), dry_run=True, global_install=args.global_install)
         return
     if len(selected) > 12 and not args.yes:
         raise JeoSkillError("Selection is larger than 12 skills. Review with --dry-run, then pass --yes.")
@@ -643,6 +711,13 @@ def build_parser() -> argparse.ArgumentParser:
     link = sub.add_parser("link", help=f"Link the CLI at {BIN_PATH}")
     link.add_argument("--force", action="store_true")
 
+    prune = sub.add_parser("prune-retired",
+                           help="Remove stale catalog copies of retired skills (jeo, harness) from runtime roots")
+    prune.add_argument("-g", "--global", dest="global_install", action="store_true")
+    prune.add_argument("--dry-run", action="store_true")
+
+    skill_usage_cli.add_parsers(sub)
+
     sub.add_parser("doctor", help="Verify catalog and installer prerequisites")
     return parser
 
@@ -659,6 +734,11 @@ def main() -> int:
         if args.command == "bootstrap":
             command_bootstrap(args)
             return 0
+        if args.command == "prune-retired":
+            command_prune_retired(args)
+            return 0
+        if args.command in skill_usage_cli.NO_CATALOG_COMMANDS:
+            return skill_usage_cli.run(args, None, None, retired_sweep_roots)
         source_catalog = Path(getattr(args, "source", "")).expanduser() / ".agent-skills/skills.json"
         configured_catalog = os.environ.get("JEO_SKILLS_CATALOG")
         if configured_catalog:
@@ -668,9 +748,13 @@ def main() -> int:
         elif args.command == "install" and args.all and args.source != DEFAULT_SOURCE:
             raise JeoSkillError("Custom-source --all requires a source-matched JEO_SKILLS_CATALOG or a local source .agent-skills/skills.json; the default catalog cannot establish every skill in that source.")
         else:
-            catalog, source = load_catalog(cache=not getattr(args, "dry_run", False))
+            catalog, source = load_catalog(cache=not (getattr(args, "dry_run", False)
+                                                      or (args.command in skill_usage_cli.COMMANDS
+                                                          and skill_usage_cli.read_only(args))))
             if args.command == "install" and args.source != DEFAULT_SOURCE:
                 print(f"Warning: selection uses catalog {source}, not a catalog verified for {args.source}; set JEO_SKILLS_CATALOG to a source-matched catalog if it differs.", file=sys.stderr)
+        if args.command in skill_usage_cli.COMMANDS:
+            return skill_usage_cli.run(args, catalog, source, retired_sweep_roots)
         if args.command == "categories":
             command_categories(args, catalog)
         elif args.command == "list":

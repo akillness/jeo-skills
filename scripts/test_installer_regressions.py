@@ -146,6 +146,314 @@ class InstallerRegressions(unittest.TestCase):
         return {str(path.relative_to(self.work)): ("link", os.readlink(path)) if path.is_symlink()
                 else ("file", path.read_bytes()) if path.is_file() else ("directory",)
                 for path in self.work.rglob("*")}
+    def catalog_fixture(self, root, name):
+        source = ROOT / "scripts/fixtures/retired-skills" / name
+        self.assertTrue(source.is_dir(), source)
+        destination = Path(root) / name
+        destination.mkdir(parents=True, exist_ok=True)
+        for path in source.rglob("*"):
+            relative = path.relative_to(source)
+            target = destination / ("SKILL.md" if relative.name == "SKILL.md.fixture" else relative)
+            if path.is_dir():
+                target.mkdir(parents=True, exist_ok=True)
+            else:
+                target.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(path, target)
+        return destination
+
+    def test_global_prune_upgrades_real_retired_fixtures_without_touching_other_files(self):
+        shared = self.home / ".agents/skills"
+        pi = self.home / ".pi/agent/skills"
+        self.catalog_fixture(shared, "harness")
+        self.catalog_fixture(pi, "jeo")
+        sentinel = shared / "keep/SKILL.md"
+        sentinel.parent.mkdir(parents=True)
+        sentinel.write_text("unrelated skill\n")
+
+        before = self.snapshot()
+        preview = self.cli("prune-retired", "--global", "--dry-run")
+        self.successful(preview)
+        for candidate in (shared / "harness", pi / "jeo"):
+            self.assertIn(f"Retired skill would-remove: {candidate}", preview.stdout)
+        self.assertEqual(self.snapshot(), before)
+
+        applied = self.cli("prune-retired", "--global")
+        self.successful(applied)
+        self.assertFalse((shared / "harness").exists())
+        self.assertFalse((pi / "jeo").exists())
+        self.assertEqual(sentinel.read_text(), "unrelated skill\n")
+
+    def test_global_prune_removes_links_to_removed_retired_copies(self):
+        shared = self.catalog_fixture(self.home / ".agents/skills", "harness")
+        link_root = self.home / ".config/crush/skills"
+        link_root.mkdir(parents=True)
+        linked = link_root / "harness"
+        linked.symlink_to("../../../.agents/skills/harness", target_is_directory=True)
+
+        before = self.snapshot()
+        preview = self.cli("prune-retired", "--global", "--dry-run")
+        self.successful(preview)
+        self.assertIn(f"Retired skill would-remove: {shared}", preview.stdout)
+        self.assertIn(f"Retired skill would-remove: {linked}", preview.stdout)
+        self.assertEqual(self.snapshot(), before)
+
+        applied = self.cli("prune-retired", "--global")
+        self.successful(applied)
+        self.assertFalse(shared.exists())
+        self.assertFalse(linked.exists())
+        self.assertFalse(linked.is_symlink())
+
+    def test_global_prune_keeps_unrelated_dangling_and_live_links(self):
+        pi_root = self.home / ".pi/agent/skills"
+        pi_root.mkdir(parents=True)
+        other_project = self.work / "other-project/harness"
+        dangling = pi_root / "harness"
+        dangling.symlink_to(other_project, target_is_directory=True)
+
+        unrelated = self.work / "unrelated-jeo"
+        unrelated.mkdir()
+        (unrelated / "SKILL.md").write_text(
+            "---\nname: jeo\ndescription: unrelated\n---\n# Not the retired JEO\n"
+        )
+        live_link = pi_root / "jeo"
+        live_link.symlink_to(unrelated, target_is_directory=True)
+
+        before = self.snapshot()
+        result = self.cli("prune-retired", "--global")
+        self.successful(result)
+        for candidate in (dangling, live_link):
+            self.assertIn(f"Retired skill kept: {candidate}", result.stdout)
+            self.assertIn("symlink kept", result.stdout)
+            self.assertTrue(candidate.is_symlink())
+        self.assertFalse(other_project.exists())
+        self.assertEqual(self.snapshot(), before)
+
+    def test_global_install_sweeps_link_root_and_dry_run_previews_both(self):
+        shared = self.catalog_fixture(self.home / ".agents/skills", "harness")
+        link_root = self.home / ".config/crush/skills"
+        link_root.mkdir(parents=True)
+        linked = link_root / "harness"
+        linked.symlink_to("../../../.agents/skills/harness", target_is_directory=True)
+
+        installed = self.cli("install", "alpha", "--agent", "universal", "--global", "--yes",
+                             "--source", str(self.source))
+        self.successful(installed)
+        self.assert_skill(self.home / ".agents/skills", "alpha")
+        self.assertFalse(shared.exists())
+        self.assertFalse(linked.exists())
+        self.assertFalse(linked.is_symlink())
+        self.assertFalse((self.home / ".cache/jeo-skill/retired-removed.json").exists())
+
+        shared = self.catalog_fixture(self.home / ".agents/skills", "harness")
+        linked = link_root / "harness"
+        linked.symlink_to("../../../.agents/skills/harness", target_is_directory=True)
+        before = self.snapshot()
+        preview = self.cli("install", "alpha", "--agent", "universal", "--global", "--yes",
+                           "--source", str(self.source), "--dry-run")
+        self.successful(preview)
+        self.assertIn(f"Retired skill would-remove: {shared}", preview.stdout)
+        self.assertIn(f"Retired skill would-remove: {linked}", preview.stdout)
+        self.assertEqual(self.snapshot(), before)
+        self.assertFalse((self.home / ".cache/jeo-skill/retired-removed.json").exists())
+
+    def test_global_install_and_prune_keep_unrelated_dangling_link(self):
+        pi_root = self.home / ".pi/agent/skills"
+        pi_root.mkdir(parents=True)
+        unrelated_target = self.work / "other-project/harness"
+        dangling = pi_root / "harness"
+        dangling.symlink_to(unrelated_target, target_is_directory=True)
+
+        installed = self.cli("install", "alpha", "--agent", "universal", "--global", "--yes",
+                             "--source", str(self.source))
+        self.successful(installed)
+        self.assert_skill(self.home / ".agents/skills", "alpha")
+        self.assertTrue(dangling.is_symlink())
+        self.assertFalse(unrelated_target.exists())
+
+        pruned = self.cli("prune-retired", "--global")
+        self.successful(pruned)
+        self.assertIn(f"Retired skill kept: {dangling}", pruned.stdout)
+        self.assertIn("symlink kept", pruned.stdout)
+        self.assertTrue(dangling.is_symlink())
+        self.assertFalse(unrelated_target.exists())
+        self.assertFalse((self.home / ".cache/jeo-skill/retired-removed.json").exists())
+
+    def test_global_prune_dry_run_never_creates_retired_receipt(self):
+        self.catalog_fixture(self.home / ".agents/skills", "harness")
+        receipt = self.home / ".cache/jeo-skill/retired-removed.json"
+        before = self.snapshot()
+
+        result = self.cli("prune-retired", "--global", "--dry-run")
+        self.successful(result)
+        self.assertFalse(receipt.exists())
+        self.assertEqual(self.snapshot(), before)
+
+
+    def test_global_prune_preserves_non_catalog_and_linked_retired_copies(self):
+        third_party = self.home / ".claude/skills/harness"
+        third_party.mkdir(parents=True)
+        (third_party / "SKILL.md").write_text(
+            "---\nname: harness\ndescription: third party\n---\n"
+            "# Harness v2 — 에이전트 팀과 스킬 설계\n"
+        )
+
+        outside = self.work / "outside"
+        outside.mkdir()
+        linked_dir_target = outside / "jeo"
+        self.catalog_fixture(outside, "jeo")
+        linked_dir = self.home / ".pi/agent/skills/jeo"
+        linked_dir.parent.mkdir(parents=True, exist_ok=True)
+        linked_dir.symlink_to(linked_dir_target, target_is_directory=True)
+
+        symlinked_skill = self.home / ".gemini/config/skills/jeo"
+        symlinked_skill.mkdir(parents=True)
+        skill_target = outside / "jeo-skill.md"
+        skill_target.write_bytes((ROOT / "scripts/fixtures/retired-skills/jeo/SKILL.md.fixture").read_bytes())
+        (symlinked_skill / "SKILL.md").symlink_to(skill_target)
+
+        internal_link = self.home / ".gemini/antigravity-cli/skills/jeo"
+        self.catalog_fixture(internal_link.parent, "jeo")
+        internal_target = outside / "internal-target.txt"
+        internal_target.write_text("outside target\n")
+        (internal_link / "internal-link").symlink_to(internal_target)
+
+        wrong_name = self.home / ".config/crush/skills/jeo"
+        self.catalog_fixture(wrong_name.parent, "jeo")
+        (wrong_name / "SKILL.md").write_text(
+            (wrong_name / "SKILL.md").read_text().replace("name: jeo\n", "name: jeo-other\n", 1)
+        )
+
+        before = self.snapshot()
+        result = self.cli("prune-retired", "--global")
+        self.successful(result)
+        for candidate in (third_party, linked_dir, symlinked_skill, internal_link, wrong_name):
+            self.assertIn(f"Retired skill kept: {candidate}", result.stdout)
+            self.assertTrue(candidate.exists() or candidate.is_symlink())
+        self.assertEqual(self.snapshot(), before)
+        self.assertEqual(internal_target.read_text(), "outside target\n")
+
+    def test_global_prune_skips_linked_config_ancestor(self):
+        outside = self.work / "linked-config"
+        self.catalog_fixture(outside / "opencode/skills", "jeo")
+        config = self.home / ".config"
+        config.symlink_to(outside, target_is_directory=True)
+        candidate = config / "opencode/skills/jeo"
+        before = self.snapshot()
+
+        result = self.cli("prune-retired", "--global")
+        self.successful(result)
+        self.assertIn(f"Retired skill skipped: {config / 'opencode/skills'}", result.stdout)
+        self.assertTrue(candidate.exists())
+        self.assertEqual(self.snapshot(), before)
+
+    def test_global_prune_removes_aside_retired_copy_and_preserves_builtin(self):
+        skills = self.home / ".aside/u/acct/skills"
+        self.catalog_fixture(skills / "user", "jeo")
+        builtin = skills / "builtin/keep.txt"
+        builtin.parent.mkdir(parents=True)
+        builtin.write_bytes(b"builtin stays\n")
+
+        result = self.cli("prune-retired", "--global")
+        self.successful(result)
+        self.assertFalse((skills / "user/jeo").exists())
+        self.assertEqual(builtin.read_bytes(), b"builtin stays\n")
+
+    def test_project_prune_is_scoped_to_project_roots(self):
+        project_copy = self.catalog_fixture(self.project / ".agents/skills", "jeo")
+        home_copy = self.catalog_fixture(self.home / ".agents/skills", "jeo")
+
+        result = self.cli("prune-retired")
+        self.successful(result)
+        self.assertIn(f"Retired skill removed: {project_copy}", result.stdout)
+        self.assertFalse(project_copy.exists())
+        self.assertTrue(home_copy.exists())
+
+    def test_project_install_cleans_retired_copy_and_dry_run_is_byte_stable(self):
+        retired = self.catalog_fixture(self.project / ".agents/skills", "harness")
+        result = self.cli("install", "alpha", "--agent", "universal", "--yes",
+                          "--source", str(self.source))
+        self.successful(result)
+        self.assert_skill(self.project / ".agents/skills", "alpha")
+        self.assertFalse(retired.exists())
+        self.assertIn(f"Retired skill removed: {retired}", result.stdout)
+
+        dry_retired = self.catalog_fixture(self.project / ".agents/skills", "harness")
+        before = self.snapshot()
+        dry_run = self.cli("install", "alpha", "--agent", "universal", "--yes",
+                            "--source", str(self.source), "--dry-run")
+        self.successful(dry_run)
+        self.assertIn(f"Retired skill would-remove: {dry_retired}", dry_run.stdout)
+        self.assertEqual(self.snapshot(), before)
+
+    def test_gjc_projection_cleans_retired_copy(self):
+        retired = self.catalog_fixture(self.project / ".gjc/skills", "jeo")
+        result = self.cli("install", "alpha", "--agent", "gjc", "--yes",
+                          "--source", str(self.source))
+        self.successful(result)
+        self.assert_skill(self.project / ".agents/skills", "alpha")
+        self.assert_skill(self.project / ".gjc/skills", "alpha")
+        self.assertFalse(retired.exists())
+        self.assertIn(f"Retired skill removed: {retired}", result.stdout)
+
+    def test_gjc_projection_cleanup_removes_linked_retired_copy(self):
+        shared = self.catalog_fixture(self.project / ".agents/skills", "harness")
+        projection_root = self.project / ".gjc/skills"
+        projection_root.mkdir(parents=True)
+        linked = projection_root / "harness"
+        linked.symlink_to(shared, target_is_directory=True)
+
+        result = self.cli("install", "alpha", "--agent", "gjc", "--yes",
+                          "--source", str(self.source))
+        self.successful(result)
+        self.assert_skill(self.project / ".agents/skills", "alpha")
+        self.assert_skill(self.project / ".gjc/skills", "alpha")
+        self.assertFalse(shared.exists())
+        self.assertFalse(linked.exists())
+        self.assertFalse(linked.is_symlink())
+        self.assertIn(f"Retired skill removed: {shared}", result.stdout)
+        self.assertIn(f"Retired skill removed: {linked}", result.stdout)
+
+        shared = self.catalog_fixture(self.project / ".agents/skills", "harness")
+        linked = projection_root / "harness"
+        linked.symlink_to(shared, target_is_directory=True)
+        before = self.snapshot()
+        preview = self.cli("install", "alpha", "--agent", "gjc", "--yes",
+                           "--source", str(self.source), "--dry-run")
+        self.successful(preview)
+        self.assertIn(f"Retired skill would-remove: {shared}", preview.stdout)
+        self.assertIn(f"Retired skill would-remove: {linked}", preview.stdout)
+        self.assertEqual(self.snapshot(), before)
+
+    def test_install_sh_dry_run_prints_cleanup_and_global_bootstrap_removes_pi_copy(self):
+        before = self.snapshot()
+        preview = self.bootstrap(INSTALL_GLOBAL="true", JEO_SKILLS_DRY_RUN="true")
+        self.successful(preview)
+        self.assertIn("prune-retired --global", preview.stdout)
+        self.assertEqual(self.snapshot(), before)
+
+        retired = self.catalog_fixture(self.home / ".pi/agent/skills", "jeo")
+        result = self.bootstrap(INSTALL_GLOBAL="true", JEO_SKILLS_JEV="skip")
+        self.successful(result)
+        self.assertFalse(retired.exists())
+
+    def test_retired_catalog_metadata_matches_cleanup_registry(self):
+        scripts = ROOT / ".agent-skills/jeo-skill/scripts"
+        previous_dont_write = sys.dont_write_bytecode
+        sys.dont_write_bytecode = True
+        sys.path.insert(0, str(scripts))
+        try:
+            import install_support
+        finally:
+            sys.path.pop(0)
+            sys.dont_write_bytecode = previous_dont_write
+        catalog = json.loads((ROOT / ".agent-skills/skills.json").read_text())
+        retired = catalog["retired_skills"]
+        live = {row["name"] for row in catalog["skills"]}
+        for name, (replacement, _heading) in install_support.RETIRED_INSTALLS.items():
+            with self.subTest(name=name):
+                self.assertIn(name, retired)
+                self.assertEqual(retired[name]["replacement"], replacement)
+                self.assertNotIn(name, live)
 
     def test_doctor_bounds_a_hung_node_version_check(self):
         node = self.bin / "node"

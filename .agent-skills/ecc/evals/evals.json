@@ -24,9 +24,9 @@
     {
       "id": 3,
       "prompt": "ECC로 우리 팀에 맞는 에이전트 조직을 새로 설계해줘.",
-      "expected_output": "The skill routes bespoke team design to the local harness skill rather than treating ECC installation as the design solution.",
+      "expected_output": "The skill routes bespoke team design to the local harness2 skill (method mode) rather than treating ECC installation as the design solution.",
       "assertions": [
-        "The response routes custom agent-team architecture to `harness`",
+        "The response routes custom agent-team architecture to `harness2`",
         "The response does not install ECC merely because the request needs multiple agents",
         "The response distinguishes a harness installation from a project-specific workflow design"
       ]

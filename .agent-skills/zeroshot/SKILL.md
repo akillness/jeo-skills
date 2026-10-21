@@ -48,7 +48,7 @@ before installation or compatibility claims.
 Do **not** use this skill merely because a task could benefit from several agents. Use
 `task-planning`, `tdd`, or one focused coding agent when one executor plus one test loop
 is enough. Use `ooo` for a larger specification-first loop. Use `code-review` for review
-of an existing diff or PR. Use `harness` when designing a reusable multi-agent team
+of an existing diff or PR. Use `harness2` when designing a reusable multi-agent team
 rather than operating ZeroShot.
 
 ## Instructions

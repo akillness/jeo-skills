@@ -15,7 +15,7 @@ compatibility: >
   Linux host required for building/flashing (installer refuses non-removable
   disks). Needs Rust (stable + nightly), QEMU/OVMF for emulator testing, and
   ~6 GB free disk per model. Raspberry Pi 5 target additionally needs a
-  pinned UEFI firmware build. Pairs with `harness`/`build-fix` for general
+  pinned UEFI firmware build. Pairs with `build-fix` for general
   Rust workspace debugging.
 metadata:
   tags: nightrun, rust, no_std, uefi, bare-metal, local-llm, llama-cpp-parity, gguf, qemu, raspberry-pi
@@ -49,7 +49,7 @@ Pi 5). This skill drives the build → convert → test → flash workflow safel
 - General local-LLM serving without bare-metal/no-OS constraints → use a
   normal inference runtime, not this skill
 - Generic Rust workspace refactors unrelated to the boot/model/kernel path →
-  use `harness` or `build-fix`
+  use `build-fix`
 - Cross-compiling for targets other than x86_64 UEFI / Raspberry Pi 5 → out
   of scope; NightRun is UEFI-only, no legacy BIOS
 

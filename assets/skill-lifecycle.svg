@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1870" viewBox="0 0 1200 1870" role="img" aria-labelledby="title desc">
+  <title id="title">Skill usage, reversible local quarantine, and catalog retirement</title>
+  <desc id="desc">Runtime invocation and load records feed usage scan and report. Optional Jev hooks already enabled by the user may append injected and routed events to jev-usage.jsonl before the first scan; only full-body injections count as use, never routed-only entries. Usage scan creates aggregate tracker state and starts the thirty-day grace clock. Used skills and protected skills stay; candidates require zero uses across all history and a thirty-day grace. Prune-unused previews before apply, rescans, and requires a Jev review or recorded skip. Only provable catalog copies enter reversible quarantine, followed by restore or permanent purge. A separate maintainer lane consumes report JSON, previews catalog retirement, requires named approval, regenerates and validates projections, and rolls back on failure. Installers do not start tracking or register hooks.</desc>
+  <defs>
+    <style>
+      text{fill:#12231E;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:21px}
+      .heading{font-size:34px;font-weight:700}.label{font-size:24px;font-weight:700}.small{font-size:19px}
+      .cmd{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:19px}
+      .card{fill:#FFFFFF;stroke:#137E73;stroke-width:2}
+      .flow{fill:none;stroke:#137E73;stroke-width:3;marker-end:url(#arrow)}
+      .branch{fill:none;stroke:#AC6415;stroke-width:2;stroke-dasharray:9 7}
+    </style>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0 10 5 0 10Z" fill="#137E73"/></marker>
+  </defs>
+  <rect width="1200" height="1870" fill="#F7F9F5"/>
+  <text x="40" y="60" class="heading">Observe use before removing skills.</text>
+  <text x="40" y="97">Local quarantine and maintainer catalog retirement have separate scopes.</text>
+
+  <rect x="40" y="130" width="1120" height="120" rx="16" class="branch"/>
+  <text x="64" y="164" class="label">Optional Jev ledger · pre-enabled hooks</text>
+  <text x="64" y="197" class="cmd">jev-usage.jsonl</text>
+  <text x="310" y="197" class="small">User-enabled hooks may append before the first usage scan.</text>
+  <text x="64" y="230" class="small">Injected / routed events: only full-body injections count as use; routed-only entries do not.</text>
+  <path d="M212 250V290" class="branch"/>
+  <g transform="translate(0 160)">
+  <rect x="40" y="130" width="345" height="145" rx="16" class="card"/>
+  <text x="64" y="169" class="label">Runtime records</text>
+  <text x="64" y="207" class="small">Invocations and installed loads</text>
+  <text x="64" y="239" class="small">Jev full-body injections count.</text>
+  <path d="M385 204H425" class="flow"/>
+  <rect x="425" y="130" width="345" height="145" rx="16" class="card"/>
+  <text x="449" y="169" class="label">Scan</text>
+  <text x="449" y="210" class="cmd">jeo-skill usage scan</text>
+  <text x="449" y="237" style="font-size:15px">Creates aggregate tracker state;</text>
+  <text x="449" y="263" style="font-size:15px">starts the thirty-day grace clock.</text>
+  <path d="M770 204H810" class="flow"/>
+  <rect x="810" y="130" width="350" height="145" rx="16" class="card"/>
+  <text x="834" y="169" class="label">Report</text>
+  <text x="834" y="210" class="cmd">jeo-skill usage report</text>
+  <text x="834" y="246" class="small">History survives rotated logs.</text>
+  <text x="40" y="310" class="small">Installers do not start tracking or register hooks. Mentions and catalog-source reads do not count.</text>
+  <path d="M985 275V337H600V365" class="flow"/>
+
+  <rect x="40" y="365" width="345" height="160" rx="16" fill="#EDF1E9" stroke="#137E73" stroke-width="2"/>
+  <text x="64" y="404" class="label">Used → keep</text>
+  <text x="64" y="446">Invoked or loaded</text>
+  <text x="64" y="485" class="small">A mention is not usage.</text>
+  <rect x="410" y="365" width="380" height="160" rx="16" fill="#E4F1E9" stroke="#137E73" stroke-width="3"/>
+  <text x="434" y="404" class="label">Candidate</text>
+  <text x="434" y="444" class="small">Zero uses across all history</text>
+  <text x="434" y="478" class="small">Plus thirty-day grace from scan</text>
+  <text x="434" y="507" class="small">or first installed sighting, if later</text>
+  <rect x="815" y="365" width="345" height="160" rx="16" fill="#EDF1E9" stroke="#137E73" stroke-width="2"/>
+  <text x="839" y="404" class="label">Protected → keep</text>
+  <text x="839" y="446">Protected skills are excluded</text>
+  <text x="839" y="485" class="small">even with no recorded use.</text>
+
+  <rect x="40" y="553" width="1120" height="105" rx="16" fill="#EDF1E9"/>
+  <text x="64" y="588" class="small">Protections: jeo-skill · starter / cli-core / infrastructure-core bundles</text>
+  <text x="64" y="625" class="cmd">jeo-skill usage keep &lt;name&gt;</text>
+  <text x="545" y="625" class="small">plus usage relevance protections</text>
+  <path d="M600 525V553M600 658V698" class="flow"/>
+
+  <rect x="40" y="698" width="1120" height="110" rx="16" class="card"/>
+  <text x="64" y="736" class="label">Local install cleanup · preview</text>
+  <text x="64" y="778" class="cmd">jeo-skill prune-unused --global</text>
+  <text x="675" y="778" class="small">Read-only plan; no moves</text>
+  <path d="M600 808V848" class="flow"/>
+
+  <rect x="40" y="848" width="1120" height="210" rx="16" class="card"/>
+  <text x="64" y="886" class="label">Apply · rescan first, then review gate</text>
+  <text x="64" y="927" class="cmd">jeo-skill prune-unused --global --apply</text>
+  <rect x="64" y="950" width="591" height="84" rx="10" class="branch"/>
+  <text x="82" y="982" class="cmd">--jev-profile jeopi --allow-remote</text>
+  <text x="82" y="1013" class="small">Jev receipt; deny / unavailable aborts apply</text>
+  <rect x="685" y="950" width="451" height="84" rx="10" class="branch"/>
+  <text x="703" y="982" class="cmd">--skip-jev-review</text>
+  <text x="703" y="1013" class="small">Alternative: record the explicit skip</text>
+  <path d="M600 1058V1098" class="flow"/>
+
+  <rect x="40" y="1098" width="1120" height="110" rx="16" class="card"/>
+  <text x="64" y="1135" class="label">Reversible quarantine batch · manifest and review / skip record</text>
+  <text x="64" y="1176" class="small">Only provable catalog copies move. Unproven copies, symlinks, and linked roots stay.</text>
+  <path d="M600 1208V1228H307V1250M600 1228H892V1250" class="flow"/>
+  <rect x="40" y="1250" width="535" height="116" rx="16" class="card"/>
+  <text x="64" y="1287" class="label">Restore from the batch</text>
+  <text x="64" y="1321" class="cmd">jeo-skill restore --list</text>
+  <text x="64" y="1348" class="cmd" style="font-size:15px">jeo-skill restore --batch &lt;batch-id&gt; --apply</text>
+  <rect x="615" y="1250" width="545" height="116" rx="16" class="card"/>
+  <text x="639" y="1287" class="label">Purge quarantine · permanent</text>
+  <text x="639" y="1321" class="cmd">jeo-skill purge-quarantine</text>
+  <text x="639" y="1348" class="cmd">  --older-than &lt;days&gt; --apply</text>
+
+  <rect x="40" y="1410" width="1120" height="260" rx="16" fill="#EDF1E9" stroke="#12231E" stroke-width="2"/>
+  <text x="64" y="1450" class="label">Maintainer lane · catalog retirement in a repository checkout</text>
+  <text x="64" y="1488" class="cmd">jeo-skill usage report --json &gt; report.json</text>
+  <path d="M600 1500V1520" class="flow"/>
+  <text x="64" y="1548" class="cmd">python3 scripts/retire-unused-skills.py --usage-report report.json</text>
+  <text x="64" y="1582" class="small">Preview first. Then add:</text>
+  <text x="361" y="1582" class="cmd">--apply --approve name[,name]</text>
+  <text x="64" y="1618" class="small">Use the Jev gate above or a recorded --skip-jev-review for this separate apply.</text>
+  <text x="64" y="1650">Regenerate projections → validate → roll back on failure</text>
+  </g>
+</svg>

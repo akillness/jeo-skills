@@ -16,7 +16,7 @@ edges:
     condition: when the task touches skills.json, SKILL.md frontmatter, README/TOON projections, or CI catalog validation
   - target: patterns/INDEX.md
     condition: when starting a task — check the pattern index for a matching pattern file
-last_updated: 2026-10-15
+last_updated: 2026-10-21
 ---
 
 # Session Bootstrap
@@ -28,6 +28,59 @@ Then read this file fully before doing anything else in this session.
 ## Current Project State
 
 **Working:**
+
+- README/visual refresh 2 (2026-10-21): English/Korean/Spanish READMEs now document skill
+  usage tracking (`usage`, `prune-unused`, `restore`, `purge-quarantine`, maintainer
+  `retire-unused-skills.py` with a required Jev review choice), 18 operator preflights, and the
+  corrected host split: Claude Code loads native `~/.claude/skills`, not the shared root (also
+  fixed in `setup-all-skills-prompt.md` Step 3/4D). Duplicate `ooo` docs merged, gti/plannotator
+  commands fixed, EN structure fence closed. New visuals: Codex cover `assets/readme-cover.webp`
+  (gti private-codex) and Codex-authored `catalog-install-flow.svg`, `runtime-boundaries.svg`,
+  `skill-lifecycle.svg`; old cover/diagrams and the orphan `assets/scrapingant/` logo deleted.
+  Root `CHANGELOG.md` gained 2026-10-15 and 2026-10-21. Runbook:
+  `patterns/readme-visual-refresh.md`.
+
+- harness2 replacement and four operators (2026-10-21): `harness` (revfactory) retired to
+  `harness2` (google-research/harness2 @ `1cfe254e`, Apache-2.0; agent-team design moved to
+  its method mode, every route-out repointed); added `ruflo`, `voicestudio`,
+  `diagram-design`, `artcraft` as commit-pinned operators with offline preflights (catalog
+  369 → 373; new groups `agent-harness-optimization`, `voice-generation`,
+  `diagram-authoring`, `generative-scene-studios`, `agent-swarm-runtimes`). Installs now
+  remove fingerprint-matched stale catalog copies of retired `jeo`/`harness`
+  (`install_support.RETIRED_INSTALLS`, `jeo-skill prune-retired`, `install.sh`, setup guide
+  Step 4E). Evidence: installer 63/63 (vendored `scripts/fixtures/retired-skills/*.fixture`,
+  no git history needed), preflight 15/15 with `TMPDIR=/private/tmp/...`, catalog gates
+  pass; documented full install (Steps 4–4E, 7) passed end to end with real skills@1.7.0 in
+  an isolated HOME seeded from this machine's stale copies, sourced from a committed local
+  snapshot via a git `insteadOf` redirect (public HEAD not yet pushed), with real
+  jeopi/OMP/GJC loader probes (OpenCode: placement only); upstream harness2 demo 2/2 in both
+  modes + unit 5/5 in an isolated clone. Jev (jeopi, api,
+  unvalidated) routed the task and returned `proposal_only` on the cleanup review. Real
+  HOME (user-approved, 2026-10-21): the five new skills were installed from the local
+  checkout into the shared root, GJC and Antigravity CLI only, and 11 retired entries were
+  removed after a backup at `~/.agents/.jeo-quarantine/retired-20261021160539/`. The five
+  copies also added to `~/.claude/skills` and Aside (outside the approved scope) were
+  removed again. There is no APFS snapshot, so "absent before the run" rests on the
+  session-start skill inventory, the names' absence from git history and Aside state before
+  today, and exact file-set equality with the repo. A same-named file that differed would
+  have been overwritten unrecoverably at install time. The installed router (`~/.local/bin/jeo-skill`) is still the old
+  build without `prune-retired`, and `.skill-lock.json` still lists `jeo`/`harness`.
+  Runbooks: `patterns/jeo-skill-install-flow.md`, `patterns/catalog-metadata-changes.md`.
+
+- Skill usage tracking + unused-skill cleanup (2026-10-21, interview-approved D1-D12):
+  `jeo-skill usage scan|report|keep|unkeep|relevance`, `prune-unused` (preview read-only;
+  `--apply` rescans, Jev review gate or recorded skip, reversible quarantine), `restore`,
+  `purge-quarantine`; maintainer `scripts/retire-unused-skills.py` for catalog retirement.
+  Logic lives in `skill_usage.py`/`skill_quarantine.py`/`skill_jev.py`/`skill_usage_cli.py`;
+  `jeo-skill.py` only registers/dispatches. Jev hooks append `jev-usage.jsonl` (injected vs
+  routed). Evidence: usage 7, quarantine 15, retirement 7 Python tests and 4 node ledger
+  tests pass; Jev runtime/codex/lifecycle 64 pass; catalog gates pass; installer 63/63 with
+  `TMPDIR=/private/tmp/...` (4 prune-retired assertions fail under macOS `/var` TMPDIR —
+  pre-existing `/private/var` path reporting, not this change). Real-data read-only scan
+  (state in /tmp): 205 of 373 catalog skills used, 168 never; after grace a preview would
+  quarantine 922 provable copies and keep 209. Real tracking state was NOT started and no
+  host hook was installed (user chose docs + snippet). Installed `~/.agents/jev` and the
+  installed router are not updated. Runbook: `patterns/skill-usage-lifecycle.md`.
 
 - Publication preparation (2026-10-15): reconciled the upstream OKF addition and
   retained the 368-skill catalog. Focused Python 31, Node 28 and all eight README
@@ -94,7 +147,7 @@ Then read this file fully before doing anything else in this session.
   No public guide/README patch or push was made by this audit; deployment/model
   execution and fresh Linux/Windows setup are not claimed.
 
-- The catalog manifest (`.agent-skills/skills.json`, 369 skills) and its three
+- The catalog manifest (`.agent-skills/skills.json`, 373 skills) and its three
   projections (`.agent-skills/skills.toon`, `README.md`/`README.ko.md`/`README.es-ES.md`
   category tables, each skill's own SKILL.md frontmatter) are validated end-to-end by
   `scripts/validate-catalog-projections.py`, wired into `.github/workflows/ci.yml`

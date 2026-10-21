@@ -47,9 +47,9 @@
     {
       "id": 5,
       "prompt": "Help me design the roles and handoffs for a new multi-agent team before I choose a runtime.",
-      "expected_output": "The request routes to harness for team architecture rather than configuring Paperclip prematurely.",
+      "expected_output": "The request routes to harness2 for team architecture rather than configuring Paperclip prematurely.",
       "assertions": [
-        "Response routes to `harness` for agent-team design",
+        "Response routes to `harness2` for agent-team design",
         "Response does not create Paperclip agents or a Paperclip company"
       ]
     },

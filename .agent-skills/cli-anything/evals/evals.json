@@ -24,9 +24,9 @@
     {
       "id": 3,
       "prompt": "I want to design a team of specialized agents with their own skills for my data pipeline project.",
-      "expected_output": "A route-out to the `harness` skill (agent-team architecture), since this is not a software CLI wrapper request.",
+      "expected_output": "A route-out to the `harness2` skill (agent-team design through its method mode), since this is not a software CLI wrapper request.",
       "assertions": [
-        "Output routes to `harness` instead of running cli-anything modes.",
+        "Output routes to `harness2` instead of running cli-anything modes.",
         "Output explains the boundary: cli-anything wraps software in CLIs; agent-team design belongs elsewhere.",
         "Output does not install cli-anything-hub or start the 7-phase pipeline."
       ]

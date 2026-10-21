@@ -1,7 +1,7 @@
 {
-  "updated": "2026-10-15",
+  "updated": "2026-10-21",
   "purpose": "Current README cover and source-accurate workflow diagrams",
-  "post_edit": "2026-10-15: Maintainer removed snapshot skill/category counts from the Codex SVGs to avoid drift after catalog additions; no image was regenerated.",
+  "post_edit": "2026-10-21: two Codex correction runs, no manual asset edits. Run 1 added the optional pre-enabled Jev ledger input before usage scan, scan-created aggregate state and grace-clock wording, and explicit restore flags. Run 2 (exit 0, after an 850px render review) added intrinsic width/height to all three SVGs, rerouted the catalog connector that crossed the 'Placement is one step' text, and changed the Verify line to the jeo-skill doctor report fields.",
   "palette": {
     "paper": "#F7F9F5",
     "ink": "#12231E",
@@ -9,7 +9,7 @@
     "optional": "#AC6415"
   },
   "hero": {
-    "path": "assets/readme-hero.webp",
+    "path": "assets/readme-cover.webp",
     "generator": "god-tibo-imagen (gti)",
     "provider": "private-codex",
     "request_model": "gpt-6-luna",
@@ -19,25 +19,30 @@
     "returned_format": "WebP",
     "published_size": "1600x900",
     "published_format": "WebP",
-    "conversion": "ImageMagick resize into a 1600x900 canvas; WebP quality 86",
-    "selection": "Architectural library-card composition, selected from two generated variants",
-    "prompt": "Create a polished editorial cover image for the open-source project jeo-skills. Wide landscape composition, exact 16:9 canvas, 2048x1152. Subject: a beautifully organized library of modular agent skill cards, illustrated as precise architectural paper-and-ceramic objects rather than a real dashboard. A single central catalog block connects to a small routing hub, which fans out into three distinct groups of selected skill cards; a thin secondary branch represents optional tools, never the main path. Communicate curated knowledge, selective installation, composable workflows, and evidence-based verification. Style: premium restrained architectural 3D editorial illustration with technically precise geometry, crisp edges, gentle tactile paper textures, clean warm-offwhite #F7F9F5 background, forest-ink #12231E, muted jade #137E73, sage green and tiny amber #AC6415 accents. Lighting: soft natural studio light, elegant low shadows, no neon, no glowing purple gradients, no noisy particles. Composition: hero objects on the right two-thirds, generous calm left area with the product wordmark jeo-skills in dark forest ink, sharp, legible, correctly spelled, clean understated sans-serif. Under it ONLY the short phrase Select. Install. Verify. sharp and legible. No other text, numbers, dates, provider logos or fake metrics. No people, wizard, weapons, carpet, fantasy objects, terminal screenshot or real application UI. Make the central objects distinct and the connection pathways clear. This is a static product illustration for a GitHub README, coherent with hand-editable warm-white/teal architecture SVGs.",
-    "boundary": "Illustrative product cover, not a runtime screenshot. Generation uses an undocumented Codex backend; no public API stability guarantee. No account identifiers or credentials are included."
+    "published_size_bytes": 76052,
+    "conversion": "ImageMagick magick resize-and-center-crop to an exact 1600x900 canvas; WebP quality 86",
+    "selection": "Variant 2 selected from two private-codex variants after image inspection; it had no visible letterforms, logos, or stray text, with shape marks used only as abstract card distinctions.",
+    "prompt": "Premium restrained architectural 3D editorial illustration for the open-source project jeo-skills. Exact 16:9 wide canvas, absolutely NO text, letters, numbers, symbols, logos, labels, UI, or readable marks anywhere. Arrange a central catalog monolith of modular paper and ceramic skill cards feeding a compact teal routing hub; the hub fans into selected card groups in separate orderly shelves for shared root and native shelves. Show a quiet circular lifecycle loop beside it: unused cards settle in a distinct geometric quarantine tray and can return; two legacy cards slide into a clean archive slot. Add only a thin amber side branch representing optional tools, never the main path. Palette: paper #F7F9F5 background, ink #12231E, teal #137E73 main accents, amber #AC6415 only on optional branch; soft daylight, generous negative space, crisp architectural geometry, tactile paper texture, low shadows, premium restrained editorial product art, no people, no fantasy, no terminal screenshot, no decorative typography. Ensure every surface is abstract and text-free.",
+    "boundary": "Illustrative product cover, not a runtime screenshot. Generation uses the undocumented private Codex backend through gti; no public API stability guarantee. No account identifiers or credentials are included."
   },
   "diagrams": {
     "paths": [
-      "assets/catalog-workflow.svg",
-      "assets/runtime-architecture.svg"
+      "assets/catalog-install-flow.svg",
+      "assets/runtime-boundaries.svg",
+      "assets/skill-lifecycle.svg"
     ],
-    "authoring": "Codex app-server",
+    "authoring": "Codex exec via codex-cli 0.163.0",
     "sandbox": "workspace-write",
-    "thread": "ephemeral; only the two assigned SVG files in write scope",
+    "write_scope": "Ephemeral Codex sessions were instructed to write only the three listed SVG paths; correction run 1 changed only assets/skill-lifecycle.svg, correction run 2 changed the three SVGs.",
     "source_of_truth": [
       ".agent-skills/skills.json",
       "install.sh",
-      ".agent-skills/jeo-skill/",
-      "jev/README.md"
+      ".agent-skills/jeo-skill/SKILL.md",
+      ".agent-skills/jeo-skill/scripts/jeo-skill.py",
+      "jev/README.md",
+      ".mex/patterns/skill-usage-lifecycle.md"
     ],
-    "boundary": "Static editable diagrams; installation, host activation and optional backend execution remain distinct."
+    "boundary": "Static editable diagrams; catalog placement, host permissions/model selection/execution, optional Jev or Jevgrep integrations, and upstream runtime activation remain distinct. Optional branches are dashed amber; the maintainer catalog-retirement lane is separate from local quarantine.",
+    "post_edit": "Codex corrections only (both exit 0): run 1 added the pre-enabled Jev jev-usage.jsonl input before scan, scan-created aggregate state and thirty-day grace, and restore command forms; run 2 added intrinsic width/height, rerouted the catalog connector off text, and aligned the Verify line with jeo-skill doctor output (catalog source, installer prerequisites, CLI link state). Transform-aware 1200px and visual 850px checks: no text outside the viewBox, no text overlaps, no connector crossing text."
   }
 }

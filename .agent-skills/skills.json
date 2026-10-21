@@ -1,7 +1,7 @@
 {
   "version": "2.1.0",
   "generated": "2026-10-15",
-  "skill_count": 369,
+  "skill_count": 373,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -261,7 +261,10 @@
       "higgsfield-youtube-thumbnail",
       "higgsfield-video-explainer",
       "higgsfield-brandkit",
-      "shopping-shorts"
+      "shopping-shorts",
+      "voicestudio",
+      "diagram-design",
+      "artcraft"
     ],
     "cli-tools": [
       "soup",
@@ -372,7 +375,9 @@
       "jev-control-plane",
       "anyjev",
       "typesafe-computer-use",
-      "jev-ultrafast"
+      "jev-ultrafast",
+      "harness2",
+      "ruflo"
     ],
     "engineering": [
       "audit-reference-originality",
@@ -385,7 +390,6 @@
       "migrate-to-shoehorn",
       "performance-optimization",
       "performance-profiling",
-      "harness",
       "scaffold-exercises",
       "tdd",
       "testing-strategies",
@@ -711,18 +715,21 @@
         "video-motion-previs"
       ],
       "audio": [
-        "elevenlabs-tts"
+        "elevenlabs-tts",
+        "voicestudio"
       ],
       "presentation": [
         "presentation-builder"
       ],
       "diagram": [
-        "drawio"
+        "drawio",
+        "diagram-design"
       ],
       "design": [
         "open-design",
         "blender-mcp",
-        "higgsfield-brandkit"
+        "higgsfield-brandkit",
+        "artcraft"
       ],
       "capture": [],
       "storytelling": [
@@ -800,7 +807,8 @@
         "paperclip",
         "jev-control-plane",
         "typesafe-computer-use",
-        "jev-ultrafast"
+        "jev-ultrafast",
+        "ruflo"
       ],
       "agent-frameworks": [
         "microsoft-agent-framework",
@@ -836,7 +844,8 @@
         "kadath",
         "agent-benchmarking",
         "agent-observability",
-        "multi-agent-eval-harness"
+        "multi-agent-eval-harness",
+        "harness2"
       ],
       "memory": [
         "mex",
@@ -884,7 +893,6 @@
         "implement"
       ],
       "testing": [
-        "harness",
         "scaffold-exercises",
         "tdd",
         "testing-strategies"
@@ -1227,6 +1235,16 @@
       "replacement": "task-planning",
       "replacement_type": "skill",
       "reason": "pm-skills recipe merged; capacity math, Definition-of-Ready gate, and the sprint summary now live in task-planning/references/sprint-planning-recipe.md."
+    },
+    "harness": {
+      "replacement": "harness2",
+      "replacement_type": "skill",
+      "reason": "Replaced on 2026-10-21 by the google-research/harness2 operator; agent-team design now runs through harness2 method mode (subagents component plus execution probes)."
+    },
+    "jeo": {
+      "replacement": "ooo",
+      "replacement_type": "skill",
+      "reason": "Removed from the catalog in f96d10d8 (2026-05-28); spec-first orchestration routes through ooo. Installers remove stale catalog-fingerprinted jeo copies."
     }
   },
   "relationship_groups": {
@@ -1251,8 +1269,7 @@
       "members": [
         "tdd",
         "testing-strategies",
-        "backend-testing",
-        "harness"
+        "backend-testing"
       ]
     },
     "performance": {
@@ -1621,9 +1638,10 @@
         "paperclip",
         "agent-manager",
         "openexecutive",
-        "harness"
+        "ruflo",
+        "harness2"
       ],
-      "note": "Paperclip is the agent-company control plane; agent-manager is local tmux lifecycle management; openexecutive is a fixed virtual-executive application; harness owns agent-team architecture. These are adjacent surfaces, not aliases. Paperclip references were audited at paperclipai/paperclip 0f14d261233c545aa6a8a38ec253c498a5130fff (2026-09-27)."
+      "note": "Paperclip is the agent-company control plane; agent-manager is local tmux lifecycle management; openexecutive is a fixed virtual-executive application; ruflo is a repository-local swarm/hive-mind orchestration engine; harness2 owns agent-harness and agent-team design and refinement. These are adjacent surfaces, not aliases. Paperclip references were audited at paperclipai/paperclip 0f14d261233c545aa6a8a38ec253c498a5130fff (2026-09-27)."
     },
     "jev-project-operators": {
       "mode": "related",
@@ -1652,6 +1670,51 @@
         "rtk"
       ],
       "note": "Context Mode executes subprocesses and indexes tool output with host-specific MCP/hook support, Headroom compresses transport, and RTK filters shell output. Context Mode is not an OS/security sandbox. Inspect existing ownership before enabling any combination; catalog installation does not activate these runtimes or hooks."
+    },
+    "agent-harness-optimization": {
+      "mode": "layered",
+      "members": [
+        "harness2",
+        "skill-autoresearch",
+        "multi-agent-eval-harness"
+      ],
+      "note": "harness2 refines a whole agent harness from execution contrasts (google-research/harness2 pinned at 1cfe254e8d25b15f37048c3730134686abe60335); skill-autoresearch ratchets one SKILL.md against a frozen eval; multi-agent-eval-harness grades coordination failures."
+    },
+    "voice-generation": {
+      "mode": "adjacent",
+      "members": [
+        "voicestudio",
+        "elevenlabs-tts"
+      ],
+      "note": "voicestudio runs local cloning, voice design and dubbing (debpalash/VoiceStudio pinned at 28bf2c7a83b8a64836297340c52a45d716684aed, AGPL-3.0-only); elevenlabs-tts owns hosted ElevenLabs generation."
+    },
+    "diagram-authoring": {
+      "mode": "adjacent",
+      "members": [
+        "diagram-design",
+        "drawio",
+        "paperbanana"
+      ],
+      "note": "diagram-design authors self-contained HTML/SVG editorial diagrams (cathrynlavery/diagram-design pinned at f2f4d49ea8d632f17cf196ba26599277a93f767b); drawio owns editable .drawio and CLI exports; paperbanana owns academic figures."
+    },
+    "generative-scene-studios": {
+      "mode": "adjacent",
+      "members": [
+        "artcraft",
+        "open-generative-ai",
+        "openstory",
+        "blender-mcp"
+      ],
+      "note": "artcraft is a scene-blocking creator IDE (storytold/artcraft pinned at 40e04793b504147de97ba1f0659d3975167524e5, MIT OR Apache-2.0); open-generative-ai is a hosted multi-provider studio; openstory sequences script-to-video; blender-mcp drives Blender."
+    },
+    "agent-swarm-runtimes": {
+      "mode": "adjacent",
+      "members": [
+        "ruflo",
+        "zeroshot",
+        "ooo"
+      ],
+      "note": "ruflo (ruvnet/ruflo, formerly claude-flow, pinned at a00b2855e5b8204aec61133d5fbc53060e1726b5, MIT) runs swarm/hive-mind orchestration; zeroshot runs graph-verified provider-CLI workflows; ooo freezes the spec first."
     }
   },
   "model_policies": {
@@ -5891,7 +5954,7 @@
     },
     {
       "name": "ecc",
-      "description": "Install, configure, verify, update, or recover affaan-m/ECC, the MIT-licensed agent harness with native Claude Code and Codex plugins plus selective adapters for other supported clients. Use when the user names ECC, Everything Claude Code, ecc-universal, ecc@ecc, `ecc setup`, or an ECC plugin, hook, rule, skill, or harness installation. Route generic agent-team design to `harness`, delivery workflow selection to `agentic-skills`, and BMAD phase selection to `bmad`.",
+      "description": "Install, configure, verify, update, or recover affaan-m/ECC, the MIT-licensed agent harness with native Claude Code and Codex plugins plus selective adapters for other supported clients. Use when the user names ECC, Everything Claude Code, ecc-universal, ecc@ecc, `ecc setup`, or an ECC plugin, hook, rule, skill, or harness installation. Route generic agent-team design to `harness2`, delivery workflow selection to `agentic-skills`, and BMAD phase selection to `bmad`.",
       "category": "ai-agents",
       "subcategory": "orchestration",
       "interface": "cli",
@@ -7003,37 +7066,6 @@
       "keyword": "performance-profiling",
       "version": "1.0",
       "source": "https://github.com/MengTo/Skills/tree/main/agent-skills/codex/performance-profiling"
-    },
-    {
-      "name": "harness",
-      "description": "Design domain-specific agent teams, define specialized agents, and generate the skills they use. Use when you need to decompose a complex project into coordinated multi-agent teams, choose the right architecture pattern (pipeline, fan-out/fan-in, expert pool, producer-reviewer, supervisor, hierarchical delegation), generate .claude/agents/ and .claude/skills/ files, or validate and iterate on generated harnesses. Triggers on: harness, build a harness, design agent team, agent team architecture, multi-agent skill generation, set up harness, harness engineering, domain agent team, harness for this project.",
-      "category": "engineering",
-      "subcategory": "testing",
-      "interface": "workflow",
-      "path": "harness/SKILL.md",
-      "tags": [
-        "harness",
-        "agent-team",
-        "multi-agent",
-        "skill-generation",
-        "orchestration",
-        "meta-skill",
-        "claude-code"
-      ],
-      "platforms": [],
-      "allowed_tools": [
-        "Bash",
-        "Read",
-        "Write",
-        "Edit",
-        "Glob",
-        "Grep",
-        "WebFetch",
-        "Agent"
-      ],
-      "keyword": "harness",
-      "version": "1.0",
-      "source": "https://github.com/revfactory/harness"
     },
     {
       "name": "scaffold-exercises",
@@ -9149,7 +9181,7 @@
     },
     {
       "name": "solo-skills",
-      "description": "Audit, selectively adapt, install, route, and maintain the Korean solopreneur skill pack from bam-bam-2/solo-skills. Use when the user names solo-skills, bam-bam-2/solo-skills, its 26-skill collection, or `fleet.md`; wants a pinned inventory or selective install; needs to choose among its content, messaging, publishing, remote, media, or agent workflows; or needs to remove author-specific assumptions before adoption. Inspect frontmatter, support scripts, licenses, destination collisions, personal paths, account IDs, credential names, network targets, schedulers, permission-bypass flags, and live-action switches before copying or running anything. Require explicit approval for external messages, publishing, archives, remote commands, desktop control, scheduled agents, paid providers, account access, or local persistence. Route generic agent-team design to the canonical local `harness` and reusable skill authoring to `skill-standardization`.",
+      "description": "Audit, selectively adapt, install, route, and maintain the Korean solopreneur skill pack from bam-bam-2/solo-skills. Use when the user names solo-skills, bam-bam-2/solo-skills, its 26-skill collection, or `fleet.md`; wants a pinned inventory or selective install; needs to choose among its content, messaging, publishing, remote, media, or agent workflows; or needs to remove author-specific assumptions before adoption. Inspect frontmatter, support scripts, licenses, destination collisions, personal paths, account IDs, credential names, network targets, schedulers, permission-bypass flags, and live-action switches before copying or running anything. Require explicit approval for external messages, publishing, archives, remote commands, desktop control, scheduled agents, paid providers, account access, or local persistence. Route generic agent-team design to the catalog's `harness2` and reusable skill authoring to `skill-standardization`.",
       "category": "utilities",
       "subcategory": "productivity",
       "interface": "workflow",
@@ -13673,6 +13705,167 @@
       "keyword": "jev-ultrafast",
       "version": "1.1.0",
       "source": "https://github.com/browser-use/jev-ultrafast"
+    },
+    {
+      "name": "harness2",
+      "description": "Operate google-research/harness2 (Harness²), the Apache-2.0 framework for recursive agent harnessing: refine the prompts, guardrails, memory, tool guidance, subagents, skills, scripts, and plugins around a fixed model through contrastive Propose-Probe-Compose steps and a per-domain improvement library. Use when a user wants to run the credential-free local demo, preflight or set up the LAB, JobBench, or WorkBuddy benchmarks, budget and launch a parallel or sequential refinement run with OpenCode or Codex executors, judge and report results, start the Codex bridge, or apply the method by hand to design or refine their own agent harness or agent team. Owns the retired `harness` name. Route reusable SKILL.md ratcheting to `skill-autoresearch`, multi-agent coordination evals to `multi-agent-eval-harness`, production tracing to `agent-observability`, and runtime team execution to `paperclip`, `ruflo`, or `zeroshot`.",
+      "category": "ai-agents",
+      "subcategory": "evaluation",
+      "interface": "cli",
+      "path": "harness2/SKILL.md",
+      "tags": [
+        "harness2",
+        "recursive-harnessing",
+        "propose-probe-compose",
+        "agent-harness",
+        "agent-team",
+        "benchmark",
+        "opencode",
+        "codex"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex CLI",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "harness2",
+      "version": "1.0.0",
+      "source": "https://github.com/google-research/harness2"
+    },
+    {
+      "name": "voicestudio",
+      "description": "Use when operating debpalash/VoiceStudio as a local-first voice cloning, voice design, speech generation, transcription, and video-dubbing repository: inspect the Electron and FastAPI surfaces, check host fit offline, prepare approval-gated installs and launches, map Hugging Face model downloads and licenses, use the local MCP/API, and troubleshoot model, device, port, and media failures without claiming runtime proof. Require documented speaker consent before cloning a real person's voice and refuse impersonation or fraud. Route hosted ElevenLabs TTS to `elevenlabs-tts`, programmatic or templated video assembly to `video-production`, timeline editing to `opencut`, and hosted generative video to `open-generative-ai`.",
+      "category": "creative-media",
+      "subcategory": "audio",
+      "interface": "workflow",
+      "path": "voicestudio/SKILL.md",
+      "tags": [
+        "voice-cloning",
+        "voice-design",
+        "speech",
+        "dubbing",
+        "audio",
+        "hugging-face",
+        "electron",
+        "fastapi"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex CLI",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read"
+      ],
+      "keyword": "voicestudio",
+      "version": "1.0.0",
+      "source": "https://github.com/debpalash/VoiceStudio"
+    },
+    {
+      "name": "ruflo",
+      "description": "Use when operating the source-pinned ruvnet/ruflo repository or Ruflo CLI for fit checks, offline preflight, initialization previews, Claude Code or Codex swarm and hive-mind orchestration, MCP registration, memory inspection, cleanup, rollback, or troubleshooting. Keep the rename boundary explicit: the root package and compatibility CLI expose claude-flow names while current Ruflo docs and the wrapper use ruflo. Separate read-only discovery from commands writing project files, Claude settings, MCP registrations, hooks, helpers, runtime configuration, CLAUDE.md, or memory databases; require approval before installs, package or model downloads, paid or remote calls, servers or ports, credentials, publishing, or destructive cleanup. Route agent-company control-plane work to paperclip, local tmux lifecycle management to agent-manager, graph-based provider-CLI orchestration to zeroshot, specification-first clarification to ooo, and recursive agent-harness optimization to harness2.",
+      "category": "ai-agents",
+      "subcategory": "orchestration",
+      "interface": "cli",
+      "path": "ruflo/SKILL.md",
+      "tags": [
+        "ruflo",
+        "claude-flow",
+        "swarm",
+        "hive-mind",
+        "mcp",
+        "memory",
+        "orchestration"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex CLI",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read"
+      ],
+      "keyword": "ruflo",
+      "version": "1.0.0",
+      "source": "https://github.com/ruvnet/ruflo"
+    },
+    {
+      "name": "diagram-design",
+      "description": "Use when creating source-grounded branded diagrams with cathrynlavery/diagram-design: run its offline preflight, choose a semantic pattern and visual type, author self-contained HTML with inline SVG, verify accessibility and geometry, open or screenshot local output when a browser is available, export manually to SVG or PNG, import and redraw Mermaid, draw.io, or Excalidraw content, and adapt the style guide to approved brand tokens. Keep static output, local paths, and font/network boundaries explicit. Never install or publish without approval. Route editable .drawio diagrams and draw.io CLI exports to `drawio`, academic paper figures to `paperbanana`, and slide decks to `slides-grab` or `presentation-builder`.",
+      "category": "creative-media",
+      "subcategory": "diagram",
+      "interface": "workflow",
+      "path": "diagram-design/SKILL.md",
+      "tags": [
+        "diagram",
+        "svg",
+        "html",
+        "architecture",
+        "flowchart",
+        "visualization",
+        "editorial",
+        "branding"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex CLI",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob"
+      ],
+      "keyword": "diagram-design",
+      "version": "1.0.0",
+      "source": "https://github.com/cathrynlavery/diagram-design"
+    },
+    {
+      "name": "artcraft",
+      "description": "Operate storytold/artcraft, the dual-licensed Rust/Tauri ArtCraft creator IDE for 2D and 3D scene blocking, hosted AI image, video, audio, mesh, and world generation, release/source-build handoff, exports, and troubleshooting. Use when a user asks to fit-check ArtCraft, inspect its pinned source, install a desktop release, build the app, block a scene, generate media, account for providers or credits, or hand off downloaded assets. Keep remote generation, credentials, downloads, installers, ports, source builds, publishing, and destructive reset actions approval-gated. Route hosted multi-provider generative studio work to `open-generative-ai`, script-to-video storyboard work to `openstory`, Blender scene control to `blender-mcp`, and code-first video assembly to `video-production`.",
+      "category": "creative-media",
+      "subcategory": "design",
+      "interface": "workflow",
+      "path": "artcraft/SKILL.md",
+      "tags": [
+        "artcraft",
+        "creator-ide",
+        "scene-blocking",
+        "tauri",
+        "ai-image",
+        "ai-video",
+        "3d",
+        "desktop"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex CLI",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read"
+      ],
+      "keyword": "artcraft",
+      "version": "1.0.0",
+      "source": "https://github.com/storytold/artcraft"
     }
   ]
 }

@@ -88,7 +88,7 @@ Known blockers at the pin:
 
 | Name | Blocker | Default response |
 |---|---|---|
-| `harness` | name collision with the canonical jeo-skills harness | keep local canonical owner or use an isolated renamed adaptation |
+| `harness` | name collision with any existing `harness` directory (jeo-skills now ships `harness2`; its installers remove only catalog-fingerprinted `harness` copies) | keep the existing owner or use an isolated renamed adaptation |
 | `style-skill-creator` | YAML parse failure and name `cw-style-skill-creator` differs from directory | wait for upstream fix or create a separately named, provenance-preserving adaptation |
 | `voice-dna-creator` | YAML parse failure | wait for upstream fix or create a separately reviewed adaptation |
 

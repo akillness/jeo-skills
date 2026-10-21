@@ -28,7 +28,7 @@ This is an operator guide, not permission to install or run the Paperclip server
 - Use `agent-manager` for local tmux/Python agent lifecycle management without Paperclip.
 - Use `clawteam` for ClawTeam's team, task, inbox, worktree, and board workflow.
 - Use `openexecutive` for the fixed self-hosted virtual-executive application.
-- Use `harness` to design an agent team or its role boundaries before choosing a runtime.
+- Use `harness2` to design an agent team or its role boundaries before choosing a runtime.
 
 Do not treat these surfaces as aliases just because a request says "multi-agent".
 

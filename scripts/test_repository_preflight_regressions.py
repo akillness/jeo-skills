@@ -35,9 +35,15 @@ SKILLS = (
     "pg-jev",
     "okf-agent-memory",
     "jev-ultrafast",
+    "harness2",
+    "voicestudio",
+    "ruflo",
+    "diagram-design",
+    "artcraft",
 )
 
-# Public source markers used by the twelve helpers.  The superset lets each
+
+# Public source markers used by the standalone helpers.  The superset lets each
 # helper enforce its own source contract without the test inventing a fake
 # success condition for one particular implementation.
 PUBLIC_MARKERS = (
@@ -78,6 +84,16 @@ PUBLIC_MARKERS = (
     "jev_ultrafast/demo.py", "jev_ultrafast/snapshot.js",
     "examples/run.py", "examples/flights.py", "scripts/check_guards.py",
     "tests/test_agent.py",
+    "LICENSE-APACHE", "LICENSE-MIT", "_docs/dev_setup.md",
+    "backend/config/models.yaml", "config/app.json",
+    "crates/desktop/artcraft/tauri.conf.json", "dependencies/PINNED.md",
+    "docs/SETUP.md", "frontend/package.json",
+    "harness2/cli/run_sweep.py", "harness2/core/recursion.py", "harness2/demo.py",
+    "skills/diagram-design/SKILL.md", "skills/diagram-design/assets/template.html",
+    "skills/diagram-design/references/style-guide.md",
+    "skills/diagram-design/scripts/self_check.py",
+    "v3/@claude-flow/cli/package.json", "v3/@claude-flow/cli/src/commands/init.ts",
+    "v3/@claude-flow/cli/src/commands/memory.ts", "v3/@claude-flow/cli/src/commands/swarm.ts",
 )
 
 # Names are deliberately broad: a correct helper may inspect their presence,
@@ -90,6 +106,7 @@ TRAPPED_TOOLS = (
     "rustc", "fineenvs", "llmfit", "pg_config", "make", "psql", "docker",
     "docker-compose", "bash", "openssl", "python", "python3",
     "browser-harness", "google-chrome", "chromium", "chromium-browser", "chrome",
+    "claude", "curl", "ffmpeg", "gcloud", "pandoc", "pdftoppm",
 )
 
 
@@ -315,6 +332,115 @@ class RepositoryPreflightRegressions(unittest.TestCase):
         invalid_report = self.report(invalid)
         self.assertEqual(invalid.returncode, 2)
         self.assertEqual(invalid_report["status"], "error")
+
+    def test_harness2_bench_selection_avoids_unselected_toolchains(self):
+        def tool_path(label: str, names: tuple[str, ...]) -> Path:
+            path = self.work / (label + "-bin")
+            path.mkdir()
+            for name in names:
+                source = "uv" if name == "pdftotext" else name
+                (path / name).symlink_to(self.bin / source)
+            return path
+
+        def run(path: Path | None, *args: str, **extra: str) -> tuple[subprocess.CompletedProcess[str], dict]:
+            env = self.env(with_tools=False, **extra)
+            if path is not None:
+                env["PATH"] = str(path)
+            result = subprocess.run(
+                [sys.executable, str(self.helper("harness2")), "--json", *args],
+                cwd=self.work,
+                env=env,
+                text=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                timeout=10,
+            )
+            return result, self.report(result)
+
+        demo_result, demo = run(tool_path("demo", ("uv", "git")), "--bench", "demo")
+        self.assertEqual(demo_result.returncode, 0, demo)
+        self.assertEqual(demo["status"], "ok", demo)
+        demo_names = {check["name"] for check in demo["checks"]}
+        self.assertFalse(demo_names & {"tool:node", "tool:npm", "tool:gcloud", "tool:docker"}, demo)
+
+        method_result, method = run(None, "--bench", "method")
+        self.assertEqual(method_result.returncode, 0, method)
+        self.assertEqual(method["status"], "ok", method)
+        self.assertFalse(any(check["name"].startswith("tool:") for check in method["checks"]), method)
+
+        method_cx_result, method_cx = run(None, "--bench", "method", "--substrate", "cx")
+        self.assertEqual(method_cx_result.returncode, 2, method_cx)
+        self.assertEqual(method_cx["status"], "error", method_cx)
+
+        empty_demo_result, empty_demo = run(None, "--bench", "demo")
+        self.assertEqual(empty_demo_result.returncode, 1, empty_demo)
+        self.assertEqual(empty_demo["status"], "blocked", empty_demo)
+
+        lab_missing_result, lab_missing = run(
+            tool_path("lab-missing", ("uv", "git", "node", "npm", "pandoc", "pdftotext")),
+            "--bench", "lab",
+        )
+        self.assertEqual(lab_missing_result.returncode, 1, lab_missing)
+        self.assertEqual(lab_missing["status"], "blocked", lab_missing)
+        self.assertEqual(
+            next(check["status"] for check in lab_missing["checks"] if check["name"] == "tool:pdftoppm"),
+            "blocked",
+        )
+
+        lab_tools = ("uv", "git", "node", "npm", "pandoc", "pdftoppm")
+        lab_warn_result, lab_warn = run(tool_path("lab-warn", lab_tools), "--bench", "lab")
+        self.assertEqual(lab_warn_result.returncode, 0, lab_warn)
+        self.assertEqual(lab_warn["status"], "ok", lab_warn)
+        self.assertEqual(
+            next(check["status"] for check in lab_warn["checks"] if check["name"] == "tool:gcloud"),
+            "warn",
+        )
+
+        lab_vertex_result, lab_vertex = run(
+            tool_path("lab-vertex", lab_tools),
+            "--bench", "lab",
+            HARNESS2_SOLVER_MODEL="google-vertex/gemini-x",
+        )
+        self.assertEqual(lab_vertex_result.returncode, 1, lab_vertex)
+        self.assertEqual(lab_vertex["status"], "blocked", lab_vertex)
+        self.assertEqual(
+            next(check["status"] for check in lab_vertex["checks"] if check["name"] == "tool:gcloud"),
+            "blocked",
+        )
+
+        wb_result, wb = run(
+            tool_path("wb", ("uv", "git", "node", "npm", "docker", "curl")),
+            "--bench", "wb",
+        )
+        self.assertEqual(wb_result.returncode, 1, wb)
+        self.assertEqual(wb["status"], "blocked", wb)
+        self.assertEqual(
+            next(check["status"] for check in wb["checks"] if check["name"] == "tool:gcloud"),
+            "blocked",
+        )
+
+        substrate_result, substrate = run(self.work / "empty-substrate", "--substrate", "cx")
+        self.assertEqual(substrate_result.returncode, 2, substrate)
+        self.assertEqual(substrate["status"], "error", substrate)
+
+        invalid_result, invalid = run(self.work / "empty-bench", "--bench", "x")
+        self.assertEqual(invalid_result.returncode, 2, invalid)
+        self.assertEqual(invalid["status"], "error", invalid)
+
+        repo = self.make_git_fixture("harness2 dotenv fixture")
+        secret = "harness2-fixture-secret-must-not-leak"
+        (repo / ".env").write_text("HARNESS2_SOLVER_MODEL=" + secret + "\n")
+        repo_result, repo_report = run(
+            tool_path("repo", ("uv", "git")),
+            "--bench", "demo",
+            "--repo", str(repo),
+        )
+        self.assertEqual(repo_result.returncode, 0, repo_report)
+        dotenv = next(check for check in repo_report["checks"] if check["name"] == "repo_dotenv")
+        self.assertEqual(dotenv["status"], "info")
+        self.assertTrue(dotenv["present"])
+        self.assertNotIn(secret, repo_result.stdout + repo_result.stderr)
+        self.assertEqual(self._read_invocations(), [])
 
     def test_jev_ultrafast_rejects_symlinked_public_source_paths(self):
         repo = self.make_git_fixture("symlinked Jev Ultrafast source")

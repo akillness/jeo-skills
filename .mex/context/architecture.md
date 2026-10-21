@@ -17,7 +17,7 @@ edges:
   - target: patterns/catalog-metadata-changes.md
     condition: when adding a new skill or editing an existing skill's metadata
 grounds_to: []
-last_updated: 2026-10-14
+last_updated: 2026-10-21
 ---
 
 # Architecture
@@ -92,6 +92,14 @@ and checkpoint ownership remain authoritative: no graph binary traversal or rebu
 The wrapper enforces no-cache, concurrency/request/output bounds and a subprocess
 timeout; these bounds are not monetary or upload-size limits. See
 `.agent-skills/jevgrep/SKILL.md` for authorization and the pinned CLI contract.
+
+**Skill usage lifecycle:** `jeo-skill usage scan` aggregates invocation/load events from
+local runtime records (names, counts, timestamps only) into a private state dir; reports
+classify catalog skills as used/protected/in-grace/candidate. `prune-unused --apply` moves
+provable catalog copies into a restorable quarantine after a fail-closed Jev review (or a
+recorded skip); `scripts/retire-unused-skills.py` is the separate, per-skill-approved
+catalog retirement. Jev hooks feed injected skill names through `jev-usage.jsonl`. See
+`patterns/skill-usage-lifecycle.md`.
 
 ## Key Components
 - **`.agent-skills/skills.json`** — the manifest / single source of truth for all

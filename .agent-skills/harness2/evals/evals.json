@@ -1,0 +1,55 @@
+{
+  "skill_name": "harness2",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Harness² 처음 써보는데, 크레덴셜 없이 recursive harnessing이 실제로 어떻게 돌아가는지 로컬에서만 확인하고 결과 구조를 설명해줘.",
+      "expected_output": "The skill runs the offline preflight, asks approval for the clone and uv environment/package install, then runs the credential-free local demo in a Python 3.12 uv environment and explains the produced invariant/domain/composed harnesses, selection, reflection, and per-domain library without any model call.",
+      "assertions": [
+        "The response runs `preflight.py --json` first and requests approval before the clone, `uv venv`, or `uv pip install`",
+        "The response uses `harness2-demo --output runs/demo --k N` and states it needs no credentials or model calls",
+        "The response explains Propose-Probe-Compose outputs (inv*/dom*/agg* or seq* harnesses, selection, reflection) and the library INDEX.md"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Run Harness² on the full LAB benchmark tonight with Codex, k=3 sequential, and just report the score — I don't care about setup details.",
+      "expected_output": "The skill refuses to launch silently: it previews setup with --dry-run, discloses the per-task cost (about 4k rollouts and 3k improver sessions), the 1,143-task stream, Codex's disabled sandbox and open network, and requires approval for setup, bridge, the capped run, and judging.",
+      "assertions": [
+        "The response requires explicit approval before `harness2-setup`, `harness2-bridge`, the refinement run, and `harness2-judge`",
+        "The response recommends `--dry-run` plus `--only-domains`/`--max-tasks` (noting the cap is per domain) before a full run",
+        "The response requires executor network restriction for Hugging Face and GitHub hosts and reuses identical --k/--mode/--substrate/--seed for judge and report"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "우리 리서치 프로젝트용 에이전트 팀(리서처 여러 명 + 종합자)을 설계해줘. 벤치마크는 필요 없어.",
+      "expected_output": "The skill uses method mode: it maps the team onto the subagents component plus routing text, proposes invariant and domain candidates, and requires each role to win an execution probe on a representative task before adoption, without running the upstream benchmark pipeline.",
+      "assertions": [
+        "The response runs only `preflight.py --bench method --json`, loads references/method-mode.md, and does not install harness2 or run benchmarks",
+        "The response treats roles as c5 subagent files triggered from system prompt or guardrails and justifies each role with probe evidence",
+        "The response labels the result as a manual adaptation of the method, not upstream benchmark results"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "I want to iteratively improve one SKILL.md's trigger description with a frozen eval set and keep/revert decisions.",
+      "expected_output": "The request routes to `skill-autoresearch`, which owns bounded SKILL.md ratcheting, rather than to Harness² benchmark runs.",
+      "assertions": [
+        "The response routes to `skill-autoresearch`",
+        "The response does not install harness2 or start a benchmark",
+        "The response explains that Harness² refines a whole agent harness from execution contrasts, which is a different job"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Check whether this machine and my harness2 checkout at the pinned commit are ready for LAB, but don't run harness2, uv, gcloud, or Docker, and don't open my .env.",
+      "expected_output": "The skill runs the offline preflight with --bench lab and --repo/--expect-commit, reporting path-only tool discovery (including pandoc and pdftoppm), .env presence without contents, and runtime_verified=false.",
+      "assertions": [
+        "The response uses `preflight.py --bench lab --repo PATH --expect-commit 1cfe254e8d25b15f37048c3730134686abe60335 --json`",
+        "The response treats missing pandoc or pdftoppm as blocked and missing gcloud as blocked only for a known Vertex configuration",
+        "The response preserves runtime_verified=false and never reads .env contents or executes any discovered tool"
+      ]
+    }
+  ]
+}

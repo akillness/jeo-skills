@@ -2,14 +2,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-369-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-373-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![GJC](https://img.shields.io/badge/GJC-gajae--code-181717?style=for-the-badge&logo=github)](https://github.com/akillness/gajae-code)
 [![jeo-code](https://img.shields.io/badge/jeo--code-jeo-181717?style=for-the-badge&logo=github)](https://github.com/akillness/jeo-code)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**369 categorized skills · lightweight selective install · compact TOON catalog · cross-platform**
+**373 categorized skills · lightweight selective install · compact TOON catalog · cross-platform**
 
 A curated collection for spec-first, multi-agent LLM workflows. Delegate a complete setup
 with one prompt, or install the `jeo-skill` router first and add only the web,
@@ -21,7 +21,7 @@ infrastructure, game, media, CLI, or utility skills you need.
 
 ---
 
-<img src="assets/readme-hero.webp" alt="Editorial cover showing the jeo-skills catalog connecting selected agent workflows" width="100%">
+<img src="assets/readme-cover.webp" alt="Editorial cover showing the jeo-skills catalog connecting selected agent workflows" width="100%">
 
 ## 💡 What is Agent Skills?
 
@@ -37,8 +37,8 @@ Compose the catalog with the public [`jeo-code`](https://github.com/akillness/je
 
 ## 🏗 Workflow & Architecture
 
-<img src="assets/catalog-workflow.svg" alt="Workflow diagram from the central skills manifest through selection and shared or native installation to host-owned execution and optional verification" width="100%">
-<img src="assets/runtime-architecture.svg" alt="Architecture diagram showing catalog projections, host-owned permissions, optional Jev and Jevgrep integrations, and the real coding model" width="100%">
+<img src="assets/catalog-install-flow.svg" alt="Installation flow from the skills manifest through discovery, selection, shared or native installation, verification, and retired-skill cleanup" width="100%">
+<img src="assets/runtime-boundaries.svg" alt="Runtime boundaries between catalog projections, host-owned permissions and execution, optional Jev and Jevgrep integrations, and upstream applications" width="100%">
 
 ### Jev Control Plane (optional System One integration)
 
@@ -158,11 +158,11 @@ Or just paste the URL into the agent chat:
 The agent runs a **full install by default** (say "core only" or "minimal" to narrow it) and will:
 
 - detect macOS / Linux / Windows and select the native package manager,
-- install the `skills@1.7.0` CLI and add skills to the universal shared root (`~/.agents/skills`), which jeopi, jeo-code, oh-my-pi, Claude Code, Codex, Gemini CLI, and OpenCode automatically discover and load,
+- install the `skills@1.7.0` CLI and add skills to the universal shared root (`~/.agents/skills`), which jeopi, jeo-code, oh-my-pi, Codex, Gemini CLI, OpenCode, Cursor, and Cline automatically discover and load; when `claude` is installed, the guide also places skills natively in `~/.claude/skills`,
 - **GJC requires native projection** to `~/.gjc/agent/skills` (global) or `.gjc/skills` (project) since it does not load shared providers; the setup guide handles this automatically,
 - **Antigravity IDE and CLI require native projection** (see setup guide Step 4C) since `skills@1.7.0` installs to shared root regardless of `--agent` flag,
 - register MCP tools (`ooo`, `semble`), shell tooling (`rtk`), and platform-specific integrations,
-- **preserve any pre-existing skills** — it only adds or updates, never deletes.
+- **preserve any pre-existing skills** — it never deletes other skills; the only removals are fingerprint-matched catalog copies of retired `jeo`/`harness`.
 
 Jev remains optional in all catalog modes: default setup does not download Jev models or install Jev rules/hooks. The root installer offers a default-no prompt only in an interactive home-scoped session; the delegation guide requires explicit approved opt-in before running Jev setup.
 > [!NOTE]
@@ -175,15 +175,16 @@ Jev remains optional in all catalog modes: default setup does not download Jev m
 
 ### Lightweight selective install (manual / CI)
 
-Install the **`jeo-skill` router first**, not all 369 skill folders. It provides category,
+Install the **`jeo-skill` router first**, not all 373 skill folders. It provides category,
 subcategory, interface, bundle, and relationship discovery while keeping heavy apps,
 models, MCP servers, and runtimes on demand.
 
 ```bash
 # One lightweight skill, shared globally
-# Shared-root hosts discover this install: jeopi, jeo-code, oh-my-pi, Claude Code,
-# Codex, Gemini CLI, and OpenCode. GJC is separate; pass `--agent gjc` when you
-# want the router to copy the selected skills into `~/.gjc/agent/skills`.
+# Shared-root hosts discover this install: jeopi, jeo-code, oh-my-pi, Codex,
+# Gemini CLI, OpenCode, Cursor, and Cline. Claude Code is native; pass
+# `--agent claude-code` when `claude` is installed. GJC is separate; pass
+# `--agent gjc` when you want the router to copy the selected skills into `~/.gjc/agent/skills`.
 npx --yes skills@1.7.0 add https://github.com/akillness/jeo-skills \
   --skill jeo-skill --global --agent universal --yes --copy --full-depth
 
@@ -238,6 +239,65 @@ Available modes:
 - `JEO_SKILLS_SELECTION=bundle` — install the `starter` bundle through jeo-skill
 - `JEO_SKILLS_SELECTION=all` — install every skill in the catalog
 
+Installs also remove stale catalog copies of retired skills — `jeo` (now `ooo`) and
+`harness` (now `harness2`) — from the roots they write, only when the copy's frontmatter
+name and first heading match this catalog's version. Preview or sweep every runtime root:
+
+```bash
+jeo-skill prune-retired --global --dry-run
+jeo-skill prune-retired --global
+```
+
+### Skill usage tracking and unused-skill cleanup
+
+<img src="assets/skill-lifecycle.svg" alt="Skill usage tracking lifecycle from runtime evidence through reversible quarantine or permanent purge, with a separate maintainer retirement lane" width="100%">
+
+`jeo-skill usage scan` reads local runtime records (Claude `skillUsage` and transcripts, Codex
+rollouts, OpenCode, Antigravity, Aside, jeopi/GJC/OMP/Pi sessions, and the Jev injection ledger)
+and stores only skill names, counts, and timestamps under
+`${JEO_SKILL_STATE_DIR:-${XDG_STATE_HOME:-~/.local/state}/jeo-skill}`. A skill counts as used only
+when an agent invoked or loaded it; prompt mentions, Jev routing without injection, and reads of
+the catalog source checkout never count. Evidence survives rotated or deleted runtime logs.
+
+A skill becomes a candidate only with zero uses across all history and a 30-day grace period after
+tracking began (or after it was first seen installed, if later). `jeo-skill`, the `starter`,
+`cli-core`, and `infrastructure-core` bundles, `usage keep` pins, and `usage relevance` protections
+are never candidates.
+
+```bash
+jeo-skill usage scan                     # refresh evidence (writes tracker state only)
+jeo-skill usage report --status candidate
+jeo-skill usage keep rare-but-needed       # `usage unkeep` removes the pin
+jeo-skill usage relevance --repos ~/work/app --jev-profile jeopi --dry-run
+
+# Preview, then quarantine (rescans before --apply; reversible)
+jeo-skill prune-unused --global
+jeo-skill prune-unused --global --apply --jev-profile jeopi --allow-remote
+# Or explicitly skip review (recorded in the batch manifest)
+jeo-skill prune-unused --global --apply --skip-jev-review
+jeo-skill restore --list
+jeo-skill restore --batch <batch-id> --apply
+jeo-skill purge-quarantine --older-than 30 --apply   # permanent; preview without --apply
+```
+
+Quarantine moves only provable catalog copies; third-party copies, symlinks, and linked roots are
+reported and kept. A Jev `deny` or unavailable review aborts `--apply`; `proposal_only` proceeds
+because the explicit `--apply` is the human approval, and the receipt is stored in the batch
+manifest. `--skip-jev-review` is recorded instead. Catalog retirement is a separate maintainer
+step in a repository checkout:
+`python3 scripts/retire-unused-skills.py --usage-report report.json` previews proposals, while
+`python3 scripts/retire-unused-skills.py --usage-report report.json --apply --approve name[,name] --jev-profile jeopi --allow-remote`
+(or `--skip-jev-review`, recorded instead of a receipt) retires approved skills, regenerates
+projections, validates, and rolls back on failure. `--apply` without one of the two review
+choices is rejected.
+
+Installers never start tracking or register hooks. `jeo-skill usage scan` creates the aggregate
+tracker state and starts the 30-day grace clock. If Jev hooks are already enabled, they may write
+routed/injected events to `jev-usage.jsonl` in the same private state directory
+(`${JEO_SKILL_STATE_DIR:-${XDG_STATE_HOME:-~/.local/state}/jeo-skill}`) without a scan; only
+injections count as use. Optional SessionEnd or cron scheduling is user-installed. See the
+[`jeo-skill` usage-tracking guidance](.agent-skills/jeo-skill/SKILL.md#usage-tracking-and-unused-skill-cleanup).
+
 ### On-demand video motion previs
 
 `video-motion-previs` remains a CLI-first motion workflow. Its desktop app and generated
@@ -282,12 +342,13 @@ or a new destructive action is unclear. For programmable/template video generati
 
 ### On-demand repository operators
 
-Twelve source-pinned operator skills cover `openrig`, `anyjev`,
+Eighteen source-pinned operator skills cover `openrig`, `anyjev`,
 `typesafe-computer-use`, `zurp`, `helix-foundry`, `uzu`, `context-mode`, `rea`,
-`fineenvs`, `llmfit`, `pg-jev`, and `jev-ultrafast`. Each v1.1.0 package ships a router-first
-`SKILL.md`, a pinned reference, an executable stdlib offline preflight and evals;
-applications, models, credentials, MCP/hook registration, desktop authority and
-database writes remain separately approved operations. See the
+`fineenvs`, `llmfit`, `pg-jev`, `okf-agent-memory`, `jev-ultrafast`, `harness2`,
+`voicestudio`, `ruflo`, `diagram-design`, and `artcraft`. Each v1.1.0 package ships a
+router-first `SKILL.md`, a pinned reference, an executable stdlib offline preflight and evals;
+applications, models, credentials, MCP/hook registration, desktop authority and database writes
+remain separately approved operations. See the
 [setup guide](setup-all-skills-prompt.md#repository-operators-on-demand-offline-support).
 
 From this repository, inspect a selected package without activating its upstream app:
@@ -296,7 +357,8 @@ From this repository, inspect a selected package without activating its upstream
 python3 .agent-skills/openrig/scripts/preflight.py --json
 ```
 
-All twelve helpers support `--help`, `--json`, optional `--repo` and `--expect-commit`.
+All eighteen helpers support `--help`, `--json`, optional `--repo` and `--expect-commit`.
+`harness2` additionally accepts `--bench demo|method|lab|jb|wb` and `--substrate oc|cx`.
 They remain standalone after installation and report `runtime_verified: false`.
 Exit 0 means offline checks pass, 1 reports missing/mismatched prerequisites, and 2
 rejects invalid input. A tool path or matching source HEAD is not runtime readiness.
@@ -304,7 +366,7 @@ rejects invalid input. A tool path or matching source HEAD is not runtime readin
 
 ## 📚 Skills List
 
-> Central manifest: `.agent-skills/skills.json` · 369 skills · 10 primary categories · subcategory/interface/relationship metadata
+> Central manifest: `.agent-skills/skills.json` · 373 skills · 10 primary categories · subcategory/interface/relationship metadata
 
 ### 🌐 Web (52)
 
@@ -421,9 +483,9 @@ Subcategories: `client` (3), `web` (2), `server` (1), `design-ui` (7), `audio` (
 | `game-feel` |
 | `game-ui-ux` |
 
-### 🎬 Creative Media (33)
+### 🎬 Creative Media (36)
 
-Subcategories: `image` (10), `video` (14), `motion` (1), `audio` (1), `presentation` (1), `diagram` (1), `design` (3), `capture` (0), `storytelling` (2)
+Subcategories: `image` (10), `video` (14), `motion` (1), `audio` (2), `presentation` (1), `diagram` (2), `design` (4), `capture` (0), `storytelling` (2)
 
 | Skill |
 |---|
@@ -460,6 +522,9 @@ Subcategories: `image` (10), `video` (14), `motion` (1), `audio` (1), `presentat
 | `higgsfield-video-explainer` |
 | `higgsfield-brandkit` |
 | `shopping-shorts` |
+| `voicestudio` |
+| `diagram-design` |
+| `artcraft` |
 
 ### ⌨️ CLI Tools (40)
 
@@ -508,9 +573,9 @@ Subcategories: `developer-cli` (10), `ai-cli` (15), `media-cli` (1), `automation
 | `rea` |
 | `llmfit` |
 
-### 🤖 AI & Agents (67)
+### 🤖 AI & Agents (69)
 
-Subcategories: `orchestration` (15), `agent-frameworks` (18), `skill-authoring` (5), `evaluation` (7), `memory` (3), `planning-review` (13), `discovery` (3), `prompting` (3)
+Subcategories: `orchestration` (16), `agent-frameworks` (18), `skill-authoring` (5), `evaluation` (8), `memory` (3), `planning-review` (13), `discovery` (3), `prompting` (3)
 
 | Skill |
 |---|
@@ -581,10 +646,12 @@ Subcategories: `orchestration` (15), `agent-frameworks` (18), `skill-authoring` 
 | `anyjev` |
 | `typesafe-computer-use` |
 | `jev-ultrafast` |
+| `harness2` |
+| `ruflo` |
 
-### 🧰 Engineering (24)
+### 🧰 Engineering (23)
 
-Subcategories: `code-quality` (11), `testing` (4), `architecture` (6), `documentation` (2), `code-navigation` (1)
+Subcategories: `code-quality` (11), `testing` (3), `architecture` (6), `documentation` (2), `code-navigation` (1)
 
 | Skill |
 |---|
@@ -598,7 +665,6 @@ Subcategories: `code-quality` (11), `testing` (4), `architecture` (6), `document
 | `migrate-to-shoehorn` |
 | `performance-optimization` |
 | `performance-profiling` |
-| `harness` |
 | `scaffold-exercises` |
 | `tdd` |
 | `testing-strategies` |
@@ -772,16 +838,6 @@ Spec-first development front door: clarify ambiguous requests with a **git-groun
 | Verify UI | `agentation` | Wait for explicit submit, then process UI feedback |
 | Durable knowledge | `llm-wiki` + `graphify` | File significant findings into the wiki and graph |
 
-### plannotator — Visual Plan Review
-> Keyword: `plan` | [Skill](.agent-skills/plannotator/SKILL.md) | [GitHub](https://github.com/backnotprop/plannotator)
-
-Browser UI for annotating AI plans. Approve or send structured feedback in one click. Works with Claude Code, OpenCode, Gemini CLI, and Codex CLI.
-
-```bash
-bash scripts/install.sh --all
-```
-
-### ooo — Ouroboros Specification-First Development
 > Keyword: `ooo`, `ouroboros`, `ooo ralph` | [Skill](.agent-skills/ooo/SKILL.md) | [GitHub](https://github.com/Q00/ouroboros)
 
 Socratic interview **grounded in updated git data** → immutable seed/spec → **spec-kit renders the execution plan from the seed** → **execute through cli-anything harnesses** (`--json` output = evaluate evidence) → verify before done → keep looping until completion is actually verified. Installable as a Claude Code plugin or via pip; the skill installer wires all three integrations by default.
@@ -810,6 +866,15 @@ ouroboros run resume
 ouroboros tui monitor
 ```
 
+### plannotator — Visual Plan Review
+> Keyword: `plan` | [Skill](.agent-skills/plannotator/SKILL.md) | [GitHub](https://github.com/backnotprop/plannotator)
+
+Browser UI for annotating AI plans. Approve or send structured feedback in one click. Works with Claude Code, OpenCode, Gemini CLI, and Codex CLI.
+
+```bash
+bash .agent-skills/plannotator/scripts/install.sh --all
+```
+
 ### god-tibo-imagen — AI Image Generation via Codex Backend
 > Keyword: `god-tibo-imagen`, `gti`, `image generation`, `codex image` | [Skill](.agent-skills/god-tibo-imagen/SKILL.md) | [GitHub](https://github.com/NomaDamas/god-tibo-imagen)
 
@@ -829,7 +894,7 @@ pip install god-tibo-imagen
 npx skills add https://github.com/akillness/jeo-skills --skill god-tibo-imagen
 
 # Usage
- --output ./icon.png
+gti --prompt "flat blue square icon" --output ./icon.png
 gti --prompt "make it round" --input ./ref.png --output ./out.png
 ```
 
@@ -973,18 +1038,19 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 | [CrewAI](https://github.com/crewAIInc/crewAI) | 45.7k | Role-playing autonomous AI agent orchestration |
 | [smolagents](https://github.com/huggingface/smolagents) | 25.9k | HuggingFace code-thinking agent library |
 | [agency-agents](https://github.com/msitarzewski/agency-agents) | 21.2k | 61 specialized AI agents across 9 divisions |
-| [revfactory/harness](https://github.com/revfactory/harness) | meta-skill | Agent team & skill architect plugin / scaffold |
+| [ruvnet/ruflo](https://github.com/ruvnet/ruflo) | 78k | Agent swarm and hive-mind orchestration engine (formerly claude-flow) |
+| [google-research/harness2](https://github.com/google-research/harness2) | 15.9k | Recursive agent harnessing: Propose–Probe–Compose refinement of the prompts, tools, memory, skills, and subagents around a fixed model |
 | [revfactory/webtoon-harness](https://github.com/revfactory/webtoon-harness) | harness | 27-agent webtoon production team (trend → vertical-scroll viewer) plugin |
 
-> Packaged skill and integration instructions → [.agent-skills/harness/SKILL.md](.agent-skills/harness/SKILL.md)
+> Packaged skills and integration instructions → [.agent-skills/harness2/SKILL.md](.agent-skills/harness2/SKILL.md) · [.agent-skills/ruflo/SKILL.md](.agent-skills/ruflo/SKILL.md)
 
 ---
 
 ## 📁 Structure
 
 ```text
-├── .agent-skills/          ← 369 skill folders (SKILL.md + optional support files)
-├── assets/                ← README hero and catalog/runtime diagrams
+├── .agent-skills/          ← 373 skill folders (SKILL.md + optional support files)
+├── assets/                ← README cover and catalog-install, runtime-boundary and skill-lifecycle diagrams
 ├── changelog/             ← localized monthly source files
 ├── docs/                  ← ScrapingAnt partnership and outreach notes
 ├── install.sh             ← one-line installer
@@ -994,6 +1060,7 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 ├── README.ko.md           ← 한국어
 ├── README.es-ES.md        ← Español
 └── CHANGELOG.md           ← release history
+```
 
 ---
 
@@ -1003,7 +1070,6 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 |------|---------|-----|
 | `ooo` | `ooo`, `ouroboros`, `ooo interview` | [.agent-skills/ooo/SKILL.md](.agent-skills/ooo/SKILL.md) |
 | `plannotator` | `plan` | [.agent-skills/plannotator/SKILL.md](.agent-skills/plannotator/SKILL.md) |
-| `ooo` | `ooo`, `ouroboros` | [.agent-skills/ooo/SKILL.md](.agent-skills/ooo/SKILL.md) |
 | `stitch-skills` | `stitch`, `stitch-design`, `enhance-prompt` | [.agent-skills/stitch-skills/SKILL.md](.agent-skills/stitch-skills/SKILL.md) |
 | `compresso` | `compresso`, `compress video`, `batch compression` | [.agent-skills/compresso/SKILL.md](.agent-skills/compresso/SKILL.md) |
 | `filmcraft` | `filmcraft`, `filmcraft-cli`, `.fcproj`, `FilmCraft MCP` | [.agent-skills/filmcraft/SKILL.md](.agent-skills/filmcraft/SKILL.md) |
@@ -1015,12 +1081,15 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 | `god-tibo-imagen` | `god-tibo-imagen`, `gti`, `image generation` | [.agent-skills/god-tibo-imagen/SKILL.md](.agent-skills/god-tibo-imagen/SKILL.md) |
 | `notebooklm` | `notebooklm`, `notebook query`, `google notebooklm` | [.agent-skills/notebooklm/SKILL.md](.agent-skills/notebooklm/SKILL.md) |
 | `zeude` | `zeude`, `ai adoption`, `enterprise claude` | [.agent-skills/zeude/SKILL.md](.agent-skills/zeude/SKILL.md) |
-| `harness` | `harness` | [.agent-skills/harness/SKILL.md](.agent-skills/harness/SKILL.md) |
+| `harness2` | `harness2`, `recursive harnessing`, `propose-probe-compose` | [.agent-skills/harness2/SKILL.md](.agent-skills/harness2/SKILL.md) |
+| `ruflo` | `ruflo`, `claude-flow`, `agent swarm` | [.agent-skills/ruflo/SKILL.md](.agent-skills/ruflo/SKILL.md) |
+| `voicestudio` | `VoiceStudio`, `voice cloning`, `voice design` | [.agent-skills/voicestudio/SKILL.md](.agent-skills/voicestudio/SKILL.md) |
+| `diagram-design` | `diagram-design`, `editorial diagrams`, `inline SVG` | [.agent-skills/diagram-design/SKILL.md](.agent-skills/diagram-design/SKILL.md) |
+| `artcraft` | `ArtCraft`, `scene blocking`, `AI image and video creation` | [.agent-skills/artcraft/SKILL.md](.agent-skills/artcraft/SKILL.md) |
 | `webtoon-harness` | `webtoon harness`, `make a webtoon` | [.agent-skills/webtoon-harness/SKILL.md](.agent-skills/webtoon-harness/SKILL.md) |
 | `game-studio-harness` | `game production harness`, `게임 제작 하네스`, `stage gate` | [.agent-skills/game-studio-harness/SKILL.md](.agent-skills/game-studio-harness/SKILL.md) |
 | `heretic` | `heretic`, `abliterate`, `decensor a model` | [.agent-skills/heretic/SKILL.md](.agent-skills/heretic/SKILL.md) |
 | `bmad` | `bmad` | [.agent-skills/bmad/SKILL.md](.agent-skills/bmad/SKILL.md) |
-| Harness OSS | — | [.agent-skills/harness/SKILL.md](.agent-skills/harness/SKILL.md) |
 | `scrapingant-web-fetch` | `scrapingant`, `mcp web scraping`, `fetch blocked page` | [.agent-skills/scrapingant-web-fetch/SKILL.md](.agent-skills/scrapingant-web-fetch/SKILL.md) |
 
 ---
@@ -1041,7 +1110,11 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 | `bmad` | [bmad-dev/BMAD-METHOD](https://github.com/bmad-dev/BMAD-METHOD) | MIT |
 | `agentation` | [benjitaylor/agentation](https://github.com/benjitaylor/agentation) | MIT |
 | `fabric` | [danielmiessler/fabric](https://github.com/danielmiessler/fabric) | MIT |
-| `harness` | [revfactory/harness](https://github.com/revfactory/harness) | Apache-2.0 |
+| `harness2` | [google-research/harness2](https://github.com/google-research/harness2) | Apache-2.0 |
+| `ruflo` | [ruvnet/ruflo](https://github.com/ruvnet/ruflo) | MIT |
+| `voicestudio` | [debpalash/VoiceStudio](https://github.com/debpalash/VoiceStudio) | AGPL-3.0-only |
+| `diagram-design` | [cathrynlavery/diagram-design](https://github.com/cathrynlavery/diagram-design) | MIT |
+| `artcraft` | [storytold/artcraft](https://github.com/storytold/artcraft) | MIT OR Apache-2.0 |
 | `webtoon-harness` | [revfactory/webtoon-harness](https://github.com/revfactory/webtoon-harness) | MIT |
 | `heretic` | [p-e-w/heretic](https://github.com/p-e-w/heretic) | AGPL-3.0-or-later |
 
@@ -1090,6 +1163,17 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 ---
 
 <!-- WHATS-NEW:START -->
+
+## 🆕 What's New in v2026-10-21
+
+| Change | Details |
+|--------|---------|
+| **harness → harness2** | Replaced the revfactory `harness` skill with `harness2`, an operator for `google-research/harness2` pinned to `1cfe254e8d25b15f37048c3730134686abe60335` (Apache-2.0): credential-free demo, LAB/JobBench/WorkBuddy setup and paid-run gates, Codex bridge, and a method mode that applies Propose–Probe–Compose by hand (agent-team design moved here). `harness` is now in `retired_skills` and every route-out was repointed. |
+| **Four new operators** | Added `ruflo` (ruvnet/ruflo, MIT), `voicestudio` (debpalash/VoiceStudio, AGPL-3.0-only), `diagram-design` (cathrynlavery/diagram-design, MIT), and `artcraft` (storytold/artcraft, MIT OR Apache-2.0), each commit-pinned with an offline preflight and explicit install, model, provider, server, and publishing gates. Catalog grows from 369 to 373. |
+| **Retired-skill cleanup on install** | `jeo-skill install` and `install.sh` now remove stale catalog copies of retired `jeo` (→ `ooo`) and `harness` (→ `harness2`) from the roots they write, and `jeo-skill prune-retired [--global] [--dry-run]` sweeps every runtime root. Removal requires the catalog's exact frontmatter name and first heading; links are unlinked only when they point at a copy the same sweep removed. Third-party same-name skills, unrelated links, and roots behind linked ancestors are kept. `.skill-lock.json` is not edited. |
+| **Verification** | Installer regressions 63/63 (15 new, vendored fixtures), repository preflight regressions 15/15 (five new helpers plus harness2 bench/method cases), catalog projection/frontmatter/layout/changelog gates pass; 25 new eval scenarios. The documented full install (Steps 4–4E, 7) ran end to end with the real pinned `skills@1.7.0` in an isolated HOME seeded with this machine's stale copies, against a committed local snapshot of this working tree (the GitHub URL was redirected to it; public HEAD does not contain these changes until they are pushed): every retired copy and its dependent link was removed, unrelated skills, links, and Aside `builtin/` stayed byte-identical, and real jeopi/oh-my-pi/GJC loaders resolve the five new skills and no `jeo`/`harness`. OpenCode was verified by shared-root placement only, not runtime activation. The upstream harness2 demo passed in both recursion modes (2/2 tasks each) plus its 5 unit tests; no benchmark, model, judge, or other upstream runtime ran. |
+| **Skill usage tracking and unused-skill cleanup** | Added `jeo-skill usage scan`/`report` evidence aggregation across local runtime records and the Jev `jev-usage.jsonl` ledger, zero-use plus 30-day-grace candidate rules, protected bundles/pins, reversible `prune-unused` quarantine with `restore`, permanent `purge-quarantine`, and the separate maintainer `retire-unused-skills.py` lane. Only provable catalog copies move; third-party copies, symlinks, and linked roots stay. Jev `deny`/unavailable aborts apply, `proposal_only` proceeds only with explicit `--apply`, and skipped review is recorded; routed ledger events do not count as use, only injections do. Usage (7), quarantine (15), retirement (7 Python) and Jev ledger (4 Node) regressions pass; a real-data read-only scan used `/tmp`, with no tracking state or host hook started. |
+| **README visual refresh** | Documentation-only: added the Codex cover `assets/readme-cover.webp` and `catalog-install-flow.svg`, `runtime-boundaries.svg`, and `skill-lifecycle.svg`; superseded `readme-hero.webp`, `catalog-workflow.svg`, `runtime-architecture.svg`, and the orphan `assets/scrapingant/` logo; merged duplicate `ooo` docs, corrected god-tibo-imagen and plannotator commands, and updated the operator count from 12 to 18. |
 
 ## 🆕 What's New in v2026-10-15
 
@@ -1144,19 +1228,6 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 | **Cap-aware skill selection and provider/model policies** | Selection runs gate Nouls, then sharded Choice or a lexical shortlist reranked by fit Nouls, and can answer "no skill fits" explicitly. Optional `skills.json` `model_policies` add advisory per-skill `provider/model` routing (for example `openai/gpt-6.1-sol` or `ollama/qwen2.5:7b`); hosts are not adapted yet. |
 | **Fixes** | The hosted `api` request now matches the documented `/v1/systemone` body (`model`, Choice `criteria`, `noul` answers); prune batches are position-keyed and bounded by each backend's state limit; oversized input is rejected before any request instead of being truncated server-side; setup installs a validated catalog snapshot so `route-skills` works outside a checkout, and skill excerpts sent to a backend stay inside the catalog root (`../` and outbound symlinks refused). |
 | **Verification** | 52 loopback regressions (also on Python 3.11 + Node 24), 20/20 offline self-test checks, 3 isolated profile tests, CI green on Linux and macOS, and a live isolated-HOME run on Ollama JEV-9B-GGUF: routing from an empty directory over the 354-skill snapshot, `local`→`ollama` prune fallback, and a fail-closed `review --backend local`. The live run proves transport, not calibration (tier `unvalidated`). |
-
-## 🆕 What's New in v2026-10-01
-
-| Change | Details |
-|--------|---------|
-| **Linux permission preservation** | Fixed Agentation's permission lookup and the configuration regression helper to select BSD or GNU `stat` by platform. The initial Ubuntu CI run exposed filesystem output leaking into a captured mode value; the existing exact-mode preservation checks remain unchanged. |
-| **Legacy upgrade and CI coverage** | Added portable, preview-first `install.sh` instructions that bypass old PATH routers, replaced manual native-copy guidance with guarded installation commands, and added regressions for preserving the shared CLI link, executing documented previews without writes, and preserving minimal/core/full selections through GJC/AGY/IDE preview and apply commands. Local checks pass: 34 installer, 6 loader-probe, and 24 configuration-writer tests. CI now runs these gates on main pushes and manual dispatch as well as pull requests, on Linux and macOS. Actual user installations and ECC settings were not changed. |
-| **Installation docs: runtime mapping verified** | Updated `setup-all-skills-prompt.md`, `README.md`, `README.ko.md`, `README.es-ES.md`, and `jeo-skill` SKILL.md to clarify accurate runtime support paths and native projection requirements. All 12 installer cases + 7 linked selective installs + 8 actual session loaders passed smoke tests. |
-| **Antigravity IDE/CLI paths corrected** | Fixed Antigravity IDE native root to `~/.gemini/config/skills` (legacy `~/.gemini/antigravity/skills` paths preserved, never deleted). Antigravity CLI (`agy`) remains at `~/.gemini/antigravity-cli/skills`. Both require native materialization since `skills@1.7.0` installs to shared root regardless of `--agent` flag; setup guide Step 4C handles this automatically. |
-| **OMP → oh-my-pi naming fixed** | Corrected all references from OpenMP to oh-my-pi (the actual runtime name) across all README and installation guide sections. |
-| **Native projection reference table added** | The `jeo-skill` guide documents runtime aliases, shared and native roots, installation scope, automatic selected-skill projection, and per-account Aside selection. Native placement is handled by the installer rather than manual copies. |
-| **Shared provider and account safety** | Confirmed jeopi/jeo-code/oh-my-pi load shared `.agents/skills` roots; no ECC adapter needed. GJC uses `~/.gjc/agent/skills` globally or `.gjc/skills` in a project. Aside uses account-scoped `~/.aside/u/<id>/skills/user/` paths; credentials are never shared across accounts. |
-| **Installation prerequisites validated** | Documentation specifies: Bash 3+, Node.js >= 22.20, and `skills@1.7.0` CLI pinned. Verification scope is honest: no false end-to-end desktop test claims; all guarantees backed by automated installer regression suite. |
 
 > 📜 Older entries: [`changelog/en/`](changelog/en/) (monthly files, newest first).
 

@@ -2,14 +2,14 @@
 
 <div align="center">
 
-[![Skills](https://img.shields.io/badge/Skills-369-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
+[![Skills](https://img.shields.io/badge/Skills-373-blue?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![Platform](https://img.shields.io/badge/Platform-Claude%20%7C%20Gemini%20%7C%20Codex%20%7C%20OpenCode%20%7C%20jeopi-orange?style=for-the-badge)](https://github.com/akillness/jeo-skills)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![GJC](https://img.shields.io/badge/GJC-gajae--code-181717?style=for-the-badge&logo=github)](https://github.com/akillness/gajae-code)
 [![jeo-code](https://img.shields.io/badge/jeo--code-jeo-181717?style=for-the-badge&logo=github)](https://github.com/akillness/jeo-code)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
-**카테고리형 스킬 369개 · 경량 선택 설치 · 압축 TOON 카탈로그 · 멀티플랫폼**
+**카테고리형 스킬 373개 · 경량 선택 설치 · 압축 TOON 카탈로그 · 멀티플랫폼**
 
 스펙 우선 멀티 에이전트 LLM 워크플로우 컬렉션입니다. 프롬프트 하나로 전체 설정을
 위임하거나, `jeo-skill` 라우터부터 설치해 필요한 웹, 인프라, 게임, 미디어, CLI,
@@ -21,7 +21,7 @@
 
 ---
 
-<img src="assets/readme-hero.webp" alt="jeo-skills: Claude, Codex, Gemini, OpenCode용 스펙 우선 에이전트 스킬" width="100%">
+<img src="assets/readme-cover.webp" alt="jeo-skills 카탈로그와 에이전트 워크플로우를 연결하는 에디토리얼 커버" width="100%">
 
 ## 💡 Agent Skills란?
 
@@ -42,8 +42,8 @@
 
 ## 🏗 워크플로우 및 아키텍처
 
-<img src="assets/catalog-workflow.svg" alt="스킬 카탈로그를 선택·설치·검증하는 jeo-skills 워크플로우" width="100%">
-<img src="assets/runtime-architecture.svg" alt="jeo-skills 런타임 통합과 호스트별 권한 경계" width="100%">
+<img src="assets/catalog-install-flow.svg" alt="skills.json에서 스킬 탐색·선택·공유 또는 native 설치·검증·은퇴 스킬 정리로 이어지는 흐름" width="100%">
+<img src="assets/runtime-boundaries.svg" alt="카탈로그 투영, 호스트 권한과 실행, 선택적 Jev·Jevgrep, 운영 스킬 사전 점검의 경계" width="100%">
 
 ### Jev 컨트롤 플레인 (선택적 System One 통합)
 
@@ -165,12 +165,12 @@ curl -s https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-sk
 에이전트는 기본적으로 **전체 설치**를 실행합니다. 범위를 줄이려면 “core only” 또는 “minimal”이라고 요청하세요. 에이전트가 수행하는 작업은 다음과 같습니다.
 
 - macOS / Linux / Windows를 감지하고 `brew` / `snap` / `winget`과 올바른 설치 경로를 선택합니다.
-- `skills@1.7.0` CLI를 설치하고 universal 공유 루트(`~/.agents/skills`)에 스킬을 추가합니다. 공유 루트를 사용하는 jeopi, jeo-code, oh-my-pi, Claude Code, Codex, Gemini CLI, OpenCode가 이를 읽도록 설정됩니다.
+- `skills@1.7.0` CLI를 설치하고 universal 공유 루트(`~/.agents/skills`)에 스킬을 추가합니다. 이 공유 루트를 사용하는 jeopi, jeo-code, oh-my-pi, Codex, Gemini CLI, OpenCode, Cursor, Cline이 이를 읽습니다. Claude Code가 설치되어 있으면 가이드는 스킬을 네이티브 경로 `~/.claude/skills`에도 배치합니다.
 - **GJC는 native 투영이 필요**하므로 `~/.gjc/agent/skills`(글로벌) 또는 `.gjc/skills`(프로젝트)에 스킬을 따로 배치합니다. 설정 가이드의 target-aware bootstrap이 이를 처리하며, 공유 루트 설치만으로 전용 경로 로드가 완료됐다고 가정하지 않습니다.
 - **Antigravity IDE와 CLI도 native 투영이 필요**합니다. `skills@1.7.0`이 `--agent` 플래그를 무시하고 공유 루트에 설치하므로, 설정 가이드 Step 4C가 올바른 전용 경로를 따로 채웁니다.
 - `--global`은 홈 범위 설치입니다. `--global`을 생략하면 현재 프로젝트 범위가 기본이며, 프로젝트 헬퍼를 직접 실행해 그 범위에 설치합니다.
 - MCP 도구(`ooo`, `semble`), 셸 도구(`rtk`), 플랫폼별 통합을 등록합니다.
-- 기존 스킬을 보존하며 추가 또는 업데이트만 수행하고 삭제하지 않습니다.
+- 기존 스킬을 보존하며 추가 또는 업데이트만 수행합니다. 다만 은퇴한 `jeo`(→ `ooo`)와 `harness`(→ `harness2`)의 fingerprint가 일치하는 카탈로그 사본은 제거합니다.
 
 모든 카탈로그 모드에서 Jev는 선택 사항입니다. 기본 설정은 Jev 모델을 다운로드하거나 Jev 규칙/훅을 설치하지 않습니다. 루트 설치 프로그램은 대화형 홈 범위 세션에서만 기본값이 ‘아니요’인 질문을 표시하며, 위임 가이드는 명시적으로 승인된 선택이 있을 때만 Jev 설정을 실행합니다.
 > [!NOTE]
@@ -182,14 +182,18 @@ curl -s https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-sk
 
 ### 경량 선택 설치(수동 / CI)
 
-368개 스킬 폴더 전체가 아니라 **`jeo-skill` 라우터부터 설치**합니다. 카테고리,
+373개 스킬 폴더 전체가 아니라 **`jeo-skill` 라우터부터 설치**합니다. 카테고리,
 하위 분류, 인터페이스, 번들, 연관 스킬을 탐색할 수 있으며 앱·모델·MCP 서버·런타임은
 실제 선택된 작업에서만 온디맨드로 설치합니다.
 
 ```bash
-# 공유 글로벌 경로에 라우터를 설치하고 native 투영의 기반을 마련
+# 공유 글로벌 경로에 라우터를 설치합니다. Claude Code 네이티브 투영은 --agent claude-code로 별도 실행
 npx --yes skills@1.7.0 add https://github.com/akillness/jeo-skills \
  --skill jeo-skill --global --agent universal --yes --copy --full-depth
+
+# Claude Code가 설치되어 있으면 네이티브 경로에 별도 설치
+npx --yes skills@1.7.0 add https://github.com/akillness/jeo-skills \
+ --skill jeo-skill --global --agent claude-code --yes --copy --full-depth
 
 python3 "$HOME/.agents/skills/jeo-skill/scripts/jeo-skill.py" link
 jeo-skill doctor
@@ -217,6 +221,48 @@ jeo-skill install --bundle web-frontend --dry-run
 jeo-skill install responsive-design react-best-practices --global --yes
 jeo-skill install --bundle game-web --global --yes
 ```
+
+설치 시 카탈로그에서 은퇴한 스킬 — `jeo`(현재 `ooo`)와 `harness`(현재 `harness2`) — 의 오래된
+카탈로그 사본을 설치 대상 루트에서 제거합니다. frontmatter 이름과 첫 제목이 이 카탈로그 버전과
+일치할 때만 제거하며, 이 정리에서 지운 사본을 가리키는 링크만 함께 해제합니다. 다른 출처의 동명 스킬·무관한 링크는 유지합니다. 모든 런타임 루트를 점검·정리하려면:
+
+```bash
+jeo-skill prune-retired --global --dry-run
+jeo-skill prune-retired --global
+```
+
+### 스킬 사용 추적과 미사용 스킬 정리
+
+<img src="assets/skill-lifecycle.svg" alt="런타임 기록에서 사용 스캔, 후보 판정, 격리·복구·영구 삭제와 카탈로그 은퇴로 이어지는 스킬 수명 주기" width="100%">
+
+`jeo-skill usage scan`은 Claude `skillUsage`와 transcript, Codex rollouts, OpenCode, Antigravity, Aside, jeopi/GJC/OMP/Pi 세션, Jev injection ledger의 로컬 기록에서 스킬 이름·횟수·시각만 읽어 `${JEO_SKILL_STATE_DIR:-${XDG_STATE_HOME:-~/.local/state}/jeo-skill}`에 저장합니다. 사용은 스킬 호출 또는 로드(Skill/slash 호출, 설치된 `<root>/<name>/SKILL.md`나 `skill://<name>` 읽기, Jev 전체 본문 주입)일 때만 인정하며, 프롬프트 언급·주입 없는 Jev 라우팅·체크아웃 원본 읽기는 사용으로 세지 않습니다. 회전되거나 삭제된 로그의 증거도 유지됩니다.
+
+전체 이력에서 사용이 0회이고 추적 시작(또는 설치가 처음 확인된 시점) 후 30일 유예가 지나야 후보가 됩니다. `jeo-skill`, `starter`/`cli-core`/`infrastructure-core` 번들, `usage keep` 핀, `usage relevance` 보호 스킬은 후보가 아닙니다. 격리는 확인 가능한 카탈로그 사본만 대상으로 하며, 서드파티 사본·심볼릭 링크·링크된 루트는 유지합니다. Jev가 `deny`를 반환하거나 사용할 수 없으면 적용을 중단하고, `proposal_only`는 명시적인 `--apply`가 사용자 승인으로 간주되어 진행합니다. `--skip-jev-review` 사용도 영수증에 기록됩니다. 카탈로그 은퇴는 별도의 관리 작업입니다.
+
+```bash
+jeo-skill usage scan                     # 근거 새로 고침(추적 상태만 기록)
+jeo-skill usage report --status candidate
+jeo-skill usage keep rare-but-needed     # 핀 설정; usage unkeep로 해제
+# 핀 해제: jeo-skill usage unkeep rare-but-needed
+jeo-skill usage report --json
+jeo-skill usage relevance --repos ~/work/app --jev-profile jeopi --dry-run
+
+# 로컬 설치: 미리 보기 후 격리(먼저 재검색; 되돌릴 수 있음)
+jeo-skill prune-unused --global
+jeo-skill prune-unused --global --apply --jev-profile jeopi --allow-remote
+jeo-skill prune-unused --global --apply --skip-jev-review
+jeo-skill restore --list
+jeo-skill restore --batch <batch-id> --apply
+jeo-skill purge-quarantine --older-than 30 --apply   # 영구 삭제; --apply 없이 미리 보기
+
+# 저장소 카탈로그 은퇴(관리자 단계)
+python3 scripts/retire-unused-skills.py --usage-report report.json
+python3 scripts/retire-unused-skills.py --usage-report report.json --apply --approve a,b --jev-profile jeopi --allow-remote
+# 또는 Jev 검토를 명시적으로 건너뛰기(기록됨). 둘 중 하나가 없으면 --apply는 거부됩니다
+python3 scripts/retire-unused-skills.py --usage-report report.json --apply --approve a,b --skip-jev-review
+```
+
+설치 프로그램과 `install.sh`는 추적을 시작하거나 훅을 등록하지 않습니다. `usage scan`이 집계 트래커 상태를 만들고 30일 유예 시계를 시작합니다. 사용자가 Jev 훅을 이미 활성화한 경우에는 scan 전에도 같은 상태 디렉터리의 `jev-usage.jsonl`에 라우팅·주입 이벤트가 기록되며, 이 중 주입만 사용으로 집계됩니다. 자세한 정의와 SessionEnd 훅·cron 예시는 [jeo-skill 사용 추적 안내](.agent-skills/jeo-skill/SKILL.md)를 참고하세요.
 
 원라인 설치기도 같은 경량 기본값을 사용합니다.
 
@@ -272,11 +318,12 @@ FilmCraft 빌드, MCP 등록, 앱 시작, 폰트 다운로드, 미디어 가져�
 ### 온디맨드 레포 운영 스킬
 
 `openrig`, `anyjev`, `typesafe-computer-use`, `zurp`, `helix-foundry`, `uzu`,
-`context-mode`, `rea`, `fineenvs`, `llmfit`, `pg-jev`, `jev-ultrafast`의 원문
-커밋을 고정한 운영 스킬 12개를 제공합니다. 각 v1.1.0 패키지는 표준 `SKILL.md`, 커밋 고정
-레퍼런스, 실행 가능한 표준 라이브러리 기반 오프라인 점검 스크립트와 평가 사례를 포함합니다. 앱·모델·키,
-MCP/훅 등록, 데스크톱 제어, 데이터베이스 쓰기는 각각 별도 승인이 필요합니다.
-[setup 가이드](setup-all-skills-prompt.md#repository-operators-on-demand-offline-support)를 참고하세요.
+`context-mode`, `rea`, `fineenvs`, `llmfit`, `pg-jev`, `okf-agent-memory`, `jev-ultrafast`,
+`harness2`, `voicestudio`, `ruflo`, `diagram-design`, `artcraft`의 원문 커밋을 고정한
+운영 스킬 18개를 제공합니다. 각 v1.1.0 패키지는 표준 `SKILL.md`, 커밋 고정 레퍼런스,
+실행 가능한 표준 라이브러리 기반 오프라인 점검 스크립트와 평가 사례를 포함합니다.
+앱·모델·키, MCP/훅 등록, 데스크톱 제어, 데이터베이스 쓰기는 각각 별도 승인이 필요합니다.
+[`setup 가이드`](setup-all-skills-prompt.md#repository-operators-on-demand-offline-support)를 참고하세요.
 
 이 저장소에서 선택한 패키지의 사전 조건만 점검할 수 있습니다. 원본 앱은 실행하지 않습니다.
 
@@ -284,15 +331,16 @@ MCP/훅 등록, 데스크톱 제어, 데이터베이스 쓰기는 각각 별도 
 python3 .agent-skills/openrig/scripts/preflight.py --json
 ```
 
-12개 스크립트 모두 `--help`, `--json`, 선택적 `--repo`와 `--expect-commit`을 지원하며,
-스킬 설치 후에도 다른 스킬 없이 독립 실행됩니다. 결과는 항상 `runtime_verified: false`입니다.
-종료 코드 0은 오프라인 점검 통과, 1은 누락·불일치, 2는 잘못된 입력을 뜻합니다.
-도구 경로나 소스 HEAD 일치는 실제 런타임 작동 증명이 아닙니다.
+18개 스크립트 모두 `--help`, `--json`, 선택적 `--repo`와 `--expect-commit`을 지원하며,
+스킬 설치 후에도 다른 스킬 없이 독립 실행됩니다. `harness2`는 여기에 더해
+`--bench demo|method|lab|jb|wb`와 `--substrate oc|cx`를 지원합니다. 결과는 항상
+`runtime_verified: false`입니다. 종료 코드 0은 오프라인 점검 통과, 1은 누락·불일치,
+2는 잘못된 입력을 뜻합니다. 도구 경로나 소스 HEAD 일치는 실제 런타임 작동 증명이 아닙니다.
 
 
 ## 📚 스킬 목록
 
-> 중앙 매니페스트: `.agent-skills/skills.json` · 369개 스킬 · 10개 기본 카테고리 · 하위 카테고리/인터페이스/관계 그룹 지원
+> 중앙 매니페스트: `.agent-skills/skills.json` · 373개 스킬 · 10개 기본 카테고리 · 하위 카테고리/인터페이스/관계 그룹 지원
 
 ### 🌐 웹 (52개)
 
@@ -409,9 +457,9 @@ python3 .agent-skills/openrig/scripts/preflight.py --json
 | `game-feel` |
 | `game-ui-ux` |
 
-### 🎬 크리에이티브 미디어 (33개)
+### 🎬 크리에이티브 미디어 (36개)
 
-하위 분류: `image` (10), `video` (14), `motion` (1), `audio` (1), `presentation` (1), `diagram` (1), `design` (3), `capture` (0), `storytelling` (2)
+하위 분류: `image` (10), `video` (14), `motion` (1), `audio` (2), `presentation` (1), `diagram` (2), `design` (4), `capture` (0), `storytelling` (2)
 
 | Skill |
 |---|
@@ -448,6 +496,9 @@ python3 .agent-skills/openrig/scripts/preflight.py --json
 | `higgsfield-video-explainer` |
 | `higgsfield-brandkit` |
 | `shopping-shorts` |
+| `voicestudio` |
+| `diagram-design` |
+| `artcraft` |
 
 ### ⌨️ CLI 도구 (40개)
 
@@ -496,9 +547,9 @@ python3 .agent-skills/openrig/scripts/preflight.py --json
 | `rea` |
 | `llmfit` |
 
-### 🤖 AI 및 에이전트 (67개)
+### 🤖 AI 및 에이전트 (69개)
 
-하위 분류: `orchestration` (15), `agent-frameworks` (18), `skill-authoring` (5), `evaluation` (7), `memory` (3), `planning-review` (13), `discovery` (3), `prompting` (3)
+하위 분류: `orchestration` (16), `agent-frameworks` (18), `skill-authoring` (5), `evaluation` (8), `memory` (3), `planning-review` (13), `discovery` (3), `prompting` (3)
 
 | Skill |
 |---|
@@ -569,10 +620,12 @@ python3 .agent-skills/openrig/scripts/preflight.py --json
 | `anyjev` |
 | `typesafe-computer-use` |
 | `jev-ultrafast` |
+| `harness2` |
+| `ruflo` |
 
-### 🧰 엔지니어링 (24개)
+### 🧰 엔지니어링 (23개)
 
-하위 분류: `code-quality` (11), `testing` (4), `architecture` (6), `documentation` (2), `code-navigation` (1)
+하위 분류: `code-quality` (11), `testing` (3), `architecture` (6), `documentation` (2), `code-navigation` (1)
 
 | Skill |
 |---|
@@ -586,7 +639,6 @@ python3 .agent-skills/openrig/scripts/preflight.py --json
 | `migrate-to-shoehorn` |
 | `performance-optimization` |
 | `performance-profiling` |
-| `harness` |
 | `scaffold-exercises` |
 | `tdd` |
 | `testing-strategies` |
@@ -757,19 +809,8 @@ TOON(Token-Oriented Object Notation)은 카탈로그를 명시적으로 포맷�
 | Verify UI / annotate | `agentation` | 명시적 submit 이후에만 UI 피드백 처리 |
 | Cleanup | repo cleanup scripts + `worktree-cleanup.sh` | 요약, follow-up queue, worktree 정리 |
 
-### plannotator — 시각적 계획 검토
-> 키워드: `plan` | [문서](.agent-skills/plannotator/SKILL.md) | [GitHub](https://github.com/backnotprop/plannotator)
-
-AI 계획을 브라우저 UI에서 어노테이션. 클릭 한 번으로 승인 또는 구조화된 피드백 전송. Claude Code, OpenCode, Gemini CLI, Codex CLI 지원.
-
-```bash
-bash scripts/install.sh --all
-```
-
-### ooo — Ouroboros 스펙 우선 개발
-> 키워드: `ooo`, `ouroboros`, `ooo ralph` | [문서](.agent-skills/ooo/SKILL.md) | [GitHub](https://github.com/Q00/ouroboros)
-
 **업데이트되는 git 데이터에 근거한** 소크라테스식 인터뷰 → 불변 seed/spec 고정 → **spec-kit이 seed로부터 실행 계획을 렌더링** → **cli-anything harness로 실행**(`--json` 출력 = evaluate 증거) → 완료 주장 전에 검증 → 실제로 검증될 때까지 반복합니다. Claude Code 플러그인 또는 pip으로 설치 가능하며, 스킬 installer가 세 연동을 기본으로 배선합니다.
+> 키워드: `ooo`, `ouroboros`, `ooo ralph` | [문서](.agent-skills/ooo/SKILL.md) | [GitHub](https://github.com/Q00/ouroboros)
 
 ```bash
 # 플러그인 설치 (Claude Code)
@@ -794,6 +835,16 @@ ouroboros run workflow seed.yaml
 ouroboros run resume
 ouroboros tui monitor
 ```
+
+### plannotator — 시각적 계획 검토
+> 키워드: `plan` | [문서](.agent-skills/plannotator/SKILL.md) | [GitHub](https://github.com/backnotprop/plannotator)
+
+AI 계획을 브라우저 UI에서 어노테이션. 클릭 한 번으로 승인 또는 구조화된 피드백 전송. Claude Code, OpenCode, Gemini CLI, Codex CLI 지원.
+
+```bash
+bash .agent-skills/plannotator/scripts/install.sh --all
+```
+
 
 ### god-tibo-imagen — Codex 백엔드를 활용한 AI 이미지 생성
 > 키워드: `god-tibo-imagen`, `gti`, `image generation`, `codex image` | [문서](.agent-skills/god-tibo-imagen/SKILL.md) | [GitHub](https://github.com/NomaDamas/god-tibo-imagen)
@@ -957,18 +1008,19 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 | [CrewAI](https://github.com/crewAIInc/crewAI) | 45.7k | 역할 기반 자율 AI 에이전트 오케스트레이션 |
 | [smolagents](https://github.com/huggingface/smolagents) | 25.9k | HuggingFace 코드 사고 경량 에이전트 라이브러리 |
 | [agency-agents](https://github.com/msitarzewski/agency-agents) | 21.2k | 9개 부서의 61개 특화 AI 에이전트 |
-| [revfactory/harness](https://github.com/revfactory/harness) | meta-skill | 에이전트 팀 · 스킬 하네스 설계 플러그인 |
+| [ruvnet/ruflo](https://github.com/ruvnet/ruflo) | 78k | 에이전트 스웜·하이브마인드 오케스트레이션 엔진 (구 claude-flow) |
+| [google-research/harness2](https://github.com/google-research/harness2) | 15.9k | 재귀적 에이전트 하네싱: 고정 모델 주변의 프롬프트·도구·메모리·스킬·서브에이전트를 Propose–Probe–Compose로 개선 |
 | [revfactory/webtoon-harness](https://github.com/revfactory/webtoon-harness) | harness | 27개 에이전트 웹툰 제작 팀(트렌드 → 세로 스크롤 뷰어) 플러그인 |
 
-> 설치 및 연동 가이드 → [.agent-skills/harness/SKILL.md](.agent-skills/harness/SKILL.md) · 패키징된 스킬 → [.agent-skills/harness/SKILL.md](.agent-skills/harness/SKILL.md)
+> 패키징된 스킬 및 연동 가이드 → [.agent-skills/harness2/SKILL.md](.agent-skills/harness2/SKILL.md) · [.agent-skills/ruflo/SKILL.md](.agent-skills/ruflo/SKILL.md)
 
 ---
 
 ## 📁 구조
 
 ```text
-├── .agent-skills/          ← 369개 스킬 폴더 (SKILL.md + 선택적 지원 파일)
-├── assets/                ← README hero 및 카탈로그/런타임 다이어그램
+├── .agent-skills/          ← 373개 스킬 폴더 (SKILL.md + 선택적 지원 파일)
+├── assets/                ← README 커버와 catalog-install, runtime-boundary, skill-lifecycle 다이어그램
 ├── changelog/             ← 월별 다국어 릴리스 소스 파일
 ├── docs/                  ← ScrapingAnt 파트너십·아웃리치 자료
 ├── install.sh             ← 한 줄 설치 스크립트
@@ -989,7 +1041,6 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 |------|--------|------|
 | `ooo` | `ooo`, `ouroboros`, `ooo interview` | [.agent-skills/ooo/SKILL.md](.agent-skills/ooo/SKILL.md) |
 | `plannotator` | `plan` | [.agent-skills/plannotator/SKILL.md](.agent-skills/plannotator/SKILL.md) |
-| `ooo` | `ooo`, `ouroboros` | [.agent-skills/ooo/SKILL.md](.agent-skills/ooo/SKILL.md) |
 | `stitch-skills` | `stitch`, `stitch-design`, `enhance-prompt` | [.agent-skills/stitch-skills/SKILL.md](.agent-skills/stitch-skills/SKILL.md) |
 | `compresso` | `compresso`, `compress video`, `batch compression` | [.agent-skills/compresso/SKILL.md](.agent-skills/compresso/SKILL.md) |
 | `filmcraft` | `filmcraft`, `filmcraft-cli`, `.fcproj`, `FilmCraft MCP` | [.agent-skills/filmcraft/SKILL.md](.agent-skills/filmcraft/SKILL.md) |
@@ -1000,12 +1051,15 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 | `god-tibo-imagen` | `god-tibo-imagen`, `gti`, `image generation` | [.agent-skills/god-tibo-imagen/SKILL.md](.agent-skills/god-tibo-imagen/SKILL.md) |
 | `notebooklm` | `notebooklm`, `notebook query`, `google notebooklm` | [.agent-skills/notebooklm/SKILL.md](.agent-skills/notebooklm/SKILL.md) |
 | `zeude` | `zeude`, `ai adoption`, `enterprise claude` | [.agent-skills/zeude/SKILL.md](.agent-skills/zeude/SKILL.md) |
-| `harness` | `harness` | [.agent-skills/harness/SKILL.md](.agent-skills/harness/SKILL.md) |
+| `harness2` | `harness2`, `재귀 하네싱`, `propose-probe-compose` | [.agent-skills/harness2/SKILL.md](.agent-skills/harness2/SKILL.md) |
+| `ruflo` | `ruflo`, `claude-flow`, `에이전트 스웜` | [.agent-skills/ruflo/SKILL.md](.agent-skills/ruflo/SKILL.md) |
+| `voicestudio` | `VoiceStudio`, `보이스 클로닝`, `영상 더빙` | [.agent-skills/voicestudio/SKILL.md](.agent-skills/voicestudio/SKILL.md) |
+| `diagram-design` | `diagram-design`, `HTML/SVG 다이어그램`, `에디토리얼 다이어그램` | [.agent-skills/diagram-design/SKILL.md](.agent-skills/diagram-design/SKILL.md) |
+| `artcraft` | `ArtCraft`, `씬 블로킹`, `AI 이미지·영상 생성` | [.agent-skills/artcraft/SKILL.md](.agent-skills/artcraft/SKILL.md) |
 | `webtoon-harness` | `웹툰 만들어`, `웹툰 하네스` | [.agent-skills/webtoon-harness/SKILL.md](.agent-skills/webtoon-harness/SKILL.md) |
 | `game-studio-harness` | `게임 제작 하네스`, `게임 제작 사이클`, `stage gate` | [.agent-skills/game-studio-harness/SKILL.md](.agent-skills/game-studio-harness/SKILL.md) |
 | `heretic` | `heretic`, `어블리터레이션`, `모델 검열 제거` | [.agent-skills/heretic/SKILL.md](.agent-skills/heretic/SKILL.md) |
 | `bmad` | `bmad` | [.agent-skills/bmad/SKILL.md](.agent-skills/bmad/SKILL.md) |
-| Harness OSS | — | [.agent-skills/harness/SKILL.md](.agent-skills/harness/SKILL.md) |
 | `scrapingant-web-fetch` | `scrapingant`, `mcp 웹 스크래핑`, `차단된 페이지 fetch` | [.agent-skills/scrapingant-web-fetch/SKILL.md](.agent-skills/scrapingant-web-fetch/SKILL.md) |
 
 ---
@@ -1026,7 +1080,11 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 | `bmad` | [bmad-dev/BMAD-METHOD](https://github.com/bmad-dev/BMAD-METHOD) | MIT |
 | `agentation` | [benjitaylor/agentation](https://github.com/benjitaylor/agentation) | MIT |
 | `fabric` | [danielmiessler/fabric](https://github.com/danielmiessler/fabric) | MIT |
-| `harness` | [revfactory/harness](https://github.com/revfactory/harness) | Apache-2.0 |
+| `harness2` | [google-research/harness2](https://github.com/google-research/harness2) | Apache-2.0 |
+| `ruflo` | [ruvnet/ruflo](https://github.com/ruvnet/ruflo) | MIT |
+| `voicestudio` | [debpalash/VoiceStudio](https://github.com/debpalash/VoiceStudio) | AGPL-3.0-only |
+| `diagram-design` | [cathrynlavery/diagram-design](https://github.com/cathrynlavery/diagram-design) | MIT |
+| `artcraft` | [storytold/artcraft](https://github.com/storytold/artcraft) | MIT OR Apache-2.0 |
 | `webtoon-harness` | [revfactory/webtoon-harness](https://github.com/revfactory/webtoon-harness) | MIT |
 | `heretic` | [p-e-w/heretic](https://github.com/p-e-w/heretic) | AGPL-3.0-or-later |
 | `llm-wiki` | [karpathy/llm-wiki gist](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) | — |
@@ -1035,7 +1093,6 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 | `scrapling` | [D4Vinci/Scrapling](https://github.com/D4Vinci/Scrapling) | BSD-3-Clause |
 | `agent-reach` | [Panniantong/Agent-Reach](https://github.com/Panniantong/Agent-Reach) | MIT |
 | `semble` | [MinishLab/semble](https://github.com/MinishLab/semble) | MIT |
-| `harness` | [revfactory/harness](https://github.com/revfactory/harness) | Apache-2.0 |
 | `strix` | [usestrix/strix](https://github.com/usestrix/strix) | Apache-2.0 |
 | `autoresearch` | Andrej Karpathy methodology | — |
 | `nightrun` | [hardrave/NIGHTRUN](https://github.com/hardrave/NIGHTRUN) | MIT |
@@ -1073,6 +1130,17 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 ---
 
 <!-- WHATS-NEW:START -->
+
+## 🆕 v2026-10-21 업데이트
+
+| 변경 사항 | 상세 내용 |
+|--------|---------|
+| **harness → harness2** | revfactory `harness` 스킬을 `google-research/harness2` 운영 스킬 `harness2`로 교체했습니다. `1cfe254e8d25b15f37048c3730134686abe60335`(Apache-2.0)에 고정하고, 크레덴셜 없는 데모, LAB/JobBench/WorkBuddy 설정과 유료 실행 승인 게이트, Codex 브리지, Propose–Probe–Compose를 직접 적용하는 method 모드(에이전트 팀 설계 이관)를 안내합니다. `harness`는 `retired_skills`로 옮기고 모든 라우팅을 새 담당 스킬로 바꿨습니다. |
+| **운영 스킬 4종 추가** | `ruflo`(ruvnet/ruflo, MIT), `voicestudio`(debpalash/VoiceStudio, AGPL-3.0-only), `diagram-design`(cathrynlavery/diagram-design, MIT), `artcraft`(storytold/artcraft, MIT OR Apache-2.0)를 커밋 고정, 오프라인 preflight, 설치·모델·프로바이더·서버·배포 승인 게이트와 함께 추가했습니다. 카탈로그가 369개에서 373개가 됐습니다. |
+| **설치 시 은퇴 스킬 정리** | `jeo-skill install`과 `install.sh`가 설치 대상 루트에서 은퇴한 `jeo`(→ `ooo`)·`harness`(→ `harness2`)의 오래된 카탈로그 사본을 제거하며, `jeo-skill prune-retired [--global] [--dry-run]`으로 모든 런타임 루트를 점검합니다. frontmatter 이름과 첫 제목이 카탈로그 사본과 정확히 일치할 때만 지우고, 링크는 같은 정리에서 지운 사본을 가리킬 때만 해제합니다. 다른 출처의 동명 스킬·무관한 링크·링크된 상위 경로는 유지합니다. `.skill-lock.json`은 수정하지 않습니다. |
+| **검증** | 설치 회귀 63/63(신규 15개, 고정 fixture), 저장소 preflight 회귀 15/15(신규 helper 5종과 harness2 bench/method 사례), 카탈로그 투영·frontmatter·레이아웃·changelog 게이트 통과, 평가 시나리오 25개 추가. 이 머신의 오래된 사본을 그대로 복제한 격리 HOME에서 실제 고정 버전 `skills@1.7.0`으로 문서의 전체 설치(Step 4–4E, 7)를 처음부터 끝까지 실행했습니다. 설치 원본은 이 작업 트리를 커밋한 로컬 스냅숏이며(GitHub URL을 그쪽으로 우회), 공개 HEAD에는 push 전까지 이 변경이 없습니다. 모든 은퇴 사본과 이를 가리키는 링크가 제거되고 무관한 스킬·링크·Aside `builtin/`은 바이트 단위로 유지됐으며, 실제 jeopi/oh-my-pi/GJC 로더가 새 스킬 5종을 찾고 `jeo`/`harness`는 찾지 않음을 확인했습니다. OpenCode는 공유 루트 배치만 확인했고 런타임 활성화는 확인하지 않았습니다. upstream harness2 데모는 두 재귀 모드 모두 2/2 작업이 통과했고 단위 테스트 5개도 통과했습니다. 벤치마크·모델·심사 등 다른 upstream 런타임은 실행하지 않았습니다. |
+| **스킬 사용 추적과 미사용 스킬 정리** | `jeo-skill usage scan`이 Claude·Codex·OpenCode·Antigravity·Aside·jeopi/GJC/OMP/Pi 세션과 Jev의 로컬 기록에서 스킬 이름·횟수·시각만 보존하고, 호출·로드·Jev 전체 본문 주입만 사용으로 집계합니다. 전체 이력 0회와 추적 시작 후 30일 유예를 모두 충족한 항목만 후보로 삼으며 핵심 번들·핀·`usage relevance` 보호는 제외합니다. `prune-unused`는 확인 가능한 카탈로그 사본만 되돌릴 수 있게 격리하고 서드파티 사본·링크는 보존하며, Jev `deny`/사용 불가는 적용을 중단합니다. `restore`/`purge-quarantine`과 관리자용 `retire-unused-skills.py --approve`를 분리했습니다. 설치기와 `install.sh`는 추적이나 훅 등록을 시작하지 않으며, `usage scan`이 집계 트래커 상태와 30일 유예 시계를 만듭니다. 이미 활성화한 Jev 훅은 scan 전에도 같은 상태 디렉터리의 `jev-usage.jsonl`에 라우팅·주입 이벤트를 남기고 주입만 사용으로 셉니다. usage 7·quarantine 15·retirement 7 Python 회귀와 Node ledger 테스트 4개가 통과했으며, 실제 데이터 read-only scan은 `/tmp`에서 실행하고 호스트 추적 상태와 훅은 시작하지 않았습니다. |
+| **README 시각 자료 갱신** | 새 Codex 커버 `assets/readme-cover.webp`와 `catalog-install-flow.svg`, `runtime-boundaries.svg`, `skill-lifecycle.svg` 다이어그램으로 갱신했습니다. `readme-hero.webp`, `catalog-workflow.svg`, `runtime-architecture.svg`, 고아 `assets/scrapingant/` 로고를 더 이상 사용하지 않으며, 중복 `ooo` 문서 병합, god-tibo-imagen·plannotator 명령 수정, 운영 스킬 수 12개→18개를 반영했습니다. 문서 전용 변경입니다. |
 
 ## 🆕 v2026-10-15 업데이트
 
@@ -1116,19 +1184,6 @@ npx skills add https://github.com/akillness/jeo-skills --skill semble
 | **용량 인식 스킬 선택과 프로바이더/모델 정책** | 게이트 Noul 뒤 샤딩된 Choice 또는 어휘 숏리스트를 적합도 Noul로 재정렬하며, "맞는 스킬 없음"을 명시적으로 답할 수 있습니다. 선택적인 `skills.json` `model_policies`는 스킬별 `provider/model` 권고 라우팅(예: `openai/gpt-6.1-sol`, `ollama/qwen2.5:7b`)을 추가합니다. 호스트 어댑터는 아직 없습니다. |
 | **수정** | 호스팅 `api` 요청이 문서화된 `/v1/systemone` 본문(`model`, Choice `criteria`, `noul` 응답)과 일치합니다. 프루닝 배치는 위치 키를 쓰고 각 백엔드의 상태 한도로 제한되며, 한도를 넘는 입력은 서버에서 잘리는 대신 요청 전에 거부됩니다. 설정이 검증된 카탈로그 스냅샷을 설치해 체크아웃 밖에서도 `route-skills`가 동작하고, 백엔드로 보내는 스킬 발췌는 카탈로그 루트 안으로 제한됩니다(`../`와 외부를 가리키는 심볼릭 링크 거부). |
 | **검증** | 루프백 회귀 52개(Python 3.11 + Node 24에서도 통과), 오프라인 self-test 20/20, 격리 프로필 테스트 3개, Linux·macOS CI 통과, Ollama JEV-9B-GGUF 대상 격리 HOME 실사용 검증: 빈 디렉터리에서 354개 스킬 스냅샷으로 라우팅, `local`→`ollama` 프루닝 폴백, `review --backend local`의 fail-closed. 이 실행은 전송 경로를 증명할 뿐 보정을 증명하지 않습니다(티어 `unvalidated`). |
-
-## 🆕 v2026-10-01 업데이트
-
-| 변경 사항 | 상세 내용 |
-|--------|---------|
-| **Linux 파일 권한 보존 수정** | Agentation과 설정 회귀 테스트의 권한 조회를 OS별 BSD/GNU `stat` 선택 방식으로 수정했습니다. 첫 Ubuntu CI에서 파일시스템 출력이 권한 값에 섞이는 문제가 드러났으며, 기존 파일 권한의 정확한 보존을 확인하는 검증은 유지했습니다. |
-| **구버전 업그레이드와 CI 검증 보강** | PATH의 구버전 라우터를 우회하는 이식 가능한 `install.sh` 미리보기·업그레이드 절차를 추가하고, 수동 복사 안내를 보호 검사가 있는 설치 명령으로 교체했습니다. 공유 CLI 링크 보존, 미리보기 무변경, GJC·AGY·IDE의 미리보기와 실제 설치가 minimal/core/full 선택을 유지하는지 확인하는 회귀 테스트를 추가했습니다. 로컬 설치 34개·로더 6개·설정 24개 테스트 통과. Linux/macOS CI는 PR뿐 아니라 main push와 수동 실행에서도 이 검증을 수행합니다. 실제 사용자 설치와 ECC 설정은 변경하지 않았습니다. |
-| **설치 문서: 런타임 매핑 검증 완료** | `setup-all-skills-prompt.md`, `README.md`, `README.ko.md`, `README.es-ES.md`, `jeo-skill` SKILL.md를 업데이트해 정확한 런타임 지원 경로와 native 투영 요구사항을 명확히 했습니다. 설치 프로그램 12가지 케이스 + 7가지 연결된 선택적 설치 + 8가지 실제 세션 로더 모두 스모크 테스트 통과. |
-| **Antigravity IDE/CLI 경로 수정** | Antigravity IDE native 루트를 `~/.gemini/config/skills`로 수정 (레거시 `~/.gemini/antigravity/skills` 경로 보존, 삭제 안 함). Antigravity CLI (`agy`)는 `~/.gemini/antigravity-cli/skills`로 유지. 두 모드 모두 native 투영 필요 (`skills@1.7.0`이 `--agent` 플래그 무시하고 공유 루트에 설치하므로); 설정 가이드 Step 4C가 자동으로 처리. |
-| **OMP → oh-my-pi 명명 수정** | 모든 README 및 설치 가이드 섹션에서 OpenMP 참조를 oh-my-pi (실제 런타임 이름)로 수정. |
-| **Native 투영 참조 표 추가** | `jeo-skill` 가이드에 런타임 별칭, 공유·전용 경로, 설치 범위, 선택한 스킬의 자동 배치와 Aside 계정 선택을 문서화했습니다. 전용 경로 배치는 수동 복사가 아닌 설치 프로그램이 처리합니다. |
-| **공유 프로바이더 및 계정 안전성** | jeopi/jeo-code/oh-my-pi의 공유 `.agents/skills` 경로 로드를 확인했습니다. ECC 어댑터는 필요하지 않습니다. GJC는 전역 `~/.gjc/agent/skills` 또는 프로젝트 `.gjc/skills`를 사용합니다. Aside는 계정별 `~/.aside/u/<id>/skills/user/` 경로를 사용하며 자격증명을 계정 간 공유하지 않습니다. |
-| **설치 필수 요소 검증** | 문서 명시: Bash 3+, Node.js >= 22.20, `skills@1.7.0` CLI 고정. 검증 범위는 정확함: 거짓 end-to-end 데스크톱 테스트 주장 없음; 모든 보장은 자동화된 설치 프로그램 회귀 테스트 스위트로 뒷받침. |
 
 > 📜 이전 기록: [`changelog/ko/`](changelog/ko/) (월별 파일, 최신순).
 

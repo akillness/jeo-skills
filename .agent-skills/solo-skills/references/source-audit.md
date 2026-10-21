@@ -44,9 +44,9 @@ real CLI lists 24 available skills. Do not report all 26 as installed.
 
 ### Existing catalog collision
 
-The upstream pack includes `harness`, and jeo-skills already has a canonical
-`harness` from another source. A broad install into one target can replace or
-shadow it. The read-only plan blocks a same-name destination.
+The upstream pack includes `harness`. jeo-skills retired its own `harness` in favor of
+`harness2`, but an older catalog copy or another `harness` may still exist in the target
+root; a broad install can replace or shadow it. The read-only plan blocks a same-name destination.
 
 ### Personal environment coupling
 

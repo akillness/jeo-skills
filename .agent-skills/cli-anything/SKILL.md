@@ -52,7 +52,7 @@ build → refine → validate loop.
 ## When not to use this skill
 
 - The user wants to **design a domain-specific agent team** (agents +
-  skills scaffolding), not a software CLI wrapper → use `harness`
+  skills scaffolding), not a software CLI wrapper → use `harness2`
 - The user is browsing/installing **Claude plugins generally** → use
   `ccpi-marketplace`
 - The target has **no codebase and no API** and must be driven through a
@@ -206,7 +206,7 @@ When the user asks `cli-anything` for help, return a compact brief:
 - 2-3 bullets grounded in the user's packet
 
 ## Route-outs
-- `harness` for agent-team architecture (not software wrappers)
+- `harness2` for agent-team and agent-harness design (not software wrappers)
 - `browser-harness` for no-codebase GUI/browser targets
 - `ccpi-marketplace` for general Claude plugin browsing
 ```
@@ -236,6 +236,6 @@ When the user asks `cli-anything` for help, return a compact brief:
 - Technical report: <https://arxiv.org/abs/2606.03854>
 - Installer script: [`scripts/install.sh`](scripts/install.sh)
 - Command + platform reference: [`references/commands.md`](references/commands.md)
-- Adjacent skills: `../harness/SKILL.md`, `../ccpi-marketplace/SKILL.md`,
+- Adjacent skills: `../harness2/SKILL.md`, `../ccpi-marketplace/SKILL.md`,
   `../browser-harness/SKILL.md`, `../scrapling/SKILL.md`
 - License: Apache-2.0 (see upstream `LICENSE`)

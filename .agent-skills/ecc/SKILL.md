@@ -5,7 +5,7 @@ description: >
   agent harness with native Claude Code and Codex plugins plus selective adapters
   for other supported clients. Use when the user names ECC, Everything Claude Code,
   ecc-universal, ecc@ecc, `ecc setup`, or an ECC plugin, hook, rule, skill, or
-  harness installation. Route generic agent-team design to `harness`, delivery
+  harness installation. Route generic agent-team design to `harness2`, delivery
   workflow selection to `agentic-skills`, and BMAD phase selection to `bmad`.
 allowed-tools: Bash Read Write Edit Glob Grep
 compatibility: >
@@ -36,7 +36,7 @@ commands, and skills.
 - Audit an existing ECC checkout or configuration before a mutation.
 
 Do not use this skill merely because a coding task needs planning, tests, review, or
-multiple agents. Use `harness` to design a bespoke team, `agentic-skills` for generic
+multiple agents. Use `harness2` to design a bespoke team, `agentic-skills` for generic
 quality-gated delivery, and `bmad` for BMAD packet routing.
 
 ## Instructions

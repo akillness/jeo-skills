@@ -12,7 +12,7 @@ description: >
   and live-action switches before copying or running anything. Require explicit
   approval for external messages, publishing, archives, remote commands,
   desktop control, scheduled agents, paid providers, account access, or local
-  persistence. Route generic agent-team design to the canonical local `harness`
+  persistence. Route generic agent-team design to the catalog's `harness2`
   and reusable skill authoring to `skill-standardization`.
 allowed-tools: Bash Read Write Edit Glob Grep
 compatibility: >
@@ -62,7 +62,7 @@ no release tags at audit time.
 Do not use this wrapper for these nearby jobs:
 
 - Designing an agent team without explicitly requesting the Solo pack: use the
-  canonical local `harness`.
+  catalog's `harness2` (method mode).
 - Creating or standardizing a reusable skill: use `skill-standardization` or
   `write-a-skill`.
 - Ordinary Gmail, Google Calendar, Docs, or Sheets work: use the matching Google
@@ -174,10 +174,12 @@ python3 .agent-skills/solo-skills/scripts/audit-pack.py plan \
 The plan never creates the target. It returns `BLOCKED` for invalid selected
 frontmatter or an existing same-name destination.
 
-The jeo-skills catalog already owns a canonical `harness`. Never let a broad
-Solo install overwrite it. A full install also cannot faithfully include the
-two invalid frontmatter skills. Default to a selected lane, copied into an
-isolated target if naming or behavior conflicts remain.
+The jeo-skills catalog retired its own `harness` in favor of `harness2`, and its
+installers remove only copies matching the catalog's exact `harness` fingerprint.
+A Solo `harness` still collides with any existing `harness` directory in the target
+root, so never let a broad Solo install overwrite one. A full install also cannot
+faithfully include the two invalid frontmatter skills. Default to a selected lane,
+copied into an isolated target if naming or behavior conflicts remain.
 
 ### Step 6: Adapt author-specific assumptions
 
@@ -286,7 +288,7 @@ reviewed folder and verify every support file.
 
 Request: "기존 스킬은 신경 쓰지 말고 Solo 26개 전부 전역 설치해."
 
-Do not overwrite. Show the local `harness` collision, two invalid frontmatter
+Do not overwrite. Show any existing `harness` directory collision, two invalid frontmatter
 files, and personal-environment coupling. Offer selected low-risk content skills
 or an isolated, adapted target.
 

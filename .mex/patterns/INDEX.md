@@ -1,6 +1,6 @@
 # Pattern Index
 
-<!-- last_updated: 2026-10-14 -->
+<!-- last_updated: 2026-10-21 -->
 
 Lookup table for all pattern files in this directory. Check here before starting any task — if a pattern exists, follow it.
 
@@ -24,3 +24,4 @@ Lookup table for all pattern files in this directory. Check here before starting
 | [jev-control-plane.md](jev-control-plane.md) | Operating, extending, or debugging the Jev harness: backend kinds, per-operation routing/fallback, attestation tiers, cap-aware selection, `model_policies` routing, and the self-test/regression/smoke evidence gates |
 | [performance-resource-audit.md](performance-resource-audit.md) | Measuring and optimizing repository executable speed, allocation and resource lifecycles without changing outputs or weakening safety checks |
 | [readme-visual-refresh.md](readme-visual-refresh.md) | Refreshing localized README prose, generated release windows and Codex image/SVG assets with scoped consumer-command and browser verification |
+| [skill-usage-lifecycle.md](skill-usage-lifecycle.md) | Tracking skill usage, quarantining/restoring never-used installed skills, Jev review/relevance gates, the Jev usage ledger, or retiring never-used catalog skills |

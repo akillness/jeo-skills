@@ -25,7 +25,8 @@ Use this skill as the lightweight catalog front door when the user needs to:
 - install only one skill, a curated bundle, or one category slice;
 - inspect related or overlapping skills before choosing one;
 - avoid a full `.agent-skills` checkout in an agent runtime;
-- verify that the local catalog and the `jeo-skill` executable are usable.
+- verify that the local catalog and the `jeo-skill` executable are usable;
+- track which installed skills agents actually invoke, and quarantine never-used ones.
 
 Do not physically move skill folders to represent taxonomy. Agent skill discovery expects
 `<skill-name>/SKILL.md`; category and relationship metadata belongs in the central catalog.
@@ -76,6 +77,61 @@ For an explicit Jevgrep request, follow [jevgrep](../jevgrep/SKILL.md) for scope
 skill-document discovery through `jeo-skill explore` with an inert `--dry-run` and
 a separate remote-content/cost gate. Catalog metadata search and selection remain
 the default; the canonical skill owns setup, consent, and snippet verification.
+
+## Usage tracking and unused-skill cleanup
+
+`jeo-skill usage scan` reads local runtime records (Claude `skillUsage` and transcripts,
+Codex rollouts, OpenCode, Antigravity, Aside, jeopi/GJC/OMP/Pi sessions, and the Jev
+injection ledger) and stores only skill names, counts, and timestamps under
+`${JEO_SKILL_STATE_DIR:-${XDG_STATE_HOME:-~/.local/state}/jeo-skill}`. A skill counts as
+used only when an agent invoked or loaded it: a Skill/slash invocation, a read of an
+installed `<root>/<name>/SKILL.md` or `skill://<name>`, or a Jev full-body injection.
+Mentions in prompts, Jev routing without injection, and reads of the catalog source
+(`<checkout>/.agent-skills/<name>/SKILL.md`) never count. Evidence survives rotated or
+deleted runtime logs.
+
+A skill becomes a removal candidate only with zero uses across all history and a 30-day
+grace after tracking began (or after it was first seen installed, if later). `jeo-skill`,
+the `starter`, `cli-core`, and `infrastructure-core` bundles, `usage keep` pins, and skills
+protected by `usage relevance` are never candidates.
+
+```bash
+jeo-skill usage scan                     # refresh evidence (writes tracker state only)
+jeo-skill usage report --status candidate
+jeo-skill usage keep rare-but-needed     # pin; `usage unkeep` removes the pin
+jeo-skill usage relevance --repos ~/work/app --jev-profile jeopi --dry-run
+
+# Local installs: preview, then quarantine (rescans first; reversible)
+jeo-skill prune-unused --global
+jeo-skill prune-unused --global --apply --jev-profile jeopi --allow-remote
+jeo-skill restore --list
+jeo-skill restore --batch <batch-id> --apply
+jeo-skill purge-quarantine --older-than 30 --apply   # permanent; preview without --apply
+```
+
+Quarantine moves only provable jeo-skills catalog copies (directory, frontmatter name, and
+first heading match the catalog); third-party copies, symlinks, and linked roots are
+reported and kept. Every Jev call needs `--allow-remote`: the profile's review backend may
+be hosted and even `status` contacts configured endpoints. A Jev `deny` or unavailable
+review aborts the apply; `proposal_only` proceeds because `--apply` is the human approval,
+and the receipt is stored in the batch manifest. `--skip-jev-review` is recorded instead.
+
+Catalog retirement is a separate maintainer step in a repository checkout:
+`python3 scripts/retire-unused-skills.py --usage-report report.json` previews proposals from
+`jeo-skill usage report --json`; `--apply --approve name[,name]` plus either
+`--jev-profile P --allow-remote` or a recorded `--skip-jev-review` retires approved skills,
+regenerates projections, validates, and rolls back on any failure (`--apply` without a review
+choice is rejected).
+
+For periodic reports, run the scan from a host hook or scheduler and apply manually. A
+Claude Code `SessionEnd` hook in `~/.claude/settings.json`:
+
+```json
+{"hooks": {"SessionEnd": [{"hooks": [{"type": "command",
+  "command": "nohup jeo-skill usage scan >/dev/null 2>&1 &"}]}]}}
+```
+
+Or a daily cron entry: `17 3 * * * jeo-skill usage scan >/dev/null 2>&1`.
 
 ## Runtime Installation Guide
 

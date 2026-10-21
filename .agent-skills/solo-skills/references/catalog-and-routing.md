@@ -51,7 +51,7 @@ repository has 26 directories containing `SKILL.md`, while Agent Skills CLI
 | Skill | Route here for | Portability boundary |
 |---|---|---|
 | `claude-codex-fallback` | run Claude first and Codex only on confirmed usage-limit failure | bundled shell uses permission or sandbox bypass flags; never adopt those defaults blindly |
-| `harness` | generate agent teams, skills, and project rules | collides with the canonical jeo-skills `harness`; install only when explicitly selecting this variant |
+| `harness` | generate agent teams, skills, and project rules | collides with any existing `harness` directory in the target root (jeo-skills retired its own `harness` for `harness2`); install only when explicitly selecting this variant |
 | `computer-use` | discover Orca's current computer-use reference | stub only; requires a compatible Orca binary that serves version-matched instructions |
 | `orchestration` | discover Orca's current multi-agent orchestration reference | stub only; requires a compatible Orca binary and live reference output |
 | `remote-offload` | send a heavy command to an SSH host | author SSH alias, remote path, key, resource assumptions, and quoted command execution |
@@ -69,8 +69,8 @@ repository has 26 directories containing `SKILL.md`, while Agent Skills CLI
 
 1. Enter this router only when the user names the Solo pack or explicitly wants
    one of its source workflows.
-2. Generic agent-team design routes to the canonical local `harness` unless the
-   user deliberately chooses the upstream Solo variant.
+2. Generic agent-team design routes to the catalog's `harness2` (method mode)
+   unless the user deliberately chooses the upstream Solo variant.
 3. Generic skill creation routes to `skill-standardization` or `write-a-skill`.
 4. For `computer-use` and `orchestration`, verify a matching Orca binary and ask
    it for the live reference. The checked-in stubs are not usage guides.

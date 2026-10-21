@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1290" viewBox="0 0 1200 1290" role="img" aria-labelledby="title desc">
+  <title id="title">Catalog discovery, installation, and native placement</title>
+  <desc id="desc">The canonical skills.json catalog feeds jeo-skill discovery, selection previews, and global installation. Shared readers and native shelves are separate destinations. Doctor checks catalog and installer prerequisites; prune-retired cleans proven stale copies of jeo and harness, whose replacements are ooo and harness2. File placement does not prove runtime activation.</desc>
+  <defs>
+    <style>
+      text{fill:#12231E;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:21px}
+      .heading{font-size:34px;font-weight:700}.label{font-size:24px;font-weight:700}.small{font-size:19px}
+      .cmd{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:19px}
+      .card{fill:#FFFFFF;stroke:#137E73;stroke-width:2}.native{fill:#EDF1E9;stroke:#12231E;stroke-width:2}
+      .flow{fill:none;stroke:#137E73;stroke-width:3;marker-end:url(#arrow)}
+    </style>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 10 5 0 10Z" fill="#137E73"/></marker>
+  </defs>
+  <rect width="1200" height="1290" fill="#F7F9F5"/>
+  <text x="40" y="60" class="heading">Choose skills. Place them where the host reads.</text>
+  <text x="40" y="96">One catalog, selective installation, distinct runtime shelves.</text>
+
+  <rect x="40" y="130" width="420" height="150" rx="16" class="card"/>
+  <text x="64" y="167" class="label">Canonical catalog</text>
+  <text x="64" y="202" class="cmd">.agent-skills/skills.json</text>
+  <text x="64" y="239" class="small">Taxonomy, bundles, relationships, skills</text>
+  <path d="M460 205H510" class="flow"/>
+  <rect x="510" y="130" width="650" height="150" rx="16" class="card"/>
+  <text x="534" y="167" class="label">Discover with jeo-skill</text>
+  <text x="534" y="202" class="cmd">jeo-skill categories</text>
+  <text x="534" y="232" class="cmd">jeo-skill list --category web</text>
+  <text x="534" y="262" class="cmd">jeo-skill related responsive-design</text>
+  <path d="M835 280V320" class="flow"/>
+
+  <rect x="40" y="320" width="1120" height="178" rx="16" class="card"/>
+  <text x="64" y="357" class="label">Select by name or bundle; preview before installation</text>
+  <text x="64" y="397" class="cmd">jeo-skill install responsive-design --dry-run</text>
+  <text x="64" y="429" class="cmd">jeo-skill install --bundle web-frontend --dry-run</text>
+  <text x="64" y="472" class="cmd">jeo-skill install responsive-design --global --yes</text>
+  <path d="M600 498V520H287V550M600 520H863V550" class="flow"/>
+
+  <rect x="40" y="550" width="494" height="230" rx="16" fill="#E4F1E9" stroke="#137E73" stroke-width="3"/>
+  <text x="64" y="588" class="label">Shared root · global</text>
+  <text x="64" y="628" class="cmd">~/.agents/skills</text>
+  <text x="64" y="674">jeopi · jeo-code · oh-my-pi</text>
+  <text x="64" y="710">Codex · Gemini CLI · OpenCode</text>
+  <text x="64" y="746">Cursor · Cline</text>
+
+  <rect x="566" y="550" width="594" height="390" rx="16" class="native"/>
+  <text x="590" y="588" class="label">Native shelves · target-specific placement</text>
+  <text x="590" y="629" class="small">Claude Code · when claude is installed</text>
+  <text x="590" y="659" class="cmd">~/.claude/skills</text>
+  <text x="590" y="702" class="small">Pi</text>
+  <text x="700" y="702" class="cmd">~/.pi/agent/skills</text>
+  <text x="590" y="741" class="small">GJC</text>
+  <text x="700" y="741" class="cmd">~/.gjc/agent/skills</text>
+  <text x="590" y="785" class="small">Antigravity CLI / IDE</text>
+  <text x="590" y="815" class="cmd">~/.gemini/antigravity-cli/skills</text>
+  <text x="590" y="845" class="cmd">~/.gemini/config/skills</text>
+  <text x="590" y="885" class="small">Aside · account-scoped</text>
+  <text x="590" y="915" class="cmd">~/.aside/u/&lt;id&gt;/skills/user</text>
+
+  <text x="64" y="831" class="label">Placement is one step</text>
+  <text x="64" y="866" class="small">Choose a target with --agent &lt;runtime&gt;.</text>
+  <text x="64" y="898" class="small">Loading and account activation need</text>
+  <text x="64" y="927" class="small">their own runtime checks.</text>
+
+  <path d="M510 780V966H600V990M863 940V966H600" class="flow"/>
+  <rect x="40" y="990" width="1120" height="100" rx="16" class="card"/>
+  <text x="64" y="1029" class="label">Verify</text>
+  <text x="255" y="1029" class="cmd">jeo-skill doctor</text>
+  <text x="64" y="1065" class="small">Reports the catalog source, installer prerequisites and CLI link state.</text>
+  <path d="M600 1090V1130" class="flow"/>
+  <rect x="40" y="1130" width="1120" height="120" rx="16" class="card"/>
+  <text x="64" y="1168" class="label">Clean retired catalog copies</text>
+  <text x="64" y="1205" class="cmd">jeo-skill prune-retired --global</text>
+  <text x="675" y="1168">jeo → ooo</text>
+  <text x="675" y="1205">harness → harness2</text>
+  <text x="64" y="1233" class="small">Fingerprint-matched stale copies only; replacements are selected separately.</text>
+</svg>

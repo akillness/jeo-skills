@@ -41,6 +41,11 @@ if [ "$DRY_RUN" = true ]; then
   if [ "$SELECTION" != router ]; then
     printf 'Command: '; printf '%q ' python3 "$CLI_PATH" install "${TARGET_ARGS[@]}" "${SELECT_ARGS[@]}" --yes; printf '\n'
   fi
+  if [ "$GLOBAL" = true ]; then
+    printf 'Command: '; printf '%q ' python3 "$CLI_PATH" prune-retired --global; printf '\n'
+  else
+    printf 'Command: '; printf '%q ' python3 "$CLI_PATH" prune-retired; printf '\n'
+  fi
   info "Dry run: shared router destination $ROOT; bootstrap resolves target $AGENT; no changes made."
   info 'Runtime support, account selection, and catalog selections are validated during execution, not by this bootstrap preview.'
   info "After install, optional Jev setup targets profile '$JEV_PROFILE'; set JEO_SKILLS_JEV_PROFILE for an independent profile when AGENT=universal."
@@ -76,6 +81,12 @@ npx --yes skills@1.7.0 add "$REPO_URL" "${ADD_ARGS[@]}"
 python3 "$CLI_PATH" bootstrap "${TARGET_ARGS[@]}"
 if [ "$SELECTION" != router ]; then
   python3 "$CLI_PATH" install "${TARGET_ARGS[@]}" "${SELECT_ARGS[@]}" --yes
+fi
+# Remove stale catalog copies of retired skills (jeo, harness) from every runtime root in scope.
+if [ "$GLOBAL" = true ]; then
+  python3 "$CLI_PATH" prune-retired --global || info 'WARNING: retired-skill cleanup did not complete; installed skills remain available.'
+else
+  python3 "$CLI_PATH" prune-retired || info 'WARNING: retired-skill cleanup did not complete; installed skills remain available.'
 fi
 if [ "$GLOBAL" = true ] && ! command -v jeo-skill >/dev/null 2>&1; then
   info 'Add $HOME/.local/bin to PATH to use jeo-skill.'

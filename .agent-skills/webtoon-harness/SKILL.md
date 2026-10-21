@@ -142,5 +142,5 @@ See [references/trend-research-scrapling.md](references/trend-research-scrapling
 - [Trend Research via scrapling](references/trend-research-scrapling.md)
 - [Install / scaffold](references/install.md)
 - [revfactory/webtoon-harness](https://github.com/revfactory/webtoon-harness) (MIT)
-- [scrapling skill](../scrapling/SKILL.md) · [harness skill](../harness/SKILL.md)
+- [scrapling skill](../scrapling/SKILL.md) · [harness2 skill](../harness2/SKILL.md)
 - [Agent Skills Specification](https://agentskills.io/specification)

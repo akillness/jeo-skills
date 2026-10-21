@@ -37,7 +37,7 @@ Discover and apply high-quality prompts from the prompts.chat collection to enha
 
 - **The main job is building a full LLM application framework** → use `pydantic-ai`, `crewai-multi-agent`, or `langgraph-human-in-the-loop`
 - **The main job is prompt optimization via RLHF or fine-tuning** → use `dspy`, `openrlhf-training`, or `moe-training`
-- **The main job is building an agent system** → use `deep-agents-core`, `crewai-multi-agent`, or workflow skills like `harness`
+- **The main job is building an agent system** → use `deep-agents-core`, `crewai-multi-agent`, or `harness2` for agent-harness and team design
 - **The main job is RAG pipeline construction** → use `llamaindex` or `supabase-agent-skills`
 
 ## Instructions

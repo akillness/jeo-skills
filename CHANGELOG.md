@@ -2,6 +2,29 @@
 
 All notable changes to **jeo-skills** are documented here.
 
+## 2026-10-21
+
+### Added
+- Added the pinned `harness2` operator plus `ruflo`, `voicestudio`, `diagram-design`, and `artcraft`; the catalog grows from 369 to 373 skills.
+- Added local skill-usage tracking with candidate reporting, reversible quarantine/restore, permanent quarantine purge, a separate maintainer retirement script, and the Jev injection usage ledger.
+
+### Changed
+- Install and `prune-retired` cleanup now remove only fingerprint-matched catalog copies of retired `jeo`/`harness`; third-party copies, unrelated links, linked roots, and `.skill-lock.json` remain untouched.
+- Refreshed README visuals and authored documentation, including the usage lifecycle, host boundaries, commands, and 18-operator preflight guidance.
+
+### Removed
+- Retired the revfactory `harness` skill and superseded README images (`readme-hero.webp`, `catalog-workflow.svg`, `runtime-architecture.svg`) plus the orphan `assets/scrapingant/` logo.
+
+## 2026-10-15
+
+### Added
+- Added the source-pinned `okf-agent-memory` operator for the `okf-memory/okf-agent-memory` Go CLI and stdio MCP (commit `ad7beb01b9d4294d8dd28c25494d274374985b69`, MIT), covering project-local OKF v0.2 workflows, source-pinned commands, security, and approval gates.
+- Added a standalone stdlib preflight bound to the pinned commit; the repository-preflight suite passed 13/13, including malicious-path, pin, symlink, size, no-write, and credential-isolation cases.
+
+### Changed
+- Registered `okf-agent-memory` under `ai-agents/memory`, linked it with `okf` and related knowledge-vault skills, clarified the Google OKF v0.1 authoring path, and refreshed projections and README/setup guidance; the catalog grew from 367 to 368 skills.
+- Recorded the pinned `go.mod` requirement of Go 1.26.0 against the guide's 1.22+ prerequisite; no upstream installation, build, bootstrap, MCP registration, or target-project write was performed.
+
 ## 2026-10-14
 
 ### Added

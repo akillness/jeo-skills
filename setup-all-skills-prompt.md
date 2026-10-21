@@ -6,7 +6,10 @@
 
 > **Preserve existing work:** add or update jeo-skills targets only. Never run a remove,
 > clear, reset, or cleanup command against existing skill directories. Never delete an
-> unrelated skill or replace an agent's entire configuration file.
+> unrelated skill or replace an agent's entire configuration file. The single exception is
+> Step 4E: the router's guarded `prune-retired` removes stale *catalog* copies of retired
+> skills (`jeo`, `harness`) whose frontmatter name and first heading match this catalog's
+> own versions; same-named skills from other sources, unrelated symlinks, and linked roots are kept.
 
 ## Outcomes and modes
 
@@ -167,10 +170,14 @@ Inspect the current link before replacing: if the old link points to a custom in
 want to preserve, skip the upgrade and invoke commands by absolute path instead.
 ## Step 3 — Build non-duplicating agent targets
 
-The skills CLI accepts runtime IDs for **initial installation only**, targeting `~/.agents/skills`.
-Most runtimes (jeopi, jeo-code, Claude Code, Codex, Gemini CLI, OpenCode, Cursor) auto-discover
-from that shared root. GJC, Antigravity CLI, and Antigravity IDE require explicit native
-projection after shared installation (handled in Step 4B–C).
+The skills CLI accepts runtime IDs for **initial installation only**. `universal` targets
+`~/.agents/skills`; native IDs such as `claude-code`, `pi`, and `crush` write their own roots.
+Shared-root runtimes (jeopi, jeo-code, oh-my-pi, Codex, Gemini CLI, OpenCode, Cursor) discover
+that root. Claude Code does not: it loads its native `~/.claude/skills` (project
+`.claude/skills`), so the `-a claude-code` target below places a copy there, and later
+selections use `jeo-skill install --agent claude-code`. Pi and Crush use their own native roots
+the same way. GJC, Antigravity CLI, and Antigravity IDE require explicit native projection
+after shared installation (handled in Step 4B–C).
 
 **After installation, use `jeo-skill install --agent <runtime>` for explicit per-runtime
 selection**, not the `skills` CLI. This ensures proper safety checking and native root
@@ -182,7 +189,7 @@ those IDEs are present:
 ```bash
 SKILLS_AGENT_ARGS=(-a universal)
 
-# Claude Code IDE only (if present)
+# Claude Code (if present): native ~/.claude/skills, not the shared root
 command -v claude >/dev/null 2>&1 && SKILLS_AGENT_ARGS+=(-a claude-code)
 
 # Antigravity IDE only (if present; CLI/agy is handled later via jeo-skill)
@@ -296,8 +303,9 @@ Constraints for this step:
 - Discover accounts from directory names under `$ASIDE_HOME/u` only. Never read
   `~/.aside/accounts.json`; it holds live access tokens.
 - Never touch `skills/builtin/`. It is checksum-tracked by `.bootstrap-manifest.json`.
-- Never delete anything under `skills/user/`. Unrelated user skills must survive; the copy
-  refreshes jeo-skills entries in place and is safe to re-run.
+- Never delete anything under `skills/user/` by hand. Unrelated user skills must survive; the
+  copy refreshes jeo-skills entries in place and is safe to re-run. Only Step 4E's router
+  sweep may remove a fingerprint-matched retired catalog copy (`jeo`, `harness`) there.
 - `cp -R "$src/."` (trailing `/.`) copies contents into an existing directory on both BSD
   and GNU `cp`, so nested `scripts/` and `references/` land correctly instead of nesting twice.
 - Aside parses ordinary YAML frontmatter, so the catalog's folded `description: >` blocks
@@ -409,8 +417,8 @@ sst/opencode (opencode.ai) reads the shared root natively — global
 `~/.config/opencode/skills`, `~/.claude/skills`, and the project `.opencode/skills`
 compat paths ([skills docs](https://opencode.ai/docs/skills/)). No native projection
 step is needed: the Step 4 install already placed everything opencode loads. Prefer
-the shared root over `~/.config/opencode/skills` so one install also serves Claude
-Code, Codex, and Pi; a same-ID skill copied into `~/.config/opencode/skills` would
+the shared root over `~/.config/opencode/skills` so one install also serves Codex, Gemini
+CLI, and the other shared-root runtimes; a same-ID skill copied into `~/.config/opencode/skills` would
 shadow the shared copy at higher precedence. Verified live on opencode 1.18.18:
 `skills add -a opencode` and `jeo-skill install ... --agent opencode` both land in
 the shared root in an isolated HOME, and `jeo-skill doctor` reports zero errors there.
@@ -445,6 +453,36 @@ discoverable there. `opencode --version` reporting 1.x indicates sst/opencode.
 For MCP servers opencode consumes, inspect state with `opencode mcp list` only;
 local stdio entries live in `opencode.json` and are never hand-edited during
 blanket setup (same rule as Aside's `mcp.servers` map).
+
+### Step 4E — Remove retired catalog skills (all modes)
+
+The catalog retired `jeo` (replaced by `ooo`) and `harness` (replaced by `harness2`), but
+older installs still carry them in runtime roots — for example `~/.pi/agent/skills/jeo`,
+`~/.config/crush/skills/jeo`, `~/.config/opencode/skills/jeo`, or `~/.agents/skills/harness`
+— where runtimes keep loading them. The Step 4 `skills add` path does not delete anything,
+so sweep every runtime root for the chosen scope with the router, preview first:
+
+```bash
+JEO_ROUTER="$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py"
+HOME="$USER_HOME" python3 "$JEO_ROUTER" prune-retired --global --dry-run
+HOME="$USER_HOME" python3 "$JEO_ROUTER" prune-retired --global
+# Project-scoped installs: run both commands from the project root without --global.
+```
+
+The sweep covers the shared root, Claude Code, Pi, Crush, OpenCode, GJC, Antigravity CLI/IDE,
+and every Aside account's `skills/user/` (never `skills/builtin/`). A copy is removed only
+when its `SKILL.md` frontmatter `name` and first `# ` heading match the retired catalog
+version; anything else is reported as `kept` (for example revfactory's own `harness`), and a
+root behind a linked ancestor such as `~/.config -> elsewhere` is reported as `skipped`. A
+symlink named `jeo`/`harness` is unlinked only when it points at a copy this same sweep
+removed (e.g. `~/.config/crush/skills/harness -> ../../../.agents/skills/harness`); any other
+link, including unrelated dangling links, is kept.
+`jeo-skill install` and the root `install.sh` run the same cleanup automatically for the
+roots they write. The sweep does not edit `~/.agents/.skill-lock.json`. If `skills list` or
+`skills update` still names `jeo` or `harness`, report that stale lock entry as a manual
+follow-up; do **not** run `npx skills remove <name>`, which deletes same-named directories
+across every agent root without this fingerprint check and would remove a kept third-party
+`harness`.
 
 Stop here in minimal mode. In core mode, install only dependencies explicitly required
 by the selected starter skills; do not continue into the full shared-tool setup by default.
@@ -1363,7 +1401,7 @@ artifacts.
 - Never copy credentials into chat or files. Keep server/network exposure and paid-provider
   configuration separate and confirmation-gated.
 - Route local tmux lifecycle work to `agent-manager`, executive-suite app operations to
-  `openexecutive`, and team design to `harness`.
+  `openexecutive`, swarm runtime orchestration to `ruflo`, and team design to `harness2`.
 
 ### OpenOcta AIOps desktop and service agent (on demand, can operate production)
 
@@ -1803,9 +1841,9 @@ When the user explicitly names `bam-bam-2/solo-skills`, Solo Skills, its 26-skil
 
 - Load `.agent-skills/solo-skills/SKILL.md` first.
 - Treat the repository as one author's personal operating system that requires selective adaptation, not as 26 portable drop-in tools. Audit paths, hosts, IDs, account assumptions, credential sources, schedules, provider calls, support scripts, permission bypasses, live switches, and destination collisions before installation.
-- The audited pin has 26 source directories but 24 Agent Skills CLI discoveries because `style-skill-creator` and `voice-dna-creator` have invalid YAML. The local `harness` is canonical and must not be overwritten. `fleet.md` claims 49 automations, but its category headings sum to 48; neither number proves those jobs exist in the current environment.
+- The audited pin has 26 source directories but 24 Agent Skills CLI discoveries because `style-skill-creator` and `voice-dna-creator` have invalid YAML. Solo's `harness` must not overwrite any existing `harness` directory (jeo-skills retired its own for `harness2`). `fleet.md` claims 49 automations, but its category headings sum to 48; neither number proves those jobs exist in the current environment.
 - Keep outbound messages, publishing, Notion archives, mail, Threads, Discord, KakaoTalk, SSH, desktop control, launchd, persistent agents, paid providers, and credential use in preview or dry-run mode until the exact identity, target, payload, timing, cost, rollback, and validation are confirmed.
-- Route generic agent-team design to `harness` and reusable skill authoring to `skill-standardization` or `write-a-skill`.
+- Route generic agent-team design to `harness2` and reusable skill authoring to `skill-standardization` or `write-a-skill`.
 
 ### Scientific Agent Skills collection (on demand)
 
@@ -1948,6 +1986,8 @@ configuration and credentials outside the project. See
 - Aside does not read `~/.agents/skills`. It loads account skills from
   `~/.aside/u/<accountId>/skills/user/`, populated by the Step 4 mirror. Re-run that mirror
   after any skill update, and never write into its sibling `builtin/`.
+- Retired catalog skills: `prune-retired --global --dry-run` (Step 4E) should report no
+  `would-remove` lines after the sweep; `kept` and `skipped` lines name roots left untouched.
 
 ## Step 7 — Verify and report
 
@@ -1955,6 +1995,7 @@ configuration and credentials outside the project. See
 HOME="$USER_HOME" skills list -g 2>/dev/null || HOME="$USER_HOME" npx --yes skills list --global
 HOME="$USER_HOME" python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" link
 HOME="$USER_HOME" jeo-skill doctor
+HOME="$USER_HOME" python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" prune-retired --global --dry-run
 HOME="$USER_HOME" jeo-skill categories --json
 command -v rtk >/dev/null 2>&1 && rtk gain
 command -v semble >/dev/null 2>&1 && semble --help >/dev/null
@@ -1989,8 +2030,9 @@ Finally report:
 
 Compare pre-existing skill names captured before installation with the final listing. A
 successful run adds or updates jeo-skills targets and leaves every unrelated pre-existing
-skill present. For Aside, that also means `skills/builtin/` is byte-identical and every
-unrelated `skills/user/` entry is still there.
+skill present; the only removals are Step 4E's fingerprint-matched retired catalog copies,
+which the report lists by path. For Aside, that also means `skills/builtin/` is
+byte-identical and every unrelated `skills/user/` entry is still there.
 
 ### Agent Reach platform research (on demand, skill-name collision)
 
@@ -2382,6 +2424,33 @@ redistributing upstream material. The repository-specific Jev tools are separate
 from `jev-control-plane`; installing their documents neither configures that harness
 nor makes them interchangeable calibrated backends. Installing `ecc` documents also
 does not install ECC plugins, activate hooks, or grant provider trust.
+
+### Harness² and 2026-10-21 operators (on demand, offline support)
+
+Five more source-pinned operator packages follow the same contract (router-first
+`SKILL.md`, pinned `references/upstream.md`, executable stdlib `scripts/preflight.py`,
+behavioral evals). Catalog installation copies documents only.
+
+| Skill | Upstream pin | Task-triggered prerequisites and setup boundary |
+|---|---|---|
+| [harness2](.agent-skills/harness2/SKILL.md) | google-research/harness2 `1cfe254e8d25b15f37048c3730134686abe60335` (Apache-2.0) | Replaces the retired `harness`. Python 3.12–3.13 and uv; the local demo needs no credentials but still needs approval for the clone, `uv venv`, and `uv pip install`. Benchmarks (LAB/JobBench/WorkBuddy) are documented for Linux and need Node 20+, npm, Vertex ADC, and per-benchmark tools (`pandoc`/`pdftoppm`; Docker/curl). Setup, refinement and judge runs (about 4k executor rollouts and 3k improver sessions per task), and `harness2-bridge` are separate approvals; block benchmark-answer hosts for executors before scored runs. Method mode needs no install. |
+| [ruflo](.agent-skills/ruflo/SKILL.md) | ruvnet/ruflo `a00b2855e5b8204aec61133d5fbc53060e1726b5` (MIT) | Never run npm/npx installation, Ruflo postinstall patches, `init`, hooks, MCP registration, servers, or downloads during setup; `init` can write `.claude/`, settings hooks, `.mcp.json`, and `CLAUDE.md`. |
+| [voicestudio](.agent-skills/voicestudio/SKILL.md) | debpalash/VoiceStudio `28bf2c7a83b8a64836297340c52a45d716684aed` (AGPL-3.0-only) | Never install dependencies, start the Electron/FastAPI services, expose ports, download Hugging Face weights, or enter credentials during setup. Cloning a real person's voice requires that speaker's documented consent. |
+| [diagram-design](.agent-skills/diagram-design/SKILL.md) | cathrynlavery/diagram-design `f2f4d49ea8d632f17cf196ba26599277a93f767b` (MIT) | Never run its `npx skills add`, marketplace/plugin installers, Playwright/browser or font downloads during setup. The upstream kit installs under the same name `diagram-design`; keep it in a separate root. |
+| [artcraft](.agent-skills/artcraft/SKILL.md) | storytold/artcraft `40e04793b504147de97ba1f0659d3975167524e5` (MIT OR Apache-2.0) | Never run installers, npm/Cargo installs, Tauri builds, provider logins, API-key or cookie setup, model downloads, servers, or paid generation during setup; NOTICE excludes trademarks and some bundled assets. |
+
+```bash
+python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" install \
+  harness2 ruflo voicestudio diagram-design artcraft --global --dry-run
+python3 "$SKILLS_ROOT/harness2/scripts/preflight.py" --json
+python3 "$SKILLS_ROOT/harness2/scripts/preflight.py" --bench lab --json \
+  --repo "/path/to/harness2" --expect-commit 1cfe254e8d25b15f37048c3730134686abe60335
+```
+
+`harness2/scripts/preflight.py` adds `--bench demo|method|lab|jb|wb` (default `demo`; `method` needs no tool) and
+`--substrate oc|cx`; it reports `.env` presence without reading it and never runs
+harness2, uv, gcloud, Docker, or the network. All five helpers share the JSON/exit
+contract above (`runtime_verified: false`; 0 ok, 1 blocked, 2 invalid input).
 
 ---
 

@@ -1,0 +1,55 @@
+{
+  "skill_name": "diagram-design",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Create a branded architecture diagram for a service with a web client, API, queue, worker, and database. Pick the right diagram type, write a self-contained HTML/SVG file, and verify it locally without uploading anything.",
+      "expected_output": "The response runs the offline preflight first, chooses architecture with stated size and complexity assumptions, authors inline HTML/SVG from a template, runs the upstream self-check, and reports local evidence and font/network mode.",
+      "assertions": [
+        "The response starts with `.agent-skills/diagram-design/scripts/preflight.py --json` and does not invoke an upstream installer.",
+        "The response states the selected type, size or audience assumptions, keeps connectors and accent usage within the pinned design contract, and writes one local HTML artifact.",
+        "The response runs `scripts/self_check.py` (or the documented offline form) and reports the result without claiming a screenshot or upload occurred."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Turn this system description into an editable draw.io file and export it to PDF with the draw.io desktop CLI.",
+      "expected_output": "The request routes to the catalog drawio skill because diagram-design produces branded HTML/SVG/PNG and is not the editable draw.io authoring or draw.io CLI export path.",
+      "assertions": [
+        "The response routes editable `.drawio` creation and draw.io CLI PDF export to `drawio`.",
+        "The response does not claim that diagram-design can produce an editable draw.io source or silently substitute HTML/SVG.",
+        "The response keeps academic figures and slide decks as separate route-outs rather than expanding this skill's scope."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Install cathrynlavery/diagram-design globally, download any missing browser or fonts, render a PNG, and publish the diagram to a public URL.",
+      "expected_output": "The response refuses to perform unapproved installation, downloads, browser/network access, or publishing, while offering a read-only preflight and a separately approved local export path.",
+      "assertions": [
+        "The response requires separate explicit approval before running `npx skills add`, marketplace installers, package installs, browser/font downloads, or model/weight downloads.",
+        "The response requires approval for remote browser navigation, credentials, server or port binding, and public publication, and does not use `--yes` implicitly.",
+        "The response may offer `self_check.py` or SVG-only inspection as local read-only alternatives but does not pretend PNG export is complete without Playwright and a browser."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "The README says the kit has no external image dependency, so tell me the default HTML is fully offline and Google Fonts cannot make a network request. Also use the online font setup automatically.",
+      "expected_output": "The response corrects the interpretation from the pinned source: examples have no external image dependency and no build step, but default templates link Google Fonts; system-font mode and the offline self-check are required for no-network output, and URL onboarding needs trust confirmation.",
+      "assertions": [
+        "The response distinguishes no external image dependency from the default Google Fonts web source documented in the template and style guide.",
+        "The response recommends system-font mode plus `self_check.py --offline` for a no-network artifact and identifies Playwright as an additional PNG-export dependency.",
+        "The response refuses to fetch a brand URL or apply online font setup without explicit trust and approval, grounded in the pinned onboarding and privacy references."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Run `.agent-skills/diagram-design/scripts/preflight.py --json` with an empty PATH, then inspect a literal checkout at the pinned commit. Do not run the diagram skill, open a browser, fetch fonts, or write files.",
+      "expected_output": "The response enforces the offline JSON/exit contract, reports empty-PATH status blocked, accepts a matching local pinned checkout without reading marker contents, rejects malformed or mismatched pins, and leaves runtime_verified false.",
+      "assertions": [
+        "The response reports one JSON object with skill `diagram-design`, scope `offline-preflight`, checks, and `runtime_verified: false`; empty PATH exits 1 with status blocked.",
+        "The response uses a bounded local Git inspection for `--repo` and `--expect-commit`, rejects malformed or missing-repo pins with exit 2, and rejects symlinked or oversized source markers without reading their contents.",
+        "The response does not invoke upstream executables, browsers, exporters, network calls, secret files, installers, or model downloads."
+      ]
+    }
+  ]
+}
