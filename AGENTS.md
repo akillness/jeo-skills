@@ -14,6 +14,7 @@ A curated, cross-platform catalog of 405 categorized AI agent skills (`.agent-sk
 - Never run `repair-skill-frontmatter.py` or `flatten_skills.py` in mutating mode from CI — only `--check`/`--dry-run` (a prior mutating CI config corrupted 26 skill descriptions)
 - Never create category subfolders under `.agent-skills/` — one flat `<name>/SKILL.md` per skill, enforced by `flatten_skills.py --dry-run`
 - Never hand-edit `.agent-skills/skills.toon` or the README category tables to "fix" a validation failure — they are projections of `skills.json`; fix the manifest instead
+- Never commit a new repository-root file or directory without adding its own `!/name` line to the root allowlist in `.gitignore` — everything at the root is ignored by default so local notes, agent state, and scratch files never reach GitHub; prefer putting new work under `.agent-skills/` or an existing allowlisted directory
 
 ## Commands
 - Validate catalog: `python3 scripts/validate-catalog-projections.py`

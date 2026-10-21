@@ -24,8 +24,8 @@ last_updated: 2026-10-01
 
 Global tool at `~/.agents/hooks/ctx/` (stdlib Python, package `ctx`), shim
 `~/.local/bin/ctx`. Seed, research and evidence for the decision live in this
-repo under `.ouroboros/` (gitignored by `/.ouroboros/` — copy out before relying
-on git for them).
+repo under `.ouroboros/` (ignored by the root allowlist in `.gitignore` — copy out
+before relying on git for them).
 
 | Layer | Root | Refresh (hook) | Checkpoint (pre-push) | GC |
 |---|---|---|---|---|
