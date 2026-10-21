@@ -144,8 +144,11 @@ never infer runtime loading solely from an upstream agent label or successful ex
   fingerprint-matched retired copies (`jeo`, `harness`) that `skills list` still reports.
 - On this macOS host, `uv tool install 'semble[mcp]'` (uv-managed CPython 3.13) is blocked
   by library validation: syspolicyd rejects and then deletes `orjson`'s `.so`, so the CLI and
-  `uvx --from 'semble[mcp]' semble` (Codex's MCP command) fail. The Homebrew-Python venv at
-  `~/.local/share/semble-venv` works. Do not leave a broken semble tool install on PATH.
+  `uvx --from 'semble[mcp]' semble` fail. The Homebrew-Python venv at
+  `~/.local/share/semble-venv` works; Codex's `[mcp_servers.semble]` now points at
+  `.../semble-venv/bin/semble` with `args = []` (an MCP initialize + tools/list handshake
+  returned `search`, `find_related`). `codex mcp list` alone only proves registration.
+  Do not leave a broken semble tool install on PATH.
 - Aside mirror copies keep Aside-owned `.skill_id` files; compare mirrored content
   excluding them. `~/.config/opencode/skills` can hold older catalog copies that shadow the
   shared root at higher precedence; the guide does not refresh that root.
