@@ -127,7 +127,8 @@ esac
 
 printf 'platform=%s\nhome=%s\nskills_root=%s\n' "$PLATFORM" "$USER_HOME" "$SKILLS_ROOT"
 for cmd in node npm npx python3 claude codex gemini opencode cursor agy pi crush jeo gjc jeopi aside; do
-  command -v "$cmd" >/dev/null 2>&1 && printf 'found: %s\n' "$cmd"
+  # `if`, not `&&`: an absent last agent must not turn detection into exit status 1.
+  if command -v "$cmd" >/dev/null 2>&1; then printf 'found: %s\n' "$cmd"; fi
 done
 ```
 
