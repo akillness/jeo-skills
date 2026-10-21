@@ -556,7 +556,11 @@ else
   catalog_keep_existing_or_warn 'Could not refresh the skills catalog snapshot'
 fi
 
-node --check "$SETUP_STAGE/files/jev-harness.mjs" >/dev/null || fail 'Harness syntax check failed'
+# Every staged Node module is checked before anything is published: a broken plugin or
+# native controller would crash every host hook that loads it.
+while IFS= read -r -d '' staged_module; do
+  node --check "$staged_module" >/dev/null || fail "Syntax check failed for staged ${staged_module#"$SETUP_STAGE/"}"
+done < <(find "$SETUP_STAGE" -name '*.mjs' -type f -print0)
 mkdir -p "$JEV_HOME" "$RULES_DIR"
 if [ -n "$PROFILE" ]; then mkdir -p "$PROFILE_DIR"; fi
 for f in "${PUBLISH_FILES[@]}"; do

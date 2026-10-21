@@ -73,6 +73,9 @@ jeopi/GJC/OMP/Pi `custom_message` `skill-prompt` and assistant `read` toolCalls 
 - `prune-unused --apply` refuses when any present store failed to read (any `error` other
   than `store not found`): a broken store could hide fresh use. Scans and reports stay
   failure-isolated.
+- Refreshing `~/.agents/jev` from a worktree another session is editing can publish a
+  mid-edit file. `jev-setup.sh` now syntax-checks every staged `*.mjs`; still run
+  `node --check ~/.agents/jev/jev-plugin.mjs` and one offline hook after any refresh.
 - Every Jev call needs `--allow-remote`, checked before any harness subprocess: harness
   `status` itself probes configured endpoints (systemone with its bearer token), which may
   be remote. Unknown harness flags are silently ignored, so do not rely on new status flags.

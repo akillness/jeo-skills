@@ -81,6 +81,12 @@ Then read this file fully before doing anything else in this session.
   distinct transcripts). `prune-unused --apply` refuses when any present store failed to
   read. Evidence: usage 13, quarantine 16, retirement 7 Python tests and
   4 node ledger tests pass; Jev runtime/codex/lifecycle 64 pass; catalog gates pass;
+  installer-side end-to-end: the INSTALLED `jev-plugin.mjs` hook (offline stub backend)
+  wrote a 0600 ledger line without prompt text and the INSTALLED `jeo-skill usage scan`
+  counted it as `jev` use. That check exposed an outage: the asset refresh had published a
+  mid-merge `jev-plugin.mjs` with a duplicate import (SyntaxError on every host hook);
+  republished, and `jev-setup.sh` now `node --check`s every staged `*.mjs` before publishing
+  (install.test 20/20; the new case fails on the previous setup).
   installer 63/63. The earlier `/var` TMPDIR failures were a test-fixture alias mismatch, fixed
   in the merge (`test_installer_regressions.py` resolves its owned temp root); the suite now
   passes 63/63 with the default macOS TMPDIR and in CI run 39569222853 (Ubuntu + macOS).

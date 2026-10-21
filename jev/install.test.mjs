@@ -215,6 +215,47 @@ test('late mandatory native fetch failure is atomic across prior core, native, c
   const installSafety_existing = installSafety_seedExisting(installSafety_fixture); const installSafety_missing = 'plugins/jeopi/shared/jev-controller.mjs'; const installSafety_curl = installSafety_rawCurl(installSafety_fixture.installSafety_rootDir, { installSafety_missing }); const installSafety_result = installSafety_run(installSafety_fixture, installSafety_systemone('late'), { ...installSafety_systemoneEnv, installSafety_bin: installSafety_curl.installSafety_bin, JEO_SKILLS_RAW_BASE: 'https://raw.fixture.test/jev' });
   assert.notEqual(installSafety_result.status, 0); assert.match(`${installSafety_result.stdout}\n${installSafety_result.stderr}`, /Cannot fetch plugins\/jeopi\/shared\/jev-controller\.mjs/); assert.doesNotMatch(installSafety_result.stdout, /Setup complete/); installSafety_assertExistingUnchanged(installSafety_existing);
 });
+test('staged module syntax errors fail atomically before publishing or writing a profile', async (installSafety_test) => {
+  const installSafety_args = ['--config-only', '--profile', 'p', '--mode', 'api'];
+  await installSafety_test.test('broken root plugin', () => {
+    const installSafety_fixture = installSafety_local();
+    const installSafety_installed = join(installSafety_fixture.installSafety_home, '.agents', 'jev');
+    const installSafety_sourcePlugin = join(installSafety_fixture.installSafety_source, 'jev', 'jev-plugin.mjs');
+    const installSafety_validPlugin = readFileSync(installSafety_sourcePlugin);
+    mkdirSync(installSafety_installed, { recursive: true });
+    writeFileSync(join(installSafety_installed, 'jev-plugin.mjs'), installSafety_validPlugin);
+    writeFileSync(installSafety_sourcePlugin, `${installSafety_validPlugin.toString('utf8')}\nconst __jev_duplicate = 1;\nconst __jev_duplicate = 2;\n`);
+    const installSafety_result = installSafety_run(installSafety_fixture, installSafety_args);
+    assert.notEqual(installSafety_result.status, 0, `${installSafety_result.stdout}\n${installSafety_result.stderr}`);
+    assert.match(installSafety_result.stderr, /Syntax check failed for staged .*jev-plugin\.mjs/);
+    assert.deepEqual(readFileSync(join(installSafety_installed, 'jev-plugin.mjs')), installSafety_validPlugin);
+    assert.equal(existsSync(join(installSafety_installed, 'profiles', 'p.env')), false);
+  });
+  await installSafety_test.test('broken native plugin module', () => {
+    const installSafety_fixture = installSafety_local();
+    const installSafety_installed = join(installSafety_fixture.installSafety_home, '.agents', 'jev');
+    const installSafety_sourcePlugin = join(installSafety_fixture.installSafety_source, 'jev', 'plugins', 'omp', 'index.mjs');
+    const installSafety_validPlugin = readFileSync(installSafety_sourcePlugin);
+    const installSafety_installedPlugin = join(installSafety_installed, 'plugins', 'omp', 'index.mjs');
+    mkdirSync(dirname(installSafety_installedPlugin), { recursive: true });
+    writeFileSync(join(installSafety_installed, 'jev-plugin.mjs'), readFileSync(join(installSafety_fixture.installSafety_source, 'jev', 'jev-plugin.mjs')));
+    writeFileSync(installSafety_installedPlugin, installSafety_validPlugin);
+    writeFileSync(installSafety_sourcePlugin, `${installSafety_validPlugin.toString('utf8')}\nconst __jev_duplicate = 1;\nconst __jev_duplicate = 2;\n`);
+    const installSafety_result = installSafety_run(installSafety_fixture, installSafety_args);
+    assert.notEqual(installSafety_result.status, 0, `${installSafety_result.stdout}\n${installSafety_result.stderr}`);
+    assert.match(installSafety_result.stderr, /Syntax check failed for staged .*plugins\/omp\/index\.mjs/);
+    assert.deepEqual(readFileSync(installSafety_installedPlugin), installSafety_validPlugin);
+    assert.equal(existsSync(join(installSafety_installed, 'profiles', 'p.env')), false);
+  });
+  await installSafety_test.test('unmodified source succeeds', () => {
+    const installSafety_fixture = installSafety_local();
+    const installSafety_result = installSafety_run(installSafety_fixture, installSafety_args);
+    installSafety_ok(installSafety_result);
+    const installSafety_installed = join(installSafety_fixture.installSafety_home, '.agents', 'jev');
+    assert.equal(existsSync(join(installSafety_installed, 'profiles', 'p.env')), true);
+    assert.deepEqual(readFileSync(join(installSafety_installed, 'jev-plugin.mjs')), readFileSync(join(installSafety_fixture.installSafety_source, 'jev', 'jev-plugin.mjs')));
+  });
+});
 test('profile setup removes private staging directories after success and failure', () => {
   const installSafety_success = installSafety_local(); installSafety_ok(installSafety_run(installSafety_success, ['--profile', 'cleanup-success', '--mode', 'systemone', '--config-only', '--endpoint', 'https://api.fixture.test/v1/systemone', '--model', 'cleanup-model'])); assert.deepEqual(readdirSync(installSafety_success.installSafety_home).filter(installSafety_entry => /^jev-setup\./.test(installSafety_entry)), []);
   const installSafety_failure = installSafety_local(); writeFileSync(join(installSafety_failure.installSafety_source, 'jev', 'jev-harness.mjs'), 'not valid javascript\n'); const installSafety_result = installSafety_run(installSafety_failure, ['--profile', 'cleanup-failure', '--mode', 'systemone', '--config-only', '--endpoint', 'https://api.fixture.test/v1/systemone', '--model', 'cleanup-model']); assert.notEqual(installSafety_result.status, 0); assert.deepEqual(readdirSync(installSafety_failure.installSafety_home).filter(installSafety_entry => /^jev-setup\./.test(installSafety_entry)), []);
