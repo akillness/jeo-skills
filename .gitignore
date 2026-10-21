@@ -6,7 +6,6 @@
 !/.agent-skills/
 !/.frontmatter/
 !/.github/
-!/.mex/
 !/assets/
 !/changelog/
 !/docs/
@@ -85,12 +84,9 @@ venv.bak/
 .agent-skills/*/bin/
 .agent-skills/*/.src/
 
-# Regenerable context layers (managed by `ctx`; rebuilt at checkpoint)
-# The curated mex scaffold (.mex/*.md, context/, patterns/, events/) stays tracked.
+# Regenerable context layers (managed by `ctx`; rebuilt at checkpoint). The mex scaffold
+# (.mex/) is local-only: the root allowlist above leaves it untracked.
 .graphify/
 graphify-out/
 .zvec-grep/
-.mex/graph.db*
-.mex/wiki.db*
-.mex/local/
 .ouroboros/evidence/
