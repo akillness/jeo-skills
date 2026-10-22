@@ -766,6 +766,12 @@ python3 scripts/changelog.py check
 
 <!-- WHATS-NEW:START -->
 
+## 🆕 v2026-10-22 업데이트
+
+| 변경 사항 | 상세 내용 |
+|--------|---------|
+| **Aside 이후 macOS의 uvx MCP 서버** | 설치 가이드를 실제 홈에 적용하다가, Aside 세션 안에서 uv가 처음 내려받은 wheel에 `com.apple.quarantine ...;Aside;`가 남는 문제를 확인했습니다. macOS가 로드 시점에 확장 모듈(`.so`)을 지우고, uvx는 깨진 캐시 환경을 계속 재사용해서 `uvx`로 등록한 `semble`·`ooo`가 `No module named 'orjson.orjson'` 또는 `'rpds.rpds'`로 실패합니다. 가이드의 Semble·Ouroboros 블록, Aside 섹션, `ooo` 스킬에 증상, `xattr` 확인 방법, 복구 절차(uv 기반 MCP 서버를 멈추고 일반 터미널에서 `uv cache clean` 실행 후 재시도)를 추가했습니다. 새 캐시에서 검증했으며 `--refresh`, `--reinstall`, `uv cache clean <패키지>`로는 해결되지 않고, uv로 띄운 서버가 실행 중이면 `uv cache clean`이 대기합니다. |
+
 ## 🆕 v2026-10-21 업데이트
 
 | 변경 사항 | 상세 내용 |
@@ -808,19 +814,6 @@ python3 scripts/changelog.py check
 | **CI test 잡 설정 축소** | `test` 잡에서 미사용 Bun 설치를 제거하고(4단계 모두 pure Python) `pyyaml==6.0.3`으로 고정했습니다. `flatten_skills.py`의 낡은 다음 단계 힌트는 실제 `generate-catalog-projections.py --check`를 가리킵니다. 설치 스위트의 대기(hung-node 바운드, unreachable probe)는 계약상 의도된 동작이라 유지합니다. |
 | **README 시각 자료 갱신** | 장비 GIF 5개와 구형 SVG 2개, 직렬 CI 파이프라인 이미지를 Codex 정적 커버(`readme-hero.webp`)와 소스에 맞는 SVG 2개(`catalog-workflow.svg`, `runtime-architecture.svg`)로 교체했습니다. 명령·문서 링크·TOON·native 경계와 한국어 대체 텍스트, 실제 스킬·공개 `jeo-code` 링크도 현재 소스에 맞췄습니다. 이는 문서·카탈로그 표현 갱신이며 런타임 동작 보장이 아닙니다. |
 | **카탈로그 검증·검색 최적화** | 카탈로그 검증기 warm median은 268.69ms→126.49ms, 동일 검색 핸들러에서 40개 쿼리 총 실행은 1134.76ms→157.30ms로 개선됐고 스트리밍·실패 정리를 반영했습니다. 집중 검증은 Python 31개와 Node 28개로 skip 0건입니다. 수치는 소스 전용 픽스처·벤치마크이며 CLI 기동 시간이 아닌 CI 배선 검증이지 원격 동작 통과가 아닙니다. 모델·GPU·전체 브라우저·전역 누수 없음은 주장하지 않습니다. |
-
-## 🆕 v2026-10-12 업데이트
-
-| 변경 사항 | 상세 내용 |
-|--------|---------|
-| **레포 운영 스킬의 독립 지원 파일** | 요청한 운영 스킬 11개를 v1.1.0으로 표준화하고 짧은 SKILL.md, 원문 커밋 고정 레퍼런스, 실행 가능한 표준 라이브러리 기반 오프라인 점검 스크립트를 구성했습니다. 매니페스트 버전·변경된 설명, README 번역본, TOON과 setup 가이드를 동기화하며 기존 367개 카탈로그는 유지합니다. |
-| **오프라인 동작·안전성 검증** | 회귀 테스트 12개와 Ubuntu/macOS 설치 CI 실행 단계를 추가했습니다. 로컬에서 소스·커밋, 도구 누락, 특수문자 경로, 독립 실행, 파일·비밀값 보호, 자식 프로세스 자격증명 차단, Git 대상 바꿔치기·trace 검사가 통과했습니다. Git 검사는 요청한 루트에 결속하고 OS 실행에 필요한 환경만 허용하며 상속 설정·프롬프트·네트워크 프로토콜을 차단합니다. Zurp는 Burp/MCP 사전 조건을 따로 선택합니다. 스크립트 평가 사례 11개로 작성된 시나리오는 44개에서 55개가 됩니다. 원본 런타임·프로바이더·모델·데스크톱·DB 실행을 검증한 것은 아닙니다. |
-| **FilmCraft 스킬** | Rust 영상 편집기의 headless CLI/MCP와 데스크톱 loopback 제어 bridge를 위한 `filmcraft`를 추가했습니다. 원본 커밋 `1fdfd8324db4aa23b08c69f518b086e632f75f84`에 근거해 프로젝트 보존, 명령 탐색, 미디어 누락 오류와 승인된 출력 경로를 안내합니다. |
-| **선택 설치와 카탈로그** | 스킬 1개를 등록해 354개에서 355개로 갱신하고 README 번역본, TOON, setup 문서를 동기화했습니다. 스킬 설치는 FilmCraft 앱 설치·빌드, MCP 등록, 미디어 수정을 수행하지 않습니다. 다른 작업의 로컬 스킬 추가는 이번 공개 변경에서 제외했습니다. |
-| **검증 범위** | 스킬 형식 검증, 카탈로그 검색, 선택 설치 dry-run이 통과했습니다. 행동 평가 시나리오 10개를 포함했으며 FilmCraft 빌드, GUI/MCP 실행, 편집과 export는 실행하지 않았습니다. |
-| **원문 커밋을 고정한 레포 운영 스킬 11개** | `openrig`, `anyjev`, `typesafe-computer-use`, `zurp`, `helix-foundry`, `uzu`, `context-mode`, `rea`, `fineenvs`, `llmfit`, `pg-jev` 운영 지침을 추가했습니다. 실제 소스 명령, 커밋, 라이선스 근거와 부작용 승인 경계를 기록했습니다. 이번 묶음은 배포 카탈로그를 355개에서 366개로 늘립니다. |
-| **선택 설정과 탐색** | 영어·한국어·스페인어 README 카탈로그와 출처, setup 가이드, Jev·로컬 모델·컨텍스트 도구의 관계를 갱신했습니다. 카탈로그 설치는 문서만 추가하며 앱·모델·MCP/훅·키·데스크톱 제어·DB 쓰기를 자동 실행하지 않습니다. Context Mode 프로세스 실행은 OS 보안 샌드박스가 아니며 npm postinstall은 Claude 설정을 변경할 수 있습니다. |
-| **검증 범위** | 행동 평가 시나리오 44개를 추가했습니다. 스킬 11개의 frontmatter 로딩과 11개 선택 설치 dry-run을 확인했습니다. 실제 업스트림 런타임, 모델 품질, 데스크톱 액션, 라이브 대상·DB 실행을 검증했다는 뜻은 아닙니다. |
 
 > 📜 이전 기록: [`changelog/ko/`](changelog/ko/) (월별 파일, 최신순).
 

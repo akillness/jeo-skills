@@ -766,6 +766,12 @@ Edit metadata in `skills.json`, never in the generated tables. Upstream sources 
 
 <!-- WHATS-NEW:START -->
 
+## 🆕 What's New in v2026-10-22
+
+| Change | Details |
+|--------|---------|
+| **uvx MCP servers on macOS after Aside** | Applying the setup guide to a real home showed that wheels uv first downloaded inside an Aside session keep `com.apple.quarantine ...;Aside;`: macOS deletes their extension modules when they load, and uvx keeps reusing the broken cached environment, so `uvx`-registered `semble` and `ooo` fail with `No module named 'orjson.orjson'` or `'rpds.rpds'`. The guide's Semble and Ouroboros blocks, its Aside section, and the `ooo` skill now give the signature, the `xattr` check, and the recovery: stop uv-based MCP servers, run `uv cache clean` from a regular terminal, rerun. Verified in fresh caches; `--refresh`, `--reinstall`, and `uv cache clean <package>` do not fix it, and `uv cache clean` waits while uv-launched servers run. |
+
 ## 🆕 What's New in v2026-10-21
 
 | Change | Details |
@@ -808,30 +814,6 @@ Edit metadata in `skills.json`, never in the generated tables. Upstream sources 
 | **CI test-job setup trim** | The `test` job drops the unused Bun setup (all four steps are pure Python) and pins `pyyaml==6.0.3`; the stale `flatten_skills.py` next-step hint now points at the real `generate-catalog-projections.py --check`. Installer-suite waits (hung-node bound, unreachable-backend probes) are intentional contract behavior and unchanged. |
 | **README visual and boundary refresh** | Documentation-only: replaced five GIF equipment items, two retired SVGs, and the serial-CI image with a Codex static cover plus `assets/catalog-workflow.svg` and `assets/runtime-architecture.svg`; corrected current commands, `.agent-skills/<name>/SKILL.md` links, TOON metadata boundaries, and native host boundaries. No runtime or provider behavior is claimed. |
 | **Catalog validation and search** | Local fixture metrics: catalog-validator warm median 268.69 → 126.49 ms and 40 queries on one handler 1134.76 → 157.30 ms, with bounded streaming and failure cleanup. Focused Python (31) and Node (28) cases report zero skips; new CI wiring reports these fixtures. This is not model/GPU, full-browser, remote-action, or global-leak-free proof. |
-
-## 🆕 What's New in v2026-10-12
-
-| Change | Details |
-|--------|---------|
-| **Portable repository operator support** | Standardized all eleven requested operator packages to v1.1.0 with router-first SKILL.md, independent commit-pinned references and executable stdlib offline preflights. Manifest versions and changed discovery descriptions, README locales, TOON and setup guidance are synchronized; the 367-skill baseline is unchanged. |
-| **Offline behavior and safety** | Added a dedicated twelve-method regression suite and explicit Ubuntu/macOS installer CI step. The local suite passes source/pin, missing-tool, literal-path, copied-helper, no-write/secret-output, child credential exclusion and hostile Git selector/trace checks. Git inspection binds the requested root and allowlists only portable host environment keys, with inherited configuration, prompts and network protocols disabled; Zurp can select Burp or MCP prerequisites separately. Eleven helper eval cases extend the authored scenarios from 44 to 55; no upstream runtime, provider, model, desktop or database execution is claimed. |
-| **FilmCraft skill** | Added `filmcraft` for the Rust editor's headless CLI/MCP and desktop loopback control bridge, pinned to upstream commit `1fdfd8324db4aa23b08c69f518b086e632f75f84`. Guidance covers project preservation, command discovery, missing-media failures and approved export paths. |
-| **Selective setup and catalog** | Registered one new skill (354 → 355) and refreshed README locales, TOON and setup guidance. Installing the skill does not install/build FilmCraft, register MCP, or modify media. Concurrent local skill additions are excluded from this publication. |
-| **Verification boundary** | Skill-format validation, catalog search and selective-install dry-run pass. Ten behavioral evaluation fixtures are included; FilmCraft build, GUI/MCP execution, editing and export were not run. |
-| **Eleven source-pinned repository operators** | Added `openrig`, `anyjev`, `typesafe-computer-use`, `zurp`, `helix-foundry`, `uzu`, `context-mode`, `rea`, `fineenvs`, `llmfit`, and `pg-jev` as original operating guides with audited commits, primary-source commands, license evidence and explicit side-effect boundaries. This batch extends the published catalog from 355 to 366 skills. |
-| **Selective setup and discovery** | Updated English/Korean/Spanish README catalog projections and source references, the setup guide, and meaningful Jev/local-model/context-tool relationships. Catalog installation adds documents only; it does not install upstream applications, download models, register hooks/MCP, use credentials, control a desktop or mutate a database. Context Mode subprocesses are not an OS/security sandbox and its npm postinstall can modify Claude configuration. |
-| **Verification boundaries** | Added 44 behavioral evaluation scenarios. Eleven skill documents load with valid frontmatter and the selective-install dry-run resolves all eleven. Upstream runtimes, model quality, desktop actions, live targets and databases were not executed or certified by this documentation change. |
-
-## 🆕 What's New in v2026-10-12b
-
-| Change | Details |
-|--------|---------|
-| **Non-blocking optional Jev setup** | Invalid modes, project-scoped opt-in, temporary-file allocation, download, and Jev setup failures warn and skip only Jev. Verified skill installation remains successful; genuine skill installation errors still fail. |
-| **Per-agent advisory controls** | Added independent private profiles, config-only setup, and packaged Claude, jeopi, OMP, and Pi hooks. New config-only profiles start OFF. Copying assets does not register a plugin; session-load plans and registration-gated package maintenance remain separate from profile ON/OFF. jeopi/OMP/Pi actual-OFF callbacks recover from 1 MiB stdin `EPIPE` and return `{}` without changing prior host context. |
-| **Backend and model contracts** | Enabling requires structurally complete saved backend configuration. Host-specific model argv stays advisory. TypeSafe responses use the strict typed contract; local legacy wire support remains isolated. Backend error bodies never enter native advisory context. |
-| **Trusted assets and credentials** | Native hooks pin a trusted catalog and refuse working-directory substitutions. Setup stages required runtime assets before publication, preserves valid catalog snapshots on refresh failure, and cleans private payloads. Standalone root-controller symlink/non-file and raw-native non-file leaf collisions are preflighted before staging/publication; collision regressions preserve core/native/catalog/private-profile bytes and outside targets. Saved matching API keys remain authoritative; local-only computer-use writer plans cannot borrow ambient hosted credentials. |
-| **Verification** | 48 installer regressions and 64 Jev regressions pass. With `JEV_LIVE_SMOKE=0`, the Node install/plugin/profile run reports 54 total, 53 pass, and 1 opt-in live skip; the prior mock self-test passed 20/20. Catalog projections, frontmatter, and flat layout checks pass. The source catalog has 367 skills due to the concurrent MI addition; this Jev update adds no catalog entry. |
-| **Boundaries** | Host plans are not executed automatically. Live Ollama reached HTTP 200 but returned `selectedSkill:null` / `errorCategory:backend_unavailable`: transport and fail-closed output only, not successful routing, model quality/calibration, or native package registration. Paid API, database, and desktop execution remain unverified. Config-only setup downloads no models; approved ordinary backend setup may do so. |
 
 > 📜 Older entries: [`changelog/en/`](changelog/en/) (monthly files, newest first).
 

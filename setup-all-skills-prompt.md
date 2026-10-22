@@ -202,7 +202,10 @@ prefix; outside Aside it is a no-op because `USER_HOME` equals `$HOME` there.
 
 Under Aside, prefer Homebrew or pyenv installs. macOS security removes unsigned binaries
 that curl/tarball installers drop, so the `uv` and `rtk` shell installers below tend to
-vanish; tools already installed on the host run fine once `PATH` is set.
+vanish; tools already installed on the host run fine once `PATH` is set. Packages uv or
+uvx download inside Aside stay quarantined in `~/.cache/uv` and later break uvx-launched
+MCP servers even outside Aside, so run the Step 5 uv installs from a regular terminal (the
+recovery is under the Semble block).
 
 ## Step 2 — Install the skills CLI
 
@@ -812,6 +815,19 @@ fi
 is absent; `claude mcp list` health-checks every registered server first, which is slow
 on a busy configuration. Every registration below uses the same presence check.
 
+**macOS: uvx servers that lose their extension modules.** If this block or the Ouroboros
+block below fails with `ModuleNotFoundError: No module named 'orjson.orjson'` (or
+`'rpds.rpds'`), `ImportError: cannot import name ... (unknown location)`, or a missing
+`*.cpython-*-darwin.so`, uv's cache holds wheels first downloaded inside an Aside session.
+Those files carry `com.apple.quarantine ...;Aside;`, macOS deletes their unsigned extension
+modules when they load (even later, outside Aside), and uvx keeps reusing the broken cached
+environment. Confirm with `xattr -p com.apple.quarantine <file under ~/.cache/uv/archive-v0>`.
+Recover from a regular terminal, not Aside: stop agent sessions that run uv or uvx MCP
+servers (`uv cache clean` waits for every process holding the cache), run `uv cache clean`,
+then rerun the block. `--refresh`, `--reinstall`, and `uv cache clean <package>` keep the
+cached environment and do not fix it. Report this as a follow-up rather than forcing
+`uv cache clean --force` under running servers.
+
 ### Zvec-grep local workspace search
 
 Install `zg` for local-first hybrid, vector, lexical, and managed-ripgrep
@@ -1059,7 +1075,8 @@ registration that `claude mcp get ooo` or `claude mcp list` shows as `Failed to 
 (for example `ouroboros mcp serve` over an `[all]` install from an older version of this
 guide, or `uvx --from 'ouroboros-ai[mcp]'` without `--isolated` while the CLI is a uv tool)
 must be reported; only with the user's approval run `claude mcp remove ooo -s user` (or
-`codex mcp remove ooo`) and rerun this block.
+`codex mcp remove ooo`) and rerun this block. For a missing `*.so` or `rpds.rpds` error, see
+the macOS uv cache note under Semble above.
 
 ### Aside browser skill and MCP wiring
 

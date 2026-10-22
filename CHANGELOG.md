@@ -2,6 +2,11 @@
 
 All notable changes to **jeo-skills** are documented here.
 
+## 2026-10-22
+
+### Fixed
+- `setup-all-skills-prompt.md` and the `ooo` skill document a macOS failure found while applying the guide to a real home: uv wheels first downloaded inside an Aside session keep `com.apple.quarantine ...;Aside;`, macOS deletes their extension modules on load, and uvx keeps reusing the broken cached environment, so `uvx`-registered `semble`/`ooo` servers fail with `No module named 'orjson.orjson'`/`'rpds.rpds'`. Recovery, verified in fresh caches: stop uv-based MCP servers, run `uv cache clean` from a regular terminal, rerun; `--refresh`, `--reinstall`, and `uv cache clean <package>` do not fix it.
+
 ## 2026-10-21
 
 ### Added

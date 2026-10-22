@@ -319,6 +319,9 @@ ouroboros mcp info
 # (skip it if an `ooo` or `ouroboros` server already exists). --isolated keeps uvx from
 # reusing an installed ouroboros-ai tool environment such as [all], which pins MCP SDK 1.x.
 claude mcp add ooo -s user -- uvx --isolated --from 'ouroboros-ai[mcp]' ouroboros mcp serve
+# macOS: "No module named 'rpds.rpds'" or a missing *.so means uv's cache holds wheels
+# downloaded inside an Aside session (quarantined); stop uv-based MCP servers, run
+# `uv cache clean` from a regular terminal, and retry (`--refresh`/`--reinstall` do not help).
 ```
 
 **Available MCP tools**
