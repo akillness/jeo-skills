@@ -121,7 +121,7 @@ curl -fsSL "$URL" | JEO_SKILLS_DRY_RUN=true INSTALL_GLOBAL=false bash
 | `skill-authoring` | skill-standardization, write-a-skill, upskill |
 | `product-management` | pm-skills, create-prd, user-stories, opportunity-solution-tree, north-star-metric |
 | `langchain` | langchain-fundamentals, langgraph-fundamentals, deep-agents-core, langsmith |
-| `knowledge-repositories` | 21 ontology, code-graph, memory and retrieval operators (`jeo-skill install --bundle knowledge-repositories --dry-run`) |
+| `knowledge-repositories` | 22 operadores de ontología, grafos de código, memoria y recuperación (`jeo-skill install --bundle knowledge-repositories --dry-run`) |
 | `ui-design-repositories` | 10 source-pinned UI operators (`jeo-skill install --bundle ui-design-repositories --dry-run`) |
 
 Las habilidades operadoras de repositorios son guías con fuentes fijadas. Instalar una no instala, ejecuta ni conecta los proyectos upstream; esos pasos requieren aprobación por separado.
@@ -206,7 +206,7 @@ Ninguna forma parte de la instalación del catálogo. Ambas pueden enviar datos 
 
 ## 📚 Lista de Habilidades
 
-> Generado desde `.agent-skills/skills.json` · 405 habilidades · despliega una categoría para ver sus habilidades.
+> Generado desde `.agent-skills/skills.json` · 406 habilidades · despliega una categoría para ver sus habilidades.
 
 ### 🌐 Web (69)
 
@@ -464,9 +464,9 @@ Subcategorías: `developer-cli` (10), `ai-cli` (16), `media-cli` (1), `automatio
 
 </details>
 
-### 🤖 IA y Agentes (73)
+### 🤖 IA y Agentes (74)
 
-Subcategorías: `orchestration` (16), `agent-frameworks` (19), `skill-authoring` (5), `evaluation` (8), `memory` (6), `planning-review` (13), `discovery` (3), `prompting` (3)
+Subcategorías: `orchestration` (16), `agent-frameworks` (19), `skill-authoring` (5), `evaluation` (8), `memory` (7), `planning-review` (13), `discovery` (3), `prompting` (3)
 
 <details>
 <summary>Ver habilidades</summary>
@@ -546,6 +546,7 @@ Subcategorías: `orchestration` (16), `agent-frameworks` (19), `skill-authoring`
 | `memsearch` |
 | `harness2` |
 | `ruflo` |
+| `agent-beacon` |
 
 </details>
 
@@ -770,6 +771,8 @@ Edita los metadatos en `skills.json`, nunca en las tablas generadas. Las fuentes
 
 | Cambio | Detalles |
 |--------|---------|
+| **Operador Agent Beacon** | Añadido `agent-beacon` v1.0.0 para `Asymptote-Labs/agent-beacon`, fijado en `cfbd7b1d721664e3b1b5ca2fca5eac4327532c07` (MIT). El catálogo pasa de 405 a 406 habilidades; `knowledge-repositories` incluye 22 guías y 19 helpers de archivos seleccionados. La instalación añade solo la guía y sus recursos, no el motor Beacon. La captura, los datos privados, los servicios, Cloud, MCP y la eliminación requieren aprobación explícita. |
+| **Verificación de Beacon** | Los 12 hashes de archivos públicos fijados coinciden. Las suites modificadas pasan 20/20 y 65/65, incluida la instalación por nombre, los recursos anidados, la retirada del `jeo` identificado como copia del catálogo y la conservación de habilidades actuales/ajenas y de HOME. La prueba de instalación usa transporte de fixture aislado, no una instalación pública. Los seis escenarios de privacidad y enrutamiento están redactados, no ejecutados como evaluación de modelos. |
 | **README reconstruido para la legibilidad** | Se sustituyeron todas las secciones de texto y los elementos visuales del README: nueva portada Codex `assets/readme-cover.webp`, `how-it-works.svg`, `catalog-map.svg` y `skill-lifecycle.svg` escritos por Codex, tablas para opciones de instalación, entornos, CLI del enrutador y estados del ciclo de vida, listas de categorías desplegables y una insignia con el número de habilidades en vivo. Se eliminaron herramientas destacadas, OSS recomendado, documentos relacionados y notas largas de operadores; las fuentes y licencias upstream pasaron a `docs/attribution.md`. Se retiraron `catalog-install-flow.svg` y `runtime-boundaries.svg`. Las variables del instalador se muestran ahora del lado de `bash` en la tubería. Solo documentación. |
 | **Actualización de Open Ontologies** | La guía existente `open-ontologies` pasa a v1.1.0 sin duplicados; el catálogo sigue en 405 habilidades. Se verificaron los SHA256 de seis archivos públicos del commit `dfb09bf815326913d7d7822fa7228f2602fb4976` (MIT), se documentaron la preflight offline y los límites de aprobación/evidencia, y se añadieron referencias de instalación. Las suites modificadas pasan 64/64 y 19/19: la instalación por nombre retira solo el `jeo` identificado como copia del catálogo y conserva habilidades actuales, homónimos ajenos y raíces fuera del alcance. La instalación del catálogo añade solo el paquete del operador, no el motor upstream. |
 | **harness → harness2** | `harness` (revfactory) se sustituye por `harness2`, operador de `google-research/harness2` fijado en `1cfe254e8d25b15f37048c3730134686abe60335` (Apache-2.0): demo sin credenciales, configuración y ejecuciones de pago de LAB/JobBench/WorkBuddy con aprobación, puente Codex y un modo método para aplicar Propose–Probe–Compose a mano (incluye el diseño de equipos de agentes). `harness` pasa a `retired_skills`. |

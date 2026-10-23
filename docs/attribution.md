@@ -43,6 +43,7 @@ Skills in this catalog that adapt, wrap or operate another project credit it her
 | `eli5` | [DreambigOu/ELI5](https://github.com/DreambigOu/ELI5) | MIT |
 | `openocta` | [openocta/openocta](https://github.com/openocta/openocta) | Apache-2.0 wrapper |
 | `open-ontologies` | [operator guide](../.agent-skills/open-ontologies/SKILL.md) · [fabio-rovai/open-ontologies @ dfb09bf815326913d7d7822fa7228f2602fb4976](https://github.com/fabio-rovai/open-ontologies/tree/dfb09bf815326913d7d7822fa7228f2602fb4976) | MIT (upstream) |
+| `agent-beacon` | [operator guide](../.agent-skills/agent-beacon/SKILL.md) · [Asymptote-Labs/agent-beacon @ cfbd7b1d721664e3b1b5ca2fca5eac4327532c07](https://github.com/Asymptote-Labs/agent-beacon/tree/cfbd7b1d721664e3b1b5ca2fca5eac4327532c07) | MIT (upstream) |
 | `open-code-review` | [alibaba/open-code-review](https://github.com/alibaba/open-code-review) | Apache-2.0 |
 | `pm-skills` + 62 `pm-*` skills | [phuryn/pm-skills @ 8607e3b](https://github.com/phuryn/pm-skills) | MIT |
 | `langchain-*`, `langgraph-*`, `deep-agents-*` (10) | [langchain-ai/langchain-skills @ 88df7d9](https://github.com/langchain-ai/langchain-skills) | MIT |

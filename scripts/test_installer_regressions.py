@@ -370,6 +370,135 @@ class InstallerRegressions(unittest.TestCase):
         self.assertFalse(project_copy.exists())
         self.assertTrue(home_copy.exists())
 
+    def test_named_open_ontologies_install_retires_catalog_jeo_without_cross_scope_or_foreign_deletion(self):
+        open_source = self.source / ".agent-skills" / "open-ontologies"
+        shutil.copytree(ROOT / ".agent-skills/open-ontologies", open_source)
+        catalog = json.loads(self.catalog.read_text())
+        catalog["skills"].append({
+            "name": "open-ontologies",
+            "category": "engineering",
+            "subcategory": "testing",
+            "description": "fixture Open Ontologies skill",
+        })
+        self.catalog.write_text(json.dumps(catalog))
+
+        project_root = self.project / ".agents/skills"
+        retired = self.catalog_fixture(project_root, "jeo")
+        current = project_root / "jeo-skill"
+        shutil.copytree(self.source / ".agent-skills/jeo-skill", current)
+        current_before = (current / "SKILL.md").read_bytes()
+        unrelated = project_root / "unrelated.txt"
+        unrelated.write_text("leave this file alone\n")
+
+        home_retired = self.catalog_fixture(self.home / ".agents/skills", "jeo")
+
+        result = self.cli("install", "open-ontologies", "--agent", "universal", "--yes",
+                          "--source", str(self.source))
+        self.successful(result)
+        installed = project_root / "open-ontologies"
+        self.assertIn("Selected 1 skill(s): open-ontologies", result.stdout)
+        self.assertEqual((installed / "SKILL.md").read_bytes(),
+                         (open_source / "SKILL.md").read_bytes())
+        self.assertEqual((installed / "scripts/preflight.py").read_bytes(),
+                         (open_source / "scripts/preflight.py").read_bytes())
+        self.assertFalse(retired.exists())
+        self.assertEqual((current / "SKILL.md").read_bytes(), current_before)
+        self.assertEqual(unrelated.read_text(), "leave this file alone\n")
+        self.assertTrue(home_retired.exists(), "project install must not sweep HOME")
+        same_root_foreign = project_root / "jeo"
+        same_root_foreign.mkdir()
+        same_root_payload = "---\nname: jeo\ndescription: foreign\n---\n# Foreign JEO\n"
+        (same_root_foreign / "SKILL.md").write_text(same_root_payload)
+        reinstall = self.cli("install", "open-ontologies", "--agent", "universal", "--yes",
+                             "--source", str(self.source))
+        self.successful(reinstall)
+        self.assertIn(f"Retired skill kept: {same_root_foreign}", reinstall.stdout)
+        self.assertEqual((same_root_foreign / "SKILL.md").read_text(), same_root_payload)
+        self.assertTrue(home_retired.exists(), "reinstall must remain project-scoped")
+
+        dry_retired = self.catalog_fixture(project_root, "jeo")
+        before = self.snapshot()
+        preview = self.cli("install", "open-ontologies", "--agent", "universal", "--yes",
+                           "--source", str(self.source), "--dry-run")
+        self.successful(preview)
+        self.assertIn(f"Retired skill would-remove: {dry_retired}", preview.stdout)
+        self.assertEqual(self.snapshot(), before)
+        self.assertTrue(home_retired.exists(), "dry-run must remain project-scoped")
+    def test_named_agent_beacon_install_copies_nested_assets_and_retires_only_matching_jeo(self):
+        beacon_source = self.source / ".agent-skills" / "agent-beacon"
+        shutil.copytree(ROOT / ".agent-skills/agent-beacon", beacon_source)
+        catalog = json.loads(self.catalog.read_text())
+        catalog["skills"].append({
+            "name": "agent-beacon",
+            "category": "ai-agents",
+            "subcategory": "memory",
+            "description": "fixture Agent Beacon skill",
+        })
+        self.catalog.write_text(json.dumps(catalog))
+
+        project_root = self.project / ".agents/skills"
+        retired = self.catalog_fixture(project_root, "jeo")
+        current = project_root / "jeo-skill"
+        shutil.copytree(self.source / ".agent-skills/jeo-skill", current)
+        current_before = {
+            str(path.relative_to(current)): path.read_bytes()
+            for path in current.rglob("*") if path.is_file() and not path.is_symlink()
+        }
+        unrelated = project_root / "unrelated.txt"
+        unrelated.write_text("leave this file alone\n")
+        home_retired = self.catalog_fixture(self.home / ".agents/skills", "jeo")
+        home_before = {
+            str(path.relative_to(self.home)): path.read_bytes()
+            for path in self.home.rglob("*") if path.is_file() and not path.is_symlink()
+        }
+
+        result = self.cli("install", "agent-beacon", "--agent", "universal", "--yes",
+                          "--source", str(self.source))
+        self.successful(result)
+        installed = project_root / "agent-beacon"
+        self.assertIn("Selected 1 skill(s): agent-beacon", result.stdout)
+        expected_files = {
+            str(path.relative_to(beacon_source)): path.read_bytes()
+            for path in beacon_source.rglob("*") if path.is_file() and not path.is_symlink()
+        }
+        actual_files = {
+            str(path.relative_to(installed)): path.read_bytes()
+            for path in installed.rglob("*") if path.is_file() and not path.is_symlink()
+        }
+        self.assertEqual(actual_files, expected_files)
+        self.assertFalse(retired.exists())
+        self.assertEqual({
+            str(path.relative_to(current)): path.read_bytes()
+            for path in current.rglob("*") if path.is_file() and not path.is_symlink()
+        }, current_before)
+        self.assertEqual((unrelated).read_text(), "leave this file alone\n")
+        self.assertTrue(home_retired.exists(), "project install must not sweep HOME")
+        self.assertEqual({
+            str(path.relative_to(self.home)): path.read_bytes()
+            for path in self.home.rglob("*") if path.is_file() and not path.is_symlink()
+        }, home_before)
+
+        same_root_foreign = project_root / "jeo"
+        same_root_foreign.mkdir()
+        same_root_payload = "---\nname: jeo\ndescription: foreign\n---\n# Foreign JEO\n"
+        (same_root_foreign / "SKILL.md").write_text(same_root_payload)
+        reinstall = self.cli("install", "agent-beacon", "--agent", "universal", "--yes",
+                             "--source", str(self.source))
+        self.successful(reinstall)
+        self.assertIn(f"Retired skill kept: {same_root_foreign}", reinstall.stdout)
+        self.assertEqual((same_root_foreign / "SKILL.md").read_text(), same_root_payload)
+        self.assertTrue(home_retired.exists(), "reinstall must remain project-scoped")
+
+        dry_retired = self.catalog_fixture(project_root, "jeo")
+        before = self.snapshot()
+        preview = self.cli("install", "agent-beacon", "--agent", "universal", "--yes",
+                           "--source", str(self.source), "--dry-run")
+        self.successful(preview)
+        self.assertIn(f"Retired skill would-remove: {dry_retired}", preview.stdout)
+        self.assertEqual(self.snapshot(), before)
+        self.assertTrue(home_retired.exists(), "dry-run must remain project-scoped")
+
+
     def test_project_install_cleans_retired_copy_and_dry_run_is_byte_stable(self):
         retired = self.catalog_fixture(self.project / ".agents/skills", "harness")
         result = self.cli("install", "alpha", "--agent", "universal", "--yes",

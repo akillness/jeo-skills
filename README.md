@@ -121,7 +121,7 @@ curl -fsSL "$URL" | JEO_SKILLS_DRY_RUN=true INSTALL_GLOBAL=false bash
 | `skill-authoring` | skill-standardization, write-a-skill, upskill |
 | `product-management` | pm-skills, create-prd, user-stories, opportunity-solution-tree, north-star-metric |
 | `langchain` | langchain-fundamentals, langgraph-fundamentals, deep-agents-core, langsmith |
-| `knowledge-repositories` | 21 ontology, code-graph, memory and retrieval operators (`jeo-skill install --bundle knowledge-repositories --dry-run`) |
+| `knowledge-repositories` | 22 ontology, code-graph, memory and retrieval operators (`jeo-skill install --bundle knowledge-repositories --dry-run`) |
 | `ui-design-repositories` | 10 source-pinned UI operators (`jeo-skill install --bundle ui-design-repositories --dry-run`) |
 
 Repository-operator skills are guides with pinned sources. Installing them does not install, run or connect the upstream projects; those steps need separate approval.
@@ -206,7 +206,7 @@ Neither is part of catalog installation. Both can send data to a configured back
 
 ## 📚 Skills List
 
-> Generated from `.agent-skills/skills.json` · 405 skills · expand a category to see its skills.
+> Generated from `.agent-skills/skills.json` · 406 skills · expand a category to see its skills.
 
 ### 🌐 Web (69)
 
@@ -464,9 +464,9 @@ Subcategories: `developer-cli` (10), `ai-cli` (16), `media-cli` (1), `automation
 
 </details>
 
-### 🤖 AI & Agents (73)
+### 🤖 AI & Agents (74)
 
-Subcategories: `orchestration` (16), `agent-frameworks` (19), `skill-authoring` (5), `evaluation` (8), `memory` (6), `planning-review` (13), `discovery` (3), `prompting` (3)
+Subcategories: `orchestration` (16), `agent-frameworks` (19), `skill-authoring` (5), `evaluation` (8), `memory` (7), `planning-review` (13), `discovery` (3), `prompting` (3)
 
 <details>
 <summary>Show skills</summary>
@@ -546,6 +546,7 @@ Subcategories: `orchestration` (16), `agent-frameworks` (19), `skill-authoring` 
 | `memsearch` |
 | `harness2` |
 | `ruflo` |
+| `agent-beacon` |
 
 </details>
 
@@ -776,6 +777,8 @@ Edit metadata in `skills.json`, never in the generated tables. Upstream sources 
 
 | Change | Details |
 |--------|---------|
+| **Agent Beacon operator** | Added `agent-beacon` v1.0.0 for `Asymptote-Labs/agent-beacon`, pinned to `cfbd7b1d721664e3b1b5ca2fca5eac4327532c07` (MIT). Covers cross-harness session history, local/cloud destinations, reviewed memory, lenses, sharing and CLI/MCP integration with explicit capture, private-data, service, upload and removal approvals. The catalog grows from 405 to 406; `knowledge-repositories` contains 22 guides and 19 selected-file helpers. Installation adds the guide and support files, not the Beacon runtime. |
+| **Beacon offline and installer coverage** | The standalone helper inherits the existing secure no-Git implementation; all 12 selected official public-file hashes match. Modified helper and installer suites pass 20/20 and 65/65, including named Beacon installation, nested assets, same-root retired `jeo` removal, foreign/current skill preservation and byte-stable previews. Installer evidence uses isolated fixture transport, not a public install. Six routing/privacy evaluations are authored fixtures, not executed model-quality results. |
 | **Setup guide install fixes** | A full run of `setup-all-skills-prompt.md` in an isolated macOS HOME (real `skills@1.7.0`, uv, npm, Claude Code, Codex, opencode 2.0.32) found and fixed: Step 1 resolved the login home even when `$HOME` pointed elsewhere (it now honors `$HOME` outside Aside) and left `~/.local/bin` off `PATH`, so `jeo-skill` and `graphify` were not found; non-interactive `rtk init -g` never registered its hook (now `--auto-patch`); `ooo` was registered over the `[all]` extra, whose MCP SDK 1.x makes `ouroboros mcp serve` fail (now `uvx --isolated --from 'ouroboros-ai[mcp]'`); the Aside step rewrote JSONC `opencode.json`, dropping comments and every other key (now `opencode mcp add`); the knowledge-pipeline writer overwrote customized wrappers and rewrote settings on every run (now keep-and-report, write only on change, non-ASCII kept). Step 4D now only verifies and reports stale `~/.config/opencode/skills` copies, Step 7 uses the scoped `skills list -g -a universal` (the unscoped form hung past 150 s on a large home), three broken code fences were restored, and Steps 6–7 precede the on-demand reference. `jeo-skill` run from HOME no longer reads the legacy `~/.agent-skills/skills.json`. |
 | **Install verification** | After the fixes, full, core and minimal modes ran end to end (every step exit 0; Claude Code reports semble, ooo, aside and the OMC plugin server Connected; installed bytes match the repository in the shared, Claude, GJC, Antigravity CLI and Aside roots; seeded user skills, hooks and JSONC config preserved), and a second full run changed no guide-owned config. New `scripts/test_setup_guide_regressions.py` (7 tests) runs in CI; installer 64/64, Jev 64/64, config writers 24/24 and catalog gates pass. |
 | **README rebuilt for readability** | Replaced every README prose section and visual: new Codex cover `assets/readme-cover.webp`, Codex-written `how-it-works.svg`, `catalog-map.svg` and `skill-lifecycle.svg`, scannable tables for install options, runtimes, router CLI and lifecycle states, collapsible category lists, and a live skill-count badge. Featured tools, recommended OSS, related-docs and long operator notes were removed; upstream sources and licenses moved to `docs/attribution.md`. `catalog-install-flow.svg` and `runtime-boundaries.svg` were retired. Installer variables are now shown on the `bash` side of the pipe. Documentation only. |

@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "skill": "agent-beacon",
+  "repository": "Asymptote-Labs/agent-beacon",
+  "commit": "cfbd7b1d721664e3b1b5ca2fca5eac4327532c07",
+  "observed_at": "2026-10-22T23:42:30Z",
+  "license": {
+    "path": "LICENSE",
+    "conclusion": "MIT; full pinned root license inspected",
+    "url": "https://github.com/Asymptote-Labs/agent-beacon/blob/cfbd7b1d721664e3b1b5ca2fca5eac4327532c07/LICENSE"
+  },
+  "tools": [
+    {
+      "name": "python3",
+      "purpose": "Run the offline selected-source preflight helper; tool discovery only, no version test"
+    }
+  ],
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "d561329705fbff2f7513a573135db9901b33b2c39d7c9e6d9c0b91a7a9b6f2c1",
+      "url": "https://github.com/Asymptote-Labs/agent-beacon/blob/cfbd7b1d721664e3b1b5ca2fca5eac4327532c07/README.md",
+      "purpose": "Project scope, cross-harness history, local-first model, setup and privacy overview"
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "083b5d7f980521a76359c5bf9892ae051e3b6c31838a86e197e20f7879100457",
+      "url": "https://github.com/Asymptote-Labs/agent-beacon/blob/cfbd7b1d721664e3b1b5ca2fca5eac4327532c07/LICENSE",
+      "purpose": "Full pinned root MIT license text"
+    },
+    {
+      "path": "agent-skills/LICENSE",
+      "sha256": "083b5d7f980521a76359c5bf9892ae051e3b6c31838a86e197e20f7879100457",
+      "url": "https://github.com/Asymptote-Labs/agent-beacon/blob/cfbd7b1d721664e3b1b5ca2fca5eac4327532c07/agent-skills/LICENSE",
+      "purpose": "Full pinned bundled native-skills MIT license text"
+    },
+    {
+      "path": "docs/cli/endpoint-install.mdx",
+      "sha256": "0775ac9e0267b7b8d0bdb0290787fd239db13a9a3837f17cc033a813a18d4ada",
+      "url": "https://github.com/Asymptote-Labs/agent-beacon/blob/cfbd7b1d721664e3b1b5ca2fca5eac4327532c07/docs/cli/endpoint-install.mdx",
+      "purpose": "Endpoint setup, harness discovery, services, backfill, onboarding and dry-run behavior"
+    },
+    {
+      "path": "docs/cli/endpoint-connect.mdx",
+      "sha256": "9eff863ddcdcd9265b2f1c0a995b2cb4371396a33414a90b5bbbcb3aa9e7b78a",
+      "url": "https://github.com/Asymptote-Labs/agent-beacon/blob/cfbd7b1d721664e3b1b5ca2fca5eac4327532c07/docs/cli/endpoint-connect.mdx",
+      "purpose": "Cloud forwarding, backfill, privacy modes, credentials and disconnect boundaries"
+    },
+    {
+      "path": "docs/cli/endpoint-status.mdx",
+      "sha256": "1293f40ec822e0539f438f56f248f86cd508422774707a98d8f20e85291058ac",
+      "url": "https://github.com/Asymptote-Labs/agent-beacon/blob/cfbd7b1d721664e3b1b5ca2fca5eac4327532c07/docs/cli/endpoint-status.mdx",
+      "purpose": "Read-only local health, service state, diagnostics and destination status"
+    },
+    {
+      "path": "docs/cli/endpoint-traces.mdx",
+      "sha256": "9671aa21a731fda91131cd8d825a2020fa0b17ca9a2ff84ecec0538cd09b772d",
+      "url": "https://github.com/Asymptote-Labs/agent-beacon/blob/cfbd7b1d721664e3b1b5ca2fca5eac4327532c07/docs/cli/endpoint-traces.mdx",
+      "purpose": "Local JSONL trace browsing, search, history retention and reset"
+    },
+    {
+      "path": "docs/cli/memory.mdx",
+      "sha256": "0df1f8ec96b01209f49d68ec08dbac8337056bfde9876d657265f66d1080bb56",
+      "url": "https://github.com/Asymptote-Labs/agent-beacon/blob/cfbd7b1d721664e3b1b5ca2fca5eac4327532c07/docs/cli/memory.mdx",
+      "purpose": "Jev dry-run/evaluation, candidate review, approved memory and skill installation"
+    },
+    {
+      "path": "docs/cli/lenses.mdx",
+      "sha256": "b195c2070cc288bd09b0898a5339c13376f1ccec34a8228d9fa79c39a0eaa080",
+      "url": "https://github.com/Asymptote-Labs/agent-beacon/blob/cfbd7b1d721664e3b1b5ca2fca5eac4327532c07/docs/cli/lenses.mdx",
+      "purpose": "Local lens store, trust warning, sandbox limits, lint and preview"
+    },
+    {
+      "path": "docs/cli/share.mdx",
+      "sha256": "03bf4dafd05eb1f56f6a7c5406474a0de8e084f1fb103ad7bfefec51c47b08f9",
+      "url": "https://github.com/Asymptote-Labs/agent-beacon/blob/cfbd7b1d721664e3b1b5ca2fca5eac4327532c07/docs/cli/share.mdx",
+      "purpose": "Explicit trace sharing, payload preview, visibility, credentials and upload boundaries"
+    },
+    {
+      "path": "docs/cli/mcp-connect.mdx",
+      "sha256": "1483bbe265c05f6a6e3c79505d7acc72ef4672c9d85d5a45b79d2bc58e7d2305",
+      "url": "https://github.com/Asymptote-Labs/agent-beacon/blob/cfbd7b1d721664e3b1b5ca2fca5eac4327532c07/docs/cli/mcp-connect.mdx",
+      "purpose": "Beacon Cloud MCP registration, OAuth/token modes, config backups and status"
+    },
+    {
+      "path": "docs/cli/endpoint-uninstall.mdx",
+      "sha256": "e567e4dd3e920475eccacf4f5a55db38af284aa0bc6232e8d213051eb0cf0c72",
+      "url": "https://github.com/Asymptote-Labs/agent-beacon/blob/cfbd7b1d721664e3b1b5ca2fca5eac4327532c07/docs/cli/endpoint-uninstall.mdx",
+      "purpose": "Service/config/log removal and keep-logs/keep-config retention flags"
+    }
+  ]
+}

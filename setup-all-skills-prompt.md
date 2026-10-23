@@ -24,8 +24,8 @@ It does **not** download every app, model weight, media runtime, SDK, or service
 inside all skills. Those remain on demand when a real task selects the corresponding skill.
 For example, installing `okf-agent-memory` adds only its operator guide; it does not install
 upstream `okf`, bootstrap a repository, or register the MCP server.
-The `knowledge-repositories` bundle similarly installs 21 guides, not their upstream
-runtimes. Its 18 new helpers inspect selected public-file hashes offline; this does
+The `knowledge-repositories` bundle similarly installs 22 guides, not their upstream
+runtimes. Its 19 selected-file helpers inspect selected public-file hashes offline; this does
 not prove Git HEAD, full revision integrity, dependency versions, or live readiness.
 Private-data ingestion, remote embeddings, cloud resources, database/index writes,
 and service or MCP activation each require their own approval.
@@ -48,6 +48,34 @@ python3 "$HOME/.agents/skills/open-ontologies/scripts/preflight.py" \
 ```
 
 This performs selected-public-file SHA-256 checks only; `runtime_verified=false` means it is **not** Git HEAD, full-revision, dependency, build, or runtime evidence. Blanket setup MUST NOT build or install the upstream project or activate MCP. The guide does not run binaries/builds or the Lean checker, pull OCI images, register an MCP client, upload or ingest ontology data, make provider calls, or write graph/database artifacts; each such action requires separate approval.
+
+### Agent Beacon session history and memory (on demand)
+
+[`agent-beacon`](.agent-skills/agent-beacon/SKILL.md) is a guide-only operator for the pinned [`Asymptote-Labs/agent-beacon` upstream commit](https://github.com/Asymptote-Labs/agent-beacon/tree/cfbd7b1d721664e3b1b5ca2fca5eac4327532c07). It covers the named Agent Beacon project: a local-first cross-harness session-history and memory layer with normalized local JSONL events, trace browsing/search, reviewed memory evaluation and promotion, lenses, handoff, and explicit sharing. It is not a generic observability SDK, memory-backend selector, or agent-team runtime. Read the [pinned upstream notes](.agent-skills/agent-beacon/references/upstream.md) and [source manifest](.agent-skills/agent-beacon/references/source.json) first.
+
+Install only the operator guide, on demand:
+
+```bash
+HOME="$USER_HOME" python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" install agent-beacon --global --yes
+```
+
+Against an approved absolute, non-symlinked upstream checkout, run the linked [offline preflight helper](.agent-skills/agent-beacon/scripts/preflight.py):
+
+```bash
+python3 "$SKILLS_ROOT/agent-beacon/scripts/preflight.py" \
+  --repo /absolute/path/to/agent-beacon --json
+```
+
+The helper only checks the selected public-file hashes; `runtime_verified=false` is always
+reported and means no Git HEAD, dependency, build, runtime, or security guarantee. It never
+executes Beacon, uses the network or subprocesses, reads secrets, or starts services. Catalog
+installation is not Beacon executable installation and does not approve endpoint setup,
+background capture, private-session reads, Cloud/managed enrollment, model or distillation
+work, MCP/hooks/services, trace sharing/upload, or uninstall/delete. Beacon's interactive setup
+preselects Cloud (Local is an explicit opt-out); signing in alone does not forward telemetry.
+Cloud connect, bounded last-30-day backfill, Standard versus Metadata-only forwarding,
+`beacon share`, `beacon mcp connect`, and uninstall cleanup each require separate approval.
+Use `--dry-run`/`--print` where offered, and keep `beacon mcp serve` loopback-only.
 
 ### UI-design repository guides (on demand)
 

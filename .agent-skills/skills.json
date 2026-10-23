@@ -1,7 +1,7 @@
 {
   "version": "2.1.0",
   "generated": "2026-10-21",
-  "skill_count": 405,
+  "skill_count": 406,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -407,7 +407,8 @@
       "memori",
       "memsearch",
       "harness2",
-      "ruflo"
+      "ruflo",
+      "agent-beacon"
     ],
     "engineering": [
       "audit-reference-originality",
@@ -912,7 +913,8 @@
         "okf-agent-memory",
         "memmachine",
         "memori",
-        "memsearch"
+        "memsearch",
+        "agent-beacon"
       ],
       "planning-review": [
         "bmad-idea",
@@ -1248,7 +1250,8 @@
       "leann",
       "turbovec",
       "cocoindex",
-      "pixelrag"
+      "pixelrag",
+      "agent-beacon"
     ],
     "ui-design-repositories": [
       "superdesign",
@@ -1842,9 +1845,10 @@
         "obsidian-second-brain",
         "rowboat",
         "ai-knowledge-management-platform",
-        "knowledge-catalog"
+        "knowledge-catalog",
+        "agent-beacon"
       ],
-      "note": "Distinct knowledge and memory contracts: agent-memory servers/SDKs, Markdown-backed recall, OKF v0.2 project memory, an Obsidian vault, a desktop work app, AWS document/SQL samples and Google Cloud catalog samples. They are not interchangeable backends; use agent-memory-architecture for product-neutral selection."
+      "note": "Distinct knowledge and memory contracts: agent-memory servers/SDKs, Markdown-backed recall, OKF v0.2 project memory, an Obsidian vault, a desktop work app, AWS document/SQL samples and Google Cloud catalog samples. Agent Beacon adds cross-harness session capture and curated memory (Asymptote-Labs/agent-beacon at cfbd7b1d721664e3b1b5ca2fca5eac4327532c07). They are not interchangeable backends; use agent-memory-architecture for product-neutral selection."
     },
     "retrieval-storage-indexing": {
       "mode": "layered",
@@ -15029,6 +15033,37 @@
       "keyword": "artcraft",
       "version": "1.0.0",
       "source": "https://github.com/storytold/artcraft"
+    },
+    {
+      "name": "agent-beacon",
+      "description": "Operate Asymptote-Labs/agent-beacon, the cross-harness coding-agent session history and self-improving memory layer. Use when users name Agent Beacon, beacon.sh, Beacon endpoint capture, trace replay, lenses, memory recall/distillation/promotion, or its CLI/MCP integration. Route setup, local/cloud destination choices, private session access, sharing and removal through explicit approval gates. This is the named Beacon project, not a generic tracing SDK, memory-backend selector, or agent-team runtime.",
+      "category": "ai-agents",
+      "subcategory": "memory",
+      "interface": "cli",
+      "path": "agent-beacon/SKILL.md",
+      "tags": [
+        "agent-beacon",
+        "agent-memory",
+        "session-history",
+        "trace-replay",
+        "cross-harness",
+        "privacy"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex CLI",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Grep",
+        "Glob"
+      ],
+      "keyword": "agent-beacon",
+      "version": "1.0.0",
+      "source": "https://github.com/Asymptote-Labs/agent-beacon"
     }
   ]
 }

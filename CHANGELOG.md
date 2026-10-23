@@ -10,6 +10,7 @@ All notable changes to **jeo-skills** are documented here.
 ## 2026-10-21
 
 ### Added
+- Added the `agent-beacon` operator, pinned to `Asymptote-Labs/agent-beacon` commit `cfbd7b1d721664e3b1b5ca2fca5eac4327532c07` (MIT), with a standalone selected-file helper, source/license references, six authored routing/privacy evals, setup guidance and canonical attribution. The catalog grows from 405 to 406; helper/installer regressions pass 20/20 and 65/65. Beacon capture, private data access, Cloud forwarding, hooks/MCP, services and removal remain separately approved operations.
 - Added the pinned `harness2` operator plus `ruflo`, `voicestudio`, `diagram-design`, and `artcraft`; with `harness` retired, the catalog grows from 401 to 405 skills.
 - Added local skill-usage tracking with candidate reporting, reversible quarantine/restore, permanent quarantine purge, a separate maintainer retirement script, and the Jev injection usage ledger.
 

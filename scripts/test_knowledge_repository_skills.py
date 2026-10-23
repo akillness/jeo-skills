@@ -26,7 +26,7 @@ SKILLS = (
     "hyper-extract", "agentic-graphrag-blueprint", "codebase-memory-mcp",
     "memmachine", "memori", "memsearch", "rowboat",
     "ai-knowledge-management-platform", "knowledge-catalog", "pixeltable",
-    "leann", "turbovec", "cocoindex", "pixelrag",
+    "leann", "turbovec", "cocoindex", "pixelrag", "agent-beacon",
 )
 FIXTURE_FILES = {
     "README.md": b"synthetic public README\n",
@@ -183,15 +183,15 @@ class KnowledgeRepositoryPreflightTests(unittest.TestCase):
                 result.append((str(path.relative_to(root)), "dir"))
         return tuple(result)
 
-    def test_all_eighteen_helpers_are_identical_executable_and_metadata_consistent(self):
+    def test_all_nineteen_helpers_are_identical_executable_and_metadata_consistent(self):
         helpers = [self.helper(name) for name in SKILLS]
-        self.assertEqual(len(helpers), 18)
+        self.assertEqual(len(helpers), 19)
         for helper in helpers:
             self.assertTrue(helper.is_file(), str(helper))
             self.assertTrue(helper.stat().st_mode & stat.S_IXUSR, f"not executable: {helper}")
         baseline = helpers[0].read_bytes()
         self.assertTrue(all(path.read_bytes() == baseline for path in helpers[1:]),
-                        "the 18 standalone helper copies differ")
+                        "the 19 standalone helper copies differ")
         for skill in SKILLS:
             with self.subTest(skill=skill):
                 package = self.helper(skill).parent.parent
@@ -229,7 +229,7 @@ class KnowledgeRepositoryPreflightTests(unittest.TestCase):
                         self.assertIsInstance(case[field], str)
                         self.assertTrue(case[field].strip())
 
-    def test_all_eighteen_real_packages_default_inventory_is_offline_and_nonblocking(self):
+    def test_all_nineteen_real_packages_default_inventory_is_offline_and_nonblocking(self):
         tool_name = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.+-]{0,63}$")
         for skill in SKILLS:
             with self.subTest(skill=skill):
@@ -303,7 +303,111 @@ class KnowledgeRepositoryPreflightTests(unittest.TestCase):
         traversal = self.invoke_path(helper, "--json", "--repo", str(self.source / ".." / ".."))
         self.assertEqual(traversal.returncode, 2, traversal.stdout + traversal.stderr)
 
-    def test_all_eighteen_package_copy_is_portable_with_synthetic_manifest(self):
+    def test_open_ontologies_helper_supports_default_matching_and_meaningful_mismatch_modes(self):
+        package = self.make_package("open-ontologies", self.helper("open-ontologies"))
+        helper = package / "scripts" / "preflight.py"
+
+        default = self.invoke_path(helper, "--json")
+        self.assertEqual(default.returncode, 0, default.stdout + default.stderr)
+        default_report = self.report(default)
+        self.assertEqual(default_report.get("skill"), "open-ontologies")
+        self.assertFalse(default_report.get("source_checked"))
+        self.assertTrue(any("No source" in str(warning) for warning in default_report["warnings"]))
+
+        matching = self.invoke_path(helper, "--json", "--repo", str(self.source))
+        self.assertEqual(matching.returncode, 0, matching.stdout + matching.stderr)
+        matching_report = self.report(matching)
+        self.assertTrue(matching_report.get("source_checked"))
+        self.assertEqual(
+            {check["status"] for check in matching_report["checks"] if check["name"].startswith("file:")},
+            {"match"},
+        )
+
+        changed = self.source / "README.md"
+        original = changed.read_bytes()
+        changed.write_bytes(b"tampered Open Ontologies source\n")
+        try:
+            mismatch = self.invoke_path(helper, "--json", "--repo", str(self.source))
+        finally:
+            changed.write_bytes(original)
+        self.assertEqual(mismatch.returncode, 1, mismatch.stdout + mismatch.stderr)
+        mismatch_report = self.report(mismatch)
+        self.assertEqual(mismatch_report.get("status"), "blocked")
+        self.assertEqual(
+            [check for check in mismatch_report["checks"] if check["name"].startswith("file:")],
+            [
+                {"name": "file:README.md", "status": "mismatch"},
+                {"name": "file:src/module.py", "status": "match"},
+            ],
+        )
+    def test_agent_beacon_standalone_copy_checks_every_manifest_file_and_never_reads_traces(self):
+        package = self.make_package("agent-beacon", self.helper("agent-beacon"))
+        manifest_path = ROOT / ".agent-skills/agent-beacon/references/source.json"
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        self.assertEqual(manifest["repository"], "Asymptote-Labs/agent-beacon")
+        self.assertEqual(manifest["commit"], "cfbd7b1d721664e3b1b5ca2fca5eac4327532c07")
+        self.assertTrue(manifest["files"])
+        for item in manifest["files"]:
+            self.assertEqual(
+                item["url"],
+                f"https://github.com/{manifest['repository']}/blob/{manifest['commit']}/"
+                f"{quote(item['path'], safe='/')}",
+            )
+
+        payloads = {
+            f"public/{index}.txt": f"beacon fixture {index}\n".encode("utf-8")
+            for index, _item in enumerate(manifest["files"])
+        }
+        self.write_manifest(package, payloads, skill="agent-beacon")
+        for path, payload in payloads.items():
+            target = self.source / path
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes(payload)
+        private_trace = self.source / "private-trace.json"
+        private_trace.write_text(SECRET, encoding="utf-8")
+        before_source = self.snapshot(self.source)
+
+        matching = self.invoke_path(package / "scripts/preflight.py", "--json",
+                                     "--repo", str(self.source))
+        self.assertEqual(matching.returncode, 0, matching.stdout + matching.stderr)
+        matching_report = self.report(matching)
+        expected_names = ["file:" + path for path in payloads]
+        self.assertEqual(
+            [check["name"] for check in matching_report["checks"] if check["name"].startswith("file:")],
+            expected_names,
+        )
+        self.assertEqual(
+            [check["status"] for check in matching_report["checks"] if check["name"].startswith("file:")],
+            ["match"] * len(expected_names),
+        )
+        self.assertNotIn(SECRET, matching.stdout + matching.stderr)
+        self.assertEqual(self.snapshot(self.source), before_source)
+
+        tampered = next(iter(payloads))
+        (self.source / tampered).write_bytes(b"tampered beacon payload\n")
+        mismatch = self.invoke_path(package / "scripts/preflight.py", "--json",
+                                    "--repo", str(self.source))
+        self.assertEqual(mismatch.returncode, 1, mismatch.stdout + mismatch.stderr)
+        mismatch_report = self.report(mismatch)
+        self.assertEqual(
+            [check for check in mismatch_report["checks"] if check["name"].startswith("file:")],
+            [{"name": name, "status": "mismatch" if name == "file:" + tampered else "match"}
+             for name in expected_names],
+        )
+
+        default = self.invoke_path(package / "scripts/preflight.py", "--json")
+        self.assertEqual(default.returncode, 0, default.stdout + default.stderr)
+        default_report = self.report(default)
+        self.assertFalse(default_report["source_checked"])
+        self.assertTrue(any("No source" in warning for warning in default_report["warnings"]))
+        self.assertNotIn(SECRET, default.stdout + default.stderr)
+        unsupported = self.invoke_path(package / "scripts/preflight.py", "--json",
+                                        "--expect-commit", SECRET)
+        self.assertEqual(unsupported.returncode, 2, unsupported.stdout + unsupported.stderr)
+        self.assertNotIn(SECRET, unsupported.stdout + unsupported.stderr)
+
+
+    def test_all_nineteen_package_copy_is_portable_with_synthetic_manifest(self):
         for skill in SKILLS:
             with self.subTest(skill=skill):
                 package = self.make_package(skill, self.helper(skill))
