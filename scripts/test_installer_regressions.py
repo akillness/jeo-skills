@@ -11,6 +11,7 @@ import os
 from pathlib import Path
 import shutil
 import subprocess
+import stat
 import sys
 import tempfile
 import unittest
@@ -498,6 +499,98 @@ class InstallerRegressions(unittest.TestCase):
         self.assertEqual(self.snapshot(), before)
         self.assertTrue(home_retired.exists(), "dry-run must remain project-scoped")
 
+
+    def test_named_gamedev_guide_install_preserves_scope_modes_and_preview_bytes(self):
+        guide = (ROOT / "setup-all-skills-prompt.md").read_text(encoding="utf-8")
+        section = guide.split("### awesome-gamedev-agent-skills collection (on demand)", 1)[1]
+        block = section.split("```bash\n", 1)[1].split("```", 1)[0].strip()
+        self.assertIn("install awesome-gamedev-agent-skills --global --yes", block)
+
+        name = "awesome-gamedev-agent-skills"
+        source_package = self.source / ".agent-skills" / name
+        shutil.copytree(ROOT / ".agent-skills" / name, source_package)
+        router_root = self.source / ".agents" / "skills"
+        shutil.copytree(self.source / ".agent-skills" / "jeo-skill", router_root / "jeo-skill")
+        catalog = json.loads(self.catalog.read_text(encoding="utf-8"))
+        catalog["skills"].append({
+            "name": name,
+            "category": "game",
+            "subcategory": "client",
+            "description": "fixture gamedev guide",
+        })
+        self.catalog.write_text(json.dumps(catalog), encoding="utf-8")
+        def tree_snapshot(root):
+            return {
+                str(path.relative_to(root)): ("symlink", os.readlink(path)) if path.is_symlink()
+                else ("file", path.read_bytes(), stat.S_IMODE(path.stat().st_mode)) if path.is_file()
+                else ("directory",)
+                for path in root.rglob("*")
+            }
+
+
+        shared = self.home / ".agents" / "skills"
+        retired = self.catalog_fixture(shared, "jeo")
+        current = shared / "jeo-skill"
+        shutil.copytree(self.source / ".agent-skills" / "jeo-skill", current)
+        current_before = tree_snapshot(current)
+        unrelated = shared / "unrelated-data.bin"
+        unrelated.write_bytes(b"leave current unrelated data alone\n")
+        project_before = tree_snapshot(self.project)
+        outside_home = self.work / "outside-home"
+        outside_retired = self.catalog_fixture(outside_home / ".agents" / "skills", "jeo")
+        outside_before = tree_snapshot(outside_home)
+
+        (self.bin / "npx").write_text(
+            f"#!{sys.executable}\nimport os, sys\n"
+            "if sys.argv[1:5] == ['--yes', 'skills@1.7.0', 'add', "
+            "'https://github.com/akillness/jeo-skills']:\n"
+            "    sys.argv[4] = os.environ['JEO_SKILLS_SOURCE']\n" + NPX)
+        (self.bin / "npx").chmod(0o700)
+        env = {
+            "USER_HOME": str(self.home),
+            "SKILLS_ROOT": str(router_root),
+            "JEO_SKILLS_SOURCE": str(self.source),
+            "JEO_SKILLS_CATALOG": str(self.catalog),
+        }
+        result = self.execute(["/bin/bash", "-c", block], extra_env=env)
+        self.successful(result)
+        installed = shared / name
+        self.assertIn(f"Selected 1 skill(s): {name}", result.stdout)
+        expected = {
+            str(path.relative_to(source_package)): (path.read_bytes(), stat.S_IMODE(path.stat().st_mode))
+            for path in source_package.rglob("*") if path.is_file() and not path.is_symlink()
+        }
+        actual = {
+            str(path.relative_to(installed)): (path.read_bytes(), stat.S_IMODE(path.stat().st_mode))
+            for path in installed.rglob("*") if path.is_file() and not path.is_symlink()
+        }
+        self.assertEqual(actual, expected)
+        self.assertFalse(retired.exists(), "only the fingerprinted retired JEO copy is removed")
+        self.assertEqual(tree_snapshot(current), current_before)
+        self.assertEqual(unrelated.read_bytes(), b"leave current unrelated data alone\n")
+        self.assertEqual(tree_snapshot(self.project), project_before)
+        self.assertTrue(outside_retired.exists(), "out-of-scope HOME must not be swept")
+        self.assertEqual(tree_snapshot(outside_home), outside_before)
+
+        same_root_foreign = shared / "jeo"
+        same_root_foreign.mkdir()
+        foreign_payload = b"---\nname: jeo\ndescription: foreign\n---\n# foreign\n"
+        (same_root_foreign / "SKILL.md").write_bytes(foreign_payload)
+        reinstall = self.execute(["/bin/bash", "-c", block], extra_env=env)
+        self.successful(reinstall)
+        self.assertIn(f"Retired skill kept: {same_root_foreign}", reinstall.stdout)
+        self.assertEqual((same_root_foreign / "SKILL.md").read_bytes(), foreign_payload)
+        self.assertTrue(outside_retired.exists())
+
+        shutil.rmtree(same_root_foreign)
+        dry_retired = self.catalog_fixture(shared, "jeo")
+        before_preview = self.snapshot()
+        preview_block = block.replace(" --yes", " --yes --dry-run", 1)
+        preview = self.execute(["/bin/bash", "-c", preview_block], extra_env=env)
+        self.successful(preview)
+        self.assertIn(f"Retired skill would-remove: {dry_retired}", preview.stdout)
+        self.assertEqual(self.snapshot(), before_preview)
+        self.assertTrue(outside_retired.exists())
 
     def test_project_install_cleans_retired_copy_and_dry_run_is_byte_stable(self):
         retired = self.catalog_fixture(self.project / ".agents/skills", "harness")

@@ -1,0 +1,56 @@
+[
+  {
+    "id": "gamedev-exact-project",
+    "prompt": "The user names gamedev-skills/awesome-gamedev-agent-skills at commit 7eb1b53305fab881f4758e2eff2e371cd7869221 and asks for its pinned offline inventory and selective guide installation.",
+    "expected_skill": "awesome-gamedev-agent-skills",
+    "expected_behavior": "Use the exact project operator, preserve the pinned version and game/client ownership, and explain that guide installation does not install upstream skills, engines, plugins, assets, providers, or runtimes.",
+    "authored": true,
+    "executed": false,
+    "evidence_status": "authored-not-executed"
+  },
+  {
+    "id": "gamedev-selected-godot-defold-source",
+    "prompt": "Select only the Godot and Defold guidance from the pinned collection for an offline review; do not install engines or execute upstream code.",
+    "expected_skill": "awesome-gamedev-agent-skills",
+    "expected_behavior": "Use the collection router for the requested Godot and Defold source choices, keep the operation offline and selective, and require separate approval before any engine, provider, plugin, asset, or upstream-runtime action.",
+    "authored": true,
+    "executed": false,
+    "evidence_status": "authored-not-executed"
+  },
+  {
+    "id": "gamedev-localweb-unity-near-miss",
+    "prompt": "A user asks for a generic local web game implementation and separately asks to curate a third-party Unity skill pack; the gamedev-skills collection is not named.",
+    "expected_skill": "web-game-development",
+    "expected_behavior": "Route the local web-game implementation to web-game-development and the generic Unity pack curation to unity-gamedev-skill-pack; do not force the awesome gamedev collection for either near-miss.",
+    "authored": true,
+    "executed": false,
+    "evidence_status": "authored-not-executed"
+  },
+  {
+    "id": "gamedev-collision-generic-router",
+    "prompt": "The user names gamedev-skills/awesome-gamedev-agent-skills and asks to install its guide where an existing skill name collides, while also requesting generic engine routing advice.",
+    "expected_skill": "awesome-gamedev-agent-skills",
+    "expected_behavior": "Inspect the collision-aware selection path, preserve existing same-root and unrelated skills, and keep generic routing advice separate from installing or replacing the collection operator.",
+    "authored": true,
+    "executed": false,
+    "evidence_status": "authored-not-executed"
+  },
+  {
+    "id": "gamedev-version-preservation",
+    "prompt": "Install the pinned collection guide while an existing project has current skills and a different same-root skill with the same retired-looking name.",
+    "expected_skill": "awesome-gamedev-agent-skills",
+    "expected_behavior": "Preserve current and foreign same-root data, remove only the fingerprinted retired copy when the installer identifies it, keep unrelated HOME/project data untouched, and retain the declared collection version rather than silently upgrading it.",
+    "authored": true,
+    "executed": false,
+    "evidence_status": "authored-not-executed"
+  },
+  {
+    "id": "gamedev-whole-pack-native-plugin-readiness",
+    "prompt": "The user asks to install the whole upstream pack, a native plugin, and the engines, then asks whether the setup is ready after the offline helper reports selected-file metadata.",
+    "expected_skill": "awesome-gamedev-agent-skills",
+    "expected_behavior": "Stop for explicit approval before whole-pack installation, native-plugin or engine changes, provider use, and upstream execution; report runtime_verified=false and do not claim readiness from metadata, source hashes, or guide presence alone.",
+    "authored": true,
+    "executed": false,
+    "evidence_status": "authored-not-executed"
+  }
+]

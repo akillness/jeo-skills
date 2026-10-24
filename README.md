@@ -114,7 +114,7 @@ curl -fsSL "$URL" | JEO_SKILLS_DRY_RUN=true INSTALL_GLOBAL=false bash
 | `web-backend` | api-design, authentication-setup, database-schema-design, backend-testing |
 | `web-design` | web-design, design-system, responsive-design, web-accessibility |
 | `infrastructure-core` | deployment-automation, environment-setup, monitoring-observability, security-best-practices |
-| `game-client` | unity-gamedev-skill-pack, game-studio-harness, game-performance-profiler |
+| `game-client` | unity-gamedev-skill-pack, game-studio-harness, game-performance-profiler, awesome-gamedev-agent-skills |
 | `game-web` | web-game-development, threejs-fundamentals, implement-fog-of-war |
 | `game-art` | game-vfx, rfxgen, perfectpixel, open-design-game-ui-concept, unirig |
 | `media-video` | video-production, video-shotcraft, video-motion-previs, shopping-shorts, filmcraft |
@@ -206,7 +206,7 @@ Neither is part of catalog installation. Both can send data to a configured back
 
 ## 📚 Skills List
 
-> Generated from `.agent-skills/skills.json` · 406 skills · expand a category to see its skills.
+> Generated from `.agent-skills/skills.json` · 407 skills · expand a category to see its skills.
 
 ### 🌐 Web (69)
 
@@ -318,9 +318,9 @@ Subcategories: `deployment` (2), `environment` (2), `observability` (3), `securi
 
 </details>
 
-### 🎮 Game (28)
+### 🎮 Game (29)
 
-Subcategories: `client` (3), `web` (2), `server` (1), `design-ui` (7), `audio` (1), `animation` (2), `motion-vfx` (2), `sprite-image` (1), `art-resources` (0), `storytelling` (0), `tooling` (3), `qa-performance` (4), `release` (2)
+Subcategories: `client` (4), `web` (2), `server` (1), `design-ui` (7), `audio` (1), `animation` (2), `motion-vfx` (2), `sprite-image` (1), `art-resources` (0), `storytelling` (0), `tooling` (3), `qa-performance` (4), `release` (2)
 
 <details>
 <summary>Show skills</summary>
@@ -355,6 +355,7 @@ Subcategories: `client` (3), `web` (2), `server` (1), `design-ui` (7), `audio` (
 | `game-design-theory` |
 | `game-feel` |
 | `game-ui-ux` |
+| `awesome-gamedev-agent-skills` |
 
 </details>
 
@@ -767,6 +768,13 @@ Edit metadata in `skills.json`, never in the generated tables. Upstream sources 
 
 <!-- WHATS-NEW:START -->
 
+## 🆕 What's New in v2026-10-24
+
+| Change | Details |
+|--------|---------|
+| **Cross-engine game skill collection** | Added `awesome-gamedev-agent-skills` v1.0.0 for `gamedev-skills/awesome-gamedev-agent-skills` at `7eb1b53305fab881f4758e2eff2e371cd7869221` (Apache-2.0; LICENSE and NOTICE inspected). The catalog grows from 406 to 407 and `game-client` from three to four guides. The operator selects from 76 upstream leaves plus their router without vendoring the pack, preserves project engine versions, and protects same-name local skills. |
+| **Game collection verification** | Dedicated subprocess tests pass 6/6 and installer regressions 66/66; all 12 selected public-source hashes match. A project-scoped guide install from the local working tree passed with a transparent launcher executing cached genuine `skills@1.7.0`: preview, nested bytes/modes, fingerprinted retired-`jeo` removal and foreign/current/HOME preservation. No registry resolution, public-repository install, real-HOME activation, engine or provider execution was performed. Six routing/safety evals are authored, not executed model-quality results. |
+
 ## 🆕 What's New in v2026-10-22
 
 | Change | Details |
@@ -807,16 +815,6 @@ Edit metadata in `skills.json`, never in the generated tables. Upstream sources 
 | **Routing and catalog** | Registered the skill under `ai-agents/memory`, linked it with `okf` and related knowledge-vault skills, and clarified that `okf` remains the Google OKF v0.1 format authoring path. Refreshed manifest projections, all README locale counts, setup guidance, `AGENTS.md`, and `.mex/ROUTER.md`; catalog grows from 367 to 368. Added nine routing/safety evaluation scenarios across the new operator and the `okf` route-out. |
 | **Read-only preflight and regressions** | Added a standalone stdlib preflight bound to the pinned commit and fixed public source markers. It rejects symlinked paths and oversized markers, scopes Git environment variables, and runs no upstream executable. The shared repository-preflight regression suite passes 13/13, including malicious-path, pin, symlink, size, no-write, and credential-isolation cases. |
 | **Known upstream drift and execution boundary** | The pinned `go.mod` requires Go 1.26.0, while the getting-started guide says 1.22+; the skill records the conflict. No upstream installation, build, bootstrap, MCP registration, or target-project write was performed. |
-
-## 🆕 What's New in v2026-10-14
-
-| Change | Details |
-|--------|---------|
-| **Jev runtime activation on Codex** | The `codex` profile is ON with `api` backend, assist skill injection and advisory PreToolUse review; both generated hook definitions are trusted and enabled in live Codex sessions, with real TypeSafe routing evidence (`react-best-practices` via served `jev-1.13.0`). Tier stays unvalidated: transport proof, not calibration or permission grants. |
-| **Timeout fixture sync** | The native SIGTERM/SIGKILL escalation test now follows child handler readiness instead of wall-clock deadlines; production timeout behavior is unchanged. |
-| **CI test-job setup trim** | The `test` job drops the unused Bun setup (all four steps are pure Python) and pins `pyyaml==6.0.3`; the stale `flatten_skills.py` next-step hint now points at the real `generate-catalog-projections.py --check`. Installer-suite waits (hung-node bound, unreachable-backend probes) are intentional contract behavior and unchanged. |
-| **README visual and boundary refresh** | Documentation-only: replaced five GIF equipment items, two retired SVGs, and the serial-CI image with a Codex static cover plus `assets/catalog-workflow.svg` and `assets/runtime-architecture.svg`; corrected current commands, `.agent-skills/<name>/SKILL.md` links, TOON metadata boundaries, and native host boundaries. No runtime or provider behavior is claimed. |
-| **Catalog validation and search** | Local fixture metrics: catalog-validator warm median 268.69 → 126.49 ms and 40 queries on one handler 1134.76 → 157.30 ms, with bounded streaming and failure cleanup. Focused Python (31) and Node (28) cases report zero skips; new CI wiring reports these fixtures. This is not model/GPU, full-browser, remote-action, or global-leak-free proof. |
 
 > 📜 Older entries: [`changelog/en/`](changelog/en/) (monthly files, newest first).
 

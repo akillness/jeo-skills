@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "skill": "awesome-gamedev-agent-skills",
+  "repository": "gamedev-skills/awesome-gamedev-agent-skills",
+  "commit": "7eb1b53305fab881f4758e2eff2e371cd7869221",
+  "observed_at": "2026-10-24",
+  "license": {
+    "path": "LICENSE",
+    "conclusion": "Apache-2.0; full pinned root license inspected",
+    "url": "https://github.com/gamedev-skills/awesome-gamedev-agent-skills/blob/7eb1b53305fab881f4758e2eff2e371cd7869221/LICENSE"
+  },
+  "tools": [
+    {
+      "name": "python3",
+      "purpose": "Run the offline selected-source preflight helper; no upstream code execution"
+    },
+    {
+      "name": "skills",
+      "purpose": "Preview or selectively copy audited local skills with the installed 1.7.0 CLI"
+    }
+  ],
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "a94286c74019d89916751750f76bf18ccfe28041242e9bbf34a3e60dbd1529ea",
+      "url": "https://github.com/gamedev-skills/awesome-gamedev-agent-skills/blob/7eb1b53305fab881f4758e2eff2e371cd7869221/README.md",
+      "purpose": "Project scope, README inventory claim, engine list, CLI/plugin installation overview"
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "6f82dcfeb95a1c0a0452180a3b16f21bf82111780018fed59d95a052b5b75f6c",
+      "url": "https://github.com/gamedev-skills/awesome-gamedev-agent-skills/blob/7eb1b53305fab881f4758e2eff2e371cd7869221/LICENSE",
+      "purpose": "Full pinned root Apache-2.0 license text"
+    },
+    {
+      "path": "NOTICE",
+      "sha256": "2dcb65b1c5be24e5ba11e937f3996100f4e980d8cf8ac5b30ba1d70dae6c40f8",
+      "url": "https://github.com/gamedev-skills/awesome-gamedev-agent-skills/blob/7eb1b53305fab881f4758e2eff2e371cd7869221/NOTICE",
+      "purpose": "Pinned attribution and engine/framework trademark notice"
+    },
+    {
+      "path": "router/SKILL.md",
+      "sha256": "be21de2339c838ae413c50bf1615f108021d79da33e2b621bc0471428c8baf70",
+      "url": "https://github.com/gamedev-skills/awesome-gamedev-agent-skills/blob/7eb1b53305fab881f4758e2eff2e371cd7869221/router/SKILL.md",
+      "purpose": "Master router algorithm, exclusive engine detection, composition and disclosure rules"
+    },
+    {
+      "path": "router/references/engine-detection.md",
+      "sha256": "d1604d770f42ce2d43f3e642d68a57c7d1d1189d38646ec9a2cf7b117e030f31",
+      "url": "https://github.com/gamedev-skills/awesome-gamedev-agent-skills/blob/7eb1b53305fab881f4758e2eff2e371cd7869221/router/references/engine-detection.md",
+      "purpose": "Complete engine fingerprints, precedence, version sources, disambiguation and gaps"
+    },
+    {
+      "path": "router/references/routing-table.md",
+      "sha256": "9fcc647dc67e8776997f5a0447ec71ce2452c468413169fcf96d45f5b665724b",
+      "url": "https://github.com/gamedev-skills/awesome-gamedev-agent-skills/blob/7eb1b53305fab881f4758e2eff2e371cd7869221/router/references/routing-table.md",
+      "purpose": "Exhaustive task-to-skill bindings, composition rules and binding gaps"
+    },
+    {
+      "path": "docs/INSTALLATION.md",
+      "sha256": "5c0e1e9576e88712cef4c7de1e5504bcce9e1bbc214a8f9ba3530b8e1b9d6292",
+      "url": "https://github.com/gamedev-skills/awesome-gamedev-agent-skills/blob/7eb1b53305fab881f4758e2eff2e371cd7869221/docs/INSTALLATION.md",
+      "purpose": "Universal CLI, Claude plugin, native destinations, selection and verification instructions"
+    },
+    {
+      "path": "docs/VERSION-SUPPORT.md",
+      "sha256": "df32381de2b3b60b202d8c231ab6d7ee402d83e8a09049127379bf39ef677ba0",
+      "url": "https://github.com/gamedev-skills/awesome-gamedev-agent-skills/blob/7eb1b53305fab881f4758e2eff2e371cd7869221/docs/VERSION-SUPPORT.md",
+      "purpose": "New-project baselines, existing-version preservation and maintenance policy"
+    },
+    {
+      "path": ".claude-plugin/marketplace.json",
+      "sha256": "3f57f913f007521e9732f23f880ac987bfea4cfd2c5ca6085bd752d88cb39f26",
+      "url": "https://github.com/gamedev-skills/awesome-gamedev-agent-skills/blob/7eb1b53305fab881f4758e2eff2e371cd7869221/.claude-plugin/marketplace.json",
+      "purpose": "Claude marketplace plugin groups, router entry and engine/discipline/genre/workflow selectors"
+    },
+    {
+      "path": "skills/ebitengine/ebitengine-game/SKILL.md",
+      "sha256": "bbd4d03e12b572385ea3e847dc05db915ba0da7154bffe180a30b0197d03d297",
+      "url": "https://github.com/gamedev-skills/awesome-gamedev-agent-skills/blob/7eb1b53305fab881f4758e2eff2e371cd7869221/skills/ebitengine/ebitengine-game/SKILL.md",
+      "purpose": "Selected Ebitengine leaf, version baseline, read-only checker and package/build boundaries"
+    },
+    {
+      "path": "skills/other-engines/defold-core/SKILL.md",
+      "sha256": "339b91b141406ee256527ccc27f692d191bb62f235f9e08d6ea1d2b4b66b2b9d",
+      "url": "https://github.com/gamedev-skills/awesome-gamedev-agent-skills/blob/7eb1b53305fab881f4758e2eff2e371cd7869221/skills/other-engines/defold-core/SKILL.md",
+      "purpose": "Selected Defold leaf, version handling, Bob build/read-only checker and unsupported subsystem pointers"
+    },
+    {
+      "path": "skills/ebitengine/ebitengine-game/scripts/package_macos_app.py",
+      "sha256": "5300047a6daf1698ff31fcc6477179f5b64b4cc0961cabe70cfae732f9398270",
+      "url": "https://github.com/gamedev-skills/awesome-gamedev-agent-skills/blob/7eb1b53305fab881f4758e2eff2e371cd7869221/skills/ebitengine/ebitengine-game/scripts/package_macos_app.py",
+      "purpose": "Selected workflow script showing bounded app assembly, overwrite guard and separate signing/notarization steps"
+    }
+  ]
+}

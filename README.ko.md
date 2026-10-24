@@ -114,7 +114,7 @@ curl -fsSL "$URL" | JEO_SKILLS_DRY_RUN=true INSTALL_GLOBAL=false bash
 | `web-backend` | api-design, authentication-setup, database-schema-design, backend-testing |
 | `web-design` | web-design, design-system, responsive-design, web-accessibility |
 | `infrastructure-core` | deployment-automation, environment-setup, monitoring-observability, security-best-practices |
-| `game-client` | unity-gamedev-skill-pack, game-studio-harness, game-performance-profiler |
+| `game-client` | unity-gamedev-skill-pack, game-studio-harness, game-performance-profiler, awesome-gamedev-agent-skills |
 | `game-web` | web-game-development, threejs-fundamentals, implement-fog-of-war |
 | `game-art` | game-vfx, rfxgen, perfectpixel, open-design-game-ui-concept, unirig |
 | `media-video` | video-production, video-shotcraft, video-motion-previs, shopping-shorts, filmcraft |
@@ -206,7 +206,7 @@ python3 scripts/retire-unused-skills.py --usage-report report.json --apply \
 
 ## 📚 스킬 목록
 
-> `.agent-skills/skills.json`에서 생성 · 406개 스킬 · 카테고리를 펼치면 스킬 목록이 보입니다.
+> `.agent-skills/skills.json`에서 생성 · 407개 스킬 · 카테고리를 펼치면 스킬 목록이 보입니다.
 
 ### 🌐 웹 (69개)
 
@@ -318,9 +318,9 @@ python3 scripts/retire-unused-skills.py --usage-report report.json --apply \
 
 </details>
 
-### 🎮 게임 (28개)
+### 🎮 게임 (29개)
 
-하위 분류: `client` (3), `web` (2), `server` (1), `design-ui` (7), `audio` (1), `animation` (2), `motion-vfx` (2), `sprite-image` (1), `art-resources` (0), `storytelling` (0), `tooling` (3), `qa-performance` (4), `release` (2)
+하위 분류: `client` (4), `web` (2), `server` (1), `design-ui` (7), `audio` (1), `animation` (2), `motion-vfx` (2), `sprite-image` (1), `art-resources` (0), `storytelling` (0), `tooling` (3), `qa-performance` (4), `release` (2)
 
 <details>
 <summary>스킬 보기</summary>
@@ -355,6 +355,7 @@ python3 scripts/retire-unused-skills.py --usage-report report.json --apply \
 | `game-design-theory` |
 | `game-feel` |
 | `game-ui-ux` |
+| `awesome-gamedev-agent-skills` |
 
 </details>
 
@@ -767,6 +768,13 @@ python3 scripts/changelog.py check
 
 <!-- WHATS-NEW:START -->
 
+## 🆕 v2026-10-24 업데이트
+
+| 변경 사항 | 상세 내용 |
+|--------|---------|
+| **크로스 엔진 게임 스킬 컬렉션** | `gamedev-skills/awesome-gamedev-agent-skills` 커밋 `7eb1b53305fab881f4758e2eff2e371cd7869221`(Apache-2.0, LICENSE·NOTICE 확인)에 고정한 `awesome-gamedev-agent-skills` v1.0.0 운영 가이드를 추가했습니다. 카탈로그는 406→407개, `game-client`는 가이드 3→4개입니다. 원본의 개별 스킬 76개와 라우터를 통째로 복제하지 않고 선별하며, 기존 프로젝트 엔진 버전과 동명 로컬 스킬을 보존합니다. |
+| **게임 컬렉션 검증** | 전용 subprocess 테스트 6/6·설치 회귀 66/66 및 선택 공개 소스 12개 해시 일치를 확인했습니다. 로컬 작업 트리를 원본으로 삼아 임시 런처로 캐시된 실제 `skills@1.7.0`을 실행한 프로젝트 범위 설치에서 미리보기, 중첩 파일 바이트·권한, 지문이 일치하는 은퇴 `jeo` 제거, 동명 외부·현행 스킬·HOME 보존이 통과했습니다. npm 조회, 공개 저장소 설치, 실제 HOME 활성화, 엔진·프로바이더 실행은 하지 않았습니다. 라우팅·안전 평가 6개는 작성된 시나리오이며 실행된 모델 품질 결과가 아닙니다. |
+
 ## 🆕 v2026-10-22 업데이트
 
 | 변경 사항 | 상세 내용 |
@@ -807,16 +815,6 @@ python3 scripts/changelog.py check
 | **라우팅과 카탈로그** | `ai-agents/memory`로 등록하고 `okf` 및 지식 관리 스킬과 연결했습니다. 기존 `okf`는 Google OKF v0.1 문서 작성 경로로 명확히 구분했습니다. 매니페스트 투영, README 3개 언어의 현재 개수, setup 안내, `AGENTS.md`, `.mex/ROUTER.md`를 갱신해 카탈로그가 367개에서 368개가 됐습니다. 새 운영 스킬과 기존 `okf` 경계에 평가 시나리오 9개를 추가했습니다. |
 | **읽기 전용 사전 점검과 회귀** | 고정 커밋과 공개 소스 경로를 확인하는 표준 라이브러리 기반 단독 preflight를 추가했습니다. 심볼릭 링크 경로와 1 MiB 초과 파일을 거부하고 Git 환경을 allowlist로 제한하며 업스트림 실행 파일은 호출하지 않습니다. 공용 사전 점검 회귀 13/13이 통과했고 악성 경로, 커밋 고정, 링크, 크기, 무변조, 자격증명 격리를 확인했습니다. |
 | **업스트림 문서 충돌 및 실행 범위** | 고정 `go.mod`는 Go 1.26.0을 요구하지만 시작 가이드는 1.22+라고 안내합니다. 스킬에 이 충돌을 기록했습니다. 업스트림 설치·빌드·bootstrap·MCP 등록과 대상 프로젝트 쓰기는 실행하지 않았습니다. |
-
-## 🆕 v2026-10-14 업데이트
-
-| 변경 사항 | 상세 내용 |
-|--------|---------|
-| **Codex Jev 런타임 활성화** | `codex` 프로파일이 `api` 백엔드·assist 스킬 주입·advisory PreToolUse 리뷰로 ON 상태이며, 생성된 훅 정의 2건이 실제 Codex 세션에서 trusted·enabled로 확인됐고 live TypeSafe 라우팅 근거(`jev-1.13.0` 경유 `react-best-practices` 선택)를 확보했습니다. tier는 unvalidated 유지 — 전송 증명이며 캘리브레이션·권한 부여 증명이 아닙니다. |
-| **타임아웃 픽스처 동기화** | 네이티브 SIGTERM/SIGKILL 상승 테스트가 wall-clock 대신 자식 핸들러 준비 상태에 따르도록 수정했습니다. 운영 타임아웃 동작은 불변입니다. |
-| **CI test 잡 설정 축소** | `test` 잡에서 미사용 Bun 설치를 제거하고(4단계 모두 pure Python) `pyyaml==6.0.3`으로 고정했습니다. `flatten_skills.py`의 낡은 다음 단계 힌트는 실제 `generate-catalog-projections.py --check`를 가리킵니다. 설치 스위트의 대기(hung-node 바운드, unreachable probe)는 계약상 의도된 동작이라 유지합니다. |
-| **README 시각 자료 갱신** | 장비 GIF 5개와 구형 SVG 2개, 직렬 CI 파이프라인 이미지를 Codex 정적 커버(`readme-hero.webp`)와 소스에 맞는 SVG 2개(`catalog-workflow.svg`, `runtime-architecture.svg`)로 교체했습니다. 명령·문서 링크·TOON·native 경계와 한국어 대체 텍스트, 실제 스킬·공개 `jeo-code` 링크도 현재 소스에 맞췄습니다. 이는 문서·카탈로그 표현 갱신이며 런타임 동작 보장이 아닙니다. |
-| **카탈로그 검증·검색 최적화** | 카탈로그 검증기 warm median은 268.69ms→126.49ms, 동일 검색 핸들러에서 40개 쿼리 총 실행은 1134.76ms→157.30ms로 개선됐고 스트리밍·실패 정리를 반영했습니다. 집중 검증은 Python 31개와 Node 28개로 skip 0건입니다. 수치는 소스 전용 픽스처·벤치마크이며 CLI 기동 시간이 아닌 CI 배선 검증이지 원격 동작 통과가 아닙니다. 모델·GPU·전체 브라우저·전역 누수 없음은 주장하지 않습니다. |
 
 > 📜 이전 기록: [`changelog/ko/`](changelog/ko/) (월별 파일, 최신순).
 

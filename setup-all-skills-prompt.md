@@ -2012,6 +2012,28 @@ When the user explicitly names `Unity-Technologies/skills`, the official Unity S
 - Keep skill installation separate from Editor/module/package changes, live C# evaluation, project mutation, Git publication, UGS deployment, licensing, purchases, ads, privacy settings, credentials, builds, and tests. Preview and confirm each side-effect class separately.
 - Route generic third-party Unity pack curation to `unity-gamedev-skill-pack`, build-log failures to `game-build-log-triage`, game CI design to `game-ci-cd-pipeline`, and profiler interpretation to `game-performance-profiler`.
 
+### awesome-gamedev-agent-skills collection (on demand)
+
+When the user explicitly names `gamedev-skills/awesome-gamedev-agent-skills`, asks for its cross-engine collection/router, or selects one of its game-engine examples:
+
+- Load [`.agent-skills/awesome-gamedev-agent-skills/SKILL.md`](.agent-skills/awesome-gamedev-agent-skills/SKILL.md) first. The pinned upstream checkout has 77 `SKILL.md` files (76 leaf skills plus one router); this catalog skill is one guide to that collection and router, not a wholesale import. Existing `unity-gamedev-skill-pack` remains the generic Unity pack route; use the game-specific owner for implementation.
+- Use the selected source pin [`gamedev-skills/awesome-gamedev-agent-skills @ 7eb1b53305fab881f4758e2eff2e371cd7869221`](https://github.com/gamedev-skills/awesome-gamedev-agent-skills/tree/7eb1b53305fab881f4758e2eff2e371cd7869221) (Apache-2.0; preserve the upstream [NOTICE](https://github.com/gamedev-skills/awesome-gamedev-agent-skills/blob/7eb1b53305fab881f4758e2eff2e371cd7869221/NOTICE)). Selected upstream examples stay in the package references; they are not broad setup defaults.
+- Install only the catalog guide after reviewing the destination. Current local same-name collisions are `game-feel`, `game-ui-ux`, and `performance-optimization`; do not overwrite any of them without explicit approval.
+
+```bash
+python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" install awesome-gamedev-agent-skills --global --yes
+```
+
+- For an approved absolute upstream checkout, run the offline helper:
+
+```bash
+python3 "$SKILLS_ROOT/awesome-gamedev-agent-skills/scripts/preflight.py" \
+  --repo /absolute/path/to/awesome-gamedev-agent-skills --json
+```
+
+  It checks only selected public-file content with a no-Git helper (1–12 audited public files), has no `--expect-commit` mode, and reports `runtime_verified=false`; it does not establish Git HEAD, full-revision integrity, dependency, build, or runtime readiness.
+- Full, core, and minimal setup must not clone or install the upstream pack/native plugin, engine SDK, assets, or provider, and must not execute upstream or engine commands. Approve any dependency or project write separately; stop on a destination collision until the user chooses the target and replacement policy.
+
 ### Multiplayer game architecture contract (on demand)
 
 When a task mentions multiplayer game architecture, netcode, server authority, replication,

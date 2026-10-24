@@ -85,5 +85,7 @@ jobs:
         run: python3 -B scripts/test_opencreator_preflight.py -v
       - name: Knowledge repository offline pin regressions
         run: python3 -B scripts/test_knowledge_repository_skills.py -v
+      - name: Cross-engine game skill collection boundaries
+        run: python3 -B scripts/test_awesome_gamedev_agent_skills.py -v
       - name: UI repository source and installation boundaries
         run: python3 -B scripts/test_ui_design_skills.py -v

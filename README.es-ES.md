@@ -114,7 +114,7 @@ curl -fsSL "$URL" | JEO_SKILLS_DRY_RUN=true INSTALL_GLOBAL=false bash
 | `web-backend` | api-design, authentication-setup, database-schema-design, backend-testing |
 | `web-design` | web-design, design-system, responsive-design, web-accessibility |
 | `infrastructure-core` | deployment-automation, environment-setup, monitoring-observability, security-best-practices |
-| `game-client` | unity-gamedev-skill-pack, game-studio-harness, game-performance-profiler |
+| `game-client` | unity-gamedev-skill-pack, game-studio-harness, game-performance-profiler, awesome-gamedev-agent-skills |
 | `game-web` | web-game-development, threejs-fundamentals, implement-fog-of-war |
 | `game-art` | game-vfx, rfxgen, perfectpixel, open-design-game-ui-concept, unirig |
 | `media-video` | video-production, video-shotcraft, video-motion-previs, shopping-shorts, filmcraft |
@@ -206,7 +206,7 @@ Ninguna forma parte de la instalación del catálogo. Ambas pueden enviar datos 
 
 ## 📚 Lista de Habilidades
 
-> Generado desde `.agent-skills/skills.json` · 406 habilidades · despliega una categoría para ver sus habilidades.
+> Generado desde `.agent-skills/skills.json` · 407 habilidades · despliega una categoría para ver sus habilidades.
 
 ### 🌐 Web (69)
 
@@ -318,9 +318,9 @@ Subcategorías: `deployment` (2), `environment` (2), `observability` (3), `secur
 
 </details>
 
-### 🎮 Juego (28)
+### 🎮 Juego (29)
 
-Subcategorías: `client` (3), `web` (2), `server` (1), `design-ui` (7), `audio` (1), `animation` (2), `motion-vfx` (2), `sprite-image` (1), `art-resources` (0), `storytelling` (0), `tooling` (3), `qa-performance` (4), `release` (2)
+Subcategorías: `client` (4), `web` (2), `server` (1), `design-ui` (7), `audio` (1), `animation` (2), `motion-vfx` (2), `sprite-image` (1), `art-resources` (0), `storytelling` (0), `tooling` (3), `qa-performance` (4), `release` (2)
 
 <details>
 <summary>Ver habilidades</summary>
@@ -355,6 +355,7 @@ Subcategorías: `client` (3), `web` (2), `server` (1), `design-ui` (7), `audio` 
 | `game-design-theory` |
 | `game-feel` |
 | `game-ui-ux` |
+| `awesome-gamedev-agent-skills` |
 
 </details>
 
@@ -766,6 +767,13 @@ Edita los metadatos en `skills.json`, nunca en las tablas generadas. Las fuentes
 ---
 
 <!-- WHATS-NEW:START -->
+
+## Novedades en v2026-10-24
+
+| Cambio | Detalles |
+|--------|---------|
+| **Colección de habilidades de juegos** | Añadido `awesome-gamedev-agent-skills` v1.0.0 para `gamedev-skills/awesome-gamedev-agent-skills`, fijado en `7eb1b53305fab881f4758e2eff2e371cd7869221` (Apache-2.0; LICENSE y NOTICE revisados). El catálogo pasa de 406 a 407 y `game-client` de tres a cuatro guías. Selecciona entre 76 habilidades originales y su router sin copiar todo el paquete, conserva las versiones del motor y protege las habilidades locales con el mismo nombre. |
+| **Verificación de la colección** | Pasan 6/6 pruebas dedicadas, 66/66 de instalación y 12/12 hashes públicos. La instalación del árbol local en un proyecto aislado usa un lanzador transparente del CLI real `skills@1.7.0` en caché y comprueba archivos, permisos, vista previa y retirada segura de `jeo`. No hubo resolución npm, instalación pública, activación en HOME real ni ejecución de motores o proveedores. Los seis escenarios están redactados, no ejecutados como evaluación de modelos. |
 
 ## 🆕 Novedades en v2026-10-21
 

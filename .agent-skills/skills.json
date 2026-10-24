@@ -1,7 +1,7 @@
 {
   "version": "2.1.0",
   "generated": "2026-10-21",
-  "skill_count": 406,
+  "skill_count": 407,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -246,7 +246,8 @@
       "multiplayer-game-architecture",
       "game-design-theory",
       "game-feel",
-      "game-ui-ux"
+      "game-ui-ux",
+      "awesome-gamedev-agent-skills"
     ],
     "creative-media": [
       "aura-asset-images",
@@ -685,7 +686,8 @@
       "client": [
         "implement-fog-of-war",
         "unity-gamedev-skill-pack",
-        "unity-technologies-skills"
+        "unity-technologies-skills",
+        "awesome-gamedev-agent-skills"
       ],
       "web": [
         "agentic-gamedev-skills",
@@ -1182,7 +1184,8 @@
     "game-client": [
       "unity-gamedev-skill-pack",
       "game-studio-harness",
-      "game-performance-profiler"
+      "game-performance-profiler",
+      "awesome-gamedev-agent-skills"
     ],
     "game-web": [
       "web-game-development",
@@ -1882,6 +1885,16 @@
         "optimize-web-animations"
       ],
       "note": "Ten independent source-specific UI operators; no existing default job is superseded. Complete source/license/history audit: docs/ui-design-repositories.md and each references/upstream.md. Pins: superdesigndev/superdesign-skill@f9f05cd988c247dce6c072eaf9ac6b162f2ffc4b; marvkr/better-design@e146625f3041ef8089a2013587435fc763dc3b15; madebymustafa/design-taste@c4a6bff0871eb4b15371b0e7d2751628b0ed4608; DavidHDev/canvas-ui@a04a99b235299ee79a123a16ccb2e6cf9da74b6b; paper-design/shaders@43cd68db79fa0b1759f72ffc941b3238e2a3954c; ui-layouts/uilayouts@88d827d7ec342917ca06f6894e5add65fabbe5d8; Hyperiux-Immersion-Labs/hyperiux-components@71f73983fa70e56b81de5bdcf6eb49d0a5fcf5ba; ibelick/motion-primitives@120f64f6ca60348e251f929e9c81f11ccbe45eda; ui-layouts/cursify@b3a173c33f12e74550389c9555f9ce85c30c46f6; akaieuan/trickle-UI-kit@41129071f15271046bdca5d2ca332231b59e8d4d. Restricted/absent grants are not permissive reuse rights; no upstream runtime is vendored or activated."
+    },
+    "gamedev-skill-collections": {
+      "mode": "adjacent",
+      "members": [
+        "awesome-gamedev-agent-skills",
+        "unity-gamedev-skill-pack",
+        "unity-technologies-skills",
+        "agentic-gamedev-skills"
+      ],
+      "note": "Distinct sources, not interchangeable or a blanket install: gamedev-skills/awesome-gamedev-agent-skills at 7eb1b53305fab881f4758e2eff2e371cd7869221 is a cross-engine collection and router; Unity pack curation, Unity's official collection and abagames/agentic-gamedev-skills retain their own contracts. Inspect the selected source and engine version, compare destination collisions, and approve each installation separately. Installing these guides does not install their upstream packs or engines."
     }
   },
   "model_policies": {
@@ -15064,6 +15077,41 @@
       "keyword": "agent-beacon",
       "version": "1.0.0",
       "source": "https://github.com/Asymptote-Labs/agent-beacon"
+    },
+    {
+      "name": "awesome-gamedev-agent-skills",
+      "description": "Inspect, selectively install, and maintain gamedev-skills/awesome-gamedev-agent-skills, its cross-engine Agent Skills collection and engine/task router. Use when users name this project, its plugin bundles, or need its pinned inventory, collision-aware selection, or Godot, Unity, Unreal, Ebitengine, web-engine, Bevy, pygame, LOVE, Defold and Roblox guidance. Preserve existing skills and engine versions; route generic Unity pack curation to unity-gamedev-skill-pack and Three.js gameplay to web-game-development. Installing this guide does not install upstream skills, plugins, engines, assets, or providers.",
+      "category": "game",
+      "subcategory": "client",
+      "interface": "workflow",
+      "path": "awesome-gamedev-agent-skills/SKILL.md",
+      "tags": [
+        "game-development",
+        "skill-collection",
+        "selective-install",
+        "cross-engine",
+        "godot",
+        "unity",
+        "unreal",
+        "defold"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex CLI",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Grep",
+        "Glob"
+      ],
+      "keyword": "awesome-gamedev-agent-skills",
+      "version": "1.0.0",
+      "source": "https://github.com/gamedev-skills/awesome-gamedev-agent-skills"
     }
   ]
 }

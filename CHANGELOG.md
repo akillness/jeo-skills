@@ -2,6 +2,11 @@
 
 All notable changes to **jeo-skills** are documented here.
 
+## 2026-10-24
+
+### Added
+- Added `awesome-gamedev-agent-skills` v1.0.0 as a pinned, collision-aware operator for `gamedev-skills/awesome-gamedev-agent-skills` at `7eb1b53305fab881f4758e2eff2e371cd7869221` (Apache-2.0; LICENSE/NOTICE inspected), with an unchanged hardened selected-file helper, source references and six authored routing/safety evals. Catalog: 406→407; `game-client`: three→four guides. Dedicated tests pass 6/6, installer tests 66/66 and selected-source hashes 12/12; an isolated real cached-installer guide-install probe passes. No wholesale upstream pack, host plugin, engine or provider was activated.
+
 ## 2026-10-22
 
 ### Fixed
