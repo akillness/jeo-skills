@@ -33,7 +33,7 @@
 
 ## 🚀 Inicio rápido
 
-**Opción A: deja que tu agente lo instale.** Pega esto en Claude Code, Codex, Gemini CLI o cualquier agente de codificación:
+**Opción A: deja que tu agente lo instale.** Pega esto en Claude Code, Codex, `agy` (Antigravity CLI) o cualquier agente de codificación:
 
 ```text
 Read https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-skills-prompt.md in full and follow it to install the jeo-skills.
@@ -130,15 +130,27 @@ Las habilidades operadoras de repositorios son guías con fuentes fijadas. Insta
 
 ## 🖥 Entornos compatibles
 
-| Entorno | `--agent` | Raíz global | Raíz del proyecto |
+`--agent` distingue el destino de instalación; las rutas indican dónde busca cada runtime. Que exista una ruta no demuestra activación nativa. Esta guía usa `agy` para Antigravity CLI y no presenta Gemini CLI como host actual.
+
+| Entorno (ID canónico) | `--agent` / alias | Raíz global | Raíz del proyecto |
 |---|---|---|---|
-| jeopi · jeo-code · oh-my-pi | `universal` (default), `jeopi`, `jeo`, `omp` | `~/.agents/skills` | `.agents/skills` |
-| Codex · Gemini CLI · OpenCode · Cursor · Cline | `universal` | `~/.agents/skills` | `.agents/skills` |
-| Claude Code | `claude-code` | `~/.claude/skills` (or `$CLAUDE_CONFIG_DIR/skills`) | `.claude/skills` |
-| GJC | `gjc` | `~/.gjc/agent/skills` | `.gjc/skills` |
-| Antigravity CLI | `agy` / `antigravity-cli` | `~/.gemini/antigravity-cli/skills` | `.agents/skills` |
-| Antigravity IDE | `antigravity` | `~/.gemini/config/skills` | — |
-| Aside | `aside` + `--aside-account <id>` | `~/.aside/u/<id>/skills/user/` | — |
+| Jeo (`jeo`) | `jeo` | `~/.agents/skills` | `.agents/skills` |
+| GJC (`gjc`) | `gjc` | `${GJC_CONFIG_DIR:-$HOME/.gjc}/agent/skills` | `.gjc/skills` |
+| JeoPi (`jeopi`) | `jeopi` | `~/.agents/skills` | `.agents/skills` |
+| Pi (`pi`) | `pi` | `~/.pi/agent/skills` | `.pi/skills` |
+| Codex (`codex`) | `codex` | `~/.agents/skills` | `.agents/skills` |
+| Claude Code (`claude`) | `claude-code` | `~/.claude/skills` (o `$CLAUDE_CONFIG_DIR/skills`) | `.claude/skills` |
+| OMP (`omp`) | `omp` | `~/.agents/skills` | `.agents/skills` |
+| Antigravity CLI (`agy`) | `agy` (`antigravity-cli`) | `~/.gemini/antigravity-cli/skills` | `.agents/skills` |
+| Kimi Code (`kimi`) | `kimi` (`kimi-code-cli`) | `~/.agents/skills`; adicional `${KIMI_CODE_HOME:-$HOME/.kimi-code}/skills` | `.agents/skills` |
+| Grok Build (`grok`) | `grok` | `${GROK_HOME:-$HOME/.grok}/skills` | `.grok/skills` |
+| OpenCode (`opencode`) | `opencode` | `~/.agents/skills` | `.agents/skills` |
+| Cursor (`cursor`) | `cursor` | `~/.agents/skills` | `.agents/skills` |
+| Crush (`crush`) | `crush` | `${XDG_CONFIG_HOME:-$HOME/.config}/crush/skills` | `.crush/skills` |
+| Antigravity IDE (`antigravity`) | `antigravity` | `~/.gemini/config/skills` | — |
+| Aside (`aside`) | `aside` + `--aside-account <id>` | `~/.aside/u/<id>/skills/user/` | — |
+
+`grok` identifica el destino de registro de Grok Build y requiere selección explícita en la guía de setup: `JEO_SKILLS_AGENT=grok` para instalar o `JEV_AGENT=grok` para un único perfil Jev. El setup no lo selecciona automáticamente por `PATH`, porque el ejecutable local puede ser el CLI antiguo de Superagent/VibeKit sin cargador de Agent Skills. El `detect` del controlador solo informa del inventario de binarios, no verifica la implementación. Confírmala por separado; la guía no sustituye ni actualiza ese binario automáticamente.
 
 > [!NOTE]
 > La instalación escribe archivos de habilidades en una raíz. No inicia sesión, inicia ni recarga un entorno. Recarga el host si una habilidad recién instalada no aparece.
@@ -203,6 +215,40 @@ python3 scripts/retire-unused-skills.py --usage-report report.json --apply \
 | **Jevgrep** | Descubrimiento remoto sobre documentos seleccionados de habilidades o de la wiki | `jeo-skill explore "<question>" --root <dir> --dry-run` · [jevgrep](.agent-skills/jevgrep/SKILL.md) |
 
 Ninguna forma parte de la instalación del catálogo. Ambas pueden enviar datos a un backend configurado. En `jeo-skill`, los comandos que las llaman (`prune-unused --apply`, `usage relevance`, `explore`) rechazan el uso remoto sin `--allow-remote`; el arnés Jev independiente envía directamente a su backend configurado, así que aprueba un perfil alojado antes de usarlo.
+
+### Perfiles de Jev por agente
+
+La configuración opcional de Jev se realiza por agente detectado después de autorizar explícitamente un backend; no existe un perfil universal ni un valor predeterminado `jeopi`. Para los seis hosts habituales y los hosts actuales añadidos, los perfiles predeterminados son:
+
+| Host canónico | Perfil predeterminado |
+|---|---|
+| `jeo` | `jeo` |
+| `gjc` | `gjc` |
+| `jeopi` | `jeopi` |
+| `pi` | `pi` |
+| `codex` | `codex` |
+| `claude` | `claude` |
+| `agy` | `agy` |
+| `kimi` | `kimi` |
+| `grok` | `grok` |
+| `opencode` | `opencode` |
+
+Los demás hosts admitidos (`omp`, `cursor`, `crush` y `antigravity`) siguen el mismo valor predeterminado basado en su ID canónico cuando no existe una asignación previa. `aside` requiere una cuenta seleccionada y usa `aside-u<cuenta>` por defecto. Los alias de instalación se normalizan como `jeo-code` → `jeo`, `oh-my-pi` → `omp`, `antigravity-cli` → `agy`, `kimi-code-cli` → `kimi` y `claude-code` → `claude`; esta guía ya no ofrece `gemini-cli` como host o alias actual.
+
+La selección de hosts es `JEV_AGENT` > `JEO_SKILLS_AGENT`; un selector ausente o `universal` configura por separado todos los hosts detectados, no un perfil compartido. Para un único host, la prioridad del perfil es `JEO_SKILLS_JEV_PROFILE` > `JEV_PROFILE` > `agents.json[host].profile` > el perfil con el mismo nombre del host. Las asignaciones existentes y los perfiles personalizados se conservan.
+
+Después de que la configuración por host termine correctamente, la guía llama al controlador canónico en modo solo configuración para crear o actualizar la asignación host → perfil en `~/.agents/jev/agents.json`. El controlador conserva las asignaciones `native`, `scope`, personalizadas y de los demás hosts; la operación no registra hooks. El `--agent` de la configuración independiente designa el destino de instalación, mientras que el controlador usa el ID canónico del host; el arnés no tiene una opción `--agent`.
+
+Los perfiles de `agy`, `kimi`, `grok` y `opencode` son rutas de adaptador/uso manual: no implican hooks nativos automáticos. La instalación, la carga del paquete, el registro de hooks y la confianza del host son pasos separados que deben verificarse en el agente correspondiente. Todo comando del arnés debe recibir el perfil seleccionado explícitamente; un perfil ausente o desactivado no recurre a otro perfil ni a la configuración compartida heredada. Consulta la [tabla canónica de hosts y perfiles](jev/jev-control-plane.rule.md#activation-and-profiles) para el mapa detallado.
+
+Antes de operar, comprueba el estado (solo lectura; puede consultar backends locales configurados, pero no ejecuta inferencia):
+
+```sh
+: "${JEV_PROFILE:?Selecciona primero el perfil de este agente}"
+node ~/.agents/jev/jev-harness.mjs --profile "$JEV_PROFILE" status
+```
+
+Consulta la [guía de instalación](setup-all-skills-prompt.md#jev-control-plane-harness-system-one) y [jev/README.md](jev/README.md) para conocer los detalles.
 
 ## 📚 Lista de Habilidades
 
@@ -774,6 +820,7 @@ Edita los metadatos en `skills.json`, nunca en las tablas generadas. Las fuentes
 |--------|---------|
 | **Colección de habilidades de juegos** | Añadido `awesome-gamedev-agent-skills` v1.0.0 para `gamedev-skills/awesome-gamedev-agent-skills`, fijado en `7eb1b53305fab881f4758e2eff2e371cd7869221` (Apache-2.0; LICENSE y NOTICE revisados). El catálogo pasa de 406 a 407 y `game-client` de tres a cuatro guías. Selecciona entre 76 habilidades originales y su router sin copiar todo el paquete, conserva las versiones del motor y protege las habilidades locales con el mismo nombre. |
 | **Verificación de la colección** | Pasan 6/6 pruebas dedicadas, 66/66 de instalación y 12/12 hashes públicos. La instalación del árbol local en un proyecto aislado usa un lanzador transparente del CLI real `skills@1.7.0` en caché y comprueba archivos, permisos, vista previa y retirada segura de `jeo`. No hubo resolución npm, instalación pública, activación en HOME real ni ejecución de motores o proveedores. Los seis escenarios están redactados, no ejecutados como evaluación de modelos. |
+| **Agentes actuales y perfiles Jev enlazados** | La guía usa `agy` en lugar del antiguo host Gemini CLI, añade Kimi (`kimi` → `kimi-code-cli`) y Grok Build de selección explícita en setup (`grok`, `.grok/skills`, `GROK_HOME`) y documenta OpenCode en todos los README. El controlador enlaza perfiles en `agents.json`, preserva campos personalizados y claves sin registrar hooks, mantiene la autodetección de LM Studio y permite activar sus perfiles con modelo vacío. Rechaza perfiles compartidos, asignaciones inseguras y ancestros enlazados antes de escribir. La selección automática de setup excluye `grok` por la colisión con Superagent/VibeKit; `detect` solo informa del inventario de binarios. |
 
 ## 🆕 Novedades en v2026-10-21
 

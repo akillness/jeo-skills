@@ -70,7 +70,7 @@ const HOST_MODEL_POLICY = {
 const WRITER_PROVIDERS = new Set(['anthropic', 'openai']);
 const SKILL_ID = /^[a-z0-9-]+$/;
 const NATIVE_HOSTS = new Set(['claude', 'jeopi', 'omp', 'pi']);
-const OPERATORS = new Set(['claude', 'jeopi', 'omp', 'pi', 'codex', 'gemini', 'opencode', 'jeo', 'aside']);
+const OPERATORS = new Set(['claude', 'jeopi', 'omp', 'pi', 'codex', 'opencode', 'jeo', 'gjc', 'agy', 'kimi', 'grok', 'aside', 'cursor', 'crush', 'antigravity']);
 
 const USAGE_LEDGER_NAME = 'jev-usage.jsonl';
 const USAGE_LEDGER_ROTATE_BYTES = 5 * 1024 * 1024;
@@ -419,6 +419,11 @@ function runSetup(ctx, flags) {
 
 function validateConfigure(flags, ctx) {
   if (!BACKENDS.includes(flags.backend)) throw new Error(`unsupported backend '${flags.backend || ''}'; expected ${BACKENDS.join(', ')}`);
+  if (ctx.profile) {
+    for (const [agent, entry] of Object.entries(ctx.mappings.value)) {
+      if (agent !== ctx.agent && entry?.profile === ctx.profile) throw new Error('selected profile is already assigned to another agent');
+    }
+  }
   if (flags.endpoint !== undefined) parseURL(flags.endpoint);
   validateModel(flags.model);
   // --key-env is required only when the *target* api backend file has no
@@ -459,11 +464,10 @@ async function configure(flags) {
 // Field-presence only, no network probes - mirrors what jev-harness.mjs's
 // describeBackend() would flag as a structural `error`, for the one backend
 // (systemone) where harness itself computes that, plus a plugin-only
-// requirement (a resolved model) for ollama/lmstudio, where harness's own
-// coarse check stays silent but a null model would otherwise reach a real
-// generative request. `local` has a genuine built-in default model id in
-// the harness and is never gated here; `api` has no deeper field beyond the
-// key already required by `configured`.
+// requirement (a resolved model) for ollama. LM Studio instead resolves an
+// omitted model from the server's loaded models at request time. `local`
+// has a built-in default model id and is never gated here; `api` has no
+// deeper field beyond the key already required by `configured`.
 function backendEnableError(state) {
   const b = state.backendFile.values;
   if (state.backend === 'systemone') {
@@ -475,8 +479,6 @@ function backendEnableError(state) {
     }
   } else if (state.backend === 'ollama' && !(b.JEV_OLLAMA_MODEL || b.JEV_LOCAL_MODEL)) {
     return 'JEV_OLLAMA_MODEL (or legacy JEV_LOCAL_MODEL) is required';
-  } else if (state.backend === 'lmstudio' && !(b.JEV_LMSTUDIO_MODEL || b.JEV_LOCAL_MODEL)) {
-    return 'JEV_LMSTUDIO_MODEL (or legacy JEV_LOCAL_MODEL) is required';
   }
   return null;
 }
@@ -534,7 +536,7 @@ function commandPath(command) {
 async function detect(flags) {
   const ctx = resolveContext(flags);
   const hosts = {};
-  for (const host of ['claude', 'jeopi', 'omp', 'pi', 'codex', 'gemini', 'opencode', 'jeo', 'aside']) {
+  for (const host of OPERATORS) {
     const binary = commandPath(host);
     const native = NATIVE_HOSTS.has(host);
     hosts[host] = {

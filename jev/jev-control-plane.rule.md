@@ -5,15 +5,39 @@ Opt-in runtime policy for a host agent environment. Loading this rule or the por
 
 ## Activation and profiles
 
-Jev is installed/configured only after opting in through `jev-setup.sh`. For a per-agent installation, identify the profile assigned to this runtime and use that same `--profile <id>` on every harness command. Never fall back to a different profile or the legacy shared config when the selected profile is missing or disabled. A no-profile install is supported only for an intentionally configured legacy setup.
+Jev is installed/configured only after opting in through `jev-setup.sh`. For a per-agent installation, identify the profile assigned to this runtime and use that same `${JEV_PROFILE:?Select the current agent profile first}` value on every harness command. Never fall back to a different profile or the legacy shared config when the selected profile is missing or disabled. A no-profile install is supported only for an intentionally configured legacy setup.
+
+Runtime IDs are independent profile namespaces; do not infer a host from `PATH`. The canonical mapping below is the source of truth for host identity, setup/router destination, storage roots, and Jev integration boundary:
+
+| Runtime | Canonical host ID | Guide alias | Setup/router destination | Skill roots | Jev integration boundary |
+|---|---|---|---|---|---|
+| Claude Code | `claude` | `claude-code` | `claude-code` | `~/.claude/skills`; project `.claude/skills` | native lifecycle |
+| Jeo | `jeo` | `jeo-code` | `jeo` | shared `~/.agents/skills`; project `.agents/skills` | adapter-only; no native Jev lifecycle verified |
+| JeoPi | `jeopi` | none | `jeopi` | shared `~/.agents/skills`; project `.agents/skills` | native session extension |
+| Pi | `pi` | none | `pi` | `~/.pi/agent/skills`; project `.pi/skills` | native session extension |
+| OMP | `omp` | `oh-my-pi` | `omp` | shared `~/.agents/skills`; project `.agents/skills` | native session extension |
+| GJC | `gjc` | none | `gjc` | `~/.gjc/agent/skills`; project `.gjc/skills` | adapter-only; no native Jev lifecycle verified |
+| Codex | `codex` | none | `codex` | shared `~/.agents/skills`; project `.agents/skills` | native hooks |
+| OpenCode | `opencode` | none | `opencode` | shared `~/.agents/skills`; project `.agents/skills` | adapter-only; no native Jev lifecycle verified |
+| Antigravity CLI | `agy` | `antigravity-cli` | `agy` | `~/.gemini/antigravity-cli/skills`; project `.agents/skills` | explicit harness only; no native Jev loading verified |
+| Kimi Code | `kimi` | `kimi-code-cli` | `kimi` (router alias for upstream `kimi-code-cli`) | shared `~/.agents/skills`; project `.agents/skills`; optional `${KIMI_CODE_HOME:-~/.kimi-code}/skills` | explicit harness only; no native Jev loading verified |
+| Grok Build | `grok` | none | `grok` | `${GROK_HOME:-$HOME/.grok}/skills`; project `.grok/skills` | explicit-selection-only harness; Grok Build only; installed Superagent v1.0.1 `grok` has no Jev skill loader |
+| Cursor | `cursor` | none | `cursor` | shared `~/.agents/skills`; project `.agents/skills` | explicit harness only; no native Jev loading verified |
+| Crush | `crush` | none | `crush` | `~/.config/crush/skills`; project `.crush/skills` | explicit harness only; no native Jev loading verified |
+| Antigravity IDE | `antigravity` | none | `antigravity` | `~/.gemini/config/skills`; global only | explicit harness only; no native Jev loading verified |
+| Aside | `aside` | none | `aside` | `~/.aside/u/<account>/skills/user/`; account-scoped | adapter-only; select an independent account profile |
+
+The guide selects `JEV_AGENT` before `JEO_SKILLS_AGENT`; absent or `universal` means all detected hosts except Grok Build, which requires explicit selection as `grok`, while a custom `JEO_SKILLS_JEV_PROFILE` (otherwise `JEV_PROFILE`) requires one selected host. It normalizes `antigravity-cli` to `agy` and `kimi-code-cli` to `kimi`. Standalone setup takes the setup/router destination as `--agent`, while the controller takes the canonical host ID; pass `--profile` explicitly to both. After each selected host setup succeeds, the guide creates or updates that host's `agents.json` binding through `jev-plugin.mjs configure --agent <host> --profile <profile> --backend <selected> --apply` in configuration-only mode. That path preserves custom profile/native/scope fields, other host entries, and saved per-profile keys; it does not register native hooks. The harness itself has no `--agent` option or host autodetection. A profile for an adapter-only or explicit-harness host enables explicit harness commands, not automatic native hooks. `universal` selects shared skill storage, not a coding-agent identity. Provider/model selection is separate: model names never select a host or profile.
+
+AGY is the Antigravity CLI, not the Antigravity IDE. Its `~/.gemini/antigravity-cli/skills` path is the CLI's actual storage location and is only a storage namespace, not a current host ID. Antigravity IDE uses the separate `~/.gemini/config/skills` root. Kimi Code's native root is optional; its default is `~/.kimi-code`, while shared `.agents/skills` discovery remains the normal path. Grok Build uses the `${GROK_HOME:-$HOME/.grok}` global root or project `.grok/skills`; it requires explicit selection and is never PATH-detected because the installed Superagent v1.0.1 `grok` binary is a different product with no automatic loader, so do not claim that it loads Grok Build skills.
+
+Look up `agents.json` by canonical host ID: `claude`, `jeo`, `jeopi`, `pi`, `omp`, `gjc`, `codex`, `opencode`, `agy`, `kimi`, `grok`, `cursor`, `crush`, `antigravity`, or `aside`. An explicit `--profile` or session-local `JEV_PROFILE` is authoritative; preserve an assigned custom profile. If no assignment exists, use the current host ID (`aside-u<account>` for a selected Aside account). An unidentified host must not reuse the first installed CLI's profile.
 
 Before any live operation, inspect the profile:
 
 ```sh
-node ~/.agents/jev/jev-harness.mjs --profile jeopi status
+node ~/.agents/jev/jev-harness.mjs --profile "${JEV_PROFILE:?Select the current agent profile first}" status
 ```
-
-`active` means configured, not proven inference readiness. Status exit `2` means inactive/unconfigured and the host continues with its normal permission policies. Exit `3` means fail closed: the configuration is invalid, or an evaluated operation chain has no usable backend. A down backend that no evaluated chain references never causes exit `3`. Exit `0` means the requested operation chain is not known unavailable. Use `--operation route-skills|prune-context|review` to inspect one chain; without it, status evaluates all three.
 
 ## Host lifecycle integration
 
@@ -57,17 +81,17 @@ Profiles store `JEV_ENABLED`, `JEV_MODE`, and optional operation policies in the
 ## Skill routing
 
 ```sh
-node ~/.agents/jev/jev-harness.mjs --profile jeopi route-skills --top-k 3 "<task>"
+node ~/.agents/jev/jev-harness.mjs --profile "${JEV_PROFILE:?Select the current agent profile first}" route-skills --top-k 3 "<task>"
 ```
 
 The result retains `task`, mode, `families`, `topK`, token estimates, and `publicRegistryFallback`, and adds `selection` and advisory `routing`. Gate Nouls use threshold `0.30`; candidate fit uses threshold `0.30`. A gate below threshold returns explicit none (`topK: []`, `selection.reason: "gate"`) and `publicRegistryFallback`. Choice shards are selected by `ceil(catalogSize / choiceCap) <= 4`: sharded routing takes per-shard finalists then a final choice; otherwise a lexical shortlist is used. Candidates below the fit threshold produce explicit none (`selection.reason: "fits"`) and `publicRegistryFallback`.
 
-When `.agent-skills/skills.json` has `model_policies`, `routing` provides advisory provider/model vocabulary such as `openai/gpt-6.1-sol`, `anthropic/claude-fable-5-1`, or `ollama/qwen2.5:7b`, with the resolved `policy`, ranked candidates, the chosen value (or `other`), and `provenance: {backend: {kind, driver, model, tier}}`. Model advice does not switch the host model. `model_policies` is not projected into `skills.toon` or README catalog tables. Token savings are estimates, not measured host token usage.
+When `.agent-skills/skills.json` has `model_policies`, `routing` provides advisory provider/model vocabulary such as `openai/gpt-6.1-sol`, `google/gemini-2.5-pro`, `anthropic/claude-fable-5-1`, or `ollama/qwen2.5:7b`; these names identify models, not coding-agent hosts. The resolved `policy`, ranked candidates, the chosen value (or `other`), and `provenance: {backend: {kind, driver, model, tier}}` are returned. Model advice does not switch the host model. `model_policies` is not projected into `skills.toon` or README catalog tables. Token savings are estimates, not measured host token usage.
 
 ## Context pruning
 
 ```sh
-node ~/.agents/jev/jev-harness.mjs --profile jeopi prune-context < blocks.jsonl
+node ~/.agents/jev/jev-harness.mjs --profile "${JEV_PROFILE:?Select the current agent profile first}" prune-context < blocks.jsonl
 ```
 
 The request state is `{blocks:[{id,text}...]}` and questions are keyed by position within each request as `essential::<index>` (duplicate block IDs are safe). Blocks are batched within the answering backend's state limit so none is judged unseen; an oversized single block comes back `keep` with a `reason`. Batch-capable drivers send one request per batch; other drivers loop per question. Keep a block unless the answer is `no` with confidence at least `0.8`; uncertain blocks remain.
@@ -75,7 +99,7 @@ The request state is `{blocks:[{id,text}...]}` and questions are keyed by positi
 ## Review and receipts
 
 ```sh
-node ~/.agents/jev/jev-harness.mjs --profile jeopi review "<task>" '<proposal-json>'
+node ~/.agents/jev/jev-harness.mjs --profile "${JEV_PROFILE:?Select the current agent profile first}" review "<task>" '<proposal-json>'
 ```
 
 Review envelopes and results bind `backend: {kind, model, tier}`. A `permit` on any tier other than `validated` is downgraded to `proposal_only` with reason `Backend tier 'unvalidated' cannot authorize autonomous execution`. Receipt v2 is the SHA-256 of `JSON.stringify({v:2, task, proposal, decision, backend:{kind, model, tier}})`; preserve it as the audit binding. `reject` never proceeds and `unavailable` never authorizes action.

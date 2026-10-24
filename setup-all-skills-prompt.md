@@ -154,10 +154,12 @@ case ":$PATH:" in
 esac
 
 printf 'platform=%s\nhome=%s\nskills_root=%s\n' "$PLATFORM" "$USER_HOME" "$SKILLS_ROOT"
-for cmd in node npm npx python3 claude codex gemini opencode cursor agy pi crush jeo gjc jeopi aside; do
+for cmd in node npm npx python3 claude codex kimi grok opencode cursor agy pi crush jeo gjc jeopi omp antigravity aside; do
   # `if`, not `&&`: an absent last agent must not turn detection into exit status 1.
   if command -v "$cmd" >/dev/null 2>&1; then printf 'found: %s\n' "$cmd"; fi
 done
+# A `grok` executable is inventory-only: Jev and Grok Build projection require explicit
+# `JEO_SKILLS_AGENT=grok` (Superagent/VibeKit uses the same command name).
 ```
 
 `USER_HOME` follows `$HOME` except inside an Aside session, so a container, CI job, or
@@ -271,12 +273,13 @@ want to preserve, skip the upgrade and invoke commands by absolute path instead.
 
 The skills CLI accepts runtime IDs for **initial installation only**. `universal` targets
 `~/.agents/skills`; native IDs such as `claude-code`, `pi`, and `crush` write their own roots.
-Shared-root runtimes (jeopi, jeo-code, oh-my-pi, Codex, Gemini CLI, OpenCode, Cursor) discover
+Shared-root runtimes (jeopi, jeo-code, oh-my-pi, Codex, Kimi CLI, OpenCode, and Cursor) discover
 that root. Claude Code does not: it loads its native `~/.claude/skills` (project
 `.claude/skills`), so the `-a claude-code` target below places a copy there, and later
 selections use `jeo-skill install --agent claude-code`. Pi and Crush use their own native roots
-the same way. GJC, Antigravity CLI, and Antigravity IDE require explicit native projection
-after shared installation (handled in Step 4B–C).
+the same way. GJC, Antigravity CLI, Antigravity IDE, and Grok Build require explicit native
+projection after shared installation (handled in Step 4B–C). Grok Build uses `.grok/skills`;
+it is not a shared-root runtime.
 
 **After installation, use `jeo-skill install --agent <runtime>` for explicit per-runtime
 selection**, not the `skills` CLI. This ensures proper safety checking and native root
@@ -294,6 +297,11 @@ command -v claude >/dev/null 2>&1 && SKILLS_AGENT_ARGS+=(-a claude-code)
 # Antigravity IDE only (if present; CLI/agy is handled later via jeo-skill)
 command -v antigravity >/dev/null 2>&1 && SKILLS_AGENT_ARGS+=(-a antigravity)
 
+# Grok Build (only with explicit selection): its native .grok/skills root is a real skills target.
+# A `grok` executable alone is Superagent/VibeKit-compatible inventory, not proof of Grok Build.
+[ "${JEO_SKILLS_AGENT:-}" = grok ] && command -v grok >/dev/null 2>&1 \
+  && SKILLS_AGENT_ARGS+=(-a grok)
+
 # Pi and Crush (only when their native agent roots exist)
 (command -v pi >/dev/null 2>&1 && [ -d "$USER_HOME/.pi/agent" ]) \
   && SKILLS_AGENT_ARGS+=(-a pi)
@@ -307,11 +315,19 @@ recognized by the `skills` CLI:
 - `jeopi`, `jeo`, `gjc`, `omp` are runtimes that load from shared or native paths, not CLI targets
 - `aside` is handled separately (Step 4A mirrors to account directories)
 
-`codex`, `gemini-cli`, `opencode`, and `cursor` also map to the shared root, so adding
-all of those alongside `universal` would create redundant platform exposure rather than
-additional skills. For an opencode-only install, `-a opencode` (or
-`jeo-skill install ... --agent opencode`) is valid and targets the same shared root
-that sst/opencode reads natively — see Step 4D. No separate projection is needed.
+`codex`, `opencode`, `cursor`, and Kimi CLI also discover the shared root, so adding
+those alongside `universal` would create redundant platform exposure rather than additional
+skills. Kimi's official CLI also scans `~/.kimi-code/skills` when `KIMI_CODE_HOME` is set (or
+defaults to `~/.kimi-code`), but no extra projection is needed when the shared root is present.
+For an opencode-only or Kimi-only install, `-a opencode` or `-a kimi-code-cli` (and the
+equivalent `jeo-skill install --agent opencode` or `--agent kimi`) is valid and targets the
+shared root. The router's `kimi` alias is the canonical local spelling for upstream
+`kimi-code-cli`.
+
+Grok Build is different: use the registry-native `-a grok` target for its global
+`${GROK_HOME:-$HOME/.grok}/skills` or project `.grok/skills` root. Do not claim that an
+installed `grok` binary loads these skills unless it is the Grok Build CLI; the Homebrew
+Superagent `grok` executable is a separate product with no automatic skill-loader contract.
 
 ## Step 4 — Install the requested scope
 
@@ -509,6 +525,48 @@ fi
 **Important:** Do not use manual `cp -R` for Antigravity projection. Always use
 `jeo-skill install --agent antigravity-cli` or `jeo-skill install --agent antigravity`.
 
+#### Kimi CLI (`kimi`)
+
+The official Kimi CLI discovers both global `~/.kimi-code/skills` and `~/.agents/skills`,
+plus project `.kimi-code/skills` and `.agents/skills`. `KIMI_CODE_HOME` is optional and
+defaults to `~/.kimi-code`; its native `skills` directory is an additional discovery path,
+not a reason to duplicate the shared install. Passing `--skills-dir` replaces discovery
+instead of adding another root. When a Kimi-only selection is required, use the router's
+canonical `--agent kimi` spelling (it aliases the upstream `kimi-code-cli` registry target):
+
+```bash
+if command -v kimi >/dev/null 2>&1; then
+  printf 'kimi: shared skills root readable at %s\n' "$SKILLS_ROOT"
+  printf 'kimi: optional native root is %s/skills (shared root needs no projection)\n' "${KIMI_CODE_HOME:-$USER_HOME/.kimi-code}"
+fi
+```
+
+#### Grok Build (`grok`)
+
+Grok Build is a registry-native target with global `${GROK_HOME:-$USER_HOME/.grok}/skills`
+and project `.grok/skills` roots. Because the `grok` command name collides with the
+Homebrew Superagent/VibeKit CLI, projection is explicit-only: set `JEO_SKILLS_AGENT=grok`
+and verify the binary is Grok Build before running this block:
+
+```bash
+if [ "${JEO_SKILLS_AGENT:-}" = grok ] && command -v grok >/dev/null 2>&1; then
+  printf 'grok: explicit selection; verify this is Grok Build before relying on .grok/skills\n'
+  # Preview Grok Build projection without making changes
+  HOME="$USER_HOME" python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" \
+    install "${RUNTIME_SELECTION[@]}" --agent grok --global --dry-run || exit 1
+
+  # Install selected skills to Grok Build's native global root
+  HOME="$USER_HOME" python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" \
+    install "${RUNTIME_SELECTION[@]}" --agent grok --global --yes || exit 1
+
+  printf 'grok: Grok Build native projection completed (Superagent grok does not load it)\n'
+fi
+```
+
+The Homebrew `grok` executable installed by Superagent/VibeKit is a different CLI and has no
+automatic skill-loader contract. Without `JEO_SKILLS_AGENT=grok`, the command is inventory-only
+and this block does not install or configure Grok Build skills.
+
 ### Step 4D — OpenCode (all modes when detected)
 
 sst/opencode (opencode.ai) reads the shared root natively — global
@@ -516,8 +574,8 @@ sst/opencode (opencode.ai) reads the shared root natively — global
 `~/.config/opencode/skills`, `~/.claude/skills`, and the project `.opencode/skills`
 compat paths ([skills docs](https://opencode.ai/docs/skills/)). No native projection
 step is needed: the Step 4 install already placed everything opencode loads. Prefer
-the shared root over `~/.config/opencode/skills` so one install also serves Codex, Gemini
-CLI, and the other shared-root runtimes; a same-ID skill copied into `~/.config/opencode/skills` would
+the shared root over `~/.config/opencode/skills` so one install also serves Codex, Kimi CLI,
+and the other shared-root runtimes; a same-ID skill copied into `~/.config/opencode/skills` would
 shadow the shared copy at higher precedence. Re-verified on opencode 2.0.32 in an
 isolated HOME: the Step 4 install already lands every skill in the shared root, so this
 step only verifies placement and reports stale shadowing copies; it does not reinstall.
@@ -625,9 +683,28 @@ at an operator-run System One endpoint (driver `typesafe`, `decide`, or
 without a TTY) and downloads or starts nothing. Read [jev/README.md](jev/README.md) for
 settings, prerequisites, and validation limits. Never infer Jev consent from “full install”.
 
-Use the canonical setup script rather than copying runtime files or writing credentials
-by hand. The block below is a no-op without an explicit backend selection, including
-in a no-TTY session; no remote Jev script is fetched in that case.
+Use the canonical setup script rather than copying runtime files, writing credentials by hand,
+or adding a second mapping writer. After backend opt-in, the block configures a separate profile
+for each detected coding agent, then invokes the installed Jev controller to bind the canonical
+host id to that profile in `agents.json`; the controller preserves existing native, scope, and
+other-agent entries. The TSV carries profile, setup destination, and canonical host separately:
+`agy` uses setup destination `agy` (router alias `antigravity-cli`), `kimi` uses `kimi` (alias
+`kimi-code-cli`), and `grok`/`opencode` use their canonical ids. The binding call reuses saved
+per-profile credentials and never passes `--key-env`; it is configuration-only and does not
+register hooks. PATH-only `grok` is excluded from universal Jev auto-detection because
+Superagent/VibeKit uses the same command name; select `JEV_AGENT=grok` or
+`JEO_SKILLS_AGENT=grok` explicitly. Set `JEV_AGENT` (or `JEO_SKILLS_AGENT`) to configure only
+one host; `universal` means all detected hosts, not a shared Jev profile.
+An explicit `JEO_SKILLS_JEV_PROFILE` (otherwise `JEV_PROFILE`) overrides the profile only for a single selected host; existing
+`agents.json` assignments are otherwise preserved. Aside requires an explicitly selected
+account via `JEO_SKILLS_ASIDE_ACCOUNT`; its default profile is account-specific.
+Session-local `JEV_AGENT`/`JEV_PROFILE` count as selections in this block. To configure
+all detected hosts instead of the active session only, unset `JEV_AGENT`, `JEV_PROFILE`,
+`JEO_SKILLS_AGENT`, and `JEO_SKILLS_JEV_PROFILE` inside the setup subshell only; keep the
+active session's bindings outside it. A lone inherited profile with multiple hosts is
+ambiguous and skips optional Jev rather than sharing that profile across agents.
+The block is a no-op without an explicit backend selection, including in a no-TTY session;
+no remote Jev script is fetched in that case or when host/profile selection is ambiguous.
 
 ```bash
 (
@@ -637,21 +714,109 @@ case "${JEO_SKILLS_JEV:-skip}" in
     if [ "${INSTALL_GLOBAL:-true}" != true ]; then
       printf '%s\n' 'WARNING: Jev is home-scoped; skipping optional Jev for project installation. Run approved standalone setup separately.' >&2
       exit 0
-    elif [ -f "$PWD/jev/jev-setup.sh" ]; then
-      HOME="$USER_HOME" JEO_SKILLS_JEV="$JEO_SKILLS_JEV" bash "$PWD/jev/jev-setup.sh" || printf '%s\n' 'WARNING: Optional Jev setup did not complete; installed skills remain available.' >&2
+    fi
+    if ! JEV_TARGETS=$(HOME="$USER_HOME" python3 - "${JEV_AGENT:-${JEO_SKILLS_AGENT:-}}" "${JEO_SKILLS_JEV_PROFILE:-${JEV_PROFILE:-}}" <<'PY'
+import json
+import os
+from pathlib import Path
+import re
+import shutil
+import sys
+import stat
+
+# Host identity, canonical controller id, and skill transport destination are intentionally distinct.
+targets = {
+    "claude": "claude-code", "codex": "codex", "opencode": "opencode",
+    "cursor": "cursor", "agy": "agy", "kimi": "kimi", "grok": "grok",
+    "pi": "pi", "crush": "crush", "jeo": "jeo", "gjc": "gjc",
+    "jeopi": "jeopi", "omp": "omp", "antigravity": "antigravity", "aside": "aside",
+}
+aliases = {"claude-code": "claude", "jeo-code": "jeo", "oh-my-pi": "omp", "antigravity-cli": "agy", "kimi-code-cli": "kimi"}
+requested, override = sys.argv[1:]
+requested = aliases.get(requested, requested)
+account = os.environ.get("JEO_SKILLS_ASIDE_ACCOUNT", "")
+if requested and requested != "universal":
+    if requested not in targets:
+        raise SystemExit("Unknown Jev host; select a supported coding agent explicitly.")
+    hosts = [requested]
+else:
+    hosts = [host for host in targets if host != "grok" and shutil.which(host) and (host != "aside" or account)]
+if not hosts:
+    raise SystemExit("No coding-agent host detected; optional Jev setup skipped.")
+if override and len(hosts) != 1:
+    raise SystemExit("Multiple hosts detected: a custom Jev profile requires selecting one host.")
+mapping_path = Path.home() / ".agents/jev/agents.json"
+try:
+    try:
+        mapping_info = mapping_path.lstat()
+    except FileNotFoundError:
+        mappings = {}
+    else:
+        if not stat.S_ISREG(mapping_info.st_mode):
+            raise ValueError
+        mappings = json.loads(mapping_path.read_text(encoding="utf-8"))
+    if not isinstance(mappings, dict):
+        raise ValueError
+    rows = []
+    for host in hosts:
+        if host == "aside" and not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", account):
+            raise ValueError
+        default = ("aside-u" + account) if host == "aside" else host
+        entry = mappings.get(host, {})
+        if not isinstance(entry, dict):
+            raise ValueError
+        profile = override or entry.get("profile", default)
+        if not isinstance(profile, str) or not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", profile):
+            raise ValueError
+        rows.append((profile, targets[host], host))
+    if len({profile for profile, _, _ in rows}) != len(rows):
+        raise ValueError
+    selected_hosts = {host for _, _, host in rows}
+    selected_profiles = {profile for profile, _, _ in rows}
+    for mapped_host, mapped_entry in mappings.items():
+        if mapped_host in selected_hosts or not isinstance(mapped_entry, dict):
+            continue
+        mapped_profile = mapped_entry.get("profile")
+        if (isinstance(mapped_profile, str)
+                and re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", mapped_profile)
+                and mapped_profile in selected_profiles):
+            raise ValueError
+except (OSError, ValueError, TypeError):
+    raise SystemExit("Invalid or shared Jev profile assignment; select independent profiles/accounts before setup.")
+for profile, destination, canonical in rows:
+    print(profile + "\t" + destination + "\t" + canonical)
+PY
+    ); then
+      printf '%s\n' 'WARNING: Optional Jev host/profile selection failed; existing Jev configuration and installed skills unchanged.' >&2
+      exit 0
+    fi
+    if [ -f "$PWD/jev/jev-setup.sh" ]; then
+      JEV_SETUP="$PWD/jev/jev-setup.sh"
     else
       if ! JEV_SETUP=$(mktemp "${TMPDIR:-/tmp}/jev-setup.XXXXXX"); then
         printf '%s\n' 'WARNING: Cannot create private Jev setup file; skipping optional Jev. Installed skills remain available.' >&2
         exit 0
       fi
-      if curl -fsSL "${JEO_SKILLS_RAW_BASE:-https://raw.githubusercontent.com/akillness/jeo-skills/main/jev}/jev-setup.sh" -o "$JEV_SETUP"; then
-        HOME="$USER_HOME" JEO_SKILLS_JEV="$JEO_SKILLS_JEV" bash "$JEV_SETUP" || printf '%s\n' 'WARNING: Optional Jev setup did not complete; installed skills remain available.' >&2
-      else
+      trap 'rm -f "$JEV_SETUP"' EXIT
+      if ! curl -fsSL "${JEO_SKILLS_RAW_BASE:-https://raw.githubusercontent.com/akillness/jeo-skills/main/jev}/jev-setup.sh" -o "$JEV_SETUP"; then
         printf '%s\n' 'WARNING: Jev setup unavailable; installed skills remain available. Use approved standalone setup from a trusted checkout later.' >&2
+        exit 0
       fi
-      rm -f "$JEV_SETUP" || printf '%s\n' 'WARNING: Optional Jev temporary setup cleanup failed.' >&2
-      exit 0
     fi
+    while IFS=$'\t' read -r -u 3 JEV_SELECTED_PROFILE JEV_INSTALL_AGENT JEV_CANONICAL_AGENT; do
+      if HOME="$USER_HOME" JEO_SKILLS_JEV="$JEO_SKILLS_JEV" bash "$JEV_SETUP" --profile "$JEV_SELECTED_PROFILE" --agent "$JEV_INSTALL_AGENT" --mode "$JEO_SKILLS_JEV" 3<&-; then
+        JEV_PLUGIN="$USER_HOME/.agents/jev/jev-plugin.mjs"
+        if [ ! -f "$JEV_PLUGIN" ]; then
+          printf '%s\n' 'WARNING: Jev controller not installed; profile setup succeeded but canonical host mapping was not applied.' >&2
+        elif ! HOME="$USER_HOME" node "$JEV_PLUGIN" configure --agent "$JEV_CANONICAL_AGENT" --profile "$JEV_SELECTED_PROFILE" --backend "$JEO_SKILLS_JEV" --apply 3<&-; then
+          printf '%s\n' 'WARNING: Jev controller mapping failed; profile setup succeeded but canonical host mapping was not applied.' >&2
+        else
+          printf 'jev: canonical host %s bound to profile %s\n' "$JEV_CANONICAL_AGENT" "$JEV_SELECTED_PROFILE"
+        fi
+      else
+        printf '%s\n' 'WARNING: Optional Jev setup did not complete; installed skills remain available.' >&2
+      fi
+    done 3<<< "$JEV_TARGETS"
     ;;
   *) printf '%s\n' 'WARNING: Invalid optional JEO_SKILLS_JEV; skipping Jev. JEO_SKILLS_JEV must be skip, api, local, ollama, lmstudio, or systemone. Installed skills remain available.' >&2; exit 0 ;;
 esac
@@ -951,7 +1116,7 @@ installed script serves every repository. Per-agent events:
 |---|---|---|---|
 | Claude Code | `UserPromptSubmit` | `Stop` | `~/.claude/settings.json` |
 | Codex CLI | `UserPromptSubmit` | `Stop` | `~/.codex/hooks.json` |
-| Gemini CLI / Antigravity | `BeforeAgent` | `AfterAgent` | `~/.gemini/settings.json` |
+| Antigravity CLI / IDE | `BeforeAgent` | `AfterAgent` | `~/.gemini/settings.json` |
 
 ```bash
 KP_SCRIPTS="$USER_HOME/.agents/hooks"
@@ -1045,7 +1210,7 @@ fi
 if command -v codex >/dev/null 2>&1; then
   secure_kp_hooks "$USER_HOME/.codex/hooks.json" "$USER_HOME/.codex/hooks/llm-wiki-ingest.sh" UserPromptSubmit Stop
 fi
-if command -v gemini >/dev/null 2>&1 || command -v agy >/dev/null 2>&1; then
+if command -v agy >/dev/null 2>&1 || command -v antigravity >/dev/null 2>&1; then
   secure_kp_hooks "$USER_HOME/.gemini/settings.json" "$USER_HOME/.gemini/hooks/llm-wiki-ingest.sh" BeforeAgent AfterAgent
 fi
 

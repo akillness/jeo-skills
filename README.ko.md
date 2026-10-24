@@ -33,7 +33,7 @@
 
 ## 🚀 빠른 시작
 
-**옵션 A: 에이전트가 설치하도록 합니다.** Claude Code, Codex, Gemini CLI 또는 코딩 에이전트에 다음을 붙여 넣으세요.
+**옵션 A: 에이전트가 설치하도록 합니다.** Claude Code, Codex, Antigravity CLI(`agy`), Kimi Code, Grok Build, OpenCode 또는 다른 코딩 에이전트에 다음을 붙여 넣으세요.
 
 ```text
 Read https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-skills-prompt.md in full and follow it to install the jeo-skills.
@@ -132,16 +132,64 @@ curl -fsSL "$URL" | JEO_SKILLS_DRY_RUN=true INSTALL_GLOBAL=false bash
 
 | 런타임 | `--agent` | 전역 루트 | 프로젝트 루트 |
 |---|---|---|---|
-| jeopi · jeo-code · oh-my-pi | `universal` (기본값), `jeopi`, `jeo`, `omp` | `~/.agents/skills` | `.agents/skills` |
-| Codex · Gemini CLI · OpenCode · Cursor · Cline | `universal` | `~/.agents/skills` | `.agents/skills` |
+| JeoPi · Jeo(`jeo-code`) · OMP(`oh-my-pi`) | `universal` (기본값), `jeopi`, `jeo`, `omp` | `~/.agents/skills` | `.agents/skills` |
+| Codex | `universal` | `~/.agents/skills` | `.agents/skills` |
+| Kimi Code | `kimi` (`skills@1.7.0` 대상은 `kimi-code-cli`) | `~/.agents/skills` | `.agents/skills` |
+| OpenCode · Cursor | `universal` | `~/.agents/skills` | `.agents/skills` |
 | Claude Code | `claude-code` | `~/.claude/skills` (또는 `$CLAUDE_CONFIG_DIR/skills`) | `.claude/skills` |
 | GJC | `gjc` | `~/.gjc/agent/skills` | `.gjc/skills` |
-| Antigravity CLI | `agy` / `antigravity-cli` | `~/.gemini/antigravity-cli/skills` | `.agents/skills` |
+| Pi | `pi` | `~/.pi/agent/skills` | `.pi/skills` |
+| Antigravity CLI (AGY) | `agy` / `antigravity-cli` | `~/.gemini/antigravity-cli/skills` | `.agents/skills` |
+| Grok Build | `grok` | `${GROK_HOME:-$HOME/.grok}/skills` | `.grok/skills` |
 | Antigravity IDE | `antigravity` | `~/.gemini/config/skills` | — |
+| Crush | `crush` | `~/.config/crush/skills` | `.crush/skills` |
 | Aside | `aside` + `--aside-account <id>` | `~/.aside/u/<id>/skills/user/` | — |
 
 > [!NOTE]
+> 이 가이드의 현재 호스트·설정 대상에서는 이전 `gemini-cli` 호스트/설치 별칭을 사용하지 않고 Antigravity CLI의 `agy`/`antigravity-cli`를 사용합니다. Google/Gemini 제공자·모델 이름과 AGY의 `.gemini` 저장 경로는 그대로 유효합니다. `kimi`는 `kimi-code-cli`로 정규화되어 공유 루트에 설치합니다. Kimi 자체는 `${KIMI_CODE_HOME:-$HOME/.kimi-code}/skills`와 프로젝트 `.kimi-code/skills`도 검색하지만, 라우터가 그 모든 경로에 복사한다는 뜻은 아닙니다.
+> 
+> `grok`는 Grok Build의 네이티브 대상이며 setup 가이드에서 명시적으로 선택할 때만 설정합니다. 설치 대상은 `JEO_SKILLS_AGENT=grok`, Jev 단일 프로필은 `JEV_AGENT=grok`로 선택하세요. 같은 이름의 Superagent/VibeKit CLI가 있으므로 setup은 `PATH`만 보고 자동 선택하지 않습니다. 컨트롤러의 `detect`는 바이너리 존재만 보고하며 구현 종류를 검증하지 않습니다. 그 바이너리가 스킬을 자동 로드한다고 가정하거나 자동 업그레이드하지 않습니다.
+> 
 > 설치하면 스킬 파일을 루트에 기록하지만 런타임에 로그인하거나 시작하거나 새로고침하지는 않습니다. 새로 설치한 스킬이 보이지 않으면 호스트를 새로고침하세요.
+
+### Jev 에이전트별 프로필과 활성화 경계
+
+Jev는 백엔드를 별도로 선택하고 옵트인한 뒤에만 설정합니다. 현재 가이드는 이전 `gemini-cli` 호스트/별칭을 설정 대상으로 사용하지 않으며, 이는 Google/Gemini 제공자·모델의 전역 종료를 주장하는 것이 아닙니다. 호스트와 모델·제공자는 별개입니다.
+
+#### 기본 프로필
+
+| canonical host ID | 기본 프로필 | 독립 실행형 설치 대상 및 비고 |
+|---|---|---|
+| `jeo` | `jeo` | `jeo` |
+| `gjc` | `gjc` | `gjc` |
+| `jeopi` | `jeopi` | `jeopi` |
+| `pi` | `pi` | `pi` |
+| `codex` | `codex` | `codex` |
+| `claude` | `claude` | `claude-code` |
+| `agy` | `agy` | `antigravity-cli` |
+| `kimi` | `kimi` | `kimi-code-cli` (`skills@1.7.0`) |
+| `grok` | `grok` | `grok` (Grok Build) |
+| `opencode` | `opencode` | `opencode` |
+| `omp` | `omp` | `omp` |
+| `cursor` | `cursor` | `cursor` |
+| `crush` | `crush` | `crush` |
+| `antigravity` | `antigravity` | `antigravity` (IDE) |
+| `aside` | `aside-u<account>` | `aside` 계정별 프로필 |
+
+호스트 선택은 `JEV_AGENT` > `JEO_SKILLS_AGENT` 순서입니다. 두 변수가 없거나 값이 `universal`이면 감지된 호스트를 각각 독립적으로 구성합니다. 한 호스트의 프로필 우선순위는 `JEO_SKILLS_JEV_PROFILE` > `JEV_PROFILE` > `~/.agents/jev/agents.json`의 canonical host ID 매핑 > host ID와 같은 이름의 프로필입니다. Aside는 계정을 먼저 선택하고 `aside-u<account>`를 기본값으로 사용합니다.
+
+호스트별 설정이 성공하면 기존 컨트롤러의 config-only 경로가 `~/.agents/jev/agents.json`에 canonical host ID 바인딩을 생성하거나 갱신합니다. 이 갱신은 기존 `native`·`scope`·사용자 지정 프로필 할당과 다른 호스트 항목을 보존하며, hook을 등록하지 않습니다. `agy`, `kimi`, `grok`, `opencode` 및 기타 새 호스트의 프로필은 명시적 하네스·수동 경로만 제공하며 native hook 활성화를 주장하지 않습니다.
+
+컨트롤러(`jev-plugin.mjs`)의 `--agent`는 canonical host ID를 사용합니다. 독립 실행형 `jev-setup.sh --agent`의 값은 스킬 설치 대상(`claude-code`, `antigravity-cli`, `kimi-code-cli`, `grok` 등)입니다. 하네스(`jev-harness.mjs`)에는 `--agent` 옵션이나 호스트 자동 감지가 없으므로 모든 작업에 현재 프로필을 `--profile`로 명시해야 하며, 선택한 프로필이 없거나 비활성화되면 다른 프로필이나 레거시 공유 설정으로 대체하지 않습니다.
+
+현재 프로필 상태만 읽으려면 다음처럼 실행하세요(`status`는 읽기 전용이며 구성된 로컬 백엔드를 확인할 수 있지만, 그 결과를 호스트 활성화나 모델 사용의 증거로 추론하지 않습니다).
+
+```bash
+node ~/.agents/jev/jev-harness.mjs \
+  --profile "${JEV_PROFILE:?현재 할당된 Jev 프로필을 먼저 선택하세요}" status
+```
+
+모든 감지 호스트를 대상으로 설정하려면 설정 서브셸 내부에서만 `JEV_AGENT`, `JEV_PROFILE`, `JEO_SKILLS_AGENT`, `JEO_SKILLS_JEV_PROFILE`을 `unset`하고, 활성 세션 바깥의 값은 보존하세요. 프로필 설정만으로 native hook이 자동 활성화되지 않으며, 기존 실제 `HOME` 설치도 삭제하거나 초기화하지 않습니다. 자세한 호스트 매핑과 활성화 경계는 [Jev 활성화 및 프로필 표](jev/jev-control-plane.rule.md#activation-and-profiles), 설정 순서는 [설정 가이드](setup-all-skills-prompt.md#jev-control-plane-harness-system-one)와 [jev/README.md](jev/README.md)를 확인하세요.
 
 ## 💻 라우터 CLI
 
@@ -774,6 +822,7 @@ python3 scripts/changelog.py check
 |--------|---------|
 | **크로스 엔진 게임 스킬 컬렉션** | `gamedev-skills/awesome-gamedev-agent-skills` 커밋 `7eb1b53305fab881f4758e2eff2e371cd7869221`(Apache-2.0, LICENSE·NOTICE 확인)에 고정한 `awesome-gamedev-agent-skills` v1.0.0 운영 가이드를 추가했습니다. 카탈로그는 406→407개, `game-client`는 가이드 3→4개입니다. 원본의 개별 스킬 76개와 라우터를 통째로 복제하지 않고 선별하며, 기존 프로젝트 엔진 버전과 동명 로컬 스킬을 보존합니다. |
 | **게임 컬렉션 검증** | 전용 subprocess 테스트 6/6·설치 회귀 66/66 및 선택 공개 소스 12개 해시 일치를 확인했습니다. 로컬 작업 트리를 원본으로 삼아 임시 런처로 캐시된 실제 `skills@1.7.0`을 실행한 프로젝트 범위 설치에서 미리보기, 중첩 파일 바이트·권한, 지문이 일치하는 은퇴 `jeo` 제거, 동명 외부·현행 스킬·HOME 보존이 통과했습니다. npm 조회, 공개 저장소 설치, 실제 HOME 활성화, 엔진·프로바이더 실행은 하지 않았습니다. 라우팅·안전 평가 6개는 작성된 시나리오이며 실행된 모델 품질 결과가 아닙니다. |
+| **현재 코딩 에이전트와 Jev 프로필 바인딩** | config-only 컨트롤러가 canonical host ID를 독립 `agents.json` 프로필에 연결하고 기존 배정·사용자 필드·저장 키·LM Studio 자동 모델 선택을 보존하며 훅은 등록하지 않습니다. LM Studio 모델이 비어 있어도 자동 감지 경로로 프로필을 활성화할 수 있습니다. 현재 대상은 Gemini CLI 대신 `agy`를 사용하며 Kimi(`kimi` → `kimi-code-cli`), Grok Build(`grok`, `.grok/skills`, `GROK_HOME`)와 OpenCode를 모든 README에 명시했습니다. 공유·안전하지 않은 매핑과 링크된 런타임 상위 경로는 설정 전에 거부합니다. setup 자동 호스트 선택은 Superagent/VibeKit 이름 충돌 때문에 `grok`를 제외하며, 컨트롤러 `detect`는 구현 검증이 아닌 바이너리 존재만 보고합니다. |
 
 ## 🆕 v2026-10-22 업데이트
 

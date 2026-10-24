@@ -194,6 +194,52 @@ test('configure apply requests canonical config-only setup and writes mode-600 e
     assert.equal(count(), 0);
   });
 });
+test('configure rejects a profile already mapped to another host without setup or writes', async () => {
+  const f = fixture({ profile: 'shared', enabled: false });
+  privateWrite(join(f.profileDir, 'shared.env'), 'JEV_ENABLED=false\nJEV_MODE=api\nshared-base-sentinel=keep\n');
+  privateWrite(join(f.profileDir, 'shared.api.env'), 'JEV_API_ENDPOINT=http://127.0.0.1:8763/v1/systemone\nJEV_API_KEY=shared-api-key\nJEV_API_MODEL=shared-model\nshared-backend-sentinel=keep\n');
+  privateWrite(join(f.profileDir, 'foreign.env'), 'JEV_ENABLED=false\nJEV_MODE=ollama\nforeign-base-sentinel=keep\n');
+  privateWrite(join(f.profileDir, 'foreign.ollama.env'), 'JEV_OLLAMA_ENDPOINT=http://127.0.0.1:11434\nJEV_OLLAMA_MODEL=foreign-model\nforeign-backend-sentinel=keep\n');
+  const configRoot = join(f.home, '.agents', 'jev');
+  const mappingPath = join(configRoot, 'agents.json');
+  privateWrite(mappingPath, JSON.stringify({
+    agy: { profile: 'shared', native: 'adapter', scope: 'user' },
+    claude: { profile: 'foreign', native: 'claude', scope: 'project', foreign: 'preserve-me' },
+  }, null, 2) + '\n');
+  installForbiddenCommand(f, 'kimi');
+  const beforeProfiles = profileBytes(f);
+  const beforeMapping = readFileSync(mappingPath);
+  const beforeConfigEntries = readdirSync(configRoot).sort();
+  await withCounterServer(async (_endpoint, count) => {
+    const collisionArgs = [
+      'configure', '--agent', 'kimi', '--profile', 'shared', '--backend', 'api',
+      '--endpoint', 'http://127.0.0.1:8763/v1/systemone', '--model', 'collision-model', '--key-env', 'JEV_API_KEY',
+    ];
+    for (const [name, extra] of [['preview', []], ['apply', ['--apply']]]) {
+      const result = runPlugin(f, [...collisionArgs, ...extra]);
+      assert.notEqual(result.status, 0, `${name} collision must fail`);
+      assert.match(`${result.stdout}\n${result.stderr}`, /profile|mapped|assigned|already|collision/i, `${name} must explain the profile collision`);
+      assert.deepEqual(profileBytes(f), beforeProfiles, `${name} collision must preserve every profile/backend byte`);
+      assert.deepEqual(readFileSync(mappingPath), beforeMapping, `${name} collision must preserve the mapping bytes`);
+      assert.deepEqual(readdirSync(configRoot).sort(), beforeConfigEntries, `${name} collision must not create config artifacts`);
+      assert.equal(existsSync(join(f.home, 'jev-plugin-command.log')), false, `${name} collision must not execute a host command`);
+      assert.equal(count(), 0, `${name} collision must not contact the backend`);
+    }
+    const independent = runPlugin(f, [
+      'configure', '--agent', 'kimi', '--profile', 'newprofile', '--backend', 'api',
+      '--endpoint', 'http://127.0.0.1:8763/v1/systemone', '--model', 'independent-model', '--key-env', 'JEV_API_KEY',
+    ]);
+    assert.equal(independent.status, 0, `${independent.stdout}\n${independent.stderr}`);
+    const body = jsonResult(independent);
+    assert.equal(body.ok, true);
+    assert.equal(body.applied, false);
+    assert.equal(body.agent, 'kimi');
+    assert.equal(body.profile, 'newprofile');
+    assert.deepEqual(profileBytes(f), beforeProfiles, 'independent preview must remain zero-write');
+    assert.deepEqual(readFileSync(mappingPath), beforeMapping, 'independent preview must preserve existing mappings');
+    assert.equal(count(), 0, 'independent preview must not contact the backend');
+  });
+});
 test('configure api update reuses a saved profile key across backend switches without ambient secret leakage', () => {
   const f = fixture({ profile: 'saved-api', enabled: false });
   privateWrite(join(f.profileDir, 'saved-api.env'), 'JEV_ENABLED=false\nJEV_MODE=ollama\n');
@@ -259,7 +305,6 @@ test('enable rejects incomplete non-local backends while preserving local legacy
   const incomplete = [
     ['api', 'JEV_API_ENDPOINT=http://127.0.0.1:8763/v1/systemone\n'],
     ['ollama', 'JEV_OLLAMA_ENDPOINT=http://127.0.0.1:11434\n'],
-    ['lmstudio', 'JEV_LMSTUDIO_ENDPOINT=http://127.0.0.1:1234\n'],
     ['systemone', 'JEV_SYSTEMONE_ENDPOINT=http://127.0.0.1:8763/v1/systemone\n'],
   ];
   for (const [mode, backend] of incomplete) {
@@ -290,6 +335,64 @@ test('enable rejects incomplete non-local backends while preserving local legacy
   const enabled = runPlugin(valid, ['enable', '--agent', 'claude', '--profile', valid.profile, '--apply']);
   assert.equal(enabled.status, 0, `${enabled.stdout}\n${enabled.stderr}`);
   assert.equal(jsonResult(enabled).enabled, true);
+});
+test('enable and disable preserve lmstudio autodetection without provider activation', async () => {
+  const invalid = fixture({ profile: 'lmstudio-config-invalid', enabled: false });
+  privateWrite(join(invalid.profileDir, `${invalid.profile}.env`), 'JEV_ENABLED=false\nJEV_MODE=lmstudio\n');
+  installForbiddenCommand(invalid, 'claude');
+  installForbiddenCommand(invalid, 'lms');
+  const invalidBefore = profileBytes(invalid);
+  const invalidResult = runPlugin(invalid, [
+    'configure', '--agent', 'claude', '--profile', invalid.profile, '--backend', 'lmstudio',
+    '--endpoint', 'file:///tmp/lmstudio', '--apply',
+  ]);
+  assert.notEqual(invalidResult.status, 0, 'configure must reject an unsupported lmstudio endpoint scheme');
+  assert.match(`${invalidResult.stdout}\n${invalidResult.stderr}`, /endpoint|url|scheme|unsupported/i);
+  assert.deepEqual(profileBytes(invalid), invalidBefore, 'invalid configure must preserve profile/backend bytes');
+  assert.equal(existsSync(join(invalid.home, 'jev-plugin-command.log')), false, 'invalid configure must not execute provider/host commands');
+
+  const defaults = fixture({ profile: 'lmstudio-default-model', enabled: false });
+  privateWrite(join(defaults.profileDir, `${defaults.profile}.env`), 'JEV_ENABLED=false\nJEV_MODE=lmstudio\n');
+  const defaultBackendPath = join(defaults.profileDir, `${defaults.profile}.lmstudio.env`);
+  privateWrite(defaultBackendPath, '');
+  installForbiddenCommand(defaults, 'claude');
+  installForbiddenCommand(defaults, 'lms');
+  const defaultBackend = readFileSync(defaultBackendPath);
+  const defaultEnabled = runPlugin(defaults, ['enable', '--agent', 'claude', '--profile', defaults.profile, '--apply']);
+  assert.equal(defaultEnabled.status, 0, `${defaultEnabled.stdout}\n${defaultEnabled.stderr}`);
+  assert.equal(jsonResult(defaultEnabled).enabled, true);
+  assert.deepEqual(readFileSync(defaultBackendPath), defaultBackend, 'lmstudio enable must preserve a blank model for the built-in endpoint and auto-detection');
+  assert.doesNotMatch(readFileSync(defaultBackendPath, 'utf8'), /JEV_(?:LMSTUDIO|LOCAL)_MODEL=/);
+  assert.equal(existsSync(join(defaults.home, 'jev-plugin-command.log')), false, 'default lmstudio enable must not activate provider/host/model commands');
+
+  const defaultDisabled = runPlugin(defaults, ['disable', '--agent', 'claude', '--profile', defaults.profile, '--apply']);
+  assert.equal(defaultDisabled.status, 0, `${defaultDisabled.stdout}\n${defaultDisabled.stderr}`);
+  assert.equal(jsonResult(defaultDisabled).enabled, false);
+  assert.deepEqual(readFileSync(defaultBackendPath), defaultBackend, 'lmstudio disable must preserve a blank model');
+  assert.equal(existsSync(join(defaults.home, 'jev-plugin-command.log')), false, 'default lmstudio disable must not activate provider/host/model commands');
+
+  await withCounterServer(async (endpoint, count) => {
+    const explicit = fixture({ profile: 'lmstudio-explicit-model', enabled: false });
+    privateWrite(join(explicit.profileDir, `${explicit.profile}.env`), 'JEV_ENABLED=false\nJEV_MODE=lmstudio\n');
+    const backendPath = join(explicit.profileDir, `${explicit.profile}.lmstudio.env`);
+    privateWrite(backendPath, `JEV_LMSTUDIO_ENDPOINT=${endpoint}\n`);
+    installForbiddenCommand(explicit, 'claude');
+    installForbiddenCommand(explicit, 'lms');
+    const beforeBackend = readFileSync(backendPath);
+    const enabled = runPlugin(explicit, ['enable', '--agent', 'claude', '--profile', explicit.profile, '--apply']);
+    assert.equal(enabled.status, 0, `${enabled.stdout}\n${enabled.stderr}`);
+    assert.equal(jsonResult(enabled).enabled, true);
+    assert.deepEqual(readFileSync(backendPath), beforeBackend, 'explicit endpoint-only lmstudio enable must preserve a blank model');
+    assert.equal(existsSync(join(explicit.home, 'jev-plugin-command.log')), false, 'enable must not execute provider/host/model commands');
+    assert.equal(count(), 0, 'enable must not contact the lmstudio endpoint');
+
+    const disabled = runPlugin(explicit, ['disable', '--agent', 'claude', '--profile', explicit.profile, '--apply']);
+    assert.equal(disabled.status, 0, `${disabled.stdout}\n${disabled.stderr}`);
+    assert.equal(jsonResult(disabled).enabled, false);
+    assert.deepEqual(readFileSync(backendPath), beforeBackend, 'explicit endpoint-only lmstudio disable must preserve a blank model');
+    assert.equal(existsSync(join(explicit.home, 'jev-plugin-command.log')), false, 'disable must not execute provider/host/model commands');
+    assert.equal(count(), 0, 'disable must not contact the lmstudio endpoint');
+  });
 });
 
 
@@ -1575,6 +1678,37 @@ test('status detect and host-plan are truthful read-only operations', async () =
     }
     assert.equal(existsSync(join(f.home, 'jev-plugin-command.log')), false, 'read-only plans must not invoke host CLIs');
     assert.equal(count(), 0, 'read-only plans must not probe the backend');
+  });
+});
+test('detect reports the current canonical host inventory without activation or side effects', async () => {
+  const f = fixture({ profile: 'detect-inventory', enabled: true });
+  const canonical = ['claude', 'jeopi', 'omp', 'pi', 'codex', 'opencode', 'jeo', 'gjc', 'agy', 'kimi', 'grok', 'aside', 'cursor', 'crush', 'antigravity'];
+  const native = new Set(['claude', 'jeopi', 'omp', 'pi']);
+  for (const host of canonical) installForbiddenCommand(f, host);
+  const before = profileBytes(f);
+  const configRoot = join(f.home, '.agents', 'jev');
+  const beforeConfigEntries = readdirSync(configRoot).sort();
+  await withCounterServer(async (_endpoint, count) => {
+    const result = runPlugin(f, ['detect', '--agent', 'claude', '--profile', f.profile]);
+    assert.equal(result.status, 0, `${result.stdout}\n${result.stderr}`);
+    const body = jsonResult(result);
+    assert.equal(body.ok, true);
+    assert.deepEqual(Object.keys(body.capabilities).sort(), [...canonical].sort(), 'detect must expose exactly the current canonical hosts');
+    assert.equal(Object.hasOwn(body.capabilities, 'gemini'), false, 'retired gemini must not be reported');
+    for (const host of canonical) {
+      assert.deepEqual(body.capabilities[host], {
+        binary: join(f.bin, host),
+        present: true,
+        runnable: true,
+        capability: native.has(host) ? 'native-lifecycle' : 'adapter-only',
+        readiness: 'unverified',
+        activation: 'not-run',
+      }, `${host} detection must preserve the adapter/native and unverified-readiness boundaries`);
+    }
+    assert.deepEqual(profileBytes(f), before, 'detect must not write configuration');
+    assert.deepEqual(readdirSync(configRoot).sort(), beforeConfigEntries, 'detect must not create config artifacts');
+    assert.equal(existsSync(join(f.home, 'jev-plugin-command.log')), false, 'detect must not execute host commands');
+    assert.equal(count(), 0, 'detect must not probe the backend');
   });
 });
 

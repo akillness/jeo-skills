@@ -10,12 +10,17 @@ Jev is optional and separate from catalog installation in every mode, including 
 
 Use one lowercase profile ID per independent agent environment. `--profile` selects isolated Jev state, while `--agent` selects where the Agent Skill is installed. A missing or disabled selected profile never falls back to another profile or the legacy shared config. Profile and backend files are mode-600. Setup is home-scoped and must be explicitly approved before it performs hosted calls, model downloads, or local execution.
 
+Choose the coding-agent host, not the model/provider. Current canonical host IDs are `claude`, `jeo`, `jeopi`, `pi`, `omp`, `gjc`, `codex`, `opencode`, `agy`, `kimi`, `grok`, `cursor`, `crush`, `antigravity`, and `aside`. Set session-local `JEV_AGENT` to one of these IDs and `JEV_PROFILE` to its explicitly assigned profile, otherwise its `agents.json` mapping, otherwise the host ID. Aside requires a selected account and defaults to `aside-u<account>`; independent accounts need independent profiles such as `aside-u0` or `claude-work`. The [shared rule](jev-control-plane.rule.md#activation-and-profiles) is the canonical host table: `antigravity-cli` is the guide alias for AGY (`agy`), `kimi-code-cli` is the guide alias for Kimi Code (`kimi`), AGY is distinct from the Antigravity IDE (`antigravity`), and Grok Build is explicit-selection-only (`grok`), never PATH-detected because an installed `grok` may be Superagent rather than Grok Build.
+
+After backend opt-in, the [setup guide](../setup-all-skills-prompt.md#jev-control-plane-harness-system-one) selects hosts using `JEV_AGENT` > `JEO_SKILLS_AGENT`; an absent selector or `universal` configures all detected hosts independently except Grok Build, which requires explicit `grok` selection. A custom `JEO_SKILLS_JEV_PROFILE` (otherwise `JEV_PROFILE`) requires one selected host. After each per-host setup succeeds, the guide invokes the existing `jev-plugin.mjs configure --agent <host> --profile <profile> --backend <selected> --apply` configuration-only path to create or update that canonical host's `~/.agents/jev/agents.json` binding. It preserves custom profile/native/scope fields on that host, other host entries, and any saved per-profile key; it does not register native hooks. Session variables count as selections, so unset all four inside the setup subshell for an all-host run without inherited bindings. This is configuration, not native hook activation. Standalone setup/harness commands still require explicit `--profile` (or the harness's existing `JEV_PROFILE`); no runtime selection is inferred from a provider/model name.
+
 Standalone setup preflights the root `~/.agents/jev/jev-plugin.mjs` destination and raw-native file leaves before staging or publication. Root-controller symlinks/non-files and native non-file leaf collisions are refused. The collision regressions preserve existing core/native/catalog/profile bytes and outside targets; resolve the conflicting destination before rerunning approved setup.
 
 ```sh
 JEO_SKILLS_AGENT=jeopi JEO_SKILLS_JEV=api bash install.sh
-bash jev/jev-setup.sh --profile gjc --agent gjc --mode local
-bash jev/jev-setup.sh --profile jeopi --agent jeopi --mode systemone
+bash jev/jev-setup.sh --profile agy --agent agy --mode local
+bash jev/jev-setup.sh --profile kimi --agent kimi --mode systemone
+bash jev/jev-setup.sh --profile grok --agent grok --mode api
 bash jev/jev-setup.sh --profile gjc --disable
 bash jev/jev-setup.sh --profile gjc --status
 JEO_SKILLS_JEV=skip bash install.sh
@@ -34,6 +39,14 @@ The registry has exactly five backend kinds: `api`, `local`, `ollama`, `lmstudio
 | `ollama` | Requires Ollama; model pull/start is explicit and may download a quantized third-party model. | Native `/api/chat` JSON-from-chat adapter, default `http://127.0.0.1:11434`. |
 | `lmstudio` | Requires LM Studio; model download/load and server startup are explicit. | OpenAI-compatible `/v1/chat/completions` JSON-from-chat adapter, default `http://127.0.0.1:1234`. |
 | `systemone` | Configures an endpoint, model, and optional key; no model download is implied. | `JEV_SYSTEMONE_DRIVER=typesafe` (default), `decide`, or `vllm-jev-decision`. |
+
+For LM Studio, an empty `JEV_LMSTUDIO_MODEL` intentionally auto-selects a loaded
+model whose ID matches `/jev/i`. Config-only binding preserves that empty value,
+and a valid endpoint-only profile can be enabled without pinning a model.
+Explicit `--model`, a saved `JEV_LMSTUDIO_MODEL`, and legacy `JEV_LOCAL_MODEL`
+remain model-selection inputs in that order. Enablement does not load a model,
+start the server or prove readiness; status and live operations still require
+the configured server and a matching loaded model.
 
 The local HTTP server rejects negative `Content-Length` and bodies above 1 MiB
 with its existing HTTP 400 JSON error envelope. It applies a 10-second timeout
@@ -112,21 +125,22 @@ Jev setup.
 ## Configuration and setup
 
 ```sh
+: "${JEV_AGENT:?Select the current coding agent first}" "${JEV_PROFILE:?Select the current agent profile first}"
 # Preview configuration (no --apply: shows what will be set)
-node ~/.agents/jev/jev-plugin.mjs configure --agent jeopi --profile jeopi --backend api --key-env JEV_API_KEY
+node ~/.agents/jev/jev-plugin.mjs configure --agent "$JEV_AGENT" --profile "$JEV_PROFILE" --backend api --key-env JEV_API_KEY
 
 # Apply configuration (--apply: writes profile files and environment)
-node ~/.agents/jev/jev-plugin.mjs configure --agent jeopi --profile jeopi --backend api --key-env JEV_API_KEY --apply
+node ~/.agents/jev/jev-plugin.mjs configure --agent "$JEV_AGENT" --profile "$JEV_PROFILE" --backend api --key-env JEV_API_KEY --apply
 
 # Enable profile (default: preview; --apply: changes JEV_ENABLED=true)
-node ~/.agents/jev/jev-plugin.mjs enable --agent jeopi --profile jeopi
-node ~/.agents/jev/jev-plugin.mjs enable --agent jeopi --profile jeopi --apply
+node ~/.agents/jev/jev-plugin.mjs enable --agent "$JEV_AGENT" --profile "$JEV_PROFILE"
+node ~/.agents/jev/jev-plugin.mjs enable --agent "$JEV_AGENT" --profile "$JEV_PROFILE" --apply
 
 # Disable profile (loaded callbacks return neutral before doing work)
-node ~/.agents/jev/jev-plugin.mjs disable --agent jeopi --profile jeopi --apply
+node ~/.agents/jev/jev-plugin.mjs disable --agent "$JEV_AGENT" --profile "$JEV_PROFILE" --apply
 
 # Status (always read-only, never reaches backend)
-node ~/.agents/jev/jev-plugin.mjs status --agent jeopi --profile jeopi
+node ~/.agents/jev/jev-plugin.mjs status --agent "$JEV_AGENT" --profile "$JEV_PROFILE"
 ```
 
 `configure` with `--agent` and `--backend` prepares a new profile or updates an existing one. Without `--apply`, it validates the request and returns a preview without changes. With `--apply`, it invokes `jev-setup.sh --config-only` and writes configuration files without downloads or inference; a new profile starts OFF. API configuration requires `--key-env` naming an existing non-empty environment variable in the invoking process unless the selected profile's API backend already has a saved key; omit `--key-env` to preserve that saved key. Use the variable name, never a literal credential. `enable` and `disable` toggle `JEV_ENABLED` in the profile's base file; without `--apply` they preview the change, with `--apply` they write it. `status` reports saved configuration without reaching any backend.
@@ -168,8 +182,9 @@ Returns read-only JSON with `capability`, `lifecycle`, and `steps`; `verified: f
 ### Model plan
 
 ```sh
+: "${JEV_AGENT:?Select the current coding agent first}" "${JEV_PROFILE:?Select the current agent profile first}"
 # Preview advice against a fresh host-owned observation, without executing it
-node ~/.agents/jev/jev-plugin.mjs model-plan --agent jeopi --profile jeopi \
+node ~/.agents/jev/jev-plugin.mjs model-plan --agent "$JEV_AGENT" --profile "$JEV_PROFILE" \
   --advice advice.json --host-models host-models.json
 ```
 
@@ -258,19 +273,19 @@ jev/                                  # source in this repository
 `estimatedTokensSaved` and `estimatedSavingsPercent` approximate names/descriptions at one token per four characters; they do not measure end-to-end model tokens or cost.
 
 ```sh
-node ~/.agents/jev/jev-harness.mjs --profile jeopi route-skills --top-k 3 "<task>"
+node ~/.agents/jev/jev-harness.mjs --profile "${JEV_PROFILE:?Select the current agent profile first}" route-skills --top-k 3 "<task>"
 ```
 
 `route-skills` retains `task`, mode, `families` (categories of `topK`), `topK`, token estimates, and `publicRegistryFallback`, and adds `selection` and advisory `routing`. Gate and fit thresholds are both `0.30`. A gate below threshold returns explicit none (`topK: []`, `selection.reason: "gate"`) and `publicRegistryFallback`; no candidate meeting fit threshold returns explicit none with `selection.reason: "fits"`. Strategy is `sharded` when `ceil(catalogSize / choiceCap) <= 4` and `shortlist` otherwise. The sharded path chooses per-shard finalists, then a final choice; shortlist is lexical and cap-aware.
 
-If `.agent-skills/skills.json` supplies `model_policies`, `routing` is advisory: candidates use `provider/model` strings such as `openai/gpt-6.1-sol`, `anthropic/claude-fable-5-1`, and `ollama/qwen2.5:7b`; each result carries the resolved `policy` (`{id, candidates, fallback, constraints}`), ranked candidates with probabilities, the chosen value (or `other`), confidence, and `provenance: {backend: {kind, driver, model, tier}}`. Native hosts receive model suggestions and `model-plan` can render host launch arguments; neither automatically switches the coding model. `model_policies` is not projected into `skills.toon` or README catalog tables. If no policy exists, `routing: []`.
+If `.agent-skills/skills.json` supplies `model_policies`, `routing` is advisory: candidates use `provider/model` strings such as `openai/gpt-6.1-sol`, `google/gemini-2.5-pro`, `anthropic/claude-fable-5-1`, and `ollama/qwen2.5:7b`; these names identify models, not hosts. Each result carries the resolved `policy` (`{id, candidates, fallback, constraints}`), ranked candidates with probabilities, the chosen value (or `other`), confidence, and `provenance: {backend: {kind, driver, model, tier}}`. Native hosts receive model suggestions and `model-plan` can render host launch arguments; neither automatically switches the coding model. `model_policies` is not projected into `skills.toon` or README catalog tables. If no policy exists, `routing: []`.
 
 ### Prune
 
 The standalone CLI emits verdicts rather than editing host context. Pi-family assist callbacks apply them only to older Jev-owned custom messages.
 
 ```sh
-node ~/.agents/jev/jev-harness.mjs --profile jeopi prune-context < blocks.jsonl
+node ~/.agents/jev/jev-harness.mjs --profile "${JEV_PROFILE:?Select the current agent profile first}" prune-context < blocks.jsonl
 ```
 
 The request state is `{blocks:[{id,text}...]}`. Questions are keyed by position within that request as `essential::<index>`, so duplicate block IDs are safe. Blocks are split into batches bounded by the answering backend's serialized-state limit (`local`/`ollama`/`lmstudio` 6,000 chars; AutoTrust `decide`/`vllm-jev-decision` 3,000; hosted `api`/`systemone` `typesafe` 100,000) so no block is judged without appearing in the model's input; a single block larger than the limit is returned as `keep` with a `reason` and is never dropped unjudged. Batch-capable drivers send one request per batch; other drivers loop per question. Keep blocks unless Jev returns `no` with confidence at least `0.8`; preserve uncertain blocks.
@@ -280,7 +295,7 @@ The request state is `{blocks:[{id,text}...]}`. Questions are keyed by position 
 The standalone CLI returns a decision; it does not execute tests/builds or intercept a host action. Library callers can supply failed validation evidence. Codex PreToolUse integration applies the profile review mode described above.
 
 ```sh
-node ~/.agents/jev/jev-harness.mjs --profile jeopi review "<task>" '<proposal-json>'
+node ~/.agents/jev/jev-harness.mjs --profile "${JEV_PROFILE:?Select the current agent profile first}" review "<task>" '<proposal-json>'
 ```
 
 Review envelopes and results bind `backend: {kind, model, tier}`. A proposed `permit` on a non-validated tier is downgraded to `proposal_only` with reason `Backend tier 'unvalidated' cannot authorize autonomous execution`. Receipt v2 is the SHA-256 of `JSON.stringify({v:2, task, proposal, decision, backend:{kind, model, tier}})`; preserve the receipt as the audit binding.
@@ -297,7 +312,7 @@ Review envelopes and results bind `backend: {kind, model, tier}`. A proposed `pe
 Fresh 2026-10-14 verification: six Node suites reported **117 passed, 1 opt-in live skip**; Python Jev+installer regressions passed **112 tests**; mock self-test passed **20/20**. Real TypeSafe routing selected `react-best-practices` through served `jev-1.13.0`. Two new actual Codex 0.162.1 sessions confirmed injected skill/source recognition and advisory PreToolUse findings before a successful read-only command. The installed profile uses assist/advisory, with both generated definitions reported trusted by the actual host. This verifies the stated transport and integration, not calibration, broad routing quality, or automatic permission grants.
 
 ```sh
-node ~/.agents/jev/jev-harness.mjs --profile jeopi smoke --backend local --task "<task>"
+node ~/.agents/jev/jev-harness.mjs --profile "${JEV_PROFILE:?Select the current agent profile first}" smoke --backend local --task "<task>"
 node ~/.agents/jev/jev-harness.mjs self-test --mock
 node ~/.agents/jev/jev-harness.mjs route-skills --mock --top-k 3 "React performance task"
 ```

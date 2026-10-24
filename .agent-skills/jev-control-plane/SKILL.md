@@ -18,13 +18,21 @@ Use it when installing or configuring Jev for one runtime, checking or toggling 
 
 ## Select the current agent profile
 
-Use a unique lower-kebab-case profile ID for each independent agent environment, such as `jeopi`, `gjc`, or `aside-u0`. `--profile` selects Jev state; `--agent` selects the Agent Skill destination. Never silently switch profiles or fall back to another profile or the legacy shared config.
+Identify the coding-agent runtime that loaded this skill, not its model/provider. Set `JEV_AGENT` to one current canonical host ID: `claude`, `jeo`, `jeopi`, `pi`, `omp`, `gjc`, `codex`, `opencode`, `agy`, `kimi`, `grok`, `cursor`, `crush`, `antigravity`, or `aside`. The host list is intentionally separate from provider/model names.
+
+Guide aliases normalize to canonical hosts: `claude-code` → `claude`, `jeo-code` → `jeo`, `oh-my-pi` → `omp`, `antigravity-cli` → `agy`, and `kimi-code-cli` → `kimi`. AGY means the Antigravity CLI; it is distinct from the Antigravity IDE (`antigravity`). Grok Build is explicit-selection-only: set `JEV_AGENT=grok` (or `JEO_SKILLS_AGENT=grok` during setup); never infer it from `PATH`, because an installed `grok` may be Superagent rather than Grok Build.
+
+Use the explicitly assigned profile, otherwise the current host's `profile` in `~/.agents/jev/agents.json`, otherwise the host ID itself. Aside instead requires a selected account and defaults to `aside-u<account>`. Set that exact value as `JEV_PROFILE` in this session. Keep independent accounts/configurations separate (for example `aside-u0` or `claude-work`). If the host or assignment is unknown, stop Jev work rather than choosing the first installed CLI. A selected missing/disabled profile never falls back to `jeopi`, another profile, or legacy configuration.
+
+The controller's `--agent` is the canonical host identity; standalone setup's `--agent` is the skill installation destination. `--profile` always selects Jev state. See the [shared host table](../../jev/jev-control-plane.rule.md#activation-and-profiles) for each destination, storage root, and verified Jev boundary; it is the source of truth for AGY, Kimi Code, and Grok Build distinctions.
+
+After a successful per-host setup, the guide creates or updates that canonical host's `~/.agents/jev/agents.json` binding through the existing controller `configure --agent <host> --profile <profile> --backend <selected> --apply` path. It preserves custom host fields, other host entries, and saved per-profile keys; configuration-only binding is not native hook registration.
 
 Check the exact profile before every live operation:
-
 ```sh
-node ~/.agents/jev/jev-harness.mjs --profile jeopi status
+node ~/.agents/jev/jev-harness.mjs --profile "${JEV_PROFILE:?Select the current agent profile first}" status
 ```
+
 
 Status exit `2` means inactive or unconfigured; skip Jev gates and follow the host's normal permission policies. Exit `3` means fail closed: the configuration is invalid, or an evaluated operation chain has no usable backend; a down backend that no evaluated chain references never causes it. Exit `0` means the requested chain is not known unavailable, not that model quality or host enforcement is proven. Use `--operation route-skills|prune-context|review` for one operation; otherwise all three chains are evaluated.
 
@@ -33,21 +41,22 @@ Status exit `2` means inactive or unconfigured; skip Jev gates and follow the ho
 For initial setup or updates, use jev-plugin.mjs with preview-then-apply pattern:
 
 ```sh
+: "${JEV_AGENT:?Select the current coding agent first}" "${JEV_PROFILE:?Select the current agent profile first}"
 # Preview configuration (shows what will be set, no changes)
-node ~/.agents/jev/jev-plugin.mjs configure --agent jeopi --profile jeopi --backend api --key-env JEV_API_KEY
+node ~/.agents/jev/jev-plugin.mjs configure --agent "$JEV_AGENT" --profile "$JEV_PROFILE" --backend api --key-env JEV_API_KEY
 
 # Apply configuration (invokes setup and writes files)
-node ~/.agents/jev/jev-plugin.mjs configure --agent jeopi --profile jeopi --backend api --key-env JEV_API_KEY --apply
+node ~/.agents/jev/jev-plugin.mjs configure --agent "$JEV_AGENT" --profile "$JEV_PROFILE" --backend api --key-env JEV_API_KEY --apply
 
 # Enable profile (preview then apply)
-node ~/.agents/jev/jev-plugin.mjs enable --agent jeopi --profile jeopi
-node ~/.agents/jev/jev-plugin.mjs enable --agent jeopi --profile jeopi --apply
+node ~/.agents/jev/jev-plugin.mjs enable --agent "$JEV_AGENT" --profile "$JEV_PROFILE"
+node ~/.agents/jev/jev-plugin.mjs enable --agent "$JEV_AGENT" --profile "$JEV_PROFILE" --apply
 
 # Disable profile  
-node ~/.agents/jev/jev-plugin.mjs disable --agent jeopi --profile jeopi --apply
+node ~/.agents/jev/jev-plugin.mjs disable --agent "$JEV_AGENT" --profile "$JEV_PROFILE" --apply
 
 # Check profile status (always read-only)
-node ~/.agents/jev/jev-plugin.mjs status --agent jeopi --profile jeopi
+node ~/.agents/jev/jev-plugin.mjs status --agent "$JEV_AGENT" --profile "$JEV_PROFILE"
 ```
 
 `configure` with `--agent` and `--backend` prepares or updates a profile. Without `--apply`, it validates the request and returns a preview without changes. With `--apply`, it invokes configuration-only setup and writes files without downloads or inference; new profiles start OFF. API configuration requires `--key-env` naming an existing non-empty environment variable in the invoking process unless the selected profile's API backend already has a saved key; omit `--key-env` to preserve that key. Use the variable name, never a literal credential. `enable` and `disable` toggle `JEV_ENABLED`; without `--apply` they preview the change, with `--apply` they write it. `status` shows saved configuration without reaching any backend.
@@ -62,11 +71,12 @@ The backend registry has exactly five kinds: `api`, `local`, `ollama`, `lmstudio
 ### Optional native session integration
 
 ```sh
+: "${JEV_AGENT:?Select the current coding agent first}" "${JEV_PROFILE:?Select the current agent profile first}"
 # Read-only session-load plan; does not install, register, load, or enable anything
-node ~/.agents/jev/jev-plugin.mjs host-plan --agent claude --profile claude
+node ~/.agents/jev/jev-plugin.mjs host-plan --agent "$JEV_AGENT" --profile "$JEV_PROFILE"
 
 # Advisory model argv only; never executes the plan
-node ~/.agents/jev/jev-plugin.mjs model-plan --agent jeopi --profile jeopi --advice advice.json
+node ~/.agents/jev/jev-plugin.mjs model-plan --agent "$JEV_AGENT" --profile "$JEV_PROFILE" --advice advice.json
 ```
 
 Profiles default to `JEV_RUNTIME_MODE=advisory` and `JEV_REVIEW_MODE=off`. Explicit `configure --runtime-mode assist` enables trusted selected skill instruction loading in a registered, enabled integration. Skill bodies include source paths for resolving referenced files. They must match the trusted catalog and remain within its skill root; files exceeding 64 KiB or the 96 KiB combined budget are skipped whole, never partially injected.
@@ -104,12 +114,12 @@ Each fallback is an ordered comma-separated allow-list; only those kinds may be 
 ## Run approved operations
 
 ```sh
-node ~/.agents/jev/jev-harness.mjs --profile jeopi route-skills --top-k 3 "<task>"
-node ~/.agents/jev/jev-harness.mjs --profile jeopi prune-context < blocks.jsonl
-node ~/.agents/jev/jev-harness.mjs --profile jeopi review "<task>" '<proposal-json>'
+node ~/.agents/jev/jev-harness.mjs --profile "${JEV_PROFILE:?Select the current agent profile first}" route-skills --top-k 3 "<task>"
+node ~/.agents/jev/jev-harness.mjs --profile "${JEV_PROFILE:?Select the current agent profile first}" prune-context < blocks.jsonl
+node ~/.agents/jev/jev-harness.mjs --profile "${JEV_PROFILE:?Select the current agent profile first}" review "<task>" '<proposal-json>'
 ```
 
-`route-skills` adds `selection` and advisory `routing`. Gate and fit thresholds are both `0.30`. Gate failure is explicit none (`topK: []`, `selection.reason: "gate"`) with `publicRegistryFallback`; fit failure is explicit none with `selection.reason: "fits"`. The strategy is `sharded` when `ceil(catalogSize / choiceCap) <= 4`, otherwise `shortlist`. `routing` reads optional `skills.json` `model_policies` and uses `provider/model` vocabulary (for example `openai/gpt-6.1-sol`); model advice remains advisory, with the resolved `policy` and `provenance: {backend: {kind, driver, model, tier}}`. The command itself does not install skills or change the coding model. Token savings are estimates rather than measured host usage.
+`route-skills` adds `selection` and advisory `routing`. Gate and fit thresholds are both `0.30`. Gate failure is explicit none (`topK: []`, `selection.reason: "gate"`) with `publicRegistryFallback`; fit failure is explicit none with `selection.reason: "fits"`. The strategy is `sharded` when `ceil(catalogSize / choiceCap) <= 4`, otherwise `shortlist`. `routing` reads optional `skills.json` `model_policies` and uses `provider/model` vocabulary (for example `openai/gpt-6.1-sol` or `google/gemini-2.5-pro`); these are model examples, not host IDs. Model advice remains advisory, with the resolved `policy` and `provenance: {backend: {kind, driver, model, tier}}`. The command itself does not install skills or change the coding model. Token savings are estimates rather than measured host usage.
 
 `prune-context` sends `{blocks:[{id,text}...]}` with position-keyed questions `essential::<index>` per request, so duplicate block IDs are safe. Blocks are batched within the answering backend's state limit so none is judged unseen; an oversized single block is returned as `keep` with a `reason`. Batch-capable drivers send one request per batch; other drivers loop. Keep blocks unless the answer is `no` with confidence at least `0.8`.
 
@@ -124,12 +134,15 @@ Missing credentials, unreachable backends, contract errors, malformed responses,
 An install without `--profile` may use the intentional legacy `~/.agents/jev/.env`; a selected profile never falls back to it. Keep profile files private and out of source control.
 
 ```sh
-bash ~/.agents/jev/jev-setup.sh --profile jeopi --agent jeopi --mode api
-bash ~/.agents/jev/jev-setup.sh --profile gjc --agent gjc --mode local
-node ~/.agents/jev/jev-harness.mjs --profile jeopi status
-node ~/.agents/jev/jev-harness.mjs --profile gjc status
-```
+# Two independent hosts; these are examples, not a shared default.
+bash ~/.agents/jev/jev-setup.sh --profile claude --agent claude-code --mode api
+bash ~/.agents/jev/jev-setup.sh --profile agy --agent agy --mode local
+bash ~/.agents/jev/jev-setup.sh --profile kimi --agent kimi --mode systemone
+node ~/.agents/jev/jev-harness.mjs --profile claude status
+node ~/.agents/jev/jev-harness.mjs --profile agy status
+node ~/.agents/jev/jev-harness.mjs --profile kimi status
 
+```
 ## References
 
 - Backend setup and limits: `jev/README.md` in the `jeo-skills` checkout.

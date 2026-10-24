@@ -6,6 +6,10 @@ All notable changes to **jeo-skills** are documented here.
 
 ### Added
 - Added `awesome-gamedev-agent-skills` v1.0.0 as a pinned, collision-aware operator for `gamedev-skills/awesome-gamedev-agent-skills` at `7eb1b53305fab881f4758e2eff2e371cd7869221` (Apache-2.0; LICENSE/NOTICE inspected), with an unchanged hardened selected-file helper, source references and six authored routing/safety evals. Catalog: 406→407; `game-client`: three→four guides. Dedicated tests pass 6/6, installer tests 66/66 and selected-source hashes 12/12; an isolated real cached-installer guide-install probe passes. No wholesale upstream pack, host plugin, engine or provider was activated.
+- Added verified Kimi Code (`kimi` → `kimi-code-cli`, shared skills) and Grok Build (`grok`, project `.grok/skills` or global `GROK_HOME/skills`) router destinations. Current setup uses Antigravity CLI `agy` instead of the retired Gemini CLI target and documents OpenCode consistently. Setup excludes Grok from automatic host selection because a `grok` binary can be Superagent/VibeKit without Agent Skill loading; controller `detect` reports binary inventory only.
+
+### Fixed
+- Jev's shared rule and portable skill no longer steer every coding agent to `jeopi`. Successful per-host setup binds canonical host IDs to independent profiles in `agents.json` through the existing config-only controller, preserving custom assignments, native/scope fields and saved keys without registering hooks. Invalid, shared or unsafe mappings are rejected before setup effects; external runtime roots reject symlink ancestors. Config-only LM Studio binding preserves automatic model selection, and controller enablement now accepts a blank model for that autodetection path. README shell examples execute verbatim with valid guards. Existing real-HOME installs are not modified by this source update.
 
 ## 2026-10-22
 

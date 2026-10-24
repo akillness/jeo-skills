@@ -46,12 +46,22 @@ paths = {
     "claude-code": (".claude/skills", ".claude/skills"),
     "antigravity-cli": (".agents/skills", ".agents/skills"),
     "antigravity": (".agents/skills", ".agents/skills"),
+    "kimi-code-cli": (".agents/skills", ".agents/skills"),
+    "grok": (".grok/skills", ".grok/skills"),
 }
 if agent not in paths:
     raise SystemExit("unsupported upstream agent: " + agent)
+record = os.environ.get("TRANSPORT_RECORD")
+if record:
+    import json
+    Path(record).write_text(json.dumps(args))
 global_install = "--global" in args
-base = Path.home() if global_install else Path.cwd()
-destination = base / paths[agent][int(global_install)]
+if agent == "grok" and global_install:
+    base = Path(os.environ.get("GROK_HOME") or Path.home())
+    destination = base / "skills"
+else:
+    base = Path.home() if global_install else Path.cwd()
+    destination = base / paths[agent][int(global_install)]
 names = []
 for value in args[args.index("--skill") + 1:]:
     if value.startswith("--"):
@@ -61,16 +71,15 @@ if "--full-depth" not in args:
     raise SystemExit("fixture nested skills require full-depth discovery")
 if names == ["*"]:
     names = sorted(path.name for path in (source / ".agent-skills").iterdir() if path.is_dir())
+if "--copy" not in args:
+    raise SystemExit("fixture requires copy mode")
 for name in names:
     origin = source / ".agent-skills" / name
     target = destination / name
     destination.mkdir(parents=True, exist_ok=True)
     if target.is_symlink():
         target.unlink()
-    if "--copy" in args:
-        shutil.copytree(origin, target, dirs_exist_ok=True)
-    elif not target.exists():
-        target.symlink_to(origin, target_is_directory=True)
+    shutil.copytree(origin, target, dirs_exist_ok=True)
 '''
 
 
@@ -770,6 +779,164 @@ class InstallerRegressions(unittest.TestCase):
         self.successful(result)
         self.assertEqual(json.loads(result.stdout)["catalog"], str(self.catalog.resolve()))
 
+    def test_kimi_project_install_uses_verified_shared_root_and_transport_alias(self):
+        record = self.work / "kimi-project-transport.json"
+        result = self.cli("install", "alpha", "--agent", "kimi", "--yes",
+                          "--source", str(self.source),
+                          extra_env={"TRANSPORT_RECORD": str(record)})
+        self.successful(result)
+        root = self.project / ".agents/skills"
+        self.assertIn(f"Destination: {root}", result.stdout)
+        self.assertIn(f"Verified 1 skill(s) at {root}", result.stdout)
+        self.assertNotIn("Unverified passthrough", result.stdout)
+        self.assert_skill(root, "alpha")
+        self.assertFalse((self.home / ".agents").exists())
+        self.assertEqual(json.loads(record.read_text()), [
+            "--yes", "skills@1.7.0", "add", str(self.source), "--skill", "alpha",
+            "--agent", "kimi-code-cli", "--copy", "--full-depth", "--yes",
+        ])
+
+    def test_kimi_global_install_and_dry_run_are_scoped_and_exact(self):
+        root = self.home / ".agents/skills"
+        record = self.work / "kimi-global-transport.json"
+        before = self.snapshot()
+        preview = self.cli("install", "alpha", "--agent", "kimi", "--global", "--yes",
+                           "--source", str(self.source), "--dry-run",
+                           extra_env={"TRANSPORT_RECORD": str(record)})
+        self.successful(preview)
+        self.assertIn(f"Destination: {root}", preview.stdout)
+        self.assertNotIn("Unverified passthrough", preview.stdout)
+        self.assertEqual(self.snapshot(), before)
+        self.assertFalse(record.exists(), "dry-run must not invoke transport")
+
+        result = self.cli("install", "alpha", "--agent", "kimi", "--global", "--yes",
+                          "--source", str(self.source),
+                          extra_env={"TRANSPORT_RECORD": str(record)})
+        self.successful(result)
+        self.assert_skill(root, "alpha")
+        self.assertFalse((self.project / ".agents/skills/alpha").exists())
+        self.assertEqual(json.loads(record.read_text()), [
+            "--yes", "skills@1.7.0", "add", str(self.source), "--skill", "alpha",
+            "--agent", "kimi-code-cli", "--copy", "--full-depth", "--global", "--yes",
+        ])
+
+    def test_grok_project_install_uses_verified_native_root_and_preserves_siblings(self):
+        root = self.project / ".grok/skills"
+        keep = root / "keep"
+        keep.mkdir(parents=True)
+        keep_file = keep / "SKILL.md"
+        keep_file.write_text("user-owned Grok Build skill\n")
+        keep_file.chmod(0o640)
+        outside = self.work / "grok-project-outside"
+        outside.mkdir()
+        sentinel = outside / "sentinel"
+        sentinel.write_text("untouched\n")
+        linked = root / "linked"
+        linked.symlink_to(outside, target_is_directory=True)
+        record = self.work / "grok-project-transport.json"
+
+        result = self.cli("install", "alpha", "--agent", "grok", "--yes",
+                          "--source", str(self.source),
+                          extra_env={"TRANSPORT_RECORD": str(record)})
+        self.successful(result)
+        self.assertIn(f"Destination: {root}", result.stdout)
+        self.assertIn(f"Verified 1 skill(s) at {root}", result.stdout)
+        self.assertNotIn("Unverified passthrough", result.stdout)
+        self.assert_skill(root, "alpha")
+        self.assertEqual(keep_file.read_text(), "user-owned Grok Build skill\n")
+        self.assertEqual(stat.S_IMODE(keep_file.stat().st_mode), 0o640)
+        self.assertTrue(linked.is_symlink())
+        self.assertEqual(linked.resolve(), outside.resolve())
+        self.assertEqual(sentinel.read_text(), "untouched\n")
+        self.assertEqual(json.loads(record.read_text()), [
+            "--yes", "skills@1.7.0", "add", str(self.source), "--skill", "alpha",
+            "--agent", "grok", "--copy", "--full-depth", "--yes",
+        ])
+
+    def test_grok_global_install_honors_safe_grok_home_and_rejects_symlink_escape(self):
+        grok_home = self.work / "grok-home"
+        grok_home.mkdir()
+        outside = self.work / "grok-global-outside"
+        outside.mkdir()
+        (outside / "sentinel").write_text("untouched\n")
+        record = self.work / "grok-global-transport.json"
+        linked_home = self.work / "grok-home-link"
+        linked_home.symlink_to(outside, target_is_directory=True)
+        before_linked_home = self.snapshot()
+        rejected_home = self.cli("install", "alpha", "--agent", "grok", "--global", "--yes",
+                                "--source", str(self.source),
+                                extra_env={"GROK_HOME": str(linked_home), "TRANSPORT_RECORD": str(record)})
+        self.assertNotEqual(rejected_home.returncode, 0, rejected_home.stdout)
+        self.assertIn("symlink", rejected_home.stdout.lower())
+        self.assertEqual(self.snapshot(), before_linked_home)
+        self.assertFalse(record.exists(), "linked GROK_HOME must not invoke transport")
+        linked_home.unlink()
+        nested_parent = self.work / "linked-parent"
+        nested_parent.symlink_to(outside, target_is_directory=True)
+        nested_home = nested_parent / "new-grok"
+        before_nested_home = self.snapshot()
+        rejected_nested_home = self.cli("install", "alpha", "--agent", "grok", "--global", "--yes",
+                                       "--source", str(self.source),
+                                       extra_env={"GROK_HOME": str(nested_home),
+                                                  "TRANSPORT_RECORD": str(record)})
+        self.assertNotEqual(rejected_nested_home.returncode, 0, rejected_nested_home.stdout)
+        self.assertIn("symlink", rejected_nested_home.stdout.lower())
+        self.assertEqual(self.snapshot(), before_nested_home)
+        self.assertFalse(record.exists(), "nested linked GROK_HOME must not invoke transport")
+        nested_parent.unlink()
+
+        linked_root = grok_home / "skills"
+        linked_root.symlink_to(outside, target_is_directory=True)
+        before = self.snapshot()
+        rejected = self.cli("install", "alpha", "--agent", "grok", "--global", "--yes",
+                            "--source", str(self.source),
+                            extra_env={"GROK_HOME": str(grok_home), "TRANSPORT_RECORD": str(record)})
+        self.assertNotEqual(rejected.returncode, 0, rejected.stdout)
+        self.assertIn("symlink", rejected.stdout.lower())
+        self.assertEqual(self.snapshot(), before)
+        self.assertFalse(record.exists(), "symlink guard must run before transport")
+        self.assertEqual((outside / "sentinel").read_text(), "untouched\n")
+
+        linked_root.unlink()
+        root = grok_home / "skills"
+        root.mkdir()
+        keep_file = root / "keep/SKILL.md"
+        keep_file.parent.mkdir()
+        keep_file.write_text("preserve me\n")
+        keep_file.chmod(0o640)
+        result = self.cli("install", "alpha", "--agent", "grok", "--global", "--yes",
+                          "--source", str(self.source),
+                          extra_env={"GROK_HOME": str(grok_home), "TRANSPORT_RECORD": str(record)})
+        self.successful(result)
+        self.assertIn(f"Destination: {root}", result.stdout)
+        self.assert_skill(root, "alpha")
+        self.assertEqual(keep_file.read_text(), "preserve me\n")
+        self.assertEqual(stat.S_IMODE(keep_file.stat().st_mode), 0o640)
+        self.assertEqual(json.loads(record.read_text()), [
+            "--yes", "skills@1.7.0", "add", str(self.source), "--skill", "alpha",
+            "--agent", "grok", "--copy", "--full-depth", "--global", "--yes",
+        ])
+
+    def test_grok_global_dry_run_is_no_write_and_preserves_permissions(self):
+        grok_home = self.work / "grok-preview-home"
+        root = grok_home / "skills"
+        keep_file = root / "keep/SKILL.md"
+        keep_file.parent.mkdir(parents=True)
+        keep_file.write_text("preview-owned\n")
+        keep_file.chmod(0o640)
+        record = self.work / "grok-preview-transport.json"
+        before = self.snapshot()
+        preview = self.cli("install", "alpha", "--agent", "grok", "--global", "--yes",
+                           "--source", str(self.source), "--dry-run",
+                           extra_env={"GROK_HOME": str(grok_home), "TRANSPORT_RECORD": str(record)})
+        self.successful(preview)
+        self.assertIn(f"Destination: {root}", preview.stdout)
+        self.assertNotIn("Unverified passthrough", preview.stdout)
+        self.assertEqual(self.snapshot(), before)
+        self.assertEqual(keep_file.read_text(), "preview-owned\n")
+        self.assertEqual(stat.S_IMODE(keep_file.stat().st_mode), 0o640)
+        self.assertFalse(record.exists(), "dry-run must not invoke transport")
+
     def test_shared_aliases_materialize_copied_skills_in_requested_scope(self):
         for alias in ("jeopi", "jeo", "omp"):
             for global_install in (False, True):
@@ -1165,6 +1332,54 @@ class InstallerRegressions(unittest.TestCase):
                 self.assertFalse((self.home / ".gjc/agent/skills/alpha").exists())
                 self.assertFalse((self.home / ".pi-ignored").exists())
                 shutil.rmtree(native / "alpha")
+    def test_gjc_absolute_config_dir_stays_external_and_project_scope_remains_local(self):
+        external = self.work / "external-gjc-config"
+        external_skills = external / "agent/skills"
+        foreign = external_skills / "foreign/SKILL.md"
+        foreign.parent.mkdir(parents=True)
+        foreign.write_text("foreign GJC skill\n")
+        outside = self.work / "gjc-symlink-outside"
+        outside.mkdir()
+        (outside / "sentinel").write_text("untouched\n")
+        linked_parent = self.work / "gjc-linked-parent"
+        linked_parent.symlink_to(outside, target_is_directory=True)
+        linked_config = linked_parent / "new-config"
+        before = self.snapshot()
+        rejected = self.cli("install", "alpha", "--agent", "gjc", "--global", "--yes",
+                            "--source", str(self.source),
+                            extra_env={"GJC_CONFIG_DIR": str(linked_config)})
+        self.assertNotEqual(rejected.returncode, 0, rejected.stdout)
+        self.assertIn("symlink", rejected.stdout.lower())
+        self.assertEqual(self.snapshot(), before)
+        linked_parent.unlink()
+
+        project_result = self.cli("install", "alpha", "--agent", "gjc", "--yes",
+                                 "--source", str(self.source),
+                                 extra_env={"GJC_CONFIG_DIR": str(external)})
+        self.successful(project_result)
+        project_shared = self.project / ".agents/skills"
+        project_native = self.project / ".gjc/skills"
+        self.assertIn(f"Copy selected skills: {project_shared} -> {project_native}",
+                      project_result.stdout)
+        self.assert_skill(project_shared, "alpha")
+        self.assert_skill(project_native, "alpha")
+        self.assertFalse((external_skills / "alpha").exists())
+        self.assertEqual(foreign.read_text(), "foreign GJC skill\n")
+        self.assertFalse((self.home / ".gjc/agent/skills/alpha").exists())
+
+        global_result = self.cli("install", "alpha", "--agent", "gjc", "--global", "--yes",
+                                "--source", str(self.source),
+                                extra_env={"GJC_CONFIG_DIR": str(external)})
+        self.successful(global_result)
+        global_shared = self.home / ".agents/skills"
+        global_native = external / "agent/skills"
+        self.assertIn(f"Copy selected skills: {global_shared} -> {global_native}",
+                      global_result.stdout)
+        self.assert_skill(global_shared, "alpha")
+        self.assert_skill(global_native, "alpha")
+        self.assertEqual(foreign.read_text(), "foreign GJC skill\n")
+        self.assertFalse((self.home / ".gjc/agent/skills/alpha").exists())
+
 
     def sync_entrypoint(self):
         destination = self.source / "scripts/sync-aside-skills.py"

@@ -31,7 +31,7 @@ CACHE_PATH = Path.home() / ".cache" / "jeo-skill" / "skills.json"
 BIN_PATH = Path.home() / ".local" / "bin" / "jeo-skill"
 TOKEN_RE = re.compile(r"[a-z0-9]+")
 SKILLS_PACKAGE = "skills@1.7.0"
-AGENT_ALIASES = {"jeopi": "universal", "jeo": "universal", "omp": "universal", "gjc": "universal", "aside": "universal", "agy": "antigravity-cli"}
+AGENT_ALIASES = {"jeopi": "universal", "jeo": "universal", "omp": "universal", "gjc": "universal", "aside": "universal", "agy": "antigravity-cli", "kimi": "kimi-code-cli"}
 
 
 class JeoSkillError(RuntimeError):
@@ -345,15 +345,22 @@ def install_command(args: argparse.Namespace, selected: list[str]) -> list[str]:
         command.append("--yes")
     return command
 
+def grok_home() -> Path:
+    """Match skills@1.7.0's Grok Build global root selection."""
+    configured = os.environ.get("GROK_HOME", "").strip()
+    return Path(configured).expanduser() if configured else Path.home() / ".grok"
+
+
 
 def install_root(args: argparse.Namespace) -> Path | None:
     agent = AGENT_ALIASES.get(args.agent, args.agent)
     home = Path.home()
     base = home if args.global_install else Path.cwd()
-    shared = {"universal", "cline", "codex", "cursor", "gemini-cli", "opencode", "antigravity", "antigravity-cli"}
+    shared = {"universal", "cline", "codex", "cursor", "gemini-cli", "opencode", "antigravity", "antigravity-cli", "kimi-code-cli"}
     if not args.global_install:
         relative = ".agents/skills" if agent in shared else {
-            "claude-code": ".claude/skills", "pi": ".pi/skills", "crush": ".crush/skills"
+            "claude-code": ".claude/skills", "pi": ".pi/skills", "crush": ".crush/skills",
+            "grok": ".grok/skills",
         }.get(agent)
         return base / relative if relative else None
     if agent in shared:
@@ -361,6 +368,7 @@ def install_root(args: argparse.Namespace) -> Path | None:
     roots = {
         "claude-code": Path(os.environ.get("CLAUDE_CONFIG_DIR", "").strip() or str(home / ".claude")) / "skills",
         "pi": home / ".pi/agent/skills", "crush": home / ".config/crush/skills",
+        "grok": grok_home() / "skills",
     }
     return roots.get(agent)
 
@@ -375,7 +383,7 @@ def projection_root(args: argparse.Namespace) -> Path | None:
     if args.agent == "gjc":
         if not args.global_install:
             return Path.cwd() / ".gjc/skills"
-        return Path.home() / gjc_config_name().lstrip("/") / "agent/skills"
+        return Path.home() / gjc_config_name() / "agent/skills"
     if args.global_install:
         agent = AGENT_ALIASES.get(args.agent, args.agent)
         if agent == "antigravity-cli":
@@ -415,6 +423,13 @@ def preflight_destination(root: Path, selected: list[str]) -> None:
             boundary = scope
             break
     require_safe_path(root, boundary)
+    if boundary == root:
+        ignored_aliases = {Path("/var"), Path("/tmp")} if sys.platform == "darwin" else set()
+        for ancestor in root.parents:
+            if ancestor in ignored_aliases:
+                continue
+            if ancestor.is_symlink():
+                raise ValueError(f"Refusing symlink destination: {ancestor}")
     for name in selected:
         if not re.fullmatch(r"[a-z0-9][a-z0-9._-]*", name):
             raise JeoSkillError(f"Unsafe skill name: {name}")
@@ -473,13 +488,15 @@ def retired_sweep_roots(global_install: bool) -> list[Path]:
     if not global_install:
         cwd = Path.cwd()
         return [cwd / ".agents/skills", cwd / ".claude/skills", cwd / ".pi/skills",
-                cwd / ".crush/skills", cwd / ".gjc/skills", cwd / ".opencode/skills"]
+                cwd / ".crush/skills", cwd / ".gjc/skills", cwd / ".opencode/skills",
+                cwd / ".grok/skills", cwd / ".kimi-code/skills"]
     config = Path(os.environ.get("XDG_CONFIG_HOME", "").strip() or str(home / ".config"))
     claude = Path(os.environ.get("CLAUDE_CONFIG_DIR", "").strip() or str(home / ".claude"))
     roots = [home / ".agents/skills", claude / "skills", home / ".pi/agent/skills",
              home / ".config/crush/skills", config / "crush/skills", config / "opencode/skills",
-             home / gjc_config_name().lstrip("/") / "agent/skills",
-             home / ".gemini/antigravity-cli/skills", home / ".gemini/config/skills"]
+             home / gjc_config_name() / "agent/skills",
+             home / ".gemini/antigravity-cli/skills", home / ".gemini/config/skills",
+             grok_home() / "skills", home / ".kimi-code/skills"]
     aside_users = home / ".aside" / "u"
     if aside_users.is_dir() and not aside_users.is_symlink():
         roots.extend(account / "skills" / "user" for account in sorted(aside_users.iterdir())

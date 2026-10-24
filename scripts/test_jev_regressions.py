@@ -954,18 +954,81 @@ class JevRegressions(unittest.TestCase):
         with self.subTest(mode="invalid"):
             assert_optional_skip("invalid", "JEO_SKILLS_JEV must be skip, api, local, ollama, lmstudio, or systemone")
 
+    def test_config_only_lmstudio_preserves_autodetect_and_model_precedence(self):
+        cases = (
+            ("empty", "agy", {"JEV_LMSTUDIO_MODEL": ""}, None, ""),
+            ("saved", "kimi", {"JEV_LMSTUDIO_MODEL": "saved-model"}, None, "saved-model"),
+            ("explicit", "opencode", {"JEV_LMSTUDIO_MODEL": "saved-model"}, "explicit-model", "explicit-model"),
+        )
+        for name, agent, saved, override, expected in cases:
+            with self.subTest(name=name):
+                profile = f"lmstudio-{name}"
+                profiles = self.home / ".agents/jev/profiles"
+                profiles.mkdir(parents=True, exist_ok=True)
+                (profiles / f"{profile}.env").write_text("JEV_ENABLED=false\nJEV_MODE=lmstudio\n")
+                (profiles / f"{profile}.lmstudio.env").write_text(
+                    "JEV_LMSTUDIO_ENDPOINT=http://127.0.0.1:1234\n"
+                    + "".join(f"{key}={value}\n" for key, value in saved.items())
+                )
+                command = [self.node, str(ROOT / "jev/jev-plugin.mjs"), "configure",
+                           "--agent", agent, "--profile", profile, "--backend", "lmstudio", "--apply"]
+                if override is not None:
+                    command.extend(("--model", override))
+                result = self.execute(command)
+                self.successful(result)
+                if name == "empty":
+                    enabled = self.execute([
+                        self.node, str(ROOT / "jev/jev-plugin.mjs"), "enable",
+                        "--agent", agent, "--profile", profile, "--apply",
+                    ])
+                    self.successful(enabled)
+                    self.assertIn("JEV_ENABLED=true", (profiles / f"{profile}.env").read_text())
+
+                backend = (profiles / f"{profile}.lmstudio.env").read_text()
+                self.assertIn(f"JEV_LMSTUDIO_MODEL={expected}\n", backend)
+                self.assertNotIn("JEV_LMSTUDIO_MODEL=mradermacher/JEV-9B-GGUF", backend)
+                self.assertNotIn("JEV_LOCAL_MODEL=", backend)
+                mapping = json.loads((self.home / ".agents/jev/agents.json").read_text())
+                self.assertEqual(mapping[agent]["profile"], profile)
+                self.assertEqual(mapping[agent]["native"], "adapter")
+                self.assertEqual(mapping[agent]["scope"], "user")
+
     def test_setup_guide_block_configures_systemone_from_a_checkout(self):
         text = (ROOT / "setup-all-skills-prompt.md").read_text()
         section = text.split("### Jev control-plane harness (System One)", 1)[1].split("\n### ", 1)[0]
         block = re.search(r"```(?:bash|sh)\n(.*?)\n```", section, re.S).group(1)
-        result = self.execute(["/bin/bash"], {"USER_HOME": str(self.home), "JEO_SKILLS_JEV": "systemone",
-                                              "JEV_SYSTEMONE_ENDPOINT": "http://127.0.0.1:1/v1/systemone",
-                                              "JEV_SYSTEMONE_MODEL": "fixture-JEV-9B"}, block, ROOT)
+        npx = self.bin / "npx"
+        npx.write_text("#!/bin/sh\nmkdir -p \"$HOME/.agents/skills/jev-control-plane\"\nprintf 'fixture\\n' > \"$HOME/.agents/skills/jev-control-plane/SKILL.md\"\nexit 0\n")
+        npx.chmod(0o700)
+        result = self.execute(
+            ["/bin/bash"],
+            {
+                "USER_HOME": str(self.home),
+                "JEO_SKILLS_JEV": "systemone",
+                "JEV_AGENT": "agy",
+                "JEO_SKILLS_JEV_PROFILE": "guide-systemone",
+                "JEV_SYSTEMONE_ENDPOINT": "http://127.0.0.1:1/v1/systemone",
+                "JEV_SYSTEMONE_MODEL": "fixture-JEV-9B",
+            },
+            block,
+            ROOT,
+        )
         self.successful(result)
-        saved = self.home / ".agents/jev/.env"
+        profiles = self.home / ".agents/jev/profiles"
+        saved = profiles / "guide-systemone.env"
+        backend = profiles / "guide-systemone.systemone.env"
         self.assertEqual(saved.stat().st_mode & 0o777, 0o600)
+        self.assertEqual(backend.stat().st_mode & 0o777, 0o600)
+        self.assertIn("JEV_ENABLED=true", saved.read_text())
         self.assertIn("JEV_MODE=systemone", saved.read_text())
-        self.assertIn("JEV_SYSTEMONE_MODEL=fixture-JEV-9B", saved.read_text())
+        self.assertIn("JEV_SYSTEMONE_ENDPOINT=http://127.0.0.1:1/v1/systemone", backend.read_text())
+        self.assertIn("JEV_SYSTEMONE_MODEL=fixture-JEV-9B", backend.read_text())
+        mapping_path = self.home / ".agents/jev/agents.json"
+        self.assertTrue(mapping_path.is_file(), result.stdout + result.stderr)
+        mapping = json.loads(mapping_path.read_text())
+        self.assertEqual(mapping["agy"]["profile"], "guide-systemone")
+        self.assertEqual(mapping["agy"]["native"], "adapter")
+        self.assertEqual(mapping["agy"]["scope"], "user")
         self.assertTrue((self.home / ".agents/jev/skills.json").is_file())
         self.assertFalse(self.external_log.exists())  # no downloads, fetches, or server starts
 

@@ -734,7 +734,7 @@ if [ "$CONFIG_ONLY" = true ]; then
       [ "$MODEL_DIR_OVERRIDE_SET" = false ] || fail '--model-dir is only valid with local backend'
       endpoint="${ENDPOINT_OVERRIDE:-$(profile_value JEV_LMSTUDIO_ENDPOINT)}"; [ -n "$endpoint" ] || endpoint='http://127.0.0.1:1234'
       validate_endpoint_url "$endpoint" 'LM Studio endpoint'
-      model="${MODEL_OVERRIDE:-$(profile_value JEV_LMSTUDIO_MODEL)}"; [ -n "$model" ] || model="$(profile_value JEV_LOCAL_MODEL)"; [ -n "$model" ] || model='mradermacher/JEV-9B-GGUF'
+      model="${MODEL_OVERRIDE:-$(profile_value JEV_LMSTUDIO_MODEL)}"; [ -n "$model" ] || model="$(profile_value JEV_LOCAL_MODEL)"
       printf 'JEV_LMSTUDIO_ENDPOINT=%s\nJEV_LMSTUDIO_MODEL=%s\n' "$endpoint" "$model" | write_config_only_selected
       ;;
     systemone)
