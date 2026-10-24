@@ -568,5 +568,289 @@ class SkillUsageRegressions(unittest.TestCase):
         after = self._rows(self._report(now=NOW_LATE))["jev-skill"]["count"]
         self.assertEqual(after, before + 1)
 
+    def test_incremental_growth_counts_load_and_ignores_non_load_tail(self):
+        session = self.home / ".claude/projects/p/s.jsonl"
+        self.successful(self.cli("usage", "scan", "--json"))
+        before = self._rows(self._report())["claude-project"]
+        load = json.dumps(
+            {"role": "assistant", "content": [{"type": "tool_use", "name": "Skill", "input": {"skill": "claude-project"}}]},
+            separators=(",", ":"),
+        )
+        with session.open("a", encoding="utf-8") as handle:
+            handle.write(load + "\n")
+        self.successful(self.cli("usage", "scan", "--json"))
+        after_load = self._rows(self._report())["claude-project"]
+        self.assertEqual(after_load["count"], before["count"] + 1)
+        self.assertEqual(after_load["by_source"], {"claude_projects": before["count"] + 1})
+        with session.open("a", encoding="utf-8") as handle:
+            handle.write(json.dumps({"role": "user", "content": "not a skill load"}) + "\n")
+        self.successful(self.cli("usage", "scan", "--json"))
+        after_non_load = self._rows(self._report())["claude-project"]
+        self.assertEqual(after_non_load, after_load)
+
+    def test_rewrite_before_cursor_forces_full_reparse_and_keeps_highwater(self):
+        session = self.home / ".claude/projects/p/rewrite.jsonl"
+
+        def load(skill):
+            return json.dumps(
+                {"role": "assistant", "content": [{"type": "tool_use", "name": "Skill", "input": {"skill": skill}}]},
+                separators=(",", ":"),
+            ).encode("utf-8") + b"\n"
+
+        event_a = load("late-skill")
+        event_b = load("kept-skill")
+        self.assertEqual(len(event_a), len(event_b))
+        filler = b'{"filler":"' + (b"x" * 6000) + b'"}\n'
+        original = event_a + filler
+        session.write_bytes(original)
+        self.successful(self.cli("usage", "scan", "--json"))
+        first = self._rows(self._report())
+        self.assertEqual(first["late-skill"]["by_source"], {"claude_projects": 1})
+        self.assertEqual(first["kept-skill"]["count"], 0)
+
+        rewritten = event_b + original[len(event_a):] + b'{"role":"user","content":"tail"}\n'
+        self.assertEqual(rewritten[len(event_b):len(event_b) + len(filler)], filler)
+        session.write_bytes(rewritten)
+        self.successful(self.cli("usage", "scan", "--json"))
+        second = self._rows(self._report())
+        self.assertEqual(second["kept-skill"]["count"], 1)
+        self.assertEqual(second["kept-skill"]["by_source"], {"claude_projects": 1})
+        self.assertEqual(second["late-skill"]["count"], 1)
+        self.assertEqual(second["late-skill"]["by_source"], {"claude_projects": 1})
+
+    def test_partial_and_complete_final_lines_are_consumed_once(self):
+        original = self.home / ".claude/projects/p/s.jsonl"
+        original.unlink()
+
+        def load(skill):
+            return json.dumps(
+                {"role": "assistant", "content": [{"type": "tool_use", "name": "Skill", "input": {"skill": skill}}]},
+                separators=(",", ":"),
+            ).encode("utf-8")
+
+        partial_path = self.home / ".claude/projects/p/partial.jsonl"
+        complete_a = load("late-skill") + b"\n"
+        cut = len(complete_a) - 8
+        partial_path.write_bytes(complete_a[:cut])
+        self.successful(self.cli("usage", "scan", "--json"))
+        rows = self._rows(self._report())
+        self.assertEqual(rows["late-skill"]["count"], 0)
+
+        with partial_path.open("ab") as handle:
+            handle.write(complete_a[cut:])
+        self.successful(self.cli("usage", "scan", "--json"))
+        rows = self._rows(self._report())
+        self.assertEqual(rows["late-skill"]["count"], 1)
+        self.successful(self.cli("usage", "scan", "--json"))
+        self.assertEqual(self._rows(self._report())["late-skill"]["count"], 1)
+
+        complete_path = self.home / ".claude/projects/p/complete.jsonl"
+        complete_path.write_bytes(load("kept-skill"))
+        self.successful(self.cli("usage", "scan", "--json"))
+        rows = self._rows(self._report())
+        self.assertEqual(rows["kept-skill"]["count"], 1)
+        with complete_path.open("ab") as handle:
+            handle.write(b"\n" + load("kept-skill") + b"\n")
+        self.successful(self.cli("usage", "scan", "--json"))
+        self.assertEqual(self._rows(self._report())["kept-skill"]["count"], 2)
+
+    def test_oversized_line_is_skipped_without_losing_following_loads(self):
+        session = self.home / ".claude/projects/p/s.jsonl"
+        session.unlink()
+
+        def load(skill):
+            return json.dumps(
+                {"role": "assistant", "content": [{"type": "tool_use", "name": "Skill", "input": {"skill": skill}}]},
+                separators=(",", ":"),
+            ).encode("utf-8") + b"\n"
+
+        oversized = b'{"padding":"' + (b"x" * (8 * 1024 * 1024 + 128)) + b'"}\n'
+        session.write_bytes(load("late-skill") + oversized + load("kept-skill"))
+        self.successful(self.cli("usage", "scan", "--json"))
+        rows = self._rows(self._report())
+        self.assertEqual(rows["late-skill"]["count"], 1)
+        self.assertEqual(rows["kept-skill"]["count"], 1)
+        self.assertEqual(rows["late-skill"]["by_source"], {"claude_projects": 1})
+        self.assertEqual(rows["kept-skill"]["by_source"], {"claude_projects": 1})
+
+    def test_invalid_utf8_in_unrelated_field_does_not_drop_load(self):
+        session = self.home / ".claude/projects/p/s.jsonl"
+        session.unlink()
+        session.write_bytes(
+            b'{"role":"assistant","unrelated":"bad \xff byte","content":'
+            b'[{"type":"tool_use","name":"Skill","input":{"skill":"late-skill"}}]}\n'
+        )
+        self.successful(self.cli("usage", "scan", "--json"))
+        row = self._rows(self._report())["late-skill"]
+        self.assertEqual(row["count"], 1)
+        self.assertEqual(row["by_source"], {"claude_projects": 1})
+
+    def test_touch_only_change_does_not_recount(self):
+        session = self.home / ".claude/projects/p/s.jsonl"
+        self.successful(self.cli("usage", "scan", "--json"))
+        before = self._rows(self._report())["claude-project"]
+        before_bytes = session.read_bytes()
+        stat = session.stat()
+        os.utime(session, ns=(stat.st_atime_ns, stat.st_mtime_ns + 1_000_000))
+        self.assertEqual(session.read_bytes(), before_bytes)
+        self.successful(self.cli("usage", "scan", "--json"))
+        self.assertEqual(self._rows(self._report())["claude-project"], before)
+
+    def test_atomic_replacement_new_inode_same_length_and_mtime_is_parsed(self):
+        session = self.home / ".claude/projects/p/s.jsonl"
+        session.unlink()
+
+        def load(skill):
+            return json.dumps(
+                {"role": "assistant", "content": [{"type": "tool_use", "name": "Skill", "input": {"skill": skill}}]},
+                separators=(",", ":"),
+            ).encode("utf-8") + b"\n"
+
+        old_bytes = load("late-skill")
+        new_bytes = load("kept-skill")
+        self.assertEqual(len(old_bytes), len(new_bytes))
+        session.write_bytes(old_bytes)
+        self.successful(self.cli("usage", "scan", "--json"))
+        old_stat = session.stat()
+        replacement = session.with_name("replacement.jsonl")
+        replacement.write_bytes(new_bytes)
+        os.utime(replacement, ns=(old_stat.st_atime_ns, old_stat.st_mtime_ns))
+        os.replace(replacement, session)
+        new_stat = session.stat()
+        self.assertNotEqual(new_stat.st_ino, old_stat.st_ino)
+        self.assertEqual(new_stat.st_size, old_stat.st_size)
+        self.assertEqual(new_stat.st_mtime_ns, old_stat.st_mtime_ns)
+        self.successful(self.cli("usage", "scan", "--json"))
+        rows = self._rows(self._report())
+        self.assertEqual(rows["kept-skill"]["count"], 1)
+        self.assertEqual(rows["kept-skill"]["by_source"], {"claude_projects": 1})
+        self.assertEqual(rows["late-skill"]["count"], 1)
+        self.assertEqual(rows["late-skill"]["by_source"], {"claude_projects": 1})
+
+    def test_pi_block_scan_refinds_prefilter_tokens_after_repeated_line_hits(self):
+        names = {
+            "a": "candidate-old",
+            "b": "late-skill",
+            "c": "kept-skill",
+            "d": "codex-skill",
+            "e": "bundle-skill",
+        }
+        jeopi = self.home / ".jeopi/agent/sessions/x/s.jsonl"
+        self._jsonl(
+            jeopi,
+            [
+                {
+                    "type": "message",
+                    "message": {
+                        "role": "assistant",
+                        "content": [
+                            {
+                                "type": "toolCall",
+                                "name": "read",
+                                "arguments": {"path": f"/h/.agents/skills/{names['a']}/SKILL.md"},
+                            },
+                            {"type": "text", "text": "SKILL.md skill://candidate-old"},
+                        ],
+                    },
+                },
+                {"type": "message", "message": {"role": "assistant", "content": [{"type": "text", "text": "ordinary response"}]}},
+                {
+                    "type": "message",
+                    "message": {
+                        "role": "assistant",
+                        "content": [
+                            {
+                                "type": "toolCall",
+                                "name": "read",
+                                "arguments": {"path": f"/h/.agents/skills/{names['b']}/SKILL.md"},
+                            }
+                        ],
+                    },
+                },
+                {"type": "custom_message", "customType": "skill-prompt", "details": {"name": names["c"]}},
+                {
+                    "type": "message",
+                    "message": {
+                        "role": "assistant",
+                        "content": [
+                            {
+                                "type": "toolCall",
+                                "name": "read",
+                                "arguments": {"path": f"/h/.agents/skills/{names['a']}/SKILL.md"},
+                            }
+                        ],
+                    },
+                },
+            ],
+        )
+        codex = self.home / ".codex/sessions/2026/10/01/rollout-x.jsonl"
+        self._jsonl(
+            codex,
+            [
+                {
+                    "type": "event_msg",
+                    "payload": {
+                        "type": "item_completed",
+                        "item": {
+                            "type": "CommandExecution",
+                            "status": "completed",
+                            "exit_code": 0,
+                            "parsed_cmd": [{"type": "read", "path": f"/h/.agents/skills/{names['d']}/SKILL.md"}],
+                        },
+                    },
+                },
+                {
+                    "type": "event_msg",
+                    "payload": {
+                        "type": "item_completed",
+                        "item": {
+                            "type": "CommandExecution",
+                            "status": "completed",
+                            "exit_code": 0,
+                            "parsed_cmd": [{"type": "read", "path": f"/h/.agents/skills/{names['e']}/SKILL.md"}],
+                        },
+                    },
+                },
+            ],
+        )
+
+        result = self.cli("usage", "scan", "--json")
+        self.successful(result)
+        rows = self._rows(self._report())
+        for key, expected in (("a", 2), ("b", 1), ("c", 1), ("d", 1), ("e", 1)):
+            with self.subTest(skill=names[key]):
+                self.assertEqual(rows[names[key]]["count"], expected)
+
+    def test_claude_project_partial_unconsumed_tails_are_counted_per_file(self):
+        (self.home / ".claude/projects/p/s.jsonl").unlink()
+        header = b'{"header":"' + (b"H" * 5000) + b'"}\n'
+
+        def transcript(skill):
+            tail = json.dumps(
+                {
+                    "role": "assistant",
+                    "content": [{"type": "tool_use", "name": "Skill", "input": {"skill": skill}}],
+                },
+                separators=(",", ":"),
+            ).encode("utf-8") + b"\n"
+            return header + tail
+
+        prefix = transcript("late-skill")
+        session_a = self.home / ".claude/projects/a/session.jsonl"
+        session_b = self.home / ".claude/projects/b/session.jsonl"
+        session_a.parent.mkdir(parents=True)
+        session_b.parent.mkdir(parents=True)
+        bytes_a = prefix + b'{"tail":"A"}'
+        bytes_b = prefix + b'{"tail":"B"}'
+        self.assertNotEqual(bytes_a, bytes_b)
+        self.assertEqual(len(bytes_a), len(bytes_b))
+        session_a.write_bytes(bytes_a)
+        session_b.write_bytes(bytes_b)
+
+        self.successful(self.cli("usage", "scan", "--json"))
+        row = self._rows(self._report())["late-skill"]
+        self.assertEqual(row["count"], 2)
+        self.assertEqual(row["by_source"], {"claude_projects": 2})
+
 if __name__ == "__main__":
     unittest.main()

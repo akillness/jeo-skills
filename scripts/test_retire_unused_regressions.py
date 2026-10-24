@@ -6,6 +6,7 @@ Run: python3 scripts/test_retire_unused_regressions.py -v
 
 from __future__ import annotations
 
+import importlib.util
 import json
 import os
 from pathlib import Path
@@ -243,6 +244,62 @@ class RetirementRegressions(unittest.TestCase):
         self.assertFalse(self.fake_jev_log.exists() and self.fake_jev_log.read_text(encoding="utf-8"))
         self.assertEqual(self.snapshot(), before)
 
+class ReferenceIndexRegressions(unittest.TestCase):
+    def test_reference_forms_are_scanned_independently(self):
+        module_path = ROOT / "scripts" / "retire-unused-skills.py"
+        spec = importlib.util.spec_from_file_location("retire_unused_skills_regression", module_path)
+        if spec is None or spec.loader is None:
+            self.fail(f"cannot load {module_path}")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+
+        with tempfile.TemporaryDirectory(prefix="jeo-reference-index-") as temporary:
+            repo = Path(temporary)
+            catalog = repo / ".agent-skills"
+            probes = {
+                "alpha": "`alpha`\n",
+                "beta": "\n",
+                "gamma": "\n",
+                "delta": "\n",
+                "uri-probe": "`skill://alpha`\n",
+                "link-probe": "[`../beta/SKILL.md`](../beta/SKILL.md)\n",
+                "uri-boundary": "`x` skill://gamma `y`\n",
+                "link-boundary": "`x` [g](../delta/SKILL.md) `y`\n",
+                "adjacent": "`a`b`\n",
+                "negatives": "skill://alphabet\n`alpha beta`\n",
+            }
+            for name, text in probes.items():
+                skill_md = catalog / name / "SKILL.md"
+                skill_md.parent.mkdir(parents=True)
+                skill_md.write_text(text, encoding="utf-8")
+
+            expected = {
+                "alpha": ["uri-probe"],
+                "beta": ["link-probe"],
+                "gamma": ["uri-boundary"],
+                "delta": ["link-boundary"],
+                "x": ["link-boundary", "uri-boundary"],
+                "y": ["link-boundary", "uri-boundary"],
+                "a": ["adjacent"],
+                "b": ["adjacent"],
+                "alphabet": ["negatives"],
+                "alpha beta": ["negatives"],
+            }
+            for name, referencing_skills in expected.items():
+                with self.subTest(name=name):
+                    references = module.find_live_references(repo, name)
+                    self.assertEqual(
+                        references,
+                        [
+                            {
+                                "skill": skill,
+                                "path": f".agent-skills/{skill}/SKILL.md",
+                            }
+                            for skill in referencing_skills
+                        ],
+                    )
+
+ 
 
 if __name__ == "__main__":
     unittest.main()

@@ -72,6 +72,10 @@ jobs:
         run: python3 scripts/test_jev_regressions.py -v
       - name: Optional Jevgrep discovery contract regressions
         run: python3 scripts/test_jevgrep_regressions.py -v
+      - name: ECC read-only plan and proposal regressions
+        run: |
+          bash .agent-skills/ecc/scripts/ecc.sh self-test
+          python3 -B scripts/test_ecc_regressions.py -v
       - name: Skill usage tracking, quarantine, and retirement regressions
         run: |
           python3 scripts/test_skill_usage_regressions.py -v

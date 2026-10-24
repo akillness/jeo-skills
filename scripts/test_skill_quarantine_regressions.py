@@ -408,6 +408,45 @@ class SkillQuarantineRegressions(unittest.TestCase):
         manifest = json.loads(applied.stdout)
         self.assertEqual(manifest["items"][0]["state"], "quarantined")
         self.assertFalse((self.agents_root / "alpha").exists())
+    def test_file_limit_refuses_apply_and_unpatched_control_succeeds(self):
+        self.install_alpha_only()
+        self.write_usage(names=["alpha"])
+        sessions = self.home / ".claude" / "projects" / "fixture"
+        sessions.mkdir(parents=True)
+        for name in ("session-a.jsonl", "session-b.jsonl"):
+            (sessions / name).write_text("{}\n", encoding="utf-8")
+
+        import argparse
+        import skill_usage  # type: ignore
+        import skill_usage_cli  # type: ignore
+
+        args = argparse.Namespace(
+            command="prune-unused", apply=True, global_install=True,
+            jev_profile=None, allow_remote=False, skip_jev_review=True, json=True,
+        )
+        roots = lambda global_install: [self.agents_root] if global_install else []
+        before = self.runtime_snapshot()
+        with patch.dict(os.environ, self.env, clear=True):
+            with patch.object(skill_usage, "MAX_FILES", 2):
+                with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
+                    with self.assertRaisesRegex(ValueError, "refusing to quarantine"):
+                        skill_usage_cli.run(args, json.loads(self.catalog.read_text(encoding="utf-8")),
+                                            str(self.catalog), roots)
+            usage = skill_usage.read_state("usage.json", None)
+        self.assertEqual(self.runtime_snapshot(), before)
+        self.assertTrue((self.agents_root / "alpha").exists())
+        self.assertFalse((self.state / "quarantine").exists())
+        self.assertIn("file limit 2 reached", usage["sources"]["claude_projects"]["error"])
+
+        output = io.StringIO()
+        with patch.dict(os.environ, self.env, clear=True):
+            with contextlib.redirect_stdout(output):
+                status = skill_usage_cli.run(args, json.loads(self.catalog.read_text(encoding="utf-8")),
+                                             str(self.catalog), roots)
+        self.assertEqual(status, 0)
+        self.assertEqual(json.loads(output.getvalue())["items"][0]["state"], "quarantined")
+        self.assertFalse((self.agents_root / "alpha").exists())
+
     def test_prune_apply_propagates_injected_move_failure(self):
         self.install_alpha_only()
         self.write_usage()
@@ -561,6 +600,21 @@ class SkillQuarantineRegressions(unittest.TestCase):
         self.assertEqual(persisted["protect"], first_data["protect"])
         self.assertEqual(len(self.calls()), 2)
 
+
+    def test_review_payload_contains_usage_count_rows(self):
+        self._reset_for_gate()
+        result = self.cli("prune-unused", "--global", "--apply", "--jev-profile", "fixture",
+                          "--allow-remote", "--json")
+        self.successful(result)
+        review_calls = [call for call in self.calls() if "review" in call]
+        self.assertEqual(len(review_calls), 1)
+        proposal = json.loads(review_calls[0][-1])
+        self.assertEqual(proposal["scope"], "local-install")
+        rows = proposal["evidence"]["skills"]
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]["name"], "alpha")
+        self.assertIn("count", rows[0])
+        self.assertEqual(rows[0]["count"], 0)
 
 if __name__ == "__main__":
     unittest.main()

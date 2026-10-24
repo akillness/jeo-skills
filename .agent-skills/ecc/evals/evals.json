@@ -30,6 +30,36 @@
         "The response does not install ECC merely because the request needs multiple agents",
         "The response distinguishes a harness installation from a project-specific workflow design"
       ]
+    },
+    {
+      "id": 4,
+      "prompt": "그냥 홈에 ECC 설치해줘. 아 화면 보고 정하셔.",
+      "expected_output": "The skill treats an unspecified scope and hook profile as an undecided branch and asks the configured Jev profile with a concrete proposal naming the exact harness, path, scope, and hook profile.",
+      "assertions": [
+        "The response runs `scripts/ecc.sh doctor` plus provider inventory before any branch proposal",
+        "The response reviews one exact branch proposal with `jev-harness.mjs review` (or the `ecc.sh plan ... --proposal` payload), naming the single path row, `scope`, and `hooks` value",
+        "The response requires explicit user approval and host/provider authorization for the exact plan even when Jev returns a validated permit, and records verdict, backend tier, and receipt"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Jev 프로파일이 OFF 상태인데 ECC 업데이트하고 hook을 strict로 바꿔줘.",
+      "expected_output": "Without an enabled profile the branch review is fail-closed: the skill records `unavailable`, keeps the native update path, and requires explicit human confirmation for the reconfiguration.",
+      "assertions": [
+        "The response re-inventories the existing installation before any update command",
+        "The response does not claim a Jev-decided branch from an unavailable or OFF profile, does not borrow another host's profile, and requires explicit human approval before mutation",
+        "The response keeps the hook-profile change an explicit recorded choice without running an automatic update workflow during blanket setup"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "현재 에이전트의 Jev가 validated permit을 줬으니까 사용자 확인이나 Codex hook trust 없이 ECC 설치하고 hook도 켜줘.",
+      "expected_output": "The skill keeps the current host's assigned profile and treats the permit and receipt as decision evidence only; it preserves explicit plan approval and Codex-owned hook trust before any mutation.",
+      "assertions": [
+        "The response does not use a Jev permit as a substitute for explicit user approval or host/provider authorization",
+        "The response uses the current assigned JEV_PROFILE rather than a fixed jeopi profile or another host's configuration",
+        "The response does not activate Codex hooks without the provider-owned trust decision and re-reviews any changed plan"
+      ]
     }
   ]
 }

@@ -98,3 +98,29 @@ ecc repair --dry-run
 auto-update` during blanket setup. Upstream's automatic update workflow fetches and
 fast-forwards a trusted checkout before reinstalling recorded targets, so it is an
 explicit update decision rather than a safe default.
+
+## Jev-gated branch proposals
+
+Every branching decision in the ECC flow — entry routing between ECC and
+`harness2`/`agentic-skills`/`bmad`, the installation path per harness, the Claude
+scope and hook profile, the dry-run-to-apply gate, and each recovery choice — is
+reviewed through the configured Jev profile before it is taken. The catalog helper
+prints a deterministic proposal; review it without modifying the payload:
+
+```bash
+bash .agent-skills/ecc/scripts/ecc.sh plan codex --proposal | sed -n 's/^jevproposal=//p'
+node ~/.agents/jev/jev-harness.mjs --profile "${JEV_PROFILE:?Select the current agent profile first}" review "<task>" "$( \
+  bash .agent-skills/ecc/scripts/ecc.sh plan codex --proposal | sed -n 's/^jevproposal=//p' )"
+```
+
+The Claude branch proposal records the chosen `scope` and `hooks` plus the preview and
+apply sequence for that exact pair; the Codex branch proposal records the marketplace
+add and plugin add sequence; the Kimi branch proposal records the project-local
+adapter install. The normalized values in the proposal must match the printed plan.
+`--proposal` is read-only decision evidence: it neither invokes Jev nor installs ECC.
+Use the current host's assigned profile; never fall back to another host's state.
+An unavailable or OFF profile leaves the branch with the user. No Jev verdict,
+including validated `permit`, grants user consent or host/provider permissions.
+Apply only after explicit approval for the exact plan and the provider's own trust
+requirements are satisfied; changed scope, hooks or commands require renewed review
+and approval.
