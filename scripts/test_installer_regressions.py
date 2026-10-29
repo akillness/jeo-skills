@@ -1048,19 +1048,69 @@ class InstallerRegressions(unittest.TestCase):
                         "--source", str(self.source), "--aside-home", str(aside_home), *args)
 
     def test_bootstrap_selection_preserves_custom_source_and_scope(self):
+        helper = self.source / "scripts/install-full-tools.sh"
+        helper.parent.mkdir()
+        helper.write_text('#!/bin/sh\nprintf "%s\\n" "$#" "$@" > "$HELPER_RECORD"\n')
+        record = self.work / "helper-record"
+        user_file = self.project / "user-owned.txt"
+        user_file.write_text("preserve user data\n")
+        catalog = json.loads(self.catalog.read_text())
+        for name, category in (("gamma", "engineering"), ("delta", "creative")):
+            skill = self.source / ".agent-skills" / name
+            (skill / "references").mkdir(parents=True)
+            (skill / "SKILL.md").write_text(f"---\nname: {name}\ndescription: fixture\n---\n{name} payload\n")
+            (skill / "references/evidence.txt").write_text(f"{name} nested payload\n")
+            catalog["skills"].append({"name": name, "category": category, "subcategory": "testing", "description": "fixture"})
+        catalog["categories"]["creative"] = {}
+        self.catalog.write_text(json.dumps(catalog))
+        sentinels = []
+        for base in (self.project, self.home):
+            sentinel = base / ".agents/skills/foreign/SKILL.md"
+            sentinel.parent.mkdir(parents=True)
+            sentinel.write_bytes(b"foreign user skill\x00\n")
+            sentinels.append(sentinel)
+        config = self.home / ".config/jeo-skill/user-settings.json"
+        config.parent.mkdir(parents=True)
+        config.write_bytes(b'{"user": "keep"}\n')
         cases = (("bundle", {"JEO_SKILLS_BUNDLE": "pair"}),
                  ("category", {"JEO_SKILLS_CATEGORY": "engineering"}),
                  ("all", {}))
         for selection, options in cases:
             for global_install in (False, True):
                 with self.subTest(selection=selection, global_install=global_install):
-                    self.successful(self.bootstrap(
+                    result = self.bootstrap(
                         JEO_SKILLS_AGENT="jeopi", INSTALL_GLOBAL=str(global_install).lower(),
-                        JEO_SKILLS_SELECTION=selection, **options))
+                        JEO_SKILLS_SELECTION=selection, HELPER_RECORD=str(record), **options)
+                    if selection == "all" and not global_install:
+                        self.assertEqual(result.returncode, 1, result.stdout)
+                        self.assertIn("Partial success: project-scoped skills installed", result.stdout)
+                        self.assertIn("user-global tools were not installed", result.stdout)
+                    else:
+                        self.successful(result)
+                    if selection == "all" and global_install:
+                        self.assertEqual(record.read_text(), f"1\n{self.project}\n")
+                        record.unlink()
+                    else:
+                        self.assertFalse(record.exists(), result.stdout)
+                    self.assertEqual(user_file.read_text(), "preserve user data\n")
                     base = self.home if global_install else self.project
-                    for name in ("jeo-skill", "alpha", "beta"):
+                    expected = {"jeo-skill", "alpha", "beta"}
+                    if selection in ("category", "all"):
+                        expected.add("gamma")
+                    if selection == "all":
+                        expected.add("delta")
+                    for name in expected:
                         self.assert_skill(base / ".agents/skills", name)
-                    shutil.rmtree(base / ".agents")
+                    for name in {"jeo-skill", "alpha", "beta", "gamma", "delta"} - expected:
+                        self.assertFalse((base / ".agents/skills" / name).exists())
+                    opposite = self.project if global_install else self.home
+                    for name in {"jeo-skill", "alpha", "beta", "gamma", "delta"}:
+                        self.assertFalse((opposite / ".agents/skills" / name).exists(), result.stdout)
+                    for sentinel in sentinels:
+                        self.assertEqual(sentinel.read_bytes(), b"foreign user skill\x00\n")
+                    self.assertEqual(config.read_bytes(), b'{"user": "keep"}\n')
+                    for name in expected:
+                        shutil.rmtree(base / ".agents/skills" / name)
                     link = self.home / ".local/bin/jeo-skill"
                     if link.is_symlink():
                         link.unlink()
