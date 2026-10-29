@@ -177,6 +177,105 @@ class SetupGuideRegressions(unittest.TestCase):
         self.assertIn(f"home={login_home}", result.stdout)
         self.assertIn(f"skills_root={login_home / '.agents/skills'}", result.stdout)
 
+    def test_full_tool_installer_pins_updates_preserves_project_and_avoids_activation(self) -> None:
+        installer = ROOT / "scripts/install-full-tools.sh"
+        bin_dir = self.work / "bin"
+        bin_dir.mkdir()
+        log = self.work / "commands.log"
+
+        def executable(name: str, body: str) -> None:
+            path = bin_dir / name
+            path.write_text("#!/bin/sh\nset -eu\n" + body, encoding="utf-8")
+            path.chmod(0o755)
+
+        executable("node", 'if [ "${1:-}" = -p ]; then echo "22 20"; else echo v22.20.0; fi\n')
+        executable("uname", 'case "${1:-}" in -s) echo Darwin;; -m) echo arm64;; *) echo Darwin;; esac\n')
+        executable("npm", f'echo "npm $*" >> {shlex.quote(str(log))}\n')
+        executable("mex-agent", 'echo 0.8.4\n')
+        executable("zg", 'exit 0\n')
+        executable("cargo", f'echo "cargo $*" >> {shlex.quote(str(log))}\n')
+        executable("rtk", 'exit 0\n')
+        executable("semble", 'exit 0\n')
+        executable("clihub", 'exit 0\n')
+        executable(
+            "uv",
+            f'echo "uv $*" >> {shlex.quote(str(log))}\n',
+        )
+        executable(
+            "specify",
+            'if [ "${1:-}" = init ]; then mkdir -p .specify/templates; '
+            'printf generated > .specify/templates/plan.md; printf generated > README.md; '
+            'else echo "specify 1.0.6"; fi\n',
+        )
+
+        original = b"user README\n"
+        (self.project / "README.md").write_bytes(original)
+        env = self.env(PATH=f"{bin_dir}:/usr/bin:/bin", TMPDIR=str(self.work))
+        result = subprocess.run(
+            ["/bin/bash", str(installer), str(self.project)],
+            cwd=ROOT,
+            env=env,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            timeout=60,
+            check=False,
+        )
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertIn("6/6 succeeded", result.stdout)
+        self.assertIn("README.md", result.stdout)
+        self.assertEqual((self.project / "README.md").read_bytes(), original)
+        self.assertEqual((self.project / ".specify/templates/plan.md").read_text(), "generated")
+        commands = log.read_text(encoding="utf-8")
+        for pin in (
+            "mex-agent@0.8.4",
+            "@zvec/zvec-grep@0.2.2",
+            "github/spec-kit.git@v1.0.6",
+            "--tag v0.49.0",
+            "semble==0.7.0",
+            "clihub-ai==0.1.0",
+        ):
+            self.assertIn(pin, commands)
+        for forbidden in ("mex setup", "mex graph", "zg index", " mcp ", "rtk init"):
+            self.assertNotIn(forbidden, commands)
+
+    def test_full_tool_installer_continues_and_reports_partial_success(self) -> None:
+        installer = ROOT / "scripts/install-full-tools.sh"
+        bin_dir = self.work / "bin"
+        bin_dir.mkdir()
+        log = self.work / "commands.log"
+
+        def executable(name: str, body: str) -> None:
+            path = bin_dir / name
+            path.write_text("#!/bin/sh\nset -eu\n" + body, encoding="utf-8")
+            path.chmod(0o755)
+
+        executable("node", 'if [ "${1:-}" = -p ]; then echo "22 20"; else echo v22.20.0; fi\n')
+        executable("uname", 'case "${1:-}" in -s) echo Linux;; -m) echo aarch64;; *) echo Linux;; esac\n')
+        executable("npm", f'echo "npm $*" >> {shlex.quote(str(log))}\ncase "$*" in *zvec-grep*) exit 9;; esac\n')
+        executable("mex-agent", 'echo 0.8.4\n')
+        executable("cargo", f'echo "cargo $*" >> {shlex.quote(str(log))}\n')
+        executable("rtk", 'exit 0\n')
+        executable("semble", 'exit 0\n')
+        executable("clihub", 'exit 0\n')
+        executable("uv", f'echo "uv $*" >> {shlex.quote(str(log))}\n')
+        executable("specify", 'if [ "${1:-}" = init ]; then mkdir -p .specify; else echo 1.0.6; fi\n')
+
+        result = subprocess.run(
+            ["/bin/bash", str(installer), str(self.project)],
+            cwd=ROOT,
+            env=self.env(PATH=f"{bin_dir}:/usr/bin:/bin", TMPDIR=str(self.work)),
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            timeout=60,
+            check=False,
+        )
+        self.assertEqual(result.returncode, 1, result.stdout)
+        self.assertIn("PARTIAL SUCCESS - failed: zvec-grep", result.stdout)
+        self.assertIn("Linux ARM64 requires a compatible glibc toolchain", result.stdout)
+        self.assertIn("clihub-ai==0.1.0", log.read_text(encoding="utf-8"))
+
     def knowledge_function(self) -> str:
         block = guide_block("### Knowledge pipeline hooks (llm-wiki + graphify, per-repo vault)")
         match = re.search(r"(?ms)^secure_kp_hooks\(\) \{.*?^\}\n", block)

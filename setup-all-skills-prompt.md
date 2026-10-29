@@ -15,7 +15,7 @@
 
 | Mode | Trigger | Outcome |
 |---|---|---|
-| `full` | Default | Install every jeo-skills skill, register supported MCP/shell tools, and configure detected integrations. |
+| `full` | Default | Install every jeo-skills skill plus the six pinned default CLIs; activation of MCP, hooks, indexes, models, and project memory remains separately approved. |
 | `core` | User says “core only” | Install the `starter` bundle through `jeo-skill`; do not install the entire catalog. |
 | `minimal` | User says “minimal” | Install only the `jeo-skill` router and its CLI link; skip MCP, shell, and plugin setup. |
 
@@ -645,8 +645,32 @@ by the selected starter skills; do not continue into the full shared-tool setup 
 
 ## Step 5 — Full-mode shared tools
 
-Run this step only in full mode. Reuse working installations and make every registration
-idempotent: inspect/list first, add only when missing, and never rewrite a whole config.
+Run this step only in full mode. The supported default is the repository-owned installer,
+which upgrades existing copies to verified official pins, checks that each command runs,
+continues after individual failures, and prints an explicit partial-success summary:
+
+```bash
+bash scripts/install-full-tools.sh "$PWD"
+```
+
+Run that command from the trusted jeo-skills checkout used for installation. The six pins are mex-agent 0.8.4,
+`@zvec/zvec-grep` 0.2.2, spec-kit 1.0.6, RTK 0.49.0, Semble 0.7.0, and
+CLI-Hub (`clihub-ai`) 0.1.0. The guide enforces Node.js 22.20+ (the skills CLI
+minimum, which also satisfies mex and zvec-grep). Linux ARM64 RTK is built from the official fixed tag; an incompatible
+glibc/toolchain failure is reported for RTK while the other five attempts continue.
+
+Spec-kit is generated in an empty staging directory and only missing files are copied
+into the current project. Existing files are never overwritten; every collision is
+listed. Set `SPEC_KIT_INTEGRATION` when `codex` is not the desired integration.
+
+The default installer deliberately does **not** run `mex setup`, `mex graph`, `zg index`,
+download an embedding/model, register an MCP server, or install/patch hooks. Each is a
+separate persistent or execution-side-effect approval. It also does not run remote Jev
+or any model call. CLI-Hub alone is installed as the default harness discovery surface;
+individual CLI-Anything harnesses are installed on demand for the selected task.
+
+The legacy manual blocks below are troubleshooting references only. Do not run them
+after the supported installer and do not treat their MCP/hook commands as approved.
 
 ### RTK shell output compaction
 
@@ -662,14 +686,15 @@ if ! command -v rtk >/dev/null 2>&1; then
     export PATH="$USER_HOME/.local/bin:$PATH"
   fi
 fi
-command -v rtk >/dev/null 2>&1 && rtk init -g --auto-patch
+command -v rtk >/dev/null 2>&1 && rtk --version
 ```
 
 Do not use `cargo install rtk`; crates.io contains an unrelated package with that name.
 Keep `--auto-patch`: without a TTY, `rtk init -g` answers its settings prompt with "no",
 prints "RTK hook registered" anyway, and leaves the Claude Code hook unregistered.
-`--auto-patch` merges the `PreToolUse` hook into `settings.json` (other keys kept, backup
-written to `settings.json.bak`) and is a no-op once the hook is present.
+Run `rtk init -g --auto-patch` only after separate hook approval. It merges the
+`PreToolUse` hook into `settings.json` (other keys kept, backup written to
+`settings.json.bak`) and is a no-op once the hook is present.
 
 ### Jev control-plane harness (System One)
 
@@ -988,21 +1013,25 @@ if ! command -v uvx >/dev/null 2>&1; then
     export PATH="$USER_HOME/.local/bin:$USER_HOME/.cargo/bin:$PATH"
   fi
 fi
-command -v semble >/dev/null 2>&1 || uv tool install 'semble[mcp]'
+command -v semble >/dev/null 2>&1 || uv tool install 'semble==0.7.0'
 
 # Absolute path: MCP clients spawn servers with their own PATH.
 UVX_BIN=$(command -v uvx || true)
 if [ -z "$UVX_BIN" ]; then
   printf '%s\n' 'semble: uvx not found after installing uv; open a new shell and rerun.' >&2
 else
-  if command -v claude >/dev/null 2>&1 && ! claude mcp get semble >/dev/null 2>&1; then
+  if [ "${JEO_SKILLS_APPROVE_SEMBLE_MCP:-false}" = true ] && command -v claude >/dev/null 2>&1 && ! claude mcp get semble >/dev/null 2>&1; then
     claude mcp add semble -s user -- "$UVX_BIN" --from 'semble[mcp]' semble
   fi
-  if command -v codex >/dev/null 2>&1 && ! codex mcp get semble >/dev/null 2>&1; then
+  if [ "${JEO_SKILLS_APPROVE_SEMBLE_MCP:-false}" = true ] && command -v codex >/dev/null 2>&1 && ! codex mcp get semble >/dev/null 2>&1; then
     codex mcp add semble -- "$UVX_BIN" --from 'semble[mcp]' semble
   fi
 fi
 ```
+
+The MCP branches remain disabled unless the user separately approves Semble MCP and
+`JEO_SKILLS_APPROVE_SEMBLE_MCP=true` is set for this invocation. A full install alone
+is not that approval.
 
 `claude mcp get NAME` and `codex mcp get NAME` exit non-zero only when that one server
 is absent; `claude mcp list` health-checks every registered server first, which is slow
