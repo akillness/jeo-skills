@@ -68,6 +68,8 @@ jobs:
         run: python3 scripts/test_installer_regressions.py -v
       - name: Setup guide install-block regressions
         run: python3 scripts/test_setup_guide_regressions.py -v
+      - name: Independent full-tools installation safety regressions
+        run: python3 scripts/test_full_tools_independent.py -v
       - name: Optional Jev setup and backend contract regressions
         run: python3 scripts/test_jev_regressions.py -v
       - name: Optional Jevgrep discovery contract regressions

@@ -177,104 +177,402 @@ class SetupGuideRegressions(unittest.TestCase):
         self.assertIn(f"home={login_home}", result.stdout)
         self.assertIn(f"skills_root={login_home / '.agents/skills'}", result.stdout)
 
-    def test_full_tool_installer_pins_updates_preserves_project_and_avoids_activation(self) -> None:
-        installer = ROOT / "scripts/install-full-tools.sh"
+    def test_step_one_blocks_project_scope_before_global_prerequisites(self) -> None:
+        bin_dir = self.work / "prerequisite-bin"
+        bin_dir.mkdir()
+        log = self.work / "prerequisite-actions"
+        for name in ("uname", "brew", "snap", "winget", "sudo", "npm", "npx"):
+            self.write_python_stub(bin_dir / name, '''import os, sys
+name = os.path.basename(sys.argv[0])
+with open(os.environ["ACTION_LOG"], "a") as output:
+    output.write(name + " " + " ".join(sys.argv[1:]) + "\\n")
+if name == "uname":
+    print(os.environ["FIXTURE_PLATFORM"])
+''')
+        sentinel = self.home / ".agents/skills/user/SKILL.md"
+        sentinel.parent.mkdir(parents=True)
+        sentinel.write_bytes(b"preserve existing skill\n")
+        before = tree_snapshot(self.home)
+        block = guide_block("## Step 1 — Detect OS, prerequisites, and coding agents")
+        for platform in ("Darwin", "Linux", "MINGW64_NT"):
+            for scope in ("false", None):
+                with self.subTest(platform=platform, scope=scope):
+                    log.write_text("")
+                    env = self.env(PATH=str(bin_dir), ACTION_LOG=str(log), FIXTURE_PLATFORM=platform)
+                    if scope is not None:
+                        env["INSTALL_GLOBAL"] = scope
+                    result = run_block(block, env, self.project)
+                    actions = log.read_text()
+                    if scope == "false":
+                        self.assertNotEqual(result.returncode, 0, result.stdout)
+                        self.assertIn("stopped before prerequisites", result.stdout)
+                        self.assertIn("project-only scope", result.stdout)
+                        self.assertEqual(actions, "")
+                    else:
+                        self.assertEqual(result.returncode, 0, result.stdout)
+                        self.assertIn("uname -s\n", actions)
+                        self.assertIn("platform=", result.stdout)
+                    self.assertEqual(tree_snapshot(self.home), before)
+
+    def full_tool_fixture(self) -> tuple[Path, Path]:
         bin_dir = self.work / "bin"
         bin_dir.mkdir()
         log = self.work / "commands.log"
 
         def executable(name: str, body: str) -> None:
             path = bin_dir / name
-            path.write_text("#!/bin/sh\nset -eu\n" + body, encoding="utf-8")
+            path.write_text("#!/bin/sh\nset -eu\n" + body + "\n", encoding="utf-8")
             path.chmod(0o755)
 
-        executable("node", 'if [ "${1:-}" = -p ]; then echo "22 20"; else echo v22.20.0; fi\n')
-        executable("uname", 'case "${1:-}" in -s) echo Darwin;; -m) echo arm64;; *) echo Darwin;; esac\n')
-        executable("npm", f'echo "npm $*" >> {shlex.quote(str(log))}\n')
-        executable("mex-agent", 'echo 0.8.4\n')
-        executable("zg", 'exit 0\n')
-        executable("cargo", f'echo "cargo $*" >> {shlex.quote(str(log))}\n')
-        executable("rtk", 'exit 0\n')
-        executable("semble", 'exit 0\n')
-        executable("clihub", 'exit 0\n')
-        executable(
-            "uv",
-            f'echo "uv $*" >> {shlex.quote(str(log))}\n',
-        )
-        executable(
-            "specify",
-            'if [ "${1:-}" = init ]; then mkdir -p .specify/templates; '
-            'printf generated > .specify/templates/plan.md; printf generated > README.md; '
-            'else echo "specify 1.0.6"; fi\n',
-        )
+        for name in ("head", "mkdir", "mktemp", "rm", "sed", "uname"):
+            path = shutil.which(name, path=os.defpath)
+            self.assertIsNotNone(path, name)
+            (bin_dir / name).symlink_to(path)
+        (bin_dir / "python3").symlink_to(sys.executable)
+        executable("node", 'if [ "${1:-}" = -p ]; then echo "22 20"; else echo v22.20.0; fi')
+        executable("npm", '''printf 'npm %s\n' "$*" >> "$FIXTURE_LOG"
+case "$*" in
+  *mex-agent@0.8.4*) [ "${FAIL_MEX:-0}" != 1 ] ;;
+  *@zvec/zvec-grep@0.2.2*) [ "${FAIL_ZVEC:-0}" != 1 ] ;;
+  *) exit 41 ;;
+esac''')
+        executable("cargo", '''printf 'cargo %s\n' "$*" >> "$FIXTURE_LOG"
+[ "${FAIL_RTK:-0}" != 1 ]''')
+        executable("uv", '''printf 'uv %s\n' "$*" >> "$FIXTURE_LOG"
+case "$*" in
+  *specify-cli*99e047e9b48c3ecbbc5c3e530fb45bed671960bc*) [ "${FAIL_SPEC:-0}" != 1 ] ;;
+  *semble==0.7.0*) [ "${FAIL_SEMBLE:-0}" != 1 ] ;;
+  *cli-anything-hub==0.4.1*) [ "${FAIL_CLI:-0}" != 1 ] ;;
+  *) echo "fixture rejected package: $*" >&2; exit 41 ;;
+esac''')
+        executable("mex", 'printf "mex %s\\n" "$*" >> "$FIXTURE_LOG"; echo "${MEX_OUTPUT:-0.8.4}"')
+        executable("zg", 'printf "zg %s\\n" "$*" >> "$FIXTURE_LOG"; [ "${1:-}" = version ] && echo "${ZVEC_OUTPUT:-0.2.2}"; exit 0')
+        executable("rtk", 'printf "rtk %s\\n" "$*" >> "$FIXTURE_LOG"; [ "${1:-}" = --version ] && echo "${RTK_OUTPUT:-rtk 1.1.0}"; exit 0')
+        executable("semble", 'printf "semble %s\\n" "$*" >> "$FIXTURE_LOG"; [ "${1:-}" = --version ] && echo "${SEMBLE_OUTPUT:-0.7.0}"; exit 0')
+        executable("cli-hub", 'printf "cli-hub %s\\n" "$*" >> "$FIXTURE_LOG"; [ "${FAIL_CLI_EXEC:-0}" != 1 ] || exit 43; echo "${CLI_OUTPUT:-cli-hub 0.4.1}"')
+        executable("clihub", 'echo "incorrect executable" >&2; exit 44')
+        executable("specify", '''printf 'specify %s\n' "$*" >> "$FIXTURE_LOG"
+if [ "${1:-}" = init ]; then
+  mkdir -p .specify/templates
+  printf generated > .specify/templates/plan.md
+  printf generated > README.md
+else
+  echo "${SPEC_OUTPUT:-specify 1.2.6.dev0}"
+fi''')
+        return bin_dir, log
 
-        original = b"user README\n"
-        (self.project / "README.md").write_bytes(original)
-        env = self.env(PATH=f"{bin_dir}:/usr/bin:/bin", TMPDIR=str(self.work))
-        result = subprocess.run(
-            ["/bin/bash", str(installer), str(self.project)],
-            cwd=ROOT,
-            env=env,
+    def run_full_tool_installer(self, bin_dir: Path, log: Path, **overrides: str) -> subprocess.CompletedProcess[str]:
+        return subprocess.run(
+            ["/bin/bash", str(ROOT / "scripts/install-full-tools.sh"), str(self.project)],
+            cwd=self.project,
+            env=self.env(PATH=str(bin_dir), FIXTURE_LOG=str(log), **overrides),
             text=True,
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
             timeout=60,
             check=False,
         )
+
+    def test_full_tool_installer_pins_updates_and_preserves_project(self) -> None:
+        bin_dir, log = self.full_tool_fixture()
+        original = b"user README\n"
+        (self.project / "README.md").write_bytes(original)
+        result = self.run_full_tool_installer(bin_dir, log)
         self.assertEqual(result.returncode, 0, result.stdout)
         self.assertIn("6/6 succeeded", result.stdout)
+        self.assertIn("collision", result.stdout.lower())
         self.assertIn("README.md", result.stdout)
         self.assertEqual((self.project / "README.md").read_bytes(), original)
         self.assertEqual((self.project / ".specify/templates/plan.md").read_text(), "generated")
         commands = log.read_text(encoding="utf-8")
         for pin in (
-            "mex-agent@0.8.4",
-            "@zvec/zvec-grep@0.2.2",
-            "github/spec-kit.git@v1.0.6",
-            "--tag v0.49.0",
-            "semble==0.7.0",
-            "clihub-ai==0.1.0",
+            "mex-agent@0.8.4", "@zvec/zvec-grep@0.2.2",
+            "github/spec-kit.git@99e047e9b48c3ecbbc5c3e530fb45bed671960bc",
+            "--tag v1.1.0", "semble==0.7.0", "cli-anything-hub==0.4.1",
         ):
             self.assertIn(pin, commands)
-        for forbidden in ("mex setup", "mex graph", "zg index", " mcp ", "rtk init"):
+
+    def test_full_tool_installer_does_not_activate_without_approval(self) -> None:
+        bin_dir, log = self.full_tool_fixture()
+        result = self.run_full_tool_installer(bin_dir, log)
+        self.assertEqual(result.returncode, 0, result.stdout)
+        commands = log.read_text(encoding="utf-8")
+        for forbidden in ("mex setup", "mex graph", "zg index", " mcp ", "rtk init", "model"):
             self.assertNotIn(forbidden, commands)
+        self.assertFalse((self.home / ".config").exists())
+        self.assertFalse((self.home / ".agents").exists())
 
-    def test_full_tool_installer_continues_and_reports_partial_success(self) -> None:
-        installer = ROOT / "scripts/install-full-tools.sh"
-        bin_dir = self.work / "bin"
-        bin_dir.mkdir()
-        log = self.work / "commands.log"
+    def test_full_tool_installer_continues_and_reports_individual_failures(self) -> None:
+        bin_dir, log = self.full_tool_fixture()
+        failures = (
+            ("FAIL_MEX", "mex"), ("FAIL_ZVEC", "zvec-grep"),
+            ("FAIL_SPEC", "spec-kit"), ("FAIL_RTK", "RTK"),
+            ("FAIL_SEMBLE", "Semble"), ("FAIL_CLI", "CLI-Hub"),
+            ("FAIL_CLI_EXEC", "CLI-Hub"),
+        )
+        for variable, name in failures:
+            with self.subTest(tool=name, failure=variable):
+                log.write_text("")
+                result = self.run_full_tool_installer(bin_dir, log, **{variable: "1"})
+                self.assertEqual(result.returncode, 1, result.stdout)
+                self.assertIn("5/6 succeeded", result.stdout)
+                self.assertIn(f"PARTIAL SUCCESS - failed: {name}\n", result.stdout)
+                commands = log.read_text(encoding="utf-8")
+                self.assertIn("cli-anything-hub==0.4.1", commands)
+                self.assertIn("semble==0.7.0", commands)
 
-        def executable(name: str, body: str) -> None:
-            path = bin_dir / name
-            path.write_text("#!/bin/sh\nset -eu\n" + body, encoding="utf-8")
-            path.chmod(0o755)
+    def test_full_tool_installer_rejects_incorrect_executable_versions(self) -> None:
+        bin_dir, log = self.full_tool_fixture()
+        for variable, name in (
+            ("MEX_OUTPUT", "mex"), ("ZVEC_OUTPUT", "zvec-grep"),
+            ("SPEC_OUTPUT", "spec-kit"), ("RTK_OUTPUT", "RTK"),
+            ("SEMBLE_OUTPUT", "Semble"), ("CLI_OUTPUT", "CLI-Hub"),
+        ):
+            with self.subTest(tool=name):
+                result = self.run_full_tool_installer(bin_dir, log, **{variable: "wrong-version"})
+                self.assertEqual(result.returncode, 1, result.stdout)
+                self.assertIn("5/6 succeeded", result.stdout)
+                self.assertIn(f"PARTIAL SUCCESS - failed: {name}\n", result.stdout)
+                self.assertIn("wrong-version", result.stdout)
 
-        executable("node", 'if [ "${1:-}" = -p ]; then echo "22 20"; else echo v22.20.0; fi\n')
-        executable("uname", 'case "${1:-}" in -s) echo Linux;; -m) echo aarch64;; *) echo Linux;; esac\n')
-        executable("npm", f'echo "npm $*" >> {shlex.quote(str(log))}\ncase "$*" in *zvec-grep*) exit 9;; esac\n')
-        executable("mex-agent", 'echo 0.8.4\n')
-        executable("cargo", f'echo "cargo $*" >> {shlex.quote(str(log))}\n')
-        executable("rtk", 'exit 0\n')
-        executable("semble", 'exit 0\n')
-        executable("clihub", 'exit 0\n')
-        executable("uv", f'echo "uv $*" >> {shlex.quote(str(log))}\n')
-        executable("specify", 'if [ "${1:-}" = init ]; then mkdir -p .specify; else echo 1.0.6; fi\n')
+    def test_full_tool_installer_reports_multiple_failures_and_continues(self) -> None:
+        bin_dir, log = self.full_tool_fixture()
+        result = self.run_full_tool_installer(bin_dir, log, FAIL_ZVEC="1", FAIL_CLI_EXEC="1")
+        self.assertEqual(result.returncode, 1, result.stdout)
+        self.assertIn("4/6 succeeded", result.stdout)
+        self.assertIn("PARTIAL SUCCESS - failed: zvec-grep CLI-Hub\n", result.stdout)
+        self.assertIn("semble==0.7.0", log.read_text(encoding="utf-8"))
+        self.assertEqual((self.project / ".specify/templates/plan.md").read_text(), "generated")
 
-        result = subprocess.run(
-            ["/bin/bash", str(installer), str(self.project)],
-            cwd=ROOT,
-            env=self.env(PATH=f"{bin_dir}:/usr/bin:/bin", TMPDIR=str(self.work)),
-            text=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT,
-            timeout=60,
-            check=False,
+    def test_full_tool_installer_reports_all_failures_without_unbound_array(self) -> None:
+        bin_dir, log = self.full_tool_fixture()
+        result = self.run_full_tool_installer(
+            bin_dir, log, FAIL_MEX="1", FAIL_ZVEC="1", FAIL_SPEC="1",
+            FAIL_RTK="1", FAIL_SEMBLE="1", FAIL_CLI="1",
         )
         self.assertEqual(result.returncode, 1, result.stdout)
-        self.assertIn("PARTIAL SUCCESS - failed: zvec-grep", result.stdout)
-        self.assertIn("Linux ARM64 requires a compatible glibc toolchain", result.stdout)
-        self.assertIn("clihub-ai==0.1.0", log.read_text(encoding="utf-8"))
+        self.assertIn("0/6 succeeded", result.stdout)
+        self.assertIn("PARTIAL SUCCESS - failed: mex zvec-grep spec-kit RTK Semble CLI-Hub\n", result.stdout)
+        self.assertNotIn("unbound variable", result.stdout.lower())
+
+    def test_step_two_global_fences_respect_project_only_scope(self) -> None:
+        for index in (0, 1):
+            for scope in ("false", None):
+                with self.subTest(fence=index, scope=scope), tempfile.TemporaryDirectory(dir=self.work) as root:
+                    root = Path(root)
+                    home, bin_dir, project = root / "home", root / "bin", root / "project"
+                    home.mkdir()
+                    bin_dir.mkdir()
+                    project.mkdir()
+                    log = root / "commands"
+                    log.write_text("")
+                    router = home / ".agents/skills/jeo-skill/scripts/jeo-skill.py"
+                    router.parent.mkdir(parents=True)
+                    router.write_text('import os\nopen(os.environ["ACTION_LOG"], "a").write("doctor\\n")\n')
+                    sentinel = home / ".agents/skills/user/SKILL.md"
+                    sentinel.parent.mkdir(parents=True)
+                    sentinel.write_bytes(b"existing user skill\n")
+                    (project / "user-file").write_bytes(b"existing project file\n")
+                    before_home, before_project = tree_snapshot(home), tree_snapshot(project)
+                    for name in ("npm", "npx", "bash"):
+                        self.write_python_stub(bin_dir / name, '''import os, sys
+with open(os.environ["ACTION_LOG"], "a") as log:
+    log.write(os.path.basename(sys.argv[0]) + " " + " ".join(sys.argv[1:]) + " " + os.environ.get("JEO_SKILLS_DRY_RUN", "") + "\\n")
+if os.path.basename(sys.argv[0]) == "npm":
+    import pathlib
+    path = pathlib.Path(os.environ["FIXTURE_BIN"]) / "skills"
+    path.write_text("#!/bin/sh\\necho fixture-version\\n")
+    path.chmod(0o700)
+''')
+                    (bin_dir / "python3").symlink_to(sys.executable)
+                    env = self.env(HOME=str(home), USER_HOME=str(home), PATH=str(bin_dir),
+                                   ACTION_LOG=str(log), FIXTURE_BIN=str(bin_dir))
+                    if scope is not None:
+                        env["INSTALL_GLOBAL"] = scope
+                    result = run_block(guide_block("## Step 2 — Install the skills CLI", index), env, project)
+                    actions = log.read_text()
+                    if scope == "false":
+                        self.assertNotEqual(result.returncode, 0, result.stdout)
+                        self.assertIn("project-only scope", result.stdout)
+                        self.assertEqual(actions, "", result.stdout)
+                    else:
+                        self.assertEqual(result.returncode, 0, result.stdout)
+                        if index == 0:
+                            self.assertIn("npm install -g skills@1.7.0", actions)
+                            self.assertIn("fixture-version", result.stdout)
+                        else:
+                            self.assertIn("bash ./install.sh true", actions)
+                            self.assertIn("bash ./install.sh false", actions)
+                            self.assertIn("doctor\n", actions)
+                    self.assertEqual(tree_snapshot(home), before_home)
+                    self.assertEqual(tree_snapshot(project), before_project)
+
+    def test_full_guide_steps_preserve_default_and_project_scope(self) -> None:
+        bin_dir = self.work / "step-bin"
+        bin_dir.mkdir()
+        log = self.work / "step-actions"
+        helper = self.work / "step-helper"
+        helper.write_text('printf "helper:%s\\n" "$1" >> "$ACTION_LOG"\n')
+        for name, body in (
+            ("npx", 'printf "npx:%s\\n" "$*" >> "$ACTION_LOG"'),
+            ("curl", '''[ "$1" = -fsSL ] && [ "$2" = 'https://raw.githubusercontent.com/akillness/jeo-skills/main/scripts/install-full-tools.sh' ] && [ "$3" = -o ] || exit 41
+cp "$FIXTURE_HELPER" "$4"'''),
+        ):
+            executable = bin_dir / name
+            executable.write_text("#!/bin/bash\nset -eu\n" + body + "\n")
+            executable.chmod(0o700)
+        scratch = self.work / "step-tmp"
+        scratch.mkdir()
+        (self.project / "user-file").write_bytes(b"preserve project\n")
+        (self.home / "user-file").write_bytes(b"preserve home\n")
+        global_sentinel = self.home / ".agents/skills/existing/SKILL.md"
+        global_sentinel.parent.mkdir(parents=True)
+        global_sentinel.write_bytes(b"preserve installed skill\n")
+        home_before, project_before = tree_snapshot(self.home), tree_snapshot(self.project)
+        code = "\n".join((
+            guide_block("## Step 1 — Detect OS, prerequisites, and coding agents"),
+            "SKILLS_AGENT_ARGS=()",
+            guide_block("### Default: full"),
+            guide_block("## Step 5 — Full-mode shared tools"),
+        ))
+        for scope in (None, "false"):
+            with self.subTest(scope=scope):
+                log.write_text("")
+                env = self.env(PATH=f"{bin_dir}:/usr/bin:/bin", TMPDIR=str(scratch),
+                               ACTION_LOG=str(log), FIXTURE_HELPER=str(helper))
+                if scope is not None:
+                    env["INSTALL_GLOBAL"] = scope
+                result = run_block(code, env, self.project)
+                actions = log.read_text()
+                if scope is None:
+                    self.assertEqual(result.returncode, 0, result.stdout)
+                    self.assertIn("npx:--yes skills@1.7.0 add -g https://github.com/akillness/jeo-skills --skill * --yes --copy --full-depth\n", actions)
+                    self.assertIn(f"helper:{self.project}\n", actions)
+                else:
+                    self.assertNotEqual(result.returncode, 0, result.stdout)
+                    self.assertIn("PARTIAL FAILURE", result.stdout)
+                    self.assertIn("stopped before prerequisites", result.stdout)
+                    self.assertIn("Global guide skipped", result.stdout)
+                    self.assertNotIn("npx:", actions)
+                    self.assertNotIn("helper:", actions)
+                self.assertEqual(tree_snapshot(self.home), home_before)
+                self.assertEqual(tree_snapshot(self.project), project_before)
+                self.assertEqual(list(scratch.iterdir()), [], result.stdout)
+
+    def test_full_tool_guide_remote_helper_propagates_results_and_cleans_up(self) -> None:
+        bin_dir = self.work / "guide-bin"
+        bin_dir.mkdir()
+        for name in ("bash", "mktemp", "rm"):
+            executable = shutil.which(name, path=os.defpath)
+            self.assertIsNotNone(executable, name)
+            (bin_dir / name).symlink_to(executable)
+        helper = self.work / "fixture-helper"
+        helper.write_text('''#!/bin/bash
+printf '%s\\n%s\\n' "$1" "$HOME" > "$HELPER_RESULT"
+if [ "${HELPER_FAIL:-0}" = 1 ]; then
+  echo 'helper failed' >&2
+  exit 7
+fi
+''', encoding="utf-8")
+        curl = bin_dir / "curl"
+        curl.write_text('''#!/bin/bash
+if [ "$1" != -fsSL ] || [ "$2" != 'https://raw.githubusercontent.com/akillness/jeo-skills/main/scripts/install-full-tools.sh' ] || [ "$3" != -o ]; then
+  exit 40
+fi
+if [ "${DOWNLOAD_FAIL:-0}" = 1 ]; then exit 22; fi
+while IFS= read -r line || [ -n "$line" ]; do printf '%s\\n' "$line"; done < "$FIXTURE_HELPER" > "$4"
+''', encoding="utf-8")
+        curl.chmod(0o755)
+        scratch = self.work / "scratch"
+        scratch.mkdir()
+        helper_result = self.work / "helper-result"
+        block = guide_block("## Step 5 — Full-mode shared tools")
+        for failure in ("success", "download", "helper"):
+            with self.subTest(failure=failure):
+                helper_result.unlink(missing_ok=True)
+                env = self.env(
+                    PATH=str(bin_dir), TMPDIR=str(scratch), PROJECT_DIR=str(self.project), INSTALL_GLOBAL="true",
+                    FIXTURE_HELPER=str(helper), HELPER_RESULT=str(helper_result),
+                    DOWNLOAD_FAIL="1" if failure == "download" else "0",
+                    HELPER_FAIL="1" if failure == "helper" else "0",
+                )
+                result = run_block(block, env, self.work)
+                self.assertEqual(list(scratch.iterdir()), [], result.stdout)
+                if failure == "success":
+                    self.assertEqual(result.returncode, 0, result.stdout)
+                else:
+                    self.assertNotEqual(result.returncode, 0, result.stdout)
+                    self.assertIn("PARTIAL FAILURE", result.stdout)
+                if failure == "download":
+                    self.assertIn("download failed", result.stdout)
+                    self.assertFalse(helper_result.exists())
+                else:
+                    self.assertEqual(helper_result.read_text().splitlines(), [str(self.project), str(self.home)])
+                    if failure == "helper":
+                        self.assertIn("helper failed", result.stdout)
+
+    def test_remote_bootstrap_fetches_full_tool_helper_for_user_project(self) -> None:
+        download = self.work / "download"
+        download.mkdir()
+        installer = download / "install.sh"
+        shutil.copy2(ROOT / "install.sh", installer)
+        bin_dir = self.work / "bootstrap-bin"
+        bin_dir.mkdir()
+        for name in ("bash", "basename", "dirname", "mktemp", "rm", "mkdir", "cp"):
+            executable = shutil.which(name, path=os.defpath)
+            self.assertIsNotNone(executable, name)
+            (bin_dir / name).symlink_to(executable)
+        (bin_dir / "python3").symlink_to(sys.executable)
+        fixture_router = self.work / "router"
+        (fixture_router / "scripts").mkdir(parents=True)
+        (fixture_router / "SKILL.md").write_text("fixture\n")
+        (fixture_router / "scripts/install_support.py").write_text("")
+        (fixture_router / "scripts/jeo-skill.py").write_text("pass\n")
+        fixture_helper = self.work / "downloaded-helper"
+        fixture_helper.write_text('printf "%s\\n" "$1" > "$HELPER_RESULT"\n')
+
+        def command(name: str, body: str) -> None:
+            executable = bin_dir / name
+            executable.write_text("#!/bin/bash\nset -eu\n" + body + "\n")
+            executable.chmod(0o755)
+
+        command("node", "exit 0")
+        command("npx", '''if [ "${1:-}" = --version ]; then exit 0; fi
+if [ "${INSTALL_GLOBAL:-true}" = true ]; then scope="$HOME"; else scope="$PWD"; fi
+mkdir -p "$scope/.agents/skills"
+cp -R "$FIXTURE_ROUTER" "$scope/.agents/skills/jeo-skill"''')
+        command("git", 'echo "unexpected git access" >&2; exit 41')
+        command("curl", '''[ "$1" = -fsSL ]
+[ "$2" = 'https://raw.githubusercontent.com/akillness/jeo-skills/main/scripts/install-full-tools.sh' ]
+[ "$3" = -o ]
+cp "$FIXTURE_HELPER" "$4"''')
+        scratch = self.work / "bootstrap-tmp"
+        scratch.mkdir()
+        helper_result = self.work / "bootstrap-result"
+        for global_scope in ("true", "false"):
+            with self.subTest(global_scope=global_scope):
+                helper_result.unlink(missing_ok=True)
+                result = subprocess.run(
+                    ["/bin/bash", str(installer)],
+                    cwd=self.project,
+                    env=self.env(
+                        PATH=str(bin_dir), TMPDIR=str(scratch), INSTALL_GLOBAL=global_scope,
+                        JEO_SKILLS_SELECTION="all", JEO_SKILLS_JEV="skip",
+                        FIXTURE_ROUTER=str(fixture_router), FIXTURE_HELPER=str(fixture_helper),
+                        HELPER_RESULT=str(helper_result),
+                    ),
+                    text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                    timeout=60, check=False,
+                )
+                if global_scope == "true":
+                    self.assertEqual(result.returncode, 0, result.stdout)
+                    self.assertEqual(helper_result.read_text().splitlines(), [str(self.project)])
+                else:
+                    self.assertNotEqual(result.returncode, 0, result.stdout)
+                    self.assertIn("partial", result.stdout.lower())
+                    self.assertIn("global", result.stdout.lower())
+                    self.assertFalse(helper_result.exists(), result.stdout)
+                self.assertEqual(list(scratch.iterdir()), [], result.stdout)
 
     def knowledge_function(self) -> str:
         block = guide_block("### Knowledge pipeline hooks (llm-wiki + graphify, per-repo vault)")
@@ -385,6 +683,7 @@ else:
             XDG_CONFIG_HOME=str(self.home / ".config"),
             OPENCODE_STUB_VERSION="opencode v2.0.32",
             OPENCODE_STUB_LOG=str(log),
+            JEO_SKILLS_APPROVE_ASIDE_MCP="true",
         )
         result = run_block(block, env, self.work)
         self.assertEqual(result.returncode, 0, result.stdout)
@@ -431,7 +730,7 @@ if args[:2] == ["mcp", "add"]:
     with open({str(claude_log)!r}, "a", encoding="utf-8") as output:
         output.write(json.dumps(args) + "\\n")
 ''')
-        env = self.env(PATH=f"{bin_dir}:/usr/bin:/bin", CLAUDE_STUB_EXISTING="")
+        env = self.env(PATH=f"{bin_dir}:/usr/bin:/bin", CLAUDE_STUB_EXISTING="", JEO_SKILLS_APPROVE_OOO_MCP="true")
         result = run_block(block, env, self.work)
         self.assertEqual(result.returncode, 0, result.stdout)
         uv_calls = [json.loads(line) for line in uv_log.read_text(encoding="utf-8").splitlines()]
@@ -446,6 +745,103 @@ if args[:2] == ["mcp", "add"]:
         result = run_block(block, env, self.work)
         self.assertEqual(result.returncode, 0, result.stdout)
         self.assertEqual(claude_log.read_text(encoding="utf-8"), "")
+
+    def test_optional_activation_fences_require_separate_approval(self) -> None:
+        cases = (
+            ("### Graphify and Headroom code-context layer", 0, "JEO_SKILLS_APPROVE_HEADROOM_DEPLOY", "headroom deploy"),
+            ("### Graphify and Headroom code-context layer", 1, "JEO_SKILLS_APPROVE_HEADROOM_HOOK", "policy-hook"),
+            ("### Knowledge pipeline hooks (llm-wiki + graphify, per-repo vault)", 0, "JEO_SKILLS_APPROVE_KNOWLEDGE_HOOKS", "knowledge-ingest"),
+            ("### Ouroboros (`ooo`) MCP server", 0, "JEO_SKILLS_APPROVE_OOO_MCP", "claude mcp add ooo"),
+            ("### Aside browser skill and MCP wiring", 1, "JEO_SKILLS_APPROVE_ASIDE_MCP", "claude mcp add aside"),
+        )
+        for heading, index, flag, expected in cases:
+            approvals = [(None, None), ("false", None), ("true", "true")]
+            if flag == "JEO_SKILLS_APPROVE_KNOWLEDGE_HOOKS":
+                approvals.extend([("true", None), ("true", "false"), (None, "true")])
+            for approval, data_approval in approvals:
+                with self.subTest(flag=flag, approval=approval, data_approval=data_approval), tempfile.TemporaryDirectory(dir=self.work) as root:
+                    root = Path(root)
+                    home, bin_dir, skills = root / "home", root / "bin", root / "skills"
+                    home.mkdir()
+                    bin_dir.mkdir()
+                    skills.mkdir()
+                    log = root / "actions.log"
+                    log.write_text("")
+                    for name in ("graphify", "headroom", "claude", "codex", "opencode", "aside", "uv", "uvx", "git", "curl"):
+                        self.write_python_stub(bin_dir / name, '''import os, sys
+with open(os.environ["ACTION_LOG"], "a") as log:
+    log.write(os.path.basename(sys.argv[0]) + " " + " ".join(sys.argv[1:]) + "\\n")
+if sys.argv[1:3] in (["install", "status"], ["mcp", "get"]):
+    raise SystemExit(1)
+''')
+                    scripts = skills / "headroom/scripts"
+                    scripts.mkdir(parents=True)
+                    hook = scripts / "setup-claude-code-policy-hook.sh"
+                    hook.write_text('printf "policy-hook\\n" >> "$ACTION_LOG"\n')
+                    hook.chmod(0o700)
+                    (scripts / "jeo-code-policy-hook.py").write_text("pass\n")
+                    bootstrap = skills / "llm-wiki/scripts/bootstrap-vault.sh"
+                    bootstrap.parent.mkdir(parents=True)
+                    bootstrap.write_text('printf "vault-bootstrap\\n" >> "$ACTION_LOG"\n')
+                    bootstrap.chmod(0o700)
+                    ingest = home / ".agents/hooks/ingest-prompt.py"
+                    ingest.parent.mkdir(parents=True)
+                    ingest.write_text('import os\nopen(os.environ["ACTION_LOG"], "a").write("knowledge-ingest\\n")\n')
+                    settings = home / ".claude/settings.json"
+                    settings.parent.mkdir()
+                    settings.write_text('{"sentinel": "preserve"}\n')
+                    before = tree_snapshot(home)
+                    env = self.env(
+                        HOME=str(home), USER_HOME=str(home), PATH=f"{bin_dir}:/usr/bin:/bin",
+                        SKILLS_ROOT=str(skills), PLATFORM="linux", ACTION_LOG=str(log),
+                        OBSIDIAN_MIND_VAULT=str(root / "vault"),
+                    )
+                    if approval is not None:
+                        env[flag] = approval
+                    if flag == "JEO_SKILLS_APPROVE_KNOWLEDGE_HOOKS" and data_approval is not None:
+                        env["JEO_SKILLS_APPROVE_KNOWLEDGE_DATA"] = data_approval
+                    result = run_block(guide_block(heading, index), env, root)
+                    self.assertEqual(result.returncode, 0, result.stdout)
+                    actions = log.read_text()
+                    if approval == "true" and (flag != "JEO_SKILLS_APPROVE_KNOWLEDGE_HOOKS" or data_approval == "true"):
+                        self.assertIn(expected, actions, result.stdout)
+                        if flag == "JEO_SKILLS_APPROVE_KNOWLEDGE_HOOKS":
+                            self.assertIn("UserPromptSubmit", json.loads(settings.read_text())["hooks"])
+                            self.assertIn("vault-bootstrap", actions)
+                    else:
+                        self.assertNotIn(expected, actions, result.stdout)
+                        self.assertEqual(tree_snapshot(home), before)
+                        if flag != "JEO_SKILLS_APPROVE_HEADROOM_DEPLOY":
+                            self.assertEqual(actions, "", result.stdout)
+
+    def test_approved_omc_plugin_reports_each_install_failure(self) -> None:
+        bin_dir = self.work / "omc-bin"
+        bin_dir.mkdir()
+        log = self.work / "omc.log"
+        self.write_python_stub(bin_dir / "claude", '''import os, sys
+args = sys.argv[1:]
+with open(os.environ["OMC_LOG"], "a") as output:
+    output.write(" ".join(args) + "\\n")
+if (args[:3] == ["plugin", "marketplace", "add"] and os.environ["FAIL_STEP"] in ("marketplace", "both")) or (args[:2] == ["plugin", "install"] and os.environ["FAIL_STEP"] in ("install", "both")):
+    raise SystemExit(1)
+''')
+        block = guide_block("### Claude Code orchestration plugin")
+        for failure in ("marketplace", "install", "both"):
+            with self.subTest(failure=failure):
+                log.write_text("")
+                result = run_block(block, self.env(
+                    PATH=f"{bin_dir}:/usr/bin:/bin", OMC_LOG=str(log), FAIL_STEP=failure,
+                    JEO_SKILLS_APPROVE_OMC_PLUGIN="true",
+                ), self.work)
+                self.assertEqual(result.returncode, 1, result.stdout)
+                if failure in ("marketplace", "both"):
+                    self.assertIn("PARTIAL FAILURE — marketplace add failed", result.stdout)
+                if failure in ("install", "both"):
+                    self.assertIn("PARTIAL FAILURE — plugin install failed", result.stdout)
+                self.assertEqual(log.read_text().splitlines(), [
+                    "plugin marketplace add https://github.com/Yeachan-Heo/oh-my-claudecode",
+                    "plugin install oh-my-claudecode",
+                ])
 
     def test_step_four_d_reports_only_stale_opencode_shadowing_without_writes(self) -> None:
         block = guide_block("### Step 4D — OpenCode (all modes when detected)")

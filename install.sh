@@ -8,6 +8,7 @@ AGENT="${JEO_SKILLS_AGENT:-universal}"
 JEV_PROFILE="${JEO_SKILLS_JEV_PROFILE:-$AGENT}"
 GLOBAL="${INSTALL_GLOBAL:-true}"
 DRY_RUN="${JEO_SKILLS_DRY_RUN:-false}"
+PROJECT_DIR="$(pwd -P)"
 info() { printf '[jeo-skills] %s\n' "$*"; }
 fail() { printf '[jeo-skills] ERROR: %s\n' "$*" >&2; exit 1; }
 
@@ -40,6 +41,14 @@ if [ "$DRY_RUN" = true ]; then
   printf 'Command: '; printf '%q ' python3 "$CLI_PATH" bootstrap "${TARGET_ARGS[@]}"; printf '\n'
   if [ "$SELECTION" != router ]; then
     printf 'Command: '; printf '%q ' python3 "$CLI_PATH" install "${TARGET_ARGS[@]}" "${SELECT_ARGS[@]}" --yes; printf '\n'
+  fi
+  if [ "$SELECTION" = all ]; then
+    if [ "$GLOBAL" = true ]; then
+      info "Would obtain scripts/install-full-tools.sh from $REPO_URL and run it for project $PROJECT_DIR."
+      info 'Would install or update mex-agent, zvec-grep, specify-cli, RTK, Semble, and cli-anything-hub in the user-global scope; no tools are run during dry run.'
+    else
+      info 'Project-scoped all would skip user-global tool installation and report partial success; set INSTALL_GLOBAL=true to allow global installation.'
+    fi
   fi
   if [ "$GLOBAL" = true ]; then
     printf 'Command: '; printf '%q ' python3 "$CLI_PATH" prune-retired --global; printf '\n'
@@ -82,6 +91,34 @@ python3 "$CLI_PATH" bootstrap "${TARGET_ARGS[@]}"
 if [ "$SELECTION" != router ]; then
   python3 "$CLI_PATH" install "${TARGET_ARGS[@]}" "${SELECT_ARGS[@]}" --yes
 fi
+FULL_STATUS=0
+if [ "$SELECTION" = all ] && [ "$GLOBAL" != true ]; then
+  info 'WARNING: Partial success: project-scoped skills installed, but user-global tools were not installed. Set INSTALL_GLOBAL=true to allow global tool installation.' >&2
+  FULL_STATUS=1
+elif [ "$SELECTION" = all ]; then
+  FULL_HELPER=''
+  FULL_TMP=''
+  if [ -d "$REPO_URL" ]; then
+    FULL_HELPER="$REPO_URL/scripts/install-full-tools.sh"
+  elif [ "$REPO_URL" = 'https://github.com/akillness/jeo-skills' ] && [ -f "${BASH_SOURCE[0]:-}" ] && [ "$(basename "${BASH_SOURCE[0]}")" = install.sh ] && [ -f "$(dirname "${BASH_SOURCE[0]}")/scripts/install-full-tools.sh" ]; then
+    FULL_HELPER="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)/scripts/install-full-tools.sh"
+  elif FULL_TMP="$(mktemp -d "${TMPDIR:-/tmp}/jeo-full.XXXXXX")"; then
+    FULL_HELPER="$FULL_TMP/install-full-tools.sh"
+    if [ "$REPO_URL" = 'https://github.com/akillness/jeo-skills' ]; then
+      curl -fsSL 'https://raw.githubusercontent.com/akillness/jeo-skills/main/scripts/install-full-tools.sh' -o "$FULL_HELPER" || FULL_HELPER=''
+    else
+      git clone --quiet --depth 1 -- "$REPO_URL" "$FULL_TMP/source" && FULL_HELPER="$FULL_TMP/source/scripts/install-full-tools.sh" || FULL_HELPER=''
+    fi
+  fi
+  if [ -z "$FULL_HELPER" ] || [ ! -f "$FULL_HELPER" ]; then
+    info 'ERROR: Full tool helper unavailable; skills were installed but tool installation did not complete.' >&2
+    FULL_STATUS=1
+  elif ! bash "$FULL_HELPER" "$PROJECT_DIR"; then
+    info 'WARNING: Full tool installation partially failed; installed skills remain available.' >&2
+    FULL_STATUS=1
+  fi
+  if [ -n "$FULL_TMP" ]; then rm -rf "$FULL_TMP" || info 'WARNING: Full tool temporary cleanup failed.'; fi
+fi
 # Remove stale catalog copies of retired skills (jeo, harness) from every runtime root in scope.
 if [ "$GLOBAL" = true ]; then
   python3 "$CLI_PATH" prune-retired --global || info 'WARNING: retired-skill cleanup did not complete; installed skills remain available.'
@@ -91,7 +128,11 @@ fi
 if [ "$GLOBAL" = true ] && ! command -v jeo-skill >/dev/null 2>&1; then
   info 'Add $HOME/.local/bin to PATH to use jeo-skill.'
 fi
-info 'Selected installation completed; runtime activation may require a reload.'
+if [ "$FULL_STATUS" = 0 ]; then
+  info 'Selected installation completed; runtime activation may require a reload.'
+else
+  info 'Selected skills installed; full tool installation did not complete.'
+fi
 
 # Optional Jev control plane (interactive TUI; JEO_SKILLS_JEV=skip|api|local|ollama|lmstudio|systemone to force).
 if [ "$GLOBAL" = true ] && [ "${JEO_SKILLS_JEV:-}" != skip ] && { [ -n "${JEO_SKILLS_JEV:-}" ] || [ -t 0 ]; }; then
@@ -111,4 +152,5 @@ if [ "$GLOBAL" = true ] && [ "${JEO_SKILLS_JEV:-}" != skip ] && { [ -n "${JEO_SK
     fi
   fi
 fi
+exit "$FULL_STATUS"
 

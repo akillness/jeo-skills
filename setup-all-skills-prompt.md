@@ -3,6 +3,10 @@
 > **For AI agents:** read this guide in full, detect the host OS and installed coding
 > agents, then perform the requested installation. The default mode is **full**. Use
 > **core only** or **minimal** only when the user explicitly asks for that narrower mode.
+> This guide's default full path uses global/user tools and may install system-wide
+> prerequisites. Confirm that scope first. For `INSTALL_GLOBAL=false`, stop before
+> Step 1 or any package-manager command and use project-scoped `install.sh` from the
+> project; do not widen scope to satisfy missing prerequisites.
 
 > **Preserve existing work:** add or update jeo-skills targets only. Never run a remove,
 > clear, reset, or cleanup command against existing skill directories. Never delete an
@@ -120,8 +124,15 @@ bundle, full mirrors the whole catalog.
 ## Step 1 — Detect OS, prerequisites, and coding agents
 
 Determine the platform before choosing paths or package managers:
+If `INSTALL_GLOBAL=false`, do not install Homebrew, Snap, Winget, or other global
+prerequisites; stop and use the project-scoped entrypoint instead.
+
 
 ```bash
+if [ "${INSTALL_GLOBAL:-true}" = false ]; then
+  printf '%s\n' 'Global guide stopped before prerequisites: project-only scope; use project-scoped install.sh' >&2
+  false
+else
 case "$(uname -s 2>/dev/null || echo Windows)" in
   Darwin*) PLATFORM=macos ;;
   Linux*) PLATFORM=linux ;;
@@ -144,6 +155,8 @@ else
   esac
 fi
 SKILLS_ROOT="$USER_HOME/.agents/skills"
+# Capture the user's project before changing directories; it is not the skills checkout.
+PROJECT_DIR="$(pwd -P)"
 REPO_URL="https://github.com/akillness/jeo-skills"
 
 # `jeo-skill link` and `uv tool install` put commands in ~/.local/bin, which a fresh
@@ -160,6 +173,7 @@ for cmd in node npm npx python3 claude codex kimi grok opencode cursor agy pi cr
 done
 # A `grok` executable is inventory-only: Jev and Grok Build projection require explicit
 # `JEO_SKILLS_AGENT=grok` (Superagent/VibeKit uses the same command name).
+fi
 ```
 
 `USER_HOME` follows `$HOME` except inside an Aside session, so a container, CI job, or
@@ -167,7 +181,7 @@ isolated test `HOME` receives the installation and the login home is left alone.
 line only affects this session: if `~/.local/bin` was missing, persist it for new shells
 with `uv tool update-shell` (or the shell profile) and say so in the final report.
 
-Install only missing prerequisites. Prefer the native package manager:
+Only for the approved global path, install missing prerequisites. Prefer the native package manager:
 
 - macOS: Homebrew (`brew install node python uv`);
 - Linux: the detected distro manager, or Snap when that is the managed option
@@ -230,28 +244,39 @@ per-command override, e.g. `HOME="$USER_HOME" skills add …`, so it lands in th
 `~/.agents/skills` instead of Aside's runtime home. The Step 4 snippets already carry this
 prefix; outside Aside it is a no-op because `USER_HOME` equals `$HOME` there.
 
-Under Aside, prefer Homebrew or pyenv installs. macOS security removes unsigned binaries
-that curl/tarball installers drop, so the `uv` and `rtk` shell installers below tend to
-vanish; tools already installed on the host run fine once `PATH` is set. Packages uv or
-uvx download inside Aside stay quarantined in `~/.cache/uv` and later break uvx-launched
-MCP servers even outside Aside, so run the Step 5 uv installs from a regular terminal (the
-recovery is under the Semble block).
+In an Aside session, host-tool installation can encounter macOS quarantine or Aside's
+isolated caches. If verification fails, report the affected tool as failed and run the
+approved full-tool step from a regular terminal with the same project path; do not run
+an MCP server or download a model as a workaround without separate approval.
 
 ## Step 2 — Install the skills CLI
+
+This guide's Steps 2–7 target global/user scope. If `INSTALL_GLOBAL=false`, stop
+before any of them and use project-scoped `install.sh` from the project instead.
+The guards below also refuse individual global blocks if an earlier failure is ignored.
 
 Requires Node 22.20+. Install the pinned stable version:
 
 ```bash
+if [ "${INSTALL_GLOBAL:-true}" = false ]; then
+  printf '%s\n' 'Global skills CLI installation skipped: project-only scope' >&2
+  false
+else
 if ! command -v skills >/dev/null 2>&1; then
   npm install -g skills@1.7.0
 fi
 skills --version
+fi
 ```
 
 **Upgrade note:** From a trusted, current `jeo-skills` checkout root, bypass the old
 PATH router with `bash ./install.sh`. Preview first, then apply the shared-router update:
 
 ```bash
+if [ "${INSTALL_GLOBAL:-true}" = false ]; then
+  printf '%s\n' 'Global router upgrade skipped: project-only scope' >&2
+  false
+else
 # Preview what will be upgraded (no changes made)
 HOME="${USER_HOME:-$HOME}" JEO_SKILLS_SOURCE="$PWD" JEO_SKILLS_SELECTION=router JEO_SKILLS_AGENT=universal INSTALL_GLOBAL=true JEO_SKILLS_DRY_RUN=true bash ./install.sh
 
@@ -262,6 +287,7 @@ HOME="${USER_HOME:-$HOME}" JEO_SKILLS_SOURCE="$PWD" JEO_SKILLS_SELECTION=router 
 HOME="${USER_HOME:-$HOME}" python3 "${USER_HOME:-$HOME}/.agents/skills/jeo-skill/scripts/jeo-skill.py" doctor
 
 # Continue with the requested selection in Step 4; this upgrade installs only the router.
+fi
 ```
 
 The new router uses guarded `jeo-skill install` commands instead of manual `cp` copying, so
@@ -333,26 +359,47 @@ Superagent `grok` executable is a separate product with no automatic skill-loade
 
 ### Default: full
 
-Unless the user said “core only” or “minimal”, install every live skill:
+Unless the user said “core only” or “minimal”, the default full path installs skills
+and shared tools in the host's global/user scope. Confirm that this global scope is
+intended before running it. If the user selected project-only scope, set
+`INSTALL_GLOBAL=false`, stop this global guide, and use project-scoped `install.sh`
+with `JEO_SKILLS_SELECTION=all` from the project instead; it reports the skipped
+global tools as partial failure. Never convert an explicit `false` to `true`.
 
 ```bash
-HOME="$USER_HOME" npx --yes skills@1.7.0 add -g "$REPO_URL" --skill '*' "${SKILLS_AGENT_ARGS[@]}" --yes --copy --full-depth
+INSTALL_GLOBAL="${INSTALL_GLOBAL:-true}"
+if [ "$INSTALL_GLOBAL" = true ]; then
+  HOME="$USER_HOME" npx --yes skills@1.7.0 add -g "$REPO_URL" --skill '*' "${SKILLS_AGENT_ARGS[@]}" --yes --copy --full-depth
+else
+  printf '%s\n' 'Global guide skipped: use project-scoped install.sh; do not continue Steps 4A–7' >&2
+  false
+fi
 ```
 
 ### Core only
 
 ```bash
+if [ "${INSTALL_GLOBAL:-true}" = false ]; then
+  printf '%s\n' 'Global core installation skipped: project-only scope' >&2
+  false
+else
 HOME="$USER_HOME" npx --yes skills@1.7.0 add -g "$REPO_URL" --skill jeo-skill "${SKILLS_AGENT_ARGS[@]}" --yes --copy --full-depth
 HOME="$USER_HOME" python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" link
 HOME="$USER_HOME" jeo-skill install --bundle starter --global --yes
+fi
 ```
 
 ### Minimal
 
 ```bash
+if [ "${INSTALL_GLOBAL:-true}" = false ]; then
+  printf '%s\n' 'Global minimal installation skipped: project-only scope' >&2
+  false
+else
 HOME="$USER_HOME" npx --yes skills@1.7.0 add -g "$REPO_URL" --skill jeo-skill "${SKILLS_AGENT_ARGS[@]}" --yes --copy --full-depth
 HOME="$USER_HOME" python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" link
 HOME="$USER_HOME" jeo-skill doctor
+fi
 ```
 
 The `HOME="$USER_HOME"` prefix is what makes these land in the host `~/.agents/skills`.
@@ -375,6 +422,10 @@ the jeo-skills catalog and actually present in `$SKILLS_ROOT`. Never mirror the 
 shared root — it holds skills from other sources.
 
 ```bash
+if [ "${INSTALL_GLOBAL:-true}" = false ]; then
+  printf '%s\n' 'Global Aside projection skipped: project-only scope' >&2
+  false
+else
 ASIDE_HOME="$USER_HOME/.aside"
 ASIDE_MODE=full   # full | core | minimal — match the mode you installed
 
@@ -411,6 +462,7 @@ EOF
     printf 'aside_synced=%s -> %s\n' "$synced" "$dest"
   done
 fi
+fi
 ```
 
 Constraints for this step:
@@ -440,6 +492,10 @@ Use guarded `jeo-skill install` with `--agent gjc` for safe projection. Skip thi
 installed or you do not use it.
 
 ```bash
+if [ "${INSTALL_GLOBAL:-true}" = false ]; then
+  printf '%s\n' 'Global runtime projection skipped: project-only scope' >&2
+  false
+else
 # Reuse the mode chosen in Step 4A, including when Aside itself is absent.
 case "$ASIDE_MODE" in
   minimal) RUNTIME_SELECTION=(jeo-skill) ;;
@@ -462,6 +518,7 @@ if command -v gjc >/dev/null 2>&1; then
   
   printf 'gjc: native projection completed\n'
 fi
+fi
 ```
 
 **Important:** The `jeo-skill install --agent gjc` command:
@@ -481,6 +538,10 @@ editor) need their native roots populated. Use guarded `jeo-skill install` with 
 #### Antigravity CLI (agy)
 
 ```bash
+if [ "${INSTALL_GLOBAL:-true}" = false ]; then
+  printf '%s\n' 'Global Antigravity CLI projection skipped: project-only scope' >&2
+  false
+else
 if command -v agy >/dev/null 2>&1; then
   # Preview Antigravity CLI projection without making changes
   HOME="$USER_HOME" python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" \
@@ -491,6 +552,7 @@ if command -v agy >/dev/null 2>&1; then
     install "${RUNTIME_SELECTION[@]}" --agent antigravity-cli --global --yes || exit 1
   
   printf 'antigravity-cli: native projection completed\n'
+fi
 fi
 ```
 
@@ -504,6 +566,10 @@ fi
 If Antigravity IDE is installed on the same machine:
 
 ```bash
+if [ "${INSTALL_GLOBAL:-true}" = false ]; then
+  printf '%s\n' 'Global Antigravity IDE projection skipped: project-only scope' >&2
+  false
+else
 if command -v antigravity >/dev/null 2>&1; then
   # Preview Antigravity IDE projection without making changes
   HOME="$USER_HOME" python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" \
@@ -514,6 +580,7 @@ if command -v antigravity >/dev/null 2>&1; then
     install "${RUNTIME_SELECTION[@]}" --agent antigravity --global --yes || exit 1
   
   printf 'antigravity-ide: native projection completed\n'
+fi
 fi
 ```
 
@@ -549,6 +616,10 @@ Homebrew Superagent/VibeKit CLI, projection is explicit-only: set `JEO_SKILLS_AG
 and verify the binary is Grok Build before running this block:
 
 ```bash
+if [ "${INSTALL_GLOBAL:-true}" = false ]; then
+  printf '%s\n' 'Global Grok projection skipped: project-only scope' >&2
+  false
+else
 if [ "${JEO_SKILLS_AGENT:-}" = grok ] && command -v grok >/dev/null 2>&1; then
   printf 'grok: explicit selection; verify this is Grok Build before relying on .grok/skills\n'
   # Preview Grok Build projection without making changes
@@ -560,6 +631,7 @@ if [ "${JEO_SKILLS_AGENT:-}" = grok ] && command -v grok >/dev/null 2>&1; then
     install "${RUNTIME_SELECTION[@]}" --agent grok --global --yes || exit 1
 
   printf 'grok: Grok Build native projection completed (Superagent grok does not load it)\n'
+fi
 fi
 ```
 
@@ -584,6 +656,10 @@ directly to `~/.config/opencode/skills/aside-browser/SKILL.md` (and the shared r
 via `aside skills install --target opencode` (or `--target general`) in Step 5.
 
 ```bash
+if [ "${INSTALL_GLOBAL:-true}" = false ]; then
+  printf '%s\n' 'Global OpenCode checks skipped: project-only scope' >&2
+  false
+else
 if command -v opencode >/dev/null 2>&1; then
   opencode --version
   [ -f "$SKILLS_ROOT/jeo-skill/SKILL.md" ] \
@@ -598,6 +674,7 @@ if command -v opencode >/dev/null 2>&1; then
     cmp -s "$dir/SKILL.md" "$SKILLS_ROOT/$name/SKILL.md" \
       || printf 'opencode: stale copy shadows the shared root: %s\n' "${dir%/}"
   done
+fi
 fi
 ```
 
@@ -619,10 +696,15 @@ path does not delete anything, so sweep every runtime root for the chosen scope 
 preview first:
 
 ```bash
+if [ "${INSTALL_GLOBAL:-true}" = false ]; then
+  printf '%s\n' 'Global retired-skill sweep skipped: project-only scope' >&2
+  false
+else
 JEO_ROUTER="$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py"
 HOME="$USER_HOME" python3 "$JEO_ROUTER" prune-retired --global --dry-run
 HOME="$USER_HOME" python3 "$JEO_ROUTER" prune-retired --global
 # Project-scoped installs: run both commands from the project root without --global.
+fi
 ```
 
 The sweep covers the shared root, Claude Code, Pi, Crush, OpenCode, GJC, Antigravity CLI/IDE,
@@ -645,29 +727,80 @@ by the selected starter skills; do not continue into the full shared-tool setup 
 
 ## Step 5 — Full-mode shared tools
 
-Run this step only in full mode. The supported default is the repository-owned installer,
-which upgrades existing copies to verified official pins, checks that each command runs,
-continues after individual failures, and prints an explicit partial-success summary:
+Run this step only in full mode. The repository-owned helper upgrades existing copies
+to pinned official versions, verifies each command, and continues after individual
+failures. It prints each tool's status and exits 0 only when all succeed; exit 1 means
+partial failure, not a successful full installation.
+
+The helper installs or updates tools in the host's global/user scope (including npm,
+uv and Cargo); `PROJECT_DIR` only selects the spec-kit project destination. Run it
+only for an explicitly global full installation, with `INSTALL_GLOBAL=true` set.
+For `INSTALL_GLOBAL=false`, do not invoke the helper: project-scoped `install.sh`
+with selection `all` installs the skills but reports partial failure (exit 1) because
+the global tools were not installed. A later global tool installation is a separate
+decision; do not silently widen project-scoped permission.
+
+`PROJECT_DIR` is the absolute user project captured in Step 1, not the jeo-skills
+checkout. If using a trusted local checkout, set `JEO_CHECKOUT` to its absolute path.
+Otherwise fetch the official repository's helper, since a remote skill installation
+does not copy this repository-level script. The remote source tracks `main`, just as
+the default `install.sh` remote path does; use a reviewed checkout for a fixed revision.
 
 ```bash
-bash scripts/install-full-tools.sh "$PWD"
+(
+  if [ "${INSTALL_GLOBAL:-}" != true ]; then
+    printf '%s\n' 'full tools: PARTIAL FAILURE — global tool installation not selected' >&2
+    exit 1
+  fi
+  if [ -n "${JEO_CHECKOUT:-}" ]; then
+    helper="$JEO_CHECKOUT/scripts/install-full-tools.sh"
+    if [ ! -f "$helper" ]; then
+      printf '%s\n' 'full tools: PARTIAL FAILURE — checkout helper not found' >&2
+      exit 1
+    fi
+  else
+    tmp=$(mktemp -d "${TMPDIR:-/tmp}/jeo-full.XXXXXX") || {
+      printf '%s\n' 'full tools: PARTIAL FAILURE — cannot create temporary directory' >&2
+      exit 1
+    }
+    trap 'rm -rf "$tmp"' EXIT
+    helper="$tmp/install-full-tools.sh"
+    if ! curl -fsSL 'https://raw.githubusercontent.com/akillness/jeo-skills/main/scripts/install-full-tools.sh' -o "$helper"; then
+      printf '%s\n' 'full tools: PARTIAL FAILURE — official helper download failed' >&2
+      exit 1
+    fi
+  fi
+  if HOME="$USER_HOME" bash "$helper" "$PROJECT_DIR"; then
+    :
+  else
+    status=$?
+    printf '%s\n' 'full tools: PARTIAL FAILURE — helper did not complete' >&2
+    exit "$status"
+  fi
+)
 ```
 
-Run that command from the trusted jeo-skills checkout used for installation. The six pins are mex-agent 0.8.4,
-`@zvec/zvec-grep` 0.2.2, spec-kit 1.0.6, RTK 0.49.0, Semble 0.7.0, and
-CLI-Hub (`clihub-ai`) 0.1.0. The guide enforces Node.js 22.20+ (the skills CLI
-minimum, which also satisfies mex and zvec-grep). Linux ARM64 RTK is built from the official fixed tag; an incompatible
-glibc/toolchain failure is reported for RTK while the other five attempts continue.
+Alternatively, when invoking `install.sh` with `JEO_SKILLS_SELECTION=all`, invoke it
+from the user project: its full-tool target is the invocation directory, not the
+checkout directory. It resolves the helper from a local source or checkout, or fetches
+it for a remote source; a missing helper or any nonzero status is a partial failure.
+
+The pins are `mex-agent` 0.8.4, `@zvec/zvec-grep` 0.2.2, `specify-cli` at
+Git commit `99e047e9b48c3ecbbc5c3e530fb45bed671960bc` (1.2.6.dev0), RTK v1.1.0,
+`semble` 0.7.0, and `cli-anything-hub` 0.4.1. Node.js 22.20+ is required by the
+skills CLI. RTK builds from its official pinned Git tag and requires Rust 1.91 or newer.
+Linux ARM64 RTK can fail on an incompatible glibc/toolchain; report that failure while
+allowing the other tool attempts to continue. Do not claim success on
+an unsupported platform or when command verification fails.
 
 Spec-kit is generated in an empty staging directory and only missing files are copied
-into the current project. Existing files are never overwritten; every collision is
-listed. Set `SPEC_KIT_INTEGRATION` when `codex` is not the desired integration.
+into `PROJECT_DIR`. Existing files and symbolic links are protected, and collisions
+are reported rather than overwritten.
 
-The default installer deliberately does **not** run `mex setup`, `mex graph`, `zg index`,
-download an embedding/model, register an MCP server, or install/patch hooks. Each is a
-separate persistent or execution-side-effect approval. It also does not run remote Jev
-or any model call. CLI-Hub alone is installed as the default harness discovery surface;
-individual CLI-Anything harnesses are installed on demand for the selected task.
+The default installer does not run `mex setup` or `mex graph`, create a `zg` index,
+download an embedding/model, register MCP, or install/patch hooks. Each requires
+separate approval, as do remote Jev and model calls. CLI-Anything harnesses beyond
+`cli-anything-hub` are installed only on demand for the selected task.
 
 The legacy manual blocks below are troubleshooting references only. Do not run them
 after the supported installer and do not treat their MCP/hook commands as approved.
@@ -1099,13 +1232,19 @@ if command -v headroom >/dev/null 2>&1; then
   headroom --version
   if headroom install status; then
     headroom doctor
-  else
+  elif [ "${JEO_SKILLS_APPROVE_HEADROOM_DEPLOY:-false}" = true ]; then
+    # Durable routing changes require separate approval.
     headroom deploy
     headroom install status
     headroom doctor
+  else
+    printf '%s\n' 'headroom deploy skipped: separate approval required'
   fi
 fi
 ```
+
+Deploy requires separate approval (`JEO_SKILLS_APPROVE_HEADROOM_DEPLOY=true`); the
+Claude policy hook requires its own approval (`JEO_SKILLS_APPROVE_HEADROOM_HOOK=true`).
 
 `headroom deploy` is the durable routing path; do not layer `headroom wrap` on
 top of a healthy deployment. The Claude Code adapter below is the only portable
@@ -1117,7 +1256,7 @@ the Ponytail ladder only when the host explicitly supplies
 `context_usage_percent >= 60`. It never infers context usage from proxy savings.
 
 ```bash
-if command -v claude >/dev/null 2>&1 \
+if [ "${JEO_SKILLS_APPROVE_HEADROOM_HOOK:-false}" = true ] && command -v claude >/dev/null 2>&1 \
   && [ -x "$SKILLS_ROOT/headroom/scripts/setup-claude-code-policy-hook.sh" ]; then
   bash "$SKILLS_ROOT/headroom/scripts/setup-claude-code-policy-hook.sh"
   python3 "$SKILLS_ROOT/headroom/scripts/jeo-code-policy-hook.py" --self-test
@@ -1134,9 +1273,11 @@ JSON/TOML schema or overwrite its existing settings.
 
 ### Knowledge pipeline hooks (llm-wiki + graphify, per-repo vault)
 
-Wire every prompt and every finished turn through `hooks/ingest-prompt.py` so the
-`llm-wiki` vault and its graphify graph stay current mid-conversation, not once per
-session. The vault is **project-scoped**: `ingest-prompt.py` resolves it at run time as
+Only after separate approval of both hook registration (`JEO_SKILLS_APPROVE_KNOWLEDGE_HOOKS=true`)
+and vault/index data writes (`JEO_SKILLS_APPROVE_KNOWLEDGE_DATA=true`), wire prompts
+and finished turns through `hooks/ingest-prompt.py`. Approval covers vault bootstrap
+and subsequent hook-triggered ingestion and graph refreshes, not just this setup run.
+The vault is **project-scoped**: `ingest-prompt.py` resolves it at run time as
 `$LLM_WIKI_VAULT` → `$OBSIDIAN_MIND_VAULT/llm-wiki` → `<git toplevel>/llm-wiki` →
 `~/vaults/obsidian-mind/llm-wiki`, so no hook or wrapper stores a vault path and one
 installed script serves every repository. Per-agent events:
@@ -1148,6 +1289,7 @@ installed script serves every repository. Per-agent events:
 | Antigravity CLI / IDE | `BeforeAgent` | `AfterAgent` | `~/.gemini/settings.json` |
 
 ```bash
+if [ "${JEO_SKILLS_APPROVE_KNOWLEDGE_HOOKS:-false}" = true ] && [ "${JEO_SKILLS_APPROVE_KNOWLEDGE_DATA:-false}" = true ]; then
 KP_SCRIPTS="$USER_HOME/.agents/hooks"
 KP_INGEST="$KP_SCRIPTS/ingest-prompt.py"
 KP_RAW_URL="https://raw.githubusercontent.com/akillness/jeo-skills/main/hooks/ingest-prompt.py"
@@ -1247,6 +1389,9 @@ fi
 #    this writes nothing into the vault beyond a graph refresh; exit 0 is expected
 #    even without graphify, because the script never blocks the host agent.
 printf '{"hook_event_name":"Stop"}' | python3 "$KP_INGEST" && echo "ingest-prompt.py ok"
+else
+  printf '%s\n' 'knowledge pipeline skipped: separate hook and vault/index write approvals required'
+fi
 ```
 
 Codex runs new `~/.codex/hooks.json` entries only after the user reviews and trusts them
@@ -1263,12 +1408,16 @@ agent touches.
 
 ### Ouroboros (`ooo`) MCP server
 
+Register or resolve this optional MCP server only after separate approval
+(`JEO_SKILLS_APPROVE_OOO_MCP=true`).
+
 The MCP server needs MCP SDK 2, which only the `[mcp]` extra provides. `[all]`, `[claude]`,
 and `[claude-sdk]` pin MCP SDK 1.x, and `ouroboros mcp serve` refuses to start from them.
 So the server runs from an isolated uvx `[mcp]` environment, registered by absolute path;
 the terminal CLI is installed only when missing and is otherwise left untouched.
 
 ```bash
+if [ "${JEO_SKILLS_APPROVE_OOO_MCP:-false}" = true ]; then
 UVX_BIN=$(command -v uvx || true)
 if [ -z "$UVX_BIN" ]; then
   printf '%s\n' 'ooo: uv is missing; install it (Semble block above) and rerun this block.' >&2
@@ -1288,6 +1437,9 @@ else
     && ! codex mcp get ouroboros >/dev/null 2>&1; then
     codex mcp add ooo -- "$UVX_BIN" --isolated --from 'ouroboros-ai[mcp]' ouroboros mcp serve
   fi
+fi
+else
+  printf '%s\n' 'ooo MCP skipped: separate approval required'
 fi
 ```
 
@@ -1324,10 +1476,11 @@ If `aside` CLI is not yet installed on macOS or Linux, install it via:
 `curl -fsSL https://releases.aside.com/install.sh | bash`
 
 **2. Aside as an MCP server.** `aside mcp` starts Aside over stdio, letting another agent
-drive its browser session. Register it idempotently across Claude Code, Codex, and OpenCode:
+drive its browser session. Register it only after separate approval
+(`JEO_SKILLS_APPROVE_ASIDE_MCP=true`), idempotently across Claude Code, Codex, and OpenCode:
 
 ```bash
-if command -v aside >/dev/null 2>&1; then
+if [ "${JEO_SKILLS_APPROVE_ASIDE_MCP:-false}" = true ] && command -v aside >/dev/null 2>&1; then
   ASIDE_BIN=$(command -v aside)  # absolute: MCP clients spawn servers with their own PATH
   if command -v claude >/dev/null 2>&1 && ! claude mcp get aside >/dev/null 2>&1; then
     claude mcp add aside -s user -- "$ASIDE_BIN" mcp
@@ -1361,14 +1514,18 @@ shape; add servers through Aside's own MCP settings UI and report that as a manu
 
 ### Claude Code orchestration plugin
 
-When Claude Code is detected, install the official marketplace plugin without removing
-or replacing existing plugins:
+When separately approved (`JEO_SKILLS_APPROVE_OMC_PLUGIN=true`), install the official
+marketplace plugin without removing or replacing existing plugins; it can enable hooks:
 
 ```bash
-if command -v claude >/dev/null 2>&1; then
-  claude plugin marketplace add https://github.com/Yeachan-Heo/oh-my-claudecode || true
-  claude plugin install oh-my-claudecode || true
-fi
+(
+  if [ "${JEO_SKILLS_APPROVE_OMC_PLUGIN:-false}" = true ] && command -v claude >/dev/null 2>&1; then
+    status=0
+    claude plugin marketplace add https://github.com/Yeachan-Heo/oh-my-claudecode || { printf '%s\n' 'OMC: PARTIAL FAILURE — marketplace add failed' >&2; status=1; }
+    claude plugin install oh-my-claudecode || { printf '%s\n' 'OMC: PARTIAL FAILURE — plugin install failed' >&2; status=1; }
+    exit "$status"
+  fi
+)
 ```
 
 If the installed Claude version does not expose non-interactive plugin commands, report
@@ -1432,11 +1589,11 @@ it fetches and fast-forwards an existing checkout before reinstalling recorded t
 
 OMC 4.15.7 emits Claude-only `suppressOutput` fields from three `PostToolUse`
 handlers. Codex rejects that field at its plugin boundary. When both Codex and
-the installed repair helper are present, repair only that known cached version;
-all other plugin caches remain untouched.
+the installed repair helper are present, repair only that known cached version after
+separate hook-change approval (`JEO_SKILLS_APPROVE_OMC_HOOK_REPAIR=true`); all other plugin caches remain untouched.
 
 ```bash
-if command -v codex >/dev/null 2>&1 \
+if [ "${JEO_SKILLS_APPROVE_OMC_HOOK_REPAIR:-false}" = true ] && command -v codex >/dev/null 2>&1 \
   && [ -x "$SKILLS_ROOT/jeo-skill/scripts/repair-codex-omc-posttool-hooks.sh" ]; then
   bash "$SKILLS_ROOT/jeo-skill/scripts/repair-codex-omc-posttool-hooks.sh"
 fi
@@ -1465,6 +1622,10 @@ fi
 ## Step 7 — Verify and report
 
 ```bash
+if [ "${INSTALL_GLOBAL:-true}" = false ]; then
+  printf '%s\n' 'Global verification skipped: project-only scope' >&2
+  false
+else
 # Scope the listing: unscoped `skills list -g` can hang for minutes on a home with many
 # agent roots, while the scoped form returns in seconds.
 HOME="$USER_HOME" skills list -g -a universal 2>/dev/null \
@@ -1478,8 +1639,12 @@ command -v jeo-skill >/dev/null 2>&1 \
   || printf 'jeo-skill is linked in %s but that directory is not on PATH (see Step 1)\n' "$USER_HOME/.local/bin"
 command -v rtk >/dev/null 2>&1 && rtk gain
 command -v semble >/dev/null 2>&1 && semble --help >/dev/null
-command -v claude >/dev/null 2>&1 && claude mcp list
-command -v codex >/dev/null 2>&1 && codex mcp list
+if [ "${JEO_SKILLS_APPROVE_MCP_INSPECTION:-false}" = true ]; then
+  command -v claude >/dev/null 2>&1 && claude mcp list
+  command -v codex >/dev/null 2>&1 && codex mcp list
+else
+  printf '%s\n' 'MCP live inspection skipped: separate approval required'
+fi
 command -v opencode >/dev/null 2>&1 && opencode --version
 command -v opencode >/dev/null 2>&1 && [ -f "$SKILLS_ROOT/jeo-skill/SKILL.md" ] && printf 'opencode: shared root readable at %s\n' "$SKILLS_ROOT"
 command -v opencode >/dev/null 2>&1 \
@@ -1491,6 +1656,7 @@ for acct in "$USER_HOME"/.aside/u/*/; do
   printf 'aside %s: %s user skills\n' "$(basename "${acct%/}")" \
     "$(find "$acct/skills/user" -maxdepth 2 -name SKILL.md 2>/dev/null | wc -l | tr -d ' ')"
 done
+fi
 ```
 
 Finally report:
@@ -1501,9 +1667,9 @@ Finally report:
    `skills/user/` path and how many skills were mirrored there; for opencode, the
    shared `~/.agents/skills` path, `opencode --version`, any stale shadowing copies that
    Step 4D reported, and whether `opencode.json` holds the aside MCP entry;
-4. MCP/shell/plugin registrations completed or skipped, with reasons — note whether Aside
-   was registered as an MCP server (across Claude Code, Codex, and OpenCode) and its
-   `aside-browser` skill installed, and that servers Aside consumes stay a manual UI step;
+4. MCP, hooks, shell, and plugin actions completed or skipped, with reasons and the
+   specific approvals obtained; report skipped activation as skipped, never as active.
+   Note the Aside skill separately from its MCP registration and manual UI setup;
 5. verification output and any manual follow-up (for example persisting `~/.local/bin`
    on PATH, trusting new Codex hooks in `/hooks`, or a pre-existing failing MCP entry);
 6. in full mode, if `scrapingant-web-fetch` was not already configured, ask the user once
