@@ -1408,6 +1408,20 @@ agent touches.
 
 ### Ouroboros (`ooo`) MCP server
 
+**Prerequisite for the supported ooo flow:** prepare OpenSpace first. The ooo
+installer checks the configured OpenSpace Python and BM25 dependency; when missing,
+`OPENSPACE_INSTALL_APPROVED=1` authorizes a fresh dedicated installation, not an
+overwrite of an existing target. Package downloads and installation writes need
+approval. If preparation fails, report failure and stop. MCP host registration is
+separate, requires explicit approval, and must be verified in the intended host;
+executable availability is not host readiness.
+
+Before choosing or starting ooo, run the explicit local BM25 search described in
+`.agent-skills/ooo/SKILL.md` and review its candidates. Do not substitute MCP
+`search_skills`: `OPENSPACE_CLOUD_MODE=local` alone does not prevent embedding
+credential discovery or external transmission. Direct ooo CLI/MCP calls, including
+the manual block below, bypass that search; this repository cannot enforce it there.
+
 Register or resolve this optional MCP server only after separate approval
 (`JEO_SKILLS_APPROVE_OOO_MCP=true`).
 
@@ -1418,26 +1432,37 @@ the terminal CLI is installed only when missing and is otherwise left untouched.
 
 ```bash
 if [ "${JEO_SKILLS_APPROVE_OOO_MCP:-false}" = true ]; then
+ooo_mcp_setup() (
+if [ ! -f "$SKILLS_ROOT/ooo/scripts/install.sh" ] || ! HOME="$USER_HOME" bash "$SKILLS_ROOT/ooo/scripts/install.sh" --ensure-openspace; then
+  printf '%s\n' 'ooo: OpenSpace preparation failed or installer is missing; ooo installation and registration stopped.' >&2
+  exit 1
+else
 UVX_BIN=$(command -v uvx || true)
 if [ -z "$UVX_BIN" ]; then
   printf '%s\n' 'ooo: uv is missing; install it (Semble block above) and rerun this block.' >&2
+  exit 1
 else
   # Terminal CLI (`ouroboros`, `ooo`); reuse an existing install. It cannot serve MCP.
-  command -v ouroboros >/dev/null 2>&1 || uv tool install 'ouroboros-ai[all]'
+  if ! command -v ouroboros >/dev/null 2>&1; then
+    uv tool install 'ouroboros-ai[all]' || { printf '%s\n' 'ooo: CLI installation failed; registration stopped.' >&2; exit 1; }
+  fi
   # MCP server: `--isolated` is required. Without it uvx reuses an installed
   # `ouroboros-ai` tool environment (such as the [all] CLI above, MCP SDK 1.x) and the
   # server cannot start. Resolve it once so the first client launch is fast.
-  "$UVX_BIN" --isolated --from 'ouroboros-ai[mcp]' ouroboros --version
+  "$UVX_BIN" --isolated --from 'ouroboros-ai[mcp]' ouroboros --version || { printf '%s\n' 'ooo: MCP environment resolution failed; registration stopped.' >&2; exit 1; }
   # An existing `ooo` or `ouroboros` registration counts as present (no duplicate server).
   if command -v claude >/dev/null 2>&1 && ! claude mcp get ooo >/dev/null 2>&1 \
     && ! claude mcp get ouroboros >/dev/null 2>&1; then
-    claude mcp add ooo -s user -- "$UVX_BIN" --isolated --from 'ouroboros-ai[mcp]' ouroboros mcp serve
+    claude mcp add ooo -s user -- "$UVX_BIN" --isolated --from 'ouroboros-ai[mcp]' ouroboros mcp serve || { printf '%s\n' 'ooo: Claude MCP registration failed.' >&2; exit 1; }
   fi
   if command -v codex >/dev/null 2>&1 && ! codex mcp get ooo >/dev/null 2>&1 \
     && ! codex mcp get ouroboros >/dev/null 2>&1; then
-    codex mcp add ooo -- "$UVX_BIN" --isolated --from 'ouroboros-ai[mcp]' ouroboros mcp serve
+    codex mcp add ooo -- "$UVX_BIN" --isolated --from 'ouroboros-ai[mcp]' ouroboros mcp serve || { printf '%s\n' 'ooo: Codex MCP registration failed.' >&2; exit 1; }
   fi
 fi
+fi
+)
+ooo_mcp_setup
 else
   printf '%s\n' 'ooo MCP skipped: separate approval required'
 fi

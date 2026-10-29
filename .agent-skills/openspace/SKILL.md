@@ -84,8 +84,9 @@ ln -sf ~/.agents/venvs/openspace/bin/openspace-mcp ~/.local/bin/openspace-mcp
 
 Requires **Python 3.12+**.
 
-Or run the bundled installer, which performs the same steps non-interactively, copies the
-two host skills (Step 4), and registers the MCP server (Step 3):
+The bundled installer below can copy host skills and invoke a registrar. Package
+downloads, writes to the user's installation, and host registration require separate
+approval; do not treat its exit status as proof that any host exposes the tools.
 
 ```bash
 bash scripts/install-openspace.sh --help
@@ -95,16 +96,14 @@ bash scripts/install-openspace.sh
 
 Full per-host wiring detail: [references/install-and-mcp-wiring.md](references/install-and-mcp-wiring.md).
 
-### Step 3: Wire the MCP server, with `OPENSPACE_HOST_SKILL_DIRS` pointed at this repo's skill root
+### Step 3: Wire the MCP server only for approved hosts
 
-Register the `openspace` MCP server in **every AI runtime installed on the machine** —
-Claude Code and its Anthropic-compatible forks (kimi, glm/zai, deepseek, grok, qwen),
-Codex, Gemini CLI, Cursor, OpenCode, and the pi / gjc / jeopi agent runtimes. **For
-jeo-skills, `OPENSPACE_HOST_SKILL_DIRS` must point at `$HOME/.agents/skills`** — that is
-where this repo's installers copy skills for host agents to load, so that is the
-directory OpenSpace should scan and rank against.
+Registration changes host configuration and is separate from package-install approval.
+For jeo-skills, `$HOME/.agents/skills` is the usual installed skill root. Preview the
+registrar's full target set and obtain approval for those changes before running it;
+it is not a per-host registration command.
 
-Use the bundled registrar instead of hand-editing each config:
+The bundled registrar can touch every detected runtime; `--force` can overwrite existing entries:
 
 ```bash
 bash scripts/register-openspace-mcp.sh --dry-run   # preview every runtime it would touch
@@ -149,9 +148,9 @@ OpenSpace supports three launch modes; prefer stdio for local use:
 - **SSE** — `openspace-mcp --transport sse --host 127.0.0.1 --port 8080` → endpoint `http://127.0.0.1:8080/sse`
 - **streamable HTTP** — `openspace-mcp --transport streamable-http --host 127.0.0.1 --port 8081` → endpoint `http://127.0.0.1:8081/mcp`
 
-Do not report installation success until `openspace-mcp --help` works and the MCP
-client can see OpenSpace's tools; long `execute_task` calls need a `toolTimeout` of at
-least 600 seconds.
+`openspace-mcp --help` checks the executable, not host visibility. Verify the chosen
+host can see the tools separately; do not claim registration succeeded otherwise.
+Long `execute_task` calls need a `toolTimeout` of at least 600 seconds.
 
 ### Step 4: Copy the two host skills that teach the agent when/how to call OpenSpace
 
@@ -160,30 +159,35 @@ cp -r OpenSpace/openspace/host_skills/delegate-task/ /path/to/your/agent/skills/
 cp -r OpenSpace/openspace/host_skills/skill-discovery/ /path/to/your/agent/skills/
 ```
 
-`skill-discovery/SKILL.md` teaches the host agent to search/discover skills;
-`delegate-task/SKILL.md` teaches it to execute, fix, and upload. For jeo-skills, copy
-both into `$HOME/.agents/skills/` (this is exactly what `scripts/install-openspace.sh`
-automates). No additional prompting is needed after that — the host agent now knows
-when to reach for OpenSpace instead of guessing.
+`skill-discovery/SKILL.md` teaches discovery; `delegate-task/SKILL.md` teaches
+execution and evolution. Copying them is a user-data write and does not guarantee
+the host will load them or enforce a search before another tool runs.
 
 ### Step 5: Retrieve/discover the right skill for a task
 
-Once installed, ask the host agent (via the `openspace` MCP tools, or `skill-discovery`)
-to search and rank skills for the task at hand instead of scanning the catalog by hand.
-OpenSpace discovers skills from `OPENSPACE_HOST_SKILL_DIRS`, configured
-`skills.skill_dirs`, project roots such as `.openspace/skills`, user roots such as
-`~/.openspace/skills`, and finally its own bundled `openspace/skills` — in that
-precedence order. Every discovered skill passes `check_skill_safety` before it can be
-loaded; skills with dangerous patterns (prompt injection, credential exfiltration) are
-blocked and logged.
+For the supported ooo entrypoint, use the repository's explicit local BM25 path,
+not the general MCP `search_skills` tool. `OPENSPACE_CLOUD_MODE=local` alone does
+not prevent embedding credential discovery or transmission of the query and skill
+bodies. Public MCP search has no BM25-only switch; removing environment keys is not
+enough because credentials may be found in host configuration. Registry sync may
+write IDs and a database. Do not use it for this privacy boundary.
 
-**Both ranking stages are optional at runtime and fail silently.** BM25 needs the
-`rank_bm25` package in the OpenSpace venv; the semantic re-rank needs an OpenAI-compatible
-key (`OPENAI_API_KEY` / `OPENROUTER_API_KEY`, or a nanobot/OpenClaw host config). With
-neither, `search_skills` still answers, every result carries `score: 0.0`, and the order is
-arbitrary — the skill finder is effectively a name lookup. Always verify with an **intent**
-query (`"scrape a javascript rendered page"` should surface `scrapling`), never a name
-query, which passes even when ranking is dead.
+From the jeo-skills repository root, run:
+
+```bash
+bash .agent-skills/ooo/scripts/install.sh --search "$HOME/.agents/skills" "describe the request"
+```
+
+Candidates sharing query tokens are shown in BM25 order, including zero or negative
+scores. Review them before choosing ooo. The `--init` form in [the ooo skill](../ooo/SKILL.md)
+requires explicit approval before providing the request and full selected skill as
+initial interview context; later use is not guaranteed. This wrapper does not
+intercept direct MCP or CLI calls.
+
+Outside that entrypoint, any search using embeddings, an LLM, a provider, registry
+sync, or the cloud requires separate informed approval for the exact data and
+destination. Treat missing BM25 dependencies, search errors, and unavailable host
+tools as explicit failures rather than silently switching to a remote search.
 
 Ranking detail and route-out reasoning: [references/skill-discovery-routing.md](references/skill-discovery-routing.md).
 
@@ -228,8 +232,8 @@ trust state itself is never sent to the cloud. Optional cloud bootstrap:
 openspace-cloud-auth bootstrap-agent-key --email you@example.com --agent-name openspace-local-agent
 ```
 
-Without cloud bootstrap, all local capabilities (task execution, evolution, local skill
-search) still work normally.
+Cloud bootstrap is not needed for the explicit BM25-only path; other capabilities
+may depend on configuration or external services and require their own approval.
 
 ### Step 9: Route out honestly when OpenSpace is not the right layer
 
@@ -246,10 +250,9 @@ search) still work normally.
 
 **Output sketch**
 - Mode: `install-as-skill-finder`
-- Run `bash scripts/install-openspace.sh` (clone + `pip install -e .` + verify `openspace-mcp --help`)
-- Register the `openspace` MCP server in every installed runtime with `bash scripts/register-openspace-mcp.sh` (`OPENSPACE_HOST_SKILL_DIRS=$HOME/.agents/skills`, `OPENSPACE_WORKSPACE=$HOME/.openspace/OpenSpace`)
-- Copy `skill-discovery/` and `delegate-task/` into `$HOME/.agents/skills/`
-- Verify tools are visible and a lightweight local skill search works
+- Review `bash scripts/install-openspace.sh --dry-run` and approve its package and write effects before installation.
+- Approve host registration separately; inspect the full registrar target set first.
+- Verify the intended host can see the tools; report missing registration explicitly.
 
 ### Example 2: Find the right skill for a task
 
@@ -258,8 +261,8 @@ search) still work normally.
 
 **Output sketch**
 - Mode: `retrieve-a-skill`
-- Ask OpenSpace to search/rank skills for "JS-rendered page scraping" across `OPENSPACE_HOST_SKILL_DIRS`
-- Expect it to surface `scrapling` (or an equivalent) ranked above generic candidates, using BM25 + embedding hybrid ranking, then load that skill's `SKILL.md`
+- Use the ooo installer's explicit local BM25 search against the intended skill root.
+- Review the ranked candidates; no particular skill is guaranteed to rank first.
 
 ### Example 3: Judge whether a skill is still reliable
 

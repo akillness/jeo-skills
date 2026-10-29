@@ -66,6 +66,8 @@ jobs:
         run: /bin/bash scripts/test-runtime-config-writers.sh
       - name: Isolated runtime installation regressions
         run: python3 scripts/test_installer_regressions.py -v
+      - name: OpenSpace and ooo offline integration regressions
+        run: python3 -B scripts/test_openspace_ooo_integration.py -v
       - name: Setup guide install-block regressions
         run: python3 scripts/test_setup_guide_regressions.py -v
       - name: Independent full-tools installation safety regressions

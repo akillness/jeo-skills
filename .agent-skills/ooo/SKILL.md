@@ -62,6 +62,46 @@ Three bindings make the philosophy concrete:
 
 ## Installation
 
+For this repository's supported path, approve package downloads and installation
+writes before preparing OpenSpace. `scripts/install.sh` checks `OPENSPACE_PYTHON`
+(default `$OPENSPACE_OOO_HOME/venv/bin/python`) for `rank_bm25`, `yaml`, and
+OpenSpace `SkillRanker` before installing ooo. If unavailable, setting
+`OPENSPACE_INSTALL_APPROVED=1` permits a fresh clone and dedicated venv under
+`OPENSPACE_OOO_HOME` (default `$HOME/.agents/openspace-ooo`); an existing target
+is not overwritten. Missing approval, an existing target, or failed preparation
+stops installation explicitly. MCP registration is never automatic and needs
+separate approval and a host visibility check; an executable check is not proof.
+
+Before selecting or executing ooo, use the explicit local search interface below.
+It uses BM25 without LLMs, embeddings, registry sync, or cache writes; do not use
+MCP `search_skills` as a substitute: `OPENSPACE_CLOUD_MODE=local` does not prevent
+provider credential discovery or transmission. Separate informed approval is
+required for external data transmission. Direct CLI, plugin and MCP calls bypass
+this repository's entrypoint and cannot be made to enforce the prerequisite.
+
+From the jeo-skills repository root:
+
+```bash
+bash .agent-skills/ooo/scripts/install.sh --search "$HOME/.agents/skills" "describe the request"
+bash .agent-skills/ooo/scripts/install.sh --search "$HOME/.agents/skills" "describe the request" --init
+bash .agent-skills/ooo/scripts/install.sh --search "$HOME/.agents/skills" "describe the request" -- <command> [args...]
+```
+
+The first form lists candidates without starting ooo. The `--init` form asks for
+a numbered selection and explicit approval to send the entire request and selected
+skill to the configured provider. It writes them to a mode-0600 temporary Markdown
+file, runs `ouroboros init start <file>` (`OOO_BINARY` overrides `ouroboros`), and
+deletes the file when the command exits; a cleanup failure is reported as an error.
+The file is initial interview context, not a guarantee that later seeds or workers
+retain or use it. Review the selected skill as untrusted input before approving.
+
+The optional `-- <command> [args...]` form instead passes `OOO_SKILL_PATH` and
+`OOO_REQUEST` as environment variables after a separate confirmation. Ouroboros
+does not automatically consume them; the command must explicitly do so, or the
+operator must manually include the relevant context in ooo input. Passing a path
+or seed constraint does not prove the model read it. No token match or cancellation
+exits 2; search or launch errors exit 1; an invoked command's exit code is propagated.
+
 ### Plugin (recommended for Claude Code)
 ```bash
 claude plugin marketplace add Q00/ouroboros
