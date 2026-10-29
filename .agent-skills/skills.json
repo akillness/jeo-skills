@@ -1,7 +1,7 @@
 {
   "version": "2.1.0",
   "generated": "2026-10-21",
-  "skill_count": 407,
+  "skill_count": 408,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -176,6 +176,7 @@
       "chatbot-template",
       "airship",
       "moli",
+      "lightpanda",
       "design-taste-frontend",
       "higgsfield-websites",
       "stagehand",
@@ -647,7 +648,8 @@
         "react-grab",
         "slides-grab",
         "stitched-full-page-capture",
-        "moli"
+        "moli",
+        "lightpanda"
       ]
     },
     "infrastructure": {
@@ -1496,7 +1498,8 @@
         "react-grab",
         "stitched-full-page-capture",
         "browser-video-recording",
-        "stagehand"
+        "stagehand",
+        "lightpanda"
       ]
     },
     "firebase-ai-stack": {
@@ -1515,7 +1518,8 @@
         "agent-reach",
         "x-twitter-scraper",
         "ax",
-        "stagehand"
+        "stagehand",
+        "lightpanda"
       ]
     },
     "code-context-policy": {
@@ -9001,6 +9005,20 @@
       "keyword": "moli",
       "version": "1.0",
       "source": "https://github.com/lexmount/moli"
+    },
+    {
+      "name": "lightpanda",
+      "description": "Operate lightpanda-io/browser, the headless browser for AI and automation: offline preflight, release selection, approved fetch and CDP/MCP integration. Use when users name Lightpanda or need its source-pinned setup and runtime boundaries; route generic browser automation to browser-harness or playwriter.",
+      "category": "web",
+      "subcategory": "capture",
+      "interface": "workflow",
+      "path": "lightpanda/SKILL.md",
+      "tags": ["lightpanda", "headless-browser", "cdp", "mcp", "browser-automation", "web-fetch"],
+      "platforms": ["Claude", "ChatGPT", "Gemini", "Codex"],
+      "allowed_tools": ["Bash", "Read", "Glob", "Grep"],
+      "keyword": "lightpanda",
+      "version": "1.0.0",
+      "source": "https://github.com/lightpanda-io/browser"
     },
     {
       "name": "design-taste-frontend",

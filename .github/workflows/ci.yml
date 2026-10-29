@@ -89,6 +89,8 @@ jobs:
         run: python3 scripts/test_repository_preflight_regressions.py -v
       - name: OpenCreator offline preflight regressions
         run: python3 -B scripts/test_opencreator_preflight.py -v
+      - name: Lightpanda offline operator regressions
+        run: python3 -B scripts/test_lightpanda_skill.py -v
       - name: Knowledge repository offline pin regressions
         run: python3 -B scripts/test_knowledge_repository_skills.py -v
       - name: Cross-engine game skill collection boundaries

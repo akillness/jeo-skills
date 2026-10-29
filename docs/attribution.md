@@ -27,6 +27,7 @@ Skills in this catalog that adapt, wrap or operate another project credit it her
 | `obsidian-second-brain` | [eugeniughelbur/obsidian-second-brain](https://github.com/eugeniughelbur/obsidian-second-brain) (fork: [akillness/obsidian-second-brain](https://github.com/akillness/obsidian-second-brain)) | MIT |
 | `graphify` | [safishamsi/graphify](https://github.com/safishamsi/graphify) | MIT |
 | `browser-harness` | [browser-use/browser-harness](https://github.com/browser-use/browser-harness) | MIT |
+| `lightpanda` | [lightpanda-io/browser](https://github.com/lightpanda-io/browser) · [main @ 8f2c818](https://github.com/lightpanda-io/browser/tree/8f2c8185c97e3cc98de07f164e7eb3d9e2dd9020) | AGPL-3.0 (upstream) |
 | `stagehand` | [browserbase/stagehand](https://github.com/browserbase/stagehand) | MIT |
 | `scrapling` | [D4Vinci/Scrapling](https://github.com/D4Vinci/Scrapling) | BSD-3-Clause |
 | `agent-reach` | [Panniantong/Agent-Reach](https://github.com/Panniantong/Agent-Reach) | MIT |

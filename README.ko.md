@@ -254,11 +254,11 @@ python3 scripts/retire-unused-skills.py --usage-report report.json --apply \
 
 ## 📚 스킬 목록
 
-> `.agent-skills/skills.json`에서 생성 · 407개 스킬 · 카테고리를 펼치면 스킬 목록이 보입니다.
+> `.agent-skills/skills.json`에서 생성 · 408개 스킬 · 카테고리를 펼치면 스킬 목록이 보입니다.
 
-### 🌐 웹 (69개)
+### 🌐 웹 (70개)
 
-하위 분류: `frontend` (12), `backend` (3), `design` (15), `api` (2), `auth` (1), `data` (13), `testing` (4), `accessibility` (1), `performance` (1), `graphics` (12), `capture` (5)
+하위 분류: `frontend` (12), `backend` (3), `design` (15), `api` (2), `auth` (1), `data` (13), `testing` (4), `accessibility` (1), `performance` (1), `graphics` (12), `capture` (6)
 
 <details>
 <summary>스킬 보기</summary>
@@ -312,6 +312,7 @@ python3 scripts/retire-unused-skills.py --usage-report report.json --apply \
 | `chatbot-template` |
 | `airship` |
 | `moli` |
+| `lightpanda` |
 | `design-taste-frontend` |
 | `higgsfield-websites` |
 | `stagehand` |

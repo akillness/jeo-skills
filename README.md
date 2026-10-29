@@ -251,11 +251,11 @@ node ~/.agents/jev/jev-harness.mjs --profile "${JEV_PROFILE:?Select the current 
 
 ## 📚 Skills List
 
-> Generated from `.agent-skills/skills.json` · 407 skills · expand a category to see its skills.
+> Generated from `.agent-skills/skills.json` · 408 skills · expand a category to see its skills.
 
-### 🌐 Web (69)
+### 🌐 Web (70)
 
-Subcategories: `frontend` (12), `backend` (3), `design` (15), `api` (2), `auth` (1), `data` (13), `testing` (4), `accessibility` (1), `performance` (1), `graphics` (12), `capture` (5)
+Subcategories: `frontend` (12), `backend` (3), `design` (15), `api` (2), `auth` (1), `data` (13), `testing` (4), `accessibility` (1), `performance` (1), `graphics` (12), `capture` (6)
 
 <details>
 <summary>Show skills</summary>
@@ -309,6 +309,7 @@ Subcategories: `frontend` (12), `backend` (3), `design` (15), `api` (2), `auth` 
 | `chatbot-template` |
 | `airship` |
 | `moli` |
+| `lightpanda` |
 | `design-taste-frontend` |
 | `higgsfield-websites` |
 | `stagehand` |
