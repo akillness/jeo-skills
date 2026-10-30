@@ -6818,7 +6818,7 @@
     },
     {
       "name": "openspace",
-      "description": "Install and route through OpenSpace, the skill management layer for AI agents, so a host agent can retrieve/rank/load the right SKILL.md out of this jeo-skills catalog (~150 installed skills), then evaluate skill quality from real execution evidence and evolve skills via FIX/DERIVED/CAPTURED updates. Covers install-as-skill-finder, retrieve-a-skill, evaluate-quality, evolve-skills, and local-first hub share/import. Triggers on: openspace, skill finder, skill retrieval, find the right skill, rank skills, skill discovery, skill quality, evolve skill, FIX DERIVED CAPTURED, skill hub, openspace-mcp, DiscoverSkills, skill-discovery, delegate-task.",
+      "description": "Install OpenSpace, the skill management layer for AI agents, on its own and use it as the skill router for every host and model: a prompt-time hook ranks the installed catalog with OpenSpace's local BM25 (no LLM, no network) before the model runs and hands it the matching SKILL.md paths, then evaluate skill quality from execution evidence and evolve skills via FIX/DERIVED/CAPTURED. Covers install-as-skill-finder, prompt-time routing hooks, retrieve-a-skill, evaluate-quality, evolve-skills, and local-first hub share/import. Triggers on: openspace, skill finder, skill routing, routing hook, prompt hook, route skills, find the right skill, rank skills, skill discovery, skill quality, evolve skill, FIX DERIVED CAPTURED, skill hub, openspace-mcp, skill-discovery, delegate-task.",
       "category": "ai-agents",
       "subcategory": "discovery",
       "interface": "mcp",
@@ -6827,6 +6827,8 @@
         "openspace",
         "skill-management",
         "skill-discovery",
+        "skill-routing",
+        "prompt-hook",
         "skill-retrieval",
         "skill-evaluation",
         "skill-evolution",
@@ -6845,7 +6847,7 @@
         "Grep"
       ],
       "keyword": "openspace",
-      "version": "1.0",
+      "version": "2.0",
       "source": "https://github.com/HKUDS/OpenSpace"
     },
     {

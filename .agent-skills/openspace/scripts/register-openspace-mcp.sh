@@ -93,8 +93,8 @@ TARGETS = [
     ("claude-code",      home / ".claude.json",                     "json_mcpservers", home),
     ("claude-desktop",   home / ".claude/claude_desktop_config.json","json_mcpservers", home / ".claude"),
     ("codex",            home / ".codex/config.toml",               "toml_mcp",        home / ".codex"),
-    ("gemini-cli",       home / ".gemini/settings.json",            "json_mcpservers", home / ".gemini"),
-    ("qwen-code",        home / ".qwen/settings.json",              "json_mcpservers", home / ".qwen"),
+    ("gemini-cli",       home / ".gemini/settings.json",            "json_gemini",     home / ".gemini"),
+    ("qwen-code",        home / ".qwen/settings.json",              "json_gemini",     home / ".qwen"),
     ("grok-cli",         home / ".grok/config.toml",                "toml_mcp",        home / ".grok"),
     ("kimi-cli",         home / ".kimi/mcp.json",                   "json_mcpservers", home / ".kimi"),
     ("glm",              home / ".glm/mcp.json",                    "json_mcpservers", home / ".glm"),
@@ -110,6 +110,9 @@ TARGETS = [
 ]
 
 json_entry = {"command": bin_path, "toolTimeout": 600, "env": dict(env)}
+# Gemini CLI and Qwen Code validate mcpServers strictly and reject `toolTimeout`, which
+# stops the CLI from starting; their default MCP timeout is already 10 minutes.
+gemini_entry = {"command": bin_path, "env": dict(env)}
 opencode_entry = {"type": "local", "command": [bin_path], "environment": dict(env), "enabled": True}
 
 
@@ -159,13 +162,16 @@ def handle_json(path, key, entry):
     servers = data.setdefault(key, {})
     if not isinstance(servers, dict):
         raise RuntimeError(f"unexpected '{key}' shape in {path}")
-    if "openspace" in servers and not force:
+    current = servers.get("openspace")
+    # An entry this script wrote with a key the runtime rejects is repaired without --force.
+    invalid = entry is gemini_entry and isinstance(current, dict) and "toolTimeout" in current
+    if current is not None and not force and not invalid:
         return "already registered"
     servers["openspace"] = entry
     if dry:
-        return "would register"
+        return "would repair" if invalid else "would register"
     atomic_write(path, json.dumps(data, indent=2) + "\n", mode, json.loads)
-    return "registered"
+    return "repaired" if invalid else "registered"
 
 
 def strip_toml_table(text: str, name: str) -> str:
@@ -222,6 +228,8 @@ for label, path, fmt, gate in TARGETS:
             status = handle_json(path, "mcpServers", json_entry)
         elif fmt == "json_opencode":
             status = handle_json(path, "mcp", opencode_entry)
+        elif fmt == "json_gemini":
+            status = handle_json(path, "mcpServers", gemini_entry)
         else:
             status = handle_toml(path)
         results.append((label, path, status))

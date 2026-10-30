@@ -19,16 +19,20 @@ Path B, and the host-skills/env-var sections).
 git clone --filter=blob:none --sparse https://github.com/HKUDS/OpenSpace.git ~/.openspace/OpenSpace
 cd ~/.openspace/OpenSpace
 git sparse-checkout set --no-cone '/*' '!/assets/'   # skips the ~50 MB assets/ folder
+git checkout --detach 618c8461dab9a075a7e7c4330b40a18e9f5514d9   # the commit route_prompt.py was verified against
 
-python3 -m venv ~/.agents/venvs/openspace          # or: uv venv --python 3.12 ~/.agents/venvs/openspace
-~/.agents/venvs/openspace/bin/python -m pip install -e .
+uv venv --python 3.12 ~/.agents/venvs/openspace     # or: python3.12 -m venv ~/.agents/venvs/openspace
+uv pip install --python ~/.agents/venvs/openspace/bin/python -e . rank-bm25 PyYAML 'mcp>=1,<2'
 ~/.agents/venvs/openspace/bin/openspace-mcp --help  # verification gate
 ln -sf ~/.agents/venvs/openspace/bin/openspace-mcp ~/.local/bin/openspace-mcp
 ```
 
-With `uv` present, `uv pip install -e . --python ~/.agents/venvs/openspace/bin/python`
-replaces the two pip lines. `scripts/install-openspace.sh` performs exactly this sequence
-and then registers the MCP server.
+`mcp>=1,<2` is required: OpenSpace declares `mcp>=1.0.0`, and MCP SDK 2 removed the
+`mcp.server.fastmcp` module `openspace-mcp` imports, so an unpinned install fails at
+`--help`. `rank-bm25` and `PyYAML` back the local ranker used by the prompt router.
+`scripts/install-openspace.sh` performs this sequence, rebuilds a venv whose base Python
+was removed, checks `route_prompt.py --check`, copies the host skills, and registers the
+MCP server; `--hooks` also installs the prompt-time routing hooks.
 
 ## Registering across every installed runtime
 
@@ -67,7 +71,7 @@ PATH; resolution order is `$OPENSPACE_VENV/bin/openspace-mcp` (default
 
 ## MCP server config
 
-Add an MCP server named `openspace`. Prefer stdio for local use.
+Add an MCP server named `openspace`. Prefer stdio for local use. Claude-family configs:
 
 ```json
 {
@@ -85,6 +89,11 @@ Add an MCP server named `openspace`. Prefer stdio for local use.
   }
 }
 ```
+
+Gemini CLI and Qwen Code validate `mcpServers` strictly; an unknown key such as
+`toolTimeout` stops the CLI at startup ("Unrecognized key(s) in object"). Write only
+`command` and `env` there; both default to a 10-minute MCP timeout. The registrar does
+this and repairs an older entry that carries `toolTimeout`.
 
 **In this repo (jeo-skills):** set `OPENSPACE_HOST_SKILL_DIRS` to
 `$HOME/.agents/skills` — that is the shared skills root other jeo-skills installers
@@ -163,7 +172,9 @@ npm run dev
 ## Verification checklist before reporting success
 
 - `openspace-mcp --help` works
+- `route_prompt.py --check` passes with the venv's Python
 - the MCP client can see OpenSpace's tools
-- a lightweight local skill search works
+- a lightweight local skill search works (`route_prompt.py --explain "<intent query>"`)
+- with routing hooks: `route-hooks.py status`, plus one live prompt per host compared with `OPENSPACE_ROUTE=off`
 - long `execute_task` calls have a timeout of at least 600 seconds
 - report back: MCP config path, skill directory, chosen transport, verification results

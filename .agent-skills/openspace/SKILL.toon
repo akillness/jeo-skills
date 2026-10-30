@@ -1,8 +1,9 @@
 N:openspace
-D:Install and route through OpenSpace, the skill management layer for AI agents, so a host agent can retrieve/rank/load the right SKILL.md out of this jeo-skills catalog (~150 installed skills), then evaluate skill quality from real execution evidence and evolve skills via FIX/DERIVED/CAPTURED updates. Covers install-as-skill-finder, retrieve-a-skill, evaluate-quality, evolve-skills, and local-first hub share/import. Route plain keyword catalog lookups to codebase-search/semble, long-lived markdown knowledge to llm-wiki, and per-repo agent memory to opencontext.
-G:openspace|skill-management|skill-discovery|skill-retrieval|skill-evaluation|skill-evolution|mcp|agent-skills|quality-layer|cloud-hub
-U[5]:
+D:Install OpenSpace on its own and use it as the skill router for every host and model: a prompt-time hook ranks the installed catalog with OpenSpace's local BM25 (no LLM, no network) before the model runs and hands it matching SKILL.md paths; then evaluate skill quality from execution evidence and evolve skills via FIX/DERIVED/CAPTURED. Covers install-as-skill-finder, prompt-time routing hooks, retrieve-a-skill, evaluate-quality, evolve-skills, and local-first hub share/import. Route plain keyword catalog lookups to codebase-search/semble, long-lived markdown knowledge to llm-wiki, and per-repo agent memory to opencontext.
+G:openspace|skill-management|skill-discovery|skill-routing|prompt-hook|skill-retrieval|skill-evaluation|skill-evolution|mcp|agent-skills|quality-layer|cloud-hub
+U[6]:
   When a host agent should be wired up to search, rank, and load the right SKILL.md out of a large installed skill catalog instead of guessing
+  When skill routing must behave the same on every model: a prompt hook picks skills before the model runs (Claude Code, Codex, Gemini CLI, Kimi Code, jeopi/omp/pi/gjc, OpenCode)
   When the task is finding the best-fit skill for a specific job among many installed skills
   When a team needs to know which installed skills actually work from real execution evidence, not just descriptions
   When a skill should evolve under control via FIX / DERIVED / CAPTURED, with provisional-to-trusted promotion

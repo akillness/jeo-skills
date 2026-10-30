@@ -3,12 +3,12 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "We have about 150 skills installed under .agent-skills, and our host agent keeps guessing the wrong one. Install OpenSpace so it can find the right skill for each task on its own.",
-      "expected_output": "Identifies install-as-skill-finder mode, walks through git clone + pip install -e . + openspace-mcp --help verification, wires the MCP server with OPENSPACE_HOST_SKILL_DIRS pointed at $HOME/.agents/skills, and copies the skill-discovery and delegate-task host skills.",
+      "prompt": "We have hundreds of skills installed under ~/.agents/skills, and our host agent keeps guessing the wrong one. Install OpenSpace so it can find the right skill for each task on its own.",
+      "expected_output": "Identifies install-as-skill-finder mode, previews and runs scripts/install-openspace.sh (pinned checkout, dedicated venv with rank-bm25, PyYAML and mcp<2, openspace-mcp --help and route_prompt.py --check), registers the MCP server with OPENSPACE_HOST_SKILL_DIRS pointed at $HOME/.agents/skills, copies the skill-discovery and delegate-task host skills, and does not make OpenSpace a prerequisite of any other skill.",
       "assertions": [
         "Output selects OpenSpace as the skill-finder/skill-management layer for the catalog",
-        "Output includes `git clone https://github.com/HKUDS/OpenSpace.git` and `pip install -e .`",
-        "Output includes `openspace-mcp --help` as the verification step",
+        "Output uses `scripts/install-openspace.sh` with a `--dry-run` preview before installing",
+        "Output includes `openspace-mcp --help` as a verification step and pins `mcp` below 2 or explains why the installer does",
         "Output sets OPENSPACE_HOST_SKILL_DIRS to $HOME/.agents/skills (the shared jeo-skills host root), not an arbitrary path",
         "Output copies both the skill-discovery and delegate-task host skills"
       ]
@@ -16,11 +16,11 @@
     {
       "id": 2,
       "prompt": "Given the task 'scrape a JS-rendered dashboard and pull structured data', which of our installed skills should the agent use, and how would OpenSpace figure that out?",
-      "expected_output": "Uses retrieve-a-skill mode, explains OpenSpace's skill discovery/ranking (BM25 + embedding hybrid ranking via skill_ranker.py, discovery precedence across OPENSPACE_HOST_SKILL_DIRS/project/user/bundled skills), and expects a scraping-oriented skill such as scrapling to rank highest.",
+      "expected_output": "Uses retrieve-a-skill mode, ranks locally with route_prompt.py --explain (OpenSpace SkillRanker.bm25_only, no LLM or network), explains the gate (named skill, or rare term plus coverage), and expects a scraping-oriented skill such as scrapling to rank highest.",
       "assertions": [
         "Output identifies retrieve-a-skill / skill discovery as the primary mode",
-        "Output references ranking mechanics such as BM25 plus embedding hybrid ranking",
-        "Output references the discovery precedence order (OPENSPACE_HOST_SKILL_DIRS, project .openspace/skills, user ~/.openspace/skills, bundled skills)",
+        "Output ranks with `route_prompt.py --explain` or the routing note, not MCP `search_skills` with embeddings",
+        "Output explains that the local ranker is BM25-only and sends nothing to a provider",
         "Output does not claim OpenSpace itself performs the scraping; it selects the right skill for the agent to run"
       ]
     },
@@ -55,6 +55,17 @@
         "Output identifies this as a route-out case",
         "Output names codebase-search or semble as the correct tool for plain keyword lookup",
         "Output does not describe this simple grep task as needing skill ranking, quality evaluation, or evolution"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "스킬 라우팅이 Claude뿐 아니라 GPT, Gemini, 작은 로컬 모델에서도 똑같이 동작하게 하고 싶어. 쿼리 입력할 때 앞단에서 스킬이 골라지게 해줘.",
+      "expected_output": "Uses prompt-routing mode: previews and installs route-hooks.py for detected hosts, explains that OpenSpace's local BM25 chooses skills before the model runs so every model gets the same suggestions, names the per-host event (UserPromptSubmit, BeforeAgent, before_agent_start, OpenCode prompt hook), notes Codex /hooks trust, and verifies with a live prompt against an OPENSPACE_ROUTE=off control.",
+      "assertions": [
+        "Output selects the prompt-time routing hooks (`route-hooks.py install`, or `install-openspace.sh --hooks`) after a dry-run preview",
+        "Output explains that ranking happens before the model and without an LLM, so routing does not depend on the model",
+        "Output mentions that Codex needs the hook trusted in /hooks",
+        "Output verifies per host with a live prompt and an `OPENSPACE_ROUTE=off` control rather than trusting the config file"
       ]
     }
   ]

@@ -714,19 +714,15 @@ else:
         claude_log = self.work / "claude-add.log"
         installer = self.work / "skills/ooo/scripts/install.sh"
         installer.parent.mkdir(parents=True)
-        prepared = self.work / "openspace-prepared"
-        installer.write_text(f'test "$1" = --ensure-openspace || exit 1\ntouch {shlex.quote(str(prepared))}\n')
+        # ooo no longer needs OpenSpace: the block must not invoke the installer at all.
+        installer.write_text('printf "ooo installer invoked\\n" >&2\nexit 1\n')
         self.write_python_stub(self.work / "bin/uvx", f'''import json, os, sys
-if not os.path.exists({str(prepared)!r}):
-    raise SystemExit("OpenSpace not prepared")
 with open({str(uvx_log)!r}, "a", encoding="utf-8") as output:
     output.write(json.dumps(sys.argv[1:]) + "\\n")
 if sys.argv[1:] and sys.argv[-1] == "--version":
     print("ouroboros fixture")
 ''')
         self.write_python_stub(self.work / "bin/uv", f'''import json, sys
-if not __import__("os").path.exists({str(prepared)!r}):
-    raise SystemExit("OpenSpace not prepared")
 with open({str(uv_log)!r}, "a", encoding="utf-8") as output:
     output.write(json.dumps(sys.argv[1:]) + "\\n")
 ''')
@@ -741,6 +737,7 @@ if args[:2] == ["mcp", "add"]:
         env = self.env(PATH=f"{bin_dir}:/usr/bin:/bin", SKILLS_ROOT=str(self.work / "skills"), CLAUDE_STUB_EXISTING="", JEO_SKILLS_APPROVE_OOO_MCP="true")
         result = run_block(block, env, self.work)
         self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertNotIn("ooo installer invoked", result.stdout)
         uv_calls = [json.loads(line) for line in uv_log.read_text(encoding="utf-8").splitlines()]
         self.assertIn(["tool", "install", "ouroboros-ai[all]"], uv_calls)
         uvx_calls = [json.loads(line) for line in uvx_log.read_text(encoding="utf-8").splitlines()]
@@ -749,7 +746,6 @@ if args[:2] == ["mcp", "add"]:
         self.assertEqual(add_calls, [["mcp", "add", "ooo", "-s", "user", "--", str(self.work / "bin/uvx"), "--isolated", "--from", "ouroboros-ai[mcp]", "ouroboros", "mcp", "serve"]])
 
         claude_log.write_text("", encoding="utf-8")
-        prepared.unlink()
         env["CLAUDE_STUB_EXISTING"] = "ouroboros"
         result = run_block(block, env, self.work)
         self.assertEqual(result.returncode, 0, result.stdout)
@@ -760,6 +756,8 @@ if args[:2] == ["mcp", "add"]:
             ("### Graphify and Headroom code-context layer", 0, "JEO_SKILLS_APPROVE_HEADROOM_DEPLOY", "headroom deploy"),
             ("### Graphify and Headroom code-context layer", 1, "JEO_SKILLS_APPROVE_HEADROOM_HOOK", "policy-hook"),
             ("### Knowledge pipeline hooks (llm-wiki + graphify, per-repo vault)", 0, "JEO_SKILLS_APPROVE_KNOWLEDGE_HOOKS", "knowledge-ingest"),
+            ("### OpenSpace skill finder and prompt-time skill routing", 0, "JEO_SKILLS_APPROVE_OPENSPACE", "openspace-install"),
+            ("### OpenSpace skill finder and prompt-time skill routing", 0, "JEO_SKILLS_APPROVE_SKILL_ROUTING_HOOKS", "route-hooks install"),
             ("### Ouroboros (`ooo`) MCP server", 0, "JEO_SKILLS_APPROVE_OOO_MCP", "claude mcp add ooo"),
             ("### Aside browser skill and MCP wiring", 1, "JEO_SKILLS_APPROVE_ASIDE_MCP", "claude mcp add aside"),
         )
@@ -795,7 +793,13 @@ if sys.argv[1:3] in (["install", "status"], ["mcp", "get"]):
                     bootstrap.chmod(0o700)
                     installer = skills / "ooo/scripts/install.sh"
                     installer.parent.mkdir(parents=True)
-                    installer.write_text('test "$1" = --ensure-openspace || exit 1\ntest "${OPENSPACE_INSTALL_APPROVED:-}" = 1 || exit 1\nprintf "openspace-prepared\\n" >> "$ACTION_LOG"\n')
+                    installer.write_text("exit 1\n")
+                    openspace_scripts = skills / "openspace/scripts"
+                    openspace_scripts.mkdir(parents=True)
+                    (openspace_scripts / "install-openspace.sh").write_text('printf "openspace-install\\n" >> "$ACTION_LOG"\n')
+                    (openspace_scripts / "route-hooks.py").write_text(
+                        'import os, sys\nopen(os.environ["ACTION_LOG"], "a").write("route-hooks " + " ".join(sys.argv[1:]) + "\\n")\n'
+                    )
                     ingest = home / ".agents/hooks/ingest-prompt.py"
                     ingest.parent.mkdir(parents=True)
                     ingest.write_text('import os\nopen(os.environ["ACTION_LOG"], "a").write("knowledge-ingest\\n")\n')
@@ -812,21 +816,15 @@ if sys.argv[1:3] in (["install", "status"], ["mcp", "get"]):
                         env[flag] = approval
                     if flag == "JEO_SKILLS_APPROVE_KNOWLEDGE_HOOKS" and data_approval is not None:
                         env["JEO_SKILLS_APPROVE_KNOWLEDGE_DATA"] = data_approval
-                    if flag == "JEO_SKILLS_APPROVE_OOO_MCP":
-                        env["OPENSPACE_INSTALL_APPROVED"] = "1"
                     result = run_block(guide_block(heading, index), env, root)
                     self.assertEqual(result.returncode, 0, result.stdout)
                     actions = log.read_text()
                     if approval == "true" and (flag != "JEO_SKILLS_APPROVE_KNOWLEDGE_HOOKS" or data_approval == "true"):
                         self.assertIn(expected, actions, result.stdout)
-                        if flag == "JEO_SKILLS_APPROVE_OOO_MCP":
-                            self.assertLess(actions.index("openspace-prepared"), actions.index(expected))
-                            log.write_text("")
-                            del env["OPENSPACE_INSTALL_APPROVED"]
-                            rejected = run_block(guide_block(heading, index), env, root)
-                            self.assertNotEqual(rejected.returncode, 0, rejected.stdout)
-                            self.assertIn("OpenSpace preparation failed", rejected.stdout)
-                            self.assertEqual(log.read_text(), "")
+                        if flag == "JEO_SKILLS_APPROVE_OPENSPACE":
+                            self.assertNotIn("route-hooks", actions, "hooks need their own approval")
+                        if flag == "JEO_SKILLS_APPROVE_SKILL_ROUTING_HOOKS":
+                            self.assertNotIn("openspace-install", actions, "install needs its own approval")
                         if flag == "JEO_SKILLS_APPROVE_KNOWLEDGE_HOOKS":
                             self.assertIn("UserPromptSubmit", json.loads(settings.read_text())["hooks"])
                             self.assertIn("vault-bootstrap", actions)

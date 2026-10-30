@@ -1410,24 +1410,64 @@ when `graphifyy` is importable. A checkout-level `graphify update .` belongs in 
 user-owned `Stop` hook if wanted, because it writes `.graphify/` into every repository the
 agent touches.
 
+### OpenSpace skill finder and prompt-time skill routing
+
+OpenSpace installs on its own; no other skill, ooo included, depends on it. Only after
+approval of its package downloads and installation writes (`JEO_SKILLS_APPROVE_OPENSPACE=true`),
+`install-openspace.sh` clones HKUDS/OpenSpace at the commit the router was verified against
+(`GIT_REF=main` follows upstream), builds `~/.agents/venvs/openspace` (rebuilt when its base
+Python was removed), installs OpenSpace with `rank-bm25`, `PyYAML`, and `mcp<2` (OpenSpace
+declares `mcp>=1.0.0`, but `openspace-mcp` imports the FastMCP API that MCP SDK 2 removed),
+checks `openspace-mcp --help` and the router contract offline, copies the `skill-discovery`
+and `delegate-task` host skills, and registers the `openspace` MCP server in detected
+runtimes. Gemini CLI and Qwen Code reject a `toolTimeout` key in `mcpServers`, so their
+entries omit it (both default to 10 minutes) and an older entry carrying it is repaired.
+
+Prompt-time routing hooks change host settings and need their own approval
+(`JEO_SKILLS_APPROVE_SKILL_ROUTING_HOOKS=true`). On every prompt, OpenSpace's local BM25 ranker
+(`SkillRanker.bm25_only`: no LLM, no embeddings, no network) scores the installed skills
+before the model runs, and at most three skills that clear its gate reach the model as a
+short note (name, `SKILL.md` path, description). The choice does not depend on the model, so
+any model the host runs gets the same suggestions. A prompt that names no skill-specific
+term gets no note, and a missing venv makes every hook a silent no-op.
+
+| Host | Event | Config |
+|---|---|---|
+| Claude Code | `UserPromptSubmit` | `~/.claude/settings.json` |
+| Codex CLI | `UserPromptSubmit` (trust it in `/hooks`) | `~/.codex/hooks.json` |
+| Gemini CLI / Antigravity | `BeforeAgent` | `~/.gemini/settings.json` |
+| Kimi Code | `UserPromptSubmit` | `~/.kimi-code/config.toml` |
+| jeopi, omp, pi, gjc | `before_agent_start` extension | `~/.<host>/agent/extensions/openspace-route.ts` |
+| OpenCode 2 (1.x: `chat.message`) | `session.hook("prompt")` plugin | `~/.config/opencode/plugins/openspace-route.js` |
+
+```bash
+if [ "${JEO_SKILLS_APPROVE_OPENSPACE:-false}" = true ]; then
+  if [ -f "$SKILLS_ROOT/openspace/scripts/install-openspace.sh" ]; then
+    HOME="$USER_HOME" SKILLS_ROOT="$SKILLS_ROOT" bash "$SKILLS_ROOT/openspace/scripts/install-openspace.sh" \
+      || printf '%s\n' 'openspace: installation failed; see the output above.' >&2
+  else
+    printf '%s\n' 'openspace: installer missing; install the openspace skill first.' >&2
+  fi
+else
+  printf '%s\n' 'openspace skipped: separate approval required'
+fi
+if [ "${JEO_SKILLS_APPROVE_SKILL_ROUTING_HOOKS:-false}" = true ] && [ -f "$SKILLS_ROOT/openspace/scripts/route-hooks.py" ]; then
+  HOME="$USER_HOME" SKILLS_ROOT="$SKILLS_ROOT" python3 "$SKILLS_ROOT/openspace/scripts/route-hooks.py" install
+else
+  printf '%s\n' 'skill routing hooks skipped: separate approval and the openspace skill required'
+fi
+```
+
+`route-hooks.py status` reports each host; `route-hooks.py remove` takes the hooks out again.
+Codex runs the new hook only after the user trusts it in `/hooks`; list that as a manual
+follow-up. Pi-family extensions and the OpenCode plugin take effect in new sessions.
+
 ### Ouroboros (`ooo`) MCP server
 
-**Prerequisite for the supported ooo flow:** prepare OpenSpace first. The ooo
-installer checks the configured OpenSpace Python and BM25 dependency; when missing,
-`OPENSPACE_INSTALL_APPROVED=1` authorizes a fresh dedicated installation, not an
-overwrite of an existing target. Package downloads and installation writes need
-approval. If preparation fails, report failure and stop. MCP host registration is
-separate, requires explicit approval, and must be verified in the intended host;
-executable availability is not host readiness.
-
-Before choosing or starting ooo, run the explicit local BM25 search described in
-`.agent-skills/ooo/SKILL.md` and review its candidates. Do not substitute MCP
-`search_skills`: `OPENSPACE_CLOUD_MODE=local` alone does not prevent embedding
-credential discovery or external transmission. Direct ooo CLI/MCP calls, including
-the manual block below, bypass that search; this repository cannot enforce it there.
-
-Register or resolve this optional MCP server only after separate approval
-(`JEO_SKILLS_APPROVE_OOO_MCP=true`).
+ooo installs without OpenSpace. Package downloads and installation writes need approval;
+MCP host registration is separate, requires explicit approval
+(`JEO_SKILLS_APPROVE_OOO_MCP=true`), and must be verified in the intended host; executable
+availability is not host readiness.
 
 The MCP server needs MCP SDK 2, which only the `[mcp]` extra provides. `[all]`, `[claude]`,
 and `[claude-sdk]` pin MCP SDK 1.x, and `ouroboros mcp serve` refuses to start from them.
@@ -1437,10 +1477,10 @@ the terminal CLI is installed only when missing and is otherwise left untouched.
 ```bash
 if [ "${JEO_SKILLS_APPROVE_OOO_MCP:-false}" = true ]; then
 ooo_mcp_setup() (
-if [ ! -f "$SKILLS_ROOT/ooo/scripts/install.sh" ] || ! HOME="$USER_HOME" bash "$SKILLS_ROOT/ooo/scripts/install.sh" --ensure-openspace; then
-  printf '%s\n' 'ooo: OpenSpace preparation failed or installer is missing; ooo installation and registration stopped.' >&2
+if [ ! -f "$SKILLS_ROOT/ooo/scripts/install.sh" ]; then
+  printf '%s\n' 'ooo: installer is missing; install the ooo skill first.' >&2
   exit 1
-else
+fi
 UVX_BIN=$(command -v uvx || true)
 if [ -z "$UVX_BIN" ]; then
   printf '%s\n' 'ooo: uv is missing; install it (Semble block above) and rerun this block.' >&2
@@ -1463,7 +1503,6 @@ else
     && ! codex mcp get ouroboros >/dev/null 2>&1; then
     codex mcp add ooo -- "$UVX_BIN" --isolated --from 'ouroboros-ai[mcp]' ouroboros mcp serve || { printf '%s\n' 'ooo: Codex MCP registration failed.' >&2; exit 1; }
   fi
-fi
 fi
 )
 ooo_mcp_setup
