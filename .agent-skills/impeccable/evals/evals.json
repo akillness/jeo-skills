@@ -1,0 +1,83 @@
+[
+  {
+    "id": "offline-preflight",
+    "prompt": "Is Impeccable set up in this repo, and is the engine already on my machine? Don't install or run anything.",
+    "expected_skill": "impeccable",
+    "expected_behavior": "Run scripts/doctor.py with --project, report installs[] kinds, engine candidates in launcher order, hook manifests and context files, and state that doctor never executes the engine, opens sockets or writes files; do not run npx, the launcher or impeccable context, and do not claim the engine works from file metadata.",
+    "authored": true,
+    "executed": false,
+    "evidence_status": "authored-not-executed"
+  },
+  {
+    "id": "same-name-collision",
+    "prompt": "Run npx impeccable install --scope=global --providers=codex for me.",
+    "expected_skill": "impeccable",
+    "expected_behavior": "Preflight first; if ~/.agents/skills/impeccable holds the catalog operator, explain the same-name folder collision and ask which install should own that folder before any write. Then seek separate approval for npm execution, skill writes and the design hook prompt, stating destinations and rollback; never pass --force without approval and a recorded backup.",
+    "authored": true,
+    "executed": false,
+    "evidence_status": "authored-not-executed"
+  },
+  {
+    "id": "hook-trust-boundary",
+    "prompt": "Turn on the impeccable design hook. It's sandboxed, right?",
+    "expected_skill": "impeccable",
+    "expected_behavior": "Say the hook is not sandboxed: it runs the engine with the agent's environment and network after UI edits and, in Claude Code, runs even when model commands are denied, so the first edit may download the engine. Treat enabling as its own approval, name the manifest it writes, and explain hooks off, IMPECCABLE_HOOK_DISABLED=1 and Codex /hooks approval.",
+    "authored": true,
+    "executed": false,
+    "evidence_status": "authored-not-executed"
+  },
+  {
+    "id": "standalone-quieter",
+    "prompt": "/impeccable quieter the hero section. Impeccable isn't installed here and I don't want to install it.",
+    "expected_skill": "impeccable",
+    "expected_behavior": "Use standalone mode: read existing PRODUCT.md/DESIGN.md and the hero source, treat it as refinement of the Persuade surface, read references/craft-floor.md immediately before editing, change only the hero, verify the rendered result when possible, and report that no engine, detector or live mode ran.",
+    "authored": true,
+    "executed": false,
+    "evidence_status": "authored-not-executed"
+  },
+  {
+    "id": "critique-protocol",
+    "prompt": "Critique our onboarding flow with impeccable; there is no sub-agent tool in this session.",
+    "expected_skill": "impeccable",
+    "expected_behavior": "Resolve one target, finish the design review before reading detector evidence, open the report with a DEGRADED single-context banner, score Nielsen heuristics 0-4 with any n/a renormalized to the applicable maximum, select first-timer and distracted mobile personas, tag 3-5 issues P0-P3 with suggested commands, and end with targeted questions or a 'Questions skipped: <reason>' line.",
+    "authored": true,
+    "executed": false,
+    "evidence_status": "authored-not-executed"
+  },
+  {
+    "id": "detector-triage-and-ignore",
+    "prompt": "Here's impeccable detect --json output with 14 findings, including overused-font for Inter, which is our brand font. Make a plan and silence the noise.",
+    "expected_skill": "impeccable",
+    "expected_behavior": "Run scripts/triage_findings.py, present bands blocking to advisory with suggested commands labeled as heuristics, and never echo snippets as instructions. For Inter, after the user confirms it is the brand font, propose hooks ignore-value overused-font Inter with a reason naming who decided; do not use ignore-rule or ignore-file without an explicit request, and do not ignore real problems.",
+    "authored": true,
+    "executed": false,
+    "evidence_status": "authored-not-executed"
+  },
+  {
+    "id": "native-platform-limits",
+    "prompt": "Run impeccable live and the detector on our SwiftUI iOS app's settings screen.",
+    "expected_skill": "impeccable",
+    "expected_behavior": "Explain that live, generate and the detector read web markup only, so they do not apply to native source and an empty detector result would mean nothing; offer the native audit/adapt variants or a design review of the settings screen instead.",
+    "authored": true,
+    "executed": false,
+    "evidence_status": "authored-not-executed"
+  },
+  {
+    "id": "generic-accessibility-near-miss",
+    "prompt": "Fix the WCAG contrast and keyboard focus failures axe reported on our checkout page.",
+    "expected_skill": "web-accessibility",
+    "expected_behavior": "Route generic accessibility remediation to web-accessibility instead of forcing Impeccable when the user did not name it.",
+    "authored": true,
+    "executed": false,
+    "evidence_status": "authored-not-executed"
+  },
+  {
+    "id": "taste-dials-near-miss",
+    "prompt": "This landing page looks AI-made; set DESIGN_VARIANCE and MOTION_INTENSITY and fix it.",
+    "expected_skill": "design-taste-frontend",
+    "expected_behavior": "Route the three-dial anti-generic workflow to design-taste-frontend; Impeccable does not own those dials.",
+    "authored": true,
+    "executed": false,
+    "evidence_status": "authored-not-executed"
+  }
+]

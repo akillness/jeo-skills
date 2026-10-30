@@ -101,6 +101,12 @@ Lightpanda는 `jeo-skill install lightpanda --global --dry-run`으로 선택을 
 실행 호환성을 보증하지 않습니다. 브라우저 다운로드·설치·실행, 사이트 접근, 서버, 자격 증명,
 프로바이더 호출은 각각 별도 승인이 필요합니다. [설치 가이드](setup-all-skills-prompt.md#lightpanda-browser-operator-on-demand)를 참고하세요.
 
+Impeccable은 `jeo-skill install impeccable --global --dry-run`으로 선택을 미리 확인한 뒤
+스킬을 설치합니다. 스킬 설치는 `pbakaus/impeccable` 4.8.0 운영 가이드만 복사하며 Impeccable,
+엔진, 디자인 훅은 설치하지 않습니다. 업스트림 설치 프로그램도 같은 `impeccable` 폴더 이름을
+쓰므로 어느 쪽이든 쓰기 전에 오프라인 doctor로 먼저 확인합니다. npm 실행, 엔진 다운로드·실행,
+훅, 브라우저 스캔, live 모드는 각각 별도 승인이 필요합니다. [설치 가이드](setup-all-skills-prompt.md#impeccable-design-operator-on-demand)를 참고하세요.
+
 설치 프로그램 변수는 파이프 오른쪽의 `bash`에 지정합니다.
 
 ```bash
@@ -260,11 +266,11 @@ python3 scripts/retire-unused-skills.py --usage-report report.json --apply \
 
 ## 📚 스킬 목록
 
-> `.agent-skills/skills.json`에서 생성 · 408개 스킬 · 카테고리를 펼치면 스킬 목록이 보입니다.
+> `.agent-skills/skills.json`에서 생성 · 409개 스킬 · 카테고리를 펼치면 스킬 목록이 보입니다.
 
-### 🌐 웹 (70개)
+### 🌐 웹 (71개)
 
-하위 분류: `frontend` (12), `backend` (3), `design` (15), `api` (2), `auth` (1), `data` (13), `testing` (4), `accessibility` (1), `performance` (1), `graphics` (12), `capture` (6)
+하위 분류: `frontend` (12), `backend` (3), `design` (16), `api` (2), `auth` (1), `data` (13), `testing` (4), `accessibility` (1), `performance` (1), `graphics` (12), `capture` (6)
 
 <details>
 <summary>스킬 보기</summary>
@@ -320,6 +326,7 @@ python3 scripts/retire-unused-skills.py --usage-report report.json --apply \
 | `moli` |
 | `lightpanda` |
 | `design-taste-frontend` |
+| `impeccable` |
 | `higgsfield-websites` |
 | `stagehand` |
 | `helix-foundry` |
@@ -823,6 +830,13 @@ python3 scripts/changelog.py check
 
 <!-- WHATS-NEW:START -->
 
+## 🆕 v2026-10-30 업데이트
+
+| 변경 사항 | 상세 내용 |
+|--------|---------|
+| **Impeccable 디자인 운영 가이드** | `pbakaus/impeccable` 스킬 4.8.0 / 엔진 0.1.18, 커밋 `02523aec3e4c4580102d996d1b6a71fbe062e03f`(Apache-2.0, LICENSE·NOTICE.md 확인)에 고정한 `impeccable` v1.0.0을 추가했습니다. 카탈로그는 408→409개(`web/design`)입니다. 업스트림 명령 24개를 라우팅하고, 업스트림 스킬 없이도 작업할 수 있도록 critique/audit 방법론과 craft floor를 요약해 담았으며, 62개 규칙 탐지기와 ignore 정책을 문서화했습니다. npm 실행, 엔진 다운로드·실행, 샌드박스가 아닌 디자인 훅, 브라우저 스캔, live 모드는 각각 별도 승인합니다. 업스트림도 같은 `impeccable` 폴더 이름을 쓰므로 어느 설치 프로그램이든 쓰기 전에 먼저 확인합니다. |
+| **Impeccable 오프라인 도구와 검증** | `scripts/doctor.py`는 설치본(업스트림/카탈로그 운영 가이드), 런처 순서의 엔진 후보와 선택적 고정 다이제스트 비교, 훅 매니페스트, 텔레메트리 옵트아웃, 프로젝트 컨텍스트 파일을 아무것도 실행하거나 소켓을 열거나 파일을 쓰지 않고 보고합니다. `scripts/triage_findings.py`는 `detect --json` 결과를 blocking/quality/slop/advisory 순으로 묶고 명령을 제안하며 snippet은 출력하지 않습니다. 전용 테스트 21/21, Node 24에서 설치 회귀 72/72·설치 가이드 34/34가 통과했습니다. 라우팅·안전 평가 9개는 작성된 시나리오이며 실행된 모델 결과가 아닙니다. 업스트림 설치 프로그램·엔진·훅·브라우저는 실행하지 않았습니다. |
+
 ## 🆕 v2026-10-24 업데이트
 
 | 변경 사항 | 상세 내용 |
@@ -860,18 +874,6 @@ python3 scripts/changelog.py check
 | 변경 사항 | 상세 내용 |
 |--------|---------|
 | **OpenCreator 운영 스킬** | `krillinai/OpenCreator` 커밋 `b01a9f71165b9010216e25c462653b0cfa33cbce`에 고정한 `opencreator` 가이드를 추가했습니다. Desktop/CLI/Server 선택, 제작 작업, Codex·provider 설정, Skills/MCP/일정, 릴리스 무결성과 승인 경계를 다룹니다. 오프라인 읽기 전용 사전 점검과 작성된 시나리오 11개, CI에 연결된 전용 회귀 테스트 16개를 추가해 모두 통과했습니다. 카탈로그는 400개에서 401개로 늘었습니다. 업스트림 앱·설치 프로그램·provider·유료 서비스는 실행하지 않았습니다. |
-
-## 🆕 v2026-10-15 업데이트
-
-| 변경 사항 | 상세 내용 |
-|--------|---------|
-| **UI 소스 고정 운영 스킬 10개** | Superdesign, Better Design, Design Taste, Canvas UI, Paper Shaders, UI Layouts, Hyperiux, Motion Primitives, Cursify, Trickle UI Kit 가이드를 추가했습니다. 정확한 저장소·커밋·선택 소스·전체 라이선스 관찰·중복 결정을 `docs/ui-design-repositories.md`와 독립 레퍼런스에 기록했습니다. |
-| **선택 설치와 재사용 권한** | `ui-design-repositories` 번들은 문서만 추가합니다(390 → 400개). 기존 스킬 삭제는 0개이며 시스템 거버넌스·레시피·성능 진단 역할을 보존했습니다. Canvas UI 배포 제한, Hyperiux Effects 별도 조건, Cursify 라이선스 부재를 명시하고 업스트림 컴포넌트 코드는 포함하지 않았습니다. |
-| **오프라인 검증 범위** | 패키징·라우터 회귀 6개가 통과했고 Ubuntu/macOS CI에 연결했습니다. 평가 시나리오 45개는 작성된 픽스처이지 실행한 모델 품질·브라우저 평가가 아닙니다. 업스트림 설치·서버·원격 디자인 호출·유료 서비스·UI 런타임은 실행하지 않았습니다. |
-| **OKF Agent Memory 운영 스킬** | 별도 Go CLI·stdio MCP 프로젝트인 `okf-memory/okf-agent-memory`를 위한 `okf-agent-memory`를 추가했습니다. upstream 커밋 `ad7beb01b9d4294d8dd28c25494d274374985b69`(MIT)에 고정하고 OKF v0.2 프로젝트 메모리, 명령, 보안, 승인 경계를 안내합니다. |
-| **라우팅과 카탈로그** | `ai-agents/memory`로 등록하고 `okf` 및 지식 관리 스킬과 연결했습니다. 기존 `okf`는 Google OKF v0.1 문서 작성 경로로 명확히 구분했습니다. 매니페스트 투영, README 3개 언어의 현재 개수, setup 안내, `AGENTS.md`, `.mex/ROUTER.md`를 갱신해 카탈로그가 367개에서 368개가 됐습니다. 새 운영 스킬과 기존 `okf` 경계에 평가 시나리오 9개를 추가했습니다. |
-| **읽기 전용 사전 점검과 회귀** | 고정 커밋과 공개 소스 경로를 확인하는 표준 라이브러리 기반 단독 preflight를 추가했습니다. 심볼릭 링크 경로와 1 MiB 초과 파일을 거부하고 Git 환경을 allowlist로 제한하며 업스트림 실행 파일은 호출하지 않습니다. 공용 사전 점검 회귀 13/13이 통과했고 악성 경로, 커밋 고정, 링크, 크기, 무변조, 자격증명 격리를 확인했습니다. |
-| **업스트림 문서 충돌 및 실행 범위** | 고정 `go.mod`는 Go 1.26.0을 요구하지만 시작 가이드는 1.22+라고 안내합니다. 스킬에 이 충돌을 기록했습니다. 업스트림 설치·빌드·bootstrap·MCP 등록과 대상 프로젝트 쓰기는 실행하지 않았습니다. |
 
 > 📜 이전 기록: [`changelog/ko/`](changelog/ko/) (월별 파일, 최신순).
 

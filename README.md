@@ -101,6 +101,12 @@ fetch, structured data, CDP and MCP; its offline doctor checks local metadata, n
 compatibility. Browser download, installation, execution, site access, servers, credentials
 and provider calls require separate approval. See the [setup guide](setup-all-skills-prompt.md#lightpanda-browser-operator-on-demand).
 
+For Impeccable, preview `jeo-skill install impeccable --global --dry-run` before installing
+the selected skill. It installs an operator guide for `pbakaus/impeccable` 4.8.0, not
+Impeccable, its engine or its design hook; the upstream installer uses the same `impeccable`
+folder name, so run the offline doctor before either installer writes. npm execution, engine
+download and runs, the hook, browser scans and live mode require separate approval. See the [setup guide](setup-all-skills-prompt.md#impeccable-design-operator-on-demand).
+
 Installer variables belong to `bash`, on the right side of the pipe:
 
 ```bash
@@ -257,11 +263,11 @@ node ~/.agents/jev/jev-harness.mjs --profile "${JEV_PROFILE:?Select the current 
 
 ## 📚 Skills List
 
-> Generated from `.agent-skills/skills.json` · 408 skills · expand a category to see its skills.
+> Generated from `.agent-skills/skills.json` · 409 skills · expand a category to see its skills.
 
-### 🌐 Web (70)
+### 🌐 Web (71)
 
-Subcategories: `frontend` (12), `backend` (3), `design` (15), `api` (2), `auth` (1), `data` (13), `testing` (4), `accessibility` (1), `performance` (1), `graphics` (12), `capture` (6)
+Subcategories: `frontend` (12), `backend` (3), `design` (16), `api` (2), `auth` (1), `data` (13), `testing` (4), `accessibility` (1), `performance` (1), `graphics` (12), `capture` (6)
 
 <details>
 <summary>Show skills</summary>
@@ -317,6 +323,7 @@ Subcategories: `frontend` (12), `backend` (3), `design` (15), `api` (2), `auth` 
 | `moli` |
 | `lightpanda` |
 | `design-taste-frontend` |
+| `impeccable` |
 | `higgsfield-websites` |
 | `stagehand` |
 | `helix-foundry` |
@@ -820,6 +827,13 @@ Edit metadata in `skills.json`, never in the generated tables. Upstream sources 
 
 <!-- WHATS-NEW:START -->
 
+## 🆕 What's New in v2026-10-30
+
+| Change | Details |
+|--------|---------|
+| **Impeccable design operator** | Added `impeccable` v1.0.0 for `pbakaus/impeccable` skill 4.8.0 / engine 0.1.18 at `02523aec3e4c4580102d996d1b6a71fbe062e03f` (Apache-2.0; LICENSE and NOTICE.md inspected). The catalog grows from 408 to 409 in `web/design`. It routes the 24 upstream commands, carries a paraphrased critique/audit method and craft floor so work proceeds without the upstream skill, documents the 62-rule detector and ignore policy, and gates npm execution, engine download and runs, the unsandboxed design hook, browser scans and live mode separately. Upstream uses the same `impeccable` folder name; the guide checks before either installer writes. |
+| **Impeccable offline helpers and verification** | `scripts/doctor.py` reports installs (upstream vs catalog operator), engine candidates in launcher order with optional pinned-digest checks, hook manifests, telemetry opt-outs and project context files without executing anything, opening sockets or writing files. `scripts/triage_findings.py` ranks `detect --json` findings into blocking/quality/slop/advisory bands with suggested commands and never echoes snippets. Dedicated tests pass 21/21; installer 72/72 and setup-guide 34/34 pass on Node 24. Nine routing/safety evals are authored, not executed model results. No upstream installer, engine, hook or browser was run. |
+
 ## 🆕 What's New in v2026-10-24
 
 | Change | Details |
@@ -857,18 +871,6 @@ Edit metadata in `skills.json`, never in the generated tables. Upstream sources 
 | Change | Details |
 |--------|---------|
 | **OpenCreator operator** | Added the source-pinned `opencreator` guide for `krillinai/OpenCreator` commit `b01a9f71165b9010216e25c462653b0cfa33cbce`, covering Desktop/CLI/Server, creator tasks, Codex/provider setup, Skills/MCP/schedules, release integrity and approval boundaries. Added an offline read-only preflight, 11 authored scenarios, and 16 passing subprocess regressions wired into CI. Catalog: 400 → 401. No upstream app, installer, provider, or paid service was run. |
-
-## 🆕 What's New in v2026-10-15
-
-| Change | Details |
-|--------|---------|
-| **Ten source-pinned UI operators** | Added Superdesign, Better Design, Design Taste, Canvas UI, Paper Shaders, UI Layouts, Hyperiux, Motion Primitives, Cursify and Trickle UI Kit guides. Exact repository identities, commits, selected source coordinates, complete license observations and duplicate decisions live in `docs/ui-design-repositories.md` and independent skill references. |
-| **Selective setup and rights** | The `ui-design-repositories` bundle adds documents only (390 → 400 skills). Zero existing skills were removed: named-source tooling does not replace system governance, visual recipes or performance diagnosis. Canvas UI redistribution is restricted, Hyperiux Effects has separate terms, and Cursify has no observed license grant; no upstream component code is vendored. |
-| **Offline verification boundary** | Added six passing packaging/router regressions and Ubuntu/macOS CI wiring. Forty-five positive/negative scenarios are authored fixtures, not executed model-quality or browser evaluations. Upstream installs, servers, remote design calls, paid services and UI runtime execution were not performed. |
-| **OKF Agent Memory operator** | Added `okf-agent-memory` for the separate `okf-memory/okf-agent-memory` Go CLI and stdio MCP, pinned to upstream commit `ad7beb01b9d4294d8dd28c25494d274374985b69` (MIT). The guide covers project-local OKF v0.2 workflows, source-pinned commands, security, and approval gates. |
-| **Routing and catalog** | Registered the skill under `ai-agents/memory`, linked it with `okf` and related knowledge-vault skills, and clarified that `okf` remains the Google OKF v0.1 format authoring path. Refreshed manifest projections, all README locale counts, setup guidance, `AGENTS.md`, and `.mex/ROUTER.md`; catalog grows from 367 to 368. Added nine routing/safety evaluation scenarios across the new operator and the `okf` route-out. |
-| **Read-only preflight and regressions** | Added a standalone stdlib preflight bound to the pinned commit and fixed public source markers. It rejects symlinked paths and oversized markers, scopes Git environment variables, and runs no upstream executable. The shared repository-preflight regression suite passes 13/13, including malicious-path, pin, symlink, size, no-write, and credential-isolation cases. |
-| **Known upstream drift and execution boundary** | The pinned `go.mod` requires Go 1.26.0, while the getting-started guide says 1.22+; the skill records the conflict. No upstream installation, build, bootstrap, MCP registration, or target-project write was performed. |
 
 > 📜 Older entries: [`changelog/en/`](changelog/en/) (monthly files, newest first).
 

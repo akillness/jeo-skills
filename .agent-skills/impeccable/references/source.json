@@ -1,0 +1,912 @@
+{
+  "schema_version": 1,
+  "skill": "impeccable",
+  "repository": "pbakaus/impeccable",
+  "commit": "02523aec3e4c4580102d996d1b6a71fbe062e03f",
+  "committed_at": "2026-10-29T18:41:44Z",
+  "observed_at": "2026-10-30",
+  "skill_version": "4.8.0",
+  "engine_version": "0.1.18",
+  "license": {
+    "spdx": "Apache-2.0",
+    "path": "LICENSE",
+    "url": "https://github.com/pbakaus/impeccable/blob/02523aec3e4c4580102d996d1b6a71fbe062e03f/LICENSE",
+    "conclusion": "Apache-2.0; full pinned root license inspected; NOTICE.md covers only upstream ios.md/android.md, which this operator does not reproduce"
+  },
+  "engine": {
+    "release_url_template": "https://github.com/pbakaus/impeccable/releases/download/engine-v{version}/{asset}",
+    "checksums": [
+      {
+        "version": "0.1.18",
+        "asset": "impeccable-darwin-arm64",
+        "sha256": "543ee2f72036ad185dc9991ac3ba86b74d91f988f3d497776a088b8b65c8a9e1"
+      },
+      {
+        "version": "0.1.18",
+        "asset": "impeccable-darwin-x64",
+        "sha256": "1f1eee78c142f7e40e16f481aeeeb1fad1d8515d8a1ef033d7c6d133e52232b3"
+      },
+      {
+        "version": "0.1.18",
+        "asset": "impeccable-linux-x64",
+        "sha256": "736ed785e74ae2344d3036127f614ddde5ab520a527d8bc82a891612ef71f648"
+      },
+      {
+        "version": "0.1.18",
+        "asset": "impeccable-linux-arm64",
+        "sha256": "317cb18d64b0f7715681dd6e574ad64b2adb5a6caf8e7a1b3b57965f805404be"
+      },
+      {
+        "version": "0.1.18",
+        "asset": "impeccable-windows-x64.exe",
+        "sha256": "8f61e96b0c97001546a824d79b44f46b423b560f3eb1a0cc44a8695a1b395d9f"
+      }
+    ],
+    "candidate_order": [
+      "IMPECCABLE_BIN (executed without probe when executable)",
+      "<skill>/scripts/bin/<os>-<arch>/impeccable (sibling binary)",
+      "~/.impeccable/bin/impeccable (unversioned; engine-probe handshake first)",
+      "${IMPECCABLE_HOME:-~/.impeccable}/bin/<VERSION>/impeccable (digest checked once, then .verified stamp)",
+      "impeccable on PATH (engine-probe handshake first)",
+      "checksum-verified download of the pinned release asset into the versioned cache"
+    ]
+  },
+  "commands": [
+    {
+      "name": "craft",
+      "category": "Build",
+      "argument_hint": "[feature description]",
+      "web_only": false,
+      "deprecated": true
+    },
+    {
+      "name": "shape",
+      "category": "Build",
+      "argument_hint": "[feature to shape]",
+      "web_only": false,
+      "deprecated": false
+    },
+    {
+      "name": "init",
+      "category": "Build",
+      "argument_hint": "",
+      "web_only": false,
+      "deprecated": false
+    },
+    {
+      "name": "document",
+      "category": "Build",
+      "argument_hint": "",
+      "web_only": false,
+      "deprecated": false
+    },
+    {
+      "name": "extract",
+      "category": "Build",
+      "argument_hint": "[target]",
+      "web_only": false,
+      "deprecated": false
+    },
+    {
+      "name": "critique",
+      "category": "Evaluate",
+      "argument_hint": "[area (feature, page, component...)]",
+      "web_only": false,
+      "deprecated": false
+    },
+    {
+      "name": "audit",
+      "category": "Evaluate",
+      "argument_hint": "[area (feature, page, component...)]",
+      "web_only": false,
+      "deprecated": false
+    },
+    {
+      "name": "polish",
+      "category": "Refine",
+      "argument_hint": "[target]",
+      "web_only": false,
+      "deprecated": false
+    },
+    {
+      "name": "bolder",
+      "category": "Refine",
+      "argument_hint": "[target]",
+      "web_only": false,
+      "deprecated": false
+    },
+    {
+      "name": "quieter",
+      "category": "Refine",
+      "argument_hint": "[target]",
+      "web_only": false,
+      "deprecated": false
+    },
+    {
+      "name": "distill",
+      "category": "Refine",
+      "argument_hint": "[target]",
+      "web_only": false,
+      "deprecated": false
+    },
+    {
+      "name": "harden",
+      "category": "Refine",
+      "argument_hint": "[target]",
+      "web_only": false,
+      "deprecated": false
+    },
+    {
+      "name": "onboard",
+      "category": "Refine",
+      "argument_hint": "[target]",
+      "web_only": false,
+      "deprecated": false
+    },
+    {
+      "name": "animate",
+      "category": "Enhance",
+      "argument_hint": "[target]",
+      "web_only": false,
+      "deprecated": false
+    },
+    {
+      "name": "colorize",
+      "category": "Enhance",
+      "argument_hint": "[target]",
+      "web_only": false,
+      "deprecated": false
+    },
+    {
+      "name": "typeset",
+      "category": "Enhance",
+      "argument_hint": "[target]",
+      "web_only": false,
+      "deprecated": false
+    },
+    {
+      "name": "layout",
+      "category": "Enhance",
+      "argument_hint": "[target]",
+      "web_only": false,
+      "deprecated": false
+    },
+    {
+      "name": "delight",
+      "category": "Enhance",
+      "argument_hint": "[target]",
+      "web_only": false,
+      "deprecated": false
+    },
+    {
+      "name": "overdrive",
+      "category": "Enhance",
+      "argument_hint": "[target]",
+      "web_only": false,
+      "deprecated": false
+    },
+    {
+      "name": "clarify",
+      "category": "Fix",
+      "argument_hint": "[target]",
+      "web_only": false,
+      "deprecated": false
+    },
+    {
+      "name": "adapt",
+      "category": "Fix",
+      "argument_hint": "[target] [context (mobile, tablet, print...)]",
+      "web_only": false,
+      "deprecated": false
+    },
+    {
+      "name": "optimize",
+      "category": "Fix",
+      "argument_hint": "[target]",
+      "web_only": false,
+      "deprecated": false
+    },
+    {
+      "name": "live",
+      "category": "Iterate",
+      "argument_hint": "",
+      "web_only": true,
+      "deprecated": false
+    },
+    {
+      "name": "generate",
+      "category": "Iterate",
+      "argument_hint": "[count] [direction] variants of [element]",
+      "web_only": true,
+      "deprecated": false
+    }
+  ],
+  "aliases": {
+    "teach": "init",
+    "craft": "ordinary new-work request (deprecated)"
+  },
+  "utility_verbs": [
+    "pin",
+    "hooks",
+    "doctor"
+  ],
+  "detector": {
+    "rule_count": 62,
+    "exit_codes": {
+      "0": "no primary findings (advisories may be listed)",
+      "1": "a requested target could not be scanned",
+      "2": "primary findings"
+    },
+    "rules": [
+      {
+        "id": "side-tab",
+        "name": "Side-tab accent border",
+        "category": "slop",
+        "tier": "warning",
+        "scopes": []
+      },
+      {
+        "id": "border-accent-on-rounded",
+        "name": "Border accent on rounded element",
+        "category": "slop",
+        "tier": "warning",
+        "scopes": []
+      },
+      {
+        "id": "overused-font",
+        "name": "Overused font",
+        "category": "slop",
+        "tier": "warning",
+        "scopes": [
+          "type"
+        ]
+      },
+      {
+        "id": "flat-type-hierarchy",
+        "name": "Flat type hierarchy",
+        "category": "slop",
+        "tier": "warning",
+        "scopes": [
+          "type"
+        ]
+      },
+      {
+        "id": "gradient-text",
+        "name": "Gradient text",
+        "category": "slop",
+        "tier": "warning",
+        "scopes": []
+      },
+      {
+        "id": "ai-color-palette",
+        "name": "AI color palette",
+        "category": "slop",
+        "tier": "warning",
+        "scopes": []
+      },
+      {
+        "id": "cream-palette",
+        "name": "Cream / beige palette",
+        "category": "slop",
+        "tier": "warning",
+        "scopes": []
+      },
+      {
+        "id": "nested-cards",
+        "name": "Nested cards",
+        "category": "slop",
+        "tier": "warning",
+        "scopes": [
+          "layout"
+        ]
+      },
+      {
+        "id": "monotonous-spacing",
+        "name": "Monotonous spacing",
+        "category": "slop",
+        "tier": "warning",
+        "scopes": [
+          "layout"
+        ]
+      },
+      {
+        "id": "bounce-easing",
+        "name": "Bounce or elastic easing",
+        "category": "slop",
+        "tier": "advisory",
+        "scopes": []
+      },
+      {
+        "id": "pulsing-dot",
+        "name": "Pulsing status dot",
+        "category": "slop",
+        "tier": "warning",
+        "scopes": []
+      },
+      {
+        "id": "blinking-cursor",
+        "name": "Decorative blinking cursor",
+        "category": "slop",
+        "tier": "advisory",
+        "scopes": []
+      },
+      {
+        "id": "shape-assembled-illustration",
+        "name": "Shape-assembled illustration",
+        "category": "slop",
+        "tier": "advisory",
+        "scopes": []
+      },
+      {
+        "id": "organic-clip-path",
+        "name": "Organic contour drawn as clip-path",
+        "category": "quality",
+        "tier": "warning",
+        "scopes": []
+      },
+      {
+        "id": "buried-raster",
+        "name": "Raster buried under a wash or opacity",
+        "category": "quality",
+        "tier": "warning",
+        "scopes": []
+      },
+      {
+        "id": "hard-offset-shadow",
+        "name": "Hard offset shadow",
+        "category": "quality",
+        "tier": "advisory",
+        "scopes": []
+      },
+      {
+        "id": "dark-glow",
+        "name": "Glowing shadow accents",
+        "category": "slop",
+        "tier": "warning",
+        "scopes": []
+      },
+      {
+        "id": "radial-halo",
+        "name": "Radial-gradient background halo",
+        "category": "slop",
+        "tier": "warning",
+        "scopes": []
+      },
+      {
+        "id": "radial-spotlight-glow",
+        "name": "Decorative radial spotlight glow",
+        "category": "slop",
+        "tier": "warning",
+        "scopes": []
+      },
+      {
+        "id": "marquee",
+        "name": "Auto-scrolling marquee",
+        "category": "slop",
+        "tier": "warning",
+        "scopes": []
+      },
+      {
+        "id": "icon-tile-stack",
+        "name": "Icon tile stacked above heading",
+        "category": "slop",
+        "tier": "warning",
+        "scopes": [
+          "layout"
+        ]
+      },
+      {
+        "id": "italic-serif-display",
+        "name": "Italic serif display headline",
+        "category": "slop",
+        "tier": "warning",
+        "scopes": [
+          "type"
+        ]
+      },
+      {
+        "id": "hero-eyebrow-chip",
+        "name": "Hero eyebrow / pill chip",
+        "category": "slop",
+        "tier": "warning",
+        "scopes": [
+          "type"
+        ]
+      },
+      {
+        "id": "kicker-above-heading",
+        "name": "Kicker / eyebrow label above heading",
+        "category": "slop",
+        "tier": "warning",
+        "scopes": [
+          "type"
+        ]
+      },
+      {
+        "id": "numbered-section-labels",
+        "name": "Tiny numbered section labels",
+        "category": "slop",
+        "tier": "advisory",
+        "scopes": [
+          "type"
+        ]
+      },
+      {
+        "id": "em-dash-overuse",
+        "name": "Em-dash overuse",
+        "category": "slop",
+        "tier": "advisory",
+        "scopes": []
+      },
+      {
+        "id": "marketing-buzzword",
+        "name": "Marketing buzzword",
+        "category": "slop",
+        "tier": "warning",
+        "scopes": []
+      },
+      {
+        "id": "aphoristic-cadence",
+        "name": "Aphoristic-cadence copy",
+        "category": "slop",
+        "tier": "warning",
+        "scopes": []
+      },
+      {
+        "id": "oversized-h1",
+        "name": "Oversized hero headline",
+        "category": "slop",
+        "tier": "warning",
+        "scopes": [
+          "type"
+        ]
+      },
+      {
+        "id": "extreme-negative-tracking",
+        "name": "Crushed letter spacing",
+        "category": "slop",
+        "tier": "warning",
+        "scopes": [
+          "type"
+        ]
+      },
+      {
+        "id": "broken-image",
+        "name": "Broken or placeholder image",
+        "category": "quality",
+        "tier": "warning",
+        "scopes": []
+      },
+      {
+        "id": "script-error",
+        "name": "Uncaught script error on load",
+        "category": "quality",
+        "tier": "error",
+        "scopes": []
+      },
+      {
+        "id": "content-hidden-at-rest",
+        "name": "Content invisible at rest",
+        "category": "quality",
+        "tier": "error",
+        "scopes": [
+          "layout"
+        ]
+      },
+      {
+        "id": "edge-flush-cards",
+        "name": "Cards flush against the scroller edge",
+        "category": "quality",
+        "tier": "warning",
+        "scopes": [
+          "layout"
+        ]
+      },
+      {
+        "id": "text-occlusion",
+        "name": "Text occluded by an overlapping element",
+        "category": "quality",
+        "tier": "warning",
+        "scopes": [
+          "layout"
+        ]
+      },
+      {
+        "id": "first-viewport-column-overflow",
+        "name": "One column stretches the first viewport",
+        "category": "quality",
+        "tier": "warning",
+        "scopes": [
+          "layout"
+        ]
+      },
+      {
+        "id": "gray-on-color",
+        "name": "Gray text on colored background",
+        "category": "quality",
+        "tier": "warning",
+        "scopes": []
+      },
+      {
+        "id": "low-contrast",
+        "name": "Low contrast text",
+        "category": "quality",
+        "tier": "warning",
+        "scopes": []
+      },
+      {
+        "id": "line-length",
+        "name": "Line length too long",
+        "category": "quality",
+        "tier": "warning",
+        "scopes": [
+          "type",
+          "layout"
+        ]
+      },
+      {
+        "id": "cramped-padding",
+        "name": "Cramped padding",
+        "category": "quality",
+        "tier": "warning",
+        "scopes": [
+          "layout"
+        ]
+      },
+      {
+        "id": "body-text-viewport-edge",
+        "name": "Body text touching viewport edge",
+        "category": "quality",
+        "tier": "warning",
+        "scopes": [
+          "layout"
+        ]
+      },
+      {
+        "id": "tight-leading",
+        "name": "Tight line height",
+        "category": "quality",
+        "tier": "warning",
+        "scopes": [
+          "type"
+        ]
+      },
+      {
+        "id": "skipped-heading",
+        "name": "Skipped heading level",
+        "category": "quality",
+        "tier": "warning",
+        "scopes": [
+          "type"
+        ]
+      },
+      {
+        "id": "heading-rhythm",
+        "name": "Heading crowded against the previous block",
+        "category": "quality",
+        "tier": "warning",
+        "scopes": [
+          "layout",
+          "type"
+        ]
+      },
+      {
+        "id": "justified-text",
+        "name": "Justified text",
+        "category": "quality",
+        "tier": "warning",
+        "scopes": [
+          "type"
+        ]
+      },
+      {
+        "id": "straggler",
+        "name": "Straggler",
+        "category": "quality",
+        "tier": "advisory",
+        "scopes": [
+          "type"
+        ]
+      },
+      {
+        "id": "unbalanced-heading",
+        "name": "Unbalanced heading",
+        "category": "quality",
+        "tier": "advisory",
+        "scopes": [
+          "type"
+        ]
+      },
+      {
+        "id": "tiny-text",
+        "name": "Tiny body text",
+        "category": "quality",
+        "tier": "warning",
+        "scopes": [
+          "type"
+        ]
+      },
+      {
+        "id": "undersized-ui-text",
+        "name": "Undersized functional text",
+        "category": "quality",
+        "tier": "warning",
+        "scopes": [
+          "type"
+        ]
+      },
+      {
+        "id": "all-caps-body",
+        "name": "All-caps body text",
+        "category": "quality",
+        "tier": "warning",
+        "scopes": [
+          "type"
+        ]
+      },
+      {
+        "id": "wide-tracking",
+        "name": "Wide letter spacing on body text",
+        "category": "quality",
+        "tier": "warning",
+        "scopes": [
+          "type"
+        ]
+      },
+      {
+        "id": "text-overflow",
+        "name": "Content overflowing its container",
+        "category": "quality",
+        "tier": "warning",
+        "scopes": [
+          "layout"
+        ]
+      },
+      {
+        "id": "repeated-container-text",
+        "name": "Same text repeated inside one container",
+        "category": "quality",
+        "tier": "warning",
+        "scopes": []
+      },
+      {
+        "id": "clipped-overflow-container",
+        "name": "Positioned child clipped by overflow container",
+        "category": "quality",
+        "tier": "advisory",
+        "scopes": [
+          "layout"
+        ]
+      },
+      {
+        "id": "design-system-font",
+        "name": "Font outside DESIGN.md",
+        "category": "quality",
+        "tier": "warning",
+        "scopes": [
+          "type"
+        ]
+      },
+      {
+        "id": "design-system-color",
+        "name": "Color outside DESIGN.md",
+        "category": "quality",
+        "tier": "advisory",
+        "scopes": []
+      },
+      {
+        "id": "design-system-radius",
+        "name": "Radius outside DESIGN.md",
+        "category": "quality",
+        "tier": "advisory",
+        "scopes": []
+      },
+      {
+        "id": "design-system-font-size",
+        "name": "Font size outside DESIGN.md",
+        "category": "quality",
+        "tier": "advisory",
+        "scopes": [
+          "type"
+        ]
+      },
+      {
+        "id": "gpt-thin-border-wide-shadow",
+        "name": "Hairline border with wide shadow",
+        "category": "slop",
+        "tier": "advisory",
+        "scopes": []
+      },
+      {
+        "id": "repeating-stripes-gradient",
+        "name": "Repeating-gradient stripes",
+        "category": "slop",
+        "tier": "advisory",
+        "scopes": []
+      },
+      {
+        "id": "codex-grid-background",
+        "name": "Decorative grid-line background",
+        "category": "slop",
+        "tier": "advisory",
+        "scopes": []
+      },
+      {
+        "id": "theater-slop-phrase",
+        "name": "Theater framing copy",
+        "category": "slop",
+        "tier": "advisory",
+        "scopes": []
+      }
+    ]
+  },
+  "provider_skill_roots": {
+    "project": [
+      ".agent",
+      ".agents",
+      ".claude",
+      ".cursor",
+      ".devin",
+      ".dsh",
+      ".gemini",
+      ".github",
+      ".grok",
+      ".hermes",
+      ".kiro",
+      ".omp",
+      ".opencode",
+      ".pi",
+      ".qoder",
+      ".rovodev",
+      ".trae",
+      ".trae-cn",
+      ".veto",
+      ".vibe"
+    ],
+    "global": [
+      "${CLAUDE_CONFIG_DIR:-~/.claude}/skills",
+      "~/.agents/skills",
+      "${XDG_CONFIG_HOME:-~/.config}/devin/skills",
+      "~/.gemini/config/skills",
+      "~/.grok/skills",
+      "${HERMES_HOME:-~/.hermes}/skills",
+      "${DSH_HOME:-~/.dsh}/skills",
+      "~/.qoder/skills",
+      "~/.rovodev/skills",
+      "~/.vibe/skills",
+      "~/.trae/skills",
+      "~/.trae-cn/skills"
+    ]
+  },
+  "hook_manifests": {
+    "project": [
+      ".claude/settings.local.json",
+      ".claude/settings.json",
+      ".codex/hooks.json",
+      ".cursor/hooks.json",
+      ".github/hooks/impeccable.json",
+      ".grok/hooks/impeccable.json",
+      ".gemini/settings.json"
+    ],
+    "global": [
+      "${CLAUDE_CONFIG_DIR:-~/.claude}/settings.json",
+      "~/.hermes/plugins/impeccable-design-hook"
+    ]
+  },
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "f42abb6c9f674eb4bde7ee6e6bc6584a186987a87d0589420b5393b03eaf64e8",
+      "url": "https://github.com/pbakaus/impeccable/blob/02523aec3e4c4580102d996d1b6a71fbe062e03f/README.md",
+      "purpose": "Install routes, detector CLI, hooks-outside-approval and telemetry notes"
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "02bb8c3b4e70190e3986c0404ad2fd8d639b4f534252d82379cc1b502b6d1812",
+      "url": "https://github.com/pbakaus/impeccable/blob/02523aec3e4c4580102d996d1b6a71fbe062e03f/LICENSE",
+      "purpose": "Full Apache License 2.0 text; Copyright 2025 Paul Bakaus"
+    },
+    {
+      "path": "NOTICE.md",
+      "sha256": "c60a093c2845fd9fb82f9c6f742ece31f379f8190b535309d32d66c45ccffdcb",
+      "url": "https://github.com/pbakaus/impeccable/blob/02523aec3e4c4580102d996d1b6a71fbe062e03f/NOTICE.md",
+      "purpose": "Third-party notice: ios.md/android.md distilled from ehmo/platform-design-skills (MIT)"
+    },
+    {
+      "path": "package.json",
+      "sha256": "6706c7c3a4b1074350b4aa49df8af50e04b9fcaff13485fa3226a75fa59dea07",
+      "url": "https://github.com/pbakaus/impeccable/blob/02523aec3e4c4580102d996d1b6a71fbe062e03f/package.json",
+      "purpose": "npm package impeccable 4.8.0, Apache-2.0, cli/bin/cli.js entry"
+    },
+    {
+      "path": "skill/SKILL.src.md",
+      "sha256": "a2c627ba2fbfb0697921ff663b9ea9dbff6584e0fb23977a7185026d07131264",
+      "url": "https://github.com/pbakaus/impeccable/blob/02523aec3e4c4580102d996d1b6a71fbe062e03f/skill/SKILL.src.md",
+      "purpose": "Canonical skill source: setup, modes, 24-row command table, routing"
+    },
+    {
+      "path": "skill/scripts/impeccable",
+      "sha256": "d9709ee88e790bda2d98f55c4d1abe42e28b91db849882a2998bac79b1e074cb",
+      "url": "https://github.com/pbakaus/impeccable/blob/02523aec3e4c4580102d996d1b6a71fbe062e03f/skill/scripts/impeccable",
+      "purpose": "POSIX launcher: engine candidate order, checksum-verified first-run download"
+    },
+    {
+      "path": "skill/scripts/VERSION",
+      "sha256": "447836d46f39c5900faf74ad6a6554b8e1fafeca1f78de0416d5f05c6e09a080",
+      "url": "https://github.com/pbakaus/impeccable/blob/02523aec3e4c4580102d996d1b6a71fbe062e03f/skill/scripts/VERSION",
+      "purpose": "Pinned engine version used by the launcher cache path"
+    },
+    {
+      "path": "skill/scripts/engine-checksums.txt",
+      "sha256": "2f0235179cbc515d7c7ec71a9a08283d0cb88a5238d35ffa5a5f42122e78fe35",
+      "url": "https://github.com/pbakaus/impeccable/blob/02523aec3e4c4580102d996d1b6a71fbe062e03f/skill/scripts/engine-checksums.txt",
+      "purpose": "Per-asset SHA-256 digests for the pinned engine release"
+    },
+    {
+      "path": "skill/scripts/command-metadata.json",
+      "sha256": "c6dcbeed7f13152205ca022c8f24d08683770835083f0a7325261c1c2d5f215c",
+      "url": "https://github.com/pbakaus/impeccable/blob/02523aec3e4c4580102d996d1b6a71fbe062e03f/skill/scripts/command-metadata.json",
+      "purpose": "Command descriptions and argument hints"
+    },
+    {
+      "path": "skill/reference/routing.md",
+      "sha256": "051540914d74dd64608a0f455c7135e5e6d47948c756290883501f01b6f3cd7d",
+      "url": "https://github.com/pbakaus/impeccable/blob/02523aec3e4c4580102d996d1b6a71fbe062e03f/skill/reference/routing.md",
+      "purpose": "No-argument menu and signal-driven command recommendation"
+    },
+    {
+      "path": "skill/reference/craft-floor.md",
+      "sha256": "086e731940b72db13d9693b575db377a7b102729a56da5c79a21461635695c87",
+      "url": "https://github.com/pbakaus/impeccable/blob/02523aec3e4c4580102d996d1b6a71fbe062e03f/skill/reference/craft-floor.md",
+      "purpose": "Pre-edit verify list and refuse list"
+    },
+    {
+      "path": "skill/reference/critique.md",
+      "sha256": "f2ece6380e378ab644d0508adf10e213eb2d6e241e3d7339727fb8e61cd2d39b",
+      "url": "https://github.com/pbakaus/impeccable/blob/02523aec3e4c4580102d996d1b6a71fbe062e03f/skill/reference/critique.md",
+      "purpose": "Dual-assessment critique, heuristic scoring, personas, P0-P3"
+    },
+    {
+      "path": "skill/reference/audit.md",
+      "sha256": "6f2850794a8e74fd07ab9410104f99e3f20dee5490d5e82c98880852203341d0",
+      "url": "https://github.com/pbakaus/impeccable/blob/02523aec3e4c4580102d996d1b6a71fbe062e03f/skill/reference/audit.md",
+      "purpose": "Five-dimension technical audit and /20 bands"
+    },
+    {
+      "path": "skill/reference/hooks.md",
+      "sha256": "837ca533bb62bf83394b7bda31f4bbf54f150bf5a7e177c63acd4f1e253ecc34",
+      "url": "https://github.com/pbakaus/impeccable/blob/02523aec3e4c4580102d996d1b6a71fbe062e03f/skill/reference/hooks.md",
+      "purpose": "Design hook tiers, harness manifests, ignore triage policy"
+    },
+    {
+      "path": "skill/reference/polish.md",
+      "sha256": "c504e12ea076fd1a57b8c9ece79fbb532c54226b2b6298c5c62fa889ae1dd34d",
+      "url": "https://github.com/pbakaus/impeccable/blob/02523aec3e4c4580102d996d1b6a71fbe062e03f/skill/reference/polish.md",
+      "purpose": "Polish triage order and critique snapshot handoff"
+    },
+    {
+      "path": "skill/reference/live.md",
+      "sha256": "5f064ed92b1d294dbe8441bad9bf86cda956aa1c765e7ae3636a57eecb9cd5c0",
+      "url": "https://github.com/pbakaus/impeccable/blob/02523aec3e4c4580102d996d1b6a71fbe062e03f/skill/reference/live.md",
+      "purpose": "Live mode contract and local-checkout-only boundary"
+    },
+    {
+      "path": "crates/detect/src/cli.rs",
+      "sha256": "c2c8b6936cd4a2f88f531dbde0c9fa2b63a87407611b63c92507f8d40bc63f42",
+      "url": "https://github.com/pbakaus/impeccable/blob/02523aec3e4c4580102d996d1b6a71fbe062e03f/crates/detect/src/cli.rs",
+      "purpose": "detect usage text, flags, output streams and exit status"
+    },
+    {
+      "path": "crates/foundation/src/registry.rs",
+      "sha256": "052fcc5d501bb1775ab0c42a04136ea00c335d93fd9bad1064815d6c84a54413",
+      "url": "https://github.com/pbakaus/impeccable/blob/02523aec3e4c4580102d996d1b6a71fbe062e03f/crates/foundation/src/registry.rs",
+      "purpose": "Built-in 62-rule registry: id, category, scopes, severity"
+    },
+    {
+      "path": "crates/foundation/src/findings.rs",
+      "sha256": "4075f9068461da46f3226e606009795c4565f1363a2bafc4482f4b5f8e3087b6",
+      "url": "https://github.com/pbakaus/impeccable/blob/02523aec3e4c4580102d996d1b6a71fbe062e03f/crates/foundation/src/findings.rs",
+      "purpose": "Finding JSON fields and default warning severity"
+    }
+  ]
+}

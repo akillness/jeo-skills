@@ -102,6 +102,13 @@ revisa metadatos locales, no la compatibilidad en ejecución. La descarga, insta
 del navegador, el acceso a sitios, los servidores, las credenciales y las llamadas a proveedores
 requieren aprobación por separado. Consulta la [guía de instalación](setup-all-skills-prompt.md#lightpanda-browser-operator-on-demand).
 
+Para Impeccable, previsualiza la selección con `jeo-skill install impeccable --global --dry-run`
+antes de instalar la habilidad. Se instala una guía de operación para `pbakaus/impeccable` 4.8.0,
+no Impeccable, su motor ni su hook de diseño; el instalador original usa la misma carpeta
+`impeccable`, así que ejecuta el diagnóstico sin conexión antes de que cualquiera de los dos escriba.
+La ejecución de npm, la descarga y ejecución del motor, el hook, los escaneos con navegador y el
+modo live requieren aprobación por separado. Consulta la [guía de instalación](setup-all-skills-prompt.md#impeccable-design-operator-on-demand).
+
 Las variables del instalador pertenecen a `bash`, en el lado derecho de la tubería:
 
 ```bash
@@ -259,11 +266,11 @@ Consulta la [guía de instalación](setup-all-skills-prompt.md#jev-control-plane
 
 ## 📚 Lista de Habilidades
 
-> Generado desde `.agent-skills/skills.json` · 408 habilidades · despliega una categoría para ver sus habilidades.
+> Generado desde `.agent-skills/skills.json` · 409 habilidades · despliega una categoría para ver sus habilidades.
 
-### 🌐 Web (70)
+### 🌐 Web (71)
 
-Subcategorías: `frontend` (12), `backend` (3), `design` (15), `api` (2), `auth` (1), `data` (13), `testing` (4), `accessibility` (1), `performance` (1), `graphics` (12), `capture` (6)
+Subcategorías: `frontend` (12), `backend` (3), `design` (16), `api` (2), `auth` (1), `data` (13), `testing` (4), `accessibility` (1), `performance` (1), `graphics` (12), `capture` (6)
 
 <details>
 <summary>Ver habilidades</summary>
@@ -319,6 +326,7 @@ Subcategorías: `frontend` (12), `backend` (3), `design` (15), `api` (2), `auth`
 | `moli` |
 | `lightpanda` |
 | `design-taste-frontend` |
+| `impeccable` |
 | `higgsfield-websites` |
 | `stagehand` |
 | `helix-foundry` |
@@ -821,6 +829,13 @@ Edita los metadatos en `skills.json`, nunca en las tablas generadas. Las fuentes
 ---
 
 <!-- WHATS-NEW:START -->
+
+## 🆕 Novedades en v2026-10-30
+
+| Cambio | Detalles |
+|--------|---------|
+| **Operador de diseño Impeccable** | Añadido `impeccable` v1.0.0 para `pbakaus/impeccable` (habilidad 4.8.0, motor 0.1.18), fijado en `02523aec3e4c4580102d996d1b6a71fbe062e03f` (Apache-2.0; LICENSE y NOTICE.md revisados). El catálogo pasa de 408 a 409 en `web/design`. Enruta los 24 comandos originales, incluye un método de crítica/auditoría resumido y el craft floor para trabajar sin la habilidad original, documenta el detector de 62 reglas y exige aprobaciones separadas para npm, la descarga y ejecución del motor, el hook de diseño sin sandbox, los escaneos con navegador y el modo live. El original usa la misma carpeta `impeccable`; la guía lo comprueba antes de que escriba cualquier instalador. |
+| **Herramientas sin conexión y verificación** | `scripts/doctor.py` informa de instalaciones (original u operador del catálogo), candidatos del motor en el orden del lanzador con comprobación opcional del digest fijado, manifiestos de hooks, exclusión de telemetría y archivos de contexto sin ejecutar nada, abrir sockets ni escribir archivos. `scripts/triage_findings.py` ordena los hallazgos de `detect --json` por bandas con comandos sugeridos y nunca reproduce los fragmentos. Pasan 21/21 pruebas dedicadas y, con Node 24, 72/72 de instalación y 34/34 de la guía. Los nueve escenarios están redactados, no ejecutados. No se ejecutó el instalador, el motor, el hook ni el navegador originales. |
 
 ## Novedades en v2026-10-24
 

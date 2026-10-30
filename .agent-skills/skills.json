@@ -1,7 +1,7 @@
 {
   "version": "2.1.0",
   "generated": "2026-10-21",
-  "skill_count": 408,
+  "skill_count": 409,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -178,6 +178,7 @@
       "moli",
       "lightpanda",
       "design-taste-frontend",
+      "impeccable",
       "higgsfield-websites",
       "stagehand",
       "helix-foundry",
@@ -593,7 +594,8 @@
         "design-taste-frontend",
         "superdesign",
         "better-design",
-        "design-taste"
+        "design-taste",
+        "impeccable"
       ],
       "api": [
         "api-design",
@@ -1396,7 +1398,8 @@
         "design-first-ui-prompting",
         "responsive-design",
         "web-accessibility",
-        "design-taste-frontend"
+        "design-taste-frontend",
+        "impeccable"
       ]
     },
     "react": {
@@ -9060,6 +9063,20 @@
       "keyword": "design-taste-frontend",
       "version": "1.0",
       "source": "https://github.com/Leonxlnx/taste-skill"
+    },
+    {
+      "name": "impeccable",
+      "description": "Operate pbakaus/impeccable, the design vocabulary and slop detector for coding agents: offline preflight, collision-aware install planning, routing to its commands (shape, init, document, extract, critique, audit, polish, bolder, quieter, distill, harden, onboard, animate, colorize, typeset, layout, delight, overdrive, clarify, adapt, optimize, live, generate), detector triage, and a standalone method when the upstream skill is absent. Use when users name Impeccable, /impeccable or $impeccable commands, npx impeccable, its design hook or 62-rule detector, or its PRODUCT.md/DESIGN.md workflow. Route generic anti-generic taste work to design-taste-frontend, accessibility remediation to web-accessibility, token governance to design-system, and visual recipes to web-design. Installing this guide does not install Impeccable, its engine or hooks.",
+      "category": "web",
+      "subcategory": "design",
+      "interface": "workflow",
+      "path": "impeccable/SKILL.md",
+      "tags": ["impeccable", "design-review", "ux-critique", "design-audit", "anti-slop", "design-detector", "design-md", "frontend-design"],
+      "platforms": ["Claude", "ChatGPT", "Gemini", "Codex", "Cursor"],
+      "allowed_tools": ["Bash", "Read", "Write", "Edit", "Glob", "Grep"],
+      "keyword": "impeccable",
+      "version": "1.0.0",
+      "source": "https://github.com/pbakaus/impeccable"
     },
     {
       "name": "mex",

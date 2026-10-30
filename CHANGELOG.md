@@ -2,6 +2,11 @@
 
 All notable changes to **jeo-skills** are documented here.
 
+## 2026-10-30
+
+### Added
+- Added the `impeccable` operator v1.0.0 for `pbakaus/impeccable` skill 4.8.0 / engine 0.1.18 at `02523aec3e4c4580102d996d1b6a71fbe062e03f` (Apache-2.0; LICENSE and NOTICE.md inspected, license copied as `LICENSE.upstream.txt`). It routes the 24 upstream commands, carries a paraphrased critique/audit method and craft floor for use without the upstream skill, documents the 62-rule detector, and gates npm execution, engine download/runs, the unsandboxed design hook, browser scans and live mode separately. Stdlib `scripts/doctor.py` inspects installs (upstream vs catalog operator under the same `impeccable` folder name), engine candidates in launcher order with optional pinned-digest checks, hook manifests, telemetry opt-outs and project context without executing anything; `scripts/triage_findings.py` ranks `detect --json` findings and routes them to commands without echoing snippets. `references/source.json` pins commands, checksums, rules and 19 selected file hashes. Catalog: 408→409 (`web/design`, `web-design` relationship group). New tests pass 21/21; installer 72/72 and setup-guide 34/34 pass on Node 24. Nine routing/safety evals are authored, not executed. No upstream installer, engine, hook or browser was run.
+
 ## 2026-10-24
 
 ### Added

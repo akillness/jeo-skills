@@ -2954,6 +2954,33 @@ server/CDP/MCP startup, LLM/provider calls and credential use separately. Set
 help or version probe. Do not use `version --check`: it makes a network request even
 with telemetry disabled. Telemetry opt-out does not prevent page or provider traffic.
 
+### Impeccable design operator (on demand)
+
+To select it independently, preview `jeo-skill install impeccable --global --dry-run`
+and install it with `jeo-skill install impeccable --global --yes` only when selected.
+
+Installing the `impeccable` skill copies an operator guide and two stdlib Python scripts
+for `pbakaus/impeccable` skill 4.8.0 / engine 0.1.18 at commit
+`02523aec3e4c4580102d996d1b6a71fbe062e03f` (Apache-2.0). It does not install Impeccable,
+its engine binary, the design hook or any browser tooling. Without upstream installed the
+operator still routes the 24 commands and applies a distilled critique/audit method and
+craft floor; it reports that no detector or live mode ran.
+For the loaded skill, set `SKILL_DIR` to the directory containing its `SKILL.md`, then run
+`python3 "$SKILL_DIR/scripts/doctor.py" --project "$PWD"`; it inspects installed skill
+folders, engine candidates, hook manifests and project context files without executing
+anything, opening sockets or writing files.
+
+Upstream installs a folder with the same name, `impeccable`, in the same skill roots
+`jeo-skill` uses. Check the doctor's `installs[]` before either installer writes, and never
+overwrite the other kind without approval. Approve separately: `npx impeccable install`
+or `update` (npm execution and skill writes), the engine's first-run download into
+`~/.impeccable/bin/<version>/`, engine runs (`impeccable context`, `detect`), the design hook
+(it runs unsandboxed after every UI edit and, in Claude Code, outside model approval),
+URL scans that launch a browser, and `live`/`generate` (local helper, script injection,
+source writes; never on a deployed site). Telemetry opt-out (`DO_NOT_TRACK=1` or
+`"telemetry": false` in `.impeccable/config.json`) stops anonymous direction records, not the
+direction-catalog request itself.
+
 ### Repository operators (on demand, offline support)
 
 The thirteen repository operator skills below are original instruction packages, not
