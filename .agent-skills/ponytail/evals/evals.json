@@ -3,32 +3,50 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "Use ponytail. Add a date picker to the signup form.",
-      "expected_output": "A minimal solution that stops at the native-platform rung — ships <input type=\"date\"> instead of installing a date library plus wrapper component — and marks the shortcut.",
+      "prompt": "Use ponytail. Add a date picker to the signup form. The project already has a DateField component in src/components.",
+      "expected_output": "Reuses the existing DateField (codebase rung) instead of a native input or a new library, keeps server-side validation, and ends with what was skipped and any risk.",
       "assertions": [
-        "Output uses the native platform feature (e.g. <input type=\"date\">) and does NOT install or wrap a third-party date library.",
-        "Output names the ladder rung it stopped at and leaves a `ponytail:` marker on the shortcut.",
-        "Output keeps trust-boundary/server-side validation rather than cutting it for fewer lines."
+        "Output reuses the existing DateField component and does NOT add a date library or a wrapper.",
+        "Output keeps trust-boundary or server-side validation of the date.",
+        "Output ends with one or two lines naming what was skipped or not checked and any risk."
       ]
     },
     {
       "id": 2,
-      "prompt": "/ponytail-review on this diff that adds a 120-line LRUCache class and a hand-rolled email regex while a validation lib is already a dependency.",
-      "expected_output": "A confidence-grouped delete-list: collapse the LRUCache to a Map, replace the custom regex with the already-installed validation lib (installed-dependency rung), and inline single-use abstractions.",
+      "prompt": "/ponytail-review on this diff that adds a 120-line LRUCache class used by one handler and a hand-rolled email regex while a validation library is already a dependency.",
+      "expected_output": "A numbered quality review grouped Must fix / Should fix / Nice to have, each finding with What this is / Problem / Fix / If we skip it, replacing the cache with a Map and size check and the regex with the installed validator, ending with a Verdict and a Lean line.",
       "assertions": [
-        "Output returns a delete-list (what to remove/collapse), not a rewrite, and groups items by confidence.",
-        "Output prefers the already-installed dependency over the hand-rolled regex.",
-        "Output flags any over-engineering-looking code that actually guards a trust boundary as keep, not cut."
+        "Every finding states a concrete case that goes wrong, not a style preference.",
+        "Output prefers the already-installed validation library over the hand-rolled regex.",
+        "Output ends with `Verdict:` and a `Lean: -<N> lines possible.` line."
       ]
     },
     {
       "id": 3,
-      "prompt": "Make my agent's responses use fewer tokens and drop the filler words.",
-      "expected_output": "A route-out to the caveman skill, because this is communication compression, not reducing code volume.",
+      "prompt": "/ponytail-debt",
+      "expected_output": "One ledger row per `shortcut:` or older `ponytail:` comment with file, line, what was simplified, ceiling and upgrade trigger, `no-trigger` tags where the upgrade is missing, and the closing count.",
       "assertions": [
-        "Output routes to caveman instead of applying the YAGNI code ladder.",
-        "Output does not produce a code delete-list or a `ponytail:` marker for this request.",
-        "Output distinguishes communication brevity (caveman) from less code (ponytail)."
+        "Output collects both `shortcut:` and `ponytail:` comment markers.",
+        "Rows without an upgrade trigger are tagged `no-trigger`.",
+        "Output ends with `<N> markers, <M> with no trigger.` and edits no file unless asked."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "/ponytail-gain — how much did ponytail save in this repo?",
+      "expected_output": "The upstream benchmark card (lines of code -53%, cost -26%, time -41%, 39 tasks x 5 runs) with a statement that no per-repo saving can be measured, pointing to /ponytail-debt and /ponytail-audit.",
+      "assertions": [
+        "Output shows the pinned benchmark figures and labels them as upstream measurements.",
+        "Output does NOT invent a per-repo lines or tokens saved number."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Make my agent's responses use fewer tokens and drop the filler words.",
+      "expected_output": "A route-out to the caveman skill, because this is reply compression, not less code.",
+      "assertions": [
+        "Output routes to caveman instead of applying the code ladder.",
+        "Output does not produce a code review, a ledger or a `shortcut:` marker for this request."
       ]
     }
   ]

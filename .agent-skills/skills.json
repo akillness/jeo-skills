@@ -306,7 +306,6 @@
       "fabric",
       "ooo",
       "open-code-review",
-      "ponytail",
       "zeude",
       "compresso",
       "codeflow",
@@ -437,7 +436,8 @@
       "domain-modeling",
       "implement",
       "prototype",
-      "codebase-memory-mcp"
+      "codebase-memory-mcp",
+      "ponytail"
     ],
     "research": [
       "academic-research",
@@ -820,7 +820,6 @@
         "headroom",
         "ooo",
         "open-code-review",
-        "ponytail",
         "zeude",
         "soup",
         "mcp-server-sv-number",
@@ -960,7 +959,8 @@
         "migrate-to-shoehorn",
         "performance-optimization",
         "performance-profiling",
-        "implement"
+        "implement",
+        "ponytail"
       ],
       "testing": [
         "scaffold-exercises",
@@ -5094,7 +5094,7 @@
     },
     {
       "name": "caveman",
-      "description": "Enables persistent ultra-compressed technical communication; use for explicit brevity or token-reduction requests, except where fragments risk safety or clarity.",
+      "description": "Terse caveman voice for replies: answer first, drop ceremony, keep every technical fact, code span, path, number and negation exact. Use for /caveman, caveman mode, talk like caveman, be brief, or fewer output tokens. Stays on until stop caveman or normal mode; plain prose for warnings, irreversible steps and anything written to files.",
       "category": "cli-tools",
       "subcategory": "developer-cli",
       "interface": "cli",
@@ -5121,8 +5121,8 @@
         "Edit"
       ],
       "keyword": "caveman",
-      "version": "1.0",
-      "source": "mattpocock/skills"
+      "version": "2.0.0",
+      "source": "https://github.com/JuliusBrussee/caveman"
     },
     {
       "name": "ccpi-marketplace",
@@ -5486,20 +5486,20 @@
     },
     {
       "name": "ponytail",
-      "description": "Make the agent solve coding tasks with the least code that remains correct. Before writing code, walk the Ponytail ladder: skip what need not exist, then prefer stdlib, native platform features, already-installed dependencies, one line, and only then the minimum custom code. Use when the user asks for ponytail mode, less code, YAGNI, anti-bloat, minimal code, an over-engineering review, a current-diff delete-list, a whole-repo bloat audit, or a `ponytail:` tech-debt harvest. Keep validation, data-loss handling, security, and accessibility. Mark shortcuts with `ponytail:` plus the upgrade path. Triggers on: ponytail, /ponytail, /ponytail-review, /ponytail-audit, /ponytail-debt, write less code, YAGNI, over-engineering, anti-bloat, minimal code, do I need this, lazy dev.",
-      "category": "cli-tools",
-      "subcategory": "ai-cli",
-      "interface": "cli",
+      "description": "Lazy senior dev mode for coding work: ship the smallest change that fully solves the task, reuse what the codebase, stdlib, platform or installed dependencies already provide, keep validation, data-loss handling, security and accessibility, leave one small check for risky logic, and end with what was skipped and any risk. Use for ponytail, /ponytail, be lazy, simplest solution, YAGNI, over-engineering or bloat complaints, /ponytail-review, /ponytail-audit, /ponytail-debt, /ponytail-gain, or a shortcut-debt ledger.",
+      "category": "engineering",
+      "subcategory": "code-quality",
+      "interface": "workflow",
       "path": "ponytail/SKILL.md",
       "tags": [
         "yagni",
         "over-engineering",
-        "minimalism",
-        "anti-bloat",
+        "minimal-change",
         "code-review",
-        "refactoring",
-        "productivity",
-        "tech-debt"
+        "code-audit",
+        "tech-debt",
+        "testing",
+        "productivity"
       ],
       "platforms": [
         "Claude",
@@ -5507,6 +5507,7 @@
         "Gemini",
         "Cursor",
         "OpenCode",
+        "Copilot",
         "All"
       ],
       "allowed_tools": [
@@ -5518,7 +5519,7 @@
         "Edit"
       ],
       "keyword": "ponytail",
-      "version": "1.0.0",
+      "version": "2.0.0",
       "source": "akillness/jeo-skills"
     },
     {

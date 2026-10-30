@@ -1266,7 +1266,11 @@ fi
 Headroom can route other detected clients, but their hook payloads do not share
 Claude Code's source-mutation and explicit-context signals. Use the `graphify`
 and `ponytail` skills there; do not claim the Claude policy hook enforces those
-hosts.
+hosts. The catalog `ponytail` skill is instruction-only; persistent Ponytail
+levels and hooks come from the separately approved upstream plugin
+(`bash "$SKILLS_ROOT/ponytail/scripts/install.sh"` prints each detected host's
+install, `RUNTIME=<host> APPLY=1` runs one). The upstream skills CLI install writes
+the same `ponytail` folder, so keep one source per host.
 
 For another detected agent, use its documented MCP command/config surface; do not guess a
 JSON/TOML schema or overwrite its existing settings.
@@ -2777,10 +2781,11 @@ they carry a standing boundary:
   user-invoked entry points that call it. Do not duplicate the procedure into them.
 - Upstream renames are already applied here: use `diagnosing-bugs` (was `diagnose`),
   `to-spec` (was `to-prd`), and `to-tickets` (was `to-issues` and `to-plan`). The manifest's
-  `retired_skills` ledger records all three. `caveman`, `zoom-out`, and `write-a-skill` were
-  retired upstream but are kept locally because `ponytail`, the architecture entry point, and
-  `find-skills` / `upskill` / `solo-skills` / `openocta` still route to them; each one states
-  its upstream status at the top of its `SKILL.md`.
+  `retired_skills` ledger records all three. `zoom-out` and `write-a-skill` were retired
+  upstream but are kept locally because the architecture entry point and `find-skills` /
+  `upskill` / `solo-skills` / `openocta` still route to them; each one states its upstream
+  status at the top of its `SKILL.md`. `caveman`, which `ponytail` routes to, now follows the
+  maintained `JuliusBrussee/caveman` (Apache-2.0, pinned v4.0.1) instead of the retired copy.
 - Route catalog-wide discovery to `jeo-skill`, `find-skills`, or `openspace` rather than
   `ask-matt`, which only knows this one suite.
 

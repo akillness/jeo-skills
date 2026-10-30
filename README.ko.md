@@ -473,9 +473,9 @@ python3 scripts/retire-unused-skills.py --usage-report report.json --apply \
 
 </details>
 
-### ⌨️ CLI 도구 (42개)
+### ⌨️ CLI 도구 (41개)
 
-하위 분류: `developer-cli` (10), `ai-cli` (16), `media-cli` (1), `automation-cli` (6), `search-cli` (8), `benchmark-cli` (1)
+하위 분류: `developer-cli` (10), `ai-cli` (15), `media-cli` (1), `automation-cli` (6), `search-cli` (8), `benchmark-cli` (1)
 
 <details>
 <summary>스킬 보기</summary>
@@ -494,7 +494,6 @@ python3 scripts/retire-unused-skills.py --usage-report report.json --apply \
 | `fabric` |
 | `ooo` |
 | `open-code-review` |
-| `ponytail` |
 | `zeude` |
 | `compresso` |
 | `codeflow` |
@@ -613,9 +612,9 @@ python3 scripts/retire-unused-skills.py --usage-report report.json --apply \
 
 </details>
 
-### 🧰 엔지니어링 (24개)
+### 🧰 엔지니어링 (25개)
 
-하위 분류: `code-quality` (11), `testing` (3), `architecture` (6), `documentation` (2), `code-navigation` (2)
+하위 분류: `code-quality` (12), `testing` (3), `architecture` (6), `documentation` (2), `code-navigation` (2)
 
 <details>
 <summary>스킬 보기</summary>
@@ -646,6 +645,7 @@ python3 scripts/retire-unused-skills.py --usage-report report.json --apply \
 | `implement` |
 | `prototype` |
 | `codebase-memory-mcp` |
+| `ponytail` |
 
 </details>
 
@@ -839,6 +839,9 @@ python3 scripts/changelog.py check
 | **mex v1.2: mex-agent 0.8 setup 대응** | 새 프로젝트에서 `scripts/install.sh`가 `mex setup` 직후 멈췄습니다. mex-agent 0.8은 스캐폴드 내용 채우기가 남아 있으면 종료 코드 2를 내는데 설치 스크립트가 `set -euo pipefail`로 실행돼 루트 `AGENTS.md` 연결, 그래프, check가 실행되지 않았고, 0.8은 파이프로 넣던 도구 메뉴 답도 무시합니다. 이제 mex-agent 0.8 이상에는 `--yes --tool <tool>`(필요 시 `--force`)을 넘기고 0.7.x에는 기존 메뉴 입력을 유지합니다. 종료 코드 2는 `mex-agent setup next --start` 안내와 함께 보고하고 계속 진행하며, 그 밖의 setup 실패에서는 멈춥니다. mex-agent가 없으면 `mex-agent@0.8.5`를 설치합니다(`MEX_AGENT_NPM_SPEC`로 변경 가능). 임시 `HOME`에서 실제 mex-agent 0.8.5로 종료 코드 0, 루트 `AGENTS.md` 생성, graph·check 실행을 확인했습니다. |
 | **obsidian-second-brain v1.0.1: 원본 설치 수정** | `WITH_UPSTREAM=1`이 macOS `/bin/bash` 3.2와 UTF-8 로케일에서 중단됐습니다(`"$dest…"`를 정의되지 않은 변수로 읽음). `GLOBAL=1`이면 `npx skills add -g`가 `~/.claude/skills/obsidian-second-brain`을 라우팅 사본 링크로 바꿔, 원본 clone은 항상 실패하는데도 `Done`이 출력됐고 재실행하면 기존 원본 checkout이 삭제됐습니다. 이제 `npx` 실행 동안 그 자리의 실제 디렉터리를 옆으로 옮겨 두었다가 복원하고, clone이 성공한 뒤에만 라우팅 링크·사본을 교체하며, 다른 디렉터리는 건드리지 않고 거부합니다. `git`이 없거나 clone 실패·거부 시 종료 코드 1을 냅니다. 실제 `skills@1.7.0`, `git`, `/bin/bash` 3.2로 첫 실행에서 원본이 설치되고 재실행에서 로컬 표식이 유지된 채 pull되는 것을 확인했습니다. |
 | **devup-ui v1.0.1과 회귀 방지** | `devup-ui/scripts/install.sh`에도 같은 `$pm…` 패턴이 있어 중괄호로 고쳤습니다. `scripts/test-runtime-config-writers.sh`가 추적 중인 셸 스크립트에서 비ASCII 문자 바로 앞의 중괄호 없는 변수를 검사하고, obsidian 원본 설치 경우(최초, 재실행, 다른 디렉터리, clone 실패, 원본만 있는 경우)를 UTF-8 로케일에서 검증합니다. `mex/scripts/test-runtime.sh`는 mex-agent 0.8 setup을 검증합니다. Node 24에서 설정 작성기 26/26, 설치 회귀 72/72, 설치 가이드 34/34가 통과했습니다. |
+| **ponytail v2.0.0: Ponytail 5.3.3 반영** | 원본 `DietrichGebert/ponytail` 5.3.3, 커밋 `7801d061243d7b753bad0e0b3c057cd250b11755`(MIT, 라이선스 사본 포함)에 맞췄습니다. 표준 라이브러리보다 코드베이스에 이미 있는 코드를 먼저 쓰고, 변경이 깨뜨리는 호출부를 모두 마무리하고, 위험한 로직에는 작은 검사를 남기고, 답변은 건너뛴 것과 위험으로 끝냅니다. `ultra`는 요청 자체에 이의를 제기하고, 표시 주석은 `shortcut: <한계>, <업그레이드 시점>`입니다(예전 `ponytail:`도 수집). `/ponytail-review`와 `/ponytail-audit`는 전체 품질 리뷰가 됐고, `/ponytail-gain`은 예전 80–94% 주장 대신 고정 커밋의 측정값(코드 −53%, 비용 −26%, 시간 −41%)을 보여 줍니다. 분류는 `engineering/code-quality`로 옮겼습니다. |
+| **ponytail 설치 안내와 레거시 제거** | `references/commands.md`와 `scripts/install.sh`가 원본 플러그인의 모든 호스트(Codex `plugin add`, Copilot CLI, Qwen, omp, OpenCode 2 `plugin add`, Antigravity, Hermes, Devin, Grok, Goose, OpenClaw, Kimi, Cursor 훅)와 설정·제거 방법을 다룹니다. `APPLY=1`은 호스트 하나만 실행하고 모호하면 거부합니다. 2 MB 데모 GIF(옛 단계), 존재하지 않는 `skills serve` MCP 안내, OpenCode 2가 거부하는 파일 경로 플러그인 안내, 사실과 다른 변경 이력 날짜를 지우고 현재 단계를 보여 주는 5 KB SVG로 바꿨습니다. 설치 용량은 2.03 MB → 33 KB입니다. 격리된 환경에서 Claude Code와 omp에 플러그인 5.3.3이 실제로 설치되는 것을 확인했습니다. |
+| **caveman v2.0.0: 유지되는 원본으로 교체** | 원본에서 삭제된 `mattpocock/skills` 출처 사본을 `JuliusBrussee/caveman` 4.0.1, 커밋 `d262ab3882952a59312ff3537cd86d894523c5ab`(Apache-2.0, 라이선스 사본과 변경 사항 명시)에 맞췄습니다. 결론부터 말하고, 코드·경로·오류는 그대로 두며, 임의 약어와 화살표를 쓰지 않고, 경고·되돌릴 수 없는 작업·파일에 남는 내용은 평문으로 씁니다. 근거 없던 “~75%”는 원본 자체 수치로 바꿨고 내용 없는 상투 섹션을 지웠습니다. 새 `scripts/test_ponytail_caveman_skills.py`(테스트 12개, CI 포함)가 고정 커밋, 버전, 링크, 레거시 파일, 설치 스크립트의 실행 안 함·호스트 하나 규칙을 검사합니다. |
 
 ## 🆕 v2026-10-24 업데이트
 

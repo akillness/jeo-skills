@@ -1,77 +1,31 @@
 # Ponytail — Changelog
 
-All notable changes to the ponytail skill are documented here.
-Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
-Semantic versioning per [SemVer](https://semver.org/).
+Changes to the jeo-skills `ponytail` skill. Dates come from this repository's
+git history.
 
----
+## [2.0.0] — 2026-10-30
+
+### Changed
+- Rebased on upstream Ponytail 5.3.3 (`7801d061243d7b753bad0e0b3c057cd250b11755`, MIT): reuse code already in the codebase before stdlib or platform features, finish every caller the change breaks, leave one small check for risky logic, end every reply with what was skipped and any risk, `lite` names the smaller option and `ultra` pushes back on the request, and the never-cut list adds hardware calibration and anything the user asked for.
+- Shortcut marker is now `shortcut: <limit>, <when to upgrade>`; `/ponytail-debt` still collects older `ponytail:` markers.
+- `/ponytail-review` and `/ponytail-audit` are full quality reviews (correct, safe, load, tested, fast, lean) with numbered findings; added `/ponytail-gain` with the pinned benchmark (−53% code, −26% cost, −41% time) in place of the older 80–94% claims.
+- `references/commands.md` and `scripts/install.sh` cover every upstream plugin host (Codex `plugin add`, Copilot CLI, Qwen, omp, OpenCode 2 `plugin add`, Antigravity, Hermes, Devin, Grok, Goose, OpenClaw, Kimi, Cursor hooks), settings and uninstall; `APPLY=1` runs one host only.
+- Moved from `cli-tools/ai-cli` to `engineering/code-quality`.
+
+### Removed
+- The 2 MB demo GIF (old ladder and install lines), replaced by a 5 KB SVG of the current ladder.
+- The README "Claude Desktop (MCP server)" setup: `skills serve` is not a skills CLI command.
+- OpenCode file-path plugin instructions, which OpenCode 2 rejects.
+- Duplicate category and tag metadata in `SKILL.md`; the catalog manifest owns them.
 
 ## [1.2.1] — 2026-06-30
-
-### Changed
-- Shortened `SKILL.md` frontmatter description below validator guidance while preserving trigger coverage.
-- Clarified `/ponytail-review`, `/ponytail-audit`, and `/ponytail-debt` output contracts.
-- Removed stale `ai-slop-cleaner` route-out; correctness/security review now routes to `code-review`.
-- Updated README install examples and catalog link from `oh-my-skills` to `jeo-skills`.
-
----
+- Shortened the description, clarified the review, audit and debt output contracts, and routed correctness reviews to `code-review`.
 
 ## [1.2.0] — 2026-06-22
+- Added the `metadata` block and expanded triggers.
 
-### Added
-- `metadata` block in `SKILL.md`: `category`, `tags`, `platforms`, `keyword`, `version`, `source`, `upstream` — aligns with skill-standardization schema
+## [1.1.0] — 2026-06-22
+- Added `README.md`, this changelog and a demo GIF.
 
-### Changed
-- SKILL.md description rewritten with imperative verb lead; trigger list expanded (`ponytail review`, `ponytail audit`, `ponytail debt`, `lazy dev`)
-- `SKILL.md` compatibility block route-out wording expanded
-
----
-
-## [1.1.0] — 2025-07-10
-
-### Added
-- `README.md` with full per-runtime install crosswalk (Claude Code, Codex, Gemini CLI, Pi, OpenCode, Cursor, Windsurf, Cline, Copilot, Kiro)
-- MCP server setup guidance for Claude Desktop (`claude_desktop_config.json`)
-- Demo GIF (`assets/ponytail-demo.gif`) — animated terminal walkthrough of the YAGNI ladder
-- `CHANGELOG.md` (this file)
-- Changelog snippet in README (latest 5 entries only)
-
-### Changed
-- `references/commands.md` — expanded instruction-only adapter table with exact file paths
-- `scripts/install.sh` — doc comment clarifying `APPLY=1` env knob behavior
-
-### Fixed
-- Ponytail ladder rung order in `commands.md` was inconsistent with `SKILL.md`; unified to: skip → stdlib → platform → installed-dep → one line → minimum
-
----
-
-## [1.0.1] — 2025-06-18
-
-### Fixed
-- `install.sh` `set -euo pipefail` caused early exit on macOS when `pi` or `opencode` were not on PATH; fallback `echo all` branch now always reached cleanly
-- SKILL.md description trigger phrasing tightened per skill-standardization validator feedback (`description` must start with imperative verb)
-
-### Changed
-- `evals/evals.json` — added third eval (route-out to `caveman` when request is communication brevity, not code volume)
-
----
-
-## [1.0.0] — 2025-05-30
-
-### Added
-- Initial `SKILL.md` with YAGNI ladder, never-cut safety list (`ponytail:` marker convention), four intensity levels (lite / full / ultra / off)
-- `references/commands.md` — per-runtime command and install crosswalk
-- `scripts/install.sh` — auto-detect runtime, print (or with `APPLY=1` run) the right install command
-- `evals/evals.json` — two canonical evals: native date picker vs. flatpickr, delete-list review of LRUCache + hand-rolled email regex
-- Upstream credit: `DietrichGebert/ponytail` (MIT); catalog: `akillness/jeo-skills`
-
----
-
-## [0.2.0] — 2025-04-14
-
-### Added
-- Compatibility note routing `caveman` (communication compression) and `code-refactoring` (behavior-preserving cleanup) as explicit out-of-scope skills
-- `SKILL.toon` compact rendering for token-limited runtimes
-
-### Changed
-- Description rewritten to be trigger-oriented; now activates on: `ponytail`, `write less code`, `YAGNI`, `anti-bloat`, `minimal code`, `do I need this`, `lazy senior dev`
+## [1.0.0] — 2026-06-15
+- Initial skill: the ladder, the never-cut list, `references/commands.md`, `scripts/install.sh` (with OpenCode autodetection) and evals.

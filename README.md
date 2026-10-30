@@ -470,9 +470,9 @@ Subcategories: `image` (10), `video` (18), `motion` (1), `audio` (2), `presentat
 
 </details>
 
-### ⌨️ CLI Tools (42)
+### ⌨️ CLI Tools (41)
 
-Subcategories: `developer-cli` (10), `ai-cli` (16), `media-cli` (1), `automation-cli` (6), `search-cli` (8), `benchmark-cli` (1)
+Subcategories: `developer-cli` (10), `ai-cli` (15), `media-cli` (1), `automation-cli` (6), `search-cli` (8), `benchmark-cli` (1)
 
 <details>
 <summary>Show skills</summary>
@@ -491,7 +491,6 @@ Subcategories: `developer-cli` (10), `ai-cli` (16), `media-cli` (1), `automation
 | `fabric` |
 | `ooo` |
 | `open-code-review` |
-| `ponytail` |
 | `zeude` |
 | `compresso` |
 | `codeflow` |
@@ -610,9 +609,9 @@ Subcategories: `orchestration` (16), `agent-frameworks` (19), `skill-authoring` 
 
 </details>
 
-### 🧰 Engineering (24)
+### 🧰 Engineering (25)
 
-Subcategories: `code-quality` (11), `testing` (3), `architecture` (6), `documentation` (2), `code-navigation` (2)
+Subcategories: `code-quality` (12), `testing` (3), `architecture` (6), `documentation` (2), `code-navigation` (2)
 
 <details>
 <summary>Show skills</summary>
@@ -643,6 +642,7 @@ Subcategories: `code-quality` (11), `testing` (3), `architecture` (6), `document
 | `implement` |
 | `prototype` |
 | `codebase-memory-mcp` |
+| `ponytail` |
 
 </details>
 
@@ -836,6 +836,9 @@ Edit metadata in `skills.json`, never in the generated tables. Upstream sources 
 | **mex v1.2: mex-agent 0.8 setup** | On a fresh project `scripts/install.sh` stopped right after `mex setup`: mex-agent 0.8 exits 2 while scaffold population is pending, the installer runs under `set -euo pipefail`, so the root `AGENTS.md` bridge, graph and check never ran; 0.8 also ignores the piped tool menu. The installer now passes `--yes --tool <tool>` (and `--force`) to mex-agent >= 0.8, keeps the piped menu for 0.7.x, reports exit 2 with the `mex-agent setup next --start` next step and continues, and stops on any other setup failure. A missing mex-agent is installed as `mex-agent@0.8.5` (`MEX_AGENT_NPM_SPEC` overrides). Real mex-agent 0.8.5 in a throwaway `HOME`: exit 0, root `AGENTS.md` written, graph and check ran. |
 | **obsidian-second-brain v1.0.1: upstream install** | `WITH_UPSTREAM=1` aborted on macOS `/bin/bash` 3.2 under a UTF-8 locale (`"$dest…"` read as an unbound variable). With `GLOBAL=1`, `npx skills add -g` links `~/.claude/skills/obsidian-second-brain` to the routing copy, so the upstream clone always failed while the installer printed `Done`, and a re-run deleted an existing upstream checkout. The installer now parks a real directory there while `npx` runs, replaces the routing link or copy only after a successful clone, refuses any other directory, and exits 1 on a missing `git`, a failed clone or a refusal. Real `skills@1.7.0`, `git` and `/bin/bash` 3.2: the first run cloned upstream; a re-run kept a local marker and pulled. |
 | **devup-ui v1.0.1 and regression guards** | `devup-ui/scripts/install.sh` had the same unbraced `$pm…` expansion. `scripts/test-runtime-config-writers.sh` now scans tracked shell scripts for an unbraced variable directly before non-ASCII text and covers the obsidian upstream cases (fresh, re-run, foreign directory, clone failure, upstream-only) under a UTF-8 locale; `mex/scripts/test-runtime.sh` covers mex-agent 0.8 setup. Config-writer tests 26/26, installer regressions 72/72 and setup guide 34/34 pass on Node 24. |
+| **ponytail v2.0.0: Ponytail 5.3.3** | Rebased on upstream `DietrichGebert/ponytail` 5.3.3 at `7801d061243d7b753bad0e0b3c057cd250b11755` (MIT, license copied). Reuse code already in the codebase before stdlib, finish every caller a change breaks, leave one small check for risky logic, end replies with what was skipped and any risk; `ultra` now pushes back on the request; markers are `shortcut: <limit>, <when to upgrade>` (older `ponytail:` still harvested). `/ponytail-review` and `/ponytail-audit` are full quality reviews, `/ponytail-gain` shows the pinned benchmark (−53% code, −26% cost, −41% time) instead of the old 80–94% claims. Moved to `engineering/code-quality`. |
+| **ponytail installs and legacy removal** | `references/commands.md` and `scripts/install.sh` cover every upstream plugin host (Codex `plugin add`, Copilot CLI, Qwen, omp, OpenCode 2 `plugin add`, Antigravity, Hermes, Devin, Grok, Goose, OpenClaw, Kimi, Cursor hooks) plus settings and uninstall; `APPLY=1` runs one host and refuses ambiguity. Removed the 2 MB demo GIF (old ladder), the README `skills serve` MCP setup (no such command), OpenCode file-path plugin lines that OpenCode 2 rejects, and invented changelog dates; a 5 KB SVG shows the current ladder. Install payload: 2.03 MB → 33 KB. Real isolated installs: Claude Code and omp both installed plugin 5.3.3. |
+| **caveman v2.0.0: maintained upstream** | The copy credited to `mattpocock/skills` (removed upstream) now follows `JuliusBrussee/caveman` 4.0.1 at `d262ab3882952a59312ff3537cd86d894523c5ab` (Apache-2.0, license copied, changes stated): answer first, payload verbatim, no invented abbreviations or arrows, plain prose for warnings, irreversible steps and anything persisted. The unsourced “~75%” is replaced by upstream's own figures, and generic filler sections are gone. New `scripts/test_ponytail_caveman_skills.py` (12 tests, in CI) checks pins, versions, links, legacy payload and the installer's no-run/one-host contract. |
 
 ## 🆕 What's New in v2026-10-24
 

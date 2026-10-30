@@ -95,6 +95,8 @@ jobs:
         run: python3 -B scripts/test_lightpanda_skill.py -v
       - name: Impeccable offline operator regressions
         run: python3 -B scripts/test_impeccable_skill.py -v
+      - name: Ponytail and caveman pin and installer regressions
+        run: python3 -B scripts/test_ponytail_caveman_skills.py -v
       - name: Knowledge repository offline pin regressions
         run: python3 -B scripts/test_knowledge_repository_skills.py -v
       - name: Cross-engine game skill collection boundaries

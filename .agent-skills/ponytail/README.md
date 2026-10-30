@@ -1,205 +1,46 @@
-# 🐴 ponytail
+# ponytail
 
-> "He says nothing. He writes one line. It works."
+> The best code is the code you never wrote.
 
-The **laziest senior dev in the room** as an agent skill.  
-Before writing anything, ponytail walks the YAGNI ladder and stops at the first rung that holds:
+The lazy senior developer as an agent skill: the smallest change that fully
+solves the task, the never-cut safety list, one small check where logic needs
+it, and a reply that names what was skipped. Adapted from
+[Ponytail 5.3.3](https://github.com/DietrichGebert/ponytail/tree/7801d061243d7b753bad0e0b3c057cd250b11755)
+(MIT, Dietrich Gebert).
 
-
-1. Does this need to exist?   → no: skip it           (YAGNI)
-2. Stdlib does it?            → use the stdlib
-3. Native platform feature?   → use the platform       (e.g. <input type="date">)
-4. Already-installed dep?      → use what's installed
-5. One line?                  → write one line
-6. Only then                  → the minimum that works
-
-
-Every shortcut taken gets a `ponytail:` comment naming its upgrade path so "later" never becomes "never."
-
----
-
-## Demo
-
-![ponytail in action](assets/ponytail-demo.gif)
-
-*Terminal walkthrough: YAGNI ladder → before/after date-picker example → install commands*
-
----
+![Ponytail ladder: take the first rung that fully works, never cut validation, data-loss handling, security, accessibility, hardware calibration or anything the user asked for](assets/ponytail-ladder.svg)
 
 ## Install
 
-### Quick (any runtime)
+This catalog skill (instruction-only, every skills-compatible agent):
 
 ```bash
 npx skills add https://github.com/akillness/jeo-skills --skill ponytail
-# global, non-interactive:
-npx skills add https://github.com/akillness/jeo-skills --skill ponytail -g -y
+npx skills add https://github.com/akillness/jeo-skills --skill ponytail -g -y   # global
 ```
 
-Or run the bundled auto-detect helper:
+The upstream plugin adds lifecycle hooks, persistent levels, subagent injection
+and, in Claude Code, the cost/time/tests band:
 
 ```bash
-# prints the right install command; set APPLY=1 to actually run it
-bash .agent-skills/ponytail/scripts/install.sh
-
-# force a specific runtime and apply immediately
-RUNTIME=claude APPLY=1 bash .agent-skills/ponytail/scripts/install.sh
+bash .agent-skills/ponytail/scripts/install.sh                     # print the install for detected hosts
+RUNTIME=codex APPLY=1 bash .agent-skills/ponytail/scripts/install.sh   # run one host's CLI steps
 ```
 
----
+Keep one source per host: the upstream skills CLI install
+(`npx skills add DietrichGebert/ponytail`) writes the same `ponytail` folder as
+this skill. Every host, settings and uninstall:
+[references/commands.md](references/commands.md).
 
-### Per-runtime (upstream plugin)
-
-Source: <https://github.com/DietrichGebert/ponytail> (MIT)
-
-| Runtime | Install command |
-|---------|-----------------|
-| **Claude Code** | `claude plugin marketplace add DietrichGebert/ponytail` → then in-session: `/plugin install ponytail@ponytail` |
-| **Codex** | `codex plugin marketplace add DietrichGebert/ponytail` → `/plugins` → select Ponytail → install; trust 2 hooks under `/hooks`; start a new thread |
-| **Gemini CLI** | `gemini extensions install https://github.com/DietrichGebert/ponytail` |
-| **Pi** | `pi install git:github.com/DietrichGebert/ponytail` |
-| **OpenCode** | run from a checkout; add `{ "plugin": ["./.opencode/plugins/ponytail.mjs"] }` to `opencode.json` |
-
----
-
-### Claude Desktop (MCP server)
-
-Add ponytail's rules via the MCP server entry in `~/Library/Application Support/Claude/claude_desktop_config.json`:
-
-
-{
-  "mcpServers": {
-    "ponytail": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "skills",
-        "serve",
-        "https://github.com/akillness/jeo-skills",
-        "--skill",
-        "ponytail"
-      ]
-    }
-  }
-}
-
-
-Restart Claude Desktop after saving. The skill activates on triggers: `ponytail`, `write less code`, `YAGNI`, `anti-bloat`, `minimal code`.
-
----
-
-### Instruction-only adapters (always-on, no commands needed)
-
-Copy the matching rules file from the upstream repo into your project:
-
-| Agent | Drop file here |
-|-------|---------------|
-| Cursor | `.cursor/rules/ponytail.md` |
-| Windsurf | `.windsurf/rules/ponytail.md` |
-| Cline | `.clinerules/ponytail.md` |
-| GitHub Copilot | `.github/copilot-instructions.md` (or `~/.copilot/copilot-instructions.md` for global) |
-| Kiro | `.kiro/steering/ponytail.md` (project) or `~/.kiro/steering/ponytail.md` (global) |
-| Aider / Antigravity / Codex-VS Code | `AGENTS.md` (`~/.codex/AGENTS.md` for global Codex) |
-
-Agent portability map: <https://github.com/DietrichGebert/ponytail/blob/main/docs/agent-portability.md>
-
----
-
-## Commands
-
-Available in skill-capable hosts (Claude Code, Codex, Gemini CLI, Pi, OpenCode).  
-In Codex, prefix commands with `@` instead of `/`.
+## Use
 
 | Command | What it does |
-|---------|-------------|
-| `/ponytail [lite\|full\|ultra\|off]` | Set intensity, or report current level with no argument. Default on activation: **full**. Mode persists until changed. |
-| `/ponytail-review` | Review the **current diff** only → delete-list grouped by confidence, with file, bloat, lower ladder rung, and any keep reason. |
-| `/ponytail-audit` | Audit the **whole repo** (not just the diff) for the same patterns; do not edit unless asked. |
-| `/ponytail-debt` | Harvest only `ponytail:` markers in the tree into a tech-debt ledger; unmarked TODOs are not Ponytail debt. |
-| `/ponytail-help` | Quick command reference. |
+|---|---|
+| `/ponytail [lite\|full\|ultra\|off]` | Set the level (default `full`); `ultra` also pushes back on the request. |
+| `/ponytail-review` | Quality review of a change: correct, safe, load, tested, fast, lean. |
+| `/ponytail-audit` | The same review for the whole repo, ranked, at most 20 findings. |
+| `/ponytail-debt` | Ledger of `shortcut:` (and older `ponytail:`) comments. |
+| `/ponytail-gain` | Upstream benchmark card: −53% code, −26% cost, −41% time. |
+| `/ponytail-help` | Quick reference. |
 
-### Intensity levels
-
-| Level | Behaviour |
-|-------|-----------|
-| `lite` | Apply the ladder, but bias toward the user's existing style; flag only the loudest bloat. |
-| `full` | Default. Walk the ladder on every non-trivial unit of code. |
-| `ultra` | Maximal laziness — aggressively collapse, inline, and delete. |
-| `off` | Stand down until re-activated. |
-
----
-
-## Never-cut list
-
-Laziness is about effort, not correctness. These are **never** removed at any intensity:
-
-- **Trust-boundary validation** — user input, network data, file reads are still validated.
-- **Data-loss handling** — failures that can corrupt data are still handled.
-- **Security** — authn/authz, secrets, injection defences stay.
-- **Accessibility** — semantic, accessible output stays.
-
-If cutting code would weaken one of these, that code is not bloat.
-
----
-
-## The `ponytail:` marker
-
-Every shortcut gets a one-line comment naming its upgrade path:
-
-```js
-// ponytail: in-memory map — swap for Redis when this needs to survive a restart
-const seen = new Map()
-```
-
-```html
-<!-- ponytail: browser has one -->
-<input type="date">
-```
-
-Run `/ponytail-debt` to harvest all markers into a tech-debt ledger.
-
----
-
-## References
-
-- [`references/commands.md`](references/commands.md) — per-runtime command & install crosswalk
-- [`scripts/install.sh`](scripts/install.sh) — auto-detect + apply installer
-- [`evals/evals.json`](evals/evals.json) — canonical evals
-- Upstream (MIT): <https://github.com/DietrichGebert/ponytail>
-- Benchmarks (80–94% less code, 3–6× faster): <https://github.com/DietrichGebert/ponytail/tree/main/benchmarks>
-- Related: [`../caveman/SKILL.md`](../caveman/SKILL.md) · [`../code-refactoring/SKILL.md`](../code-refactoring/SKILL.md) · [`../code-review/SKILL.md`](../code-review/SKILL.md)
-
----
-
-## Changelog (latest 5)
-
-See [`CHANGELOG.md`](CHANGELOG.md) for the full history.
-
-### [1.2.1] — 2026-06-30
-- Shortened the `SKILL.md` description while preserving Ponytail trigger coverage.
-- Clarified `/ponytail-review`, `/ponytail-audit`, and `/ponytail-debt` output contracts.
-- Removed stale `ai-slop-cleaner` route-out; correctness/security review routes to `code-review`.
-- Updated install examples from `oh-my-skills` to `jeo-skills`.
-
-### [1.2.0] — 2026-06-22
-- Added `metadata` block to `SKILL.md` (category, tags, platforms, keyword, version, source, upstream)
-- Expanded trigger list and route-out wording.
-
-### [1.1.0] — 2025-07-10
-- Added `README.md` with full per-runtime install crosswalk and MCP server setup
-- Added demo GIF (`assets/ponytail-demo.gif`) — animated YAGNI ladder walkthrough
-- Added `CHANGELOG.md`
-
-### [1.0.1] — 2025-06-18
-- Fixed `install.sh` early-exit on macOS when optional CLIs are absent
-- Tightened SKILL.md trigger phrasing per skill-standardization validator
-- Added third eval: route-out to `caveman` for communication-brevity requests
-
-### [1.0.0] — 2025-05-30
-- Initial release: SKILL.md, `references/commands.md`, `scripts/install.sh`, `evals/evals.json`
-- Four intensity levels (lite / full / ultra / off), YAGNI ladder, `ponytail:` marker convention
-
----
-
-
-<sub>Upstream: <a href="https://github.com/DietrichGebert/ponytail">DietrichGebert/ponytail</a> (MIT) · Catalog: <a href="https://github.com/akillness/jeo-skills">akillness/jeo-skills</a> · "Done. He'd be proud. He won't say it."</sub>
+The rules live in [SKILL.md](SKILL.md); history in [CHANGELOG.md](CHANGELOG.md).

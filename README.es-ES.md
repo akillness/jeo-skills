@@ -473,9 +473,9 @@ Subcategorías: `image` (10), `video` (18), `motion` (1), `audio` (2), `presenta
 
 </details>
 
-### ⌨️ Herramientas CLI (42)
+### ⌨️ Herramientas CLI (41)
 
-Subcategorías: `developer-cli` (10), `ai-cli` (16), `media-cli` (1), `automation-cli` (6), `search-cli` (8), `benchmark-cli` (1)
+Subcategorías: `developer-cli` (10), `ai-cli` (15), `media-cli` (1), `automation-cli` (6), `search-cli` (8), `benchmark-cli` (1)
 
 <details>
 <summary>Ver habilidades</summary>
@@ -494,7 +494,6 @@ Subcategorías: `developer-cli` (10), `ai-cli` (16), `media-cli` (1), `automatio
 | `fabric` |
 | `ooo` |
 | `open-code-review` |
-| `ponytail` |
 | `zeude` |
 | `compresso` |
 | `codeflow` |
@@ -613,9 +612,9 @@ Subcategorías: `orchestration` (16), `agent-frameworks` (19), `skill-authoring`
 
 </details>
 
-### 🧰 Ingeniería (24)
+### 🧰 Ingeniería (25)
 
-Subcategorías: `code-quality` (11), `testing` (3), `architecture` (6), `documentation` (2), `code-navigation` (2)
+Subcategorías: `code-quality` (12), `testing` (3), `architecture` (6), `documentation` (2), `code-navigation` (2)
 
 <details>
 <summary>Ver habilidades</summary>
@@ -646,6 +645,7 @@ Subcategorías: `code-quality` (11), `testing` (3), `architecture` (6), `documen
 | `implement` |
 | `prototype` |
 | `codebase-memory-mcp` |
+| `ponytail` |
 
 </details>
 
@@ -839,6 +839,9 @@ Edita los metadatos en `skills.json`, nunca en las tablas generadas. Las fuentes
 | **mex v1.2: setup de mex-agent 0.8** | En un proyecto nuevo `scripts/install.sh` se detenía tras `mex setup`: mex-agent 0.8 sale con código 2 mientras falta poblar el andamiaje y el instalador usa `set -euo pipefail`, así que el puente `AGENTS.md`, el grafo y `check` nunca se ejecutaban; 0.8 además ignora el menú de herramientas por tubería. Ahora pasa `--yes --tool <tool>` (y `--force`) a mex-agent >= 0.8, mantiene el menú para 0.7.x, informa del código 2 con el siguiente paso `mex-agent setup next --start` y continúa, y se detiene ante cualquier otro fallo. Si falta mex-agent instala `mex-agent@0.8.5` (`MEX_AGENT_NPM_SPEC` lo cambia). Con mex-agent 0.8.5 real en un `HOME` temporal: código 0, `AGENTS.md` raíz creado, grafo y `check` ejecutados. |
 | **obsidian-second-brain v1.0.1: instalación del original** | `WITH_UPSTREAM=1` abortaba en `/bin/bash` 3.2 de macOS con locale UTF-8 (`"$dest…"` se leía como variable no definida). Con `GLOBAL=1`, `npx skills add -g` enlaza `~/.claude/skills/obsidian-second-brain` a la copia de enrutamiento, así que el clon fallaba siempre mientras se imprimía `Done`, y una nueva ejecución borraba un checkout original existente. Ahora aparta un directorio real mientras corre `npx`, sustituye el enlace o la copia solo tras un clon correcto, rechaza cualquier otro directorio y sale con 1 si falta `git`, falla el clon o hay rechazo. Con `skills@1.7.0`, `git` y `/bin/bash` 3.2 reales: la primera ejecución clonó el original y la segunda conservó un marcador local e hizo pull. |
 | **devup-ui v1.0.1 y guardas de regresión** | `devup-ui/scripts/install.sh` tenía la misma expansión `$pm…` sin llaves. `scripts/test-runtime-config-writers.sh` revisa los scripts de shell versionados en busca de variables sin llaves justo antes de texto no ASCII y cubre los casos del original de obsidian (inicial, repetición, directorio ajeno, clon fallido, solo original) con locale UTF-8; `mex/scripts/test-runtime.sh` cubre el setup de mex-agent 0.8. Pasan 26/26 pruebas de escritores de configuración, 72/72 regresiones del instalador y 34/34 de la guía con Node 24. |
+| **ponytail v2.0.0: Ponytail 5.3.3** | Basado en el original `DietrichGebert/ponytail` 5.3.3, fijado en `7801d061243d7b753bad0e0b3c057cd250b11755` (MIT, licencia copiada). Reutiliza el código que ya tiene el proyecto antes que la biblioteca estándar, termina cada llamador que el cambio rompe, deja una comprobación pequeña para la lógica de riesgo y cierra cada respuesta con lo omitido y los riesgos; `ultra` cuestiona la petición; las marcas son `shortcut: <límite>, <cuándo mejorar>` (las antiguas `ponytail:` siguen contando). `/ponytail-review` y `/ponytail-audit` son revisiones de calidad completas y `/ponytail-gain` muestra el benchmark fijado (−53 % código, −26 % coste, −41 % tiempo) en lugar del antiguo 80–94 %. Pasa a `engineering/code-quality`. |
+| **Instalación de ponytail y limpieza** | `references/commands.md` y `scripts/install.sh` cubren todos los hosts del plugin original (Codex `plugin add`, Copilot CLI, Qwen, omp, OpenCode 2 `plugin add`, Antigravity, Hermes, Devin, Grok, Goose, OpenClaw, Kimi, hooks de Cursor) con ajustes y desinstalación; `APPLY=1` ejecuta un solo host y rechaza la ambigüedad. Eliminados el GIF de 2 MB (escalera antigua), la configuración MCP con `skills serve` (no existe), las rutas de archivo de OpenCode que OpenCode 2 rechaza y fechas inventadas del historial; un SVG de 5 KB muestra la escalera actual. Carga instalada: 2,03 MB → 33 KB. En entornos aislados, Claude Code y omp instalaron el plugin 5.3.3. |
+| **caveman v2.0.0: original mantenido** | La copia atribuida a `mattpocock/skills` (retirada allí) sigue ahora `JuliusBrussee/caveman` 4.0.1 en `d262ab3882952a59312ff3537cd86d894523c5ab` (Apache-2.0, licencia copiada y cambios indicados): primero la respuesta, código y rutas literales, sin abreviaturas inventadas ni flechas, y prosa completa para avisos, pasos irreversibles y todo lo que queda en archivos. El “~75 %” sin fuente se sustituye por las cifras del propio original y desaparecen las secciones de relleno. `scripts/test_ponytail_caveman_skills.py` (12 pruebas, en CI) comprueba fijaciones, versiones, enlaces, restos antiguos y el contrato del instalador. |
 
 ## Novedades en v2026-10-24
 
