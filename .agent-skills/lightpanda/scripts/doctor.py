@@ -41,12 +41,16 @@ def main():
             if exc.errno not in (errno.ENOENT, errno.ENOTDIR):
                 found = regular = executable = None
                 error = {"errno": exc.errno, "message": exc.strerror or str(exc)}
+    arch = {"arm64": "aarch64", "aarch64": "aarch64", "amd64": "x86_64", "x86_64": "x86_64"}.get(machine)
+    release_os = "macos" if system == "Darwin" else "linux" if system == "Linux" and libc_name == "glibc" else None
+    asset = f"lightpanda-{arch}-{release_os}" if arch and release_os else None
     value = os.environ.get("LIGHTPANDA_DISABLE_TELEMETRY")
     print(json.dumps({
         "platform": system,
         "architecture": machine,
         "libc": {"name": libc_name, "version": libc_version},
         "platform_supported": machine in ("arm64", "aarch64", "x86_64", "amd64") and (system == "Darwin" or (system == "Linux" and libc_name == "glibc")),
+        "stable_release": {"version": "1.0.2", "asset": asset},
         "binary": {"path": candidate, "found": found, "regular_file": regular, "executable": executable, "error": error},
         "telemetry_env": "unset" if value is None else "set" if value == "true" else "other",
         "network_accessed": False,

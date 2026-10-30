@@ -2934,14 +2934,22 @@ of the description on purpose.
 
 ### Lightpanda browser operator (on demand)
 
+To select it independently, preview `jeo-skill install lightpanda --global --dry-run`
+and install it with `jeo-skill install lightpanda --global --yes` only when selected.
+
 Installing the `lightpanda` skill copies instructions only, not the browser. Start with
 the skill's offline preflight to inspect platform and existing local availability; it
 does not prove browser runtime or site compatibility. Stable release `1.0.2` and main
 commit `8f2c8185c97e3cc98de07f164e7eb3d9e2dd9020` are separate references; nightly
-is mutable. Native Windows is unsupported; use WSL where appropriate.
+is mutable. Stable 1.0.2 supports fetch waiting, structured-data output, CDP and MCP
+workflows; source support does not prove an installed binary works. Native Windows is
+unsupported; use WSL where appropriate.
+For the loaded skill, set `SKILL_DIR` to the directory containing its `SKILL.md`, then
+run `python3 "$SKILL_DIR/scripts/doctor.py"` (optionally `--binary PATH`); this checks
+local metadata without executing the browser or accessing the network.
 
-Approve browser installation or binary downloads, external-site visits, server/CDP/MCP
-startup, LLM/provider calls and credential use separately. Set
+Approve browser installation or binary downloads, binary execution, external-site visits,
+server/CDP/MCP startup, LLM/provider calls and credential use separately. Set
 `LIGHTPANDA_DISABLE_TELEMETRY=true` for every browser invocation, including the first
 help or version probe. Do not use `version --check`: it makes a network request even
 with telemetry disabled. Telemetry opt-out does not prevent page or provider traffic.

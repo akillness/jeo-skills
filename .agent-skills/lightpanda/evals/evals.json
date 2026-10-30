@@ -34,5 +34,23 @@
     "authored": true,
     "executed": false,
     "evidence_status": "authored-not-executed"
+  },
+  {
+    "id": "dynamic-fetch-deadlines",
+    "prompt": "Prepare a Lightpanda 1.0.2 command to extract a dynamic article after its selector appears, with bounded waiting and termination; what happens if the deadline is reached?",
+    "expected_skill": "lightpanda",
+    "expected_behavior": "Require separate approval before binary execution and visiting the URL, redirects and subresources. Use stable-source-supported --wait-selector, --wait-ms and selected --dump and --dump-selector options, and distinguish the wait setting from --terminate-ms requesting graceful termination after initialization; never promise a hard wall-clock bound or complete extraction. Handle timeouts, missing content, nonzero exit and truncated output without claiming success, and distinguish source review from binary verification.",
+    "authored": true,
+    "executed": false,
+    "evidence_status": "authored-not-executed"
+  },
+  {
+    "id": "http-mcp-session-boundary",
+    "prompt": "Plan local Lightpanda HTTP MCP clients sharing a session, explain whether the session ID authenticates them, and close the session after use.",
+    "expected_skill": "lightpanda",
+    "expected_behavior": "Require separate approval for starting the server, client configuration and navigation; disable telemetry on the server process. Explain initialize and Mcp-Session-Id reuse shares a browsing context, distinct sessions separate contexts, and the session ID is not client authentication: other local processes or holders of the ID may gain access. Describe session_close or DELETE /mcp with its session header, and stop the server after use without claiming live verification.",
+    "authored": true,
+    "executed": false,
+    "evidence_status": "authored-not-executed"
   }
 ]

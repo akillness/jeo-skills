@@ -95,6 +95,13 @@ La lista completa y generada está en [Lista de Habilidades](#-lista-de-habilida
 | Habilidades específicas | `jeo-skill install <name> [<name> ...] --global --yes` |
 | Un paquete o segmento de categoría | `jeo-skill install --bundle <bundle> --global --yes` o `--category <id> [--subcategory <id>]` |
 
+Para Lightpanda, previsualiza la selección con `jeo-skill install lightpanda --global --dry-run`
+antes de instalar la habilidad. Se instalan instrucciones, no el navegador. La habilidad cubre
+fetch, datos estructurados, CDP y MCP de la versión estable 1.0.2; su diagnóstico sin conexión
+revisa metadatos locales, no la compatibilidad en ejecución. La descarga, instalación y ejecución
+del navegador, el acceso a sitios, los servidores, las credenciales y las llamadas a proveedores
+requieren aprobación por separado. Consulta la [guía de instalación](setup-all-skills-prompt.md#lightpanda-browser-operator-on-demand).
+
 Las variables del instalador pertenecen a `bash`, en el lado derecho de la tubería:
 
 ```bash

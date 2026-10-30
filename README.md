@@ -95,6 +95,12 @@ The full, generated list is in [Skills list](#-skills-list).
 | Specific skills | `jeo-skill install <name> [<name> ...] --global --yes` |
 | A bundle or category slice | `jeo-skill install --bundle <bundle> --global --yes` or `--category <id> [--subcategory <id>]` |
 
+For Lightpanda, preview `jeo-skill install lightpanda --global --dry-run` before installing
+the selected skill. It installs guidance, not the browser. The skill covers stable 1.0.2
+fetch, structured data, CDP and MCP; its offline doctor checks local metadata, not runtime
+compatibility. Browser download, installation, execution, site access, servers, credentials
+and provider calls require separate approval. See the [setup guide](setup-all-skills-prompt.md#lightpanda-browser-operator-on-demand).
+
 Installer variables belong to `bash`, on the right side of the pipe:
 
 ```bash

@@ -193,11 +193,84 @@ class LightpandaDoctorTests(unittest.TestCase):
                 self.assertIs(report["platform_supported"], supported)
                 self.assertEqual(report["libc"]["name"], name)
 
+    def test_stable_release_asset_selection_and_aliases(self):
+        cases = (
+            ("Linux", "aarch64", "glibc", False, "lightpanda-aarch64-linux"),
+            ("Linux", "arm64", "glibc", False, "lightpanda-aarch64-linux"),
+            ("Linux", "x86_64", "glibc", False, "lightpanda-x86_64-linux"),
+            ("Linux", "amd64", "glibc", False, "lightpanda-x86_64-linux"),
+            ("Darwin", "arm64", "", False, "lightpanda-aarch64-macos"),
+            ("Darwin", "aarch64", "", False, "lightpanda-aarch64-macos"),
+            ("Darwin", "x86_64", "", False, "lightpanda-x86_64-macos"),
+            ("Darwin", "amd64", "", False, "lightpanda-x86_64-macos"),
+            ("Linux", "x86_64", "musl", False, None),
+            ("Linux", "x86_64", "", False, None),
+            ("Linux", "x86_64", "glibc", True, None),
+            ("Android", "aarch64", "", False, None),
+            ("Linux", "riscv64", "glibc", False, None),
+            ("Windows", "x86_64", "", False, None),
+        )
+        for system, machine, libc, android, asset in cases:
+            with self.subTest(system=system, machine=machine, libc=libc, android=android):
+                fixture = dict(system=system, machine=machine, libc=libc,
+                               version="", android=android)
+                report = self.report(platform_fixture=fixture)
+                self.assertEqual(report["stable_release"]["version"], "1.0.2")
+                self.assertEqual(report["stable_release"]["asset"], asset)
+                self.assertEqual(report["platform_supported"], asset is not None)
+
+    def test_stable_release_metadata_survives_binary_inspection_error(self):
+        candidate = str(self.bin / "unreadable")
+        fixture = dict(system="Linux", machine="x86_64", libc="glibc",
+                       version="2.35", android=False)
+        result = self.invoke("--binary", candidate, platform_fixture=fixture,
+                             stat_error={"path": candidate, "errno": errno.EACCES})
+        self.assertEqual(result.returncode, 1)
+        report = json.loads(result.stdout)
+        self.assertEqual(report["stable_release"]["version"], "1.0.2")
+        self.assertEqual(report["stable_release"]["asset"], "lightpanda-x86_64-linux")
+        self.assertEqual(report["binary"]["error"]["errno"], errno.EACCES)
+        self.assertFalse(report["network_accessed"])
+        self.assertFalse(report["binary_executed"])
+
     def test_invalid_cli_arguments_fail_without_side_effects(self):
         result = self.invoke("--binary")
         self.assertEqual(result.returncode, 2)
         self.assertIn("--binary", result.stderr)
         self.assertEqual(list(self.bin.iterdir()), [])
+
+
+class LightpandaDocumentationTests(unittest.TestCase):
+    def test_runtime_sources_and_stable_feature_contract(self):
+        runtime = (DOCTOR.parents[1] / "references/runtime.md").read_text(encoding="utf-8")
+        stable = "c5f7bb29b127040c899d4e181b5709f76fc71a6f"
+        main = "8f2c8185c97e3cc98de07f164e7eb3d9e2dd9020"
+        self.assertIn(f"/blob/{stable}/README.md", runtime)
+        self.assertIn(f"/blob/{stable}/src/Config.zig", runtime)
+        self.assertIn(f"/blob/{main}/README.md", runtime)
+        for option in ("--wait-selector", "--wait-until", "--dump structured_data",
+                       "--dump-selector", "--dump-max-bytes", "--json",
+                       "--fail-on-http-error", "--block-private-networks",
+                       "--block-cidrs", "--block-urls"):
+            with self.subTest(option=option):
+                self.assertIn(option, runtime)
+        self.assertIn("Mcp-Session-Id", runtime)
+        self.assertIn("stdio", runtime)
+        self.assertIn("HTTP MCP", runtime)
+        self.assertIn("Source review is not binary execution", runtime)
+        self.assertIn("not a firewall", runtime)
+        self.assertIn("not client authentication", runtime)
+
+    def test_install_guidance_preserves_approval_and_verification_boundaries(self):
+        install = (DOCTOR.parents[1] / "references/install.md").read_text(encoding="utf-8")
+        self.assertIn("/releases/tag/1.0.2", install)
+        self.assertIn("c5f7bb29b127040c899d4e181b5709f76fc71a6f", install)
+        self.assertIn("explicit approval", install)
+        self.assertIn("SHA-256", install)
+        self.assertIn("not independent proof of authenticity", install)
+        self.assertIn("does not download anything", install)
+        self.assertIn("No runtime was tested", install)
+        self.assertIn("version --check", install)
 
 
 if __name__ == "__main__":
