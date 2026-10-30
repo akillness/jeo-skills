@@ -58,8 +58,10 @@ python3 "$SKILL_DIR/scripts/triage_findings.py" findings.json --format markdown
 ```
 
 The script groups findings by rule, ranks bands `blocking` (error tier) → `quality` →
-`slop` → `advisory`, counts files, lists up to five sample locations, and orders the
-suggested commands. It never echoes snippets, writes nothing, and makes no network calls.
+`slop` → `advisory`, counts files, lists up to five distinct sample locations, and orders the
+suggested commands. A rule can appear in two bands when the engine demotes some of its
+findings to advisory (seen with `low-contrast`). Static HTML scans report `line: 0`, so their
+locations are file paths only. It never echoes snippets, writes nothing, and makes no network calls.
 Exit 0 on success, 1 for unreadable or malformed input, 2 for argument errors. The routes in
 the table below are this operator's heuristic for which playbook owns the fix; they are not
 upstream detector output.

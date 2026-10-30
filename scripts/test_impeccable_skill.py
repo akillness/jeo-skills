@@ -322,6 +322,27 @@ class TriageTests(Sandbox):
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(json.loads(result.stdout)["groups"][0]["rule"], "gradient-text")
 
+    def test_engine_static_html_shape_dedupes_locations_and_splits_demoted_findings(self):
+        # Shape observed from the pinned 0.1.18 engine on a static HTML file: line 0, absolute
+        # paths, repeated rules in one file, and low-contrast partly demoted to advisory.
+        page = "/work/project/index.html"
+        def finding(rule, category, severity, advisory=False):
+            item = {"antipattern": rule, "name": rule, "description": "d", "severity": severity,
+                    "category": category, "file": page, "line": 0, "snippet": "s"}
+            if advisory:
+                item["advisory"] = True
+            return item
+        findings = ([finding("dark-glow", "slop", "warning")] * 3
+                    + [finding("low-contrast", "quality", "warning")]
+                    + [finding("low-contrast", "quality", "advisory", True)] * 2)
+        plan = json.loads(self.triage(findings).stdout)
+        self.assertEqual([(g["band"], g["rule"], g["count"], g["locations"]) for g in plan["groups"]], [
+            ("quality", "low-contrast", 1, [page]),
+            ("slop", "dark-glow", 3, [page]),
+            ("advisory", "low-contrast", 2, [page])])
+        self.assertEqual((plan["primary_findings"], plan["detector_exit_expected"]), (4, 2))
+        self.assertEqual([c["command"] for c in plan["next_commands"]], ["polish", "quieter"])
+
     def test_malformed_input_fails_closed(self):
         cases = {
             "not-json": "{",

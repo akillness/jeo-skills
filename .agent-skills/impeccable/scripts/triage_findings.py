@@ -151,8 +151,10 @@ def triage(findings, source):
         })
         group["count"] += 1
         group["files"].add(finding["file"])
-        if len(group["locations"]) < SAMPLE_LOCATIONS:
-            group["locations"].append(location(finding))
+        spot = location(finding)
+        # Static HTML scans report line 0, so repeats of one file collapse to one sample.
+        if len(group["locations"]) < SAMPLE_LOCATIONS and spot not in group["locations"]:
+            group["locations"].append(spot)
     ordered = sorted(groups.values(), key=lambda g: (BANDS.index(g["band"]), -g["count"], g["rule"]))
     for group in ordered:
         group["files"] = sorted(group["files"])

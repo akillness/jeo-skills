@@ -13,8 +13,36 @@
 - Selected file SHA-256 values and commit-pinned URLs: [`source.json`](source.json). They are
   selected-file evidence, not a whole-revision, dependency, runtime or security attestation.
 
-No upstream installer, launcher, engine, npm package, hook, browser helper or live server was
-executed for this audit, and no engine binary was downloaded.
+The source audit executed nothing upstream. A later runtime check (below) ran the pinned
+launcher and engine once, in a throwaway sandbox only.
+
+## Runtime verification (2026-10-30, macOS arm64, sandboxed)
+
+Run under a temporary `HOME` with `DO_NOT_TRACK=1`; nothing touched the real home, PATH, hooks
+or any harness configuration. No npm package, installer, hook, browser, URL scan or live server
+was used.
+
+- This operator was installed from the public catalog with
+  `jeo-skill install impeccable --global --yes` (`skills@1.7.0`, Node 24) into the temporary
+  `~/.agents/skills/impeccable`; the installed tree was byte-identical to this folder.
+- The pinned upstream `.claude/skills/impeccable` build was copied into a fixture project. The
+  installed `scripts/doctor.py` classified it as `upstream` 4.8.0 / engine 0.1.18 and the global
+  copy as `catalog-operator` 1.0.0.
+- `.claude/skills/impeccable/scripts/impeccable detect --json index.html` made the launcher
+  download `impeccable-darwin-arm64` for engine 0.1.18 into the temporary
+  `~/.impeccable/bin/0.1.18/`. `doctor.py --verify-digest` then reported
+  `543ee2f72036ad185dc9991ac3ba86b74d91f988f3d497776a088b8b65c8a9e1`, matching the pinned digest
+  and the launcher's `.verified` stamp.
+- `detect --list-rules --json` from that binary returned the same 62 rules as `source.json`, in
+  the same order, with identical names, categories, tiers and scopes.
+- On a static HTML fixture with known tells, `detect --json` exited 2 with 19 findings (17
+  primary, 2 advisory). Every finding had exactly the documented keys (`antipattern`, `name`,
+  `description`, `severity`, `category`, `file`, `line`, `snippet`, plus `advisory` on
+  advisories); `line` was `0` throughout, and `low-contrast` was split between warning and
+  advisory. `scripts/triage_findings.py` processed the real output and predicted exit 2.
+
+Still unverified: URL and `--cdp` scans (browser), the design hook in any harness, `live` and
+`generate`, `critique-storage`, upstream `doctor`, the npm CLI route, and Linux/Windows assets.
 
 ## What upstream is
 
