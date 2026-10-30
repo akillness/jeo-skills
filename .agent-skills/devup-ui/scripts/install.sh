@@ -104,7 +104,7 @@ install_packages() {
     return 0
   fi
 
-  log "Installing @devup-ui/react + $plugin_pkg into $PROJECT via $pm…"
+  log "Installing @devup-ui/react + $plugin_pkg into $PROJECT via ${pm}…"
   ( cd "$PROJECT" && $add_cmd @devup-ui/react "$plugin_pkg" )
   log "Next: register the plugin in your $BUNDLER config (see references/installation-and-plugins.md)."
 }

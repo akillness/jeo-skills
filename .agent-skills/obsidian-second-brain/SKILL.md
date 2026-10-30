@@ -22,7 +22,7 @@ metadata:
   tags: obsidian-second-brain, obsidian, second-brain, llm-wiki, knowledge-vault, note-taking, self-rewriting, contradiction-reconciliation, synthesis, research-toolkit, cross-cli, claude-code, codex, gemini, opencode
   platforms: Claude, Codex, Gemini, OpenCode, All
   keyword: obsidian-second-brain
-  version: "1.0.0"
+  version: "1.0.1"
   upstream: https://github.com/akillness/obsidian-second-brain
   origin: https://github.com/eugeniughelbur/obsidian-second-brain
   source: akillness/jeo-skills

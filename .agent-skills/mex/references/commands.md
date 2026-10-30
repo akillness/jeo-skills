@@ -33,7 +33,7 @@ the collision so stale docs or scripts using bare `mex` remain visible.
 ## Install
 
 ```bash
-npm install -g mex-agent      # installs the upstream package
+npm install -g mex-agent@0.8.5   # the version scripts/install.sh installs when missing
 mex-agent --version           # unambiguous wrapper installed by this skill
 npx mex-agent setup           # fallback without the wrapper
 ```
@@ -49,12 +49,15 @@ bash .agent-skills/mex/scripts/install.sh --skip-skill /path/to/project
 GLOBAL=1 bash .agent-skills/mex/scripts/install.sh -g /path/to/project
 ```
 
-Registers the jeo-skills plugin, resolves or installs `mex-agent`, creates an
-unambiguous wrapper when needed, and runs `mex-agent setup` non-interactively by
-piping the `--tool` choice into its prompts. Setup is skipped unless `.mex/`
-is absent or `--force` is given, but the default `codex`/`multiple` path still
-ensures a root `AGENTS.md` bridge for jeo/gjc/jeopi. It then builds the code
-graph, runs `mex-agent check`, and reports every project anchor found.
+Registers the jeo-skills plugin, resolves or installs `mex-agent` (`mex-agent@0.8.5`,
+overridable with `MEX_AGENT_NPM_SPEC`), creates an unambiguous wrapper when needed,
+and runs `mex-agent setup` non-interactively: `--yes --tool <tool>` for
+mex-agent >= 0.8, the `--tool` choice piped into the menu for 0.7.x. Setup exit 2
+(scaffold created, population pending) is reported and the run continues; any
+other non-zero setup exit stops it. Setup is skipped unless `.mex/` is absent or
+`--force` is given, but the default `codex`/`multiple` path still ensures a root
+`AGENTS.md` bridge for jeo/gjc/jeopi. It then builds the code graph, runs
+`mex-agent check`, and reports every project anchor found.
 
 ## Setup and scaffolding
 
@@ -66,13 +69,15 @@ mex-agent                              # open the interactive terminal dashboard
 mex-agent tui                          # same dashboard, without the TeX collision
 ```
 
-`mex-agent setup` is interactive (it asks which tool anchor to write, then whether
-to install mex globally) and only creates EMPTY scaffold files plus the
-anchor. It does **not** auto-populate `.mex/context/*.md` or `.mex/patterns/`
-— it prints a long prompt bounded by "COPY ABOVE THIS LINE" banners that a
-human must paste into their coding agent's chat; that agent session is what
-actually writes the project-specific wiki content. `scripts/install.sh`
-detects this banner and warns so the step isn't silently skipped.
+`mex-agent setup` only creates the scaffold files plus the anchor. It does **not**
+auto-populate `.mex/context/*.md` or `.mex/patterns/`. mex-agent 0.8.x takes
+`--tool <tool>` (repeatable, `none` for no tool) and `--yes` for scripts; without a
+terminal it stops with exit 2 ("Setup paused: scaffold population is still
+required.") until an agent session runs `mex-agent setup next --start` and follows
+it to completion (`mex-agent setup` exits 0). mex-agent 0.7.x is interactive (it
+asks which tool anchor to write, then whether to install mex globally) and prints a
+long prompt bounded by "COPY ABOVE THIS LINE" banners to paste into the agent chat.
+`scripts/install.sh` reports either form so the step isn't silently skipped.
 
 ## Pre-analysis and diagnostics
 

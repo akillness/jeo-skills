@@ -372,6 +372,119 @@ expect_status 1 'Obsidian second brain dangling symlink rejection'
 [ -L "$OBS_LINK_HOME/.jeo/config.json" ] && [ ! -e "$WORK/obsidian-dangling-target.json" ] || fail 'Obsidian second brain replaced dangling symlink'
 pass 'Obsidian second brain preserves backups and rejects failed or symlinked config updates'
 
+# Obsidian second brain WITH_UPSTREAM: the global routing-skill install links
+# ~/.claude/skills/obsidian-second-brain to the routing copy (deleting what was there, as
+# `npx skills add -g` does); the upstream checkout must still land there, survive re-runs,
+# and every refusal or clone failure must exit non-zero. Run under a UTF-8 locale so macOS
+# /bin/bash 3.2 parses the multibyte log lines the way users hit them.
+OBS_UP_BIN="$WORK/obsidian-upstream-bin"
+OBS_UP_GIT_LOG="$WORK/obsidian-upstream-git.log"
+mkdir -p "$OBS_UP_BIN"
+cat >"$OBS_UP_BIN/npx" <<'EOF'
+#!/bin/sh
+set -eu
+[ -z "${FAKE_NPX_NOOP:-}" ] || exit 0
+copy="$HOME/.agents/skills/obsidian-second-brain"
+mkdir -p "$copy" "$HOME/.claude/skills"
+printf '%s\n' '---' 'name: obsidian-second-brain' 'aliases: [/idea-discovery, /vault-health]' \
+  'metadata:' '  source: akillness/jeo-skills' '---' >"$copy/SKILL.md"
+rm -rf "$HOME/.claude/skills/obsidian-second-brain"
+ln -s ../../.agents/skills/obsidian-second-brain "$HOME/.claude/skills/obsidian-second-brain"
+EOF
+cat >"$OBS_UP_BIN/git" <<'EOF'
+#!/bin/sh
+set -eu
+[ -z "${FAKE_GIT_FAIL:-}" ] || exit 128
+case "$1" in
+  clone)
+    if [ -e "$3" ] || [ -L "$3" ]; then
+      echo "fatal: destination path '$3' already exists" >&2
+      exit 128
+    fi
+    mkdir -p "$3/.git" "$3/scripts"
+    printf '%s\n' '---' 'name: obsidian-second-brain' '---' 'upstream vault skill' >"$3/SKILL.md"
+    printf 'clone %s\n' "$3" >>"$FAKE_GIT_LOG" ;;
+  -C) printf 'pull %s\n' "$2" >>"$FAKE_GIT_LOG" ;;
+  *) exit 2 ;;
+esac
+EOF
+chmod 700 "$OBS_UP_BIN/npx" "$OBS_UP_BIN/git"
+obs_upstream() {
+  local home="$1"
+  shift
+  run_capture env HOME="$home" PATH="$OBS_UP_BIN:$PATH" LC_ALL=en_US.UTF-8 FAKE_GIT_LOG="$OBS_UP_GIT_LOG" \
+    GLOBAL=1 WITH_UPSTREAM=1 JEO=0 "$@" /bin/bash "$OBS_INSTALL"
+}
+
+OBS_UP_HOME="$WORK/obsidian-upstream-home"
+OBS_UP_DEST="$OBS_UP_HOME/.claude/skills/obsidian-second-brain"
+mkdir -p "$OBS_UP_HOME"
+obs_upstream "$OBS_UP_HOME"
+expect_status 0 'Obsidian second brain global upstream install'
+expect_output 'Done.' 'Obsidian second brain global upstream install'
+[ ! -L "$OBS_UP_DEST" ] && [ -d "$OBS_UP_DEST/.git" ] || fail 'Obsidian upstream checkout did not replace the routing-skill link'
+grep -q '^  source: akillness/jeo-skills$' "$OBS_UP_HOME/.agents/skills/obsidian-second-brain/SKILL.md" \
+  || fail 'Obsidian upstream install removed the shared routing copy'
+printf 'keep\n' >"$OBS_UP_DEST/local-state"
+obs_upstream "$OBS_UP_HOME"
+expect_status 0 'Obsidian second brain upstream re-run'
+[ ! -L "$OBS_UP_DEST" ] && [ -f "$OBS_UP_DEST/local-state" ] || fail 'Obsidian re-run let the routing-skill install delete the upstream checkout'
+grep -Fxq "pull $OBS_UP_DEST" "$OBS_UP_GIT_LOG" || fail 'Obsidian re-run did not update the existing upstream checkout'
+if find "$OBS_UP_HOME/.claude" -maxdepth 2 -name '.obsidian-second-brain.*' | grep -q .; then
+  fail 'Obsidian upstream install leaked a parked or staged directory'
+fi
+
+OBS_FOREIGN_HOME="$WORK/obsidian-foreign-home"
+OBS_FOREIGN_DEST="$OBS_FOREIGN_HOME/.claude/skills/obsidian-second-brain"
+mkdir -p "$OBS_FOREIGN_DEST"
+printf 'mine\n' >"$OBS_FOREIGN_DEST/notes.md"
+obs_upstream "$OBS_FOREIGN_HOME"
+expect_status 1 'Obsidian second brain refuses a foreign Claude skill directory'
+expect_output 'neither the upstream checkout' 'Obsidian second brain foreign directory refusal'
+expect_no_output 'Done.' 'Obsidian second brain foreign directory refusal'
+[ ! -L "$OBS_FOREIGN_DEST" ] && [ -f "$OBS_FOREIGN_DEST/notes.md" ] || fail 'Obsidian install replaced a foreign Claude skill directory'
+
+OBS_FAIL_HOME="$WORK/obsidian-clone-fail-home"
+mkdir -p "$OBS_FAIL_HOME"
+obs_upstream "$OBS_FAIL_HOME" FAKE_GIT_FAIL=1
+expect_status 1 'Obsidian second brain clone failure'
+expect_no_output 'Done.' 'Obsidian second brain clone failure'
+[ -L "$OBS_FAIL_HOME/.claude/skills/obsidian-second-brain" ] || fail 'Obsidian clone failure removed the routing-skill link'
+if find "$OBS_FAIL_HOME/.claude" -maxdepth 2 -name '.obsidian-second-brain.*' | grep -q .; then
+  fail 'Obsidian clone failure leaked a staged directory'
+fi
+
+# Without a routing copy the report reads the upstream SKILL.md, which has no aliases line.
+OBS_ONLY_HOME="$WORK/obsidian-upstream-only-home"
+mkdir -p "$OBS_ONLY_HOME"
+obs_upstream "$OBS_ONLY_HOME" FAKE_NPX_NOOP=1
+expect_status 0 'Obsidian second brain upstream-only install'
+expect_output 'Slash aliases declared in SKILL.md: 0' 'Obsidian second brain upstream-only report'
+[ -d "$OBS_ONLY_HOME/.claude/skills/obsidian-second-brain/.git" ] || fail 'Obsidian upstream-only install did not clone'
+pass 'Obsidian second brain installs, keeps, and refuses upstream checkouts correctly under a UTF-8 locale'
+
+# Under a UTF-8 locale, bash 3.2 (macOS /bin/bash) reads an unbraced variable followed
+# directly by a multibyte character (such as an ellipsis) as a name that includes the
+# character's first byte, which aborts `set -u` scripts. Shell scripts must brace such names.
+run_capture python3 - "$ROOT" <<'PY'
+import re
+import subprocess
+import sys
+
+root = sys.argv[1]
+tracked = subprocess.run(["git", "-C", root, "ls-files", "*.sh", "*.bash"],
+                         capture_output=True, text=True, check=True).stdout.splitlines()
+pattern = re.compile(r"(?<!\\)\$[A-Za-z_][A-Za-z0-9_]*[^\x00-\x7f]")
+bad = []
+for rel in tracked:
+    with open(f"{root}/{rel}", encoding="utf-8", errors="replace") as handle:
+        bad += [f"{rel}:{n}: {line.strip()}" for n, line in enumerate(handle, 1) if pattern.search(line)]
+print("\n".join(bad))
+sys.exit(1 if bad else 0)
+PY
+expect_status 0 'unbraced shell variables directly followed by non-ASCII text'
+pass 'no tracked shell script expands an unbraced variable directly before non-ASCII text'
+
 # The Codex OMC repair removes only the incompatible response field from all known cache hooks.
 # Its production SHA-256 allow-list pins canonical OMC sources, so this isolated fixture derives
 # an equivalent allow-list in a temporary helper from the exact post-repair fixture bytes.

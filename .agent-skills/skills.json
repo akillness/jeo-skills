@@ -2325,7 +2325,7 @@
         "WebFetch"
       ],
       "keyword": "devup-ui",
-      "version": "1.0",
+      "version": "1.0.1",
       "source": "https://github.com/dev-five-git/devup-ui"
     },
     {
@@ -8190,7 +8190,7 @@
         "WebFetch"
       ],
       "keyword": "obsidian-second-brain",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "source": "akillness/jeo-skills"
     },
     {
@@ -9120,7 +9120,7 @@
         "Grep"
       ],
       "keyword": "mex",
-      "version": "1.1",
+      "version": "1.2",
       "source": "mex-memory/mex"
     },
     {

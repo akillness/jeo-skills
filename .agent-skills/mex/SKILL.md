@@ -14,7 +14,7 @@ description: >
   "architectural context", "living wiki", "project anchor file".
 allowed-tools: Bash Read Write Edit Glob Grep
 compatibility: >
-  Node.js >= 22.5. `npm install -g mex-agent` (MIT); binary is `mex`. Works
+  Node.js >= 22.5. mex-agent (MIT); binary is `mex`. `install.sh` installs `mex-agent@0.8.5` when missing (override with `MEX_AGENT_NPM_SPEC`). Works
   standalone. An MCP package exists in the upstream monorepo
   (`packages/mex-mcp`) but is not published to npm as of this writing —
   build-from-source only, no `mex mcp` CLI subcommand ships in the released
@@ -22,7 +22,7 @@ compatibility: >
 metadata:
   tags: mex, mex-agent, project-memory, code-graphs, drift-detection, documentation, agent-memory, living-wiki, tree-sitter, sqlite, cli, project-anchor
   platforms: Claude, ChatGPT, Gemini, Codex, Cursor, Windsurf, jeo, gjc, jeopi, OpenCode
-  version: "1.1"
+  version: "1.2"
   source: https://github.com/mex-memory/mex
 ---
 
@@ -71,10 +71,13 @@ This is the fully automated path: it registers the skill, resolves an actual
 mex-agent executable in the order `MEX_AGENT_BIN` → `mex-agent` →
 `~/.local/bin/mex-agent` → bare `mex` only when its version is a mex-agent
 semantic version, and installs mex-agent plus an unambiguous wrapper when none
-is available. It then runs `mex-agent setup` non-interactively (skipped if
-`.mex/` already exists — pass `--force` to re-run), ensures the default
-Codex/jeo path has a root `AGENTS.md` bridge, builds the code graph, runs
-`mex-agent check`, and
+is available (`mex-agent@0.8.5` by default; `MEX_AGENT_NPM_SPEC` overrides). It
+then runs `mex-agent setup` non-interactively (skipped if `.mex/` already
+exists — pass `--force` to re-run): mex-agent >= 0.8 gets `--yes --tool <tool>`,
+0.7.x gets its numbered menu answer piped in. Exit 2 (scaffold created,
+population pending) is reported and the install continues; any other non-zero
+setup exit stops the installer. It then ensures the default Codex/jeo path has a
+root `AGENTS.md` bridge, builds the code graph, runs `mex-agent check`, and
 reports the installed anchors. It is idempotent and safe to re-run.
 See `--help` for flags (`--mode agent-memory`, `--force`, `--skip-skill`,
 `--tool <claude|cursor|windsurf|copilot|opencode|codex|multiple|none>`,
@@ -114,11 +117,14 @@ that does not exist until you actually run `mex-agent log`):
 ```
 
 Every `context/*.md` and `patterns/*` file is an **empty template** at this
-point — `mex-agent setup` does not read your codebase and fill them in. It prints a
-long prompt (bounded by "COPY ABOVE THIS LINE" banners) that you must paste
-into your coding agent's chat; that agent session is what actually writes
-project-specific content into the scaffold. `scripts/install.sh` detects the
-banner and prints a warning so this step is never silently skipped.
+point — `mex-agent setup` does not read your codebase and fill them in.
+mex-agent 0.8.x stops with exit 2 ("Setup paused: scaffold population is still
+required."); an agent session must run `mex-agent setup next --start` and do
+what it prints until `mex-agent setup` exits 0. mex-agent 0.7.x instead prints a
+long prompt (bounded by "COPY ABOVE THIS LINE" banners) to paste into your
+coding agent's chat. Either way, that agent session is what actually writes
+project-specific content into the scaffold. `scripts/install.sh` reports the
+pending population step so it is never silently skipped.
 
 One consequence of automating that prompt: mex's follow-up "Has population
 finished?" grounding step is TTY-only (`confirmAndCaptureGrounding` bails when
@@ -128,10 +134,10 @@ stdin is not a TTY, verified in mex-agent 0.7.1), so driving
 `install.sh` prints this reminder.
 
 
-It also writes a **project anchor file at the repository root**, chosen
-interactively (mex asks "Which AI tool do you use?") — this is the "rule
-document" the skill turns on automatically once you've answered that one
-prompt (`install.sh` answers it for you via `--tool`, default `codex`):
+It also writes a **project anchor file at the repository root** for the
+selected AI tool — mex-agent 0.7.x asks "Which AI tool do you use?", 0.8.x takes
+`--tool`. This is the "rule document" the skill turns on automatically;
+`install.sh` supplies the choice via its own `--tool` (default `codex`):
 
 | Tool | Project anchor mex writes |
 |---|---|
@@ -148,7 +154,7 @@ very repository's own `AGENTS.md`-driven skill instructions are loaded that
 way. So `install.sh`'s default `--tool codex` gives jeo/gjc/jeopi their rule
 document automatically. That covers the *anchor file* only; the wiki content
 it points to (`.mex/context/*.md`, `.mex/patterns/*`) still needs the
-paste-into-agent step from Step 2 above — there is no way to skip that and
+population step from Step 2 above — there is no way to skip that and
 still get real, project-specific content. Verify what actually exists with
 `bash .agent-skills/mex/scripts/mex.sh doctor` (Step 6).
 

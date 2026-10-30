@@ -102,4 +102,65 @@ test -x "$BARE_HOME/.local/bin/mex-agent"
 test "$(HOME="$BARE_HOME" MEX_AGENT_CLI="$FAKE_CLI" MEX_AGENT_NODE="/Users/jangyoung/.aside/runtime/bin/node" \
   "$BARE_HOME/.local/bin/mex-agent" --version)" = "0.7.1"
 
+# mex-agent >= 0.8: setup takes --yes/--tool and exits 2 while population is
+# pending. That pause must not abort the installer; any other failure must.
+V08_HOME="$TMP_ROOT/v08-home"
+V08_LOG="$TMP_ROOT/v08-calls.log"
+mkdir -p "$V08_HOME/.local/bin"
+cat > "$V08_HOME/.local/bin/mex-agent" <<'SH'
+#!/usr/bin/env bash
+set -euo pipefail
+if [ "${1:-}" = "--version" ]; then
+  echo "0.8.5"
+  exit 0
+fi
+printf '%s\n' "$*" >> "${MEX_TEST_LOG:?}"
+if [ "${1:-}" = "setup" ]; then
+  mkdir -p .mex
+  printf '# Fixture project memory\n' > .mex/AGENTS.md
+  echo "Setup paused: scaffold population is still required."
+  exit "${FAKE_SETUP_EXIT:-2}"
+fi
+SH
+chmod +x "$V08_HOME/.local/bin/mex-agent"
+
+v08_project() {
+  local project="$TMP_ROOT/$1"
+  mkdir -p "$project"
+  git -C "$project" init -q
+  printf '%s' "$project"
+}
+
+V08_PROJECT="$(v08_project v08-project)"
+: > "$V08_LOG"
+V08_OUTPUT="$(HOME="$V08_HOME" PATH="$TEST_PATH" MEX_TEST_LOG="$V08_LOG" \
+  bash "$INSTALLER" --skip-skill --tool codex "$V08_PROJECT" 2>&1)"
+awk '$0 == "setup --yes --tool codex" { found=1 } END { exit found ? 0 : 1 }' "$V08_LOG"
+awk '$0 == "graph" { graph=1 } $0 == "check" { check=1 } END { exit graph && check ? 0 : 1 }' "$V08_LOG"
+test -f "$V08_PROJECT/AGENTS.md"
+printf '%s\n' "$V08_OUTPUT" | awk '/setup next --start/ { found=1 } END { exit found ? 0 : 1 }'
+
+V08_MULTI="$(v08_project v08-multiple)"
+: > "$V08_LOG"
+HOME="$V08_HOME" PATH="$TEST_PATH" MEX_TEST_LOG="$V08_LOG" \
+  bash "$INSTALLER" --skip-skill --tool multiple "$V08_MULTI" >/dev/null 2>&1
+awk '$0 == "setup --yes" { found=1 } END { exit found ? 0 : 1 }' "$V08_LOG"
+
+: > "$V08_LOG"
+HOME="$V08_HOME" PATH="$TEST_PATH" MEX_TEST_LOG="$V08_LOG" \
+  bash "$INSTALLER" --skip-skill --force --tool claude "$V08_PROJECT" >/dev/null 2>&1
+awk '$0 == "setup --yes --force --tool claude" { found=1 } END { exit found ? 0 : 1 }' "$V08_LOG"
+
+V08_FAIL="$(v08_project v08-fail)"
+: > "$V08_LOG"
+if HOME="$V08_HOME" PATH="$TEST_PATH" MEX_TEST_LOG="$V08_LOG" FAKE_SETUP_EXIT=1 \
+  bash "$INSTALLER" --skip-skill --tool codex "$V08_FAIL" >/dev/null 2>&1; then
+  echo "FAIL: installer ignored a failing mex setup" >&2
+  exit 1
+fi
+if awk '$0 == "graph" { found=1 } END { exit found ? 0 : 1 }' "$V08_LOG"; then
+  echo "FAIL: installer kept going after a failing mex setup" >&2
+  exit 1
+fi
+
 echo "PASS: mex runtime resolution and jeo anchor regression tests"

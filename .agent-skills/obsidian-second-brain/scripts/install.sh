@@ -38,6 +38,46 @@ UPSTREAM_URL="https://github.com/akillness/obsidian-second-brain"
 SKILL="obsidian-second-brain"
 JEO_CONFIG="${JEO_CONFIG:-$HOME/.jeo/config.json}"
 
+# The upstream vault skill lives where its own quick-install puts it.
+CLAUDE_SKILL_DIR="$HOME/.claude/skills/$SKILL"
+CLAUDE_HOLD=""
+
+# The jeo-skills routing copy carries this frontmatter line; the upstream skill does not.
+is_routing_copy() {
+  [ -f "$1/SKILL.md" ] && grep -q '^  source: akillness/jeo-skills$' "$1/SKILL.md"
+}
+
+# `npx skills add -g` replaces ~/.claude/skills/<skill> with a link to the routing copy,
+# which deletes an upstream checkout (or any other real directory) kept there. Park such a
+# directory beside the skills root while the routing skill installs, then put it back.
+park_claude_skill_dir() {
+  [ "${GLOBAL:-0}" = "1" ] || return 0
+  [ -d "$CLAUDE_SKILL_DIR" ] && [ ! -L "$CLAUDE_SKILL_DIR" ] || return 0
+  is_routing_copy "$CLAUDE_SKILL_DIR" && return 0
+  CLAUDE_HOLD="$(mktemp -d "$HOME/.claude/.$SKILL.hold.XXXXXX")"
+  mv "$CLAUDE_SKILL_DIR" "$CLAUDE_HOLD/$SKILL"
+  log "Keeping existing $CLAUDE_SKILL_DIR out of the routing-skill install"
+}
+
+restore_claude_skill_dir() {
+  [ -n "$CLAUDE_HOLD" ] || return 0
+  # The slot was empty while parked, so a link or routing copy there came from npx.
+  if [ -L "$CLAUDE_SKILL_DIR" ]; then
+    rm -f "$CLAUDE_SKILL_DIR"
+  elif [ -d "$CLAUDE_SKILL_DIR" ] && is_routing_copy "$CLAUDE_SKILL_DIR"; then
+    rm -rf "$CLAUDE_SKILL_DIR"
+  fi
+  if [ -e "$CLAUDE_SKILL_DIR" ]; then
+    warn "$CLAUDE_SKILL_DIR is occupied; the original is kept at $CLAUDE_HOLD/$SKILL"
+    CLAUDE_HOLD=""
+    return 1
+  fi
+  mv "$CLAUDE_HOLD/$SKILL" "$CLAUDE_SKILL_DIR"
+  rmdir "$CLAUDE_HOLD"
+  CLAUDE_HOLD=""
+}
+trap restore_claude_skill_dir EXIT
+
 # Never follow or replace a config symlink, including a dangling one.
 reject_jeo_config_symlink() {
   if [ -L "$JEO_CONFIG" ]; then
@@ -130,27 +170,49 @@ install_skill() {
   fi
 
   log "Installing $SKILL routing skill via npx skills…"
+  park_claude_skill_dir
   # shellcheck disable=SC2086
   npx skills add "$REPO_URL" --skill "$SKILL" $GLOBAL_FLAG $AGENT_FLAGS --yes \
     || warn "npx skills add failed — install manually (git clone)."
+  restore_claude_skill_dir
 }
 
+# Install or update the upstream checkout at ~/.claude/skills/<skill>. Claude Code gets the
+# full upstream skill there; other agents keep the routing copy in ~/.agents/skills.
 install_upstream() {
   [ "${WITH_UPSTREAM:-0}" = "1" ] || return 0
 
   if ! command -v git >/dev/null 2>&1; then
     warn "git not found — cannot clone upstream. See $UPSTREAM_URL"
-    return 0
+    return 1
   fi
 
-  local dest="$HOME/.claude/skills/$SKILL"
+  local dest="$CLAUDE_SKILL_DIR" stage
   if [ -d "$dest/.git" ]; then
     log "Upstream already cloned at $dest — pulling latest…"
     git -C "$dest" pull --ff-only || warn "git pull failed — leaving existing clone."
   else
-    log "Cloning upstream vault skill into $dest…"
-    git clone "$UPSTREAM_URL" "$dest" \
-      || { warn "Clone failed — see $UPSTREAM_URL"; return 0; }
+    if { [ -e "$dest" ] || [ -L "$dest" ]; } && ! is_routing_copy "$dest"; then
+      warn "$dest exists and is neither the upstream checkout nor the jeo-skills routing copy."
+      warn "Move it away, then re-run with WITH_UPSTREAM=1."
+      return 1
+    fi
+    log "Cloning upstream vault skill into ${dest}…"
+    mkdir -p "$(dirname "$dest")"
+    stage="$(mktemp -d "$(dirname "$dest")/.$SKILL.clone.XXXXXX")"
+    if ! git clone "$UPSTREAM_URL" "$stage/$SKILL"; then
+      rm -rf "$stage"
+      warn "Clone failed — see $UPSTREAM_URL"
+      return 1
+    fi
+    # Replace the routing link or copy only once the clone has succeeded.
+    if [ -L "$dest" ]; then
+      rm -f "$dest"
+    elif [ -e "$dest" ]; then
+      rm -rf "$dest"
+    fi
+    mv "$stage/$SKILL" "$dest"
+    rmdir "$stage"
   fi
 
   if [ -n "${VAULT:-}" ] && [ -f "$dest/scripts/setup.sh" ]; then
@@ -328,7 +390,8 @@ verify_report() {
 
   if [ -n "$skill_md" ]; then
     local n
-    n="$(grep -m1 '^aliases:' "$skill_md" | grep -o '/[A-Za-z0-9-]*' | wc -l | tr -d ' ')"
+    # The upstream SKILL.md has no aliases line; a missing match is a count of zero, not a failure.
+    n="$(grep -m1 '^aliases:' "$skill_md" | grep -o '/[A-Za-z0-9-]*' | wc -l | tr -d ' ')" || n=0
     log "Slash aliases declared in SKILL.md: ${n:-0} (expect 45)"
   fi
 
@@ -356,7 +419,12 @@ fi
 
 log "Starting $SKILL setup"
 install_skill
-install_upstream
+UPSTREAM_STATUS=0
+install_upstream || UPSTREAM_STATUS=$?
 wire_jeo
 verify_report
+if [ "$UPSTREAM_STATUS" -ne 0 ]; then
+  warn "Finished with errors: the upstream vault skill was not installed (see above)."
+  exit 1
+fi
 log "Done. See .agent-skills/$SKILL/SKILL.md for the routing guide and 45-command reference."

@@ -15,7 +15,7 @@
 # There is intentionally no MCP registration step here: mex's MCP package
 # (packages/mex-mcp) is not published to npm as of this writing and ships no
 # `mex mcp` CLI subcommand in the released mex-agent package (verified against
-# mex-agent 0.7.1). Do not add one until mex-memory/mex confirms publication.
+# mex-agent 0.7.1 and 0.8.5). Do not add one until mex-memory/mex confirms publication.
 #
 # Usage:
 #   bash scripts/install.sh [project_path]
@@ -28,21 +28,26 @@
 #   --mode <mode>    passed through to `mex setup --mode <mode>` (e.g. agent-memory)
 #   --force          re-run `mex setup` even if .mex/ already exists
 #   --skip-skill     skip the jeo-skills plugin registration step
-#   --tool <name>    which anchor `mex setup`'s interactive prompt should pick:
+#   --tool <name>    which AI tool anchor `mex setup` writes:
 #                    claude | cursor | windsurf | copilot | opencode | codex |
 #                    multiple | none (default: codex, i.e. AGENTS.md — the
-#                    anchor jeo/gjc/jeopi/Codex all read the same way)
+#                    anchor jeo/gjc/jeopi/Codex all read the same way).
+#                    mex-agent >= 0.8 receives `--tool <name> --yes`
+#                    (`multiple` keeps the tools saved in .mex/config.json);
+#                    0.7.x gets the choice piped to its menu.
 #
-# IMPORTANT: `mex setup` only creates an EMPTY .mex/ scaffold plus the project
+# IMPORTANT: `mex setup` only creates the .mex/ scaffold plus the project
 # anchor file. It does NOT auto-populate context/architecture.md, patterns/*,
-# etc. — it prints a prompt (between the "COPY BELOW/ABOVE THIS LINE" banners)
-# that a human must paste into their coding agent chat to actually populate the
-# wiki. This script surfaces that requirement; it cannot skip it.
+# etc. mex-agent >= 0.8 then stops with exit 2 ("Setup paused: scaffold
+# population is still required."): an agent session must run
+# `mex-agent setup next --start` and follow it until `mex-agent setup` exits 0.
+# mex-agent 0.7.x prints a prompt between "COPY BELOW/ABOVE THIS LINE" banners
+# to paste into the agent chat. This script treats that pause as success,
+# surfaces the requirement, and continues; any other setup failure stops it.
 #
-# Also note: mex setup's "Has population finished?" grounding prompt is
-# TTY-only, so driving setup non-interactively (as this script does) skips
-# grounding capture. Run `mex-agent graph ground` after the agent populates
-# the scaffold.
+# Also note: mex setup's grounding confirmation is interactive only, so driving
+# setup non-interactively (as this script does) skips grounding capture. Run
+# `mex-agent graph ground` after the agent populates the scaffold.
 #
 # Env knobs:
 #   GLOBAL=1           install the skill globally (npx skills add -g)
@@ -50,6 +55,8 @@
 #   SKIP_SKILL=1       same as --skip-skill
 #   MEX_AGENT_BIN=...  explicit mex-agent executable override
 #   MEX_AGENT_WRAPPER=... target path for the generated wrapper
+#   MEX_AGENT_NPM_SPEC=... npm spec installed when mex-agent is missing
+#                      (default: mex-agent@0.8.5, the version this script was verified with)
 
 set -euo pipefail
 
@@ -70,7 +77,7 @@ FORCE=0
 SKIP_SKILL_FLAG=0
 TOOL="codex"
 
-# mex setup has no non-interactive tool flag, so the choice is piped to its
+# mex-agent 0.7.x has no non-interactive tool flag, so the choice is piped to its
 # menu. Numbers verified against mex-agent 0.7.1 (selectToolConfig).
 tool_choice_number() {
   case "$1" in
@@ -185,12 +192,22 @@ install_mex_agent() {
   [ "$status" -ne 2 ] || die "$MEX_AGENT_RESOLVE_ERROR"
 
   command -v npm >/dev/null 2>&1 || die "npm not found; cannot install mex-agent"
-  log "Installing mex-agent globally (npm install -g mex-agent)..."
-  npm install -g mex-agent
+  local spec="${MEX_AGENT_NPM_SPEC:-mex-agent@0.8.5}"
+  log "Installing mex-agent globally (npm install -g $spec)..."
+  npm install -g "$spec"
   install_unambiguous_wrapper
 
   resolve_mex_agent_bin || die "mex-agent was installed but cannot be resolved: $MEX_AGENT_RESOLVE_ERROR"
   log "Confirmed mex-agent: $MEX_AGENT_VERSION_RESOLVED ($MEX_AGENT_BIN_RESOLVED)"
+}
+
+# mex-agent 0.8 replaced the numbered tool menu with `setup --tool/--yes`.
+mex_agent_has_tool_flag() {
+  local major minor
+  major="${MEX_AGENT_VERSION_RESOLVED%%.*}"
+  minor="${MEX_AGENT_VERSION_RESOLVED#*.}"
+  minor="${minor%%.*}"
+  [ "$major" -gt 0 ] || [ "$minor" -ge 8 ]
 }
 
 # ---- step 3: scaffold project memory ----
@@ -199,21 +216,42 @@ run_setup() {
     log ".mex/ already exists at $PROJECT_PATH — skipping 'mex setup' (use --force to re-run)"
     return 0
   fi
-  log "Running 'mex setup' in $PROJECT_PATH (auto-answering the tool prompt: $TOOL -> choice $TOOL_CHOICE)..."
-  local setup_log args=(setup)
+  local setup_log status=0 args=(setup)
   if [ -n "$MODE" ]; then
     args+=(--mode "$MODE")
   fi
   setup_log="$(mktemp)"
-  # mex setup asks two piped questions: which tool anchor to write, and whether
-  # to install mex globally (already handled above, so decline it here).
-  (cd "$PROJECT_PATH" && printf '%s\nn\n' "$TOOL_CHOICE" | "$MEX_AGENT_BIN_RESOLVED" "${args[@]}") | tee "$setup_log"
+  if mex_agent_has_tool_flag; then
+    args+=(--yes)
+    [ "$FORCE" = "1" ] && args+=(--force)
+    [ "$TOOL" = "multiple" ] || args+=(--tool "$TOOL")
+    log "Running 'mex setup' in $PROJECT_PATH (${args[*]:1})..."
+    (cd "$PROJECT_PATH" && "$MEX_AGENT_BIN_RESOLVED" "${args[@]}" </dev/null) | tee "$setup_log" || status=$?
+  else
+    log "Running 'mex setup' in $PROJECT_PATH (auto-answering the tool prompt: $TOOL -> choice $TOOL_CHOICE)..."
+    # mex-agent 0.7.x asks two piped questions: which tool anchor to write, and
+    # whether to install mex globally (already handled above, so decline it here).
+    (cd "$PROJECT_PATH" && printf '%s\nn\n' "$TOOL_CHOICE" | "$MEX_AGENT_BIN_RESOLVED" "${args[@]}") | tee "$setup_log" || status=$?
+  fi
+  case "$status" in
+    0) ;;
+    2)
+      warn "'mex setup' created the .mex/ scaffold but stopped at population (exit 2)."
+      warn "The wiki content (context/*.md, patterns/*) is NOT populated yet. In your coding"
+      warn "agent's chat run 'mex-agent setup next --start' and follow what it prints until"
+      warn "'mex-agent setup' exits 0. Afterwards run 'mex-agent graph ground'."
+      ;;
+    *)
+      rm -f "$setup_log"
+      die "'mex setup' failed (exit $status); see its output above"
+      ;;
+  esac
   if grep -q "COPY ABOVE THIS LINE" "$setup_log"; then
     warn "'mex setup' only created an EMPTY .mex/ scaffold + the $TOOL anchor file."
     warn "The wiki content (context/*.md, patterns/*) is NOT populated yet — copy the"
     warn "prompt printed above (between the two 'COPY ... THIS LINE' banners) into"
     warn "your coding agent's chat so it fills in the scaffold from the real codebase."
-    warn "Afterwards run 'mex ground' — grounding capture is TTY-only and was skipped."
+    warn "Afterwards run 'mex-agent graph ground' — grounding capture is TTY-only and was skipped."
   fi
   rm -f "$setup_log"
 }

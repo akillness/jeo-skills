@@ -18,7 +18,7 @@ compatibility: >
 license: Apache-2.0
 metadata:
   tags: devup-ui, css-in-js, zero-runtime, build-time-extraction, styled, theming, react, nextjs, vite, rust, wasm
-  version: "1.0"
+  version: "1.0.1"
   source: https://github.com/dev-five-git/devup-ui
   docs: https://devup-ui.com
 ---

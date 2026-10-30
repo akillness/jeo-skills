@@ -19,12 +19,14 @@ bash scripts/install.sh
 `scripts/install.sh` env knobs:
 
 - `GLOBAL=1` — install globally (`npx skills add -g`)
-- `WITH_UPSTREAM=1` — also clone the full upstream vault skill (45 commands + agents)
+- `WITH_UPSTREAM=1` — also clone the full upstream vault skill (45 commands + agents) into `~/.claude/skills/obsidian-second-brain`. Claude Code gets the upstream skill there; other agents keep the routing skill in `~/.agents/skills`. A routing-skill link or copy at that path is replaced only after the clone succeeds; any other existing directory is left alone and the run exits 1. A missing `git` or a failed clone also exits 1 instead of reporting `Done`.
 - `VAULT=<dir>` — when `WITH_UPSTREAM=1`, run the upstream `setup.sh` against this vault
 - `AGENTS=<list>` — comma/space agent targets for `-a` (e.g. `claude-code,codex`)
 - `JEO=1|0|auto` — jeo wiring: `1` force, `0` skip, `auto` (default) wires when `~/.jeo/config.json` exists
 - `JEO_CONFIG=<file>` — override the jeo config path (default `~/.jeo/config.json`)
 - `UNINSTALL=1` — remove the jeo AI-first hook (creates a backup) and exit
+
+With `GLOBAL=1`, `npx skills add -g` links `~/.claude/skills/obsidian-second-brain` to the routing copy and would delete a real directory there. The installer parks an existing upstream checkout (or any other non-routing directory) outside the skills root while `npx` runs and puts it back afterwards, so re-running the installer keeps the upstream skill.
 
 ## jeo-code (jeo)
 
