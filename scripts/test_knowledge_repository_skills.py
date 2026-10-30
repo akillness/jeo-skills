@@ -28,6 +28,9 @@ SKILLS = (
     "ai-knowledge-management-platform", "knowledge-catalog", "pixeltable",
     "leann", "turbovec", "cocoindex", "pixelrag", "agent-beacon",
 )
+# Every package ships six authored scenarios; open-ontologies v1.2.0 adds `install-and-smoke`
+# for its verified install.sh/smoke.py path.
+EVAL_COUNTS = {"open-ontologies": 7}
 FIXTURE_FILES = {
     "README.md": b"synthetic public README\n",
     "src/module.py": b"synthetic public module\n",
@@ -222,8 +225,9 @@ class KnowledgeRepositoryPreflightTests(unittest.TestCase):
                 self.assertTrue((package / "references" / "upstream.md").is_file())
                 cases = json.loads((package / "evals" / "evals.json").read_text(encoding="utf-8"))
                 self.assertIsInstance(cases, list)
-                self.assertEqual(len(cases), 6)
-                self.assertEqual(len({case["id"] for case in cases}), 6)
+                expected = EVAL_COUNTS.get(skill, 6)
+                self.assertEqual(len(cases), expected)
+                self.assertEqual(len({case["id"] for case in cases}), expected)
                 for case in cases:
                     for field in ("id", "prompt", "expected_skill", "expected_behavior"):
                         self.assertIsInstance(case[field], str)
