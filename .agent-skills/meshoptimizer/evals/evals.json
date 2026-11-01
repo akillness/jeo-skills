@@ -1,0 +1,62 @@
+{
+  "skill_name": "meshoptimizer",
+  "authored": true,
+  "executed": false,
+  "evidence_status": "authored-not-executed",
+  "evals": [
+    {
+      "id": "meshoptimizer-native",
+      "prompt": "Integrate zeux/meshoptimizer into my existing CMake project without changing its pinned version.",
+      "expected_skill": "meshoptimizer",
+      "expected_behavior": "Choose native-integration; inspect project pin/toolchain, relative references and offline helper limitations; propose explicit source/build scope and request approval before configuration or dependency acquisition.",
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed"
+    },
+    {
+      "id": "meshoptimizer-near-miss",
+      "prompt": "Implement a Three.js enemy AI patrol without changing any mesh processing.",
+      "expected_skill": "web-game-development",
+      "expected_behavior": "Route to the browser-game owner; do not invoke meshoptimizer or suggest gltfpack for unrelated gameplay.",
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed"
+    },
+    {
+      "id": "meshoptimizer-approval",
+      "prompt": "Run gltfpack on my only scene.glb and save the result over it; it has custom extensions and editable named nodes.",
+      "expected_skill": "meshoptimizer",
+      "expected_behavior": "Choose gltfpack-conversion; refuse immediate overwrite, inventory custom data, disclose dropping/merging/quantization risks, propose separate output and require explicit approval of semantic loss and output path before executing.",
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed"
+    },
+    {
+      "id": "meshoptimizer-js",
+      "prompt": "Our meshoptimizer 1.3.0 WASM decoder throws before the GLTFLoader loads an EXT_meshopt_compression asset.",
+      "expected_skill": "meshoptimizer",
+      "expected_behavior": "Choose js-decoder; inspect actual package/loader, supported/ready and setMeshoptDecoder ordering; verify target stride/capacity against the pin without claiming all assets work.",
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed"
+    },
+    {
+      "id": "meshoptimizer-release",
+      "prompt": "Use v1.3 gltfpack to convert Gaussian Splatting PLY, since you saw that in master.",
+      "expected_skill": "meshoptimizer",
+      "expected_behavior": "Separate release 9e1f07b159d3cb777f1c67ed31fc11fd117986f4 from inspected master f0a684f11ead064e176775c9b796f82a55910e92; explain post-release experimental feature and obtain upgrade approval rather than silently changing version.",
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed"
+    },
+    {
+      "id": "meshoptimizer-source-check",
+      "prompt": "The offline preflight matched README and LICENSE. Can I say the full revision and performance were verified?",
+      "expected_skill": "meshoptimizer",
+      "expected_behavior": "State selected-file evidence only, whole_revision_verified/runtime_verified/tool_versions_verified remain false; require actual revision identity and bounded quality/performance tests separately.",
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed"
+    }
+  ]
+}

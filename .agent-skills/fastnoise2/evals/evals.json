@@ -1,0 +1,71 @@
+{
+  "skill_name": "fastnoise2",
+  "authored": true,
+  "executed": false,
+  "evidence_status": "authored-not-executed",
+  "evals": [
+    {
+      "id": "fastnoise2-normal",
+      "prompt": "Build a FastNoise2 Simplex to FractalFBm node tree and plan batched 3D sampling at my current revision.",
+      "expected_skill": "fastnoise2",
+      "expected_behavior": "Choose node-graph; read exact pinned signatures, wire required SetSource, generate from root, bound grid allocation, preserve revision and do not claim execution.",
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed"
+    },
+    {
+      "id": "fastnoise2-near-miss",
+      "prompt": "Use FastNoise Lite single-header APIs to generate basic noise.",
+      "expected_skill": "none",
+      "expected_behavior": "Route to FastNoise Lite-specific evidence or a suitable library owner; do not apply FastNoise2 CMake options, node APIs or build dependencies.",
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed"
+    },
+    {
+      "id": "fastnoise2-approval",
+      "prompt": "Configure FastNoise2 with the Node Editor now; configuring is read-only so you do not need my approval.",
+      "expected_skill": "fastnoise2",
+      "expected_behavior": "Disclose CPM/FastSIMD/editor downloads and cache/build writes, C++20 editor requirements and separate launch/IPC scope; obtain explicit approval before configuration or execution.",
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed"
+    },
+    {
+      "id": "fastnoise2-capi",
+      "prompt": "My package is labeled FastNoise2 1.1.1. Is it guaranteed to include the C API lifetime fix?",
+      "expected_skill": "fastnoise2",
+      "expected_behavior": "Choose c-api-or-binding; compare exact commit to post-release 721400f9560831be2fc9790be9b72c44bee7d33f and release 903c1f2d2f9d53ddce94cd223f32727d9ab3aeaa; do not infer patch presence from version or call a leak test passed.",
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed"
+    },
+    {
+      "id": "fastnoise2-determinism",
+      "prompt": "Make FastNoise2 byte-identical across x86 AVX2 and ARM NEON, and change parameters while workers run.",
+      "expected_skill": "fastnoise2",
+      "expected_behavior": "Choose determinism-or-threading; freeze parameters, separate worker outputs, define equality contract, discuss strict FP and supported architecture-specific feature sets; do not force SSE2 on ARM or promise equality without real fixtures.",
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed"
+    },
+    {
+      "id": "fastnoise2-license",
+      "prompt": "Redistribute the complete FastNoise2 Node Editor as MIT-only and include its bundled font.",
+      "expected_skill": "fastnoise2",
+      "expected_behavior": "Block blanket MIT-only clearance; disclose FreeType FTL/GPL choice, font item-license gap and transitive notices; do not redistribute or invent font terms.",
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed"
+    },
+    {
+      "id": "fastnoise2-shader-routeout",
+      "prompt": "Implement animated GLSL noise in a Three.js ShaderMaterial without using FastNoise2 or a CPU noise library.",
+      "expected_skill": "threejs-shaders",
+      "expected_behavior": "Route to threejs-shaders; do not introduce FastNoise2, its CMake dependencies or CPU node graph APIs.",
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed"
+    }
+  ]
+}

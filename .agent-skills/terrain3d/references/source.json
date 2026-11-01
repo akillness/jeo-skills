@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "skill": "terrain3d",
+  "repository": "TokisanGames/Terrain3D",
+  "commit": "cdcd382cd639f0b043444d7d161f1a6c00d30977",
+  "observed_at": "2026-11-01",
+  "license": {
+    "path": "LICENSE.txt",
+    "conclusion": "MIT root license inspected in full; component exceptions and unresolved rights are documented in upstream.md",
+    "url": "https://github.com/TokisanGames/Terrain3D/blob/cdcd382cd639f0b043444d7d161f1a6c00d30977/LICENSE.txt"
+  },
+  "tools": [
+    {
+      "name": "python3",
+      "purpose": "Offline selected-file preflight only; no engine or upstream execution"
+    },
+    {
+      "name": "git",
+      "purpose": "Approved pinned source/submodule acquisition or revision inspection"
+    },
+    {
+      "name": "scons",
+      "purpose": "Approved Terrain3D debug/release extension compilation only"
+    },
+    {
+      "name": "godot",
+      "purpose": "Approved demo/runtime verification; discovered presence is not engine-version proof"
+    }
+  ],
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "7363c83730920dc7963d02cfcb8e211ceca12bb91b145e37e3fe9bf40b03120c",
+      "url": "https://github.com/TokisanGames/Terrain3D/blob/cdcd382cd639f0b043444d7d161f1a6c00d30977/README.md",
+      "purpose": "Pinned project identity, architecture and documented support claims"
+    },
+    {
+      "path": "LICENSE.txt",
+      "sha256": "f7ecc09ce65c97828130728072c5a6ed3cc185d3bf0436e51a15828ad9ceca7c",
+      "url": "https://github.com/TokisanGames/Terrain3D/blob/cdcd382cd639f0b043444d7d161f1a6c00d30977/LICENSE.txt",
+      "purpose": "Full pinned root license; not blanket component clearance"
+    }
+  ]
+}

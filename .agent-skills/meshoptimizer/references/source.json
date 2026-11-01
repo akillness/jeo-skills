@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "skill": "meshoptimizer",
+  "repository": "zeux/meshoptimizer",
+  "commit": "f0a684f11ead064e176775c9b796f82a55910e92",
+  "observed_at": "2026-11-01",
+  "license": {
+    "path": "LICENSE.md",
+    "conclusion": "MIT; full pinned root license inspected; optional components have separate notices and unresolved closure described in upstream.md",
+    "url": "https://github.com/zeux/meshoptimizer/blob/f0a684f11ead064e176775c9b796f82a55910e92/LICENSE.md"
+  },
+  "tools": [
+    {
+      "name": "python3",
+      "purpose": "Optional offline selected-file helper; never executes upstream code"
+    },
+    {
+      "name": "cmake",
+      "purpose": "Native library/gltfpack configuration and build only with approval"
+    },
+    {
+      "name": "c++",
+      "purpose": "Project-selected C++11 compiler; discovery is not version verification"
+    },
+    {
+      "name": "node",
+      "purpose": "Optional JavaScript fixture tests only after scoped approval"
+    },
+    {
+      "name": "gltfpack",
+      "purpose": "Asset conversion to a separate output only after preservation approval"
+    },
+    {
+      "name": "git",
+      "purpose": "Source acquisition only with separate network/write approval"
+    }
+  ],
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "69dee313d6982ef86199c0e8cb0f5ad9aca683bf2250418a872fcbbcc00d514b",
+      "url": "https://github.com/zeux/meshoptimizer/blob/f0a684f11ead064e176775c9b796f82a55910e92/README.md",
+      "purpose": "Pinned project scope, architecture, build/platform claims and critical limitations"
+    },
+    {
+      "path": "LICENSE.md",
+      "sha256": "f03037ca7bad1e3eb7f4a63fa6084a8baabd5ba30d3c239a9a7f35705d873e26",
+      "url": "https://github.com/zeux/meshoptimizer/blob/f0a684f11ead064e176775c9b796f82a55910e92/LICENSE.md",
+      "purpose": "Full pinned root MIT terms; not optional dependency or asset clearance"
+    }
+  ]
+}

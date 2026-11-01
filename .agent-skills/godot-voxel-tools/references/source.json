@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "skill": "godot-voxel-tools",
+  "repository": "Zylann/godot_voxel",
+  "commit": "045ff9326a32fd10ac6fdac6357b5a098aaf2093",
+  "observed_at": "2026-11-01",
+  "license": {
+    "path": "LICENSE.md",
+    "conclusion": "MIT; full pinned root license inspected; component/distribution closure incomplete, see upstream.md",
+    "url": "https://github.com/Zylann/godot_voxel/blob/045ff9326a32fd10ac6fdac6357b5a098aaf2093/LICENSE.md"
+  },
+  "tools": [
+    {
+      "name": "python3",
+      "purpose": "Run offline selected-file preflight only; no upstream execution"
+    },
+    {
+      "name": "scons",
+      "purpose": "Optional separately approved upstream workflow tool; presence does not verify version, install or runtime"
+    },
+    {
+      "name": "git",
+      "purpose": "Optional separately approved upstream workflow tool; presence does not verify version, install or runtime"
+    },
+    {
+      "name": "godot",
+      "purpose": "Optional separately approved upstream workflow tool; presence does not verify version, install or runtime"
+    }
+  ],
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "88d7d20c75461a11e419e2bbd5bdbc9b2cd4f1fd690a2855cee026c9717ed56c",
+      "url": "https://github.com/Zylann/godot_voxel/blob/045ff9326a32fd10ac6fdac6357b5a098aaf2093/README.md",
+      "purpose": "Pinned project scope and claims"
+    },
+    {
+      "path": "LICENSE.md",
+      "sha256": "3a1f742145830b5702fe9e7aa2566c5896012a88fb3f70a00d6fd64e9cc203ee",
+      "url": "https://github.com/Zylann/godot_voxel/blob/045ff9326a32fd10ac6fdac6357b5a098aaf2093/LICENSE.md",
+      "purpose": "Pinned license terms and component notices; scope limitations in upstream.md"
+    },
+    {
+      "path": "thirdparty/fast_noise_2/LICENSE",
+      "sha256": "6a772f6fa13928b07693cc8643dac0284910ea031b82cba1b49e51a36616cddf",
+      "url": "https://github.com/Zylann/godot_voxel/blob/045ff9326a32fd10ac6fdac6357b5a098aaf2093/thirdparty/fast_noise_2/LICENSE",
+      "purpose": "Pinned license terms and component notices; scope limitations in upstream.md"
+    },
+    {
+      "path": "thirdparty/lz4/LICENSE",
+      "sha256": "8b58c446121a109ccf32edc094bba3010a3d85e4ee3702950db55e4d3e87736c",
+      "url": "https://github.com/Zylann/godot_voxel/blob/045ff9326a32fd10ac6fdac6357b5a098aaf2093/thirdparty/lz4/LICENSE",
+      "purpose": "Pinned license terms and component notices; scope limitations in upstream.md"
+    },
+    {
+      "path": "thirdparty/meshoptimizer/LICENSE.md",
+      "sha256": "e4a26033e3551fb2722888949fbb41e77aee628e8e8f04dcffeee301aa7e5634",
+      "url": "https://github.com/Zylann/godot_voxel/blob/045ff9326a32fd10ac6fdac6357b5a098aaf2093/thirdparty/meshoptimizer/LICENSE.md",
+      "purpose": "Pinned license terms and component notices; scope limitations in upstream.md"
+    }
+  ]
+}

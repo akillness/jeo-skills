@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "skill": "recast-navigation",
+  "repository": "recastnavigation/recastnavigation",
+  "commit": "9f4ce64458dfae86e1239c525ddc219c4e9e06f1",
+  "observed_at": "2026-11-01",
+  "license": {
+    "path": "License.txt",
+    "conclusion": "zlib; full pinned root license inspected; component/distribution closure incomplete, see upstream.md",
+    "url": "https://github.com/recastnavigation/recastnavigation/blob/9f4ce64458dfae86e1239c525ddc219c4e9e06f1/License.txt"
+  },
+  "tools": [
+    {
+      "name": "python3",
+      "purpose": "Run offline selected-file preflight only; no upstream execution"
+    },
+    {
+      "name": "cmake",
+      "purpose": "Optional separately approved upstream workflow tool; presence does not verify version, install or runtime"
+    },
+    {
+      "name": "premake5",
+      "purpose": "Optional separately approved upstream workflow tool; presence does not verify version, install or runtime"
+    },
+    {
+      "name": "vcpkg",
+      "purpose": "Optional separately approved upstream workflow tool; presence does not verify version, install or runtime"
+    }
+  ],
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "3e36443648f6f8888ebd2121663d8848b719c37a3118cfd345ca8242e7583ea3",
+      "url": "https://github.com/recastnavigation/recastnavigation/blob/9f4ce64458dfae86e1239c525ddc219c4e9e06f1/README.md",
+      "purpose": "Pinned project scope and claims"
+    },
+    {
+      "path": "License.txt",
+      "sha256": "ffad87821cce7cfd3be00b63ffadd01b04e83a4c6a0bcc68f06362ffd42d705e",
+      "url": "https://github.com/recastnavigation/recastnavigation/blob/9f4ce64458dfae86e1239c525ddc219c4e9e06f1/License.txt",
+      "purpose": "Pinned license terms and component notices; scope limitations in upstream.md"
+    },
+    {
+      "path": "RecastDemo/Contrib/imgui/LICENSE.txt",
+      "sha256": "c80c5789748d955c4a650562baa0d750494e2c7128c2ca66aaebe2e3c4e198bf",
+      "url": "https://github.com/recastnavigation/recastnavigation/blob/9f4ce64458dfae86e1239c525ddc219c4e9e06f1/RecastDemo/Contrib/imgui/LICENSE.txt",
+      "purpose": "Pinned license terms and component notices; scope limitations in upstream.md"
+    },
+    {
+      "path": "RecastDemo/Contrib/implot/LICENSE",
+      "sha256": "38bd30c2111fe7e3d8fb86d8607491239659eff1df1b1004b9a8349e20a91967",
+      "url": "https://github.com/recastnavigation/recastnavigation/blob/9f4ce64458dfae86e1239c525ddc219c4e9e06f1/RecastDemo/Contrib/implot/LICENSE",
+      "purpose": "Pinned license terms and component notices; scope limitations in upstream.md"
+    },
+    {
+      "path": "Docs/doxygen-awesome-css/LICENSE",
+      "sha256": "a848f4935f110d45ae18cc4149b9613776648c6dc5e596f247b501b3d2503134",
+      "url": "https://github.com/recastnavigation/recastnavigation/blob/9f4ce64458dfae86e1239c525ddc219c4e9e06f1/Docs/doxygen-awesome-css/LICENSE",
+      "purpose": "Selected license-file hash only; full terms not reviewed"
+    }
+  ]
+}

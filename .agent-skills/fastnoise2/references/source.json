@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "skill": "fastnoise2",
+  "repository": "Auburn/FastNoise2",
+  "commit": "721400f9560831be2fc9790be9b72c44bee7d33f",
+  "observed_at": "2026-11-01",
+  "license": {
+    "path": "LICENSE",
+    "conclusion": "MIT; full pinned root license inspected; optional components have separate notices and unresolved closure described in upstream.md",
+    "url": "https://github.com/Auburn/FastNoise2/blob/721400f9560831be2fc9790be9b72c44bee7d33f/LICENSE"
+  },
+  "tools": [
+    {
+      "name": "python3",
+      "purpose": "Optional offline selected-file helper; never executes upstream code"
+    },
+    {
+      "name": "cmake",
+      "purpose": "Configuration can fetch FastSIMD/editor dependencies; separate approval required"
+    },
+    {
+      "name": "c++",
+      "purpose": "Project-selected core C++17 or optional editor C++20 compiler"
+    },
+    {
+      "name": "clang-cl",
+      "purpose": "Optional Windows compiler recommended upstream; never install automatically"
+    },
+    {
+      "name": "git",
+      "purpose": "Approved source acquisition only; not a local revision attestation"
+    }
+  ],
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "4fb442486b116974947b56bee05b658a03e337edf8b6d361fc4bc7cacdccee53",
+      "url": "https://github.com/Auburn/FastNoise2/blob/721400f9560831be2fc9790be9b72c44bee7d33f/README.md",
+      "purpose": "Pinned project scope, architecture, build/platform claims and critical limitations"
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "6a772f6fa13928b07693cc8643dac0284910ea031b82cba1b49e51a36616cddf",
+      "url": "https://github.com/Auburn/FastNoise2/blob/721400f9560831be2fc9790be9b72c44bee7d33f/LICENSE",
+      "purpose": "Full pinned root MIT terms; not optional dependency or asset clearance"
+    }
+  ]
+}

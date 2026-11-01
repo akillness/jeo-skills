@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "skill": "jolt-physics",
+  "repository": "jrouwe/JoltPhysics",
+  "commit": "ea4599d5044d92ba91b18664ec1df96255d5eb31",
+  "observed_at": "2026-11-01",
+  "license": {
+    "path": "LICENSE",
+    "conclusion": "MIT root license inspected in full; component exceptions and unresolved rights are documented in upstream.md",
+    "url": "https://github.com/jrouwe/JoltPhysics/blob/ea4599d5044d92ba91b18664ec1df96255d5eb31/LICENSE"
+  },
+  "tools": [
+    {
+      "name": "python3",
+      "purpose": "Offline selected-file preflight only; discovers tools without executing them"
+    },
+    {
+      "name": "git",
+      "purpose": "Approved pinned source acquisition or read-only revision inspection, never automatic publication"
+    },
+    {
+      "name": "cmake",
+      "purpose": "Approved native Jolt configuration/build only"
+    },
+    {
+      "name": "clang++",
+      "purpose": "Optional compiler discovery; no version or build proof"
+    },
+    {
+      "name": "g++",
+      "purpose": "Optional compiler discovery; no version or build proof"
+    }
+  ],
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "ad1bc97a1bd81f5f0cda9975684dd175ddb22b721dd34d5d26f42443e5fe859d",
+      "url": "https://github.com/jrouwe/JoltPhysics/blob/ea4599d5044d92ba91b18664ec1df96255d5eb31/README.md",
+      "purpose": "Pinned project identity, architecture and documented support claims"
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "800abe35d64ad9defd636ff1ee8c961e06f0ebca3ef8d10083e8aa0e8ef86ac3",
+      "url": "https://github.com/jrouwe/JoltPhysics/blob/ea4599d5044d92ba91b18664ec1df96255d5eb31/LICENSE",
+      "purpose": "Full pinned root license; not blanket component clearance"
+    }
+  ]
+}

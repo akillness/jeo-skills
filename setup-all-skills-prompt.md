@@ -84,6 +84,35 @@ Cloud connect, bounded last-30-day backfill, Standard versus Metadata-only forwa
 `beacon share`, `beacon mcp connect`, and uninstall cleanup each require separate approval.
 Use `--dry-run`/`--print` where offered, and keep `beacon mcp serve` loopback-only.
 
+### Game-development source guides (on demand)
+
+The `game-source-repositories` bundle selects ten independent operator guides:
+`jolt-physics`, `terrain3d`, `material-maker`, `effekseer`, `godot-voxel-tools`,
+`recast-navigation`, `ozz-animation`, `the-forge`, `meshoptimizer`, and `fastnoise2`.
+These are source-specific guides, not replacements for the existing engine-neutral
+`game-vfx`, engine-specific game skills, or Three.js geometry and animation skills.
+
+```bash
+HOME="$USER_HOME" python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" install --bundle game-source-repositories --dry-run
+# After installing a selected guide, inspect it without a source checkout:
+python3 "$SKILLS_ROOT/jolt-physics/scripts/preflight.py" --json
+# Optional: compare only the guide's listed public files against a local checkout:
+python3 "$SKILLS_ROOT/jolt-physics/scripts/preflight.py" --repo /absolute/path/to/jolt-physics --json
+```
+
+Installing or previewing these guides does not install, build, or run the upstream
+engines, tools, plugins, examples, assets, or SDKs. Approve each download, build,
+project or asset modification, external service, and publication separately. Review
+`references/upstream.md` and `references/source.json` for the exact pinned revision,
+license and dependency/asset boundaries; source licenses do not automatically cover
+all bundled assets and SDKs. The Forge's current upstream and older GitHub snapshot
+have different platform/licensing scopes; check its guide before choosing a version.
+The offline preflights require a POSIX Python with `O_NOFOLLOW` and `dir_fd` support.
+Native Windows Python may fail closed with `secure_posix_traversal_unavailable`; use a
+supported WSL environment or manually compare the listed public files instead. Selected-file
+hashes do not establish Git HEAD, a complete revision, runtime operation, performance, or
+production readiness. Authored evaluation scenarios are not executed model-quality results.
+
 ### UI-design repository guides (on demand)
 
 The `ui-design-repositories` bundle installs ten original operator guides and their

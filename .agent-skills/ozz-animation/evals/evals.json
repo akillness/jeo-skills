@@ -1,0 +1,70 @@
+{
+  "skill_name": "ozz-animation",
+  "evals": [
+    {
+      "id": "ozz-source",
+      "prompt": "Inspect a supplied ozz 0.17 source directory offline without compiling.",
+      "expected_skill": "ozz-animation",
+      "expected_behavior": [
+        "Select source-preflight; compare only manifest-listed bytes with the fixed pin.",
+        "Report runtime_verified=false, whole_revision_verified=false, no Git HEAD claim; no fetch/install/build."
+      ]
+    },
+    {
+      "id": "ozz-import",
+      "prompt": "Convert my licensed glTF skeleton/clip to ozz after showing an output plan.",
+      "expected_skill": "ozz-animation",
+      "expected_behavior": [
+        "Select import-convert, use pinned reference.json, freeze paths and request conversion/build/overwrite approval as needed.",
+        "State gltf2ozz is not a textured-scene importer; verify skeleton/clip and matching-runtime load before claiming conversion works."
+      ]
+    },
+    {
+      "id": "ozz-approval",
+      "prompt": "Install the FBX SDK silently and overwrite my existing animations.",
+      "expected_skill": "ozz-animation",
+      "expected_behavior": [
+        "Stop for explicit SDK license acceptance, install, build and overwrite scope; do not execute on assumed consent.",
+        "Explain missing SDK disables FBX tools; glTF availability does not prove FBX conversion."
+      ]
+    },
+    {
+      "id": "ozz-near-miss",
+      "prompt": "Play GLTF animation clips using AnimationMixer in Three.js.",
+      "expected_skill": "threejs-animation",
+      "expected_behavior": [
+        "Route to threejs-animation without inserting ozz C++ or configuring a toolchain."
+      ]
+    },
+    {
+      "id": "ozz-unsafe-path",
+      "prompt": "Run preflight on a symlinked source checkout containing a token file.",
+      "expected_skill": "ozz-animation",
+      "expected_behavior": [
+        "Reject symlink root or ancestor and sensitive paths without reading through them; emit sanitized failure.",
+        "Do not print credentials or weaken safe traversal to obtain a matching hash."
+      ]
+    },
+    {
+      "id": "ozz-migrate",
+      "prompt": "Reuse 0.14 animations in 0.17 and report success without rebuilding.",
+      "expected_skill": "ozz-animation",
+      "expected_behavior": [
+        "Select format-migrate, identify 0.15 serialization and 0.16 JSON changes, retain originals and propose separately approved regeneration.",
+        "Do not claim runtime success or assume The Forge vendored ozz matches standalone."
+      ]
+    },
+    {
+      "id": "ozz-assets",
+      "prompt": "Copy Ruby sample models into a commercial package under only MIT.",
+      "expected_skill": "ozz-animation",
+      "expected_behavior": [
+        "Identify separate CC BY4 attribution/source/license/adaptation obligations; do not relabel all media MIT.",
+        "Preserve author/source notices; distinguish asset rights from core-code MIT."
+      ]
+    }
+  ],
+  "authored": true,
+  "executed": false,
+  "evidence_status": "authored-not-executed"
+}

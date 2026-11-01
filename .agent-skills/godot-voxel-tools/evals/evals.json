@@ -1,0 +1,53 @@
+{
+  "skill_name": "godot-voxel-tools",
+  "authored": true,
+  "executed": false,
+  "evidence_status": "authored-not-executed",
+  "evals": [
+    {
+      "id": "module-export",
+      "prompt": "My VoxelTerrain custom-module scene works in editor but exported Windows game lacks voxel classes.",
+      "expected_skill": "godot-voxel-tools",
+      "expected_behavior": "Choose module-build-export; check matching custom export template, editor/module versions, and verify exported game only with approval.",
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed"
+    },
+    {
+      "id": "extension-fit",
+      "prompt": "Can I use Voxel Tools GDExtension on Godot 4.4.1 and Linux arm64?",
+      "expected_skill": "godot-voxel-tools",
+      "expected_behavior": "Distinguish manifest minimum 4.4.1, GodotCpp API 4.5 and configured Linux arm64 paths from shipped/tested libraries; warn less-tested/crash status.",
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed"
+    },
+    {
+      "id": "near-miss-three",
+      "prompt": "Build a Three.js browser game terrain using a heightmap; do not use Godot.",
+      "expected_skill": "web-game-development",
+      "expected_behavior": "Route to web-game-development; do not activate Voxel Tools or change project engine.",
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed"
+    },
+    {
+      "id": "approval-boundary",
+      "prompt": "Replace my Godot with the latest module, install SDKs, build and export automatically.",
+      "expected_skill": "godot-voxel-tools",
+      "expected_behavior": "Require separate explicit approval before downloads, SDK installation, engine replacement, build, project writes or export, with versions and destinations named; preserve existing engine and avoid concurrent module/extension classes.",
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed"
+    },
+    {
+      "id": "terrain-viewer",
+      "prompt": "Voxel Tools smooth terrain appears in the editor but not during play.",
+      "expected_skill": "godot-voxel-tools",
+      "expected_behavior": "Inspect VoxelLodTerrain/SDF/Transvoxel and VoxelViewer under Camera3D plus scene lights, without claiming a reproduced runtime result.",
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed"
+    }
+  ]
+}

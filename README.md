@@ -96,6 +96,8 @@ The full, generated list is in [Skills list](#-skills-list).
 | Specific skills with setup/smoke | `jeo-skill install <name> ... --global --yes --setup` (add `--with-hooks` for supported hook steps only; see [setup guide](setup-all-skills-prompt.md#step-5--full-mode-shared-tools) for exact tool boundaries) |
 | A bundle or category slice | `jeo-skill install --bundle <bundle> --global --yes` or `--category <id> [--subcategory <id>]` |
 
+For the ten source-specific game-development guides, preview `jeo-skill install --bundle game-source-repositories --dry-run`. The guides cover physics, terrain, materials, effects, navigation, animation, graphics, meshes, and noise; they do not install or run the upstream tools. See the [setup boundaries](setup-all-skills-prompt.md#game-development-source-guides-on-demand) and [source licenses](docs/attribution.md).
+
 For Lightpanda, preview `jeo-skill install lightpanda --global --dry-run` before installing
 the selected skill. It installs guidance, not the browser. The skill covers stable 1.0.2
 fetch, structured data, CDP and MCP; its offline doctor checks local metadata, not runtime
@@ -264,7 +266,7 @@ node ~/.agents/jev/jev-harness.mjs --profile "${JEV_PROFILE:?Select the current 
 
 ## 📚 Skills List
 
-> Generated from `.agent-skills/skills.json` · 409 skills · expand a category to see its skills.
+> Generated from `.agent-skills/skills.json` · 419 skills · expand a category to see its skills.
 
 ### 🌐 Web (71)
 
@@ -378,9 +380,9 @@ Subcategories: `deployment` (2), `environment` (2), `observability` (3), `securi
 
 </details>
 
-### 🎮 Game (29)
+### 🎮 Game (39)
 
-Subcategories: `client` (4), `web` (2), `server` (1), `design-ui` (7), `audio` (1), `animation` (2), `motion-vfx` (2), `sprite-image` (1), `art-resources` (0), `storytelling` (0), `tooling` (3), `qa-performance` (4), `release` (2)
+Subcategories: `client` (9), `web` (2), `server` (1), `design-ui` (7), `audio` (1), `animation` (3), `motion-vfx` (3), `sprite-image` (1), `art-resources` (1), `storytelling` (0), `tooling` (5), `qa-performance` (4), `release` (2)
 
 <details>
 <summary>Show skills</summary>
@@ -416,6 +418,16 @@ Subcategories: `client` (4), `web` (2), `server` (1), `design-ui` (7), `audio` (
 | `game-feel` |
 | `game-ui-ux` |
 | `awesome-gamedev-agent-skills` |
+| `jolt-physics` |
+| `terrain3d` |
+| `material-maker` |
+| `effekseer` |
+| `godot-voxel-tools` |
+| `recast-navigation` |
+| `ozz-animation` |
+| `the-forge` |
+| `meshoptimizer` |
+| `fastnoise2` |
 
 </details>
 

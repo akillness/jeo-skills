@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "skill": "material-maker",
+  "repository": "RodZill4/material-maker",
+  "commit": "7d6daae3c74c09720afe4138ce09699ab3591ce1",
+  "observed_at": "2026-11-01",
+  "license": {
+    "path": "LICENSE.md",
+    "conclusion": "MIT root license inspected in full; component exceptions and unresolved rights are documented in upstream.md",
+    "url": "https://github.com/RodZill4/material-maker/blob/7d6daae3c74c09720afe4138ce09699ab3591ce1/LICENSE.md"
+  },
+  "tools": [
+    {
+      "name": "python3",
+      "purpose": "Offline selected-file preflight only; no renderer execution"
+    },
+    {
+      "name": "godot",
+      "purpose": "Approved source-project launch or desktop export using matching engine/templates"
+    },
+    {
+      "name": "git",
+      "purpose": "Approved pinned source acquisition or read-only inspection; not upstream AI PR publishing"
+    }
+  ],
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "fe4f9eff499f55f1d21fe692921ab2a2d40e6616c249a8734318e10fbbbfad68",
+      "url": "https://github.com/RodZill4/material-maker/blob/7d6daae3c74c09720afe4138ce09699ab3591ce1/README.md",
+      "purpose": "Pinned project identity, architecture and documented support claims"
+    },
+    {
+      "path": "LICENSE.md",
+      "sha256": "db17817a68e6c06c3aba6242d50ec34285c02f1ada4fbd8cd7382110f95c09de",
+      "url": "https://github.com/RodZill4/material-maker/blob/7d6daae3c74c09720afe4138ce09699ab3591ce1/LICENSE.md",
+      "purpose": "Full pinned root license; not blanket component clearance"
+    }
+  ]
+}

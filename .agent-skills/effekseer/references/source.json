@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "skill": "effekseer",
+  "repository": "effekseer/Effekseer",
+  "commit": "b5700082b49bc5f919610880dafddc90211a9a4e",
+  "observed_at": "2026-11-01",
+  "license": {
+    "path": "LICENSE",
+    "conclusion": "MIT; full pinned root license inspected; component/distribution closure incomplete, see upstream.md",
+    "url": "https://github.com/effekseer/Effekseer/blob/b5700082b49bc5f919610880dafddc90211a9a4e/LICENSE"
+  },
+  "tools": [
+    {
+      "name": "python3",
+      "purpose": "Run offline selected-file preflight only; no upstream execution"
+    },
+    {
+      "name": "git",
+      "purpose": "Optional separately approved upstream workflow tool; presence does not verify version, install or runtime"
+    },
+    {
+      "name": "cmake",
+      "purpose": "Optional separately approved upstream workflow tool; presence does not verify version, install or runtime"
+    },
+    {
+      "name": "dotnet",
+      "purpose": "Optional separately approved upstream workflow tool; presence does not verify version, install or runtime"
+    }
+  ],
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "c52ae620f8de63adc11562e6bc006fa892119283f80d5913a4d6440248f3e392",
+      "url": "https://github.com/effekseer/Effekseer/blob/b5700082b49bc5f919610880dafddc90211a9a4e/README.md",
+      "purpose": "Pinned project scope and claims"
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "9686573243a6e4732edef9e39ac1356371dc7f4a17d995bea32777e36463cb29",
+      "url": "https://github.com/effekseer/Effekseer/blob/b5700082b49bc5f919610880dafddc90211a9a4e/LICENSE",
+      "purpose": "Pinned license terms and component notices; scope limitations in upstream.md"
+    },
+    {
+      "path": "LICENSE_TOOL",
+      "sha256": "e32cc7be243d939dec49776382cd458d05367a88fd8a0d497cda0550e2b6fb23",
+      "url": "https://github.com/effekseer/Effekseer/blob/b5700082b49bc5f919610880dafddc90211a9a4e/LICENSE_TOOL",
+      "purpose": "Pinned license terms and component notices; scope limitations in upstream.md"
+    },
+    {
+      "path": "LICENSE_RUNTIME_DIRECTX",
+      "sha256": "8b9d86a405b0d3d7e5dc9e1b60d13d5a896117aeaecb60157021ab305b4cfe83",
+      "url": "https://github.com/effekseer/Effekseer/blob/b5700082b49bc5f919610880dafddc90211a9a4e/LICENSE_RUNTIME_DIRECTX",
+      "purpose": "Pinned license terms and component notices; scope limitations in upstream.md"
+    },
+    {
+      "path": "LICENSE_RUNTIME_VULKAN",
+      "sha256": "3b208589c56986922a803b7c2700fc568d5eb7f4675eeab51530586ac64f3929",
+      "url": "https://github.com/effekseer/Effekseer/blob/b5700082b49bc5f919610880dafddc90211a9a4e/LICENSE_RUNTIME_VULKAN",
+      "purpose": "Pinned license terms and component notices; scope limitations in upstream.md"
+    }
+  ]
+}

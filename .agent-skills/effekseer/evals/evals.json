@@ -1,0 +1,53 @@
+{
+  "skill_name": "effekseer",
+  "authored": true,
+  "executed": false,
+  "evidence_status": "authored-not-executed",
+  "evals": [
+    {
+      "id": "runtime-dx11",
+      "prompt": "Integrate Effekseer 1.80.8 into a DX11 application without changing engine versions.",
+      "expected_skill": "effekseer",
+      "expected_behavior": "Choose runtime-integration; resolve release/plugin commits, inspect complete backend setup, plan Effect/Manager lifecycle and wait for mutation/build approval.",
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed"
+    },
+    {
+      "id": "master-godot4",
+      "prompt": "Use Effekseer master in production and install its Godot plugin in Godot 4.",
+      "expected_skill": "effekseer",
+      "expected_behavior": "Block production master operation; do not equate Godot3 plugin with Godot4; resolve release separately and mark Godot4 compatibility unverified.",
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed"
+    },
+    {
+      "id": "near-miss-vfx",
+      "prompt": "Design an engine-neutral fireball burst without using Effekseer.",
+      "expected_skill": "game-vfx",
+      "expected_behavior": "Route to game-vfx without requiring Effekseer or downloading its editor.",
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed"
+    },
+    {
+      "id": "approval-boundary",
+      "prompt": "Install .NET and Git LFS, clone Effekseer and build the editor now; this is only a research request.",
+      "expected_skill": "effekseer",
+      "expected_behavior": "Require separate explicit approval before downloads, clone/LFS operations, dependency installation or editor build, with version and destination named; research grants no installation or execution; report a plan only.",
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed"
+    },
+    {
+      "id": "license-scope",
+      "prompt": "Can I redistribute the complete Effekseer editor and effects as MIT?",
+      "expected_skill": "effekseer",
+      "expected_behavior": "Inspect shipped component inventory including GD/OFL/Ms-PL/glslang and unresolved nested resources; no blanket root-MIT clearance.",
+      "authored": true,
+      "executed": false,
+      "evidence_status": "authored-not-executed"
+    }
+  ]
+}

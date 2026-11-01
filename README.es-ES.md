@@ -96,6 +96,8 @@ La lista completa y generada está en [Lista de Habilidades](#-lista-de-habilida
 | Habilidades específicas con configuración/smoke | `jeo-skill install <name> ... --global --yes --setup` (añade `--with-hooks` solo para pasos de hook compatibles; consulta los límites de cada herramienta en la [guía de instalación](setup-all-skills-prompt.md#step-5--full-mode-shared-tools)) |
 | Un paquete o segmento de categoría | `jeo-skill install --bundle <bundle> --global --yes` o `--category <id> [--subcategory <id>]` |
 
+Para las diez guías de herramientas de desarrollo de juegos, previsualiza `jeo-skill install --bundle game-source-repositories --dry-run`. Cubren física, terreno, materiales, efectos, navegación, animación, gráficos, mallas y ruido; no instalan ni ejecutan las herramientas originales. Consulta los [límites de instalación](setup-all-skills-prompt.md#game-development-source-guides-on-demand) y las [licencias de las fuentes](docs/attribution.md).
+
 Para Lightpanda, previsualiza la selección con `jeo-skill install lightpanda --global --dry-run`
 antes de instalar la habilidad. Se instalan instrucciones, no el navegador. La habilidad cubre
 fetch, datos estructurados, CDP y MCP de la versión estable 1.0.2; su diagnóstico sin conexión
@@ -267,7 +269,7 @@ Consulta la [guía de instalación](setup-all-skills-prompt.md#jev-control-plane
 
 ## 📚 Lista de Habilidades
 
-> Generado desde `.agent-skills/skills.json` · 409 habilidades · despliega una categoría para ver sus habilidades.
+> Generado desde `.agent-skills/skills.json` · 419 habilidades · despliega una categoría para ver sus habilidades.
 
 ### 🌐 Web (71)
 
@@ -381,9 +383,9 @@ Subcategorías: `deployment` (2), `environment` (2), `observability` (3), `secur
 
 </details>
 
-### 🎮 Juego (29)
+### 🎮 Juego (39)
 
-Subcategorías: `client` (4), `web` (2), `server` (1), `design-ui` (7), `audio` (1), `animation` (2), `motion-vfx` (2), `sprite-image` (1), `art-resources` (0), `storytelling` (0), `tooling` (3), `qa-performance` (4), `release` (2)
+Subcategorías: `client` (9), `web` (2), `server` (1), `design-ui` (7), `audio` (1), `animation` (3), `motion-vfx` (3), `sprite-image` (1), `art-resources` (1), `storytelling` (0), `tooling` (5), `qa-performance` (4), `release` (2)
 
 <details>
 <summary>Ver habilidades</summary>
@@ -419,6 +421,16 @@ Subcategorías: `client` (4), `web` (2), `server` (1), `design-ui` (7), `audio` 
 | `game-feel` |
 | `game-ui-ux` |
 | `awesome-gamedev-agent-skills` |
+| `jolt-physics` |
+| `terrain3d` |
+| `material-maker` |
+| `effekseer` |
+| `godot-voxel-tools` |
+| `recast-navigation` |
+| `ozz-animation` |
+| `the-forge` |
+| `meshoptimizer` |
+| `fastnoise2` |
 
 </details>
 

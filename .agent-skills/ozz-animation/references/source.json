@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "skill": "ozz-animation",
+  "repository": "guillaumeblanc/ozz-animation",
+  "commit": "744eb9d99f606eda849acb0b1204f7a3dc20bca1",
+  "observed_at": "2026-11-01",
+  "license": {
+    "path": "LICENSE.md",
+    "conclusion": "MIT root inspected in full; dependencies, optional FBX SDK and media have separate terms",
+    "url": "https://github.com/guillaumeblanc/ozz-animation/blob/744eb9d99f606eda849acb0b1204f7a3dc20bca1/LICENSE.md"
+  },
+  "tools": [
+    {
+      "name": "python3",
+      "purpose": "Run offline selected-file helper only; discovery is informational, no tool execution/version attestation"
+    }
+  ],
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "d232578af20d80e38c74d2bcec5641f058f8be343a87b35c1c6ad6180a5a887a",
+      "url": "https://github.com/guillaumeblanc/ozz-animation/blob/744eb9d99f606eda849acb0b1204f7a3dc20bca1/README.md",
+      "purpose": "Pinned project scope, platform/version statements and documentation boundary"
+    },
+    {
+      "path": "LICENSE.md",
+      "sha256": "3ddd93e9888fe70b9d61675ceb1c4278a579dc67171678f015de114efe815852",
+      "url": "https://github.com/guillaumeblanc/ozz-animation/blob/744eb9d99f606eda849acb0b1204f7a3dc20bca1/LICENSE.md",
+      "purpose": "Actual full pinned root license; not third-party/asset clearance"
+    }
+  ]
+}

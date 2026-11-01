@@ -1,7 +1,7 @@
 {
   "version": "2.1.0",
   "generated": "2026-10-21",
-  "skill_count": 409,
+  "skill_count": 419,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -249,7 +249,17 @@
       "game-design-theory",
       "game-feel",
       "game-ui-ux",
-      "awesome-gamedev-agent-skills"
+      "awesome-gamedev-agent-skills",
+      "jolt-physics",
+      "terrain3d",
+      "material-maker",
+      "effekseer",
+      "godot-voxel-tools",
+      "recast-navigation",
+      "ozz-animation",
+      "the-forge",
+      "meshoptimizer",
+      "fastnoise2"
     ],
     "creative-media": [
       "aura-asset-images",
@@ -691,7 +701,12 @@
         "implement-fog-of-war",
         "unity-gamedev-skill-pack",
         "unity-technologies-skills",
-        "awesome-gamedev-agent-skills"
+        "awesome-gamedev-agent-skills",
+        "jolt-physics",
+        "terrain3d",
+        "godot-voxel-tools",
+        "recast-navigation",
+        "the-forge"
       ],
       "web": [
         "agentic-gamedev-skills",
@@ -714,21 +729,27 @@
       ],
       "animation": [
         "animato",
-        "unirig"
+        "unirig",
+        "ozz-animation"
       ],
       "motion-vfx": [
         "dalamud-vfx-editor",
-        "game-vfx"
+        "game-vfx",
+        "effekseer"
       ],
       "sprite-image": [
         "perfectpixel"
       ],
-      "art-resources": [],
+      "art-resources": [
+        "material-maker"
+      ],
       "storytelling": [],
       "tooling": [
         "game-studio-harness",
         "underworld-overseer-save-mapper",
-        "godogen"
+        "godogen",
+        "meshoptimizer",
+        "fastnoise2"
       ],
       "qa-performance": [
         "game-build-log-triage",
@@ -1271,6 +1292,18 @@
       "motion-primitives",
       "cursify",
       "trickle-ui"
+    ],
+    "game-source-repositories": [
+      "jolt-physics",
+      "terrain3d",
+      "material-maker",
+      "effekseer",
+      "godot-voxel-tools",
+      "recast-navigation",
+      "ozz-animation",
+      "the-forge",
+      "meshoptimizer",
+      "fastnoise2"
     ]
   },
   "retired_skills": {
@@ -1902,6 +1935,22 @@
         "agentic-gamedev-skills"
       ],
       "note": "Distinct sources, not interchangeable or a blanket install: gamedev-skills/awesome-gamedev-agent-skills at 7eb1b53305fab881f4758e2eff2e371cd7869221 is a cross-engine collection and router; Unity pack curation, Unity's official collection and abagames/agentic-gamedev-skills retain their own contracts. Inspect the selected source and engine version, compare destination collisions, and approve each installation separately. Installing these guides does not install their upstream packs or engines."
+    },
+    "game-source-repositories": {
+      "mode": "adjacent",
+      "members": [
+        "jolt-physics",
+        "terrain3d",
+        "material-maker",
+        "effekseer",
+        "godot-voxel-tools",
+        "recast-navigation",
+        "ozz-animation",
+        "the-forge",
+        "meshoptimizer",
+        "fastnoise2"
+      ],
+      "note": "Source-specific game-tool operators, not interchangeable runtime implementations. Each guide preserves its own pinned source, license, version, and approval boundaries; guide installation does not install the upstream tools."
     }
   },
   "model_policies": {
@@ -15150,6 +15199,238 @@
       "keyword": "awesome-gamedev-agent-skills",
       "version": "1.0.0",
       "source": "https://github.com/gamedev-skills/awesome-gamedev-agent-skills"
+    },
+    {
+      "name": "jolt-physics",
+      "description": "Operate jrouwe/JoltPhysics for native C++ physics integration, pinned builds, body lifecycle, collision queries, determinism checks, or Jolt-specific failures. Use when the request names Jolt Physics, its JPH API, or this repository. Route ordinary Godot physics settings, unrelated physics engines, and JavaScript binding work to their own owners; this skill does not install or build anything by activation.",
+      "category": "game",
+      "subcategory": "client",
+      "interface": "library",
+      "path": "jolt-physics/SKILL.md",
+      "tags": [
+        "physics",
+        "jolt",
+        "rigid-body",
+        "collision",
+        "cpp"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Bash"
+      ],
+      "keyword": "jolt-physics",
+      "version": "1.0.0",
+      "source": "https://github.com/jrouwe/JoltPhysics"
+    },
+    {
+      "name": "terrain3d",
+      "description": "Operate TokisanGames/Terrain3D for Godot version compatibility, addon installation or source builds, region and heightmap integration, terrain API work, upgrades, and Terrain3D-specific failures. Use when the request names Terrain3D, Terrain3DData, or this repository. Route generic Godot terrain choices, voxel worlds, and other terrain plugins to their own owners; activation never installs or upgrades the addon.",
+      "category": "game",
+      "subcategory": "client",
+      "interface": "library",
+      "path": "terrain3d/SKILL.md",
+      "tags": [
+        "godot",
+        "terrain",
+        "heightmap",
+        "gdextension"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Bash"
+      ],
+      "keyword": "terrain3d",
+      "version": "1.0.0",
+      "source": "https://github.com/TokisanGames/Terrain3D"
+    },
+    {
+      "name": "material-maker",
+      "description": "Operate RodZill4/material-maker for procedural PBR node graphs, 3D texture painting, profile-aware CLI exports, version-fit source packaging, and Material Maker failures. Use when the request names Material Maker, its .ptex workflow, or this repository. Route generic Godot shaders, other material editors, and Terrain3D work elsewhere. Respect upstream prohibition on AI/LLM or agentic pull requests; activation does not install or launch the app.",
+      "category": "game",
+      "subcategory": "art-resources",
+      "interface": "desktop",
+      "path": "material-maker/SKILL.md",
+      "tags": [
+        "materials",
+        "procedural-textures",
+        "pbr",
+        "painting"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Bash"
+      ],
+      "keyword": "material-maker",
+      "version": "1.0.0",
+      "source": "https://github.com/RodZill4/material-maker"
+    },
+    {
+      "name": "effekseer",
+      "description": "Operate effekseer/Effekseer for effect authoring, runtime integration, release selection, build planning, and license review. Use when the user names Effekseer, an .efkefc effect, its Manager API, or an Effekseer renderer/plugin. Route generic game VFX to game-vfx and Blender work to blender-mcp; this is not an engine-neutral particle design guide.",
+      "category": "game",
+      "subcategory": "motion-vfx",
+      "interface": "desktop",
+      "path": "effekseer/SKILL.md",
+      "tags": [
+        "vfx",
+        "particles",
+        "effekseer",
+        "game-development"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Bash"
+      ],
+      "keyword": "effekseer",
+      "version": "1.0.0",
+      "source": "https://github.com/effekseer/Effekseer"
+    },
+    {
+      "name": "godot-voxel-tools",
+      "description": "Operate Zylann/godot_voxel Voxel Tools for Godot: choose module versus GDExtension, plan matching builds and export templates, configure terrain, and diagnose streaming or C# integration. Use when the user names Voxel Tools, godot_voxel, VoxelTerrain, VoxelLodTerrain, or its VoxelViewer. Route ordinary terrain and unrelated voxel renderers to their own tools; this is not a generic voxel engine guide.",
+      "category": "game",
+      "subcategory": "client",
+      "interface": "library",
+      "path": "godot-voxel-tools/SKILL.md",
+      "tags": [
+        "godot",
+        "voxel",
+        "terrain",
+        "gdextension"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Bash"
+      ],
+      "keyword": "godot-voxel-tools",
+      "version": "1.0.0",
+      "source": "https://github.com/Zylann/godot_voxel"
+    },
+    {
+      "name": "recast-navigation",
+      "description": "Operate recastnavigation/recastnavigation for Recast baking, Detour queries, TileCache obstacles, Crowd movement, source/CMake integration, and license review. Use when the user names Recast Navigation, Detour, dtNavMeshQuery, or this repository. Route engine-owned navigation settings and generic pathfinding theory to the engine or design owner; this is not a universal AI movement guide.",
+      "category": "game",
+      "subcategory": "client",
+      "interface": "library",
+      "path": "recast-navigation/SKILL.md",
+      "tags": [
+        "navigation",
+        "navmesh",
+        "pathfinding",
+        "recast",
+        "detour"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Read",
+        "Write",
+        "Edit",
+        "Bash"
+      ],
+      "keyword": "recast-navigation",
+      "version": "1.0.0",
+      "source": "https://github.com/recastnavigation/recastnavigation"
+    },
+    {
+      "name": "ozz-animation",
+      "description": "Operate guillaumeblanc/ozz-animation for pinned-source preflight, glTF or FBX-to-ozz conversion, CMake/runtime integration, animation-job debugging, and format migration. Use when the request names ozz-animation, gltf2ozz, fbx2ozz, SamplingJob, BlendingJob, or LocalToModelJob. Preserve engine boundaries and asset rights; route generic Three.js animation to threejs-animation and The Forge integration to the-forge. Installing this guide does not install the library, SDKs, tools, or assets.",
+      "category": "game",
+      "subcategory": "animation",
+      "interface": "library",
+      "path": "ozz-animation/SKILL.md",
+      "tags": [
+        "animation",
+        "skeleton",
+        "skinning",
+        "cpp"
+      ],
+      "platforms": [],
+      "allowed_tools": [],
+      "keyword": "ozz-animation",
+      "version": "1.0.0",
+      "source": "https://github.com/guillaumeblanc/ozz-animation"
+    },
+    {
+      "name": "the-forge",
+      "description": "Operate The Forge graphics framework at its current Codeberg source: inspect pinned Windows/D3D12 scope, audit component licenses, plan example builds, integrate IApp/resources/FSL, and debug graphics ownership. Use when the request names The Forge, The-Forge/The-Forge, ForgeShadingLanguage, or its framework examples. Separate legacy ConfettiFX GitHub versions, commercial platforms, restricted SDKs, and build-started ReloadServer; route standalone ozz work to ozz-animation.",
+      "category": "game",
+      "subcategory": "client",
+      "interface": "library",
+      "path": "the-forge/SKILL.md",
+      "tags": [
+        "graphics",
+        "directx12",
+        "rendering",
+        "game-framework"
+      ],
+      "platforms": [],
+      "allowed_tools": [],
+      "keyword": "the-forge",
+      "version": "1.0.0",
+      "source": "https://codeberg.org/The-Forge/The-Forge"
+    },
+    {
+      "name": "meshoptimizer",
+      "description": "Operate zeux/meshoptimizer for source-pinned native or JavaScript/WASM integration, meshopt simplification, meshlets and codecs, or preservation-aware gltfpack conversion. Use when the request names meshoptimizer, meshopt APIs, gltfpack, MeshoptDecoder or EXT/KHR_meshopt_compression. Route generic mesh modeling, unrelated compressors and Three.js gameplay to their own tools; this is not a renderer or general game-development guide.",
+      "category": "game",
+      "subcategory": "tooling",
+      "interface": "library",
+      "path": "meshoptimizer/SKILL.md",
+      "tags": [
+        "mesh",
+        "gltf",
+        "compression",
+        "optimization"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Read",
+        "Bash",
+        "Write",
+        "Edit"
+      ],
+      "keyword": "meshoptimizer",
+      "version": "1.0.0",
+      "source": "https://github.com/zeux/meshoptimizer"
+    },
+    {
+      "name": "fastnoise2",
+      "description": "Operate Auburn/FastNoise2 for pinned C++ or C API integration, FastSIMD node graphs, encoded tree loading, deterministic batch noise, or the optional FastNoise2 Node Editor. Use when the request names FastNoise2, its FastNoise:: APIs, FASTNOISE2 build options or Node Editor serialization. Route FastNoise Lite, shader noise and general terrain generation without this library to their own tools; this is not a terrain engine or GPU noise framework.",
+      "category": "game",
+      "subcategory": "tooling",
+      "interface": "library",
+      "path": "fastnoise2/SKILL.md",
+      "tags": [
+        "noise",
+        "procedural",
+        "simd",
+        "generation"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Read",
+        "Bash",
+        "Write",
+        "Edit"
+      ],
+      "keyword": "fastnoise2",
+      "version": "1.0.0",
+      "source": "https://github.com/Auburn/FastNoise2"
     }
   ]
 }

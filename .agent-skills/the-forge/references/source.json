@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "skill": "the-forge",
+  "repository": "The-Forge/The-Forge",
+  "host": "codeberg.org",
+  "commit": "5abcdd969d0d883e9bf91f6926a8ea0935a0b3bc",
+  "observed_at": "2026-11-01",
+  "license": {
+    "path": "LICENSE.txt",
+    "conclusion": "Apache-2.0 root inspected in full; restricted FluidStudios/NVAPI/DirectX SDKs, LGPL TinyTIFF and unresolved PIX/asset/tool terms are not overridden",
+    "url": "https://codeberg.org/The-Forge/The-Forge/src/commit/5abcdd969d0d883e9bf91f6926a8ea0935a0b3bc/LICENSE.txt"
+  },
+  "tools": [
+    {
+      "name": "python3",
+      "purpose": "Run offline selected-file helper only; discovery is informational, no tool execution/version attestation"
+    }
+  ],
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "c13b70fcedb9a56f194efe8e49d979018f2e5dc10e9528d4fa433cb541a9c1fa",
+      "url": "https://codeberg.org/The-Forge/The-Forge/src/commit/5abcdd969d0d883e9bf91f6926a8ea0935a0b3bc/README.md",
+      "purpose": "Pinned project scope, platform/version statements and documentation boundary"
+    },
+    {
+      "path": "LICENSE.txt",
+      "sha256": "3485d677a6944ccd842b74d80abb90399728944d7dce78ee41d82ea50686cabe",
+      "url": "https://codeberg.org/The-Forge/The-Forge/src/commit/5abcdd969d0d883e9bf91f6926a8ea0935a0b3bc/LICENSE.txt",
+      "purpose": "Actual full pinned root license; not third-party/asset clearance"
+    }
+  ]
+}
