@@ -1,12 +1,14 @@
 # Link-check exclusion ledger (A0-d)
 #
-# G10 budget: 15 entries. Exceeding it demotes rule 7b (inline code spans) to
-# report-only, because a large ledger means the rule is mis-scoped rather than
-# the catalog being broken.
+# G10 budget: 15 entries. The report prints the count; it does not automatically
+# relax rule 7b. A larger ledger is a signal to review the rule's scope.
 #
-# Format: <path>:<line>   # reason
-# Line numbers are authoritative from .frontmatter/link-census.tsv and are
-# refreshed by re-running `python3 scripts/link_targets.py --report-only`.
+# Format: <path>:<line><TAB><rule><TAB><target>   # reason
+# Legacy path:line entries only apply when the line has one candidate; raw
+# target entries remain global for compatibility and should not be added.
+# Verify line numbers against the current source. To refresh a census without
+# overwriting the tracked artifact, copy these ledgers into a scratch directory
+# and pass it to `link_targets.py --artifact-dir <scratch> --report-only`.
 #
 # Every entry here is a documentation example or an upstream artifact — a target
 # that is CORRECTLY absent from this repo. Genuine broken links are repaired in
@@ -16,25 +18,24 @@
 # okf documents its own link conventions; this line is the counter-example in
 # prose ("`/tables/customers.md` survives file moves; `../tables/customers.md`
 # silently breaks"). The target is meant not to exist.
-.agent-skills/okf/SKILL.md:415
+.agent-skills/okf/SKILL.md:414	7b	../tables/customers.md
 
 # --- illustrative examples in prose ---------------------------------------
 # codeflow explains that `[text](./relative.md)` becomes a graph edge; the path
 # is syntax illustration, not a link.
-.agent-skills/codeflow/SKILL.md:57
-.agent-skills/codeflow/references/features.md:18
-# okf usage sample uses the literal token `URL` as a placeholder.
-.agent-skills/okf/references/usage.md:59
+.agent-skills/codeflow/SKILL.md:57	7a	./relative.md
+.agent-skills/codeflow/references/features.md:18	7a	./relative.md
 # yuwen-publish-precheck case README shows a user-supplied rules path.
-.agent-skills/yuwen-publish-precheck/data/cases/README.md:16
+.agent-skills/yuwen-publish-precheck/data/cases/README.md:16	7b	../my-rules.md
 
 # --- upstream repository artifacts ----------------------------------------
 # scientific-llm-benchmarks/references/benchmarks.md documents the UPSTREAM
 # repo layout (data/benchmarks.yaml, CONTRIBUTING.md, LICENSE); those files live
 # in the upstream project, not in jeo-skills.
-.agent-skills/scientific-llm-benchmarks/references/benchmarks.md:222
-.agent-skills/scientific-llm-benchmarks/references/benchmarks.md:226
+.agent-skills/scientific-llm-benchmarks/references/benchmarks.md:222	7a	data/benchmarks.yaml
+.agent-skills/scientific-llm-benchmarks/references/benchmarks.md:222	7a	CONTRIBUTING.md
+.agent-skills/scientific-llm-benchmarks/references/benchmarks.md:226	7a	LICENSE
 # vox-director README is the upstream README: the packaged .skill bundle and
 # LICENSE are release artifacts, not vendored files.
-.agent-skills/vox-director/README.md:80
-.agent-skills/vox-director/README.md:126
+.agent-skills/vox-director/README.md:80	7a	vox-director.skill
+.agent-skills/vox-director/README.md:126	7a	LICENSE

@@ -130,6 +130,6 @@ client.generate_image(
 
 - [NomaDamas/god-tibo-imagen](https://github.com/NomaDamas/god-tibo-imagen)
 - [npm: god-tibo-imagen](https://www.npmjs.com/package/god-tibo-imagen)
-- [Docs](../../docs/god-tibo-imagen/README.md)
+- [Archived docs at commit 413be1e (may be outdated)](https://github.com/akillness/jeo-skills/blob/413be1e4efa4f050b167b657bc483d4152377d28/docs/god-tibo-imagen/README.md)
 
 Source: [NomaDamas/god-tibo-imagen](https://github.com/NomaDamas/god-tibo-imagen) — MIT License

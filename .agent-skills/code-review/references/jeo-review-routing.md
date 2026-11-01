@@ -15,9 +15,9 @@ The job is to:
 5. classify findings by severity,
 6. route non-review work out immediately.
 
-Read [references/intake-packets-and-escalations.md](references/intake-packets-and-escalations.md) before handling an unfamiliar review packet.
-Read [references/review-modes.md](references/review-modes.md) for deeper heuristics by change type.
-Read [references/handoff-boundaries.md](references/handoff-boundaries.md) when deciding whether `code-review`, `git-workflow`, `debugging`, `testing-strategies`, `web-accessibility`, `web-accessibility`, or repo/PR workflow skills should own the next step.
+Read [references/intake-packets-and-escalations.md](intake-packets-and-escalations.md) before handling an unfamiliar review packet.
+Read [references/review-modes.md](review-modes.md) for deeper heuristics by change type.
+Read [references/handoff-boundaries.md](handoff-boundaries.md) when deciding whether `code-review`, `git-workflow`, `debugging`, `testing-strategies`, `web-accessibility`, `web-accessibility`, or repo/PR workflow skills should own the next step.
 
 ## When to use this skill
 - Reviewing a PR, MR, local diff, patch stack, or self-review packet before merge
@@ -57,7 +57,7 @@ Packet: diff + tests, no rollout notes
 If the packet is still mostly branch hygiene or repo-admin work, route out before pretending review has started.
 
 ### Step 2: Choose one primary review mode
-Pick one primary mode from [references/review-modes.md](references/review-modes.md):
+Pick one primary mode from [references/review-modes.md](review-modes.md):
 - general change review
 - backend / platform review
 - frontend / UX-adjacent review

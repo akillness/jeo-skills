@@ -2,6 +2,16 @@
 
 All notable changes to **jeo-skills** are documented here.
 
+## 2026-11-02
+
+### Fixed
+- Repaired skill reference destinations without moving source documents. Historical generated documentation now links to its archived revision; unresolved cross-skill routes are identified rather than assigned invented replacements.
+- Strict link scans use the same policy identity for absolute and relative scan roots, distinguish inline Markdown examples from real links, and bind explicit exceptions to source line, rule, and target. Ambiguous legacy line exceptions and duplicate normalized targets fail closed; legacy raw-target entries remain global for compatibility.
+
+### Added
+- CI now runs scoped strict-link validation and the scanner regression suite. The existing R-2 deferred batch remains out of scope; five missing example images in that batch are not claimed fixed.
+- Added a reproducible fixed-evaluator link-exception ratchet under `.frontmatter/link-exception-ratchet/`. The unchanged safety rubric improved from 3/5 to 5/5, with rejected candidates retained in the log. In a local paired synthetic 2,000-exception workload, the reviewed baseline and final scanner medians were 0.375 s and 0.098 s; full-catalog medians were 0.667 s and 0.651 s. These are fixture measurements, not production guarantees.
+
 ## 2026-11-01
 
 ### Added

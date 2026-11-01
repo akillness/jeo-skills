@@ -682,7 +682,7 @@ def self_test_rule_f(repo_root: Path) -> int:
 
 
 def validate_links(repo_root: Path) -> str:
-    """Rule 7/8 — no dangling relative links (never reads frontmatter, B-1)."""
+    """Enforce Rule 7/8 within the configured scope (frontmatter excluded, B-1)."""
     sys.path.insert(0, str(Path(__file__).resolve().parent))
     import link_targets
 
@@ -696,12 +696,12 @@ def validate_links(repo_root: Path) -> str:
         + "; ".join(f"{b['file']}:{b['line']} -> {b['target']}" for b in broken[:8])
         + (f" (+{len(broken) - 8} more)" if len(broken) > 8 else ""),
     )
-    return "rule 7/8: 0 dangling relative links"
+    return "rule 7/8: 0 broken links in enforced scope (deferred, vendored and explicit exceptions excluded)"
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Validate manifest-derived TOON and README skill catalog projections.")
     parser.add_argument("--repo-root", default=".", type=Path, help="repository root containing .agent-skills (default: current directory)")
-    parser.add_argument("--strict-links", action="store_true", help="fail on dangling relative links (enable after L1 repairs)")
+    parser.add_argument("--strict-links", action="store_true", help="fail on dangling relative links within the configured scope")
     parser.add_argument("--gate1", action="store_true", help="require every ledger exception applied (gate 1, after L1x)")
     parser.add_argument("--self-test-rule-f", action="store_true", help="exercise active, incomplete, and D4-retired Rule F states")
     args = parser.parse_args()
@@ -725,7 +725,7 @@ def main() -> int:
 
     print(f"catalog projections valid: {len(skill_names)} skills, {len(categories)} categories, {toon_records} TOON records, 3 README tables, {loadable} loadable SKILL.md documents")
     print(frozen_summary)
-    print(link_summary if link_summary else "rule 7/8: not enforced yet (pass --strict-links after L1)")
+    print(link_summary if link_summary else "rule 7/8: not enforced in this run (pass --strict-links)")
     return 0
 
 

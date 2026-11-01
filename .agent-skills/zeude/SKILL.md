@@ -141,7 +141,7 @@ POST /api/teams           # create/manage teams
 ## References
 
 - [zep-us/zeude](https://github.com/zep-us/zeude)
-- [Docs](../../docs/zeude/README.md)
+- [Archived docs at commit 413be1e (may be outdated)](https://github.com/akillness/jeo-skills/blob/413be1e4efa4f050b167b657bc483d4152377d28/docs/zeude/README.md)
 - Enterprise contact: jaegyu.lee@zep.us
 
 Source: [zep-us/zeude](https://github.com/zep-us/zeude) — Apache-2.0 License

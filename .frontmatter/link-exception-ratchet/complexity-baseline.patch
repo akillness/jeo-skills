@@ -1,0 +1,16 @@
+--- a/scripts/link_targets.py
++++ b/scripts/link_targets.py
+@@ -256,0 +257 @@
++            qualified_counts: dict[str, int] = {}
+@@ -270,5 +271,6 @@
+-                matches = sum(
+-                    1 for other_rule, other_raw in candidates
+-                    if other_rule == rule and other_raw.split("#", 1)[0].strip() == target
+-                )
+-                qualified = qualified_key in exclusions and matches == 1
++                if qualified_key in exclusions and qualified_key not in qualified_counts:
++                    qualified_counts[qualified_key] = sum(
++                        1 for other_rule, other_raw in candidates
++                        if other_rule == rule and other_raw.split("#", 1)[0].strip() == target
++                    )
++                qualified = qualified_counts.get(qualified_key) == 1

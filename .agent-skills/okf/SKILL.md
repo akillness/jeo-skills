@@ -427,7 +427,7 @@ When the user asks `okf` for help, return a compact brief:
 - OKF Specification: <https://github.com/google/open-knowledge-format>
 - PyTorchKR discussion (Korean): <https://discuss.pytorch.kr/t/open-knowledge-format-okf-google-ai-feat-llm-wiki/10701>
 - LLM-Wiki pattern: see `llm-wiki` skill (`../llm-wiki/SKILL.md`)
-- Obsidian integration: see `obsidian` skill (`../obsidian/SKILL.md`)
+- Obsidian integration: see the `obsidian` skill (not included in this repository; locate it separately)
 - Knowledge graph: see `graphify` skill (`../graphify/SKILL.md`)
 - Web scraping into OKF: see `scrapling` skill (`../scrapling/SKILL.md`)
 - Local usage reference: [`references/usage.md`](references/usage.md)

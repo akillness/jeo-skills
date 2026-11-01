@@ -37,10 +37,17 @@ real scenario YAML files live under
 
 **The Makefile eval target is stale, and the runner default does not rescue
 it.** The Makefile passes a repository-root scenarios path that does not exist
-in the checkout. The runner's own default is the relative string
-`../packages/core/openexecutive/evals/_scenarios/`, which only resolves when
-the current directory is `evals/`. A missing scenario directory produces no
-error; the runner simply reports zero scenarios.
+in the checkout. The runner's own default is this literal path in the upstream
+OpenExecutive checkout, not a link to a file packaged with this skill (see
+[pinned source context](upstream-and-architecture.md#pinned-source)):
+
+```text
+../packages/core/openexecutive/evals/_scenarios/
+```
+
+It only resolves when the current directory in that checkout is `evals/`.
+A missing scenario directory produces no error; the runner simply reports
+zero scenarios.
 
 Always pass the scenario path explicitly:
 

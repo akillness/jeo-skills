@@ -1,0 +1,16 @@
+--- a/scripts/link_targets.py
++++ b/scripts/link_targets.py
+@@ -263,0 +264 @@
++                qualified_key = f"{key}\t{rule}\t{target}"
+@@ -266 +267,10 @@
+-                if key in exclusions or raw in exclusions:
++                # Legacy line exclusions are unambiguous only for one candidate.
++                # Qualified entries also fail closed when the same normalized
++                # target occurs more than once under the same rule on the line.
++                matches = sum(
++                    1 for other_rule, other_raw in candidates
++                    if other_rule == rule and other_raw.split("#", 1)[0].strip() == target
++                )
++                qualified = qualified_key in exclusions and matches == 1
++                legacy_line = key in exclusions and len(candidates) == 1
++                if qualified or legacy_line or raw in exclusions:

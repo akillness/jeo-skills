@@ -18,6 +18,7 @@ Never flagged (deliberate exclusions, each one an observed false-positive class)
   - `{...}` template placeholders
   - URLs, mailto:, anchors, and protocol-relative targets
   - fenced code blocks and HTML comments
+  - markdown link/image syntax wholly inside an inline code span (rule 7a only)
   - vendored mirrors listed in `.frontmatter/vendored-mirrors.txt`
   - the deferred batch listed in `.frontmatter/deferred-batch.txt`
   - explicit entries in `.frontmatter/link-check-exclusions.txt`
@@ -28,6 +29,7 @@ from __future__ import annotations
 import argparse
 import re
 import sys
+from collections import Counter
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -99,6 +101,70 @@ def _strip_fences_and_comments(body: str) -> list[tuple[int, str]]:
     return out
 
 
+def _inline_code_ranges(text: str) -> list[tuple[int, int]]:
+    """Match same-length backtick runs for 7a, without changing rule 7b."""
+    runs = list(re.finditer(r"`+", text))
+    ranges: list[tuple[int, int]] = []
+    index = 0
+    while index < len(runs):
+        opener = runs[index]
+        prefix = text[:opener.start()]
+        if (len(prefix) - len(prefix.rstrip("\\"))) % 2:
+            index += 1
+            continue
+        for closing in range(index + 1, len(runs)):
+            if len(runs[closing].group()) == len(opener.group()):
+                ranges.append((opener.start(), runs[closing].end()))
+                index = closing + 1
+                break
+        else:
+            index += 1
+    return ranges
+
+
+def _inline_code_ranges_by_line(body: str, lines: list[tuple[int, str]]) -> dict[int, list[tuple[int, int]]]:
+    """Extend 7a code spans only across conservative plain-text paragraphs.
+
+    This is not a Markdown block parser. Ambiguous block/container syntax,
+    indentation, hard breaks, comments, and removed-line gaps end a group;
+    those lines retain only their existing single-line handling. False-positive
+    examples in complex Markdown are preferable to hiding a real broken link.
+    """
+    original = body.split("\n")
+    result = {number: _inline_code_ranges(text) for number, text in lines}
+    paragraph: list[tuple[int, str]] = []
+
+    def flush() -> None:
+        if len(paragraph) > 1:
+            ranges = _inline_code_ranges("\n".join(text for _, text in paragraph))
+            offset = 0
+            for number, text in paragraph:
+                result[number] = [
+                    (max(0, start - offset), min(len(text), end - offset))
+                    for start, end in ranges
+                    if start < offset + len(text) and end > offset
+                ]
+                offset += len(text) + 1
+        paragraph.clear()
+
+    for number, text in lines:
+        plain = (
+            bool(text.strip())
+            and text == original[number - 1]
+            and not re.match(r"^(?:\s|[#>*+_=~-]|\d+[.)](?:\s|$))", text)
+            and not re.match(r"^\[[^\]]+\]:", text)
+            and "<" not in text
+            and "|" not in text
+            and not text.endswith(("  ", "\t", "\\"))
+        )
+        if not plain or (paragraph and number != paragraph[-1][0] + 1):
+            flush()
+        if plain:
+            paragraph.append((number, text))
+    flush()
+    return result
+
+
 def _load_list(path: Path) -> set[str]:
     if not path.is_file():
         return set()
@@ -146,9 +212,17 @@ def scan(root: Path = SKILLS_ROOT, artifact_dir: Path = ARTIFACT_DIR) -> list[di
     findings: list[dict] = []
     for path in iter_markdown(root):
         rel = path.as_posix()
-        parts = path.parts
-        slug = parts[1] if len(parts) > 1 else ""
-        in_vendor = any(rel.startswith(v.rstrip("/") + "/") or rel == v for v in vendored)
+        # Ledger paths live in a logical catalog namespace, independently of
+        # the caller's cwd or absolute/relative root spelling. Keep `rel` above
+        # unchanged for census/diagnostic compatibility; never resolve symlinks
+        # when deriving this policy identity.
+        relative = path.relative_to(root)
+        policy_path = (SKILLS_ROOT / relative).as_posix()
+        slug = relative.parts[0] if len(relative.parts) > 1 else ""
+        in_vendor = any(
+            policy_path.startswith(v.rstrip("/") + "/") or policy_path == v.rstrip("/")
+            for v in vendored
+        )
         in_deferred = slug in deferred
         raw_text = path.read_text(encoding="utf-8")
         if path.name == "SKILL.md":
@@ -162,10 +236,17 @@ def scan(root: Path = SKILLS_ROOT, artifact_dir: Path = ARTIFACT_DIR) -> list[di
             body = raw_text
             offset = 0
 
-        for lineno, text in _strip_fences_and_comments(body):
+        lines = _strip_fences_and_comments(body)
+        code_ranges_by_line = _inline_code_ranges_by_line(body, lines)
+        for lineno, text in lines:
             abs_line = lineno + offset
             candidates: list[tuple[str, str]] = []
+            code_ranges = code_ranges_by_line[lineno]
             for m in _MD_LINK.finditer(text):
+                # Literal Markdown examples are not links. Only suppress a
+                # complete 7a match inside code, not a link with a code label.
+                if any(start <= m.start() and m.end() <= end for start, end in code_ranges):
+                    continue
                 candidates.append(("7a", m.group(1)))
             for m in _REF_DEF.finditer(text):
                 candidates.append(("8", m.group(1)))
@@ -174,16 +255,30 @@ def scan(root: Path = SKILLS_ROOT, artifact_dir: Path = ARTIFACT_DIR) -> list[di
                 if span.startswith("../") and " " not in span and "{" not in span:
                     candidates.append(("7b", span))
 
+            normalized_counts: Counter[tuple[str, str]] | None = None
             for rule, raw in candidates:
                 target = raw.split("#", 1)[0].strip()
                 if not target or _is_external(target):
                     continue
                 if _is_excluded_shape(target):
                     continue
-                key = f"{rel}:{abs_line}"
+                key = f"{policy_path}:{abs_line}"
+                qualified_key = f"{key}\t{rule}\t{target}"
                 resolved = (path.parent / target).resolve()
                 exists = resolved.exists()
-                if key in exclusions or raw in exclusions:
+                # Legacy line exclusions are unambiguous only for one candidate.
+                # Qualified entries also fail closed when the same normalized
+                # target occurs more than once under the same rule on the line.
+                qualified = False
+                if qualified_key in exclusions:
+                    if normalized_counts is None:
+                        normalized_counts = Counter(
+                            (item_rule, item_raw.split("#", 1)[0].strip())
+                            for item_rule, item_raw in candidates
+                        )
+                    qualified = normalized_counts[(rule, target)] == 1
+                legacy_line = key in exclusions and len(candidates) == 1
+                if qualified or legacy_line or raw in exclusions:
                     status = "excluded:explicit"
                 elif in_vendor:
                     status = "excluded:vendored"
@@ -219,7 +314,7 @@ def write_census(findings: list[dict], artifact_dir: Path = ARTIFACT_DIR) -> Pat
 
 
 def validate_link_targets(root: Path = SKILLS_ROOT, artifact_dir: Path = ARTIFACT_DIR) -> list[dict]:
-    """Return broken findings. Empty list means the catalog has no dangling links."""
+    """Return broken findings. Empty means no broken findings within the enforced scope."""
     return [f for f in scan(root, artifact_dir) if f["status"] == "broken"]
 
 

@@ -274,6 +274,6 @@ Required qualities:
 - [references/routing-heuristics.md](references/routing-heuristics.md)
 - [references/operator-packet-and-proof-stack.md](references/operator-packet-and-proof-stack.md)
 - [references/measurement-handoff.md](references/measurement-handoff.md)
-- `../marketing-skills-collection/SKILL.md`
+- `marketing-skills-collection` — legacy alias removed from this repository; use the canonical `marketing-automation` skill.
 - `../steam-store-launch-ops/SKILL.md`
 - `../task-planning/SKILL.md`

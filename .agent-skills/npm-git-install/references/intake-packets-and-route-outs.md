@@ -2,6 +2,8 @@
 
 Start from the package-delivery packet the user already has. Do not force every request through a giant syntax tour.
 
+`github-repo-management` route-outs below are blocked: the catalog and retired-skill map contain no such skill or recorded replacement. Keep package-host administration outside `npm-git-install`; resolve the owner before handing off.
+
 ## `temporary-bridge-packet`
 Use when the request is about an unpublished fix, fork, PR branch, or short-lived unblocker.
 

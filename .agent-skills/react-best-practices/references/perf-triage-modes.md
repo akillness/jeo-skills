@@ -106,7 +106,7 @@ Use when the request only says “the page is slow” or “this route feels bad
 4. only then recommend specific fixes
 
 ## Route-outs
-- app-wide client/server state ownership → `../state-management/SKILL.md`
-- accessibility-specific failures → `../web-accessibility/SKILL.md`
-- layout adaptation / overflow / reflow → `../responsive-design/SKILL.md`
-- non-React-wide bottleneck or mixed backend/db/runtime issue → `../performance-optimization/SKILL.md`
+- app-wide client/server state ownership → [state-management](../../state-management/SKILL.md)
+- accessibility-specific failures → [web-accessibility](../../web-accessibility/SKILL.md)
+- layout adaptation / overflow / reflow → [responsive-design](../../responsive-design/SKILL.md)
+- non-React-wide bottleneck or mixed backend/db/runtime issue → [performance-optimization](../../performance-optimization/SKILL.md)

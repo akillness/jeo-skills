@@ -232,7 +232,7 @@ Required qualities:
 - [Package-manager behavior](references/package-manager-behavior.md)
 - [Private auth and CI notes](references/private-auth-and-ci.md)
 - `../git-workflow/SKILL.md`
-- `../github-repo-management/SKILL.md`
+- `github-repo-management` — blocked: absent from the catalog and retired-skill map; no replacement is recorded.
 - `../deployment-automation/SKILL.md`
 - `../system-environment-setup/SKILL.md`
 - npm package spec: https://docs.npmjs.com/cli/v11/using-npm/package-spec
