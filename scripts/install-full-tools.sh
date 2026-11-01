@@ -204,12 +204,16 @@ PY
 }
 
 install_rtk() {
-  command -v cargo >/dev/null 2>&1 || { printf 'cargo is required for pinned RTK installation.\n' >&2; return 1; }
-  if [ "$(uname -s 2>/dev/null)" = Linux ] && [ "$(uname -m 2>/dev/null)" = aarch64 ]; then
-    printf 'NOTE: RTK Linux ARM64 may fail because of glibc/toolchain compatibility; failure is recorded.\n' >&2
-  fi
-  cargo install --git https://github.com/rtk-ai/rtk --tag "v$RTK_VERSION" --locked --force rtk || return
   local cargo_rtk="${CARGO_HOME:-$HOME/.cargo}/bin/rtk"
+  if [ -x "$cargo_rtk" ] && [ "$("$cargo_rtk" --version 2>/dev/null || true)" = "rtk $RTK_VERSION" ]; then
+    : # Already compiled and matches pinned version
+  else
+    command -v cargo >/dev/null 2>&1 || { printf 'cargo is required for pinned RTK installation.\n' >&2; return 1; }
+    if [ "$(uname -s 2>/dev/null)" = Linux ] && [ "$(uname -m 2>/dev/null)" = aarch64 ]; then
+      printf 'NOTE: RTK Linux ARM64 may fail because of glibc/toolchain compatibility; failure is recorded.\n' >&2
+    fi
+    cargo install --git https://github.com/rtk-ai/rtk --tag "v$RTK_VERSION" --locked --force rtk || return
+  fi
   if [ -x "$cargo_rtk" ]; then
     python3 - "$HOME" "$cargo_rtk" <<'PY' || true
 from pathlib import Path
