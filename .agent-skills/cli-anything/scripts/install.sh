@@ -16,8 +16,8 @@
 
 set -euo pipefail
 
-CLI_ANYTHING_HUB_SPEC="${CLI_ANYTHING_HUB_SPEC:-cli-anything-hub}"
-
+CLI_ANYTHING_HUB_SPEC="${CLI_ANYTHING_HUB_SPEC:-cli-anything-hub==0.4.1}"
+export PATH="${HOME}/.local/bin:${PATH}"
 echo "=== cli-anything installer ==="
 echo "spec: ${CLI_ANYTHING_HUB_SPEC}"
 

@@ -11,11 +11,17 @@ RTK_VERSION=1.1.0
 SEMBLE_VERSION=0.7.0
 CLIHUB_VERSION=0.4.1
 
+EXTENDED="${JEO_FULL_TOOLS_EXTENDED:-0}"
+if [ "${1:-}" = "--extended" ]; then
+  EXTENDED=1
+  shift
+fi
 PROJECT_DIR=${1:-$PWD}
 SPEC_KIT_INTEGRATION=${SPEC_KIT_INTEGRATION:-codex}
+SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" 2>/dev/null && pwd || echo "$PWD")
 failures=()
 successes=()
-
+total_tools=6
 record() {
   local name=$1
   shift
@@ -54,7 +60,33 @@ install_mex() {
   require_node_22 || return
   command -v npm >/dev/null 2>&1 || return 1
   npm install -g "mex-agent@$MEX_VERSION" || return
-  check_version "$MEX_VERSION" mex --version
+  local wrapper_src="$SCRIPT_DIR/../.agent-skills/mex/scripts/mex-agent-wrapper.sh"
+  if [ ! -f "$wrapper_src" ]; then
+    wrapper_src="$HOME/.agents/skills/mex/scripts/mex-agent-wrapper.sh"
+  fi
+  if [ -f "$wrapper_src" ]; then
+    python3 - "$HOME" "$wrapper_src" <<'PY' || true
+from pathlib import Path
+import shutil, sys
+home, wrapper = Path(sys.argv[1]), Path(sys.argv[2])
+cli_candidates = list(home.glob(".nvm/versions/node/*/lib/node_modules/mex-agent/dist/cli.js")) + [
+    home / ".local/lib/node_modules/mex-agent/dist/cli.js",
+    Path("/opt/homebrew/lib/node_modules/mex-agent/dist/cli.js"),
+    Path("/usr/local/lib/node_modules/mex-agent/dist/cli.js"),
+]
+if any(p.is_file() for p in cli_candidates):
+    dest = home / ".local/bin/mex-agent"
+    if not dest.exists() and not dest.is_symlink():
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(wrapper, dest)
+        dest.chmod(0o755)
+PY
+  fi
+  if [ -x "$HOME/.local/bin/mex-agent" ]; then
+    check_version "$MEX_VERSION" "$HOME/.local/bin/mex-agent" --version
+  else
+    check_version "$MEX_VERSION" mex --version
+  fi
 }
 
 install_zvec_grep() {
@@ -70,13 +102,27 @@ install_spec_kit() {
 
   # Generate into an empty staging directory, then copy only absent paths. This
   # avoids spec-kit's --force behavior, which may overwrite managed project files.
-  local stage manifest merge_status=0
+  local stage manifest merge_status=0 integ_list="$SPEC_KIT_INTEGRATION"
   stage=$(mktemp -d "${TMPDIR:-/tmp}/jeo-spec-kit.XXXXXX") || return
   manifest="$stage/collisions.txt"
-  if ! (cd "$stage" && specify init --here --force --non-interactive --integration "$SPEC_KIT_INTEGRATION"); then
-    rm -rf "$stage"
-    return 1
+  if [ "$integ_list" = "auto" ]; then
+    integ_list=""
+    for cand_agent in claude codex gemini opencode cursor copilot; do
+      if command -v "$cand_agent" >/dev/null 2>&1; then
+        integ_list="${integ_list:+$integ_list }$cand_agent"
+      fi
+    done
+    integ_list="${integ_list:-codex}"
+  else
+    integ_list="${integ_list//,/ }"
   fi
+  for integ in $integ_list; do
+    [ -n "$integ" ] || continue
+    if ! (cd "$stage" && specify init --here --force --non-interactive --integration "$integ"); then
+      rm -rf "$stage"
+      return 1
+    fi
+  done
   python3 - "$stage" "$PROJECT_DIR" "$manifest" <<'PY' || merge_status=$?
 from pathlib import Path
 import errno, os, secrets, shutil, stat, sys
@@ -163,7 +209,23 @@ install_rtk() {
     printf 'NOTE: RTK Linux ARM64 may fail because of glibc/toolchain compatibility; failure is recorded.\n' >&2
   fi
   cargo install --git https://github.com/rtk-ai/rtk --tag "v$RTK_VERSION" --locked --force rtk || return
-  check_version "rtk $RTK_VERSION" rtk --version && rtk gain >/dev/null
+  local cargo_rtk="${CARGO_HOME:-$HOME/.cargo}/bin/rtk"
+  if [ -x "$cargo_rtk" ]; then
+    python3 - "$HOME" "$cargo_rtk" <<'PY' || true
+from pathlib import Path
+import os, sys
+home, cargo_rtk = Path(sys.argv[1]), Path(sys.argv[2])
+dest = home / ".local/bin/rtk"
+dest.parent.mkdir(parents=True, exist_ok=True)
+if dest.is_symlink() or not dest.exists():
+    if dest.is_symlink():
+        dest.unlink()
+    os.symlink(str(cargo_rtk), str(dest))
+PY
+    check_version "rtk $RTK_VERSION" "$HOME/.local/bin/rtk" --version && "$HOME/.local/bin/rtk" gain >/dev/null
+  else
+    check_version "rtk $RTK_VERSION" rtk --version && rtk gain >/dev/null
+  fi
 }
 
 install_semble() {
@@ -178,6 +240,61 @@ install_clihub() {
   check_version "cli-hub $CLIHUB_VERSION" cli-hub --version
 }
 
+install_graphify() {
+  if ! command -v graphify >/dev/null 2>&1; then
+    command -v uv >/dev/null 2>&1 || return 1
+    uv tool install graphifyy || return 1
+  fi
+  graphify --version >/dev/null
+}
+
+install_openspace() {
+  local os_installer="$SCRIPT_DIR/../.agent-skills/openspace/scripts/install-openspace.sh"
+  if [ ! -f "$os_installer" ]; then
+    os_installer="$HOME/.agents/skills/openspace/scripts/install-openspace.sh"
+  fi
+  [ -f "$os_installer" ] || { printf 'OpenSpace installer not found.\n' >&2; return 1; }
+  if [ "${JEO_SKILLS_APPROVE_ALL_HOOKS_MCP:-false}" = true ]; then
+    bash "$os_installer" --hooks
+  else
+    bash "$os_installer" --skip-mcp
+  fi
+}
+
+install_open_ontologies() {
+  local oo_smoke="$SCRIPT_DIR/../.agent-skills/open-ontologies/scripts/smoke.py"
+  local oo_install="$SCRIPT_DIR/../.agent-skills/open-ontologies/scripts/install.sh"
+  if [ ! -f "$oo_smoke" ]; then
+    oo_smoke="$HOME/.agents/skills/open-ontologies/scripts/smoke.py"
+    oo_install="$HOME/.agents/skills/open-ontologies/scripts/install.sh"
+  fi
+  local oo_bin="${HOME}/.local/bin/open-ontologies"
+  [ -x "$oo_bin" ] || oo_bin="$(command -v open-ontologies 2>/dev/null || true)"
+  if [ -n "$oo_bin" ] && [ -x "$oo_bin" ] && [ -f "$oo_smoke" ]; then
+    python3 "$oo_smoke" --binary "$oo_bin" >/dev/null
+  elif [ "${OPEN_ONTOLOGIES_BUILD_APPROVED:-0}" = 1 ] && [ -f "$oo_install" ]; then
+    bash "$oo_install"
+  else
+    printf 'open-ontologies binary not installed (set OPEN_ONTOLOGIES_BUILD_APPROVED=1 to build from source).\n' >&2
+    return 1
+  fi
+}
+
+install_okf_agent_memory() {
+  local okf_smoke="$SCRIPT_DIR/../.agent-skills/okf-agent-memory/scripts/smoke.py"
+  if [ ! -f "$okf_smoke" ]; then
+    okf_smoke="$HOME/.agents/skills/okf-agent-memory/scripts/smoke.py"
+  fi
+  local okf_bin
+  okf_bin="$(PATH="$HOME/.local/bin:/opt/homebrew/bin:/usr/local/bin:$PATH" command -v okf 2>/dev/null || true)"
+  if [ -n "$okf_bin" ] && [ -x "$okf_bin" ] && [ -f "$okf_smoke" ]; then
+    python3 "$okf_smoke" --binary "$okf_bin" >/dev/null
+  else
+    printf 'okf binary not found on PATH.\n' >&2
+    return 1
+  fi
+}
+
 record mex install_mex
 record zvec-grep install_zvec_grep
 record spec-kit install_spec_kit
@@ -185,7 +302,15 @@ record RTK install_rtk
 record Semble install_semble
 record CLI-Hub install_clihub
 
-printf '\nFull-tool result: %s/6 succeeded.\n' "${#successes[@]}"
+if [ "$EXTENDED" = 1 ]; then
+  total_tools=10
+  record Graphify install_graphify
+  record OpenSpace install_openspace
+  record Open-Ontologies install_open_ontologies
+  record OKF-Agent-Memory install_okf_agent_memory
+fi
+
+printf '\nFull-tool result: %s/%s succeeded.\n' "${#successes[@]}" "$total_tools"
 printf 'Succeeded:'; if [ "${#successes[@]}" -gt 0 ]; then printf ' %s' "${successes[@]}"; fi; printf '\n'
 if [ "${#failures[@]}" -gt 0 ]; then
   printf 'PARTIAL SUCCESS - failed:' >&2
@@ -193,4 +318,8 @@ if [ "${#failures[@]}" -gt 0 ]; then
   printf '\n' >&2
   exit 1
 fi
-printf 'All six full-mode tools installed and executable.\n'
+if [ "$EXTENDED" = 1 ]; then
+  printf 'All %s extended full-mode tools installed and executable.\n' "$total_tools"
+else
+  printf 'All six full-mode tools installed and executable.\n'
+fi

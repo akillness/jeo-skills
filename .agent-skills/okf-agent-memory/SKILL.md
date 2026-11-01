@@ -61,6 +61,7 @@ metadata:
 - `references/upstream.md`: commit-pinned upstream source map, security boundaries, license, and known documentation drift.
 - `references/commands.md`: reviewed CLI/MCP commands, scope rules, installation caveats, and side-effect gates.
 - `scripts/preflight.py`: standalone stdlib-only, read-only checkout/source-shape preflight.
+- `scripts/smoke.py`: isolated temporary-directory CLI smoke check (`okf init` + `okf validate`) for an installed `okf` binary.
 - `evals/evals.json`: routing and safety scenarios for this operator skill.
 
 ## Examples

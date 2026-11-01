@@ -225,6 +225,50 @@ exec(compile(sys.stdin.read(), "<installer merge>", "exec"), {"__name__": "__mai
         self.assertIn("cli-hub ", self.log.read_text(encoding="utf-8"))
         self.assertEqual((self.project / ".specify/nested/new.txt").read_bytes(), b"generated new file\n")
 
+    def test_multi_agent_spec_kit_integration_merges_absent_files_and_preserves_user_sentinel(self):
+        self.command("specify", '''if [ "$1" = "--version" ]; then echo "specify 1.2.6.dev0"; exit 0; fi
+if [ "$1" != "init" ]; then exit 42; fi
+integ=""
+while [ "$#" -gt 0 ]; do
+  if [ "$1" = "--integration" ]; then integ="$2"; shift 2; else shift; fi
+done
+python3 - "$integ" <<'PY'
+from pathlib import Path
+import sys
+integ = sys.argv[1]
+root = Path('.specify/nested')
+root.mkdir(parents=True, exist_ok=True)
+(root / 'existing.txt').write_bytes(f'generated {integ}\\n'.encode())
+(root / f'{integ}.txt').write_bytes(f'agent {integ}\\n'.encode())
+PY''')
+        existing = self.project / ".specify/nested/existing.txt"
+        existing.parent.mkdir(parents=True)
+        existing.write_bytes(b"user sentinel preserved\n")
+        result = self.run_installer(SPEC_KIT_INTEGRATION="claude,codex")
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertEqual(existing.read_bytes(), b"user sentinel preserved\n")
+        self.assertEqual((existing.parent / "claude.txt").read_bytes(), b"agent claude\n")
+        self.assertEqual((existing.parent / "codex.txt").read_bytes(), b"agent codex\n")
+        self.assertIn("collision", result.stdout.lower())
+
+    def test_extended_mode_requires_openspace_bm25_probe_even_when_openspace_mcp_is_present(self):
+        self.command("openspace-mcp", 'exit 0')
+        self.command("graphify", 'echo "graphify 0.9.97"')
+        self.command("open-ontologies", 'exit 0')
+        self.command("okf", 'if [ "$1" = "--version" ]; then echo "okf v0.6.1"; exit 0; fi; mkdir -p knowledge; touch knowledge/index.md knowledge/log.md; exit 0')
+        result = subprocess.run(
+            ["/bin/bash", str(INSTALLER), "--extended", str(self.project)],
+            cwd=self.project,
+            env={**self.env, "OPENSPACE_PYTHON": str(self.work / "missing-openspace-python")},
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            timeout=30,
+        )
+        self.assertNotEqual(result.returncode, 0, result.stdout)
+        self.assertIn("PARTIAL SUCCESS - failed:", result.stdout)
+        self.assertIn("OpenSpace", result.stdout.split("PARTIAL SUCCESS - failed:")[-1])
+
 
 if __name__ == "__main__":
     unittest.main()

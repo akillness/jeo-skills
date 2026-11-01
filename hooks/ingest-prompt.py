@@ -1,39 +1,86 @@
 #!/usr/bin/env python3
-"""Capture every user prompt into the llm-wiki vault and refresh graphify.
+"""Capture every user prompt (and turn-end output when delegated) into the llm-wiki vault.
 
 Used as the UserPromptSubmit (Claude) / BeforeAgent (Gemini/Antigravity) /
-UserPromptSubmit (Codex) hook by setup-all-skills-prompt.md Step 6.
+UserPromptSubmit (Codex) hook by setup-all-skills-prompt.md Step 6, as the
+Claude PostCompact hook (captures `compact_summary`), and as the turn-end
+(Stop / AfterAgent / post-turn) router to `ingest-output.py` when output or
+transcript data is present.
 
-Vault resolution (project-scoped — every repo keeps its own wiki):
-  1. $LLM_WIKI_VAULT                        — explicit wiki root
+Vault resolution:
+  1. $LLM_WIKI_VAULT                        — explicit wiki root (canonical:
+                                              ~/vaults/llm-wiki)
   2. $OBSIDIAN_MIND_VAULT/llm-wiki          — explicit obsidian-mind vault
-  3. <git toplevel of cwd>/llm-wiki         — the working repo root (default)
+  3. <git toplevel of cwd>/llm-wiki         — the working repo root
   4. ~/vaults/obsidian-mind/llm-wiki        — fallback outside any git repo
-
-The obsidian-mind vault IS the project root, so the llm-wiki schema is nested
-in its own `llm-wiki/` subfolder and never mixes with obsidian-mind's own
-`brain/`, `org/` and `perf/` folders.
 
 Behavior:
   1. Read prompt payload from stdin (JSON or raw text).
   2. Write raw capture + source summary + query stub under the vault.
-  3. Touch index.md / log.md.
-  4. If graphifyy is importable, rebuild the structural graph under
-     <vault>/.graphify/. If not, skip the graph step silently.
+  3. Under the shared `vault` layer lock (ctx.lock.layer_lock), insert the
+     index.md bullets and append the log.md entry. If the lock is busy for
+     longer than the wait window the index/log update is deferred (recorded in
+     .state/deferred-index.jsonl); the raw capture is never lost.
+
+Turn-end events (Stop / AfterAgent / post-turn) delegate to `ingest-output.py`
+when an assistant output or transcript is present, and otherwise exit 0 without
+creating a vault skeleton. The knowledge graph is regenerated only by
+`ctx checkpoint` (graphify-out/ is the single graphify root; this script never
+writes `.graphify/`).
 
 All errors are swallowed (exit 0) so the host agent's prompt is never blocked.
 """
 from __future__ import annotations
 
+import fcntl
 import hashlib
 import json
 import os
 import re
 import subprocess
 import sys
+import time
+from contextlib import contextmanager
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import Any, Iterator
+
+for _hook_dir in (Path(__file__).resolve().parent, Path.home() / ".agents" / "hooks"):
+    if str(_hook_dir) not in sys.path:
+        sys.path.insert(0, str(_hook_dir))
+try:
+    from ctx.lock import Locked, layer_lock  # type: ignore
+except Exception:
+    class Locked(Exception):  # type: ignore[no-redef]
+        def __init__(self, name: str, holder: dict[str, Any] | None = None):
+            self.name = name
+            self.holder = holder or {}
+            super().__init__(f"layer {name!r} is locked")
+
+    @contextmanager
+    def layer_lock(name: str, wait_seconds: float = 0) -> Iterator[Path]:  # type: ignore[no-redef]
+        path = Path.home() / ".agents" / "hooks" / "ctx" / "locks" / f"{name}.lock"
+        path.parent.mkdir(parents=True, exist_ok=True)
+        fd = os.open(str(path), os.O_RDWR | os.O_CREAT, 0o644)
+        deadline = time.monotonic() + max(0.0, float(wait_seconds))
+        try:
+            while True:
+                try:
+                    fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                    break
+                except (BlockingIOError, OSError):
+                    if time.monotonic() >= deadline:
+                        raise Locked(name)
+                    time.sleep(0.1)
+            try:
+                yield path
+            finally:
+                try:
+                    fcntl.flock(fd, fcntl.LOCK_UN)
+                except OSError:
+                    pass
+        finally:
+            os.close(fd)
 
 HOME = Path.home()
 
@@ -81,17 +128,19 @@ def resolve_vault_root() -> Path:
 
 
 VAULT_ROOT = resolve_vault_root()
-GRAPH_OUT = VAULT_ROOT / ".graphify"
 STATE_FILE = VAULT_ROOT / ".state" / "ingest-prompt.json"
 MAX_PROMPT_SNIPPET = 80
+VAULT_LOCK_WAIT = float(os.environ.get("CTX_VAULT_LOCK_WAIT", "1.0"))
+AUTO_END = "<!-- ctx:auto:END -->"
 
-TITLE_RE = re.compile(r"^#\s+(.+?)\s*$", re.MULTILINE)
-WIKILINK_RE = re.compile(r"\[\[([^\]|#]+)(?:[#|][^\]]*)?\]\]")
-IGNORE_DIRS = {".obsidian", ".trash", ".git", ".graphify", "graphify-out", ".state"}
-
+# Vault dirs that are never wiki pages (shared with the ctx vault layer lint).
+IGNORE_DIRS = {".obsidian", ".trash", ".git", ".graphify", "graphify-out", ".state", ".venv", ".jeo", ".survey"}
 
 
 def now_utc() -> datetime:
+    frozen = os.environ.get("JEO_INGEST_FROZEN_UTC", "").strip()
+    if frozen:
+        return datetime.fromisoformat(frozen)
     return datetime.now(timezone.utc)
 
 
@@ -157,7 +206,6 @@ def flatten_strings(value: Any) -> list[str]:
         # JSON (manual runs, agents that pipe the bare prompt), so it must be
         # extractable too — otherwise those prompts are silently dropped.
         for key in ("text", "prompt", "input_text", "message", "content", "query", "user_input", "raw"):
-
             if key in value:
                 out.extend(flatten_strings(value[key]))
         if "items" in value:
@@ -203,20 +251,33 @@ def prompt_title(prompt_text: str) -> str:
     return title
 
 
-def fence(text: str) -> str:
-    return text.replace("```", "'''")
+def fenced_block(text: str, info: str = "text") -> str:
+    longest = max((len(m.group(0)) for m in re.finditer(r"`+", text)), default=0)
+    delim = "`" * max(3, longest + 1)
+    return f"{delim}{info}\n{text}\n{delim}"
 
 
 def insert_marker_line(file_path: Path, marker: str, line: str) -> None:
+    """Insert `line` before `<!-- MARKER:END -->`; else before the ctx:auto END
+    marker (so auto bullets stay inside the ctx-managed block instead of growing
+    the file tail forever); else append at EOF. Rewrites via temp+rename."""
     anchor = f"<!-- {marker}:END -->"
     text = file_path.read_text(encoding="utf-8") if file_path.exists() else ""
     if line in text:
         return
-    if anchor not in text:
-        text = text.rstrip() + "\n\n" + line + "\n"
+    if anchor in text:
+        text = text.replace(anchor, line + "\n" + anchor, 1)
+    elif AUTO_END in text:
+        text = text.replace(AUTO_END, line + "\n" + AUTO_END, 1)
     else:
-        text = text.replace(anchor, line + "\n" + anchor)
-    file_path.write_text(text, encoding="utf-8")
+        text = text.rstrip() + "\n\n" + line + "\n"
+    atomic_write(file_path, text)
+
+
+def atomic_write(file_path: Path, text: str) -> None:
+    tmp = file_path.with_name(f".{file_path.name}.{os.getpid()}.tmp")
+    tmp.write_text(text, encoding="utf-8")
+    os.replace(tmp, file_path)
 
 
 def append_log(title: str, body_lines: list[str]) -> None:
@@ -232,27 +293,69 @@ def append_log(title: str, body_lines: list[str]) -> None:
             handle.write(line + "\n")
 
 
+def defer_index_update(reason: str, title: str, **paths: str) -> None:
+    """The vault lock was busy: raw/source/query are already on disk; record the
+    deferred index/log bullets so the next ingest or `ctx refresh` reconciles."""
+    try:
+        note = VAULT_ROOT / ".state" / "deferred-index.jsonl"
+        note.parent.mkdir(parents=True, exist_ok=True)
+        entry = {"at": now_utc().isoformat(), "script": "ingest-prompt", "title": title, "reason": reason, **paths}
+        with note.open("a", encoding="utf-8") as handle:
+            handle.write(json.dumps(entry, ensure_ascii=False) + "\n")
+    except Exception:
+        pass
+    sys.stderr.write(f"ingest-prompt: index/log update deferred ({reason})\n")
+
+
+def reconcile_deferred_index() -> None:
+    note = VAULT_ROOT / ".state" / "deferred-index.jsonl"
+    if not note.is_file():
+        return
+    try:
+        lines = [line.strip() for line in note.read_text(encoding="utf-8").splitlines() if line.strip()]
+        note.unlink(missing_ok=True)
+        for line in lines:
+            item = json.loads(line)
+            title = item.get("title", "Deferred Capture")
+            if item.get("source"):
+                insert_marker_line(VAULT_ROOT / "index.md", "SOURCES", f"- [[{item['source']}]] - {title}")
+            if item.get("query"):
+                insert_marker_line(VAULT_ROOT / "index.md", "QUERIES", f"- [[{item['query']}]] - {title}")
+            if item.get("report"):
+                insert_marker_line(VAULT_ROOT / "index.md", "REPORTS", f"- [[{item['report']}]] - {title}")
+    except Exception:
+        pass
+
+
+def _write_exclusive(path: Path, content: str, *, encoding: str = "utf-8") -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("x", encoding=encoding) as handle:
+        handle.write(content)
+
+
 def write_prompt_files(prompt_text: str, session_id: str) -> dict[str, Path]:
     stamp = now_utc()
     date_slug = stamp.strftime("%Y-%m-%d")
     time_slug = stamp.strftime("%H%M%S")
-    session_short = (session_id or "session")[:12]
+    session_short = slugify(session_id or "session", max_len=12)
     title = prompt_title(prompt_text)
     prompt_slug = slugify(title)
+    base_id = hashlib.sha256(f"{session_id}\n{prompt_text}".encode("utf-8")).hexdigest()[:8]
 
     raw_dir = VAULT_ROOT / "raw" / "sources" / "prompts" / stamp.strftime("%Y") / stamp.strftime("%m") / stamp.strftime("%d")
     raw_dir.mkdir(parents=True, exist_ok=True)
-    raw_path = raw_dir / f"{time_slug}-{session_short}-{prompt_slug}.md"
+    for attempt in range(100):
+        capture_id = base_id if attempt == 0 else f"{base_id}-{attempt}"
+        raw_path = raw_dir / f"{time_slug}-{session_short}-{capture_id}-{prompt_slug}.md"
+        source_rel = Path("wiki") / "sources" / f"{date_slug}-{time_slug}-{capture_id}-{prompt_slug}.md"
+        source_path = VAULT_ROOT / source_rel
+        query_rel = Path("wiki") / "queries" / f"{date_slug}-{time_slug}-{capture_id}-{prompt_slug}.md"
+        query_path = VAULT_ROOT / query_rel
+        if not raw_path.exists() and not source_path.exists() and not query_path.exists():
+            break
 
-    source_rel = Path("wiki") / "sources" / f"{date_slug}-{time_slug}-{prompt_slug}.md"
-    source_path = VAULT_ROOT / source_rel
-    source_path.parent.mkdir(parents=True, exist_ok=True)
-
-    query_rel = Path("wiki") / "queries" / f"{date_slug}-{time_slug}-{prompt_slug}.md"
-    query_path = VAULT_ROOT / query_rel
-    query_path.parent.mkdir(parents=True, exist_ok=True)
-
-    raw_path.write_text(
+    _write_exclusive(
+        raw_path,
         "\n".join(
             [
                 "---",
@@ -266,16 +369,15 @@ def write_prompt_files(prompt_text: str, session_id: str) -> dict[str, Path]:
                 "",
                 "## Prompt",
                 "",
-                "```text",
-                fence(prompt_text),
-                "```",
+                fenced_block(prompt_text),
                 "",
             ]
         ),
         encoding="utf-8",
     )
 
-    source_path.write_text(
+    _write_exclusive(
+        source_path,
         "\n".join(
             [
                 "---",
@@ -292,16 +394,15 @@ def write_prompt_files(prompt_text: str, session_id: str) -> dict[str, Path]:
                 "",
                 "## Prompt Excerpt",
                 "",
-                "```text",
-                fence(prompt_text[:2000]),
-                "```",
+                fenced_block(prompt_text[:2000]),
                 "",
             ]
         ),
         encoding="utf-8",
     )
 
-    query_path.write_text(
+    _write_exclusive(
+        query_path,
         "\n".join(
             [
                 "---",
@@ -334,113 +435,108 @@ def write_prompt_files(prompt_text: str, session_id: str) -> dict[str, Path]:
         encoding="utf-8",
     )
 
-    insert_marker_line(VAULT_ROOT / "index.md", "SOURCES", f"- [[{source_rel.with_suffix('').as_posix()}]] - {title}")
-    insert_marker_line(VAULT_ROOT / "index.md", "QUERIES", f"- [[{query_rel.with_suffix('').as_posix()}]] - {title}")
-    append_log(
-        title,
-        [
-            f"- Raw capture: [[{raw_path.relative_to(VAULT_ROOT).with_suffix('').as_posix()}]]",
-            f"- Source note: [[{source_rel.with_suffix('').as_posix()}]]",
-            f"- Query note: [[{query_rel.with_suffix('').as_posix()}]]",
-        ],
-    )
+    try:
+        with layer_lock("vault", wait_seconds=VAULT_LOCK_WAIT):
+            reconcile_deferred_index()
+            insert_marker_line(VAULT_ROOT / "index.md", "SOURCES", f"- [[{source_rel.with_suffix('').as_posix()}]] - {title}")
+            insert_marker_line(VAULT_ROOT / "index.md", "QUERIES", f"- [[{query_rel.with_suffix('').as_posix()}]] - {title}")
+            append_log(
+                title,
+                [
+                    f"- Raw capture: [[{raw_path.relative_to(VAULT_ROOT).with_suffix('').as_posix()}]]",
+                    f"- Source note: [[{source_rel.with_suffix('').as_posix()}]]",
+                    f"- Query note: [[{query_rel.with_suffix('').as_posix()}]]",
+                ],
+            )
+    except Locked as exc:
+        defer_index_update(
+            str(exc),
+            title,
+            raw=raw_path.relative_to(VAULT_ROOT).with_suffix("").as_posix(),
+            source=source_rel.with_suffix("").as_posix(),
+            query=query_rel.with_suffix("").as_posix(),
+        )
     return {"raw": raw_path, "source": source_path, "query": query_path}
 
 
-def maybe_refresh_graph() -> dict[str, Any] | None:
-    """Best-effort graphify refresh. Returns None if graphify is unavailable."""
-    try:
-        import networkx as nx  # type: ignore
-        from graphify.analyze import god_nodes, suggest_questions, surprising_connections  # type: ignore
-        from graphify.cluster import cluster, score_all  # type: ignore
-        from graphify.export import to_html, to_json, to_obsidian  # type: ignore
-        from graphify.report import generate  # type: ignore
-    except Exception:
-        return None
-
-    GRAPH_OUT.mkdir(parents=True, exist_ok=True)
-    pages: dict[str, dict[str, Any]] = {}
-    for path in VAULT_ROOT.rglob("*.md"):
-        rel = path.relative_to(VAULT_ROOT)
-        if any(part in IGNORE_DIRS for part in rel.parts):
-            continue
-        if rel.name in {"AGENTS.md", "CLAUDE.md", "GEMINI.md"}:
-            continue
-        text = path.read_text(encoding="utf-8")
-        page_id = rel.with_suffix("").as_posix()
-        match = TITLE_RE.search(text)
-        label = match.group(1).strip() if match else path.stem
-        pages[page_id] = {"path": path, "rel": rel, "label": label, "text": text}
-
-    graph = nx.Graph()
-    for page_id, page in pages.items():
-        graph.add_node(page_id, label=page["label"], source_file=page["rel"].as_posix())
-    page_ids = set(pages)
-    for page_id, page in pages.items():
-        for target in WIKILINK_RE.findall(page["text"]):
-            normalized = target.strip().strip("/").removesuffix(".md")
-            if normalized in page_ids:
-                graph.add_edge(page_id, normalized, relation="links_to", weight=1.0, confidence="EXTRACTED", confidence_score=1.0, source_file=page["rel"].as_posix())
-
-    communities = cluster(graph)
-    cohesion = score_all(graph, communities)
-    labels = {cid: f"Community {cid}" for cid in communities}
-    detection_result = {"total_files": len(pages), "total_words": sum(len(p["text"].split()) for p in pages.values())}
-    gods = god_nodes(graph)
-    surprises = surprising_connections(graph, communities)
-    questions = suggest_questions(graph, communities, labels)
-    report = generate(
-        graph, communities, cohesion, labels, gods, surprises, detection_result,
-        {"input": 0, "output": 0}, str(VAULT_ROOT), suggested_questions=questions,
-    )
-    (GRAPH_OUT / "GRAPH_REPORT.md").write_text(report, encoding="utf-8")
-    to_json(graph, communities, str(GRAPH_OUT / "graph.json"))
-    try:
-        to_html(graph, communities, str(GRAPH_OUT / "graph.html"), community_labels=labels)
-    except Exception as exc:
-        (GRAPH_OUT / "graph.html.error.txt").write_text(str(exc), encoding="utf-8")
-    try:
-        to_obsidian(graph, communities, str(GRAPH_OUT / "obsidian"), community_labels=labels, cohesion=cohesion)
-    except Exception:
-        pass
-    return {"nodes": graph.number_of_nodes(), "edges": graph.number_of_edges(), "communities": len(communities)}
-
-
-def dedupe_guard(session_id: str, prompt_text: str) -> bool:
+def is_duplicate(session_id: str, prompt_text: str) -> bool:
     digest = hashlib.sha256(f"{session_id}\n{prompt_text}".encode("utf-8")).hexdigest()
+    key = session_id or "default"
     state = load_state()
-    if state.get("last_digest") == digest:
-        return False
-    save_state({"last_digest": digest, "updated_at": now_utc().isoformat(), "session_id": session_id})
-    return True
+    sessions = state.get("sessions") if isinstance(state.get("sessions"), dict) else {}
+    return sessions.get(key) == digest
+
+
+def record_dedupe(session_id: str, prompt_text: str) -> None:
+    digest = hashlib.sha256(f"{session_id}\n{prompt_text}".encode("utf-8")).hexdigest()
+    key = session_id or "default"
+    state = load_state()
+    sessions = state.get("sessions") if isinstance(state.get("sessions"), dict) else {}
+    sessions[key] = digest
+    save_state({"last_digest": digest, "updated_at": now_utc().isoformat(), "session_id": session_id, "sessions": sessions})
+
+
+def extract_compact_summary(payload: dict[str, Any]) -> str:
+    """Claude PostCompact payload: `compact_summary` (doc field) or a fallback key."""
+    for key in ("compact_summary", "summary", "compaction_summary"):
+        value = payload.get(key)
+        if isinstance(value, str) and value.strip():
+            return value.strip()
+    return ""
+
+
+def _delegate_turn_end_output(payload: dict[str, Any]) -> int:
+    has_output = any(
+        isinstance(payload.get(key), str) and payload.get(key, "").strip()
+        for key in ("assistant_output", "output", "response", "text", "raw",
+                    "transcript_path", "transcriptPath", "conversation_path", "conversationPath")
+    )
+    if not has_output:
+        return 0
+    for candidate in (
+        Path(__file__).resolve().parent / "ingest-output.py",
+        HOME / ".agents" / "hooks" / "ingest-output.py",
+        VAULT_ROOT / "scripts" / "ingest-output.py",
+    ):
+        if candidate.is_file():
+            env = os.environ.copy()
+            env.setdefault("LLM_WIKI_VAULT", str(VAULT_ROOT))
+            env.setdefault("CTX_VAULT_LOCK_WAIT", "1.0")
+            subprocess.run(
+                [sys.executable, str(candidate)],
+                input=json.dumps(payload, ensure_ascii=False),
+                text=True,
+                capture_output=True,
+                timeout=30,
+                env=env,
+            )
+            return 0
+    return 0
 
 
 def main() -> int:
     try:
-        ensure_vault()
         payload = read_payload()
         event_name = payload.get("hook_event_name") or payload.get("type") or "UserPromptSubmit"
-        # Turn-end events (Claude/Codex "Stop", Gemini/Antigravity "AfterAgent")
-        # carry no prompt text to capture — they exist only to give a
-        # graphify refresh point at the END of a turn, mirroring what
-        # jeo-code already gets from its native `post-implementation` /
-        # `post-turn` hooks. Skip straight to the graph rebuild and return;
-        # do not fall through to the prompt-capture path below.
         if event_name in {"Stop", "AfterAgent", "post-turn"}:
-            maybe_refresh_graph()
+            return _delegate_turn_end_output(payload)
+        if event_name == "PostCompact":
+            prompt_text = extract_compact_summary(payload)
+            if not prompt_text:
+                return 0
+            prompt_text = "Compact summary (PostCompact)\n\n" + prompt_text
+        elif event_name in {"UserPromptSubmit", "BeforeAgent", "manual"}:
+            prompt_text = extract_prompt_text(payload)
+        else:
             return 0
-
-
-        if event_name not in {"UserPromptSubmit", "BeforeAgent", "manual"}:
-            return 0
-        session_id = extract_session_id(payload)
-        prompt_text = extract_prompt_text(payload)
         if not prompt_text:
             return 0
-        if not dedupe_guard(session_id, prompt_text):
+        session_id = extract_session_id(payload)
+        ensure_vault()
+        if is_duplicate(session_id, prompt_text):
             return 0
         write_prompt_files(prompt_text, session_id)
-        maybe_refresh_graph()
+        record_dedupe(session_id, prompt_text)
     except Exception:
         pass
     return 0

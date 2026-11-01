@@ -93,6 +93,7 @@ La lista completa y generada está en [Lista de Habilidades](#-lista-de-habilida
 | Solo el proyecto actual | línea única con `INSTALL_GLOBAL=false` |
 | Previsualizar sin cambios | línea única con `JEO_SKILLS_DRY_RUN=true` |
 | Habilidades específicas | `jeo-skill install <name> [<name> ...] --global --yes` |
+| Habilidades específicas con configuración/smoke | `jeo-skill install <name> ... --global --yes --setup` (añade `--with-hooks` solo para pasos de hook compatibles; consulta los límites de cada herramienta en la [guía de instalación](setup-all-skills-prompt.md#step-5--full-mode-shared-tools)) |
 | Un paquete o segmento de categoría | `jeo-skill install --bundle <bundle> --global --yes` o `--category <id> [--subcategory <id>]` |
 
 Para Lightpanda, previsualiza la selección con `jeo-skill install lightpanda --global --dry-run`
@@ -829,6 +830,16 @@ Edita los metadatos en `skills.json`, nunca en las tablas generadas. Las fuentes
 ---
 
 <!-- WHATS-NEW:START -->
+
+## 🆕 Novedades en v2026-11-01
+
+| Cambio | Detalles |
+|--------|---------|
+| **Configuración selectiva y automatización de hooks** | Añadidos `--setup` (con lista de permitidos explícita `SUPPORTED_SETUP_SKILLS`) y `--with-hooks` (que exporta `JEO_SKILLS_APPROVE_ALL_HOOKS_MCP=true`) a `jeo-skill install`. Ejecuta comprobaciones de CLI y smoke empaquetadas para habilidades compatibles (`open-ontologies`, `okf-agent-memory`, `mex`, `openspace`, `ooo`, `rtk`, `cli-anything`, `spec-kit`, `ecc`, `jev-control-plane`, `graphify`, `semble`, `zvec-grep`, `llm-wiki`) y omite de forma segura las no compatibles. `--dry-run` no ejecuta subprocesos ni escribe archivos. |
+| **Modo de runtime `--skip-mcp` y aislamiento de hooks en OpenSpace** | Añadido `--skip-mcp` a `install-openspace.sh` y conectado a `jeo-skill install openspace --setup` y `scripts/install-full-tools.sh`, evitando el registro no autorizado del servidor MCP en los hosts durante la configuración sin `--with-hooks`. Se mantiene la separación independiente de `ooo` y `openspace` introducida en v2.0. |
+| **Herramientas completas extendidas y spec-kit multiagente** | `scripts/install-full-tools.sh` añade el modo `--extended` (10/10 herramientas) que incluye `Graphify`, `OpenSpace` (prueba BM25), `Open-Ontologies` (`smoke.py`) y `OKF-Agent-Memory` (`smoke.py`), manteniendo la línea base 6/6 por defecto. Instala el envoltorio `~/.local/bin/mex-agent` (priorizando nvm/npm frente al `mex` de TeX Live), enlaza `~/.local/bin/rtk -> ~/.cargo/bin/rtk` (`1.1.0`) y admite `SPEC_KIT_INTEGRATION` multiagente con preparación y fusión atómica segura. |
+| **Canal de conocimiento y concurrencia del vault** | Empaquetados `hooks/ctx/lock.py`, `hooks/ingest-output.py` e `hooks/ingest-prompt.py` en el repositorio con respaldo real de `fcntl.flock`. Los eventos de fin de turno (`Stop`, `AfterAgent`, `post-turn`) con salida se delegan a `ingest-output.py` bajo el bloqueo del vault, extrayendo únicamente texto visible (filtrando `thinking` y `tool_use`). Se evitan colisiones con `capture_id` y creación exclusiva (`"x"`), las capturas usan bloques de código no mutables y la contención difiere la indexación a `.state/deferred-index.jsonl` con reconciliación automática en la siguiente ejecución. |
+| **Enlace multihost de Jev y actualización de ECC** | Vinculados los 10 agentes detectados a perfiles independientes en `~/.agents/jev/agents.json`, cambiado `echo-turn-jeopi` a `runtimeMode: assist` para la inyección automática de instrucciones, y actualizado el plugin `ecc@ecc` de Claude Code a `2.2.3` con revisiones de propuestas Jev. |
 
 ## 🆕 Novedades en v2026-10-30
 

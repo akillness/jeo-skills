@@ -36,6 +36,11 @@ have_cmd() {
   command -v "$1" >/dev/null 2>&1
 }
 
+export PATH="${HOME}/.local/bin:${CARGO_HOME:-$HOME/.cargo}/bin:${PATH}"
+if [ -x "${CARGO_HOME:-$HOME/.cargo}/bin/rtk" ] && [ ! -e "${HOME}/.local/bin/rtk" ]; then
+  mkdir -p "${HOME}/.local/bin"
+  ln -sf "${CARGO_HOME:-$HOME/.cargo}/bin/rtk" "${HOME}/.local/bin/rtk"
+fi
 have_correct_rtk() {
   have_cmd rtk && rtk gain >/dev/null 2>&1
 }
@@ -136,6 +141,10 @@ install_with_cargo() {
   have_cmd cargo || die "cargo is required for --method cargo."
   log "Installing RTK from git repository https://github.com/${REPO}"
   cargo install --git "https://github.com/${REPO}" --force
+  if [ -x "${CARGO_HOME:-$HOME/.cargo}/bin/rtk" ]; then
+    mkdir -p "${HOME}/.local/bin"
+    ln -sf "${CARGO_HOME:-$HOME/.cargo}/bin/rtk" "${HOME}/.local/bin/rtk"
+  fi
 }
 
 if [[ "$METHOD" == "auto" ]]; then

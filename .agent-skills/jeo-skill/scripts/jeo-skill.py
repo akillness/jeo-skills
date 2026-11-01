@@ -511,6 +511,136 @@ def command_prune_retired(args: argparse.Namespace) -> None:
 
 
 
+SUPPORTED_SETUP_SKILLS = frozenset({
+    "open-ontologies", "okf-agent-memory", "mex", "openspace", "ooo", "rtk",
+    "cli-anything", "spec-kit", "ecc", "jev-control-plane", "graphify",
+    "semble", "zvec-grep", "llm-wiki",
+})
+
+
+def _resolve_jev_profile_for_agent(agent: str) -> str | None:
+    explicit_profile = os.environ.get("JEV_PROFILE", "").strip()
+    if explicit_profile:
+        return explicit_profile
+    effective_agent = os.environ.get("JEV_AGENT", "").strip() or agent
+    canonical = {"claude-code": "claude", "jeo-code": "jeo", "oh-my-pi": "omp",
+                 "antigravity-cli": "agy", "kimi-code-cli": "kimi"}.get(effective_agent, effective_agent)
+    if not canonical or canonical == "universal":
+        return None
+    try:
+        data = json.loads((Path.home() / ".agents/jev/agents.json").read_text(encoding="utf-8"))
+        if isinstance(data, dict) and isinstance(data.get(canonical), dict):
+            prof = data[canonical].get("profile")
+            if isinstance(prof, str) and prof.strip():
+                return prof.strip()
+    except Exception:
+        pass
+    return canonical
+
+
+def skill_setup_commands(root: Path | None, selected: list[str], *,
+                         agent: str = "universal", global_install: bool,
+                         with_hooks: bool) -> tuple[list[tuple[str, list[str]]], list[str]]:
+    if root is None:
+        return [], list(selected)
+    home = Path.home()
+    checkout_root = Path(__file__).resolve().parents[2]
+    plans: list[tuple[str, list[str]]] = []
+    unsupported: list[str] = []
+
+    for name in selected:
+        if name not in SUPPORTED_SETUP_SKILLS:
+            unsupported.append(name)
+            continue
+        skill_dir = root / name
+        if name == "open-ontologies":
+            oo_bin = home / ".local/bin/open-ontologies"
+            resolved_oo = str(oo_bin) if oo_bin.is_file() and os.access(oo_bin, os.X_OK) else shutil.which("open-ontologies")
+            if resolved_oo:
+                plans.append((name, [sys.executable, str(skill_dir / "scripts/smoke.py"), "--binary", resolved_oo, "--json"]))
+            else:
+                plans.append((name, ["bash", str(skill_dir / "scripts/install.sh")]))
+        elif name == "okf-agent-memory":
+            plans.append((name, [sys.executable, str(skill_dir / "scripts/smoke.py"), "--json"]))
+        elif name == "mex":
+            plans.append((name, ["bash", str(skill_dir / "scripts/mex.sh"), "doctor", "."]))
+        elif name == "openspace":
+            if with_hooks:
+                plans.append((name, ["bash", str(skill_dir / "scripts/install-openspace.sh"), "--hooks"]))
+            else:
+                plans.append((name, ["bash", str(skill_dir / "scripts/install-openspace.sh"), "--skip-mcp"]))
+        elif name == "ooo":
+            plans.append((name, ["bash", str(skill_dir / "scripts/install.sh")]))
+        elif name == "rtk":
+            plans.append((name, ["bash", str(skill_dir / "scripts/install.sh")]))
+            if with_hooks and shutil.which("claude"):
+                plans.append((name, ["bash", str(skill_dir / "scripts/init-agent.sh"), "--agent", "claude", "--global", "--auto-patch"]))
+        elif name == "cli-anything":
+            plans.append((name, ["bash", str(skill_dir / "scripts/install.sh")]))
+        elif name == "spec-kit":
+            plans.append((name, ["bash", str(skill_dir / "scripts/install.sh")]))
+        elif name == "ecc":
+            plans.append((name, ["bash", str(skill_dir / "scripts/ecc.sh"), "doctor"]))
+        elif name == "jev-control-plane":
+            harness = home / ".agents/jev/jev-harness.mjs"
+            profile = _resolve_jev_profile_for_agent(agent)
+            if profile:
+                plans.append((name, ["node", str(harness), "--profile", profile, "--mock", "self-test"]))
+            else:
+                plans.append((name, ["node", str(harness), "--mock", "self-test"]))
+        elif name == "graphify":
+            if shutil.which("graphify"):
+                plans.append((name, ["graphify", "--version"]))
+            else:
+                plans.append((name, ["uv", "tool", "install", "graphifyy"]))
+                plans.append((name, ["graphify", "--version"]))
+        elif name == "semble":
+            if shutil.which("semble"):
+                plans.append((name, ["semble", "--version"]))
+            else:
+                plans.append((name, ["uv", "tool", "install", "semble==0.7.0"]))
+                plans.append((name, ["semble", "--version"]))
+        elif name == "zvec-grep":
+            if shutil.which("zg"):
+                plans.append((name, ["zg", "version"]))
+            else:
+                plans.append((name, ["npm", "install", "-g", "@zvec/zvec-grep@0.2.2"]))
+                plans.append((name, ["zg", "version"]))
+        elif name == "llm-wiki":
+            vault = Path(os.environ.get("LLM_WIKI_VAULT", "").strip() or str(home / "vaults/llm-wiki")).expanduser()
+            if not (vault / "index.md").is_file():
+                plans.append((name, ["bash", str(skill_dir / "scripts/bootstrap-vault.sh"), str(vault)]))
+            plans.append((name, [sys.executable, str(skill_dir / "scripts/lint-wiki.py"), str(vault)]))
+            if with_hooks and (home / ".agents/hooks/ingest-prompt.py").is_file():
+                plans.append((name, [sys.executable, str(home / ".agents/hooks/ingest-prompt.py"), '{"hook_event_name":"Stop"}']))
+    return plans, unsupported
+
+
+def run_skill_setup(root: Path | None, selected: list[str], *,
+                    agent: str = "universal", global_install: bool,
+                    with_hooks: bool, dry_run: bool) -> None:
+    plans, unsupported = skill_setup_commands(
+        root, selected, agent=agent, global_install=global_install, with_hooks=with_hooks
+    )
+    for skill_name in unsupported:
+        print(f"Setup skipped ({skill_name}): no automated --setup handler defined")
+    for skill_name, cmd in plans:
+        print(f"Setup plan ({skill_name}): {shlex.join(cmd)}")
+    if dry_run or not plans:
+        return
+    env = os.environ.copy()
+    home = Path.home()
+    env["PATH"] = f"{home / '.local/bin'}:{home / '.cargo/bin'}:/opt/homebrew/bin:" + env.get("PATH", "")
+    env["SKIP_SKILL"] = "1"
+    if global_install:
+        env["GLOBAL"] = "1"
+    if with_hooks:
+        env["JEO_SKILLS_APPROVE_ALL_HOOKS_MCP"] = "true"
+    for skill_name, cmd in plans:
+        completed = subprocess.run(cmd, env=env, check=False)
+        if completed.returncode != 0:
+            raise JeoSkillError(f"Post-install setup failed for {skill_name} (exit {completed.returncode}): {shlex.join(cmd)}")
+
 def finish_install(args: argparse.Namespace, selected: list[str]) -> None:
     root = install_root(args)
     projection = projection_root(args)
@@ -526,7 +656,9 @@ def finish_install(args: argparse.Namespace, selected: list[str]) -> None:
     # One batched sweep (same as the dry-run preview) so links into a removed shared copy
     # are judged against the full set of removals.
     clean_retired((root, projection), dry_run=False, global_install=args.global_install)
-
+    if getattr(args, "setup", False) or getattr(args, "with_hooks", False):
+        run_skill_setup(projection or root, selected, agent=args.agent, global_install=args.global_install,
+                        with_hooks=getattr(args, "with_hooks", False), dry_run=False)
 
 def installer_prerequisite_errors() -> list[str]:
     errors = []
@@ -560,6 +692,9 @@ def command_install(args: argparse.Namespace, catalog: dict[str, Any]) -> None:
     if projection:
         print(f"Copy selected skills: {root} -> {projection}")
     if args.dry_run:
+        if getattr(args, "setup", False) or getattr(args, "with_hooks", False):
+            run_skill_setup(projection or root, selected, agent=args.agent, global_install=args.global_install,
+                            with_hooks=getattr(args, "with_hooks", False), dry_run=True)
         clean_retired((root, projection), dry_run=True, global_install=args.global_install)
         return
     if len(selected) > 12 and not args.yes:
@@ -718,9 +853,12 @@ def build_parser() -> argparse.ArgumentParser:
     install.add_argument("--dry-run", action="store_true")
     install.add_argument("-y", "--yes", action="store_true")
     install.add_argument("--all", action="store_true")
+    install.add_argument("--setup", action="store_true",
+                         help="Run bundled tool installation or smoke verification for selected skills")
+    install.add_argument("--with-hooks", dest="with_hooks", action="store_true",
+                         help="Also run optional hook and MCP registration steps (implies --setup)")
     install.add_argument("--aside-home", default=str(Path.home() / ".aside"))
     install.add_argument("--aside-account")
-
     bootstrap = sub.add_parser("bootstrap", help="Finish a shared-router bootstrap")
     bootstrap.add_argument("--source", default=DEFAULT_SOURCE)
     bootstrap.add_argument("-g", "--global", dest="global_install", action="store_true")
@@ -728,8 +866,8 @@ def build_parser() -> argparse.ArgumentParser:
     bootstrap.add_argument("--aside-home", default=str(Path.home() / ".aside"))
     bootstrap.add_argument("--aside-account")
     bootstrap.set_defaults(names=["jeo-skill"], all=False, bundle=None, category=None,
-                           subcategory=None, interface=None, yes=True, dry_run=False)
-
+                           subcategory=None, interface=None, yes=True, dry_run=False,
+                           setup=False, with_hooks=False)
     link = sub.add_parser("link", help=f"Link the CLI at {BIN_PATH}")
     link.add_argument("--force", action="store_true")
 

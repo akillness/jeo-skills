@@ -46,7 +46,7 @@ PYTHON_BIN="${PYTHON_BIN:-python3}"
 GIT_REF="${GIT_REF:-$VERIFIED_REF}"
 DRY_RUN=0
 HOOKS=0
-
+SKIP_MCP="${SKIP_MCP:-0}"
 usage() {
   cat <<EOF
 Usage: bash scripts/install-openspace.sh [--hooks] [--dry-run] [--help]
@@ -62,6 +62,7 @@ Env knobs:
 
 Options:
   --hooks     Also install prompt-time skill routing hooks for every detected host
+  --skip-mcp  Skip registering the openspace MCP server in host configs
   --dry-run   Print the planned actions without cloning, installing, or copying
   --help      Show this help and exit
 
@@ -73,6 +74,10 @@ while (($# > 0)); do
   case "$1" in
     --hooks)
       HOOKS=1
+      shift
+      ;;
+    --skip-mcp)
+      SKIP_MCP=1
       shift
       ;;
     --dry-run)
@@ -101,7 +106,11 @@ print_plan() {
   echo "  4. copy host skills into: $SKILLS_ROOT"
   echo "     - $OPENSPACE_HOME/openspace/host_skills/skill-discovery/"
   echo "     - $OPENSPACE_HOME/openspace/host_skills/delegate-task/"
-  echo "  5. register openspace MCP in every installed runtime (OPENSPACE_HOST_SKILL_DIRS=$SKILLS_ROOT)"
+  if [ "$SKIP_MCP" = "1" ]; then
+    echo "  5. skip MCP registration (--skip-mcp)"
+  else
+    echo "  5. register openspace MCP in every installed runtime (OPENSPACE_HOST_SKILL_DIRS=$SKILLS_ROOT)"
+  fi
   if [ "$HOOKS" = "1" ]; then
     echo "  6. prompt-time skill routing hooks:"
     OPENSPACE_VENV="$OPENSPACE_VENV" SKILLS_ROOT="$SKILLS_ROOT" python3 "$SCRIPT_DIR/route-hooks.py" install --dry-run | sed 's/^/     /'
@@ -243,7 +252,9 @@ main() {
   install_package
   verify_install
   copy_host_skills
-  register_mcp
+  if [ "$SKIP_MCP" != "1" ]; then
+    register_mcp
+  fi
   if [ "$HOOKS" = "1" ]; then
     install_hooks
   fi

@@ -44,26 +44,25 @@ Create the wiki skeleton first:
 bash scripts/bootstrap-vault.sh /path/to/vault
 ```
 
-Under the `jeo` runtime, do not invent a new vault location. The vault is
-**project-scoped**: the tool-flow rule (`~/.agents/rules/jeo-tool-flow.md`) and
-the ingest hook both resolve it as `$LLM_WIKI_VAULT` → `<obsidian-mind
-vault>/llm-wiki`, where the obsidian-mind vault is `$OBSIDIAN_MIND_VAULT` → the
-git toplevel of the current directory → `~/vaults/obsidian-mind` outside any git
-repo. So each repository owns its own wiki at `<repo>/llm-wiki/`. Pass that same
-path to `bootstrap-vault.sh` so the skill's vault and the hook's vault stay one
-and the same:
+Under the `jeo` / `jeopi` runtime, do not invent a new vault location. The ingest
+hooks (`hooks/ingest-prompt.py` and `hooks/ingest-output.py`) resolve the vault as
+`$LLM_WIKI_VAULT` (canonical unified vault: `~/vaults/llm-wiki`) →
+`$OBSIDIAN_MIND_VAULT/llm-wiki` → `<git toplevel>/llm-wiki` →
+`~/vaults/obsidian-mind/llm-wiki`. Pass that same path to `bootstrap-vault.sh` so
+the skill's vault and the hooks' vault stay one and the same:
 
 ```bash
 OM_VAULT="${OBSIDIAN_MIND_VAULT:-$(git rev-parse --show-toplevel 2>/dev/null || echo "$HOME/vaults/obsidian-mind")}"
 bash scripts/bootstrap-vault.sh "${LLM_WIKI_VAULT:-$OM_VAULT/llm-wiki}"
 ```
 
-`setup-all-skills-prompt.md` (Step 5, "Knowledge pipeline hooks") calls this script with
-that exact resolution during a full-mode install and registers `hooks/ingest-prompt.py`
-as the prompt-in / turn-end hook for Claude Code, Codex, and Gemini; the ingest script
-bootstraps a missing vault on the first captured prompt in any other repo, so a fresh
-`jeo` setup and a manual bootstrap never diverge.
-
+`setup-all-skills-prompt.md` (Step 5, "Knowledge pipeline hooks") installs
+`hooks/ingest-prompt.py`, `hooks/ingest-output.py`, and `hooks/ctx/lock.py` under
+`~/.agents/hooks/` and registers the prompt-in (`UserPromptSubmit` / `BeforeAgent` /
+`PostCompact`) and turn-end (`Stop` / `AfterAgent` / `post-turn`) hooks for Claude
+Code, Codex, and Gemini/Antigravity. Both ingesters serialize `index.md` / `log.md`
+updates under `ctx.lock.layer_lock("vault")`, while Graphify regeneration (`graphify-out/graph.json`)
+runs at `ctx checkpoint` rather than per turn.
 
 The bootstrap creates:
 

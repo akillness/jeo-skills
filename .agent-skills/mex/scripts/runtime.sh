@@ -54,6 +54,22 @@ resolve_mex_agent_bin() {
     return 0
   fi
 
+  local path_candidate
+  while IFS= read -r path_candidate; do
+    if mex_agent_is_valid "$path_candidate"; then
+      MEX_AGENT_BIN_RESOLVED="$path_candidate"
+      MEX_AGENT_VERSION_RESOLVED="$(mex_agent_version_for "$path_candidate")"
+      return 0
+    fi
+  done < <(type -ap mex 2>/dev/null || true)
+
+  for path_candidate in "${HOME:-}"/.nvm/versions/node/*/bin/mex "${HOME:-}/.local/bin/mex" /usr/local/bin/mex; do
+    if mex_agent_is_valid "$path_candidate"; then
+      MEX_AGENT_BIN_RESOLVED="$path_candidate"
+      MEX_AGENT_VERSION_RESOLVED="$(mex_agent_version_for "$path_candidate")"
+      return 0
+    fi
+  done
   if [ -n "$candidate" ]; then
     version="$(mex_agent_version_for "$candidate" 2>/dev/null || true)"
     MEX_AGENT_RESOLVE_ERROR="'mex' resolves to $candidate but is not mex-agent (got: ${version:-unknown})"

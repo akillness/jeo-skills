@@ -553,6 +553,28 @@ if args[:2] == ["pip", "install"]:
         self.assertIn("openspace-route.sh claude", settings["hooks"]["UserPromptSubmit"][0]["hooks"][0]["command"])
 
 
+    def test_skip_mcp_flag_installs_runtime_and_leaves_host_configs_unchanged(self):
+        claude = self.home / ".claude.json"
+        claude_bytes = b'{"mcpServers": {"sentinel": "keep"}}\n'
+        claude.write_bytes(claude_bytes)
+        codex = self.home / ".codex/config.toml"
+        codex.parent.mkdir(parents=True)
+        codex_bytes = b'[mcp_servers.sentinel]\ncommand = "keep"\n'
+        codex.write_bytes(codex_bytes)
+        gemini = self.home / ".gemini/settings.json"
+        gemini.parent.mkdir(parents=True)
+        gemini_bytes = b'{"mcpServers": {"sentinel": {}}}\n'
+        gemini.write_bytes(gemini_bytes)
+        (self.venv / "bin").mkdir(parents=True)
+        (self.venv / "bin/python").symlink_to(sys.executable)
+
+        result = self.install("--skip-mcp")
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertEqual(claude.read_bytes(), claude_bytes)
+        self.assertEqual(codex.read_bytes(), codex_bytes)
+        self.assertEqual(gemini.read_bytes(), gemini_bytes)
+        self.assertFalse((self.home / ".agents/hooks").exists())
+
 class Documentation(unittest.TestCase):
     def test_skill_documents_the_hook_and_not_the_ooo_coupling(self):
         text = (SKILL / "SKILL.md").read_text(encoding="utf-8")

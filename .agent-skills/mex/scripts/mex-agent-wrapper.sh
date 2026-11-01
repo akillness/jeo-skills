@@ -10,8 +10,19 @@ find_cli() {
     return 0
   fi
 
+  if command -v npm >/dev/null 2>&1; then
+    npm_root="$(npm root -g 2>/dev/null || true)"
+    candidate="$npm_root/mex-agent/dist/cli.js"
+    [ -f "$candidate" ] && { printf '%s\n' "$candidate"; return 0; }
+  fi
+
+  local latest_nvm=""
+  for candidate in "$HOME"/.nvm/versions/node/*/lib/node_modules/mex-agent/dist/cli.js; do
+    [ -f "$candidate" ] && latest_nvm="$candidate"
+  done
+  [ -n "$latest_nvm" ] && { printf '%s\n' "$latest_nvm"; return 0; }
+
   for candidate in \
-    "$HOME"/.nvm/versions/node/*/lib/node_modules/mex-agent/dist/cli.js \
     "$HOME"/.local/lib/node_modules/mex-agent/dist/cli.js \
     "$HOME"/.aside/runtime/node/lib/node_modules/mex-agent/dist/cli.js \
     /opt/homebrew/lib/node_modules/mex-agent/dist/cli.js \
@@ -19,7 +30,7 @@ find_cli() {
     [ -f "$candidate" ] && { printf '%s\n' "$candidate"; return 0; }
   done
 
-  for npm_cmd in "$(command -v npm 2>/dev/null || true)" /opt/homebrew/bin/npm /usr/local/bin/npm "$HOME/.aside/runtime/bin/npm"; do
+  for npm_cmd in /opt/homebrew/bin/npm /usr/local/bin/npm "$HOME/.aside/runtime/bin/npm"; do
     [ -n "$npm_cmd" ] && [ -x "$npm_cmd" ] || continue
     npm_root="$("$npm_cmd" root -g 2>/dev/null || true)"
     candidate="$npm_root/mex-agent/dist/cli.js"

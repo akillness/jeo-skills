@@ -1707,5 +1707,297 @@ raise SystemExit(0)
                         self.assertEqual(report["agent"], profile)
                         self.assertTrue(report["profilePresent"])
 
+    def test_router_install_setup_dry_run_executes_no_subprocesses_and_reports_allowlist(self) -> None:
+        router = self.install_router_copy()
+        catalog_path = self.project / ".agent-skills/skills.json"
+        catalog_path.parent.mkdir(parents=True)
+        catalog_path.write_text(
+            json.dumps(self.catalog(["open-ontologies", "openspace", "ponytail"])),
+            encoding="utf-8",
+        )
+        bin_dir = self.work / "no-exec-bin"
+        bin_dir.mkdir()
+        action_log = self.work / "setup-dryrun-actions.log"
+        for cmd in ("npx", "bash", "node", "uv"):
+            self.write_python_stub(
+                bin_dir / cmd,
+                'import os, sys\nopen(os.environ["ACTION_LOG"], "a").write(" ".join(sys.argv) + "\\n")\nraise SystemExit(99)\n',
+            )
+        before_home = tree_snapshot(self.home)
+        before_project = tree_snapshot(self.project)
+        env = self.env(PATH=str(bin_dir), ACTION_LOG=str(action_log), JEO_SKILLS_CATALOG=str(catalog_path))
+        result = self.run_router(
+            router,
+            ["install", "open-ontologies", "openspace", "ponytail", "--global", "--setup", "--with-hooks", "--dry-run"],
+            self.project,
+            env,
+        )
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertIn("Setup skipped (ponytail): no automated --setup handler defined", result.stdout)
+        self.assertIn("Setup plan (open-ontologies):", result.stdout)
+        self.assertIn("Setup plan (openspace):", result.stdout)
+        self.assertFalse(action_log.exists(), "dry-run with --setup must not spawn setup subprocesses")
+        self.assertEqual(tree_snapshot(self.home), before_home)
+        self.assertEqual(tree_snapshot(self.project), before_project)
+        os_script = ROOT / ".agent-skills/openspace/scripts/install-openspace.sh"
+        os_dry = subprocess.run(
+            ["/bin/bash", str(os_script), "--dry-run"],
+            cwd=self.project,
+            env=env,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            timeout=10,
+        )
+        self.assertEqual(os_dry.returncode, 0, os_dry.stdout)
+        self.assertFalse(action_log.exists(), "openspace --dry-run must not run git/python/uv")
+        self.assertEqual(tree_snapshot(self.home), before_home)
+        self.assertEqual(tree_snapshot(self.project), before_project)
+
+    def test_plain_setup_passes_skip_mcp_and_leaves_host_configs_unchanged(self) -> None:
+        router = self.install_router_copy()
+        catalog_path = self.project / ".agent-skills/skills.json"
+        catalog_path.parent.mkdir(parents=True)
+        catalog_path.write_text(json.dumps(self.catalog(["openspace"])), encoding="utf-8")
+
+        claude_cfg = self.home / ".claude.json"
+        claude_cfg.write_text('{"mcpServers": {"sentinel": "keep"}}\n', encoding="utf-8")
+        codex_cfg = self.home / ".codex/config.toml"
+        codex_cfg.parent.mkdir(parents=True, exist_ok=True)
+        codex_cfg.write_text('[mcp_servers.sentinel]\ncommand = "keep"\n', encoding="utf-8")
+        gemini_cfg = self.home / ".gemini/settings.json"
+        gemini_cfg.parent.mkdir(parents=True, exist_ok=True)
+        gemini_cfg.write_text('{"mcpServers": {"sentinel": {}}}\n', encoding="utf-8")
+
+        bin_dir = self.work / "plain-setup-bin"
+        bin_dir.mkdir()
+        for util in ("bash", "dirname", "head", "ln", "mkdir", "mktemp", "rm", "uname"):
+            resolved = shutil.which(util, path=os.defpath)
+            if resolved:
+                (bin_dir / util).symlink_to(resolved)
+        (bin_dir / "python3").symlink_to(sys.executable)
+        self.write_python_stub(bin_dir / "node", 'print("v22.20.0")\n')
+
+        repo_skills = ROOT / ".agent-skills"
+        self.write_python_stub(bin_dir / "npx", f'''import shutil, sys
+from pathlib import Path
+dest_root = Path({str(self.home / ".agents/skills")!r})
+src_root = Path({str(repo_skills)!r})
+shutil.copytree(src_root / "openspace", dest_root / "openspace", dirs_exist_ok=True)
+os_inst = dest_root / "openspace/scripts/install-openspace.sh"
+os_inst.write_bytes(bytes([35, 33, 47, 98, 105, 110, 47, 115, 104, 10, 101, 99, 104, 111, 32, 115, 101, 116, 117, 112, 45, 97, 114, 103, 115, 58, 32, 34, 36, 64, 34, 10]))
+''')
+
+        env = self.env(PATH=str(bin_dir), JEO_SKILLS_CATALOG=str(catalog_path))
+        res_plain = self.run_router(
+            router,
+            ["install", "openspace", "--global", "--yes", "--setup"],
+            self.project,
+            env,
+        )
+        self.assertEqual(res_plain.returncode, 0, res_plain.stdout)
+        self.assertIn("install-openspace.sh --skip-mcp", res_plain.stdout)
+        self.assertIn("setup-args: --skip-mcp", res_plain.stdout)
+        self.assertNotIn("openspace", claude_cfg.read_text(encoding="utf-8"))
+        self.assertNotIn("openspace", codex_cfg.read_text(encoding="utf-8"))
+        self.assertNotIn("openspace", gemini_cfg.read_text(encoding="utf-8"))
+
+        res_hooks = self.run_router(
+            router,
+            ["install", "openspace", "--global", "--yes", "--with-hooks", "--dry-run"],
+            self.project,
+            env,
+        )
+        self.assertEqual(res_hooks.returncode, 0, res_hooks.stdout)
+        self.assertIn("install-openspace.sh --hooks", res_hooks.stdout)
+
+    def test_router_install_setup_apply_runs_self_contained_open_ontologies_openspace_and_rtk_without_ooo(self) -> None:
+        router = self.install_router_copy()
+        catalog_path = self.project / ".agent-skills/skills.json"
+        catalog_path.parent.mkdir(parents=True)
+        selected_names = ["open-ontologies", "openspace", "rtk"]
+        catalog_path.write_text(json.dumps(self.catalog(selected_names)), encoding="utf-8")
+
+        bin_dir = self.work / "apply-setup-bin"
+        bin_dir.mkdir()
+        for util in ("bash", "dirname", "head", "ln", "mkdir", "mktemp", "rm", "uname"):
+            resolved = shutil.which(util, path=os.defpath)
+            if resolved:
+                (bin_dir / util).symlink_to(resolved)
+        (bin_dir / "python3").symlink_to(sys.executable)
+        self.write_python_stub(bin_dir / "node", 'print("v22.20.0")\n')
+
+        # npx stub materializes ONLY the selected skills (open-ontologies, openspace, rtk) — NOT ooo!
+        repo_skills = ROOT / ".agent-skills"
+        self.write_python_stub(bin_dir / "npx", f'''import shutil, sys
+from pathlib import Path
+args = sys.argv[1:]
+idx = args.index("--skill") + 1
+names = []
+while idx < len(args) and not args[idx].startswith("-"):
+    names.append(args[idx])
+    idx += 1
+dest_root = Path({str(self.home / ".agents/skills")!r})
+src_root = Path({str(repo_skills)!r})
+for name in names:
+    shutil.copytree(src_root / name, dest_root / name, dirs_exist_ok=True)
+os_inst = dest_root / "openspace/scripts/install-openspace.sh"
+if os_inst.is_file():
+    os_inst.write_bytes(bytes([35, 33, 47, 98, 105, 110, 47, 115, 104, 10, 101, 99, 104, 111, 32, 79, 112, 101, 110, 83, 112, 97, 99, 101, 45, 105, 110, 115, 116, 97, 108, 108, 101, 100, 10]))
+''')
+
+        # Fake open-ontologies binary in ~/.local/bin/open-ontologies that passes smoke.py
+        oo_bin = self.home / ".local/bin/open-ontologies"
+        oo_bin.parent.mkdir(parents=True, exist_ok=True)
+        self.write_python_stub(oo_bin, '''import json, sys
+rows = [
+    {"result": {"triples_loaded": 2}},
+    {"result": {"results": []}},
+    {"result": {"inferred_count": 1, "fixpoint_reached": True, "profile_used": "rdfs", "initial_triples": 2, "final_triples": 3}},
+    {"result": {"results": [{"consumer": "<https://example.org/open-ontologies-smoke/ci>"}]}},
+]
+for row in rows:
+    print(json.dumps(row))
+''')
+
+        # Fake OpenSpace BM25 modules in ~/.agents/venvs/openspace/bin/python
+        os_modules = self.work / "os-modules"
+        os_modules.mkdir()
+        (os_modules / "rank_bm25.py").write_text("")
+        (os_modules / "yaml.py").write_text("def safe_load(t): return {}\n")
+        for mod in ("openspace", "openspace/utils", "openspace/skill_engine"):
+            (os_modules / mod).mkdir(parents=True, exist_ok=True)
+            (os_modules / mod / "__init__.py").write_text("")
+        (os_modules / "openspace/utils/logging.py").write_text("class Logger:\n  @staticmethod\n  def configure(**k): pass\n")
+        (os_modules / "openspace/skill_engine/skill_ranker.py").write_text(
+            "class SkillCandidate:\n  def __init__(self, **k):\n    self.__dict__.update(k)\n    self.bm25_score = 1.0\n"
+            "class SkillRanker:\n  def __init__(self, enable_cache=False): pass\n"
+            "  def bm25_only(self, q, c, top_k=1): return c[:top_k]\n"
+        )
+        os_py = self.home / ".agents/venvs/openspace/bin/python"
+        os_py.parent.mkdir(parents=True, exist_ok=True)
+        os_py.symlink_to(sys.executable)
+
+        # Fake cargo rtk in ~/.cargo/bin/rtk
+        cargo_rtk = self.home / ".cargo/bin/rtk"
+        cargo_rtk.parent.mkdir(parents=True, exist_ok=True)
+        self.write_python_stub(cargo_rtk, 'import sys\nif "--version" in sys.argv: print("rtk 1.1.0")\n')
+
+        env = self.env(
+            PATH=str(bin_dir),
+            JEO_SKILLS_CATALOG=str(catalog_path),
+            PYTHONPATH=str(os_modules),
+        )
+        result = self.run_router(
+            router,
+            ["install", "open-ontologies", "openspace", "rtk", "--global", "--yes", "--setup"],
+            self.project,
+            env,
+        )
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertFalse((self.home / ".agents/skills/ooo").exists(), "ooo was not installed")
+        self.assertTrue((self.home / ".local/bin/rtk").is_symlink(), "rtk symlink created in ~/.local/bin")
+        self.assertIn("OpenSpace-installed", result.stdout)
+
+    def test_ingest_hooks_frozen_clock_two_sessions_preserve_both_captures_and_filter_transcript(self) -> None:
+        vault = self.work / "frozen-vault"
+        env = self.env(
+            LLM_WIKI_VAULT=str(vault),
+            JEO_INGEST_FROZEN_UTC="2026-11-01T12:00:00+00:00",
+        )
+        ingest_prompt = ROOT / "hooks/ingest-prompt.py"
+        for idx, session_id in enumerate(("session-alpha", "session-beta"), 1):
+            prompt_payload = json.dumps({
+                "hook_event_name": "UserPromptSubmit",
+                "session_id": session_id,
+                "prompt": f"# Identical Heading\n\nDistinct body from {session_id} ({idx}).\n```python\nprint('{session_id}')\n```",
+            })
+            res_p = subprocess.run(
+                [sys.executable, str(ingest_prompt)],
+                input=prompt_payload, text=True, capture_output=True, env=env, timeout=15,
+            )
+            self.assertEqual(res_p.returncode, 0, res_p.stderr)
+
+            transcript = self.work / f"transcript-{session_id}.jsonl"
+            transcript.write_text(json.dumps({
+                "type": "assistant",
+                "message": {
+                    "content": [
+                        {"type": "thinking", "thinking": f"SECRET_THINKING_{session_id}"},
+                        {"type": "tool_use", "name": "bash", "input": {"cmd": f"SECRET_TOOL_{session_id}"}},
+                        {"type": "text", "text": f"# Identical Answer Title\n\nVisible output for {session_id}.\n```bash\necho {session_id}\n```"},
+                    ]
+                }
+            }) + "\n", encoding="utf-8")
+            stop_payload = json.dumps({
+                "hook_event_name": "Stop",
+                "session_id": session_id,
+                "transcript_path": str(transcript),
+            })
+            res_o = subprocess.run(
+                [sys.executable, str(ingest_prompt)],
+                input=stop_payload, text=True, capture_output=True, env=env, timeout=15,
+            )
+            self.assertEqual(res_o.returncode, 0, res_o.stderr)
+
+        raw_prompts = sorted((vault / "raw/sources/prompts").rglob("*.md"))
+        raw_outputs = sorted((vault / "raw/sources/outputs").rglob("*.md"))
+        queries = sorted((vault / "wiki/queries").rglob("*.md"))
+        reports = sorted((vault / "wiki/reports").rglob("*.md"))
+        self.assertEqual(len(raw_prompts), 2, raw_prompts)
+        self.assertEqual(len(raw_outputs), 2, raw_outputs)
+        self.assertEqual(len(queries), 2, queries)
+        self.assertEqual(len(reports), 2, reports)
+        combined_reports = "\n".join(p.read_text(encoding="utf-8") for p in reports)
+        self.assertIn("Visible output for session-alpha.", combined_reports)
+        self.assertIn("Visible output for session-beta.", combined_reports)
+        self.assertNotIn("SECRET_THINKING_", combined_reports)
+        self.assertNotIn("SECRET_TOOL_", combined_reports)
+        combined_raw_prompts = "\n".join(p.read_text(encoding="utf-8") for p in raw_prompts)
+        combined_raw_outputs = "\n".join(p.read_text(encoding="utf-8") for p in raw_outputs)
+        self.assertIn("```python\nprint('session-alpha')\n```", combined_raw_prompts)
+        self.assertIn("```bash\necho session-beta\n```", combined_raw_outputs)
+        self.assertNotIn("'''", combined_raw_prompts)
+        self.assertNotIn("'''", combined_raw_outputs)
+
+        # Held-lock test: while vault.lock is held, delegated Stop output still writes raw/report
+        # and records deferred-index.jsonl; once unlocked, the next ingest reconciles index.md.
+        import fcntl
+        lock_path = self.home / ".agents/hooks/ctx/locks/vault.lock"
+        lock_path.parent.mkdir(parents=True, exist_ok=True)
+        lock_fd = os.open(str(lock_path), os.O_RDWR | os.O_CREAT, 0o644)
+        fcntl.flock(lock_fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        try:
+            locked_env = dict(env, CTX_VAULT_LOCK_WAIT="0.05")
+            res_locked = subprocess.run(
+                [sys.executable, str(ingest_prompt)],
+                input=json.dumps({
+                    "hook_event_name": "Stop",
+                    "session_id": "session-locked",
+                    "assistant_output": "# Locked Output Heading\n\nSaved while lock held.",
+                }),
+                text=True, capture_output=True, env=locked_env, timeout=15,
+            )
+            self.assertEqual(res_locked.returncode, 0, res_locked.stderr)
+            deferred_file = vault / ".state/deferred-index.jsonl"
+            self.assertTrue(deferred_file.is_file(), "deferred-index.jsonl must be written when vault lock is held")
+            self.assertIn("Locked Output Heading", deferred_file.read_text(encoding="utf-8"))
+        finally:
+            fcntl.flock(lock_fd, fcntl.LOCK_UN)
+            os.close(lock_fd)
+
+        res_reconcile = subprocess.run(
+            [sys.executable, str(ingest_prompt)],
+            input=json.dumps({
+                "hook_event_name": "UserPromptSubmit",
+                "session_id": "session-reconcile",
+                "prompt": "# Reconcile Trigger\n\nReconciles deferred entries.",
+            }),
+            text=True, capture_output=True, env=env, timeout=15,
+        )
+        self.assertEqual(res_reconcile.returncode, 0, res_reconcile.stderr)
+        self.assertFalse((vault / ".state/deferred-index.jsonl").exists())
+        self.assertIn("Locked Output Heading", (vault / "index.md").read_text(encoding="utf-8"))
+
 if __name__ == "__main__":
     unittest.main()

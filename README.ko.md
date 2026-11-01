@@ -93,6 +93,7 @@ jeo-skill install react-best-practices --global --yes      # install
 | 현재 프로젝트에만 설치 | `INSTALL_GLOBAL=false`를 지정한 한 줄 명령 |
 | 변경 없이 미리 보기 | `JEO_SKILLS_DRY_RUN=true`를 지정한 한 줄 명령 |
 | 특정 스킬 | `jeo-skill install <name> [<name> ...] --global --yes` |
+| 특정 스킬 + 런타임/스모크 검증 | `jeo-skill install <name> ... --global --yes --setup` (지원되는 스킬에 한해 훅/MCP 단계를 실행하려면 `--with-hooks` 추가, 도구별 지원 범위는 [설치 가이드](setup-all-skills-prompt.md#step-5--full-mode-shared-tools) 참조) |
 | 번들 또는 카테고리 일부 | `jeo-skill install --bundle <bundle> --global --yes` 또는 `--category <id> [--subcategory <id>]` |
 
 Lightpanda는 `jeo-skill install lightpanda --global --dry-run`으로 선택을 미리 확인한 뒤
@@ -830,6 +831,16 @@ python3 scripts/changelog.py check
 
 <!-- WHATS-NEW:START -->
 
+## 🆕 v2026-11-01 업데이트
+
+| 변경 사항 | 상세 내용 |
+|--------|---------|
+| **선택적 스킬 설정 및 훅 자동화** | `jeo-skill install`에 명시적 허용목록(`SUPPORTED_SETUP_SKILLS`) 기반 `--setup`과 Hook/MCP 자동 등록용 `--with-hooks`(`JEO_SKILLS_APPROVE_ALL_HOOKS_MCP=true` 내보냄)를 추가했습니다. 지원 스킬(`open-ontologies`, `okf-agent-memory`, `mex`, `openspace`, `ooo`, `rtk`, `cli-anything`, `spec-kit`, `ecc`, `jev-control-plane`, `graphify`, `semble`, `zvec-grep`, `llm-wiki`)의 번들 CLI/스모크 검증을 수행하며, 미지원 스킬은 안전하게 건너뜁니다. `--dry-run` 시 서브프로세스나 파일 쓰기를 전혀 수행하지 않습니다. |
+| **OpenSpace `--skip-mcp` 런타임 모드 및 훅 격리** | `install-openspace.sh`에 `--skip-mcp` 옵션을 추가하고 `jeo-skill install openspace --setup` 및 `install-full-tools.sh`의 기본 호출에 연결해, `--with-hooks` 승인 없이 호스트 MCP 설정이 변경되는 문제를 방지했습니다. upstream v2.0의 ooo/openspace 독립 설치 구조를 그대로 유지합니다. |
+| **Full-tools 확장 및 다중 에이전트 spec-kit** | `scripts/install-full-tools.sh`에 기본 6/6 계약을 유지하면서 `Graphify`, `OpenSpace`(BM25 프로브 기준), `Open-Ontologies`(`smoke.py`), `OKF-Agent-Memory`(`smoke.py`)를 포함하는 `--extended`(10/10 도구) 모드를 추가했습니다. TeX Live `mex`보다 최신 nvm/npm 버전을 우선하는 `~/.local/bin/mex-agent` 래퍼 설치, `~/.local/bin/rtk -> ~/.cargo/bin/rtk`(`1.1.0`) 심볼릭 링크 연결, 다중 에이전트 `SPEC_KIT_INTEGRATION` 스테이징 및 안전한 미존재 파일 전용 병합을 지원합니다. |
+| **지식 파이프라인 및 볼트 동시성 강화** | `hooks/ctx/lock.py`, `hooks/ingest-output.py`, `hooks/ingest-prompt.py`를 레포에 패키징하고 실제 `fcntl.flock` 폴백을 내장했습니다. `Stop`/`AfterAgent`/`post-turn` 턴 종료 이벤트 시 출력이 있으면 볼트 락 하에 `ingest-output.py`로 위임하며 가시적 텍스트 블록만 추출합니다(`thinking`/`tool_use` 필터링). 고유 `capture_id`와 배타적 생성(`"x"`)으로 파일 덮어쓰기 충돌을 차단하고, 백틱 비변조 외곽 펜스를 적용했으며, 락 점유 시 `.state/deferred-index.jsonl`에 안전하게 지연 기록 후 다음 실행 시 자동 색인 병합합니다. |
+| **Jev 다중 호스트 바인딩 및 ECC 업데이트** | 감지된 10개 코딩 에이전트 호스트를 `~/.agents/jev/agents.json`의 독립 프로필에 연결하고, `echo-turn-jeopi`를 `runtimeMode: assist`로 전환하여 스킬 본문 자동 주입을 활성화했으며, Claude Code `ecc@ecc` 플러그인을 Jev 리뷰를 거쳐 `2.2.3`으로 업데이트했습니다. |
+
 ## 🆕 v2026-10-30 업데이트
 
 | 변경 사항 | 상세 내용 |
@@ -876,12 +887,6 @@ python3 scripts/changelog.py check
 | **검증** | 설치 회귀 63/63(신규 15개, 고정 fixture), 저장소 preflight 회귀 15/15(신규 helper 5종과 harness2 bench/method 사례), 카탈로그 투영·frontmatter·레이아웃·changelog 게이트 통과, 평가 시나리오 25개 추가. 이 머신의 오래된 사본을 그대로 복제한 격리 HOME에서 실제 고정 버전 `skills@1.7.0`으로 문서의 전체 설치(Step 4–4E, 7)를 처음부터 끝까지 실행했습니다. 설치 원본은 이 작업 트리를 커밋한 로컬 스냅숏이며(GitHub URL을 그쪽으로 우회), 공개 HEAD에는 push 전까지 이 변경이 없습니다. 모든 은퇴 사본과 이를 가리키는 링크가 제거되고 무관한 스킬·링크·Aside `builtin/`은 바이트 단위로 유지됐으며, 실제 jeopi/oh-my-pi/GJC 로더가 새 스킬 5종을 찾고 `jeo`/`harness`는 찾지 않음을 확인했습니다. OpenCode는 공유 루트 배치만 확인했고 런타임 활성화는 확인하지 않았습니다. upstream harness2 데모는 두 재귀 모드 모두 2/2 작업이 통과했고 단위 테스트 5개도 통과했습니다. 벤치마크·모델·심사 등 다른 upstream 런타임은 실행하지 않았습니다. |
 | **스킬 사용 추적과 미사용 스킬 정리** | `jeo-skill usage scan`이 Claude·Codex·OpenCode·Antigravity·Aside·jeopi/GJC/OMP/Pi 세션과 Jev의 로컬 기록에서 사용 요약과 증분 스캔 메타데이터만 보존하고(대화 본문 제외), 호출·로드·Jev 전체 본문 주입만 사용으로 집계합니다. 전체 이력 0회와 추적 시작 후 30일 유예를 모두 충족한 항목만 후보로 삼으며 핵심 번들·핀·`usage relevance` 보호는 제외합니다. `prune-unused`는 확인 가능한 카탈로그 사본만 되돌릴 수 있게 격리하고 서드파티 사본·링크는 보존하며, Jev `deny`/사용 불가는 적용을 중단합니다. `restore`/`purge-quarantine`과 관리자용 `retire-unused-skills.py --approve`를 분리했습니다. 설치기와 `install.sh`는 추적이나 훅 등록을 시작하지 않으며, `usage scan`이 집계 트래커 상태와 30일 유예 시계를 만듭니다. 이미 활성화한 Jev 훅은 scan 전에도 같은 상태 디렉터리의 `jev-usage.jsonl`에 라우팅·주입 이벤트를 남기고 주입만 사용으로 셉니다. usage 7·quarantine 15·retirement 7 Python 회귀와 Node ledger 테스트 4개가 통과했으며, 실제 데이터 read-only scan은 `/tmp`에서 실행하고 호스트 추적 상태와 훅은 시작하지 않았습니다. |
 | **README 시각 자료 갱신** | 새 Codex 커버 `assets/readme-cover.webp`와 `catalog-install-flow.svg`, `runtime-boundaries.svg`, `skill-lifecycle.svg` 다이어그램으로 갱신했습니다. `readme-hero.webp`, `catalog-workflow.svg`, `runtime-architecture.svg`, 고아 `assets/scrapingant/` 로고를 더 이상 사용하지 않으며, 중복 `ooo` 문서 병합, god-tibo-imagen·plannotator 명령 수정, 운영 스킬 수 12개→18개를 반영했습니다. 문서 전용 변경입니다. |
-
-## 🆕 v2026-10-17 업데이트
-
-| 변경 사항 | 상세 내용 |
-|--------|---------|
-| **OpenCreator 운영 스킬** | `krillinai/OpenCreator` 커밋 `b01a9f71165b9010216e25c462653b0cfa33cbce`에 고정한 `opencreator` 가이드를 추가했습니다. Desktop/CLI/Server 선택, 제작 작업, Codex·provider 설정, Skills/MCP/일정, 릴리스 무결성과 승인 경계를 다룹니다. 오프라인 읽기 전용 사전 점검과 작성된 시나리오 11개, CI에 연결된 전용 회귀 테스트 16개를 추가해 모두 통과했습니다. 카탈로그는 400개에서 401개로 늘었습니다. 업스트림 앱·설치 프로그램·provider·유료 서비스는 실행하지 않았습니다. |
 
 > 📜 이전 기록: [`changelog/ko/`](changelog/ko/) (월별 파일, 최신순).
 

@@ -58,11 +58,19 @@ jeo-skill install responsive-design react-best-practices --dry-run
 # Install globally after reviewing the selection.
 jeo-skill install responsive-design react-best-practices --global --yes
 jeo-skill install --bundle game-web --global --yes
+
+# Optionally run bundled tool setup / smoke verification (--setup) and hook/MCP wiring (--with-hooks):
+jeo-skill install open-ontologies openspace rtk --global --yes --setup --dry-run
+jeo-skill install open-ontologies openspace rtk --global --yes --setup
 ```
 
-The CLI delegates installation to `npx skills add ... --skill ...`; it never copies the
+The CLI delegates file installation to `npx skills add ... --skill ...`; it never copies the
 whole repository unless the user explicitly selects every skill. Omit `--global` for a
 project-local install. Use `--agent <runtime>` to target a specific supported runtime.
+Pass `--setup` to also run the selected skills' bundled CLI/smoke verification helpers
+(for example `open-ontologies`, `okf-agent-memory`, `mex`, `openspace`, `ooo`, `rtk`,
+`semble`, `cli-anything`, `spec-kit`, `graphify`, `llm-wiki`, `jev-control-plane`, `ecc`),
+and `--with-hooks` when you also approve hook/MCP registration.
 
 ### 3. Treat overlap as a routing relationship
 

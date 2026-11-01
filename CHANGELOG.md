@@ -2,6 +2,18 @@
 
 All notable changes to **jeo-skills** are documented here.
 
+## 2026-11-01
+
+### Added
+- Added `--setup` (with an explicit allowlist `SUPPORTED_SETUP_SKILLS`) and `--with-hooks` (which exports `JEO_SKILLS_APPROVE_ALL_HOOKS_MCP=true`) to `jeo-skill install`. It runs bundled CLI/smoke verification for supported skills (`open-ontologies`, `okf-agent-memory`, `mex`, `openspace`, `ooo`, `rtk`, `cli-anything`, `spec-kit`, `ecc`, `jev-control-plane`, `graphify`, `semble`, `zvec-grep`, `llm-wiki`) and explicitly skips unsupported ones. `--dry-run` executes zero subprocesses and writes zero files.
+- Added `--skip-mcp` to `install-openspace.sh` and wired it into `jeo-skill install openspace --setup` and `scripts/install-full-tools.sh`, preventing unintended host MCP registration during setup without `--with-hooks`. Preserved the upstream `ooo` and `openspace` independent installation structure from v2.0.
+- Added `--extended` mode (10/10 tools) to `scripts/install-full-tools.sh` covering `Graphify`, `OpenSpace` (BM25 probe), `Open-Ontologies` (`smoke.py`), and `OKF-Agent-Memory` (`smoke.py`) while preserving the 6/6 default baseline.
+- Packaged `hooks/ctx/lock.py`, `hooks/ingest-output.py`, and `hooks/ingest-prompt.py` in the repository with real `fcntl.flock` fallbacks. Turn-end events (`Stop`, `AfterAgent`, `post-turn`) with output payloads delegate to `ingest-output.py` under the vault layer lock, capturing visible text only (filtering `thinking`/`tool_use`). File collisions are eliminated with `capture_id` and exclusive creation (`"x"` mode), raw captures use non-mutating outer fences, and lock contention defers indexing to `.state/deferred-index.jsonl` with automatic reconciliation on the next unlocked run.
+
+### Changed
+- `scripts/install-full-tools.sh` now installs the unambiguous `~/.local/bin/mex-agent` wrapper (prioritizing active npm and newest nvm Node ahead of TeX Live `mex`), automatically links `~/.local/bin/rtk -> ~/.cargo/bin/rtk` (`1.1.0`), and supports multi-agent `SPEC_KIT_INTEGRATION` (`auto` or comma-separated) with staging and absent-only atomic merge.
+- Bound all 10 detected coding agent hosts to independent profiles in `~/.agents/jev/agents.json`, switched `echo-turn-jeopi` to `runtimeMode: assist` for automated skill instruction injection, and updated Claude Code `ecc@ecc` plugin to `2.2.3` with Jev proposal reviews.
+
 ## 2026-10-30
 
 ### Added

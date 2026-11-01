@@ -34,25 +34,28 @@ not prove Git HEAD, full revision integrity, dependency versions, or live readin
 Private-data ingestion, remote embeddings, cloud resources, database/index writes,
 and service or MCP activation each require their own approval.
 
-### Open Ontologies guide (on demand)
+### Open Ontologies operator and runtime installer (on demand)
 
-[`open-ontologies`](.agent-skills/open-ontologies/SKILL.md) is a member of the `knowledge-repositories` bundle's selected-public-file helpers and a guide-only operator for the pinned [`fabio-rovai/open-ontologies` upstream commit](https://github.com/fabio-rovai/open-ontologies/commit/dfb09bf815326913d7d7822fa7228f2602fb4976). It covers RDF/OWL semantic planning, change-impact/reasoning, and certificate-aware verification; it is not a GUI ontology editor. Use Protégé or another workbench skill for visual editing. Read the [pinned upstream notes](.agent-skills/open-ontologies/references/upstream.md) before choosing commands.
+[`open-ontologies`](.agent-skills/open-ontologies/SKILL.md) (v1.2.0) is a member of the `knowledge-repositories` bundle's selected-public-file helpers and an operator for the pinned [`fabio-rovai/open-ontologies` upstream commit](https://github.com/fabio-rovai/open-ontologies/commit/dfb09bf815326913d7d7822fa7228f2602fb4976). It covers RDF/OWL semantic planning, change-impact/reasoning, and certificate-aware verification; it is not a GUI ontology editor. Use Protégé or another workbench skill for visual editing. Read the [pinned upstream notes](.agent-skills/open-ontologies/references/upstream.md) before choosing commands.
 
-Install only the operator guide, on demand:
+Install the operator guide (add `--setup` when you also approve building or verifying the pinned binary and running its isolated RDFS batch smoke test):
 
 ```bash
 HOME="$USER_HOME" python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" install open-ontologies --global --yes
+# Optional approved build + smoke (clones pinned dfb09bf8..., runs preflight.py, builds with cargo 1.88+, and runs smoke.py):
+HOME="$USER_HOME" python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" install open-ontologies --global --yes --setup
 ```
 
-Against an approved absolute upstream checkout, run the linked [offline preflight helper](.agent-skills/open-ontologies/scripts/preflight.py):
+Against an approved absolute upstream checkout, run the linked [offline preflight helper](.agent-skills/open-ontologies/scripts/preflight.py), or verify an installed binary with [`smoke.py`](.agent-skills/open-ontologies/scripts/smoke.py):
 
 ```bash
 python3 "$HOME/.agents/skills/open-ontologies/scripts/preflight.py" \
   --repo /absolute/path/to/open-ontologies --json
+python3 "$HOME/.agents/skills/open-ontologies/scripts/smoke.py" \
+  --binary "$HOME/.local/bin/open-ontologies" --json
 ```
 
-This performs selected-public-file SHA-256 checks only; `runtime_verified=false` means it is **not** Git HEAD, full-revision, dependency, build, or runtime evidence. Blanket setup MUST NOT build or install the upstream project or activate MCP. The guide does not run binaries/builds or the Lean checker, pull OCI images, register an MCP client, upload or ingest ontology data, make provider calls, or write graph/database artifacts; each such action requires separate approval.
-
+`preflight.py` performs selected-public-file SHA-256 checks only (`runtime_verified=false`). `scripts/install.sh` (invoked on demand or via `--setup`) requires separate approval for cloning, Rust 1.88+ compilation, and binary placement; `smoke.py` verifies only the local `--no-connect` CLI batch/RDFS surface in a temporary directory, not MCP servers, certificates, or user ontology data.
 ### Agent Beacon session history and memory (on demand)
 
 [`agent-beacon`](.agent-skills/agent-beacon/SKILL.md) is a guide-only operator for the pinned [`Asymptote-Labs/agent-beacon` upstream commit](https://github.com/Asymptote-Labs/agent-beacon/tree/cfbd7b1d721664e3b1b5ca2fca5eac4327532c07). It covers the named Agent Beacon project: a local-first cross-harness session-history and memory layer with normalized local JSONL events, trace browsing/search, reviewed memory evaluation and promotion, lenses, handoff, and explicit sharing. It is not a generic observability SDK, memory-backend selector, or agent-team runtime. Read the [pinned upstream notes](.agent-skills/agent-beacon/references/upstream.md) and [source manifest](.agent-skills/agent-beacon/references/source.json) first.
@@ -1153,10 +1156,10 @@ UVX_BIN=$(command -v uvx || true)
 if [ -z "$UVX_BIN" ]; then
   printf '%s\n' 'semble: uvx not found after installing uv; open a new shell and rerun.' >&2
 else
-  if [ "${JEO_SKILLS_APPROVE_SEMBLE_MCP:-false}" = true ] && command -v claude >/dev/null 2>&1 && ! claude mcp get semble >/dev/null 2>&1; then
+  if [ "${JEO_SKILLS_APPROVE_SEMBLE_MCP:-${JEO_SKILLS_APPROVE_ALL_HOOKS_MCP:-false}}" = true ] && command -v claude >/dev/null 2>&1 && ! claude mcp get semble >/dev/null 2>&1; then
     claude mcp add semble -s user -- "$UVX_BIN" --from 'semble[mcp]' semble
   fi
-  if [ "${JEO_SKILLS_APPROVE_SEMBLE_MCP:-false}" = true ] && command -v codex >/dev/null 2>&1 && ! codex mcp get semble >/dev/null 2>&1; then
+  if [ "${JEO_SKILLS_APPROVE_SEMBLE_MCP:-${JEO_SKILLS_APPROVE_ALL_HOOKS_MCP:-false}}" = true ] && command -v codex >/dev/null 2>&1 && ! codex mcp get semble >/dev/null 2>&1; then
     codex mcp add semble -- "$UVX_BIN" --from 'semble[mcp]' semble
   fi
 fi
@@ -1256,7 +1259,7 @@ the Ponytail ladder only when the host explicitly supplies
 `context_usage_percent >= 60`. It never infers context usage from proxy savings.
 
 ```bash
-if [ "${JEO_SKILLS_APPROVE_HEADROOM_HOOK:-false}" = true ] && command -v claude >/dev/null 2>&1 \
+if [ "${JEO_SKILLS_APPROVE_HEADROOM_HOOK:-${JEO_SKILLS_APPROVE_ALL_HOOKS_MCP:-false}}" = true ] && command -v claude >/dev/null 2>&1 \
   && [ -x "$SKILLS_ROOT/headroom/scripts/setup-claude-code-policy-hook.sh" ]; then
   bash "$SKILLS_ROOT/headroom/scripts/setup-claude-code-policy-hook.sh"
   python3 "$SKILLS_ROOT/headroom/scripts/jeo-code-policy-hook.py" --self-test
@@ -1278,13 +1281,13 @@ JSON/TOML schema or overwrite its existing settings.
 ### Knowledge pipeline hooks (llm-wiki + graphify, per-repo vault)
 
 Only after separate approval of both hook registration (`JEO_SKILLS_APPROVE_KNOWLEDGE_HOOKS=true`)
-and vault/index data writes (`JEO_SKILLS_APPROVE_KNOWLEDGE_DATA=true`), wire prompts
-and finished turns through `hooks/ingest-prompt.py`. Approval covers vault bootstrap
-and subsequent hook-triggered ingestion and graph refreshes, not just this setup run.
-The vault is **project-scoped**: `ingest-prompt.py` resolves it at run time as
-`$LLM_WIKI_VAULT` → `$OBSIDIAN_MIND_VAULT/llm-wiki` → `<git toplevel>/llm-wiki` →
-`~/vaults/obsidian-mind/llm-wiki`, so no hook or wrapper stores a vault path and one
-installed script serves every repository. Per-agent events:
+and vault/index data writes (`JEO_SKILLS_APPROVE_KNOWLEDGE_DATA=true`) — or the unified
+`JEO_SKILLS_APPROVE_ALL_HOOKS_MCP=true` opt-in when neither individual flag is `false` — wire prompts
+and finished turns through `hooks/ingest-prompt.py` and `hooks/ingest-output.py` under
+`hooks/ctx/lock.py`. Approval covers vault bootstrap and subsequent hook-triggered prompt
+and output ingestion. The vault resolves at run time as
+`$LLM_WIKI_VAULT` (canonical unified vault: `~/vaults/llm-wiki`) → `$OBSIDIAN_MIND_VAULT/llm-wiki` → `<git toplevel>/llm-wiki` →
+`~/vaults/obsidian-mind/llm-wiki`, so no hook or wrapper stores a hardcoded vault path. Per-agent events:
 
 | Agent | prompt-in | turn-end | Config file |
 |---|---|---|---|
@@ -1293,25 +1296,29 @@ installed script serves every repository. Per-agent events:
 | Antigravity CLI / IDE | `BeforeAgent` | `AfterAgent` | `~/.gemini/settings.json` |
 
 ```bash
-if [ "${JEO_SKILLS_APPROVE_KNOWLEDGE_HOOKS:-false}" = true ] && [ "${JEO_SKILLS_APPROVE_KNOWLEDGE_DATA:-false}" = true ]; then
+if { [ "${JEO_SKILLS_APPROVE_KNOWLEDGE_HOOKS:-}" != false ] && [ "${JEO_SKILLS_APPROVE_KNOWLEDGE_DATA:-}" != false ] && [ "${JEO_SKILLS_APPROVE_ALL_HOOKS_MCP:-false}" = true ]; } || { [ "${JEO_SKILLS_APPROVE_KNOWLEDGE_HOOKS:-false}" = true ] && [ "${JEO_SKILLS_APPROVE_KNOWLEDGE_DATA:-false}" = true ]; }; then
 KP_SCRIPTS="$USER_HOME/.agents/hooks"
 KP_INGEST="$KP_SCRIPTS/ingest-prompt.py"
-KP_RAW_URL="https://raw.githubusercontent.com/akillness/jeo-skills/main/hooks/ingest-prompt.py"
+KP_OUTPUT="$KP_SCRIPTS/ingest-output.py"
+KP_LOCK="$KP_SCRIPTS/ctx/lock.py"
+KP_RAW_BASE="https://raw.githubusercontent.com/akillness/jeo-skills/main/hooks"
 
-# 1. Bootstrap the CURRENT project's vault only; other repos are bootstrapped by
-#    ingest-prompt.py itself on their first captured prompt.
+# 1. Bootstrap the target vault if missing.
 OM_VAULT="${OBSIDIAN_MIND_VAULT:-$(git rev-parse --show-toplevel 2>/dev/null || echo "$USER_HOME/vaults/obsidian-mind")}"
 KP_VAULT="${LLM_WIKI_VAULT:-$OM_VAULT/llm-wiki}"
 if [ ! -f "$KP_VAULT/index.md" ] && [ -x "$SKILLS_ROOT/llm-wiki/scripts/bootstrap-vault.sh" ]; then
   bash "$SKILLS_ROOT/llm-wiki/scripts/bootstrap-vault.sh" "$KP_VAULT"
 fi
 
-# 2. Place the shared ingest script at its project-independent path (once).
+# 2. Place the shared ingest scripts and ctx lock helper at their project-independent paths.
 mkdir -p "$KP_SCRIPTS"
 if [ ! -f "$KP_INGEST" ]; then
-  curl -fsSL "$KP_RAW_URL" -o "$KP_INGEST" && chmod +x "$KP_INGEST"
+  curl -fsSL "$KP_RAW_BASE/ingest-prompt.py" -o "$KP_INGEST" && chmod +x "$KP_INGEST"
+  mkdir -p "$KP_SCRIPTS/ctx"
+  curl -fsSL "$KP_RAW_BASE/ingest-output.py" -o "$KP_OUTPUT" 2>/dev/null && chmod +x "$KP_OUTPUT" || true
+  curl -fsSL "$KP_RAW_BASE/ctx/lock.py" -o "$KP_LOCK" 2>/dev/null || true
+  : > "$KP_SCRIPTS/ctx/__init__.py" 2>/dev/null || true
 fi
-
 # 3. Install one vault-path-free wrapper per agent and register it for both events.
 #    Non-destructive and idempotent: an existing wrapper is kept (and reported when it
 #    differs from this template), any hook command that already invokes the wrapper
@@ -1389,9 +1396,9 @@ if command -v agy >/dev/null 2>&1 || command -v antigravity >/dev/null 2>&1; the
   secure_kp_hooks "$USER_HOME/.gemini/settings.json" "$USER_HOME/.gemini/hooks/llm-wiki-ingest.sh" BeforeAgent AfterAgent
 fi
 
-# 4. Prove the hook runs end to end. A turn-end event captures no prompt text, so
-#    this writes nothing into the vault beyond a graph refresh; exit 0 is expected
-#    even without graphify, because the script never blocks the host agent.
+# 4. Prove the hook runs end to end. A bare Stop payload without assistant_output is
+#    a clean exit-0 no-op; when assistant_output or transcript_path is present, Stop
+#    delegates to ingest-output.py under the vault layer lock.
 printf '{"hook_event_name":"Stop"}' | python3 "$KP_INGEST" && echo "ingest-prompt.py ok"
 else
   printf '%s\n' 'knowledge pipeline skipped: separate hook and vault/index write approvals required'
@@ -1404,11 +1411,9 @@ hooks are active.
 
 `jeo`, `jeopi`, and `gjc` register the same script through their own `post-turn` /
 `wikiRoot` config; read the `llm-wiki` skill's "Vault contract" section before touching
-those files, and merge keys rather than rewriting them. Keep the shared wrapper limited to
-the ingest call: the script already rebuilds the vault's own `<vault>/.graphify/` graph
-when `graphifyy` is importable. A checkout-level `graphify update .` belongs in a separate,
-user-owned `Stop` hook if wanted, because it writes `.graphify/` into every repository the
-agent touches.
+those files, and merge keys rather than rewriting them. Turn-end events with output payload
+delegate to `ingest-output.py` under `ctx.lock.layer_lock("vault")`, while Graphify
+regeneration (`graphify-out/graph.json`) runs at `ctx checkpoint` rather than per turn.
 
 ### OpenSpace skill finder and prompt-time skill routing
 
@@ -1475,7 +1480,7 @@ So the server runs from an isolated uvx `[mcp]` environment, registered by absol
 the terminal CLI is installed only when missing and is otherwise left untouched.
 
 ```bash
-if [ "${JEO_SKILLS_APPROVE_OOO_MCP:-false}" = true ]; then
+if [ "${JEO_SKILLS_APPROVE_OOO_MCP:-${JEO_SKILLS_APPROVE_ALL_HOOKS_MCP:-false}}" = true ]; then
 ooo_mcp_setup() (
 if [ ! -f "$SKILLS_ROOT/ooo/scripts/install.sh" ]; then
   printf '%s\n' 'ooo: installer is missing; install the ooo skill first.' >&2
@@ -1548,7 +1553,7 @@ drive its browser session. Register it only after separate approval
 (`JEO_SKILLS_APPROVE_ASIDE_MCP=true`), idempotently across Claude Code, Codex, and OpenCode:
 
 ```bash
-if [ "${JEO_SKILLS_APPROVE_ASIDE_MCP:-false}" = true ] && command -v aside >/dev/null 2>&1; then
+if [ "${JEO_SKILLS_APPROVE_ASIDE_MCP:-${JEO_SKILLS_APPROVE_ALL_HOOKS_MCP:-false}}" = true ] && command -v aside >/dev/null 2>&1; then
   ASIDE_BIN=$(command -v aside)  # absolute: MCP clients spawn servers with their own PATH
   if command -v claude >/dev/null 2>&1 && ! claude mcp get aside >/dev/null 2>&1; then
     claude mcp add aside -s user -- "$ASIDE_BIN" mcp

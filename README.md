@@ -93,6 +93,7 @@ The full, generated list is in [Skills list](#-skills-list).
 | Current project only | one-liner with `INSTALL_GLOBAL=false` |
 | Preview without changes | one-liner with `JEO_SKILLS_DRY_RUN=true` |
 | Specific skills | `jeo-skill install <name> [<name> ...] --global --yes` |
+| Specific skills with setup/smoke | `jeo-skill install <name> ... --global --yes --setup` (add `--with-hooks` for supported hook steps only; see [setup guide](setup-all-skills-prompt.md#step-5--full-mode-shared-tools) for exact tool boundaries) |
 | A bundle or category slice | `jeo-skill install --bundle <bundle> --global --yes` or `--category <id> [--subcategory <id>]` |
 
 For Lightpanda, preview `jeo-skill install lightpanda --global --dry-run` before installing
@@ -827,6 +828,16 @@ Edit metadata in `skills.json`, never in the generated tables. Upstream sources 
 
 <!-- WHATS-NEW:START -->
 
+## 🆕 What's New in v2026-11-01
+
+| Change | Details |
+|--------|---------|
+| **Selective skill setup & hook automation** | Added `--setup` (with an explicit allowlist `SUPPORTED_SETUP_SKILLS`) and `--with-hooks` (which exports `JEO_SKILLS_APPROVE_ALL_HOOKS_MCP=true`) to `jeo-skill install`. It runs bundled CLI/smoke verification for supported skills (`open-ontologies`, `okf-agent-memory`, `mex`, `openspace`, `ooo`, `rtk`, `cli-anything`, `spec-kit`, `ecc`, `jev-control-plane`, `graphify`, `semble`, `zvec-grep`, `llm-wiki`) and explicitly skips unsupported ones. `--dry-run` executes zero subprocesses and writes zero files. |
+| **OpenSpace `--skip-mcp` runtime mode & hook isolation** | Added `--skip-mcp` to `install-openspace.sh` and wired it into `jeo-skill install openspace --setup` and `scripts/install-full-tools.sh`, preventing unintended host MCP registration during setup without `--with-hooks`. Upstream `ooo` and `openspace` separation from v2.0 is preserved. |
+| **Extended full-tools & multi-agent spec-kit** | `scripts/install-full-tools.sh` adds `--extended` mode (10/10 tools) covering `Graphify`, `OpenSpace` (BM25 probe), `Open-Ontologies` (`smoke.py`), and `OKF-Agent-Memory` (`smoke.py`) while preserving the 6/6 default baseline. It installs the unambiguous `~/.local/bin/mex-agent` wrapper (prioritizing active npm and newest nvm Node ahead of TeX Live `mex`), automatically links `~/.local/bin/rtk -> ~/.cargo/bin/rtk` (`1.1.0`), and supports multi-agent `SPEC_KIT_INTEGRATION` (`auto` or comma-separated) with staging and absent-only atomic merge. |
+| **Knowledge pipeline & vault concurrency** | Packaged `hooks/ctx/lock.py`, `hooks/ingest-output.py`, and `hooks/ingest-prompt.py` in the repository with real `fcntl.flock` fallbacks. Turn-end events (`Stop`, `AfterAgent`, `post-turn`) with output payloads delegate to `ingest-output.py` under the vault layer lock, capturing visible text only (filtering `thinking`/`tool_use`). File collisions are eliminated with `capture_id` and exclusive creation (`"x"` mode), raw captures use non-mutating outer fences, and lock contention defers indexing to `.state/deferred-index.jsonl` with automatic reconciliation on the next unlocked run. |
+| **Jev multi-host binding & ECC update** | Bound all 10 detected coding agent hosts to independent profiles in `~/.agents/jev/agents.json`, switched `echo-turn-jeopi` to `runtimeMode: assist` for automated skill instruction injection, and updated Claude Code `ecc@ecc` plugin to `2.2.3` with Jev proposal reviews. |
+
 ## 🆕 What's New in v2026-10-30
 
 | Change | Details |
@@ -873,12 +884,6 @@ Edit metadata in `skills.json`, never in the generated tables. Upstream sources 
 | **Verification** | Installer regressions 63/63 (15 new, vendored fixtures), repository preflight regressions 15/15 (five new helpers plus harness2 bench/method cases), catalog projection/frontmatter/layout/changelog gates pass; 25 new eval scenarios. The documented full install (Steps 4–4E, 7) ran end to end with the real pinned `skills@1.7.0` in an isolated HOME seeded with this machine's stale copies, against a committed local snapshot of this working tree (the GitHub URL was redirected to it; public HEAD does not contain these changes until they are pushed): every retired copy and its dependent link was removed, unrelated skills, links, and Aside `builtin/` stayed byte-identical, and real jeopi/oh-my-pi/GJC loaders resolve the five new skills and no `jeo`/`harness`. OpenCode was verified by shared-root placement only, not runtime activation. The upstream harness2 demo passed in both recursion modes (2/2 tasks each) plus its 5 unit tests; no benchmark, model, judge, or other upstream runtime ran. |
 | **Skill usage tracking and unused-skill cleanup** | Added `jeo-skill usage scan`/`report` evidence aggregation across local runtime records and the Jev `jev-usage.jsonl` ledger, zero-use plus 30-day-grace candidate rules, protected bundles/pins, reversible `prune-unused` quarantine with `restore`, permanent `purge-quarantine`, and the separate maintainer `retire-unused-skills.py` lane. Only provable catalog copies move; third-party copies, symlinks, and linked roots stay. Jev `deny`/unavailable aborts apply, `proposal_only` proceeds only with explicit `--apply`, and skipped review is recorded; routed ledger events do not count as use, only injections do. Usage (7), quarantine (15), retirement (7 Python) and Jev ledger (4 Node) regressions pass; a real-data read-only scan used `/tmp`, with no tracking state or host hook started. |
 | **README visual refresh** | Documentation-only: added the Codex cover `assets/readme-cover.webp` and `catalog-install-flow.svg`, `runtime-boundaries.svg`, and `skill-lifecycle.svg`; superseded `readme-hero.webp`, `catalog-workflow.svg`, `runtime-architecture.svg`, and the orphan `assets/scrapingant/` logo; merged duplicate `ooo` docs, corrected god-tibo-imagen and plannotator commands, and updated the operator count from 12 to 18. |
-
-## 🆕 What's New in v2026-10-17
-
-| Change | Details |
-|--------|---------|
-| **OpenCreator operator** | Added the source-pinned `opencreator` guide for `krillinai/OpenCreator` commit `b01a9f71165b9010216e25c462653b0cfa33cbce`, covering Desktop/CLI/Server, creator tasks, Codex/provider setup, Skills/MCP/schedules, release integrity and approval boundaries. Added an offline read-only preflight, 11 authored scenarios, and 16 passing subprocess regressions wired into CI. Catalog: 400 → 401. No upstream app, installer, provider, or paid service was run. |
 
 > 📜 Older entries: [`changelog/en/`](changelog/en/) (monthly files, newest first).
 
