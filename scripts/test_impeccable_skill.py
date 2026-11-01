@@ -171,7 +171,7 @@ class DoctorTests(Sandbox):
                 row["sha256"] = digest
         (skill / "references" / "source.json").write_text(json.dumps(source), encoding="utf-8")
         cached = self.executable(self.home / ".impeccable" / "bin" / "0.1.18" / "impeccable", payload)
-        Path(str(cached) + ".verified").write_text(digest + "\n", encoding="utf-8")
+        Path(str(cached) + ".verified").write_text(f"{digest} {len(payload)}\n", encoding="utf-8")
         self.executable(self.home / ".impeccable" / "bin" / "impeccable", b"different bytes")
         linux = json.dumps({"system": "Linux", "machine": "x86_64"})
         result = self.run_script(skill / "scripts" / "doctor.py", "--project", self.project, "--verify-digest",
@@ -184,6 +184,51 @@ class DoctorTests(Sandbox):
         self.assertFalse(by_origin["home"]["matches_pinned_digest"])
         plain = self.report(TEST_PLATFORM=linux)
         self.assertNotIn("sha256", plain["engine_candidates"][0])
+
+    def test_verified_stamp_real_launcher_format_and_freshness(self):
+        payload = b"pinned engine bytes"
+        digest = hashlib.sha256(payload).hexdigest()
+        skill = self.root / "skill-copy-stamp"
+        shutil.copytree(SKILL, skill)
+        source = json.loads((skill / "references" / "source.json").read_text(encoding="utf-8"))
+        for row in source["engine"]["checksums"]:
+            if row["asset"] == "impeccable-linux-x64":
+                row["sha256"] = digest
+        (skill / "references" / "source.json").write_text(json.dumps(source), encoding="utf-8")
+        linux = json.dumps({"system": "Linux", "machine": "x86_64"})
+
+        # Case 1: Real launcher format with digest and byte count: "$actual $size"
+        cached = self.executable(self.home / ".impeccable" / "bin" / "0.1.18" / "impeccable", payload)
+        stamp_file = Path(str(cached) + ".verified")
+        stamp_file.write_text(f"{digest} {len(payload)}\n", encoding="utf-8")
+        result = self.run_script(skill / "scripts" / "doctor.py", "--project", self.project, "--verify-digest",
+                                 TEST_PLATFORM=linux)
+        by_origin = {c["origin"]: c for c in json.loads(result.stdout)["engine_candidates"]}
+        self.assertTrue(by_origin["versioned-cache"]["verified_stamp"])
+
+        # Case 2: Size mismatch in stamp
+        stamp_file.write_text(f"{digest} {len(payload) + 99}\n", encoding="utf-8")
+        result = self.run_script(skill / "scripts" / "doctor.py", "--project", self.project, "--verify-digest",
+                                 TEST_PLATFORM=linux)
+        by_origin = {c["origin"]: c for c in json.loads(result.stdout)["engine_candidates"]}
+        self.assertFalse(by_origin["versioned-cache"]["verified_stamp"])
+
+        # Case 3: Stale stamp (binary modified after stamp was written)
+        stamp_file.write_text(f"{digest} {len(payload)}\n", encoding="utf-8")
+        stamp_mtime = stamp_file.stat().st_mtime
+        os.utime(cached, (stamp_mtime + 10, stamp_mtime + 10))
+        result = self.run_script(skill / "scripts" / "doctor.py", "--project", self.project, "--verify-digest",
+                                 TEST_PLATFORM=linux)
+        by_origin = {c["origin"]: c for c in json.loads(result.stdout)["engine_candidates"]}
+        self.assertFalse(by_origin["versioned-cache"]["verified_stamp"])
+
+        # Case 4: Digest-only format (backward compatibility)
+        os.utime(cached, (stamp_mtime - 10, stamp_mtime - 10))
+        stamp_file.write_text(f"{digest}\n", encoding="utf-8")
+        result = self.run_script(skill / "scripts" / "doctor.py", "--project", self.project, "--verify-digest",
+                                 TEST_PLATFORM=linux)
+        by_origin = {c["origin"]: c for c in json.loads(result.stdout)["engine_candidates"]}
+        self.assertTrue(by_origin["versioned-cache"]["verified_stamp"])
 
     def test_platform_asset_selection_matches_launcher(self):
         digests = {row["asset"]: row["sha256"] for row in SOURCE["engine"]["checksums"]}

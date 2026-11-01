@@ -121,8 +121,20 @@ def inspect_candidate(inspection, origin, path, verify, expected, version=None):
     except OSError as exc:
         info["error"] = inspection.failed(path, exc)
     if origin == "versioned-cache":
-        stamp = inspection.read_text(Path(str(path) + ".verified"))
-        info["verified_stamp"] = None if stamp is None else (stamp.strip() == expected if expected else False)
+        stamp_path = Path(str(path) + ".verified")
+        stamp = inspection.read_text(stamp_path)
+        if stamp is None:
+            info["verified_stamp"] = None
+        elif not expected:
+            info["verified_stamp"] = False
+        else:
+            tokens = stamp.strip().split()
+            digest_part = tokens[0] if tokens else ""
+            matches_digest = (digest_part == expected)
+            matches_size = (tokens[1] == str(status.st_size)) if len(tokens) > 1 else True
+            stamp_stat, _ = inspection.stat(stamp_path)
+            fresh = (stamp_stat is not None and status.st_mtime <= stamp_stat.st_mtime)
+            info["verified_stamp"] = bool(matches_digest and matches_size and fresh)
     return info
 
 
