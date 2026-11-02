@@ -46,6 +46,11 @@ if [ "$DRY_RUN" = true ]; then
     if [ "$GLOBAL" = true ]; then
       info "Would obtain scripts/install-full-tools.sh from $REPO_URL and run it for project $PROJECT_DIR."
       info 'Would install or update mex-agent, zvec-grep, specify-cli, RTK, Semble, and cli-anything-hub in the user-global scope; no tools are run during dry run.'
+      if [ -n "${JEO_SECOND_BRAIN_CONFIG:-}" ]; then
+        info "Would configure obsidian-second-brain from $JEO_SECOND_BRAIN_CONFIG after explicit target/model/cost/automation consent; no setup runs during dry run."
+      else
+        info 'Second-brain setup requires JEO_SECOND_BRAIN_CONFIG; no existing vault or hook is migrated.'
+      fi
     else
       info 'Project-scoped all would skip user-global tool installation and report partial success; set INSTALL_GLOBAL=true to allow global installation.'
     fi
@@ -119,6 +124,24 @@ elif [ "$SELECTION" = all ]; then
   fi
   if [ -n "$FULL_TMP" ]; then rm -rf "$FULL_TMP" || info 'WARNING: Full tool temporary cleanup failed.'; fi
 fi
+
+# New knowledge installs use second brain; selection/--yes is not model or job consent.
+if [ "$SELECTION" = all ] && [ "$GLOBAL" = true ]; then
+  if [ -z "${JEO_SECOND_BRAIN_CONFIG:-}" ]; then
+    info 'Second-brain activation pending: provide JEO_SECOND_BRAIN_CONFIG with a NEW vault, model, cost allowance and explicit automation consent. Existing knowledge settings are unchanged.'
+  else
+    BRAIN_SETUP="$ROOT/obsidian-second-brain/scripts/setup.py"
+    BRAIN_ARGS=(--config "$JEO_SECOND_BRAIN_CONFIG")
+    if [ -n "${JEO_SECOND_BRAIN_SOURCE:-}" ]; then BRAIN_ARGS+=(--source "$JEO_SECOND_BRAIN_SOURCE"); fi
+    if [ ! -f "$BRAIN_SETUP" ]; then
+      info 'ERROR: Installed obsidian-second-brain setup helper is missing.' >&2
+      FULL_STATUS=1
+    elif ! python3 "$BRAIN_SETUP" "${BRAIN_ARGS[@]}"; then
+      info 'ERROR: Second-brain setup did not complete; existing knowledge settings were not migrated.' >&2
+      FULL_STATUS=1
+    fi
+  fi
+fi
 # Remove stale catalog copies of retired skills (jeo, harness) from every runtime root in scope.
 if [ "$GLOBAL" = true ]; then
   python3 "$CLI_PATH" prune-retired --global || info 'WARNING: retired-skill cleanup did not complete; installed skills remain available.'
@@ -131,7 +154,7 @@ fi
 if [ "$FULL_STATUS" = 0 ]; then
   info 'Selected installation completed; runtime activation may require a reload.'
 else
-  info 'Selected skills installed; full tool installation did not complete.'
+  info 'Selected skills installed; a required full-install component did not complete (see errors above).'
 fi
 
 # Optional Jev control plane (interactive TUI; JEO_SKILLS_JEV=skip|api|local|ollama|lmstudio|systemone to force).

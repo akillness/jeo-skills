@@ -8203,7 +8203,7 @@
     },
     {
       "name": "obsidian-second-brain",
-      "description": "Routing front door for obsidian-second-brain — a self-rewriting Obsidian vault that evolves Karpathy's LLM-Wiki pattern. Every source REWRITES existing pages instead of appending: people updated, claims revised, contradictions reconciled, patterns synthesized automatically. 45 commands across 4 layers, background + 4 scheduled agents, 4 role presets, AI-first write validator. Cross-CLI: Claude Code, Codex CLI, Gemini CLI, OpenCode.",
+      "description": "Route obsidian-second-brain installation and self-rewriting wiki operations. Use when creating a consented new Obsidian vault, capturing sources, reconciling claims, synthesizing knowledge or reviewing its scheduled maintenance. Includes pinned operating documents and a shared tool-free proposal runtime; native PostCompact wiring is scoped to the new Claude vault, not every host.",
       "category": "utilities",
       "subcategory": "knowledge",
       "interface": "cli",
@@ -8242,7 +8242,7 @@
         "WebFetch"
       ],
       "keyword": "obsidian-second-brain",
-      "version": "1.0.1",
+      "version": "1.1.0",
       "source": "akillness/jeo-skills"
     },
     {

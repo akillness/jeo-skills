@@ -2,6 +2,15 @@
 
 All notable changes to **jeo-skills** are documented here.
 
+## Unreleased
+
+### Added
+- `obsidian-second-brain` v1.1.0 adds consented, new-vault-only `setup.py`, a shared tool-free JSON-proposal `runtime.py`, and portable `ctx_guard.py` lifecycle roles using upstream operating assets pinned to `c8b1d8c1c5b41d4f1845f7188200d354837be96f`. Setup requires reviewed targets, data/model/hook/PostCompact/schedule permissions and Claude allowances, makes no model calls, installs a new-vault-local Claude PostCompact hook and managed cron block, and leaves separately approved index initialization pending. No migration or existing-install change is performed.
+
+### Changed
+- Prefer `JEO_SECOND_BRAIN_CONFIG=/absolute/reviewed.json bash scripts/install.sh` (optional `JEO_SECOND_BRAIN_SOURCE` pinned checkout) or direct `python3 scripts/setup.py --config ... --dry-run` followed by apply. `WITH_UPSTREAM=1` now requires that configuration rather than cloning/pulling a global upstream skill or executing unsafe upstream `setup.sh`. Automated source handling supports UTF-8 text; unsupported binaries are retained with explicit errors while supported entries can progress independently.
+- Portable lifecycle retains mex/zvec/Graphify/vault roles without a private HOME `ctx` package, preserves all raw trees including video and archived-root sources, and implements no legacy GC or unapproved deletion. Graphify rebuilds only at checkpoint with separate provider/model/unbounded-cost authority; Claude allowances are estimates, not a hard billing guarantee or a Graphify cost cap. Installed smoke/fixture evidence does not verify real-provider model quality, billing or live host integrations; other hosts use operating documents/shared runtime, not fabricated native PostCompact hooks.
+
 ## 2026-11-02
 
 ### Fixed

@@ -574,85 +574,36 @@ cp "$FIXTURE_HELPER" "$4"''')
                     self.assertFalse(helper_result.exists(), result.stdout)
                 self.assertEqual(list(scratch.iterdir()), [], result.stdout)
 
-    def knowledge_function(self) -> str:
-        block = guide_block("### Knowledge pipeline hooks (llm-wiki + graphify, per-repo vault)")
-        match = re.search(r"(?ms)^secure_kp_hooks\(\) \{.*?^\}\n", block)
-        self.assertIsNotNone(match)
-        return match.group(0)
-
-    def knowledge_call(self, settings: Path, wrapper: Path, ingest: Path, before: str = "UserPromptSubmit", after: str = "Stop") -> subprocess.CompletedProcess[str]:
-        code = self.knowledge_function() + f'\nsecure_kp_hooks "$SETTINGS" "$WRAPPER" {before} {after}\n'
-        return run_block(
-            code,
-            self.env(
-                SETTINGS=str(settings),
-                WRAPPER=str(wrapper),
-                KP_INGEST=str(ingest),
-                USER_HOME=str(self.home),
-            ),
-            self.work,
-        )
-
-    def test_knowledge_pipeline_writer_preserves_wrappers_merges_hooks_idempotently_and_handles_gemini(self) -> None:
-        ingest = self.home / ".agents/hooks/ingest-prompt.py"
-        ingest.parent.mkdir(parents=True)
-        ingest.write_text("#!/bin/sh\nexit 0\n", encoding="utf-8")
-        ingest.chmod(0o700)
-
-        customized = self.home / ".claude/hooks/llm-wiki-ingest.sh"
-        customized.parent.mkdir(parents=True)
-        customized_bytes = b"#!/bin/sh\ncustom wrapper\n"
-        customized.write_bytes(customized_bytes)
+    def test_second_brain_guide_requires_config_and_honors_explicit_veto_without_touching_legacy_hooks(self) -> None:
+        block = guide_block("### Knowledge pipeline (second brain + graphify, new vault)")
+        wrapper = self.home / ".claude/hooks/llm-wiki-ingest.sh"
+        wrapper.parent.mkdir(parents=True)
+        wrapper.write_text("#!/bin/sh\ncustom legacy ingestion\n")
         settings = self.home / ".claude/settings.json"
-        result = self.knowledge_call(settings, customized, ingest)
-        self.assertEqual(result.returncode, 0, result.stdout)
-        self.assertEqual(customized.read_bytes(), customized_bytes)
-        self.assertIn("kept existing wrapper", result.stdout)
+        settings.write_text('{"env":{"keep":"사용자"},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"legacy-stop"}]}]}}\n')
+        before = tree_snapshot(self.home)
+        cases = (
+            {"JEO_SKILLS_APPROVE_ALL_HOOKS": "true"},
+            {"JEO_SKILLS_APPROVE_KNOWLEDGE_HOOKS": "true", "JEO_SKILLS_APPROVE_KNOWLEDGE_DATA": "true"},
+            {"JEO_SECOND_BRAIN_CONFIG": str(self.work / "unread-config.json"), "JEO_SKILLS_APPROVE_KNOWLEDGE_HOOKS": "false"},
+            {"JEO_SECOND_BRAIN_CONFIG": str(self.work / "unread-config.json"), "JEO_SKILLS_APPROVE_KNOWLEDGE_DATA": "false"},
+        )
+        for approvals in cases:
+            with self.subTest(approvals=approvals):
+                result = run_block(block, self.env(SKILLS_ROOT=str(self.work / "no-helper"), **approvals), self.work)
+                self.assertEqual(result.returncode, 0, result.stdout)
+                self.assertEqual(tree_snapshot(self.home), before)
 
-        settings.write_text(json.dumps({
-            "env": {"value": "값-보존"},
-            "unrelated": {"keep": True},
-            "hooks": {
-                "UserPromptSubmit": [{"hooks": [{"type": "command", "command": 'bash "$HOME/.claude/hooks/llm-wiki-ingest.sh"'}]}],
-                "Stop": [{"hooks": [{"type": "command", "command": "existing-stop"}]}],
-            },
-        }, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-        result = self.knowledge_call(settings, customized, ingest)
-        self.assertEqual(result.returncode, 0, result.stdout)
-        data = json.loads(settings.read_text(encoding="utf-8"))
-        user_commands = [hook["command"] for entry in data["hooks"]["UserPromptSubmit"] for hook in entry["hooks"]]
-        stop_commands = [hook["command"] for entry in data["hooks"]["Stop"] for hook in entry["hooks"]]
-        wrapper_command = f'bash "{customized}"'
-        self.assertEqual(sum(command.replace("$HOME", str(self.home)).replace("~/", str(self.home) + "/").find(str(customized)) >= 0 for command in user_commands), 1)
-        self.assertEqual(sum(command == wrapper_command for command in stop_commands), 1)
-        self.assertIn("existing-stop", stop_commands)
-        self.assertEqual(data["env"]["value"], "값-보존")
-        self.assertTrue(data["unrelated"]["keep"])
-        raw_settings = settings.read_bytes()
-        self.assertIn("값-보존".encode(), raw_settings)
-        self.assertNotIn(b"\\u", raw_settings)
-
-        before_bytes = settings.read_bytes()
-        before_stat = settings.stat()
-        result = self.knowledge_call(settings, customized, ingest)
-        self.assertEqual(result.returncode, 0, result.stdout)
-        after_stat = settings.stat()
-        self.assertEqual(settings.read_bytes(), before_bytes)
-        self.assertEqual(after_stat.st_mtime_ns, before_stat.st_mtime_ns)
-        self.assertEqual(after_stat.st_ino, before_stat.st_ino)
-
-        missing_wrapper = self.home / ".gemini/hooks/llm-wiki-ingest.sh"
-        gemini_settings = self.home / ".gemini/settings.json"
-        result = self.knowledge_call(gemini_settings, missing_wrapper, ingest, "BeforeAgent", "AfterAgent")
-        self.assertEqual(result.returncode, 0, result.stdout)
-        self.assertEqual(stat.S_IMODE(missing_wrapper.stat().st_mode), 0o700)
-        self.assertIn(f'INGEST="{ingest}"', missing_wrapper.read_text(encoding="utf-8"))
-        gemini = json.loads(gemini_settings.read_text(encoding="utf-8"))
-        for event in ("BeforeAgent", "AfterAgent"):
-            self.assertEqual(len(gemini["hooks"][event]), 1)
-            entry = gemini["hooks"][event][0]
-            self.assertEqual(entry["matcher"], "")
-            self.assertEqual(entry["hooks"][0]["name"], "llm-wiki-ingest")
+    def test_second_brain_guide_reports_missing_helper_instead_of_silent_activation(self) -> None:
+        block = guide_block("### Knowledge pipeline (second brain + graphify, new vault)")
+        before = tree_snapshot(self.home)
+        result = run_block(block, self.env(
+            SKILLS_ROOT=str(self.work / "no-helper"),
+            JEO_SECOND_BRAIN_CONFIG=str(self.work / "approved.json"),
+        ), self.work)
+        self.assertNotEqual(result.returncode, 0, result.stdout)
+        self.assertIn("helper missing", result.stdout)
+        self.assertEqual(tree_snapshot(self.home), before)
 
     def write_python_stub(self, path: Path, source: str) -> None:
         path.write_text(f"#!{sys.executable}\n" + source, encoding="utf-8")
@@ -755,7 +706,6 @@ if args[:2] == ["mcp", "add"]:
         cases = (
             ("### Graphify and Headroom code-context layer", 0, "JEO_SKILLS_APPROVE_HEADROOM_DEPLOY", "headroom deploy"),
             ("### Graphify and Headroom code-context layer", 1, "JEO_SKILLS_APPROVE_HEADROOM_HOOK", "policy-hook"),
-            ("### Knowledge pipeline hooks (llm-wiki + graphify, per-repo vault)", 0, "JEO_SKILLS_APPROVE_KNOWLEDGE_HOOKS", "knowledge-ingest"),
             ("### OpenSpace skill finder and prompt-time skill routing", 0, "JEO_SKILLS_APPROVE_OPENSPACE", "openspace-install"),
             ("### OpenSpace skill finder and prompt-time skill routing", 0, "JEO_SKILLS_APPROVE_SKILL_ROUTING_HOOKS", "route-hooks install"),
             ("### Ouroboros (`ooo`) MCP server", 0, "JEO_SKILLS_APPROVE_OOO_MCP", "claude mcp add ooo"),
@@ -763,8 +713,6 @@ if args[:2] == ["mcp", "add"]:
         )
         for heading, index, flag, expected in cases:
             approvals = [(None, None), ("false", None), ("true", "true")]
-            if flag == "JEO_SKILLS_APPROVE_KNOWLEDGE_HOOKS":
-                approvals.extend([("true", None), ("true", "false"), (None, "true")])
             for approval, data_approval in approvals:
                 with self.subTest(flag=flag, approval=approval, data_approval=data_approval), tempfile.TemporaryDirectory(dir=self.work) as root:
                     root = Path(root)
@@ -787,10 +735,6 @@ if sys.argv[1:3] in (["install", "status"], ["mcp", "get"]):
                     hook.write_text('printf "policy-hook\\n" >> "$ACTION_LOG"\n')
                     hook.chmod(0o700)
                     (scripts / "jeo-code-policy-hook.py").write_text("pass\n")
-                    bootstrap = skills / "llm-wiki/scripts/bootstrap-vault.sh"
-                    bootstrap.parent.mkdir(parents=True)
-                    bootstrap.write_text('printf "vault-bootstrap\\n" >> "$ACTION_LOG"\n')
-                    bootstrap.chmod(0o700)
                     installer = skills / "ooo/scripts/install.sh"
                     installer.parent.mkdir(parents=True)
                     installer.write_text("exit 1\n")
@@ -800,9 +744,6 @@ if sys.argv[1:3] in (["install", "status"], ["mcp", "get"]):
                     (openspace_scripts / "route-hooks.py").write_text(
                         'import os, sys\nopen(os.environ["ACTION_LOG"], "a").write("route-hooks " + " ".join(sys.argv[1:]) + "\\n")\n'
                     )
-                    ingest = home / ".agents/hooks/ingest-prompt.py"
-                    ingest.parent.mkdir(parents=True)
-                    ingest.write_text('import os\nopen(os.environ["ACTION_LOG"], "a").write("knowledge-ingest\\n")\n')
                     settings = home / ".claude/settings.json"
                     settings.parent.mkdir()
                     settings.write_text('{"sentinel": "preserve"}\n')
@@ -810,24 +751,18 @@ if sys.argv[1:3] in (["install", "status"], ["mcp", "get"]):
                     env = self.env(
                         HOME=str(home), USER_HOME=str(home), PATH=f"{bin_dir}:/usr/bin:/bin",
                         SKILLS_ROOT=str(skills), PLATFORM="linux", ACTION_LOG=str(log),
-                        OBSIDIAN_MIND_VAULT=str(root / "vault"),
                     )
                     if approval is not None:
                         env[flag] = approval
-                    if flag == "JEO_SKILLS_APPROVE_KNOWLEDGE_HOOKS" and data_approval is not None:
-                        env["JEO_SKILLS_APPROVE_KNOWLEDGE_DATA"] = data_approval
                     result = run_block(guide_block(heading, index), env, root)
                     self.assertEqual(result.returncode, 0, result.stdout)
                     actions = log.read_text()
-                    if approval == "true" and (flag != "JEO_SKILLS_APPROVE_KNOWLEDGE_HOOKS" or data_approval == "true"):
+                    if approval == "true":
                         self.assertIn(expected, actions, result.stdout)
                         if flag == "JEO_SKILLS_APPROVE_OPENSPACE":
                             self.assertNotIn("route-hooks", actions, "hooks need their own approval")
                         if flag == "JEO_SKILLS_APPROVE_SKILL_ROUTING_HOOKS":
                             self.assertNotIn("openspace-install", actions, "install needs its own approval")
-                        if flag == "JEO_SKILLS_APPROVE_KNOWLEDGE_HOOKS":
-                            self.assertIn("UserPromptSubmit", json.loads(settings.read_text())["hooks"])
-                            self.assertIn("vault-bootstrap", actions)
                     else:
                         self.assertNotIn(expected, actions, result.stdout)
                         self.assertEqual(tree_snapshot(home), before)

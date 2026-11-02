@@ -372,96 +372,48 @@ expect_status 1 'Obsidian second brain dangling symlink rejection'
 [ -L "$OBS_LINK_HOME/.jeo/config.json" ] && [ ! -e "$WORK/obsidian-dangling-target.json" ] || fail 'Obsidian second brain replaced dangling symlink'
 pass 'Obsidian second brain preserves backups and rejects failed or symlinked config updates'
 
-# Obsidian second brain WITH_UPSTREAM: the global routing-skill install links
-# ~/.claude/skills/obsidian-second-brain to the routing copy (deleting what was there, as
-# `npx skills add -g` does); the upstream checkout must still land there, survive re-runs,
-# and every refusal or clone failure must exit non-zero. Run under a UTF-8 locale so macOS
-# /bin/bash 3.2 parses the multibyte log lines the way users hit them.
+# Full second-brain installation requires a bounded configuration before routing,
+# upstream transport, or legacy hook mutation. Existing checkouts are user data.
 OBS_UP_BIN="$WORK/obsidian-upstream-bin"
-OBS_UP_GIT_LOG="$WORK/obsidian-upstream-git.log"
+OBS_UP_ACTIONS="$WORK/obsidian-upstream-actions"
 mkdir -p "$OBS_UP_BIN"
-cat >"$OBS_UP_BIN/npx" <<'EOF'
+for executable in npx git; do
+  cat >"$OBS_UP_BIN/$executable" <<'EOF'
 #!/bin/sh
-set -eu
-[ -z "${FAKE_NPX_NOOP:-}" ] || exit 0
-copy="$HOME/.agents/skills/obsidian-second-brain"
-mkdir -p "$copy" "$HOME/.claude/skills"
-printf '%s\n' '---' 'name: obsidian-second-brain' 'aliases: [/idea-discovery, /vault-health]' \
-  'metadata:' '  source: akillness/jeo-skills' '---' >"$copy/SKILL.md"
-rm -rf "$HOME/.claude/skills/obsidian-second-brain"
-ln -s ../../.agents/skills/obsidian-second-brain "$HOME/.claude/skills/obsidian-second-brain"
+printf '%s\n' "$0 $*" >>"$OBS_UP_ACTIONS"
+exit 91
 EOF
-cat >"$OBS_UP_BIN/git" <<'EOF'
-#!/bin/sh
-set -eu
-[ -z "${FAKE_GIT_FAIL:-}" ] || exit 128
-case "$1" in
-  clone)
-    if [ -e "$3" ] || [ -L "$3" ]; then
-      echo "fatal: destination path '$3' already exists" >&2
-      exit 128
-    fi
-    mkdir -p "$3/.git" "$3/scripts"
-    printf '%s\n' '---' 'name: obsidian-second-brain' '---' 'upstream vault skill' >"$3/SKILL.md"
-    printf 'clone %s\n' "$3" >>"$FAKE_GIT_LOG" ;;
-  -C) printf 'pull %s\n' "$2" >>"$FAKE_GIT_LOG" ;;
-  *) exit 2 ;;
-esac
-EOF
-chmod 700 "$OBS_UP_BIN/npx" "$OBS_UP_BIN/git"
-obs_upstream() {
-  local home="$1"
-  shift
-  run_capture env HOME="$home" PATH="$OBS_UP_BIN:$PATH" LC_ALL=en_US.UTF-8 FAKE_GIT_LOG="$OBS_UP_GIT_LOG" \
-    GLOBAL=1 WITH_UPSTREAM=1 JEO=0 "$@" /bin/bash "$OBS_INSTALL"
-}
-
+  chmod 700 "$OBS_UP_BIN/$executable"
+done
 OBS_UP_HOME="$WORK/obsidian-upstream-home"
 OBS_UP_DEST="$OBS_UP_HOME/.claude/skills/obsidian-second-brain"
-mkdir -p "$OBS_UP_HOME"
-obs_upstream "$OBS_UP_HOME"
-expect_status 0 'Obsidian second brain global upstream install'
-expect_output 'Done.' 'Obsidian second brain global upstream install'
-[ ! -L "$OBS_UP_DEST" ] && [ -d "$OBS_UP_DEST/.git" ] || fail 'Obsidian upstream checkout did not replace the routing-skill link'
-grep -q '^  source: akillness/jeo-skills$' "$OBS_UP_HOME/.agents/skills/obsidian-second-brain/SKILL.md" \
-  || fail 'Obsidian upstream install removed the shared routing copy'
-printf 'keep\n' >"$OBS_UP_DEST/local-state"
-obs_upstream "$OBS_UP_HOME"
-expect_status 0 'Obsidian second brain upstream re-run'
-[ ! -L "$OBS_UP_DEST" ] && [ -f "$OBS_UP_DEST/local-state" ] || fail 'Obsidian re-run let the routing-skill install delete the upstream checkout'
-grep -Fxq "pull $OBS_UP_DEST" "$OBS_UP_GIT_LOG" || fail 'Obsidian re-run did not update the existing upstream checkout'
-if find "$OBS_UP_HOME/.claude" -maxdepth 2 -name '.obsidian-second-brain.*' | grep -q .; then
-  fail 'Obsidian upstream install leaked a parked or staged directory'
-fi
-
-OBS_FOREIGN_HOME="$WORK/obsidian-foreign-home"
-OBS_FOREIGN_DEST="$OBS_FOREIGN_HOME/.claude/skills/obsidian-second-brain"
-mkdir -p "$OBS_FOREIGN_DEST"
-printf 'mine\n' >"$OBS_FOREIGN_DEST/notes.md"
-obs_upstream "$OBS_FOREIGN_HOME"
-expect_status 1 'Obsidian second brain refuses a foreign Claude skill directory'
-expect_output 'neither the upstream checkout' 'Obsidian second brain foreign directory refusal'
-expect_no_output 'Done.' 'Obsidian second brain foreign directory refusal'
-[ ! -L "$OBS_FOREIGN_DEST" ] && [ -f "$OBS_FOREIGN_DEST/notes.md" ] || fail 'Obsidian install replaced a foreign Claude skill directory'
-
-OBS_FAIL_HOME="$WORK/obsidian-clone-fail-home"
-mkdir -p "$OBS_FAIL_HOME"
-obs_upstream "$OBS_FAIL_HOME" FAKE_GIT_FAIL=1
-expect_status 1 'Obsidian second brain clone failure'
-expect_no_output 'Done.' 'Obsidian second brain clone failure'
-[ -L "$OBS_FAIL_HOME/.claude/skills/obsidian-second-brain" ] || fail 'Obsidian clone failure removed the routing-skill link'
-if find "$OBS_FAIL_HOME/.claude" -maxdepth 2 -name '.obsidian-second-brain.*' | grep -q .; then
-  fail 'Obsidian clone failure leaked a staged directory'
-fi
-
-# Without a routing copy the report reads the upstream SKILL.md, which has no aliases line.
-OBS_ONLY_HOME="$WORK/obsidian-upstream-only-home"
-mkdir -p "$OBS_ONLY_HOME"
-obs_upstream "$OBS_ONLY_HOME" FAKE_NPX_NOOP=1
-expect_status 0 'Obsidian second brain upstream-only install'
-expect_output 'Slash aliases declared in SKILL.md: 0' 'Obsidian second brain upstream-only report'
-[ -d "$OBS_ONLY_HOME/.claude/skills/obsidian-second-brain/.git" ] || fail 'Obsidian upstream-only install did not clone'
-pass 'Obsidian second brain installs, keeps, and refuses upstream checkouts correctly under a UTF-8 locale'
+mkdir -p "$OBS_UP_DEST/.git" "$OBS_UP_HOME/.jeo"
+printf 'authored checkout state\n' >"$OBS_UP_DEST/local-state"
+printf '%s\n' '{"sentinel":"user hooks"}' >"$OBS_UP_HOME/.jeo/config.json"
+cp "$OBS_UP_HOME/.jeo/config.json" "$WORK/obsidian-before-config.json"
+for attempt in first rerun; do
+  run_capture env HOME="$OBS_UP_HOME" PATH="$OBS_UP_BIN:$PATH" LC_ALL=en_US.UTF-8 \
+    OBS_UP_ACTIONS="$OBS_UP_ACTIONS" GLOBAL=1 WITH_UPSTREAM=1 JEO=1 \
+    JEO_SECOND_BRAIN_CONFIG= /bin/bash "$OBS_INSTALL"
+  expect_status 1 "Obsidian full install without configuration ($attempt)"
+  expect_output 'JEO_SECOND_BRAIN_CONFIG' 'Obsidian full install explains required consent configuration'
+  [ ! -e "$OBS_UP_ACTIONS" ] || fail 'Unapproved full install invoked routing or source transport'
+  [ ! -L "$OBS_UP_DEST" ] && [ "$(cat "$OBS_UP_DEST/local-state")" = 'authored checkout state' ] \
+    || fail 'Unapproved full install replaced authored upstream checkout'
+  cmp -s "$WORK/obsidian-before-config.json" "$OBS_UP_HOME/.jeo/config.json" \
+    || fail 'Unapproved full install changed existing hooks'
+done
+OBS_BAD_CONFIG="$WORK/obsidian-invalid-consent.json"
+printf '%s\n' '{"version":1,"consent":{"model":false}}' >"$OBS_BAD_CONFIG"
+run_capture env HOME="$OBS_UP_HOME" PATH="$OBS_UP_BIN:$PATH" OBS_UP_ACTIONS="$OBS_UP_ACTIONS" \
+  GLOBAL=1 WITH_UPSTREAM=1 JEO=1 JEO_SECOND_BRAIN_CONFIG="$OBS_BAD_CONFIG" /bin/bash "$OBS_INSTALL"
+expect_status 1 'Obsidian full install rejects malformed or unapproved configuration'
+[ ! -e "$OBS_UP_ACTIONS" ] || fail 'Invalid full configuration invoked routing or source transport'
+cmp -s "$WORK/obsidian-before-config.json" "$OBS_UP_HOME/.jeo/config.json" \
+  || fail 'Invalid full configuration changed existing hooks'
+[ ! -L "$OBS_UP_DEST" ] && [ -f "$OBS_UP_DEST/local-state" ] \
+  || fail 'Invalid full configuration replaced authored checkout'
+pass 'Obsidian full install enforces configuration before effects and preserves owned user data'
 
 # Under a UTF-8 locale, bash 3.2 (macOS /bin/bash) reads an unbraced variable followed
 # directly by a multibyte character (such as an ellipsis) as a name that includes the

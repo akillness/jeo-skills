@@ -514,7 +514,7 @@ def command_prune_retired(args: argparse.Namespace) -> None:
 SUPPORTED_SETUP_SKILLS = frozenset({
     "open-ontologies", "okf-agent-memory", "mex", "openspace", "ooo", "rtk",
     "cli-anything", "spec-kit", "ecc", "jev-control-plane", "graphify",
-    "semble", "zvec-grep", "llm-wiki",
+    "semble", "zvec-grep", "llm-wiki", "obsidian-second-brain",
 })
 
 
@@ -549,6 +549,9 @@ def skill_setup_commands(root: Path | None, selected: list[str], *,
     unsupported: list[str] = []
 
     for name in selected:
+        if name == "llm-wiki" and "obsidian-second-brain" in selected:
+            print("Legacy llm-wiki setup omitted: obsidian-second-brain owns this new knowledge installation; select llm-wiki alone for its separate setup")
+            continue
         if name not in SUPPORTED_SETUP_SKILLS:
             unsupported.append(name)
             continue
@@ -606,6 +609,15 @@ def skill_setup_commands(root: Path | None, selected: list[str], *,
             else:
                 plans.append((name, ["npm", "install", "-g", "@zvec/zvec-grep@0.2.2"]))
                 plans.append((name, ["zg", "version"]))
+        elif name == "obsidian-second-brain":
+            config = os.environ.get("JEO_SECOND_BRAIN_CONFIG", "").strip()
+            if not config:
+                raise JeoSkillError("obsidian-second-brain --setup requires JEO_SECOND_BRAIN_CONFIG with explicit new-vault, model, cost and automation consent; --with-hooks alone is not consent")
+            command = [sys.executable, str(skill_dir / "scripts/setup.py"), "--config", str(Path(config).expanduser())]
+            source = os.environ.get("JEO_SECOND_BRAIN_SOURCE", "").strip()
+            if source:
+                command.extend(["--source", str(Path(source).expanduser())])
+            plans.append((name, command))
         elif name == "llm-wiki":
             vault = Path(os.environ.get("LLM_WIKI_VAULT", "").strip() or str(home / "vaults/llm-wiki")).expanduser()
             if not (vault / "index.md").is_file():

@@ -1673,5 +1673,65 @@ class InstallerRegressions(unittest.TestCase):
             self.assertFalse(Path(download["path"]).parent.exists())
 
 
+    def test_second_brain_docs_install_is_inert_and_with_hooks_is_not_model_consent(self):
+        source = self.source / ".agent-skills/obsidian-second-brain"
+        shutil.copytree(ROOT / ".agent-skills/obsidian-second-brain", source)
+        catalog = json.loads(self.catalog.read_text())
+        catalog["skills"].append({"name": "obsidian-second-brain", "category": "engineering",
+                                  "subcategory": "testing", "description": "fixture"})
+        self.catalog.write_text(json.dumps(catalog))
+        settings = self.home / ".claude/settings.json"
+        settings.parent.mkdir()
+        settings.write_text('{"hooks":{"Stop":[{"hooks":[{"type":"command","command":"existing"}]}]}}\n')
+        existing_vault = self.home / "existing-vault"
+        existing_vault.mkdir()
+        note = existing_vault / "authored.md"
+        note.write_text("existing vault is not an install target\n")
+        before = settings.read_bytes()
+        result = self.cli("install", "obsidian-second-brain", "--agent", "universal", "--global", "--yes", "--source", str(self.source))
+        self.successful(result)
+        installed = self.home / ".agents/skills/obsidian-second-brain"
+        self.assertEqual((installed / "SKILL.md").read_bytes(), (source / "SKILL.md").read_bytes())
+        self.assertEqual((installed / "scripts/setup.py").read_bytes(), (source / "scripts/setup.py").read_bytes())
+        self.assertEqual(settings.read_bytes(), before)
+        self.assertEqual(note.read_text(), "existing vault is not an install target\n")
+        self.assertFalse((self.home / ".second-brain").exists())
+        result = self.cli("install", "obsidian-second-brain", "--agent", "universal", "--global", "--yes", "--source", str(self.source), "--with-hooks")
+        self.assertNotEqual(result.returncode, 0, result.stdout)
+        self.assertIn("JEO_SECOND_BRAIN_CONFIG", result.stdout)
+        self.assertEqual(settings.read_bytes(), before)
+        self.assertEqual(note.read_text(), "existing vault is not an install target\n")
+
+    def test_broad_setup_never_activates_legacy_wiki_alongside_second_brain(self):
+        brain = self.source / ".agent-skills/obsidian-second-brain"
+        shutil.copytree(ROOT / ".agent-skills/obsidian-second-brain", brain)
+        legacy = self.source / ".agent-skills/llm-wiki"
+        legacy.mkdir()
+        (legacy / "SKILL.md").write_text("---\nname: llm-wiki\ndescription: fixture\n---\n")
+        bootstrap = legacy / "scripts/bootstrap-vault.sh"
+        bootstrap.parent.mkdir()
+        bootstrap.write_text('#!/bin/sh\nprintf unsafe > "$HOME/legacy-bootstrap-ran"\n')
+        bootstrap.chmod(0o700)
+        catalog = json.loads(self.catalog.read_text())
+        for name in ("obsidian-second-brain", "llm-wiki"):
+            catalog["skills"].append({"name": name, "category": "engineering", "subcategory": "testing", "description": "fixture"})
+        self.catalog.write_text(json.dumps(catalog))
+        config = self.work / "unapproved.json"
+        config.write_text('{"version":1,"consent":{"model":false}}')
+        args = ("install", "--all", "--setup", "--agent", "universal", "--global", "--yes", "--source", str(self.source))
+        for approvals in ({}, {"JEO_SECOND_BRAIN_CONFIG": str(config)}):
+            with self.subTest(approvals=approvals):
+                result = self.cli(*args, extra_env=approvals)
+                self.assertNotEqual(result.returncode, 0, result.stdout)
+                self.assertFalse((self.home / "legacy-bootstrap-ran").exists(), result.stdout)
+                self.assertIn("llm-wiki", result.stdout)
+        before = self.snapshot()
+        record = self.work / "transport-not-called.json"
+        result = self.cli(*args, "--dry-run", extra_env={"JEO_SECOND_BRAIN_CONFIG": str(config), "TRANSPORT_RECORD": str(record)})
+        self.successful(result)
+        self.assertFalse(record.exists(), result.stdout)
+        self.assertEqual(self.snapshot(), before)
+        self.assertFalse((self.home / "legacy-bootstrap-ran").exists())
+
 if __name__ == "__main__":
     unittest.main()

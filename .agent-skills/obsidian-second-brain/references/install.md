@@ -1,157 +1,201 @@
-# obsidian-second-brain — install matrix
+# obsidian-second-brain — consented installation
 
-> **One codebase, four platforms.** Vault behavior is identical across all four;
-> only the install path and the dispatcher file (`CLAUDE.md` / `AGENTS.md` /
-> `GEMINI.md`) differ.
+**Last updated:** 2026-11-02
 
-## Plugin (this jeo-skill front door)
+## Preferred: initialize a new vault
 
-Install the routing skill into any skills-compatible agent:
+This adapter retains Obsidian and its CLI, replaces the knowledge-operation layer
+for future installations, and leaves existing vaults and installations alone.
+It installs the operating assets and initializes a new wiki vault; it is not a
+migration or an existing-install upgrade.
 
-```bash
-npx skills add https://github.com/akillness/jeo-skills --skill obsidian-second-brain
-# global:
-npx skills add https://github.com/akillness/jeo-skills --skill obsidian-second-brain -g
-# or, from this skill dir:
-bash scripts/install.sh
-```
+1. Review a version-1 JSON configuration using the fields below. Choose a **new**
+   vault and collection inbox, the model, processing limits, schedule, and separate
+   data/model/hook/PostCompact/schedule permissions. Keep credentials out of this
+   file; the selected CLI/provider owns authentication. Completion: the operator
+   has approved the actual targets, data disclosure, model and allowances.
+2. From this skill directory, preview without subprocesses, downloads or writes:
 
-`scripts/install.sh` env knobs:
+   ```bash
+   python3 scripts/setup.py --config /absolute/reviewed.json --dry-run
+   # Optional local source; preview defers git-blob verification until apply:
+   python3 scripts/setup.py --config /absolute/reviewed.json --source /absolute/pinned-checkout --dry-run
+   ```
 
-- `GLOBAL=1` — install globally (`npx skills add -g`)
-- `WITH_UPSTREAM=1` — also clone the full upstream vault skill (45 commands + agents) into `~/.claude/skills/obsidian-second-brain`. Claude Code gets the upstream skill there; other agents keep the routing skill in `~/.agents/skills`. A routing-skill link or copy at that path is replaced only after the clone succeeds; any other existing directory is left alone and the run exits 1. A missing `git` or a failed clone also exits 1 instead of reporting `Done`.
-- `VAULT=<dir>` — when `WITH_UPSTREAM=1`, run the upstream `setup.sh` against this vault
-- `AGENTS=<list>` — comma/space agent targets for `-a` (e.g. `claude-code,codex`)
-- `JEO=1|0|auto` — jeo wiring: `1` force, `0` skip, `auto` (default) wires when `~/.jeo/config.json` exists
-- `JEO_CONFIG=<file>` — override the jeo config path (default `~/.jeo/config.json`)
-- `UNINSTALL=1` — remove the jeo AI-first hook (creates a backup) and exit
+   Completion: JSON reports `dry-run`; inspect `actions`, `integrations.pending`
+   and `deferred`. Executable availability is not initialized-index readiness.
+3. Apply the reviewed configuration through the preferred installer entrypoint:
 
-With `GLOBAL=1`, `npx skills add -g` links `~/.claude/skills/obsidian-second-brain` to the routing copy and would delete a real directory there. The installer parks an existing upstream checkout (or any other non-routing directory) outside the skills root while `npx` runs and puts it back afterwards, so re-running the installer keeps the upstream skill.
+   ```bash
+   JEO_SECOND_BRAIN_CONFIG=/absolute/reviewed.json bash scripts/install.sh
+   # Optional, verified local source instead of downloading the pinned archive:
+   JEO_SECOND_BRAIN_CONFIG=/absolute/reviewed.json JEO_SECOND_BRAIN_SOURCE=/absolute/pinned-checkout bash scripts/install.sh
+   # Direct equivalent:
+   python3 scripts/setup.py --config /absolute/reviewed.json
+   # Add --source /absolute/pinned-checkout when using the local checkout.
+   ```
 
-## jeo-code (jeo)
+   Completion: JSON reports `installed` with `model_invoked: false`, or `unchanged`
+   for an identical, intact adapter-owned rerun. Installation makes **no model
+   calls**; the approved scheduled runtime can make calls after registration.
 
-`jeo` discovers the skill automatically (`~/.agents/skills`). The 45 commands are
-declared in the `aliases:` frontmatter of `SKILL.md`, so jeo lists them as
-**slash aliases** in `jeo skills obsidian-second-brain`, the skill picker, and
-shell autocomplete. Note: in current `jeo-code` (v0.7.x) a skill is *invoked* only
-via the `$` entrypoint — run `$obsidian-second-brain <intent>` (or `$obsidian` by
-unique prefix). Typing `/idea-discovery` does not load the skill in jeo; the slash
-names are discovery/autocomplete hints here and remain live commands under Claude
-Code. Confirm registration with `jeo skills obsidian-second-brain`.
+`setup.py` uses actual operating assets from
+`akillness/obsidian-second-brain` pinned to
+`c8b1d8c1c5b41d4f1845f7188200d354837be96f`: commands, references, scripts,
+core note templates and Bases templates. A local source must be a self-contained
+Git checkout at that exact revision; apply checks copied bytes against its pinned
+Git blobs. Without `--source`, apply requires `consent.download: true` and downloads
+the pinned archive into staging. It does not clone/pull a global upstream skill or
+execute upstream `setup.sh`, bootstrap code, or background agents. Templates are
+extracted as data. Native Claude operating copies live inside the new vault;
+pristine provenance remains under `.second-brain/upstream/`.
 
-`install.sh` also registers an **advisory** write-time AI-first validator as a
-`post-turn` hook in `~/.jeo/config.json`:
+### Verify the package transport in isolation
 
-```bash
-JEO=1 VAULT="$HOME/.llm-wiki" bash scripts/install.sh
-```
-
-The hook runs `scripts/jeo-validate-ai-first.sh`, which normalizes jeo's payload
-(single `.args.filePath` and batch `.calls[].args.filePath`) and checks each
-markdown file written inside `VAULT` for AI-first frontmatter
-(`date`/`type`/`tags`/`ai-first`), a `## For future Claude` preamble, and
-ASCII-only content. It only **warns** (never reverts a write), and ignores files
-outside the vault and non-markdown files.
-
-Config safety: the installer backs up `~/.jeo/config.json` (which holds live
-tokens) before editing, merges with `jq` (append-only — existing hooks such as
-`graphify update .` are preserved), re-validates with `jq empty`, and restores the
-backup if the result is invalid. The wiring is idempotent. Remove it with
-`UNINSTALL=1 bash scripts/install.sh`.
-
-Deliberately **not** ported to jeo (Claude Code only): the `/` dispatcher palette,
-the SessionStart context loader, and the PostCompact background agent — jeo has no
-matching hook events. Vault behavior is identical; only the trigger surface differs.
-
-## Upstream — Claude Code (default)
-
-One line:
+For installation verification, use a new temporary HOME, project and npm cache;
+keep the real vault, scheduler and provider untouched. Request the transport
+explicitly rather than relying on a same-version globally installed `skills` CLI:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/akillness/obsidian-second-brain/main/scripts/quick-install.sh | bash
+npx --yes --package skills@1.7.0 -- skills --version
+# After populating the temporary cache, install from the reviewed local catalog:
+npx --offline --yes --package skills@1.7.0 -- skills add /absolute/reviewed-catalog --skill obsidian-second-brain --agent claude-code --copy --full-depth --yes
 ```
 
-Or two commands:
+Completion: confirm which executable the temporary package environment resolved,
+then run the **installed** `setup.py` preview, apply and owned rerun against the
+pinned upstream checkout. Check installed operating-asset bytes and preservation
+of an authored page. Scheduler/index fixtures and `claude --help` can prove local
+wiring without authorizing inference; they do not prove live service behavior.
 
-```bash
-git clone https://github.com/akillness/obsidian-second-brain ~/.claude/skills/obsidian-second-brain
-bash ~/.claude/skills/obsidian-second-brain/scripts/setup.sh "/path/to/your/vault"
-```
+### Reviewed configuration
 
-Then run `/obsidian-init`.
-
-## Upstream — Codex CLI / Gemini CLI / OpenCode
-
-```bash
-git clone https://github.com/akillness/obsidian-second-brain
-cd obsidian-second-brain
-bash scripts/build.sh --platform codex-cli     # or gemini-cli, or opencode
-cp -R dist/codex-cli/. /path/to/your/vault/    # or .gemini-cli / .opencode
-```
-
-Start your CLI from the vault root. Each build produces a platform-specific
-dispatcher (`AGENTS.md` for Codex / OpenCode, `GEMINI.md` for Gemini) with an
-auto-generated routing table mapping natural-language triggers to command files
-under `.codex/commands/` (or `.gemini/`, `.opencode/`).
-
-Codex has no native slash-command runtime — install wrappers to run commands by
-name: `bash scripts/install-codex-wrappers.sh` creates one shim per command in
-`~/.codex/bin/` (each delegating to `scripts/run-command.sh`, which wraps the
-command into a `codex exec` prompt). Preview without running:
-`scripts/run-command.sh --print <command>`.
-
-Run `bash scripts/build.sh` with no args to build all four platforms at once.
-
-## Run on Hermes / open models
-
-The skill is model-agnostic. The OpenCode / Codex / Gemini builds are plain
-instruction files, so they run on whatever model the host CLI points at —
-including open models like Nous Research Hermes via OpenRouter. No separate
-build, no code changes.
-
-`opencode.json`:
+This is a schema example, not approval to use these paths, model or costs. Replace
+the absolute paths and model after review; all executable prerequisites must exist.
+The adapter requires Python 3.10+ on POSIX, Claude CLI with its required safe/JSON
+flags, `crontab`, `graphify`, `mex-agent`, and `zg`. Absolute `claude_bin`,
+`crontab_bin`, `graphify_bin`, `mex_bin`, and `zvec_bin` overrides are optional;
+otherwise setup resolves executables from `PATH`.
 
 ```json
 {
-  "$schema": "https://opencode.ai/config.json",
-  "model": "openrouter/nousresearch/hermes-4-70b",
-  "provider": { "openrouter": { "models": { "nousresearch/hermes-4-70b": {} } } }
+  "version": 1,
+  "vault": "/absolute/new-second-brain",
+  "inbox": "/absolute/new-second-brain-inbox",
+  "model": "operator-selected-model",
+  "max_run_usd": 0.25,
+  "daily_budget_usd": 2.0,
+  "timeout_seconds": 120,
+  "max_input_bytes": 262144,
+  "consent": {
+    "data": true,
+    "model": true,
+    "hooks": true,
+    "schedule": true,
+    "postcompact": true,
+    "download": true
+  },
+  "integrations": {"ctx": true, "graphify": true, "mex": true, "zvec": true},
+  "schedules": {
+    "scan": "* * * * *",
+    "morning": "0 8 * * *",
+    "nightly": "0 22 * * *",
+    "weekly": "0 18 * * 5",
+    "health": "0 21 * * 0"
+  }
 }
 ```
 
-| Model id | Best for | Cost (in / out per 1M) |
-|---|---|---|
-| `nousresearch/hermes-4-70b` | Default. Cheap, capable, 131k context. | $0.13 / $0.40 |
-| `nousresearch/hermes-4-405b` | Strongest instruction-following for synthesis-heavy commands | $1.00 / $3.00 |
-| `nousresearch/hermes-3-llama-3.1-405b:free` | Zero-cost trial (needs any OpenRouter key) | free |
+All five operation consents must be explicitly `true`; neither `VAULT` nor
+`WITH_UPSTREAM=1` grants model or spend authority. Explicit false values in
+`JEO_SKILLS_APPROVE_KNOWLEDGE_HOOKS` or `JEO_SKILLS_APPROVE_KNOWLEDGE_DATA` veto
+setup. Run and daily allowances must be positive and finite; the daily allowance
+must cover a run. Schedules use exactly the five shown event keys and five-field
+cron expressions in the cron host's timezone. The mapping must be supplied explicitly;
+omitting schedules rejects setup before effects rather than activating example defaults.
 
-Honest expectation: core commands (`/obsidian-save`, `/obsidian-daily`,
-`/obsidian-capture`, `/obsidian-find`, `/obsidian-task`, `/research` in free mode)
-hold up well on open models. Sub-agent-heavy and deep-synthesis commands
-(`/obsidian-architect`, `/obsidian-reconcile`, `/research-deep`) lean hard on
-instruction-following — prefer `hermes-4-405b` or Claude. The AI-first vault rule
-applies on every write regardless of model.
+Vault/inbox parents must already exist unless the inbox is inside the newly
+created vault outside its reserved trees. Arbitrary existing vaults or inboxes,
+symlinked targets and protected existing HOME knowledge/agent trees are refused.
+Identical adapter-owned reruns verify completeness rather than overwrite content;
+changed targets, consent or configuration require a separate reviewed migration,
+which this adapter does not implement.
 
-## Research toolkit (optional)
+### Provider and billing boundaries
 
-The 6 keyed research commands need API keys. Either run `install.sh` and answer
-"y" to the research prompt, or set up manually:
+The runtime reserves `max_run_usd` against its UTC-day ledger before launching
+Claude, passes `--max-budget-usd`, and reconciles reported `total_cost_usd` after a
+successful result. Treat this as a **Claude allowance estimate**, not a hard
+billing guarantee or proof of provider entitlement. Failures/timeouts retain the
+reservation. Provider model quality, actual billing and live host integration are
+unverified by fixture/installed smoke tests.
 
-```bash
-mkdir -p ~/.config/obsidian-second-brain
-cp .env.example ~/.config/obsidian-second-brain/.env
-chmod 600 ~/.config/obsidian-second-brain/.env
-# paste keys into the file
-uv sync   # installs Python deps
-```
+Graphify checkpoint has separate external-provider authority. If approved before
+installation, add `consent.graphify_provider: true` and a `graphify_provider`
+object with explicit `backend`, `model`, and `accept_unbounded_cost: true`.
+Without both, checkpoint reports `pending_consent` and fails before launching
+Graphify. The example deliberately omits this authority. The Claude allowance does
+**not** cap Graphify costs. In the inspected Graphify implementation,
+`update --force --no-cluster` performs local AST extraction; `cluster-only`
+receives the selected backend/model and can call its provider. Review that
+provider and external cost before approving; there is no automatic index
+initialization or private HOME `ctx` source.
 
-| Key | Where | Required for | Cost |
-|---|---|---|---|
-| `XAI_API_KEY` | console.x.ai | `/x-read`, `/x-pulse`, `/research-deep` X pulse, `/youtube` summary | ~$0.05/call |
-| `PERPLEXITY_API_KEY` | perplexity.ai/settings/api | `/research`, `/research-deep` | ~$0.02–0.50/call |
-| `GEMINI_API_KEY` | aistudio.google.com/apikey | `/notebooklm` (Gemini File Search) | free tier; paid ~$0.004–0.06 |
-| `YOUTUBE_API_KEY` | console.cloud.google.com | `/youtube` metadata + comments (optional) | free tier 10k units/day |
-| `OPENAI_API_KEY` | platform.openai.com | `/podcast` Whisper transcription (optional) | ~$0.006/min |
+## Runtime and host scope
 
-Without keys, the 35 non-research commands work fully, and `/research` +
-`/research-deep` fall back to free key-less sources.
+`runtime.py` handles collection scans, morning/nightly/weekly/health work and
+PostCompact summaries through one shared tool-free Claude JSON-proposal runner.
+Host code validates allowed paths and prior-content hashes before committing wiki
+changes. See [vault-architecture.md](vault-architecture.md) for the storage,
+retention, event and lifecycle boundaries.
+
+Only the **new Claude vault's** `.claude/settings.json` receives a native
+`PostCompact` command hook. It consumes the event's `compact_summary`; it does not
+subscribe other hosts or read their private transcripts. The managed crontab block
+runs the shared runtime and preserves unrelated entries. Codex, Gemini, OpenCode
+and jeo can use copied operating documents and invoke the shared runtime; this is
+not equivalent native hook support. The automated model runner remains Claude CLI
+with the configured model, regardless of the interactive host.
+
+Indexes are separately initialized with separate approval. Setup reports missing
+`.mex`, `.zvec-grep` and `graphify-out` as `pending_initialization`; it does not
+claim they are ready. The portable `ctx_guard.py` retains mex graph, zvec retrieval,
+Graphify checkpoint and vault-retention roles without importing or changing a
+private `~/.local/bin/ctx` or HOME package. It implements no legacy GC, archive,
+purge or raw deletion.
+
+## Routing skill only and legacy jeo validator
+
+`npx skills add https://github.com/akillness/jeo-skills --skill obsidian-second-brain`
+installs the routing front door, not an initialized vault. Bare
+`bash scripts/install.sh` retains routing-skill installation and optional legacy
+jeo advisory validation. It is not the preferred consented runtime setup.
+
+| Installer variable | Scope |
+|---|---|
+| `JEO_SECOND_BRAIN_CONFIG` | Select the reviewed new-vault setup; this path bypasses routing-only install and legacy validator wiring. |
+| `JEO_SECOND_BRAIN_SOURCE` | Optional exact pinned checkout for that setup. |
+| `WITH_UPSTREAM=1` | Compatibility selector for the same new-vault path; configuration is mandatory. No upstream `setup.sh` execution. |
+| `GLOBAL=1`, `AGENTS` | Routing-skill install scope and agent targets only. Existing non-routing Claude directories are parked/restored during global routing installation, not pulled or upgraded. |
+| `JEO=1\|0\|auto`, `JEO_CONFIG`, `VAULT` | Legacy advisory `post-turn` validator target/settings; not data, model, schedule or PostCompact approval. |
+| `UNINSTALL=1` | Remove only the legacy jeo AI-first hook with backup; not a runtime/vault/schedule uninstall. |
+
+In jeo invoke `$obsidian-second-brain <intent>` or an unambiguous prefix such as
+`$obsidian-s`. **`$obsidian` exact-matches the separate `obsidian` skill.** Slash
+aliases are discovery hints in jeo, not its invocation mechanism. The legacy
+validator warns on AI-first markdown issues; it cannot supply SessionStart or
+PostCompact events that jeo does not expose.
+
+## Manual upstream recipes: unsafe/global operator-only
+
+Upstream quick-install and `scripts/setup.sh` recipes may modify global Claude
+skills/settings and use upstream background behavior outside this adapter's
+new-vault/proposal boundaries. They are **not the recommended default** and are not
+executed by this installer. Upstream build/wrapper scripts and the optional research
+toolkit likewise require their own review before execution; copied availability is
+not approval for network calls, keys, dependencies or host mutation. Interactive
+command documents can describe URL/PDF/audio/research workflows, but those are not
+implemented binary extractors in the automatic text-source runtime.
+
+Start with the reviewed configuration and the read-only preview above; do not use
+an upstream global setup recipe to bypass a refused consent or existing-vault gate.

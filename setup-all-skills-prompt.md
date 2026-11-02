@@ -19,7 +19,7 @@
 
 | Mode | Trigger | Outcome |
 |---|---|---|
-| `full` | Default | Install every jeo-skills skill plus the six pinned default CLIs; activation of MCP, hooks, indexes, models, and project memory remains separately approved. |
+| `full` | Default | Install every skill plus the six pinned default CLIs; prepare a new second-brain vault and automation after explicit target/model/cost consent. MCP, indexes and other project memory retain their separate approvals. |
 | `core` | User says “core only” | Install the `starter` bundle through `jeo-skill`; do not install the entire catalog. |
 | `minimal` | User says “minimal” | Install only the `jeo-skill` router and its CLI link; skip MCP, shell, and plugin setup. |
 
@@ -1307,142 +1307,84 @@ the same `ponytail` folder, so keep one source per host.
 For another detected agent, use its documented MCP command/config surface; do not guess a
 JSON/TOML schema or overwrite its existing settings.
 
-### Knowledge pipeline hooks (llm-wiki + graphify, per-repo vault)
+### Knowledge pipeline (second brain + graphify, new vault)
 
-Only after separate approval of both hook registration (`JEO_SKILLS_APPROVE_KNOWLEDGE_HOOKS=true`)
-and vault/index data writes (`JEO_SKILLS_APPROVE_KNOWLEDGE_DATA=true`) — or the unified
-`JEO_SKILLS_APPROVE_ALL_HOOKS_MCP=true` opt-in when neither individual flag is `false` — wire prompts
-and finished turns through `hooks/ingest-prompt.py` and `hooks/ingest-output.py` under
-`hooks/ctx/lock.py`. Approval covers vault bootstrap and subsequent hook-triggered prompt
-and output ingestion. The vault resolves at run time as
-`$LLM_WIKI_VAULT` (canonical unified vault: `~/vaults/llm-wiki`) → `$OBSIDIAN_MIND_VAULT/llm-wiki` → `<git toplevel>/llm-wiki` →
-`~/vaults/obsidian-mind/llm-wiki`, so no hook or wrapper stores a hardcoded vault path. Per-agent events:
+For a **new** knowledge installation, use `obsidian-second-brain` rather than
+bootstrapping `llm-wiki` or nesting it under Obsidian Mind. Keep the Obsidian app/CLI
+and the existing Graphify, mex, zvec and `ctx` roles. This is not a migration:
+do not reuse an existing vault, move its data, or replace its global hooks/settings.
+The separately installable `llm-wiki` and `obsidian` skills remain available.
 
-| Agent | prompt-in | turn-end | Config file |
-|---|---|---|---|
-| Claude Code | `UserPromptSubmit` | `Stop` | `~/.claude/settings.json` |
-| Codex CLI | `UserPromptSubmit` | `Stop` | `~/.codex/hooks.json` |
-| Antigravity CLI / IDE | `BeforeAgent` | `AfterAgent` | `~/.gemini/settings.json` |
+1. Ask the installer to choose a **new absolute vault path**, an input directory,
+   the Claude model, per-run and daily USD allowances, timeout and job schedules.
+   Write those reviewed values to a private JSON file and set
+   `JEO_SECOND_BRAIN_CONFIG` to its absolute path. Never invent a user's model,
+   data-transmission permission, schedule or spending allowance. Missing choices
+   mean activation is pending, not that an old knowledge pipeline should be wired.
+2. Obtain separate consent in that file for source download, data/model processing,
+   hooks, schedules and post-compaction processing. Generic
+   `JEO_SKILLS_APPROVE_ALL_HOOKS_MCP=true`, `--yes` and `--with-hooks` do **not**
+   grant model/spend consent. Explicit `JEO_SKILLS_APPROVE_KNOWLEDGE_HOOKS=false`
+   or `JEO_SKILLS_APPROVE_KNOWLEDGE_DATA=false` veto this phase.
+3. Preview the exact plan, then run the packaged helper below. It installs actual
+   pinned operating commands/templates and initializes a wiki-style new vault;
+   installing only the routing skill does not meet this outcome. An existing,
+   non-owned destination or unsafe linked path is an error, not an overwrite prompt.
 
 ```bash
-if { [ "${JEO_SKILLS_APPROVE_KNOWLEDGE_HOOKS:-}" != false ] && [ "${JEO_SKILLS_APPROVE_KNOWLEDGE_DATA:-}" != false ] && [ "${JEO_SKILLS_APPROVE_ALL_HOOKS_MCP:-false}" = true ]; } || { [ "${JEO_SKILLS_APPROVE_KNOWLEDGE_HOOKS:-false}" = true ] && [ "${JEO_SKILLS_APPROVE_KNOWLEDGE_DATA:-false}" = true ]; }; then
-KP_SCRIPTS="$USER_HOME/.agents/hooks"
-KP_INGEST="$KP_SCRIPTS/ingest-prompt.py"
-KP_OUTPUT="$KP_SCRIPTS/ingest-output.py"
-KP_LOCK="$KP_SCRIPTS/ctx/lock.py"
-KP_RAW_BASE="https://raw.githubusercontent.com/akillness/jeo-skills/main/hooks"
-
-# 1. Bootstrap the target vault if missing.
-OM_VAULT="${OBSIDIAN_MIND_VAULT:-$(git rev-parse --show-toplevel 2>/dev/null || echo "$USER_HOME/vaults/obsidian-mind")}"
-KP_VAULT="${LLM_WIKI_VAULT:-$OM_VAULT/llm-wiki}"
-if [ ! -f "$KP_VAULT/index.md" ] && [ -x "$SKILLS_ROOT/llm-wiki/scripts/bootstrap-vault.sh" ]; then
-  bash "$SKILLS_ROOT/llm-wiki/scripts/bootstrap-vault.sh" "$KP_VAULT"
-fi
-
-# 2. Place the shared ingest scripts and ctx lock helper at their project-independent paths.
-mkdir -p "$KP_SCRIPTS"
-if [ ! -f "$KP_INGEST" ]; then
-  curl -fsSL "$KP_RAW_BASE/ingest-prompt.py" -o "$KP_INGEST" && chmod +x "$KP_INGEST"
-  mkdir -p "$KP_SCRIPTS/ctx"
-  curl -fsSL "$KP_RAW_BASE/ingest-output.py" -o "$KP_OUTPUT" 2>/dev/null && chmod +x "$KP_OUTPUT" || true
-  curl -fsSL "$KP_RAW_BASE/ctx/lock.py" -o "$KP_LOCK" 2>/dev/null || true
-  : > "$KP_SCRIPTS/ctx/__init__.py" 2>/dev/null || true
-fi
-# 3. Install one vault-path-free wrapper per agent and register it for both events.
-#    Non-destructive and idempotent: an existing wrapper is kept (and reported when it
-#    differs from this template), any hook command that already invokes the wrapper
-#    counts as registered, and the settings file is rewritten only when an entry is
-#    added, with every other key preserved.
-secure_kp_hooks() {
-  local settings="$1" wrapper="$2" before="$3" after="$4"
-  KP_INGEST="$KP_INGEST" KP_HOME="$USER_HOME" python3 - "$settings" "$wrapper" "$before" "$after" <<'PY'
-import json, os, pathlib, stat, sys, tempfile
-settings, wrapper, before_event, after_event = pathlib.Path(sys.argv[1]), pathlib.Path(sys.argv[2]), sys.argv[3], sys.argv[4]
-ingest, home = os.environ["KP_INGEST"], os.environ["KP_HOME"]
-
-def replace(p, text, validator, default_mode=0o600):
-    try:
-        old = os.lstat(p)
-        if stat.S_ISLNK(old.st_mode) or not stat.S_ISREG(old.st_mode):
-            raise RuntimeError(f"refusing non-regular runtime file: {p}")
-    except FileNotFoundError:
-        old = None
-    p.parent.mkdir(parents=True, exist_ok=True)
-    validator(text)
-    fd, name = tempfile.mkstemp(prefix=f".{p.name}.tmp.", dir=p.parent)
-    tmp = pathlib.Path(name)
-    try:
-        with os.fdopen(fd, "w", encoding="utf-8") as out:
-            out.write(text); out.flush(); os.fsync(out.fileno())
-        os.chmod(tmp, stat.S_IMODE(old.st_mode) if old else default_mode)
-        os.replace(tmp, p)
-    except Exception:
-        tmp.unlink(missing_ok=True)
-        raise
-
-wrapper_text = f'''#!/bin/bash
-# Vault-path free on purpose: ingest-prompt.py resolves the project-scoped vault
-# itself from the hook's working directory, so one wrapper serves every repo.
-set -euo pipefail
-INGEST="{ingest}"
-[ -x "$INGEST" ] || exit 0
-if [ -n "${{1:-}}" ]; then INPUT="$1"; else INPUT="$(cat 2>/dev/null || true)"; fi
-printf '%s' "$INPUT" | python3 "$INGEST" >/dev/null 2>&1 || true
-
-exit 0
-'''
-if not wrapper.exists():
-    replace(wrapper, wrapper_text, lambda _: None, 0o700)
-elif wrapper.is_symlink() or not wrapper.is_file() or wrapper.read_text(encoding="utf-8") != wrapper_text:
-    print(f"kept existing wrapper {wrapper}; it differs from this guide's template")
-data = json.loads(settings.read_text(encoding="utf-8")) if settings.is_file() else {}
-cmd = f'bash "{wrapper}"'
-def invokes_wrapper(command):
-    command = str(command).replace("${HOME}", home).replace("$HOME", home).replace("~/", home + "/")
-    return str(wrapper) in command
-changed = False
-for event in (before_event, after_event):
-    entries = data.setdefault("hooks", {}).setdefault(event, [])
-    if not any(invokes_wrapper(h.get("command", "")) for e in entries for h in e.get("hooks", [])):
-        entry = {"hooks": [{"type": "command", "command": cmd}]}
-        if event in ("BeforeAgent", "AfterAgent"):
-            entry["matcher"] = ""; entry["hooks"][0]["name"] = "llm-wiki-ingest"
-        entries.append(entry)
-        changed = True
-if changed:
-    replace(settings, json.dumps(data, indent=2, ensure_ascii=False) + "\n", json.loads)
-PY
-}
-
-if command -v claude >/dev/null 2>&1; then
-  CLAUDE_DIR="${CLAUDE_CONFIG_DIR:-$USER_HOME/.claude}"
-  secure_kp_hooks "$CLAUDE_DIR/settings.json" "$CLAUDE_DIR/hooks/llm-wiki-ingest.sh" UserPromptSubmit Stop
-fi
-if command -v codex >/dev/null 2>&1; then
-  secure_kp_hooks "$USER_HOME/.codex/hooks.json" "$USER_HOME/.codex/hooks/llm-wiki-ingest.sh" UserPromptSubmit Stop
-fi
-if command -v agy >/dev/null 2>&1 || command -v antigravity >/dev/null 2>&1; then
-  secure_kp_hooks "$USER_HOME/.gemini/settings.json" "$USER_HOME/.gemini/hooks/llm-wiki-ingest.sh" BeforeAgent AfterAgent
-fi
-
-# 4. Prove the hook runs end to end. A bare Stop payload without assistant_output is
-#    a clean exit-0 no-op; when assistant_output or transcript_path is present, Stop
-#    delegates to ingest-output.py under the vault layer lock.
-printf '{"hook_event_name":"Stop"}' | python3 "$KP_INGEST" && echo "ingest-prompt.py ok"
+if [ -n "${JEO_SECOND_BRAIN_CONFIG:-}" ] && [ "${JEO_SKILLS_APPROVE_KNOWLEDGE_HOOKS:-}" != false ] && [ "${JEO_SKILLS_APPROVE_KNOWLEDGE_DATA:-}" != false ]; then
+  BRAIN_SETUP="$SKILLS_ROOT/obsidian-second-brain/scripts/setup.py"
+  [ -f "$BRAIN_SETUP" ] || { printf '%s\n' 'second-brain setup helper missing' >&2; exit 1; }
+  BRAIN_ARGS=(--config "$JEO_SECOND_BRAIN_CONFIG")
+  if [ -n "${JEO_SECOND_BRAIN_SOURCE:-}" ]; then
+    BRAIN_ARGS+=(--source "$JEO_SECOND_BRAIN_SOURCE")
+  fi
+  HOME="$USER_HOME" python3 "$BRAIN_SETUP" "${BRAIN_ARGS[@]}" --dry-run
+  HOME="$USER_HOME" python3 "$BRAIN_SETUP" "${BRAIN_ARGS[@]}"
 else
-  printf '%s\n' 'knowledge pipeline skipped: separate hook and vault/index write approvals required'
+  printf '%s\n' 'second-brain activation pending: explicit new-vault/model/cost/automation config required; existing knowledge environment unchanged'
 fi
 ```
 
-Codex runs new `~/.codex/hooks.json` entries only after the user reviews and trusts them
-in Codex's `/hooks` view; list that as a manual follow-up instead of claiming the Codex
-hooks are active.
+The config contract is enforced by
+[`scripts/setup.py`](.agent-skills/obsidian-second-brain/scripts/setup.py).
+Its required keys are `version`, `vault`, `inbox`, `model`, `max_run_usd`,
+`daily_budget_usd`, `timeout_seconds`, `max_input_bytes`, `consent`, `schedules`
+and `integrations`. Review a config with the helper's `--dry-run` before applying it.
+`consent` records explicit booleans for `download`, `data`, `model`, `hooks`,
+`schedule` and `postcompact`; a verified local source supplied through
+`JEO_SECOND_BRAIN_SOURCE` needs no download permission. The upstream revision is
+pinned inside the helper; do not run its HOME-mutating `setup.sh` or its
+permission-bypassing background hook.
 
-`jeo`, `jeopi`, and `gjc` register the same script through their own `post-turn` /
-`wikiRoot` config; read the `llm-wiki` skill's "Vault contract" section before touching
-those files, and merge keys rather than rewriting them. Turn-end events with output payload
-delegate to `ingest-output.py` under `ctx.lock.layer_lock("vault")`, while Graphify
-regeneration (`graphify-out/graph.json`) runs at `ctx checkpoint` rather than per turn.
+| Trigger | Installed behavior |
+|---|---|
+| Source arrival | A scheduled scan of the chosen inbox captures original bytes once, then runs bounded model processing and applies validated wiki updates. |
+| Daily / weekly / health | The approved cron entries call the same serialized runtime with the selected job; unrelated crontab entries are preserved. |
+| Context compaction | A `PostCompact` hook scoped to the **new vault's** Claude settings passes `compact_summary`; arbitrary transcript files and global hooks are not read or rewritten. |
+| Other coding agents | Installed operating files and the shared runtime are available; do not invent unsupported compaction hook events or claim native activation merely from copied files. |
+
+The model runner has no file tools or MCP servers. It proposes updates, and the
+host validates paths and base hashes before writing only `wiki/**`, `index.md`
+or `log.md`. Model failure, invalid updates or exhausted allowance are visible
+failures. Claude's per-run USD threshold is an estimate and may overshoot; do not
+describe it as a hard billing guarantee. Unknown consumption retains the reserved
+allowance instead of silently freeing budget.
+All cron callbacks, including inbox scans, carry `--scheduled`; revoking schedule
+consent stops them before capture or model execution. A manual scan is a separate
+explicit invocation. Graphify's provider/model and potentially unbounded external
+cost require separate `consent.graphify_provider` and `graphify_provider`
+approval at checkpoint; the Claude daily allowance does not cover that provider.
+
+`raw/**` is immutable, including second-brain originals under `raw/videos/` and
+raw files inside archived roots. Keep Graphify regeneration at checkpoint, not
+on each turn. The portable `ctx_guard.py` preserves index/checkpoint roles without
+importing private HOME lifecycle code. It inventories all raw files and protects
+them **and ancestors containing them**; it does not run legacy foreign-root GC,
+archive or purge operations. Legacy `raw/sources/**`-only protection is insufficient.
+Missing new-vault mex/zvec indexes are reported as pending separate initialization,
+not as search-ready. Unavailable integrations fail visibly. Check readiness in an
+isolated new vault; never use the user's current vault as an installation fixture.
 
 ### OpenSpace skill finder and prompt-time skill routing
 

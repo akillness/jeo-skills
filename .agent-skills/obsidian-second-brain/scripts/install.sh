@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # obsidian-second-brain installer
 #
-# Installs the obsidian-second-brain routing skill from jeo-skills, and can also
-# clone the full upstream vault skill (45 commands + background/scheduled agents)
-# from akillness/obsidian-second-brain.
+# Installs the routing skill, or provisions a NEW vault through setup.py when an
+# explicit JEO_SECOND_BRAIN_CONFIG is supplied. The upstream HOME-mutating setup.sh
+# and permission-bypassing background hook are never executed by this installer.
 #
 # It additionally wires the skill into jeo-code (jeo): the 45 commands surface as
 # slash aliases automatically (from SKILL.md frontmatter), and a write-time
@@ -13,18 +13,20 @@
 #
 # Env knobs:
 #   GLOBAL=1        - install the skill globally (npx skills add -g)
-#   WITH_UPSTREAM=1 - also clone the full upstream obsidian-second-brain vault skill
-#   VAULT=<dir>     - vault root for the jeo AI-first hook (and upstream setup.sh)
+#   WITH_UPSTREAM=1 - require the consented new-vault path (config required)
+#   VAULT=<dir>     - vault root for the legacy advisory jeo AI-first validator
 #   AGENTS=<list>   - comma/space agents for -a targeting (e.g. "claude-code,codex")
 #   JEO=1|0|auto    - jeo wiring: 1 force, 0 skip, auto (default) wires when
 #                     ~/.jeo/config.json exists
 #   JEO_CONFIG=<f>  - override jeo config path (default ~/.jeo/config.json)
 #   UNINSTALL=1     - remove the jeo AI-first hook (with backup) and exit
+#   JEO_SECOND_BRAIN_CONFIG=<json> - new-vault/model/cost/automation consent
+#   JEO_SECOND_BRAIN_SOURCE=<dir>  - optional verified local upstream checkout
 #
 # Usage:
 #   bash scripts/install.sh
 #   JEO=1 VAULT="$HOME/.llm-wiki" bash scripts/install.sh
-#   GLOBAL=1 WITH_UPSTREAM=1 VAULT="$HOME/my-vault" AGENTS="claude-code,codex" bash scripts/install.sh
+#   JEO_SECOND_BRAIN_CONFIG=/absolute/approved.json bash scripts/install.sh
 #   UNINSTALL=1 bash scripts/install.sh
 
 set -euo pipefail
@@ -34,7 +36,6 @@ warn() { printf '\033[1;33m[obsidian-second-brain]\033[0m %s\n' "$*" >&2; }
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_URL="https://github.com/akillness/jeo-skills"
-UPSTREAM_URL="https://github.com/akillness/obsidian-second-brain"
 SKILL="obsidian-second-brain"
 JEO_CONFIG="${JEO_CONFIG:-$HOME/.jeo/config.json}"
 
@@ -177,53 +178,6 @@ install_skill() {
   restore_claude_skill_dir
 }
 
-# Install or update the upstream checkout at ~/.claude/skills/<skill>. Claude Code gets the
-# full upstream skill there; other agents keep the routing copy in ~/.agents/skills.
-install_upstream() {
-  [ "${WITH_UPSTREAM:-0}" = "1" ] || return 0
-
-  if ! command -v git >/dev/null 2>&1; then
-    warn "git not found — cannot clone upstream. See $UPSTREAM_URL"
-    return 1
-  fi
-
-  local dest="$CLAUDE_SKILL_DIR" stage
-  if [ -d "$dest/.git" ]; then
-    log "Upstream already cloned at $dest — pulling latest…"
-    git -C "$dest" pull --ff-only || warn "git pull failed — leaving existing clone."
-  else
-    if { [ -e "$dest" ] || [ -L "$dest" ]; } && ! is_routing_copy "$dest"; then
-      warn "$dest exists and is neither the upstream checkout nor the jeo-skills routing copy."
-      warn "Move it away, then re-run with WITH_UPSTREAM=1."
-      return 1
-    fi
-    log "Cloning upstream vault skill into ${dest}…"
-    mkdir -p "$(dirname "$dest")"
-    stage="$(mktemp -d "$(dirname "$dest")/.$SKILL.clone.XXXXXX")"
-    if ! git clone "$UPSTREAM_URL" "$stage/$SKILL"; then
-      rm -rf "$stage"
-      warn "Clone failed — see $UPSTREAM_URL"
-      return 1
-    fi
-    # Replace the routing link or copy only once the clone has succeeded.
-    if [ -L "$dest" ]; then
-      rm -f "$dest"
-    elif [ -e "$dest" ]; then
-      rm -rf "$dest"
-    fi
-    mv "$stage/$SKILL" "$dest"
-    rmdir "$stage"
-  fi
-
-  if [ -n "${VAULT:-}" ] && [ -f "$dest/scripts/setup.sh" ]; then
-    log "Running upstream setup.sh against vault: $VAULT"
-    bash "$dest/scripts/setup.sh" "$VAULT" \
-      || warn "Upstream setup.sh failed — run it manually: bash $dest/scripts/setup.sh \"$VAULT\""
-    log "Vault wired. Next: open your CLI in the vault and run /obsidian-init"
-  else
-    log "Upstream cloned. Next: bash $dest/scripts/setup.sh \"/path/to/your/vault\" && /obsidian-init"
-  fi
-}
 
 # Locate the installed AI-first adapter (prefer the installed skill dirs).
 resolve_adapter() {
@@ -405,8 +359,8 @@ verify_report() {
   fi
 
   log "Not ported to jeo (Claude Code only): / dispatcher palette, SessionStart"
-  log "context loader, PostCompact background agent. Vault behavior is identical;"
-  log "only the trigger surface differs."
+  log "context loader, PostCompact background agent. Shared operating commands remain"
+  log "available; copied files alone do not establish native background activation."
 }
 
 # ---- main ----
@@ -417,14 +371,18 @@ if [ "${UNINSTALL:-0}" = "1" ]; then
   exit 0
 fi
 
+if [ -n "${JEO_SECOND_BRAIN_CONFIG:-}" ] || [ "${WITH_UPSTREAM:-0}" = 1 ]; then
+  if [ -z "${JEO_SECOND_BRAIN_CONFIG:-}" ]; then
+    warn "Full setup requires JEO_SECOND_BRAIN_CONFIG; VAULT and WITH_UPSTREAM are not model/spend consent."
+    exit 1
+  fi
+  SETUP_ARGS=(--config "$JEO_SECOND_BRAIN_CONFIG")
+  if [ -n "${JEO_SECOND_BRAIN_SOURCE:-}" ]; then SETUP_ARGS+=(--source "$JEO_SECOND_BRAIN_SOURCE"); fi
+  exec python3 "$SCRIPT_DIR/setup.py" "${SETUP_ARGS[@]}"
+fi
+
 log "Starting $SKILL setup"
 install_skill
-UPSTREAM_STATUS=0
-install_upstream || UPSTREAM_STATUS=$?
 wire_jeo
 verify_report
-if [ "$UPSTREAM_STATUS" -ne 0 ]; then
-  warn "Finished with errors: the upstream vault skill was not installed (see above)."
-  exit 1
-fi
 log "Done. See .agent-skills/$SKILL/SKILL.md for the routing guide and 45-command reference."
