@@ -1,0 +1,163 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1010" width="100%" role="img" aria-labelledby="oo-title oo-desc" style="max-width:1200px;background:#ffffff">
+  <title id="oo-title">open-ontologies v1.2.0 설치·동작검증 흐름</title>
+  <desc id="oo-desc">install.sh가 고정 커밋을 클론하고 해시 점검, 잠금 빌드, 바이너리 복사를 거쳐 smoke.py로 CLI 배치 RDFS 추론을 검증한다. 검증 범위는 CLI 배치와 RDFS에 한정된다.</desc>
+  <defs>
+    <style>
+      text { font-family: -apple-system, "Apple SD Gothic Neo", "Noto Sans CJK KR", "Malgun Gothic", sans-serif; fill: #17243b; }
+      .h1 { font-size: 28px; font-weight: 700; }
+      .sub { font-size: 15px; fill: #51607a; }
+      .sec { font-size: 18px; font-weight: 700; }
+      .t { font-size: 15px; font-weight: 700; }
+      .s { font-size: 13px; fill: #3b4a66; }
+      .m { font-size: 12.5px; font-family: ui-monospace, Menlo, monospace; fill: #1d3b6f; }
+      .num { font-size: 13px; font-weight: 700; fill: #ffffff; }
+      .box { fill: #f1f5fb; stroke: #4a6fa5; stroke-width: 1.5; }
+      .warn { fill: #fff6e0; stroke: #d99a1c; stroke-width: 1.5; }
+      .ok { fill: #e8f6ec; stroke: #2f9e5a; stroke-width: 1.5; }
+      .no { fill: #fdeceb; stroke: #c9473f; stroke-width: 1.5; }
+      .arrow { stroke: #4a6fa5; stroke-width: 2; fill: none; marker-end: url(#ah); }
+    </style>
+    <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#4a6fa5"/>
+    </marker>
+  </defs>
+
+  <text class="h1" x="50" y="52">open-ontologies v1.2.0 — 설치하면 바로 동작하도록 반영</text>
+  <text class="sub" x="50" y="78">scripts/install.sh + scripts/smoke.py 추가 · 이 머신에서 end-to-end 실행으로 확인 · 커밋 3a776d79</text>
+
+  <!-- approval banner -->
+  <rect class="warn" x="50" y="100" width="1100" height="46" rx="8"/>
+  <text class="t" x="68" y="121">사용자 승인 필요 (install.sh 실행 전)</text>
+  <text class="s" x="68" y="138">저장소 클론 · crate / Git 패치 다운로드 · 컴파일 · BIN_DIR 복사. 서버 실행과 MCP 클라이언트 등록은 하지 않음.</text>
+
+  <!-- install flow -->
+  <text class="sec" x="50" y="184">① install.sh 흐름</text>
+
+  <g>
+    <rect class="box" x="50"   y="198" width="170" height="150" rx="10"/>
+    <circle cx="68" cy="216" r="11" fill="#4a6fa5"/><text class="num" x="64" y="221">1</text>
+    <text class="t" x="86" y="221">도구·툴체인</text>
+    <text class="s" x="62" y="248">git · python3 · cc 확인</text>
+    <text class="s" x="62" y="268">cargo ≥ 1.88 필요</text>
+    <text class="s" x="62" y="288">미달 시 설치된 rustup</text>
+    <text class="s" x="62" y="306">stable 툴체인 자동 선택</text>
+    <text class="s" x="62" y="326">(RUST_TOOLCHAIN 지정 가능)</text>
+
+    <rect class="box" x="236"  y="198" width="170" height="150" rx="10"/>
+    <circle cx="254" cy="216" r="11" fill="#4a6fa5"/><text class="num" x="250" y="221">2</text>
+    <text class="t" x="272" y="221">고정 커밋 클론</text>
+    <text class="m" x="248" y="248">dfb09bf8…4976</text>
+    <text class="s" x="248" y="270">clone --no-checkout</text>
+    <text class="s" x="248" y="288">detach REF (40-hex 검증)</text>
+    <text class="s" x="248" y="308">다른 커밋 체크아웃은</text>
+    <text class="s" x="248" y="326">--force 없이 건드리지 않음</text>
+
+    <rect class="box" x="422"  y="198" width="170" height="150" rx="10"/>
+    <circle cx="440" cy="216" r="11" fill="#4a6fa5"/><text class="num" x="436" y="221">3</text>
+    <text class="t" x="458" y="221">preflight.py</text>
+    <text class="s" x="434" y="248">선택 파일 6개 SHA256</text>
+    <text class="s" x="434" y="268">대조 (오프라인)</text>
+    <text class="s" x="434" y="290">불일치 → 중단</text>
+    <text class="s" x="434" y="312">※ 런타임 증명 아님</text>
+
+    <rect class="box" x="608"  y="198" width="170" height="150" rx="10"/>
+    <circle cx="626" cy="216" r="11" fill="#4a6fa5"/><text class="num" x="622" y="221">4</text>
+    <text class="t" x="644" y="221">cargo build</text>
+    <text class="m" x="620" y="248">--locked --release</text>
+    <text class="s" x="620" y="270">별도 target 디렉터리</text>
+    <text class="s" x="620" y="290">첫 빌드 약 3–7분</text>
+    <text class="s" x="620" y="310">target 약 1 GB</text>
+
+    <rect class="box" x="794"  y="198" width="170" height="150" rx="10"/>
+    <circle cx="812" cy="216" r="11" fill="#4a6fa5"/><text class="num" x="808" y="221">5</text>
+    <text class="t" x="830" y="221">바이너리 설치</text>
+    <text class="s" x="806" y="248">BIN_DIR/open-ontologies</text>
+    <text class="s" x="806" y="268">(기본 ~/.local/bin)</text>
+    <text class="s" x="806" y="290">기존 파일은 --force</text>
+    <text class="s" x="806" y="308">없으면 덮어쓰기 거부</text>
+    <text class="s" x="806" y="326">→ exit 1</text>
+
+    <rect class="ok" x="980"   y="198" width="170" height="150" rx="10"/>
+    <circle cx="998" cy="216" r="11" fill="#2f9e5a"/><text class="num" x="994" y="221">6</text>
+    <text class="t" x="1016" y="221">smoke.py</text>
+    <text class="s" x="992" y="248">설치한 바이너리로</text>
+    <text class="s" x="992" y="268">런타임 검증 실행</text>
+    <text class="s" x="992" y="290">--skip-smoke 로</text>
+    <text class="s" x="992" y="308">건너뛸 수 있음</text>
+  </g>
+  <path class="arrow" d="M220,273 L234,273"/>
+  <path class="arrow" d="M406,273 L420,273"/>
+  <path class="arrow" d="M592,273 L606,273"/>
+  <path class="arrow" d="M778,273 L792,273"/>
+  <path class="arrow" d="M964,273 L978,273"/>
+
+  <!-- smoke detail -->
+  <text class="sec" x="50" y="394">② smoke.py — 임시 data-dir, --no-connect, batch 1회</text>
+  <g>
+    <rect class="box" x="50"  y="408" width="250" height="96" rx="10"/>
+    <text class="t" x="66" y="432">load</text>
+    <text class="s" x="66" y="454">triple 2개 적재</text>
+    <text class="m" x="66" y="476">invokes ⊑ dependsOn</text>
+    <text class="m" x="66" y="494">ci invokes validator</text>
+
+    <rect class="box" x="332" y="408" width="250" height="96" rx="10"/>
+    <text class="t" x="348" y="432">query (추론 전)</text>
+    <text class="s" x="348" y="454">dependsOn 행 0개여야 함</text>
+    <text class="s" x="348" y="476">→ 아직 파생되지 않았음을</text>
+    <text class="s" x="348" y="494">확인</text>
+
+    <rect class="box" x="614" y="408" width="250" height="96" rx="10"/>
+    <text class="t" x="630" y="432">reason --profile rdfs</text>
+    <text class="s" x="630" y="454">inferred_count = 1</text>
+    <text class="s" x="630" y="476">fixpoint_reached = true</text>
+
+    <rect class="ok" x="896" y="408" width="254" height="96" rx="10"/>
+    <text class="t" x="912" y="432">query (추론 후)</text>
+    <text class="s" x="912" y="454">정확히 1행: ci</text>
+    <text class="s" x="912" y="476">→ 4개 체크 모두 pass</text>
+    <text class="s" x="912" y="494">exit 0</text>
+  </g>
+  <path class="arrow" d="M300,456 L330,456"/>
+  <path class="arrow" d="M582,456 L612,456"/>
+  <path class="arrow" d="M864,456 L894,456"/>
+  <text class="s" x="50" y="526">종료 코드: 0 = 통과 · 1 = 체크 실패 (가짜 바이너리로 확인) · 2 = 바이너리 실행 불가 (없는 경로/이름으로 확인)</text>
+
+  <!-- discovery -->
+  <text class="sec" x="50" y="570">③ 실행하며 발견·반영한 것</text>
+  <rect class="warn" x="50" y="584" width="540" height="130" rx="10"/>
+  <text class="t" x="66" y="608">Rust 최소 버전은 1.88 (README의 “1.85+”로는 부족)</text>
+  <text class="s" x="66" y="632">기본 cargo 1.87이 Cargo.lock을 거부: darling 0.23.0 → rustc 1.88</text>
+  <text class="s" x="66" y="652">cargo metadata --locked 로 lock 전체 최고 rust-version = 1.88 확인</text>
+  <text class="s" x="66" y="672">→ 스크립트가 조건을 만족하는 설치된 툴체인(1.99.1)을 자동 선택</text>
+  <text class="s" x="66" y="692">→ SKILL.md compatibility 와 references/upstream.md 에 근거 기록</text>
+
+  <rect class="box" x="610" y="584" width="540" height="130" rx="10"/>
+  <text class="t" x="626" y="608">설치 위치와 부작용 분리</text>
+  <text class="s" x="626" y="632">preflight.py : stdlib만, 파일 해시만, 네트워크·업스트림 실행 없음</text>
+  <text class="s" x="626" y="652">smoke.py : 바이너리 실행, 쓰기는 임시 디렉터리 안에서만</text>
+  <text class="s" x="626" y="672">install.sh : 네트워크·파일시스템 부작용이 있는 유일한 스크립트</text>
+  <text class="s" x="626" y="692">공유 설치본 ~/.agents/skills/open-ontologies 도 1.2.0 으로 갱신</text>
+
+  <!-- results -->
+  <text class="sec" x="50" y="758">④ 이 머신에서 확인한 결과</text>
+  <rect class="ok" x="50" y="772" width="540" height="150" rx="10"/>
+  <text class="t" x="66" y="796">통과</text>
+  <text class="s" x="66" y="820">• install.sh 전체 실행: release 빌드 → 45.6 MB 바이너리 설치</text>
+  <text class="s" x="66" y="840">• 깨끗한 임시 BIN_DIR 로 재실행해도 exit 0, smoke 4/4</text>
+  <text class="s" x="66" y="860">• --force 없는 재실행은 재빌드 없이 exit 1 로 덮어쓰기 거부</text>
+  <text class="s" x="66" y="880">• shellcheck · bash -n 통과, 카탈로그 검증 3종 통과 (408 skills)</text>
+  <text class="s" x="66" y="900">• 공유 설치본 6개 파일 카탈로그와 바이트 동일, smoke 통과</text>
+
+  <rect class="no" x="610" y="772" width="540" height="150" rx="10"/>
+  <text class="t" x="626" y="796">증명하지 않은 것 (범위 한계)</text>
+  <text class="s" x="626" y="820">• MCP 전송(stdio / HTTP) 및 클라이언트 등록</text>
+  <text class="s" x="626" y="840">• certificate 검사기, owl-rl / owl-dl 등 다른 프로파일</text>
+  <text class="s" x="626" y="860">• 사용자 온톨로지 데이터, 비기본 feature(sql · embeddings 등)</text>
+  <text class="s" x="626" y="880">• smoke exit 0 = CLI batch/RDFS 표면에 대한 이 호스트의 증거일 뿐</text>
+  <text class="s" x="626" y="900">• 해시 일치 · 빌드 성공 · 바이너리 존재를 런타임 증명으로 승격하지 않음</text>
+
+  <!-- footer -->
+  <rect class="box" x="50" y="940" width="1100" height="42" rx="8"/>
+  <text class="s" x="66" y="958">변경 파일 7개 (+315/−13): SKILL.md · references/upstream.md · evals/evals.json · scripts/install.sh · scripts/smoke.py ·</text>
+  <text class="s" x="66" y="974">.agent-skills/skills.json (1.1.0 → 1.2.0) · docs/catalog-impact-pilot.md — origin/main 3a776d79 푸시 완료</text>
+</svg>
