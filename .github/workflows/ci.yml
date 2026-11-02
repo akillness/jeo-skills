@@ -72,6 +72,8 @@ jobs:
         run: python3 -B scripts/test_openspace_routing.py
       - name: ooo standalone installer regressions
         run: python3 -B scripts/test_ooo_installer.py -v
+      - name: ooo account model discovery and configuration regressions
+        run: python3 -B scripts/test_ooo_account_models.py -v
       - name: Setup guide install-block regressions
         run: python3 scripts/test_setup_guide_regressions.py -v
       - name: Independent full-tools installation safety regressions

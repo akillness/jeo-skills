@@ -20,6 +20,7 @@ All notable changes to **jeo-skills** are documented here.
 ### Added
 - CI now runs scoped strict-link validation and the scanner regression suite. The existing R-2 deferred batch remains out of scope; five missing example images in that batch are not claimed fixed.
 - Added a reproducible fixed-evaluator link-exception ratchet under `.frontmatter/link-exception-ratchet/`. The unchanged safety rubric improved from 3/5 to 5/5, with rejected candidates retained in the log. In a local paired synthetic 2,000-exception workload, the reviewed baseline and final scanner medians were 0.375 s and 0.098 s; full-catalog medians were 0.667 s and 0.651 s. These are fixture measurements, not production guarantees.
+- Added account-aware Ouroboros model setup using native Codex, Copilot and Kiro discovery instead of bundled static model snapshots. Model configuration previews by default and requires explicit apply; validated changes preserve unrelated settings and create private backups. Native catalog visibility is distinguished from live entitlement and inference verification.
 
 ## 2026-11-01
 

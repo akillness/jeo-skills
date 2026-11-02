@@ -1496,6 +1496,43 @@ must be reported; only with the user's approval run `claude mcp remove ooo -s us
 `codex mcp remove ooo`) and rerun this block. For a missing `*.so` or `rpds.rpds` error, see
 the macOS uv cache note under Semble above.
 
+**Account model selection is separate from MCP registration.** The block above does not
+run the skill installer or authorize model config writes. After package installation and
+CLI authentication, follow [ooo account-aware model setup](.agent-skills/ooo/SKILL.md#account-aware-model-setup).
+Its authoritative [`account-model-setup.py`](.agent-skills/ooo/scripts/account-model-setup.py)
+previews live/native account discovery; it does not run inference or write Ouroboros config
+unless `--apply` is explicitly supplied.
+
+Choose an **existing Python environment with the same installed Ouroboros version being
+configured**, then replace the interpreter path below. A pip/venv install uses its own Python;
+a uv tool install uses that tool environment's Python. The isolated uvx `[mcp]` environment
+above may differ from both the terminal `[all]` CLI and PATH `python3`. Missing/incompatible
+discovery APIs are a failure, not permission to install or change environments implicitly.
+
+```bash
+PYTHON_BIN="/absolute/path/to/the/Ouroboros-env/bin/python"
+OOO_HELPER="$SKILLS_ROOT/ooo/scripts/account-model-setup.py"
+OOO_CONFIG="$USER_HOME/.ouroboros/config.yaml"
+HOME="$USER_HOME" "$PYTHON_BIN" "$OOO_HELPER" --runtime codex --llm-backend codex --config "$OOO_CONFIG"
+```
+
+Review the JSON inventory, source/account scope, selection, and proposed fields first.
+Codex can inherit its native current/default selection; its catalog may be cached and
+does not independently prove fresh entitlement or inference. Only Codex, Copilot, and Kiro
+have account discovery adapters; other backends/unavailable discovery fail closed with no
+static fallback. For an explicit choice, rerun preview with `--model "$MODEL_ID"` using an
+exact discovered ID (see the skill for the Codex `default` sentinel and mixed-backend limits).
+
+After **separate approval of model selection and the config target**, repeat the reviewed
+command with `--apply`, retaining any reviewed `--model` argument:
+
+```bash
+HOME="$USER_HOME" "$PYTHON_BIN" "$OOO_HELPER" --runtime codex --llm-backend codex --config "$OOO_CONFIG" --apply
+```
+
+Successful changes report `applied` and an existing-config backup; identical settings report
+`unchanged`. This does not require entering secrets into the guide or changing MCP registration.
+
 ### Aside browser skill and MCP wiring
 
 Aside provides two complementary integration surfaces: the `aside-browser` entrypoint

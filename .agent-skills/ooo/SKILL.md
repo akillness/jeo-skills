@@ -96,6 +96,11 @@ GLOBAL=1 AGENTS="claude-code,codex" bash scripts/install.sh
 #   SPEC_KIT_REF=v0.0.10 — pin the spec-kit git ref
 #   CLI_ANYTHING_HUB_SPEC="cli-anything-hub==0.2.0" — pin CLI-Hub
 #   SKIP_PACKAGE=1 / SKIP_SKILL=1 / OOO_EXTRAS=mcp
+#   PYTHON_BIN=<path>    — use the Python that has Ouroboros installed
+#   OOO_MODEL_SETUP=0    — skip account model preview        (default: on)
+#   OOO_MODEL_APPLY=1    — explicitly approve model config writes (default: off)
+#   OOO_RUNTIME=codex / OOO_LLM_BACKEND=codex — separate namespaces
+#   OOO_MODEL=<id> / OOO_CONFIG=<path> — exact discovered ID / target config
 ```
 
 ### Setup runtimes
@@ -105,6 +110,65 @@ ouroboros setup --runtime claude
 ouroboros setup --runtime codex
 ouroboros setup --runtime opencode --opencode-mode plugin
 ```
+
+### Account-aware model setup
+
+After package installation and CLI authentication, use
+[`scripts/account-model-setup.py`](scripts/account-model-setup.py) to preview choices.
+Run it with the **same installed Ouroboros Python**, not whichever `python3` is on PATH:
+
+- **pip/venv:** use that venv's `bin/python` (`Scripts/python.exe` on Windows).
+- **uv tool:** use the installed `ouroboros-ai` tool environment's Python, not the system interpreter.
+- **MCP via uvx:** its isolated `[mcp]` environment may differ from the terminal `[all]` CLI. Select an existing interpreter with the same installed Ouroboros version being configured; do not assume the terminal CLI or PATH Python has the MCP environment's discovery APIs.
+
+From the installed `ooo` skill directory, replace the example interpreter path with yours:
+
+```bash
+PYTHON_BIN="/absolute/path/to/the/Ouroboros-env/bin/python"
+OOO_HELPER="$PWD/scripts/account-model-setup.py"
+OOO_CONFIG="$HOME/.ouroboros/config.yaml"
+"$PYTHON_BIN" "$OOO_HELPER" --runtime codex --llm-backend codex --config "$OOO_CONFIG"
+```
+
+The JSON preview reports inventories, their source/account scope, proposed changed fields,
+and `selection_required`. It makes no inference request and does not write Ouroboros config.
+This is account discovery, not an offline check: it can contact the installed CLI/provider.
+
+Supported discovery boundaries are **Codex**, **Copilot**, and **Kiro** only:
+
+- **Codex:** reads authenticated native `account/read`, `model/list`, and `config/read`.
+  With no existing model choice, the `default` sentinel inherits Codex's current/default
+  selection; it is not an invented model ID. Native catalogs may be cached and do not
+  independently prove fresh entitlement, quota, or successful inference.
+- **Copilot/Kiro:** use installed Ouroboros account discovery (Copilot authenticated API;
+  Kiro CLI model listing). Select an exact reported ID with `--model "$MODEL_ID"`.
+  Copilot bundled fallbacks and unavailable/malformed inventories are refused.
+- Other backends, missing CLIs/authentication, and incompatible installed discovery APIs
+  fail closed. Upgrade/authenticate separately with approval; no static fallback is chosen.
+- Nonempty native runtime/completion `backend_profile` settings, including
+  `OUROBOROS_RUNTIME_PROFILE`, are rejected: profile-scoped account discovery is
+  unsupported, so the helper does not validate one account while execution uses another via `--profile`.
+
+`--runtime` and `--llm-backend` select separate namespaces. When they differ, an explicit
+model must belong to both inventories. Review the preview before applying; if it reports
+`selection_required=true`, rerun preview with an exact discovered `--model "$MODEL_ID"`.
+Omitting `--model` preserves a saved concrete `models.default`; an unavailable saved choice
+is refused rather than replaced. To migrate Codex to native inheritance, preview with
+`--model default`, then repeat that explicit choice with `--model default --apply`.
+
+Only after separate approval of the target config and model choice, repeat the reviewed
+command with `--apply` (retain any reviewed `--model` argument):
+
+```bash
+"$PYTHON_BIN" "$OOO_HELPER" --runtime codex --llm-backend codex --config "$OOO_CONFIG" --apply
+```
+
+The helper validates against the installed upstream schema, preserves unrelated YAML
+settings, backs up an existing config before changes, and reports `applied` or `unchanged`.
+It does not write credentials. Package/MCP approval alone does not authorize this apply.
+Installer equivalents are the `OOO_MODEL_*`, `OOO_RUNTIME`, `OOO_LLM_BACKEND`, `OOO_CONFIG`,
+and `PYTHON_BIN` knobs above: preview is the model default, **not** an installer dry-run;
+the installer's ordinary package/skill/integration writes still occur.
 
 ## When to use
 
@@ -273,6 +337,9 @@ ouroboros cancel execution --reason "requirements changed"
 ```
 
 ### Config
+For account-validated runtime/model choices, use [Account-aware model setup](#account-aware-model-setup)
+before manual config edits; these general CLI commands are not account-discovery checks.
+
 ```bash
 ouroboros config show
 ouroboros config show orchestrator
@@ -341,7 +408,7 @@ claude mcp add ooo -s user -- uvx --isolated --from 'ouroboros-ai[mcp]' ouroboro
 | Variable | Purpose |
 |----------|---------|
 | `ANTHROPIC_API_KEY` | Claude backend |
-| `OPENAI_API_KEY` | LiteLLM / Codex |
+| `OPENAI_API_KEY` | API-backed LiteLLM calls; native Codex CLI discovery uses its existing login |
 | `OPENROUTER_API_KEY` | OpenRouter |
 | `OUROBOROS_AGENT_RUNTIME` | Override runtime |
 | `OUROBOROS_LLM_BACKEND` | Override LLM backend |

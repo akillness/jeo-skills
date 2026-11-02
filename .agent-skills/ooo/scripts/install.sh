@@ -31,6 +31,12 @@
 #   OOO_CLI_ANYTHING=0    - do NOT install cli-anything/CLI-Hub (default: 1)
 #   CLI_ANYTHING_HUB_SPEC - pip spec for CLI-Hub (default: cli-anything-hub; pinnable)
 #   PYTHON_BIN=<path>     - python interpreter to use (default: python3)
+#   OOO_MODEL_SETUP=0    - skip account model discovery/preview (default: 1)
+#   OOO_MODEL_APPLY=1    - explicitly apply validated model configuration (default: 0)
+#   OOO_RUNTIME=<name>   - runtime namespace (otherwise existing config/env)
+#   OOO_LLM_BACKEND=<name> - separate LLM backend namespace
+#   OOO_MODEL=<id>       - exact model; default explicitly selects Codex inheritance
+#   OOO_CONFIG=<path>    - target config.yaml (default: ~/.ouroboros/config.yaml)
 #
 # Usage:
 #   bash scripts/install.sh
@@ -187,11 +193,39 @@ install_cli_anything() {
   fi
 }
 
+# Model setup is independent of package/skill installation. Preview never writes
+# config; unavailable discovery blocks apply rather than choosing a static model.
+setup_account_models() {
+  if [ "${OOO_MODEL_SETUP:-1}" != "1" ]; then
+    log "OOO_MODEL_SETUP=0 — skipping account model preview"
+    return 0
+  fi
+  if [ "${OOO_MODEL_APPLY:-0}" != "1" ] &&
+     [ -z "${OOO_RUNTIME:-}${OUROBOROS_AGENT_RUNTIME:-}${OUROBOROS_RUNTIME:-}${OOO_LLM_BACKEND:-}${OOO_MODEL:-}" ] &&
+     [ ! -f "${OOO_CONFIG:-$HOME/.ouroboros/config.yaml}" ]; then
+    warn "Account model preview unresolved: select OOO_RUNTIME (and optionally OOO_LLM_BACKEND); no runtime/model guessed and no config written."
+    return 0
+  fi
+  local -a model_args=()
+  [ -z "${OOO_RUNTIME:-}" ] || model_args+=(--runtime "$OOO_RUNTIME")
+  [ -z "${OOO_LLM_BACKEND:-}" ] || model_args+=(--llm-backend "$OOO_LLM_BACKEND")
+  [ -z "${OOO_MODEL:-}" ] || model_args+=(--model "$OOO_MODEL")
+  [ -z "${OOO_CONFIG:-}" ] || model_args+=(--config "$OOO_CONFIG")
+  if [ "${OOO_MODEL_APPLY:-0}" = "1" ]; then
+    model_args+=(--apply)
+  fi
+  if ! "$PYTHON_BIN" "$SCRIPT_DIR/account-model-setup.py" "${model_args[@]}"; then
+    warn "Account model discovery/configuration unresolved; no static model fallback selected. Use the installed Ouroboros Python via PYTHON_BIN and authenticate the target CLI."
+    [ "${OOO_MODEL_APPLY:-0}" != "1" ] || return 1
+  fi
+}
+
 # ---- main ----
 log "Starting $SKILL setup (git-interview: $OOO_GIT_INTERVIEW, spec-kit: $OOO_SPEC_KIT, cli-anything: $OOO_CLI_ANYTHING)"
 preflight_package
 install_skill
 install_package
+setup_account_models
 wire_git_interview
 install_spec_kit
 install_cli_anything
