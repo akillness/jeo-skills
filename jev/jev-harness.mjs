@@ -82,6 +82,7 @@ async function readEnvFile(path, optional = true) {
 // ignored for selected profiles; legacy installs retain ambient overrides.
 const PROFILE_DIR = join(homedir(), '.agents', 'jev', 'profiles');
 let envReadError = null;
+let baseReadPending = false;
 let baseConfig = {};
 let baseFilePresent = false;
 const kindFiles = {};   // kind -> parsed <profile>.<kind>.env (profiles only)
@@ -91,7 +92,9 @@ if (!PROFILE_ERROR) {
     if (PROFILE) {
       const basePath = join(PROFILE_DIR, `${PROFILE}.env`);
       baseFilePresent = existsSync(basePath);
+      baseReadPending = true;
       baseConfig = await readEnvFile(basePath);
+      baseReadPending = false;
       for (const kind of BACKEND_KINDS) {
         const path = join(PROFILE_DIR, `${PROFILE}.${kind}.env`);
         kindFilePresent[kind] = existsSync(path);
@@ -122,7 +125,7 @@ const FILE_KIND = cfgFile(null, 'JEV_MODE') || 'api';
 const PROFILE_ENABLED_VALUE = PROFILE ? String(baseConfig.JEV_ENABLED || '').toLowerCase() : 'true';
 const PROFILE_ENABLED = PROFILE_ENABLED_VALUE === 'true';
 const PROFILE_ENABLED_INVALID = Boolean(PROFILE && baseConfig.JEV_ENABLED !== undefined && !/^(true|false)$/i.test(baseConfig.JEV_ENABLED));
-const PROFILE_DISABLED = Boolean(PROFILE && !PROFILE_ENABLED && !PROFILE_ENABLED_INVALID);
+const PROFILE_DISABLED = Boolean(PROFILE && !PROFILE_ENABLED && !PROFILE_ENABLED_INVALID && !baseReadPending);
 
 // Catalog resolution: an explicit path is authoritative. When it is absent,
 // use the checkout the host is working in, then the version-matched snapshot
@@ -220,17 +223,17 @@ const POLICY_ERRORS = policyErrors();
 const MERGED_CONFIGURED = DEFAULT_KIND_VALID && kindConfigured(DEFAULT_KIND);
 const FILE_CONFIGURED = FILE_KIND_VALID && kindConfiguredInFile(FILE_KIND);
 const ENV_MODE_SWITCHED = !PROFILE && Boolean(process.env.JEV_MODE) && process.env.JEV_MODE !== FILE_KIND;
-const CONFIG_ERROR = PROFILE_ENABLED_INVALID
-  ? 'JEV_ENABLED must be true or false'
-  : MERGED_CONFIGURED
-    ? (POLICY_ERRORS[0] || null)
-    : envReadError
-      ? envReadError
+const CONFIG_ERROR = envReadError && (PROFILE || !MERGED_CONFIGURED)
+  ? envReadError
+  : PROFILE_ENABLED_INVALID
+    ? 'JEV_ENABLED must be true or false'
+    : MERGED_CONFIGURED
+      ? (POLICY_ERRORS[0] || null)
       : !DEFAULT_KIND_VALID
         ? `Invalid JEV_MODE: ${DEFAULT_KIND}`
         : POLICY_ERRORS.length
           ? POLICY_ERRORS[0]
-          : baseFilePresent && (!FILE_CONFIGURED || ENV_MODE_SWITCHED)
+          : !PROFILE && baseFilePresent && (!FILE_CONFIGURED || ENV_MODE_SWITCHED)
             ? 'Incomplete or invalid Jev configuration file'
             : null;
 const ACTIVE = PROFILE

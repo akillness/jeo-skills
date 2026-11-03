@@ -118,6 +118,7 @@ CATALOG = {
     "web-fetch": ("Fetch static HTML documents over HTTP for reading.", "fetch url html"),
     "better-design": ("Improve visual hierarchy and spacing of interfaces.", "design better layout"),
     "han-river-water-level": ("한강홍수통제소 기반 현재 수위/유량을 관측소명으로 조회한다.", "수위 관측소 조회"),
+    "shopping-shorts": ("쇼핑 쇼츠 상품 광고: 승인 없는 유료 생성과 업로드에는 사용하지 않는다.", "쇼핑 쇼츠 상품 영상"),
     "korean-notes": ("Organize meeting notes for Korean teams.", "회의록 정리 템플릿 사용 방법"),
     "calendar-sync": ("Sync calendar events between providers.", "calendar events sync"),
     "invoice-export": ("Export invoices to spreadsheets.", "invoice export spreadsheet"),
@@ -194,6 +195,21 @@ class RouterGate(Fixture):
             with self.subTest(prompt=prompt):
                 self.assertEqual(self.suggested(prompt), [])
 
+    def test_approval_only_prompts_do_not_trigger_unrelated_skills(self):
+        for prompt in ("응 모두 승인", "네 승인합니다", "모두 승인", "yes, approve all", "approved"):
+            with self.subTest(prompt=prompt):
+                result = self.route(prompt, host="text")
+                self.assertEqual((result.returncode, result.stdout), (0, ""), result.stderr)
+
+    def test_approval_with_a_skill_or_task_still_routes(self):
+        for prompt, expected in (
+            ("응 graphify 승인", "graphify"),
+            ("네 승인합니다 한강 수위 알려줘", "han-river-water-level"),
+            ("approved, use graphify", "graphify"),
+        ):
+            with self.subTest(prompt=prompt):
+                self.assertIn(expected, self.suggested(prompt))
+
     def test_korean_particles_are_stripped_and_rarity_is_per_script(self):
         self.assertEqual(self.suggested("한강 수위 알려줘"), ["han-river-water-level"])
 
@@ -221,6 +237,92 @@ class RouterGate(Fixture):
         self.assertIn(str(self.catalog / "graphify/SKILL.md"), kimi)
         # Kimi passes raw text when stdin is not JSON.
         self.assertIn("graphify", self.route("", host="kimi", raw="graphify please").stdout)
+
+    def test_agy_preinvocation_routes_documented_payload(self):
+        payload = {"conversationId": "fixture", "workspacePaths": [str(self.work)],
+                   "lastUserInput": "use graphify", "invocationNum": 1, "initialNumSteps": 0}
+        result = self.route("", host="agy", raw=json.dumps(payload))
+        self.assertEqual((result.returncode, result.stderr), (0, ""))
+        response = json.loads(result.stdout)
+        self.assertEqual(set(response), {"injectSteps"})
+        self.assertEqual(len(response["injectSteps"]), 1)
+        step = response["injectSteps"][0]
+        self.assertEqual(set(step), {"ephemeralMessage"})
+        self.assertIn(str(self.catalog / "graphify/SKILL.md"), step["ephemeralMessage"])
+
+    def test_agy_invalid_or_disabled_input_fails_open(self):
+        for payload in ("not json", "{}", json.dumps({"prompt": "use graphify"}),
+                        json.dumps({"lastUserInput": {"text": "use graphify"}})):
+            with self.subTest(payload=payload):
+                result = self.route("", host="agy", raw=payload)
+                self.assertEqual((result.returncode, result.stderr), (0, ""))
+                self.assertEqual(json.loads(result.stdout), {})
+        disabled = self.route("", host="agy", raw=json.dumps({"lastUserInput": "use graphify"}),
+                              OPENSPACE_ROUTE="off")
+        self.assertEqual((disabled.returncode, disabled.stderr), (0, ""))
+        self.assertEqual(json.loads(disabled.stdout), {})
+
+    def test_kimi_text_blocks_route_like_string_prompts(self):
+        blocks = [{"type": "text", "text": "use graphify"}]
+        actual = self.route(blocks, host="kimi")
+        expected = self.route("use graphify", host="kimi")
+        self.assertEqual((actual.returncode, actual.stdout, actual.stderr),
+                         (expected.returncode, expected.stdout, expected.stderr))
+        self.assertIn(str(self.catalog / "graphify/SKILL.md"), actual.stdout)
+
+    def test_kimi_ignores_nontext_and_malformed_blocks(self):
+        blocks = [
+            {"type": "image", "text": "scrapling", "data": "private-image-payload"},
+            {"type": "text", "text": "use"},
+            {"type": "tool", "text": "scrapling private-tool-payload"},
+            None, "scrapling", {}, {"text": "scrapling"},
+            {"type": "text", "text": None}, {"type": "text", "text": ["scrapling"]},
+            {"type": "text", "text": "graphify"},
+        ]
+        actual = self.route(blocks, host="kimi")
+        expected = self.route("use\ngraphify", host="kimi")
+        self.assertEqual((actual.returncode, actual.stdout, actual.stderr),
+                         (expected.returncode, expected.stdout, expected.stderr))
+        self.assertIn(str(self.catalog / "graphify/SKILL.md"), actual.stdout)
+        self.assertNotIn("scrapling", actual.stdout + actual.stderr)
+        self.assertNotIn("private-", actual.stdout + actual.stderr)
+
+    def test_kimi_block_order_and_empty_inputs(self):
+        # A leading slash command suppresses routing, so reversing these blocks
+        # would incorrectly route graphify.
+        ordered = [{"type": "text", "text": "/compact"}, {"type": "text", "text": "graphify"}]
+        for prompt in (ordered, [], [None, {}, {"type": "image", "text": "graphify"}],
+                       [{"type": "text", "text": None}], [{"type": "text", "text": "   "}]):
+            with self.subTest(prompt=prompt):
+                result = self.route(prompt, host="kimi")
+                self.assertEqual((result.returncode, result.stdout, result.stderr), (0, "", ""))
+
+    def test_kimi_off_disables_string_and_block_prompts(self):
+        for prompt in ("use graphify", [{"type": "text", "text": "use graphify"}]):
+            with self.subTest(prompt=prompt):
+                result = self.route(prompt, host="kimi", OPENSPACE_ROUTE="off")
+                self.assertEqual((result.returncode, result.stdout, result.stderr), (0, "", ""))
+
+    def test_kimi_nontext_never_reaches_ranker(self):
+        ranker = self.modules / "openspace/skill_engine/skill_ranker.py"
+        ranker.write_text(FAKE_RANKER.replace(
+            "        corpus = [self._tokenize",
+            "        import os\n        from pathlib import Path\n"
+            "        Path(os.environ['QUERY_CAPTURE']).write_text(query)\n"
+            "        corpus = [self._tokenize",
+        ), encoding="utf-8")
+        capture = self.work / "query.txt"
+        blocks = [{"type": "image", "text": "scrapling privateimage"},
+                  {"type": "tool", "text": "privatetool"},
+                  {"type": "text", "text": "use graphify"}]
+        result = self.route(blocks, host="kimi", QUERY_CAPTURE=str(capture))
+        self.assertEqual((result.returncode, result.stderr), (0, ""))
+        self.assertIn("graphify", result.stdout)
+        self.assertEqual(capture.read_text(encoding="utf-8"), "graphify")
+        capture.unlink()
+        result = self.route(blocks[:2], host="kimi", QUERY_CAPTURE=str(capture), OPENSPACE_ROUTE_DEBUG="1")
+        self.assertEqual((result.returncode, result.stdout, result.stderr), (0, "", ""))
+        self.assertFalse(capture.exists())
 
     def test_missing_openspace_fails_open_silently(self):
         result = self.route("use graphify", PYTHONPATH=str(self.work / "absent"))
@@ -317,6 +419,56 @@ class HookInstaller(Fixture):
     def snapshot(self):
         return {str(p.relative_to(self.home)): p.read_bytes() for p in sorted(self.home.rglob("*")) if p.is_file()}
 
+    def test_agy_install_and_remove_preserve_named_hooks_and_gemini_settings(self):
+        path = self.home / ".gemini/config/hooks.json"
+        original = {"user-hook": {"enabled": False, "PreInvocation": [
+            {"type": "command", "command": "existing-command", "timeout": 7}]}}
+        self.write(path, original)
+        path.chmod(0o640)
+        gemini_before = self.files["gemini"].read_bytes()
+        result = self.hooks("install", "--host", "agy")
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        installed = json.loads(path.read_text())
+        self.assertEqual(installed["user-hook"], original["user-hook"])
+        handlers = installed["openspace-route"]["PreInvocation"]
+        self.assertEqual(len(handlers), 1)
+        self.assertEqual(handlers[0]["type"], "command")
+        self.assertIn("openspace-route.sh agy", handlers[0]["command"])
+        self.assertEqual(stat.S_IMODE(path.stat().st_mode), 0o640)
+        self.assertEqual(self.files["gemini"].read_bytes(), gemini_before)
+        payload = json.dumps({"lastUserInput": "use graphify", "invocationNum": 1})
+        routed = subprocess.run(["/bin/sh", "-c", handlers[0]["command"]], input=payload,
+                                text=True, capture_output=True, env=self.hook_env, timeout=60)
+        self.assertEqual((routed.returncode, routed.stderr), (0, ""))
+        self.assertIn("graphify", json.loads(routed.stdout)["injectSteps"][0]["ephemeralMessage"])
+        (self.venv / "bin/python").unlink()
+        missing = subprocess.run(["/bin/sh", "-c", handlers[0]["command"]], input=payload,
+                                 text=True, capture_output=True, env=self.hook_env, timeout=60)
+        self.assertEqual((missing.returncode, missing.stderr), (0, ""))
+        self.assertEqual(json.loads(missing.stdout), {})
+        (self.venv / "bin/python").symlink_to(sys.executable)
+        again = self.hooks("install", "--host", "agy")
+        self.assertEqual(again.returncode, 0, again.stdout + again.stderr)
+        self.assertEqual(json.loads(path.read_text()), installed)
+        removed = self.hooks("remove", "--host", "agy")
+        self.assertEqual(removed.returncode, 0, removed.stdout + removed.stderr)
+        self.assertEqual(json.loads(path.read_text()), original)
+        self.assertEqual(self.files["gemini"].read_bytes(), gemini_before)
+
+    def test_agy_refuses_unmanaged_name_and_invalid_config(self):
+        path = self.home / ".gemini/config/hooks.json"
+        for content in ('{"openspace-route": {"PreInvocation": [{"command": "user-command"}]}}',
+                        '{invalid json', '[]'):
+            with self.subTest(content=content):
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(content)
+                before = self.snapshot()
+                result = self.hooks("install", "--host", "agy")
+                self.assertNotEqual(result.returncode, 0, result.stdout + result.stderr)
+                self.assertEqual(path.read_text(), content)
+                self.assertEqual(self.files["gemini"].read_text(), self.originals["gemini"])
+                self.assertEqual(path.read_bytes(), before[str(path.relative_to(self.home))])
+
     def test_install_adds_one_entry_per_host_and_preserves_everything_else(self):
         result = self.hooks("install")
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
@@ -361,6 +513,55 @@ class HookInstaller(Fixture):
                                 env=self.env, timeout=60)
         self.assertEqual((silent.returncode, silent.stdout), (0, ""))
 
+    def test_wrapper_with_spaces_in_venv_and_skill_paths(self):
+        spaced = self.work / "venv with spaces"
+        (spaced / "bin").mkdir(parents=True)
+        (spaced / "bin/python").symlink_to(sys.executable)
+        catalog = self.work / "skills with spaces"
+        write_catalog(catalog)
+        self.hook_env.update(OPENSPACE_VENV=str(spaced), SKILLS_ROOT=str(catalog))
+        self.assertEqual(self.hooks("install", "--host", "claude").returncode, 0)
+        wrapper = self.home / ".agents/hooks/openspace-route.sh"
+        result = subprocess.run(["/bin/sh", str(wrapper), "claude"],
+                                input=json.dumps({"prompt": "use graphify"}), text=True,
+                                capture_output=True, env={**self.env, "OPENSPACE_HOST_SKILL_DIRS": ""}, timeout=60)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        context = json.loads(result.stdout)["hookSpecificOutput"]["additionalContext"]
+        self.assertIn(str(catalog / "graphify/SKILL.md"), context)
+
+    def test_install_and_remove_preserve_existing_empty_hook_entries(self):
+        original = {"hooks": {"UserPromptSubmit": [{"hooks": []}, {"matcher": "other", "hooks": []}]}}
+        self.write(self.files["claude"], original)
+        self.assertEqual(self.hooks("install", "--host", "claude").returncode, 0)
+        installed = json.loads(self.files["claude"].read_text())
+        self.assertEqual(installed["hooks"]["UserPromptSubmit"][:2], original["hooks"]["UserPromptSubmit"])
+        self.assertEqual(self.hooks("remove", "--host", "claude").returncode, 0)
+        self.assertEqual(json.loads(self.files["claude"].read_text()), original)
+
+    def test_unmanaged_shared_runtime_files_are_not_overwritten(self):
+        for filename in ("openspace-route.sh", "openspace-route.py"):
+            with self.subTest(filename=filename):
+                hook_dir = self.home / ".agents/hooks"
+                hook_dir.mkdir(parents=True, exist_ok=True)
+                foreign = hook_dir / filename
+                foreign.write_text("user owned runtime\n")
+                before = self.snapshot()
+                result = self.hooks("install", "--host", "claude")
+                self.assertNotEqual(result.returncode, 0, result.stdout + result.stderr)
+                self.assertEqual(foreign.read_text(), "user owned runtime\n")
+                self.assertEqual(self.snapshot(), before)
+                foreign.unlink()
+
+    def test_failed_host_removal_preserves_shared_runtime(self):
+        self.assertEqual(self.hooks("install").returncode, 0)
+        wrapper = self.home / ".agents/hooks/openspace-route.sh"
+        router = self.home / ".agents/hooks/openspace-route.py"
+        before = (wrapper.read_bytes(), router.read_bytes())
+        self.files["claude"].write_text("{invalid json")
+        removed = self.hooks("remove")
+        self.assertNotEqual(removed.returncode, 0, removed.stdout + removed.stderr)
+        self.assertEqual((wrapper.read_bytes(), router.read_bytes()), before)
+
     def test_remove_restores_configs_and_deletes_generated_files(self):
         self.assertEqual(self.hooks("install").returncode, 0)
         result = self.hooks("remove")
@@ -370,6 +571,18 @@ class HookInstaller(Fixture):
         self.assertEqual(tomllib.loads(self.files["kimi"].read_text()), tomllib.loads(self.originals["kimi"]))
         leftovers = [p for p in self.home.rglob("openspace-route*")]
         self.assertEqual(leftovers, [])
+
+    def test_kimi_remove_preserves_following_comments_and_section(self):
+        self.assertEqual(self.hooks("install", "--host", "kimi").returncode, 0)
+        with self.files["kimi"].open("a", encoding="utf-8") as config:
+            config.write("\n# User note for custom settings\n[custom]\nvalue = 42\n")
+        removed = self.hooks("remove", "--host", "kimi")
+        self.assertEqual(removed.returncode, 0, removed.stdout + removed.stderr)
+        text = self.files["kimi"].read_text()
+        self.assertIn("# User note for custom settings", text)
+        parsed = tomllib.loads(text)
+        self.assertEqual(parsed["custom"]["value"], 42)
+        self.assertEqual([hook["command"] for hook in parsed["hooks"]], ["other-kimi"])
 
     def test_dry_run_writes_nothing(self):
         before = self.snapshot()
@@ -403,22 +616,29 @@ class HookInstaller(Fixture):
 
     @unittest.skipUnless(shutil.which("bun"), "bun runs the generated TypeScript extension")
     def test_generated_pi_extension_injects_a_hidden_message(self):
-        self.assertEqual(self.hooks("install", "--host", "jeopi").returncode, 0)
-        extension = self.home / ".jeopi/agent/extensions/openspace-route.ts"
-        driver = self.work / "drive.ts"
-        driver.write_text(f'''import register from {json.dumps(str(extension))};
+        for host in ("jeopi", "omp", "pi", "gjc"):
+            with self.subTest(host=host):
+                (self.home / f".{host}/agent").mkdir(parents=True, exist_ok=True)
+                self.assertEqual(self.hooks("install", "--host", host).returncode, 0)
+                extension = self.home / f".{host}/agent/extensions/openspace-route.ts"
+                driver = self.work / "drive.ts"
+                driver.write_text(f'''import register from {json.dumps(str(extension))};
 const handlers: Record<string, any> = {{}};
 register({{ on: (name: string, fn: any) => (handlers[name] = fn) }});
 console.log(JSON.stringify(await handlers.before_agent_start({{ prompt: "use graphify" }})));
 console.log(JSON.stringify(await handlers.before_agent_start({{ prompt: "hi" }})));
 ''')
-        result = subprocess.run(["bun", str(driver)], capture_output=True, text=True, timeout=60,
-                                env={**self.env, "PATH": os.environ["PATH"], "OPENSPACE_HOST_SKILL_DIRS": str(self.catalog)})
-        self.assertEqual(result.returncode, 0, result.stderr)
-        routed, quiet = (json.loads(line) for line in result.stdout.splitlines())
-        self.assertEqual((routed["message"]["customType"], routed["message"]["display"]), ("openspace-route", False))
-        self.assertIn("graphify", routed["message"]["content"])
-        self.assertEqual(quiet, {})
+                env = {**self.env, "PATH": os.environ["PATH"], "OPENSPACE_HOST_SKILL_DIRS": str(self.catalog)}
+                result = subprocess.run(["bun", str(driver)], capture_output=True, text=True, timeout=60, env=env)
+                self.assertEqual(result.returncode, 0, result.stderr)
+                routed, quiet = (json.loads(line) for line in result.stdout.splitlines())
+                self.assertEqual((routed["message"]["customType"], routed["message"]["display"]), ("openspace-route", False))
+                self.assertIn("graphify", routed["message"]["content"])
+                self.assertEqual(quiet, {})
+                disabled = subprocess.run(["bun", str(driver)], capture_output=True, text=True, timeout=60,
+                                          env={**env, "OPENSPACE_ROUTE": "off"})
+                self.assertEqual(disabled.returncode, 0, disabled.stderr)
+                self.assertEqual([json.loads(line) for line in disabled.stdout.splitlines()], [{}, {}])
 
     @unittest.skipUnless(shutil.which("bun"), "bun runs the generated OpenCode plugin")
     def test_generated_opencode_2_plugin_appends_the_note_to_the_prompt(self):

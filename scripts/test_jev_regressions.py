@@ -1273,6 +1273,65 @@ class JevRegressions(unittest.TestCase):
             self.assertEqual(json.loads(route.stdout)["backend"]["kind"], "local")
             self.assertEqual(json.loads(review.stdout)["backend"]["kind"], "ollama")
 
+    def test_route_uses_operation_backend_when_unreferenced_default_is_unconfigured(self):
+        with self.backend() as (local, local_requests):
+            with self.backend() as (foreign, foreign_requests):
+                self.write_profile("host-local", base={"JEV_MODE": "api", "JEV_ROUTE_SKILLS_BACKEND": "local"},
+                                   kinds={"local": {"JEV_LOCAL_ENDPOINT": local + "/v1/systemone"}})
+                self.write_profile("host-api", kinds={"api": {"JEV_API_ENDPOINT": foreign + "/v1/systemone",
+                                                                 "JEV_API_KEY": "foreign-key"}})
+                routed = self.run_cli("--profile", "host-local", "route-skills", "--top-k", "1", TASK,
+                                      env={"JEV_PROFILE": "host-api", "JEV_API_ENDPOINT": foreign + "/v1/systemone",
+                                           "JEV_API_KEY": "foreign-key"})
+                self.successful(routed)
+                self.assertEqual(json.loads(routed.stdout)["backend"]["kind"], "local")
+                self.assertTrue(any(row[0] == "POST" for row in local_requests))
+                self.assertFalse(any(row[0] == "POST" for row in foreign_requests))
+
+    def test_base_profile_read_error_is_not_disabled_or_missing(self):
+        with self.backend() as (base, requests):
+            self.write_profile("disabled", base={"JEV_ENABLED": "false"})
+            self.write_profile("unreadable", kinds={"api": {
+                "JEV_API_ENDPOINT": base + "/v1/systemone", "JEV_API_KEY": "fixture-key"}})
+            profile = self.home / ".agents/jev/profiles/unreadable.env"
+            profile.unlink()
+            profile.mkdir()  # Reading a directory fails even when tests run as root.
+            for name, expected in (("unreadable", 3), ("missing", 2), ("disabled", 2)):
+                with self.subTest(profile=name):
+                    status = self.run_cli("--profile", name, "status", "--operation", "route-skills")
+                    self.assertEqual(status.returncode, expected, status.stdout + status.stderr)
+                    if name == "unreadable":
+                        self.assertIn("Cannot read Jev configuration", status.stdout + status.stderr)
+                    self.assertEqual(requests, [])
+
+    def test_unreadable_backend_profile_aborts_before_network(self):
+        with self.backend() as (local, requests):
+            self.write_profile(base={"JEV_MODE": "local"},
+                               kinds={"local": {"JEV_LOCAL_ENDPOINT": local + "/v1/systemone"}})
+            (self.home / ".agents/jev/profiles/fixture.api.env").mkdir()
+            status = self.run_cli("--profile", "fixture", "status", "--operation", "route-skills")
+            self.assertEqual(status.returncode, 3, status.stdout + status.stderr)
+            routed = self.run_cli("--profile", "fixture", "route-skills", TASK)
+            self.assertEqual(routed.returncode, 1, routed.stdout + routed.stderr)
+            self.assertIn("Cannot read Jev configuration", routed.stderr)
+            self.assertEqual(routed.stdout, "")
+            self.assertEqual(requests, [])
+
+    def test_route_fallback_never_contacts_another_backend_without_allowlist(self):
+        with self.backend() as (hosted, requests):
+            kinds = {"local": {"JEV_LOCAL_ENDPOINT": "http://127.0.0.1:1/v1/systemone"},
+                     "api": {"JEV_API_ENDPOINT": hosted + "/v1/systemone", "JEV_API_KEY": "fixture-key"}}
+            self.write_profile(base={"JEV_MODE": "local"}, kinds=kinds)
+            denied = self.run_cli("--profile", "fixture", "route-skills", TASK)
+            self.assertNotEqual(denied.returncode, 0, denied.stdout)
+            self.assertEqual(denied.stdout, "")
+            self.assertFalse(any(row[0] == "POST" for row in requests))
+            self.write_profile(base={"JEV_MODE": "local", "JEV_ROUTE_SKILLS_FALLBACK": "api"}, kinds=kinds)
+            allowed = self.run_cli("--profile", "fixture", "route-skills", "--top-k", "1", TASK)
+            self.successful(allowed)
+            self.assertEqual(json.loads(allowed.stdout)["backend"]["kind"], "api")
+            self.assertTrue(any(row[0] == "POST" for row in requests))
+
     def test_fallback_follows_allow_list_order_and_reports_attempted(self):
         with self.backend() as (base, requests):
             offline = "http://127.0.0.1:1/v1/systemone"

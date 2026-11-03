@@ -13,7 +13,7 @@ description: >
   openspace-mcp, skill-discovery, delegate-task.
 
 allowed-tools: Bash Read Write Edit Glob Grep
-compatibility: Requires Python 3.12+ (uv recommended). Routing hooks support Claude Code, Codex, Gemini CLI/Antigravity, Kimi Code, jeopi, omp, pi, gjc, and OpenCode; the MCP server needs an MCP-capable host. Local search, routing, evaluation, and evolution work without cloud access; sharing to the cloud hub needs an OpenSpace cloud agent key.
+compatibility: Requires Python 3.12+ (uv recommended). Routing hooks support Claude Code, Codex, Gemini CLI/Antigravity, Kimi Code, jeopi, omp, pi, gjc, and OpenCode; an experimental Antigravity CLI (agy) adapter is fixture-tested but not verified in a native authenticated run. The MCP server needs an MCP-capable host. Local search, routing, evaluation, and evolution work without cloud access; sharing to the cloud hub needs an OpenSpace cloud agent key.
 license: MIT
 metadata:
   tags: openspace, skill-management, skill-discovery, skill-routing, prompt-hook, skill-retrieval, skill-evaluation, skill-evolution, mcp, agent-skills, quality-layer, cloud-hub
@@ -165,16 +165,24 @@ python3 scripts/route-hooks.py remove
 | Claude Code | `UserPromptSubmit` → `additionalContext` | `~/.claude/settings.json` |
 | Codex CLI | `UserPromptSubmit` → `additionalContext` (trust it in `/hooks`) | `~/.codex/hooks.json` |
 | Gemini CLI / Antigravity | `BeforeAgent` → `additionalContext` | `~/.gemini/settings.json` |
+| Antigravity CLI (`agy`, experimental) | `PreInvocation` → `injectSteps` / `ephemeralMessage` | `~/.gemini/config/hooks.json` |
 | Kimi Code | `UserPromptSubmit` → hook message | `~/.kimi-code/config.toml` |
 | jeopi, omp, pi, gjc | `before_agent_start` → hidden custom message | `~/.<host>/agent/extensions/openspace-route.ts` |
 | OpenCode 2 | `session.hook("prompt")` appends to the prompt (1.x: `chat.message` synthetic part) | `~/.config/opencode/plugins/openspace-route.js` |
 
+The `agy` adapter reads `lastUserInput` and may fire more than once per turn because
+`PreInvocation` runs per model call. It was fixture-tested for AGY CLI 1.4.12; a native
+authenticated hook run remains unverified. Do not infer live routing from configuration.
+
 All hooks call one wrapper, `~/.agents/hooks/openspace-route.sh`, which runs a copy of the
 router with the OpenSpace venv. Without the venv, or on any router error, the hook prints
-nothing and exits 0, so routing can never block a prompt. Slash commands and
-`OPENSPACE_ROUTE=off` are skipped. Skill roots come from `OPENSPACE_HOST_SKILL_DIRS`
-(default `~/.agents/skills`); the parsed catalog is cached in `~/.cache/openspace-route/`
-and re-read only for changed `SKILL.md` files, so a prompt costs about 0.3 s.
+nothing and exits 0, so routing can never block a prompt. Slash commands are skipped, as
+are prompts for which the hook receives `OPENSPACE_ROUTE=off`. Kimi Code 0.34.0
+supplies the prompt as an array of text blocks; the checkout router handles that format.
+Skill roots come from
+`OPENSPACE_HOST_SKILL_DIRS` (default `~/.agents/skills`); the parsed catalog is cached in
+`~/.cache/openspace-route/` and re-read only for changed `SKILL.md` files, so a prompt
+costs about 0.3 s.
 
 The gate favors silence over noise. A skill is suggested only when the prompt names it
 (every name term present) or when a rare prompt term appears in its name or description
@@ -286,7 +294,7 @@ may depend on configuration or external services and require their own approval.
 - Mode: `prompt-routing`
 - Preview `python3 scripts/route-hooks.py install --dry-run`, get approval for the listed host configs, then install.
 - Explain that the choice is made by OpenSpace's local BM25 before the model runs, so every model receives the same suggestions; Codex needs the hook trusted in `/hooks`.
-- Verify with `route-hooks.py status` and one live prompt per host, comparing against `OPENSPACE_ROUTE=off`.
+- Verify with `route-hooks.py status` and one live prompt per host, comparing against an `OPENSPACE_ROUTE=off` control delivered to the hook.
 
 ### Example 4: Judge whether a skill is still reliable
 
@@ -317,7 +325,7 @@ may depend on configuration or external services and require their own approval.
 6. Treat the cloud hub as discovery-only; execution and trust decisions stay local, and upload requires `trusted` status.
 7. Route out honestly to `codebase-search`/`semble`, `llm-wiki`, or `opencontext` when the job is not actually skill retrieval/quality/evolution.
 8. Do not report install success until `openspace-mcp --help` works and the MCP client can see OpenSpace's tools.
-9. Prove routing per host with a live prompt and an `OPENSPACE_ROUTE=off` control; a hook entry in a config file is not proof that the host runs it.
+9. Prove routing per host with a live prompt and an `OPENSPACE_ROUTE=off` control delivered to the hook; a hook entry in a config file is not proof that the host runs it.
 
 ## References
 

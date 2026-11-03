@@ -7,6 +7,7 @@ model sees it, and passes the ranked skill note to the model as context:
   claude    ~/.claude/settings.json         UserPromptSubmit  additionalContext
   codex     ~/.codex/hooks.json             UserPromptSubmit  additionalContext (trust in /hooks)
   gemini    ~/.gemini/settings.json         BeforeAgent       additionalContext (Gemini CLI, Antigravity)
+  agy       ~/.gemini/config/hooks.json     PreInvocation    ephemeralMessage (AGY CLI)
   kimi      ~/.kimi-code/config.toml        UserPromptSubmit  hook message
   jeopi, omp, pi, gjc
             ~/.<host>/agent/extensions/     before_agent_start hidden custom message
@@ -34,6 +35,7 @@ import json
 import os
 import re
 import shlex
+import shutil
 import stat
 import subprocess
 import sys
@@ -68,9 +70,13 @@ py={python}
 router={shlex.quote(str(ROUTER))}
 if [ ! -x "$py" ] || [ ! -f "$router" ]; then
   cat >/dev/null 2>&1
+  [ "${{1:-}}" = agy ] && printf '{{}}\n'
   exit 0
 fi
-OPENSPACE_HOST_SKILL_DIRS="${{OPENSPACE_HOST_SKILL_DIRS:-{SKILLS_ROOT}}}"
+OPENSPACE_HOST_SKILL_DIRS="${{OPENSPACE_HOST_SKILL_DIRS:-}}"
+if [ -z "$OPENSPACE_HOST_SKILL_DIRS" ]; then
+  OPENSPACE_HOST_SKILL_DIRS={shlex.quote(str(SKILLS_ROOT))}
+fi
 export OPENSPACE_HOST_SKILL_DIRS
 exec "$py" -B "$router" --host "${{1:-text}}"
 """
@@ -289,7 +295,7 @@ class JsonHooks:
                 kept.append(entry)
                 continue
             hooks = [h for h in entry["hooks"] if not (isinstance(h, dict) and ours(str(h.get("command", ""))))]
-            if hooks:
+            if hooks or len(hooks) == len(entry["hooks"]):
                 kept.append({**entry, "hooks": hooks} if len(hooks) != len(entry["hooks"]) else entry)
         return kept
 
@@ -338,6 +344,65 @@ class JsonHooks:
         return ""
 
 
+class AgyHooks:
+    """AGY named hooks; leave every other named hook untouched."""
+
+    name = "agy"
+    key = "openspace-route"
+
+    def __init__(self):
+        self.path = HOME / ".gemini/config/hooks.json"
+
+    def detected(self) -> bool:
+        return bool(shutil.which("agy")) or self.path.exists()
+
+    def entry(self) -> dict:
+        return {"PreInvocation": [{"type": "command", "command": command("agy"), "timeout": TIMEOUT_SECONDS}]}
+
+    def load(self) -> tuple[dict, int]:
+        existing = read_regular(self.path)
+        if existing is None:
+            return {}, 0o600
+        text, mode = existing
+        data = json.loads(text)
+        if not isinstance(data, dict):
+            raise RuntimeError(f"unexpected JSON root in {self.path}")
+        return data, mode
+
+    def status(self) -> str:
+        data, _ = self.load()
+        if self.key not in data:
+            return "not installed"
+        return "installed" if data[self.key] == self.entry() else "conflict (unmanaged named hook)"
+
+    def install(self, dry: bool) -> str:
+        data, mode = self.load()
+        if self.key in data:
+            if data[self.key] == self.entry():
+                return "unchanged"
+            raise RuntimeError(f"refusing to overwrite named hook {self.key} in {self.path}")
+        if dry:
+            return "would install"
+        data[self.key] = self.entry()
+        atomic_write(self.path, json.dumps(data, indent=2, ensure_ascii=False) + "\n", mode)
+        return "installed"
+
+    def remove(self, dry: bool) -> str:
+        data, mode = self.load()
+        if self.key not in data:
+            return "not installed"
+        if data[self.key] != self.entry():
+            raise RuntimeError(f"refusing to remove unmanaged named hook {self.key} in {self.path}")
+        if dry:
+            return "would remove"
+        del data[self.key]
+        atomic_write(self.path, json.dumps(data, indent=2, ensure_ascii=False) + "\n", mode)
+        return "removed"
+
+    def note(self) -> str:
+        return "PreInvocation runs before each model call; routing may repeat within one turn"
+
+
 class KimiHooks:
     """Kimi Code: [[hooks]] array tables in config.toml; plain stdout becomes the hook message."""
 
@@ -367,7 +432,14 @@ class KimiHooks:
         return out
 
     def without_ours(self, text: str) -> str:
-        return "".join(c for c in self.chunks(text) if not (c.lstrip().startswith("[[hooks]]") and ours(c)))
+        kept = []
+        for chunk in self.chunks(text):
+            if chunk.lstrip().startswith("[[hooks]]") and ours(chunk):
+                kept.extend(line for line in chunk.splitlines(keepends=True)
+                            if line.lstrip().startswith("#") and MARKER not in line)
+            else:
+                kept.append(chunk)
+        return "".join(kept)
 
     @staticmethod
     def validate(text: str) -> None:
@@ -458,6 +530,7 @@ def hosts() -> dict:
         "claude": JsonHooks("claude", HOME / ".claude/settings.json", "UserPromptSubmit", "claude", HOME / ".claude"),
         "codex": JsonHooks("codex", HOME / ".codex/hooks.json", "UserPromptSubmit", "codex", HOME / ".codex"),
         "gemini": JsonHooks("gemini", HOME / ".gemini/settings.json", "BeforeAgent", "gemini", HOME / ".gemini", gemini=True),
+        "agy": AgyHooks(),
         "kimi": KimiHooks(),
     }
     for name in ("jeopi", "omp", "pi", "gjc"):
@@ -476,10 +549,15 @@ def install_runtime(dry: bool) -> list[str]:
     if not ROUTER_SOURCE.is_file():
         raise RuntimeError(f"router source missing: {ROUTER_SOURCE}")
     lines = []
-    for path, text, mode in (
-        (ROUTER, ROUTER_SOURCE.read_text(encoding="utf-8"), 0o644),
-        (WRAPPER, wrapper_text(), 0o755),
-    ):
+    runtime = (
+        (ROUTER, ROUTER_SOURCE.read_text(encoding="utf-8"), 0o644, ROUTER_SIGNATURE),
+        (WRAPPER, wrapper_text(), 0o755, MARKER),
+    )
+    for path, text, _, signature in runtime:
+        existing = read_regular(path)
+        if existing is not None and existing[0] != text and signature not in existing[0]:
+            raise RuntimeError(f"refusing to overwrite unmanaged file: {path}")
+    for path, text, mode, _ in runtime:
         existing = read_regular(path)
         if existing is not None and existing[0] == text:
             lines.append(f"unchanged {path}")
@@ -528,7 +606,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.action == "status":
         for path in (WRAPPER, ROUTER):
             print(f"{'present' if path.is_file() else 'missing'}  {path}")
-    elif args.action == "remove" and not args.host and not args.dry_run:
+    elif args.action == "remove" and not args.host and not args.dry_run and not failed:
         for path in (WRAPPER, ROUTER):
             existing = read_regular(path)
             if existing is not None and (MARKER in existing[0] or ROUTER_SIGNATURE in existing[0]):

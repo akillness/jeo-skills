@@ -35,7 +35,7 @@ import sys
 import tempfile
 from pathlib import Path
 
-HOSTS = ("claude", "codex", "gemini", "kimi", "pi", "opencode", "text")
+HOSTS = ("claude", "codex", "gemini", "agy", "kimi", "pi", "opencode", "text")
 INDEX_VERSION = 3
 BODY_CHARS = 2000  # OpenSpace's BM25 corpus uses body[:2000]
 DESCRIPTION_CHARS = 150
@@ -82,6 +82,16 @@ GENERIC = frozenset(
     개선 검토 결과 기능 내용 만들 문제 방법 보여 사용 설명 설정 수정 알려 업데이트 자동화 작업 정리 진행 추가 최적화 해결 현재 확인""".split()
 )
 
+# Acknowledgements alone carry no new skill-routing intent. Require every word
+# to be an approval word so accompanying task terms or skill names still route.
+APPROVAL_WORDS = frozenset(
+    """yes yeah yep sure ok okay fine approve approved approval all everything
+    proceed go ahead please do it confirm confirmed absolutely
+    응 네 예 넵 그래 좋아 좋아요 알겠어 알겠습니다 모두 전부 다 승인 승인해 승인해요
+    승인합니다 승인해주세요 승인할게요 진행 진행해 진행해요 진행해주세요 해 해요 해줘 해주세요
+    확인 확인해 확인해요 확인했습니다 부탁해 부탁해요""".split()
+)
+
 
 def strip_korean_suffix(match: re.Match) -> str:
     word = match.group(0)
@@ -108,6 +118,9 @@ def split_terms(normalized: str) -> list[str]:
 
 def tokens(text: str) -> list[str]:
     return split_terms(normalize(text))
+
+
+APPROVAL_TERMS = frozenset(tokens(" ".join(APPROVAL_WORDS)))
 
 
 def skill_roots() -> list[Path]:
@@ -204,6 +217,10 @@ def load_index(roots: list[Path]) -> list[dict]:
 
 def rank(prompt: str, skills: list[dict], top_k: int) -> tuple[list[dict], list[dict]]:
     """Return (suggestions, explained candidates) for one prompt."""
+    words = split_terms(prompt.lower())
+    if words and all(word in APPROVAL_WORDS for word in words):
+        return [], []
+
     from openspace.utils.logging import Logger
 
     # OpenSpace otherwise opens a log file on the first ranker import.
@@ -211,7 +228,10 @@ def rank(prompt: str, skills: list[dict], top_k: int) -> tuple[list[dict], list[
     from openspace.skill_engine.skill_ranker import SkillCandidate, SkillRanker
 
     query_terms = {t for t in tokens(prompt) if len(t) > 1 and t not in STOPWORDS}
-    content_terms = query_terms - GENERIC
+    content_terms = query_terms - GENERIC - APPROVAL_TERMS
+    # Keep explicitly named skills routable even when their name uses an approval word.
+    if not content_terms:
+        content_terms = query_terms - GENERIC
     if not content_terms or not skills:
         return [], []
     candidates = [
@@ -236,7 +256,9 @@ def rank(prompt: str, skills: list[dict], top_k: int) -> tuple[list[dict], list[
     def rare(term: str, share: float = RARE_SHARE) -> bool:
         return frequency.get(term, 0) <= max(RARE_MIN, share * population[bool(CJK_TERM.search(term))])
 
-    ranked = SkillRanker(enable_cache=False).bm25_only(" ".join(sorted(query_terms)), candidates, top_k=10)
+    named_terms = set().union(*(set(skill["name_terms"]) for skill in skills if set(skill["name_terms"]) <= query_terms))
+    ranking_terms = (query_terms - APPROVAL_TERMS) | named_terms
+    ranked = SkillRanker(enable_cache=False).bm25_only(" ".join(sorted(ranking_terms)), candidates, top_k=10)
     explained = []
     for candidate in ranked:
         if candidate.bm25_score <= 0:
@@ -296,18 +318,32 @@ def host_output(host: str, note: str) -> str:
         return json.dumps({"hookSpecificOutput": {"hookEventName": "UserPromptSubmit", "additionalContext": note}})
     if host == "gemini":
         return json.dumps({"hookSpecificOutput": {"hookEventName": "BeforeAgent", "additionalContext": note}})
+    if host == "agy":
+        return json.dumps({"injectSteps": [{"ephemeralMessage": note}]})
     if host in ("pi", "opencode"):
         return json.dumps({"context": note})
     return note  # kimi reads plain stdout as the hook message
 
 
-def prompt_from_stdin(raw: str) -> str:
+def prompt_from_stdin(raw: str, host: str) -> str:
     try:
         event = json.loads(raw)
     except ValueError:
+        if host == "agy":
+            return ""
         return raw
-    if isinstance(event, dict) and isinstance(event.get("prompt"), str):
-        return event["prompt"]
+    if isinstance(event, dict):
+        if host == "agy":
+            value = event.get("lastUserInput")
+            return value if isinstance(value, str) else ""
+        prompt = event.get("prompt")
+        if isinstance(prompt, str):
+            return prompt
+        if host == "kimi" and isinstance(prompt, list):
+            return "\n".join(
+                part["text"] for part in prompt
+                if isinstance(part, dict) and part.get("type") == "text" and isinstance(part.get("text"), str)
+            )
     return ""
 
 
@@ -368,15 +404,23 @@ def main(argv: list[str] | None = None) -> int:
 
     try:
         if os.environ.get("OPENSPACE_ROUTE", "").strip().lower() == "off":
+            if args.host == "agy":
+                print("{}")
             return 0
-        prompt = prompt_from_stdin(sys.stdin.read()).strip()
+        prompt = prompt_from_stdin(sys.stdin.read(), args.host).strip()
         # Slash commands belong to the host, not to skill routing.
         if not prompt or prompt.startswith("/"):
+            if args.host == "agy":
+                print("{}")
             return 0
         suggestions, _ = rank(prompt, load_index(skill_roots()), top_k())
         if suggestions:
             sys.stdout.write(host_output(args.host, routing_note(suggestions)) + "\n")
+        elif args.host == "agy":
+            print("{}")
     except Exception as exc:  # never block the host's prompt
+        if args.host == "agy":
+            print("{}")
         if os.environ.get("OPENSPACE_ROUTE_DEBUG") == "1":
             print(f"openspace route: {type(exc).__name__}: {exc}", file=sys.stderr)
     return 0

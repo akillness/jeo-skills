@@ -15,6 +15,8 @@
 > skills (`jeo`, `harness`) whose frontmatter name and first heading match this catalog's
 > own versions; same-named skills from other sources, unrelated symlinks, and linked roots are kept.
 
+**Navigation:** [Modes](#outcomes-and-modes) · [Steps 1–4: detect and install](#step-1--detect-os-prerequisites-and-coding-agents) · [Step 5: full-mode tools](#step-5--full-mode-shared-tools) · [Step 6: runtime checks](#step-6--runtime-specific-shared-root-checks) · [Step 7: verify and report](#step-7--verify-and-report) · [On-demand runtimes](#reference--on-demand-skill-runtimes). Read the full guide before acting; links do not bypass any gates.
+
 ## Outcomes and modes
 
 | Mode | Trigger | Outcome |
@@ -23,16 +25,14 @@
 | `core` | User says “core only” | Install the `starter` bundle through `jeo-skill`; do not install the entire catalog. |
 | `minimal` | User says “minimal” | Install only the `jeo-skill` router and its CLI link; skip MCP, shell, and plugin setup. |
 
-A full install installs the skill documents plus the explicitly listed shared tools below.
-It does **not** download every app, model weight, media runtime, SDK, or service mentioned
-inside all skills. Those remain on demand when a real task selects the corresponding skill.
-For example, installing `okf-agent-memory` adds only its operator guide; it does not install
-upstream `okf`, bootstrap a repository, or register the MCP server.
-The `knowledge-repositories` bundle similarly installs 22 guides, not their upstream
-runtimes. Its 19 selected-file helpers inspect selected public-file hashes offline; this does
-not prove Git HEAD, full revision integrity, dependency versions, or live readiness.
-Private-data ingestion, remote embeddings, cloud resources, database/index writes,
-and service or MCP activation each require their own approval.
+Full installs add skill documents and the listed shared tools, not every app, model weight,
+media runtime, SDK, or service mentioned in the skills; those remain on demand. For example,
+`okf-agent-memory` adds only its operator guide, not upstream `okf`, a repository bootstrap,
+or MCP registration. The `knowledge-repositories` bundle installs 22 guides, not upstream
+runtimes; its 19 helpers inspect selected public-file hashes offline, not Git HEAD, full
+revision integrity, dependency versions, or live readiness. Private-data ingestion, remote
+embeddings, cloud resources, database/index writes, and service or MCP activation each require
+separate approval.
 
 ### Open Ontologies operator and runtime installer (on demand)
 
@@ -144,6 +144,12 @@ Default catalog installation does not configure Jev, download Jev models, or ins
 Jev rules/hooks. Ask for explicit approval of a backend and its side effects before
 setting `JEO_SKILLS_JEV=api|local|ollama|lmstudio|systemone`; `skip` leaves existing Jev state unchanged.
 Project catalog installation (`INSTALL_GLOBAL=false`) must stay separate from Jev setup.
+
+OpenSpace prompt routing and Jev are independent: request their separate approvals and
+follow their sections below even in `core` or `minimal` mode when the user requests them.
+Installing skill documents alone does not activate either router. Preserve each existing
+host's Jev profile, backend, operation overrides, and fallback allow-lists; a request to
+route skills is not consent to overwrite them or to transmit private data.
 
 Jevgrep is a separate optional remote source-discovery CLI (`jg`), not the Jev harness.
 Catalog setup may install its skill document, but must not install/authenticate `jg`,
@@ -873,6 +879,24 @@ at an operator-run System One endpoint (driver `typesafe`, `decide`, or
 without a TTY) and downloads or starts nothing. Read [jev/README.md](jev/README.md) for
 settings, prerequisites, and validation limits. Never infer Jev consent from “full install”.
 
+For an existing installation, do not run the uniform-backend loop below merely to enable
+skill routing: it configures every selected host with `JEO_SKILLS_JEV` and can change
+previously distinct backend selections. Select each host's existing bound profile using
+`jev-control-plane`, check `status --operation route-skills`, and preserve its operation
+backend and fallback allow-list. Configure or change a profile only after explicit approval
+for that exact host and change. Never replace an unavailable backend by another profile.
+When Jev is explicitly invoked for a task, check the current host/profile, then run
+`node "$USER_HOME/.agents/jev/jev-harness.mjs" --profile "$JEV_PROFILE" status --operation route-skills`
+and `node "$USER_HOME/.agents/jev/jev-harness.mjs" --profile "$JEV_PROFILE" route-skills --top-k 3 "<approved task text>"`.
+
+Run the second command only when the status permits it and transmission of the exact task
+text to the resolved endpoint and any allowed fallback destinations is approved. Local
+backend names alone do not prove an endpoint is local. Use the returned `topK` ordering as
+advisory skill priority, inspect selected skill instructions, and respect an explicit empty
+selection; Jev does not install skills or change the coding model. Report unavailable or
+disabled profiles instead of silently overriding them. OpenSpace's local routing still runs
+independently; do not send its prompt or catalog to Jev implicitly.
+
 Use the canonical setup script rather than copying runtime files, writing credentials by hand,
 or adding a second mapping writer. After backend opt-in, the block configures a separate profile
 for each detected coding agent, then invokes the installed Jev controller to bind the canonical
@@ -1388,8 +1412,9 @@ isolated new vault; never use the user's current vault as an installation fixtur
 
 ### OpenSpace skill finder and prompt-time skill routing
 
-OpenSpace installs on its own; no other skill, ooo included, depends on it. Only after
-approval of its package downloads and installation writes (`JEO_SKILLS_APPROVE_OPENSPACE=true`),
+OpenSpace installs on its own; no other skill, ooo included, depends on it. Preview the
+installer and registrar targets before approving both package downloads/installation writes
+and MCP registration (`JEO_SKILLS_APPROVE_OPENSPACE=true` covers both in the block below).
 `install-openspace.sh` clones HKUDS/OpenSpace at the commit the router was verified against
 (`GIT_REF=main` follows upstream), builds `~/.agents/venvs/openspace` (rebuilt when its base
 Python was removed), installs OpenSpace with `rank-bm25`, `PyYAML`, and `mcp<2` (OpenSpace
@@ -1400,21 +1425,35 @@ runtimes. Gemini CLI and Qwen Code reject a `toolTimeout` key in `mcpServers`, s
 entries omit it (both default to 10 minutes) and an older entry carrying it is repaired.
 
 Prompt-time routing hooks change host settings and need their own approval
-(`JEO_SKILLS_APPROVE_SKILL_ROUTING_HOOKS=true`). On every prompt, OpenSpace's local BM25 ranker
+(`JEO_SKILLS_APPROVE_SKILL_ROUTING_HOOKS=true`). For each eligible prompt, OpenSpace's local BM25 ranker
 (`SkillRanker.bm25_only`: no LLM, no embeddings, no network) scores the installed skills
 before the model runs, and at most three skills that clear its gate reach the model as a
 short note (name, `SKILL.md` path, description). The choice does not depend on the model, so
-any model the host runs gets the same suggestions. A prompt that names no skill-specific
-term gets no note, and a missing venv makes every hook a silent no-op.
+any model the host runs gets the same suggestions. Slash commands and prompts for which the
+hook receives `OPENSPACE_ROUTE=off` are skipped; an unmatched prompt emits no note, and a
+missing venv or router error is a silent no-op. Kimi Code 0.34.0 sends the prompt as an
+array of text blocks, which the checkout router handles. Verify the actual
+host rather than equating an installed hook with per-prompt routing.
 
 | Host | Event | Config |
 |---|---|---|
 | Claude Code | `UserPromptSubmit` | `~/.claude/settings.json` |
 | Codex CLI | `UserPromptSubmit` (trust it in `/hooks`) | `~/.codex/hooks.json` |
 | Gemini CLI / Antigravity | `BeforeAgent` | `~/.gemini/settings.json` |
+| Antigravity CLI (`agy`, experimental) | `PreInvocation` | `~/.gemini/config/hooks.json` |
 | Kimi Code | `UserPromptSubmit` | `~/.kimi-code/config.toml` |
 | jeopi, omp, pi, gjc | `before_agent_start` extension | `~/.<host>/agent/extensions/openspace-route.ts` |
 | OpenCode 2 (1.x: `chat.message`) | `session.hook("prompt")` plugin | `~/.config/opencode/plugins/openspace-route.js` |
+
+This table lists implemented hook surfaces, not a claim that every catalog host has a
+native hook. The experimental `agy` adapter reads `lastUserInput` and returns an
+`injectSteps` ephemeral message; `PreInvocation` runs per model call and may repeat per
+turn. It was fixture-tested for AGY CLI 1.4.12, but its native authenticated hook run
+remains unverified. For other hosts, including Cursor, Crush, Aside, Grok Build, and jeo-code,
+report automatic routing as unsupported or unverified; do not invent a native integration.
+Where supported, preview all affected hosts with `route-hooks.py install --dry-run` before
+approval. For a host without a native hook, manually run the local router's `--explain`
+against the prompt when appropriate; that is manual routing, not per-prompt automation.
 
 ```bash
 if [ "${JEO_SKILLS_APPROVE_OPENSPACE:-false}" = true ]; then
@@ -1434,9 +1473,16 @@ else
 fi
 ```
 
-`route-hooks.py status` reports each host; `route-hooks.py remove` takes the hooks out again.
-Codex runs the new hook only after the user trusts it in `/hooks`; list that as a manual
-follow-up. Pi-family extensions and the OpenCode plugin take effect in new sessions.
+`route-hooks.py status` reports configuration, not execution. Verify each intended host in
+a fresh session with a matching live prompt and compare an `OPENSPACE_ROUTE=off` control
+delivered to the hook;
+record the host, event, observed note and control. A no-match prompt or a silent failure is
+not proof of routing. Codex also requires trusting the exact hook in `/hooks`; Pi-family
+extensions and the OpenCode plugin take effect in new sessions. Report hosts not exercised
+as unverified. `route-hooks.py remove` removes the installed hooks after separate approval.
+Use `route_prompt.py --explain` for offline local ranking; OpenSpace MCP `search_skills` may
+discover embedding credentials or transmit queries and skill bodies, so local cloud mode
+alone is not a privacy guarantee.
 
 ### Ouroboros (`ooo`) MCP server
 
