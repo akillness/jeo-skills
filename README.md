@@ -11,6 +11,7 @@
 [![Format](https://img.shields.io/badge/format-SKILL.md-AC6415?style=flat-square)](https://agentskills.io/specification)
 [![CI](https://img.shields.io/github/actions/workflow/status/akillness/jeo-skills/ci.yml?branch=main&label=CI&style=flat-square)](https://github.com/akillness/jeo-skills/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
+[![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-support-AC6415?style=flat-square&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
 [Start](#-quick-start) · [Explore the workflow](#-how-it-works) · [Choose an installation](#-install-options) · [Find your runtime](#-supported-runtimes) · [Operate the router](#-router-cli) · [Manage installed skills](#-usage-tracking-and-cleanup) · [Integrations](#-optional-integrations) · [Catalog](#-skills-list)
 
@@ -952,8 +953,6 @@ Edit metadata in `skills.json`, never in the generated tables. Upstream sources 
 ---
 
 <div align="center">
-
-[![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-support-AC6415?style=flat-square&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
 If jeo-skills helps you, please ⭐ the repository.
 

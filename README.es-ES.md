@@ -11,6 +11,7 @@
 [![Formato](https://img.shields.io/badge/format-SKILL.md-AC6415?style=flat-square)](https://agentskills.io/specification)
 [![CI](https://img.shields.io/github/actions/workflow/status/akillness/jeo-skills/ci.yml?branch=main&label=CI&style=flat-square)](https://github.com/akillness/jeo-skills/actions/workflows/ci.yml)
 [![Licencia](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
+[![Invítame a un café](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-support-AC6415?style=flat-square&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
 [Inicio rápido](#-inicio-rápido) · [Cómo funciona](#-cómo-funciona) · [Instalación](#-opciones-de-instalación) · [Entornos](#-entornos-compatibles) · [CLI](#-cli-del-enrutador) · [Ciclo de vida](#-seguimiento-de-uso-y-limpieza) · [Habilidades](#-lista-de-habilidades)
 
@@ -989,8 +990,6 @@ Edita los metadatos en `skills.json`, nunca en las tablas generadas. Las fuentes
 ---
 
 <div align="center">
-
-[![Invítame a un café](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-support-AC6415?style=flat-square&logo=buy-me-a-coffee)](https://www.buymeacoffee.com/akillness3q)
 
 Si jeo-skills te resulta útil, marca con ⭐ el repositorio.
 
