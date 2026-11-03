@@ -161,6 +161,40 @@ else:
 
 
 class InstallerRegressions(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls._clean_defpath_dir = None
+        if shutil.which("gh", path=os.defpath) or shutil.which("gh.exe", path=os.defpath):
+            cls._clean_defpath_dir = tempfile.TemporaryDirectory(prefix="jeo-installer-clean-defpath-")
+            clean_base = Path(cls._clean_defpath_dir.name)
+            clean_dirs = []
+            for i, directory in enumerate(os.defpath.split(os.pathsep)):
+                d = Path(directory)
+                if not d.is_dir():
+                    continue
+                if (d / "gh").exists() or (d / "gh.exe").exists():
+                    clean_dir = clean_base / f"clean_{i}_{d.name}"
+                    clean_dir.mkdir(parents=True, exist_ok=True)
+                    for item in d.iterdir():
+                        if item.name not in ("gh", "gh.exe"):
+                            target = clean_dir / item.name
+                            if not target.exists():
+                                try:
+                                    target.symlink_to(item)
+                                except OSError:
+                                    pass
+                    clean_dirs.append(str(clean_dir))
+                else:
+                    clean_dirs.append(directory)
+            cls.clean_defpath = os.pathsep.join(clean_dirs)
+        else:
+            cls.clean_defpath = os.defpath
+
+    @classmethod
+    def tearDownClass(cls):
+        if cls._clean_defpath_dir is not None:
+            cls._clean_defpath_dir.cleanup()
+
     def setUp(self):
         self.temporary = tempfile.TemporaryDirectory(prefix="jeo-installer-test-")
         self.addCleanup(self.temporary.cleanup)
@@ -196,7 +230,7 @@ class InstallerRegressions(unittest.TestCase):
         npx.chmod(0o700)
         # Do not inherit runtime config, credentials or a user's installer options.
         self.env = {
-            "PATH": str(self.bin) + os.pathsep + os.defpath,
+            "PATH": str(self.bin) + os.pathsep + self.clean_defpath,
             "HOME": str(self.home),
             "TMPDIR": str(self.work),
             "XDG_CONFIG_HOME": str(self.home / ".config"),
