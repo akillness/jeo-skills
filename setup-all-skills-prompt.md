@@ -159,6 +159,23 @@ Every mode also mirrors the skills it installed into any detected Aside account,
 `skills` CLI cannot target Aside. Minimal mirrors just `jeo-skill`, core mirrors the starter
 bundle, full mirrors the whole catalog.
 
+Starring `akillness/jeo-skills` is a separate account action. Immediately after explicit
+star authorization, set `JEO_SKILLS_STAR=true` for Step 1. If the user also approves
+downloading the canonical installer for this action, set `JEO_SKILLS_STAR_DOWNLOAD=true`;
+otherwise set `INSTALLER` to the absolute path of an existing trusted `install.sh`.
+The guided `npx` install does not itself provide a checkout. The fixed HTTPS download does
+not pass the GitHub token and does not follow redirects; curl ignores its configuration
+file but may use system proxy settings, which can expose request metadata. The downloaded
+file is executed only if its SHA-256 matches the pinned local installer. Network or digest
+failure is unverified, with no execution. The published installer must match that digest;
+until it does, the fallback cannot star.
+
+The star-only action requires Python 3.9+ and an active `gh` credential, but neither
+Node/npx nor a second skill installation. Do not ask a second star question after
+authorization or repeat the action later. Without explicit consent, or during a dry run,
+skip it. Record the output and status for Step 7; a nonzero star-only exit means unverified,
+not that skill installation failed. Installation permissions remain independent.
+
 ## Step 1 — Detect OS, prerequisites, and coding agents
 
 Determine the platform before choosing paths or package managers:
@@ -167,6 +184,26 @@ prerequisites; stop and use the project-scoped entrypoint instead.
 
 
 ```bash
+# Optional star action: set these only after the corresponding explicit user approvals.
+if [ "${JEO_SKILLS_STAR:-}" = true ] && [ "${JEO_SKILLS_DRY_RUN:-false}" != true ]; then
+  if ! (
+    umask 077
+    if [ -n "${INSTALLER:-}" ]; then
+      [ -f "$INSTALLER" ] || exit 1
+      JEO_SKILLS_STAR_ONLY=true JEO_SKILLS_STAR=true bash "$INSTALLER"
+    elif [ "${JEO_SKILLS_STAR_DOWNLOAD:-false}" = true ]; then
+      tmp=$(mktemp "${TMPDIR:-/tmp}/jeo-skills-star.XXXXXXXX") || exit 1
+      trap 'rm -f "$tmp"' EXIT
+      curl --disable --proto '=https' --max-time 15 -fsS 'https://raw.githubusercontent.com/akillness/jeo-skills/main/install.sh' -o "$tmp" || exit 1
+      python3 -I -c 'import hashlib,sys; sys.exit(hashlib.sha256(open(sys.argv[1], "rb").read()).hexdigest() != "35a1e031f807396499df274d91cfd503fdef0afe46cfb2c502e5679c74c18f6b")' "$tmp" || exit 1
+      JEO_SKILLS_STAR_ONLY=true JEO_SKILLS_STAR=true bash "$tmp"
+    else
+      exit 1
+    fi
+  ); then
+    printf '%s\n' 'GitHub star unverified; installation may continue independently.' >&2
+  fi
+fi
 if [ "${INSTALL_GLOBAL:-true}" = false ]; then
   printf '%s\n' 'Global guide stopped before prerequisites: project-only scope; use project-scoped install.sh' >&2
   false
@@ -1802,10 +1839,30 @@ Finally report:
 6. in full mode, if `scrapingant-web-fetch` was not already configured, ask the user once
    whether to set it up now (sponsor skill, free 10,000 credits/month, no card) — see
    "ScrapingAnt MCP web fetch" below; do not set it up without an explicit yes;
-7. only after the requested installation and verification succeed, close with a brief,
-   optional invitation to star [jeo-skills on GitHub](https://github.com/akillness/jeo-skills).
-   If setup is incomplete, report the blockers without implying success. Never create a star
-   for the user or invoke GitHub write actions; this is a suggestion, not an install requirement.
+7. report whether the optional GitHub star was skipped, verified, or unverified; do not
+   imply that an incomplete installation succeeded. Starring is a separate account action,
+   not an installation requirement, and installation approval or `--yes` is not star consent.
+   The user may also star [jeo-skills on GitHub](https://github.com/akillness/jeo-skills)
+   directly.
+
+For the `install.sh` path, `JEO_SKILLS_STAR=true` explicitly authorizes starring
+`akillness/jeo-skills` using the active `github.com` credential; `false` skips it.
+When unset, the installer asks only on interactive stdin and defaults to no; non-interactive
+runs skip it. Other values are invalid and skip it with a warning. A dry run exits before
+the prompt or any star action, even when set to `true`. Never infer consent from the full
+installation, general `--yes`, or any other approval. Do not perform a GitHub write without
+the user's explicit star authorization.
+
+After authorization, `install.sh` retrieves the credential with `gh auth token --hostname
+github.com`; `GH_TOKEN`, then `GITHUB_TOKEN`, override stored credentials, and `gh` may
+refresh its credential. Python then sends HTTPS PUT to `api.github.com` at
+`/user/starred/akillness/jeo-skills`, followed by GET on the same endpoint for readback.
+Redirects are not followed; both responses must be HTTP 204 to report verified. Credential
+retrieval and each HTTPS request have a 10-second timeout. Missing `gh`, authentication
+or access errors, other failures, and timeouts report the star as unverified. Normal
+installation continues; star-only mode exits nonzero on an unverified attempt.
+A successful PUT may have starred the repository even if GET fails; do not report
+it as verified without the readback.
 
 Compare pre-existing skill names captured before installation with the final listing. A
 successful run adds or updates jeo-skills targets and leaves every unrelated pre-existing

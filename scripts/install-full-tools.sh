@@ -323,7 +323,7 @@ if [ "${#failures[@]}" -gt 0 ]; then
   exit 1
 fi
 if [ "$EXTENDED" = 1 ]; then
-  printf 'All %s extended full-mode tools installed and executable.\n' "$total_tools"
+  printf 'All %s extended full-mode tool setup attempts succeeded; optional integration activation and readiness may require separate approval and verification.\n' "$total_tools"
 else
   printf 'All six full-mode tools installed and executable.\n'
 fi

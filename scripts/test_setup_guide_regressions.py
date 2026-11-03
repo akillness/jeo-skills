@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import pty
@@ -121,6 +122,70 @@ class SetupGuideRegressions(unittest.TestCase):
             ],
             "categories": {"fixture": {}},
         }
+
+    def test_star_download_is_pinned_consent_gated_and_cleans_up(self) -> None:
+        block = guide_block("## Step 1 — Detect OS, prerequisites, and coding agents")
+        helper = block.split('# Optional star action:', 1)[1].split(
+            'if [ "${INSTALL_GLOBAL:-true}" = false ]; then', 1)[0]
+        digest = re.search(r'hexdigest\(\) != "([0-9a-f]{64})"', helper)
+        self.assertIsNotNone(digest)
+        self.assertEqual(digest.group(1), hashlib.sha256((ROOT / "install.sh").read_bytes()).hexdigest())
+
+        binary = self.work / "bin"
+        binary.mkdir()
+        record = self.work / "calls.jsonl"
+        source = self.work / "download"
+        curl = binary / "curl"
+        curl.write_text(f"#!{sys.executable} -I\n" + '''import json, os, pathlib, shutil, sys
+args = sys.argv[1:]
+with open(os.environ["RECORD"], "a") as f: f.write(json.dumps(["curl", *args]) + "\\n")
+expected = ["--disable", "--proto", "=https", "--max-time", "15", "-fsS", "https://raw.githubusercontent.com/akillness/jeo-skills/main/install.sh", "-o"]
+if args[:-1] != expected: raise SystemExit(1)
+shutil.copyfile(os.environ["DOWNLOAD"], args[-1])
+''')
+        curl.chmod(0o700)
+        shell = binary / "bash"
+        shell.write_text(f"#!{sys.executable} -I\n" + '''import json, os, pathlib, stat, sys
+p = pathlib.Path(sys.argv[1])
+with open(os.environ["RECORD"], "a") as f:
+    f.write(json.dumps(["bash", p.read_bytes().hex(), stat.S_IMODE(p.stat().st_mode), os.environ.get("JEO_SKILLS_STAR_ONLY"), os.environ.get("JEO_SKILLS_STAR")]) + "\\n")
+''')
+        shell.chmod(0o700)
+        env = self.env(PATH=str(binary) + os.pathsep + os.defpath, RECORD=str(record), DOWNLOAD=str(source))
+        hostile = self.work / "hostile"
+        hostile.mkdir()
+        marker = self.work / "hostile-import-ran"
+        (hostile / "sitecustomize.py").write_text("from pathlib import Path\nPath(" + repr(str(marker)) + ").touch()\n")
+        env["PYTHONPATH"] = str(hostile)
+        def calls():
+            return [json.loads(line) for line in record.read_text().splitlines()] if record.exists() else []
+
+        source.write_bytes((ROOT / "install.sh").read_bytes())
+        for options in ({}, {"JEO_SKILLS_STAR": "true"},
+                        {"JEO_SKILLS_STAR": "true", "JEO_SKILLS_STAR_DOWNLOAD": "true", "JEO_SKILLS_DRY_RUN": "true"}):
+            result = run_block(helper, {**env, **options}, self.project)
+            self.assertEqual(result.returncode, 0, result.stdout)
+            self.assertEqual(calls(), [])
+        approved = {**env, "JEO_SKILLS_STAR": "true", "JEO_SKILLS_STAR_DOWNLOAD": "true"}
+        result = run_block(helper, approved, self.project)
+        self.assertEqual(result.returncode, 0, result.stdout)
+        events = calls()
+        self.assertEqual([event[0] for event in events], ["curl", "bash"])
+        self.assertEqual(bytes.fromhex(events[1][1]), source.read_bytes())
+        self.assertEqual(events[1][2:], [0o600, "true", "true"])
+        self.assertFalse(Path(events[0][-1]).exists(), "temporary installer must be removed")
+        self.assertFalse(marker.exists(), "digest verifier loaded hostile sitecustomize")
+        record.unlink()
+        result = run_block(block, approved, self.project)
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertEqual([event[0] for event in calls()], ["curl", "bash"])
+        self.assertFalse(marker.exists(), "guide fence loaded hostile sitecustomize")
+        record.unlink()
+        source.write_text("malicious replacement\n")
+        result = run_block(helper, approved, self.project)
+        self.assertIn("unverified", result.stdout.lower())
+        self.assertEqual([event[0] for event in calls()], ["curl"])
+        self.assertFalse(Path(calls()[0][-1]).exists(), "rejected download must be removed")
 
     def test_router_catalog_resolution_ignores_home_legacy_catalog_but_uses_project_catalog(self) -> None:
         router = self.install_router_copy()

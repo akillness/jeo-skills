@@ -1,10 +1,10 @@
 <div align="center">
 
-<img src="assets/readme-cover.webp" alt="Ilustración de una biblioteca modular de habilidades: un enrutador turquesa selecciona algunas tarjetas de habilidades y las envía a hosts de agentes independientes" width="100%">
+<img src="assets/readme-cover.webp" alt="Una biblioteca cósmica en tonos azul y magenta, con un cangrejo mago rojo y un muñeco encapuchado" width="100%">
 
 # jeo-skills
 
-**Un catálogo categorizado de habilidades para agentes. Instala solo las habilidades que necesitas en los agentes que ya usas.**
+**Una biblioteca de habilidades y una guía de configuración para agentes de distintos proveedores: descubre, elige y prepara lo que necesitas en tu propio entorno.**
 
 [![Habilidades](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fakillness%2Fjeo-skills%2Fmain%2F.agent-skills%2Fskills.json&query=%24.skill_count&label=skills&color=137E73&style=flat-square)](#-lista-de-habilidades)
 [![Categorías](https://img.shields.io/badge/categories-10-12231E?style=flat-square)](#-categorías)
@@ -28,8 +28,8 @@
 | **Metadatos** | Los datos de categoría, subcategoría, interfaz, paquete y relación viven una sola vez en `.agent-skills/skills.json` |
 | **Enrutador** | `jeo-skill` navega, busca y previsualiza selecciones; después instala solo lo que eliges |
 | **Entornos** | Una raíz compartida para la mayoría de los agentes, además de raíces nativas para Claude Code, GJC, Antigravity y Aside |
-| **Ciclo de vida** | El seguimiento de uso detecta las habilidades que ningún agente carga; la limpieza se previsualiza, revisa y es reversible |
-| **Opcional** | El arnés de decisiones Jev y el descubrimiento con Jevgrep, ambos desactivados de forma predeterminada y configurados por separado |
+| **Ciclo de vida** | El seguimiento local informa del uso observado; la cuarentena se previsualiza y puede revertirse antes de su purga |
+| **Opcional** | OpenSpace, Jev, memoria, contexto y bases de datos tienen configuración y permisos propios; su disponibilidad depende del host |
 
 ## 🚀 Inicio rápido
 
@@ -39,7 +39,9 @@
 Read https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-skills-prompt.md in full and follow it to install the jeo-skills.
 ```
 
-La guía detecta tu sistema operativo y tus agentes, instala todo el catálogo de forma predeterminada (pide "core only" para reducirlo) y nunca elimina habilidades que no haya instalado.
+La guía detecta tu sistema operativo y tus agentes e instala todo el catálogo de forma predeterminada (pide «core only» para reducirlo). Las herramientas adicionales, los hooks, proveedores y servicios tienen decisiones de configuración y aprobación independientes; instalar archivos no activa por sí mismo un entorno ni sus integraciones.
+
+La estrella de GitHub es opcional y requiere consentimiento específico. En `install.sh`, `JEO_SKILLS_STAR=true` la autoriza, `false` la omite y, si no se define, solo se pregunta en modo interactivo con «no» por defecto; sin esa variable, una ejecución no interactiva la omite. El modo de prueba no realiza la acción. Tras la autorización, el instalador realiza inmediatamente un PUT y un GET con `gh` para comprobar `akillness/jeo-skills`. Si no puede verificarla, lo comunica y continúa. `--yes` no autoriza esta acción.
 
 **Opción B: instala el enrutador y luego elige las habilidades.**
 
@@ -56,16 +58,21 @@ jeo-skill install react-best-practices --global --yes      # install
 
 ## 🧭 Cómo funciona
 
-<img src="assets/how-it-works.svg" alt="Diagrama: el catálogo (carpetas SKILL.md y skills.json) alimenta el enrutador jeo-skill, que instala las habilidades seleccionadas mediante npx skills en una raíz compartida o en raíces nativas de hosts; Jev y Jevgrep son rutas laterales opcionales" width="100%">
+<details>
+<summary>Seguir el camino desde el catálogo hasta el host</summary>
+
+El flujo separa selección, instalación y activación: cada paso tiene su propio alcance y sus permisos.
 
 1. **Catálogo.** Las habilidades permanecen planas como `<name>/SKILL.md`. La taxonomía son metadatos, no carpetas, por lo que los entornos siempre encuentran las habilidades en la ruta que esperan.
 2. **Enrutador.** `jeo-skill` resuelve nombres, paquetes, categorías y subcategorías según `skills.json` y muestra la selección exacta antes de escribir nada.
 3. **Instalación.** Las selecciones se delegan a `npx skills@1.7.0 add` y se copian en la raíz de cada entorno de destino.
 4. **Carga.** Cada host descubre las habilidades desde su propia raíz. La ubicación no es activación: la carga, los permisos, la elección del modelo y la ejecución permanecen bajo el control del host.
 
+</details>
+
 ## 🗂 Categorías
 
-<img src="assets/catalog-map.svg" alt="Mapa de las diez categorías de habilidades: Web, Infraestructura, Juegos, Medios creativos, Herramientas CLI, IA y agentes, Ingeniería, Investigación y análisis, Negocios, Utilidades" width="100%">
+Explora una categoría con su comando o despliega la lista generada más abajo.
 
 | Categoría | Enfoque | Explorar |
 |---|---|---|
@@ -83,6 +90,9 @@ jeo-skill install react-best-practices --global --yes      # install
 La lista completa y generada está en [Lista de Habilidades](#-lista-de-habilidades).
 
 ## 📦 Opciones de instalación
+
+<details>
+<summary>Elegir alcance, paquetes y opciones de instalación</summary>
 
 | Objetivo | Cómo |
 |---|---|
@@ -145,7 +155,12 @@ Las habilidades operadoras de repositorios son guías con fuentes fijadas. Insta
 
 </details>
 
+</details>
+
 ## 🖥 Entornos compatibles
+
+<details>
+<summary>Consultar destinos y raíces por entorno</summary>
 
 `--agent` distingue el destino de instalación; las rutas indican dónde busca cada runtime. Que exista una ruta no demuestra activación nativa. Esta guía usa `agy` para Antigravity CLI y no presenta Gemini CLI como host actual.
 
@@ -172,7 +187,16 @@ Las habilidades operadoras de repositorios son guías con fuentes fijadas. Insta
 > [!NOTE]
 > La instalación escribe archivos de habilidades en una raíz. No inicia sesión, inicia ni recarga un entorno. Recarga el host si una habilidad recién instalada no aparece.
 
+</details>
+
 ## 💻 CLI del enrutador
+
+<details>
+<summary>Buscar, instalar y gestionar habilidades con la CLI</summary>
+
+Esta captura muestra una previsualización local real de dos habilidades; no demuestra ninguna instalación ni activación de proveedores.
+
+<img src="assets/jeo-skill-dry-run.svg" alt="Previsualización grabada: selección de responsive-design y react-best-practices, destino y comando que se ejecutaría; no se instaló nada" width="100%">
 
 | Comando | Qué hace |
 |---|---|
@@ -189,9 +213,12 @@ Las habilidades operadoras de repositorios son guías con fuentes fijadas. Insta
 
 Define `JEO_SKILLS_CATALOG=/path/to/skills.json` para fijar el catálogo que usa cada comando.
 
+</details>
+
 ## 🧹 Seguimiento de uso y limpieza
 
-<img src="assets/skill-lifecycle.svg" alt="Diagrama del ciclo de vida: los registros de ejecución se escanean en el estado de uso local, se informan como usados, protegidos, en periodo de gracia o candidatos; después se previsualizan, revisan y trasladan a una cuarentena reversible que puede restaurarse o purgarse; el retiro del catálogo es una vía separada para mantenedores" width="100%">
+<details>
+<summary>Revisar el uso observado y gestionar la cuarentena</summary>
 
 `jeo-skill usage scan` lee los registros locales de ejecución (sesiones de Claude, Codex, OpenCode, Antigravity, Aside, jeopi/GJC/OMP/Pi y el registro de inyecciones de Jev). Almacena resúmenes de uso y metadatos de escaneo incremental en `~/.local/state/jeo-skill`, nunca el contenido de las transcripciones. Una habilidad cuenta como usada solo cuando un agente la invoca o carga; las menciones en los prompts nunca cuentan.
 
@@ -224,7 +251,12 @@ python3 scripts/retire-unused-skills.py --usage-report report.json --apply \
   --approve name-a,name-b --skip-jev-review          # or --jev-profile <p> --allow-remote
 ```
 
+</details>
+
 ## 🔌 Integraciones opcionales
+
+<details>
+<summary>Configurar Jev y consultar los límites de integración</summary>
 
 | Integración | Propósito | Configuración |
 |---|---|---|
@@ -266,6 +298,8 @@ node ~/.agents/jev/jev-harness.mjs --profile "$JEV_PROFILE" status
 ```
 
 Consulta la [guía de instalación](setup-all-skills-prompt.md#jev-control-plane-harness-system-one) y [jev/README.md](jev/README.md) para conocer los detalles.
+
+</details>
 
 ## 📚 Lista de Habilidades
 

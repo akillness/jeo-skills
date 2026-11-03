@@ -1,10 +1,10 @@
 <div align="center">
 
-<img src="assets/readme-cover.webp" alt="Illustration of a modular skill library: a teal router selects a few skill cards and sends them to separate agent hosts" width="100%">
+<img src="assets/readme-cover.webp" alt="A red crayfish wizard and a hooded doll explore a glowing cosmic library of skills" width="100%">
 
 # jeo-skills
 
-**A categorized catalog of agent skills. Install only the skills you need, on the agents you already use.**
+**A library of agent skills and a guided setup for the coding agents you already use. Choose what to install, and keep optional integrations under your control.**
 
 [![Skills](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fakillness%2Fjeo-skills%2Fmain%2F.agent-skills%2Fskills.json&query=%24.skill_count&label=skills&color=137E73&style=flat-square)](#-skills-list)
 [![Categories](https://img.shields.io/badge/categories-10-12231E?style=flat-square)](#-categories)
@@ -12,7 +12,7 @@
 [![CI](https://img.shields.io/github/actions/workflow/status/akillness/jeo-skills/ci.yml?branch=main&label=CI&style=flat-square)](https://github.com/akillness/jeo-skills/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
 
-[Quick start](#-quick-start) · [How it works](#-how-it-works) · [Install](#-install-options) · [Runtimes](#-supported-runtimes) · [CLI](#-router-cli) · [Lifecycle](#-usage-tracking-and-cleanup) · [Skills](#-skills-list)
+[Start](#-quick-start) · [Explore the workflow](#-how-it-works) · [Choose an installation](#-install-options) · [Find your runtime](#-supported-runtimes) · [Operate the router](#-router-cli) · [Manage installed skills](#-usage-tracking-and-cleanup) · [Integrations](#-optional-integrations) · [Catalog](#-skills-list)
 
 **English** · [한국어](README.ko.md) · [Español](README.es-ES.md)
 
@@ -29,7 +29,7 @@
 | **Router** | `jeo-skill` browses, searches and previews selections, then installs only what you pick |
 | **Runtimes** | A shared root for most agents plus native roots for Claude Code, GJC, Antigravity and Aside |
 | **Lifecycle** | Usage tracking finds skills no agent ever loads; cleanup is previewed, reviewed and reversible |
-| **Optional** | Jev decision harness and Jevgrep discovery, both off by default and set up separately |
+| **Optional** | OpenSpace routing, Jev and Jevgrep have separate setup and approval boundaries; installing skills does not activate them |
 
 ## 🚀 Quick start
 
@@ -39,7 +39,7 @@
 Read https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-skills-prompt.md in full and follow it to install the jeo-skills.
 ```
 
-The guide detects your OS and agents, installs the full catalog by default (ask for "core only" to narrow it) and never deletes skills it did not install.
+The guide detects your OS and agents. Its default full mode installs the catalog and pinned shared tools; ask for "core only" or "minimal" to narrow it. Memory, context, database, provider and routing setup have separate approvals and host prerequisites. The guide does not delete skills it did not install. See [the full setup guide](setup-all-skills-prompt.md) for exact boundaries.
 
 **Option B: install the router, then pick skills.**
 
@@ -56,12 +56,18 @@ jeo-skill install react-best-practices --global --yes      # install
 
 ## 🧭 How it works
 
-<img src="assets/how-it-works.svg" alt="Diagram: the catalog (SKILL.md folders and skills.json) feeds the jeo-skill router, which installs selected skills through npx skills into a shared root or native host roots; Jev and Jevgrep are optional side paths" width="100%">
+<img src="assets/how-it-works.svg" alt="Workflow from the skill catalog through selection, installation and verification to agent hosts, with optional OpenSpace and Jev routing" width="100%">
+
+<details>
+<summary>Explore the path from catalog to host</summary>
+
 
 1. **Catalog.** Skills stay flat as `<name>/SKILL.md`. Taxonomy is metadata, not folders, so runtimes always find skills at the path they expect.
 2. **Router.** `jeo-skill` resolves names, bundles, categories and subcategories against `skills.json` and shows the exact selection before anything is written.
 3. **Install.** Selections are delegated to `npx skills@1.7.0 add` and copied into the root of each target runtime.
 4. **Load.** Each host discovers skills from its own root. Placement is not activation: loading, permissions, model choice and execution stay with the host.
+
+</details>
 
 ## 🗂 Categories
 
@@ -98,6 +104,10 @@ The full, generated list is in [Skills list](#-skills-list).
 
 For the ten source-specific game-development guides, preview `jeo-skill install --bundle game-source-repositories --dry-run`. The guides cover physics, terrain, materials, effects, navigation, animation, graphics, meshes, and noise; they do not install or run the upstream tools. See the [setup boundaries](setup-all-skills-prompt.md#game-development-source-guides-on-demand) and [source licenses](docs/attribution.md).
 
+<details>
+<summary>Review source-specific operator guides</summary>
+
+
 For Lightpanda, preview `jeo-skill install lightpanda --global --dry-run` before installing
 the selected skill. It installs guidance, not the browser. The skill covers stable 1.0.2
 fetch, structured data, CDP and MCP; its offline doctor checks local metadata, not runtime
@@ -110,6 +120,8 @@ Impeccable, its engine or its design hook; the upstream installer uses the same 
 folder name, so run the offline doctor before either installer writes. npm execution, engine
 download and runs, the hook, browser scans and live mode require separate approval. See the [setup guide](setup-all-skills-prompt.md#impeccable-design-operator-on-demand).
 
+</details>
+
 Installer variables belong to `bash`, on the right side of the pipe:
 
 ```bash
@@ -117,6 +129,13 @@ URL=https://raw.githubusercontent.com/akillness/jeo-skills/main/install.sh
 curl -fsSL "$URL" | JEO_SKILLS_SELECTION=bundle bash
 curl -fsSL "$URL" | JEO_SKILLS_DRY_RUN=true INSTALL_GLOBAL=false bash
 ```
+
+<details>
+<summary>Choose whether to star the repository</summary>
+
+Starring is a separate GitHub account action, not consent implied by installation or `--yes`. Set `JEO_SKILLS_STAR=true` for explicit opt-in, or `JEO_SKILLS_STAR=false` to skip. If unset, an interactive prompt defaults to no; a non-interactive run skips it. A dry run does not prompt or star. Opting in uses authenticated `gh` to send a PUT and then GET for `akillness/jeo-skills`; a failed readback is reported as unverified and installation continues. A successful PUT may have starred the repository even when readback fails.
+
+</details>
 
 <details>
 <summary><b>Bundles</b> — curated starting sets</summary>
@@ -145,6 +164,10 @@ Repository-operator skills are guides with pinned sources. Installing them does 
 
 ## 🖥 Supported runtimes
 
+<details>
+<summary>Find install roots and host-specific boundaries</summary>
+
+
 | Runtime | Install target (`--agent`; router alias) | Global root | Project root |
 |---|---|---|---|
 | Jeo (`jeo-code`) | `jeo` (router alias → `universal`) | `~/.agents/skills` | `.agents/skills` |
@@ -170,7 +193,13 @@ Grok Build is the registry-native `grok` target and requires explicit setup sele
 > [!NOTE]
 > Installing writes skill files into a root. It does not sign in, start, or reload a runtime. Reload the host if a newly installed skill does not appear.
 
+</details>
+
 ## 💻 Router CLI
+
+<details>
+<summary>Browse, install and inspect skills</summary>
+
 
 | Command | What it does |
 |---|---|
@@ -187,9 +216,19 @@ Grok Build is the registry-native `grok` target and requires explicit setup sele
 
 Set `JEO_SKILLS_CATALOG=/path/to/skills.json` to pin the catalog used by every command.
 
+Recorded local dry-run example: this preview selected two skills and showed the destination and command. It did not install skills or validate a provider.
+
+<img src="assets/jeo-skill-dry-run.svg" alt="Recorded dry-run selecting responsive-design and react-best-practices, showing the preview destination and proposed install command; no installation or provider validation" width="100%">
+
+</details>
+
 ## 🧹 Usage tracking and cleanup
 
 <img src="assets/skill-lifecycle.svg" alt="Lifecycle diagram: runtime records are scanned into local usage state, reported as used, protected, in grace or candidate, then previewed, reviewed and moved into a reversible quarantine that can be restored or purged; catalog retirement is a separate maintainer lane" width="100%">
+
+<details>
+<summary>Review usage, quarantine and restore skills</summary>
+
 
 `jeo-skill usage scan` reads local runtime records (Claude, Codex, OpenCode, Antigravity, Aside, jeopi/GJC/OMP/Pi sessions and the Jev injection ledger). It stores usage summaries and incremental scan metadata under `~/.local/state/jeo-skill`, never transcript bodies. A skill counts as used only when an agent invoked or loaded it; mentions in prompts never count.
 
@@ -222,14 +261,21 @@ python3 scripts/retire-unused-skills.py --usage-report report.json --apply \
   --approve name-a,name-b --skip-jev-review          # or --jev-profile <p> --allow-remote
 ```
 
+</details>
+
 ## 🔌 Optional integrations
+
+<details>
+<summary>Choose an optional routing or discovery integration</summary>
+
 
 | Integration | Purpose | Setup |
 |---|---|---|
+| **OpenSpace** | Optional local prompt-time skill finder and routing | [OpenSpace setup](setup-all-skills-prompt.md#openspace-skill-finder-and-prompt-time-skill-routing) |
 | **Jev** | Decision harness: route a task to skills, prune context, review cleanup proposals | `bash jev/jev-setup.sh --profile <name> ...` · [jev/README.md](jev/README.md) |
 | **Jevgrep** | Remote discovery over selected skill or wiki documents | `jeo-skill explore "<question>" --root <dir> --dry-run` · [jevgrep](.agent-skills/jevgrep/SKILL.md) |
 
-Neither is part of catalog installation. Both can send data to a configured backend. In `jeo-skill`, the commands that call them (`prune-unused --apply`, `usage relevance`, `explore`) refuse remote use without `--allow-remote`; the standalone Jev harness sends to its configured backend directly, so approve a hosted profile before using it.
+These integrations are independent of catalog installation and of each other. Jev and Jevgrep can send data to a configured backend. In `jeo-skill`, commands that call them (`prune-unused --apply`, `usage relevance`, `explore`) refuse remote use without `--allow-remote`; the standalone Jev harness sends to its configured backend directly, so approve a hosted profile before using it. OpenSpace setup and host activation also require their own approval.
 
 ### Jev profiles follow the current coding agent
 
@@ -264,6 +310,8 @@ Inspect the selected profile with this safe read-only status command; it may pro
 node ~/.agents/jev/jev-harness.mjs --profile "${JEV_PROFILE:?Select the current agent profile first}" status
 ```
 
+</details>
+
 ## 📚 Skills List
 
 > Generated from `.agent-skills/skills.json` · 419 skills · expand a category to see its skills.
@@ -273,7 +321,7 @@ node ~/.agents/jev/jev-harness.mjs --profile "${JEV_PROFILE:?Select the current 
 Subcategories: `frontend` (12), `backend` (3), `design` (16), `api` (2), `auth` (1), `data` (13), `testing` (4), `accessibility` (1), `performance` (1), `graphics` (12), `capture` (6)
 
 <details>
-<summary>Show skills</summary>
+<summary>Show Web skills</summary>
 
 | Skill |
 |---|
@@ -356,7 +404,7 @@ Subcategories: `frontend` (12), `backend` (3), `design` (16), `api` (2), `auth` 
 Subcategories: `deployment` (2), `environment` (2), `observability` (3), `security` (3), `cloud-data` (6), `automation` (0), `tooling` (1)
 
 <details>
-<summary>Show skills</summary>
+<summary>Show Infrastructure skills</summary>
 
 | Skill |
 |---|
@@ -385,7 +433,7 @@ Subcategories: `deployment` (2), `environment` (2), `observability` (3), `securi
 Subcategories: `client` (9), `web` (2), `server` (1), `design-ui` (7), `audio` (1), `animation` (3), `motion-vfx` (3), `sprite-image` (1), `art-resources` (1), `storytelling` (0), `tooling` (5), `qa-performance` (4), `release` (2)
 
 <details>
-<summary>Show skills</summary>
+<summary>Show Game skills</summary>
 
 | Skill |
 |---|
@@ -436,7 +484,7 @@ Subcategories: `client` (9), `web` (2), `server` (1), `design-ui` (7), `audio` (
 Subcategories: `image` (10), `video` (18), `motion` (1), `audio` (2), `presentation` (1), `diagram` (2), `design` (4), `capture` (0), `storytelling` (2)
 
 <details>
-<summary>Show skills</summary>
+<summary>Show Creative Media skills</summary>
 
 | Skill |
 |---|
@@ -488,7 +536,7 @@ Subcategories: `image` (10), `video` (18), `motion` (1), `audio` (2), `presentat
 Subcategories: `developer-cli` (10), `ai-cli` (15), `media-cli` (1), `automation-cli` (6), `search-cli` (8), `benchmark-cli` (1)
 
 <details>
-<summary>Show skills</summary>
+<summary>Show CLI Tools skills</summary>
 
 | Skill |
 |---|
@@ -541,7 +589,7 @@ Subcategories: `developer-cli` (10), `ai-cli` (15), `media-cli` (1), `automation
 Subcategories: `orchestration` (16), `agent-frameworks` (19), `skill-authoring` (5), `evaluation` (8), `memory` (7), `planning-review` (13), `discovery` (3), `prompting` (3)
 
 <details>
-<summary>Show skills</summary>
+<summary>Show AI &amp; Agents skills</summary>
 
 | Skill |
 |---|
@@ -627,7 +675,7 @@ Subcategories: `orchestration` (16), `agent-frameworks` (19), `skill-authoring` 
 Subcategories: `code-quality` (12), `testing` (3), `architecture` (6), `documentation` (2), `code-navigation` (2)
 
 <details>
-<summary>Show skills</summary>
+<summary>Show Engineering skills</summary>
 
 | Skill |
 |---|
@@ -664,7 +712,7 @@ Subcategories: `code-quality` (12), `testing` (3), `architecture` (6), `document
 Subcategories: `academic` (3), `web-research` (3), `data-analysis` (2), `experimentation` (2), `benchmarking` (1), `intelligence` (3)
 
 <details>
-<summary>Show skills</summary>
+<summary>Show Research &amp; Analysis skills</summary>
 
 | Skill |
 |---|
@@ -690,7 +738,7 @@ Subcategories: `academic` (3), `web-research` (3), `data-analysis` (2), `experim
 Subcategories: `marketing` (4), `support` (2), `publishing` (1), `pm-toolkit` (5), `pm-discovery` (13), `pm-strategy` (12), `pm-execution` (12), `pm-market-research` (7), `pm-analytics` (3), `pm-go-to-market` (6), `pm-growth` (5)
 
 <details>
-<summary>Show skills</summary>
+<summary>Show Business skills</summary>
 
 | Skill |
 |---|
@@ -772,7 +820,7 @@ Subcategories: `marketing` (4), `support` (2), `publishing` (1), `pm-toolkit` (5
 Subcategories: `knowledge` (8), `files` (5), `git` (4), `workspace` (1), `project-management` (4), `productivity` (3), `general` (3)
 
 <details>
-<summary>Show skills</summary>
+<summary>Show Utilities skills</summary>
 
 | Skill |
 |---|

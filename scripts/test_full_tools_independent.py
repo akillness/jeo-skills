@@ -251,6 +251,36 @@ PY''')
         self.assertEqual((existing.parent / "codex.txt").read_bytes(), b"agent codex\n")
         self.assertIn("collision", result.stdout.lower())
 
+    def test_extended_success_distinguishes_setup_from_optional_readiness(self):
+        fixture = self.work / "fixture"
+        (self.bin / "dirname").symlink_to("/usr/bin/dirname")
+        (self.bin / "bash").symlink_to("/bin/bash")
+        helper = fixture / "scripts/install-full-tools.sh"
+        helper.parent.mkdir(parents=True)
+        helper.write_bytes(INSTALLER.read_bytes())
+        openspace = fixture / ".agent-skills/openspace/scripts/install-openspace.sh"
+        openspace.parent.mkdir(parents=True)
+        openspace.write_text('#!/bin/bash\nprintf "openspace %s\\n" "$*" >> "$FIXTURE_LOG"\n')
+        for name in ("open-ontologies", "okf-agent-memory"):
+            smoke = fixture / ".agent-skills" / name / "scripts/smoke.py"
+            smoke.parent.mkdir(parents=True)
+            smoke.write_text("# offline fixture smoke\n")
+        self.command("graphify", 'echo "graphify fixture"')
+        self.command("open-ontologies", 'exit 0')
+        self.command("okf", 'exit 0')
+        result = subprocess.run(
+            ["/bin/bash", str(helper), "--extended", str(self.project)],
+            cwd=self.project, env=self.env, text=True,
+            stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=30,
+        )
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertIn("Full-tool result: 10/10 succeeded.", result.stdout)
+        self.assertIn("setup attempts succeeded", result.stdout)
+        self.assertIn("readiness", result.stdout)
+        self.assertIn("separate approval and verification", result.stdout)
+        self.assertNotIn("All 10 extended full-mode tools installed and executable", result.stdout)
+        self.assertIn("openspace --skip-mcp", self.log.read_text())
+
     def test_extended_mode_requires_openspace_bm25_probe_even_when_openspace_mcp_is_present(self):
         self.command("openspace-mcp", 'exit 0')
         self.command("graphify", 'echo "graphify 0.9.97"')

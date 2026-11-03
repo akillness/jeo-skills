@@ -1,49 +1,31 @@
 {
-  "updated": "2026-10-21",
-  "purpose": "Current README cover and source-accurate workflow diagrams",
-  "post_edit": "2026-10-21: Codex-authored replacement visuals. Two private-codex cover variants were inspected; variant 1 was selected. Three SVGs were authored by separate ephemeral Codex exec runs, with no manual SVG byte edits. Browser render checks were run at 850px and 1200px widths with transform-aware getBoundingClientRect checks for text bounds, text overlap, and connector crossings.",
+  "updated": "2026-11-03",
+  "purpose": "README illustration and source-grounded, editable diagrams",
   "palette": {
-    "paper": "#F7F9F5",
-    "ink": "#12231E",
-    "teal": "#137E73",
-    "optional": "#AC6415",
-    "neutral": "#DCE4DE"
+    "background": "#090F25",
+    "surface": "#131C39",
+    "text": "#EDF6FF",
+    "secondary_text": "#C8D6EE",
+    "cyan": "#65E5F5",
+    "violet": "#C9A7FF"
   },
   "hero": {
     "path": "assets/readme-cover.webp",
-    "generator": "god-tibo-imagen (gti) 0.4.1",
-    "provider": "private-codex",
-    "request_model": null,
-    "image_model": null,
-    "requested_size": "2048x1152",
-    "returned_size": "1672x941",
-    "returned_format": "PNG",
-    "published_size": "1600x900",
+    "generator": "functions.generate_image",
+    "provider": "openai-codex",
+    "model": "gpt-6.1-terra",
+    "reference_inputs": ["../jeo-code/assets/hero.png", "../jeopi/assets/jeopi-hero.png"],
+    "generated_size": "1672x941",
+    "published_size": "1600x901",
     "published_format": "WebP",
-    "published_size_bytes": 164892,
-    "conversion": "magick /tmp/jeo-cover-1.png -resize '1600x900^' -gravity center -crop 1600x900+0+0 +repage -quality 86 assets/readme-cover.webp",
-    "selection": "Variant 1 selected after direct image inspection: it is a bright, calm 5-by-2 modular shelf scene with a clear teal router/lens, separate host docks and a subtle amber side route; neither inspected variant contained visible letterforms, and variant 1 had the cleaner paper/ceramic editorial composition without the outdoor background of variant 2.",
-    "prompt": "Fresh, calm, premium editorial 3D isometric scene for an open-source skill library. Bright modular library made of ten distinct orderly shelves, each shelf holding abstract paper skill cards with no writing. A small teal router lens selects a few cards and sends them along clean glowing teal paths into separate host docking bays. Add one subtle amber optional side path, secondary and dashed in spirit. Use architectural clarity, generous negative space, soft studio light, tactile paper and ceramic surfaces, restrained geometry, and a sophisticated editorial product-illustration composition. Absolutely no text, letters, numbers, logos, symbols, interface elements, labels, glyphs, or readable marks anywhere. Palette: paper #F7F9F5, ink #12231E, teal #137E73, optional amber #AC6415, with a soft neutral gray-green. Wide 16:9 composition, no typography.",
-    "boundary": "Illustrative product cover, not a runtime screenshot. Generation used the undocumented private Codex backend through gti; no account identifiers or credentials are included."
+    "conversion": "cwebp -q 80 -resize 1600 0",
+    "prompt_summary": "Cosmic archive, red crayfish wizard and stitched hooded doll, luminous skill atlas, no letters or logos.",
+    "boundary": "Illustrative generated artwork, not a screenshot."
   },
   "diagrams": {
-    "paths": [
-      "assets/how-it-works.svg",
-      "assets/catalog-map.svg",
-      "assets/skill-lifecycle.svg"
-    ],
-    "authoring": "Codex exec via codex-cli 0.163.0",
-    "sandbox": "workspace-write",
-    "write_scope": "Each ephemeral Codex session was instructed to write only its named SVG path. The how-it-works and catalog-map sessions wrote their files before the local command timeout; the skill-lifecycle session exited 0. No other asset was edited by the SVG authoring runs.",
-    "source_of_truth": [
-      ".agent-skills/skills.json",
-      "install.sh",
-      ".agent-skills/jeo-skill/SKILL.md",
-      ".agent-skills/jeo-skill/scripts/jeo-skill.py",
-      "jev/README.md",
-      ".mex/patterns/skill-usage-lifecycle.md"
-    ],
-    "boundary": "Static editable diagrams; catalog placement, host permissions/model selection/execution, optional Jev or Jevgrep integrations, and upstream runtime activation remain distinct. Optional branches are dashed amber; the maintainer catalog-retirement lane is separate from local quarantine.",
-    "post_edit": "2026-10-21: Codex correction run (codex-cli 0.163.0, workspace-write, ephemeral; write scope assets/catalog-map.svg only) shifted only Research & Analysis subcategory labels academic/web-research/intelligence from y=146/174/202 to y=158/186/214. All other bytes were verified identical. XML parse and rsvg-convert renders passed; browser screenshots at 850px and 1200px with transform-aware getBoundingClientRect checks found no text outside the viewBox, no text overlaps, and no connector crossings."
+    "paths": ["assets/how-it-works.svg", "assets/catalog-map.svg", "assets/skill-lifecycle.svg"],
+    "authoring": "Hand-authored and revised SVG by jeo in the current task; catalog and lifecycle layouts adapted from the existing Codex-authored diagrams.",
+    "source_of_truth": ["README.md", ".agent-skills/skills.json", "install.sh", ".agent-skills/jeo-skill/SKILL.md", "jev/README.md"],
+    "boundary": "Static diagrams, not screenshots. Installation, host activation, optional routing, provider authorization and maintainer retirement are distinct."
   }
 }

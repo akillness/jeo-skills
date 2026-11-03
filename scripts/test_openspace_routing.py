@@ -7,6 +7,7 @@ the gate is tested against real BM25 arithmetic. ``--real-openspace`` reruns the
 against an installed OpenSpace given as OPENSPACE_REAL_PYTHON.
 """
 
+from concurrent.futures import ThreadPoolExecutor
 import json
 import os
 from pathlib import Path
@@ -340,6 +341,187 @@ class RouterGate(Fixture):
         self.assertEqual(self.suggested("bicycle gears slipping"), ["baking"])
         self.assertTrue((self.work / "cache/index.json").is_file())
 
+    def test_cached_full_corpus_scores_and_gates_match_original_ranker(self):
+        # Identical descriptions exercise stable ties across the top-10 boundary.
+        write_catalog(self.catalog, {
+            f"tie-{n:02}": ("quasar telescope observation", "quasar telescope")
+            for n in range(15)
+        })
+        program = '''import copy, importlib.util, sys
+from pathlib import Path
+spec = importlib.util.spec_from_file_location("route_prompt", sys.argv[1])
+router = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(router)
+from openspace.skill_engine.skill_ranker import SkillRanker
+original_bm25 = SkillRanker.bm25_only
+cache_sizes = []
+def spy(self, *args, **kwargs):
+    cells = getattr(self._tokenize, "__closure__", None) or ()
+    cache_sizes.append(max((len(cell.cell_contents) for cell in cells
+                            if isinstance(cell.cell_contents, dict)), default=0))
+    return original_bm25(self, *args, **kwargs)
+SkillRanker.bm25_only = spy
+skills = router.load_index([Path(sys.argv[2])])
+baseline = copy.deepcopy(skills)
+for skill in baseline:
+    skill.pop("bm25_tokens", None)
+def project(result):
+    suggestions, explained = result
+    return ([item["skill"]["name"] for item in suggestions], [
+        (item["skill"]["name"], item["score"], item["anchors"],
+         item["coverage"], item["named"], item["qualified"])
+        for item in explained
+    ])
+for prompt in ("quasar telescope", "graphify로 코드베이스 그래프 만들어줘",
+               "한강 수위 알려줘", "scrape a JS-rendered page",
+               "xylophone unmatched vocabulary", "approved"):
+    old = project(router.rank(prompt, baseline, 3))
+    new = project(router.rank(prompt, skills, 3))
+    if sys.argv[3] == "real" and prompt != "approved":
+        assert cache_sizes[-1] == len(skills), (prompt, cache_sizes[-1], len(skills))
+    assert new == old, (prompt, old, new)
+    if prompt == "quasar telescope":
+        assert len(old[1]) == 10, old
+'''
+        result = subprocess.run([self.python, "-B", "-c", program, str(ROUTER), str(self.catalog),
+                                 "real" if isinstance(self, RealOpenSpace) else "fake"],
+                                text=True, capture_output=True, env=self.env, timeout=60)
+        self.assertEqual((result.returncode, result.stderr), (0, ""))
+
+    def test_cached_ranking_and_gates_match_fresh_processes(self):
+        prompts = ("use graphify and scrapling", "scrape a JS-rendered page",
+                   "한강 수위 알려줘", "make it better", "approved")
+        for prompt in prompts:
+            with self.subTest(prompt=prompt):
+                fresh_cache = str(self.work / ("fresh-" + str(prompts.index(prompt))))
+                cold = self.route(prompt, host="text", OPENSPACE_ROUTE_CACHE=fresh_cache)
+                warm = self.route(prompt, host="text", OPENSPACE_ROUTE_CACHE=fresh_cache)
+                self.assertEqual((cold.returncode, cold.stderr), (0, ""))
+                self.assertEqual((warm.returncode, warm.stdout, warm.stderr),
+                                 (cold.returncode, cold.stdout, cold.stderr))
+
+    def test_cache_tracks_removed_skills_and_distinct_roots(self):
+        self.assertEqual(self.suggested("sourdough bread recipe"), [])
+        other = self.work / "other-skills"
+        write_catalog(other)
+        write_catalog(other, {"baking": ("Bake sourdough bread at home.", "flour water salt")})
+        self.assertEqual(self.suggested("sourdough bread recipe", OPENSPACE_HOST_SKILL_DIRS=str(other)), ["baking"])
+        self.assertEqual(self.suggested("sourdough bread recipe"), [])
+        self.assertEqual(self.suggested("sourdough bread recipe", OPENSPACE_HOST_SKILL_DIRS=str(other)), ["baking"])
+        (other / "baking/SKILL.md").unlink()
+        self.assertEqual(self.suggested("sourdough bread recipe", OPENSPACE_HOST_SKILL_DIRS=str(other)), [])
+
+    def test_corrupt_index_is_rebuilt_without_affecting_results(self):
+        expected = self.suggested("scrape a JS-rendered page")
+        self.assertEqual(expected, ["scrapling"])
+        (self.work / "cache/index.json").write_text("{broken", encoding="utf-8")
+        self.assertEqual(self.suggested("scrape a JS-rendered page"), expected)
+        self.assertIsInstance(json.loads((self.work / "cache/index.json").read_text()), dict)
+
+    def test_nonobject_index_falls_back_for_routing_and_explain(self):
+        prompt = "scrape a JS-rendered page"
+        explain = lambda: subprocess.run([self.python, "-B", str(ROUTER), "--explain", prompt],
+                                         text=True, capture_output=True, env=self.env, timeout=60)
+        route_expected = self.route(prompt, host="text")
+        explain_expected = explain()
+        for result in (route_expected, explain_expected):
+            self.assertEqual((result.returncode, result.stderr), (0, ""))
+            self.assertIn("scrapling", result.stdout)
+        cache_file = self.work / "cache/index.json"
+        for invalid in ([], None, "invalid", 42):
+            for run, expected in ((lambda: self.route(prompt, host="text"), route_expected),
+                                  (explain, explain_expected)):
+                with self.subTest(invalid=invalid, command="explain" if run is explain else "route"):
+                    cache_file.write_text(json.dumps(invalid), encoding="utf-8")
+                    actual = run()
+                    self.assertEqual((actual.returncode, actual.stdout, actual.stderr),
+                                     (expected.returncode, expected.stdout, expected.stderr))
+                    self.assertIsInstance(json.loads(cache_file.read_text()), dict)
+
+    def test_invalid_nested_index_entries_rebuild(self):
+        prompt = "scrape a JS-rendered page"
+        original = self.route(prompt, host="text")
+        self.assertEqual((original.returncode, original.stderr), (0, ""))
+        self.assertIn("scrapling", original.stdout)
+        cache_file = self.work / "cache/index.json"
+        valid_cache = json.loads(cache_file.read_text())
+        path = str(self.catalog / "scrapling/SKILL.md")
+        for invalid in (None, [], {}, {"mtime_ns": 1, "size": 2, "name": "scrapling"}):
+            with self.subTest(entry=invalid):
+                cache = json.loads(json.dumps(valid_cache))
+                cache["skills"][path] = invalid
+                cache_file.write_text(json.dumps(cache), encoding="utf-8")
+                result = self.route(prompt, host="text")
+                self.assertEqual((result.returncode, result.stdout, result.stderr),
+                                 (original.returncode, original.stdout, original.stderr))
+        valid_cache["skills"] = []
+        cache_file.write_text(json.dumps(valid_cache), encoding="utf-8")
+        result = self.route(prompt, host="text")
+        self.assertEqual((result.returncode, result.stdout, result.stderr),
+                         (original.returncode, original.stdout, original.stderr))
+
+    def test_changed_upstream_tokenizer_retokenizes_cached_corpus(self):
+        prompt = "scrape a JS-rendered page"
+        self.assertIn("scrapling", self.route(prompt, host="text").stdout)
+        guard = Path(self.env["PYTHONPATH"]) / "sitecustomize.py"
+        with guard.open("a", encoding="utf-8") as out:
+            out.write('''
+import os
+from pathlib import Path
+from openspace.utils.logging import Logger
+Logger.configure(log_to_console=False, log_to_file=None)
+from openspace.skill_engine.skill_ranker import SkillRanker
+original_tokenize = SkillRanker._tokenize
+def changed_tokenize(text):
+    with Path(os.environ["TOKEN_CAPTURE"]).open("a") as capture:
+        capture.write(text + "\\n")
+    return [token + "drift" for token in original_tokenize(text)]
+SkillRanker._tokenize = staticmethod(changed_tokenize)
+''')
+        capture = self.work / "tokenizer-calls.txt"
+        cached = self.route(prompt, host="text", TOKEN_CAPTURE=str(capture))
+        self.assertEqual((cached.returncode, cached.stderr), (0, ""))
+        self.assertIn("scrapling scrape js-rendered", capture.read_text())
+        fresh = self.route(prompt, host="text", TOKEN_CAPTURE=str(capture),
+                           OPENSPACE_ROUTE_CACHE=str(self.work / "fresh-tokenizer-cache"))
+        self.assertEqual((cached.returncode, cached.stdout, cached.stderr),
+                         (fresh.returncode, fresh.stdout, fresh.stderr))
+
+    def test_malformed_cached_tokens_do_not_change_routing(self):
+        expected = self.suggested("scrape a JS-rendered page")
+        self.assertEqual(expected, ["scrapling"])
+        cache_file = self.work / "cache/index.json"
+        cache = json.loads(cache_file.read_text())
+        cache["skills"][str(self.catalog / "scrapling/SKILL.md")]["bm25_tokens"] = None
+        cache_file.write_text(json.dumps(cache), encoding="utf-8")
+        self.assertEqual(self.suggested("scrape a JS-rendered page"), expected)
+
+    def test_nul_joined_cached_tokens_cannot_bypass_digest(self):
+        prompt = "scrape a JS-rendered page"
+        original = self.route(prompt, host="text")
+        self.assertEqual((original.returncode, original.stderr), (0, ""))
+        self.assertIn("scrapling", original.stdout)
+        cache_file = self.work / "cache/index.json"
+        cache = json.loads(cache_file.read_text())
+        entry = cache["skills"][str(self.catalog / "scrapling/SKILL.md")]
+        tokens = entry["bm25_tokens"]
+        self.assertGreater(len(tokens), 1)
+        entry["bm25_tokens"] = [tokens[0] + "\0" + tokens[1], *tokens[2:]]
+        cache_file.write_text(json.dumps(cache), encoding="utf-8")
+        actual = self.route(prompt, host="text")
+        self.assertEqual((actual.returncode, actual.stdout, actual.stderr),
+                         (original.returncode, original.stdout, original.stderr))
+
+    def test_concurrent_cold_routes_produce_consistent_results(self):
+        prompt = "scrape a JS-rendered page"
+        with ThreadPoolExecutor(max_workers=8) as pool:
+            results = list(pool.map(lambda _: self.route(prompt, host="text"), range(8)))
+        for result in results:
+            self.assertEqual((result.returncode, result.stderr), (0, ""))
+            self.assertEqual(result.stdout, results[0].stdout)
+        self.assertIn("scrapling", results[0].stdout)
+        self.assertEqual(self.route(prompt, host="text").stdout, results[0].stdout)
+
     def test_check_verifies_the_ranker_contract(self):
         ok = subprocess.run([self.python, "-B", str(ROUTER), "--check"], capture_output=True, text=True, env=self.env, timeout=60)
         self.assertEqual(ok.returncode, 0, ok.stderr)
@@ -363,6 +545,23 @@ class RealOpenSpace(RouterGate):
         (guard / "sitecustomize.py").write_text(NETWORK_GUARD, encoding="utf-8")
         self.python = interpreter
         self.env["PYTHONPATH"] = str(guard)
+
+    def test_kimi_nontext_never_reaches_ranker(self):
+        guard = Path(self.env["PYTHONPATH"]) / "sitecustomize.py"
+        with guard.open("a", encoding="utf-8") as out:
+            out.write('''
+import os
+from pathlib import Path
+from openspace.utils.logging import Logger
+Logger.configure(log_to_console=False, log_to_file=None)
+from openspace.skill_engine.skill_ranker import SkillRanker
+original_bm25_only = SkillRanker.bm25_only
+def capture_query(self, query, *args, **kwargs):
+    Path(os.environ["QUERY_CAPTURE"]).write_text(query)
+    return original_bm25_only(self, query, *args, **kwargs)
+SkillRanker.bm25_only = capture_query
+''')
+        super().test_kimi_nontext_never_reaches_ranker()
 
     def test_missing_openspace_fails_open_silently(self):
         self.skipTest("an installed OpenSpace is importable without PYTHONPATH")

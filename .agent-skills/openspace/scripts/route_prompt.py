@@ -28,6 +28,8 @@ Environment:
 from __future__ import annotations
 
 import argparse
+import hashlib
+import inspect
 import json
 import os
 import re
@@ -36,7 +38,7 @@ import tempfile
 from pathlib import Path
 
 HOSTS = ("claude", "codex", "gemini", "agy", "kimi", "pi", "opencode", "text")
-INDEX_VERSION = 3
+INDEX_VERSION = 4
 BODY_CHARS = 2000  # OpenSpace's BM25 corpus uses body[:2000]
 DESCRIPTION_CHARS = 150
 # A query term anchors a skill when it is rare: in at most this share of the
@@ -144,6 +146,10 @@ def cache_dir() -> Path:
     return (Path(base).expanduser() if base else Path.home() / ".cache") / "openspace-route"
 
 
+def token_digest(text: str, words: list[str]) -> str:
+    return hashlib.sha256((text + "\0" + "\0".join(words)).encode("utf-8")).hexdigest()
+
+
 def skill_entry(text: str) -> dict:
     """Index fields for one SKILL.md, parsed with OpenSpace and normalized once."""
     from openspace.skill_engine.skill_utils import parse_frontmatter, strip_frontmatter
@@ -155,17 +161,34 @@ def skill_entry(text: str) -> dict:
     name, description = name.strip(), " ".join(description.split())
     name_norm, description_norm = normalize(name), normalize(description)
     body = normalize(strip_frontmatter(text)[: BODY_CHARS * 2])[:BODY_CHARS]
+    corpus = f"{name_norm} {description_norm}" + (f" {body}" if body else "")
+    bm25_tokens = split_terms(corpus)
     return {
         "name": name,
         "description": description,
         "name_norm": name_norm,
         "description_norm": description_norm,
         "body": body,
+        "bm25_tokens": bm25_tokens,
+        "bm25_digest": token_digest(corpus, bm25_tokens),
         "name_terms": sorted(set(split_terms(name_norm))),
         "meta_terms": sorted(set(split_terms(f"{name_norm} {description_norm}"))),
         "terms": sorted(set(split_terms(f"{name_norm} {description_norm} {body}"))),
         "cjk": bool(CJK_TERM.search(f"{description_norm} {body}")),
     }
+
+
+def valid_entry(entry: object) -> bool:
+    if not isinstance(entry, dict) or not isinstance(entry.get("mtime_ns"), int) or not isinstance(entry.get("size"), int):
+        return False
+    if entry.get("name") is None:
+        return "name" in entry
+    if not all(isinstance(entry.get(key), str) for key in ("name", "description", "name_norm", "description_norm", "body")):
+        return False
+    if not isinstance(entry.get("cjk"), bool):
+        return False
+    return all(isinstance(entry.get(key), list) and all(isinstance(term, str) for term in entry[key])
+               for key in ("name_terms", "meta_terms", "terms"))
 
 
 def load_index(roots: list[Path]) -> list[dict]:
@@ -174,11 +197,13 @@ def load_index(roots: list[Path]) -> list[dict]:
     cache_file = cache_dir() / "index.json"
     try:
         cached = json.loads(cache_file.read_text(encoding="utf-8"))
-        if cached.get("version") != INDEX_VERSION or cached.get("roots") != key:
+        if not isinstance(cached, dict) or cached.get("version") != INDEX_VERSION or cached.get("roots") != key:
             cached = {}
     except (OSError, ValueError):
         cached = {}
     previous = cached.get("skills", {})
+    if not isinstance(previous, dict):
+        previous = {}
     skills: dict[str, dict] = {}
     changed = False
     for root in roots:
@@ -188,7 +213,7 @@ def load_index(roots: list[Path]) -> list[dict]:
             except OSError:
                 continue
             entry = previous.get(str(path))
-            if not entry or entry["mtime_ns"] != stat.st_mtime_ns or entry["size"] != stat.st_size:
+            if not valid_entry(entry) or entry["mtime_ns"] != stat.st_mtime_ns or entry["size"] != stat.st_size:
                 changed = True
                 try:
                     text = path.read_text(encoding="utf-8", errors="replace")
@@ -258,7 +283,28 @@ def rank(prompt: str, skills: list[dict], top_k: int) -> tuple[list[dict], list[
 
     named_terms = set().union(*(set(skill["name_terms"]) for skill in skills if set(skill["name_terms"]) <= query_terms))
     ranking_terms = (query_terms - APPROVAL_TERMS) | named_terms
-    ranked = SkillRanker(enable_cache=False).bm25_only(" ".join(sorted(ranking_terms)), candidates, top_k=10)
+    corpus_tokens = {}
+    for c in candidates:
+        text = f"{c.name} {c.description}" + (f" {c.body[:2000]}" if c.body else "")
+        words = c.metadata.get("bm25_tokens")
+        if isinstance(words, list) and all(isinstance(word, str) and "\0" not in word for word in words):
+            try:
+                if c.metadata.get("bm25_digest") == token_digest(text, words):
+                    corpus_tokens[text] = words
+            except UnicodeError:
+                pass
+    ranker = SkillRanker(enable_cache=False)
+    # Cached tokens use split_terms, which matches this exact upstream tokenizer.
+    # Any upstream change (even cosmetic) falls back to the ranker's own method.
+    try:
+        tokenizer_source = inspect.getsource(ranker._tokenize).encode("utf-8")
+        compatible = hashlib.sha256(tokenizer_source).hexdigest() == "e26c4e675da578c3aed27cfc9b188c762ac5b4a9753aa343a5c20fad8e7df708"
+    except (AttributeError, OSError, TypeError):
+        compatible = False
+    if compatible:
+        tokenize = ranker._tokenize
+        ranker._tokenize = lambda text: corpus_tokens[text] if text in corpus_tokens else tokenize(text)
+    ranked = ranker.bm25_only(" ".join(sorted(ranking_terms)), candidates, top_k=10)
     explained = []
     for candidate in ranked:
         if candidate.bm25_score <= 0:

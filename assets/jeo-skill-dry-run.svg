@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="390" viewBox="0 0 1600 390" role="img" aria-labelledby="title desc">
+  <title id="title">Recorded jeo-skill dry-run preview</title>
+  <desc id="desc">Recorded local dry-run of a two-skill selection. The output lists the preview destination and the command that would be run. Nothing was installed and no provider was validated.</desc>
+  <rect width="1600" height="390" rx="18" fill="#090F25"/>
+  <rect x="28" y="24" width="1544" height="342" rx="14" fill="#131C39" stroke="#36476F" stroke-width="2"/>
+  <text x="56" y="65" fill="#65E5F5" font-family="-apple-system, 'Segoe UI', sans-serif" font-size="21" font-weight="700">RECORDED DRY-RUN</text>
+  <text x="56" y="96" fill="#C8D6EE" font-family="-apple-system, 'Segoe UI', sans-serif" font-size="18">Public catalog · working directory /tmp · preview only</text>
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#EDF6FF" xml:space="preserve">
+    <text x="56" y="151">$ python3 "$JEO_SKILL_CLI" install responsive-design react-best-practices --dry-run</text>
+    <text x="56" y="192">Destination: /private/tmp/.agents/skills</text>
+    <text x="56" y="221">Selected 2 skill(s): responsive-design, react-best-practices</text>
+    <text x="56" y="250">Command: npx --yes skills@1.7.0 add https://github.com/akillness/jeo-skills --skill responsive-design react-best-practices --agent universal --copy --full-depth</text>
+  </g>
+  <text x="56" y="322" fill="#C8D6EE" font-family="-apple-system, 'Segoe UI', sans-serif" font-size="18">No installation or provider validation was performed.</text>
+</svg>

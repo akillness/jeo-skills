@@ -8,6 +8,7 @@ Run: python3 scripts/test_installer_regressions.py -v
 
 import json
 import os
+import pty
 from pathlib import Path
 import shutil
 import subprocess
@@ -82,6 +83,82 @@ for name in names:
     shutil.copytree(origin, target, dirs_exist_ok=True)
 '''
 
+GH = r'''import json
+import os
+from pathlib import Path
+import sys
+import time
+
+args = sys.argv[1:]
+with Path(os.environ["GH_RECORD"]).open("a") as record:
+    record.write(json.dumps(args) + "\n")
+if args != ["auth", "token", "--hostname", "github.com"]:
+    raise SystemExit("unexpected gh invocation")
+if os.environ.get("GH_SLEEP"):
+    time.sleep(20)
+if os.environ.get("GH_AUTH_FAIL"):
+    raise SystemExit(1)
+print("fixture-secret-token")
+'''
+
+STAR_NETWORK = r'''import http.client
+import json
+import os
+from pathlib import Path
+import socket
+import time
+
+def deny_network(*args, **kwargs):
+    raise AssertionError("real network is forbidden in star tests")
+socket.socket.connect = deny_network
+socket.create_connection = deny_network
+
+class FakeConnection:
+    def __init__(self, host, timeout=None):
+        self.host, self.timeout = host, timeout
+        if os.environ.get("HTTP_CONNECT_SLEEP"):
+            with Path(os.environ["GH_RECORD"]).open("a") as record:
+                record.write(json.dumps(["CONNECT", host]) + "\n")
+            time.sleep(20)
+
+    def request(self, method, path, headers):
+        self.method = method
+        with Path(os.environ["GH_RECORD"]).open("a") as record:
+            record.write(json.dumps(["HTTP", method, self.host, path, headers.get("Authorization"), self.timeout]) + "\n")
+        if os.environ.get("HTTP_TIMEOUT") == method:
+            raise TimeoutError("fixture timeout")
+
+    def getresponse(self):
+        class Response:
+            status = int(os.environ.get("HTTP_" + self.method + "_STATUS", "204"))
+            def read(self):
+                return b"HTTP/2 204\r\n\r\n"
+        return Response()
+
+    def close(self):
+        pass
+
+http.client.HTTPSConnection = FakeConnection
+'''
+
+STAR_PYTHON_WRAPPER = r'''import os
+from pathlib import Path
+import subprocess
+import sys
+
+if sys.argv[1:] == ["-I", "-"]:
+    original_run = subprocess.run
+    def injected_run(command, *args, **kwargs):
+        if len(command) > 3 and command[1:3] == ["-I", "-c"]:
+            command = list(command)
+            command[3] = Path(os.environ["STAR_FIXTURE"]).read_text() + "\n" + command[3]
+        return original_run(command, *args, **kwargs)
+    subprocess.run = injected_run
+    exec(compile(sys.stdin.read(), "<installer>", "exec"), {"__name__": "__main__"})
+else:
+    os.execv(sys.executable, [sys.executable, *sys.argv[1:]])
+'''
+
 
 class InstallerRegressions(unittest.TestCase):
     def setUp(self):
@@ -145,6 +222,198 @@ class InstallerRegressions(unittest.TestCase):
 
     def successful(self, result):
         self.assertEqual(result.returncode, 0, result.stdout)
+
+    def star_fixture(self):
+        gh = self.bin / "gh"
+        gh.write_text(f"#!{sys.executable}\n" + GH)
+        gh.chmod(0o700)
+        record = self.work / "gh-calls.jsonl"
+        self.env["GH_RECORD"] = str(record)
+        (self.work / "sitecustomize.py").write_text(STAR_NETWORK)
+        self.env["PYTHONPATH"] = str(self.work)
+        self.env["STAR_FIXTURE"] = str(self.work / "sitecustomize.py")
+        python = self.bin / "python3"
+        python.unlink()
+        python.write_text(f"#!{sys.executable}\n" + STAR_PYTHON_WRAPPER)
+        python.chmod(0o700)
+        return record
+
+    def star_calls(self, record):
+        return [json.loads(line) for line in record.read_text().splitlines()] if record.exists() else []
+
+    def star_bootstrap(self, **options):
+        return self.bootstrap(INSTALL_GLOBAL="false", JEO_SKILLS_AGENT="universal",
+                              JEO_SKILLS_SELECTION="router", JEO_SKILLS_JEV="skip", **options)
+
+    def test_requested_jev_failure_reports_partial_install_without_failing_catalog(self):
+        result = self.bootstrap(INSTALL_GLOBAL="true", JEO_SKILLS_AGENT="universal",
+                                JEO_SKILLS_SELECTION="router", JEO_SKILLS_JEV="api")
+        self.successful(result)
+        self.assertIn("requires JEV_API_KEY", result.stdout)
+        self.assertIn("Jev setup did not complete", result.stdout)
+        self.assertIn("Selected skills installed", result.stdout)
+        self.assertNotIn("Selected installation completed", result.stdout)
+        self.assertTrue((self.home / ".agents/skills/jeo-skill/SKILL.md").is_file())
+        self.assertFalse((self.home / ".agents/jev/profiles/universal.env").exists())
+
+    def test_project_requested_jev_reports_scope_failure_without_losing_catalog(self):
+        result = self.bootstrap(INSTALL_GLOBAL="false", JEO_SKILLS_AGENT="universal",
+                                JEO_SKILLS_SELECTION="router", JEO_SKILLS_JEV="api")
+        self.successful(result)
+        self.assertIn("home-scoped", result.stdout)
+        self.assertIn("Selected skills installed", result.stdout)
+        self.assertTrue((self.project / ".agents/skills/jeo-skill/SKILL.md").is_file())
+        self.assertFalse((self.home / ".agents/jev").exists())
+
+    def test_unrequested_jev_keeps_noninteractive_catalog_success(self):
+        result = self.bootstrap(INSTALL_GLOBAL="true", JEO_SKILLS_AGENT="universal",
+                                JEO_SKILLS_SELECTION="router")
+        self.successful(result)
+        self.assertIn("Selected installation completed", result.stdout)
+        self.assertTrue((self.home / ".agents/skills/jeo-skill/SKILL.md").is_file())
+        self.assertFalse((self.home / ".agents/jev").exists())
+
+    def test_star_approved_put_then_verified_get(self):
+        record = self.star_fixture()
+        result = self.star_bootstrap(JEO_SKILLS_STAR="true")
+        self.successful(result)
+        self.assertEqual(self.star_calls(record), [
+            ["auth", "token", "--hostname", "github.com"],
+            *[["HTTP", method, "api.github.com", "/user/starred/akillness/jeo-skills",
+               "Bearer fixture-secret-token", 10] for method in ("PUT", "GET")],
+        ])
+        self.assertIn("verified", result.stdout.lower())
+        self.assertNotIn("unverified", result.stdout.lower())
+        self.assertNotIn("fixture-secret-token", result.stdout)
+
+    def test_star_only_performs_no_install_and_reports_failure(self):
+        record = self.star_fixture()
+        (self.bin / "node").unlink()
+        (self.bin / "npx").unlink()
+        options = {"JEO_SKILLS_STAR_ONLY": "true", "JEO_SKILLS_STAR": "true"}
+        result = self.bootstrap(**options)
+        self.successful(result)
+        self.assertEqual([call[1] for call in self.star_calls(record) if call[0] == "HTTP"], ["PUT", "GET"])
+        self.assertIn("verified", result.stdout.lower())
+        self.assertFalse((self.project / ".agents").exists())
+        self.assertFalse((self.home / ".agents").exists())
+        record.unlink()
+        result = self.bootstrap(**options, HTTP_GET_STATUS="404")
+        self.assertNotEqual(result.returncode, 0, result.stdout)
+        self.assertIn("unverified", result.stdout.lower())
+
+    def test_star_only_without_consent_or_in_dry_run_has_no_calls(self):
+        record = self.star_fixture()
+        for options in ({}, {"JEO_SKILLS_STAR": "false"},
+                        {"JEO_SKILLS_STAR": "true", "JEO_SKILLS_DRY_RUN": "true"}):
+            with self.subTest(options=options):
+                result = self.bootstrap(JEO_SKILLS_STAR_ONLY="true", **options)
+                self.assertEqual(self.star_calls(record), [])
+                self.assertNotIn("star verified", result.stdout.lower())
+
+    def test_star_only_ignores_install_settings_but_validates_dry_run(self):
+        record = self.star_fixture()
+        unrelated = {"JEO_SKILLS_SELECTION": "category", "JEO_SKILLS_AGENT": "aside",
+                     "INSTALL_GLOBAL": "invalid"}
+        approved = self.bootstrap(JEO_SKILLS_STAR_ONLY="true", JEO_SKILLS_STAR="true", **unrelated)
+        self.successful(approved)
+        self.assertEqual([call[1] for call in self.star_calls(record) if call[0] == "HTTP"], ["PUT", "GET"])
+        record.unlink()
+        for options in ({}, {"JEO_SKILLS_DRY_RUN": "true"}, {"JEO_SKILLS_DRY_RUN": "invalid"}):
+            with self.subTest(options=options):
+                result = self.bootstrap(JEO_SKILLS_STAR_ONLY="true", **unrelated, **options)
+                if options.get("JEO_SKILLS_DRY_RUN") == "invalid":
+                    self.assertNotEqual(result.returncode, 0, result.stdout)
+                else:
+                    self.successful(result)
+                self.assertEqual(self.star_calls(record), [])
+
+    def test_star_interactive_prompt_requires_affirmative_answer(self):
+        record = self.star_fixture()
+        for answer, expected in (("n\n", []), ("\n", []), ("y\n", ["PUT", "GET"])):
+            with self.subTest(answer=answer):
+                record.unlink(missing_ok=True)
+                master, slave = pty.openpty()
+                try:
+                    os.write(master, answer.encode())
+                    result = subprocess.run(
+                        ["/bin/bash", str(ROOT / "install.sh")], cwd=self.project,
+                        env={**self.env, "INSTALL_GLOBAL": "false", "JEO_SKILLS_AGENT": "universal",
+                             "JEO_SKILLS_SELECTION": "router", "JEO_SKILLS_JEV": "skip"},
+                        stdin=slave, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                        text=True, timeout=30)
+                finally:
+                    os.close(master)
+                    os.close(slave)
+                self.successful(result)
+                self.assertIn("Star akillness/jeo-skills", result.stdout)
+                self.assertEqual([call[1] for call in self.star_calls(record) if call[0] == "HTTP"], expected)
+                self.assertEqual(bool(self.star_calls(record)), bool(expected))
+
+    def test_star_no_consent_decline_and_dry_run_never_invoke_gh(self):
+        record = self.star_fixture()
+        for options in ({}, {"JEO_SKILLS_STAR": "false"},
+                        {"JEO_SKILLS_STAR": "true", "JEO_SKILLS_DRY_RUN": "true"}):
+            with self.subTest(options=options):
+                result = self.star_bootstrap(**options)
+                self.successful(result)
+                self.assertEqual(self.star_calls(record), [])
+                self.assertNotIn("star verified", result.stdout.lower())
+
+    def test_star_missing_gh_is_unverified(self):
+        self.assertIsNone(shutil.which("gh", path=self.env["PATH"]), "missing-gh test must never invoke a real gh")
+        result = self.star_bootstrap(JEO_SKILLS_STAR="true")
+        self.successful(result)
+        self.assertIn("unverified", result.stdout.lower())
+
+    def test_installer_inline_python_ignores_hostile_pythonpath(self):
+        marker = self.work / "hostile-import-ran"
+        (self.work / "sitecustomize.py").write_text(
+            "from pathlib import Path\nPath(" + repr(str(marker)) + ").touch()\n")
+        self.env["PYTHONPATH"] = str(self.work)
+        gh = self.bin / "gh"
+        gh.write_text("#!/bin/sh\nexit 1\n")
+        gh.chmod(0o700)
+        npx = self.bin / "npx"
+        npx.write_text('#!/bin/sh\n[ "$1" = "--version" ] && exit 0\nexit 23\n')
+        npx.chmod(0o700)
+        result = self.star_bootstrap(JEO_SKILLS_STAR="true")
+        self.assertNotEqual(result.returncode, 0, result.stdout)
+        self.assertIn("unverified", result.stdout.lower())
+        self.assertFalse(marker.exists(), "installer helper loaded hostile sitecustomize")
+
+    def test_star_failed_put_or_readback_is_unverified(self):
+        record = self.star_fixture()
+        for options, methods in (({"GH_AUTH_FAIL": "1"}, []),
+                                 ({"HTTP_PUT_STATUS": "403"}, ["PUT"]),
+                                 ({"HTTP_PUT_STATUS": "200"}, ["PUT"]),
+                                 ({"HTTP_PUT_STATUS": "302"}, ["PUT"]),
+                                 ({"HTTP_GET_STATUS": "302"}, ["PUT", "GET"]),
+                                 ({"HTTP_GET_STATUS": "404"}, ["PUT", "GET"]),
+                                 ({"HTTP_TIMEOUT": "GET"}, ["PUT", "GET"])):
+            with self.subTest(options=options):
+                record.unlink(missing_ok=True)
+                result = self.star_bootstrap(JEO_SKILLS_STAR="true", **options)
+                self.successful(result)
+                self.assertIn("unverified", result.stdout.lower())
+                self.assertNotIn("fixture-secret-token", result.stdout)
+                self.assertEqual([call[1] for call in self.star_calls(record) if call[0] == "HTTP"], methods)
+
+    def test_star_timeout_is_unverified(self):
+        record = self.star_fixture()
+        result = self.star_bootstrap(JEO_SKILLS_STAR="true", GH_SLEEP="1")
+        self.successful(result)
+        self.assertIn("unverified", result.stdout.lower())
+        self.assertEqual(len(self.star_calls(record)), 1)
+
+    def test_star_blocked_connection_obeys_total_deadline(self):
+        record = self.star_fixture()
+        result = self.star_bootstrap(JEO_SKILLS_STAR="true", HTTP_CONNECT_SLEEP="1")
+        self.successful(result)
+        self.assertIn("unverified", result.stdout.lower())
+        self.assertNotIn("fixture-secret-token", result.stdout)
+        self.assertEqual(self.star_calls(record), [["auth", "token", "--hostname", "github.com"],
+                                                    ["CONNECT", "api.github.com"]])
 
     def assert_skill(self, root, name):
         installed = root / name

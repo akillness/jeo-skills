@@ -1,80 +1,48 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="560" viewBox="0 0 1200 560" role="img" aria-labelledby="how-it-works-title how-it-works-desc">
-  <title id="how-it-works-title">How it works: catalog, router and install roots</title>
-  <desc id="how-it-works-desc">The catalog contains .agent-skills/&lt;name&gt;/SKILL.md and skills.json for taxonomy, bundles and relationships. The jeo-skill router offers categories, list, search, related and install --dry-run. Installation uses npx skills@1.7.0 add and places skills in shared or native roots. An optional branch includes Jev for route, prune and review, and Jevgrep for explore. Placement is not activation — hosts own loading, permissions and models.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="570" viewBox="0 0 1200 570" role="img" aria-labelledby="title desc">
+  <title id="title">From skill catalog to host</title>
+  <desc id="desc">Browse the catalog, preview a selection with jeo-skill, install it through npx skills into selected host roots, and verify with doctor and host discovery. The guided setup is a separate path that defaults to the full catalog. OpenSpace, Jev, and Jevgrep are independently optional and require their own setup. Installing files does not activate a host or authorize providers.</desc>
   <defs>
     <style>
-      text { font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif; fill: #12231E; }
-      .heading { font-size: 28px; font-weight: 700; letter-spacing: -0.6px; }
-      .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
-      .body { font-size: 20px; }
-      .section { font-size: 21px; font-weight: 700; fill: #137E73; }
-      .card { fill: #F7F9F5; stroke: #DDE5DE; stroke-width: 2; }
-      .flow { fill: none; stroke: #137E73; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+      text { font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif; fill: #EDF6FF; }
+      .heading { font-size: 27px; font-weight: 700; }
+      .label { font-size: 22px; font-weight: 700; }
+      .body { font-size: 19px; fill: #C8D6EE; }
+      .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 19px; }
+      .card { fill: #131C39; stroke: #36476F; stroke-width: 2; }
+      .line { fill: none; stroke: #65E5F5; stroke-width: 2.5; marker-end: url(#arrow); }
     </style>
-    <marker id="flow-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="userSpaceOnUse">
-      <path d="M1 1 L7 4 L1 7" fill="none" stroke="#137E73" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    </marker>
-    <marker id="optional-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="userSpaceOnUse">
-      <path d="M1 1 L7 4 L1 7" fill="none" stroke="#AC6415" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    </marker>
+    <marker id="arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#65E5F5"/></marker>
   </defs>
-
-  <rect width="1200" height="560" fill="#F7F9F5"/>
-
-  <!-- Connectors occupy the gutters; cards and labels are drawn afterward. -->
-  <path class="flow" d="M340 256 H380" marker-end="url(#flow-arrow)"/>
-  <path class="flow" d="M612 156 V132 H792 V156" marker-end="url(#flow-arrow)"/>
-  <path d="M524 396 V428" fill="none" stroke="#AC6415" stroke-width="2" stroke-dasharray="4 5" marker-end="url(#optional-arrow)"/>
-
-  <g aria-label="Catalog">
-    <path d="M40 84 H92" stroke="#137E73" stroke-width="4" stroke-linecap="round"/>
-    <text class="heading" x="40" y="64">Catalog</text>
-    <rect class="card" x="40" y="156" width="300" height="240" rx="20"/>
-    <text class="mono" font-size="22" x="64" y="204"><tspan x="64">.agent-skills/</tspan><tspan x="64" dy="30">&lt;name&gt;/SKILL.md</tspan></text>
-    <path d="M64 264 H316" stroke="#DDE5DE" stroke-width="2"/>
-    <text class="mono" font-size="23" font-weight="600" x="64" y="304">skills.json</text>
-    <text class="body" x="64" y="336">taxonomy · bundles</text>
-    <text class="body" x="64" y="364">relationships</text>
+  <rect width="1200" height="570" fill="#090F25"/>
+  <circle cx="1116" cy="54" r="3" fill="#C9A7FF"/><circle cx="1078" cy="37" r="2" fill="#65E5F5"/>
+  <text class="heading" x="32" y="52">From catalog to host</text>
+  <text class="body" x="32" y="82">Select deliberately. Preview before writing. Verify in the host.</text>
+  <g aria-hidden="true"><path class="line" d="M304 220 H324"/><path class="line" d="M586 220 H606"/><path class="line" d="M868 220 H888"/></g>
+  <g>
+    <rect class="card" x="32" y="112" width="272" height="220" rx="16"/>
+    <text class="label" x="52" y="152">01  Catalog</text>
+    <text class="mono" x="52" y="191">&lt;name&gt;/SKILL.md</text>
+    <text class="mono" x="52" y="223">skills.json</text>
+    <text class="body" x="52" y="265">Categories, bundles</text><text class="body" x="52" y="291">and relationships</text>
+    <rect class="card" x="324" y="112" width="262" height="220" rx="16"/>
+    <text class="label" x="344" y="152">02  Select</text>
+    <text class="body" x="344" y="192">Browse or search</text><text class="body" x="344" y="222">names and bundles</text>
+    <text class="mono" x="344" y="273">install --dry-run</text>
+    <rect class="card" x="606" y="112" width="262" height="220" rx="16"/>
+    <text class="label" x="626" y="152">03  Install</text>
+    <text class="mono" x="626" y="195">npx skills@1.7.0</text><text class="mono" x="626" y="225">add</text>
+    <text class="body" x="626" y="273">Selected host roots</text>
+    <rect class="card" x="888" y="112" width="280" height="220" rx="16"/>
+    <text class="label" x="908" y="152">04  Verify</text>
+    <text class="mono" x="908" y="195">jeo-skill doctor</text>
+    <text class="body" x="908" y="243">Check host discovery;</text><text class="body" x="908" y="271">reload if needed</text>
   </g>
-
-  <g aria-label="jeo-skill router">
-    <path d="M380 84 H432" stroke="#137E73" stroke-width="4" stroke-linecap="round"/>
-    <text class="heading" x="380" y="64">jeo-skill router</text>
-    <rect class="card" x="380" y="156" width="288" height="240" rx="20"/>
-    <text class="mono" font-size="22" x="404" y="212">categories / list</text>
-    <text class="mono" font-size="22" x="404" y="252">search / related</text>
-    <rect x="404" y="308" width="240" height="56" rx="12" fill="#137E73"/>
-    <text class="mono" font-size="21" x="424" y="343" style="fill:#F7F9F5">install --dry-run</text>
-  </g>
-
-  <g aria-label="Install command">
-    <text class="mono" font-size="21" font-weight="600" x="704" y="112" text-anchor="middle" style="fill:#137E73">npx skills@1.7.0 add</text>
-  </g>
-
-  <g aria-label="Install roots">
-    <path d="M752 84 H804" stroke="#137E73" stroke-width="4" stroke-linecap="round"/>
-    <text class="heading" x="752" y="64">Install roots</text>
-    <rect class="card" x="752" y="156" width="408" height="308" rx="20"/>
-    <text class="section" x="776" y="188">Shared</text>
-    <text class="mono" font-size="23" font-weight="600" x="776" y="220">~/.agents/skills</text>
-    <text class="body" x="776" y="252">jeopi · jeo-code · oh-my-pi</text>
-    <text class="body" x="776" y="280">Codex · Gemini CLI · OpenCode</text>
-    <text class="body" x="776" y="308">Cursor · Cline</text>
-    <path d="M776 328 H1136" stroke="#DDE5DE" stroke-width="2"/>
-    <text class="section" x="776" y="356">Native roots</text>
-    <text font-size="19" x="776" y="388">Claude Code <tspan class="mono">~/.claude/skills</tspan></text>
-    <text font-size="19" x="776" y="416">GJC <tspan class="mono">~/.gjc/agent/skills</tspan></text>
-    <text font-size="19" x="776" y="444">Antigravity · Aside per account</text>
-  </g>
-
-  <g aria-label="Optional branch">
-    <rect x="380" y="428" width="344" height="64" rx="12" fill="#F7F9F5" stroke="#AC6415" stroke-width="1.5" stroke-dasharray="6 5"/>
-    <text font-size="18" x="400" y="454" style="fill:#AC6415"><tspan font-weight="600">Optional:</tspan> Jev (route · prune · review),</text>
-    <text font-size="18" x="400" y="478" style="fill:#AC6415">Jevgrep (explore)</text>
-  </g>
-
-  <g aria-label="Host activation boundary">
-    <path d="M0 512 H1200 V560 H0 Z" fill="#DDE5DE"/>
-    <text font-size="21" font-weight="600" x="600" y="543" text-anchor="middle">Placement is not activation — hosts own loading, permissions and models.</text>
-  </g>
+  <rect x="32" y="356" width="548" height="116" rx="16" fill="#171634" stroke="#7761A7"/>
+  <text class="label" x="52" y="391">Guided setup</text>
+  <text class="body" x="52" y="423">Separate path; full catalog by default.</text><text class="body" x="52" y="450">Ask for core only to narrow the selection.</text>
+  <rect x="600" y="356" width="568" height="116" rx="16" fill="#171634" stroke="#C9A7FF" stroke-dasharray="7 5"/>
+  <text class="label" x="620" y="391">Optional, independently configured</text>
+  <text class="body" x="620" y="423">OpenSpace routing · Jev · Jevgrep</text><text class="body" x="620" y="450">Host support and approvals vary.</text>
+  <rect x="0" y="500" width="1200" height="70" fill="#111C38"/>
+  <text x="600" y="542" text-anchor="middle" font-size="20" font-weight="600">File placement is not activation or provider authorization.</text>
 </svg>

@@ -1,10 +1,10 @@
 <div align="center">
 
-<img src="assets/readme-cover.webp" alt="모듈형 스킬 라이브러리 일러스트: 청록색 라우터가 몇 개의 스킬 카드를 선택해 별도의 에이전트 호스트로 보냅니다" width="100%">
+<img src="assets/readme-cover.webp" alt="별빛 도서관에서 붉은 가재 마법사와 후드 인형이 스킬을 살펴보는 그림" width="100%">
 
 # jeo-skills
 
-**에이전트 스킬을 분류한 카탈로그입니다. 필요한 스킬만, 이미 사용하는 에이전트에 설치하세요.**
+**여러 에이전트에서 필요한 스킬을 찾고, 선택해 설치하고, 각 호스트에 맞게 운영하세요.**
 
 [![Skills](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fakillness%2Fjeo-skills%2Fmain%2F.agent-skills%2Fskills.json&query=%24.skill_count&label=skills&color=137E73&style=flat-square)](#-스킬-목록)
 [![Categories](https://img.shields.io/badge/categories-10-12231E?style=flat-square)](#-카테고리)
@@ -13,6 +13,21 @@
 [![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
 
 [빠른 시작](#-빠른-시작) · [작동 방식](#-작동-방식) · [설치 옵션](#-설치-옵션) · [지원 런타임](#-지원-런타임) · [라우터 CLI](#-라우터-cli) · [사용 추적 및 정리](#-사용-추적-및-정리) · [스킬](#-스킬-목록)
+
+설치부터 시작하려면 [빠른 시작](#-빠른-시작)을, 특정 작업을 찾아보려면 아래 메뉴를 펼치세요.
+
+<details>
+<summary>작업별 메뉴 열기</summary>
+
+- [카탈로그와 설치 흐름 이해하기](#-작동-방식)
+- [카테고리별 스킬 찾기](#-카테고리)
+- [설치 범위와 번들 선택하기](#-설치-옵션)
+- [호스트 경로와 Jev 프로필 확인하기](#-지원-런타임)
+- [CLI 명령 찾아보기](#-라우터-cli)
+- [사용 이력 확인 및 안전하게 정리하기](#-사용-추적-및-정리)
+- [선택적 통합 확인하기](#-선택적-통합)
+
+</details>
 
 [English](README.md) · **한국어** · [Español](README.es-ES.md)
 
@@ -41,6 +56,10 @@ Read https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-skill
 
 이 가이드는 운영체제와 에이전트를 감지하고 기본적으로 전체 카탈로그를 설치합니다("core only"를 요청하면 범위를 좁힐 수 있음). 에이전트가 설치하지 않은 스킬은 삭제하지 않습니다.
 
+가이드 설치와 아래 라우터 전용 설치는 별개입니다. OpenSpace, Jev, 메모리·컨텍스트·데이터베이스 및 제공자 설정은 각 단계의 선택과 승인, 호스트 지원 여부에 따라 별도로 진행됩니다. 설치만으로 이 기능이 활성화되지는 않습니다.
+
+GitHub 스타는 별도 선택입니다. `JEO_SKILLS_STAR=true`를 명시하면 `akillness/jeo-skills`에 `gh`로 PUT한 직후 GET으로 확인합니다. `false`면 건너뛰고, 미설정이면 대화형 환경에서 기본값이 아니요인 질문을 표시합니다. 미리 보기에서는 스타를 누르지 않으며, 일반 `--yes`는 스타에 대한 동의가 아닙니다.
+
 **옵션 B: 라우터를 설치한 다음 스킬을 선택합니다.**
 
 ```bash
@@ -56,16 +75,22 @@ jeo-skill install react-best-practices --global --yes      # install
 
 ## 🧭 작동 방식
 
-<img src="assets/how-it-works.svg" alt="다이어그램: 카탈로그(SKILL.md 폴더와 skills.json)가 jeo-skill 라우터로 공급되고, 라우터는 npx skills를 통해 선택한 스킬을 공유 루트 또는 네이티브 호스트 루트에 설치합니다. Jev와 Jevgrep은 선택적 경로입니다" width="100%">
+<details>
+<summary>카탈로그에서 호스트까지의 흐름 보기</summary>
+
 
 1. **카탈로그.** 스킬은 `<name>/SKILL.md` 형태로 평평하게 유지됩니다. 분류 체계는 폴더가 아니라 메타데이터이므로 런타임은 항상 예상한 경로에서 스킬을 찾습니다.
 2. **라우터.** `jeo-skill`은 `skills.json`을 기준으로 이름, 번들, 카테고리 및 하위 카테고리를 확인하고, 기록하기 전에 정확한 선택 항목을 표시합니다.
 3. **설치.** 선택 항목은 `npx skills@1.7.0 add`에 위임되며 각 대상 런타임의 루트에 복사됩니다.
 4. **로드.** 각 호스트는 자체 루트에서 스킬을 검색합니다. 배치는 활성화가 아닙니다. 로딩, 권한, 모델 선택 및 실행은 호스트가 담당합니다.
 
+</details>
+
 ## 🗂 카테고리
 
-<img src="assets/catalog-map.svg" alt="10개 스킬 카테고리 지도: Web, Infrastructure, Game, Creative Media, CLI Tools, AI and Agents, Engineering, Research and Analysis, Business, Utilities" width="100%">
+<details>
+<summary>관심 분야별 카테고리 보기</summary>
+
 
 | 카테고리 | 초점 | 찾아보기 |
 |---|---|---|
@@ -82,7 +107,16 @@ jeo-skill install react-best-practices --global --yes      # install
 
 전체 생성 목록은 [스킬 목록](#-스킬-목록)에 있습니다.
 
+</details>
+
 ## 📦 설치 옵션
+
+<details>
+<summary>설치 범위, 예시 및 번들 보기</summary>
+
+실제로 기록한 두 스킬 선택 미리 보기입니다. 설치나 제공자 활성화의 증거는 아닙니다.
+
+<img src="assets/jeo-skill-dry-run.svg" alt="실제 기록된 미리 보기: responsive-design과 react-best-practices 두 스킬의 대상 경로와 실행 예정 명령을 표시하며 설치는 하지 않았습니다" width="100%">
 
 | 목표 | 방법 |
 |---|---|
@@ -143,7 +177,12 @@ curl -fsSL "$URL" | JEO_SKILLS_DRY_RUN=true INSTALL_GLOBAL=false bash
 
 </details>
 
+</details>
+
 ## 🖥 지원 런타임
+
+<details>
+<summary>호스트별 경로와 Jev 프로필 보기</summary>
 
 | 런타임 | `--agent` | 전역 루트 | 프로젝트 루트 |
 |---|---|---|---|
@@ -206,7 +245,12 @@ node ~/.agents/jev/jev-harness.mjs \
 
 모든 감지 호스트를 대상으로 설정하려면 설정 서브셸 내부에서만 `JEV_AGENT`, `JEV_PROFILE`, `JEO_SKILLS_AGENT`, `JEO_SKILLS_JEV_PROFILE`을 `unset`하고, 활성 세션 바깥의 값은 보존하세요. 프로필 설정만으로 native hook이 자동 활성화되지 않으며, 기존 실제 `HOME` 설치도 삭제하거나 초기화하지 않습니다. 자세한 호스트 매핑과 활성화 경계는 [Jev 활성화 및 프로필 표](jev/jev-control-plane.rule.md#activation-and-profiles), 설정 순서는 [설정 가이드](setup-all-skills-prompt.md#jev-control-plane-harness-system-one)와 [jev/README.md](jev/README.md)를 확인하세요.
 
+</details>
+
 ## 💻 라우터 CLI
+
+<details>
+<summary>탐색, 설치 및 관리 명령 보기</summary>
 
 | 명령 | 기능 |
 |---|---|
@@ -223,9 +267,13 @@ node ~/.agents/jev/jev-harness.mjs \
 
 모든 명령에서 사용할 카탈로그를 고정하려면 `JEO_SKILLS_CATALOG=/path/to/skills.json`을 설정합니다.
 
+</details>
+
 ## 🧹 사용 추적 및 정리
 
-<img src="assets/skill-lifecycle.svg" alt="수명 주기 다이어그램: 런타임 기록을 스캔해 로컬 사용 상태로 저장하고, 사용됨·보호됨·유예 중·후보로 보고한 뒤 미리 보고 검토하여 되돌릴 수 있는 격리로 이동합니다. 복원 또는 영구 삭제가 가능하며 카탈로그 폐기는 별도의 유지관리자 경로입니다" width="100%">
+<details>
+<summary>사용 상태, 격리 및 복원 절차 보기</summary>
+
 
 `jeo-skill usage scan`은 로컬 런타임 기록(Claude, Codex, OpenCode, Antigravity, Aside, jeopi/GJC/OMP/Pi 세션 및 Jev 주입 원장)을 읽습니다. 사용 요약과 증분 스캔 메타데이터를 `~/.local/state/jeo-skill` 아래에 저장하며, 대화 기록 본문은 저장하지 않습니다. 에이전트가 스킬을 호출하거나 로드한 경우에만 사용으로 집계하고, 프롬프트의 언급은 집계하지 않습니다.
 
@@ -258,7 +306,12 @@ python3 scripts/retire-unused-skills.py --usage-report report.json --apply \
   --approve name-a,name-b --skip-jev-review          # or --jev-profile <p> --allow-remote
 ```
 
+</details>
+
 ## 🔌 선택적 통합
+
+<details>
+<summary>Jev와 Jevgrep의 선택적 설정 경계 보기</summary>
 
 | 통합 | 목적 | 설정 |
 |---|---|---|
@@ -266,6 +319,10 @@ python3 scripts/retire-unused-skills.py --usage-report report.json --apply \
 | **Jevgrep** | 선택한 스킬 또는 위키 문서의 원격 검색 | `jeo-skill explore "<question>" --root <dir> --dry-run` · [jevgrep](.agent-skills/jevgrep/SKILL.md) |
 
 둘 다 카탈로그 설치에 포함되지 않습니다. 둘 다 구성된 백엔드로 데이터를 보낼 수 있습니다. `jeo-skill`에서는 이를 호출하는 명령(`prune-unused --apply`, `usage relevance`, `explore`)이 `--allow-remote` 없이는 원격 사용을 거부합니다. 독립 실행형 Jev 하네스는 구성된 백엔드로 직접 전송하므로, 사용하기 전에 호스팅 프로필을 승인하세요.
+
+명시적으로 요청한 Jev 설정이 실패해도 검증된 스킬 설치는 실패로 처리하지 않습니다. 경고를 확인하고 Jev 통합이 부분적으로 완료되었음을 별도로 확인하세요.
+
+</details>
 
 ## 📚 스킬 목록
 

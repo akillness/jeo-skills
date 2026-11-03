@@ -3,26 +3,26 @@
   <desc id="skill-lifecycle-desc">Three horizontal lanes. Track runtime records through usage scan, local usage summaries and scan metadata without transcript bodies, and usage report states: used, protected, in grace for 30 days, or candidate. Mentions never count. Clean up locally by previewing prune-unused, applying with Jev review or a recorded skip, and creating a quarantine batch, then branch to restore or purge older quarantine. Maintainers run scripts/retire-unused-skills.py with approved names, regenerate and validate, and roll back on failure.</desc>
   <defs>
     <style>
-      text { fill: #12231E; font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 18px; }
+      text { fill: #EDF6FF; font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 18px; }
       .heading { font-size: 22px; font-weight: 700; }
       .command { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 18px; }
       .branch-command { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 17.5px; }
-      .node { fill: #F7F9F5; stroke: #137E73; stroke-width: 1.5; }
-      .flow { fill: none; stroke: #137E73; stroke-width: 2; stroke-linejoin: round; marker-end: url(#arrow); }
-      .review { fill: #F7F9F5; stroke: #AC6415; stroke-width: 1.5; stroke-dasharray: 6 5; }
-      .review-text { fill: #AC6415; }
+      .node { fill: #131C39; stroke: #65E5F5; stroke-width: 1.5; }
+      .flow { fill: none; stroke: #65E5F5; stroke-width: 2; stroke-linejoin: round; marker-end: url(#arrow); }
+      .review { fill: #1C183C; stroke: #C9A7FF; stroke-width: 1.5; stroke-dasharray: 6 5; }
+      .review-text { fill: #DECFFF; }
     </style>
     <marker id="arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-      <path d="M 0 0 L 8 4 L 0 8 Z" fill="#137E73"/>
+      <path d="M 0 0 L 8 4 L 0 8 Z" fill="#65E5F5"/>
     </marker>
   </defs>
-  <rect width="1200" height="600" fill="#F7F9F5"/>
+  <rect width="1200" height="600" fill="#090F25"/>
   <text x="32" y="44" font-weight="700" style="font-size:30px">Skill lifecycle</text>
   <text x="1168" y="42" text-anchor="end">mentions never count</text>
   <!-- Lanes are separated by open gutters. -->
-  <rect x="32" y="68" width="1136" height="180" rx="12" fill="#F7F9F5" stroke="#DCE4DE"/>
-  <rect x="32" y="260" width="1136" height="184" rx="12" fill="#F7F9F5" stroke="#DCE4DE"/>
-  <rect x="32" y="456" width="1136" height="112" rx="12" fill="#DCE4DE"/>
+  <rect x="32" y="68" width="1136" height="180" rx="12" fill="#0F1730" stroke="#36476F"/>
+  <rect x="32" y="260" width="1136" height="184" rx="12" fill="#0F1730" stroke="#36476F"/>
+  <rect x="32" y="456" width="1136" height="112" rx="12" fill="#171634" stroke="#564A83"/>
   <!-- Connectors precede the nodes and stay in the intervening gutters. -->
   <g aria-hidden="true">
     <path class="flow" d="M 400 156 H 432"/>
