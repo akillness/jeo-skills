@@ -3,9 +3,9 @@
 # CI and catalog-tooling surface. A new root-level file or directory is never
 # committed until it gets its own `!/name` line here.
 /*
+# Hidden (dot-prefixed) root folders stay ignored except these two.
 !/.agent-skills/
 !/.frontmatter/
-!/.github/
 !/assets/
 !/changelog/
 !/docs/
@@ -83,7 +83,13 @@ venv.bak/
 # Skill-specific build artifacts and source clones
 .agent-skills/*/bin/
 .agent-skills/*/.src/
+.agent-skills/*/template/out/
 
+# Media binaries inside skills
+*.mp4
+*.mp3
+*.wav
+*.gif
 # Regenerable context layers (managed by `ctx`; rebuilt at checkpoint). The mex scaffold
 # (.mex/) is local-only: the root allowlist above leaves it untracked.
 .graphify/
