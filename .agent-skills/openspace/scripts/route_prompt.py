@@ -227,7 +227,7 @@ def load_index(roots: list[Path]) -> list[dict]:
             cache_file.parent.mkdir(parents=True, exist_ok=True)
             fd, temporary = tempfile.mkstemp(prefix=".index.", dir=cache_file.parent)
             with os.fdopen(fd, "w", encoding="utf-8") as out:
-                json.dump({"version": INDEX_VERSION, "roots": key, "skills": skills}, out)
+                json.dump({"version": INDEX_VERSION, "roots": key, "skills": skills}, out, separators=(",", ":"))
             os.replace(temporary, cache_file)
         except OSError:
             pass
@@ -269,11 +269,12 @@ def rank(prompt: str, skills: list[dict], top_k: int) -> tuple[list[dict], list[
         )
         for skill in skills
     ]
-    document_terms = {skill["path"]: set(skill["terms"]) for skill in skills}
     frequency: dict[str, int] = {}
-    for terms in document_terms.values():
-        for term in terms & query_terms:
-            frequency[term] = frequency.get(term, 0) + 1
+    for skill in skills:
+        terms = skill["terms"]
+        for term in query_terms:
+            if term in terms:
+                frequency[term] = frequency.get(term, 0) + 1
     # Rarity is judged among skills written in the term's script: most of the
     # catalog is English, so a common Korean word would otherwise look rare.
     population = {False: len(skills), True: sum(skill["cjk"] for skill in skills)}
@@ -309,7 +310,7 @@ def rank(prompt: str, skills: list[dict], top_k: int) -> tuple[list[dict], list[
     for candidate in ranked:
         if candidate.bm25_score <= 0:
             continue
-        terms = document_terms[candidate.skill_id]
+        terms = set(candidate.metadata["terms"])
         name_terms = set(candidate.metadata["name_terms"])
         # The prompt names the skill: every name term present, one of them distinctive.
         named = name_terms <= query_terms and any(rare(t, NAME_SHARE) for t in name_terms)

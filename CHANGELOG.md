@@ -11,6 +11,17 @@ All notable changes to **jeo-skills** are documented here.
 - Prefer `JEO_SECOND_BRAIN_CONFIG=/absolute/reviewed.json bash scripts/install.sh` (optional `JEO_SECOND_BRAIN_SOURCE` pinned checkout) or direct `python3 scripts/setup.py --config ... --dry-run` followed by apply. `WITH_UPSTREAM=1` now requires that configuration rather than cloning/pulling a global upstream skill or executing unsafe upstream `setup.sh`. Automated source handling supports UTF-8 text; unsupported binaries are retained with explicit errors while supported entries can progress independently.
 - Portable lifecycle retains mex/zvec/Graphify/vault roles without a private HOME `ctx` package, preserves all raw trees including video and archived-root sources, and implements no legacy GC or unapproved deletion. Graphify rebuilds only at checkpoint with separate provider/model/unbounded-cost authority; Claude allowances are estimates, not a hard billing guarantee or a Graphify cost cap. Installed smoke/fixture evidence does not verify real-provider model quality, billing or live host integrations; other hosts use operating documents/shared runtime, not fabricated native PostCompact hooks.
 
+## 2026-11-04
+
+### Added
+- `openspace` routing hook installer (`scripts/route-hooks.py`) now discovers and wires redirected Claude Code and Codex configuration homes (`CLAUDE_CONFIG_DIR`, `CODEX_HOME`, and Orca profile/runtime/account homes under `ORCA_USER_DATA_PATH`: `claude@orca-*`, `codex@orca-runtime`, `codex@orca-*`) when those homes already contain `settings.json` or `hooks.json`.
+- Added regression tests in `scripts/test_performance_regressions.py` and `scripts/test_openspace_routing.py` covering `copy_tree` unchanged-file fast-paths, `__pycache__`/`.DS_Store` exclusion, and Orca/environment-redirected hook installation.
+
+### Changed
+- Optimized installer memory and I/O in `.agent-skills/jeo-skill/scripts/install_support.py`, `.agent-skills/jeo-skill/scripts/jeo-skill.py`, and `install.sh`: `_sha256_file` and `_copy_and_hash_file` stream through a reusable 256 KiB `bytearray`/`memoryview` buffer (`readinto`); `require_safe_tree`, `dir_manifest`, `copy_tree`, and `_retired_reason` use iterative `os.scandir` traversal instead of recursive `Path.rglob("*")`; `copy_tree` skips rewriting destination files whose size, mtime, and SHA-256 already match; `command_search` uses `heapq.nsmallest` and short-circuits `--limit 0`; `command_bootstrap` links `~/.local/bin/jeo-skill` in-process when invoked from the installed router; and `install.sh` exports `PYTHONDONTWRITEBYTECODE=1`.
+- Optimized `.agent-skills/openspace/scripts/route_prompt.py` to avoid allocating per-skill term sets across the entire catalog prior to BM25 scoring and to serialize `index.json` compactly.
+- Cleaned untracked local agent directories, stale session/cache directories, retired empty skill folders, build artifacts, `__pycache__`, and `.DS_Store` clutter from the repository checkout, and isolated subprocess stdin (`stdin=subprocess.DEVNULL`) in `scripts/test_installer_regressions.py`.
+
 ## 2026-11-02
 
 ### Fixed

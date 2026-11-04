@@ -162,8 +162,8 @@ python3 scripts/route-hooks.py remove
 
 | Host | Event | Config |
 |---|---|---|
-| Claude Code | `UserPromptSubmit` → `additionalContext` | `~/.claude/settings.json` |
-| Codex CLI | `UserPromptSubmit` → `additionalContext` (trust it in `/hooks`) | `~/.codex/hooks.json` |
+| Claude Code | `UserPromptSubmit` → `additionalContext` | `~/.claude/settings.json` (plus `$CLAUDE_CONFIG_DIR` and Orca `claude@orca-*` homes) |
+| Codex CLI | `UserPromptSubmit` → `additionalContext` (trust it in `/hooks`) | `~/.codex/hooks.json` (plus `$CODEX_HOME` and Orca `codex@orca-*` homes) |
 | Gemini CLI / Antigravity | `BeforeAgent` → `additionalContext` | `~/.gemini/settings.json` |
 | Antigravity CLI (`agy`, experimental) | `PreInvocation` → `injectSteps` / `ephemeralMessage` | `~/.gemini/config/hooks.json` |
 | Kimi Code | `UserPromptSubmit` → hook message | `~/.kimi-code/config.toml` |

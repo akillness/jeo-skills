@@ -137,11 +137,27 @@ if not target.is_absolute() or ".." in target.parts or not all(
     sys.exit(1)
 flags = os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW
 root_fd = os.open("/", flags)
+prefix = Path("/")
 try:
     for component in target.parts[1:]:
-        next_fd = os.open(component, flags, dir_fd=root_fd)
-        os.close(root_fd)
-        root_fd = next_fd
+        prefix = prefix / component
+        if root_fd is not None:
+            try:
+                next_fd = os.open(component, flags, dir_fd=root_fd)
+                os.close(root_fd)
+                root_fd = next_fd
+                continue
+            except PermissionError:
+                os.close(root_fd)
+                root_fd = None
+        info = os.lstat(prefix)
+        if stat.S_ISLNK(info.st_mode) or not stat.S_ISDIR(info.st_mode):
+            raise OSError(errno.ELOOP, "Refusing symlink or non-directory ancestor", str(prefix))
+        try:
+            root_fd = os.open(str(prefix), flags)
+        except PermissionError:
+            if prefix == target:
+                raise
 
     def merge(src, dest_fd):
         global failed

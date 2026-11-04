@@ -5,18 +5,48 @@ from __future__ import annotations
 import hashlib
 import os
 import shutil
+import stat
 from pathlib import Path
+
+_IO_BUFFER_SIZE = 256 * 1024
+
+
 def _sha256_file(path: Path) -> str:
     digest = hashlib.sha256()
+    buf = bytearray(_IO_BUFFER_SIZE)
+    view = memoryview(buf)
     with path.open("rb") as handle:
-        while True:
-            chunk = handle.read(1024 * 1024)
-            if not chunk:
-                break
-            digest.update(chunk)
-            if len(chunk) < 1024 * 1024:
-                break
+        while read_bytes := handle.readinto(buf):
+            digest.update(view[:read_bytes])
     return digest.hexdigest()
+
+
+def _copy_and_hash_file(src: Path, dst: Path) -> str:
+    """Stream-copy src to dst using a bounded buffer and return the SHA-256 hex digest."""
+    digest = hashlib.sha256()
+    buf = bytearray(_IO_BUFFER_SIZE)
+    view = memoryview(buf)
+    with src.open("rb") as reader, dst.open("wb") as writer:
+        while read_bytes := reader.readinto(buf):
+            slice_view = view[:read_bytes]
+            writer.write(slice_view)
+            digest.update(slice_view)
+    shutil.copystat(src, dst, follow_symlinks=False)
+    return digest.hexdigest()
+
+
+def _tree_first_symlink(root: Path) -> Path | None:
+    """Return the first symlink inside `root` using iterative scandir (no Path churn)."""
+    stack = [str(root)]
+    while stack:
+        current = stack.pop()
+        with os.scandir(current) as entries:
+            for entry in entries:
+                if entry.is_symlink():
+                    return Path(entry.path)
+                if entry.is_dir(follow_symlinks=False):
+                    stack.append(entry.path)
+    return None
 
 
 def require_safe_tree(path: Path) -> None:
@@ -26,9 +56,9 @@ def require_safe_tree(path: Path) -> None:
     if path.exists() and not path.is_dir():
         raise ValueError(f"Expected a directory: {path}")
     if path.is_dir():
-        for child in path.rglob("*"):
-            if child.is_symlink():
-                raise ValueError(f"Refusing symlink in skill tree: {child}")
+        symlink = _tree_first_symlink(path)
+        if symlink is not None:
+            raise ValueError(f"Refusing symlink in skill tree: {symlink}")
 
 
 def require_safe_path(path: Path, boundary: Path) -> None:
@@ -65,34 +95,69 @@ def resolve_aside_user(aside_home: Path, account: str | None) -> Path:
 
 
 def dir_manifest(root: Path) -> dict[str, str]:
-    return {
-        str(path.relative_to(root)): _sha256_file(path)
-        for path in root.rglob("*")
-        if path.is_file() and path.name != ".DS_Store"
-        and "__pycache__" not in path.parts and path.suffix != ".pyc"
-    }
-
+    if not root.is_dir() or root.is_symlink():
+        return {}
+    manifest: dict[str, str] = {}
+    stack: list[tuple[str, str]] = [(str(root), "")]
+    while stack:
+        current_dir, rel_prefix = stack.pop()
+        with os.scandir(current_dir) as entries:
+            for entry in entries:
+                name = entry.name
+                if name in {".DS_Store", "__pycache__"} or name.endswith(".pyc"):
+                    continue
+                rel_path = f"{rel_prefix}{os.sep}{name}" if rel_prefix else name
+                if entry.is_dir(follow_symlinks=False):
+                    stack.append((entry.path, rel_path))
+                elif entry.is_file(follow_symlinks=False):
+                    manifest[rel_path] = _sha256_file(Path(entry.path))
+    return manifest
 
 
 def copy_tree(src: Path, dst: Path) -> int:
     """Copy selected contents additively without following source/destination links."""
     require_safe_tree(src)
     require_safe_tree(dst)
+    if not src.is_dir():
+        raise ValueError(f"Copy verification failed: {dst}")
     copied = 0
     dst.mkdir(parents=True, exist_ok=True)
-    for path in src.rglob("*"):
-        if path.name == ".DS_Store" or "__pycache__" in path.parts or path.suffix == ".pyc":
-            continue
-        target = dst / path.relative_to(src)
-        if path.is_dir():
-            target.mkdir(parents=True, exist_ok=True)
-        elif path.is_file():
-            target.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copy2(path, target)
-            copied += 1
-    source_manifest = dir_manifest(src)
-    destination_manifest = dir_manifest(dst)
-    if not source_manifest or any(destination_manifest.get(p) != digest for p, digest in source_manifest.items()):
+    stack: list[tuple[Path, Path]] = [(src, dst)]
+    while stack:
+        current_src, current_dst = stack.pop()
+        with os.scandir(current_src) as entries:
+            for entry in entries:
+                name = entry.name
+                if name in {".DS_Store", "__pycache__"} or name.endswith(".pyc"):
+                    continue
+                src_path = Path(entry.path)
+                target = current_dst / name
+                if entry.is_dir(follow_symlinks=False):
+                    target.mkdir(parents=True, exist_ok=True)
+                    stack.append((src_path, target))
+                elif entry.is_file(follow_symlinks=False):
+                    current_dst.mkdir(parents=True, exist_ok=True)
+                    src_stat = entry.stat(follow_symlinks=False)
+                    need_copy = True
+                    src_digest = ""
+                    try:
+                        dst_stat = os.lstat(target)
+                        if (
+                            stat.S_ISREG(dst_stat.st_mode)
+                            and dst_stat.st_size == src_stat.st_size
+                            and dst_stat.st_mtime_ns == src_stat.st_mtime_ns
+                        ):
+                            src_digest = _sha256_file(src_path)
+                            if _sha256_file(target) == src_digest:
+                                need_copy = False
+                    except FileNotFoundError:
+                        pass
+                    if need_copy:
+                        src_digest = _copy_and_hash_file(src_path, target)
+                        if _sha256_file(target) != src_digest:
+                            raise ValueError(f"Copy verification failed: {dst}")
+                    copied += 1
+    if copied == 0:
         raise ValueError(f"Copy verification failed: {dst}")
     return copied
 
@@ -131,9 +196,8 @@ def _retired_reason(candidate: Path, name: str, heading: str) -> str | None:
     first_h1 = next((line.rstrip() for line in body.splitlines() if line.startswith("# ")), None)
     if names != [name] or first_h1 != heading:
         return "fingerprint differs from the retired catalog skill"
-    for child in candidate.rglob("*"):
-        if child.is_symlink():
-            return "tree contains a symlink"
+    if _tree_first_symlink(candidate) is not None:
+        return "tree contains a symlink"
     return None
 
 

@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import heapq
 import json
 import math
 import os
@@ -205,6 +206,10 @@ def tokenize(text: str) -> set[str]:
 def command_search(args: argparse.Namespace, catalog: dict[str, Any]) -> None:
     if args.limit < 0:
         raise JeoSkillError("--limit must be non-negative")
+    if args.limit == 0:
+        if args.json:
+            print_json([])
+        return
     query_tokens = tokenize(args.query)
     scored: list[tuple[int, dict[str, Any]]] = []
     phrase = args.query.lower()
@@ -222,7 +227,8 @@ def command_search(args: argparse.Namespace, catalog: dict[str, Any]) -> None:
         score = overlap * 10 + (25 if phrase in haystack else 0)
         if score:
             scored.append((score, row))
-    rows = [row for _score, row in sorted(scored, key=lambda pair: (-pair[0], pair[1]["name"]))[: args.limit]]
+    top = heapq.nsmallest(args.limit, scored, key=lambda pair: (-pair[0], pair[1]["name"]))
+    rows = [row for _score, row in top]
     if args.json:
         print_json(rows)
         return
@@ -730,7 +736,13 @@ def command_bootstrap(args: argparse.Namespace) -> None:
     if not args.global_install:
         return
     source = shared / "jeo-skill/scripts/jeo-skill.py"
-    result = subprocess.run([sys.executable, str(source), "link"], check=False)
+    if Path(__file__).resolve() == source.resolve():
+        try:
+            command_link(argparse.Namespace(force=False))
+        except (JeoSkillError, ValueError, OSError) as error:
+            raise JeoSkillError("Router installed, but CLI link failed") from error
+        return
+    result = subprocess.run([sys.executable, "-B", str(source), "link"], check=False)
     if result.returncode:
         raise JeoSkillError("Router installed, but CLI link failed")
 

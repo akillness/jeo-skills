@@ -66,7 +66,7 @@ El flujo separa selección, instalación y activación: cada paso tiene su propi
 
 1. **Catálogo.** Las habilidades permanecen planas como `<name>/SKILL.md`. La taxonomía son metadatos, no carpetas, por lo que los entornos siempre encuentran las habilidades en la ruta que esperan.
 2. **Enrutador.** `jeo-skill` resuelve nombres, paquetes, categorías y subcategorías según `skills.json` y muestra la selección exacta antes de escribir nada.
-3. **Instalación.** Las selecciones se delegan a `npx skills@1.7.0 add` y se copian en la raíz de cada entorno de destino.
+3. **Instalación.** Las selecciones se delegan a `npx skills@1.7.0 add` y se proyectan en la raíz de cada entorno de destino mediante copia en streaming de memoria acotada (256 KiB) con verificación SHA-256, recorrido iterativo `os.scandir` y omisión de archivos sin cambios en ejecuciones repetidas.
 4. **Carga.** Cada host descubre las habilidades desde su propia raíz. La ubicación no es activación: la carga, los permisos, la elección del modelo y la ejecución permanecen bajo el control del host.
 
 </details>
@@ -877,6 +877,14 @@ Edita los metadatos en `skills.json`, nunca en las tablas generadas. Las fuentes
 ---
 
 <!-- WHATS-NEW:START -->
+
+## 🆕 Novedades en v2026-11-04
+
+| Cambio | Detalles |
+|--------|---------|
+| **Optimización de rendimiento y memoria del instalador** | `install_support.py` ahora calcula hashes y copia archivos en streaming con un búfer reutilizable `bytearray`/`memoryview` de 256 KiB (`readinto`), sustituye los recorridos recursivos `Path.rglob("*")` en `require_safe_tree`, `dir_manifest`, `copy_tree` y `_retired_reason` por `os.scandir` iterativo (omitiendo `__pycache__` y `.DS_Store` antes de descender) y evita reescribir archivos de destino cuando `st_size`, `st_mtime_ns` y SHA-256 ya coinciden. `jeo-skill.py` devuelve al instante con `--limit 0`, selecciona resultados con `heapq.nsmallest` y enlaza la CLI global en el mismo proceso durante `bootstrap`. `install.sh` exporta `PYTHONDONTWRITEBYTECODE=1`. |
+| **Reducción de memoria en OpenSpace y soporte de hooks para Orca** | `openspace/scripts/route_prompt.py` escribe `index.json` de forma compacta y calcula frecuencias de términos sin reservar conjuntos `set` para todo el catálogo antes del ranking BM25. `openspace/scripts/route-hooks.py` detecta y conecta también hogares redirigidos de Claude Code y Codex (`CLAUDE_CONFIG_DIR`, `CODEX_HOME` y perfiles/cuentas de Orca bajo `ORCA_USER_DATA_PATH`). |
+| **Limpieza del repositorio y pruebas de regresión** | Se eliminaron directorios temporales de agentes en la raíz, cachés regenerables (`graphify-out/`, `llm-wiki/`, `.jeo/`, `.gjc/`, `.omo/`, `.serena/`), carpetas vacías de habilidades retiradas, artefactos de compilación, `__pycache__` y `.DS_Store`. `test_installer_regressions.py` aísla `stdin` con `DEVNULL` y se añadieron pruebas en `test_performance_regressions.py` y `test_openspace_routing.py`. |
 
 ## 🆕 Novedades en v2026-11-01
 

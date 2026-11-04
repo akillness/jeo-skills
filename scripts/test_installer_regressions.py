@@ -252,6 +252,7 @@ class InstallerRegressions(unittest.TestCase):
 
     def execute(self, command, extra_env=None):
         return subprocess.run(command, cwd=self.project, env={**self.env, **(extra_env or {})},
+                              stdin=subprocess.DEVNULL,
                               text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=30)
 
     def successful(self, result):

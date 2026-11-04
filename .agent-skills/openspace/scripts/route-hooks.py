@@ -339,7 +339,7 @@ class JsonHooks:
         return "removed"
 
     def note(self) -> str:
-        if self.name == "codex":
+        if self.name.startswith("codex"):
             return "review and trust the new UserPromptSubmit hook in Codex /hooks; Codex skips untrusted hooks"
         return ""
 
@@ -525,6 +525,47 @@ class ManagedFile:
         return "takes effect in new sessions"
 
 
+def orca_data_dir() -> Path:
+    raw = os.environ.get("ORCA_USER_DATA_PATH", "").strip()
+    if raw:
+        return Path(raw).expanduser()
+    if sys.platform == "darwin":
+        return HOME / "Library/Application Support/orca"
+    return XDG_CONFIG / "orca"
+
+
+def redirected_homes() -> list[tuple[str, str, Path]]:
+    """(key, kind, dir) for config homes a host may be started with instead of the default.
+
+    CLAUDE_CONFIG_DIR and CODEX_HOME redirect a whole host; Orca starts Claude Code with a
+    per-profile CLAUDE_CONFIG_DIR and Codex with its own CODEX_HOME. A host started that way
+    never reads ~/.claude or ~/.codex, so each such home needs its own hook entry. Only
+    homes that already hold the host's settings file count; a credentials-only home runs
+    no hooks.
+    """
+    defaults = {"claude": HOME / ".claude", "codex": HOME / ".codex"}
+    marker = {"claude": "settings.json", "codex": "hooks.json"}
+    found: list[tuple[str, str, Path]] = []
+
+    def add(key: str, kind: str, directory: Path) -> None:
+        known = {d.resolve() for _, _, d in found} | {defaults[kind].resolve()}
+        if (directory / marker[kind]).is_file() and directory.resolve() not in known:
+            found.append((key, kind, directory))
+
+    orca = orca_data_dir()
+    for profile in sorted((orca / "claude-profiles").glob("*/home")):
+        add(f"claude@orca-{profile.parent.name[:8]}", "claude", profile)
+    add("codex@orca-runtime", "codex", orca / "codex-runtime-home/home")
+    for account in sorted((orca / "codex-accounts").glob("*/home")):
+        add(f"codex@orca-{account.parent.name[:8]}", "codex", account)
+    # Orca homes first, so their names do not depend on the shell running this.
+    for kind, variable in (("claude", "CLAUDE_CONFIG_DIR"), ("codex", "CODEX_HOME")):
+        raw = os.environ.get(variable, "").strip()
+        if raw:
+            add(f"{kind}@{variable.lower()}", kind, Path(raw).expanduser())
+    return found
+
+
 def hosts() -> dict:
     found = {
         "claude": JsonHooks("claude", HOME / ".claude/settings.json", "UserPromptSubmit", "claude", HOME / ".claude"),
@@ -533,6 +574,9 @@ def hosts() -> dict:
         "agy": AgyHooks(),
         "kimi": KimiHooks(),
     }
+    for key, kind, directory in redirected_homes():
+        settings = directory / ("settings.json" if kind == "claude" else "hooks.json")
+        found[key] = JsonHooks(key, settings, "UserPromptSubmit", kind, directory)
     for name in ("jeopi", "omp", "pi", "gjc"):
         agent = HOME / f".{name}" / "agent"
         found[name] = ManagedFile(name, agent / "extensions" / "openspace-route.ts", agent, pi_extension_text)
@@ -577,6 +621,7 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
     table = hosts()
     selected = args.host or sorted(table)
+    width = max(9, *(len(name) for name in selected))
     failed = 0
 
     if args.action == "install":
@@ -601,7 +646,7 @@ def main(argv: list[str] | None = None) -> int:
         except Exception as exc:
             result = f"FAILED: {exc}"
             failed += 1
-        print(f"{name:9s} {result}")
+        print(f"{name:{width}s} {result}")
 
     if args.action == "status":
         for path in (WRAPPER, ROUTER):

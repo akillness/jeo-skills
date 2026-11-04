@@ -398,6 +398,28 @@ class InstallerDigestRegressions(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "symlink"):
                 self.support.copy_tree(source, target)
 
+    def test_copy_tree_skips_unchanged_target_writes_and_ignores_pycache(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="copy-idempotent-") as raw:
+            root = Path(raw)
+            source = root / "source"
+            target = root / "target"
+            (source / "__pycache__").mkdir(parents=True)
+            (source / "__pycache__/ignored.cpython-314.pyc").write_bytes(b"pyc")
+            (source / ".DS_Store").write_bytes(b"ds")
+            payload = source / "SKILL.md"
+            payload.write_text("---\nname: demo\ndescription: demo\n---\n", encoding="utf-8")
+
+            self.assertEqual(self.support.copy_tree(source, target), 1)
+            target_file = target / "SKILL.md"
+            self.assertFalse((target / "__pycache__").exists())
+            self.assertFalse((target / ".DS_Store").exists())
+            first_ino = target_file.stat().st_ino
+
+            with mock.patch.object(self.support, "_copy_and_hash_file", wraps=self.support._copy_and_hash_file) as spy:
+                self.assertEqual(self.support.copy_tree(source, target), 1)
+                self.assertEqual(spy.call_count, 0)
+            self.assertEqual(target_file.stat().st_ino, first_ino)
+
 
 LINK_TARGETS_PATH = ROOT / "scripts/link_targets.py"
 

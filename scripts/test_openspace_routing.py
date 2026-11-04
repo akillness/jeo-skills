@@ -857,6 +857,52 @@ console.log(JSON.stringify(input));
         text = json.loads(result.stdout)["prompt"]["text"]
         self.assertTrue(text.startswith("use graphify\n\nOpenSpace skill routing"), text)
 
+    def test_redirected_orca_and_env_homes_receive_hooks(self):
+        orca = self.work / "orca-data"
+        claude_profile = orca / "claude-profiles/12345678-aaaa/home"
+        codex_runtime = orca / "codex-runtime-home/home"
+        codex_account = orca / "codex-accounts/87654321-bbbb/home"
+        env_claude = self.work / "custom-claude"
+        env_codex = self.work / "custom-codex"
+        for home_dir, filename in (
+            (claude_profile, "settings.json"),
+            (codex_runtime, "hooks.json"),
+            (codex_account, "hooks.json"),
+            (env_claude, "settings.json"),
+            (env_codex, "hooks.json"),
+        ):
+            home_dir.mkdir(parents=True)
+            (home_dir / filename).write_text("{}\n", encoding="utf-8")
+        # Credentials-only directory without settings/hooks file is ignored.
+        (orca / "claude-profiles/99999999-empty/home").mkdir(parents=True)
+
+        env = {
+            **self.hook_env,
+            "ORCA_USER_DATA_PATH": str(orca),
+            "CLAUDE_CONFIG_DIR": str(env_claude),
+            "CODEX_HOME": str(env_codex),
+        }
+        result = subprocess.run([sys.executable, "-B", str(HOOKS), "install"],
+                                capture_output=True, text=True, env=env, timeout=60)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        for key in (
+            "claude@orca-12345678",
+            "codex@orca-runtime",
+            "codex@orca-87654321",
+            "claude@claude_config_dir",
+            "codex@codex_home",
+        ):
+            self.assertIn(key, result.stdout)
+        for home_dir, filename in (
+            (claude_profile, "settings.json"),
+            (codex_runtime, "hooks.json"),
+            (codex_account, "hooks.json"),
+            (env_claude, "settings.json"),
+            (env_codex, "hooks.json"),
+        ):
+            data = json.loads((home_dir / filename).read_text(encoding="utf-8"))
+            self.assertIn("UserPromptSubmit", data["hooks"])
+
 
 class Registrar(Fixture):
     def setUp(self):

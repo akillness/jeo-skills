@@ -82,7 +82,7 @@ jeo-skill install react-best-practices --global --yes      # install
 
 1. **카탈로그.** 스킬은 `<name>/SKILL.md` 형태로 평평하게 유지됩니다. 분류 체계는 폴더가 아니라 메타데이터이므로 런타임은 항상 예상한 경로에서 스킬을 찾습니다.
 2. **라우터.** `jeo-skill`은 `skills.json`을 기준으로 이름, 번들, 카테고리 및 하위 카테고리를 확인하고, 기록하기 전에 정확한 선택 항목을 표시합니다.
-3. **설치.** 선택 항목은 `npx skills@1.7.0 add`에 위임되며 각 대상 런타임의 루트에 복사됩니다.
+3. **설치.** 선택 항목은 `npx skills@1.7.0 add`에 위임되며, 256 KiB 고정 버퍼 기반 단일 패스 스트리밍 복사·SHA-256 검증, 반복형 `os.scandir` 순회, 동일 파일 재기록 생략을 통해 각 대상 런타임 루트에 투영됩니다.
 4. **로드.** 각 호스트는 자체 루트에서 스킬을 검색합니다. 배치는 활성화가 아닙니다. 로딩, 권한, 모델 선택 및 실행은 호스트가 담당합니다.
 
 </details>
@@ -901,6 +901,14 @@ python3 scripts/changelog.py check
 
 <!-- WHATS-NEW:START -->
 
+## 🆕 v2026-11-04 업데이트
+
+| 변경 사항 | 상세 내용 |
+|--------|---------|
+| **설치 성능 및 메모리 최적화** | `install_support.py`가 재사용 가능한 256 KiB `bytearray`/`memoryview`(`readinto`) 버퍼로 SHA-256 해싱과 단일 패스 스트리밍 복사를 수행하고, `require_safe_tree`·`dir_manifest`·`copy_tree`·`_retired_reason`의 `Path.rglob("*")` 재귀 순회를 반복형 `os.scandir` 순회로 교체해 `__pycache__`·`.DS_Store` 하위 진입과 불필요한 `Path`/`lstat` 할당을 제거했습니다. 대상 파일의 `st_size`·`st_mtime_ns`·SHA-256이 이미 일치하면 디스크 재기록을 생략합니다. `jeo-skill.py`는 `search`에서 `--limit 0` 즉시 반환과 `heapq.nsmallest` 상위 선택을 적용하고, `bootstrap` 시 동일 라우터 경로에서는 하위 Python 프로세스를 띄우지 않고 인프로세스로 CLI 링크를 생성합니다. `install.sh`는 `PYTHONDONTWRITEBYTECODE=1`을 기본 설정하고 사전 심볼릭 링크 검사를 반복형 `os.scandir`로 수행합니다. |
+| **OpenSpace 프롬프트 라우터 메모리 절감 및 Orca 훅 지원** | `openspace/scripts/route_prompt.py`가 `index.json` 캐시를 압축 저장하고, BM25 순위 산정 전에 전체 스킬의 단어 집합(`set`)을 일괄 생성하던 방식을 제거해 질의어 빈도만 계산한 뒤 상위 후보에 대해서만 집합을 생성합니다. `openspace/scripts/route-hooks.py`는 기본 홈 외에도 `CLAUDE_CONFIG_DIR`, `CODEX_HOME`, Orca 프로필·런타임·계정 홈(`claude@orca-*`, `codex@orca-runtime`, `codex@orca-*`)을 감지해 프롬프트 라우팅 훅을 설치·관리합니다. |
+| **저장소 폴더 정리 및 회귀 테스트 보강** | 작업 트리에 남아 있던 에이전트별 임시 스킬 폴더, 이전 세션·캐시 디렉터리(`graphify-out/`, `llm-wiki/`, `.jeo/`, `.gjc/`, `.omo/`, `.serena/`), 빈 은퇴 스킬 폴더, 빌드 산출물, `__pycache__`, `.DS_Store`를 일괄 정리했습니다. `test_installer_regressions.py`는 하위 프로세스 표준 입력을 `DEVNULL`로 격리해 대화형 터미널에서도 선택적 Jev 프롬프트 대기 없이 즉시 실행되며, `test_performance_regressions.py`와 `test_openspace_routing.py`에 멱등 복사 패스트패스 및 Orca 리다이렉트 홈 훅 회귀 테스트를 추가했습니다. |
+
 ## 🆕 v2026-11-01 업데이트
 
 | 변경 사항 | 상세 내용 |
@@ -940,23 +948,6 @@ python3 scripts/changelog.py check
 | 변경 사항 | 상세 내용 |
 |--------|---------|
 | **Aside 이후 macOS의 uvx MCP 서버** | 설치 가이드를 실제 홈에 적용하다가, Aside 세션 안에서 uv가 처음 내려받은 wheel에 `com.apple.quarantine ...;Aside;`가 남는 문제를 확인했습니다. macOS가 로드 시점에 확장 모듈(`.so`)을 지우고, uvx는 깨진 캐시 환경을 계속 재사용해서 `uvx`로 등록한 `semble`·`ooo`가 `No module named 'orjson.orjson'` 또는 `'rpds.rpds'`로 실패합니다. 가이드의 Semble·Ouroboros 블록, Aside 섹션, `ooo` 스킬에 증상, `xattr` 확인 방법, 복구 절차(uv 기반 MCP 서버를 멈추고 일반 터미널에서 `uv cache clean` 실행 후 재시도)를 추가했습니다. 새 캐시에서 검증했으며 `--refresh`, `--reinstall`, `uv cache clean <패키지>`로는 해결되지 않고, uv로 띄운 서버가 실행 중이면 `uv cache clean`이 대기합니다. |
-
-## 🆕 v2026-10-21 업데이트
-
-| 변경 사항 | 상세 내용 |
-|--------|---------|
-| **Agent Beacon 운영 스킬** | `Asymptote-Labs/agent-beacon` 커밋 `cfbd7b1d721664e3b1b5ca2fca5eac4327532c07`(MIT)에 고정한 `agent-beacon` v1.0.0을 추가했습니다. 하네스 간 세션 기록, 로컬·클라우드 목적지, 검토된 메모리, 렌즈, 공유, CLI·MCP 통합을 다루며 수집·개인 데이터·서비스·업로드·제거에 명시적 승인을 요구합니다. 카탈로그는 405→406개, `knowledge-repositories`는 가이드 22개·선택 파일 helper 19개가 됩니다. 설치는 가이드와 지원 파일만 추가하며 Beacon 런타임은 설치하지 않습니다. |
-| **Beacon 오프라인·설치 검증** | 기존 안전한 no-Git 구현을 재사용한 독립 helper로 공식 공개 파일 12개 해시 일치를 확인했습니다. 수정한 helper 20/20·설치 65/65 테스트가 통과했으며 이름 지정 설치, 중첩 지원 파일, 같은 루트의 은퇴 `jeo` 제거, 서드파티·현행 스킬 보존과 무변경 미리보기를 검증합니다. 설치 검증은 격리된 fixture 전송이며 실제 공개 설치 증명이 아닙니다. 라우팅·개인정보 평가 6개는 작성된 시나리오로, 실행한 모델 품질 결과가 아닙니다. |
-| **설치 가이드 수정** | 격리된 macOS HOME에서 `setup-all-skills-prompt.md` 전체 설치(실제 `skills@1.7.0`, uv, npm, Claude Code, Codex, opencode 2.0.32)를 실행해 발견한 문제를 고쳤습니다. Step 1이 `$HOME`이 다른 곳을 가리켜도 로그인 홈으로 설치하던 문제(이제 Aside 밖에서는 `$HOME`을 따름)와 `~/.local/bin`이 `PATH`에 없어 `jeo-skill`·`graphify`를 찾지 못하던 문제, 비대화형 `rtk init -g`가 훅을 등록하지 않던 문제(`--auto-patch` 사용), MCP SDK 1.x를 고정하는 `[all]` 위에 `ooo`를 등록해 `ouroboros mcp serve`가 시작되지 않던 문제(`uvx --isolated --from 'ouroboros-ai[mcp]'` 사용), Aside 단계가 JSONC `opencode.json`을 덮어써 주석과 다른 키를 모두 지우던 문제(`opencode mcp add` 사용), knowledge-pipeline 작성기가 사용자 래퍼를 덮어쓰고 매번 settings를 다시 쓰던 문제(보존·보고, 변경 시에만 쓰기, 비ASCII 유지)를 수정했습니다. Step 4D는 검증과 오래된 `~/.config/opencode/skills` 사본 보고만 하고, Step 7은 범위 지정된 `skills list -g -a universal`을 씁니다(범위 없는 형태는 큰 홈에서 150초 넘게 멈춤). 깨진 코드 펜스 3개를 복구하고 Step 6–7을 온디맨드 참고 섹션 앞으로 옮겼습니다. HOME에서 실행한 `jeo-skill`은 더 이상 레거시 `~/.agent-skills/skills.json`을 읽지 않습니다. |
-| **설치 검증** | 수정 후 full·core·minimal 모드가 끝까지 통과했습니다(모든 단계 exit 0, Claude Code에서 semble·ooo·aside·OMC 플러그인 서버 모두 Connected, 공유·Claude·GJC·Antigravity CLI·Aside 루트의 설치 바이트가 저장소와 일치, 미리 넣어 둔 사용자 스킬·훅·JSONC 설정 보존). 두 번째 full 실행은 가이드가 관리하는 설정을 바꾸지 않았습니다. 새 `scripts/test_setup_guide_regressions.py`(7개)를 CI에서 실행하며 installer 64/64, Jev 64/64, config writer 24/24, 카탈로그 게이트가 통과합니다. |
-| **가독성 중심 README 재구성** | README 본문과 시각 자료를 모두 교체했습니다. Codex로 만든 새 커버 `assets/readme-cover.webp`와 `how-it-works.svg`, `catalog-map.svg`, `skill-lifecycle.svg`, 설치 옵션·런타임·라우터 CLI·수명 주기 상태 표, 접을 수 있는 카테고리 목록, 실시간 스킬 수 배지를 추가했습니다. 추천 도구·추천 OSS·관련 문서·긴 운영 노트는 제거하고, 업스트림 출처와 라이선스는 `docs/attribution.md`로 옮겼습니다. `catalog-install-flow.svg`, `runtime-boundaries.svg`는 폐기했으며 설치 변수는 파이프의 `bash` 쪽에 두도록 안내합니다. 문서 전용 변경입니다. |
-| **Open Ontologies 운영 스킬 정비** | 이미 등록된 `open-ontologies`를 v1.1.0으로 정비해 중복 추가 없이 405개를 유지했습니다. 고정 커밋 `dfb09bf815326913d7d7822fa7228f2602fb4976`(MIT)의 선택 공개 파일 6개 해시를 재확인하고 오프라인 preflight, 승인·검증 범위, setup·README 레퍼런스를 보강했습니다. 이름 지정 설치와 독립 helper 회귀를 추가해 수정 스위트 64/64·19/19가 통과했으며 카탈로그 지문이 일치하는 `jeo`만 제거하고 현행·동명 서드파티·범위 밖 스킬을 보존합니다. 카탈로그 설치는 운영 스킬 패키지만 추가하며 업스트림 런타임은 설치하지 않습니다. |
-| **harness → harness2** | revfactory `harness` 스킬을 `google-research/harness2` 운영 스킬 `harness2`로 교체했습니다. `1cfe254e8d25b15f37048c3730134686abe60335`(Apache-2.0)에 고정하고, 크레덴셜 없는 데모, LAB/JobBench/WorkBuddy 설정과 유료 실행 승인 게이트, Codex 브리지, Propose–Probe–Compose를 직접 적용하는 method 모드(에이전트 팀 설계 이관)를 안내합니다. `harness`는 `retired_skills`로 옮기고 모든 라우팅을 새 담당 스킬로 바꿨습니다. |
-| **운영 스킬 4종 추가** | `ruflo`(ruvnet/ruflo, MIT), `voicestudio`(debpalash/VoiceStudio, AGPL-3.0-only), `diagram-design`(cathrynlavery/diagram-design, MIT), `artcraft`(storytold/artcraft, MIT OR Apache-2.0)를 커밋 고정, 오프라인 preflight, 설치·모델·프로바이더·서버·배포 승인 게이트와 함께 추가했습니다. `harness` 은퇴를 반영해 카탈로그가 401개에서 405개가 됐습니다. |
-| **설치 시 은퇴 스킬 정리** | `jeo-skill install`과 `install.sh`가 설치 대상 루트에서 은퇴한 `jeo`(→ `ooo`)·`harness`(→ `harness2`)의 오래된 카탈로그 사본을 제거하며, `jeo-skill prune-retired [--global] [--dry-run]`으로 모든 런타임 루트를 점검합니다. frontmatter 이름과 첫 제목이 카탈로그 사본과 정확히 일치할 때만 지우고, 링크는 같은 정리에서 지운 사본을 가리킬 때만 해제합니다. 다른 출처의 동명 스킬·무관한 링크·링크된 상위 경로는 유지합니다. `.skill-lock.json`은 수정하지 않습니다. |
-| **검증** | 설치 회귀 63/63(신규 15개, 고정 fixture), 저장소 preflight 회귀 15/15(신규 helper 5종과 harness2 bench/method 사례), 카탈로그 투영·frontmatter·레이아웃·changelog 게이트 통과, 평가 시나리오 25개 추가. 이 머신의 오래된 사본을 그대로 복제한 격리 HOME에서 실제 고정 버전 `skills@1.7.0`으로 문서의 전체 설치(Step 4–4E, 7)를 처음부터 끝까지 실행했습니다. 설치 원본은 이 작업 트리를 커밋한 로컬 스냅숏이며(GitHub URL을 그쪽으로 우회), 공개 HEAD에는 push 전까지 이 변경이 없습니다. 모든 은퇴 사본과 이를 가리키는 링크가 제거되고 무관한 스킬·링크·Aside `builtin/`은 바이트 단위로 유지됐으며, 실제 jeopi/oh-my-pi/GJC 로더가 새 스킬 5종을 찾고 `jeo`/`harness`는 찾지 않음을 확인했습니다. OpenCode는 공유 루트 배치만 확인했고 런타임 활성화는 확인하지 않았습니다. upstream harness2 데모는 두 재귀 모드 모두 2/2 작업이 통과했고 단위 테스트 5개도 통과했습니다. 벤치마크·모델·심사 등 다른 upstream 런타임은 실행하지 않았습니다. |
-| **스킬 사용 추적과 미사용 스킬 정리** | `jeo-skill usage scan`이 Claude·Codex·OpenCode·Antigravity·Aside·jeopi/GJC/OMP/Pi 세션과 Jev의 로컬 기록에서 사용 요약과 증분 스캔 메타데이터만 보존하고(대화 본문 제외), 호출·로드·Jev 전체 본문 주입만 사용으로 집계합니다. 전체 이력 0회와 추적 시작 후 30일 유예를 모두 충족한 항목만 후보로 삼으며 핵심 번들·핀·`usage relevance` 보호는 제외합니다. `prune-unused`는 확인 가능한 카탈로그 사본만 되돌릴 수 있게 격리하고 서드파티 사본·링크는 보존하며, Jev `deny`/사용 불가는 적용을 중단합니다. `restore`/`purge-quarantine`과 관리자용 `retire-unused-skills.py --approve`를 분리했습니다. 설치기와 `install.sh`는 추적이나 훅 등록을 시작하지 않으며, `usage scan`이 집계 트래커 상태와 30일 유예 시계를 만듭니다. 이미 활성화한 Jev 훅은 scan 전에도 같은 상태 디렉터리의 `jev-usage.jsonl`에 라우팅·주입 이벤트를 남기고 주입만 사용으로 셉니다. usage 7·quarantine 15·retirement 7 Python 회귀와 Node ledger 테스트 4개가 통과했으며, 실제 데이터 read-only scan은 `/tmp`에서 실행하고 호스트 추적 상태와 훅은 시작하지 않았습니다. |
-| **README 시각 자료 갱신** | 새 Codex 커버 `assets/readme-cover.webp`와 `catalog-install-flow.svg`, `runtime-boundaries.svg`, `skill-lifecycle.svg` 다이어그램으로 갱신했습니다. `readme-hero.webp`, `catalog-workflow.svg`, `runtime-architecture.svg`, 고아 `assets/scrapingant/` 로고를 더 이상 사용하지 않으며, 중복 `ooo` 문서 병합, god-tibo-imagen·plannotator 명령 수정, 운영 스킬 수 12개→18개를 반영했습니다. 문서 전용 변경입니다. |
 
 > 📜 이전 기록: [`changelog/ko/`](changelog/ko/) (월별 파일, 최신순).
 

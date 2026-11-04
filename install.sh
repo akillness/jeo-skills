@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Bootstrap one shared router, then let that router resolve the requested target.
 set -euo pipefail
+export PYTHONDONTWRITEBYTECODE=1
 
 REPO_URL="${JEO_SKILLS_SOURCE:-https://github.com/akillness/jeo-skills}"
 SELECTION="${JEO_SKILLS_SELECTION:-router}"
@@ -163,7 +164,7 @@ esac
 if [ "$STAR_ONLY" = true ]; then exit 0; fi
 # Do not allow the bootstrap transport to replace linked user installations.
 python3 -I - "$ROOT" "$HOME" "$PWD" <<'PY'
-import pathlib, sys
+import os, pathlib, sys
 root = pathlib.Path(sys.argv[1])
 scope = pathlib.Path(sys.argv[2]) if pathlib.Path(sys.argv[2]) in root.parents else pathlib.Path(sys.argv[3])
 parents = list(root.parents)
@@ -171,10 +172,17 @@ parents = parents[:parents.index(scope) + 1] if scope in parents else []
 for path in (root, *parents, root / 'jeo-skill'):
     if path.is_symlink():
         sys.exit(f'Refusing symlink destination: {path}')
-if (root / 'jeo-skill').is_dir():
-    for path in (root / 'jeo-skill').rglob('*'):
-        if path.is_symlink():
-            sys.exit(f'Refusing symlink in router tree: {path}')
+router_dir = root / 'jeo-skill'
+if router_dir.is_dir():
+    stack = [str(router_dir)]
+    while stack:
+        current = stack.pop()
+        with os.scandir(current) as entries:
+            for entry in entries:
+                if entry.is_symlink():
+                    sys.exit(f'Refusing symlink in router tree: {entry.path}')
+                if entry.is_dir(follow_symlinks=False):
+                    stack.append(entry.path)
 PY
 
 info 'Installing the lightweight shared jeo-skill router'
@@ -273,4 +281,3 @@ else
   info 'Selected installation completed; runtime activation may require a reload.'
 fi
 exit "$FULL_STATUS"
-
