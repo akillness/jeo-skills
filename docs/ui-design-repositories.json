@@ -1,0 +1,226 @@
+{
+  "schema_version": 1,
+  "sources": [
+    {
+      "full_name": "superdesigndev/superdesign-skill",
+      "url": "https://github.com/superdesigndev/superdesign-skill",
+      "commit": "f9f05cd988c247dce6c072eaf9ac6b162f2ffc4b",
+      "observed_at": "2026-10-15T16:26:03Z",
+      "skill": "superdesign",
+      "license_files": [
+        {
+          "path": "LICENSE",
+          "url": "https://github.com/superdesigndev/superdesign-skill/blob/f9f05cd988c247dce6c072eaf9ac6b162f2ffc4b/LICENSE"
+        }
+      ],
+      "license_notes": {
+        "expression": "MIT",
+        "distribution": "reference-only",
+        "restrictions": []
+      },
+      "decision": "independent"
+    },
+    {
+      "full_name": "marvkr/better-design",
+      "url": "https://github.com/marvkr/better-design",
+      "commit": "e146625f3041ef8089a2013587435fc763dc3b15",
+      "observed_at": "2026-10-15T16:26:03Z",
+      "skill": "better-design",
+      "license_files": [
+        {
+          "path": "LICENSE",
+          "url": "https://github.com/marvkr/better-design/blob/e146625f3041ef8089a2013587435fc763dc3b15/LICENSE"
+        }
+      ],
+      "license_notes": {
+        "expression": "MIT",
+        "distribution": "reference-only",
+        "restrictions": []
+      },
+      "decision": "independent"
+    },
+    {
+      "full_name": "madebymustafa/design-taste",
+      "url": "https://github.com/madebymustafa/design-taste",
+      "commit": "c4a6bff0871eb4b15371b0e7d2751628b0ed4608",
+      "observed_at": "2026-10-15T16:23:57Z",
+      "skill": "design-taste",
+      "license_files": [
+        {
+          "path": "LICENSE",
+          "url": "https://github.com/madebymustafa/design-taste/blob/c4a6bff0871eb4b15371b0e7d2751628b0ed4608/LICENSE"
+        }
+      ],
+      "license_notes": {
+        "expression": "MIT",
+        "distribution": "reference-only",
+        "restrictions": []
+      },
+      "decision": "independent"
+    },
+    {
+      "full_name": "DavidHDev/canvas-ui",
+      "url": "https://github.com/DavidHDev/canvas-ui",
+      "commit": "a04a99b235299ee79a123a16ccb2e6cf9da74b6b",
+      "observed_at": "2026-10-15T16:23:57Z",
+      "skill": "canvas-ui",
+      "license_files": [
+        {
+          "path": "LICENSE.md",
+          "url": "https://github.com/DavidHDev/canvas-ui/blob/a04a99b235299ee79a123a16ccb2e6cf9da74b6b/LICENSE.md"
+        }
+      ],
+      "license_notes": {
+        "expression": "MIT + Commons Clause (custom repository text)",
+        "distribution": "reference-only",
+        "restrictions": [
+          "no-component-redistribution"
+        ]
+      },
+      "decision": "independent"
+    },
+    {
+      "full_name": "paper-design/shaders",
+      "url": "https://github.com/paper-design/shaders",
+      "commit": "43cd68db79fa0b1759f72ffc941b3238e2a3954c",
+      "observed_at": "2026-10-15T16:24:49.359Z",
+      "skill": "paper-shaders",
+      "license_files": [
+        {
+          "path": "LICENSE",
+          "url": "https://github.com/paper-design/shaders/blob/43cd68db79fa0b1759f72ffc941b3238e2a3954c/LICENSE"
+        },
+        {
+          "path": "packages/shaders/LICENSE",
+          "url": "https://github.com/paper-design/shaders/blob/43cd68db79fa0b1759f72ffc941b3238e2a3954c/packages/shaders/LICENSE"
+        },
+        {
+          "path": "packages/shaders-react/LICENSE",
+          "url": "https://github.com/paper-design/shaders/blob/43cd68db79fa0b1759f72ffc941b3238e2a3954c/packages/shaders-react/LICENSE"
+        },
+        {
+          "path": "packages/shaders/NOTICE",
+          "url": "https://github.com/paper-design/shaders/blob/43cd68db79fa0b1759f72ffc941b3238e2a3954c/packages/shaders/NOTICE"
+        },
+        {
+          "path": "packages/shaders-react/NOTICE",
+          "url": "https://github.com/paper-design/shaders/blob/43cd68db79fa0b1759f72ffc941b3238e2a3954c/packages/shaders-react/NOTICE"
+        }
+      ],
+      "license_notes": {
+        "expression": "Apache-2.0",
+        "distribution": "reference-only",
+        "restrictions": [
+          "retain-license-and-notice"
+        ]
+      },
+      "decision": "independent"
+    },
+    {
+      "full_name": "ui-layouts/uilayouts",
+      "url": "https://github.com/ui-layouts/uilayouts",
+      "commit": "88d827d7ec342917ca06f6894e5add65fabbe5d8",
+      "observed_at": "2026-10-15T16:24:49.359Z",
+      "skill": "ui-layouts",
+      "license_files": [
+        {
+          "path": "LICENSE",
+          "url": "https://github.com/ui-layouts/uilayouts/blob/88d827d7ec342917ca06f6894e5add65fabbe5d8/LICENSE"
+        }
+      ],
+      "license_notes": {
+        "expression": "MIT",
+        "distribution": "reference-only",
+        "restrictions": []
+      },
+      "decision": "independent"
+    },
+    {
+      "full_name": "Hyperiux-Immersion-Labs/hyperiux-components",
+      "url": "https://github.com/Hyperiux-Immersion-Labs/hyperiux-components",
+      "commit": "71f73983fa70e56b81de5bdcf6eb49d0a5fcf5ba",
+      "observed_at": "2026-10-15T16:26:18Z",
+      "skill": "hyperiux",
+      "license_files": [
+        {
+          "path": "LICENSE",
+          "url": "https://github.com/Hyperiux-Immersion-Labs/hyperiux-components/blob/71f73983fa70e56b81de5bdcf6eb49d0a5fcf5ba/LICENSE"
+        },
+        {
+          "path": "LICENSE_EFFECTS",
+          "url": "https://github.com/Hyperiux-Immersion-Labs/hyperiux-components/blob/71f73983fa70e56b81de5bdcf6eb49d0a5fcf5ba/LICENSE_EFFECTS"
+        }
+      ],
+      "license_notes": {
+        "expression": "MIT tooling; custom Effects License v1.0",
+        "distribution": "reference-only",
+        "restrictions": [
+          "cli-license-not-effects",
+          "effects-commercial-restricted",
+          "no-standalone-effect-redistribution"
+        ]
+      },
+      "decision": "independent"
+    },
+    {
+      "full_name": "ibelick/motion-primitives",
+      "url": "https://github.com/ibelick/motion-primitives",
+      "commit": "120f64f6ca60348e251f929e9c81f11ccbe45eda",
+      "observed_at": "2026-10-15T16:26:18Z",
+      "skill": "motion-primitives",
+      "license_files": [
+        {
+          "path": "LICENCE.md",
+          "url": "https://github.com/ibelick/motion-primitives/blob/120f64f6ca60348e251f929e9c81f11ccbe45eda/LICENCE.md"
+        }
+      ],
+      "license_notes": {
+        "expression": "MIT",
+        "distribution": "reference-only",
+        "restrictions": []
+      },
+      "decision": "independent"
+    },
+    {
+      "full_name": "ui-layouts/cursify",
+      "url": "https://github.com/ui-layouts/cursify",
+      "commit": "b3a173c33f12e74550389c9555f9ce85c30c46f6",
+      "observed_at": "2026-10-15T16:24:49Z",
+      "skill": "cursify",
+      "license_files": [],
+      "license_notes": {
+        "expression": "No license grant observed",
+        "distribution": "reference-only",
+        "restrictions": [
+          "no-license-grant-observed"
+        ]
+      },
+      "decision": "independent"
+    },
+    {
+      "full_name": "akaieuan/trickle-UI-kit",
+      "url": "https://github.com/akaieuan/trickle-UI-kit",
+      "commit": "41129071f15271046bdca5d2ca332231b59e8d4d",
+      "observed_at": "2026-10-15T16:24:49Z",
+      "skill": "trickle-ui",
+      "license_files": [
+        {
+          "path": "LICENSE",
+          "url": "https://github.com/akaieuan/trickle-UI-kit/blob/41129071f15271046bdca5d2ca332231b59e8d4d/LICENSE"
+        },
+        {
+          "path": "LICENSE-DEMOS",
+          "url": "https://github.com/akaieuan/trickle-UI-kit/blob/41129071f15271046bdca5d2ca332231b59e8d4d/LICENSE-DEMOS"
+        }
+      ],
+      "license_notes": {
+        "expression": "MIT; separately scoped CC0 demo waiver",
+        "distribution": "reference-only",
+        "restrictions": [
+          "demo-waiver-not-library-wide"
+        ]
+      },
+      "decision": "independent"
+    }
+  ]
+}
