@@ -9,7 +9,7 @@
     ],
     "PreToolUse": [
       {
-        "matcher": "Bash|apply_patch|Write|Edit|MultiEdit|NotebookEdit|exec_command|write_stdin",
+        "matcher": "Bash|bash|apply_patch|Write|write|Edit|edit|ast_edit|MultiEdit|NotebookEdit|exec_command|write_stdin",
         "type": "command",
         "command": "node ${AGY_PLUGIN_ROOT}/hooks/jev-hook.mjs --agent agy",
         "timeout": 90

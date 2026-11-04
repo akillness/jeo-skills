@@ -30,9 +30,6 @@ NATIVE_PLUGIN_FILES=(
   plugins/jeopi/index.mjs
   plugins/jeopi/package.json
   plugins/jeopi/shared/jev-controller.mjs
-  plugins/jeo/index.mjs
-  plugins/jeo/package.json
-  plugins/jeo/shared/jev-controller.mjs
   plugins/gjc/index.mjs
   plugins/gjc/package.json
   plugins/gjc/shared/jev-controller.mjs

@@ -1039,8 +1039,12 @@ function selectedSkillContext(routed) {
 }
 
 const DEFAULT_CODEX_MATCHER = 'Bash|apply_patch|Write|Edit|exec_command|write_stdin';
-const DEFAULT_HOST_MATCHER = 'Bash|apply_patch|Write|Edit|MultiEdit|NotebookEdit|exec_command|write_stdin';
-const EXTENSION_HOSTS = new Set(['jeopi', 'jeo', 'omp', 'pi', 'gjc']);
+const DEFAULT_HOST_MATCHER = 'Bash|bash|apply_patch|Write|write|Edit|edit|ast_edit|MultiEdit|NotebookEdit|exec_command|write_stdin';
+// jeo-code matches `match.tool` by exact `|`-separated names, not a regex.
+const JEO_DEFAULT_MATCHER = 'bash|write|edit|ast_edit|delete';
+// jeopi, OMP, Pi, and GJC discover `<agent dir>/extensions/*.{ts,js}`; `.mjs` is never loaded.
+const EXTENSION_HOSTS = new Set(['jeopi', 'omp', 'pi', 'gjc']);
+const EXTENSION_FILE = 'jev-control-plane.js';
 const HOOK_INSTALL_HOSTS = new Set(['codex', 'claude', 'agy', 'jeopi', 'jeo', 'omp', 'pi', 'gjc']);
 
 function sessionTaskPath(event, profile) {
@@ -1106,7 +1110,7 @@ async function evaluatePreToolUse(ctx, event) {
   const configuredMatcher = ctx.state.values.JEV_PRETOOL_MATCHER;
   if (configuredMatcher && typeof event.tool_name === 'string' && event.tool_name) {
     try {
-      const re = new RegExp(`^(?:${configuredMatcher})$`);
+      const re = new RegExp(`^(?:${configuredMatcher})$`, 'i');
       if (!re.test(event.tool_name)) return {};
     } catch {}
   }
@@ -1300,7 +1304,7 @@ async function hooksInstall(flags) {
     const extRoot = process.env.JEV_EXTENSION_HOME
       ? resolve(process.env.JEV_EXTENSION_HOME)
       : join(homedir(), `.${ctx.agent}`, 'agent', 'extensions');
-    const path = join(extRoot, 'jev-control-plane.mjs');
+    const path = join(extRoot, EXTENSION_FILE);
     ensureRegular(path);
     const existing = readText(path);
     if (existing !== null && !existing.includes('@jev-control-plane-managed')) {
@@ -1313,6 +1317,49 @@ async function hooksInstall(flags) {
       path,
       events: ['before_agent_start', 'context', 'tool_call', 'before_tool_call'],
       matcher,
+      executed: false,
+    };
+  }
+
+  if (ctx.agent === 'jeo') {
+    const path = join(process.env.JEO_CONFIG_DIR || join(homedir(), '.jeo'), 'config.json');
+    ensureRegular(path);
+    const text = readText(path);
+    // jeo ignores a config.json without defaultModel (schema-required), and with it every
+    // hook, so never create or edit a config jeo itself has not initialized.
+    if (text === null) throw new Error(`jeo config not found at ${path}; run jeo once to create it before installing the Jev hook`);
+    const config = JSON.parse(text);
+    if (!config || typeof config !== 'object' || Array.isArray(config)) throw new Error('jeo config.json must contain an object');
+    if (typeof config.defaultModel !== 'string' || !config.defaultModel) throw new Error('jeo config.json has no defaultModel, so jeo ignores the file; configure jeo before installing the Jev hook');
+    const hooks = config.hooks === undefined ? {} : config.hooks;
+    if (!hooks || typeof hooks !== 'object' || Array.isArray(hooks)) throw new Error('jeo config.json hooks must contain an object');
+    const entries = hooks.hooks === undefined ? [] : hooks.hooks;
+    if (!Array.isArray(entries)) throw new Error('jeo config.json hooks.hooks must be an array');
+    const jeoMatcher = flags.matcher || JEO_DEFAULT_MATCHER;
+    const controller = shellQuote(join(HERE, 'jev-plugin.mjs'));
+    const run = [process.execPath, join(HERE, 'jev-plugin.mjs'), 'jeo-pretool', '--agent', 'jeo', '--profile', ctx.profile].map(shellQuote).join(' ');
+    const managed = item => typeof item?.run === 'string' && item.run.includes(controller) && item.run.includes("'jeo-pretool'");
+    const entry = { event: 'pre-tool', match: { tool: jeoMatcher }, run, timeoutMs: 90_000 };
+    // jeo loads no hook at all until hooks.enabled is true; turning it on must not
+    // silently activate unrelated hooks the user left disabled.
+    if (hooks.enabled !== true && entries.some(item => !managed(item))) {
+      throw new Error('jeo hooks are disabled and other hooks are configured; enable jeo hooks deliberately before installing the Jev hook');
+    }
+    let found = false;
+    const nextEntries = entries.map(item => { if (!managed(item)) return item; found = true; return entry; });
+    if (!found) nextEntries.push(entry);
+    config.hooks = { ...hooks, enabled: true, hooks: nextEntries };
+    if (flags.apply) atomicWrite(path, `${JSON.stringify(config, null, 2)}\n`);
+    return {
+      ...common('hooks-install', ctx, flags.apply, ctx.state.enabled),
+      path,
+      events: ['pre-tool'],
+      matcher: jeoMatcher,
+      limitations: [
+        'jeo pre-tool hooks receive only {event, tool, args}; jeo has no prompt-submit or context hook, so Jev cannot select skills or filter context for jeo',
+        'no task is cached for jeo, so enforce review withholds every matched tool; advisory makes no review call because jeo discards hook output on success',
+        'a project .jeo/hooks.json replaces the global hook list, so this hook does not run in such projects',
+      ],
       executed: false,
     };
   }
@@ -1419,6 +1466,36 @@ async function codexHook(flags) {
   }
 }
 
+/**
+ * jeo-code `pre-tool` adapter: jeo runs `bash -c <run>` with `{event:"pre-tool", tool, args}`
+ * on stdin and vetoes the call on any non-zero exit, surfacing stdout/stderr only then.
+ */
+async function jeoPreTool(flags) {
+  const withheld = message => ({ exitCode: 2, message });
+  let ctx;
+  let mode = 'off';
+  try {
+    ctx = resolveHookContext(flags);
+    if (!ctx.profile || !ctx.state.present || (!ctx.state.enabled && !ctx.state.invalidEnabled)) return { exitCode: 0 };
+    if (ctx.state.invalidEnabled) throw new Error('Invalid JEV_ENABLED');
+    mode = reviewMode(ctx);
+    if (mode !== 'enforce') return { exitCode: 0 };
+    const event = JSON.parse(await readStdin());
+    if (!event || event.event !== 'pre-tool' || typeof event.tool !== 'string' || !event.tool) throw new Error('invalid jeo pre-tool input');
+    const normalized = { hook_event_name: 'PreToolUse', tool_name: event.tool, tool_input: event.args ?? {} };
+    if (!resolveCachedTask(normalized, ctx)) {
+      return withheld('Jev: jeo supplies no task context to pre-tool hooks, so enforce review withholds this tool. Set this profile to JEV_REVIEW_MODE=off or advisory to stop withholding.');
+    }
+    const out = (await evaluatePreToolUse(ctx, normalized)).hookSpecificOutput;
+    return out?.permissionDecision === 'deny' ? withheld(out.permissionDecisionReason || 'Jev withheld action.') : { exitCode: 0 };
+  } catch {
+    if (mode === 'enforce') return withheld('Jev review failed; action withheld.');
+    if (ctx?.state.values.JEV_REVIEW_MODE && !['off', 'advisory'].includes(ctx.state.values.JEV_REVIEW_MODE)) return withheld('Jev enforcement configuration or input is invalid; action withheld.');
+    if (!ctx && flags.profile) return withheld('Jev profile could not be read; action withheld.');
+    return { exitCode: 0 };
+  }
+}
+
 function parseArgs(argv) {
   const [action, ...rest] = argv;
   const flags = { action, agent: undefined, profile: undefined, host: undefined, apply: false, backend: undefined, endpoint: undefined, model: undefined, keyEnv: undefined, modelDir: undefined, advice: undefined, hostModels: undefined, integration: undefined, writerEndpoint: undefined, writerKeyEnv: undefined, writerApi: undefined, writerModel: undefined, localOnly: false, memoryMode: undefined, matcher: undefined };
@@ -1467,6 +1544,12 @@ async function main() {
     else if (action === 'integration-plan') result = await integrationPlan(flags);
     else if (action === 'hook') result = await hook(flags);
     else if (action === 'codex-hook') result = await codexHook(flags);
+    else if (action === 'jeo-pretool') {
+      const { exitCode, message } = await jeoPreTool(flags);
+      if (message) process.stdout.write(`${message}\n`);
+      process.exitCode = exitCode;
+      return;
+    }
     else if (action === 'hooks-install') result = await hooksInstall(flags);
     else throw new Error(`unknown action '${action}'`);
     console.log(JSON.stringify(result));

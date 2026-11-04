@@ -889,7 +889,7 @@ test('opt-in live Ollama smoke reaches loopback service and reports real routing
 
 test('native controller copies remain byte-identical to the canonical helper', () => {
   const canonical = readFileSync(join(here, 'plugins', 'shared', 'jev-controller.mjs'));
-  for (const host of ['claude', 'jeopi', 'omp', 'pi', 'jeo', 'gjc', 'agy']) {
+  for (const host of ['claude', 'jeopi', 'omp', 'pi', 'gjc', 'agy']) {
     const local = readFileSync(join(here, 'plugins', host, 'shared', 'jev-controller.mjs'));
     assert.equal(Buffer.compare(canonical, local), 0, `${host} controller copy drifted from canonical helper`);
   }

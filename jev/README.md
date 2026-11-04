@@ -81,7 +81,24 @@ When updating an API profile that already has a saved key, omit `--key-env` to p
 | `JEV_REVIEW_MODE=advisory` | PreToolUse calls `review` and injects its verdict; host approvals remain unchanged. |
 | `JEV_REVIEW_MODE=enforce` | Explicitly deny matched tool calls unless review returns `permit` on a `validated` backend. Provider/contract failures and missing turn context deny. A permit never returns a host `allow` decision. |
 
-Set these values through `configure --runtime-mode advisory|assist --review-mode off|advisory|enforce ... --apply`. New config-only profiles remain OFF until enabled. The generated PreToolUse matcher covers `Bash`, `apply_patch`, `Write`, `Edit`, `exec_command`, and `write_stdin`; it is not an exhaustive filter for every third-party tool. Hooks do not switch coding models or rewrite Codex history. Codex can skip untrusted hooks and fail open on process failure or timeout; this is a host integration, not a security sandbox. Use host permissions for the final boundary. Hook timeout is 90 seconds.
+Set these values through `configure --runtime-mode advisory|assist --review-mode off|advisory|enforce ... --apply`. New config-only profiles remain OFF until enabled. The generated Codex PreToolUse matcher covers `Bash`, `apply_patch`, `Write`, `Edit`, `exec_command`, and `write_stdin`; other hosts also match the lowercase `bash`, `write`, and `edit` plus `ast_edit`, and native extension matchers compare case-insensitively. No matcher is an exhaustive filter for every third-party tool. Hooks do not switch coding models or rewrite Codex history. Codex can skip untrusted hooks and fail open on process failure or timeout; this is a host integration, not a security sandbox. Use host permissions for the final boundary. Hook timeout is 90 seconds.
+
+### Host integration status
+
+`hooks-install --agent <host>` writes the integration below. Skill selection, context filtering, and action review are separate events: widening a tool matcher never adds skill selection or filtering.
+
+| Host | Skill selection and injection | Context filtering | Action review | Verified |
+|---|---|---|---|---|
+| Codex | `UserPromptSubmit` | none | `PreToolUse` | live Codex sessions (see Verification) |
+| Claude | `UserPromptSubmit` | none (no host context event) | `PreToolUse` | hook fixtures only |
+| jeopi / OMP / Pi | `before_agent_start` | `context`: older Jev skill messages; `JEV_MEMORY_MODE=extended` also compresses tool results (string or text-part arrays) and summarizes older text turns | `tool_call` | Pi's real extension loader registers all callbacks from `extensions/jev-control-plane.js`; jeopi/OMP share the same `*.{ts,js}` discovery rule |
+| GJC | same extension adapter | same | same | discovery rule `*.{ts,js}` found in the binary; live loading not verified |
+| AGY | `PreInvocation` | none (no installed context event) | `PreToolUse` | hook fixtures only; no AGY CLI was available to verify |
+| jeo | none | none | `pre-tool` command hook in `~/.jeo/config.json` | jeo-code's real `runPreToolHooks` vetoes on exit 2 |
+
+jeo exposes only `pre-tool`, `post-turn`, and `post-implementation` command hooks; the `pre-tool` payload is `{event, tool, args}` with no user prompt. Jev therefore cannot select skills or filter context for jeo, and no task is cached for its review: `enforce` withholds every matched tool, while `advisory` makes no review call because jeo discards hook output on a zero exit. `hooks-install --agent jeo` edits only a `config.json` that jeo already created (it must contain `defaultModel`, or jeo ignores the whole file), refuses to turn on `hooks.enabled` while other hooks are configured, and does not apply in projects whose `.jeo/hooks.json` replaces the global hook list.
+
+In extended memory mode a dropped tool result keeps its message, with its text replaced by a placeholder, so the matching tool call is never orphaned. Results containing images or other non-text parts are never rewritten.
 
 Assist mode loads only catalog-listed paths `<name>/SKILL.md` within the selected skill root. Escaped symlinks, missing files and oversize skills are skipped; instructions are never partially truncated. Limits are 64 KiB per skill and 96 KiB combined. An explicit `JEV_CATALOG_PATH` selects a caller-trusted catalog/root; native callbacks otherwise pin the installed snapshot instead of trusting the working directory.
 

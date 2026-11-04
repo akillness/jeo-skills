@@ -86,22 +86,26 @@ export async function review(task, proposal) {
 }
 `);
 
-  const invoke = (action, event, { targetAgent = agent, extraArgs = [], expectedStatus = 0 } = {}) => {
+  const run = (action, event, { targetAgent = agent, extraArgs = [], input } = {}) => {
     const env = {
       ...process.env,
       HOME: home,
       CLAUDE_CONFIG_DIR: join(home, '.claude'),
       AGY_CONFIG_DIR: join(home, '.gemini', 'config'),
+      JEO_CONFIG_DIR: join(home, '.jeo'),
       JEV_EXTENSION_HOME: join(home, `.${targetAgent}`, 'agent', 'extensions'),
     };
     for (const k of Object.keys(env)) {
       if (k.startsWith('JEV_') && k !== 'JEV_EXTENSION_HOME') delete env[k];
     }
-    const res = spawnSync(
+    return spawnSync(
       process.execPath,
       [controller, action, '--agent', targetAgent, '--profile', profile, ...extraArgs],
-      { cwd: root, env, input: event ? JSON.stringify(event) : '', encoding: 'utf8', timeout: 8000 }
+      { cwd: root, env, input: input ?? (event ? JSON.stringify(event) : ''), encoding: 'utf8', timeout: 8000 }
     );
+  };
+  const invoke = (action, event, { expectedStatus = 0, ...options } = {}) => {
+    const res = run(action, event, options);
     assert.equal(res.status, expectedStatus, `${res.stdout}\n${res.stderr}`);
     return res.stdout.trim() ? JSON.parse(res.stdout) : {};
   };
@@ -113,6 +117,7 @@ export async function review(task, proposal) {
     controller,
     profile,
     invoke,
+    run,
     calls: () => existsSync(log) ? readFileSync(log, 'utf8').trim().split('\n').filter(Boolean).map(JSON.parse) : [],
   };
 }
@@ -120,10 +125,15 @@ export async function review(task, proposal) {
 test('hooks-install supports claude, agy, jeopi, jeo, omp, pi, and gjc in preview and apply modes', () => {
   for (const host of ['claude', 'agy', 'jeopi', 'jeo', 'omp', 'pi', 'gjc']) {
     const f = createFixture({ agent: host, profile: `install-${host}` });
+    // jeo edits only a config.json jeo itself created (defaultModel is schema-required).
+    const jeoConfig = join(f.home, '.jeo', 'config.json');
+    if (host === 'jeo') write(jeoConfig, '{"defaultModel":"anthropic/claude-sonnet-5"}\n');
+    const before = host === 'jeo' ? readFileSync(jeoConfig, 'utf8') : null;
     const preview = f.invoke('hooks-install', null, { targetAgent: host });
     assert.equal(preview.ok, true);
     assert.equal(preview.applied, false);
-    assert.equal(existsSync(preview.path), false, `${host} preview must not write ${preview.path}`);
+    if (host === 'jeo') assert.equal(readFileSync(jeoConfig, 'utf8'), before, 'jeo preview must not modify config.json');
+    else assert.equal(existsSync(preview.path), false, `${host} preview must not write ${preview.path}`);
 
     const applied = f.invoke('hooks-install', null, { targetAgent: host, extraArgs: ['--apply'] });
     assert.equal(applied.ok, true);
@@ -140,12 +150,85 @@ test('hooks-install supports claude, agy, jeopi, jeo, omp, pi, and gjc in previe
       assert.ok(cfg['jev-control-plane']);
       assert.equal(Array.isArray(cfg['jev-control-plane'].PreInvocation), true);
       assert.equal(Array.isArray(cfg['jev-control-plane'].PreToolUse), true);
+    } else if (host === 'jeo') {
+      // jeo-code loads only `pre-tool` command hooks from config.json; there is no extension API.
+      const cfg = JSON.parse(readFileSync(applied.path, 'utf8'));
+      assert.equal(applied.path, join(f.home, '.jeo', 'config.json'));
+      assert.equal(cfg.defaultModel, 'anthropic/claude-sonnet-5');
+      assert.equal(cfg.hooks.enabled, true);
+      assert.equal(cfg.hooks.hooks.length, 1);
+      assert.equal(cfg.hooks.hooks[0].event, 'pre-tool');
+      assert.equal(cfg.hooks.hooks[0].match.tool, 'bash|write|edit|ast_edit|delete');
+      assert.match(cfg.hooks.hooks[0].run, /'jeo-pretool'/);
+      assert.equal(statSync(applied.path).mode & 0o777, 0o600);
+      assert.ok(applied.limitations.some(item => /no task is cached/.test(item)));
+      f.invoke('hooks-install', null, { targetAgent: host, extraArgs: ['--apply'] });
+      assert.equal(JSON.parse(readFileSync(applied.path, 'utf8')).hooks.hooks.length, 1, 'jeo install must be idempotent');
     } else {
+      // jeopi/OMP/Pi/GJC discover `extensions/*.{ts,js}` only.
+      assert.match(applied.path, /jev-control-plane\.js$/);
       const extText = readFileSync(applied.path, 'utf8');
       assert.match(extText, /@jev-control-plane-managed/);
       assert.match(extText, new RegExp(`JEV_AGENT_ID = "${host}"`));
     }
   }
+});
+
+test('jeo hooks-install preserves existing hooks and refuses configs jeo would ignore or disabled hooks', () => {
+  const f = createFixture({ agent: 'jeo', profile: 'install-jeo-guard' });
+  const configPath = join(f.home, '.jeo', 'config.json');
+  const missing = f.invoke('hooks-install', null, { targetAgent: 'jeo', extraArgs: ['--apply'], expectedStatus: 1 });
+  assert.match(missing.error, /run jeo once/);
+  assert.equal(existsSync(configPath), false);
+
+  write(configPath, '{"hooks":{}}');
+  const invalid = f.invoke('hooks-install', null, { targetAgent: 'jeo', extraArgs: ['--apply'], expectedStatus: 1 });
+  assert.match(invalid.error, /no defaultModel/);
+  assert.equal(readFileSync(configPath, 'utf8'), '{"hooks":{}}');
+
+  const unrelated = { event: 'post-turn', match: { tool: 'edit' }, run: 'npx tsc --noEmit' };
+  write(configPath, JSON.stringify({ defaultModel: 'openai/gpt-5.2', providers: { anthropic: 'keep-me' }, hooks: { enabled: false, hooks: [unrelated] } }));
+  const before = readFileSync(configPath, 'utf8');
+  const refused = f.invoke('hooks-install', null, { targetAgent: 'jeo', extraArgs: ['--apply'], expectedStatus: 1 });
+  assert.equal(refused.ok, false);
+  assert.match(refused.error, /hooks are disabled/);
+  assert.equal(readFileSync(configPath, 'utf8'), before);
+
+  write(configPath, JSON.stringify({ defaultModel: 'openai/gpt-5.2', providers: { anthropic: 'keep-me' }, hooks: { enabled: true, hooks: [unrelated] } }));
+  f.invoke('hooks-install', null, { targetAgent: 'jeo', extraArgs: ['--apply'] });
+  const cfg = JSON.parse(readFileSync(configPath, 'utf8'));
+  assert.equal(cfg.providers.anthropic, 'keep-me');
+  assert.deepEqual(cfg.hooks.hooks[0], unrelated);
+  assert.equal(cfg.hooks.hooks[1].event, 'pre-tool');
+});
+
+test('jeo-pretool follows the jeo exit-code contract', () => {
+  const event = { event: 'pre-tool', tool: 'bash', args: { command: 'git push --force' } };
+  const missingTask = createFixture({ agent: 'jeo', profile: 'jeo-enforce', reviewMode: 'enforce', verdict: 'permit' });
+  const withheld = missingTask.run('jeo-pretool', event);
+  assert.equal(withheld.status, 2, withheld.stderr);
+  assert.match(withheld.stdout, /jeo supplies no task context/);
+  assert.equal(missingTask.calls().length, 0, 'no review call without a task');
+
+  for (const [verdict, status] of [['reject', 2], ['permit', 0]]) {
+    const f = createFixture({ agent: 'jeo', profile: `jeo-cached-${verdict}`, reviewMode: 'enforce', verdict });
+    f.invoke('hook', { prompt: 'Publish the release branch' });
+    const res = f.run('jeo-pretool', event);
+    assert.equal(res.status, status, `${verdict}: ${res.stdout}${res.stderr}`);
+    assert.equal(f.calls().filter(call => call.op === 'review').length, 1);
+  }
+
+  const advisory = createFixture({ agent: 'jeo', profile: 'jeo-advisory', reviewMode: 'advisory' });
+  assert.equal(advisory.run('jeo-pretool', event).status, 0);
+  assert.equal(advisory.calls().length, 0, 'advisory output is discarded by jeo, so no review is spent');
+
+  const off = createFixture({ agent: 'jeo', profile: 'jeo-off', enabled: false, reviewMode: 'enforce' });
+  assert.equal(off.run('jeo-pretool', event).status, 0);
+
+  const malformed = createFixture({ agent: 'jeo', profile: 'jeo-bad-input', reviewMode: 'enforce' });
+  const bad = malformed.run('jeo-pretool', null, { input: '{"event":"post-turn"}' });
+  assert.equal(bad.status, 2);
+  assert.match(bad.stdout, /action withheld/);
 });
 
 test('Claude and AGY hooks inject selected skills and enforce PreToolUse review', () => {
@@ -185,8 +268,8 @@ test('Claude and AGY hooks inject selected skills and enforce PreToolUse review'
   }
 });
 
-test('jeopi, jeo, omp, pi, and gjc extensions enforce tool_call PreToolUse and extended memory management', async () => {
-  for (const host of ['jeopi', 'jeo', 'omp', 'pi', 'gjc']) {
+test('jeopi, omp, pi, and gjc extensions enforce tool_call PreToolUse and extended memory management', async () => {
+  for (const host of ['jeopi', 'omp', 'pi', 'gjc']) {
     const f = createFixture({
       agent: host,
       profile: `ext-${host}`,
@@ -201,9 +284,12 @@ test('jeopi, jeo, omp, pi, and gjc extensions enforce tool_call PreToolUse and e
     try {
       const mod = await import(pathToFileURL(join(here, 'plugins', host, 'index.mjs')).href);
       const callbacks = new Map();
+      // Use the matcher hooks-install actually writes into the managed extension.
+      const installed = f.invoke('hooks-install', null, { targetAgent: host, extraArgs: ['--apply'] });
+      assert.match(readFileSync(installed.path, 'utf8'), new RegExp(`JEV_PRETOOL_MATCHER = ${JSON.stringify(installed.matcher).replace(/[|]/g, '\\|')}`));
       mod.createJevExtension(
         { on(event, fn) { callbacks.set(event, fn); } },
-        { agent: host, profile: f.profile, controllerPath: f.controller, memoryMode: 'extended' }
+        { agent: host, profile: f.profile, controllerPath: f.controller, memoryMode: 'extended', toolMatcher: installed.matcher }
       );
       assert.equal(callbacks.has('before_agent_start'), true);
       assert.equal(callbacks.has('context'), true);
@@ -230,6 +316,24 @@ test('jeopi, jeo, omp, pi, and gjc extensions enforce tool_call PreToolUse and e
       assert.equal(ctxOut.messages[0].customType, 'jev-memory-summary');
       assert.match(ctxOut.messages[1].content, /^\[compressed\]/);
 
+      // jeopi/OMP/Pi tool results carry `content: [{ type: 'text', text }]`.
+      const imageResult = { role: 'toolResult', toolCallId: 'call-img', toolName: 'browser', content: [{ type: 'image', data: 'AAAA', mimeType: 'image/png' }, { type: 'text', text: 'screenshot' }] };
+      const arrayOut = await callbacks.get('context')({
+        messages: [
+          imageResult,
+          { role: 'toolResult', toolCallId: 'call-old', toolName: 'bash', content: [{ type: 'text', text: 'stale build output' }] },
+          { role: 'toolResult', toolCallId: 'call-new', toolName: 'read', content: [{ type: 'text', text: 'Long tool output with /srv/app.js error trace' }] },
+          { role: 'user', content: 'Latest user turn' },
+        ],
+      });
+      assert.ok(Array.isArray(arrayOut.messages), 'array-content tool results must enter extended memory management');
+      const byCall = id => arrayOut.messages.find(message => message.toolCallId === id);
+      assert.deepEqual(byCall('call-img'), imageResult, 'image-bearing results are never rewritten');
+      assert.deepEqual(byCall('call-old').content, [{ type: 'text', text: '[Jev: tool output omitted to save context]' }], 'a dropped tool result keeps its call pairing');
+      assert.equal(byCall('call-new').content.length, 1);
+      assert.match(byCall('call-new').content[0].text, /^\[compressed\]/);
+      assert.equal(arrayOut.messages.at(-1).content, 'Latest user turn');
+
       const blockedTool = await callbacks.get('tool_call')({
         toolName: 'Bash',
         input: { command: 'git push --force' },
@@ -238,6 +342,11 @@ test('jeopi, jeo, omp, pi, and gjc extensions enforce tool_call PreToolUse and e
       });
       assert.equal(blockedTool.block, true);
       assert.equal(blockedTool.permissionDecision, 'deny');
+
+      for (const toolName of ['bash', 'write', 'edit']) {
+        const lowercase = await callbacks.get('tool_call')({ toolName, input: { command: 'git push --force' }, sessionId: 'sess-1', turnId: 'turn-1' });
+        assert.equal(lowercase.block, true, `${host} must review lowercase ${toolName}`);
+      }
 
       const unmatchedTool = await callbacks.get('tool_call')({
         toolName: 'ReadOnlyLookup',

@@ -12,14 +12,14 @@ Runtime IDs are independent profile namespaces; do not infer a host from `PATH`.
 | Runtime | Canonical host ID | Guide alias | Setup/router destination | Skill roots | Jev integration boundary |
 |---|---|---|---|---|---|
 | Claude Code | `claude` | `claude-code` | `claude-code` | `~/.claude/skills`; project `.claude/skills` | native lifecycle |
-| Jeo | `jeo` | `jeo-code` | `jeo` | shared `~/.agents/skills`; project `.agents/skills` | adapter-only; no native Jev lifecycle verified |
+| Jeo | `jeo` | `jeo-code` | `jeo` | shared `~/.agents/skills`; project `.agents/skills` | `pre-tool` command hook only (no prompt, no context event); verified against jeo-code's real runner |
 | JeoPi | `jeopi` | none | `jeopi` | shared `~/.agents/skills`; project `.agents/skills` | native session extension |
 | Pi | `pi` | none | `pi` | `~/.pi/agent/skills`; project `.pi/skills` | native session extension |
 | OMP | `omp` | `oh-my-pi` | `omp` | shared `~/.agents/skills`; project `.agents/skills` | native session extension |
-| GJC | `gjc` | none | `gjc` | `~/.gjc/agent/skills`; project `.gjc/skills` | adapter-only; no native Jev lifecycle verified |
+| GJC | `gjc` | none | `gjc` | `~/.gjc/agent/skills`; project `.gjc/skills` | extension adapter (`extensions/jev-control-plane.js`); live loading not verified |
 | Codex | `codex` | none | `codex` | shared `~/.agents/skills`; project `.agents/skills` | native hooks |
 | OpenCode | `opencode` | none | `opencode` | shared `~/.agents/skills`; project `.agents/skills` | adapter-only; no native Jev lifecycle verified |
-| Antigravity CLI | `agy` | `antigravity-cli` | `agy` | `~/.gemini/antigravity-cli/skills`; project `.agents/skills` | explicit harness only; no native Jev loading verified |
+| Antigravity CLI | `agy` | `antigravity-cli` | `agy` | `~/.gemini/antigravity-cli/skills`; project `.agents/skills` | `PreInvocation` and `PreToolUse` hooks; no context event; not live-verified |
 | Kimi Code | `kimi` | `kimi-code-cli` | `kimi` (router alias for upstream `kimi-code-cli`) | shared `~/.agents/skills`; project `.agents/skills`; optional `${KIMI_CODE_HOME:-~/.kimi-code}/skills` | explicit harness only; no native Jev loading verified |
 | Grok Build | `grok` | none | `grok` | `${GROK_HOME:-$HOME/.grok}/skills`; project `.grok/skills` | explicit-selection-only harness; Grok Build only; installed Superagent v1.0.1 `grok` has no Jev skill loader |
 | Cursor | `cursor` | none | `cursor` | shared `~/.agents/skills`; project `.agents/skills` | explicit harness only; no native Jev loading verified |
@@ -43,7 +43,7 @@ node ~/.agents/jev/jev-harness.mjs --profile "${JEV_PROFILE:?Select the current 
 
 Profiles default to `JEV_RUNTIME_MODE=advisory` and `JEV_REVIEW_MODE=off`. Explicit `assist` mode injects selected installed `SKILL.md` instructions, including source paths, into an activated Claude, jeopi, OMP, Pi, or Codex integration. Only files matching the trusted catalog and remaining within its skill root are loaded. Skip oversized files whole: 64 KiB per skill, 96 KiB combined; never truncate instructions.
 
-jeopi/OMP/Pi inject skills as Jev-owned custom messages and use the native context callback to prune only older Jev custom messages from model input. Preserve the newest skill instructions and all user, system, assistant, tool, and other extensions' messages. Do not mutate persisted history. Claude currently supports skill injection only. Codex currently supports skill injection and optional action review, without automatic history pruning. Model selection remains advisory on every host.
+jeopi/OMP/Pi/GJC inject skills as Jev-owned custom messages and use the native context callback to prune only older Jev custom messages from model input; `JEV_MEMORY_MODE=extended` additionally compresses tool results and summarizes older text turns, replacing (never removing) a dropped tool result so its tool call stays paired. Do not mutate persisted history. Claude and AGY support skill injection and action review without context filtering. jeo supports only `pre-tool` action review and receives no task context. Codex supports skill injection and optional action review, without automatic history pruning. Model selection remains advisory on every host.
 
 After installing the harness, Codex 0.162.1 integration can be configured with:
 

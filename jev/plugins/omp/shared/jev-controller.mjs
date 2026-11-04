@@ -13,8 +13,11 @@ export const JEV_ADVISORY_CUSTOM_TYPE = 'jev-advisory';
 export const JEV_SKILL_CUSTOM_TYPE = 'jev-skill-context';
 export const JEV_MEMORY_SUMMARY_CUSTOM_TYPE = 'jev-memory-summary';
 export const DEFAULT_CONTROLLER_TIMEOUT_MS = 25_000;
-export const DEFAULT_PRETOOL_MATCHER = 'Bash|apply_patch|Write|Edit|MultiEdit|NotebookEdit|exec_command|write_stdin';
-const DEFAULT_TOOL_MATCHER_RE = /^(?:Bash|bash|apply_patch|Write|write|Edit|edit|MultiEdit|NotebookEdit|exec_command|write_stdin)$/;
+export const DEFAULT_PRETOOL_MATCHER = 'Bash|bash|apply_patch|Write|write|Edit|edit|ast_edit|MultiEdit|NotebookEdit|exec_command|write_stdin';
+// Host tool names differ only in case (Claude `Bash`, jeopi/OMP/Pi/GJC `bash`), so
+// every matcher this adapter compiles is case-insensitive.
+const DEFAULT_TOOL_MATCHER_RE = new RegExp(`^(?:${DEFAULT_PRETOOL_MATCHER})$`, 'i');
+const TOOL_OUTPUT_OMITTED = '[Jev: tool output omitted to save context]';
 const CONTROLLER_TIMEOUT_GRACE_MS = 100;
 const CONTROLLER_TIMEOUT_STARTUP_GRACE_MS = 50;
 
@@ -154,16 +157,38 @@ export function advisoryMessage(result, context = extractAdvisoryContext(result)
 }
 
 function compileToolMatcher(matcher) {
-  if (matcher instanceof RegExp) return matcher;
+  if (matcher instanceof RegExp) return matcher.flags.includes('i') ? matcher : new RegExp(matcher.source, `${matcher.flags}i`);
   if (typeof matcher === 'string' && matcher.trim()) {
-    try { return new RegExp(`^(?:${matcher.trim()})$`); } catch { return DEFAULT_TOOL_MATCHER_RE; }
+    try { return new RegExp(`^(?:${matcher.trim()})$`, 'i'); } catch { return DEFAULT_TOOL_MATCHER_RE; }
   }
   return DEFAULT_TOOL_MATCHER_RE;
 }
 
 /**
+ * Text of a message whose content is a string or an array made only of text parts
+ * (`[{ type: 'text', text }]`, the jeopi/OMP/Pi tool-result shape). Content holding
+ * images or any other part type returns null so it is never rewritten.
+ */
+function messageText(message) {
+  const content = message?.content;
+  if (typeof content === 'string') return content;
+  if (!Array.isArray(content) || !content.length) return null;
+  let text = '';
+  for (const part of content) {
+    if (!part || part.type !== 'text' || typeof part.text !== 'string') return null;
+    text += (text ? '\n' : '') + part.text;
+  }
+  return text;
+}
+
+/** Replace a message's text while preserving its content shape. */
+function withMessageText(message, text) {
+  return { ...message, content: typeof message.content === 'string' ? text : [{ type: 'text', text }] };
+}
+
+/**
  * Register the provider-owned before_agent_start, context, and tool_call callbacks
- * used by jeopi/jeo/OMP/Pi/gjc.
+ * used by jeopi/OMP/Pi/GJC.
  * Advisory remains the default. Explicit assist profiles can also inject skill
  * instructions and prune Jev-owned custom messages (or extended memory blocks when
  * memoryMode === 'extended') from LLM input. PreToolUse action review runs on
@@ -225,9 +250,9 @@ export function registerBeforeAgentStart(api, { agent, profile, envelope = 'syst
 
   api.on('context', async (event = {}) => {
     if (!pruneEnabled || !latestPrompt.trim() || !Array.isArray(event.messages)) return {};
-    const isSkillMessage = message => message?.role === 'custom' && message.customType === JEV_SKILL_CUSTOM_TYPE && typeof message.content === 'string';
-    const isToolResultMessage = message => (message?.role === 'toolResult' || message?.role === 'tool') && typeof message.content === 'string';
-    const isConvMessage = message => (message?.role === 'user' || message?.role === 'assistant') && typeof message.content === 'string';
+    const isSkillMessage = message => message?.role === 'custom' && message.customType === JEV_SKILL_CUSTOM_TYPE && messageText(message) !== null;
+    const isToolResultMessage = message => (message?.role === 'toolResult' || message?.role === 'tool') && messageText(message) !== null;
+    const isConvMessage = message => (message?.role === 'user' || message?.role === 'assistant') && messageText(message) !== null;
 
     if (activeMemoryMode !== 'extended') {
       // Default jev-only boundary: never serialize or remove user, assistant,
@@ -238,9 +263,10 @@ export function registerBeforeAgentStart(api, { agent, profile, envelope = 'syst
       let chars = 0;
       for (let index = 0; index < newest && eligible.length < 32; index += 1) {
         const message = event.messages[index];
-        if (!isSkillMessage(message) || chars + message.content.length > 262_144) continue;
-        eligible.push({ id: `jev-context-${index}`, text: message.content, index });
-        chars += message.content.length;
+        const text = isSkillMessage(message) ? messageText(message) : null;
+        if (text === null || chars + text.length > 262_144) continue;
+        eligible.push({ id: `jev-context-${index}`, text, index });
+        chars += text.length;
       }
       if (!eligible.length) return {};
       const currentGeneration = generation;
@@ -267,9 +293,10 @@ export function registerBeforeAgentStart(api, { agent, profile, envelope = 'syst
       if (isSkillMessage(message)) { id = `jev-context-${index}`; kind = 'jev-skill'; }
       else if (isToolResultMessage(message)) { id = `tool-output-${index}`; kind = 'tool-output'; }
       else if (isConvMessage(message) && index < cutoff - 1) { id = `conv-turn-${index}`; kind = 'conversation'; }
-      if (!id || chars + message.content.length > 262_144) continue;
-      eligible.push({ id, kind, text: message.content, index });
-      chars += message.content.length;
+      const text = id ? messageText(message) : null;
+      if (text === null || chars + text.length > 262_144) continue;
+      eligible.push({ id, kind, text, index });
+      chars += text.length;
     }
     if (!eligible.length) return {};
     const currentGeneration = generation;
@@ -287,23 +314,29 @@ export function registerBeforeAgentStart(api, { agent, profile, envelope = 'syst
     if (generation !== currentGeneration || result?.ok !== true || result?.enabled !== true || result?.runtime?.mode !== 'assist') return {};
     const dropIds = new Set(Array.isArray(result.runtime.dropContextIds) ? result.runtime.dropContextIds.filter(id => typeof id === 'string') : []);
     const compressed = result.runtime.compressedBlocks && typeof result.runtime.compressedBlocks === 'object' ? result.runtime.compressedBlocks : {};
-    const idByIndex = new Map(eligible.map(item => [item.index, item.id]));
+    const byIndex = new Map(eligible.map(item => [item.index, item]));
     let changed = false;
+    let dropped = 0;
     const nextMessages = [];
     for (let index = 0; index < event.messages.length; index += 1) {
-      const id = idByIndex.get(index);
-      if (id && dropIds.has(id)) {
+      const item = byIndex.get(index);
+      const message = event.messages[index];
+      if (item && dropIds.has(item.id)) {
         changed = true;
+        dropped += 1;
+        // A tool result answers a tool call in the preceding assistant message;
+        // removing it would orphan that call, so only its text is replaced.
+        if (item.kind === 'tool-output') nextMessages.push(withMessageText(message, TOOL_OUTPUT_OMITTED));
         continue;
       }
-      if (id && typeof compressed[id] === 'string' && compressed[id] !== event.messages[index].content) {
+      if (item && typeof compressed[item.id] === 'string' && compressed[item.id] !== item.text) {
         changed = true;
-        nextMessages.push({ ...event.messages[index], content: compressed[id] });
+        nextMessages.push(withMessageText(message, compressed[item.id]));
       } else {
-        nextMessages.push(event.messages[index]);
+        nextMessages.push(message);
       }
     }
-    if (typeof result.runtime.conversationSummary === 'string' && result.runtime.conversationSummary.trim() && dropIds.size > 0) {
+    if (typeof result.runtime.conversationSummary === 'string' && result.runtime.conversationSummary.trim() && dropped > 0) {
       changed = true;
       nextMessages.unshift({
         role: 'custom',
