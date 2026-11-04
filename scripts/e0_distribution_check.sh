@@ -8,7 +8,7 @@
 #
 #   E0-a    the 8 references-holding pilots keep every references/*.md
 #   E0-a'   ooo (references-less pilot) keeps its non-references assets
-#   E0-a''  harness keeps references/upstream/ (7 vendored files)
+#   E0-a''  harness2 keeps references/upstream (pinned operator reference)
 #   E0-b    a 4-file references sample survives byte-identical
 #   E0-c    SKILL.md frontmatter is byte-identical after install
 #
@@ -39,7 +39,7 @@ PILOTS_WITH_REFS=(
   skill-standardization
   game-performance-profiler
   academic-research
-  harness
+  harness2
 )
 
 echo "=== E0 distribution-channel check ==="
@@ -75,13 +75,13 @@ else
 fi
 
 echo ""
-echo "E0-a'' — harness references/upstream/ vendored mirror"
-src_n=$(find "$SRC/harness/references/upstream" -type f 2>/dev/null | wc -l | tr -d ' ')
-dst_n=$(find "$DEST/harness/references/upstream" -type f 2>/dev/null | wc -l | tr -d ' ')
+echo "E0-a'' — harness2 references/upstream (pinned operator reference) vendored mirror"
+src_n=$(find "$SRC/harness2/references/upstream.md" -type f 2>/dev/null | wc -l | tr -d ' ')
+dst_n=$(find "$DEST/harness2/references/upstream.md" -type f 2>/dev/null | wc -l | tr -d ' ')
 if [ "$src_n" = "$dst_n" ] && [ "$src_n" -gt 0 ]; then
-  pass "harness/references/upstream: $dst_n/$src_n files"
+  pass "harness2/references/upstream: $dst_n/$src_n files"
 else
-  fail "harness/references/upstream: $dst_n/$src_n files"
+  fail "harness2/references/upstream: $dst_n/$src_n files"
 fi
 
 echo ""
