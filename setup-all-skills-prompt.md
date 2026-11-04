@@ -1820,6 +1820,13 @@ for acct in "$USER_HOME"/.aside/u/*/; do
   printf 'aside %s: %s user skills\n' "$(basename "${acct%/}")" \
     "$(find "$acct/skills/user" -maxdepth 2 -name SKILL.md 2>/dev/null | wc -l | tr -d ' ')"
 done
+if [ "${JEO_SKILLS_STAR:-}" = true ] && [ "${JEO_SKILLS_DRY_RUN:-false}" != true ]; then
+  if [ -n "${INSTALLER:-}" ] && [ -f "$INSTALLER" ]; then
+    JEO_SKILLS_STAR_ONLY=true JEO_SKILLS_STAR=true bash "$INSTALLER"
+  elif [ -f "$PROJECT_DIR/install.sh" ]; then
+    JEO_SKILLS_STAR_ONLY=true JEO_SKILLS_STAR=true bash "$PROJECT_DIR/install.sh"
+  fi
+fi
 fi
 ```
 
@@ -1839,10 +1846,11 @@ Finally report:
 6. in full mode, if `scrapingant-web-fetch` was not already configured, ask the user once
    whether to set it up now (sponsor skill, free 10,000 credits/month, no card) — see
    "ScrapingAnt MCP web fetch" below; do not set it up without an explicit yes;
-7. report whether the optional GitHub star was skipped, verified, or unverified; do not
-   imply that an incomplete installation succeeded. Starring is a separate account action,
-   not an installation requirement, and installation approval or `--yes` is not star consent.
-   The user may also star [jeo-skills on GitHub](https://github.com/akillness/jeo-skills)
+7. report whether the optional GitHub star was skipped, registered upon completion,
+   or unverified; do not imply that an incomplete installation succeeded. Starring is
+   a separate account action, not an installation requirement, and installation approval
+   or `--yes` is not star consent. When authorized, the star registration is performed
+   upon installation completion. The user may also star [jeo-skills on GitHub](https://github.com/akillness/jeo-skills)
    directly.
 
 For the `install.sh` path, `JEO_SKILLS_STAR=true` explicitly authorizes starring
