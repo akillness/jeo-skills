@@ -30,6 +30,17 @@ NATIVE_PLUGIN_FILES=(
   plugins/jeopi/index.mjs
   plugins/jeopi/package.json
   plugins/jeopi/shared/jev-controller.mjs
+  plugins/jeo/index.mjs
+  plugins/jeo/package.json
+  plugins/jeo/shared/jev-controller.mjs
+  plugins/gjc/index.mjs
+  plugins/gjc/package.json
+  plugins/gjc/shared/jev-controller.mjs
+  plugins/agy/index.mjs
+  plugins/agy/package.json
+  plugins/agy/hooks/hooks.json
+  plugins/agy/hooks/jev-hook.mjs
+  plugins/agy/shared/jev-controller.mjs
 )
 STANDALONE_SETUP=false
 [ -f "$SCRIPT_DIR/jev-harness.mjs" ] || STANDALONE_SETUP=true
@@ -818,7 +829,7 @@ else
   VENV="$JEV_HOME/venv"
   if [ ! -x "$VENV/bin/python" ] || ! "$VENV/bin/python" -c 'import sys; sys.exit(sys.prefix == sys.base_prefix)' >/dev/null 2>&1 || ! "$VENV/bin/python" -m pip --version >/dev/null 2>&1; then
     info 'Creating/repairing Python venv (one-time)...'
-    "$PYBIN" -m venv "$VENV"
+    "$PYBIN" -m venv "$VENV" 2>/dev/null || "$PYBIN" -m venv --without-pip "$VENV"
   fi
   if ! "$VENV/bin/python" -c 'import torch, transformers, accelerate, huggingface_hub' >/dev/null 2>&1; then
     info 'Installing missing local backend dependencies...'

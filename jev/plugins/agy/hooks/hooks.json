@@ -1,0 +1,19 @@
+{
+  "jev-control-plane": {
+    "PreInvocation": [
+      {
+        "type": "command",
+        "command": "node ${AGY_PLUGIN_ROOT}/hooks/jev-hook.mjs --agent agy",
+        "timeout": 90
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash|apply_patch|Write|Edit|MultiEdit|NotebookEdit|exec_command|write_stdin",
+        "type": "command",
+        "command": "node ${AGY_PLUGIN_ROOT}/hooks/jev-hook.mjs --agent agy",
+        "timeout": 90
+      }
+    ]
+  }
+}

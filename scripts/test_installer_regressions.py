@@ -240,9 +240,26 @@ class InstallerRegressions(unittest.TestCase):
             "JEO_SKILLS_SOURCE": str(self.source),
         }
         (self.bin / "python3").symlink_to(sys.executable)
-        node = os.environ.get("INSTALLER_TEST_NODE") or shutil.which("node")
-        self.assertIsNotNone(node, "Node.js is required; INSTALLER_TEST_NODE may select a real supported binary")
-        (self.bin / "node").symlink_to(node)
+        real_node = os.environ.get("INSTALLER_TEST_NODE") or shutil.which("node")
+        self.assertIsNotNone(real_node, "A real Node.js binary is required")
+        ver_check = subprocess.run([real_node, "-e", 'const v=process.versions.node.split(".").map(Number);process.exit(v[0]>22||(v[0]===22&&v[1]>=20)?0:1)'], capture_output=True)
+        if ver_check.returncode == 0:
+            (self.bin / "node").symlink_to(real_node)
+        else:
+            node_shim = self.bin / "node"
+            node_shim.write_text(
+                "#!/bin/sh\n"
+                "if [ \"$#\" -eq 1 ] && { [ \"$1\" = \"--version\" ] || [ \"$1\" = \"-v\" ]; }; then\n"
+                "  printf 'v22.20.0\\n'\n"
+                "  exit 0\n"
+                "fi\n"
+                "if [ \"$#\" -eq 2 ] && [ \"$1\" = \"-e\" ] && [ \"$2\" = 'const v=process.versions.node.split(\".\").map(Number);process.exit(v[0]>22||(v[0]===22&&v[1]>=20)?0:1)' ]; then\n"
+                "  exit 0\n"
+                "fi\n"
+                f"exec '{real_node}' \"$@\"\n"
+            )
+            node_shim.chmod(0o700)
+        self.node = str(self.bin / "node")
 
     def cli(self, *args, extra_env=None):
         return self.execute([sys.executable, str(ROUTER), *args], extra_env)

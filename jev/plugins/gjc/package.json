@@ -1,0 +1,13 @@
+{
+  "name": "jev-gjc-extension",
+  "version": "0.1.0",
+  "description": "Jev routing and review extension for gjc",
+  "type": "module",
+  "gjc": {
+    "version": "0.1.0",
+    "name": "jev-gjc-extension",
+    "extensions": [
+      "./index.mjs"
+    ]
+  }
+}

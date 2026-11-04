@@ -66,6 +66,9 @@ const HOST_MODEL_POLICY = {
   // pi 0.80.3: verified separate `--provider <name>` + `--model <pattern>`,
   // or the preferred combined `--model provider/id` form used here.
   pi: { providers: GENERIC_HOST_PROVIDERS, argv: (provider, model) => ['--model', `${provider}/${model}`] },
+  jeo: { providers: GENERIC_HOST_PROVIDERS, argv: (provider, model) => [`--model=${provider}/${model}`] },
+  gjc: { providers: GENERIC_HOST_PROVIDERS, argv: (provider, model) => [`--model=${provider}/${model}`] },
+  agy: { providers: new Set(['google', 'gemini']), argv: (_provider, model) => ['--model', model] },
 };
 const WRITER_PROVIDERS = new Set(['anthropic', 'openai']);
 const SKILL_ID = /^[a-z0-9-]+$/;
@@ -448,10 +451,12 @@ async function configure(flags) {
   const nextMapping = ctx.profile ? mappingFor(ctx.agent, ctx.profile, ctx.mappings.value) : ctx.mappings.value;
   if (ctx.profile) ensureRegular(ctx.mappings.path);
   runSetup(ctx, flags);
-  if (ctx.profile && (flags.runtimeMode !== undefined || flags.reviewMode !== undefined)) {
+  if (ctx.profile && (flags.runtimeMode !== undefined || flags.reviewMode !== undefined || flags.memoryMode !== undefined || flags.matcher !== undefined)) {
     let text = readEnv(profilePath(ctx.profile)).text;
     if (flags.runtimeMode !== undefined) text = replaceSetting(text, 'JEV_RUNTIME_MODE', flags.runtimeMode);
     if (flags.reviewMode !== undefined) text = replaceSetting(text, 'JEV_REVIEW_MODE', flags.reviewMode);
+    if (flags.memoryMode !== undefined) text = replaceSetting(text, 'JEV_MEMORY_MODE', flags.memoryMode);
+    if (flags.matcher !== undefined) text = replaceSetting(text, 'JEV_PRETOOL_MATCHER', flags.matcher);
     atomicWrite(profilePath(ctx.profile), text);
   }
   if (ctx.profile) atomicWrite(ctx.mappings.path, mappingText(nextMapping));
@@ -970,7 +975,8 @@ function isApprovedModelChoice(chosen) {
 function validateRuntimeFlags(flags) {
   if (flags.runtimeMode !== undefined && !['advisory', 'assist'].includes(flags.runtimeMode)) throw new Error('runtime-mode must be advisory or assist');
   if (flags.reviewMode !== undefined && !['off', 'advisory', 'enforce'].includes(flags.reviewMode)) throw new Error('review-mode must be off, advisory, or enforce');
-  if ((flags.runtimeMode !== undefined || flags.reviewMode !== undefined) && !flags.profile) throw new Error('runtime settings require --profile');
+  if (flags.memoryMode !== undefined && !['jev-only', 'extended'].includes(flags.memoryMode)) throw new Error('memory-mode must be jev-only or extended');
+  if ((flags.runtimeMode !== undefined || flags.reviewMode !== undefined || flags.memoryMode !== undefined) && !flags.profile) throw new Error('runtime settings require --profile');
 }
 
 function runtimeMode(ctx) {
@@ -982,6 +988,12 @@ function runtimeMode(ctx) {
 function reviewMode(ctx) {
   const value = ctx.state.values.JEV_REVIEW_MODE || 'off';
   if (!['off', 'advisory', 'enforce'].includes(value)) throw new Error('Invalid JEV_REVIEW_MODE');
+  return value;
+}
+
+function memoryMode(ctx) {
+  const value = ctx.state.values.JEV_MEMORY_MODE || 'jev-only';
+  if (!['jev-only', 'extended'].includes(value)) throw new Error('Invalid JEV_MEMORY_MODE');
   return value;
 }
 
@@ -1026,124 +1038,21 @@ function selectedSkillContext(routed) {
   };
 }
 
-async function hook(flags, suppliedEvent) {
-  const activation = resolveHookContext(flags);
-  if (!activation.profile || !activation.state.present || !activation.state.enabled || activation.state.invalidEnabled) {
-    return common('hook', activation, false, false);
-  }
-  const ctx = { ...activation, state: readState(activation.profile) };
-  let event;
-  if (suppliedEvent !== undefined) event = suppliedEvent;
-  else {
-    const input = await readStdin();
-    try { event = input.trim() ? JSON.parse(input) : {}; } catch { throw new Error('hook input must be JSON'); }
-  }
-  const mode = runtimeMode(ctx);
-  if (event.type === 'Context') {
-    const runtime = { mode, dropContextIds: [] };
-    if (mode !== 'assist' || !event.prompt || !Array.isArray(event.blocks)) return { ...common('hook', ctx, false, true), runtime };
-    let chars = 0;
-    const blocks = event.blocks.filter(block => {
-      if (!block || !/^jev-context-\d+$/.test(block.id) || typeof block.text !== 'string' || chars + block.text.length > 262_144) return false;
-      chars += block.text.length;
-      return true;
-    }).slice(0, 32);
-    if (!blocks.length) return { ...common('hook', ctx, false, true), runtime };
-    if (new Set(blocks.map(block => block.id)).size !== blocks.length) return { ...common('hook', ctx, false, true), runtime };
-    try {
-      process.env.JEV_PROFILE = ctx.profile;
-      const harness = await import('./jev-harness.mjs');
-      const result = await harness.pruneContext(blocks);
-      const ids = new Set(blocks.map(block => block.id));
-      runtime.dropContextIds = result.filter(item => item.verdict === 'drop' && ids.has(item.id)).map(item => item.id);
-    } catch { /* Failed pruning preserves every context message. */ }
-    return { ...common('hook', ctx, false, true), runtime };
-  }
-  const prompt = typeof event.prompt === 'string' ? event.prompt : typeof event.userPrompt === 'string' ? event.userPrompt : '';
-  let advice = 'Jev advisory context unavailable.';
-  let runtime;
-  try {
-    process.env.JEV_PROFILE = ctx.profile;
-    // A native hook's child process inherits whatever cwd the host coding
-    // agent is running in (the live, untrusted workspace), and the harness's
-    // catalog seam tries process.cwd()'s .agent-skills/skills.json before the
-    // setup-installed snapshot. Pin JEV_CATALOG_PATH before importing the
-    // harness so an untrusted workspace can never supply its own catalog:
-    // honor an already-set caller-trusted value (profile/operator concern),
-    // otherwise default to the installed snapshot - never process.cwd().
-    if (!process.env.JEV_CATALOG_PATH) process.env.JEV_CATALOG_PATH = join(homes().jev, 'skills.json');
-    const harness = await import('./jev-harness.mjs');
-    const routed = await harness.routeSkills(prompt || 'Review the current task', { topK: 3 });
-    let selected = { context: '', injected: [] };
-    try {
-      if (mode === 'assist') selected = selectedSkillContext(routed);
-    } finally {
-      recordSkillUsage({
-        agent: ctx.agent,
-        profile: ctx.profile,
-        routed: (routed?.topK || []).map(item => item?.name),
-        injected: selected.injected,
-        backend: routed?.backend,
-      });
-    }
-    if (mode === 'assist') runtime = { mode, skillContext: selected.context, pruneContext: true };
-    // untrusted content: only pass through skill names and host
-    // provider/model choices that match the approved identifier patterns,
-    // so hostile catalog text can never be transmitted as advisory context.
-    const names = routed.topK.map(item => item.name).filter(name => SKILL_ID.test(name)).join(', ') || 'no confident catalog match';
-    const models = (routed.routing || []).map(item => item.chosen).filter(isApprovedModelChoice).join(', ');
-    advice = `Jev advisory only (profile ${ctx.profile}): suggested skills: ${names}${models ? `; host model candidates: ${models}` : ''}. This does not change host permissions or the host model.`;
-  } catch (error) {
-    // Never interpolate error.message into advisory/additionalContext text: it
-    // can carry a hostile backend's raw HTTP response body (harness's
-    // httpError() embeds up to 200 chars of the response text, which survives
-    // through routeSkills's aggregated "kind: <body>" error string). A
-    // compromised or spoofed backend could use that to prompt-inject the
-    // host. Classify into a small set of fixed, local category labels
-    // instead - categories come only from matching our own code's fixed
-    // error-message prefixes, never from arbitrary substrings of the message.
-    advice = `Jev advisory only (profile ${ctx.profile}): routing unavailable (${classifyRoutingError(error)}). This does not change host permissions or the host model.`;
-  }
-  if (ctx.agent === 'claude') {
-    return { ...common('hook', ctx, false, true), ...(runtime ? { runtime } : {}), hookSpecificOutput: { hookEventName: 'UserPromptSubmit', additionalContext: [advice, runtime?.skillContext].filter(Boolean).join('\n\n') } };
-  }
-  return { ...common('hook', ctx, false, true), ...(runtime ? { runtime } : {}), context: advice };
-}
-
-function shellQuote(value) { return `'${String(value).replaceAll("'", "'\"'\"'")}'`; }
-
-async function hooksInstall(flags) {
-  const ctx = resolveContext(flags, { allowMissingProfile: false });
-  if (ctx.agent !== 'codex') throw new Error('hooks-install currently supports --agent codex');
-  if (!ctx.profile || !ctx.state.present) throw new Error('configure a named profile before installing hooks');
-  const path = join(process.env.CODEX_HOME || join(homedir(), '.codex'), 'hooks.json');
-  ensureRegular(path);
-  let config = readText(path);
-  config = config === null ? {} : JSON.parse(config);
-  if (!config || typeof config !== 'object' || Array.isArray(config)) throw new Error('hooks.json must contain an object');
-  if (config.hooks === undefined) config.hooks = {};
-  if (!config.hooks || typeof config.hooks !== 'object' || Array.isArray(config.hooks)) throw new Error('hooks.json hooks must contain an object');
-  const command = [process.execPath, join(HERE, 'jev-plugin.mjs'), 'codex-hook', '--agent', 'codex', '--profile', ctx.profile].map(shellQuote).join(' ');
-  for (const event of ['UserPromptSubmit', 'PreToolUse']) {
-    const groups = config.hooks[event] === undefined ? [] : config.hooks[event];
-    if (!Array.isArray(groups)) throw new Error(`${event} hooks must be an array`);
-    const handler = { type: 'command', command, timeout: 90, statusMessage: event === 'UserPromptSubmit' ? 'Jev: load selected skills' : 'Jev: review proposed action', ...(event === 'UserPromptSubmit' ? { additionalContextLimit: 32768 } : {}) };
-    const managed = item => item?.type === 'command' && typeof item.command === 'string' && item.command.includes(shellQuote(join(HERE, 'jev-plugin.mjs'))) && item.command.includes("'codex-hook'");
-    let found = false;
-    for (const group of groups) {
-      if (!Array.isArray(group.hooks)) continue;
-      group.hooks = group.hooks.map(item => { if (!managed(item)) return item; found = true; return handler; });
-    }
-    if (!found) groups.push({ ...(event === 'PreToolUse' ? { matcher: 'Bash|apply_patch|Write|Edit|exec_command|write_stdin' } : {}), hooks: [handler] });
-    config.hooks[event] = groups;
-  }
-  if (flags.apply) atomicWrite(path, `${JSON.stringify(config, null, 2)}\n`);
-  return { ...common('hooks-install', ctx, flags.apply, ctx.state.enabled), path, events: ['UserPromptSubmit', 'PreToolUse'], trust: 'review and trust the generated definitions in Codex /hooks; changed definitions need renewed trust', executed: false };
-}
+const DEFAULT_CODEX_MATCHER = 'Bash|apply_patch|Write|Edit|exec_command|write_stdin';
+const DEFAULT_HOST_MATCHER = 'Bash|apply_patch|Write|Edit|MultiEdit|NotebookEdit|exec_command|write_stdin';
+const EXTENSION_HOSTS = new Set(['jeopi', 'jeo', 'omp', 'pi', 'gjc']);
+const HOOK_INSTALL_HOSTS = new Set(['codex', 'claude', 'agy', 'jeopi', 'jeo', 'omp', 'pi', 'gjc']);
 
 function sessionTaskPath(event, profile) {
   if (typeof event.session_id !== 'string' || !event.session_id || typeof event.turn_id !== 'string' || !event.turn_id) return null;
   const key = createHash('sha256').update(JSON.stringify([profile, event.session_id, event.turn_id])).digest('hex');
+  return join(homes().jev, 'sessions', `${key}.json`);
+}
+
+function fallbackSessionTaskPath(event, profile, agent) {
+  if (agent === 'codex') return null;
+  const sessionKey = typeof event?.session_id === 'string' && event.session_id ? event.session_id : `default-${agent}`;
+  const key = createHash('sha256').update(JSON.stringify([profile, agent, sessionKey])).digest('hex');
   return join(homes().jev, 'sessions', `${key}.json`);
 }
 
@@ -1167,6 +1076,306 @@ function codexDecision(context, decision, reason) {
   return { hookSpecificOutput: { hookEventName: 'PreToolUse', ...(decision ? { permissionDecision: decision, permissionDecisionReason: reason } : { additionalContext: context }) } };
 }
 
+function resolveCachedTask(event, ctx) {
+  const exactPath = sessionTaskPath(event, ctx.profile);
+  if (exactPath) {
+    ensureRegular(exactPath);
+    const saved = JSON.parse(readText(exactPath) || '{}');
+    if (typeof saved.task === 'string' && saved.time > Date.now() - 86_400_000) return saved.task;
+  }
+  if (ctx.agent !== 'codex') {
+    const fallbackPath = fallbackSessionTaskPath(event, ctx.profile, ctx.agent);
+    if (fallbackPath && existsSync(fallbackPath)) {
+      ensureRegular(fallbackPath);
+      const saved = JSON.parse(readText(fallbackPath) || '{}');
+      if (typeof saved.task === 'string' && saved.time > Date.now() - 86_400_000) return saved.task;
+    }
+    const inlineTask = typeof event.task === 'string' && event.task.trim()
+      ? event.task.trim()
+      : typeof event.prompt === 'string' && event.prompt.trim()
+        ? event.prompt.trim()
+        : null;
+    if (inlineTask && inlineTask.length <= 100_000) return inlineTask;
+  }
+  return null;
+}
+
+async function evaluatePreToolUse(ctx, event) {
+  const mode = reviewMode(ctx);
+  if (mode === 'off') return {};
+  const configuredMatcher = ctx.state.values.JEV_PRETOOL_MATCHER;
+  if (configuredMatcher && typeof event.tool_name === 'string' && event.tool_name) {
+    try {
+      const re = new RegExp(`^(?:${configuredMatcher})$`);
+      if (!re.test(event.tool_name)) return {};
+    } catch {}
+  }
+  const task = resolveCachedTask(event, ctx);
+  if (!task) {
+    return mode === 'enforce'
+      ? codexDecision(null, 'deny', 'Jev: no task context for this turn. Submit the task again before retrying.')
+      : codexDecision('Jev review unavailable: no task context for this turn; host permissions remain unchanged.');
+  }
+  process.env.JEV_PROFILE = ctx.profile;
+  const harness = await import('./jev-harness.mjs');
+  const sourceLabel = ctx.agent === 'codex' ? 'Codex PreToolUse' : `${ctx.agent} PreToolUse`;
+  const result = await harness.review(task, {
+    tool: event.tool_name,
+    input: event.tool_input,
+    evidence: { source: sourceLabel, testsExecutedByJev: false },
+  });
+  if (mode === 'enforce' && (result.verdict !== 'permit' || result.backend?.tier !== 'validated')) {
+    return codexDecision(null, 'deny', `Jev: ${result.verdict}; action withheld. Backend tier: ${result.backend?.tier || 'unavailable'}. Host authorization is still required.`);
+  }
+  // Never return permissionDecision:allow: even a validated permit cannot override host approval.
+  return codexDecision(`Jev review: ${result.verdict}; backend tier ${result.backend?.tier || 'unavailable'}. Jev did not execute validation commands and does not change host permissions.`);
+}
+
+async function hook(flags, suppliedEvent) {
+  const activation = resolveHookContext(flags);
+  if (!activation.profile || !activation.state.present || !activation.state.enabled || activation.state.invalidEnabled) {
+    return common('hook', activation, false, false);
+  }
+  const ctx = { ...activation, state: readState(activation.profile) };
+  let event;
+  if (suppliedEvent !== undefined) event = suppliedEvent;
+  else {
+    const input = await readStdin();
+    try { event = input.trim() ? JSON.parse(input) : {}; } catch { throw new Error('hook input must be JSON'); }
+  }
+  const mode = runtimeMode(ctx);
+  const memMode = event.memoryMode === 'extended' ? 'extended' : memoryMode(ctx);
+  const revMode = reviewMode(ctx);
+
+  if (event.type === 'PreToolUse' || event.hook_event_name === 'PreToolUse') {
+    try {
+      const decision = await evaluatePreToolUse(ctx, event);
+      return { ...common('hook', ctx, false, true), ...decision };
+    } catch {
+      const fallback = revMode === 'advisory'
+        ? codexDecision('Jev review unavailable; host permissions remain unchanged.')
+        : revMode === 'enforce'
+          ? codexDecision(null, 'deny', 'Jev review failed; action withheld.')
+          : {};
+      return { ...common('hook', ctx, false, true), ...fallback };
+    }
+  }
+
+  if (event.type === 'Context') {
+    const runtime = { mode, dropContextIds: [] };
+    if (mode !== 'assist' || !event.prompt || !Array.isArray(event.blocks)) return { ...common('hook', ctx, false, true), runtime };
+    const idPattern = memMode === 'extended'
+      ? /^(?:jev-context|tool-output|conv-turn|memory-entry)-\d+$/
+      : /^jev-context-\d+$/;
+    let chars = 0;
+    const blocks = event.blocks.filter(block => {
+      if (!block || !idPattern.test(block.id) || typeof block.text !== 'string' || chars + block.text.length > 262_144) return false;
+      chars += block.text.length;
+      return true;
+    }).slice(0, 32);
+    if (!blocks.length) return { ...common('hook', ctx, false, true), runtime };
+    if (new Set(blocks.map(block => block.id)).size !== blocks.length) return { ...common('hook', ctx, false, true), runtime };
+    try {
+      process.env.JEV_PROFILE = ctx.profile;
+      const harness = await import('./jev-harness.mjs');
+      if (memMode === 'extended' && typeof harness.manageMemory === 'function') {
+        const managed = await harness.manageMemory(blocks, {
+          task: event.prompt,
+          persistMemory: Boolean(event.persistMemory),
+          memoryStorePath: typeof event.memoryStorePath === 'string' ? event.memoryStorePath : null,
+        });
+        const ids = new Set(blocks.map(block => block.id));
+        runtime.memoryMode = 'extended';
+        runtime.dropContextIds = (managed.dropContextIds || []).filter(id => ids.has(id));
+        runtime.compressedBlocks = managed.compressedBlocks || {};
+        if (managed.conversationSummary) runtime.conversationSummary = managed.conversationSummary;
+        if (managed.memoryStore) runtime.memoryStore = managed.memoryStore;
+      } else {
+        const result = await harness.pruneContext(blocks);
+        const ids = new Set(blocks.map(block => block.id));
+        runtime.dropContextIds = result.filter(item => item.verdict === 'drop' && ids.has(item.id)).map(item => item.id);
+      }
+    } catch { /* Failed pruning preserves every context message. */ }
+    return { ...common('hook', ctx, false, true), runtime };
+  }
+
+  const prompt = typeof event.prompt === 'string'
+    ? event.prompt
+    : typeof event.userPrompt === 'string'
+      ? event.userPrompt
+      : typeof event.lastUserInput === 'string'
+        ? event.lastUserInput
+        : '';
+
+  if (revMode !== 'off' && prompt) {
+    const exactPath = sessionTaskPath(event, ctx.profile);
+    if (exactPath) saveSessionTask(exactPath, prompt);
+    const fallbackPath = fallbackSessionTaskPath(event, ctx.profile, ctx.agent);
+    if (fallbackPath) saveSessionTask(fallbackPath, prompt);
+  }
+
+  let advice = 'Jev advisory context unavailable.';
+  let runtime;
+  try {
+    process.env.JEV_PROFILE = ctx.profile;
+    if (!process.env.JEV_CATALOG_PATH) process.env.JEV_CATALOG_PATH = join(homes().jev, 'skills.json');
+    const harness = await import('./jev-harness.mjs');
+    const routed = await harness.routeSkills(prompt || 'Review the current task', { topK: 3 });
+    let selected = { context: '', injected: [] };
+    try {
+      if (mode === 'assist') selected = selectedSkillContext(routed);
+    } finally {
+      recordSkillUsage({
+        agent: ctx.agent,
+        profile: ctx.profile,
+        routed: (routed?.topK || []).map(item => item?.name),
+        injected: selected.injected,
+        backend: routed?.backend,
+      });
+    }
+    if (mode === 'assist') {
+      runtime = {
+        mode,
+        skillContext: selected.context,
+        pruneContext: true,
+        ...(memMode === 'extended' ? { memoryMode: 'extended' } : {}),
+      };
+    }
+    const names = routed.topK.map(item => item.name).filter(name => SKILL_ID.test(name)).join(', ') || 'no confident catalog match';
+    const models = (routed.routing || []).map(item => item.chosen).filter(isApprovedModelChoice).join(', ');
+    advice = `Jev advisory only (profile ${ctx.profile}): suggested skills: ${names}${models ? `; host model candidates: ${models}` : ''}. This does not change host permissions or the host model.`;
+  } catch (error) {
+    advice = `Jev advisory only (profile ${ctx.profile}): routing unavailable (${classifyRoutingError(error)}). This does not change host permissions or the host model.`;
+  }
+  const combinedContext = [advice, runtime?.skillContext].filter(Boolean).join('\n\n');
+  if (ctx.agent === 'claude') {
+    return { ...common('hook', ctx, false, true), ...(runtime ? { runtime } : {}), hookSpecificOutput: { hookEventName: 'UserPromptSubmit', additionalContext: combinedContext } };
+  }
+  if (ctx.agent === 'agy') {
+    return {
+      ...common('hook', ctx, false, true),
+      ...(runtime ? { runtime } : {}),
+      context: advice,
+      injectSteps: [{ ephemeralMessage: combinedContext }],
+      hookSpecificOutput: { hookEventName: 'PreInvocation', additionalContext: combinedContext },
+    };
+  }
+  return { ...common('hook', ctx, false, true), ...(runtime ? { runtime } : {}), context: advice };
+}
+
+function shellQuote(value) { return `'${String(value).replaceAll("'", "'\"'\"'")}'`; }
+
+function renderManagedExtension(agent, profile, matcher) {
+  const pluginIndex = join(HERE, 'plugins', agent, 'index.mjs');
+  const controller = join(HERE, 'jev-plugin.mjs');
+  return [
+    `// @jev-control-plane-managed: generated by jev-plugin.mjs hooks-install for ${agent} (profile ${profile})`,
+    `import { createJevExtension } from ${JSON.stringify(pluginIndex)};`,
+    ``,
+    `export const JEV_AGENT_ID = ${JSON.stringify(agent)};`,
+    `export const JEV_PROFILE_ID = ${JSON.stringify(profile)};`,
+    `export const JEV_PRETOOL_MATCHER = ${JSON.stringify(matcher)};`,
+    ``,
+    `export default function jevManagedExtension(api) {`,
+    `  return createJevExtension(api, {`,
+    `    agent: JEV_AGENT_ID,`,
+    `    profile: JEV_PROFILE_ID,`,
+    `    controllerPath: ${JSON.stringify(controller)},`,
+    `    toolMatcher: JEV_PRETOOL_MATCHER,`,
+    `  });`,
+    `}`,
+    ``,
+  ].join('\n');
+}
+
+async function hooksInstall(flags) {
+  const ctx = resolveContext(flags, { allowMissingProfile: false });
+  if (!HOOK_INSTALL_HOSTS.has(ctx.agent)) {
+    throw new Error(`hooks-install currently supports --agent ${[...HOOK_INSTALL_HOSTS].join(', ')}`);
+  }
+  if (!ctx.profile || !ctx.state.present) throw new Error('configure a named profile before installing hooks');
+  const matcher = flags.matcher || ctx.state.values.JEV_PRETOOL_MATCHER || (ctx.agent === 'codex' ? DEFAULT_CODEX_MATCHER : DEFAULT_HOST_MATCHER);
+
+  if (EXTENSION_HOSTS.has(ctx.agent)) {
+    const extRoot = process.env.JEV_EXTENSION_HOME
+      ? resolve(process.env.JEV_EXTENSION_HOME)
+      : join(homedir(), `.${ctx.agent}`, 'agent', 'extensions');
+    const path = join(extRoot, 'jev-control-plane.mjs');
+    ensureRegular(path);
+    const existing = readText(path);
+    if (existing !== null && !existing.includes('@jev-control-plane-managed')) {
+      throw new Error(`refusing to overwrite unmanaged extension file: ${path}`);
+    }
+    const content = renderManagedExtension(ctx.agent, ctx.profile, matcher);
+    if (flags.apply) atomicWrite(path, content);
+    return {
+      ...common('hooks-install', ctx, flags.apply, ctx.state.enabled),
+      path,
+      events: ['before_agent_start', 'context', 'tool_call', 'before_tool_call'],
+      matcher,
+      executed: false,
+    };
+  }
+
+  if (ctx.agent === 'agy') {
+    const path = join(process.env.AGY_CONFIG_DIR || join(homedir(), '.gemini', 'config'), 'hooks.json');
+    ensureRegular(path);
+    let config = readText(path);
+    config = config === null ? {} : JSON.parse(config);
+    if (!config || typeof config !== 'object' || Array.isArray(config)) throw new Error('hooks.json must contain an object');
+    const command = [process.execPath, join(HERE, 'jev-plugin.mjs'), 'codex-hook', '--agent', 'agy', '--profile', ctx.profile].map(shellQuote).join(' ');
+    config['jev-control-plane'] = {
+      PreInvocation: [{ type: 'command', command, timeout: 90, statusMessage: 'Jev: load selected skills' }],
+      PreToolUse: [{ matcher, type: 'command', command, timeout: 90, statusMessage: 'Jev: review proposed action' }],
+    };
+    if (flags.apply) atomicWrite(path, `${JSON.stringify(config, null, 2)}\n`);
+    return {
+      ...common('hooks-install', ctx, flags.apply, ctx.state.enabled),
+      path,
+      events: ['PreInvocation', 'PreToolUse'],
+      matcher,
+      executed: false,
+    };
+  }
+
+  const isCodex = ctx.agent === 'codex';
+  const path = isCodex
+    ? join(process.env.CODEX_HOME || join(homedir(), '.codex'), 'hooks.json')
+    : join(process.env.CLAUDE_CONFIG_DIR || join(homedir(), '.claude'), 'settings.json');
+  const fileLabel = isCodex ? 'hooks.json' : 'settings.json';
+  ensureRegular(path);
+  let config = readText(path);
+  config = config === null ? {} : JSON.parse(config);
+  if (!config || typeof config !== 'object' || Array.isArray(config)) throw new Error(`${fileLabel} must contain an object`);
+  if (config.hooks === undefined) config.hooks = {};
+  if (!config.hooks || typeof config.hooks !== 'object' || Array.isArray(config.hooks)) throw new Error(`${fileLabel} hooks must contain an object`);
+  const command = [process.execPath, join(HERE, 'jev-plugin.mjs'), 'codex-hook', '--agent', ctx.agent, '--profile', ctx.profile].map(shellQuote).join(' ');
+  for (const event of ['UserPromptSubmit', 'PreToolUse']) {
+    const groups = config.hooks[event] === undefined ? [] : config.hooks[event];
+    if (!Array.isArray(groups)) throw new Error(`${event} hooks must be an array`);
+    const handler = { type: 'command', command, timeout: 90, statusMessage: event === 'UserPromptSubmit' ? 'Jev: load selected skills' : 'Jev: review proposed action', ...(event === 'UserPromptSubmit' ? { additionalContextLimit: 32768 } : {}) };
+    const managed = item => item?.type === 'command' && typeof item.command === 'string' && item.command.includes(shellQuote(join(HERE, 'jev-plugin.mjs'))) && item.command.includes("'codex-hook'");
+    let found = false;
+    for (const group of groups) {
+      if (!Array.isArray(group.hooks)) continue;
+      group.hooks = group.hooks.map(item => { if (!managed(item)) return item; found = true; return handler; });
+    }
+    if (!found) groups.push({ ...(event === 'PreToolUse' ? { matcher } : {}), hooks: [handler] });
+    config.hooks[event] = groups;
+  }
+  if (flags.apply) atomicWrite(path, `${JSON.stringify(config, null, 2)}\n`);
+  return {
+    ...common('hooks-install', ctx, flags.apply, ctx.state.enabled),
+    path,
+    events: ['UserPromptSubmit', 'PreToolUse'],
+    ...(flags.matcher ? { matcher } : {}),
+    trust: isCodex
+      ? 'review and trust the generated definitions in Codex /hooks; changed definitions need renewed trust'
+      : `review the generated definitions in ${fileLabel}`,
+    executed: false,
+  };
+}
+
 async function codexHook(flags) {
   let event;
   let ctx;
@@ -1178,31 +1387,31 @@ async function codexHook(flags) {
     event = JSON.parse(input);
     if (ctx.state.invalidEnabled) throw new Error('Invalid JEV_ENABLED');
     mode = reviewMode(ctx);
-    if (event.hook_event_name === 'UserPromptSubmit') {
-      if (mode !== 'off' && typeof event.prompt === 'string') {
+    const eventName = event.hook_event_name || (ctx.agent === 'agy' && typeof event.lastUserInput === 'string' ? 'PreInvocation' : null);
+    if (eventName === 'UserPromptSubmit' || eventName === 'PreInvocation') {
+      const promptText = typeof event.prompt === 'string' ? event.prompt : typeof event.lastUserInput === 'string' ? event.lastUserInput : null;
+      if (mode !== 'off' && typeof promptText === 'string') {
         const path = sessionTaskPath(event, ctx.profile);
-        if (path) saveSessionTask(path, event.prompt);
+        if (path) saveSessionTask(path, promptText);
+        const fallbackPath = fallbackSessionTaskPath(event, ctx.profile, ctx.agent);
+        if (fallbackPath) saveSessionTask(fallbackPath, promptText);
       }
-      const result = await hook(flags, event);
-      return { hookSpecificOutput: { hookEventName: 'UserPromptSubmit', additionalContext: [result.context, result.runtime?.skillContext].filter(Boolean).join('\n\n') } };
+      const result = await hook(flags, { ...event, ...(promptText !== null ? { prompt: promptText } : {}) });
+      const combined = result.hookSpecificOutput?.additionalContext || [result.context, result.runtime?.skillContext].filter(Boolean).join('\n\n');
+      if (ctx.agent === 'agy') {
+        return {
+          injectSteps: [{ ephemeralMessage: combined }],
+          hookSpecificOutput: { hookEventName: eventName, additionalContext: combined },
+        };
+      }
+      return { hookSpecificOutput: { hookEventName: 'UserPromptSubmit', additionalContext: combined } };
     }
-    if (event.hook_event_name !== 'PreToolUse' || mode === 'off') return {};
-    const path = sessionTaskPath(event, ctx.profile);
-    let task;
-    if (path) {
-      ensureRegular(path);
-      const saved = JSON.parse(readText(path) || '{}');
-      if (typeof saved.task === 'string' && saved.time > Date.now() - 86_400_000) task = saved.task;
-    }
-    if (!task) return mode === 'enforce' ? codexDecision(null, 'deny', 'Jev: no task context for this turn. Submit the task again before retrying.') : codexDecision('Jev review unavailable: no task context for this turn; host permissions remain unchanged.');
-    process.env.JEV_PROFILE = ctx.profile;
-    const harness = await import('./jev-harness.mjs');
-    const result = await harness.review(task, { tool: event.tool_name, input: event.tool_input, evidence: { source: 'Codex PreToolUse', testsExecutedByJev: false } });
-    if (mode === 'enforce' && (result.verdict !== 'permit' || result.backend?.tier !== 'validated')) return codexDecision(null, 'deny', `Jev: ${result.verdict}; action withheld. Backend tier: ${result.backend?.tier || 'unavailable'}. Host authorization is still required.`);
-    // Never return permissionDecision:allow: even a validated permit cannot override host approval.
-    return codexDecision(`Jev review: ${result.verdict}; backend tier ${result.backend?.tier || 'unavailable'}. Jev did not execute validation commands and does not change host permissions.`);
+    if (eventName !== 'PreToolUse' || mode === 'off') return {};
+    return await evaluatePreToolUse(ctx, event);
   } catch {
-    if (event?.hook_event_name === 'PreToolUse' && mode !== 'off') return mode === 'advisory' ? codexDecision('Jev review unavailable; host permissions remain unchanged.') : codexDecision(null, 'deny', 'Jev review failed; action withheld.');
+    if ((event?.hook_event_name === 'PreToolUse' || event?.type === 'PreToolUse') && mode !== 'off') {
+      return mode === 'advisory' ? codexDecision('Jev review unavailable; host permissions remain unchanged.') : codexDecision(null, 'deny', 'Jev review failed; action withheld.');
+    }
     // A configured enforcement hook must still deny when its profile is malformed.
     if (ctx?.state.values.JEV_REVIEW_MODE && !['off', 'advisory'].includes(ctx.state.values.JEV_REVIEW_MODE)) return codexDecision(null, 'deny', 'Jev enforcement configuration or input is invalid; action withheld.');
     if (!ctx && flags.profile) return codexDecision(null, 'deny', 'Jev profile could not be read; action withheld.');
@@ -1212,9 +1421,9 @@ async function codexHook(flags) {
 
 function parseArgs(argv) {
   const [action, ...rest] = argv;
-  const flags = { action, agent: undefined, profile: undefined, host: undefined, apply: false, backend: undefined, endpoint: undefined, model: undefined, keyEnv: undefined, modelDir: undefined, advice: undefined, hostModels: undefined, integration: undefined, writerEndpoint: undefined, writerKeyEnv: undefined, writerApi: undefined, writerModel: undefined, localOnly: false };
+  const flags = { action, agent: undefined, profile: undefined, host: undefined, apply: false, backend: undefined, endpoint: undefined, model: undefined, keyEnv: undefined, modelDir: undefined, advice: undefined, hostModels: undefined, integration: undefined, writerEndpoint: undefined, writerKeyEnv: undefined, writerApi: undefined, writerModel: undefined, localOnly: false, memoryMode: undefined, matcher: undefined };
   const valueFlags = new Map([
-    ['--runtime-mode', 'runtimeMode'], ['--review-mode', 'reviewMode'],
+    ['--runtime-mode', 'runtimeMode'], ['--review-mode', 'reviewMode'], ['--memory-mode', 'memoryMode'], ['--matcher', 'matcher'],
     ['--agent', 'agent'], ['--profile', 'profile'], ['--host', 'host'], ['--backend', 'backend'], ['--endpoint', 'endpoint'], ['--model', 'model'],
     ['--key-env', 'keyEnv'], ['--model-dir', 'modelDir'], ['--advice', 'advice'], ['--host-models', 'hostModels'], ['--integration', 'integration'],
     ['--writer-endpoint', 'writerEndpoint'], ['--writer-key-env', 'writerKeyEnv'], ['--writer-api', 'writerApi'], ['--writer-model', 'writerModel'],

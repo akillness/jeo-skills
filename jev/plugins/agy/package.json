@@ -1,0 +1,13 @@
+{
+  "name": "jev-agy-extension",
+  "version": "0.1.0",
+  "description": "Jev routing and review extension for AGY",
+  "type": "module",
+  "agy": {
+    "version": "0.1.0",
+    "name": "jev-agy-extension",
+    "extensions": [
+      "./index.mjs"
+    ]
+  }
+}

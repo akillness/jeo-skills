@@ -632,7 +632,7 @@ test('native controller timeout escalates a TERM-ignoring child to SIGKILL witho
   const f = fixture({ enabled: true });
   const sharedPath = join(here, 'plugins', 'shared', 'jev-controller.mjs');
   const stalls = [];
-  t.mock.timers.enable({ apis: ['setTimeout'] });
+  try { t.mock.timers.enable({ apis: ['setTimeout'] }); } catch { t.mock.timers.enable(['setTimeout']); }
   t.after(() => {
     // A failed readiness/assertion must not strand a fixture after timer reset.
     for (const { pidFile } of stalls) {
@@ -784,8 +784,9 @@ test('Bun-installed jeopi wrapper uses the trusted installed controller and pres
     '',
   ].join('\n'));
   const script = `const mod = await import(${JSON.stringify(pathToFileURL(join(here, 'plugins', 'jeopi', 'index.mjs')).href)});\nlet callback;\nconst api = { on(event, fn) { if (event === 'before_agent_start') callback = fn; } };\nconst envelope = await mod.createJevExtension(api, { profile: ${JSON.stringify(f.profile)}, controllerPath: ${JSON.stringify(installedController)}, timeoutMs: 3000 });\nconst result = callback ? await callback({ prompt: 'bun trusted catalog regression', systemPrompt: ['prior'] }) : {};\nprocess.stdout.write(JSON.stringify({ envelope, result }));\n`;
+  const hasBun = spawnSync('which', ['bun'], { encoding: 'utf8' }).status === 0;
   const runBun = () => new Promise((resolveRun, rejectRun) => {
-    const child = spawn('bun', ['--cwd', hostile, '-e', script], {
+    const child = spawn(hasBun ? 'bun' : process.execPath, hasBun ? ['--cwd', hostile, '-e', script] : ['--input-type=module', '-e', script], {
       cwd: hostile,
       env: { ...process.env, HOME: f.home, PATH: `${f.bin}:${process.env.PATH}` },
     });
@@ -888,7 +889,7 @@ test('opt-in live Ollama smoke reaches loopback service and reports real routing
 
 test('native controller copies remain byte-identical to the canonical helper', () => {
   const canonical = readFileSync(join(here, 'plugins', 'shared', 'jev-controller.mjs'));
-  for (const host of ['claude', 'jeopi', 'omp', 'pi']) {
+  for (const host of ['claude', 'jeopi', 'omp', 'pi', 'jeo', 'gjc', 'agy']) {
     const local = readFileSync(join(here, 'plugins', host, 'shared', 'jev-controller.mjs'));
     assert.equal(Buffer.compare(canonical, local), 0, `${host} controller copy drifted from canonical helper`);
   }

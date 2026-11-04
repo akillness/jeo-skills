@@ -1,7 +1,10 @@
 #!/usr/bin/env node
 import { createHash } from 'node:crypto';
-import { existsSync, realpathSync } from 'node:fs';
+import { chmodSync, existsSync, lstatSync, mkdirSync, readFileSync, realpathSync, renameSync, unlinkSync, writeFileSync } from 'node:fs';
 import { readFile, realpath } from 'node:fs/promises';
+
+// Pre-warm Node's internal fetch/Response JSON pipeline without opening any socket.
+try { await new Response('{}').json(); new Request('http://127.0.0.1'); } catch {}
 import { homedir } from 'node:os';
 import { basename, dirname, join, resolve, sep } from 'node:path';
 import { pathToFileURL } from 'node:url';
@@ -9,7 +12,22 @@ import { pathToFileURL } from 'node:url';
 // ── Contract constants ───────────────────────────────────────────────────────
 export const BACKEND_KINDS = ['api', 'local', 'ollama', 'lmstudio', 'systemone'];
 export const OPERATIONS = ['route-skills', 'prune-context', 'review'];
-const OP_KEY = { 'route-skills': 'ROUTE_SKILLS', 'prune-context': 'PRUNE_CONTEXT', review: 'REVIEW' };
+export const EXTENDED_OPERATIONS = ['route-skills', 'prune-context', 'review', 'moderate', 'evaluate-run', 'rerank', 'manage-memory'];
+const OP_KEY = {
+  'route-skills': 'ROUTE_SKILLS',
+  'prune-context': 'PRUNE_CONTEXT',
+  review: 'REVIEW',
+  moderate: 'MODERATE',
+  'evaluate-run': 'EVALUATE_RUN',
+  rerank: 'RERANK',
+  'manage-memory': 'PRUNE_CONTEXT',
+};
+const OP_PARENT = {
+  moderate: 'review',
+  'evaluate-run': 'review',
+  rerank: 'route-skills',
+  'manage-memory': 'prune-context',
+};
 const SYSTEMONE_DRIVERS = ['typesafe', 'decide', 'vllm-jev-decision'];
 const DEFAULT_API_URL = 'https://api.typesafe.ai/v1/systemone';
 const DEFAULT_LOCAL_URL = 'http://127.0.0.1:8763/v1/systemone';
@@ -204,8 +222,9 @@ const DEFAULT_KIND_VALID = BACKEND_KINDS.includes(DEFAULT_KIND);
 const FILE_KIND_VALID = BACKEND_KINDS.includes(FILE_KIND);
 function opKeys(op) {
   const key = OP_KEY[op];
-  const primary = cfg(null, `JEV_${key}_BACKEND`) || null;
-  const fallbackRaw = cfg(null, `JEV_${key}_FALLBACK`);
+  const parentKey = OP_PARENT[op] ? OP_KEY[OP_PARENT[op]] : null;
+  const primary = cfg(null, `JEV_${key}_BACKEND`) || (parentKey ? cfg(null, `JEV_${parentKey}_BACKEND`) : null) || null;
+  const fallbackRaw = cfg(null, `JEV_${key}_FALLBACK`) ?? (parentKey ? cfg(null, `JEV_${parentKey}_FALLBACK`) : undefined);
   const fallback = fallbackRaw ? String(fallbackRaw).split(',').map(s => s.trim()).filter(Boolean) : [];
   return { primary, fallback };
 }
@@ -252,7 +271,7 @@ export function buildChain({ primary, fallback = [], override = null }) {
 }
 
 export function resolveChain(op, { override = null } = {}) {
-  if (!OPERATIONS.includes(op)) throw new Error(`Unknown operation: ${op}`);
+  if (!OPERATIONS.includes(op) && !EXTENDED_OPERATIONS.includes(op)) throw new Error(`Unknown operation: ${op}`);
   const { primary, fallback } = opKeys(op);
   return buildChain({ primary: primary || DEFAULT_KIND, fallback, override });
 }
@@ -758,6 +777,23 @@ function simulateAnswers(state, questions) {
     else if (id === 'evidence_supports') p = /evidence|diff|patch|validation|file|code/.test(text) ? 0.92 : 0.56;
     else if (id === 'unrelated_changes') p = /unrelated|scope creep|out of scope/.test(text) ? 0.9 : 0.04;
     else if (id === 'needs_clarification') p = /ambiguous|unclear|clarification|not specified/.test(text) ? 0.91 : 0.04;
+    else if (id === 'contains_secrets_or_pii') p = /(?:sk-[a-z0-9]{12,}|ghp_[a-z0-9]{12,}|akia[0-9a-z]{12,}|api[_-]?key\s*=\s*[^\s<]+|secret|password|ssn|private[_-]?key)/i.test(text) ? 0.95 : 0.03;
+    else if (id === 'destructive_or_unsafe') p = /(?:rm\s+-rf\s+\/|mkfs\.|drop\s+database|format\s+disk|chmod\s+777\s+\/)/i.test(text) ? 0.96 : 0.03;
+    else if (id === 'prompt_injection_or_exfiltration') p = /(?:ignore\s+(?:all\s+)?previous\s+instructions|system\s+override|exfiltrate|curl\s+.*\$\{?env)/i.test(text) ? 0.95 : 0.04;
+    else if (id === 'policy_compliant') p = /(?:sk-[a-z0-9]{12,}|ghp_[a-z0-9]{12,}|rm\s+-rf\s+\/|ignore\s+(?:all\s+)?previous\s+instructions)/i.test(text) ? 0.05 : 0.94;
+    else if (id === 'goal_completed') p = /(?:completed|passed|success|verified|resolved|fixed|implemented)/i.test(text) && !/(?:incomplete|aborted|unimplemented)/i.test(text) ? 0.94 : 0.25;
+    else if (id === 'verification_passed') p = /(?:pass|passed|0\s+fail|ok\s+1|testsPassed["']:true|exitCode["']:0)/i.test(text) && !/(?:testsPassed["']:false|fail\s+[1-9])/i.test(text) ? 0.93 : 0.22;
+    else if (id === 'tool_efficiency_and_safety') p = /(?:loop|unauthorized|unsafe|escaped|violation)/i.test(text) ? 0.15 : 0.91;
+    else if (id === 'regression_or_side_effects') p = /(?:regression|broken|uncleaned|corrupted|leak)/i.test(text) ? 0.90 : 0.04;
+    else if (id.startsWith('relevant::')) {
+      const qMatch = state?.query ? String(state.query).toLowerCase() : '';
+      const idx = Number(id.split('::')[1]);
+      const cand = Array.isArray(state?.candidates) ? state.candidates[idx] : null;
+      const cText = JSON.stringify(cand || state).toLowerCase();
+      const terms = (qMatch.match(/[a-z0-9가-힣]{2,}/g) || []).filter(t => !STOPWORDS.has(t));
+      const hits = terms.filter(t => cText.includes(t)).length;
+      p = terms.length ? Math.min(0.98, 0.20 + (hits / terms.length) * 0.76) : 0.5;
+    }
     else if (id.startsWith('essential::')) p = 0.5;
     answers[id] = evaluateNoul(p);
   }
@@ -1070,50 +1106,530 @@ export function planPruneBatches(blocks, maxStateChars) {
   return { batches, oversized };
 }
 
-export async function pruneContext(blocks, { mock = false, override = null, model = null } = {}) {
+const SECRET_REDACTION_PATTERNS = [
+  [/\b(JEV_[A-Z0-9_]+\s*=\s*)([^\s"']+)/g, '$1<redacted>'],
+  [/\b(sk-[A-Za-z0-9_-]{12,})\b/g, '<redacted-api-key>'],
+  [/\b(ghp_[A-Za-z0-9]{12,})\b/g, '<redacted-gh-token>'],
+  [/\b(AKIA[0-9A-Z]{12,})\b/g, '<redacted-aws-key>'],
+  [/(Bearer\s+)[A-Za-z0-9._~+/-]+=*/gi, '$1<redacted-token>'],
+];
+
+export function redactMemorySecrets(text) {
+  let clean = String(text || '');
+  for (const [pattern, replacement] of SECRET_REDACTION_PATTERNS) clean = clean.replace(pattern, replacement);
+  return clean;
+}
+
+export function compressToolOutputBlock(text, { maxChars = 600 } = {}) {
+  const raw = redactMemorySecrets(String(text || ''));
+  const lines = raw.split(/\r?\n/).map(line => line.trimEnd()).filter(Boolean);
+  if (raw.length <= maxChars && lines.length <= 8) {
+    return { compressedText: raw, originalChars: raw.length, compressedChars: raw.length, compressed: false, preservedSignals: [] };
+  }
+  const signalLines = [];
+  const signals = new Set();
+  for (const line of lines) {
+    if (NOISE_HINTS.test(line) && !KEEP_HINTS.test(line)) continue;
+    if (KEEP_HINTS.test(line) || /(?:exit\s+code|status\s+\d+|PASS|FAIL|ERROR|WARN)/i.test(line)) {
+      if (!signals.has(line)) {
+        signals.add(line);
+        signalLines.push(line.slice(0, 200));
+      }
+    }
+    if (signalLines.length >= 8) break;
+  }
+  const head = lines[0] ? lines[0].slice(0, 160) : '';
+  const tail = lines.length > 1 ? lines.at(-1).slice(0, 160) : '';
+  const parts = [];
+  if (head) parts.push(`[head] ${head}`);
+  for (const sig of signalLines) {
+    if (sig !== head && sig !== tail) parts.push(`[signal] ${sig}`);
+  }
+  if (tail && tail !== head) parts.push(`[tail] ${tail}`);
+  parts.push(`[compressed ${lines.length} lines / ${raw.length} chars]`);
+  const joined = parts.join('\n').slice(0, maxChars);
+  return {
+    compressedText: joined,
+    originalChars: raw.length,
+    compressedChars: joined.length,
+    compressed: joined.length < raw.length,
+    preservedSignals: [...signals].slice(0, 8),
+  };
+}
+
+export function summarizeDroppedBlocks(blocks, { maxChars = 800 } = {}) {
+  if (!Array.isArray(blocks) || !blocks.length) return null;
+  const bullets = [];
+  for (const block of blocks.slice(0, 16)) {
+    const clean = redactMemorySecrets(String(block?.text || '')).replace(/\s+/g, ' ').trim();
+    if (!clean) continue;
+    const paths = (clean.match(/\/[A-Za-z0-9._/-]+/g) || []).slice(0, 3);
+    const snippet = clean.slice(0, 120);
+    bullets.push(`- [${block.id}] ${snippet}${clean.length > 120 ? '...' : ''}${paths.length ? ` (paths: ${paths.join(', ')})` : ''}`);
+  }
+  if (!bullets.length) return null;
+  return (`[Jev Rolling Context Summary: ${blocks.length} block(s) condensed]\n` + bullets.join('\n')).slice(0, maxChars);
+}
+
+export function syncLongTermMemory(entries, { memoryStorePath = null, profile = PROFILE || 'legacy', maxEntries = 200 } = {}) {
+  const targetPath = memoryStorePath
+    ? resolve(memoryStorePath)
+    : join(homedir(), '.agents', 'jev', 'memory', `${profile || 'legacy'}.jsonl`);
+  const parent = dirname(targetPath);
+  mkdirSync(parent, { recursive: true, mode: 0o700 });
+  const parentInfo = lstatSync(parent);
+  if (parentInfo.isSymbolicLink() || !parentInfo.isDirectory()) throw new Error(`Invalid memory directory: ${parent}`);
+  let existing = [];
+  if (existsSync(targetPath)) {
+    const info = lstatSync(targetPath);
+    if (info.isSymbolicLink() || !info.isFile()) throw new Error(`Refusing non-regular memory store: ${targetPath}`);
+    existing = readFileSync(targetPath, 'utf8')
+      .split(/\r?\n/)
+      .filter(Boolean)
+      .map(line => { try { return JSON.parse(line); } catch { return null; } })
+      .filter(item => item && typeof item.id === 'string' && typeof item.text === 'string');
+  }
+  const byId = new Map(existing.map(item => [item.id, item]));
+  const added = [];
+  const evicted = [];
+  for (const entry of (Array.isArray(entries) ? entries : [])) {
+    if (!entry || typeof entry.id !== 'string') continue;
+    if (entry.verdict === 'drop') {
+      if (byId.has(entry.id)) {
+        byId.delete(entry.id);
+        evicted.push(entry.id);
+      }
+      continue;
+    }
+    if (entry.verdict === 'keep' && typeof entry.text === 'string' && KEEP_HINTS.test(entry.text)) {
+      const sanitized = redactMemorySecrets(entry.text).slice(0, 2000);
+      const record = {
+        id: entry.id,
+        text: sanitized,
+        kind: entry.kind || 'memory',
+        updatedAt: new Date().toISOString(),
+      };
+      byId.set(entry.id, record);
+      added.push(entry.id);
+    }
+  }
+  const retained = [...byId.values()].slice(-maxEntries);
+  const tempPath = join(parent, `.${basename(targetPath)}.${process.pid}.${Date.now()}.tmp`);
+  writeFileSync(tempPath, retained.map(item => JSON.stringify(item)).join('\n') + (retained.length ? '\n' : ''), { mode: 0o600 });
+  chmodSync(tempPath, 0o600);
+  renameSync(tempPath, targetPath);
+  chmodSync(targetPath, 0o600);
+  return { path: targetPath, retainedCount: retained.length, added, evicted, retained };
+}
+
+export async function pruneContext(blocks, { mock = false, override = null, model = null, compress = false, summarize = false, memoryStore = null } = {}) {
   for (const block of blocks) {
     if (!block || typeof block.id !== 'string' || typeof block.text !== 'string') throw new Error('Each input line must be JSON {"id": string, "text": string}');
   }
   if (PROFILE_ERROR) throw new Error(PROFILE_ERROR);
   if (PROFILE_DISABLED) throw new Error(`Jev profile '${PROFILE}' is disabled`);
-  if (mock) return blocks.map(block => ({ id: block.id, verdict: mockKeep(block.text) ? 'keep' : 'drop' }));
-  if (!blocks.length) return [];
-  const chain = resolveChain('prune-context', { override }).chain;
-  const errors = [];
-  for (const kind of chain) {
-    const backend = describeBackend(kind, { model });
-    if (backend.error || !backend.configured) { errors.push(`${kind}: ${backend.error || 'not configured'}`); continue; }
-    const { batches, oversized } = planPruneBatches(blocks, backend.maxStateChars);
-    const verdicts = new Array(blocks.length).fill(null);
-    let failed = null;
-    for (const batch of batches) {
-      const questions = {};
-      // Keys index the `blocks` array of THIS request, so a backend reading
-      // `blocks[i]` and the harness agree; the global position is mapped back here.
-      batch.forEach((item, i) => { questions[`essential::${i}`] = noul(`Does \`blocks[${i}].text\` contain facts essential for future steps?`); });
-      const envelope = await requestJev({ blocks: batch.map(b => ({ id: b.id, text: b.text })) }, questions, { op: 'prune-context', kinds: [kind], model });
-      if (envelope.error || !envelope.answers) { failed = `${kind}: ${envelope.error}`; break; }
-      batch.forEach((item, i) => {
-        const a = envelope.answers[`essential::${i}`];
-        verdicts[item.index] = { id: item.id, verdict: !(a.answer === 'no' && a.confidence >= THRESHOLD) ? 'keep' : 'drop' };
-      });
+  let baseVerdicts = null;
+  if (mock) {
+    baseVerdicts = blocks.map(block => ({ id: block.id, verdict: mockKeep(block.text) ? 'keep' : 'drop' }));
+  } else if (!blocks.length) {
+    baseVerdicts = [];
+  } else {
+    const chain = resolveChain('prune-context', { override }).chain;
+    const errors = [];
+    for (const kind of chain) {
+      const backend = describeBackend(kind, { model });
+      if (backend.error || !backend.configured) { errors.push(`${kind}: ${backend.error || 'not configured'}`); continue; }
+      const { batches, oversized } = planPruneBatches(blocks, backend.maxStateChars);
+      const verdicts = new Array(blocks.length).fill(null);
+      let failed = null;
+      for (const batch of batches) {
+        const questions = {};
+        // Keys index the `blocks` array of THIS request, so a backend reading
+        // `blocks[i]` and the harness agree; the global position is mapped back here.
+        batch.forEach((item, i) => { questions[`essential::${i}`] = noul(`Does \`blocks[${i}].text\` contain facts essential for future steps?`); });
+        const envelope = await requestJev({ blocks: batch.map(b => ({ id: b.id, text: b.text })) }, questions, { op: 'prune-context', kinds: [kind], model });
+        if (envelope.error || !envelope.answers) { failed = `${kind}: ${envelope.error}`; break; }
+        batch.forEach((item, i) => {
+          const a = envelope.answers[`essential::${i}`];
+          verdicts[item.index] = { id: item.id, verdict: !(a.answer === 'no' && a.confidence >= THRESHOLD) ? 'keep' : 'drop' };
+        });
+      }
+      if (failed) { errors.push(failed); continue; }
+      for (const index of oversized) verdicts[index] = { id: blocks[index].id, verdict: 'keep', reason: `block exceeds ${kind} state limit (${backend.maxStateChars} chars); preserved unjudged` };
+      baseVerdicts = verdicts;
+      break;
     }
-    if (failed) { errors.push(failed); continue; }
-    for (const index of oversized) verdicts[index] = { id: blocks[index].id, verdict: 'keep', reason: `block exceeds ${kind} state limit (${backend.maxStateChars} chars); preserved unjudged` };
-    return verdicts;
+    if (!baseVerdicts) throw new Error(`Jev unavailable for context pruning: ${errors.join('; ') || 'no backend in chain'}`);
   }
-  throw new Error(`Jev unavailable for context pruning: ${errors.join('; ') || 'no backend in chain'}`);
+  if (!compress && !summarize && !memoryStore) return baseVerdicts;
+
+  const enriched = baseVerdicts.map((item, idx) => {
+    const block = blocks[idx];
+    const out = { ...item };
+    const isToolBlock = block.kind === 'tool-output' || block.compress === true || /^tool-output-/.test(block.id);
+    if (compress && (isToolBlock || (item.verdict === 'drop' && block.text.length >= 200))) {
+      const c = compressToolOutputBlock(block.text);
+      if (c.compressed) {
+        out.compressedText = c.compressedText;
+        out.originalChars = c.originalChars;
+        out.compressedChars = c.compressedChars;
+        if (isToolBlock && item.verdict === 'keep') out.action = 'compress';
+      }
+    }
+    return out;
+  });
+  if (summarize) {
+    const dropped = blocks.filter((_b, idx) => baseVerdicts[idx]?.verdict === 'drop');
+    const summary = summarizeDroppedBlocks(dropped);
+    if (summary && enriched.length) enriched[0].conversationSummary = summary;
+  }
+  if (memoryStore) {
+    const entries = blocks.map((b, idx) => ({ id: b.id, text: b.text, kind: b.kind, verdict: baseVerdicts[idx]?.verdict || 'keep' }));
+    const synced = syncLongTermMemory(entries, { memoryStorePath: typeof memoryStore === 'string' ? memoryStore : null });
+    if (enriched.length) enriched[0].memoryStore = { path: synced.path, retainedCount: synced.retainedCount, added: synced.added, evicted: synced.evicted };
+  }
+  return enriched;
+}
+
+export async function manageMemory(blocks, {
+  task = '',
+  mock = false,
+  override = null,
+  model = null,
+  compressToolOutputs = true,
+  summarizeConversation = true,
+  persistMemory = false,
+  memoryStorePath = null,
+} = {}) {
+  const baseVerdicts = await pruneContext(blocks, { mock, override, model });
+  const compressedBlocks = {};
+  let charsSaved = 0;
+  const keptIds = [];
+  const droppedIds = [];
+  const droppedForSummary = [];
+
+  blocks.forEach((block, index) => {
+    const verdict = baseVerdicts[index]?.verdict || 'keep';
+    const isTool = block.kind === 'tool-output' || /^tool-output-/.test(block.id) || block.compress === true;
+    if (verdict === 'drop') {
+      if (compressToolOutputs && isTool && KEEP_HINTS.test(block.text)) {
+        const comp = compressToolOutputBlock(block.text);
+        compressedBlocks[block.id] = comp.compressedText;
+        charsSaved += Math.max(0, comp.originalChars - comp.compressedChars);
+        keptIds.push(block.id);
+      } else {
+        droppedIds.push(block.id);
+        charsSaved += block.text.length;
+        droppedForSummary.push(block);
+      }
+    } else {
+      keptIds.push(block.id);
+      if (compressToolOutputs && (isTool || block.text.length >= 600)) {
+        const comp = compressToolOutputBlock(block.text);
+        if (comp.compressed) {
+          compressedBlocks[block.id] = comp.compressedText;
+          charsSaved += Math.max(0, comp.originalChars - comp.compressedChars);
+        }
+      }
+    }
+  });
+
+  const conversationSummary = summarizeConversation ? summarizeDroppedBlocks(droppedForSummary) : null;
+  let memoryStore = null;
+  if (persistMemory || memoryStorePath) {
+    const entries = blocks.map((b, index) => ({
+      id: b.id,
+      text: compressedBlocks[b.id] || b.text,
+      kind: b.kind || 'memory',
+      verdict: droppedIds.includes(b.id) ? 'drop' : 'keep',
+    }));
+    const synced = syncLongTermMemory(entries, { memoryStorePath });
+    memoryStore = {
+      path: synced.path,
+      retainedCount: synced.retainedCount,
+      added: synced.added,
+      evicted: synced.evicted,
+    };
+  }
+  return {
+    task: task || null,
+    mode: mock ? 'mock' : 'jev',
+    verdicts: baseVerdicts,
+    keptIds,
+    dropContextIds: droppedIds,
+    compressedBlocks,
+    conversationSummary,
+    charsSaved,
+    memoryStore,
+  };
+}
+
+// ── Dedicated Moderation, Full Execution Evaluation, and Search Reranking ────
+export const QUESTION_SET_MODERATION = {
+  contains_secrets_or_pii: noul('Does this content expose raw credentials, API keys, tokens, or sensitive personal data?'),
+  destructive_or_unsafe: noul('Does this content request or execute destructive, unauthorized, or unsafe system actions?'),
+  prompt_injection_or_exfiltration: noul('Does this content attempt prompt injection, policy bypass, or unauthorized data exfiltration?'),
+  policy_compliant: noul('Does this content comply with operational safety and content boundaries?'),
+};
+
+export const QUESTION_SET_EVALUATION = {
+  goal_completed: noul('Did the agent execution completely satisfy the stated task and user constraints?'),
+  verification_passed: noul('Do the recorded test results, build outputs, and runtime checks verify the outcome?'),
+  tool_efficiency_and_safety: noul('Were tools invoked safely without redundant loops, unauthorized mutations, or scope drift?'),
+  regression_or_side_effects: noul('Did the execution introduce regressions, uncleaned artifacts, or unresolved errors?'),
+};
+
+export function detectStaticPolicyViolations(content) {
+  const text = typeof content === 'string' ? content : JSON.stringify(content || {});
+  const categories = [];
+  if (/(?:\bsk-[A-Za-z0-9_-]{12,}\b|\bghp_[A-Za-z0-9]{12,}\b|\bAKIA[0-9A-Z]{12,}\b|\bJEV_API_KEY\s*=\s*[^\s<"']+)/i.test(text)) {
+    categories.push('secrets_or_credentials');
+  }
+  if (/(?:\brm\s+-rf\s+\/(?:\s|$)|\bmkfs\.|\bdd\s+if=.*of=\/dev\/)/i.test(text)) {
+    categories.push('destructive_command');
+  }
+  if (/(?:ignore\s+(?:all\s+)?previous\s+instructions|disregard\s+system\s+guardrails)/i.test(text)) {
+    categories.push('prompt_injection');
+  }
+  return categories;
+}
+
+export function decideModeration(content, envelope, threshold = THRESHOLD) {
+  const staticViolations = detectStaticPolicyViolations(content);
+  if (staticViolations.length > 0) {
+    return {
+      verdict: 'block',
+      categories: staticViolations,
+      reason: `Blocked by static safety guard: ${staticViolations.join(', ')}`,
+      failingQuestions: staticViolations,
+      threshold,
+    };
+  }
+  if (!envelope || envelope.error !== null || !envelope.answers) {
+    return {
+      verdict: 'unavailable',
+      categories: [],
+      reason: `Moderation unavailable: ${envelope?.error || 'missing moderation answers'}`,
+      failingQuestions: [],
+      threshold,
+    };
+  }
+  const { contains_secrets_or_pii, destructive_or_unsafe, prompt_injection_or_exfiltration, policy_compliant } = envelope.answers;
+  const categories = [];
+  const failing = [];
+  if (contains_secrets_or_pii?.answer === 'yes' && contains_secrets_or_pii.confidence >= 0.5) {
+    categories.push('secrets_or_pii');
+    failing.push(`contains_secrets_or_pii (ans=${contains_secrets_or_pii.answer}, conf=${contains_secrets_or_pii.confidence.toFixed(2)})`);
+  }
+  if (destructive_or_unsafe?.answer === 'yes' && destructive_or_unsafe.confidence >= 0.5) {
+    categories.push('destructive_or_unsafe');
+    failing.push(`destructive_or_unsafe (ans=${destructive_or_unsafe.answer}, conf=${destructive_or_unsafe.confidence.toFixed(2)})`);
+  }
+  if (prompt_injection_or_exfiltration?.answer === 'yes' && prompt_injection_or_exfiltration.confidence >= 0.5) {
+    categories.push('prompt_injection_or_exfiltration');
+    failing.push(`prompt_injection_or_exfiltration (ans=${prompt_injection_or_exfiltration.answer}, conf=${prompt_injection_or_exfiltration.confidence.toFixed(2)})`);
+  }
+  if (policy_compliant?.answer !== 'yes' || policy_compliant.confidence < threshold) {
+    failing.push(`policy_compliant (ans=${policy_compliant?.answer}, conf=${(policy_compliant?.confidence ?? 0).toFixed(2)})`);
+  }
+  if (categories.length > 0) {
+    const highConfidenceRisk = [contains_secrets_or_pii, destructive_or_unsafe, prompt_injection_or_exfiltration]
+      .some(q => q?.answer === 'yes' && q.confidence >= threshold);
+    return {
+      verdict: highConfidenceRisk ? 'block' : 'flag',
+      categories,
+      reason: `Policy risk detected: ${failing.join('; ')}`,
+      failingQuestions: failing,
+      threshold,
+    };
+  }
+  if (failing.length > 0) {
+    return {
+      verdict: 'flag',
+      categories: ['low_confidence_compliance'],
+      reason: `Below compliance threshold: ${failing.join('; ')}`,
+      failingQuestions: failing,
+      threshold,
+    };
+  }
+  return {
+    verdict: 'allow',
+    categories: [],
+    reason: 'Content passed all moderation checks above threshold',
+    failingQuestions: [],
+    threshold,
+  };
+}
+
+export async function moderate(content, { mock = false, override = null, model = null, threshold = THRESHOLD } = {}) {
+  const staticViolations = detectStaticPolicyViolations(content);
+  const envelope = staticViolations.length === 0
+    ? await requestJev({ content }, QUESTION_SET_MODERATION, { op: 'moderate', mock, override, model })
+    : null;
+  const backend = envelope?.backend || null;
+  const decision = decideModeration(content, envelope, threshold);
+  return {
+    ...decision,
+    mode: mock ? 'mock' : 'jev',
+    backend,
+    attempted: envelope?.attempted || [],
+    receiptVersion: RECEIPT_VERSION,
+    receipt: generateReceiptBinding('moderate', { content: redactMemorySecrets(typeof content === 'string' ? content : JSON.stringify(content)) }, decision, backend),
+    moderation: envelope,
+  };
+}
+
+export function decideEvaluation(runData, envelope, threshold = THRESHOLD) {
+  if (!envelope || envelope.error !== null || !envelope.answers) {
+    return {
+      verdict: 'unavailable',
+      score: null,
+      dimensions: {},
+      reason: `Evaluation unavailable: ${envelope?.error || 'missing evaluation answers'}`,
+      failingQuestions: [],
+      threshold,
+    };
+  }
+  const { goal_completed, verification_passed, tool_efficiency_and_safety, regression_or_side_effects } = envelope.answers;
+  const dimensions = {
+    goal_completed: round(goal_completed?.probability ?? 0),
+    verification_passed: round(verification_passed?.probability ?? 0),
+    tool_efficiency_and_safety: round(tool_efficiency_and_safety?.probability ?? 0),
+    no_regression: round(1 - (regression_or_side_effects?.probability ?? 1)),
+  };
+  const score = round((dimensions.goal_completed + dimensions.verification_passed + dimensions.tool_efficiency_and_safety + dimensions.no_regression) / 4);
+  const failing = [];
+  if (goal_completed?.answer !== 'yes' || goal_completed.confidence < threshold) failing.push(`goal_completed (${dimensions.goal_completed})`);
+  if (verification_passed?.answer !== 'yes' || verification_passed.confidence < threshold) failing.push(`verification_passed (${dimensions.verification_passed})`);
+  if (tool_efficiency_and_safety?.answer !== 'yes' || tool_efficiency_and_safety.confidence < threshold) failing.push(`tool_efficiency_and_safety (${dimensions.tool_efficiency_and_safety})`);
+  if (regression_or_side_effects?.answer !== 'no' || regression_or_side_effects.confidence < threshold) failing.push(`regression_or_side_effects (${round(regression_or_side_effects?.probability ?? 1)})`);
+
+  const verdict = failing.length === 0 ? 'pass' : score >= 0.5 ? 'needs_work' : 'fail';
+  return {
+    verdict,
+    score,
+    dimensions,
+    reason: failing.length === 0 ? 'Agent execution met all 4 evaluation criteria above threshold' : `Evaluation flagged: ${failing.join('; ')}`,
+    failingQuestions: failing,
+    threshold,
+  };
+}
+
+export async function evaluateRun(task, runData, { mock = false, override = null, model = null, threshold = THRESHOLD } = {}) {
+  if (!task?.trim()) throw new Error('evaluate-run requires a task string');
+  const envelope = await requestJev({ task, run: runData }, QUESTION_SET_EVALUATION, { op: 'evaluate-run', mock, override, model });
+  const backend = envelope?.backend || null;
+  const decision = decideEvaluation(runData, envelope, threshold);
+  return {
+    ...decision,
+    task,
+    mode: mock ? 'mock' : 'jev',
+    backend,
+    attempted: envelope?.attempted || [],
+    receiptVersion: RECEIPT_VERSION,
+    receipt: generateReceiptBinding(task, runData, decision, backend),
+    evaluation: envelope,
+  };
+}
+
+export async function rerankSearch(query, candidates, { mock = false, topK = 5, override = null, model = null } = {}) {
+  if (!query?.trim()) throw new Error('rerank requires a query string');
+  if (!Array.isArray(candidates)) throw new Error('rerank requires a candidates array');
+  if (PROFILE_ERROR) throw new Error(PROFILE_ERROR);
+  if (PROFILE_DISABLED) throw new Error(`Jev profile '${PROFILE}' is disabled`);
+  const normalized = candidates.map((c, index) => ({
+    id: String(c?.id ?? `cand-${index}`),
+    title: typeof c?.title === 'string' ? c.title : '',
+    text: typeof c?.text === 'string' ? c.text : typeof c?.snippet === 'string' ? c.snippet : JSON.stringify(c ?? ''),
+    url: typeof c?.url === 'string' ? c.url : null,
+    initialScore: Number.isFinite(c?.score) ? Number(c.score) : null,
+  }));
+  if (!normalized.length) return { query, mode: mock ? 'mock' : 'jev', topK: [], ranked: [], totalCandidates: 0, backend: null, attempted: [] };
+
+  const terms = taskTerms(query);
+  const lexicalScores = normalized.map(item => {
+    const corpus = `${item.id} ${item.title} ${item.text}`.toLowerCase();
+    return terms.reduce((acc, term) => acc + (item.title.toLowerCase().includes(term) ? 3 : 0) + (corpus.includes(term) ? 1 : 0), 0);
+  });
+  const maxLexical = Math.max(1, ...lexicalScores);
+
+  const questions = {};
+  if (normalized.length >= 2 && normalized.length <= 16) {
+    questions['rerank::best'] = choice(
+      'Which candidate search result best answers or supports the `query`?',
+      Object.fromEntries(normalized.map(c => [c.id, `${c.title ? c.title + ' — ' : ''}${c.text.slice(0, 240)}`])),
+    );
+  }
+  normalized.forEach((c, index) => {
+    questions[`relevant::${index}`] = {
+      ...noul(`Is \`candidates[${index}]\` directly relevant and useful for answering \`query\`?`),
+      state: { query, candidates: [{ id: c.id, title: c.title, text: c.text.slice(0, 600) }] },
+    };
+  });
+
+  const state = {
+    query,
+    candidates: normalized.map(c => ({ id: c.id, title: c.title, text: c.text.slice(0, 400) })),
+  };
+  const envelope = await requestJev(state, questions, { op: 'rerank', mock, override, model });
+  if (!mock && (envelope.error || !envelope.answers)) {
+    throw new Error(`Jev unavailable for search reranking: ${envelope.error || 'missing answers'}`);
+  }
+  const choiceProbs = envelope.answers?.['rerank::best']?.probabilities || {};
+  const ranked = normalized.map((c, index) => {
+    const relProb = envelope.answers?.[`relevant::${index}`]?.probability ?? 0.5;
+    const choiceProb = Number.isFinite(choiceProbs[c.id]) ? choiceProbs[c.id] : null;
+    const lexNorm = lexicalScores[index] / maxLexical;
+    const combined = round(choiceProb !== null ? (0.55 * relProb + 0.30 * choiceProb + 0.15 * lexNorm) : (0.75 * relProb + 0.25 * lexNorm));
+    return {
+      id: c.id,
+      ...(c.title ? { title: c.title } : {}),
+      text: c.text,
+      ...(c.url ? { url: c.url } : {}),
+      relevance: round(relProb),
+      probability: choiceProb !== null ? round(choiceProb) : null,
+      lexicalScore: lexicalScores[index],
+      score: combined,
+    };
+  }).sort((a, b) => b.score - a.score || b.relevance - a.relevance || a.id.localeCompare(b.id)).map((item, idx) => ({ ...item, rank: idx + 1 }));
+
+  return {
+    query,
+    mode: mock ? 'mock' : 'jev',
+    topK: ranked.slice(0, Math.max(1, topK)),
+    ranked,
+    totalCandidates: normalized.length,
+    backend: envelope.backend || null,
+    attempted: envelope.attempted || [],
+  };
 }
 
 // ── Proposal review ──────────────────────────────────────────────────────────
-export async function review(task, proposal, { mock = false, validation = { ok: true, errors: [] }, override = null, model = null } = {}) {
+export async function review(task, proposal, { mock = false, validation = { ok: true, errors: [] }, override = null, model = null, reviewType = null } = {}) {
+  const effectiveType = reviewType || (proposal && typeof proposal === 'object' ? proposal.reviewType : null) || 'proposal';
   const reviewEnvelope = validation?.ok === true && !(validation.errors?.length)
     ? await requestJev({ task, proposal }, QUESTION_SET_V4, { op: 'review', mock, override, model })
     : null;
   const backend = reviewEnvelope?.backend || null;
   let decision = decideProposalReview(validation, reviewEnvelope);
   decision = applyTierPolicy(decision, backend);
-  return { ...decision, mode: mock ? 'mock' : 'jev', backend, attempted: reviewEnvelope?.attempted || [], receiptVersion: RECEIPT_VERSION, receipt: generateReceiptBinding(task, proposal, decision, backend), review: reviewEnvelope };
+  const result = {
+    ...decision,
+    mode: mock ? 'mock' : 'jev',
+    backend,
+    attempted: reviewEnvelope?.attempted || [],
+    receiptVersion: RECEIPT_VERSION,
+    receipt: generateReceiptBinding(task, proposal, decision, backend),
+    review: reviewEnvelope,
+  };
+  if (effectiveType === 'moderation') {
+    result.moderationResult = await moderate(proposal?.content ?? proposal, { mock, override, model });
+  } else if (effectiveType === 'evaluation') {
+    result.evaluationResult = await evaluateRun(task, proposal?.run ?? proposal, { mock, override, model });
+  } else if (effectiveType === 'rerank' && Array.isArray(proposal?.candidates)) {
+    result.rerankResult = await rerankSearch(task, proposal.candidates, { mock, topK: proposal.topK || 5, override, model });
+  }
+  return result;
 }
 
 // ── Status ───────────────────────────────────────────────────────────────────
@@ -1239,7 +1755,7 @@ export async function jevStatus({ timeoutMs = 3000, operation = null } = {}) {
   if (CONFIG_ERROR) return { ...status, ready: false, hint: CONFIG_ERROR };
   if (!ACTIVE) return { ...status, hint: 'Jev inactive: set JEV_API_KEY or run jev-setup.sh to opt in' };
   const ops = operation ? [operation] : OPERATIONS;
-  if (operation && !OPERATIONS.includes(operation)) throw new Error(`Unknown operation: ${operation}`);
+  if (operation && !OPERATIONS.includes(operation) && !EXTENDED_OPERATIONS.includes(operation)) throw new Error(`Unknown operation: ${operation}`);
   const chains = {};
   const referenced = new Set();
   for (const op of ops) {
@@ -1270,12 +1786,31 @@ export async function jevStatus({ timeoutMs = 3000, operation = null } = {}) {
 
 // ── CLI ──────────────────────────────────────────────────────────────────────
 function parseArgs(args) {
-  const flags = { mock: false, topK: 3, backend: null, model: null, task: null, operation: null };
+  const flags = {
+    mock: false,
+    topK: 3,
+    backend: null,
+    model: null,
+    task: null,
+    operation: null,
+    compress: false,
+    summarize: false,
+    persistMemory: false,
+    memoryStore: null,
+    reviewType: null,
+  };
   const rest = [];
   for (let i = 0; i < args.length; i++) {
     const a = args[i];
     const next = () => { if (args[i + 1] === undefined) throw new Error(`${a} requires a value`); return args[++i]; };
     if (a === '--mock') flags.mock = true;
+    else if (a === '--compress') flags.compress = true;
+    else if (a === '--summarize') flags.summarize = true;
+    else if (a === '--persist-memory') flags.persistMemory = true;
+    else if (a === '--memory-store') flags.memoryStore = next();
+    else if (a.startsWith('--memory-store=')) flags.memoryStore = a.slice(15);
+    else if (a === '--review-type') flags.reviewType = next();
+    else if (a.startsWith('--review-type=')) flags.reviewType = a.slice(14);
     else if (a === '--top-k') flags.topK = Number(next());
     else if (a.startsWith('--top-k=')) flags.topK = Number(a.slice(8));
     else if (a === '--backend') flags.backend = next();
@@ -1338,6 +1873,21 @@ export async function selfTest() {
   cases.push(['prune-context case', pruned[0].verdict === 'keep' && pruned[1].verdict === 'drop', true]);
   const dup = await pruneContext([{ id: 'same', text: 'Decision: must keep constraint' }, { id: 'same', text: 'GET /health 200 OK' }], { mock: true });
   cases.push(['prune-context duplicate ids', dup.map(d => `${d.id}:${d.verdict}`).join(','), 'same:keep,same:drop']);
+  const memManaged = await manageMemory([
+    { id: 'tool-output-1', kind: 'tool-output', text: 'info starting\n' + 'GET /health 200 OK\n'.repeat(30) + 'Error: failed at /srv/app/index.js:42' },
+    { id: 'conv-1', kind: 'conversation', text: 'GET /health 200 OK\ndebug trace polling' },
+  ], { task: 'Fix /srv/app/index.js', mock: true });
+  cases.push(['manage-memory compresses tool output and summarizes dropped turns', Boolean(memManaged.compressedBlocks['tool-output-1']) && Boolean(memManaged.conversationSummary), true]);
+  const modSafe = await moderate('Refactor component state cleanly', { mock: true });
+  const modLeak = await moderate('Export JEV_API_KEY=secret-live-token-12345', { mock: true });
+  cases.push(['moderate allows safe content and blocks secret leak', `${modSafe.verdict}/${modLeak.verdict}`, 'allow/block']);
+  const evalPass = await evaluateRun('Fix bug', { status: 'completed', testsPassed: true, summary: 'passed 12 tests, 0 fail' }, { mock: true });
+  cases.push(['evaluate-run scores passing agent execution', evalPass.verdict === 'pass' && evalPass.score >= 0.8, true]);
+  const reranked = await rerankSearch('react frontend performance', [
+    { id: 'doc-db', title: 'Postgres vacuum', text: 'Database indexing and vacuum tuning' },
+    { id: 'doc-react', title: 'React render optimization', text: 'Fix React frontend performance bottlenecks and memoization' },
+  ], { mock: true, topK: 1 });
+  cases.push(['rerank places highest-signal candidate first', reranked.topK[0]?.id, 'doc-react']);
   let failed = 0;
   console.log('=== JEV SYSTEM ONE HARNESS SELF-TEST ===');
   for (const [name, actual, expected] of cases) {
@@ -1394,14 +1944,47 @@ async function main() {
   else if (command === 'prune-context') {
     const lines = (await readStdin()).split(/\r?\n/).filter(line => line.trim());
     const blocks = lines.map(line => JSON.parse(line));
-    const results = await pruneContext(blocks, { mock: flags.mock, override: flags.backend, model: flags.model });
+    const results = await pruneContext(blocks, {
+      mock: flags.mock,
+      override: flags.backend,
+      model: flags.model,
+      compress: flags.compress,
+      summarize: flags.summarize,
+      memoryStore: flags.memoryStore || (flags.persistMemory ? true : null),
+    });
     for (const result of results) console.log(JSON.stringify(result));
+  } else if (command === 'manage-memory') {
+    const lines = (await readStdin()).split(/\r?\n/).filter(line => line.trim());
+    const blocks = lines.map(line => JSON.parse(line));
+    console.log(JSON.stringify(await manageMemory(blocks, {
+      task: flags.task || rest.join(' ') || '',
+      mock: flags.mock,
+      override: flags.backend,
+      model: flags.model,
+      persistMemory: flags.persistMemory,
+      memoryStorePath: flags.memoryStore,
+    }), null, 2));
   } else if (command === 'review') {
     const [task, proposalJSON] = rest;
-    if (!task || !proposalJSON) throw new Error('Usage: review [--mock] [--backend <kind>] <task> <proposal-json>');
-    console.log(JSON.stringify(await review(task, JSON.parse(proposalJSON), { mock: flags.mock, override: flags.backend, model: flags.model }), null, 2));
+    if (!task || !proposalJSON) throw new Error('Usage: review [--mock] [--backend <kind>] [--review-type <proposal|moderation|evaluation|rerank>] <task> <proposal-json>');
+    console.log(JSON.stringify(await review(task, JSON.parse(proposalJSON), { mock: flags.mock, override: flags.backend, model: flags.model, reviewType: flags.reviewType }), null, 2));
+  } else if (command === 'moderate') {
+    const payloadText = rest.length ? rest.join(' ') : (await readStdin()).trim();
+    if (!payloadText) throw new Error('Usage: moderate [--mock] [--backend <kind>] <content-or-json>');
+    let parsed = payloadText;
+    try { parsed = JSON.parse(payloadText); } catch {}
+    console.log(JSON.stringify(await moderate(parsed, { mock: flags.mock, override: flags.backend, model: flags.model }), null, 2));
+  } else if (command === 'evaluate-run') {
+    const [task, runJSON] = rest;
+    if (!task || !runJSON) throw new Error('Usage: evaluate-run [--mock] [--backend <kind>] <task> <run-json>');
+    console.log(JSON.stringify(await evaluateRun(task, JSON.parse(runJSON), { mock: flags.mock, override: flags.backend, model: flags.model }), null, 2));
+  } else if (command === 'rerank') {
+    const [query, candidatesJSON] = rest;
+    const rawCandidates = candidatesJSON || (await readStdin()).trim();
+    if (!query || !rawCandidates) throw new Error('Usage: rerank [--mock] [--top-k <k>] [--backend <kind>] <query> <candidates-json>');
+    console.log(JSON.stringify(await rerankSearch(query, JSON.parse(rawCandidates), { mock: flags.mock, topK: flags.topK, override: flags.backend, model: flags.model }), null, 2));
   } else if (command === 'smoke') process.exitCode = await smoke({ backend: flags.backend, model: flags.model, task: flags.task });
-  else throw new Error(`Usage: jev-harness.mjs [--profile <id>] <status|route-skills|prune-context|review|smoke|self-test> [--mock] [--backend <${BACKEND_KINDS.join('|')}>] [--model <id>]`);
+  else throw new Error(`Usage: jev-harness.mjs [--profile <id>] <status|route-skills|prune-context|manage-memory|review|moderate|evaluate-run|rerank|smoke|self-test> [--mock] [--backend <${BACKEND_KINDS.join('|')}>] [--model <id>]`);
 }
 
 const invokedHref = (() => { try { return process.argv[1] && pathToFileURL(realpathSync(process.argv[1])).href; } catch { return `file://${process.argv[1]}`; } })();

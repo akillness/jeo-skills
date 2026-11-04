@@ -16,6 +16,9 @@ const installSafety_native = [
   'plugins/jeopi/index.mjs', 'plugins/jeopi/package.json', 'plugins/jeopi/shared/jev-controller.mjs',
   'plugins/claude/hooks/jev-hook.mjs', 'plugins/claude/hooks/hooks.json', 'plugins/claude/.claude-plugin/plugin.json',
   'plugins/claude/shared/jev-controller.mjs',
+  'plugins/jeo/index.mjs', 'plugins/jeo/package.json', 'plugins/jeo/shared/jev-controller.mjs',
+  'plugins/gjc/index.mjs', 'plugins/gjc/package.json', 'plugins/gjc/shared/jev-controller.mjs',
+  'plugins/agy/index.mjs', 'plugins/agy/package.json', 'plugins/agy/hooks/hooks.json', 'plugins/agy/hooks/jev-hook.mjs', 'plugins/agy/shared/jev-controller.mjs',
 ];
 const installSafety_catalog = join(installSafety_repo, '.agent-skills', 'skills.json');
 

@@ -9,6 +9,8 @@ export function createJevExtension(api, options = {}) {
     envelope: 'systemPrompt',
     controllerPath: options.controllerPath,
     timeoutMs: options.timeoutMs,
+    toolMatcher: options.toolMatcher,
+    memoryMode: options.memoryMode,
   });
 }
 

@@ -1,0 +1,13 @@
+{
+  "name": "jev-jeo-extension",
+  "version": "0.1.0",
+  "description": "Jev routing and review extension for jeo",
+  "type": "module",
+  "jeo": {
+    "version": "0.1.0",
+    "name": "jev-jeo-extension",
+    "extensions": [
+      "./index.mjs"
+    ]
+  }
+}

@@ -11,7 +11,10 @@ const DEFAULT_CONTROLLER_CANDIDATES = [
 
 export const JEV_ADVISORY_CUSTOM_TYPE = 'jev-advisory';
 export const JEV_SKILL_CUSTOM_TYPE = 'jev-skill-context';
+export const JEV_MEMORY_SUMMARY_CUSTOM_TYPE = 'jev-memory-summary';
 export const DEFAULT_CONTROLLER_TIMEOUT_MS = 25_000;
+export const DEFAULT_PRETOOL_MATCHER = 'Bash|apply_patch|Write|Edit|MultiEdit|NotebookEdit|exec_command|write_stdin';
+const DEFAULT_TOOL_MATCHER_RE = /^(?:Bash|bash|apply_patch|Write|write|Edit|edit|MultiEdit|NotebookEdit|exec_command|write_stdin)$/;
 const CONTROLLER_TIMEOUT_GRACE_MS = 100;
 const CONTROLLER_TIMEOUT_STARTUP_GRACE_MS = 50;
 
@@ -71,10 +74,12 @@ export function invokeControllerHook({ agent, profile, input, inputStream, contr
     let timeoutTimer;
     const timeoutResult = { ok: false, error: `Jev controller timed out after ${timeout}ms`, code: 'CONTROLLER_TIMEOUT' };
     const onTimeout = () => {
+      timeoutTimer = undefined;
       if (settled) return;
       timedOut = true;
       child.kill('SIGTERM');
       forceKillTimer = setTimeout(() => {
+        forceKillTimer = undefined;
         if (!settled) {
           child.kill('SIGKILL');
           finish(timeoutResult);
@@ -84,8 +89,8 @@ export function invokeControllerHook({ agent, profile, input, inputStream, contr
     const finish = (result) => {
       if (settled) return;
       settled = true;
-      clearTimeout(timeoutTimer);
-      clearTimeout(forceKillTimer);
+      if (timeoutTimer !== undefined) clearTimeout(timeoutTimer);
+      if (forceKillTimer !== undefined) clearTimeout(forceKillTimer);
       if (inputStream && typeof inputStream.unpipe === 'function') inputStream.unpipe(child.stdin);
       child.stdin.destroy();
       resolveResult(result);
@@ -148,30 +153,54 @@ export function advisoryMessage(result, context = extractAdvisoryContext(result)
   };
 }
 
+function compileToolMatcher(matcher) {
+  if (matcher instanceof RegExp) return matcher;
+  if (typeof matcher === 'string' && matcher.trim()) {
+    try { return new RegExp(`^(?:${matcher.trim()})$`); } catch { return DEFAULT_TOOL_MATCHER_RE; }
+  }
+  return DEFAULT_TOOL_MATCHER_RE;
+}
+
 /**
- * Register the provider-owned before_agent_start callback used by jeopi/OMP/Pi.
+ * Register the provider-owned before_agent_start, context, and tool_call callbacks
+ * used by jeopi/jeo/OMP/Pi/gjc.
  * Advisory remains the default. Explicit assist profiles can also inject skill
- * instructions and prune only Jev-owned custom messages from LLM input. Neither
- * callback changes permissions, persisted history, tools, or the host model.
+ * instructions and prune Jev-owned custom messages (or extended memory blocks when
+ * memoryMode === 'extended') from LLM input. PreToolUse action review runs on
+ * matched tool calls when reviewMode is advisory or enforce.
  */
-export function registerBeforeAgentStart(api, { agent, profile, envelope = 'systemPrompt', controllerPath, timeoutMs } = {}) {
+export function registerBeforeAgentStart(api, { agent, profile, envelope = 'systemPrompt', controllerPath, timeoutMs, toolMatcher, memoryMode: configuredMemoryMode } = {}) {
   if (!api || typeof api.on !== 'function') return { registered: false, agent, profile: profile || null, advisory: true };
   let latestPrompt = '';
   let pruneEnabled = false;
+  let activeMemoryMode = configuredMemoryMode || 'jev-only';
   let generation = 0;
+  const matcherRe = compileToolMatcher(toolMatcher);
+
   api.on('before_agent_start', async (event = {}) => {
     const currentGeneration = ++generation;
     latestPrompt = typeof event.prompt === 'string' ? event.prompt : '';
     pruneEnabled = false;
+    activeMemoryMode = configuredMemoryMode || 'jev-only';
     const result = await invokeControllerHook({
       agent,
       profile,
       controllerPath,
       timeoutMs,
-      input: { type: 'UserPromptSubmit', prompt: String(event.prompt || ''), agent, profile: profile || null },
+      input: {
+        type: 'UserPromptSubmit',
+        prompt: String(event.prompt || ''),
+        agent,
+        profile: profile || null,
+        ...(event.sessionId || event.session_id ? { session_id: String(event.sessionId || event.session_id) } : {}),
+        ...(event.turnId || event.turn_id ? { turn_id: String(event.turnId || event.turn_id) } : {}),
+      },
     });
     const assist = result?.ok === true && result?.enabled === true && result?.runtime?.mode === 'assist';
-    if (generation === currentGeneration) pruneEnabled = assist && result.runtime.pruneContext === true;
+    if (generation === currentGeneration) {
+      pruneEnabled = assist && result.runtime.pruneContext === true;
+      if (typeof result?.runtime?.memoryMode === 'string') activeMemoryMode = result.runtime.memoryMode;
+    }
     const skillContext = assist && typeof result.runtime.skillContext === 'string' ? result.runtime.skillContext.trim() : '';
     const skillMessage = skillContext ? {
       customType: JEV_SKILL_CUSTOM_TYPE,
@@ -193,33 +222,146 @@ export function registerBeforeAgentStart(api, { agent, profile, envelope = 'syst
     const prior = Array.isArray(event.systemPrompt) ? event.systemPrompt : [];
     return { systemPrompt: [...prior, context], ...(skillMessage ? { message: skillMessage } : {}) };
   });
+
   api.on('context', async (event = {}) => {
-    // Native context events contain a copy of LLM input. Never serialize or
-    // remove user, assistant, system, or tool messages, including tool pairs.
     if (!pruneEnabled || !latestPrompt.trim() || !Array.isArray(event.messages)) return {};
     const isSkillMessage = message => message?.role === 'custom' && message.customType === JEV_SKILL_CUSTOM_TYPE && typeof message.content === 'string';
-    let newest = event.messages.length - 1;
-    while (newest >= 0 && !isSkillMessage(event.messages[newest])) newest -= 1;
+    const isToolResultMessage = message => (message?.role === 'toolResult' || message?.role === 'tool') && typeof message.content === 'string';
+    const isConvMessage = message => (message?.role === 'user' || message?.role === 'assistant') && typeof message.content === 'string';
+
+    if (activeMemoryMode !== 'extended') {
+      // Default jev-only boundary: never serialize or remove user, assistant,
+      // system, or tool messages, including tool pairs.
+      let newest = event.messages.length - 1;
+      while (newest >= 0 && !isSkillMessage(event.messages[newest])) newest -= 1;
+      const eligible = [];
+      let chars = 0;
+      for (let index = 0; index < newest && eligible.length < 32; index += 1) {
+        const message = event.messages[index];
+        if (!isSkillMessage(message) || chars + message.content.length > 262_144) continue;
+        eligible.push({ id: `jev-context-${index}`, text: message.content, index });
+        chars += message.content.length;
+      }
+      if (!eligible.length) return {};
+      const currentGeneration = generation;
+      const result = await invokeControllerHook({
+        agent, profile, controllerPath, timeoutMs,
+        input: { type: 'Context', prompt: latestPrompt, agent, profile: profile || null, blocks: eligible.map(({ id, text }) => ({ id, text })) },
+      });
+      if (generation !== currentGeneration || result?.ok !== true || result?.enabled !== true || result?.runtime?.mode !== 'assist' || !Array.isArray(result.runtime.dropContextIds)) return {};
+      const dropIds = new Set(result.runtime.dropContextIds.filter(id => typeof id === 'string'));
+      const dropIndices = new Set(eligible.filter(({ id }) => dropIds.has(id)).map(({ index }) => index));
+      return dropIndices.size ? { messages: event.messages.filter((_message, index) => !dropIndices.has(index)) } : {};
+    }
+
+    // Extended memory management mode: supports Jev skill messages, tool output
+    // compression, and older conversation turn summarization while keeping the
+    // newest message intact.
+    const cutoff = Math.max(0, event.messages.length - 1);
     const eligible = [];
     let chars = 0;
-    // Bound the request before JSON serialization. Excluded messages and the
-    // newest skill instructions stay intact, even if a response names them.
-    for (let index = 0; index < newest && eligible.length < 32; index += 1) {
+    for (let index = 0; index < cutoff && eligible.length < 32; index += 1) {
       const message = event.messages[index];
-      if (!isSkillMessage(message) || chars + message.content.length > 262_144) continue;
-      eligible.push({ id: `jev-context-${index}`, text: message.content, index });
+      let id = null;
+      let kind = null;
+      if (isSkillMessage(message)) { id = `jev-context-${index}`; kind = 'jev-skill'; }
+      else if (isToolResultMessage(message)) { id = `tool-output-${index}`; kind = 'tool-output'; }
+      else if (isConvMessage(message) && index < cutoff - 1) { id = `conv-turn-${index}`; kind = 'conversation'; }
+      if (!id || chars + message.content.length > 262_144) continue;
+      eligible.push({ id, kind, text: message.content, index });
       chars += message.content.length;
     }
     if (!eligible.length) return {};
     const currentGeneration = generation;
     const result = await invokeControllerHook({
       agent, profile, controllerPath, timeoutMs,
-      input: { type: 'Context', prompt: latestPrompt, agent, profile: profile || null, blocks: eligible.map(({ id, text }) => ({ id, text })) },
+      input: {
+        type: 'Context',
+        memoryMode: 'extended',
+        prompt: latestPrompt,
+        agent,
+        profile: profile || null,
+        blocks: eligible.map(({ id, kind, text }) => ({ id, kind, text })),
+      },
     });
-    if (generation !== currentGeneration || result?.ok !== true || result?.enabled !== true || result?.runtime?.mode !== 'assist' || !Array.isArray(result.runtime.dropContextIds)) return {};
-    const dropIds = new Set(result.runtime.dropContextIds.filter(id => typeof id === 'string'));
-    const dropIndices = new Set(eligible.filter(({ id }) => dropIds.has(id)).map(({ index }) => index));
-    return dropIndices.size ? { messages: event.messages.filter((_message, index) => !dropIndices.has(index)) } : {};
+    if (generation !== currentGeneration || result?.ok !== true || result?.enabled !== true || result?.runtime?.mode !== 'assist') return {};
+    const dropIds = new Set(Array.isArray(result.runtime.dropContextIds) ? result.runtime.dropContextIds.filter(id => typeof id === 'string') : []);
+    const compressed = result.runtime.compressedBlocks && typeof result.runtime.compressedBlocks === 'object' ? result.runtime.compressedBlocks : {};
+    const idByIndex = new Map(eligible.map(item => [item.index, item.id]));
+    let changed = false;
+    const nextMessages = [];
+    for (let index = 0; index < event.messages.length; index += 1) {
+      const id = idByIndex.get(index);
+      if (id && dropIds.has(id)) {
+        changed = true;
+        continue;
+      }
+      if (id && typeof compressed[id] === 'string' && compressed[id] !== event.messages[index].content) {
+        changed = true;
+        nextMessages.push({ ...event.messages[index], content: compressed[id] });
+      } else {
+        nextMessages.push(event.messages[index]);
+      }
+    }
+    if (typeof result.runtime.conversationSummary === 'string' && result.runtime.conversationSummary.trim() && dropIds.size > 0) {
+      changed = true;
+      nextMessages.unshift({
+        role: 'custom',
+        customType: JEV_MEMORY_SUMMARY_CUSTOM_TYPE,
+        content: result.runtime.conversationSummary.trim(),
+        display: false,
+        attribution: 'agent',
+      });
+    }
+    return changed ? { messages: nextMessages } : {};
   });
+
+  const handleToolCall = async (event = {}) => {
+    const toolName = String(event.toolName || event.name || event.tool_name || event.tool || '');
+    if (!toolName || !matcherRe.test(toolName)) return {};
+    const toolInput = event.input ?? event.arguments ?? event.tool_input ?? {};
+    const result = await invokeControllerHook({
+      agent,
+      profile,
+      controllerPath,
+      timeoutMs,
+      input: {
+        type: 'PreToolUse',
+        hook_event_name: 'PreToolUse',
+        agent,
+        profile: profile || null,
+        prompt: latestPrompt,
+        task: latestPrompt,
+        session_id: String(event.sessionId || event.session_id || 'native-session'),
+        turn_id: String(event.turnId || event.turn_id || `turn-${generation}`),
+        tool_name: toolName,
+        tool_input: toolInput,
+      },
+    });
+    const out = result?.hookSpecificOutput;
+    if (!out || typeof out !== 'object') return {};
+    if (out.permissionDecision === 'deny') {
+      return {
+        block: true,
+        cancel: true,
+        permissionDecision: 'deny',
+        permissionDecisionReason: out.permissionDecisionReason || 'Jev withheld action.',
+        reason: out.permissionDecisionReason || 'Jev withheld action.',
+        hookSpecificOutput: out,
+      };
+    }
+    if (typeof out.additionalContext === 'string' && out.additionalContext.trim()) {
+      return {
+        block: false,
+        additionalContext: out.additionalContext.trim(),
+        hookSpecificOutput: out,
+      };
+    }
+    return {};
+  };
+
+  api.on('tool_call', handleToolCall);
+  api.on('before_tool_call', handleToolCall);
+
   return { registered: true, agent, profile: profile || null, advisory: true };
 }
