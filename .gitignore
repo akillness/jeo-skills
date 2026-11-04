@@ -3,7 +3,9 @@
 # CI and catalog-tooling surface. A new root-level file or directory is never
 # committed until it gets its own `!/name` line here.
 /*
-# Hidden (dot-prefixed) root folders stay ignored except these two.
+# Hidden (dot-prefixed) root folders are ignored unless re-included below. Explicit so a
+# future change to the `/*` line cannot silently expose .github, .jeo, .claude, .mex, etc.
+/.*/
 !/.agent-skills/
 !/.frontmatter/
 !/assets/
