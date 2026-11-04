@@ -195,7 +195,7 @@ if [ "${JEO_SKILLS_STAR:-}" = true ] && [ "${JEO_SKILLS_DRY_RUN:-false}" != true
       tmp=$(mktemp "${TMPDIR:-/tmp}/jeo-skills-star.XXXXXXXX") || exit 1
       trap 'rm -f "$tmp"' EXIT
       curl --disable --proto '=https' --max-time 15 -fsS 'https://raw.githubusercontent.com/akillness/jeo-skills/main/install.sh' -o "$tmp" || exit 1
-      python3 -I -c 'import hashlib,sys; sys.exit(hashlib.sha256(open(sys.argv[1], "rb").read()).hexdigest() != "35a1e031f807396499df274d91cfd503fdef0afe46cfb2c502e5679c74c18f6b")' "$tmp" || exit 1
+      python3 -I -c 'import hashlib,sys; sys.exit(hashlib.sha256(open(sys.argv[1], "rb").read()).hexdigest() != "389ddac2052a7e66b5c50874b08f71ee57b955a9e6a30a67c3b10bf039c090dd")' "$tmp" || exit 1
       JEO_SKILLS_STAR_ONLY=true JEO_SKILLS_STAR=true bash "$tmp"
     else
       exit 1
