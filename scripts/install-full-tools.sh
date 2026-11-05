@@ -18,7 +18,11 @@ if [ "${1:-}" = "--extended" ]; then
 fi
 PROJECT_DIR=${1:-$PWD}
 SPEC_KIT_INTEGRATION=${SPEC_KIT_INTEGRATION:-codex}
-SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" 2>/dev/null && pwd || echo "$PWD")
+SCRIPT_DIR=$(cd "${BASH_SOURCE[0]%/*}" 2>/dev/null && pwd || echo "$PWD")
+case ":$PATH:" in
+  *":$HOME/.local/bin:"*) ;;
+  *) export PATH="$HOME/.local/bin:${CARGO_HOME:-$HOME/.cargo}/bin:$PATH" ;;
+esac
 failures=()
 successes=()
 total_tools=6
@@ -178,6 +182,11 @@ try:
                 except FileExistsError:
                     pass
                 try:
+                    st = os.stat(entry.name, dir_fd=dest_fd, follow_symlinks=False)
+                    if stat.S_ISLNK(st.st_mode):
+                        raise OSError(errno.ELOOP, "Symlink directory refused")
+                    if not stat.S_ISDIR(st.st_mode):
+                        raise OSError(errno.ENOTDIR, "Not a directory")
                     child_fd = os.open(entry.name, flags, dir_fd=dest_fd)
                 except OSError as exc:
                     if exc.errno not in (errno.ELOOP, errno.ENOTDIR):

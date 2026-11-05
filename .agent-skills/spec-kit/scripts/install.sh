@@ -110,6 +110,11 @@ try:
                 except FileExistsError:
                     pass
                 try:
+                    st = os.stat(entry.name, dir_fd=dest_fd, follow_symlinks=False)
+                    if stat.S_ISLNK(st.st_mode):
+                        raise OSError(errno.ELOOP, "Symlink directory refused")
+                    if not stat.S_ISDIR(st.st_mode):
+                        raise OSError(errno.ENOTDIR, "Not a directory")
                     child_fd = os.open(entry.name, flags, dir_fd=dest_fd)
                 except OSError as exc:
                     if exc.errno not in (errno.ELOOP, errno.ENOTDIR):

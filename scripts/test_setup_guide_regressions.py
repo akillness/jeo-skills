@@ -1999,5 +1999,57 @@ for row in rows:
         self.assertFalse((vault / ".state/deferred-index.jsonl").exists())
         self.assertIn("Locked Output Heading", (vault / "index.md").read_text(encoding="utf-8"))
 
+    def test_eight_tool_workflow_chain_aliases_and_ordered_setup(self) -> None:
+        router = ROOT / ".agent-skills/jeo-skill/scripts/jeo-skill.py"
+        handler = ROOT / ".agent-skills/skill-query-handler.py"
+        env = self.env(PATH="/usr/bin:/bin")
+
+        for alias, expected in (
+            ("rtk", "rtk"),
+            ("semble", "semble"),
+            ("mex", "mex"),
+            ("zvec", "zvec-grep"),
+            ("graphify", "graphify"),
+            ("secondbrain", "obsidian-second-brain"),
+            ("cli-hub", "cli-anything"),
+            ("specity", "spec-kit"),
+        ):
+            search = self.run_router(router, ["search", alias, "--limit", "1", "--json"], ROOT, env)
+            self.assertEqual(search.returncode, 0, search.stdout)
+            rows = json.loads(search.stdout)
+            self.assertEqual(rows[0]["name"], expected, f"search {alias} -> {rows}")
+
+            match = subprocess.run(
+                [sys.executable, str(handler), "match", alias],
+                cwd=ROOT, env=env, text=True, capture_output=True, timeout=30,
+            )
+            self.assertEqual(match.returncode, 0, match.stderr)
+            self.assertIn(expected, match.stdout.splitlines()[2])
+
+        cfg = self.work / "sb-config.json"
+        cfg.write_text("{}", encoding="utf-8")
+        dry = self.run_router(
+            router,
+            [
+                "install",
+                "rtk", "semble", "mex", "zvec", "graphify", "secondbrain", "cli-hub", "specity",
+                "--global", "--yes", "--setup", "--dry-run",
+            ],
+            ROOT,
+            {**env, "JEO_SECOND_BRAIN_CONFIG": str(cfg)},
+        )
+        self.assertEqual(dry.returncode, 0, dry.stdout)
+        self.assertIn(
+            "Selected 8 skill(s): rtk, semble, mex, zvec-grep, graphify, obsidian-second-brain, cli-anything, spec-kit",
+            dry.stdout,
+        )
+        plan_lines = [line for line in dry.stdout.splitlines() if line.startswith("Setup plan (")]
+        self.assertTrue(plan_lines, dry.stdout)
+        self.assertTrue(
+            plan_lines[-1].startswith("Setup plan (obsidian-second-brain):"),
+            f"obsidian-second-brain must run last so graphify/mex-agent/zg exist first: {plan_lines}",
+        )
+
+
 if __name__ == "__main__":
     unittest.main()

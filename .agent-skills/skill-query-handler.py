@@ -67,7 +67,19 @@ STOPWORDS = {
 # Exact-name command aliases. The `$autopilot` / `$team` / `$ulw` / `$ultraqa`
 # shims were retired with their runtime documentation skills; keep this map for
 # future exact-name skills rather than pointing it at names that no longer ship.
-COMMAND_SKILL_ALIASES: Dict[str, str] = {}
+COMMAND_SKILL_ALIASES: Dict[str, str] = {
+    "zvec": "zvec-grep",
+    "zg": "zvec-grep",
+    "secondbrain": "obsidian-second-brain",
+    "second-brain": "obsidian-second-brain",
+    "cli-hub": "cli-anything",
+    "clihub": "cli-anything",
+    "cli-anything-hub": "cli-anything",
+    "specity": "spec-kit",
+    "specify": "spec-kit",
+    "specify-cli": "spec-kit",
+    "speckit": "spec-kit",
+}
 
 
 def normalize_text(text: str) -> str:

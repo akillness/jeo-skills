@@ -33,6 +33,19 @@ BIN_PATH = Path.home() / ".local" / "bin" / "jeo-skill"
 TOKEN_RE = re.compile(r"[a-z0-9]+")
 SKILLS_PACKAGE = "skills@1.7.0"
 AGENT_ALIASES = {"jeopi": "universal", "jeo": "universal", "omp": "universal", "gjc": "universal", "aside": "universal", "agy": "antigravity-cli", "kimi": "kimi-code-cli"}
+SKILL_ALIASES = {
+    "zvec": "zvec-grep",
+    "zg": "zvec-grep",
+    "secondbrain": "obsidian-second-brain",
+    "second-brain": "obsidian-second-brain",
+    "cli-hub": "cli-anything",
+    "clihub": "cli-anything",
+    "cli-anything-hub": "cli-anything",
+    "specity": "spec-kit",
+    "specify": "spec-kit",
+    "specify-cli": "spec-kit",
+    "speckit": "spec-kit",
+}
 
 
 class JeoSkillError(RuntimeError):
@@ -212,8 +225,9 @@ def command_search(args: argparse.Namespace, catalog: dict[str, Any]) -> None:
         return
     query_tokens = tokenize(args.query)
     scored: list[tuple[int, dict[str, Any]]] = []
-    phrase = args.query.lower()
+    phrase = args.query.lower().strip()
     for row in catalog["skills"]:
+        name_lower = row["name"].lower()
         haystack = " ".join(
             [
                 row["name"],
@@ -225,6 +239,10 @@ def command_search(args: argparse.Namespace, catalog: dict[str, Any]) -> None:
         ).lower()
         overlap = len(query_tokens & tokenize(haystack))
         score = overlap * 10 + (25 if phrase in haystack else 0)
+        if phrase == name_lower or SKILL_ALIASES.get(phrase) == name_lower:
+            score += 100
+        elif phrase in name_lower.split("-"):
+            score += 40
         if score:
             scored.append((score, row))
     top = heapq.nsmallest(args.limit, scored, key=lambda pair: (-pair[0], pair[1]["name"]))
@@ -250,6 +268,8 @@ def related_groups(catalog: dict[str, Any], name: str) -> list[dict[str, Any]]:
 
 def command_related(args: argparse.Namespace, catalog: dict[str, Any]) -> None:
     index = skill_index(catalog)
+    if args.name not in index and args.name.lower() in SKILL_ALIASES:
+        args.name = SKILL_ALIASES[args.name.lower()]
     if args.name not in index:
         retired = catalog.get("retired_skills", {}).get(args.name)
         if not retired:
@@ -297,7 +317,10 @@ def resolve_install_selection(
     args: argparse.Namespace, catalog: dict[str, Any]
 ) -> list[str]:
     index = skill_index(catalog)
-    selected = list(args.names)
+    selected = [
+        SKILL_ALIASES[name.lower()] if name not in index and name.lower() in SKILL_ALIASES else name
+        for name in args.names
+    ]
     if args.all:
         selected.extend(index)
 
@@ -554,7 +577,13 @@ def skill_setup_commands(root: Path | None, selected: list[str], *,
     plans: list[tuple[str, list[str]]] = []
     unsupported: list[str] = []
 
-    for name in selected:
+    ordered_selected = [
+        name for name in selected if name not in ("llm-wiki", "obsidian-second-brain")
+    ] + [
+        name for name in ("llm-wiki", "obsidian-second-brain") if name in selected
+    ]
+
+    for name in ordered_selected:
         if name == "llm-wiki" and "obsidian-second-brain" in selected:
             print("Legacy llm-wiki setup omitted: obsidian-second-brain owns this new knowledge installation; select llm-wiki alone for its separate setup")
             continue
@@ -572,6 +601,9 @@ def skill_setup_commands(root: Path | None, selected: list[str], *,
         elif name == "okf-agent-memory":
             plans.append((name, [sys.executable, str(skill_dir / "scripts/smoke.py"), "--json"]))
         elif name == "mex":
+            mex_bin = home / ".local/bin/mex-agent"
+            if not (mex_bin.is_file() and os.access(mex_bin, os.X_OK)) and not shutil.which("mex-agent"):
+                plans.append((name, ["npm", "install", "-g", "mex-agent@0.8.4"]))
             plans.append((name, ["bash", str(skill_dir / "scripts/mex.sh"), "doctor", "."]))
         elif name == "openspace":
             if with_hooks:
@@ -655,6 +687,13 @@ def run_skill_setup(root: Path | None, selected: list[str], *,
     if with_hooks:
         env["JEO_SKILLS_APPROVE_ALL_HOOKS_MCP"] = "true"
     for skill_name, cmd in plans:
+        if skill_name == "mex" and cmd[0] == "bash" and root is not None:
+            wrapper_src = root / "mex/scripts/mex-agent-wrapper.sh"
+            mex_dest = home / ".local/bin/mex-agent"
+            if wrapper_src.is_file() and not mex_dest.exists() and not mex_dest.is_symlink():
+                mex_dest.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(wrapper_src, mex_dest)
+                mex_dest.chmod(0o755)
         completed = subprocess.run(cmd, env=env, check=False)
         if completed.returncode != 0:
             raise JeoSkillError(f"Post-install setup failed for {skill_name} (exit {completed.returncode}): {shlex.join(cmd)}")

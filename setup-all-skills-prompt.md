@@ -195,7 +195,7 @@ if [ "${JEO_SKILLS_STAR:-}" = true ] && [ "${JEO_SKILLS_DRY_RUN:-false}" != true
       tmp=$(mktemp "${TMPDIR:-/tmp}/jeo-skills-star.XXXXXXXX") || exit 1
       trap 'rm -f "$tmp"' EXIT
       curl --disable --proto '=https' --max-time 15 -fsS 'https://raw.githubusercontent.com/akillness/jeo-skills/main/install.sh' -o "$tmp" || exit 1
-      python3 -I -c 'import hashlib,sys; sys.exit(hashlib.sha256(open(sys.argv[1], "rb").read()).hexdigest() != "389ddac2052a7e66b5c50874b08f71ee57b955a9e6a30a67c3b10bf039c090dd")' "$tmp" || exit 1
+      python3 -I -c 'import hashlib,sys; sys.exit(hashlib.sha256(open(sys.argv[1], "rb").read()).hexdigest() != "58c9787857634224461724dbc1ddf82eaae1cc993a49e47cf82322a4ecb4f5ce")' "$tmp" || exit 1
       JEO_SKILLS_STAR_ONLY=true JEO_SKILLS_STAR=true bash "$tmp"
     else
       exit 1
@@ -1803,6 +1803,15 @@ command -v jeo-skill >/dev/null 2>&1 \
   || printf 'jeo-skill is linked in %s but that directory is not on PATH (see Step 1)\n' "$USER_HOME/.local/bin"
 command -v rtk >/dev/null 2>&1 && rtk gain
 command -v semble >/dev/null 2>&1 && semble --help >/dev/null
+(command -v "$USER_HOME/.local/bin/mex-agent" >/dev/null 2>&1 && "$USER_HOME/.local/bin/mex-agent" --version) \
+  || (command -v mex >/dev/null 2>&1 && mex --version)
+command -v zg >/dev/null 2>&1 && zg version
+command -v graphify >/dev/null 2>&1 && graphify --version
+command -v cli-hub >/dev/null 2>&1 && cli-hub --version
+command -v specify >/dev/null 2>&1 && specify --version
+if [ -n "${JEO_SECOND_BRAIN_CONFIG:-}" ] && [ -f "$SKILLS_ROOT/obsidian-second-brain/scripts/ctx_guard.py" ]; then
+  python3 "$SKILLS_ROOT/obsidian-second-brain/scripts/ctx_guard.py" --config "$JEO_SECOND_BRAIN_CONFIG" --check
+fi
 if [ "${JEO_SKILLS_APPROVE_MCP_INSPECTION:-false}" = true ]; then
   command -v claude >/dev/null 2>&1 && claude mcp list
   command -v codex >/dev/null 2>&1 && codex mcp list

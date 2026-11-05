@@ -223,9 +223,16 @@ fi
 
 # New knowledge installs use second brain; selection/--yes is not model or job consent.
 if [ "$SELECTION" = all ] && [ "$GLOBAL" = true ]; then
+  case ":$PATH:" in
+    *":$HOME/.local/bin:"*) ;;
+    *) export PATH="$HOME/.local/bin:${CARGO_HOME:-$HOME/.cargo}/bin:$PATH" ;;
+  esac
   if [ -z "${JEO_SECOND_BRAIN_CONFIG:-}" ]; then
     info 'Second-brain activation pending: provide JEO_SECOND_BRAIN_CONFIG with a NEW vault, model, cost allowance and explicit automation consent. Existing knowledge settings are unchanged.'
   else
+    if ! command -v graphify >/dev/null 2>&1 && command -v uv >/dev/null 2>&1; then
+      uv tool install graphifyy >/dev/null 2>&1 || info 'WARNING: graphify installation did not complete prior to second-brain setup.'
+    fi
     BRAIN_SETUP="$ROOT/obsidian-second-brain/scripts/setup.py"
     BRAIN_ARGS=(--config "$JEO_SECOND_BRAIN_CONFIG")
     if [ -n "${JEO_SECOND_BRAIN_SOURCE:-}" ]; then BRAIN_ARGS+=(--source "$JEO_SECOND_BRAIN_SOURCE"); fi

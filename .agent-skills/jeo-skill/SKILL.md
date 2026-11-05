@@ -185,6 +185,23 @@ targeted runtime steps for native projections; this command alone does not perfo
 jeo-skill install --all --global --yes
 ```
 
+### Connected 8-Tool Workflow Setup (`rtk`, `semble`, `mex`, `zvec`, `graphify`, `secondbrain`, `cli-hub`, `specity`)
+
+Both `jeo-skill` and `skill-query-handler.py` resolve shorthand aliases (`zvec` → `zvec-grep`,
+`secondbrain` → `obsidian-second-brain`, `cli-hub` → `cli-anything`, `specity`/`specify` → `spec-kit`)
+directly. When `--setup` is passed, `jeo-skill` automatically orders `obsidian-second-brain`
+last so that `graphify`, `mex-agent`, and `zg` are installed and verified before
+`obsidian-second-brain/scripts/setup.py` validates its binary dependencies:
+
+```bash
+# Install and run --setup for the 7 standalone CLIs (shorthand aliases supported):
+jeo-skill install rtk semble mex zvec graphify cli-hub specity --global --yes --setup
+
+# Or include secondbrain once JEO_SECOND_BRAIN_CONFIG is prepared with explicit consent:
+JEO_SECOND_BRAIN_CONFIG=/path/to/second-brain-config.json \
+  jeo-skill install rtk semble mex zvec graphify secondbrain cli-hub specity --global --yes --setup
+```
+
 ### Selective Installation
 
 Install specific skills or curated bundles:
