@@ -1676,26 +1676,6 @@ under an app-managed `mcp.servers` map, alongside `mcp.inventories` and a separa
 so the daemon owns that schema and its credential handling. Do not hand-edit it or guess the
 shape; add servers through Aside's own MCP settings UI and report that as a manual follow-up.
 
-### Claude Code orchestration plugin
-
-When separately approved (`JEO_SKILLS_APPROVE_OMC_PLUGIN=true`), install the official
-marketplace plugin without removing or replacing existing plugins; it can enable hooks:
-
-```bash
-(
-  if [ "${JEO_SKILLS_APPROVE_OMC_PLUGIN:-false}" = true ] && command -v claude >/dev/null 2>&1; then
-    status=0
-    claude plugin marketplace add https://github.com/Yeachan-Heo/oh-my-claudecode || { printf '%s\n' 'OMC: PARTIAL FAILURE — marketplace add failed' >&2; status=1; }
-    claude plugin install oh-my-claudecode || { printf '%s\n' 'OMC: PARTIAL FAILURE — plugin install failed' >&2; status=1; }
-    exit "$status"
-  fi
-)
-```
-
-If the installed Claude version does not expose non-interactive plugin commands, report
-these two commands for the user to run through Claude Code's `/plugin` interface instead
-of editing plugin configuration by hand.
-
 ### ECC agent harness (full mode; target-selected)
 
 ECC is a separate agent-harness plugin. In full mode, offer it after the shared
@@ -1748,20 +1728,6 @@ they were enabled. Other ECC adapters stay task-triggered: preview a selected ta
 from a trusted checkout with `./install.sh --profile minimal --target <target> --dry-run --json`
 before any write. Never run ECC's automatic-update workflow during blanket setup because
 it fetches and fast-forwards an existing checkout before reinstalling recorded targets.
-
-### Codex OMC hook compatibility
-
-OMC 4.15.7 emits Claude-only `suppressOutput` fields from three `PostToolUse`
-handlers. Codex rejects that field at its plugin boundary. When both Codex and
-the installed repair helper are present, repair only that known cached version after
-separate hook-change approval (`JEO_SKILLS_APPROVE_OMC_HOOK_REPAIR=true`); all other plugin caches remain untouched.
-
-```bash
-if [ "${JEO_SKILLS_APPROVE_OMC_HOOK_REPAIR:-false}" = true ] && command -v codex >/dev/null 2>&1 \
-  && [ -x "$SKILLS_ROOT/jeo-skill/scripts/repair-codex-omc-posttool-hooks.sh" ]; then
-  bash "$SKILLS_ROOT/jeo-skill/scripts/repair-codex-omc-posttool-hooks.sh"
-fi
-```
 
 ## Step 6 — Runtime-specific shared-root checks
 

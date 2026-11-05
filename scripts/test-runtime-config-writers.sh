@@ -8,7 +8,6 @@ OBS_INSTALL="$ROOT/.agent-skills/obsidian-second-brain/scripts/install.sh"
 PLAN_HOOK="$ROOT/.agent-skills/plannotator/scripts/setup-hook.sh"
 PLAN_GEMINI="$ROOT/.agent-skills/plannotator/scripts/setup-gemini-hook.sh"
 PLAN_OPENCODE="$ROOT/.agent-skills/plannotator/scripts/setup-opencode-plugin.sh"
-CODEX_OMC_POSTTOOL_REPAIR="$ROOT/.agent-skills/jeo-skill/scripts/repair-codex-omc-posttool-hooks.sh"
 ROOT_INSTALLER="$ROOT/install.sh"
 GUIDE="$ROOT/setup-all-skills-prompt.md"
 
@@ -92,7 +91,6 @@ require_file "$OBS_INSTALL"
 require_file "$PLAN_GEMINI"
 require_file "$PLAN_OPENCODE"
 require_file "$PLAN_HOOK"
-require_file "$CODEX_OMC_POSTTOOL_REPAIR"
 require_file "$ROOT_INSTALLER"
 require_file "$GUIDE"
 command -v jq >/dev/null 2>&1 || fail 'jq is required for this isolated regression test'
@@ -437,227 +435,6 @@ PY
 expect_status 0 'unbraced shell variables directly followed by non-ASCII text'
 pass 'no tracked shell script expands an unbraced variable directly before non-ASCII text'
 
-# The Codex OMC repair removes only the incompatible response field from all known cache hooks.
-# Its production SHA-256 allow-list pins canonical OMC sources, so this isolated fixture derives
-# an equivalent allow-list in a temporary helper from the exact post-repair fixture bytes.
-CODEX_OMC_REPAIR_HOME="$WORK/codex-omc-posttool-home"
-CODEX_OMC_REPAIR_CACHE="$CODEX_OMC_REPAIR_HOME/.codex/plugins/cache/omc/oh-my-claudecode/4.15.7/scripts"
-CODEX_OMC_REPAIR_EXPECTED="$WORK/codex-omc-posttool-expected"
-CODEX_OMC_POSTTOOL_REPAIR_TEST="$WORK/repair-codex-omc-posttool-hooks.sh"
-cp "$CODEX_OMC_POSTTOOL_REPAIR" "$WORK/repair-codex-omc-posttool-hooks.sh.before"
-mkdir -p "$CODEX_OMC_REPAIR_CACHE" "$CODEX_OMC_REPAIR_EXPECTED"
-printf '%s\n' 'model = "keep"' >"$CODEX_OMC_REPAIR_HOME/.codex/config.toml"
-cp "$CODEX_OMC_REPAIR_HOME/.codex/config.toml" "$WORK/codex-omc-config-before.toml"
-
-cat >"$CODEX_OMC_REPAIR_CACHE/post-tool-verifier.mjs" <<'EOF'
-export function generateMessage(message) {
-  const response = { continue: true };
-  response.hookSpecificOutput = {
-    hookEventName: 'PostToolUse',
-    additionalContext: 'Verify the tool result before continuing.',
-  };
-  const preserved = { hook: 'verifier' };
-  if (message) {
-    response.hookSpecificOutput.additionalContext = message;
-  } else {
-    response.suppressOutput = true;
-  }
-  console.log(JSON.stringify({ continue: true, suppressOutput: true }));
-  return { ...response, preserved };
-}
-EOF
-cat >"$CODEX_OMC_REPAIR_CACHE/project-memory-posttool.mjs" <<'EOF'
-export function learnFromToolOutput() {
-  const preserved = { hook: 'memory' };
-  console.log(JSON.stringify({ continue: true, suppressOutput: true }));
-  console.log(JSON.stringify({ continue: true, suppressOutput: true }));
-  console.log(JSON.stringify({ continue: true, suppressOutput: true }));
-  return preserved;
-}
-EOF
-cat >"$CODEX_OMC_REPAIR_CACHE/post-tool-rules-injector.mjs" <<'EOF'
-export function createRulesInjectorHook() {
-  const preserved = { hook: 'rules' };
-  console.log(JSON.stringify({ continue: true, suppressOutput: true }));
-  console.log(JSON.stringify({ continue: true, suppressOutput: true }));
-  console.log(JSON.stringify({ continue: true, suppressOutput: true }));
-  console.log(JSON.stringify({ continue: true, suppressOutput: true }));
-  console.log(JSON.stringify({ continue: true, suppressOutput: true }));
-  console.log(JSON.stringify({ continue: true, suppressOutput: true }));
-  return preserved;
-}
-EOF
-
-cat >"$CODEX_OMC_REPAIR_EXPECTED/post-tool-verifier.mjs" <<'EOF'
-export function generateMessage(message) {
-  const response = { continue: true };
-  response.hookSpecificOutput = {
-    hookEventName: 'PostToolUse',
-    additionalContext: 'Verify the tool result before continuing.',
-  };
-  const preserved = { hook: 'verifier' };
-  if (message) {
-    response.hookSpecificOutput.additionalContext = message;
-  }
-  console.log(JSON.stringify({ continue: true }));
-  return { ...response, preserved };
-}
-EOF
-cat >"$CODEX_OMC_REPAIR_EXPECTED/project-memory-posttool.mjs" <<'EOF'
-export function learnFromToolOutput() {
-  const preserved = { hook: 'memory' };
-  console.log(JSON.stringify({ continue: true }));
-  console.log(JSON.stringify({ continue: true }));
-  console.log(JSON.stringify({ continue: true }));
-  return preserved;
-}
-EOF
-cat >"$CODEX_OMC_REPAIR_EXPECTED/post-tool-rules-injector.mjs" <<'EOF'
-export function createRulesInjectorHook() {
-  const preserved = { hook: 'rules' };
-  console.log(JSON.stringify({ continue: true }));
-  console.log(JSON.stringify({ continue: true }));
-  console.log(JSON.stringify({ continue: true }));
-  console.log(JSON.stringify({ continue: true }));
-  console.log(JSON.stringify({ continue: true }));
-  console.log(JSON.stringify({ continue: true }));
-  return preserved;
-}
-EOF
-
-python3 - "$CODEX_OMC_POSTTOOL_REPAIR" "$CODEX_OMC_POSTTOOL_REPAIR_TEST" "$CODEX_OMC_REPAIR_EXPECTED" <<'PY' \
-  || fail 'could not create the isolated digest-pinned Codex OMC repair helper'
-from pathlib import Path
-import hashlib
-import re
-import shutil
-import sys
-
-source_helper, temporary_helper, expected_directory = map(Path, sys.argv[1:])
-expected = {
-    path.name: hashlib.sha256(path.read_bytes()).hexdigest()
-    for path in sorted(expected_directory.glob("*.mjs"))
-}
-if set(expected) != {
-    "post-tool-verifier.mjs",
-    "project-memory-posttool.mjs",
-    "post-tool-rules-injector.mjs",
-}:
-    raise SystemExit("unexpected post-repair fixture set")
-
-shutil.copyfile(source_helper, temporary_helper)
-source = temporary_helper.read_text(encoding="utf-8")
-replacement = "COMPATIBLE_DIGESTS = {\n" + "".join(
-    f'    "{name}": "{digest}",\n' for name, digest in expected.items()
-) + "}"
-updated, replacements = re.subn(
-    r'COMPATIBLE_DIGESTS = \{\n(?:    "[^"]+": "[0-9a-f]{64}",\n)+\}',
-    replacement,
-    source,
-    count=1,
-)
-if replacements != 1:
-    raise SystemExit("could not locate the helper digest allow-list")
-temporary_helper.write_text(updated, encoding="utf-8")
-PY
-
-run_capture env HOME="$CODEX_OMC_REPAIR_HOME" PATH="$PATH" /bin/bash "$CODEX_OMC_POSTTOOL_REPAIR_TEST"
-expect_status 0 'Codex OMC PostToolUse cache repair'
-cmp -s "$WORK/codex-omc-config-before.toml" "$CODEX_OMC_REPAIR_HOME/.codex/config.toml" \
-  || fail 'Codex OMC PostToolUse repair changed Codex configuration'
-for target in post-tool-verifier.mjs project-memory-posttool.mjs post-tool-rules-injector.mjs; do
-  cmp -s "$CODEX_OMC_REPAIR_EXPECTED/$target" "$CODEX_OMC_REPAIR_CACHE/$target" \
-    || fail "Codex OMC PostToolUse repair did not produce the expected $target bytes"
-done
-pass 'Codex OMC PostToolUse repair transforms each compatible fixture without changing unrelated content'
-
-for target in post-tool-verifier.mjs project-memory-posttool.mjs post-tool-rules-injector.mjs; do
-  cp "$CODEX_OMC_REPAIR_CACHE/$target" "$WORK/codex-omc-repaired-$target"
-done
-run_capture env HOME="$CODEX_OMC_REPAIR_HOME" PATH="$PATH" /bin/bash "$CODEX_OMC_POSTTOOL_REPAIR_TEST"
-expect_status 0 'Codex OMC PostToolUse idempotent rerun'
-for target in post-tool-verifier.mjs project-memory-posttool.mjs post-tool-rules-injector.mjs; do
-  cmp -s "$WORK/codex-omc-repaired-$target" "$CODEX_OMC_REPAIR_CACHE/$target" \
-    || fail "Codex OMC PostToolUse idempotent rerun changed $target"
-done
-pass 'Codex OMC PostToolUse repair rerun is byte-for-byte idempotent'
-
-# A memory-style decoy can retain the expected hook marker and every quiet response while
-# still being untrusted when its final bytes are not the allow-listed canonical source.
-CODEX_OMC_DECOY_HOME="$WORK/codex-omc-posttool-decoy-home"
-CODEX_OMC_DECOY_CACHE="$CODEX_OMC_DECOY_HOME/.codex/plugins/cache/omc/oh-my-claudecode/4.15.7/scripts"
-mkdir -p "$CODEX_OMC_DECOY_CACHE"
-for target in post-tool-verifier.mjs post-tool-rules-injector.mjs; do
-  cp "$CODEX_OMC_REPAIR_EXPECTED/$target" "$CODEX_OMC_DECOY_CACHE/$target"
-done
-cat >"$CODEX_OMC_DECOY_CACHE/project-memory-posttool.mjs" <<'EOF'
-export function learnFromToolOutput() {
-  const unrelated = { source: 'decoy-memory-hook' };
-  console.log(JSON.stringify({ continue: true, suppressOutput: true }));
-  console.log(JSON.stringify({ continue: true, suppressOutput: true }));
-  console.log(JSON.stringify({ continue: true, suppressOutput: true }));
-  return unrelated;
-}
-EOF
-for target in post-tool-verifier.mjs project-memory-posttool.mjs post-tool-rules-injector.mjs; do
-  cp "$CODEX_OMC_DECOY_CACHE/$target" "$WORK/codex-omc-decoy-$target.before"
-done
-run_capture env HOME="$CODEX_OMC_DECOY_HOME" PATH="$PATH" /bin/bash "$CODEX_OMC_POSTTOOL_REPAIR_TEST"
-expect_status 0 'Codex OMC PostToolUse digest-decoy skip'
-expect_output 'repair skipped: unrecognized project-memory-posttool.mjs' 'Codex OMC PostToolUse digest-decoy skip'
-for target in post-tool-verifier.mjs project-memory-posttool.mjs post-tool-rules-injector.mjs; do
-  cmp -s "$WORK/codex-omc-decoy-$target.before" "$CODEX_OMC_DECOY_CACHE/$target" \
-    || fail "Codex OMC PostToolUse repair changed digest-decoy target $target"
-done
-pass 'Codex OMC PostToolUse exact-digest gate skips a marker-and-count-matching memory decoy'
-
-# The helper must not follow a leaf target symlink.
-CODEX_OMC_LEAF_HOME="$WORK/codex-omc-posttool-leaf-home"
-CODEX_OMC_LEAF_CACHE="$CODEX_OMC_LEAF_HOME/.codex/plugins/cache/omc/oh-my-claudecode/4.15.7/scripts"
-CODEX_OMC_LEAF_TARGET="$WORK/codex-omc-posttool-leaf-target.mjs"
-mkdir -p "$CODEX_OMC_LEAF_CACHE"
-printf '%s\n' 'const outside = { suppressOutput: true };' >"$CODEX_OMC_LEAF_TARGET"
-cp "$CODEX_OMC_LEAF_TARGET" "$WORK/codex-omc-posttool-leaf-target.before"
-ln -s "$CODEX_OMC_LEAF_TARGET" "$CODEX_OMC_LEAF_CACHE/post-tool-verifier.mjs"
-run_capture env HOME="$CODEX_OMC_LEAF_HOME" PATH="$PATH" /bin/bash "$CODEX_OMC_POSTTOOL_REPAIR_TEST"
-expect_status 0 'Codex OMC PostToolUse leaf-symlink skip'
-expect_output 'repair skipped: unsafe target post-tool-verifier.mjs' 'Codex OMC PostToolUse leaf-symlink skip'
-cmp -s "$WORK/codex-omc-posttool-leaf-target.before" "$CODEX_OMC_LEAF_TARGET" \
-  || fail 'Codex OMC PostToolUse repair changed a leaf-symlink target'
-pass 'Codex OMC PostToolUse repair skips a leaf symlink without target mutation'
-
-# The helper must also reject a symlinked cache scripts directory before reading external targets.
-CODEX_OMC_SCRIPTS_LINK_HOME="$WORK/codex-omc-posttool-scripts-link-home"
-CODEX_OMC_SCRIPTS_PARENT="$CODEX_OMC_SCRIPTS_LINK_HOME/.codex/plugins/cache/omc/oh-my-claudecode/4.15.7"
-CODEX_OMC_SCRIPTS_TARGET="$WORK/codex-omc-posttool-external-scripts"
-mkdir -p "$CODEX_OMC_SCRIPTS_PARENT" "$CODEX_OMC_SCRIPTS_TARGET"
-for target in post-tool-verifier.mjs project-memory-posttool.mjs post-tool-rules-injector.mjs; do
-  printf '%s\n' "const external${target%%.*} = { suppressOutput: true };" >"$CODEX_OMC_SCRIPTS_TARGET/$target"
-  cp "$CODEX_OMC_SCRIPTS_TARGET/$target" "$WORK/codex-omc-external-$target.before"
-done
-ln -s "$CODEX_OMC_SCRIPTS_TARGET" "$CODEX_OMC_SCRIPTS_PARENT/scripts"
-run_capture env HOME="$CODEX_OMC_SCRIPTS_LINK_HOME" PATH="$PATH" /bin/bash "$CODEX_OMC_POSTTOOL_REPAIR_TEST"
-expect_status 0 'Codex OMC PostToolUse scripts-directory symlink skip'
-expect_output 'repair skipped: unsafe cache directory scripts' 'Codex OMC PostToolUse scripts-directory symlink skip'
-for target in post-tool-verifier.mjs project-memory-posttool.mjs post-tool-rules-injector.mjs; do
-  cmp -s "$WORK/codex-omc-external-$target.before" "$CODEX_OMC_SCRIPTS_TARGET/$target" \
-    || fail "Codex OMC PostToolUse repair changed an external scripts target $target"
-done
-pass 'Codex OMC PostToolUse repair skips a symlinked scripts directory without external mutation'
-
-CODEX_OMC_NOOP_HOME="$WORK/codex-omc-posttool-noop-home"
-mkdir -p "$CODEX_OMC_NOOP_HOME"
-run_capture env HOME="$CODEX_OMC_NOOP_HOME" PATH="$PATH" /bin/bash "$CODEX_OMC_POSTTOOL_REPAIR_TEST"
-expect_status 0 'Codex OMC PostToolUse cache-absent no-op'
-[ ! -e "$CODEX_OMC_NOOP_HOME/.codex" ] \
-  || fail 'Codex OMC PostToolUse cache-absent no-op created ~/.codex'
-pass 'Codex OMC PostToolUse repair preserves hook output, leaves config unchanged, and safely no-ops without a cache'
-
-cmp -s "$WORK/repair-codex-omc-posttool-hooks.sh.before" "$CODEX_OMC_POSTTOOL_REPAIR" \
-  || fail 'Codex OMC PostToolUse test mutated the repository repair helper'
-pass 'Codex OMC PostToolUse fixtures leave the repository helper byte-for-byte unchanged'
-
-
 # Every changed shell writer must remain parseable.
 for writer in \
   "$ROOT_INSTALLER" \
@@ -665,7 +442,6 @@ for writer in \
   "$ROOT/.agent-skills/obsidian-second-brain/scripts/install.sh" \
   "$ROOT/.agent-skills/plannotator/scripts/setup-hook.sh" \
   "$ROOT/.agent-skills/plannotator/scripts/setup-gemini-hook.sh" \
-  "$CODEX_OMC_POSTTOOL_REPAIR" \
   "$ROOT/.agent-skills/plannotator/scripts/setup-opencode-plugin.sh"; do
   /bin/bash -n "$writer" || fail "shell syntax invalid: $writer"
 done

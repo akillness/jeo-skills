@@ -834,35 +834,6 @@ if sys.argv[1:3] in (["install", "status"], ["mcp", "get"]):
                         if flag != "JEO_SKILLS_APPROVE_HEADROOM_DEPLOY":
                             self.assertEqual(actions, "", result.stdout)
 
-    def test_approved_omc_plugin_reports_each_install_failure(self) -> None:
-        bin_dir = self.work / "omc-bin"
-        bin_dir.mkdir()
-        log = self.work / "omc.log"
-        self.write_python_stub(bin_dir / "claude", '''import os, sys
-args = sys.argv[1:]
-with open(os.environ["OMC_LOG"], "a") as output:
-    output.write(" ".join(args) + "\\n")
-if (args[:3] == ["plugin", "marketplace", "add"] and os.environ["FAIL_STEP"] in ("marketplace", "both")) or (args[:2] == ["plugin", "install"] and os.environ["FAIL_STEP"] in ("install", "both")):
-    raise SystemExit(1)
-''')
-        block = guide_block("### Claude Code orchestration plugin")
-        for failure in ("marketplace", "install", "both"):
-            with self.subTest(failure=failure):
-                log.write_text("")
-                result = run_block(block, self.env(
-                    PATH=f"{bin_dir}:/usr/bin:/bin", OMC_LOG=str(log), FAIL_STEP=failure,
-                    JEO_SKILLS_APPROVE_OMC_PLUGIN="true",
-                ), self.work)
-                self.assertEqual(result.returncode, 1, result.stdout)
-                if failure in ("marketplace", "both"):
-                    self.assertIn("PARTIAL FAILURE — marketplace add failed", result.stdout)
-                if failure in ("install", "both"):
-                    self.assertIn("PARTIAL FAILURE — plugin install failed", result.stdout)
-                self.assertEqual(log.read_text().splitlines(), [
-                    "plugin marketplace add https://github.com/Yeachan-Heo/oh-my-claudecode",
-                    "plugin install oh-my-claudecode",
-                ])
-
     def test_step_four_d_reports_only_stale_opencode_shadowing_without_writes(self) -> None:
         block = guide_block("### Step 4D — OpenCode (all modes when detected)")
         bin_dir = self.work / "bin"
