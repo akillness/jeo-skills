@@ -151,7 +151,7 @@ class HostEventBehavior(unittest.TestCase):
         self.assertEqual(config.read_text(), original)
         self.assertFalse((self.root / ".zvec-grep").exists())
         unsupported = json.loads(result.stdout)["unsupported_or_unverified"]
-        self.assertTrue({"jeo", "gjc", "standalone agy"}.issubset(unsupported))
+        self.assertTrue({"qwen", "standalone cursor", "windsurf", "copilot", "aside"}.issubset(unsupported))
 
     def test_preview_reports_all_unsupported_or_unverified_hosts(self):
         result = subprocess.run([sys.executable, str(SCRIPTS / "host-install.py"),
@@ -161,10 +161,12 @@ class HostEventBehavior(unittest.TestCase):
                                      "PYTHONDONTWRITEBYTECODE": "1"})
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         report = json.loads(result.stdout)
-        self.assertTrue({"opencode", "jeo", "gjc", "standalone agy", "qwen"}
+        self.assertTrue({"qwen", "standalone cursor", "windsurf", "copilot", "aside"}
                         .issubset(report["unsupported_or_unverified"]))
-        self.assertFalse({"opencode", "jeo", "gjc", "standalone agy", "qwen"}
+        self.assertFalse({"qwen", "standalone cursor", "windsurf", "copilot", "aside"}
                          .intersection(change["host"] for change in report["changes"]))
+        self.assertTrue({"claude", "gemini", "codex", "pi", "omp", "jeopi", "jeo", "gjc", "opencode", "agy"}
+                        .issubset({change["host"] for change in report["changes"]}))
 
     def test_unsupported_targets_reject_without_modifying_configurations(self):
         configs = [self.home / ".claude/settings.json", self.home / ".gemini/settings.json"]
@@ -173,7 +175,7 @@ class HostEventBehavior(unittest.TestCase):
             config.write_text('{"hooks":{"Stop":[]},"user":"preserve"}\n')
         before = {path.relative_to(self.home): path.read_bytes()
                   for path in self.home.rglob("*") if path.is_file()}
-        for host in ("opencode", "jeo", "gjc", "standalone agy", "agy", "qwen"):
+        for host in ("qwen", "standalone cursor", "windsurf", "copilot", "aside"):
             with self.subTest(host=host):
                 result = subprocess.run([sys.executable, str(SCRIPTS / "host-install.py"),
                                          "--home", str(self.home), "--target", "claude",
@@ -376,13 +378,13 @@ class HostEventBehavior(unittest.TestCase):
             config = self.home / f".{host}/settings.json"
             config.parent.mkdir(parents=True)
             config.write_text(json.dumps({"other": {"keep": True}, "hooks": {event: [{"hooks": [{"type": "command", "command": "existing-hook"}]}]}}))
-        for host in ("pi", "omp", "jeopi"):
+        for host in ("pi", "omp", "jeopi", "jeo", "gjc"):
             other = self.home / f".{host}/agent/extensions/other.ts"
             other.parent.mkdir(parents=True)
             other.write_text("existing extension\n")
         command = [sys.executable, str(SCRIPTS / "host-install.py"), "--home", str(self.home),
                    "--warnings-dir", str(warnings), "--daemon-home", str(daemon_home), "--apply"]
-        for host in ("claude", "gemini", "pi", "omp", "jeopi"):
+        for host in ("claude", "gemini", "pi", "omp", "jeopi", "jeo", "gjc"):
             command.extend(["--target", host])
         for _ in range(2):
             result = subprocess.run(command, cwd=self.base, env=env, capture_output=True, text=True, timeout=15)
@@ -411,7 +413,7 @@ const ctx = { cwd: process.argv[2], sessionManager: { getSessionId: () => "sessi
 await callbacks.before_agent_start({}, ctx);
 await callbacks.agent_end({}, ctx);
 '''
-        for host in ("pi", "omp", "jeopi"):
+        for host in ("pi", "omp", "jeopi", "jeo", "gjc"):
             directory = self.home / f".{host}/agent/extensions"
             self.assertEqual((directory / "other.ts").read_text(), "existing extension\n")
             result = subprocess.run([node, "--input-type=module", "-e", runner,
@@ -419,9 +421,9 @@ await callbacks.agent_end({}, ctx);
                                     cwd=self.base, env=env, capture_output=True, text=True, timeout=15)
             self.assertEqual(result.returncode, 0, result.stderr)
         records = [json.loads(line) for line in captures.read_text().splitlines()]
-        self.assertEqual([record["args"][-1] for record in records], ["start", "end"] * 5)
-        self.assertEqual([record["warnings"] for record in records], [str(warnings)] * 10)
-        self.assertEqual([record["home"] for record in records], [str(daemon_home)] * 10)
+        self.assertEqual([record["args"][-1] for record in records], ["start", "end"] * 7)
+        self.assertEqual([record["warnings"] for record in records], [str(warnings)] * 14)
+        self.assertEqual([record["home"] for record in records], [str(daemon_home)] * 14)
         self.assertFalse(inherited_home.exists())
         self.assertFalse(injected.exists())
 
@@ -457,7 +459,7 @@ await callbacks.agent_end({}, ctx);
         self.assertFalse((self.base / "relative").exists())
 
     def test_conflicting_daemon_home_rejects_all_targets_before_writing(self):
-        for host in ("claude", "gemini", "pi", "omp", "jeopi"):
+        for host in ("claude", "gemini", "pi", "omp", "jeopi", "jeo", "gjc", "opencode", "agy"):
             with self.subTest(host=host):
                 home = self.base / ("home-conflict-" + host)
                 home.mkdir()

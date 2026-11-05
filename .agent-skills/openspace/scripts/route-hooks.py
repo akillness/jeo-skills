@@ -577,7 +577,7 @@ def hosts() -> dict:
     for key, kind, directory in redirected_homes():
         settings = directory / ("settings.json" if kind == "claude" else "hooks.json")
         found[key] = JsonHooks(key, settings, "UserPromptSubmit", kind, directory)
-    for name in ("jeopi", "omp", "pi", "gjc"):
+    for name in ("jeo", "jeopi", "omp", "pi", "gjc"):
         agent = HOME / f".{name}" / "agent"
         found[name] = ManagedFile(name, agent / "extensions" / "openspace-route.ts", agent, pi_extension_text)
     opencode = XDG_CONFIG / "opencode"

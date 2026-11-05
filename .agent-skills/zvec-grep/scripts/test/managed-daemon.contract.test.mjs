@@ -30,13 +30,14 @@ import {
   DAEMON_MAIN, EXISTING_INDEX_MODULE, FIXTURE_FILES, LOCAL_MODEL, OS_SANDBOX_AVAILABLE,
   buildLocalIndex, createSandbox, defaultTokenPath, trustRegistryPath, trustRoot, diffFingerprints, fingerprintTree, ftsHits, indexArtifacts,
   inspectStates, installedPackageDir, kernelDeniesOutbound, listenerPid, localModelArtifactAvailable, realStateFingerprint,
-  mcpSearch, realZg, sleep, startDaemon, zg,
+  mcpSearch, realZg, sleep, startDaemon, zg, DAEMON_INTEGRATION_DISABLED,
 } from "./harness.mjs";
 
 const HAVE_ZG = Boolean(realZg());
 const HAVE_MODEL = localModelArtifactAvailable();
 const NEEDS_LOCAL_INDEX = (!HAVE_ZG || !HAVE_MODEL) && "installed zg 0.2.2 and an already-downloaded local model artifact are required";
-const SLOW = { timeout: 240_000 };
+const SLOW = { timeout: 240_000, skip: DAEMON_INTEGRATION_DISABLED && "managed daemon integration disabled: macOS rejects nested sandbox profiles; no fixture-confined production launcher is proven" };
+const DAEMON_SKIP = DAEMON_INTEGRATION_DISABLED && "managed daemon integration disabled: macOS rejects nested sandbox profiles; no fixture-confined production launcher is proven";
 
 // The managed daemon is macOS-only by contract (it needs a kernel egress boundary it can prove).
 const DARWIN = process.platform === "darwin";
@@ -163,7 +164,7 @@ test("non-macOS hosts: the daemon refuses to run (exit 78 OS_EGRESS_BOUNDARY_UNA
   assert.match(run.stderr + run.stdout, /OS_EGRESS_BOUNDARY_UNAVAILABLE/);
 });
 
-test("startup: refuses an unsupported @zvec/zvec-grep package version and starts no listener", { skip: !HAVE_ZG && "zg not installed" }, async (t) => {
+test("startup: refuses an unsupported @zvec/zvec-grep package version and starts no listener", { skip: !HAVE_ZG && "zg not installed" || DAEMON_SKIP }, async (t) => {
   const { sandbox } = lab(t);
   const fake = join(sandbox.root, "fake-package");
   mkdirSync(fake, { recursive: true });
@@ -208,7 +209,7 @@ test("boundary: status reports the darwin sandbox and the kernel really denies t
 });
 
 test("auth: default token file is minted 0600, /healthz is open, and every other endpoint needs the Bearer token",
-  { skip: !HAVE_ZG && "zg not installed" }, async (t) => {
+  { skip: !HAVE_ZG && "zg not installed" || DAEMON_SKIP }, async (t) => {
   const { sandbox, daemon: start } = lab(t);
   const daemon = await start({ token: null });
   const tokenPath = defaultTokenPath(sandbox);
@@ -234,7 +235,7 @@ test("auth: default token file is minted 0600, /healthz is open, and every other
   assertNoEgress(sandbox, "auth");
 });
 
-test("auth: an explicit --token-file token is honoured and never logged", { skip: !HAVE_ZG && "zg not installed" }, async (t) => {
+test("auth: an explicit --token-file token is honoured and never logged", { skip: !HAVE_ZG && "zg not installed" || DAEMON_SKIP }, async (t) => {
   const { sandbox, daemon: start } = lab(t);
   const secret = `ct-${randomBytes(24).toString("hex")}`;
   const daemon = await start({ token: secret });
@@ -246,7 +247,7 @@ test("auth: an explicit --token-file token is honoured and never logged", { skip
   assert.ok(!(daemon.output.stdout + daemon.output.stderr).includes(secret));
 });
 
-test("auth: a weak token file (<32 chars) is refused at startup and nothing listens", { skip: !HAVE_ZG && "zg not installed" }, async (t) => {
+test("auth: a weak token file (<32 chars) is refused at startup and nothing listens", { skip: !HAVE_ZG && "zg not installed" || DAEMON_SKIP }, async (t) => {
   const { sandbox } = lab(t);
   const tokenFile = join(sandbox.root, "weak.token");
   writeFileSync(tokenFile, "too-short\n", { mode: 0o600 });
@@ -278,7 +279,7 @@ test("origin/host defence: /managed/* rejects browser Origin and non-loopback Ho
 // --------------------------------------------------------------------------
 // 1. Missing / partial / disabled index: refresh creates nothing
 // --------------------------------------------------------------------------
-test("inspectExistingIndex classifies every on-disk shape and never mutates the workspace", { skip: NEEDS_LOCAL_INDEX, ...SLOW }, async (t) => {
+test("inspectExistingIndex classifies every on-disk shape and never mutates the workspace", { skip: NEEDS_LOCAL_INDEX || DAEMON_SKIP, ...SLOW }, async (t) => {
   const { sandbox, indexed } = lab(t);
   const stateOf = async (root = sandbox.workspace) => (await inspectStates(sandbox, [root]))[0];
 
@@ -339,7 +340,7 @@ test("inspectExistingIndex classifies every on-disk shape and never mutates the 
 });
 
 for (const waitMode of [true, false]) {
-  test(`missing index (no .zvec-grep at all): refresh wait:${waitMode} reports skipped_missing_index and creates nothing, offline`, { skip: !HAVE_ZG && "zg not installed" }, async (t) => {
+  test(`missing index (no .zvec-grep at all): refresh wait:${waitMode} reports skipped_missing_index and creates nothing, offline`, { skip: !HAVE_ZG && "zg not installed" || DAEMON_SKIP }, async (t) => {
     const { sandbox, daemon: start } = lab(t);
     sandbox.writeWorkspaceFiles(WORKSPACE);
     const guard = workspaceWithoutIndex(sandbox);
@@ -365,7 +366,7 @@ for (const waitMode of [true, false]) {
   });
 }
 
-test("missing index: many repeated and concurrent refreshes never create the index", { skip: !HAVE_ZG && "zg not installed" }, async (t) => {
+test("missing index: many repeated and concurrent refreshes never create the index", { skip: !HAVE_ZG && "zg not installed" || DAEMON_SKIP }, async (t) => {
   const { sandbox, daemon: start } = lab(t);
   sandbox.writeWorkspaceFiles(WORKSPACE);
   const guard = workspaceWithoutIndex(sandbox);
@@ -382,7 +383,7 @@ test("missing index: many repeated and concurrent refreshes never create the ind
   assertNoEgress(sandbox, "burst");
 });
 
-test("invalid roots are rejected with HTTP 400 {status:failed,error.code} and create nothing", { skip: !HAVE_ZG && "zg not installed" }, async (t) => {
+test("invalid roots are rejected with HTTP 400 {status:failed,error.code} and create nothing", { skip: !HAVE_ZG && "zg not installed" || DAEMON_SKIP }, async (t) => {
   const { sandbox, daemon: start } = lab(t);
   sandbox.writeWorkspaceFiles(WORKSPACE);
   const guard = workspaceWithoutIndex(sandbox);
@@ -409,7 +410,7 @@ test("invalid roots are rejected with HTTP 400 {status:failed,error.code} and cr
   assertNoEgress(sandbox, "invalid roots");
 });
 
-test("changed_paths/force_paths outside the index roots are refused with 400 PATH_OUT_OF_SCOPE, queue nothing, and never leak into the index", { skip: NEEDS_LOCAL_INDEX, ...SLOW }, async (t) => {
+test("changed_paths/force_paths outside the index roots are refused with 400 PATH_OUT_OF_SCOPE, queue nothing, and never leak into the index", { skip: NEEDS_LOCAL_INDEX || DAEMON_SKIP, ...SLOW }, async (t) => {
   const { sandbox, indexed, daemon: start } = lab(t);
   await indexed();
   const outside = join(sandbox.root, "outside-secret.ts");
@@ -434,7 +435,7 @@ for (const [label, prepare] of [
   ["files.zvec gone", (sb) => rmSync(join(sb.indexDir, "files.zvec"), { recursive: true })],
   ["index.zvec gone", (sb) => rmSync(join(sb.indexDir, "index.zvec"), { recursive: true })],
 ]) {
-  test(`partial index (${label}): refresh skips as missing and recreates no store`, { skip: NEEDS_LOCAL_INDEX, ...SLOW }, async (t) => {
+  test(`partial index (${label}): refresh skips as missing and recreates no store`, { skip: NEEDS_LOCAL_INDEX || DAEMON_SKIP, ...SLOW }, async (t) => {
     const { sandbox, indexed, daemon: start } = lab(t);
     await indexed();
     prepare(sandbox);
@@ -466,7 +467,7 @@ const REFUSALS = [
 // A non-ready existing index is a failure the host must see (background warning),
 // even when the daemon correctly refuses to write anything.
 for (const { name, status: expectedStatus, code, prepare } of REFUSALS) {
-  test(`refusal (${name}): ${expectedStatus} + durable ${code} warning, original and copied index bytes untouched, nothing created`, { skip: NEEDS_LOCAL_INDEX, ...SLOW }, async (t) => {
+  test(`refusal (${name}): ${expectedStatus} + durable ${code} warning, original and copied index bytes untouched, nothing created`, { skip: NEEDS_LOCAL_INDEX || DAEMON_SKIP, ...SLOW }, async (t) => {
     const { sandbox, indexed, daemon: start } = lab(t);
     await indexed();
     const { root, damage } = prepare(sandbox);
@@ -491,7 +492,7 @@ for (const { name, status: expectedStatus, code, prepare } of REFUSALS) {
   });
 }
 
-test("a subdirectory of an indexed root resolves to the ancestor index and never gets its own .zvec-grep", { skip: NEEDS_LOCAL_INDEX, ...SLOW }, async (t) => {
+test("a subdirectory of an indexed root resolves to the ancestor index and never gets its own .zvec-grep", { skip: NEEDS_LOCAL_INDEX || DAEMON_SKIP, ...SLOW }, async (t) => {
   const { sandbox, indexed, daemon: start } = lab(t);
   await indexed();
   const daemon = await start();
@@ -512,7 +513,7 @@ function writeLease(sandbox, lease) {
   return path;
 }
 
-test("single writer: a live foreign daemon lease blocks refresh (busy|failed), is never removed, and the index is not written", { skip: NEEDS_LOCAL_INDEX, ...SLOW }, async (t) => {
+test("single writer: a live foreign daemon lease blocks refresh (busy|failed), is never removed, and the index is not written", { skip: NEEDS_LOCAL_INDEX || DAEMON_SKIP, ...SLOW }, async (t) => {
   const { sandbox, indexed, daemon: start } = lab(t);
   await indexed();
   const lease = writeLease(sandbox, { pid: process.pid }); // the test process is alive and is not the managed daemon
@@ -526,7 +527,7 @@ test("single writer: a live foreign daemon lease blocks refresh (busy|failed), i
   assertNoEgress(sandbox, "foreign lease");
 });
 
-test("single writer: a lease left by a dead daemon on this host is recovered", { skip: NEEDS_LOCAL_INDEX, ...SLOW }, async (t) => {
+test("single writer: a lease left by a dead daemon on this host is recovered", { skip: NEEDS_LOCAL_INDEX || DAEMON_SKIP, ...SLOW }, async (t) => {
   const { sandbox, indexed, daemon: start } = lab(t);
   await indexed();
   writeLease(sandbox, { pid: deadPid() });
@@ -538,7 +539,7 @@ test("single writer: a lease left by a dead daemon on this host is recovered", {
   assertNoEgress(sandbox, "dead lease");
 });
 
-test("no manifest but stores present: refresh does not write a manifest or adopt the stores", { skip: NEEDS_LOCAL_INDEX, ...SLOW }, async (t) => {
+test("no manifest but stores present: refresh does not write a manifest or adopt the stores", { skip: NEEDS_LOCAL_INDEX || DAEMON_SKIP, ...SLOW }, async (t) => {
   const { sandbox, indexed, daemon: start } = lab(t);
   await indexed();
   rmSync(join(sandbox.indexDir, "manifest.json"));
@@ -552,7 +553,7 @@ test("no manifest but stores present: refresh does not write a manifest or adopt
   assertNoEgress(sandbox, "manifest-less");
 });
 
-test("disabled index policy: refresh reports skipped_disabled and writes nothing", { skip: NEEDS_LOCAL_INDEX, ...SLOW }, async (t) => {
+test("disabled index policy: refresh reports skipped_disabled and writes nothing", { skip: NEEDS_LOCAL_INDEX || DAEMON_SKIP, ...SLOW }, async (t) => {
   const { sandbox, indexed, daemon: start } = lab(t);
   await indexed();
   writeManifest(sandbox, (manifest) => { manifest.indexPolicy = "disabled"; });
@@ -587,7 +588,7 @@ const RACE_SHAPES = {
 };
 
 for (const [shape, { remove, manifest }] of Object.entries(RACE_SHAPES)) {
-  test(`deletion race (deterministic, ${shape}): index removed while a foreign writer holds the lock is NOT recreated once refresh proceeds`, { skip: NEEDS_LOCAL_INDEX, ...SLOW }, async (t) => {
+  test(`deletion race (deterministic, ${shape}): index removed while a foreign writer holds the lock is NOT recreated once refresh proceeds`, { skip: NEEDS_LOCAL_INDEX || DAEMON_SKIP, ...SLOW }, async (t) => {
     const { sandbox, indexed, daemon: start } = lab(t);
     await indexed();
     const daemon = await start();
@@ -623,7 +624,7 @@ for (const [shape, { remove, manifest }] of Object.entries(RACE_SHAPES)) {
   });
 }
 
-test("while the managed daemon owns a root, stock `zg index --drop` is refused (single writer) and the index survives", { skip: NEEDS_LOCAL_INDEX, ...SLOW }, async (t) => {
+test("while the managed daemon owns a root, stock `zg index --drop` is refused (single writer) and the index survives", { skip: NEEDS_LOCAL_INDEX || DAEMON_SKIP, ...SLOW }, async (t) => {
   const { sandbox, indexed, daemon: start } = lab(t);
   await indexed();
   const daemon = await start();
@@ -638,7 +639,7 @@ test("while the managed daemon owns a root, stock `zg index --drop` is refused (
   assertNoEgress(sandbox, "lease vs drop");
 });
 
-test("deletion after a successful refresh: daemon holds no stale handle and does not rebuild on the next turn", { skip: NEEDS_LOCAL_INDEX, ...SLOW }, async (t) => {
+test("deletion after a successful refresh: daemon holds no stale handle and does not rebuild on the next turn", { skip: NEEDS_LOCAL_INDEX || DAEMON_SKIP, ...SLOW }, async (t) => {
   const { sandbox, indexed, daemon: start } = lab(t);
   await indexed();
   const daemon = await start();
@@ -661,7 +662,7 @@ test("deletion after a successful refresh: daemon holds no stale handle and does
 });
 
 for (const deleteAfterMs of [0, 30, 90]) {
-  test(`deletion race (timed stress, delete +${deleteAfterMs}ms): concurrent refreshes never resurrect a deleted index`, { skip: NEEDS_LOCAL_INDEX, ...SLOW }, async (t) => {
+  test(`deletion race (timed stress, delete +${deleteAfterMs}ms): concurrent refreshes never resurrect a deleted index`, { skip: NEEDS_LOCAL_INDEX || DAEMON_SKIP, ...SLOW }, async (t) => {
     const { sandbox, indexed, daemon: start } = lab(t);
     await indexed();
     const daemon = await start();
@@ -731,7 +732,7 @@ test("model missing: refresh fails closed with a warning, never downloads, leave
   assert.equal(existsSync(join(sandbox.indexDir, "index.zvec")), true, "failed refresh removed the index");
 });
 
-test("remote-embedding manifest + credentials in the environment: refresh refuses, sends nothing, leaks nothing", { skip: NEEDS_LOCAL_INDEX, ...SLOW }, async (t) => {
+test("remote-embedding manifest + credentials in the environment: refresh refuses, sends nothing, leaks nothing", { skip: NEEDS_LOCAL_INDEX || DAEMON_SKIP, ...SLOW }, async (t) => {
   const { sandbox, indexed, daemon: start } = lab(t);
   await indexed();
   writeManifest(sandbox, (manifest) => {
@@ -757,7 +758,7 @@ test("remote-embedding manifest + credentials in the environment: refresh refuse
 // --------------------------------------------------------------------------
 // 4. Interrupted / failed / partial index
 // --------------------------------------------------------------------------
-test("stale write lock left by a dead process (interrupted writer) is recovered, not waited on forever", { skip: NEEDS_LOCAL_INDEX, ...SLOW }, async (t) => {
+test("stale write lock left by a dead process (interrupted writer) is recovered, not waited on forever", { skip: NEEDS_LOCAL_INDEX || DAEMON_SKIP, ...SLOW }, async (t) => {
   const { sandbox, indexed, daemon: start } = lab(t);
   await indexed();
   const lockDir = join(sandbox.indexDir, "locks", "home.write");
@@ -776,7 +777,7 @@ test("stale write lock left by a dead process (interrupted writer) is recovered,
   assertNoEgress(sandbox, "stale lock");
 });
 
-test("live foreign writer lock: wait:true => busy, async => INDEX_BUSY warning; lock never stolen; success after release clears the warning", { skip: NEEDS_LOCAL_INDEX, ...SLOW }, async (t) => {
+test("live foreign writer lock: wait:true => busy, async => INDEX_BUSY warning; lock never stolen; success after release clears the warning", { skip: NEEDS_LOCAL_INDEX || DAEMON_SKIP, ...SLOW }, async (t) => {
   const { sandbox, indexed, daemon: start } = lab(t);
   await indexed();
   sandbox.writeWorkspaceFiles({ "src/alpha.ts": `export function ${TOKENS.modifiedAfter}() {\n  return 6;\n}\n` });
@@ -816,7 +817,7 @@ test("live foreign writer lock: wait:true => busy, async => INDEX_BUSY warning; 
   assertNoEgress(sandbox, "live lock");
 });
 
-test("corrupt collection manifest: refresh fails with a warning; index bytes untouched; no rebuild; recovers once repaired", { skip: NEEDS_LOCAL_INDEX, ...SLOW }, async (t) => {
+test("corrupt collection manifest: refresh fails with a warning; index bytes untouched; no rebuild; recovers once repaired", { skip: NEEDS_LOCAL_INDEX || DAEMON_SKIP, ...SLOW }, async (t) => {
   const { sandbox, indexed, daemon: start } = lab(t);
   await indexed();
   const manifest3 = join(sandbox.indexDir, "index.zvec", "manifest.3");
@@ -852,7 +853,7 @@ test("corrupt collection manifest: refresh fails with a warning; index bytes unt
   assert.deepEqual((await ftsHits(sandbox, TOKENS.modifiedAfter)).files, ["src/alpha.ts"]);
 });
 
-test("daemon SIGKILLed mid-refresh: index stays openable, no rebuild, next daemon converges to a fresh index", { skip: NEEDS_LOCAL_INDEX, timeout: 300_000 }, async (t) => {
+test("daemon SIGKILLed mid-refresh: index stays openable, no rebuild, next daemon converges to a fresh index", { skip: NEEDS_LOCAL_INDEX || DAEMON_SKIP, timeout: 300_000 }, async (t) => {
   const { sandbox, indexed, daemon: start } = lab(t);
   await indexed();
   const manifestBefore = JSON.parse(readFileSync(join(sandbox.indexDir, "manifest.json"), "utf8"));
@@ -894,7 +895,7 @@ test("daemon SIGKILLed mid-refresh: index stays openable, no rebuild, next daemo
 // --------------------------------------------------------------------------
 // 5. Successful actual local indexing (offline, from an on-disk model)
 // --------------------------------------------------------------------------
-test("local incremental refresh: added, modified and deleted files are reflected; offline; identity preserved", { skip: NEEDS_LOCAL_INDEX, ...SLOW }, async (t) => {
+test("local incremental refresh: added, modified and deleted files are reflected; offline; identity preserved", { skip: NEEDS_LOCAL_INDEX || DAEMON_SKIP, ...SLOW }, async (t) => {
   const { sandbox, indexed, daemon: start } = lab(t);
   await indexed();
   const manifestBefore = JSON.parse(readFileSync(join(sandbox.indexDir, "manifest.json"), "utf8"));
@@ -942,7 +943,7 @@ test("local incremental refresh: added, modified and deleted files are reflected
   assertNoEgress(sandbox, "unchanged refresh");
 });
 
-test("local refresh without changed_paths reconciles all edits found on disk (wait:true)", { skip: NEEDS_LOCAL_INDEX, ...SLOW }, async (t) => {
+test("local refresh without changed_paths reconciles all edits found on disk (wait:true)", { skip: NEEDS_LOCAL_INDEX || DAEMON_SKIP, ...SLOW }, async (t) => {
   const { sandbox, indexed, daemon: start } = lab(t);
   await indexed();
   sandbox.writeWorkspaceFiles({ "src/gamma.ts": `export function ${TOKENS.added}() {}\n` });
@@ -956,7 +957,7 @@ test("local refresh without changed_paths reconciles all edits found on disk (wa
   assertNoEgress(sandbox, "full reconcile");
 });
 
-test("daemon restart: a refresh after restart reuses the existing index (no rebuild, no model fetch)", { skip: NEEDS_LOCAL_INDEX, ...SLOW }, async (t) => {
+test("daemon restart: a refresh after restart reuses the existing index (no rebuild, no model fetch)", { skip: NEEDS_LOCAL_INDEX || DAEMON_SKIP, ...SLOW }, async (t) => {
   const { sandbox, indexed, daemon: start } = lab(t);
   await indexed();
   const id = JSON.parse(readFileSync(join(sandbox.indexDir, "manifest.json"), "utf8")).id;

@@ -79,6 +79,21 @@ TOOL="codex"
 
 # mex-agent 0.7.x has no non-interactive tool flag, so the choice is piped to its
 # menu. Numbers verified against mex-agent 0.7.1 (selectToolConfig).
+normalize_tool_name() {
+  case "$1" in
+    claude | claude-code) echo "claude" ;;
+    cursor) echo "cursor" ;;
+    windsurf) echo "windsurf" ;;
+    copilot | github-copilot) echo "copilot" ;;
+    opencode) echo "opencode" ;;
+    codex | jeo | gjc | jeopi | omp | pi | agy | antigravity-cli | aside | universal) echo "codex" ;;
+    gemini | gemini-cli | antigravity) echo "gemini" ;;
+    multiple) echo "multiple" ;;
+    none) echo "none" ;;
+    *) die "Unknown --tool value: $1 (claude|cursor|windsurf|copilot|opencode|codex|gemini|jeo|gjc|jeopi|omp|pi|agy|antigravity|aside|multiple|none)" ;;
+  esac
+}
+
 tool_choice_number() {
   case "$1" in
     claude) echo 1 ;;
@@ -86,10 +101,10 @@ tool_choice_number() {
     windsurf) echo 3 ;;
     copilot) echo 4 ;;
     opencode) echo 5 ;;
-    codex) echo 6 ;;
+    codex | gemini) echo 6 ;;
     multiple) echo 7 ;;
     none) echo 8 ;;
-    *) die "Unknown --tool value: $1 (claude|cursor|windsurf|copilot|opencode|codex|multiple|none)" ;;
+    *) die "Unknown --tool value: $1 (claude|cursor|windsurf|copilot|opencode|codex|gemini|multiple|none)" ;;
   esac
 }
 
@@ -97,6 +112,7 @@ while (($# > 0)); do
   case "$1" in
     --mode) MODE="${2:?--mode needs a value, e.g. agent-memory}"; shift 2 ;;
     --force) FORCE=1; shift ;;
+    -g | --global) GLOBAL=1; shift ;;
     --skip-skill) SKIP_SKILL_FLAG=1; shift ;;
     --tool) TOOL="${2:?--tool needs a value}"; shift 2 ;;
     # ponytail: help is this header, printed until the first non-comment line —
@@ -107,6 +123,10 @@ while (($# > 0)); do
   esac
 done
 
+REQUESTED_TOOL="$TOOL"
+TOOL="$(normalize_tool_name "$TOOL")"
+MEX_SETUP_TOOL="$TOOL"
+[ "$MEX_SETUP_TOOL" = "gemini" ] && MEX_SETUP_TOOL="codex"
 TOOL_CHOICE="$(tool_choice_number "$TOOL")"
 
 [ -d "$PROJECT_PATH" ] || die "Project path does not exist: $PROJECT_PATH"
@@ -224,7 +244,7 @@ run_setup() {
   if mex_agent_has_tool_flag; then
     args+=(--yes)
     [ "$FORCE" = "1" ] && args+=(--force)
-    [ "$TOOL" = "multiple" ] || args+=(--tool "$TOOL")
+    [ "$MEX_SETUP_TOOL" = "multiple" ] || args+=(--tool "$MEX_SETUP_TOOL")
     log "Running 'mex setup' in $PROJECT_PATH (${args[*]:1})..."
     (cd "$PROJECT_PATH" && "$MEX_AGENT_BIN_RESOLVED" "${args[@]}" </dev/null) | tee "$setup_log" || status=$?
   else
@@ -269,24 +289,16 @@ run_check() {
 
 ensure_jeo_anchor() {
   case "$TOOL" in
-    codex | multiple) ;;
+    codex | gemini | multiple) ;;
     *) return 0 ;;
   esac
 
-  [ -f "$PROJECT_PATH/AGENTS.md" ] && return 0
-
-  if [ -f "$PROJECT_PATH/CLAUDE.md" ]; then
-    cp "$PROJECT_PATH/CLAUDE.md" "$PROJECT_PATH/AGENTS.md"
-    log "Mirrored CLAUDE.md to jeo/gjc/jeopi-compatible AGENTS.md"
-    return 0
-  fi
-
-  [ -f "$PROJECT_PATH/.mex/AGENTS.md" ] || {
-    warn "Cannot create AGENTS.md bridge: $PROJECT_PATH/.mex/AGENTS.md is missing"
-    return 0
-  }
-
-  cat > "$PROJECT_PATH/AGENTS.md" <<'EOF'
+  if [ ! -f "$PROJECT_PATH/AGENTS.md" ]; then
+    if [ -f "$PROJECT_PATH/CLAUDE.md" ]; then
+      cp "$PROJECT_PATH/CLAUDE.md" "$PROJECT_PATH/AGENTS.md"
+      log "Mirrored CLAUDE.md to jeo/gjc/jeopi-compatible AGENTS.md"
+    elif [ -f "$PROJECT_PATH/.mex/AGENTS.md" ]; then
+      cat > "$PROJECT_PATH/AGENTS.md" <<'EOF'
 # Mex project anchor
 
 Before project work, read `.mex/AGENTS.md` and then `.mex/ROUTER.md`.
@@ -297,13 +309,24 @@ Use the unambiguous `mex-agent` command for graph/check/sync operations. Never
 invoke bare `mex` unless `mex --version` prints a mex-agent semantic version;
 TeX Live may own that name.
 EOF
-  log "Created jeo/gjc/jeopi-compatible project anchor: AGENTS.md"
+      log "Created jeo/gjc/jeopi-compatible project anchor: AGENTS.md"
+    else
+      warn "Cannot create AGENTS.md bridge: $PROJECT_PATH/.mex/AGENTS.md is missing"
+    fi
+  fi
+
+  if [ "$TOOL" = "gemini" ] || [ "$TOOL" = "multiple" ]; then
+    if [ ! -f "$PROJECT_PATH/GEMINI.md" ] && [ -f "$PROJECT_PATH/AGENTS.md" ]; then
+      cp "$PROJECT_PATH/AGENTS.md" "$PROJECT_PATH/GEMINI.md"
+      log "Created Gemini/Antigravity project anchor: GEMINI.md"
+    fi
+  fi
 }
 
 # ---- step 6: report which project anchor mex installed ----
 report_anchor() {
   local found=0
-  for anchor in CLAUDE.md AGENTS.md .cursorrules .windsurfrules .github/copilot-instructions.md .opencode/opencode.json; do
+  for anchor in CLAUDE.md AGENTS.md GEMINI.md .cursorrules .windsurfrules .github/copilot-instructions.md .opencode/opencode.json; do
     if [ -f "$PROJECT_PATH/$anchor" ]; then
       log "Project anchor present: $anchor"
       found=1

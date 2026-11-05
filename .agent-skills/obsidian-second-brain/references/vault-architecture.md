@@ -59,8 +59,9 @@ reference material, not selectable `setup.py` modes.
    independently; a mixed batch can return `completed_with_source_errors` with a
    nonzero CLI exit. Text deferred by the batch allowance stays pending for a later
    scan. Completion: selected source IDs fit the full playbook/wiki/input allowance.
-3. Claude CLI runs with tools disabled, strict empty MCP configuration, safe mode,
-   JSON schema output, the chosen model and an allowance reservation. It proposes
+3. The selected host CLI (`claude`, `codex`, `jeo`, `jeopi`, `omp`, `pi`, or `gjc`)
+   runs with tools disabled/read-only, isolated MCP/session flags, JSON schema
+   output, the resolved host model and an allowance reservation. It proposes
    complete replacements using `updates: [{path, content, before_sha256}]`; it
    cannot call research tools, fetch URLs, change hooks or execute commands.
    Completion: a successful structured result includes at least one update.
@@ -112,9 +113,10 @@ timezone):
 
 Only the new vault's `.claude/settings.json` receives native `PostCompact` wiring.
 Its summary is preserved under `raw/sources/postcompact/` before model use. jeo,
-Codex, Gemini and OpenCode use copied operating documents/shared runtime; no
+jeopi, omp, Codex, Gemini and OpenCode use copied operating documents/shared runtime; no
 native PostCompact or SessionStart support is fabricated for those hosts. The
-shared automated runner uses Claude CLI even when the interactive host differs.
+shared automated runner invokes the configured or auto-detected host CLI (`claude`,
+`codex`, `jeo`, `jeopi`, `omp`, `pi`, or `gjc`) directly with its resolved model.
 Save reminders in upstream documents are guidance, not a new host callback.
 
 The runtime avoids duplicate completed events and recursive invocation. It

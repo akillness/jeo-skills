@@ -32,7 +32,14 @@ CACHE_PATH = Path.home() / ".cache" / "jeo-skill" / "skills.json"
 BIN_PATH = Path.home() / ".local" / "bin" / "jeo-skill"
 TOKEN_RE = re.compile(r"[a-z0-9]+")
 SKILLS_PACKAGE = "skills@1.7.0"
-AGENT_ALIASES = {"jeopi": "universal", "jeo": "universal", "omp": "universal", "gjc": "universal", "aside": "universal", "agy": "antigravity-cli", "kimi": "kimi-code-cli"}
+AGENT_ALIASES = {
+    "jeopi": "universal", "jeo": "universal", "jeo-code": "universal",
+    "omp": "universal", "oh-my-pi": "universal", "gjc": "universal",
+    "aside": "universal", "agy": "antigravity-cli", "kimi": "kimi-code-cli",
+    "claude": "claude-code", "gemini": "gemini-cli",
+    "windsurf": "universal", "copilot": "universal", "openclaw": "universal",
+    "qwen": "universal", "qoder": "universal",
+}
 SKILL_ALIASES = {
     "zvec": "zvec-grep",
     "zg": "zvec-grep",
@@ -615,8 +622,20 @@ def skill_setup_commands(root: Path | None, selected: list[str], *,
             plans.append((name, ["bash", str(skill_dir / "scripts/install.sh")]))
         elif name == "rtk":
             plans.append((name, ["bash", str(skill_dir / "scripts/install.sh")]))
-            if with_hooks and shutil.which("claude"):
-                plans.append((name, ["bash", str(skill_dir / "scripts/init-agent.sh"), "--agent", "claude", "--global", "--auto-patch"]))
+            if with_hooks:
+                rtk_agent_map = {
+                    "claude": "claude", "claude-code": "claude",
+                    "codex": "codex", "gemini": "gemini", "gemini-cli": "gemini",
+                    "cursor": "cursor", "copilot": "copilot",
+                    "windsurf": "windsurf", "opencode": "opencode", "cline": "cline",
+                }
+                rtk_target = rtk_agent_map.get(agent)
+                if rtk_target == "windsurf":
+                    plans.append((name, ["bash", str(skill_dir / "scripts/init-agent.sh"), "--agent", "windsurf", "--local"]))
+                elif rtk_target and (rtk_target != "claude" or shutil.which("claude")):
+                    plans.append((name, ["bash", str(skill_dir / "scripts/init-agent.sh"), "--agent", rtk_target, "--global", "--auto-patch"]))
+                elif shutil.which("claude"):
+                    plans.append((name, ["bash", str(skill_dir / "scripts/init-agent.sh"), "--agent", "claude", "--global", "--auto-patch"]))
         elif name == "cli-anything":
             plans.append((name, ["bash", str(skill_dir / "scripts/install.sh")]))
         elif name == "spec-kit":
@@ -648,6 +667,18 @@ def skill_setup_commands(root: Path | None, selected: list[str], *,
             else:
                 plans.append((name, ["npm", "install", "-g", "@zvec/zvec-grep@0.2.2"]))
                 plans.append((name, ["zg", "version"]))
+            if with_hooks and (skill_dir / "scripts/host-install.py").is_file():
+                zvec_map = {
+                    "claude": "claude", "claude-code": "claude",
+                    "gemini": "gemini", "gemini-cli": "gemini",
+                    "codex": "codex", "pi": "pi", "omp": "omp", "oh-my-pi": "omp",
+                    "jeopi": "jeopi", "jeo": "jeo", "jeo-code": "jeo",
+                    "gjc": "gjc", "opencode": "opencode",
+                    "agy": "agy", "antigravity-cli": "agy",
+                }
+                zvec_target = zvec_map.get(agent)
+                if zvec_target:
+                    plans.append((name, [sys.executable, str(skill_dir / "scripts/host-install.py"), "--target", zvec_target, "--apply"]))
         elif name == "obsidian-second-brain":
             config = os.environ.get("JEO_SECOND_BRAIN_CONFIG", "").strip()
             if not config:
@@ -662,8 +693,11 @@ def skill_setup_commands(root: Path | None, selected: list[str], *,
             if not (vault / "index.md").is_file():
                 plans.append((name, ["bash", str(skill_dir / "scripts/bootstrap-vault.sh"), str(vault)]))
             plans.append((name, [sys.executable, str(skill_dir / "scripts/lint-wiki.py"), str(vault)]))
-            if with_hooks and (home / ".agents/hooks/ingest-prompt.py").is_file():
-                plans.append((name, [sys.executable, str(home / ".agents/hooks/ingest-prompt.py"), '{"hook_event_name":"Stop"}']))
+            if with_hooks:
+                hook_target = home / ".agents/hooks/ingest-prompt.py"
+                repo_hooks = Path(__file__).resolve().parents[3] / "hooks"
+                if hook_target.is_file() or (repo_hooks / "ingest-prompt.py").is_file():
+                    plans.append((name, [sys.executable, str(hook_target), '{"hook_event_name":"Stop"}']))
     return plans, unsupported
 
 
@@ -688,6 +722,19 @@ def run_skill_setup(root: Path | None, selected: list[str], *,
     if with_hooks:
         env["JEO_SKILLS_APPROVE_ALL_HOOKS_MCP"] = "true"
     checkout_repo = Path(__file__).resolve().parents[3]
+    if with_hooks and "llm-wiki" in selected:
+        repo_hooks = checkout_repo / "hooks"
+        dest_hooks = home / ".agents/hooks"
+        if (repo_hooks / "ingest-prompt.py").is_file() and not dest_hooks.is_symlink():
+            dest_hooks.mkdir(parents=True, exist_ok=True)
+            for fname in ("ingest-prompt.py", "ingest-output.py"):
+                src_f = repo_hooks / fname
+                dst_f = dest_hooks / fname
+                if src_f.is_file() and not dst_f.exists():
+                    shutil.copy2(src_f, dst_f)
+                    dst_f.chmod(0o755)
+            if (repo_hooks / "ctx").is_dir() and not (dest_hooks / "ctx").exists():
+                shutil.copytree(repo_hooks / "ctx", dest_hooks / "ctx")
     for skill_name, cmd in plans:
         if skill_name == "mex" and cmd[0] == "bash" and root is not None:
             wrapper_src = root / "mex/scripts/mex-agent-wrapper.sh"

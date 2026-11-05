@@ -71,13 +71,20 @@ install_mex() {
   if [ -f "$wrapper_src" ]; then
     python3 - "$HOME" "$wrapper_src" <<'PY' || true
 from pathlib import Path
-import shutil, sys
+import shutil, subprocess, sys
 home, wrapper = Path(sys.argv[1]), Path(sys.argv[2])
 cli_candidates = list(home.glob(".nvm/versions/node/*/lib/node_modules/mex-agent/dist/cli.js")) + [
     home / ".local/lib/node_modules/mex-agent/dist/cli.js",
+    home / ".aside/runtime/node/lib/node_modules/mex-agent/dist/cli.js",
     Path("/opt/homebrew/lib/node_modules/mex-agent/dist/cli.js"),
     Path("/usr/local/lib/node_modules/mex-agent/dist/cli.js"),
 ]
+try:
+    npm_root = subprocess.run(["npm", "root", "-g"], capture_output=True, text=True, timeout=5)
+    if npm_root.returncode == 0 and npm_root.stdout.strip():
+        cli_candidates.insert(0, Path(npm_root.stdout.strip()) / "mex-agent/dist/cli.js")
+except Exception:
+    pass
 if any(p.is_file() for p in cli_candidates):
     dest = home / ".local/bin/mex-agent"
     if not dest.exists() and not dest.is_symlink():

@@ -51,6 +51,10 @@ if name == 'claude':
         mcp_config = json.loads(mcp) if mcp.startswith('{') else json.loads(Path(mcp).read_text())
         if mcp_config != {'mcpServers': {}}:
             raise SystemExit('ambient MCP access must be disabled')
+        model_val = args[args.index('--model') + 1]
+        if 'gpt-6.1-terra' in model_val:
+            print('error: unrecognized_model — model gpt-6.1-terra not recognized by Claude Code CLI', file=sys.stderr)
+            raise SystemExit(1)
         control = json.loads(Path(os.environ['SB_RESPONSE']).read_text())
         if control.get('block'):
             # A deterministic blocked external process; runtime's subprocess deadline
@@ -61,6 +65,23 @@ if name == 'claude':
             print('fixture model failure', file=sys.stderr)
             raise SystemExit(control['exit'])
         print(control.get('raw', json.dumps(control.get('envelope'), ensure_ascii=False)))
+elif name in ('codex', 'jeo', 'jeopi', 'omp', 'pi', 'gjc'):
+    if '--help' in args:
+        record()
+        if name == 'codex':
+            print('exec -m --model --sandbox --ephemeral --skip-git-repo-check --output-schema --json')
+        else:
+            print('-p --print --model --no-tools --no-mcp --no-session --output-format --json-schema')
+    else:
+        prompt = sys.stdin.read()
+        record(prompt=prompt)
+        control = json.loads(Path(os.environ['SB_RESPONSE']).read_text())
+        if control.get('exit'):
+            print('fixture host failure', file=sys.stderr)
+            raise SystemExit(control['exit'])
+        envelope = control.get('envelope', {})
+        structured = envelope.get('structured_output', {'updates': []})
+        print(control.get('raw', json.dumps(structured, ensure_ascii=False)))
 elif name == 'crontab':
     record()
     cron = Path(os.environ['SB_CRON'])
@@ -841,6 +862,82 @@ else:
         self.assertEqual((self.vault / "wiki/manual.md").read_text(), "manual authorization honored\n")
         self.assertEqual(len(self.model_calls()), 1)
         self.assertIn(source.read_bytes(), self.raw_bytes())
+
+    def enable_host_binaries(self, *hosts: str) -> None:
+        for name in hosts:
+            path = self.bin / name
+            path.write_text(f"#!{sys.executable}\n" + TRANSPORT)
+            path.chmod(0o700)
+
+    def test_host_detection_order_env_then_config_files_and_direct_cli_ingest_synthesis(self) -> None:
+        self.enable_host_binaries("codex", "jeo", "jeopi", "omp")
+        (self.home / ".codex").mkdir(parents=True, exist_ok=True)
+        (self.home / ".codex/config.toml").write_text('model = "gpt-6.1-terra"\n', encoding="utf-8")
+        (self.home / ".jeo").mkdir(parents=True, exist_ok=True)
+        (self.home / ".jeo/config.json").write_text(json.dumps({"defaultModel": "openai/gpt-6.1-terra"}), encoding="utf-8")
+        (self.home / ".omp/agent").mkdir(parents=True, exist_ok=True)
+        (self.home / ".omp/agent/settings.json").write_text(json.dumps({"defaultProvider": "openai-codex", "defaultModel": "gpt-6.1-terra"}), encoding="utf-8")
+        (self.home / ".jeopi/agent").mkdir(parents=True, exist_ok=True)
+        (self.home / ".jeopi/agent/settings.json").write_text(json.dumps({"model": "openai-codex/gpt-6.1-terra"}), encoding="utf-8")
+
+        # 1) When host/model are 'auto' and no env var is set, config file detection order selects jeopi first
+        self.config["host"] = "auto"
+        self.config["model"] = "auto"
+        self.save_config()
+        self.install()
+        persisted = json.loads((self.vault / ".second-brain/config.json").read_text())
+        self.assertEqual(persisted["host"], "jeopi")
+        self.assertEqual(persisted["model"], "openai-codex/gpt-6.1-terra")
+
+        # Run scan (ingest) and nightly (synthesis) via jeopi CLI directly
+        (self.inbox / "terra-note.md").write_text("# Terra source\nMulti-host ingest test\n", encoding="utf-8")
+        self.propose([self.update("wiki/terra.md", "# Ingested via jeopi\n")])
+        scan_res = self.runtime("scan")
+        self.assertEqual(scan_res.returncode, 0, scan_res.stdout)
+        self.assertEqual((self.vault / "wiki/terra.md").read_text(), "# Ingested via jeopi\n")
+        jeopi_calls = [row for row in self.calls("jeopi") if "prompt" in row]
+        self.assertEqual(len(jeopi_calls), 1)
+        self.assertIn("--model=openai-codex/gpt-6.1-terra", jeopi_calls[0]["args"])
+        self.assertEqual(self.model_calls(), [])
+
+        # 2) Environment variable overrides config-file order and owned vault config updates in place
+        self.env["SECOND_BRAIN_HOST"] = "codex"
+        self.save_config()
+        update_res = self.setup()
+        self.assertEqual(update_res.returncode, 0, update_res.stdout)
+        self.assertEqual(json.loads(update_res.stdout)["status"], "updated")
+        persisted = json.loads((self.vault / ".second-brain/config.json").read_text())
+        self.assertEqual(persisted["host"], "codex")
+        self.assertEqual(persisted["model"], "gpt-6.1-terra")
+        self.assertEqual((self.vault / "wiki/terra.md").read_text(), "# Ingested via jeopi\n")
+
+        self.propose([self.update("wiki/syntheses/nightly.md", "# Synthesized via codex\n")])
+        nightly_res = self.runtime("nightly")
+        self.assertEqual(nightly_res.returncode, 0, nightly_res.stdout)
+        self.assertEqual((self.vault / "wiki/syntheses/nightly.md").read_text(), "# Synthesized via codex\n")
+        codex_calls = [row for row in self.calls("codex") if "prompt" in row]
+        self.assertEqual(len(codex_calls), 1)
+        self.assertIn("-m", codex_calls[0]["args"])
+        self.assertIn("gpt-6.1-terra", codex_calls[0]["args"])
+        del self.env["SECOND_BRAIN_HOST"]
+
+    def test_existing_vault_with_gpt_6_1_terra_routes_to_host_cli_without_claude_unrecognized_model(self) -> None:
+        self.install()
+        self.enable_host_binaries("codex", "jeo", "jeopi", "omp")
+        # Simulate an existing vault whose config.json had model='gpt-6.1-terra' without host field
+        cfg_file = self.vault / ".second-brain/config.json"
+        cfg = json.loads(cfg_file.read_text())
+        cfg["model"] = "gpt-6.1-terra"
+        cfg_file.write_text(json.dumps(cfg, ensure_ascii=False))
+        (self.inbox / "retry-source.md").write_text("retry after unrecognized_model\n", encoding="utf-8")
+        self.propose([self.update("wiki/retried.md", "# Retried successfully\n")])
+        res = self.runtime("scan")
+        self.assertEqual(res.returncode, 0, res.stdout)
+        payload = json.loads(res.stdout)
+        self.assertIn(payload["host"], ("codex", "jeopi", "jeo", "omp"))
+        self.assertEqual(payload["model"], "gpt-6.1-terra")
+        self.assertEqual((self.vault / "wiki/retried.md").read_text(), "# Retried successfully\n")
+        self.assertEqual(self.model_calls(), [], "Claude CLI must not be called with gpt-6.1-terra")
 
 if __name__ == "__main__":
     unittest.main()

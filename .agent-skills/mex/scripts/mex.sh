@@ -90,7 +90,7 @@ case "$cmd" in
     fi
 
     anchor_found=""
-    for anchor in CLAUDE.md AGENTS.md .cursorrules .windsurfrules .github/copilot-instructions.md .opencode/opencode.json; do
+    for anchor in CLAUDE.md AGENTS.md GEMINI.md .cursorrules .windsurfrules .github/copilot-instructions.md .opencode/opencode.json; do
       if [ -f "$project_path/$anchor" ]; then
         echo "  ok    project anchor   $anchor"
         anchor_found="1"

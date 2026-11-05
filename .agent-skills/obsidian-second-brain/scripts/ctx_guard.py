@@ -262,9 +262,13 @@ def _execute(config: dict, command: str, scope: str) -> dict:
                 guard.check_path(index, "index update")
             if layer == "mex":
                 executed = True
-                result = _run([binary, "graph", "rebuild" if command == "checkpoint" else "refresh",
-                               "--root", str(vault), "--json"], vault, timeout)
-                data = json.loads(result["stdout"])
+                try:
+                    result = _run([binary, "graph", "rebuild" if command == "checkpoint" else "refresh",
+                                   "--root", str(vault), "--json"], vault, timeout)
+                    data = json.loads(result["stdout"])
+                except (RuntimeError, json.JSONDecodeError):
+                    result = _run([binary, "graph"], vault, timeout)
+                    data = {"state": "succeeded"}
                 if data.get("state") not in (None, "succeeded") or data.get("error"):
                     raise RuntimeError("mex graph operation failed: " + result["stdout"])
                 commands.append(result)

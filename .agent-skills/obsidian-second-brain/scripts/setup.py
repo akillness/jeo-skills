@@ -30,6 +30,11 @@ import unicodedata
 import urllib.request
 import zipfile
 
+try:
+    import tomllib
+except ModuleNotFoundError:  # Python 3.10 fallback
+    tomllib = None  # type: ignore[assignment]
+
 UPSTREAM = "https://github.com/akillness/obsidian-second-brain"
 REF = "c8b1d8c1c5b41d4f1845f7188200d354837be96f"
 DEFAULT_SCHEDULES = {
@@ -37,6 +42,11 @@ DEFAULT_SCHEDULES = {
     "weekly": "0 18 * * 5", "health": "0 21 * * 0",
 }
 COMMANDS = ("ingest", "daily", "reconcile", "synthesize", "recap", "health", "save")
+HOSTS = ("claude", "codex", "jeo", "jeopi", "omp", "pi", "gjc")
+HOST_DETECTION_ORDER = ("jeopi", "omp", "jeo", "codex", "claude", "pi", "gjc")
+NON_CLAUDE_HOSTS = ("codex", "jeopi", "jeo", "omp", "pi", "gjc")
+PROVIDER_QUALIFIED_HOSTS = ("jeo", "jeopi", "omp", "pi", "gjc")
+MODEL_RE = re.compile(r"[A-Za-z0-9][A-Za-z0-9._:/@+-]*")
 BASES = {
     "projects": ("Projects", "PROJECTS_FOLDER", "wiki/projects"),
     "people": ("People", "PEOPLE_FOLDER", "wiki/entities"),
@@ -78,6 +88,287 @@ def executable(value: object, name: str) -> str:
     return str(path)
 
 
+def optional_executable(value: object, name: str, fallback_dir: Path | None = None) -> str | None:
+    candidates = []
+    if isinstance(value, str) and value.strip():
+        candidates.append(value.strip())
+    if fallback_dir is not None:
+        candidates.append(str(fallback_dir / name))
+    which_hit = shutil.which(name)
+    if which_hit:
+        candidates.append(which_hit)
+    for raw in candidates:
+        try:
+            return executable(raw, name)
+        except ValueError:
+            continue
+    return None
+
+
+def user_home() -> Path:
+    raw = os.environ.get("USER_HOME") or os.environ.get("HOME")
+    return Path(raw).expanduser().resolve() if raw else Path.home().resolve()
+
+
+def is_claude_compatible_model(model: str) -> bool:
+    lowered = model.strip().lower()
+    if not lowered or lowered == "auto":
+        return False
+    non_claude_prefixes = (
+        "gpt-", "o1", "o3", "o4", "chatgpt-", "codex-",
+        "openai/", "openai-codex/", "google/", "gemini",
+        "openrouter/", "xai/", "grok-", "deepseek", "qwen",
+    )
+    if lowered.startswith(non_claude_prefixes) or "-terra" in lowered:
+        return False
+    return True
+
+
+def host_config_paths(host: str, home: Path | None = None) -> list[Path]:
+    base = home or user_home()
+    paths: list[Path] = []
+    if host == "claude":
+        cfg_dir = os.environ.get("CLAUDE_CONFIG_DIR", "").strip()
+        if cfg_dir:
+            paths.append(Path(cfg_dir).expanduser() / "settings.json")
+        paths.append(base / ".claude/settings.json")
+    elif host == "codex":
+        codex_dir = os.environ.get("CODEX_HOME", "").strip()
+        if codex_dir:
+            paths.extend([Path(codex_dir).expanduser() / "config.toml",
+                          Path(codex_dir).expanduser() / "config.json"])
+        paths.extend([base / ".codex/config.toml", base / ".codex/config.json"])
+    elif host == "jeo":
+        jeo_cfg = os.environ.get("JEO_CONFIG", "").strip()
+        if jeo_cfg:
+            paths.append(Path(jeo_cfg).expanduser())
+        paths.extend([base / ".jeo/config.json", base / ".config/jeo/config.json"])
+    elif host in ("jeopi", "omp", "pi", "gjc"):
+        env_key = f"{host.upper()}_HOME"
+        custom = os.environ.get(env_key, "").strip()
+        if custom:
+            root = Path(custom).expanduser()
+            paths.extend([root / "agent/settings.json", root / "settings.json",
+                          root / "config.json", root / "agent/config.json"])
+        root = base / f".{host}"
+        paths.extend([root / "agent/settings.json", root / "settings.json",
+                      root / "config.json", root / "agent/config.json"])
+    return paths
+
+
+def _parse_toml_model(text: str) -> tuple[str | None, str | None]:
+    if tomllib is not None:
+        try:
+            data = tomllib.loads(text)
+            if isinstance(data, dict):
+                model = data.get("model") or data.get("default_model") or data.get("defaultModel")
+                provider = data.get("model_provider") or data.get("provider")
+                return (
+                    model.strip() if isinstance(model, str) and model.strip() else None,
+                    provider.strip() if isinstance(provider, str) and provider.strip() else None,
+                )
+        except Exception:
+            pass
+    model_val = None
+    provider_val = None
+    for line in text.splitlines():
+        stripped = line.strip()
+        if not stripped or stripped.startswith("#"):
+            continue
+        if stripped.startswith("["):
+            break
+        m_match = re.match(r'^model\s*=\s*["\']([^"\']+)["\']', stripped)
+        if m_match:
+            model_val = m_match.group(1).strip()
+        p_match = re.match(r'^model_provider\s*=\s*["\']([^"\']+)["\']', stripped)
+        if p_match:
+            provider_val = p_match.group(1).strip()
+    return model_val, provider_val
+
+
+def read_host_model_config(host: str, home: Path | None = None) -> str | None:
+    env_lookup = {
+        "claude": ("SECOND_BRAIN_MODEL", "JEO_SECOND_BRAIN_MODEL", "CLAUDE_MODEL", "ANTHROPIC_MODEL"),
+        "codex": ("SECOND_BRAIN_MODEL", "JEO_SECOND_BRAIN_MODEL", "CODEX_MODEL", "OPENAI_MODEL"),
+        "jeo": ("SECOND_BRAIN_MODEL", "JEO_SECOND_BRAIN_MODEL", "JEO_MODEL"),
+        "jeopi": ("SECOND_BRAIN_MODEL", "JEO_SECOND_BRAIN_MODEL", "JEOPI_MODEL"),
+        "omp": ("SECOND_BRAIN_MODEL", "JEO_SECOND_BRAIN_MODEL", "OMP_MODEL"),
+        "pi": ("SECOND_BRAIN_MODEL", "JEO_SECOND_BRAIN_MODEL", "PI_MODEL"),
+        "gjc": ("SECOND_BRAIN_MODEL", "JEO_SECOND_BRAIN_MODEL", "GJC_MODEL"),
+    }
+    for env_name in env_lookup.get(host, ("SECOND_BRAIN_MODEL", "JEO_SECOND_BRAIN_MODEL")):
+        val = os.environ.get(env_name, "").strip()
+        if val and val.lower() != "auto" and MODEL_RE.fullmatch(val):
+            return val
+    for candidate in host_config_paths(host, home):
+        try:
+            no_symlinks(candidate)
+            if not candidate.is_file():
+                continue
+            raw_text = candidate.read_text(encoding="utf-8")
+        except Exception:
+            continue
+        if candidate.suffix == ".toml":
+            model, provider = _parse_toml_model(raw_text)
+            if model and MODEL_RE.fullmatch(model):
+                if host in PROVIDER_QUALIFIED_HOSTS and provider and "/" not in model:
+                    combined = f"{provider}/{model}"
+                    if MODEL_RE.fullmatch(combined):
+                        return combined
+                return model
+        else:
+            try:
+                data = json.loads(raw_text)
+            except Exception:
+                continue
+            if not isinstance(data, dict):
+                continue
+            model = None
+            for key in ("model", "defaultModel", "default_model"):
+                val = data.get(key)
+                if isinstance(val, str) and val.strip() and val.strip().lower() != "auto":
+                    model = val.strip()
+                    break
+                if isinstance(val, dict):
+                    nested = val.get("id") or val.get("model") or val.get("name")
+                    if isinstance(nested, str) and nested.strip():
+                        model = nested.strip()
+                        break
+            if not model and isinstance(data.get("env"), dict):
+                for env_key in ("ANTHROPIC_MODEL", "OPENAI_MODEL", "MODEL"):
+                    val = data["env"].get(env_key)
+                    if isinstance(val, str) and val.strip():
+                        model = val.strip()
+                        break
+            if model and MODEL_RE.fullmatch(model):
+                provider = data.get("defaultProvider") or data.get("provider") or data.get("modelProvider")
+                if host in PROVIDER_QUALIFIED_HOSTS and isinstance(provider, str) and provider.strip() and "/" not in model:
+                    combined = f"{provider.strip()}/{model}"
+                    if MODEL_RE.fullmatch(combined):
+                        return combined
+                return model
+    return None
+
+
+def detect_host_from_env() -> str | None:
+    for var in ("SECOND_BRAIN_HOST", "JEO_SECOND_BRAIN_HOST", "JEV_AGENT"):
+        val = os.environ.get(var, "").strip().lower()
+        if val in HOSTS:
+            return val
+    env_markers = (
+        ("jeopi", ("JEOPI_HOME", "JEOPI_AGENT_DIR", "JEOPI_MODEL")),
+        ("omp", ("OMP_HOME", "OMP_AGENT_DIR", "OMP_MODEL")),
+        ("jeo", ("JEO_CONFIG", "JEO_HOME", "JEO_MODEL")),
+        ("codex", ("CODEX_HOME", "CODEX_THREAD_ID", "CODEX_SANDBOX", "CODEX_MODEL")),
+        ("claude", ("CLAUDE_CONFIG_DIR", "CLAUDECODE", "CLAUDE_CODE_ENTRYPOINT", "CLAUDE_MODEL", "ANTHROPIC_MODEL")),
+        ("pi", ("PI_CODING_AGENT_DIR", "PI_MODEL")),
+        ("gjc", ("GJC_HOME", "GJC_MODEL")),
+    )
+    for host, keys in env_markers:
+        if any(os.environ.get(k, "").strip() for k in keys):
+            return host
+    return None
+
+
+def resolve_host_and_model(config: dict, home: Path) -> tuple[str, str, str, bool]:
+    """Return (host, model, host_bin, include_host_fields)."""
+    raw_host = config.get("host")
+    raw_model = config.get("model")
+    if raw_host is not None and (not isinstance(raw_host, str) or not raw_host.strip()):
+        raise ValueError("host must be a non-empty string when provided")
+    explicit_host = raw_host.strip().lower() if isinstance(raw_host, str) else None
+    if explicit_host and explicit_host != "auto" and explicit_host not in HOSTS:
+        raise ValueError(f"unsupported host: {explicit_host}")
+
+    if raw_model is not None and not isinstance(raw_model, str):
+        raise ValueError("explicit model identifier is required")
+    if isinstance(raw_model, str) and not raw_model.strip():
+        raise ValueError("explicit model identifier is required")
+    explicit_model = raw_model.strip() if isinstance(raw_model, str) and raw_model.strip().lower() != "auto" else None
+    if explicit_model and not MODEL_RE.fullmatch(explicit_model):
+        raise ValueError("explicit model identifier is required")
+
+    fallback_bin_dir = Path(config["claude_bin"]).parent if isinstance(config.get("claude_bin"), str) and Path(config["claude_bin"]).is_absolute() else None
+
+    host = explicit_host if explicit_host and explicit_host != "auto" else None
+    if host is None:
+        env_host = detect_host_from_env()
+        if env_host:
+            host = env_host
+
+    if host is None:
+        if explicit_model and not is_claude_compatible_model(explicit_model):
+            bare_target = explicit_model.split("/", 1)[-1]
+            for candidate in NON_CLAUDE_HOSTS:
+                cfg_model = read_host_model_config(candidate, home)
+                if cfg_model and (cfg_model == explicit_model or cfg_model.split("/", 1)[-1] == bare_target):
+                    if optional_executable(config.get(f"{candidate}_bin"), candidate, fallback_bin_dir):
+                        host = candidate
+                        break
+            if host is None:
+                for candidate in NON_CLAUDE_HOSTS:
+                    if any(p.is_file() for p in host_config_paths(candidate, home)) and optional_executable(config.get(f"{candidate}_bin"), candidate, fallback_bin_dir):
+                        host = candidate
+                        break
+            if host is None:
+                for candidate in NON_CLAUDE_HOSTS:
+                    if optional_executable(config.get(f"{candidate}_bin"), candidate, fallback_bin_dir):
+                        host = candidate
+                        break
+        elif explicit_model and explicit_host is None and config.get("claude_bin"):
+            host = "claude"
+
+    if host is None:
+        for candidate in HOST_DETECTION_ORDER:
+            if any(p.is_file() for p in host_config_paths(candidate, home)):
+                if explicit_model or read_host_model_config(candidate, home):
+                    if optional_executable(config.get(f"{candidate}_bin") or (config.get("claude_bin") if candidate == "claude" else None), candidate, fallback_bin_dir):
+                        host = candidate
+                        break
+        if host is None:
+            for candidate in HOST_DETECTION_ORDER:
+                if any(p.is_file() for p in host_config_paths(candidate, home)):
+                    host = candidate
+                    break
+        if host is None:
+            host = "claude"
+
+    model = explicit_model
+    if not model:
+        model = read_host_model_config(host, home)
+        if not model and (explicit_host is None or explicit_host == "auto"):
+            for candidate in HOST_DETECTION_ORDER:
+                cand_model = read_host_model_config(candidate, home)
+                if cand_model:
+                    if optional_executable(config.get(f"{candidate}_bin") or (config.get("claude_bin") if candidate == "claude" else None), candidate, fallback_bin_dir):
+                        host = candidate
+                    model = cand_model
+                    break
+
+    if not model or not MODEL_RE.fullmatch(model):
+        raise ValueError("explicit model identifier is required")
+
+    if host == "claude" and not is_claude_compatible_model(model):
+        for candidate in NON_CLAUDE_HOSTS:
+            if optional_executable(config.get(f"{candidate}_bin"), candidate, fallback_bin_dir):
+                host = candidate
+                break
+        else:
+            claude_fallback = read_host_model_config("claude", home)
+            if claude_fallback and is_claude_compatible_model(claude_fallback):
+                model = claude_fallback
+
+    raw_bin = config.get(f"{host}_bin") or (config.get("host_bin") if explicit_host == host else None)
+    if host == "claude" and raw_bin is None:
+        raw_bin = config.get("claude_bin")
+    resolved_bin = optional_executable(raw_bin, host, fallback_bin_dir)
+    if resolved_bin is None:
+        resolved_bin = executable(raw_bin, host)
+
+    include_host_fields = bool(explicit_host is not None or raw_model == "auto" or raw_model is None or host != "claude" or "host_bin" in config or f"{host}_bin" in config and host != "claude")
+    return host, model, resolved_bin, include_host_fields
+
+
 def cron_expression(value: object) -> str:
     if not isinstance(value, str) or len(value.split()) != 5:
         raise ValueError("cron schedule must contain exactly five numeric fields")
@@ -111,7 +402,7 @@ def validate_config(config: object, source: Path | None) -> dict:
         raise ValueError("explicit consent required for: " + ", ".join(needed))
     vault = absolute_path(config.get("vault"), "vault")
     inbox = absolute_path(config.get("inbox"), "inbox")
-    home = Path.home().resolve()
+    home = user_home()
     protected = (home / "vaults/llm-wiki", home / ".claude", home / ".agents")
     for target in (vault, inbox):
         if within_alias(Path.cwd().resolve(), target):
@@ -148,9 +439,7 @@ def validate_config(config: object, source: Path | None) -> dict:
         if json.loads(inbox_marker.read_text(encoding="utf-8")).get("vault") != str(vault):
             raise ValueError("existing inbox belongs to another vault")
         scan_regular_tree(inbox)
-    model = config.get("model")
-    if not isinstance(model, str) or not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._:/-]*", model):
-        raise ValueError("explicit model identifier is required")
+    host, model, host_bin, include_host_fields = resolve_host_and_model(config, home)
     for key in ("max_run_usd", "daily_budget_usd"):
         number = config.get(key)
         try:
@@ -175,13 +464,19 @@ def validate_config(config: object, source: Path | None) -> dict:
             raise ValueError("Graphify provider cost is not bounded by the Claude run allowance")
         for key in ("backend", "model"):
             value = provider.get(key)
-            if not isinstance(value, str) or not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._:/-]*", value):
+            if not isinstance(value, str) or not MODEL_RE.fullmatch(value):
                 raise ValueError(f"explicit Graphify provider {key} identifier is required")
     schedules = config.get("schedules")
     if not isinstance(schedules, dict) or set(schedules) != set(DEFAULT_SCHEDULES):
         raise ValueError("schedules must specify scan, morning, nightly, weekly and health only")
-    result.update(vault=str(vault), inbox=str(inbox), schedules={key: cron_expression(value) for key, value in schedules.items()})
-    result["claude_bin"] = executable(config.get("claude_bin"), "claude")
+    result.update(vault=str(vault), inbox=str(inbox), model=model,
+                  schedules={key: cron_expression(value) for key, value in schedules.items()})
+    claude_resolved = optional_executable(config.get("claude_bin"), "claude", Path(host_bin).parent)
+    result["claude_bin"] = claude_resolved if claude_resolved is not None else host_bin
+    if include_host_fields:
+        result["host"] = host
+        result["host_bin"] = host_bin
+        result[f"{host}_bin"] = host_bin
     result["python_bin"] = executable(str(Path(sys.executable).resolve()), "python3")
     result["crontab_bin"] = executable(config.get("crontab_bin"), "crontab")
     for key, binary in (("graphify_bin", "graphify"), ("mex_bin", "mex-agent"), ("zvec_bin", "zg")):
@@ -192,8 +487,9 @@ def validate_config(config: object, source: Path | None) -> dict:
     result["preset"] = "general-wiki"
     if vault.exists():
         previous = json.loads((vault / ".second-brain/config.json").read_text(encoding="utf-8"))
-        if previous != result:
-            raise ValueError("owned rerun requires identical config; changing processing consent/targets needs a separate reviewed migration")
+        for immutable in ("vault", "inbox", "upstream", "preset"):
+            if previous.get(immutable) != result.get(immutable):
+                raise ValueError(f"owned vault cannot change {immutable}; target migration requires a separate reviewed operation")
     return result
 
 
@@ -319,6 +615,24 @@ def json_bytes(value: object) -> bytes:
     return (json.dumps(value, ensure_ascii=False, sort_keys=True, indent=2) + "\n").encode("utf-8")
 
 
+def atomic_write_bytes(path: Path, data: bytes) -> None:
+    no_symlinks(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    no_symlinks(path.parent)
+    fd, name = tempfile.mkstemp(prefix=".setup-", dir=path.parent)
+    try:
+        with os.fdopen(fd, "wb") as stream:
+            stream.write(data)
+            stream.flush()
+            os.fsync(stream.fileno())
+        os.chmod(name, 0o600)
+        no_symlinks(path)
+        os.replace(name, path)
+    finally:
+        if os.path.exists(name):
+            os.unlink(name)
+
+
 def core_templates(script: bytes) -> dict[str, bytes]:
     tree = ast.parse(script.decode("utf-8"))
     function = next((node for node in tree.body if isinstance(node, ast.FunctionDef) and node.name == "write_core_templates"), None)
@@ -404,19 +718,30 @@ def runtime_command(config: dict, event: str, *, scheduled: bool = False) -> str
     return shlex.join(argv)
 
 
-def hook_settings(settings: dict, config: dict) -> dict:
+def hook_settings(settings: dict, config: dict, *, update_existing: bool = False) -> dict:
     settings = json.loads(json.dumps(settings))
     hooks = settings.setdefault("hooks", {})
     if not isinstance(hooks, dict) or not isinstance(hooks.get("PostCompact", []), list):
         raise ValueError("local hook settings have an invalid shape")
     command = runtime_command(config, "postcompact")
+    timeout = config["timeout_seconds"] + 30
     entries = hooks.setdefault("PostCompact", [])
     if any(not isinstance(entry, dict) or not isinstance(entry.get("hooks"), list)
            or any(not isinstance(hook, dict) for hook in entry["hooks"]) for entry in entries):
         raise ValueError("PostCompact hook entries must contain hook lists")
+    if update_existing:
+        updated_any = False
+        for entry in entries:
+            for hook in entry["hooks"]:
+                if hook.get("command") == command:
+                    hook["timeout"] = timeout
+                    updated_any = True
+        if not updated_any:
+            entries.append({"hooks": [{"type": "command", "command": command, "timeout": timeout}]})
+        return settings
     matching = [entry for entry in entries if any(hook.get("command") == command for hook in entry["hooks"])]
     if not matching:
-        entries.append({"hooks": [{"type": "command", "command": command, "timeout": config["timeout_seconds"] + 30}]})
+        entries.append({"hooks": [{"type": "command", "command": command, "timeout": timeout}]})
     return settings
 
 
@@ -504,7 +829,8 @@ def install(config: dict, source: Path | None, dry_run: bool) -> dict:
     integration_status = ctx_preflight(config)
     actions = ["verify pinned upstream assets", "install commands, templates and standalone runtime", "initialize immutable raw and general wiki", "register vault-local PostCompact hook", "merge consented managed crontab block"]
     if dry_run:
-        return {"status": "dry-run", "vault": str(vault), "actions": actions,
+        return {"status": "dry-run", "vault": str(vault), "host": config.get("host", "claude"),
+                "model": config["model"], "actions": actions,
                 "integrations": integration_status,
                 "deferred": ["git blob verification", "crontab read/registration"]}
     old_cron, had_cron = read_crontab(config["crontab_bin"])
@@ -540,14 +866,48 @@ def install(config: dict, source: Path | None, dry_run: bool) -> dict:
         for name in ("runtime.py", "ctx_guard.py"):
             if not (vault / ".second-brain/scripts" / name).is_file():
                 raise ValueError("owned installation is incomplete; refusing destructive repair")
+        config_file = vault / ".second-brain/config.json"
+        previous_config = json.loads(config_file.read_text(encoding="utf-8"))
         settings_path = vault / ".claude/settings.json"
-        original = settings_path.read_bytes()
-        settings = hook_settings(json.loads(original), config)
-        if settings != json.loads(original):
-            raise ValueError("owned hook settings changed; repair requires an explicit reviewed operation")
+        original_settings = json.loads(settings_path.read_text(encoding="utf-8"))
+        package = Path(__file__).resolve().parent
+        updated_actions: list[str] = []
+
+        if previous_config == config:
+            settings = hook_settings(original_settings, config)
+            if settings != original_settings:
+                raise ValueError("owned hook settings changed; repair requires an explicit reviewed operation")
+            if old_cron != new_cron:
+                raise ValueError("owned schedule changed; repair requires an explicit reviewed operation")
+            for name in ("runtime.py", "ctx_guard.py"):
+                src_bytes = (package / name).read_bytes()
+                dst_path = vault / ".second-brain/scripts" / name
+                if dst_path.read_bytes() != src_bytes:
+                    atomic_write_bytes(dst_path, src_bytes)
+                    updated_actions.append(f"sync {name}")
+            if not updated_actions:
+                return {"status": "unchanged", "vault": str(vault), "actions": [], "integrations": integration_status}
+            return {"status": "updated", "vault": str(vault), "host": config.get("host", "claude"),
+                    "model": config["model"], "actions": updated_actions, "integrations": integration_status, "model_invoked": False}
+
+        # Owned vault configuration update (e.g., host/model/schedules/timeout/allowances)
+        for name in ("runtime.py", "ctx_guard.py"):
+            src_bytes = (package / name).read_bytes()
+            dst_path = vault / ".second-brain/scripts" / name
+            if dst_path.read_bytes() != src_bytes:
+                atomic_write_bytes(dst_path, src_bytes)
+                updated_actions.append(f"update {name}")
+        atomic_write_bytes(config_file, json_bytes(config))
+        updated_actions.append("update .second-brain/config.json")
+        new_settings = hook_settings(original_settings, config, update_existing=True)
+        if new_settings != original_settings:
+            atomic_write_bytes(settings_path, json_bytes(new_settings))
+            updated_actions.append("update .claude/settings.json")
         if old_cron != new_cron:
-            raise ValueError("owned schedule changed; repair requires an explicit reviewed operation")
-        return {"status": "unchanged", "vault": str(vault), "actions": [], "integrations": integration_status}
+            subprocess.run([config["crontab_bin"], "-"], input=new_cron, text=True, capture_output=True, check=True, timeout=15)
+            updated_actions.append("update managed crontab block")
+        return {"status": "updated", "vault": str(vault), "host": config.get("host", "claude"),
+                "model": config["model"], "actions": updated_actions, "integrations": integration_status, "model_invoked": False}
     with tempfile.TemporaryDirectory(prefix=".second-brain-stage-", dir=vault.parent) as temporary:
         staging = Path(temporary)
         assets = assets if assets is not None else downloaded_assets(staging)
@@ -607,7 +967,7 @@ def install(config: dict, source: Path | None, dry_run: bool) -> dict:
             if rollback_errors:
                 raise RuntimeError(f"installation failed: {failure}; rollback incomplete: {'; '.join(rollback_errors)}") from failure
             raise
-    return {"status": "installed", "vault": str(vault), "actions": actions, "integrations": integration_status, "model_invoked": False}
+    return {"status": "installed", "vault": str(vault), " actions" if False else "actions": actions, "integrations": integration_status, "model_invoked": False}
 
 
 def main(argv: list[str] | None = None) -> int:

@@ -16,6 +16,8 @@ import json
 import math
 import os
 from pathlib import Path, PurePosixPath
+import re
+import shutil
 import signal
 import stat
 import subprocess
@@ -23,12 +25,22 @@ import sys
 import tempfile
 import unicodedata
 
+try:
+    import tomllib
+except ModuleNotFoundError:  # Python 3.10 fallback
+    tomllib = None  # type: ignore[assignment]
+
 EVENTS = ("scan", "morning", "nightly", "weekly", "health", "postcompact", "checkpoint")
 COMMANDS = {
     "scan": ("ingest",), "morning": ("daily",),
     "nightly": ("daily", "reconcile", "synthesize"),
     "weekly": ("recap",), "health": ("health",), "postcompact": ("save",),
 }
+HOSTS = ("claude", "codex", "jeo", "jeopi", "omp", "pi", "gjc")
+HOST_DETECTION_ORDER = ("jeopi", "omp", "jeo", "codex", "claude", "pi", "gjc")
+NON_CLAUDE_HOSTS = ("codex", "jeopi", "jeo", "omp", "pi", "gjc")
+PROVIDER_QUALIFIED_HOSTS = ("jeo", "jeopi", "omp", "pi", "gjc")
+MODEL_RE = re.compile(r"[A-Za-z0-9][A-Za-z0-9._:/@+-]*")
 FLAGS = ("-p", "--safe-mode", "--tools", "--strict-mcp-config", "--mcp-config",
          "--model", "--output-format", "--json-schema", "--max-budget-usd",
          "--no-session-persistence")
@@ -124,6 +136,302 @@ def amount(value: object, name: str) -> decimal.Decimal:
     return result
 
 
+def user_home() -> Path:
+    raw = os.environ.get("USER_HOME") or os.environ.get("HOME")
+    return Path(raw).expanduser() if raw else Path.home()
+
+
+def is_claude_compatible_model(model: str) -> bool:
+    lowered = model.strip().lower()
+    if not lowered or lowered == "auto":
+        return False
+    non_claude_prefixes = (
+        "gpt-", "o1", "o3", "o4", "chatgpt-", "codex-",
+        "openai/", "openai-codex/", "google/", "gemini",
+        "openrouter/", "xai/", "grok-", "deepseek", "qwen",
+    )
+    if lowered.startswith(non_claude_prefixes) or "-terra" in lowered:
+        return False
+    return True
+
+
+def host_config_paths(host: str, home: Path | None = None) -> list[Path]:
+    base = home or user_home()
+    paths: list[Path] = []
+    if host == "claude":
+        cfg_dir = os.environ.get("CLAUDE_CONFIG_DIR", "").strip()
+        if cfg_dir:
+            paths.append(Path(cfg_dir).expanduser() / "settings.json")
+        paths.append(base / ".claude/settings.json")
+    elif host == "codex":
+        codex_dir = os.environ.get("CODEX_HOME", "").strip()
+        if codex_dir:
+            paths.extend([Path(codex_dir).expanduser() / "config.toml",
+                          Path(codex_dir).expanduser() / "config.json"])
+        paths.extend([base / ".codex/config.toml", base / ".codex/config.json"])
+    elif host == "jeo":
+        jeo_cfg = os.environ.get("JEO_CONFIG", "").strip()
+        if jeo_cfg:
+            paths.append(Path(jeo_cfg).expanduser())
+        paths.extend([base / ".jeo/config.json", base / ".config/jeo/config.json"])
+    elif host in ("jeopi", "omp", "pi", "gjc"):
+        env_key = f"{host.upper()}_HOME"
+        custom = os.environ.get(env_key, "").strip()
+        if custom:
+            root = Path(custom).expanduser()
+            paths.extend([root / "agent/settings.json", root / "settings.json",
+                          root / "config.json", root / "agent/config.json"])
+        root = base / f".{host}"
+        paths.extend([root / "agent/settings.json", root / "settings.json",
+                      root / "config.json", root / "agent/config.json"])
+    return paths
+
+
+def _parse_toml_model(text: str) -> tuple[str | None, str | None]:
+    if tomllib is not None:
+        try:
+            data = tomllib.loads(text)
+            if isinstance(data, dict):
+                model = data.get("model") or data.get("default_model") or data.get("defaultModel")
+                provider = data.get("model_provider") or data.get("provider")
+                return (
+                    model.strip() if isinstance(model, str) and model.strip() else None,
+                    provider.strip() if isinstance(provider, str) and provider.strip() else None,
+                )
+        except Exception:
+            pass
+    model_val = None
+    provider_val = None
+    for line in text.splitlines():
+        stripped = line.strip()
+        if not stripped or stripped.startswith("#"):
+            continue
+        if stripped.startswith("["):
+            break
+        m_match = re.match(r'^model\s*=\s*["\']([^"\']+)["\']', stripped)
+        if m_match:
+            model_val = m_match.group(1).strip()
+        p_match = re.match(r'^model_provider\s*=\s*["\']([^"\']+)["\']', stripped)
+        if p_match:
+            provider_val = p_match.group(1).strip()
+    return model_val, provider_val
+
+
+def read_host_model_config(host: str, home: Path | None = None) -> str | None:
+    env_Lookup = {
+        "claude": ("SECOND_BRAIN_MODEL", "JEO_SECOND_BRAIN_MODEL", "CLAUDE_MODEL", "ANTHROPIC_MODEL"),
+        "codex": ("SECOND_BRAIN_MODEL", "JEO_SECOND_BRAIN_MODEL", "CODEX_MODEL", "OPENAI_MODEL"),
+        "jeo": ("SECOND_BRAIN_MODEL", "JEO_SECOND_BRAIN_MODEL", "JEO_MODEL"),
+        "jeopi": ("SECOND_BRAIN_MODEL", "JEO_SECOND_BRAIN_MODEL", "JEOPI_MODEL"),
+        "omp": ("SECOND_BRAIN_MODEL", "JEO_SECOND_BRAIN_MODEL", "OMP_MODEL"),
+        "pi": ("SECOND_BRAIN_MODEL", "JEO_SECOND_BRAIN_MODEL", "PI_MODEL"),
+        "gjc": ("SECOND_BRAIN_MODEL", "JEO_SECOND_BRAIN_MODEL", "GJC_MODEL"),
+    }
+    for env_name in env_Lookup.get(host, ("SECOND_BRAIN_MODEL", "JEO_SECOND_BRAIN_MODEL")):
+        val = os.environ.get(env_name, "").strip()
+        if val and val.lower() != "auto" and MODEL_RE.fullmatch(val):
+            return val
+    for candidate in host_config_paths(host, home):
+        try:
+            reject_links(candidate)
+            if not candidate.is_file():
+                continue
+            raw_text = read_bytes(candidate, 1024 * 1024).decode("utf-8")
+        except Exception:
+            continue
+        if candidate.suffix == ".toml":
+            model, provider = _parse_toml_model(raw_text)
+            if model and MODEL_RE.fullmatch(model):
+                if host in PROVIDER_QUALIFIED_HOSTS and provider and "/" not in model:
+                     combined = f"{provider}/{model}"
+                     if MODEL_RE.fullmatch(combined):
+                         return combined
+                return model
+        else:
+            try:
+                data = json.loads(raw_text)
+            except Exception:
+                continue
+            if not isinstance(data, dict):
+                continue
+            model = None
+            for key in ("model", "defaultModel", "default_model"):
+                val = data.get(key)
+                if isinstance(val, str) and val.strip() and val.strip().lower() != "auto":
+                    model = val.strip()
+                    break
+                if isinstance(val, dict):
+                    nested = val.get("id") or val.get("model") or val.get("name")
+                    if isinstance(nested, str) and nested.strip():
+                        model = nested.strip()
+                        break
+            if not model and isinstance(data.get("env"), dict):
+                for env_key in ("ANTHROPIC_MODEL", "OPENAI_MODEL", "MODEL"):
+                    val = data["env"].get(env_key)
+                    if isinstance(val, str) and val.strip():
+                        model = val.strip()
+                        break
+            if model and MODEL_RE.fullmatch(model):
+                provider = data.get("defaultProvider") or data.get("provider") or data.get("modelProvider")
+                if host in PROVIDER_QUALIFIED_HOSTS and isinstance(provider, str) and provider.strip() and "/" not in model:
+                    combined = f"{provider.strip()}/{model}"
+                    if MODEL_RE.fullmatch(combined):
+                        return combined
+                return model
+    return None
+
+
+def detect_host_from_env() -> str | None:
+    for var in ("SECOND_BRAIN_HOST", "JEO_SECOND_BRAIN_HOST", "JEV_AGENT"):
+        val = os.environ.get(var, "").strip().lower()
+        if val in HOSTS:
+            return val
+    env_markers = (
+        ("jeopi", ("JEOPI_HOME", "JEOPI_AGENT_DIR", "JEOPI_MODEL")),
+        ("omp", ("OMP_HOME", "OMP_AGENT_DIR", "OMP_MODEL")),
+        ("jeo", ("JEO_CONFIG", "JEO_HOME", "JEO_MODEL")),
+        ("codex", ("CODEX_HOME", "CODEX_THREAD_ID", "CODEX_SANDBOX", "CODEX_MODEL")),
+        ("claude", ("CLAUDE_CONFIG_DIR", "CLAUDECODE", "CLAUDE_CODE_ENTRYPOINT", "CLAUDE_MODEL", "ANTHROPIC_MODEL")),
+        ("pi", ("PI_CODING_AGENT_DIR", "PI_MODEL")),
+        ("gjc", ("GJC_HOME", "GJC_MODEL")),
+    )
+    for host, keys in env_markers:
+        if any(os.environ.get(k, "").strip() for k in keys):
+            return host
+    return None
+
+
+def find_host_binary(host: str, config: dict) -> Path | None:
+    candidates: list[str] = []
+    for key in (f"{host}_bin", "host_bin" if config.get("host") == host else ""):
+        if key and isinstance(config.get(key), str) and config[key].strip():
+            candidates.append(config[key].strip())
+    if host == "claude" and isinstance(config.get("claude_bin"), str) and config["claude_bin"].strip():
+        candidates.append(config["claude_bin"].strip())
+    if isinstance(config.get("claude_bin"), str) and config["claude_bin"].strip():
+        sibling = Path(config["claude_bin"]).parent / host
+        candidates.append(str(sibling))
+    which_hit = shutil.which(host)
+    if which_hit:
+        candidates.append(which_hit)
+    for raw in candidates:
+        path = Path(raw)
+        try:
+            if path.is_absolute() and not path.is_symlink() and path.is_file() and os.access(path, os.X_OK):
+                return path
+            resolved = path.resolve()
+            if resolved.is_absolute() and resolved.is_file() and os.access(resolved, os.X_OK):
+                reject_links(resolved)
+                return resolved
+        except Exception:
+            continue
+    return None
+
+
+def resolve_execution_target(config: dict) -> tuple[str, Path, str]:
+    """Resolve (host, binary_path, model) from config, environment, and host config files."""
+    home = user_home()
+    raw_host = config.get("host")
+    raw_model = config.get("model")
+    explicit_host = raw_host.strip().lower() if isinstance(raw_host, str) and raw_host.strip() else None
+    if explicit_host and explicit_host != "auto" and explicit_host not in HOSTS:
+        raise RuntimeFailure(f"Unsupported host: {explicit_host}")
+    explicit_model = raw_model.strip() if isinstance(raw_model, str) and raw_model.strip() and raw_model.strip().lower() != "auto" else None
+
+    host = explicit_host if explicit_host and explicit_host != "auto" else None
+    if host is None:
+        env_host = detect_host_from_env()
+        if env_host:
+            host = env_host
+
+    if host is None:
+        if explicit_model and not is_claude_compatible_model(explicit_model):
+            bare_target = explicit_model.split("/", 1)[-1]
+            # 1) Prefer a non-Claude host whose config file defines this model and has an executable
+            for candidate_host in NON_CLAUDE_HOSTS:
+                cfg_model = read_host_model_config(candidate_host, home)
+                if cfg_model and (cfg_model == explicit_model or cfg_model.split("/", 1)[-1] == bare_target):
+                    if find_host_binary(candidate_host, config) is not None:
+                        host = candidate_host
+                        break
+            # 2) Prefer a non-Claude host with both a config file and an executable
+            if host is None:
+                for candidate_host in NON_CLAUDE_HOSTS:
+                    if any(p.is_file() for p in host_config_paths(candidate_host, home)) and find_host_binary(candidate_host, config) is not None:
+                        host = candidate_host
+                        break
+            # 3) Any non-Claude host executable available
+            if host is None:
+                for candidate_host in NON_CLAUDE_HOSTS:
+                    if find_host_binary(candidate_host, config) is not None:
+                        host = candidate_host
+                        break
+        elif explicit_model and explicit_host is None and config.get("claude_bin"):
+            host = "claude"
+
+    if host is None:
+        # Host omitted or "auto": check host config file existence in priority order
+        for candidate_host in HOST_DETECTION_ORDER:
+            if any(p.is_file() for p in host_config_paths(candidate_host, home)):
+                if explicit_model or read_host_model_config(candidate_host, home):
+                    if find_host_binary(candidate_host, config) is not None:
+                        host = candidate_host
+                        break
+        if host is None:
+            for candidate_host in HOST_DETECTION_ORDER:
+                if any(p.is_file() for p in host_config_paths(candidate_host, home)):
+                    host = candidate_host
+                    break
+        if host is None:
+            host = "claude"
+
+    model = explicit_model
+    if not model:
+        model = read_host_model_config(host, home)
+        if not model and (explicit_host is None or explicit_host == "auto"):
+            for candidate_host in HOST_DETECTION_ORDER:
+                candidate_model = read_host_model_config(candidate_host, home)
+                if candidate_model:
+                    if find_host_binary(candidate_host, config) is not None or find_host_binary(host, config) is None:
+                        host = candidate_host
+                    model = candidate_model
+                    break
+
+    if not model or not MODEL_RE.fullmatch(model) or model.startswith("-"):
+        raise RuntimeFailure("An explicit or host-configured model is required")
+
+    # If host resolved to claude (e.g. only claude_bin exists) but model is non-Claude (like gpt-6.1-terra):
+    if host == "claude" and not is_claude_compatible_model(model):
+        for candidate_host in NON_CLAUDE_HOSTS:
+            if find_host_binary(candidate_host, config) is not None:
+                host = candidate_host
+                break
+        else:
+            claude_fallback = read_host_model_config("claude", home)
+            if claude_fallback and is_claude_compatible_model(claude_fallback):
+                model = claude_fallback
+
+    binary = find_host_binary(host, config)
+    if binary is None:
+        raise RuntimeFailure(f"{host}_bin must name an absolute executable")
+    return host, binary, model
+
+
+def format_model_for_host(host: str, model: str, home: Path | None = None) -> str:
+    if host == "claude":
+        return model.split("/", 1)[1] if model.startswith("anthropic/") else model
+    if host == "codex":
+        return re.sub(r"^openai(?:-codex)?/", "", model)
+    if host in PROVIDER_QUALIFIED_HOSTS and "/" not in model:
+        cfg_model = read_host_model_config(host, home)
+        if cfg_model and "/" in cfg_model and cfg_model.split("/", 1)[1] == model:
+            return cfg_model
+        if not is_claude_compatible_model(model):
+            return f"openai/{model}"
+        return f"anthropic/{model}"
+    return model
+
+
 def load_config(path: Path, event: str, scheduled: bool = False) -> dict:
     config = read_json(path)
     if config.get("version") != 1:
@@ -167,11 +475,12 @@ def load_config(path: Path, event: str, scheduled: bool = False) -> dict:
             raise RuntimeFailure(f"Invalid {key}")
     if not isinstance(config.get("max_input_bytes"), int):
         raise RuntimeFailure("max_input_bytes must be an integer")
-    if not isinstance(config.get("model"), str) or not config["model"].strip() or config["model"].startswith("-"):
-        raise RuntimeFailure("An explicit model is required")
-    binary = Path(config.get("claude_bin", ""))
-    if not binary.is_absolute() or not binary.is_file() or not os.access(binary, os.X_OK):
-        raise RuntimeFailure("claude_bin must name an absolute executable")
+    if event != "checkpoint":
+        resolve_execution_target(config)
+    else:
+        raw_model = config.get("model")
+        if raw_model is not None and (not isinstance(raw_model, str) or not raw_model.strip() or raw_model.startswith("-")):
+            raise RuntimeFailure("An explicit model is required")
     return config
 
 
@@ -220,20 +529,184 @@ def invoke(argv: list[str], prompt: bytes, config: dict) -> bytes:
             raise
         if process.returncode:
             errors.seek(0)
-            raise RuntimeFailure(f"Claude exited {process.returncode}: " + errors.read(2048).decode("utf-8", "replace"))
+            raise RuntimeFailure(f"Host CLI ({Path(argv[0]).name}) exited {process.returncode}: " + errors.read(2048).decode("utf-8", "replace"))
         output.seek(0)
         limit = max(config["max_input_bytes"] * 4, 65536)
         result = output.read(limit + 1)
         if len(result) > limit:
-            raise RuntimeFailure("Claude response exceeds output limit")
+            raise RuntimeFailure("Host CLI response exceeds output limit")
         return result
 
 
-def verify_cli(config: dict) -> None:
-    help_text = invoke([config["claude_bin"], "--help"], b"", config).decode("utf-8")
-    missing = [flag for flag in FLAGS if flag not in help_text]
-    if missing:
-        raise RuntimeFailure("Claude lacks required safe capabilities: " + ", ".join(missing))
+def verify_cli(config: dict, host: str = "claude", binary: Path | None = None) -> str:
+    exe = str(binary) if binary is not None else config["claude_bin"]
+    help_text = invoke([exe, "--help"], b"", config).decode("utf-8", "replace")
+    if host == "claude":
+        missing = [flag for flag in FLAGS if flag not in help_text]
+        if missing:
+            raise RuntimeFailure("Claude lacks required safe capabilities: " + ", ".join(missing))
+        return help_text
+    if host == "codex":
+        if "exec" in help_text:
+            try:
+                exec_help = invoke([exe, "exec", "--help"], b"", config).decode("utf-8", "replace")
+                help_text = help_text + "\n" + exec_help
+            except RuntimeFailure:
+                pass
+        if "-m" not in help_text and "--model" not in help_text:
+            raise RuntimeFailure("Codex CLI lacks required model flag (-m/--model)")
+        return help_text
+    if "--model" not in help_text and "-m" not in help_text:
+        raise RuntimeFailure(f"Host CLI ({host}) lacks required --model capability")
+    return help_text
+
+
+def build_host_argv(host: str, binary: Path, model: str, help_text: str, reservation: decimal.Decimal, schema_file: Path | None = None) -> list[str]:
+    exe = str(binary)
+    formatted_model = format_model_for_host(host, model)
+    if host == "claude":
+        return [
+            exe, "-p", "--safe-mode", "--tools", "",
+            "--strict-mcp-config", "--mcp-config", '{"mcpServers":{}}',
+            "--model", formatted_model, "--output-format", "json",
+            "--json-schema", json.dumps(SCHEMA), "--max-budget-usd", str(reservation),
+            "--no-session-persistence",
+        ]
+    if host == "codex":
+        argv = [exe, "exec"] if "exec" in help_text else [exe]
+        if "-m" in help_text:
+            argv += ["-m", formatted_model]
+        else:
+            argv += ["--model", formatted_model]
+        if "--sandbox" in help_text:
+            argv += ["--sandbox", "read-only"]
+        if "--ephemeral" in help_text:
+            argv.append("--ephemeral")
+        if "--skip-git-repo-check" in help_text:
+            argv.append("--skip-git-repo-check")
+        if schema_file is not None and "--output-schema" in help_text:
+            argv += ["--output-schema", str(schema_file)]
+        if "--json" in help_text:
+            argv.append("--json")
+        return argv
+    argv = [exe]
+    if "-p" in help_text:
+        argv.append("-p")
+    elif "--print" in help_text:
+        argv.append("--print")
+    if host == "pi":
+        argv += ["--model", formatted_model]
+    else:
+        argv.append(f"--model={formatted_model}")
+    if "--safe-mode" in help_text:
+        argv.append("--safe-mode")
+    if "--no-tools" in help_text:
+        argv.append("--no-tools")
+    elif "--tools" in help_text:
+        argv += ["--tools", ""]
+    if "--strict-mcp-config" in help_text and "--mcp-config" in help_text:
+        argv += ["--strict-mcp-config", "--mcp-config", '{"mcpServers":{}}']
+    elif "--no-mcp" in help_text:
+        argv.append("--no-mcp")
+    if "--output-format" in help_text:
+        argv += ["--output-format", "json"]
+    if "--json-schema" in help_text:
+        argv += ["--json-schema", json.dumps(SCHEMA)]
+    if "--max-budget-usd" in help_text:
+        argv += ["--max-budget-usd", str(reservation)]
+    if "--no-session-persistence" in help_text:
+        argv.append("--no-session-persistence")
+    elif "--no-session" in help_text:
+        argv.append("--no-session")
+    return argv
+
+
+def _extract_updates_dict(candidate: object) -> dict | None:
+    if isinstance(candidate, dict):
+        if "updates" in candidate and isinstance(candidate["updates"], list):
+            return {"updates": candidate["updates"]}
+        for key in ("structured_output", "result", "output", "response", "data", "message", "content"):
+            if key in candidate:
+                found = _extract_updates_dict(candidate[key])
+                if found is not None:
+                    return found
+    elif isinstance(candidate, list):
+        for item in reversed(candidate):
+            found = _extract_updates_dict(item)
+            if found is not None:
+                return found
+    elif isinstance(candidate, str):
+        text = candidate.strip()
+        if not text:
+            return None
+        try:
+            return _extract_updates_dict(json.loads(text))
+        except Exception:
+            pass
+        fence = re.search(r"```(?:json)?\s*(\{.*?\})\s*```", text, re.S)
+        if fence:
+            try:
+                return _extract_updates_dict(json.loads(fence.group(1)))
+            except Exception:
+                pass
+        brace_start = text.find("{")
+        brace_end = text.rfind("}")
+        if brace_start != -1 and brace_end > brace_start:
+            try:
+                return _extract_updates_dict(json.loads(text[brace_start:brace_end + 1]))
+            except Exception:
+                pass
+    return None
+
+
+def parse_host_output(raw_text: str, host: str) -> tuple[dict, decimal.Decimal]:
+    text = raw_text.strip()
+    if not text:
+        raise RuntimeFailure(f"Host CLI ({host}) returned empty output")
+    try:
+        parsed = json.loads(text)
+    except ValueError:
+        parsed = None
+
+    if host == "claude" and isinstance(parsed, dict) and "type" in parsed:
+        if parsed.get("type") != "result" or parsed.get("subtype") != "success" or parsed.get("is_error") is not False:
+            raise RuntimeFailure("Claude returned unsuccessful or incomplete result")
+        structured = parsed.get("structured_output")
+        if structured is None and "result" in parsed:
+            structured = _extract_updates_dict(parsed.get("result"))
+        cost = amount(parsed.get("total_cost_usd"), "reported total_cost_usd")
+        return structured, cost
+
+    if parsed is not None:
+        if isinstance(parsed, dict) and parsed.get("is_error") is True:
+            raise RuntimeFailure(f"Host CLI ({host}) returned an error result")
+        structured = _extract_updates_dict(parsed)
+        if structured is not None:
+            raw_cost = parsed.get("total_cost_usd", parsed.get("cost_usd", 0)) if isinstance(parsed, dict) else 0
+            cost = amount(0 if raw_cost is None else raw_cost, "reported total_cost_usd")
+            return structured, cost
+
+    # Fallback for JSONL streams (e.g. codex exec --json or jeopi/omp event streams)
+    lines = [line.strip() for line in text.splitlines() if line.strip()]
+    cost_val: object = 0
+    for line in reversed(lines):
+        try:
+            event = json.loads(line)
+        except ValueError:
+            continue
+        if isinstance(event, dict):
+            if event.get("is_error") is True or event.get("type") == "error":
+                raise RuntimeFailure(f"Host CLI ({host}) reported error in stream")
+            if "total_cost_usd" in event and event["total_cost_usd"] is not None:
+                cost_val = event["total_cost_usd"]
+            found = _extract_updates_dict(event)
+            if found is not None:
+                return found, amount(cost_val, "reported total_cost_usd")
+
+    found = _extract_updates_dict(text)
+    if found is not None:
+        return found, decimal.Decimal("0")
+    raise RuntimeFailure(f"Host CLI ({host}) returned unsuccessful or incomplete result")
 
 
 def safe_destination(vault: Path, relative: str) -> Path:
@@ -528,25 +1001,23 @@ def run(config_path: Path, event: str, compact_summary: str | None = None, sched
         prompt = (POLICY + "\n" + json.dumps(context, ensure_ascii=False)).encode("utf-8")
         if len(prompt) > config["max_input_bytes"]:
             raise RuntimeFailure("Complete playbooks/wiki/source context exceeds max_input_bytes; increase explicit allowance")
-        verify_cli(config)
+        host, binary, resolved_model = resolve_execution_target(config)
+        help_text = verify_cli(config, host, binary)
         reservation = amount(config["max_run_usd"], "max_run_usd")
         spent = amount(state["budget"].get(today, 0), "daily spending")
         if spent + reservation > amount(config["daily_budget_usd"], "daily_budget_usd"):
             raise RuntimeFailure("Daily authorized allowance exhausted")
         state["budget"][today] = str(spent + reservation)
         save_json(state_path, state)  # Durable before launch, including crashes/timeouts.
-        argv = [config["claude_bin"], "-p", "--safe-mode", "--tools", "",
-                "--strict-mcp-config", "--mcp-config", '{"mcpServers":{}}',
-                "--model", config["model"], "--output-format", "json",
-                "--json-schema", json.dumps(SCHEMA), "--max-budget-usd", str(reservation),
-                "--no-session-persistence"]
-        result = json.loads(invoke(argv, prompt, config).decode("utf-8"))
-        if not isinstance(result, dict) or result.get("type") != "result" or result.get("subtype") != "success" or result.get("is_error") is not False:
-            raise RuntimeFailure("Claude returned unsuccessful or incomplete result")
-        updates = validate_proposal(result.get("structured_output"), vault, config["max_input_bytes"])
+        with tempfile.TemporaryDirectory(prefix=".brain-schema-", dir=vault / ".second-brain") as schema_dir:
+            schema_file = Path(schema_dir) / "schema.json"
+            schema_file.write_text(json.dumps(SCHEMA), encoding="utf-8")
+            argv = build_host_argv(host, binary, resolved_model, help_text, reservation, schema_file)
+            raw_output = invoke(argv, prompt, config).decode("utf-8")
+        structured, cost = parse_host_output(raw_output, host)
+        updates = validate_proposal(structured, vault, config["max_input_bytes"])
         if not updates:
             raise RuntimeFailure("Event returned no wiki updates; input remains pending")
-        cost = amount(result.get("total_cost_usd"), "reported total_cost_usd")
         state["budget"][today] = str(spent + cost)
         for source in sources:
             if "id" in source:
@@ -558,7 +1029,8 @@ def run(config_path: Path, event: str, compact_summary: str | None = None, sched
         integration = integrate(config, "refresh")
         state["pending_refresh"] = False
         save_json(state_path, state)
-        return {"event": event, "status": "completed_with_source_errors" if source_errors else "completed", "updates": len(updates),
+        return {"event": event, "status": "completed_with_source_errors" if source_errors else "completed",
+                "host": host, "model": resolved_model, "updates": len(updates),
                 "sources": len(sources), "cost_usd": str(cost), "integration": integration, "source_errors": source_errors}
 
 

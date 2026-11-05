@@ -20,13 +20,14 @@ import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 import {
   DAEMON_DIR, buildLocalIndex, createSandbox, fingerprintTree, FIXTURE_FILES, installedPackageDir, localModelArtifactAvailable,
-  realZg, readInstanceRecord, sleep, socketRequest, trustRoot,
+  realZg, readInstanceRecord, sleep, socketRequest, trustRoot, DAEMON_INTEGRATION_DISABLED,
 } from "./harness.mjs";
 
 const HAVE = realZg() && localModelArtifactAvailable();
 const NEEDS = !HAVE && "installed zg 0.2.2 and an already-downloaded local model artifact are required";
 const DARWIN = process.platform === "darwin";
 const SLOW = { timeout: 240_000, skip: NEEDS || (!DARWIN && "managed daemon is macOS-only by contract") };
+const DAEMON_SKIP = DAEMON_INTEGRATION_DISABLED && "managed daemon integration disabled: macOS rejects nested sandbox profiles; no fixture-confined production launcher is proven";
 const BARRIER_MS = 3_000;
 
 const TOKENS = { before: "gateotterbefore", after: "gateotterafter", other: "gatewolverine" };
@@ -283,7 +284,7 @@ test("production 30s barrier fails under lock and reports recovery after release
   assert.doesNotMatch(again.text, /refresh_warning:/);
 });
 
-test("barrier: a refresh that cannot finish makes search fail within the barrier (never stale), then the next search heals and surfaces the failure once", SLOW, async (t) => {
+test("barrier: a refresh that cannot finish makes search fail within the barrier (never stale), then the next search heals and surfaces the failure once", { ...SLOW, skip: DAEMON_SKIP }, async (t) => {
   const f = fixture(t);
   await f.ready();
   const daemon = await f.daemon();
@@ -339,7 +340,7 @@ test("reservation: search waits for the host's release, then returns fresh conte
   noEgress(f.sandbox, "reservation");
 });
 
-test("reservation never resolved by the host: it expires at the barrier, raises RESERVATION_EXPIRED, and the search self-heals with a verified refresh", SLOW, async (t) => {
+test("reservation never resolved by the host: it expires at the barrier, raises RESERVATION_EXPIRED, and the search self-heals with a verified refresh", { ...SLOW, skip: DAEMON_SKIP }, async (t) => {
   const f = fixture(t);
   await f.ready();
   const daemon = await f.daemon();
@@ -362,7 +363,7 @@ test("reservation never resolved by the host: it expires at the barrier, raises 
   noEgress(f.sandbox, "expiry");
 });
 
-test("durable reservation: a daemon killed with an open reservation re-adopts it and later expires it into a warning", { ...SLOW, timeout: 300_000 }, async (t) => {
+test("durable reservation: a daemon killed with an open reservation re-adopts it and later expires it into a warning", { ...SLOW, skip: DAEMON_SKIP, timeout: 300_000 }, async (t) => {
   const f = fixture(t, { env: { ZVEC_GREP_MANAGED_BARRIER_MS: "6000" } });
   await f.ready();
   const first = await f.daemon({ ZVEC_GREP_MANAGED_BARRIER_MS: "6000" });

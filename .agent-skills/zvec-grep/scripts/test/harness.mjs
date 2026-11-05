@@ -31,6 +31,13 @@ const SANDBOX_EXEC = "/usr/bin/sandbox-exec";
 export const OS_SANDBOX_AVAILABLE =
   process.platform === "darwin" && existsSync(SANDBOX_EXEC) && osSandboxWorks();
 
+// Managed-daemon integration is disabled until a fixture-confined production launcher
+// is proven (macOS rejects nested sandbox profiles, so the tests cannot spawn the
+// daemon here). Daemon-dependent suites skip while this flag is set; startDaemon
+// stays fail-closed so enabling later cannot silently bypass the boundary.
+export const DAEMON_INTEGRATION_DISABLED = true;
+export const DAEMON_INTEGRATION_DISABLE_REASON = "managed daemon integration disabled: macOS rejects nested sandbox profiles; no fixture-confined production launcher is proven";
+
 function osSandboxWorks() {
   const probe = spawnSync(SANDBOX_EXEC, ["-p", "(version 1)(allow default)", "/usr/bin/true"], { stdio: "ignore" });
   return probe.status === 0;
@@ -415,7 +422,7 @@ function pidAlive(pid) {
  * `token: null` lets the daemon create its default token file under ZVEC_GREP_HOME.
  */
 export async function startDaemon(sandbox, { env = {}, token = randomBytes(18).toString("hex"), extraArgs = [], packageDir = installedPackageDir() } = {}) {
-  throw new Error("daemon integration disabled: macOS rejects nested sandbox profiles; no fixture-confined production launcher is proven");
+  if (DAEMON_INTEGRATION_DISABLED) throw new Error(DAEMON_INTEGRATION_DISABLE_REASON);
   const port = await freePort();
   const args = [DAEMON_MAIN, "run", "--listen", `127.0.0.1:${port}`, ...extraArgs];
   if (token) {

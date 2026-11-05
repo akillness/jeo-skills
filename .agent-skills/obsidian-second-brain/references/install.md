@@ -82,7 +82,8 @@ otherwise setup resolves executables from `PATH`.
   "version": 1,
   "vault": "/absolute/new-second-brain",
   "inbox": "/absolute/new-second-brain-inbox",
-  "model": "operator-selected-model",
+  "host": "auto",
+  "model": "auto",
   "max_run_usd": 0.25,
   "daily_budget_usd": 2.0,
   "timeout_seconds": 120,
@@ -114,27 +115,39 @@ must cover a run. Schedules use exactly the five shown event keys and five-field
 cron expressions in the cron host's timezone. The mapping must be supplied explicitly;
 omitting schedules rejects setup before effects rather than activating example defaults.
 
+`host` (`claude`, `codex`, `jeo`, `jeopi`, `omp`, `pi`, `gjc`, or `"auto"`) and `model`
+(`"auto"` or an explicit model identifier such as `gpt-6.1-terra` or `openai/gpt-6.1-terra`)
+can be specified explicitly or resolved automatically. When `host` is omitted or `"auto"`,
+detection checks active environment variables (`SECOND_BRAIN_HOST`, `JEO_SECOND_BRAIN_HOST`,
+`JEV_AGENT`, `JEOPI_HOME`, `OMP_HOME`, `JEO_CONFIG`, `CODEX_HOME`, `CLAUDE_CONFIG_DIR`)
+before existing host configuration files (`~/.jeopi/agent/settings.json`,
+`~/.omp/agent/settings.json`, `~/.jeo/config.json`, `~/.codex/config.toml`,
+`~/.claude/settings.json`, `~/.pi/agent/settings.json`, `~/.gjc/agent/settings.json`).
+
 Vault/inbox parents must already exist unless the inbox is inside the newly
 created vault outside its reserved trees. Arbitrary existing vaults or inboxes,
 symlinked targets and protected existing HOME knowledge/agent trees are refused.
 Identical adapter-owned reruns verify completeness rather than overwrite content;
-changed targets, consent or configuration require a separate reviewed migration,
-which this adapter does not implement.
+rerunning `setup.py` against an owned vault with updated `host`, `model`,
+`schedules`, `timeout_seconds` or allowances updates `.second-brain/config.json`,
+synced runtime scripts, hook timeouts and the managed crontab block in place while
+preserving authored wiki notes and immutable `raw/**` files.
 
 ### Provider and billing boundaries
 
 The runtime reserves `max_run_usd` against its UTC-day ledger before launching
-Claude, passes `--max-budget-usd`, and reconciles reported `total_cost_usd` after a
-successful result. Treat this as a **Claude allowance estimate**, not a hard
-billing guarantee or proof of provider entitlement. Failures/timeouts retain the
-reservation. Provider model quality, actual billing and live host integration are
-unverified by fixture/installed smoke tests.
+the selected host CLI, passes `--max-budget-usd` when supported, and reconciles
+reported `total_cost_usd` after a successful result. Treat this as a **run
+allowance estimate**, not a hard billing guarantee or proof of provider
+entitlement. Failures/timeouts retain the reservation. Provider model quality,
+actual billing and live host integration are unverified by fixture/installed
+smoke tests.
 
 Graphify checkpoint has separate external-provider authority. If approved before
 installation, add `consent.graphify_provider: true` and a `graphify_provider`
 object with explicit `backend`, `model`, and `accept_unbounded_cost: true`.
 Without both, checkpoint reports `pending_consent` and fails before launching
-Graphify. The example deliberately omits this authority. The Claude allowance does
+Graphify. The example deliberately omits this authority. The run allowance does
 **not** cap Graphify costs. In the inspected Graphify implementation,
 `update --force --no-cluster` performs local AST extraction; `cluster-only`
 receives the selected backend/model and can call its provider. Review that
@@ -144,18 +157,20 @@ initialization or private HOME `ctx` source.
 ## Runtime and host scope
 
 `runtime.py` handles collection scans, morning/nightly/weekly/health work and
-PostCompact summaries through one shared tool-free Claude JSON-proposal runner.
-Host code validates allowed paths and prior-content hashes before committing wiki
-changes. See [vault-architecture.md](vault-architecture.md) for the storage,
-retention, event and lifecycle boundaries.
+PostCompact summaries through a shared tool-free JSON-proposal runner that
+invokes the configured or auto-detected host CLI (`claude`, `codex`, `jeo`,
+`jeopi`, `omp`, `pi`, or `gjc`) directly with its native model flags (`--model`
+for Claude/Pi, `-m` for Codex `exec`, and `--model=<provider>/<model>` for
+`jeo`/`jeopi`/`omp`/`gjc`). Host code validates allowed paths and prior-content
+hashes before committing wiki changes. See [vault-architecture.md](vault-architecture.md)
+for the storage, retention, event and lifecycle boundaries.
 
-Only the **new Claude vault's** `.claude/settings.json` receives a native
+Only the **new vault's** `.claude/settings.json` receives a native
 `PostCompact` command hook. It consumes the event's `compact_summary`; it does not
 subscribe other hosts or read their private transcripts. The managed crontab block
-runs the shared runtime and preserves unrelated entries. Codex, Gemini, OpenCode
-and jeo can use copied operating documents and invoke the shared runtime; this is
-not equivalent native hook support. The automated model runner remains Claude CLI
-with the configured model, regardless of the interactive host.
+runs the shared runtime and preserves unrelated entries. Codex, Gemini, OpenCode,
+jeopi, omp and jeo can use copied operating documents and invoke the shared
+runtime directly with their own host CLI and configured model.
 
 Indexes are separately initialized with separate approval. Setup reports missing
 `.mex`, `.zvec-grep` and `graphify-out` as `pending_initialization`; it does not

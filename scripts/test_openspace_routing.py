@@ -689,7 +689,7 @@ class HookInstaller(Fixture):
             extension = (self.home / f".{host}/agent/extensions/openspace-route.ts").read_text()
             self.assertIn('pi.on("before_agent_start"', extension)
             self.assertIn('customType: "openspace-route"', extension)
-        for host in ("pi", "gjc"):
+        for host in ("pi", "gjc", "jeo"):
             self.assertFalse((self.home / f".{host}").exists(), "undetected hosts are never created")
         self.assertIn("skipped", result.stdout)
         plugin = (self.home / ".config/opencode/plugins/openspace-route.js").read_text()
