@@ -90,6 +90,7 @@ export async function review(task, proposal) {
     const env = {
       ...process.env,
       HOME: home,
+      CODEX_HOME: join(home, '.codex'),
       CLAUDE_CONFIG_DIR: join(home, '.claude'),
       AGY_CONFIG_DIR: join(home, '.gemini', 'config'),
       JEO_CONFIG_DIR: join(home, '.jeo'),
@@ -171,6 +172,70 @@ test('hooks-install supports claude, agy, jeopi, jeo, omp, pi, and gjc in previe
       assert.match(extText, /@jev-control-plane-managed/);
       assert.match(extText, new RegExp(`JEV_AGENT_ID = "${host}"`));
     }
+  }
+});
+
+test('Claude and Codex hook upgrades migrate matchers without widening unrelated hooks', () => {
+  for (const host of ['claude', 'codex']) {
+    for (const mixed of [false, true]) {
+      const f = createFixture({ agent: host, profile: `upgrade-${host}-${mixed}` });
+      const installed = f.invoke('hooks-install', null, { extraArgs: ['--matcher', 'Bash', '--apply'] });
+      const config = JSON.parse(readFileSync(installed.path, 'utf8'));
+      const originalGroup = config.hooks.PreToolUse[0];
+      const unrelated = { type: 'command', command: 'unrelated-user-hook', timeout: 7 };
+      if (mixed) {
+        originalGroup.hooks.push(unrelated);
+        originalGroup.customMetadata = 'preserve';
+        write(installed.path, JSON.stringify(config));
+      }
+      const before = readFileSync(installed.path, 'utf8');
+      const options = { extraArgs: ['--matcher', 'bash|write|edit'] };
+      f.invoke('hooks-install', null, options);
+      assert.equal(readFileSync(installed.path, 'utf8'), before, 'preview must not migrate hooks');
+      f.invoke('hooks-install', null, { extraArgs: [...options.extraArgs, '--apply'] });
+      const upgraded = JSON.parse(readFileSync(installed.path, 'utf8'));
+      const groups = upgraded.hooks.PreToolUse;
+      const managed = groups.filter(group => group.hooks.some(item => item.command?.includes('codex-hook')));
+      assert.equal(managed.length, 1, 'the managed hook must execute only once');
+      assert.equal(managed[0].matcher, 'bash|write|edit', `${host} must replace the old matcher`);
+      if (mixed) {
+        assert.deepEqual(groups[0], { ...originalGroup, hooks: [unrelated] }, 'unrelated hooks retain their matcher and metadata');
+      }
+      const first = readFileSync(installed.path, 'utf8');
+      f.invoke('hooks-install', null, { extraArgs: [...options.extraArgs, '--apply'] });
+      assert.equal(readFileSync(installed.path, 'utf8'), first, 'matcher migration must be idempotent');
+
+      // Duplicate legacy Jev groups must collapse to one canonical managed hook.
+      const dupConfig = JSON.parse(first);
+      dupConfig.hooks.PreToolUse.push({ matcher: 'LegacyTool', hooks: [...managed[0].hooks] });
+      write(installed.path, JSON.stringify(dupConfig));
+      f.invoke('hooks-install', null, { extraArgs: [...options.extraArgs, '--apply'] });
+      const deduped = JSON.parse(readFileSync(installed.path, 'utf8'));
+      const remainingManaged = deduped.hooks.PreToolUse.filter(group => group.hooks.some(item => item.command?.includes('codex-hook')));
+      assert.equal(remainingManaged.length, 1, 'duplicate legacy managed groups must be collapsed');
+    }
+  }
+});
+
+test('native proposal review uses the current task rather than stale cached task text', () => {
+  for (const host of ['jeopi', 'omp', 'pi', 'gjc']) {
+    const f = createFixture({ agent: host, profile: `current-${host}` });
+    f.invoke('hook', { prompt: 'Old deployment task', session_id: 'session', turn_id: 'old-turn' });
+    for (const turn of ['old-turn', 'new-turn']) {
+      const output = f.invoke('hook', {
+        type: 'PreToolUse', task: 'Current read-only inspection',
+        session_id: 'session', turn_id: turn, tool_name: 'bash', tool_input: { command: 'pwd' },
+      });
+      assert.match(output.hookSpecificOutput.additionalContext, /Jev review: permit/);
+      assert.equal(f.calls().filter(call => call.op === 'review').at(-1).input.task, 'Current read-only inspection');
+    }
+    const reviewsBefore = f.calls().filter(call => call.op === 'review').length;
+    const oversized = f.invoke('hook', {
+      type: 'PreToolUse', task: 'x'.repeat(100_001),
+      session_id: 'session', turn_id: 'old-turn', tool_name: 'bash', tool_input: {},
+    });
+    assert.equal(oversized.hookSpecificOutput.permissionDecision, 'deny', 'an oversized current task must not reuse cached authorization');
+    assert.equal(f.calls().filter(call => call.op === 'review').length, reviewsBefore);
   }
 });
 

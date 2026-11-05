@@ -79,6 +79,7 @@ COMMAND_SKILL_ALIASES: Dict[str, str] = {
     "specify": "spec-kit",
     "specify-cli": "spec-kit",
     "speckit": "spec-kit",
+    "jev": "jev-control-plane",
 }
 
 

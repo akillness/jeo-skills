@@ -1081,6 +1081,16 @@ function codexDecision(context, decision, reason) {
 }
 
 function resolveCachedTask(event, ctx) {
+  if (ctx.agent !== 'codex') {
+    const inlineTask = typeof event.task === 'string' && event.task.trim()
+      ? event.task.trim()
+      : typeof event.prompt === 'string' && event.prompt.trim()
+        ? event.prompt.trim()
+        : null;
+    // Native extensions already hold the current prompt; a stale cache must not
+    // replace it, even when the host reuses a session/turn identifier.
+    if (inlineTask) return inlineTask.length <= 100_000 ? inlineTask : null;
+  }
   const exactPath = sessionTaskPath(event, ctx.profile);
   if (exactPath) {
     ensureRegular(exactPath);
@@ -1094,12 +1104,6 @@ function resolveCachedTask(event, ctx) {
       const saved = JSON.parse(readText(fallbackPath) || '{}');
       if (typeof saved.task === 'string' && saved.time > Date.now() - 86_400_000) return saved.task;
     }
-    const inlineTask = typeof event.task === 'string' && event.task.trim()
-      ? event.task.trim()
-      : typeof event.prompt === 'string' && event.prompt.trim()
-        ? event.prompt.trim()
-        : null;
-    if (inlineTask && inlineTask.length <= 100_000) return inlineTask;
   }
   return null;
 }
@@ -1403,12 +1407,37 @@ async function hooksInstall(flags) {
     const handler = { type: 'command', command, timeout: 90, statusMessage: event === 'UserPromptSubmit' ? 'Jev: load selected skills' : 'Jev: review proposed action', ...(event === 'UserPromptSubmit' ? { additionalContextLimit: 32768 } : {}) };
     const managed = item => item?.type === 'command' && typeof item.command === 'string' && item.command.includes(shellQuote(join(HERE, 'jev-plugin.mjs'))) && item.command.includes("'codex-hook'");
     let found = false;
+    const nextGroups = [];
     for (const group of groups) {
-      if (!Array.isArray(group.hooks)) continue;
-      group.hooks = group.hooks.map(item => { if (!managed(item)) return item; found = true; return handler; });
+      if (!Array.isArray(group.hooks)) {
+        nextGroups.push(group);
+        continue;
+      }
+      const hadManaged = group.hooks.some(managed);
+      if (event === 'PreToolUse' && group.matcher !== matcher && hadManaged) {
+        if (!found && group.hooks.every(managed)) {
+          group.matcher = matcher;
+        } else {
+          // Widen only Jev's matcher, never the user's hooks sharing its group.
+          group.hooks = group.hooks.filter(item => !managed(item));
+          if (group.hooks.length) nextGroups.push(group);
+          continue;
+        }
+      }
+      const nextHooks = [];
+      for (const item of group.hooks) {
+        if (!managed(item)) {
+          nextHooks.push(item);
+        } else if (!found) {
+          found = true;
+          nextHooks.push(handler);
+        }
+      }
+      group.hooks = nextHooks;
+      if (!hadManaged || group.hooks.length) nextGroups.push(group);
     }
-    if (!found) groups.push({ ...(event === 'PreToolUse' ? { matcher } : {}), hooks: [handler] });
-    config.hooks[event] = groups;
+    if (!found) nextGroups.push({ ...(event === 'PreToolUse' ? { matcher } : {}), hooks: [handler] });
+    config.hooks[event] = nextGroups;
   }
   if (flags.apply) atomicWrite(path, `${JSON.stringify(config, null, 2)}\n`);
   return {

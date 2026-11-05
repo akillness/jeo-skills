@@ -571,7 +571,7 @@ while IFS= read -r -d '' staged_module; do
 done < <(find "$SETUP_STAGE" -name '*.mjs' -type f -print0)
 mkdir -p "$JEV_HOME" "$RULES_DIR"
 if [ -n "$PROFILE" ]; then mkdir -p "$PROFILE_DIR"; fi
-for f in "${PUBLISH_FILES[@]}"; do
+for f in ${PUBLISH_FILES[@]+"${PUBLISH_FILES[@]}"}; do
   destination="$JEV_HOME/$f"
   mkdir -p "$(dirname "$destination")"
   cp "$SETUP_STAGE/files/$f" "$destination"

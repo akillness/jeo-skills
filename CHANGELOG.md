@@ -11,6 +11,10 @@ All notable changes to **jeo-skills** are documented here.
 - Prefer `JEO_SECOND_BRAIN_CONFIG=/absolute/reviewed.json bash scripts/install.sh` (optional `JEO_SECOND_BRAIN_SOURCE` pinned checkout) or direct `python3 scripts/setup.py --config ... --dry-run` followed by apply. `WITH_UPSTREAM=1` now requires that configuration rather than cloning/pulling a global upstream skill or executing unsafe upstream `setup.sh`. Automated source handling supports UTF-8 text; unsupported binaries are retained with explicit errors while supported entries can progress independently.
 - Portable lifecycle retains mex/zvec/Graphify/vault roles without a private HOME `ctx` package, preserves all raw trees including video and archived-root sources, and implements no legacy GC or unapproved deletion. Graphify rebuilds only at checkpoint with separate provider/model/unbounded-cost authority; Claude allowances are estimates, not a hard billing guarantee or a Graphify cost cap. Installed smoke/fixture evidence does not verify real-provider model quality, billing or live host integrations; other hosts use operating documents/shared runtime, not fabricated native PostCompact hooks.
 
+### Fixed
+- Jev Claude/Codex hook reinstallation now migrates PreToolUse matchers, splitting mixed managed/user hook groups so unrelated hooks retain their original matcher and metadata. Preview remains read-only and repeated apply is idempotent.
+- Jev native proposal review prefers the current host-supplied task over stale session/turn caches and withholds oversized current tasks rather than reviewing a cached task. Regression tests cover all four extension hosts, matcher upgrades, mixed groups, and Codex fixture HOME isolation.
+
 ## 2026-11-04
 
 ### Added

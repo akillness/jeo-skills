@@ -45,6 +45,7 @@ SKILL_ALIASES = {
     "specify": "spec-kit",
     "specify-cli": "spec-kit",
     "speckit": "spec-kit",
+    "jev": "jev-control-plane",
 }
 
 
@@ -686,6 +687,7 @@ def run_skill_setup(root: Path | None, selected: list[str], *,
         env["GLOBAL"] = "1"
     if with_hooks:
         env["JEO_SKILLS_APPROVE_ALL_HOOKS_MCP"] = "true"
+    checkout_repo = Path(__file__).resolve().parents[3]
     for skill_name, cmd in plans:
         if skill_name == "mex" and cmd[0] == "bash" and root is not None:
             wrapper_src = root / "mex/scripts/mex-agent-wrapper.sh"
@@ -694,6 +696,10 @@ def run_skill_setup(root: Path | None, selected: list[str], *,
                 mex_dest.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copy2(wrapper_src, mex_dest)
                 mex_dest.chmod(0o755)
+        elif skill_name == "jev-control-plane" and len(cmd) >= 2 and not Path(cmd[1]).is_file():
+            fallback_harness = checkout_repo / "jev/jev-harness.mjs"
+            if fallback_harness.is_file():
+                cmd = [cmd[0], str(fallback_harness), *cmd[2:]]
         completed = subprocess.run(cmd, env=env, check=False)
         if completed.returncode != 0:
             raise JeoSkillError(f"Post-install setup failed for {skill_name} (exit {completed.returncode}): {shlex.join(cmd)}")
