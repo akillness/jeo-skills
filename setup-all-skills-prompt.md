@@ -195,7 +195,7 @@ if [ "${JEO_SKILLS_STAR:-}" = true ] && [ "${JEO_SKILLS_DRY_RUN:-false}" != true
       tmp=$(mktemp "${TMPDIR:-/tmp}/jeo-skills-star.XXXXXXXX") || exit 1
       trap 'rm -f "$tmp"' EXIT
       curl --disable --proto '=https' --max-time 15 -fsS 'https://raw.githubusercontent.com/akillness/jeo-skills/main/install.sh' -o "$tmp" || exit 1
-      python3 -I -c 'import hashlib,sys; sys.exit(hashlib.sha256(open(sys.argv[1], "rb").read()).hexdigest() != "58c9787857634224461724dbc1ddf82eaae1cc993a49e47cf82322a4ecb4f5ce")' "$tmp" || exit 1
+      python3 -I -c 'import hashlib,sys; sys.exit(hashlib.sha256(open(sys.argv[1], "rb").read()).hexdigest() != "c8d42ee1d86138cc995701ddcf6b0e0b5ae3370db57f77c79efad3c422b6364b")' "$tmp" || exit 1
       JEO_SKILLS_STAR_ONLY=true JEO_SKILLS_STAR=true bash "$tmp"
     else
       exit 1
@@ -872,9 +872,10 @@ Spec-kit is generated in an empty staging directory and only missing files are c
 into `PROJECT_DIR`. Existing files and symbolic links are protected, and collisions
 are reported rather than overwritten.
 
-The default installer does not run `mex setup` or `mex graph`, create a `zg` index,
-download an embedding/model, register MCP, or install/patch hooks. Each requires
-separate approval, as do remote Jev and model calls. CLI-Anything harnesses beyond
+The tool helper itself does not run `mex setup` or `mex graph`, create a `zg` index,
+download an embedding/model, register MCP, or install/patch hooks; the workspace
+activation in Step 5B does that for the project, with the vetoes listed there. Remote
+Jev and model calls still need their own approval. CLI-Anything harnesses beyond
 `cli-anything-hub` are installed only on demand for the selected task.
 
 The legacy manual blocks below are troubleshooting references only. Do not run them
@@ -1403,7 +1404,7 @@ if [ -n "${JEO_SECOND_BRAIN_CONFIG:-}" ] && [ "${JEO_SKILLS_APPROVE_KNOWLEDGE_HO
   HOME="$USER_HOME" python3 "$BRAIN_SETUP" "${BRAIN_ARGS[@]}" --dry-run
   HOME="$USER_HOME" python3 "$BRAIN_SETUP" "${BRAIN_ARGS[@]}"
 else
-  printf '%s\n' 'second-brain activation pending: explicit new-vault/model/cost/automation config required; existing knowledge environment unchanged'
+  printf '%s\n' 'second-brain: no JEO_SECOND_BRAIN_CONFIG; Step 5B creates a NEW vault with default budgets; existing knowledge environment unchanged'
 fi
 ```
 
@@ -1729,6 +1730,45 @@ from a trusted checkout with `./install.sh --profile minimal --target <target> -
 before any write. Never run ECC's automatic-update workflow during blanket setup because
 it fetches and fast-forwards an existing checkout before reinstalling recorded targets.
 
+### Step 5B — Workspace activation (full global install; no per-query setup)
+
+Goal: after install, the user only types queries. The root `install.sh` runs
+`scripts/setup-workspace.py` for `PROJECT_DIR` right after the full tools (selection `all`,
+`INSTALL_GLOBAL=true`, never from `$HOME`). Run it by hand to refresh or to activate a
+different project; it is idempotent and prints one `ok|pending|skipped|failed` line per step.
+
+```bash
+python3 "$JEO_CHECKOUT/scripts/setup-workspace.py" --project "$PROJECT_DIR" --skills-root "$SKILLS_ROOT" --dry-run
+python3 "$JEO_CHECKOUT/scripts/setup-workspace.py" --project "$PROJECT_DIR" --skills-root "$SKILLS_ROOT"
+```
+
+| Step | What it does |
+|---|---|
+| `mex` | `mex` skill `install.sh --skip-skill`: `.mex/` scaffold, code graph, drift check |
+| `zvec` | `zg index` (first run `--embedding local/potion-code-16m-v2`, later incremental) then `zg status --check-ready` |
+| `second-brain` | writes `~/.jeo/second-brain-config.json` (0600, never overwritten) for a **new** vault `~/vaults/jeo-second-brain`, host/model `auto`, $0.50/run, $5/day, 300 s, all automation consents; runs the packaged `setup.py`. Graphify's external provider is **not** enabled |
+| `open-ontologies` | builds the pinned binary when absent (needs `cargo`), runs the offline smoke test |
+| `openspace` | installs the runtime and the prompt-time routing hooks |
+| `rtk-semble` | `rtk init -g --auto-patch` (Claude Code hook); verifies `semble` |
+| `jev` | reports bound profiles; inert when Jev is not installed |
+| `refresh` | `mex-agent watch` and a marked `zg index` block in `.git/hooks/post-commit`; second-brain cron schedules |
+| `rules` | marker block `JEO-WORKFLOWS` in `~/.agents/rules/jeo-workflows.md`, `<project>/.agents/rules/jeo-workflows.md`, and a pointer in the project's `AGENTS.md`/`CLAUDE.md`; when Antigravity CLI (`agy`) or `~/.gemini` exists, also a pointer block in `~/.gemini/GEMINI.md` (agy reads global rules there, not `~/.agents/rules`) |
+| `harness2` | `.harness2/workspace.json`: method-mode component map and workflow status (benchmarks stay on demand: Vertex credentials, Docker, approval) |
+
+The installed rule fixes the per-prompt order **openspace → rtk → semble → jev**; jev runs
+only after rtk and semble ran for that prompt and only when a profile is enabled. It then
+routes by query type: knowledge to the vault, code/memory to `.mex/`, meaning search to
+`zg query`, RDF/OWL to `open-ontologies`, harness changes to `.harness2/`.
+
+Fully automatic means these were chosen by the user at install time; they are
+not silent defaults. Opt-outs: `JEO_SKILLS_WORKSPACE=skip` (installer), `--no-activate`
+(rules and manifest only), `--skip STEP`, `JEO_SKILLS_APPROVE_KNOWLEDGE_HOOKS=false` or
+`JEO_SKILLS_APPROVE_KNOWLEDGE_DATA=false` (second-brain), `JEO_SKILLS_APPROVE_OPENSPACE=false`,
+`JEO_SKILLS_APPROVE_SKILL_ROUTING_HOOKS=false`, `JEO_SKILLS_APPROVE_ALL_HOOKS_MCP=false`
+(hooks). `pending` means a prerequisite is missing, not a failure; a `failed` step makes the
+installer exit 1. Hook and cron registration is configuration, not proof of execution:
+verify a live prompt per host as described in the OpenSpace section.
+
 ## Step 6 — Runtime-specific shared-root checks
 
 - `jeo`, `jeopi`, and OMP discover `~/.agents/skills` directly; no skills CLI agent ID is
@@ -1750,6 +1790,11 @@ it fetches and fast-forwards an existing checkout before reinstalling recorded t
   `would-remove` lines after the sweep; `kept` and `skipped` lines name roots left untouched.
 
 ## Step 7 — Verify and report
+
+Also check workspace activation (Step 5B): `python3 scripts/setup-workspace.py --project "$PROJECT_DIR" --dry-run`
+must list no `failed` step; confirm `~/.agents/rules/jeo-workflows.md`, `$PROJECT_DIR/.agents/rules/jeo-workflows.md`,
+`.mex/`, `zg status --check-ready`, `.harness2/workspace.json`, and the second-brain vault. Report
+`pending` steps with their missing prerequisite.
 
 ```bash
 if [ "${INSTALL_GLOBAL:-true}" = false ]; then

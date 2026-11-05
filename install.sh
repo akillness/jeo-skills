@@ -67,10 +67,11 @@ if [ "$DRY_RUN" = true ]; then
     if [ "$GLOBAL" = true ]; then
       info "Would obtain scripts/install-full-tools.sh from $REPO_URL and run it for project $PROJECT_DIR."
       info 'Would install or update mex-agent, zvec-grep, specify-cli, RTK, Semble, and cli-anything-hub in the user-global scope; no tools are run during dry run.'
+      info "Would run scripts/setup-workspace.py for project $PROJECT_DIR (rules, mex, zvec, second-brain, open-ontologies, openspace, rtk/semble, jev, harness2 manifest); set JEO_SKILLS_WORKSPACE=skip to opt out."
       if [ -n "${JEO_SECOND_BRAIN_CONFIG:-}" ]; then
         info "Would configure obsidian-second-brain from $JEO_SECOND_BRAIN_CONFIG after explicit target/model/cost/automation consent; no setup runs during dry run."
       else
-        info 'Second-brain setup requires JEO_SECOND_BRAIN_CONFIG; no existing vault or hook is migrated.'
+        info 'Without JEO_SECOND_BRAIN_CONFIG the workspace step would create a NEW vault with default budgets; no existing vault or hook is migrated.'
       fi
     else
       info 'Project-scoped all would skip user-global tool installation and report partial success; set INSTALL_GLOBAL=true to allow global installation.'
@@ -218,7 +219,6 @@ elif [ "$SELECTION" = all ]; then
     info 'WARNING: Full tool installation partially failed; installed skills remain available.' >&2
     FULL_STATUS=1
   fi
-  if [ -n "$FULL_TMP" ]; then rm -rf "$FULL_TMP" || info 'WARNING: Full tool temporary cleanup failed.'; fi
 fi
 
 # New knowledge installs use second brain; selection/--yes is not model or job consent.
@@ -228,7 +228,7 @@ if [ "$SELECTION" = all ] && [ "$GLOBAL" = true ]; then
     *) export PATH="$HOME/.local/bin:${CARGO_HOME:-$HOME/.cargo}/bin:$PATH" ;;
   esac
   if [ -z "${JEO_SECOND_BRAIN_CONFIG:-}" ]; then
-    info 'Second-brain activation pending: provide JEO_SECOND_BRAIN_CONFIG with a NEW vault, model, cost allowance and explicit automation consent. Existing knowledge settings are unchanged.'
+    info 'No JEO_SECOND_BRAIN_CONFIG: the workspace activation below creates a NEW vault with default budgets ($0.50/run, $5/day). Existing knowledge settings are unchanged.'
   else
     if ! command -v graphify >/dev/null 2>&1 && command -v uv >/dev/null 2>&1; then
       uv tool install graphifyy >/dev/null 2>&1 || info 'WARNING: graphify installation did not complete prior to second-brain setup.'
@@ -245,6 +245,35 @@ if [ "$SELECTION" = all ] && [ "$GLOBAL" = true ]; then
     fi
   fi
 fi
+# Workspace activation: after install, wire rules, mex, zvec, second-brain, open-ontologies,
+# openspace, rtk/semble, jev and the harness2 manifest so queries alone drive the workflows.
+# JEO_SKILLS_WORKSPACE=skip opts out; JEO_SKILLS_APPROVE_KNOWLEDGE_{HOOKS,DATA}=false veto second-brain.
+if [ "$SELECTION" = all ] && [ "$GLOBAL" = true ] && [ "${JEO_SKILLS_WORKSPACE:-}" != skip ]; then
+  WS_HELPER=''
+  if [ -n "${FULL_HELPER:-}" ] && [ -f "$(dirname "$FULL_HELPER")/setup-workspace.py" ]; then
+    WS_HELPER="$(dirname "$FULL_HELPER")/setup-workspace.py"
+  elif [ "$REPO_URL" = 'https://github.com/akillness/jeo-skills' ]; then
+    if [ -z "$FULL_TMP" ]; then FULL_TMP="$(mktemp -d "${TMPDIR:-/tmp}/jeo-full.XXXXXX")" || FULL_TMP=''; fi
+    if [ -n "$FULL_TMP" ] && curl -fsSL 'https://raw.githubusercontent.com/akillness/jeo-skills/main/scripts/setup-workspace.py' -o "$FULL_TMP/setup-workspace.py"; then
+      WS_HELPER="$FULL_TMP/setup-workspace.py"
+    fi
+  fi
+  if [ "$PROJECT_DIR" = "$HOME" ]; then
+    info 'Workspace activation skipped: run the installer from a project directory, not $HOME.'
+  elif [ -z "$WS_HELPER" ]; then
+    info 'WARNING: setup-workspace.py unavailable; skills are installed but the workflows are not activated.' >&2
+    # A custom source that predates the helper is not a failed install; the official source is.
+    if [ "$REPO_URL" = 'https://github.com/akillness/jeo-skills' ]; then FULL_STATUS=1; fi
+  else
+    WS_ARGS=(--project "$PROJECT_DIR" --skills-root "$ROOT")
+    if [ -n "${JEO_SECOND_BRAIN_CONFIG:-}" ]; then WS_ARGS+=(--skip second-brain); fi
+    if ! python3 "$WS_HELPER" "${WS_ARGS[@]}"; then
+      info 'WARNING: Workspace activation reported failed steps (see above); re-run the installer to refresh.' >&2
+      FULL_STATUS=1
+    fi
+  fi
+fi
+if [ -n "${FULL_TMP:-}" ]; then rm -rf "$FULL_TMP" || info 'WARNING: Full tool temporary cleanup failed.'; fi
 # Remove stale catalog copies of retired skills (jeo, harness) from every runtime root in scope.
 if [ "$GLOBAL" = true ]; then
   python3 "$CLI_PATH" prune-retired --global || info 'WARNING: retired-skill cleanup did not complete; installed skills remain available.'

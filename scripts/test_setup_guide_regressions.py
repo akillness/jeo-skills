@@ -595,6 +595,10 @@ while IFS= read -r line || [ -n "$line" ]; do printf '%s\\n' "$line"; done < "$F
         (fixture_router / "scripts/jeo-skill.py").write_text("pass\n")
         fixture_helper = self.work / "downloaded-helper"
         fixture_helper.write_text('printf "%s\\n" "$1" > "$HELPER_RESULT"\n')
+        fixture_workspace = self.work / "downloaded-workspace.py"
+        fixture_workspace.write_text(
+            'import os, sys\nopen(os.environ["WORKSPACE_RESULT"], "w").write("\\n".join(sys.argv[1:]))\n')
+        workspace_result = self.work / "workspace-result"
 
         def command(name: str, body: str) -> None:
             executable = bin_dir / name
@@ -608,15 +612,19 @@ mkdir -p "$scope/.agents/skills"
 cp -R "$FIXTURE_ROUTER" "$scope/.agents/skills/jeo-skill"''')
         command("git", 'echo "unexpected git access" >&2; exit 41')
         command("curl", '''[ "$1" = -fsSL ]
-[ "$2" = 'https://raw.githubusercontent.com/akillness/jeo-skills/main/scripts/install-full-tools.sh' ]
 [ "$3" = -o ]
-cp "$FIXTURE_HELPER" "$4"''')
+case "$2" in
+  'https://raw.githubusercontent.com/akillness/jeo-skills/main/scripts/install-full-tools.sh') cp "$FIXTURE_HELPER" "$4" ;;
+  'https://raw.githubusercontent.com/akillness/jeo-skills/main/scripts/setup-workspace.py') cp "$FIXTURE_WORKSPACE" "$4" ;;
+  *) exit 22 ;;
+esac''')
         scratch = self.work / "bootstrap-tmp"
         scratch.mkdir()
         helper_result = self.work / "bootstrap-result"
         for global_scope in ("true", "false"):
             with self.subTest(global_scope=global_scope):
                 helper_result.unlink(missing_ok=True)
+                workspace_result.unlink(missing_ok=True)
                 result = subprocess.run(
                     ["/bin/bash", str(installer)],
                     cwd=self.project,
@@ -625,6 +633,7 @@ cp "$FIXTURE_HELPER" "$4"''')
                         JEO_SKILLS_SELECTION="all", JEO_SKILLS_JEV="skip",
                         FIXTURE_ROUTER=str(fixture_router), FIXTURE_HELPER=str(fixture_helper),
                         HELPER_RESULT=str(helper_result),
+                        FIXTURE_WORKSPACE=str(fixture_workspace), WORKSPACE_RESULT=str(workspace_result),
                     ),
                     text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                     timeout=60, check=False,
@@ -632,6 +641,7 @@ cp "$FIXTURE_HELPER" "$4"''')
                 if global_scope == "true":
                     self.assertEqual(result.returncode, 0, result.stdout)
                     self.assertEqual(helper_result.read_text().splitlines(), [str(self.project)])
+                    self.assertEqual(workspace_result.read_text().splitlines()[:2], ["--project", str(self.project)])
                 else:
                     self.assertNotEqual(result.returncode, 0, result.stdout)
                     self.assertIn("partial", result.stdout.lower())
