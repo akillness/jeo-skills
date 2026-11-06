@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "skill": "agent-s",
+  "repository": "simular-ai/Agent-S",
+  "commit": "0fff0e634869dab72027435b4586e62300185d41",
+  "committed_at": "2026-10-21T21:03:57Z",
+  "observed_at": "2026-11-06",
+  "license": {
+    "spdx": "Apache-2.0",
+    "path": "LICENSE",
+    "url": "https://github.com/simular-ai/Agent-S/blob/0fff0e634869dab72027435b4586e62300185d41/LICENSE",
+    "conclusion": "Apache-2.0 per the GitHub API, the LICENSE file and the package classifier. This skill copies no upstream code."
+  },
+  "package": {
+    "name": "gui-agents",
+    "version": "0.3.2",
+    "registry": "pypi",
+    "requires_python": "<=3.12,>=3.9",
+    "console_script": "agent_s"
+  },
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "a91d87e0c5dc0760d3c51daa80689f2386269169e4519f8d30de493107e79c6e",
+      "bytes": 8976
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "43070e2d4e532684de521b885f385d0841030efa2b1a20bafb76133a5e1379c1",
+      "bytes": 11356
+    },
+    {
+      "path": "setup.py",
+      "sha256": "ed808b6220c9b411773993ed16ebcd186acbca70b3a42281ee66f7b5111e0672",
+      "bytes": 2131
+    },
+    {
+      "path": "requirements.txt",
+      "sha256": "3efdec355a1d08b8a86c98f7b57ffea8a1c84b730e11b50a54606dde896f836e",
+      "bytes": 313
+    },
+    {
+      "path": "models.md",
+      "sha256": "2b11bb57b6b89e0c4d9678b08af03abe8cc5117508c73b7e8af44b8fce94956d",
+      "bytes": 1882
+    },
+    {
+      "path": "gui_agents/s3/README.md",
+      "sha256": "600865b1da2a49ee032cc987bfccd182ea6a2a0f73f156872c5a487c04974bf3",
+      "bytes": 10294
+    },
+    {
+      "path": "gui_agents/s3/cli_app.py",
+      "sha256": "5eaf01c79770fafb01c390fd0abf9a10ecbb32fa040a10c8a641adc98bb62835",
+      "bytes": 12216
+    },
+    {
+      "path": "gui_agents/s3/utils/local_env.py",
+      "sha256": "c007a63d2b9b41162ef848bf8f7250ccc7cbb5dadbe21f39790f628743997706",
+      "bytes": 2471
+    }
+  ]
+}

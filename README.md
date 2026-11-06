@@ -158,6 +158,7 @@ Starring is a separate GitHub account action, not consent implied by installatio
 | `langchain` | langchain-fundamentals, langgraph-fundamentals, deep-agents-core, langsmith |
 | `knowledge-repositories` | 22 ontology, code-graph, memory and retrieval operators (`jeo-skill install --bundle knowledge-repositories --dry-run`) |
 | `ui-design-repositories` | 10 source-pinned UI operators (`jeo-skill install --bundle ui-design-repositories --dry-run`) |
+| `github-five-programs` | fabric, moneyprinter-v2, agent-s, google-maps-scraper, gitingest: five open-source program operators, four of them source-pinned (`jeo-skill install --bundle github-five-programs --dry-run`) |
 
 Repository-operator skills are guides with pinned sources. Installing them does not install, run or connect the upstream projects; those steps need separate approval.
 
@@ -315,7 +316,7 @@ node ~/.agents/jev/jev-harness.mjs --profile "${JEV_PROFILE:?Select the current 
 
 ## 📚 Skills List
 
-> Generated from `.agent-skills/skills.json` · 420 skills · expand a category to see its skills.
+> Generated from `.agent-skills/skills.json` · 424 skills · expand a category to see its skills.
 
 ### 🌐 Web (71)
 
@@ -532,9 +533,9 @@ Subcategories: `image` (10), `video` (18), `motion` (1), `audio` (2), `presentat
 
 </details>
 
-### ⌨️ CLI Tools (41)
+### ⌨️ CLI Tools (43)
 
-Subcategories: `developer-cli` (10), `ai-cli` (15), `media-cli` (1), `automation-cli` (6), `search-cli` (8), `benchmark-cli` (1)
+Subcategories: `developer-cli` (11), `ai-cli` (15), `media-cli` (1), `automation-cli` (7), `search-cli` (8), `benchmark-cli` (1)
 
 <details>
 <summary>Show CLI Tools skills</summary>
@@ -582,12 +583,14 @@ Subcategories: `developer-cli` (10), `ai-cli` (15), `media-cli` (1), `automation
 | `llmfit` |
 | `hyper-extract` |
 | `leann` |
+| `google-maps-scraper` |
+| `gitingest` |
 
 </details>
 
-### 🤖 AI & Agents (74)
+### 🤖 AI & Agents (75)
 
-Subcategories: `orchestration` (16), `agent-frameworks` (19), `skill-authoring` (5), `evaluation` (8), `memory` (7), `planning-review` (13), `discovery` (3), `prompting` (3)
+Subcategories: `orchestration` (16), `agent-frameworks` (20), `skill-authoring` (5), `evaluation` (8), `memory` (7), `planning-review` (13), `discovery` (3), `prompting` (3)
 
 <details>
 <summary>Show AI &amp; Agents skills</summary>
@@ -668,6 +671,7 @@ Subcategories: `orchestration` (16), `agent-frameworks` (19), `skill-authoring` 
 | `harness2` |
 | `ruflo` |
 | `agent-beacon` |
+| `agent-s` |
 
 </details>
 
@@ -735,9 +739,9 @@ Subcategories: `academic` (3), `web-research` (4), `data-analysis` (2), `experim
 
 </details>
 
-### 📣 Business (70)
+### 📣 Business (71)
 
-Subcategories: `marketing` (4), `support` (2), `publishing` (1), `pm-toolkit` (5), `pm-discovery` (13), `pm-strategy` (12), `pm-execution` (12), `pm-market-research` (7), `pm-analytics` (3), `pm-go-to-market` (6), `pm-growth` (5)
+Subcategories: `marketing` (5), `support` (2), `publishing` (1), `pm-toolkit` (5), `pm-discovery` (13), `pm-strategy` (12), `pm-execution` (12), `pm-market-research` (7), `pm-analytics` (3), `pm-go-to-market` (6), `pm-growth` (5)
 
 <details>
 <summary>Show Business skills</summary>
@@ -814,6 +818,7 @@ Subcategories: `marketing` (4), `support` (2), `publishing` (1), `pm-toolkit` (5
 | `positioning-ideas` |
 | `product-name` |
 | `value-prop-statements` |
+| `moneyprinter-v2` |
 
 </details>
 
@@ -895,6 +900,7 @@ Edit metadata in `skills.json`, never in the generated tables. Upstream sources 
 | Change | Details |
 |--------|---------|
 | **`image-to-github-repo`: the GitHub address behind an image** | New `research` / `web-research` skill that reads a screenshot, card-news slide or SNS post, extracts project names, printed links, star counts and keyword hints, and resolves each project to a verified repository with `scripts/resolve_repo.py` (stdlib-only; GET requests to the GitHub API only). It follows rename redirects, checks printed star counts against a 0.9×–2× window, never lets a missing keyword rule a repo out, and reports `verified` / `high` / `medium` / `ambiguous` / `low` instead of guessing between same-named repositories (exit 0/1/2). `scripts/test_image_to_github_repo.py` covers it offline and runs in CI. Install with `jeo-skill install image-to-github-repo --global --yes`; the setup guide's on-demand runtimes section records its network and token boundary. |
+| **Five GitHub program operators and the `github-five-programs` bundle** | Adds `moneyprinter-v2`, `agent-s`, `google-maps-scraper` and `gitingest` next to the existing `fabric`. Each new guide is router-first and pinned to an audited upstream commit with a SHA-256 manifest, an offline stdlib `scripts/preflight.py` and evals. Audit findings are recorded, not assumed: MPV2's in-app CRON menu never runs its jobs and Outreach emails every passing row without confirmation; pip refuses `gui-agents` 0.3.2 on Python 3.12.1 and later and Agent S executes generated code with no per-action dialog; the scraper's Web UI has no authentication and telemetry is on by default; gitingest's default ignore list drops `.env` but ingests `.env.local` and key files (observed with 0.3.1). Install with `jeo-skill install --bundle github-five-programs --global --yes`; `scripts/test_five_github_programs.py` covers the helpers offline and runs in CI. |
 
 ## 🆕 What's New in v2026-11-04
 

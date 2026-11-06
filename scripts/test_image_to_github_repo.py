@@ -451,7 +451,8 @@ class CatalogTests(unittest.TestCase):
     def test_route_outs_name_live_skills(self):
         text = (SKILL / "SKILL.md").read_text(encoding="utf-8")
         live = {s["name"] for s in self.manifest["skills"]}
-        for target in ["github-repo-candidate-quality-gate", "ghgrab", "research"]:
+        for target in ["github-repo-candidate-quality-gate", "ghgrab", "research", "fabric", "moneyprinter-v2",
+                       "agent-s", "google-maps-scraper", "gitingest"]:
             self.assertIn(f"`{target}`", text)
             self.assertIn(target, live)
 

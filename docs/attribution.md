@@ -78,3 +78,14 @@ Skills in this catalog that adapt, wrap or operate another project credit it her
 | `fastnoise2` | [Auburn/FastNoise2 @ 721400f](https://github.com/Auburn/FastNoise2/tree/721400f9560831be2fc9790be9b72c44bee7d33f) | MIT core; Node Editor dependencies and assets have separate terms |
 
 The ten game-development projects above were identified through [this LinkedIn post](https://www.linkedin.com/posts/soulai_qrysumqpqrqe-aiqrysumqpqrqe-snyuiosqsswm-share-7521775238917849088-TwD6/). The guides are original, source-specific operator documentation; consult each guide's pinned primary-source references before using or redistributing upstream software. No upstream runtime or asset is bundled by the guides.
+
+## Open-source program operators
+
+| Component | Source | License |
+|-----------|--------|---------|
+| `moneyprinter-v2` | [FujiwaraChoki/MoneyPrinterV2 @ a734fa9](https://github.com/FujiwaraChoki/MoneyPrinterV2/tree/a734fa924adb9ffe5ab8472aa5526e469e42a8b5) | AGPL-3.0 (copyleft reaches modified versions that are distributed or run as a network service) |
+| `agent-s` | [simular-ai/Agent-S @ 0fff0e6](https://github.com/simular-ai/Agent-S/tree/0fff0e634869dab72027435b4586e62300185d41) · `gui-agents` 0.3.2 on PyPI | Apache-2.0 |
+| `google-maps-scraper` | [gosom/google-maps-scraper @ 903b96d](https://github.com/gosom/google-maps-scraper/tree/903b96d7aa8863188022c04db220e44f3218c860) | MIT; sponsor and referral links in the upstream README are not endorsed |
+| `gitingest` | [coderamp-labs/gitingest @ 4e259a0](https://github.com/coderamp-labs/gitingest/tree/4e259a02fe72115bee538271622f1234a81c8e1a) · `gitingest` 0.3.1 on PyPI | MIT |
+
+These four guides, with the existing `fabric` guide (above), form the `github-five-programs` bundle; the programs were named in an Instagram card-news post. The guides are original, source-specific operator documentation and bundle no upstream code or runtime. Each records its audited commit and file hashes in `references/source.json`; consult the upstream repository's current terms before redistributing anything. The `image-to-github-repo` skill resolves such posts to repository URLs.

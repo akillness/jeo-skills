@@ -1,7 +1,7 @@
 {
   "version": "2.1.0",
   "generated": "2026-10-21",
-  "skill_count": 420,
+  "skill_count": 424,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -344,7 +344,9 @@
       "rea",
       "llmfit",
       "hyper-extract",
-      "leann"
+      "leann",
+      "google-maps-scraper",
+      "gitingest"
     ],
     "ai-agents": [
       "bmad",
@@ -420,7 +422,8 @@
       "memsearch",
       "harness2",
       "ruflo",
-      "agent-beacon"
+      "agent-beacon",
+      "agent-s"
     ],
     "engineering": [
       "audit-reference-originality",
@@ -536,7 +539,8 @@
       "north-star-metric",
       "positioning-ideas",
       "product-name",
-      "value-prop-statements"
+      "value-prop-statements",
+      "moneyprinter-v2"
     ],
     "utilities": [
       "lapian-notes",
@@ -833,7 +837,8 @@
         "codeburn",
         "mole",
         "k-skill-setup",
-        "rea"
+        "rea",
+        "gitingest"
       ],
       "ai-cli": [
         "aider-cli-workflow",
@@ -861,7 +866,8 @@
         "npm-git-install",
         "okf",
         "rtk",
-        "tokhub"
+        "tokhub",
+        "google-maps-scraper"
       ],
       "search-cli": [
         "scrapling",
@@ -915,7 +921,8 @@
         "langchain-bmad",
         "a2a-protocol",
         "anyjev",
-        "agentic-graphrag-blueprint"
+        "agentic-graphrag-blueprint",
+        "agent-s"
       ],
       "skill-authoring": [
         "article-prompts-to-skills",
@@ -1040,7 +1047,8 @@
         "marketing-automation",
         "write-like-meng-on-x",
         "x-bookmark-quote-posts",
-        "youtube-growth-playbook-2026"
+        "youtube-growth-playbook-2026",
+        "moneyprinter-v2"
       ],
       "support": [
         "customer-email-draft-threads",
@@ -1306,6 +1314,13 @@
       "the-forge",
       "meshoptimizer",
       "fastnoise2"
+    ],
+    "github-five-programs": [
+      "fabric",
+      "moneyprinter-v2",
+      "agent-s",
+      "google-maps-scraper",
+      "gitingest"
     ]
   },
   "retired_skills": {
@@ -1961,6 +1976,30 @@
         "github-repo-candidate-quality-gate"
       ],
       "note": "Different inputs to GitHub repository discovery: image-to-github-repo turns names, links and star counts read from an image into verified repository URLs, while github-repo-candidate-quality-gate filters raw search-result lists into recommendation-grade keeps. Neither replaces the other."
+    },
+    "moneyprinter-projects": {
+      "mode": "adjacent",
+      "members": [
+        "moneyprinter-v2",
+        "moneyprinter-turbo"
+      ],
+      "note": "Two unrelated upstream projects with confusable names: FujiwaraChoki/MoneyPrinterV2 is a menu-driven CLI for YouTube Shorts, a Twitter bot, affiliate pitches and outreach, while harry0703/MoneyPrinterTurbo is a one-click short-video generation engine. Confirm which one the user means."
+    },
+    "maps-outreach-chain": {
+      "mode": "adjacent",
+      "members": [
+        "google-maps-scraper",
+        "moneyprinter-v2"
+      ],
+      "note": "MoneyPrinterV2's Outreach downloads, builds and runs gosom/google-maps-scraper at tag v0.9.7, then emails scraped businesses. The scraper skill owns crawl setup and personal-data review; the MPV2 skill owns the send loop and its warnings."
+    },
+    "computer-use-agents": {
+      "mode": "adjacent",
+      "members": [
+        "agent-s",
+        "typesafe-computer-use"
+      ],
+      "note": "Two different desktop-agent projects with different loops and trust models: Agent S screenshots the desktop and executes model-generated pyautogui code; typesafe-computer-use runs deterministic OCR and accessibility checks with a TypeSafe decision step. Neither replaces the other."
     }
   },
   "model_policies": {
@@ -15470,6 +15509,123 @@
       "keyword": "image-to-github-repo",
       "version": "1.0.0",
       "source": "akillness/jeo-skills"
+    },
+    {
+      "name": "moneyprinter-v2",
+      "description": "Operate FujiwaraChoki/MoneyPrinterV2 (MPV2), the AGPL-3.0 Python CLI that automates online-income workflows: YouTube Shorts generation and upload, a Twitter/X posting bot, Amazon affiliate pitches, and Google-Maps-based local-business outreach. Use when the user names MoneyPrinterV2, MPV2 or its `src/main.py` menu, `config.json`, `.mp` cache or `src/cron.py` and needs a fit check, install, configuration, offline preflight, a run, scheduling, or troubleshooting. Do not use for harry0703/MoneyPrinterTurbo (use `moneyprinter-turbo`), generic video production, or bulk unsolicited email and platform-evasion automation. Triggers on: MoneyPrinterV2, MoneyPrinter V2, MPV2, 유튜브 쇼츠 자동화, 트위터 봇, 제휴 마케팅 자동화, 콜드 메일 자동화, 돈 버는 프로그램.",
+      "category": "business",
+      "subcategory": "marketing",
+      "interface": "cli",
+      "path": "moneyprinter-v2/SKILL.md",
+      "tags": [
+        "moneyprinter",
+        "mpv2",
+        "youtube-shorts",
+        "twitter-bot",
+        "affiliate",
+        "outreach",
+        "ollama",
+        "automation"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "moneyprinter-v2",
+      "version": "1.0.0",
+      "source": "https://github.com/FujiwaraChoki/MoneyPrinterV2"
+    },
+    {
+      "name": "agent-s",
+      "description": "Operate simular-ai/Agent-S, the Apache-2.0 open-source computer-use agent framework whose Agent S3 (`gui-agents` 0.3.2, `agent_s` CLI) screenshots the desktop, asks a multimodal model plus a grounding model what to do, and executes generated pyautogui code to click, type and scroll on macOS, Windows or Linux. Use when the user names Agent S, Agent-S, Simular, `gui-agents`, `agent_s`, UI-TARS grounding, or an OSWorld-style GUI agent and needs a fit check, install, model and grounding setup, an offline preflight, a supervised run, or troubleshooting. Do not use for ordinary browser automation, tasks with a CLI or API, unsupervised runs on a personal machine, or Agent S4's AWS benchmark evolution. Triggers on: Agent S, Agent-S, gui-agents, agent_s, computer use agent, 컴퓨터 사용 에이전트, 화면 보고 PC 조작하는 AI.",
+      "category": "ai-agents",
+      "subcategory": "agent-frameworks",
+      "interface": "cli",
+      "path": "agent-s/SKILL.md",
+      "tags": [
+        "agent-s",
+        "gui-agents",
+        "computer-use",
+        "grounding",
+        "ui-tars",
+        "pyautogui",
+        "osworld"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "agent-s",
+      "version": "1.0.0",
+      "source": "https://github.com/simular-ai/Agent-S"
+    },
+    {
+      "name": "google-maps-scraper",
+      "description": "Operate gosom/google-maps-scraper, the MIT-licensed Go tool that crawls Google Maps listings into CSV, JSON, PostgreSQL or S3 (name, address, phone, website, rating, reviews, coordinates, optional website emails) through a Docker image, a CLI, a Web UI and REST API, or a self-hosted SaaS edition. Use when the user names gosom's google-maps-scraper, wants local-business lead data from Google Maps, or needs a query file, depth and concurrency choice, proxy-file setup, result review, an offline preflight, or troubleshooting. Do not use for the Google Places API, bulk emailing, scraping that ignores Google's terms or privacy law, or installing upstream's own agent skill. Triggers on: google-maps-scraper, gosom, Google Maps scraper, 구글 지도 업체 정보 수집, 지역 업체 리드, scrape Google Maps, local business leads.",
+      "category": "cli-tools",
+      "subcategory": "automation-cli",
+      "interface": "cli",
+      "path": "google-maps-scraper/SKILL.md",
+      "tags": [
+        "google-maps",
+        "scraper",
+        "leads",
+        "playwright",
+        "docker",
+        "proxies",
+        "rest-api"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "google-maps-scraper",
+      "version": "1.0.0",
+      "source": "https://github.com/gosom/google-maps-scraper"
+    },
+    {
+      "name": "gitingest",
+      "description": "Operate coderamp-labs/gitingest, the MIT-licensed tool that turns a Git repository or local directory into one prompt-friendly text digest (summary, directory tree, file contents, token estimate) through the `gitingest` CLI, the Python `ingest` API, the hosted gitingest.com site, or a self-hosted FastAPI server. Use when the user names gitingest or gitingest.com, wants to replace \"hub\" with \"ingest\" in a GitHub URL, or needs a whole-repository digest to paste into an LLM, with include or exclude patterns, size limits, a branch or subdirectory, or a private-repository token. Decide local CLI versus hosted site first. Do not use for repository-aware coding, semantic search of a codebase, or digesting a tree that contains secrets. Triggers on: gitingest, git ingest, hub to ingest, repo to prompt, 깃허브 코드 전체를 프롬프트로, 코드베이스 텍스트 덤프, digest.txt.",
+      "category": "cli-tools",
+      "subcategory": "developer-cli",
+      "interface": "cli",
+      "path": "gitingest/SKILL.md",
+      "tags": [
+        "gitingest",
+        "repo-to-prompt",
+        "digest",
+        "llm-context",
+        "hub-to-ingest",
+        "cli",
+        "python"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "gitingest",
+      "version": "1.0.0",
+      "source": "https://github.com/coderamp-labs/gitingest"
     }
   ]
 }

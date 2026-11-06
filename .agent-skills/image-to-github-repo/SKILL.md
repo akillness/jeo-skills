@@ -35,6 +35,7 @@ Route elsewhere when the job is different:
 - Ranking or filtering a list of search hits → `github-repo-candidate-quality-gate`.
 - Downloading files or folders from a known repo → `ghgrab`.
 - Evaluating or summarizing a repo after its URL is known → `research`.
+- Operating a program once it is resolved → its dedicated skill when one exists: `fabric`, `moneyprinter-v2`, `agent-s`, `google-maps-scraper`, or `gitingest` (the `github-five-programs` bundle).
 - An image that names no software (reverse image search is out of scope).
 
 ## Instructions

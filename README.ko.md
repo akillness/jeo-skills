@@ -173,6 +173,7 @@ curl -fsSL "$URL" | JEO_SKILLS_DRY_RUN=true INSTALL_GLOBAL=false bash
 | `langchain` | langchain-fundamentals, langgraph-fundamentals, deep-agents-core, langsmith |
 | `knowledge-repositories` | 22 ontology, code-graph, memory 및 retrieval 운영 가이드 (`jeo-skill install --bundle knowledge-repositories --dry-run`) |
 | `ui-design-repositories` | 10 source-pinned UI operators (`jeo-skill install --bundle ui-design-repositories --dry-run`) |
+| `github-five-programs` | fabric, moneyprinter-v2, agent-s, google-maps-scraper, gitingest: 오픈소스 프로그램 5종 운영 가이드, 그중 4종은 source-pinned (`jeo-skill install --bundle github-five-programs --dry-run`) |
 
 리포지터리 운영 스킬은 고정된 소스를 안내하는 가이드입니다. 설치해도 업스트림 프로젝트를 설치하거나 실행하거나 연결하지 않으며, 해당 단계에는 별도 승인이 필요합니다.
 
@@ -327,7 +328,7 @@ python3 scripts/retire-unused-skills.py --usage-report report.json --apply \
 
 ## 📚 스킬 목록
 
-> `.agent-skills/skills.json`에서 생성 · 420개 스킬 · 카테고리를 펼치면 스킬 목록이 보입니다.
+> `.agent-skills/skills.json`에서 생성 · 424개 스킬 · 카테고리를 펼치면 스킬 목록이 보입니다.
 
 ### 🌐 웹 (71개)
 
@@ -544,9 +545,9 @@ python3 scripts/retire-unused-skills.py --usage-report report.json --apply \
 
 </details>
 
-### ⌨️ CLI 도구 (41개)
+### ⌨️ CLI 도구 (43개)
 
-하위 분류: `developer-cli` (10), `ai-cli` (15), `media-cli` (1), `automation-cli` (6), `search-cli` (8), `benchmark-cli` (1)
+하위 분류: `developer-cli` (11), `ai-cli` (15), `media-cli` (1), `automation-cli` (7), `search-cli` (8), `benchmark-cli` (1)
 
 <details>
 <summary>스킬 보기</summary>
@@ -594,12 +595,14 @@ python3 scripts/retire-unused-skills.py --usage-report report.json --apply \
 | `llmfit` |
 | `hyper-extract` |
 | `leann` |
+| `google-maps-scraper` |
+| `gitingest` |
 
 </details>
 
-### 🤖 AI 및 에이전트 (74개)
+### 🤖 AI 및 에이전트 (75개)
 
-하위 분류: `orchestration` (16), `agent-frameworks` (19), `skill-authoring` (5), `evaluation` (8), `memory` (7), `planning-review` (13), `discovery` (3), `prompting` (3)
+하위 분류: `orchestration` (16), `agent-frameworks` (20), `skill-authoring` (5), `evaluation` (8), `memory` (7), `planning-review` (13), `discovery` (3), `prompting` (3)
 
 <details>
 <summary>스킬 보기</summary>
@@ -680,6 +683,7 @@ python3 scripts/retire-unused-skills.py --usage-report report.json --apply \
 | `harness2` |
 | `ruflo` |
 | `agent-beacon` |
+| `agent-s` |
 
 </details>
 
@@ -747,9 +751,9 @@ python3 scripts/retire-unused-skills.py --usage-report report.json --apply \
 
 </details>
 
-### 📣 비즈니스 (70개)
+### 📣 비즈니스 (71개)
 
-하위 분류: `marketing` (4), `support` (2), `publishing` (1), `pm-toolkit` (5), `pm-discovery` (13), `pm-strategy` (12), `pm-execution` (12), `pm-market-research` (7), `pm-analytics` (3), `pm-go-to-market` (6), `pm-growth` (5)
+하위 분류: `marketing` (5), `support` (2), `publishing` (1), `pm-toolkit` (5), `pm-discovery` (13), `pm-strategy` (12), `pm-execution` (12), `pm-market-research` (7), `pm-analytics` (3), `pm-go-to-market` (6), `pm-growth` (5)
 
 <details>
 <summary>스킬 보기</summary>
@@ -826,6 +830,7 @@ python3 scripts/retire-unused-skills.py --usage-report report.json --apply \
 | `positioning-ideas` |
 | `product-name` |
 | `value-prop-statements` |
+| `moneyprinter-v2` |
 
 </details>
 
@@ -907,6 +912,7 @@ python3 scripts/changelog.py check
 | 변경 사항 | 상세 내용 |
 |--------|---------|
 | **`image-to-github-repo`: 이미지 속 프로그램의 깃허브 주소 찾기** | 스크린샷·카드뉴스·SNS 게시물에서 프로젝트 이름, 표기된 링크, 별 개수, 키워드 힌트를 읽어 `scripts/resolve_repo.py`로 각 프로젝트의 실제 저장소를 검증하는 `research` / `web-research` 스킬을 추가했습니다(표준 라이브러리만 사용, GitHub API GET 요청만 전송). 이름이 바뀐 저장소의 리다이렉트를 따라가고, 표기된 별 개수를 0.9~2배 범위와 비교하며, 키워드 불일치만으로 후보를 배제하지 않고, 동명 저장소 사이에서 추측하는 대신 `verified` / `high` / `medium` / `ambiguous` / `low`로 신뢰도를 보고합니다(종료 코드 0/1/2). `scripts/test_image_to_github_repo.py`가 오프라인으로 검증하며 CI에서 실행됩니다. `jeo-skill install image-to-github-repo --global --yes`로 설치하고, 네트워크·토큰 경계는 설치 가이드의 온디맨드 런타임 섹션에 기록했습니다. |
+| **GitHub 프로그램 5종 운영 가이드와 `github-five-programs` 번들** | 기존 `fabric`에 더해 `moneyprinter-v2`, `agent-s`, `google-maps-scraper`, `gitingest`를 추가했습니다. 새 가이드는 모두 라우팅 우선 구조이며 감사한 업스트림 커밋에 고정되고, SHA-256 매니페스트, 오프라인 표준 라이브러리 `scripts/preflight.py`, evals를 갖췄습니다. 감사 결과는 추정이 아니라 기록입니다: MPV2의 앱 내 CRON 메뉴는 등록한 작업을 실행하지 않고 Outreach는 확인 없이 조건을 통과한 모든 행에 메일을 보냅니다. pip는 Python 3.12.1 이상에서 `gui-agents` 0.3.2를 거부하고 Agent S는 생성한 코드를 동작별 확인 없이 실행합니다. 스크레이퍼 웹 UI에는 인증이 없고 텔레메트리는 기본 켜짐입니다. gitingest 기본 무시 목록은 `.env`만 제외하고 `.env.local`과 키 파일은 포함합니다(0.3.1에서 관찰). `jeo-skill install --bundle github-five-programs --global --yes`로 설치하며 `scripts/test_five_github_programs.py`가 헬퍼를 오프라인으로 검증하고 CI에서 실행됩니다. |
 
 ## 🆕 v2026-11-04 업데이트
 

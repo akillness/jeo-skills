@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "skill": "gitingest",
+  "repository": "coderamp-labs/gitingest",
+  "commit": "4e259a02fe72115bee538271622f1234a81c8e1a",
+  "committed_at": "2025-08-16T01:30:46Z",
+  "observed_at": "2026-11-06",
+  "license": {
+    "spdx": "MIT",
+    "path": "LICENSE",
+    "url": "https://github.com/coderamp-labs/gitingest/blob/4e259a02fe72115bee538271622f1234a81c8e1a/LICENSE",
+    "conclusion": "MIT per the GitHub API and the package classifier. This skill copies no upstream code."
+  },
+  "package": {
+    "name": "gitingest",
+    "version": "0.3.1",
+    "registry": "pypi",
+    "requires_python": ">=3.8",
+    "console_script": "gitingest"
+  },
+  "latest_release": {
+    "tag": "v0.3.1",
+    "published_at": "2025-07-31T13:55:15Z"
+  },
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "c25be74e359d554a968348c21fe8a2d496afa0a895b879e2c702b6b5bc76533b",
+      "bytes": 14527
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "651354bf1adc1b53443ad641611e0831726bf5d3642188dc7adeac8a01eb686d",
+      "bytes": 1072
+    },
+    {
+      "path": "pyproject.toml",
+      "sha256": "674b81e906da1735a4a229e1a63a42240b0c91d9f73192f100cad148ede247c5",
+      "bytes": 3572
+    },
+    {
+      "path": "src/gitingest/__main__.py",
+      "sha256": "8546b7467134f17f8f0e1e077b2076b23d449d29a61352f018e65ad4785c590d",
+      "bytes": 6600
+    },
+    {
+      "path": "src/gitingest/config.py",
+      "sha256": "f13f512bd7be723e4693699a45850267bf10584cb04aed26da108ec9acb1f0d5",
+      "bytes": 497
+    },
+    {
+      "path": "src/gitingest/clone.py",
+      "sha256": "3311b19624b7ca8b22b653204060e1641933282ac763ad74b376f9ba10ac91c3",
+      "bytes": 6233
+    },
+    {
+      "path": "src/gitingest/entrypoint.py",
+      "sha256": "31a2dae64a94f466fe66dfa468537fca9bb7521dcc551dbcb75c0faeae6c4997",
+      "bytes": 13066
+    },
+    {
+      "path": "src/gitingest/utils/git_utils.py",
+      "sha256": "db6deb9175ecb603f00c3fd76b33bd71908e328a009a8b22f5cbc0b4a3cc46f5",
+      "bytes": 15672
+    },
+    {
+      "path": "src/gitingest/utils/ignore_patterns.py",
+      "sha256": "4b062d7d713b66c1bc66be23fce953d04fba03d92d035f735a766f00df2145d8",
+      "bytes": 4897
+    }
+  ]
+}

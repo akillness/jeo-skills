@@ -3301,6 +3301,57 @@ printed. Do not set or request a token as part of blanket setup. Exit 0 means ev
 is `verified`, `high`, or `medium`; 1 means at least one is `low`, `ambiguous`, not found, or
 an error; 2 means invalid input. A `medium` result is reported as "verify", never as final.
 
+### Five GitHub program operators (on demand, offline support)
+
+The `github-five-programs` bundle selects five operator guides for popular open-source
+programs. Four are source-pinned packages with a router-first `SKILL.md`, an audited
+`references/upstream.md`, a SHA-256 manifest (`references/source.json`), an executable stdlib
+`scripts/preflight.py` and behavioral evals; `fabric` is the older routing-first guide without
+a helper. Catalog installation copies documents only. Even in `full` mode, do not clone, build
+or install these projects, pull container images or models, start servers, open ports, read
+credentials, drive a desktop or browser, scrape, publish, or send mail. Select one real task and
+approve its exact target, data disclosure, side effects and rollback first.
+
+| Skill | Upstream pin | Task-triggered prerequisites and setup boundary |
+|---|---|---|
+| [fabric](.agent-skills/fabric/SKILL.md) | danielmiessler/fabric (MIT); no pin recorded | Provider keys or a local model; `fabric --setup` writes configuration; Homebrew and Arch installs expose the binary as `fabric-ai`. |
+| [moneyprinter-v2](.agent-skills/moneyprinter-v2/SKILL.md) | FujiwaraChoki/MoneyPrinterV2 `a734fa924adb9ffe5ab8472aa5526e469e42a8b5` (AGPL-3.0) | Python 3.12, Ollama, a Gemini image key, a logged-in Firefox profile and ImageMagick; Go only for Outreach. Its menu force-kills every Firefox process, its in-app CRON menu never runs jobs, and Outreach emails every passing scraped row without confirmation. Never run `setup_local.sh`, install requirements, publish, schedule, scrape or send mail during setup. |
+| [agent-s](.agent-skills/agent-s/SKILL.md) | simular-ai/Agent-S `0fff0e634869dab72027435b4586e62300185d41` (Apache-2.0) | Python 3.9 to 3.11 or exactly 3.12.0 (pip refuses `gui-agents` 0.3.2 on 3.12.1 and later), `tesseract`, a model key and a grounding endpoint that receive every screenshot. Generated code is `exec()`'d with no per-action confirmation; `--enable_local_env` runs arbitrary Python and Bash. Never run it during setup. |
+| [google-maps-scraper](.agent-skills/google-maps-scraper/SKILL.md) | gosom/google-maps-scraper `903b96d7aa8863188022c04db220e44f3218c860` (MIT) | Docker or a Go build at the `go.mod` version. Crawls make live Google Maps requests; the Web UI and REST API are unauthenticated and must be bound to loopback; telemetry is on unless `DISABLE_TELEMETRY=1`. Upstream's own agent skill uses the same folder name and updates itself: check the helper's `installed-skill` line before either installer writes. Never run `PROVISION` or deploy the SaaS edition. |
+| [gitingest](.agent-skills/gitingest/SKILL.md) | coderamp-labs/gitingest `4e259a02fe72115bee538271622f1234a81c8e1a` (MIT) | Python 3.8+ and git. The `hub` to `ingest` URL trick and the hosted form send data to gitingest.com; keep private repositories on the local CLI with an environment token. The default ignore list drops a plain `.env` but not `.env.local` or key files. |
+
+Preview the selection without installing any upstream runtime:
+
+```bash
+python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" install --bundle github-five-programs --global --dry-run
+```
+
+Each of the four helpers supports `--help`, `--json`, optional `--repo PATH` and optional
+`--expect-commit FULL_SHA` (requires `--repo`), plus one skill-specific input: `--config` for
+moneyprinter-v2, `--queries` for google-maps-scraper, `--target` for gitingest. The JSON report has
+`skill`, `scope: offline-preflight`, `status`, `checks` and `runtime_verified: false`; `info` checks
+are advisory and never change `status`. Exit 0 means no check blocks, 1 means at least one
+blocks, 2 means invalid input. With `--repo`, each helper compares the checkout's pinned files
+against `references/source.json`; a hash difference blocks, meaning the skill's guidance was
+audited against another commit.
+
+```bash
+python3 "$SKILLS_ROOT/agent-s/scripts/preflight.py" --help
+python3 "$SKILLS_ROOT/agent-s/scripts/preflight.py" --json
+python3 "$SKILLS_ROOT/gitingest/scripts/preflight.py" --json --target "/path/to/folder"
+python3 "$SKILLS_ROOT/google-maps-scraper/scripts/preflight.py" --json --queries "/path/to/queries.txt"
+python3 "$SKILLS_ROOT/moneyprinter-v2/scripts/preflight.py" --json --repo "/path/to/MoneyPrinterV2" \
+  --expect-commit a734fa924adb9ffe5ab8472aa5526e469e42a8b5
+```
+
+The helpers read host facts and named local inputs only: they never run the upstream project or any
+discovered tool, open a socket, read a credential value, or write a file. Tool presence and
+`status: ok` do not prove a working Ollama, model endpoint, Docker daemon, browser login or API
+key. `--config` reports set or unset for secrets and never their values; `--target` reads file
+names and sizes, never contents. Record unchecked versions and missing prerequisites instead of
+repairing them to force a green result. MoneyPrinterV2 is AGPL-3.0: its copyleft reaches modified
+versions that are distributed or run as a network service, and these wrappers do not relicense it.
+
 ---
 
 ## Guard Boundaries

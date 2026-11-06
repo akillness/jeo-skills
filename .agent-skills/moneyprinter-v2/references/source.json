@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "skill": "moneyprinter-v2",
+  "repository": "FujiwaraChoki/MoneyPrinterV2",
+  "commit": "a734fa924adb9ffe5ab8472aa5526e469e42a8b5",
+  "committed_at": "2026-09-15T22:33:05Z",
+  "observed_at": "2026-11-06",
+  "license": {
+    "spdx": "AGPL-3.0",
+    "path": "LICENSE",
+    "url": "https://github.com/FujiwaraChoki/MoneyPrinterV2/blob/a734fa924adb9ffe5ab8472aa5526e469e42a8b5/LICENSE",
+    "conclusion": "AGPL-3.0 per the GitHub API and the README; copyleft reaches modified versions that are distributed or run as a network service. This skill copies no upstream code."
+  },
+  "project_version": "none declared (no version file at the pin)",
+  "python": "3.12 (.python-version)",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "9f916931c0a3d40de3e3ab11ca6ebbf0839b6786027f1f922dfa07b9a27b4862",
+      "bytes": 4321
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "4f36279286bdd88670d4a4fee638ec9eea5eb8f10da5e38f9ec2ef419985ee44",
+      "bytes": 34518
+    },
+    {
+      "path": ".python-version",
+      "sha256": "7b55f8e67b5623c4bef3fa691288da9437d79d3aba156de48d481db32ac7d16d",
+      "bytes": 5
+    },
+    {
+      "path": "config.example.json",
+      "sha256": "076b62fb6b98e4a6c428549e932f2dfdf87faa782206a28d0b34abaf8d266a36",
+      "bytes": 1301
+    },
+    {
+      "path": "requirements.txt",
+      "sha256": "8ae54d6890e0d69e83fe20e88b851160b98266c9e3304b707f6d5b7d9f50eeb5",
+      "bytes": 322
+    },
+    {
+      "path": "src/main.py",
+      "sha256": "4fcf082ff340292e4dfd7228d3c720d56a63c3deb9c29fe508863453eac533a2",
+      "bytes": 20284
+    },
+    {
+      "path": "src/config.py",
+      "sha256": "e515eb8cdd15c5c0c122324bea5d6bbb305ac36458657c95e6d1b043a416b9a0",
+      "bytes": 11684
+    },
+    {
+      "path": "src/cron.py",
+      "sha256": "e5ef7ca2bf3c482a8f5f37ffe414e30a4e523d7ae5849e34bb3e0788d535d20a",
+      "bytes": 3399
+    },
+    {
+      "path": "src/utils.py",
+      "sha256": "3ab7ec7f92816a8cdc5c16a4b31431f49b71e8a8f7fcbb347376193954424e99",
+      "bytes": 4754
+    },
+    {
+      "path": "src/classes/Outreach.py",
+      "sha256": "8f6b2683d1781859bcbf1f432de85cb86aea07ce08c752c6f182ddb4dee9ce48",
+      "bytes": 9774
+    },
+    {
+      "path": "scripts/preflight_local.py",
+      "sha256": "6f5b84e4538f41a224177e5ed67803da2486084e906843ebcc14d2088732c2df",
+      "bytes": 3662
+    },
+    {
+      "path": "scripts/setup_local.sh",
+      "sha256": "af9af05aa1d7c87ed37e9f920dc80d6b27c5412449801e6d609b50c95c8affaa",
+      "bytes": 3713
+    },
+    {
+      "path": "scripts/upload_video.sh",
+      "sha256": "ae7f4444a29820daf4d1a6b3aff0d4f221e983958f306ad3cd0830e9d4a398aa",
+      "bytes": 774
+    },
+    {
+      "path": "docs/Configuration.md",
+      "sha256": "454cec6e458a690ca603ae33ea383d003d602a8dc75e7c23f902ad09257b6225",
+      "bytes": 6301
+    },
+    {
+      "path": "docs/YouTube.md",
+      "sha256": "f1558bfec553abbb559d3b54c8064b333f3af7318d435e20e4585bdd872f449e",
+      "bytes": 1681
+    },
+    {
+      "path": "docs/PostBridge.md",
+      "sha256": "45b8d47f6129232012dfd1a0b9d29cf8206f5251c688be99108b4d61c787f88f",
+      "bytes": 3978
+    }
+  ]
+}

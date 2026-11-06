@@ -115,3 +115,5 @@ jobs:
         run: python3 -B scripts/test_ui_design_skills.py -v
       - name: Image-to-GitHub resolver offline contracts
         run: python3 -B scripts/test_image_to_github_repo.py -v
+      - name: GitHub program operator offline contracts
+        run: python3 -B scripts/test_five_github_programs.py -v

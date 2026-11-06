@@ -1,0 +1,25 @@
+N:agent-s
+D:Operate simular-ai/Agent-S Agent S3 (gui-agents, agent_s CLI): a supervised computer-use agent that screenshots the desktop and executes generated pyautogui code, with an offline pinned preflight and approval gates.
+G:agent-s gui-agents computer-use agent_s ui-tars grounding pyautogui osworld
+U[5]:
+  Fit-check and install Agent S3 and see why pip rejects Python 3.12.1 and later
+  Choose a model and grounding endpoint and set the required --ground_* flags
+  Run one supervised task with --task and pause or stop it safely
+  Decide whether --enable_local_env is acceptable and where to run it
+  Route browser automation and Agent S4 AWS benchmarks elsewhere
+S[5]{n,action,details}:
+  1,Freeze surface,One mode one concrete task and a disposable machine; the model sees the whole screen
+  2,Offline gate,Run scripts/preflight.py with optional --repo and --expect-commit; nothing is started
+  3,Gate side effects,Separate approval for pip install grounding endpoint keys first run and local env
+  4,Follow reference,Install models run-loop and safety branches in references/upstream.md
+  5,Verify narrowly,Harmless task with --task and a person watching; judge by screen and logs
+R[6]:
+  Helper is offline and never proves the runtime works
+  pip refuses gui-agents 0.3.2 on Python 3.12.1 and later; use 3.9 to 3.11
+  Generated code runs through exec with no per-action confirmation; the dialog is never called
+  --enable_local_env runs arbitrary Python and Bash; Python has no timeout
+  Every screenshot is sent to the model and grounding endpoints
+  Never run unattended on a personal machine or with sensitive windows open
+E[2]{desc,in,out}:
+  "Install Agent S on a Mac","Python 3.14 default and no grounding endpoint","Preflight report with the 3.9-3.11 requirement and an approval plan before any install"
+  "Run with local env while away","User assumes per-action dialogs exist","Correction that none are wired up and a disposable supervised VM plan"

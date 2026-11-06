@@ -1,0 +1,26 @@
+N:moneyprinter-v2
+D:Operate FujiwaraChoki/MoneyPrinterV2 (AGPL-3.0): YouTube Shorts automation, Twitter bot, Amazon affiliate pitches and Maps-based outreach, with an offline pinned preflight and explicit approval gates.
+G:moneyprinterv2 mpv2 youtube-shorts twitter-bot affiliate outreach ollama firefox
+U[6]:
+  Fit-check and install MoneyPrinterV2 against the audited commit
+  Configure config.json and explain which keys the code still reads
+  Run or troubleshoot YouTube Shorts, Twitter and affiliate flows
+  Explain why in-app CRON jobs never fire and schedule src/cron.py from the OS
+  Review the Outreach scrape-and-email chain before any send
+  Route MoneyPrinterTurbo requests to moneyprinter-turbo
+S[5]{n,action,details}:
+  1,Freeze surface,One mode and one feature area; confirm MPV2 not Turbo and account ownership
+  2,Offline gate,Run scripts/preflight.py with optional --repo and --config; nothing is started
+  3,Gate side effects,Separate approval for pip setup_local Ollama Gemini Firefox publish schedule outreach
+  4,Follow reference,Install config feature scheduling and outreach branches in references/upstream.md
+  5,Verify narrowly,One dry generation then one upload; a green preflight proves nothing about uploads
+R[6]:
+  Helper is offline and never proves the runtime works
+  MPV2 force-kills every running Firefox before automation
+  In-app CRON menu registers jobs that nothing runs; use OS scheduling
+  Outreach sends to every passing row with no confirmation or unsubscribe
+  Never expose SMTP passwords API keys or Firefox profile contents
+  Refuse bulk spam impersonation and platform-evasion uses
+E[2]{desc,in,out}:
+  "Start MPV2 for YouTube Shorts","User wants daily Shorts uploads","Preflight report plus a staged approval plan before any install or upload"
+  "Daily upload never ran","CRON menu entry exists but no upload","Explanation that run_pending is never called and an OS scheduler plan for src/cron.py"

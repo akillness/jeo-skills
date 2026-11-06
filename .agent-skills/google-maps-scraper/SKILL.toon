@@ -1,0 +1,26 @@
+N:google-maps-scraper
+D:Operate gosom/google-maps-scraper (MIT): Docker, CLI, Web UI and REST modes for Google Maps business data, with an offline pinned preflight, proxy-file discipline and personal-data gates.
+G:google-maps-scraper gosom google-maps leads scraping playwright docker proxies
+U[6]:
+  Plan and run a small reviewed Google Maps crawl with the Docker image
+  Write a query file and pick depth concurrency email and grid options
+  Configure proxies through a mode-600 proxies file instead of the command line
+  Review CSV or JSON output for duplicates and personal data
+  Bind the Web UI or REST API to loopback because it has no authentication
+  Avoid the same-name collision with upstream's self-updating agent skill
+S[5]{n,action,details}:
+  1,Freeze surface,One mode and the purpose of the data; decline purposes that need missing consent
+  2,Offline gate,Run scripts/preflight.py with optional --queries and --repo; nothing is started
+  3,Gate side effects,Separate approval for image pull crawl email proxies server mode and exports
+  4,Follow reference,Run results reliability server and boundary branches in references/upstream.md
+  5,Verify narrowly,Tiny validation crawl first; report Google-side blocking instead of defeating it
+R[6]:
+  Helper is offline and never proves the runtime works
+  Web UI and REST API are unauthenticated; bind to 127.0.0.1
+  Use -proxies-file never inline -proxies and never ask for credentials in chat
+  DISABLE_TELEMETRY=1 unless the user opts in
+  Do not run PROVISION or deploy the SaaS edition from this skill
+  Treat emails and phone numbers as personal data with a stated purpose
+E[2]{desc,in,out}:
+  "Dentists in Berlin with emails","User wants a lead list","Preflight plus a depth-1 validation crawl plan and a personal-data review step"
+  "Share the web UI with a team","Port 8080 on a server","Loopback binding plus the SaaS-edition boundary instead of an open port"

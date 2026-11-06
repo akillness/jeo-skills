@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "skill": "google-maps-scraper",
+  "repository": "gosom/google-maps-scraper",
+  "commit": "903b96d7aa8863188022c04db220e44f3218c860",
+  "committed_at": "2026-10-21T10:24:30Z",
+  "observed_at": "2026-11-06",
+  "license": {
+    "spdx": "MIT",
+    "path": "LICENSE",
+    "url": "https://github.com/gosom/google-maps-scraper/blob/903b96d7aa8863188022c04db220e44f3218c860/LICENSE",
+    "conclusion": "MIT per the GitHub API and the README. Sponsor listings and referral links in the upstream README are not endorsed by this skill. This skill copies no upstream code."
+  },
+  "docker_image": "gosom/google-maps-scraper",
+  "go_directive": "1.27.1 (go.mod; README says 1.26.6+)",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "c6ee4ffa1c01e358562ce731c021925d44bb39d9ba05904c10fd87cdcc78d42e",
+      "bytes": 36178
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "3b74f7e7dc75d6ec836c6dc3f072ce510e2a1cbf34aff1f3e7fbc46105ffcd2b",
+      "bytes": 1074
+    },
+    {
+      "path": "go.mod",
+      "sha256": "09e6623d6c11a1b82e8443211e8af99e7321cb0c20a79cf1863a097e829e3ce6",
+      "bytes": 17291
+    },
+    {
+      "path": "Dockerfile",
+      "sha256": "e89daab2b20b6d9923adaeb8663fcb21cad96be0561fe10d6c89ff2e2346240a",
+      "bytes": 1768
+    },
+    {
+      "path": "SECURITY.md",
+      "sha256": "03de1ab2e2770cbb74e3114273587545d7df698491e75079c948f56df4c4eefe",
+      "bytes": 660
+    },
+    {
+      "path": "docs/recipes.md",
+      "sha256": "7ecc48d5a2c34eab3ca4a95abf6e650e3c0d8fdecd003ef499cb15f43acc3de4",
+      "bytes": 3558
+    },
+    {
+      "path": "docs/saas.md",
+      "sha256": "20a85296f87a59c9ae3e4d0ccf30427c0040b4119fd2140f2fab65d552c5f7c4",
+      "bytes": 2886
+    },
+    {
+      "path": "runner/runner.go",
+      "sha256": "21dca80c0649cf3e948b3fa9262a6f4a99c162a4a71090ea625b0cd938648918",
+      "bytes": 11272
+    },
+    {
+      "path": "web/web.go",
+      "sha256": "cd51566cbb52ad69aa14324ee976300457fe843c3e0eb3ca4e997177da3cecfb",
+      "bytes": 15502
+    },
+    {
+      "path": "example-queries.txt",
+      "sha256": "2fbe5ebb6894ec3201c23265b5c939e2ae13fe7c9e577db9958a93483f911881",
+      "bytes": 135
+    },
+    {
+      "path": "skills/google-maps-scraper/SKILL.md",
+      "sha256": "0b733b979b083683c2af36e52a7bd113ae2a4b1845fee66479d40f7aa20c5eec",
+      "bytes": 7291
+    }
+  ]
+}

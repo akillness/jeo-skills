@@ -151,6 +151,7 @@ curl -fsSL "$URL" | JEO_SKILLS_DRY_RUN=true INSTALL_GLOBAL=false bash
 | `langchain` | langchain-fundamentals, langgraph-fundamentals, deep-agents-core, langsmith |
 | `knowledge-repositories` | 22 operadores de ontología, grafos de código, memoria y recuperación (`jeo-skill install --bundle knowledge-repositories --dry-run`) |
 | `ui-design-repositories` | 10 source-pinned UI operators (`jeo-skill install --bundle ui-design-repositories --dry-run`) |
+| `github-five-programs` | fabric, moneyprinter-v2, agent-s, google-maps-scraper, gitingest: cinco operadores de programas de código abierto, cuatro con fuentes fijadas (`jeo-skill install --bundle github-five-programs --dry-run`) |
 
 Las habilidades operadoras de repositorios son guías con fuentes fijadas. Instalar una no instala, ejecuta ni conecta los proyectos upstream; esos pasos requieren aprobación por separado.
 
@@ -304,7 +305,7 @@ Consulta la [guía de instalación](setup-all-skills-prompt.md#jev-control-plane
 
 ## 📚 Lista de Habilidades
 
-> Generado desde `.agent-skills/skills.json` · 420 habilidades · despliega una categoría para ver sus habilidades.
+> Generado desde `.agent-skills/skills.json` · 424 habilidades · despliega una categoría para ver sus habilidades.
 
 ### 🌐 Web (71)
 
@@ -521,9 +522,9 @@ Subcategorías: `image` (10), `video` (18), `motion` (1), `audio` (2), `presenta
 
 </details>
 
-### ⌨️ Herramientas CLI (41)
+### ⌨️ Herramientas CLI (43)
 
-Subcategorías: `developer-cli` (10), `ai-cli` (15), `media-cli` (1), `automation-cli` (6), `search-cli` (8), `benchmark-cli` (1)
+Subcategorías: `developer-cli` (11), `ai-cli` (15), `media-cli` (1), `automation-cli` (7), `search-cli` (8), `benchmark-cli` (1)
 
 <details>
 <summary>Ver habilidades</summary>
@@ -571,12 +572,14 @@ Subcategorías: `developer-cli` (10), `ai-cli` (15), `media-cli` (1), `automatio
 | `llmfit` |
 | `hyper-extract` |
 | `leann` |
+| `google-maps-scraper` |
+| `gitingest` |
 
 </details>
 
-### 🤖 IA y Agentes (74)
+### 🤖 IA y Agentes (75)
 
-Subcategorías: `orchestration` (16), `agent-frameworks` (19), `skill-authoring` (5), `evaluation` (8), `memory` (7), `planning-review` (13), `discovery` (3), `prompting` (3)
+Subcategorías: `orchestration` (16), `agent-frameworks` (20), `skill-authoring` (5), `evaluation` (8), `memory` (7), `planning-review` (13), `discovery` (3), `prompting` (3)
 
 <details>
 <summary>Ver habilidades</summary>
@@ -657,6 +660,7 @@ Subcategorías: `orchestration` (16), `agent-frameworks` (19), `skill-authoring`
 | `harness2` |
 | `ruflo` |
 | `agent-beacon` |
+| `agent-s` |
 
 </details>
 
@@ -724,9 +728,9 @@ Subcategorías: `academic` (3), `web-research` (4), `data-analysis` (2), `experi
 
 </details>
 
-### 📣 Negocios (70)
+### 📣 Negocios (71)
 
-Subcategorías: `marketing` (4), `support` (2), `publishing` (1), `pm-toolkit` (5), `pm-discovery` (13), `pm-strategy` (12), `pm-execution` (12), `pm-market-research` (7), `pm-analytics` (3), `pm-go-to-market` (6), `pm-growth` (5)
+Subcategorías: `marketing` (5), `support` (2), `publishing` (1), `pm-toolkit` (5), `pm-discovery` (13), `pm-strategy` (12), `pm-execution` (12), `pm-market-research` (7), `pm-analytics` (3), `pm-go-to-market` (6), `pm-growth` (5)
 
 <details>
 <summary>Ver habilidades</summary>
@@ -803,6 +807,7 @@ Subcategorías: `marketing` (4), `support` (2), `publishing` (1), `pm-toolkit` (
 | `positioning-ideas` |
 | `product-name` |
 | `value-prop-statements` |
+| `moneyprinter-v2` |
 
 </details>
 
