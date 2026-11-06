@@ -1,0 +1,25 @@
+N:image-to-github-repo
+D:Find the GitHub repository behind a screenshot, card-news slide, SNS post, or thumbnail that names open-source programs without a link: extract names, printed URLs, star counts and hints, then verify each against the GitHub API and report a confidence level.
+G:github image screenshot ocr repo-discovery open-source card-news
+U[5]:
+  Get the GitHub address for a program shown in an image or post
+  Resolve every project in a card-news caption to a repository URL
+  Turn a partial reference (owner/repo, handle, gitingest.com URL, star count) into the canonical URL
+  Detect renamed or moved repositories from a printed link
+  Report verified/high/medium/ambiguous/low instead of guessing between same-named repos
+S[5]{n,action,details}:
+  1,Read the image,Transcribe slide and caption verbatim including star counts and units; list every project
+  2,Build candidates,One per project with name owner printed-url stars and English hints; never construct a URL
+  3,Resolve,Run scripts/resolve_repo.py --batch or --name/--url; --dry-run previews requests
+  4,Read confidence,verified high medium ambiguous low not_found error each have a fixed action
+  5,Report,Table with URL confidence provenance and caveats; say when no link was in the image
+R[6]:
+  Every URL either came from the image or was returned by the GitHub API
+  A printed link that 404s is reported as not found not repaired by search
+  A missing keyword never rules a repo out; only a printed star count can
+  Same-named repos the hints cannot separate are ambiguous and are shown not picked
+  Read-only: never clone install or run the discovered projects
+  GITHUB_TOKEN goes to api.github.com only; batches are capped at 25
+E[2]{desc,in,out}:
+  "Five programs listed in an Instagram caption","Card-news screenshot with MoneyPrinterV2 3.16만 stars and four more names","Table of five repository URLs with confidence levels resolved by name search"
+  "Printed link to a moved repo","github.com/cyclotruc/gitingest in the image","verified coderamp-labs/gitingest with renamed_from cyclotruc/gitingest"

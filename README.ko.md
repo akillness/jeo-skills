@@ -327,7 +327,7 @@ python3 scripts/retire-unused-skills.py --usage-report report.json --apply \
 
 ## 📚 스킬 목록
 
-> `.agent-skills/skills.json`에서 생성 · 419개 스킬 · 카테고리를 펼치면 스킬 목록이 보입니다.
+> `.agent-skills/skills.json`에서 생성 · 420개 스킬 · 카테고리를 펼치면 스킬 목록이 보입니다.
 
 ### 🌐 웹 (71개)
 
@@ -720,9 +720,9 @@ python3 scripts/retire-unused-skills.py --usage-report report.json --apply \
 
 </details>
 
-### 🔭 연구 및 분석 (14개)
+### 🔭 연구 및 분석 (15개)
 
-하위 분류: `academic` (3), `web-research` (3), `data-analysis` (2), `experimentation` (2), `benchmarking` (1), `intelligence` (3)
+하위 분류: `academic` (3), `web-research` (4), `data-analysis` (2), `experimentation` (2), `benchmarking` (1), `intelligence` (3)
 
 <details>
 <summary>스킬 보기</summary>
@@ -743,6 +743,7 @@ python3 scripts/retire-unused-skills.py --usage-report report.json --apply \
 | `korean-patent-search` |
 | `fineenvs` |
 | `mi-orchestration` |
+| `image-to-github-repo` |
 
 </details>
 
@@ -901,6 +902,12 @@ python3 scripts/changelog.py check
 
 <!-- WHATS-NEW:START -->
 
+## 🆕 v2026-11-06 업데이트
+
+| 변경 사항 | 상세 내용 |
+|--------|---------|
+| **`image-to-github-repo`: 이미지 속 프로그램의 깃허브 주소 찾기** | 스크린샷·카드뉴스·SNS 게시물에서 프로젝트 이름, 표기된 링크, 별 개수, 키워드 힌트를 읽어 `scripts/resolve_repo.py`로 각 프로젝트의 실제 저장소를 검증하는 `research` / `web-research` 스킬을 추가했습니다(표준 라이브러리만 사용, GitHub API GET 요청만 전송). 이름이 바뀐 저장소의 리다이렉트를 따라가고, 표기된 별 개수를 0.9~2배 범위와 비교하며, 키워드 불일치만으로 후보를 배제하지 않고, 동명 저장소 사이에서 추측하는 대신 `verified` / `high` / `medium` / `ambiguous` / `low`로 신뢰도를 보고합니다(종료 코드 0/1/2). `scripts/test_image_to_github_repo.py`가 오프라인으로 검증하며 CI에서 실행됩니다. `jeo-skill install image-to-github-repo --global --yes`로 설치하고, 네트워크·토큰 경계는 설치 가이드의 온디맨드 런타임 섹션에 기록했습니다. |
+
 ## 🆕 v2026-11-04 업데이트
 
 | 변경 사항 | 상세 내용 |
@@ -942,12 +949,6 @@ python3 scripts/changelog.py check
 | **게임 컬렉션 검증** | 전용 subprocess 테스트 6/6·설치 회귀 66/66 및 선택 공개 소스 12개 해시 일치를 확인했습니다. 로컬 작업 트리를 원본으로 삼아 임시 런처로 캐시된 실제 `skills@1.7.0`을 실행한 프로젝트 범위 설치에서 미리보기, 중첩 파일 바이트·권한, 지문이 일치하는 은퇴 `jeo` 제거, 동명 외부·현행 스킬·HOME 보존이 통과했습니다. npm 조회, 공개 저장소 설치, 실제 HOME 활성화, 엔진·프로바이더 실행은 하지 않았습니다. 라우팅·안전 평가 6개는 작성된 시나리오이며 실행된 모델 품질 결과가 아닙니다. |
 | **현재 코딩 에이전트와 Jev 프로필 바인딩** | config-only 컨트롤러가 canonical host ID를 독립 `agents.json` 프로필에 연결하고 기존 배정·사용자 필드·저장 키·LM Studio 자동 모델 선택을 보존하며 훅은 등록하지 않습니다. LM Studio 모델이 비어 있어도 자동 감지 경로로 프로필을 활성화할 수 있습니다. 현재 대상은 Gemini CLI 대신 `agy`를 사용하며 Kimi(`kimi` → `kimi-code-cli`), Grok Build(`grok`, `.grok/skills`, `GROK_HOME`)와 OpenCode를 모든 README에 명시했습니다. 공유·안전하지 않은 매핑과 링크된 런타임 상위 경로는 설정 전에 거부합니다. setup 자동 호스트 선택은 Superagent/VibeKit 이름 충돌 때문에 `grok`를 제외하며, 컨트롤러 `detect`는 구현 검증이 아닌 바이너리 존재만 보고합니다. |
 | **ECC 제안서와 미반영 회귀 테스트** | ECC 운영 가이드 v2.2.2가 현재 호스트의 Jev 프로필로 분기를 검토하며 Claude·Codex·Kimi 계획과 기본 scope/hooks에 일치하는 읽기 전용 JSON을 출력합니다. 잘못된 추가 인자는 출력 전에 거부하고 Jev 판단을 사용자 승인·호스트 권한 대신 사용하지 않습니다. helper 자체 검사와 ECC 테스트 5개를 CI에 추가했으며, 미발행 사용량·격리·은퇴 테스트 22/18/8개도 통과했습니다. 런타임 변경이나 ECC 설치·훅·프로바이더 활성화는 없고 평가 6개는 작성된 시나리오입니다. 카탈로그는 407개입니다. |
-
-## 🆕 v2026-10-22 업데이트
-
-| 변경 사항 | 상세 내용 |
-|--------|---------|
-| **Aside 이후 macOS의 uvx MCP 서버** | 설치 가이드를 실제 홈에 적용하다가, Aside 세션 안에서 uv가 처음 내려받은 wheel에 `com.apple.quarantine ...;Aside;`가 남는 문제를 확인했습니다. macOS가 로드 시점에 확장 모듈(`.so`)을 지우고, uvx는 깨진 캐시 환경을 계속 재사용해서 `uvx`로 등록한 `semble`·`ooo`가 `No module named 'orjson.orjson'` 또는 `'rpds.rpds'`로 실패합니다. 가이드의 Semble·Ouroboros 블록, Aside 섹션, `ooo` 스킬에 증상, `xattr` 확인 방법, 복구 절차(uv 기반 MCP 서버를 멈추고 일반 터미널에서 `uv cache clean` 실행 후 재시도)를 추가했습니다. 새 캐시에서 검증했으며 `--refresh`, `--reinstall`, `uv cache clean <패키지>`로는 해결되지 않고, uv로 띄운 서버가 실행 중이면 `uv cache clean`이 대기합니다. |
 
 > 📜 이전 기록: [`changelog/ko/`](changelog/ko/) (월별 파일, 최신순).
 

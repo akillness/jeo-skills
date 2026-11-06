@@ -3279,6 +3279,28 @@ python3 "$SKILLS_ROOT/harness2/scripts/preflight.py" --bench lab --json \
 harness2, uv, gcloud, Docker, or the network. All five helpers share the JSON/exit
 contract above (`runtime_verified: false`; 0 ok, 1 blocked, 2 invalid input).
 
+### Image-to-GitHub resolver (on demand, read-only network)
+
+The `image-to-github-repo` skill installs as documents plus one stdlib-only Python script
+(Python 3.9+). It never clones, installs, or runs the repositories it finds, and setup
+installs no OCR engine; the host's own image reading is the default, `tesseract` an
+optional fallback. Install it only when a task asks for the GitHub address behind an image:
+
+```bash
+HOME="$USER_HOME" python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" install image-to-github-repo --global --yes
+python3 "$SKILLS_ROOT/image-to-github-repo/scripts/resolve_repo.py" --help
+python3 "$SKILLS_ROOT/image-to-github-repo/scripts/resolve_repo.py" --name "MoneyPrinterV2" --stars "3.16만" --dry-run
+```
+
+`--help` and `--dry-run` make no network request, so they are the only invocations safe
+during installation verification. A real resolution sends GET requests to
+`https://api.github.com` only (unauthenticated: 60 core requests per hour, 10 searches per
+minute; a batch is capped at 25 candidates). `GITHUB_TOKEN` or `GH_TOKEN` is optional, raises
+those limits, is sent to `api.github.com` and no other `--api-base` host, and is never
+printed. Do not set or request a token as part of blanket setup. Exit 0 means every result
+is `verified`, `high`, or `medium`; 1 means at least one is `low`, `ambiguous`, not found, or
+an error; 2 means invalid input. A `medium` result is reported as "verify", never as final.
+
 ---
 
 ## Guard Boundaries

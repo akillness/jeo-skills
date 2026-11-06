@@ -1,7 +1,7 @@
 {
   "version": "2.1.0",
   "generated": "2026-10-21",
-  "skill_count": 419,
+  "skill_count": 420,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -463,7 +463,8 @@
       "research",
       "korean-patent-search",
       "fineenvs",
-      "mi-orchestration"
+      "mi-orchestration",
+      "image-to-github-repo"
     ],
     "business": [
       "marketing-automation",
@@ -1014,7 +1015,8 @@
       "web-research": [
         "deep-research",
         "heretic",
-        "research"
+        "research",
+        "image-to-github-repo"
       ],
       "data-analysis": [
         "data-analysis",
@@ -1951,6 +1953,14 @@
         "fastnoise2"
       ],
       "note": "Source-specific game-tool operators, not interchangeable runtime implementations. Each guide preserves its own pinned source, license, version, and approval boundaries; guide installation does not install the upstream tools."
+    },
+    "github-repo-discovery": {
+      "mode": "adjacent",
+      "members": [
+        "image-to-github-repo",
+        "github-repo-candidate-quality-gate"
+      ],
+      "note": "Different inputs to GitHub repository discovery: image-to-github-repo turns names, links and star counts read from an image into verified repository URLs, while github-repo-candidate-quality-gate filters raw search-result lists into recommendation-grade keeps. Neither replaces the other."
     }
   },
   "model_policies": {
@@ -15431,6 +15441,35 @@
       "keyword": "fastnoise2",
       "version": "1.0.0",
       "source": "https://github.com/Auburn/FastNoise2"
+    },
+    {
+      "name": "image-to-github-repo",
+      "description": "Find the GitHub repository behind an image. Reads a screenshot, card-news slide, SNS post (Instagram, Threads, X), YouTube thumbnail, slide-deck page, or README or terminal capture that names open-source programs without a clickable link, extracts each project name, owner/repo slug, printed URL, star count, and \"what it does\" hint, then verifies every candidate against the GitHub API (exists, renamed, stars, archived, same-name rivals) and reports a confidence level instead of guessing. Use when the user shares an image and asks for its GitHub address, repo link, source code, or which repository it shows. Triggers on: 이미지 깃허브 주소, 깃허브 링크 찾아줘, 이 프로그램 레포, 카드뉴스 깃허브, find the GitHub URL in this screenshot, which repository is this, image to repo, repo link from a post.",
+      "category": "research",
+      "subcategory": "web-research",
+      "interface": "workflow",
+      "path": "image-to-github-repo/SKILL.md",
+      "tags": [
+        "github",
+        "image",
+        "screenshot",
+        "ocr",
+        "repo-discovery",
+        "open-source",
+        "card-news"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Glob",
+        "Grep",
+        "WebFetch"
+      ],
+      "keyword": "image-to-github-repo",
+      "version": "1.0.0",
+      "source": "akillness/jeo-skills"
     }
   ]
 }

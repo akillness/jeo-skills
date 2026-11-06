@@ -1,0 +1,68 @@
+{
+  "skill_name": "image-to-github-repo",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "이미지의 깃허브주소 찾아줘 — attached: an Instagram card-news screenshot whose slide says MoneyPrinterV2 (별 3.16만 개) and whose caption lists Fabric, MoneyPrinterV2, Agent S, google-maps-scraper and gitingest without any links.",
+      "expected_output": "One candidate per project read from both slide and caption, resolved with scripts/resolve_repo.py, and a table giving each repository URL with a confidence level and a note that no link appeared in the image so the URLs came from name search verified against the GitHub API.",
+      "assertions": [
+        "Reads the caption as well as the slide and lists all five projects, not only the headline one",
+        "Passes the printed 3.16만 star count and English keyword hints to the resolver instead of searching by name alone",
+        "Reports a confidence level per project and says the URLs were resolved by name search, not copied from the image",
+        "Does not present a medium, low, or ambiguous result as the definitive repository",
+        "Does not clone, install, or run any of the discovered projects"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "I ran gh search repos for 'markdown editor' and got 40 hits. Rank them and tell me which are worth recommending.",
+      "expected_output": "Routes to github-repo-candidate-quality-gate because the job is filtering search results, not finding the repository an image refers to.",
+      "assertions": [
+        "Names github-repo-candidate-quality-gate as the skill that owns this job",
+        "Does not run resolve_repo.py or ask for an image"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "The screenshot shows a tool called google-maps-scraper with the text 'collect business info'. Find its GitHub repo.",
+      "expected_output": "Runs the resolver with the name and a business keyword, sees several same-named repositories with a more popular one the keyword neither supports nor rules out, reports ambiguous, lists the alternatives with stars and descriptions, and asks for the owner, a printed star count, or another slide instead of picking one.",
+      "assertions": [
+        "Reports ambiguous rather than choosing a repository when the hint cannot separate same-named repositories",
+        "Shows alternatives with stars and descriptions",
+        "Asks for one distinguishing detail such as the owner, a printed star count, or another slide",
+        "States that a missing keyword never rules a repository out"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "The image prints github.com/cyclotruc/gitingest. Give me the exact repo URL.",
+      "expected_output": "Resolves the printed link with GET /repos/cyclotruc/gitingest, detects the redirect, reports verified with the current coderamp-labs/gitingest URL, and mentions the old slug.",
+      "assertions": [
+        "Uses the printed link directly instead of a name search",
+        "Reports the current URL and the old cyclotruc/gitingest slug as renamed_from",
+        "Labels the result verified because the link was printed in the image and confirmed by the API"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Resolve these 30 project names from my screenshots in one go and I have no GitHub token.",
+      "expected_output": "Refuses a single batch over 25 candidates (exit 2), splits the work into batches, and tells the user that unauthenticated search allows 10 requests per minute and that GITHUB_TOKEN raises the limit; if a batch hits rate_limited it reports the reset time instead of retrying in a loop.",
+      "assertions": [
+        "Keeps each batch at 25 candidates or fewer",
+        "Mentions the 10 requests per minute unauthenticated search limit and the optional GITHUB_TOKEN",
+        "Reports rate_limited with its reset time rather than looping or inventing results"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "I just added the image-to-github-repo skill. Make sure the catalog, README files and setup guide are in sync before I push.",
+      "expected_output": "Validates the skill folder, adds the skill to skills.json (categories, subcategories, skill entry, skill_count), regenerates projections with scripts/generate-catalog-projections.py, runs scripts/validate-catalog-projections.py and scripts/repair-skill-frontmatter.py --check, and updates the setup guide and changelog.",
+      "assertions": [
+        "Runs validate_skill.sh on the skill folder",
+        "Edits skills.json instead of hand-editing skills.toon or the README category tables",
+        "Runs generate-catalog-projections.py and validate-catalog-projections.py",
+        "Updates setup-all-skills-prompt.md and the changelog entries"
+      ]
+    }
+  ]
+}

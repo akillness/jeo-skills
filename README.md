@@ -315,7 +315,7 @@ node ~/.agents/jev/jev-harness.mjs --profile "${JEV_PROFILE:?Select the current 
 
 ## 📚 Skills List
 
-> Generated from `.agent-skills/skills.json` · 419 skills · expand a category to see its skills.
+> Generated from `.agent-skills/skills.json` · 420 skills · expand a category to see its skills.
 
 ### 🌐 Web (71)
 
@@ -708,9 +708,9 @@ Subcategories: `code-quality` (12), `testing` (3), `architecture` (6), `document
 
 </details>
 
-### 🔭 Research & Analysis (14)
+### 🔭 Research & Analysis (15)
 
-Subcategories: `academic` (3), `web-research` (3), `data-analysis` (2), `experimentation` (2), `benchmarking` (1), `intelligence` (3)
+Subcategories: `academic` (3), `web-research` (4), `data-analysis` (2), `experimentation` (2), `benchmarking` (1), `intelligence` (3)
 
 <details>
 <summary>Show Research &amp; Analysis skills</summary>
@@ -731,6 +731,7 @@ Subcategories: `academic` (3), `web-research` (3), `data-analysis` (2), `experim
 | `korean-patent-search` |
 | `fineenvs` |
 | `mi-orchestration` |
+| `image-to-github-repo` |
 
 </details>
 
@@ -889,6 +890,12 @@ Edit metadata in `skills.json`, never in the generated tables. Upstream sources 
 
 <!-- WHATS-NEW:START -->
 
+## 🆕 What's New in v2026-11-06
+
+| Change | Details |
+|--------|---------|
+| **`image-to-github-repo`: the GitHub address behind an image** | New `research` / `web-research` skill that reads a screenshot, card-news slide or SNS post, extracts project names, printed links, star counts and keyword hints, and resolves each project to a verified repository with `scripts/resolve_repo.py` (stdlib-only; GET requests to the GitHub API only). It follows rename redirects, checks printed star counts against a 0.9×–2× window, never lets a missing keyword rule a repo out, and reports `verified` / `high` / `medium` / `ambiguous` / `low` instead of guessing between same-named repositories (exit 0/1/2). `scripts/test_image_to_github_repo.py` covers it offline and runs in CI. Install with `jeo-skill install image-to-github-repo --global --yes`; the setup guide's on-demand runtimes section records its network and token boundary. |
+
 ## 🆕 What's New in v2026-11-04
 
 | Change | Details |
@@ -930,12 +937,6 @@ Edit metadata in `skills.json`, never in the generated tables. Upstream sources 
 | **Game collection verification** | Dedicated subprocess tests pass 6/6 and installer regressions 66/66; all 12 selected public-source hashes match. A project-scoped guide install from the local working tree passed with a transparent launcher executing cached genuine `skills@1.7.0`: preview, nested bytes/modes, fingerprinted retired-`jeo` removal and foreign/current/HOME preservation. No registry resolution, public-repository install, real-HOME activation, engine or provider execution was performed. Six routing/safety evals are authored, not executed model-quality results. |
 | **Current coding agents and bound Jev profiles** | Setup binds canonical hosts to independent `agents.json` profiles through the config-only controller, preserving assignments, custom fields, saved keys and LM Studio automatic model selection without registering hooks. The controller now allows enabling an LM Studio profile with a blank model for autodetection. Current targets use `agy` instead of Gemini CLI, add Kimi (`kimi` → `kimi-code-cli`), Grok Build (`grok`, `.grok/skills`, `GROK_HOME`) and OpenCode in every README. Shared/unsafe mappings and linked runtime ancestors are rejected before effects. Setup host auto-selection excludes `grok` because it may be Superagent/VibeKit; controller `detect` reports binary inventory, not the implementation. |
 | **ECC proposals and pending regression updates** | ECC operator guide v2.2.2 reviews branches with the current host's Jev profile and prints read-only proposal JSON matching normalized Claude/Codex/Kimi plans, including default scope/hooks. Malformed/extra arguments fail before output; Jev verdicts never replace user/provider approval. Added CI coverage: helper self-test and 5 ECC tests. The previously unpublished usage/quarantine/retirement suites pass 22/18/8 with no runtime changes. Six safety scenarios are authored, not model-evaluation results; no ECC install/hooks/provider activation. Catalog remains 407. |
-
-## 🆕 What's New in v2026-10-22
-
-| Change | Details |
-|--------|---------|
-| **uvx MCP servers on macOS after Aside** | Applying the setup guide to a real home showed that wheels uv first downloaded inside an Aside session keep `com.apple.quarantine ...;Aside;`: macOS deletes their extension modules when they load, and uvx keeps reusing the broken cached environment, so `uvx`-registered `semble` and `ooo` fail with `No module named 'orjson.orjson'` or `'rpds.rpds'`. The guide's Semble and Ouroboros blocks, its Aside section, and the `ooo` skill now give the signature, the `xattr` check, and the recovery: stop uv-based MCP servers, run `uv cache clean` from a regular terminal, rerun. Verified in fresh caches; `--refresh`, `--reinstall`, and `uv cache clean <package>` do not fix it, and `uv cache clean` waits while uv-launched servers run. |
 
 > 📜 Older entries: [`changelog/en/`](changelog/en/) (monthly files, newest first).
 

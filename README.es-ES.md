@@ -304,7 +304,7 @@ Consulta la [guía de instalación](setup-all-skills-prompt.md#jev-control-plane
 
 ## 📚 Lista de Habilidades
 
-> Generado desde `.agent-skills/skills.json` · 419 habilidades · despliega una categoría para ver sus habilidades.
+> Generado desde `.agent-skills/skills.json` · 420 habilidades · despliega una categoría para ver sus habilidades.
 
 ### 🌐 Web (71)
 
@@ -697,9 +697,9 @@ Subcategorías: `code-quality` (12), `testing` (3), `architecture` (6), `documen
 
 </details>
 
-### 🔭 Investigación y Análisis (14)
+### 🔭 Investigación y Análisis (15)
 
-Subcategorías: `academic` (3), `web-research` (3), `data-analysis` (2), `experimentation` (2), `benchmarking` (1), `intelligence` (3)
+Subcategorías: `academic` (3), `web-research` (4), `data-analysis` (2), `experimentation` (2), `benchmarking` (1), `intelligence` (3)
 
 <details>
 <summary>Ver habilidades</summary>
@@ -720,6 +720,7 @@ Subcategorías: `academic` (3), `web-research` (3), `data-analysis` (2), `experi
 | `korean-patent-search` |
 | `fineenvs` |
 | `mi-orchestration` |
+| `image-to-github-repo` |
 
 </details>
 
