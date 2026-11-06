@@ -43,6 +43,9 @@ def add_parsers(sub: argparse._SubParsersAction) -> None:
     scan.add_argument("--json", action="store_true")
     scan.add_argument("--if-idle", action="store_true",
                       help="Exit quietly if another scan is running (for hooks and schedulers)")
+    scan.add_argument("--project-root", action="append", default=[], metavar="PATH", dest="project_roots",
+                      help="Project directory whose <PATH>/.jeo/sessions jeo transcripts are read; repeatable, "
+                           "remembered so later scans (including scheduled ones) keep reading it")
 
     report = actions.add_parser("report", help="Show used, protected, in-grace and candidate skills")
     report.add_argument("--status", choices=("used", "protected", "in-grace", "candidate"))
@@ -112,16 +115,31 @@ def _require_catalog_names(catalog: dict[str, Any], names: Iterable[str]) -> Non
         raise ValueError("unknown catalog skills: " + ", ".join(unknown))
 
 
-def _scan(catalog: dict[str, Any], roots_fn: RootsFn, *, wait: bool = True) -> dict[str, Any]:
+def _scan(catalog: dict[str, Any], roots_fn: RootsFn, *, wait: bool = True,
+          project_roots: Iterable[Path] = ()) -> dict[str, Any]:
     # Usage evidence is account-wide; record installs from global and current-project roots.
-    return skill_usage.scan(catalog, tracked_roots(roots_fn, True) + list(roots_fn(False)), wait=wait)
+    return skill_usage.scan(catalog, tracked_roots(roots_fn, True) + list(roots_fn(False)), wait=wait,
+                            project_roots=project_roots)
+
+
+def _valid_project_roots(values: Iterable[str]) -> list[Path]:
+    """`--project-root` values that name an existing directory; others warn on stderr and are skipped."""
+    valid: list[Path] = []
+    for value in values:
+        path = Path(value).expanduser()
+        if path.is_dir():
+            valid.append(path)
+        else:
+            print(f"warning: --project-root {value} is not an existing directory; skipped", file=sys.stderr)
+    return valid
 
 
 def command_usage(args: argparse.Namespace, catalog: dict[str, Any], roots_fn: RootsFn) -> int:
     action = args.usage_command
     if action == "scan":
         try:
-            usage = _scan(catalog, roots_fn, wait=not args.if_idle)
+            usage = _scan(catalog, roots_fn, wait=not args.if_idle,
+                          project_roots=_valid_project_roots(args.project_roots))
         except skill_usage.ScanBusy:
             print("Another usage scan is running; skipped.", file=sys.stderr)
             return 0

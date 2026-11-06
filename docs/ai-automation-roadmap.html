@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 자동화 로드맵 · AI Automation Roadmap 2026</title>
+<meta name="description" content="LLM → RAG → Workflow → Agent → Agentic AI 오케스트레이션 기반 AI 자동화 로드맵. Jev(System One) 관점의 기술 딥서치와 90일 실행 계획.">
+<style>
+  :root {
+    --bg: #f7f7f5;
+    --surface: #ffffff;
+    --ink: #22272f;
+    --body: #3c4356;
+    --muted: #6b7280;
+    --line: #e6e6e1;
+    --accent: #4f46e5;
+    --accent-soft: #eef0fe;
+    --navy: #14181f;
+    --radius: 16px;
+    --shadow: 0 1px 2px rgba(20,24,31,.04), 0 16px 40px -24px rgba(20,24,31,.18);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans KR", sans-serif;
+    font-size: 17px;
+    line-height: 1.9;
+    -webkit-font-smoothing: antialiased;
+  }
+  .hero {
+    background: linear-gradient(160deg, #10131a 0%, #1b1f2e 55%, #262c44 100%);
+    color: #fff;
+    padding: 96px 24px 104px;
+    text-align: center;
+  }
+  .hero-img {
+    display: block; width: min(880px, 92%); height: auto; border-radius: 18px; margin: 0 auto 34px;
+    box-shadow: 0 30px 60px -30px rgba(0,0,0,.65);
+  }
+  .hero h1 { font-size: clamp(2.4rem, 6vw, 3.9rem); margin: 0 0 18px; font-weight: 850; letter-spacing: -.03em; line-height: 1.15; }
+  .hero h1 .hero-title { color: #ffffff; }
+  .hero p { max-width: 720px; margin: 0 auto; color: #c3c8ec; font-size: 1.12rem; }
+  .hero-meta { margin-top: 30px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  .hero-meta span {
+    font-size: 12.5px; color: #dfe3fb; border: 1px solid rgba(199,203,245,.3);
+    padding: 5px 13px; border-radius: 999px; background: rgba(255,255,255,.05);
+  }
+  .container { max-width: 820px; margin: 0 auto; padding: 0 24px; }
+  section { padding: 76px 0 10px; scroll-margin-top: 20px; }
+  h2 { font-size: clamp(1.7rem, 4vw, 2.3rem); margin: 10px 0 16px; letter-spacing: -.02em; line-height: 1.25; font-weight: 800; }
+  .lede { color: var(--muted); max-width: 780px; font-size: 1.08rem; }
+  .prose p { margin: 0 0 18px; color: var(--body); font-size: 1.06rem; }
+  .prose p strong, .prose li strong { color: var(--ink); }
+  .prose p.lead { font-size: 1.22rem; color: var(--ink); }
+  details {
+    background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+    box-shadow: var(--shadow); margin-top: 26px; overflow: hidden;
+  }
+  details + details { margin-top: 20px; }
+  summary {
+    cursor: pointer; padding: 26px 30px; font-weight: 750; font-size: 1.22rem; letter-spacing: -.01em;
+    list-style: none; display: flex; align-items: center; gap: 14px;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::before { content: "+"; font-size: 1.7rem; color: var(--accent); font-weight: 800; line-height: 1; }
+  details[open] summary::before { content: "–"; }
+  summary .tier { margin-left: auto; }
+  .tier {
+    font-size: 11.5px; font-weight: 750; letter-spacing: .07em; text-transform: uppercase;
+    background: var(--navy); color: #fff; padding: 5px 12px; border-radius: 999px; white-space: nowrap;
+  }
+  .tier.soft { background: var(--accent-soft); color: #4338ca; }
+  .tier.green { background: #e7f6ef; color: #0a7a52; }
+  .tier.amber { background: #fdf1de; color: #a15c00; }
+  details .body { padding: 0 30px 30px; border-top: 1px solid var(--line); padding-top: 22px; }
+  details .body h3 { margin: 20px 0 8px; font-size: clamp(1.35rem, 2.6vw, 1.6rem); font-weight: 750; color: var(--ink); }
+  details .body p, details .body li { font-size: .99rem; }
+  details .body p { margin: 0 0 14px; }
+  details .body ul { padding-left: 22px; margin: 0 0 14px; }
+  details .body li { margin-bottom: 6px; }
+  .note {
+    border-left: 1px solid var(--accent); background: var(--accent-soft); color: #3730a3;
+    padding: 14px 20px; border-radius: 0 12px 12px 0; margin: 18px 0; font-size: .97rem;
+  }
+  .note.green { border-color: #10a172; background: #e7f6ef; color: #0a5c3d; }
+  .note.amber { border-color: #e0a13e; background: #fdf3e4; color: #8a4d00; }
+  .note.red { border-color: #e06565; background: #fdecec; color: #8f1f1f; }
+  pre.code {
+    background: #14181f; color: #d7def5; padding: 22px; border-radius: 12px; overflow-x: auto;
+    font-size: 13.5px; line-height: 1.85; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  pre.code .c { color: #8b93ad; }
+  .callout {
+    border: 1px solid var(--line); background: var(--surface); border-radius: var(--radius);
+    box-shadow: var(--shadow); padding: 26px 30px; margin-top: 26px;
+  }
+  .pill-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+  .pill { font-size: 12.5px; background: #f1f2ee; border: 1px solid var(--line); color: #4a5163; border-radius: 999px; padding: 4px 13px; }
+  .ladder-svg { display: block; width: 100%; height: auto; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 18px; }
+  table.rung-table { width: 100%; border-collapse: collapse; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+  table.rung-table th, table.rung-table td { padding: 12px 14px; text-align: left; border-bottom: 1px solid var(--line); font-size: .93rem; vertical-align: top; }
+  table.rung-table th { background: #f8f9fc; font-size: .78rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+  table.rung-table tr:last-child td { border-bottom: 0; }
+  .source-list { columns: 2; column-gap: 40px; }
+  @media (max-width: 760px) { .source-list { columns: 1; } }
+  footer { margin-top: 84px; padding: 44px 0 60px; border-top: 1px solid var(--line); background: var(--surface); }
+  footer .container { color: var(--muted); font-size: .9rem; }
+  footer h3 { margin-top: 0; }
+  footer a { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <img class="hero-img" src="assets/ai-automation-hero.png" alt="남색 계층이 연결된 AI 자동화 데이터 흐름 추상 일러스트" width="880" height="495">
+  <h1>AI 자동화 로드맵 <span class="hero-title">AI Automation Roadmap</span></h1>
+  <p>LLM에서 Agentic AI까지, AI가 무엇을 결정하는지를 기술적으로 깊이 파헤치고, 그 위에 쌓는 로드맵을 서사형으로 완성한다.</p>
+  <div class="hero-meta">
+    <span>5개 기술 계층</span>
+    <span>Jev(System One) 관점</span>
+    <span>90일 실행 계획</span>
+    <span>거버넌스 · HITL</span>
+  </div>
+</header>
+
+<main class="container">
+
+  <!-- 01 · 개요 -->
+  <section id="overview">
+    <h2>왜 지금 AI 자동화가 다른가</h2>
+    <p class="lede">과거의 AI 자동화는 챗봇에게 질문에 답하게 하는 것이었다면, 지금의 AI 자동화는 AI가 업무를 수행하는 방향으로 진화하고 있다. 반복 업무는 AI가, 전략 수립과 감독, 최종 결정은 인간이 담당한다.</p>
+
+    <div class="prose" style="margin-top: 22px">
+      <p class="lead">AI 자동화의 시대적 이동은 한 문장에 압축된다. 자동화 대상이 <strong>개별 작업(task)</strong>에서 <strong>업무 프로세스(workflow)</strong>로 이동했기 때문이다.</p>
+      <p>2026년에는 에이전트가 트리거를 감지하고, 맥락을 해석하고, 도구를 호출하고, 사람에게 승인을 요청하는 구조가 등장했다. Gartner는 task-specific AI agents가 엔터프라이즈 애플리케이션의 상당 비율로 확산되는 것을 전망했고, McKinsey는 2025년에도 agentic AI를 scaling하는 조직과 experimenting하는 조직이 동시에 존재했다. 실제 운영 사례 분석에 따르면 프로덕션 시스템 대부분이 여전히 <strong>사전에 정의된 구조화된 워크플로우</strong>에 속한다.</p>
+      <p>따라서 이 로드맵은 기술의 깊이를 먼저 쌓고, 그 위에 실행 전략을 얹는다. 기술이 깊을수록 자동화가 신뢰받고, 실행이 명확할수록 성과가 남는다.</p>
+    </div>
+
+    <div class="callout">
+      <p style="margin:0; font-weight:700; font-size:1.05rem;">핵심 원칙 — 워크플로우를 먼저 고르고, 도구는 그다음이다.</p>
+      <div class="pill-row">
+        <span class="pill">Start with the workflow, not the tool</span>
+        <span class="pill">Define the business outcome</span>
+        <span class="pill">Check the data</span>
+        <span class="pill">Build the guardrails</span>
+        <span class="pill">Keep humans in control</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 · 기술 서사 -->
+  <section id="ladder">
+    <h2>AI 자동화의 다섯 개 기술 계층</h2>
+    <p class="lede">LLM, RAG, Workflow, Agent, Agentic AI. 이것들은 벽이 아니라 사다리이며, 각 계층은 아래 계층이 표현하지 못하는 본질적 이해라는 점을 반복해서 증명한다.</p>
+
+    <p>서사는 단순하다. <strong>시스템은 한 번에 하나의 좁은 판단을 수행하고, 필요에 따라 다음 판단으로 넘어간다.</strong> 이 판단의 단위와 그에 대한 confidence, 그리고 코드가 소유하는 경계가 계층 전체를 결정한다.</p>
+
+    <p>평가의 난이도는 계층이 올라갈수록 배가된다. LLM은 output 하나를 점검하면 되지만, RAG은 retrieval과 faithfulness를 함께, Agent는 trajectory를, Agentic AI는 outcome과 per-agent attribution를 점검해야 한다. 그래서 각 계층은 자신의 판단 단위에 맞는 평가를 별도로 갖춰야 하고, 평가 자체가 곧 다음 개선의 입력이 된다.</p>
+
+    <svg class="ladder-svg" viewBox="0 0 720 470" role="img" aria-label="AI 자동화 기술 계층 사다리: LLM, RAG, Workflow, Agent, Agentic AI">
+      <defs>
+        <marker id="ladder-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M 0 1 L 9 5 L 0 9 z" fill="#4f46e5"/>
+        </marker>
+      </defs>
+      <rect x="20" y="40" width="680" height="64" rx="12" fill="#ffffff" stroke="#4f46e5" stroke-width="1.5"/>
+      <text x="44" y="64" font-size="20" font-weight="700" fill="#22272f">Rung 1 · LLM</text>
+      <text x="44" y="84" font-size="12" fill="#6b7280">BASE · ONE CALL, NO STATE</text>
+      <rect x="20" y="130" width="680" height="64" rx="12" fill="#ffffff" stroke="#4f46e5" stroke-width="1.5"/>
+      <text x="44" y="154" font-size="20" font-weight="700" fill="#22272f">Rung 2 · Retrieval-Augmented Generation</text>
+      <text x="44" y="174" font-size="12" fill="#6b7280">GROUNDING · RETRIEVAL THEN ONE CALL</text>
+      <rect x="20" y="220" width="680" height="64" rx="12" fill="#ffffff" stroke="#4f46e5" stroke-width="1.5"/>
+      <text x="44" y="244" font-size="20" font-weight="700" fill="#22272f">Rung 2.5 · Workflow</text>
+      <text x="44" y="264" font-size="12" fill="#6b7280">ORCHESTRATION · PREDEFINED CODE PATHS</text>
+      <rect x="20" y="310" width="680" height="64" rx="12" fill="#ffffff" stroke="#4f46e5" stroke-width="1.5"/>
+      <text x="44" y="334" font-size="20" font-weight="700" fill="#22272f">Rung 3 · AI Agent</text>
+      <text x="44" y="354" font-size="12" fill="#6b7280">DYNAMIC · MODEL DIRECTS ITSELF</text>
+      <rect x="20" y="400" width="680" height="64" rx="12" fill="#ffffff" stroke="#4f46e5" stroke-width="1.5"/>
+      <text x="44" y="424" font-size="20" font-weight="700" fill="#22272f">Rung 4 · Agentic AI</text>
+      <text x="44" y="444" font-size="12" fill="#6b7280">ORCHESTRATED · ORCHESTRATOR + SHARED STATE</text>
+      <line x1="360" y1="104" x2="360" y2="120" stroke="#4f46e5" stroke-width="1.5" marker-end="url(#ladder-arrow)"/>
+      <line x1="360" y1="194" x2="360" y2="210" stroke="#4f46e5" stroke-width="1.5" marker-end="url(#ladder-arrow)"/>
+      <line x1="360" y1="284" x2="360" y2="300" stroke="#4f46e5" stroke-width="1.5" marker-end="url(#ladder-arrow)"/>
+      <line x1="360" y1="374" x2="360" y2="390" stroke="#4f46e5" stroke-width="1.5" marker-end="url(#ladder-arrow)"/>
+    </svg>
+
+    <table class="rung-table">
+      <thead>
+        <tr>
+          <th>계층</th>
+          <th>핵심 판단</th>
+          <th>상태</th>
+          <th>대표 실패</th>
+          <th>대표 비용</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Rung 1 · LLM</td>
+          <td>변환 / 분류 / 초안</td>
+          <td>없음</td>
+          <td>환각, 출처 없음</td>
+          <td>flat · 낮음</td>
+        </tr>
+        <tr>
+          <td>Rung 2 · RAG</td>
+          <td>검색 필요?</td>
+          <td>index</td>
+          <td>retrieval 실패</td>
+          <td>flat + index</td>
+        </tr>
+        <tr>
+          <td>Rung 2.5 · Workflow</td>
+          <td>단계 분기</td>
+          <td>code</td>
+          <td>경로 불일치</td>
+          <td>예측 가능</td>
+        </tr>
+        <tr>
+          <td>Rung 3 · Agent</td>
+          <td>행동 선택</td>
+          <td>task state</td>
+          <td>silent wrong completion</td>
+          <td>variable · tail</td>
+        </tr>
+        <tr>
+          <td>Rung 4 · Agentic AI</td>
+          <td>조율 / 평가</td>
+          <td>shared state</td>
+          <td>inter-agent misalignment</td>
+          <td>fan-out · coordination</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <details open>
+      <summary>Rung 1 · Large Language Model <span class="tier">BASE · ONE CALL, NO STATE</span></summary>
+      <div class="body">
+        <p>서사의 첫 단계에서 시스템은 입력을 받아 필요한 변환이 있는지만 판단하고, 그 변환을 수행한다. LLM은 <strong>모델 호출 한 번</strong>으로 이 작업을 수행하며, 상태를 두지 않는다. 프롬프트가 곧 저장소이고, 문맥이 곧 입력이다.</p>
+        <h3>기술적 깊이</h4>
+        <p>변환, 요약, 분류, 추출, 초안 작성, 제공된 자료에 대한 추론이 이 계층의 경계에 있다. 반면 환각, 지식 마감, 출처 없음, 행동 부재라는 실패는 모두 같은 문제를 다른 표면으로 드러낸다. 모델이 스스로 사실을 구분하지는 못한다.</p>
+        <h3>Jev으로의 치환</h4>
+        <p>이 계층은 시스템이 묻는 <strong>첫 번째 좁은 판단</strong>에 해당한다. 질문이 그 자체로 단일 신호이고, state는 prompt이며, criteria는 출력 스키마가 된다. confidence는 분포의 수준을 요약할 뿐 전체 작업의 정확성을 주장하지 않는다.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Rung 2 · Retrieval-Augmented Generation <span class="tier soft">GROUNDING · RETRIEVAL THEN ONE CALL</span></summary>
+      <div class="body">
+        <p>시스템이 소유한 사실이 프롬프트로 들어오지 않을 때, retrieval가 개입한다. 시스템은 <strong>검색이 필요한가</strong>를 판단하고, 필요하면 관련 청크를 고른다. 이 판단도 마찬가지로 좁은 신호에 묶인다.</p>
+        <h3>기술적 깊이</h4>
+        <p>실패 분류는 generation 실패가 아니라 retrieval 실패에 가깝다. corpus gap, chunking, semantic gap, ranking, retrieved-and-ignored, stale index라는 여섯 계층을 통과해야 한다. grounded는 정확함을 의미하지 않는다.</p>
+        <h3>비용의 본질</h4>
+        <p>retrieval을 agent로 승격시키면 같은 질의에 대해 성공률은 오르지만 비용은 배가 된다. 같은 100개 쿼리 실험에서 agentic retrieval은 RAG 대비 성공률에서 +14점을 얻었지만 비용은 36배, latency는 2.5배가 추가로 소요됐다.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Rung 2.5 · Workflow <span class="tier green">ORCHESTRATION · PREDEFINED CODE PATHS</span></summary>
+      <div class="body">
+        <p>LLM과 도구를 조율하는 방식이 가장 중요하다. Workflow는 LLM과 도구를 <strong>사전에 정의된 코드 경로</strong>로 오케스트레이션하는 반면, Agent는 LLM이 스스로 프로세스를 동적으로 지시하는 방식이다. 코드를 작성하는 것이 경량이고, 능동성이 무게다.</p>
+        <h3>기술적 깊이</h4>
+        <p>prompt chaining, routing, parallelization, evaluator-optimizer, orchestrator-workers. 실행 경로가 예측 가능하면 workflow이 곧 최선이다. 실측된 프로덕션 분석에서 대부분의 사례가 workflow에 속했다.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Rung 3 · AI Agent <span class="tier">DYNAMIC · MODEL DIRECTS ITSELF</span></summary>
+      <div class="body">
+        <p>경로가 예측 불가능해질 때 등장한다. Goal과 task state를 두고, plan, act, observe를 반복한다. 이때 시스템은 매 단계에서 <strong>다음 행동을 선택하는 판단</strong>을 내린다.</p>
+        <h3>기술적 깊이</h4>
+        <p>오류가 누적되면 p의 거듭제곱으로 전체 성공률이 붕괴된다. 자기 실수가 맥락에 들어오면 오류율이 실제로 상승하는 self-conditioning이 존재한다. 그리고 가장 위험한 silent wrong completion은 실패 신호 없이 성공으로 선언될 수 있다. 검증 단계가 state machine에 있어야 한다.</p>
+        <h3>Jev으로의 치환</h4>
+        <p>행동 선택은 <strong>Choice</strong>로, 검증은 <strong>Noul</strong>으로, 임계값은 confidence 기준으로 표현할 수 있다. Action을 선택하기 전에 필요한 state를 채우고, confidence가 낮으면 escalation으로 넘긴다.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Rung 4 · Agentic AI <span class="tier amber">ORCHESTRATED · ORCHESTRATOR + SHARED STATE</span></summary>
+      <div class="body">
+        <p>여러 에이전트가 필요할 때. 오케스트레이터가 공유 task state 위에서 독립적인 질문들을 던지고, fan-out과 평가, 조정, 에스컬레이션을 조율한다. 에이전트 간 출력은 신뢰할 수 없다.</p>
+        <h3>기술적 깊이</h4>
+        <p>멀티에이전트 실패의 대부분은 base model의 한계가 아니라 specification과 design, 상호 정렬, 검증 문제다. MAST 분석에서 이를 42%, 37%, 21%로 분해했다. 오케스트레이션 비용과 동시 추적 가능성이 설계의 핵심이다.</p>
+      </div>
+    </details>
+
+    <div class="callout">
+      <p style="margin:0; font-weight:700; font-size:1.05rem;">중단 판단 체크리스트 — 순서대로 YES가 나오면 그 계층에서 멈춘다.</p>
+      <pre class="code"><span class="c"># 1부터 순서대로. YES가 나오면 그 rung에서 STOP.</span>
+1. Can one good prompt do it?                     → LLM.      Stop.
+2. Does it need facts you own, fetched once?      → RAG.      Stop.
+3. Can you write the steps down in advance?      → WORKFLOW. Stop.  (most teams belong here)
+4. Does ONE agent close the loop?                 → AI AGENT. Stop.
+5. Genuine parallel specialists + shared state,
+   and can you afford coordination + debugging?  → AGENTIC AI. Stop.</pre>
+    </div>
+  </section>
+
+  <!-- 03 · 트렌드 -->
+  <section id="trends">
+    <h2>2026년 AI 자동화의 흐름</h2>
+    <div class="prose" style="margin-top: 18px">
+      <p>에이전트의 등장은 자동화의 전제를 바꿨다. 자동화가 아니라 <strong>자동 수행</strong>가 되었고, 이는 데이터, 거버넌스, 운영 모델과 깊이 연결된다. 도구 중심의 자동화는 사라지고, 프로세스 중심의 자동화가 커지고 있다.</p>
+      <p>여덟 가지 흐름이 동시에 진행된다. 첫째, 에이전트가 자동화의 주체가 되었다. 둘째, 멀티에이전트 오케스트레이션이 아키텍처의 다음 단계가 되었다. 셋째, AI가 워크플로우 안에 삽입되어 one-off 생산성 도구의 한계를 넘어설 준비가 되었다. 넷째, governance가 플랫폼으로 들어왔다. 다섯째, 데이터 기반의 readiness가 자동화의 전제가 됐다. 여섯째, 인간 검토는 설계 요구사항이 됐다. 일곱째, 시장이 구현 중심으로 이동했고, 여덟째 자동화의 가치 측정이 task savings에서 운영 모델 변화로 이동했다.</p>
+    </div>
+  </section>
+
+  <!-- 04 · use case -->
+  <section id="usecases">
+    <h2>자동화할 일을 고르는 기준</h2>
+    <div class="prose" style="margin-top: 18px">
+      <p>자동화는 너무 많이 시작하면 실패한다. 시작할 수 있는 use case는 빈도가 높고, 측정이 가능하고, 데이터가 뒷받침되고, 위험도가 낮거나 중간이다. 티켓 요약, 리포트 해석, 리드 정제, 문서 인테로, 예측 리마인더, 지식 검색이 이 영역에 속한다.</p>
+      <p>확장 단계에서는 케이스 라우팅, 금융 마감 지원, 수요 예외 처리, CRM 정비, 계획 편차 알림, 조달 검토가 있다. 이 단계는 시스템 통합과 더 강한 거버넌스, 비즈니스 소유권이 필요하다. 후순위는 자율 협상, high-risk decisioning, 멀티에이전트 실행, 규제 대상 고객 결정, 셀프 히밍 같은 고도화다.</p>
+    </div>
+  </section>
+
+  <!-- 05 · 90일 -->
+  <section id="roadmap">
+    <h2>90일 실행 서사</h2>
+    <p class="lede">하루 단위가 아니라, 관리 가능한 슬라이스부터 시작한다. 진단에서 controlled slice, hardening, 그리고 확장 판단까지의 한 편의 서사.</p>
+
+    <div class="prose" style="margin-top: 22px">
+      <p>첫 15일은 진단이다. 자동화할 workflow 하나를 고르고, 그 앞에서 데이터와 핸드오프를 매핑하며, 리스크와 기준 KPI를 정한다. 이 단계에서 성공 지표가 바르게 잡혀야 한다.</p>
+      <p>16일부터 45일까지는 controlled slice을 만든다. 데이터 연결과 첫 AI capability를 구성하고, review rule을 설계하고, 출력을 테스트하고, workflow visibility를 만든다. 여기서 가장 작은 자동화가 실제 데이터 위에서 도는지 검증한다.</p>
+      <p>46일부터 75일까지는 hardening과 integration이다. 권한, observability, 예외 처리, 로깅, 비용 모니터링, 사용자 피드백 루프를 붙인다. 운영 ready가 되었는지 비즈니스, IT, 거버넌스가 함께 평가할 수 있게 만든다.</p>
+      <p>마지막 15일은 training과 scale decision이다. 사용자 교육, adoption 추적, 지표 운동, 교훈 정리, 그리고 다음 workflow 선택이다. 자동화는 한 번에 크게 늘리지 않는다.</p>
+    </div>
+
+    <div class="callout">
+      <p style="margin:0; font-weight:700; font-size:1.05rem;">성과는 task savings가 아니라 프로세스 결과로 측정한다.</p>
+      <div class="pill-row">
+        <span class="pill">Cycle time</span>
+        <span class="pill">Quality</span>
+        <span class="pill">Decision impact</span>
+        <span class="pill">Adoption</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 · 거버넌스 -->
+  <section id="governance">
+    <h2>자율성에 따른 통제 설계</h2>
+    <div class="prose" style="margin-top: 18px">
+      <p>자율성이 올라갈수록 blast radius가 커진다. low risk는 자동화할 수 있고, medium risk는 권고와 검토를, high risk는 승인과 감사를 요구한다. 금융, 헬스케어, 보상, 조달, 법무, 고객 커뮤니케이션처럼 accountability가 중요한 영역에 이 모델은 특히 강하게 적용된다.</p>
+      <p>에이전트 설계에는 tool permission, approval gate, step cap, 검증 단계가 필요하다. confidence가 낮은 판단은 escalation로 넘긴다. 그리고 <strong>agent가 스스로 성공을 판단하게 두면 안 된다</strong>는 규칙은 모든 계층에 공통으로 적용된다.</p>
+    </div>
+  </section>
+
+  <!-- 07 · 실수 -->
+  <section id="mistakes">
+    <h2>흔한 실수</h2>
+    <div class="prose" style="margin-top: 18px">
+      <p>자동화는 대부분의 실패를 선행 조건에서 만든다. workflow과 성공 지표를 정하지 않은 채 tool부터 선택했고, 고장난 프로세스를 자동화했으며, 신뢰할 수 없는 데이터에 action을 수행했고, governance를 뒤로 미루고, evaluation 없이 AI output을 쓰고, 시간 절감만 보고 비즈니스 결과를 보지 않았다.</p>
+      <p>마지막으로, agent scaling을 support ownership, monitoring, cost governance 없이 확장한 사례가 있다. 자동화는 도구의 문제가 아니라 운영의 문제다.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="container">
+    <h3>주요 참고 자료</h3>
+    <div class="source-list">
+      <div>
+        <ul style="padding-left:0; list-style:none;">
+          <li><a href="https://www.taskade.com/blog/llm-rag-agent-agentic" target="_blank" rel="noopener">Taskade — LLM vs RAG vs AI Agent vs Agentic AI: 2026 Architecture</a></li>
+          <li><a href="https://b-eye.com/blog/ai-automation-trends" target="_blank" rel="noopener">B EYE — AI Automation Trends 2026</a></li>
+        </ul>
+      </div>
+      <div>
+        <ul style="padding-left:0; list-style:none;">
+          <li><a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank" rel="noopener">Anthropic — Building effective agents</a></li>
+          <li><a href="https://www.anthropic.com/engineering/built-multi-agent-research-system" target="_blank" rel="noopener">Anthropic — Built multi-agent research system</a></li>
+        </ul>
+      </div>
+    </div>
+    <p>추가 근거: arXiv:2512.04123 · arXiv:2509.09677 · arXiv:2602.04234 · arXiv:2503.13657 · Gartner · McKinsey · UiPath.</p>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -852,5 +852,385 @@ class SkillUsageRegressions(unittest.TestCase):
         self.assertEqual(row["count"], 2)
         self.assertEqual(row["by_source"], {"claude_projects": 2})
 
+    # ---- jeo: project-local session stores and the assistant tool-use parser ----
+
+    def _jeo_catalog(self, *names):
+        catalog = json.loads(self.catalog_path.read_text(encoding="utf-8"))
+        known = {item["name"] for item in catalog["skills"]}
+        for name in names:
+            if name in known:
+                continue
+            catalog["categories"]["engineering"].append(name)
+            catalog["skills"].append(
+                {"name": name, "category": "engineering", "subcategory": "testing", "description": "usage fixture"}
+            )
+        self.catalog_path.write_text(json.dumps(catalog), encoding="utf-8")
+
+    @staticmethod
+    def _jeo_uri(name):
+        return "skill" + "://" + name
+
+    @staticmethod
+    def _jeo_path(name, base="/h/.agents/skills"):
+        return f"{base}/{name}/SKILL.md"
+
+    @staticmethod
+    def _jeo_call(tool, arguments):
+        return {"id": f"call-{tool}", "tool": tool, "arguments": arguments}
+
+    @staticmethod
+    def _jeo_message(calls=None, *, role="assistant", stamp=NOW_OLD, text=None):
+        message = {"role": role}
+        if text is not None:
+            message["content"] = [{"type": "text", "text": text}]
+        if calls is not None:
+            message["toolUse"] = calls
+        return {"type": "message", "timestamp": stamp, "message": message}
+
+    def _jeo_read(self, name, *, key="filePath", target=None, stamp=NOW_OLD):
+        call = self._jeo_call("read", {key: target or self._jeo_path(name)})
+        return self._jeo_message([call], stamp=stamp)
+
+    def _jeo_scan(self, *args, now=NOW_OLD):
+        result = self.cli("usage", "scan", "--json", *args, now=now)
+        self.successful(result)
+        return json.loads(result.stdout)
+
+    def _jeo_cursor(self):
+        return json.loads((self.state / "usage-cursor.json").read_text(encoding="utf-8"))
+
+    def _jeo_count(self, name):
+        row = self._rows(self._report())[name]
+        return row["count"], row["by_source"]
+
+    @staticmethod
+    def _jeo_lines(stdout):
+        return [line for line in stdout.splitlines() if line.split()[:1] == ["jeo"]]
+
+    def test_jeo_parser_counts_only_assistant_read_calls_naming_catalog_skills(self):
+        positives = {
+            "jx-key-filepath": self._jeo_read("jx-key-filepath", key="filePath"),
+            "jx-key-path": self._jeo_read("jx-key-path", key="path"),
+            "jx-key-file": self._jeo_read("jx-key-file", key="file"),
+            "jx-key-file-path": self._jeo_read("jx-key-file-path", key="file_path"),
+            "jx-key-uri": self._jeo_read(
+                "jx-key-uri", key="path", target=self._jeo_uri("jx-key-uri"), stamp=NOW_LATE
+            ),
+            # a write and a read in one assistant record: only the read is a load
+            "jx-key-mixed": self._jeo_message([
+                self._jeo_call("write", {"filePath": self._jeo_path("jx-neg-mixed-write")}),
+                self._jeo_call("read", {"filePath": self._jeo_path("jx-key-mixed")}),
+            ]),
+        }
+
+        def argument_soup(name):
+            # every path-ish key a read would use, so only the tool name can exclude the call
+            target = self._jeo_path(name)
+            return {"filePath": target, "path": target, "command": "cat " + target}
+
+        negatives = {
+            # path-only lines in a find/bash result are what the pre-tool-use parser mistook for loads
+            "jx-neg-find-result": {
+                "type": "message", "timestamp": NOW_EXPIRED,
+                "toolResults": [{"id": "r1", "tool": "find", "output": self._jeo_path("jx-neg-find-result") + "\n"}],
+            },
+            "jx-neg-bash-result": {
+                "type": "message", "timestamp": NOW_EXPIRED,
+                "message": {"role": "toolResult", "toolResults": [
+                    {"id": "r2", "tool": "bash", "output": self._jeo_path("jx-neg-bash-result")}
+                ]},
+            },
+            "jx-neg-user-text": self._jeo_message(
+                role="user", stamp=NOW_EXPIRED,
+                text="open " + self._jeo_path("jx-neg-user-text") + " via " + self._jeo_uri("jx-neg-user-text"),
+            ),
+            "jx-neg-user-call": self._jeo_message(
+                [self._jeo_call("read", {"filePath": self._jeo_path("jx-neg-user-call")})],
+                role="user", stamp=NOW_EXPIRED,
+            ),
+            "jx-neg-assistant-text": self._jeo_message(
+                stamp=NOW_EXPIRED, text="next I will read " + self._jeo_path("jx-neg-assistant-text")
+            ),
+            "jx-neg-checkout": self._jeo_read(
+                "jx-neg-checkout", target="/work/repo/.agent-skills/jx-neg-checkout/SKILL.md", stamp=NOW_EXPIRED
+            ),
+        }
+        for tool in ("write", "edit", "bash", "find", "ls", "grep"):
+            name = f"jx-neg-{tool}"
+            negatives[name] = self._jeo_message([self._jeo_call(tool, argument_soup(name))], stamp=NOW_EXPIRED)
+        unknown = [
+            self._jeo_read("jx-not-in-catalog", stamp=NOW_EXPIRED),
+            self._jeo_read("jx-not-in-catalog", key="path", target=self._jeo_uri("jx-not-in-catalog"), stamp=NOW_EXPIRED),
+        ]
+        negative_names = [*negatives, "jx-neg-mixed-write"]
+        self._jeo_catalog(*positives, *negative_names)
+        self._jsonl(
+            self.home / ".jeo/sessions/parser.jsonl",
+            [*negatives.values(), *positives.values(), *unknown],
+        )
+
+        scan = self._jeo_scan()
+        rows = self._rows(self._report())
+        for name in positives:
+            with self.subTest(positive=name):
+                self.assertEqual((rows[name]["count"], rows[name]["by_source"]), (1, {"jeo": 1}))
+        for name in negative_names:
+            with self.subTest(negative=name):
+                self.assertEqual((rows[name]["count"], rows[name]["by_source"]), (0, {}))
+        jeo = scan["sources"]["jeo"]
+        self.assertEqual(jeo["records"], len(positives))
+        # negatives carry the latest timestamp and must not widen the window
+        self.assertEqual(jeo["window"], [NOW_OLD, NOW_LATE])
+        self.assertNotIn("jx-not-in-catalog", (self.state / "usage.json").read_text(encoding="utf-8"))
+
+    def test_jeo_project_root_option_reads_project_store_and_is_remembered(self):
+        other = self.work / "other-project"
+        self.assertNotEqual(other, self.project)  # the CLI's cwd is self.project
+        self._jeo_catalog("jx-proj")
+        self._jsonl(other / ".jeo/sessions/u1.jsonl", [self._jeo_read("jx-proj")])
+
+        text = self.cli("usage", "scan", "--project-root", str(other))
+        self.successful(text)
+        lines = self._jeo_lines(text.stdout)
+        self.assertEqual(len(lines), 1, text.stdout)
+        self.assertRegex(lines[0], r"\bok\b.*records=1\s")
+        self.assertEqual(self._jeo_count("jx-proj"), (1, {"jeo": 1}))
+        self.assertEqual(self._jeo_cursor()["jeo_project_roots"], [os.path.realpath(other)])
+
+        # a later scan, run without the option, still reads the remembered project store
+        self._jsonl(other / ".jeo/sessions/u2.jsonl", [self._jeo_read("jx-proj", stamp=NOW_LATE)])
+        later = self._jeo_scan(now=NOW_LATE)
+        self.assertEqual(later["sources"]["jeo"]["records"], 2)
+        self.assertEqual(self._jeo_count("jx-proj"), (2, {"jeo": 2}))
+
+    def test_jeo_home_and_project_stores_sum_into_one_source_with_merged_window(self):
+        first, second = self.work / "sum-one", self.work / "sum-two"
+        self._jeo_catalog("jx-sum-home", "jx-sum-one", "jx-sum-two")
+        self._jsonl(self.home / ".jeo/sessions/h.jsonl", [self._jeo_read("jx-sum-home", stamp=NOW_LATE)])
+        self._jsonl(first / ".jeo/sessions/a.jsonl", [self._jeo_read("jx-sum-one", stamp=NOW_OLD)])
+        self._jsonl(second / ".jeo/sessions/b.jsonl", [self._jeo_read("jx-sum-two", stamp=NOW_EXPIRED)])
+
+        text = self.cli("usage", "scan", "--project-root", str(first), "--project-root", str(second))
+        self.successful(text)
+        lines = self._jeo_lines(text.stdout)
+        self.assertEqual(len(lines), 1, text.stdout)
+        self.assertRegex(lines[0], r"records=3\s")
+        self.assertIn(f"window={NOW_OLD}..{NOW_EXPIRED}", lines[0])
+        rows = self._rows(self._report())
+        for name in ("jx-sum-home", "jx-sum-one", "jx-sum-two"):
+            with self.subTest(skill=name):
+                self.assertEqual((rows[name]["count"], rows[name]["by_source"]), (1, {"jeo": 1}))
+        self.assertEqual(
+            self._jeo_cursor()["jeo_project_roots"], [os.path.realpath(first), os.path.realpath(second)]
+        )
+
+    def test_jeo_session_dirs_env_adds_absolute_existing_dirs_and_ignores_the_rest(self):
+        one, two = self.work / "env-one", self.work / "env-two"
+        missing = self.work / "env-missing"
+        relative_store = self.project / "rel-store"  # "rel-store" resolves against the CLI's cwd
+        self._jeo_catalog("jx-env-one", "jx-env-two", "jx-env-rel")
+        self._jsonl(one / "a.jsonl", [self._jeo_read("jx-env-one")])
+        self._jsonl(two / "b.jsonl", [self._jeo_read("jx-env-two")])
+        self._jsonl(relative_store / "c.jsonl", [self._jeo_read("jx-env-rel")])
+        self.env["JEO_SKILL_JEO_SESSION_DIRS"] = os.pathsep.join(
+            [str(one), "rel-store", str(missing), "", str(two)]
+        )
+
+        scan = self._jeo_scan()
+        self.assertEqual(scan["sources"]["jeo"]["records"], 2)
+        self.assertEqual(self._jeo_count("jx-env-one"), (1, {"jeo": 1}))
+        self.assertEqual(self._jeo_count("jx-env-two"), (1, {"jeo": 1}))
+        self.assertEqual(self._jeo_count("jx-env-rel"), (0, {}))
+
+    def test_jeo_relevance_repos_and_cwd_stores_are_read(self):
+        repo = self.work / "relevant-repo"
+        self._jeo_catalog("jx-rel-repo", "jx-rel-relative", "jx-cwd")
+        self._jsonl(repo / ".jeo/sessions/r.jsonl", [self._jeo_read("jx-rel-repo")])
+        # a relative repo entry must not be resolved against the cwd
+        self._jsonl(self.project / "relative/repo/.jeo/sessions/x.jsonl", [self._jeo_read("jx-rel-relative")])
+        self._jsonl(self.project / ".jeo/sessions/c.jsonl", [self._jeo_read("jx-cwd")])
+        relevance = self.state / "relevance.json"
+        relevance.write_text(
+            json.dumps({"version": 1, "repos": [str(repo), "relative/repo", 7, ""], "protect": {}}),
+            encoding="utf-8",
+        )
+        relevance.chmod(0o600)
+
+        scan = self._jeo_scan()
+        self.assertEqual(scan["sources"]["jeo"]["records"], 2)
+        self.assertEqual(self._jeo_count("jx-rel-repo"), (1, {"jeo": 1}))
+        self.assertEqual(self._jeo_count("jx-cwd"), (1, {"jeo": 1}))
+        self.assertEqual(self._jeo_count("jx-rel-relative"), (0, {}))
+
+    def test_jeo_same_physical_dir_reached_twice_is_counted_once(self):
+        real, alias = self.work / "real-project", self.work / "alias-project"
+        real.mkdir()
+        alias.symlink_to(real, target_is_directory=True)
+        self._jeo_catalog("jx-alias")
+        self._jsonl(real / ".jeo/sessions/u.jsonl", [self._jeo_read("jx-alias")])
+        self.env["JEO_SKILL_JEO_SESSION_DIRS"] = os.pathsep.join(
+            [str(alias / ".jeo/sessions"), str(real / ".jeo/sessions")]
+        )
+
+        scan = self._jeo_scan("--project-root", str(alias), "--project-root", str(real))
+        self.assertEqual(scan["sources"]["jeo"]["records"], 1)
+        self.assertEqual(self._jeo_count("jx-alias"), (1, {"jeo": 1}))
+        self.assertEqual(self._jeo_cursor()["jeo_project_roots"], [os.path.realpath(real)])
+        # remembered root plus env dir still resolve to one store on the next scan
+        self.assertEqual(self._jeo_scan()["sources"]["jeo"]["records"], 1)
+        self.assertEqual(self._jeo_count("jx-alias"), (1, {"jeo": 1}))
+
+    def test_jeo_symlinked_store_dir_is_skipped(self):
+        target = self.work / "elsewhere/sessions"
+        project = self.work / "symlink-project"
+        self._jeo_catalog("jx-symlinked")
+        self._jsonl(target / "u.jsonl", [self._jeo_read("jx-symlinked")])
+        (project / ".jeo").mkdir(parents=True)
+        (project / ".jeo/sessions").symlink_to(target, target_is_directory=True)
+
+        scan = self._jeo_scan("--project-root", str(project))
+        self.assertEqual(scan["sources"]["jeo"]["records"], 0)
+        self.assertFalse(scan["sources"]["jeo"]["available"])
+        self.assertEqual(self._jeo_count("jx-symlinked"), (0, {}))
+
+        # the env route applies the same rule: the symlink is skipped, its real target is not
+        self.env["JEO_SKILL_JEO_SESSION_DIRS"] = str(project / ".jeo/sessions")
+        self.assertEqual(self._jeo_scan()["sources"]["jeo"]["records"], 0)
+        self.env["JEO_SKILL_JEO_SESSION_DIRS"] = str(target)
+        self.assertEqual(self._jeo_scan()["sources"]["jeo"]["records"], 1)
+        self.assertEqual(self._jeo_count("jx-symlinked"), (1, {"jeo": 1}))
+
+    def test_jeo_non_directory_project_root_warns_exits_zero_and_is_not_remembered(self):
+        self._jeo_catalog("jx-bad-root")
+        target = self.work / "was-a-file"
+        target.write_text("not a directory", encoding="utf-8")
+        missing = self.work / "no-such-project"
+
+        result = self.cli(
+            "usage", "scan", "--json", "--project-root", str(target), "--project-root", str(missing)
+        )
+        self.successful(result)
+        for bad in (target, missing):
+            self.assertIn(f"--project-root {bad} is not an existing directory", result.stderr)
+        self.assertIn("summary", json.loads(result.stdout))
+        self.assertEqual(self._jeo_cursor().get("jeo_project_roots"), [])
+
+        # once the path becomes a real project it is read only if passed again: nothing was remembered
+        target.unlink()
+        self._jsonl(target / ".jeo/sessions/u.jsonl", [self._jeo_read("jx-bad-root")])
+        self.assertEqual(self._jeo_scan()["sources"]["jeo"]["records"], 0)
+        self.assertEqual(self._jeo_count("jx-bad-root"), (0, {}))
+        self._jeo_scan("--project-root", str(target))
+        self.assertEqual(self._jeo_count("jx-bad-root"), (1, {"jeo": 1}))
+
+    def test_jeo_remembered_root_that_vanishes_is_pruned_and_keeps_its_contribution(self):
+        project = self.work / "vanishing-project"
+        self._jeo_catalog("jx-vanish")
+        self._jsonl(project / ".jeo/sessions/u1.jsonl", [self._jeo_read("jx-vanish")])
+        self._jeo_scan("--project-root", str(project))
+        self.assertEqual(self._jeo_count("jx-vanish"), (1, {"jeo": 1}))
+        self.assertEqual(self._jeo_cursor()["jeo_project_roots"], [os.path.realpath(project)])
+
+        shutil.rmtree(project)
+        self._jeo_scan()
+        self.assertEqual(self._jeo_cursor()["jeo_project_roots"], [])
+        self.assertEqual(self._jeo_count("jx-vanish"), (1, {"jeo": 1}))
+
+        # recreating the directory does not resurrect the pruned root...
+        self._jsonl(project / ".jeo/sessions/u2.jsonl", [self._jeo_read("jx-vanish", stamp=NOW_LATE)])
+        self._jeo_scan()
+        self.assertEqual(self._jeo_count("jx-vanish"), (1, {"jeo": 1}))
+        # ...but passing it again reads the new session on top of the retained one
+        self._jeo_scan("--project-root", str(project))
+        self.assertEqual(self._jeo_count("jx-vanish"), (2, {"jeo": 2}))
+
+    def test_jeo_cursor_from_old_parser_is_reread_once_without_double_counting(self):
+        self._jeo_catalog("jx-mig-lost", "jx-mig-kept")
+        store = self.home / ".jeo/sessions"
+        self._jsonl(store / "lost.jsonl", [self._jeo_read("jx-mig-lost")])
+        self._jsonl(store / "kept.jsonl", [self._jeo_read("jx-mig-kept", stamp=NOW_LATE)])
+        clean = self._jeo_scan()
+        clean_jeo = clean["sources"]["jeo"]
+        self.assertEqual(clean_jeo["records"], 2)
+        self.assertEqual(self._jeo_count("jx-mig-lost"), (1, {"jeo": 1}))
+        self.assertEqual(self._jeo_count("jx-mig-kept"), (1, {"jeo": 1}))
+        self.assertIsInstance(self._jeo_cursor()["jeo_parser_version"], int)
+
+        # rewind to what the old parser left behind: no version, and lost.jsonl recorded nothing
+        cursor = self._jeo_cursor()
+        del cursor["jeo_parser_version"]
+        entries = {Path(e["path"]).name: e for e in cursor["files"].values() if e["source"] == "jeo"}
+        entries["lost.jsonl"]["contribution"] = {}
+        entries["lost.jsonl"]["records"] = 0
+        (self.state / "usage-cursor.json").write_text(json.dumps(cursor), encoding="utf-8")
+        (self.state / "usage.json").unlink()  # the cursor must be the only memory of old counts
+
+        migrated = self._jeo_scan()
+        self.assertEqual(migrated["sources"]["jeo"]["records"], clean_jeo["records"])
+        self.assertEqual(migrated["sources"]["jeo"]["window"], clean_jeo["window"])
+        self.assertEqual(self._jeo_count("jx-mig-lost"), (1, {"jeo": 1}))  # recovered by the forced re-read
+        self.assertEqual(self._jeo_count("jx-mig-kept"), (1, {"jeo": 1}))  # not inflated by it
+        self.assertGreaterEqual(self._jeo_cursor()["jeo_parser_version"], 2)
+
+        again = self._jeo_scan()
+        self.assertEqual(again["sources"]["jeo"]["records"], clean_jeo["records"])
+        self.assertEqual(self._jeo_count("jx-mig-lost"), (1, {"jeo": 1}))
+        self.assertEqual(self._jeo_count("jx-mig-kept"), (1, {"jeo": 1}))
+
+    def test_jeo_scan_never_persists_transcript_text(self):
+        sentinel = "JEO_TRANSCRIPT_SENTINEL_7c41d9"
+        project = self.work / "leak-project"
+        env_store = self.work / "leak-env-store"
+        stores = [self.home / ".jeo/sessions", project / ".jeo/sessions", env_store]
+        self.env["JEO_SKILL_JEO_SESSION_DIRS"] = str(env_store)
+        names = [f"jx-leak-{index}" for index in range(len(stores))]
+        self._jeo_catalog(*names)
+        for store, name in zip(stores, names):
+            path = self._jeo_path(name)
+            self._jsonl(store / "s.jsonl", [
+                self._jeo_message(role="user", text=f"{sentinel} {path}"),
+                # a counted load whose record also carries transcript text
+                self._jeo_message([self._jeo_call("read", {"filePath": path})], text=f"{sentinel} reading"),
+                self._jeo_message([self._jeo_call("write", {"filePath": path, "content": sentinel})]),
+                {"type": "message", "timestamp": NOW_OLD,
+                 "toolResults": [{"id": "r", "tool": "find", "output": f"{sentinel}\n{path}\n"}]},
+            ])
+
+        self._jeo_scan("--project-root", str(project))
+        for name in names:
+            self.assertEqual(self._jeo_count(name), (1, {"jeo": 1}))  # the files really were parsed
+        persisted = b"".join(path.read_bytes() for path in self.state.rglob("*") if path.is_file())
+        names_on_disk = "\n".join(str(path.relative_to(self.state)) for path in self.state.rglob("*"))
+        self.assertNotIn(sentinel.encode(), persisted)
+        self.assertNotIn(sentinel, names_on_disk)
+
+    def test_jeo_default_home_store_is_still_read_without_roots_or_env(self):
+        self.assertNotIn("JEO_SKILL_JEO_SESSION_DIRS", self.env)
+        self._jeo_catalog("jx-default")
+        self._jsonl(self.home / ".jeo/sessions/d.jsonl", [self._jeo_read("jx-default")])
+
+        scan = self._jeo_scan()
+        jeo = scan["sources"]["jeo"]
+        self.assertTrue(jeo["available"])
+        self.assertEqual(jeo["records"], 1)
+        self.assertIsNone(jeo["error"])
+        self.assertEqual(self._jeo_count("jx-default"), (1, {"jeo": 1}))
+        self.assertEqual(self._jeo_cursor().get("jeo_project_roots"), [])
+
+    def test_jeo_remembered_project_roots_are_capped_to_the_newest_512(self):
+        roots = []
+        for index in range(513):
+            root = self.work / "cap" / f"p{index:03d}"
+            root.mkdir(parents=True)
+            roots.append(root)
+        self._jeo_catalog("jx-cap-dropped", "jx-cap-kept")
+        self._jsonl(roots[0] / ".jeo/sessions/u.jsonl", [self._jeo_read("jx-cap-dropped")])
+        self._jsonl(roots[-1] / ".jeo/sessions/u.jsonl", [self._jeo_read("jx-cap-kept")])
+
+        self._jeo_scan(*[arg for root in roots for arg in ("--project-root", str(root))])
+        self.assertEqual(self._jeo_cursor()["jeo_project_roots"], [os.path.realpath(r) for r in roots[1:]])
+        self.assertEqual(self._jeo_count("jx-cap-dropped"), (0, {}))
+        self.assertEqual(self._jeo_count("jx-cap-kept"), (1, {"jeo": 1}))
+
 if __name__ == "__main__":
     unittest.main()

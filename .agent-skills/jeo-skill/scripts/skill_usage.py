@@ -902,32 +902,120 @@ def _collect_pi(home: Path, names: set[str], cursor: dict[str, Any]) -> dict[str
     return _collect_pi_family("pi", home / ".pi" / "agent" / "sessions", names, cursor)
 
 
-def _collect_jeo(home: Path, names: set[str], cursor: dict[str, Any]) -> dict[str, Any]:
-    files = _files_under(home / ".jeo" / "sessions", lambda n: n.endswith(".jsonl") or n.endswith(".json"))
-    def jeo_parser(value: Any, when: datetime | None, events: dict[str, dict[str, Any]]) -> int:
+JEO_DIRS_ENV = "JEO_SKILL_JEO_SESSION_DIRS"
+JEO_PARSER_VERSION = 2  # bump to re-read every live jeo session file under a changed parser
+MAX_JEO_PROJECT_ROOTS = 512
+JEO_PATH_KEYS = ("filePath", "path", "file", "file_path")
+
+
+def _remember_jeo_project_roots(cursor: dict[str, Any], roots: Iterable[Path | str] = ()) -> list[str]:
+    """Project roots whose `<root>/.jeo/sessions` the jeo collector reads.
+
+    jeo writes a session to the project-local `<cwd>/.jeo/sessions`, not to `~/.jeo`, so the
+    set of roots has to be explicit. Like Claude profile dirs, roots passed to `usage scan
+    --project-root` are resolved, saved in the cursor (`jeo_project_roots`) and re-read by
+    every later scan, including scheduled scans that are not given the option; roots whose
+    directory has vanished are dropped. Only absolute directory paths are stored."""
+    remembered = cursor.get("jeo_project_roots")
+    candidates = [item for item in remembered if isinstance(item, str)] if isinstance(remembered, list) else []
+    for raw in roots:
+        resolved = os.path.realpath(os.path.expanduser(str(raw)))
+        if resolved not in candidates:
+            candidates.append(resolved)
+    kept = [item for item in candidates if os.path.isabs(item) and os.path.isdir(item)][-MAX_JEO_PROJECT_ROOTS:]
+    cursor["jeo_project_roots"] = kept
+    return kept
+
+
+def _jeo_session_dirs(home: Path, cursor: dict[str, Any]) -> list[Path]:
+    """Every allowed jeo session store, each physical directory once, default store first:
+    `~/.jeo/sessions`, `JEO_SKILL_JEO_SESSION_DIRS` (os.pathsep-separated absolute dirs),
+    `<root>/.jeo/sessions` for each remembered project root and `usage relevance` repository,
+    then the current working directory's `.jeo/sessions`. Nothing is discovered by walking
+    the filesystem, and symlinked store directories are skipped like `_files_under` does."""
+    candidates: list[Path] = [home / ".jeo" / "sessions"]
+    for raw in os.environ.get(JEO_DIRS_ENV, "").split(os.pathsep):
+        raw = raw.strip()
+        if raw and Path(raw).expanduser().is_absolute():
+            candidates.append(Path(raw).expanduser())
+    candidates += [Path(root) / ".jeo" / "sessions" for root in _remember_jeo_project_roots(cursor)]
+    relevance = read_state("relevance.json", {})
+    repos = relevance.get("repos") if isinstance(relevance, dict) else None
+    for repo in repos if isinstance(repos, list) else []:
+        if isinstance(repo, str) and repo and Path(repo).expanduser().is_absolute():
+            candidates.append(Path(repo).expanduser() / ".jeo" / "sessions")
+    try:
+        candidates.append(Path.cwd() / ".jeo" / "sessions")
+    except OSError:  # the working directory was removed
+        pass
+    seen: set[str] = set()
+    directories: list[Path] = []
+    for path in candidates:
+        if path.is_symlink() or not path.is_dir():
+            continue
+        physical = os.path.realpath(path)
+        if physical not in seen:
+            seen.add(physical)
+            directories.append(path)
+    return directories
+
+
+def _jeo_parser() -> Callable[[Any, datetime | None, dict[str, dict[str, Any]]], int]:
+    """jeo session JSONL (`<project>/.jeo/sessions/<uuid>.jsonl`).
+
+    A load is an assistant `message.toolUse` entry (`{id, tool, arguments}`) of a read tool
+    whose `filePath`/`path` is `<dir>/<name>/SKILL.md` or `skill://<name>`. jeo's `read`
+    result carries the file content (not a path), and `find`/`ls`/`bash` results or a read
+    document that merely lists SKILL.md paths are not loads, so `toolResults`, user and
+    assistant text, writes, edits, searches and shell commands are never counted."""
+    def parser(value: Any, when: datetime | None, events: dict[str, dict[str, Any]]) -> int:
+        if not isinstance(value, dict):
+            return 0
+        message = value.get("message")
+        if not isinstance(message, dict) or message.get("role") != "assistant":
+            return 0
+        calls = message.get("toolUse")
+        if not isinstance(calls, list):
+            return 0
+        when = _event_time(value, when)
         count = 0
-        for envelope in _iter_dicts(value):
-            results = envelope.get("toolResults")
-            if isinstance(results, dict):
-                results = [results]
-            if not isinstance(results, list):
+        for call in calls:
+            if not isinstance(call, dict) or not _is_read_tool(call.get("tool") or call.get("name")):
                 continue
-            for result in results:
-                if not isinstance(result, dict) or not isinstance(result.get("output"), str):
-                    continue
-                # jeo's read tool emits a path-only line in toolResults; never inspect
-                # user/assistant message text because it may merely mention a skill.
-                for line in result["output"].splitlines():
-                    path = line.strip()
-                    if not path or " " in path or not path.endswith("/SKILL.md"):
-                        continue
-                    name = _path_skill(path, names)
-                    if name:
-                        _add_event(events, name, when)
-                        count += 1
+            arguments = call.get("arguments")
+            if not isinstance(arguments, dict):
+                continue
+            for key in JEO_PATH_KEYS:
+                path = arguments.get(key)
+                name = _path_skill(path, parser.names) or _skill_uri(path, parser.names)
+                if name:
+                    _add_event(events, name, when)
+                    count += 1
+                    break
         return count
-    jeo_parser.prefilter = ("SKILL.md",)  # type: ignore[attr-defined]
-    return _file_source("jeo", files, jeo_parser, names, cursor)
+    parser.names = set()  # type: ignore[attr-defined]
+    parser.prefilter = ("SKILL.md", "skill://")  # type: ignore[attr-defined]
+    return parser
+
+
+def _collect_jeo(home: Path, names: set[str], cursor: dict[str, Any]) -> dict[str, Any]:
+    """All allowed jeo session stores (see `_jeo_session_dirs`) as ONE `jeo` source: files are
+    summed, copies byte-identical across stores counted once, windows min/max-merged."""
+    if cursor.get("jeo_parser_version") != JEO_PARSER_VERSION:
+        # Files scanned under an older parser must be re-read; the high-water merge keeps
+        # whatever they already contributed.
+        for entry in cursor.get("files", {}).values():
+            if isinstance(entry, dict) and entry.get("source") == "jeo" and not entry.get("retired"):
+                entry["mtime_ns"] = -1
+                entry.pop("offset", None)
+        cursor["jeo_parser_version"] = JEO_PARSER_VERSION
+    files: list[Path] = []
+    for directory in _jeo_session_dirs(home, cursor):
+        files.extend(_files_under(directory, lambda n: n.endswith(".jsonl") or n.endswith(".json")))
+    del files[MAX_FILES:]  # a full listing reads as truncated: _file_source reports the limit
+    parser = _jeo_parser()
+    parser.names = names  # type: ignore[attr-defined]
+    return _file_source("jeo", files, parser, names, cursor)
 
 
 def _collect_jev(names: set[str], cursor: dict[str, Any]) -> dict[str, Any]:
@@ -989,13 +1077,18 @@ def _scan_lock(wait: bool) -> Iterator[None]:
         os.close(descriptor)
 
 
-def scan(catalog: dict, roots: Iterable[Path], *, home: Path | None = None, wait: bool = True) -> dict:
-    """Aggregate usage evidence; `wait=False` raises ScanBusy instead of queueing."""
+def scan(catalog: dict, roots: Iterable[Path], *, home: Path | None = None, wait: bool = True,
+         project_roots: Iterable[Path | str] = ()) -> dict:
+    """Aggregate usage evidence; `wait=False` raises ScanBusy instead of queueing.
+
+    `project_roots` are remembered (see `_remember_jeo_project_roots`) so later scans keep
+    reading their `.jeo/sessions`."""
     with _scan_lock(wait):
-        return _scan_locked(catalog, roots, home=home)
+        return _scan_locked(catalog, roots, home=home, project_roots=project_roots)
 
 
-def _scan_locked(catalog: dict, roots: Iterable[Path], *, home: Path | None) -> dict:
+def _scan_locked(catalog: dict, roots: Iterable[Path], *, home: Path | None,
+                 project_roots: Iterable[Path | str] = ()) -> dict:
     home = Path(home or Path.home()).expanduser()
     names = _catalog_names(catalog)
     started_value = read_state("usage.json", {}).get("tracking_started_at")
@@ -1003,6 +1096,7 @@ def _scan_locked(catalog: dict, roots: Iterable[Path], *, home: Path | None) -> 
     cursor = read_state("usage-cursor.json", {})
     if not isinstance(cursor, dict):
         cursor = {}
+    _remember_jeo_project_roots(cursor, project_roots)
     # Cached per-file contributions only hold names known to the catalog that parsed them.
     # When the catalog changes (remote vs checkout, new skills), re-parse every live file;
     # the high-water merge keeps prior counts, and vanished files keep their contribution.

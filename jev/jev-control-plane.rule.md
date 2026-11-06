@@ -1,3 +1,6 @@
+---
+description: Opt-in Jev control-plane policy; read it before configuring, enabling or reviewing Jev for a host runtime
+---
 <!-- JEV-CONTROL-PLANE:START -->
 # Jev Control Plane
 

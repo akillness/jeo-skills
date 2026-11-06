@@ -102,8 +102,15 @@ backward-compatible exact-name installation is required.
   skill in the prompt (`jeo-skill`, or "use the jeo-skill skill"), because `jeo skills
   list` discovers `~/.agents/skills` but the system prompt lists only about 30 of them,
   ordered by name-token match to the task.
-- `jeo-skill usage scan` reads `~/.jeo/sessions` for jeo; jeo use outside that path is
-  not counted, so do not treat a jeo-only skill with zero uses as unused.
+- `jeo-skill usage scan` reads jeo sessions from `~/.jeo/sessions` plus the project-local
+  `<project>/.jeo/sessions` stores, which is where jeo-code actually writes them. Name each
+  project once with `jeo-skill usage scan --project-root ~/work/app` (repeatable; remembered
+  in the tracker state, so scheduled scans keep reading it), or list session directories in
+  `JEO_SKILL_JEO_SESSION_DIRS` (os.pathsep-separated absolute paths). Repositories passed to
+  `usage relevance --repos` and the current directory are read too; nothing walks the
+  filesystem. A skill counts for jeo only when an assistant turn `read`s its `SKILL.md`
+  (or `skill://<name>`); a skill that jeo merely received through a prompt hook or a slash
+  alias leaves no read, so do not treat a jeo-only skill with zero uses as unused.
 
 ### Optional Jevgrep source discovery
 

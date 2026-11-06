@@ -6,6 +6,7 @@
 # Hidden (dot-prefixed) root folders are ignored unless re-included below. Explicit so a
 # future change to the `/*` line cannot silently expose .github, .jeo, .claude, .mex, etc.
 /.*/
+!/.mex/
 !/.agent-skills/
 !/.frontmatter/
 !/assets/

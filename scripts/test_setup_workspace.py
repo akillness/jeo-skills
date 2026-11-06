@@ -414,5 +414,23 @@ class WorkspaceSetupTests(unittest.TestCase):
         self.assertEqual(box.calls(), [])
 
 
+class RuleSourceFrontmatterTests(unittest.TestCase):
+    """jeopi skips a rule file that has neither `alwaysApply` nor a description, so a shipped rule
+    source must open with frontmatter before its marker block or it never reaches the model."""
+
+    def test_every_shipped_rule_source_declares_frontmatter(self):
+        sources = sorted((ROOT / "jev").glob("*.rule.md"))
+        self.assertTrue(sources, "no jev/*.rule.md rule sources found")
+        for source in sources:
+            with self.subTest(rule=source.name):
+                lines = source.read_text(encoding="utf-8").splitlines()
+                self.assertEqual(lines[0], "---", "frontmatter must be the first line")
+                end = lines.index("---", 1)
+                keys = {line.split(":", 1)[0].strip(): line.split(":", 1)[1].strip()
+                        for line in lines[1:end] if ":" in line}
+                self.assertTrue(keys.get("description") or keys.get("alwaysApply", "").lower() == "true")
+                self.assertTrue(lines[end + 1].startswith("<!--"), "marker block must follow the frontmatter")
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -1,13 +1,13 @@
 ---
 name: agents
 description: Always-loaded project anchor. Read this first. Contains project identity, non-negotiables, commands, and pointer to ROUTER.md for full context.
-last_updated: 2026-11-01
+last_updated: 2026-11-06
 ---
 
 # jeo-skills
 
 ## What This Is
-A curated, cross-platform catalog of 419 categorized AI agent skills (`.agent-skills/<name>/SKILL.md`), with all taxonomy/relationship metadata centralized once in `.agent-skills/skills.json` and installable selectively via the `jeo-skill` router CLI.
+A curated, cross-platform catalog of categorized AI agent skills (current count: `jeo-skill doctor`) (`.agent-skills/<name>/SKILL.md`), with all taxonomy/relationship metadata centralized once in `.agent-skills/skills.json` and installable selectively via the `jeo-skill` router CLI.
 
 ## Non-Negotiables
 - Never duplicate a skill's category/subcategory/tags/relationships in its own `SKILL.md` — that metadata lives once in `.agent-skills/skills.json`
@@ -44,3 +44,12 @@ After meaningful work, run GROW:
 ## Navigation
 At the start of every session, read `.mex/ROUTER.md` before doing anything else.
 For full project context, patterns, and task guidance — everything is there.
+
+<!-- JEO-WORKFLOWS:START -->
+## Workflow rules
+Every prompt: openspace route → rtk shell → semble search → jev (only after rtk and
+semble, if a profile is enabled) → then by query: knowledge → second-brain vault,
+code/memory → `.mex/`, semantic search → `zg query`, ontology → open-ontologies,
+harness changes → `.harness2/`. Full rules: `.agents/rules/jeo-workflows.md` (global copy
+`~/.agents/rules/jeo-workflows.md`).
+<!-- JEO-WORKFLOWS:END -->
