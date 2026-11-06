@@ -102,6 +102,7 @@ The full, generated list is in [Skills list](#-skills-list).
 | Specific skills | `jeo-skill install <name> [<name> ...] --global --yes` |
 | Specific skills with setup/smoke | `jeo-skill install <name> ... --global --yes --setup` (add `--with-hooks` for supported hook steps only; see [setup guide](setup-all-skills-prompt.md#step-5--full-mode-shared-tools) for exact tool boundaries) |
 | A bundle or category slice | `jeo-skill install --bundle <bundle> --global --yes` or `--category <id> [--subcategory <id>]` |
+| Five GitHub programs and one readiness report | `jeo-skill install --bundle github-five-programs --global --yes --setup`; the one-liner with `JEO_SKILLS_SELECTION=bundle JEO_SKILLS_BUNDLE=github-five-programs` prints the same report. It is offline and read-only: nothing is installed or run, and no per-program approval is asked |
 
 For the ten source-specific game-development guides, preview `jeo-skill install --bundle game-source-repositories --dry-run`. The guides cover physics, terrain, materials, effects, navigation, animation, graphics, meshes, and noise; they do not install or run the upstream tools. See the [setup boundaries](setup-all-skills-prompt.md#game-development-source-guides-on-demand) and [source licenses](docs/attribution.md).
 
@@ -143,7 +144,7 @@ Starring is a separate GitHub account action, not consent implied by installatio
 
 | Bundle | Skills |
 |---|---|
-| `starter` | jeo-skill, skill-standardization, codebase-search, git-workflow, debugging, testing-strategies |
+| `starter` | jeo-skill, skill-standardization, codebase-search, git-workflow, debugging, testing-strategies, image-to-github-repo |
 | `cli-core` | jeo-skill, rtk, semble, zvec-grep, graphify, scrapling |
 | `web-frontend` | react-best-practices, responsive-design, web-accessibility, design-system, web-design |
 | `web-backend` | api-design, authentication-setup, database-schema-design, backend-testing |
@@ -211,6 +212,7 @@ Grok Build is the registry-native `grok` target and requires explicit setup sele
 | `jeo-skill related <name>` | Overlapping or sequential skills to consider together |
 | `jeo-skill install ... --dry-run` | Preview a selection without writing files |
 | `jeo-skill doctor` | Check the catalog, `npx`/Node.js prerequisites and the CLI link |
+| `jeo-skill readiness [--global] [--json]` | Offline, read-only readiness report for fabric, moneyprinter-v2, agent-s, google-maps-scraper and gitingest |
 | `jeo-skill usage scan` / `usage report` | Track which installed skills agents actually load |
 | `jeo-skill prune-unused` / `restore` / `purge-quarantine` | Quarantine, restore or delete never-used skills |
 | `jeo-skill prune-retired --global --dry-run` | Remove stale copies of retired catalog skills |
@@ -901,6 +903,7 @@ Edit metadata in `skills.json`, never in the generated tables. Upstream sources 
 |--------|---------|
 | **`image-to-github-repo`: the GitHub address behind an image** | New `research` / `web-research` skill that reads a screenshot, card-news slide or SNS post, extracts project names, printed links, star counts and keyword hints, and resolves each project to a verified repository with `scripts/resolve_repo.py` (stdlib-only; GET requests to the GitHub API only). It follows rename redirects, checks printed star counts against a 0.9×–2× window, never lets a missing keyword rule a repo out, and reports `verified` / `high` / `medium` / `ambiguous` / `low` instead of guessing between same-named repositories (exit 0/1/2). `scripts/test_image_to_github_repo.py` covers it offline and runs in CI. Install with `jeo-skill install image-to-github-repo --global --yes`; the setup guide's on-demand runtimes section records its network and token boundary. |
 | **Five GitHub program operators and the `github-five-programs` bundle** | Adds `moneyprinter-v2`, `agent-s`, `google-maps-scraper` and `gitingest` next to the existing `fabric`. Each new guide is router-first and pinned to an audited upstream commit with a SHA-256 manifest, an offline stdlib `scripts/preflight.py` and evals. Audit findings are recorded, not assumed: MPV2's in-app CRON menu never runs its jobs and Outreach emails every passing row without confirmation; pip refuses `gui-agents` 0.3.2 on Python 3.12.1 and later and Agent S executes generated code with no per-action dialog; the scraper's Web UI has no authentication and telemetry is on by default; gitingest's default ignore list drops `.env` but ingests `.env.local` and key files (observed with 0.3.1). Install with `jeo-skill install --bundle github-five-programs --global --yes`; `scripts/test_five_github_programs.py` covers the helpers offline and runs in CI. |
+| **One readiness report for the five programs** | `jeo-skill readiness` (new `skill_readiness.py`) runs each operator's offline `preflight.py` and prints one report. `jeo-skill install … --setup`, `install.sh` (`JEO_SKILLS_SELECTION=all` or `JEO_SKILLS_BUNDLE=github-five-programs`) and `scripts/install-full-tools.sh --programs` print it after installing, without counting it in the tool total. Blocked is a report (exit 1), not an install failure, and it needs no per-program approval, installs nothing and opens no network connection; opt out with `JEO_SKILLS_READINESS=skip`. `fabric` gains the same pinned helper (loopback-by-default server, `.env` permission check) and `image-to-github-repo` joins the `starter` bundle. Offline tests cover Linux and macOS in CI. |
 
 ## 🆕 What's New in v2026-11-04
 

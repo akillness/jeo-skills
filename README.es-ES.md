@@ -106,6 +106,7 @@ La lista completa y generada está en [Lista de Habilidades](#-lista-de-habilida
 | Habilidades específicas | `jeo-skill install <name> [<name> ...] --global --yes` |
 | Habilidades específicas con configuración/smoke | `jeo-skill install <name> ... --global --yes --setup` (añade `--with-hooks` solo para pasos de hook compatibles; consulta los límites de cada herramienta en la [guía de instalación](setup-all-skills-prompt.md#step-5--full-mode-shared-tools)) |
 | Un paquete o segmento de categoría | `jeo-skill install --bundle <bundle> --global --yes` o `--category <id> [--subcategory <id>]` |
+| Cinco programas de GitHub y un informe de preparación | `jeo-skill install --bundle github-five-programs --global --yes --setup`; la línea única con `JEO_SKILLS_SELECTION=bundle JEO_SKILLS_BUNDLE=github-five-programs` imprime el mismo informe. Es sin conexión y de solo lectura: no instala ni ejecuta nada y no pide aprobación por programa |
 
 Para las diez guías de herramientas de desarrollo de juegos, previsualiza `jeo-skill install --bundle game-source-repositories --dry-run`. Cubren física, terreno, materiales, efectos, navegación, animación, gráficos, mallas y ruido; no instalan ni ejecutan las herramientas originales. Consulta los [límites de instalación](setup-all-skills-prompt.md#game-development-source-guides-on-demand) y las [licencias de las fuentes](docs/attribution.md).
 
@@ -136,7 +137,7 @@ curl -fsSL "$URL" | JEO_SKILLS_DRY_RUN=true INSTALL_GLOBAL=false bash
 
 | Paquete | Habilidades |
 |---|---|
-| `starter` | jeo-skill, skill-standardization, codebase-search, git-workflow, debugging, testing-strategies |
+| `starter` | jeo-skill, skill-standardization, codebase-search, git-workflow, debugging, testing-strategies, image-to-github-repo |
 | `cli-core` | jeo-skill, rtk, semble, zvec-grep, graphify, scrapling |
 | `web-frontend` | react-best-practices, responsive-design, web-accessibility, design-system, web-design |
 | `web-backend` | api-design, authentication-setup, database-schema-design, backend-testing |
@@ -208,6 +209,7 @@ Esta captura muestra una previsualización local real de dos habilidades; no dem
 | `jeo-skill related <name>` | Habilidades superpuestas o secuenciales para considerar juntas |
 | `jeo-skill install ... --dry-run` | Previsualiza una selección sin escribir archivos |
 | `jeo-skill doctor` | Comprueba el catálogo, los prerrequisitos de `npx`/Node.js y el enlace de la CLI |
+| `jeo-skill readiness [--global] [--json]` | Informe de preparación sin conexión y de solo lectura para fabric, moneyprinter-v2, agent-s, google-maps-scraper y gitingest |
 | `jeo-skill usage scan` / `usage report` | Registra qué habilidades instaladas cargan realmente los agentes |
 | `jeo-skill prune-unused` / `restore` / `purge-quarantine` | Pone en cuarentena, restaura o elimina habilidades nunca usadas |
 | `jeo-skill prune-retired --global --dry-run` | Elimina copias obsoletas de habilidades retiradas del catálogo |

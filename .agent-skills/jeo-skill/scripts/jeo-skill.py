@@ -21,6 +21,7 @@ from typing import Any, Iterable
 sys.dont_write_bytecode = True
 from install_support import (copy_tree, remove_retired_installs, require_safe_path,
                              require_safe_tree, resolve_aside_user)
+import skill_readiness
 import skill_usage_cli
 
 DEFAULT_SOURCE = "https://github.com/akillness/jeo-skills"
@@ -592,6 +593,8 @@ def skill_setup_commands(root: Path | None, selected: list[str], *,
     ]
 
     for name in ordered_selected:
+        if name in skill_readiness.READINESS_SKILLS:
+            continue  # reported by run_readiness_report, which never installs or fails the install
         if name == "llm-wiki" and "obsidian-second-brain" in selected:
             print("Legacy llm-wiki setup omitted: obsidian-second-brain owns this new knowledge installation; select llm-wiki alone for its separate setup")
             continue
@@ -711,7 +714,11 @@ def run_skill_setup(root: Path | None, selected: list[str], *,
         print(f"Setup skipped ({skill_name}): no automated --setup handler defined")
     for skill_name, cmd in plans:
         print(f"Setup plan ({skill_name}): {shlex.join(cmd)}")
+    for line in skill_readiness.describe_plan(root, [n for n in selected if n in skill_readiness.READINESS_SKILLS]):
+        print(line)
     if dry_run or not plans:
+        if not dry_run:
+            run_readiness_report(root, selected)
         return
     env = os.environ.copy()
     home = Path.home()
@@ -750,6 +757,23 @@ def run_skill_setup(root: Path | None, selected: list[str], *,
         completed = subprocess.run(cmd, env=env, check=False)
         if completed.returncode != 0:
             raise JeoSkillError(f"Post-install setup failed for {skill_name} (exit {completed.returncode}): {shlex.join(cmd)}")
+    run_readiness_report(root, selected)
+
+
+def run_readiness_report(root: Path | None, selected: list[str]) -> None:
+    """Print the offline readiness report for selected program operators; blocked is a report, not a failure."""
+    names = [name for name in selected if name in skill_readiness.READINESS_SKILLS]
+    if names and root is not None:
+        skill_readiness.report(root, names)
+
+
+def command_readiness(args: argparse.Namespace) -> int:
+    names = unique(args.names or list(skill_readiness.READINESS_SKILLS))
+    unknown = [name for name in names if name not in skill_readiness.READINESS_SKILLS]
+    if unknown:
+        raise JeoSkillError(f"No readiness helper for: {', '.join(unknown)}. Known: {', '.join(skill_readiness.READINESS_SKILLS)}")
+    return skill_readiness.report(projection_root(args) or install_root(args), names, as_json=args.json)
+
 
 def finish_install(args: argparse.Namespace, selected: list[str]) -> None:
     root = install_root(args)
@@ -992,6 +1016,15 @@ def build_parser() -> argparse.ArgumentParser:
     prune.add_argument("-g", "--global", dest="global_install", action="store_true")
     prune.add_argument("--dry-run", action="store_true")
 
+    readiness = sub.add_parser("readiness",
+                               help="Offline, read-only readiness report for the GitHub program operators")
+    readiness.add_argument("names", nargs="*", help="Operators to check (default: all five)")
+    readiness.add_argument("-g", "--global", dest="global_install", action="store_true")
+    readiness.add_argument("-a", "--agent", default="universal")
+    readiness.add_argument("--aside-home", default=str(Path.home() / ".aside"))
+    readiness.add_argument("--aside-account")
+    readiness.add_argument("--json", action="store_true")
+
     skill_usage_cli.add_parsers(sub)
 
     sub.add_parser("doctor", help="Verify catalog and installer prerequisites")
@@ -1010,6 +1043,8 @@ def main() -> int:
         if args.command == "bootstrap":
             command_bootstrap(args)
             return 0
+        if args.command == "readiness":
+            return command_readiness(args)
         if args.command == "prune-retired":
             command_prune_retired(args)
             return 0

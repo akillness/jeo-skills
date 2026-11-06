@@ -15,7 +15,7 @@ Skills in this catalog that adapt, wrap or operate another project credit it her
 | `plannotator` | [plannotator.ai](https://plannotator.ai) | MIT |
 | `bmad` | [bmad-dev/BMAD-METHOD](https://github.com/bmad-dev/BMAD-METHOD) | MIT |
 | `agentation` | [benjitaylor/agentation](https://github.com/benjitaylor/agentation) | MIT |
-| `fabric` | [danielmiessler/fabric](https://github.com/danielmiessler/fabric) | MIT |
+| `fabric` | [danielmiessler/fabric @ 8e8511c](https://github.com/danielmiessler/fabric/tree/8e8511c770b2589a6066398a86343fbf8c2a56a3) (offline helper and audit notes pinned here) | MIT |
 | `harness2` | [google-research/harness2](https://github.com/google-research/harness2) | Apache-2.0 |
 | `ruflo` | [ruvnet/ruflo](https://github.com/ruvnet/ruflo) | MIT |
 | `voicestudio` | [debpalash/VoiceStudio](https://github.com/debpalash/VoiceStudio) | AGPL-3.0-only |
@@ -88,4 +88,4 @@ The ten game-development projects above were identified through [this LinkedIn p
 | `google-maps-scraper` | [gosom/google-maps-scraper @ 903b96d](https://github.com/gosom/google-maps-scraper/tree/903b96d7aa8863188022c04db220e44f3218c860) | MIT; sponsor and referral links in the upstream README are not endorsed |
 | `gitingest` | [coderamp-labs/gitingest @ 4e259a0](https://github.com/coderamp-labs/gitingest/tree/4e259a02fe72115bee538271622f1234a81c8e1a) · `gitingest` 0.3.1 on PyPI | MIT |
 
-These four guides, with the existing `fabric` guide (above), form the `github-five-programs` bundle; the programs were named in an Instagram card-news post. The guides are original, source-specific operator documentation and bundle no upstream code or runtime. Each records its audited commit and file hashes in `references/source.json`; consult the upstream repository's current terms before redistributing anything. The `image-to-github-repo` skill resolves such posts to repository URLs.
+These four guides and the `fabric` guide (listed with the older sources above) form the `github-five-programs` bundle; the programs were named in an Instagram card-news post. The guides are original, source-specific operator documentation and bundle no upstream code or runtime. Each records its audited commit and file hashes in `references/source.json`; consult the upstream repository's current terms before redistributing anything. The `image-to-github-repo` skill resolves such posts to repository URLs.

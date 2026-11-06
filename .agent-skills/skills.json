@@ -1189,7 +1189,8 @@
       "codebase-search",
       "git-workflow",
       "debugging",
-      "testing-strategies"
+      "testing-strategies",
+      "image-to-github-repo"
     ],
     "web-frontend": [
       "react-best-practices",
@@ -5488,7 +5489,7 @@
         "Glob"
       ],
       "keyword": "fabric",
-      "version": "2.1.0",
+      "version": "2.2.0",
       "source": "Daniel Miessler Fabric README + REST API docs + GitHub issue survey (2026-04-18)"
     },
     {

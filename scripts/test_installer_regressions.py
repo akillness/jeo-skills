@@ -2054,5 +2054,106 @@ class InstallerRegressions(unittest.TestCase):
         self.assertEqual(self.snapshot(), before)
         self.assertFalse((self.home / "legacy-bootstrap-ran").exists())
 
+    FIVE_PROGRAMS = ("fabric", "moneyprinter-v2", "agent-s", "google-maps-scraper", "gitingest")
+
+    def add_five_programs(self):
+        """Put the five real program operators and their bundle into the fixture source and catalog."""
+        for name in self.FIVE_PROGRAMS:
+            shutil.copytree(ROOT / ".agent-skills" / name, self.source / ".agent-skills" / name,
+                            ignore=shutil.ignore_patterns("__pycache__"))
+        catalog = json.loads(self.catalog.read_text())
+        for name in self.FIVE_PROGRAMS:
+            catalog["skills"].append({"name": name, "category": "engineering", "subcategory": "testing", "description": "fixture"})
+        catalog["bundles"]["github-five-programs"] = list(self.FIVE_PROGRAMS)
+        self.catalog.write_text(json.dumps(catalog))
+
+    def five_program_bootstrap(self, **options):
+        return self.bootstrap(INSTALL_GLOBAL="true", JEO_SKILLS_AGENT="universal", JEO_SKILLS_SELECTION="bundle",
+                              JEO_SKILLS_JEV="skip", **{"JEO_SKILLS_BUNDLE": "github-five-programs", **options})
+
+    def test_five_program_bundle_install_prints_one_readiness_report_and_never_fails_on_blocked(self):
+        self.add_five_programs()
+        result = self.five_program_bootstrap()
+        self.successful(result)
+        self.assertEqual(result.stdout.count("Program readiness"), 1, result.stdout)
+        for name in self.FIVE_PROGRAMS:
+            self.assertIn(f"- {name}:", result.stdout)
+            self.assertTrue((self.home / ".agents/skills" / name / "scripts/preflight.py").is_file(), name)
+        self.assertRegex(result.stdout, r"\d/5 ready\.")
+        self.assertNotIn("WARNING: readiness report could not run", result.stdout)
+
+    def test_readiness_report_is_skippable_and_absent_for_other_selections(self):
+        self.add_five_programs()
+        skipped = self.five_program_bootstrap(JEO_SKILLS_READINESS="skip")
+        self.successful(skipped)
+        self.assertNotIn("Program readiness", skipped.stdout)
+        other = self.five_program_bootstrap(JEO_SKILLS_BUNDLE="pair")
+        self.successful(other)
+        self.assertNotIn("Program readiness", other.stdout)
+
+    def test_dry_run_previews_the_readiness_command_without_running_it(self):
+        self.add_five_programs()
+        preview = self.five_program_bootstrap(JEO_SKILLS_DRY_RUN="true")
+        self.successful(preview)
+        self.assertIn("jeo-skill.py readiness --agent universal --global", preview.stdout)
+        self.assertNotIn("Program readiness", preview.stdout)
+        plain = self.five_program_bootstrap(JEO_SKILLS_DRY_RUN="true", JEO_SKILLS_BUNDLE="pair")
+        self.assertNotIn("readiness", plain.stdout)
+
+    def test_install_setup_for_the_bundle_reports_without_running_any_installer(self):
+        self.add_five_programs()
+        self.successful(self.five_program_bootstrap(JEO_SKILLS_READINESS="skip"))
+        preview = self.cli("install", "--bundle", "github-five-programs", "--setup", "--global", "--yes",
+                           "--dry-run", "--source", str(self.source))
+        self.successful(preview)
+        self.assertEqual(preview.stdout.count("Readiness plan ("), 5, preview.stdout)
+        self.assertNotIn("Setup skipped", preview.stdout)
+        self.assertNotIn("Setup plan (", preview.stdout)
+        applied = self.cli("install", "--bundle", "github-five-programs", "--setup", "--global", "--yes",
+                           "--source", str(self.source))
+        self.successful(applied)
+        self.assertEqual(applied.stdout.count("Program readiness"), 1, applied.stdout)
+        self.assertNotIn("Setup skipped", applied.stdout)
+
+    def test_standalone_readiness_command_is_offline_and_validates_names(self):
+        self.add_five_programs()
+        self.successful(self.five_program_bootstrap(JEO_SKILLS_READINESS="skip"))
+        report = self.cli("readiness", "--global", "gitingest", "--json")
+        self.assertIn(report.returncode, (0, 1), report.stdout)
+        payload = json.loads(report.stdout)
+        self.assertEqual((payload["scope"], payload["total"], payload["results"][0]["skill"]), ("readiness", 1, "gitingest"))
+        self.assertEqual(payload["results"][0]["state"], "ready")
+        unknown = self.cli("readiness", "--global", "alpha")
+        self.assertEqual(unknown.returncode, 1, unknown.stdout)
+        self.assertIn("No readiness helper for: alpha", unknown.stdout)
+        absent = self.cli("readiness", "--global", "fabric", "--json")
+        self.assertEqual(json.loads(absent.stdout)["results"][0]["state"], "ready" if absent.returncode == 0 else "blocked")
+
+    def test_full_tools_programs_tier_reports_without_changing_the_tool_total(self):
+        self.add_five_programs()
+        self.successful(self.five_program_bootstrap(JEO_SKILLS_READINESS="skip"))
+        fixture = self.work / "fixture-helper"
+        (fixture / "scripts").mkdir(parents=True)
+        shutil.copy(ROOT / "scripts/install-full-tools.sh", fixture / "scripts/install-full-tools.sh")
+        empty = self.work / "empty-bin"
+        empty.mkdir()
+        for tool in ("python3", "dirname", "mktemp", "uname"):
+            found = shutil.which(tool) if tool != "python3" else sys.executable
+            if found:
+                (empty / tool).symlink_to(found)
+        env = {**self.env, "PATH": str(empty), "JEO_FULL_TOOLS_EXTENDED": "0"}
+        run = lambda *flags: subprocess.run(
+            ["/bin/bash", str(fixture / "scripts/install-full-tools.sh"), *flags, str(self.project)],
+            cwd=self.project, env=env, stdin=subprocess.DEVNULL, text=True,
+            stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=60)
+        plain = run()
+        with_programs = run("--programs")
+        self.assertNotIn("Program readiness", plain.stdout)
+        self.assertEqual(with_programs.stdout.count("nothing was installed, started or contacted"), 1, with_programs.stdout)
+        for result in (plain, with_programs):
+            self.assertIn("Full-tool result: 0/6 succeeded.", result.stdout)
+        self.assertEqual(plain.returncode, with_programs.returncode)
+        self.assertLess(with_programs.stdout.index("Program readiness"), with_programs.stdout.index("Full-tool result"))
+
 if __name__ == "__main__":
     unittest.main()

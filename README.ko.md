@@ -130,6 +130,7 @@ jeo-skill install react-best-practices --global --yes      # install
 | 특정 스킬 | `jeo-skill install <name> [<name> ...] --global --yes` |
 | 특정 스킬 + 런타임/스모크 검증 | `jeo-skill install <name> ... --global --yes --setup` (지원되는 스킬에 한해 훅/MCP 단계를 실행하려면 `--with-hooks` 추가, 도구별 지원 범위는 [설치 가이드](setup-all-skills-prompt.md#step-5--full-mode-shared-tools) 참조) |
 | 번들 또는 카테고리 일부 | `jeo-skill install --bundle <bundle> --global --yes` 또는 `--category <id> [--subcategory <id>]` |
+| GitHub 프로그램 5종 + 준비 상태 리포트 | `jeo-skill install --bundle github-five-programs --global --yes --setup`. `JEO_SKILLS_SELECTION=bundle JEO_SKILLS_BUNDLE=github-five-programs`를 지정한 한 줄 명령도 같은 리포트를 출력합니다. 오프라인 읽기 전용이라 아무것도 설치하거나 실행하지 않으며 프로그램별 승인을 묻지 않습니다 |
 
 게임 개발 도구별 스킬 10개는 `jeo-skill install --bundle game-source-repositories --dry-run`으로 미리 볼 수 있습니다. 물리, 지형, 재질, 이펙트, 경로 탐색, 애니메이션, 그래픽, 메시와 노이즈를 다루며 업스트림 도구 자체를 설치하거나 실행하지는 않습니다. [설치 범위](setup-all-skills-prompt.md#game-development-source-guides-on-demand)와 [출처별 라이선스](docs/attribution.md)를 확인하세요.
 
@@ -158,7 +159,7 @@ curl -fsSL "$URL" | JEO_SKILLS_DRY_RUN=true INSTALL_GLOBAL=false bash
 
 | 번들 | 스킬 |
 |---|---|
-| `starter` | jeo-skill, skill-standardization, codebase-search, git-workflow, debugging, testing-strategies |
+| `starter` | jeo-skill, skill-standardization, codebase-search, git-workflow, debugging, testing-strategies, image-to-github-repo |
 | `cli-core` | jeo-skill, rtk, semble, zvec-grep, graphify, scrapling |
 | `web-frontend` | react-best-practices, responsive-design, web-accessibility, design-system, web-design |
 | `web-backend` | api-design, authentication-setup, database-schema-design, backend-testing |
@@ -262,6 +263,7 @@ node ~/.agents/jev/jev-harness.mjs \
 | `jeo-skill related <name>` | 함께 고려할 중복 또는 순차 스킬 |
 | `jeo-skill install ... --dry-run` | 파일을 기록하지 않고 선택 항목 미리 보기 |
 | `jeo-skill doctor` | 카탈로그, `npx`/Node.js 사전 요건 및 CLI 링크 확인 |
+| `jeo-skill readiness [--global] [--json]` | fabric, moneyprinter-v2, agent-s, google-maps-scraper, gitingest의 오프라인 읽기 전용 준비 상태 리포트 |
 | `jeo-skill usage scan` / `usage report` | 설치된 스킬 중 에이전트가 실제로 로드한 항목 추적 |
 | `jeo-skill prune-unused` / `restore` / `purge-quarantine` | 한 번도 사용하지 않은 스킬 격리, 복원 또는 삭제 |
 | `jeo-skill prune-retired --global --dry-run` | 폐기된 카탈로그 스킬의 오래된 복사본 제거 |
@@ -913,6 +915,7 @@ python3 scripts/changelog.py check
 |--------|---------|
 | **`image-to-github-repo`: 이미지 속 프로그램의 깃허브 주소 찾기** | 스크린샷·카드뉴스·SNS 게시물에서 프로젝트 이름, 표기된 링크, 별 개수, 키워드 힌트를 읽어 `scripts/resolve_repo.py`로 각 프로젝트의 실제 저장소를 검증하는 `research` / `web-research` 스킬을 추가했습니다(표준 라이브러리만 사용, GitHub API GET 요청만 전송). 이름이 바뀐 저장소의 리다이렉트를 따라가고, 표기된 별 개수를 0.9~2배 범위와 비교하며, 키워드 불일치만으로 후보를 배제하지 않고, 동명 저장소 사이에서 추측하는 대신 `verified` / `high` / `medium` / `ambiguous` / `low`로 신뢰도를 보고합니다(종료 코드 0/1/2). `scripts/test_image_to_github_repo.py`가 오프라인으로 검증하며 CI에서 실행됩니다. `jeo-skill install image-to-github-repo --global --yes`로 설치하고, 네트워크·토큰 경계는 설치 가이드의 온디맨드 런타임 섹션에 기록했습니다. |
 | **GitHub 프로그램 5종 운영 가이드와 `github-five-programs` 번들** | 기존 `fabric`에 더해 `moneyprinter-v2`, `agent-s`, `google-maps-scraper`, `gitingest`를 추가했습니다. 새 가이드는 모두 라우팅 우선 구조이며 감사한 업스트림 커밋에 고정되고, SHA-256 매니페스트, 오프라인 표준 라이브러리 `scripts/preflight.py`, evals를 갖췄습니다. 감사 결과는 추정이 아니라 기록입니다: MPV2의 앱 내 CRON 메뉴는 등록한 작업을 실행하지 않고 Outreach는 확인 없이 조건을 통과한 모든 행에 메일을 보냅니다. pip는 Python 3.12.1 이상에서 `gui-agents` 0.3.2를 거부하고 Agent S는 생성한 코드를 동작별 확인 없이 실행합니다. 스크레이퍼 웹 UI에는 인증이 없고 텔레메트리는 기본 켜짐입니다. gitingest 기본 무시 목록은 `.env`만 제외하고 `.env.local`과 키 파일은 포함합니다(0.3.1에서 관찰). `jeo-skill install --bundle github-five-programs --global --yes`로 설치하며 `scripts/test_five_github_programs.py`가 헬퍼를 오프라인으로 검증하고 CI에서 실행됩니다. |
+| **프로그램 5종 준비 상태 리포트 한 번에** | `jeo-skill readiness`(새 `skill_readiness.py`)가 각 운영 스킬의 오프라인 `preflight.py`를 실행해 리포트 하나로 출력합니다. `jeo-skill install … --setup`, `install.sh`(`JEO_SKILLS_SELECTION=all` 또는 `JEO_SKILLS_BUNDLE=github-five-programs`), `scripts/install-full-tools.sh --programs`가 설치 후 이 리포트를 보여주며 도구 총계에는 포함하지 않습니다. blocked는 설치 실패가 아니라 리포트(종료 코드 1)이고, 프로그램별 승인이 필요 없으며 아무것도 설치하지 않고 네트워크 연결도 열지 않습니다. `JEO_SKILLS_READINESS=skip`으로 끌 수 있습니다. `fabric`에도 같은 고정 헬퍼(기본 루프백 서버, `.env` 권한 점검)가 생겼고 `image-to-github-repo`가 `starter` 번들에 들어갔습니다. 오프라인 테스트가 CI에서 Linux와 macOS를 모두 검증합니다. |
 
 ## 🆕 v2026-11-04 업데이트
 

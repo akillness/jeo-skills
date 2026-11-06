@@ -195,7 +195,7 @@ if [ "${JEO_SKILLS_STAR:-}" = true ] && [ "${JEO_SKILLS_DRY_RUN:-false}" != true
       tmp=$(mktemp "${TMPDIR:-/tmp}/jeo-skills-star.XXXXXXXX") || exit 1
       trap 'rm -f "$tmp"' EXIT
       curl --disable --proto '=https' --max-time 15 -fsS 'https://raw.githubusercontent.com/akillness/jeo-skills/main/install.sh' -o "$tmp" || exit 1
-      python3 -I -c 'import hashlib,sys; sys.exit(hashlib.sha256(open(sys.argv[1], "rb").read()).hexdigest() != "c8d42ee1d86138cc995701ddcf6b0e0b5ae3370db57f77c79efad3c422b6364b")' "$tmp" || exit 1
+      python3 -I -c 'import hashlib,sys; sys.exit(hashlib.sha256(open(sys.argv[1], "rb").read()).hexdigest() != "3e4ebf0af1fa2534d7a9a3bff269e50214400232cda6635a963938d2483385cc")' "$tmp" || exit 1
       JEO_SKILLS_STAR_ONLY=true JEO_SKILLS_STAR=true bash "$tmp"
     else
       exit 1
@@ -1810,6 +1810,7 @@ HOME="$USER_HOME" python3 "$JEO_ROUTER" link
 HOME="$USER_HOME" python3 "$JEO_ROUTER" doctor
 HOME="$USER_HOME" python3 "$JEO_ROUTER" prune-retired --global --dry-run
 HOME="$USER_HOME" python3 "$JEO_ROUTER" categories --json
+[ -f "$SKILLS_ROOT/gitingest/scripts/preflight.py" ] && { HOME="$USER_HOME" python3 "$JEO_ROUTER" readiness --global || [ "$?" -le 1 ]; }
 command -v jeo-skill >/dev/null 2>&1 \
   || printf 'jeo-skill is linked in %s but that directory is not on PATH (see Step 1)\n' "$USER_HOME/.local/bin"
 command -v rtk >/dev/null 2>&1 && rtk gain
@@ -3301,42 +3302,57 @@ printed. Do not set or request a token as part of blanket setup. Exit 0 means ev
 is `verified`, `high`, or `medium`; 1 means at least one is `low`, `ambiguous`, not found, or
 an error; 2 means invalid input. A `medium` result is reported as "verify", never as final.
 
-### Five GitHub program operators (on demand, offline support)
+### Five GitHub program operators (on demand, one readiness report)
 
 The `github-five-programs` bundle selects five operator guides for popular open-source
-programs. Four are source-pinned packages with a router-first `SKILL.md`, an audited
+programs. Each is a source-pinned package: a router-first `SKILL.md`, an audited
 `references/upstream.md`, a SHA-256 manifest (`references/source.json`), an executable stdlib
-`scripts/preflight.py` and behavioral evals; `fabric` is the older routing-first guide without
-a helper. Catalog installation copies documents only. Even in `full` mode, do not clone, build
-or install these projects, pull container images or models, start servers, open ports, read
-credentials, drive a desktop or browser, scrape, publish, or send mail. Select one real task and
-approve its exact target, data disclosure, side effects and rollback first.
+`scripts/preflight.py` and behavioral evals. Catalog installation copies documents only. Even in
+`full` mode, do not clone, build or install these projects, pull container images or models,
+start servers, open ports, read credentials, drive a desktop or browser, scrape, publish, or send
+mail. Select one real task and approve its exact target, data disclosure, side effects and
+rollback first.
+
+One command installs the guides and prints one readiness report. It needs no per-program
+approval, because the report installs nothing, starts nothing and contacts nothing:
+
+```bash
+# preview first (writes nothing): the selection and the readiness commands
+HOME="$USER_HOME" python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" install --bundle github-five-programs --global --setup --dry-run
+HOME="$USER_HOME" python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" install --bundle github-five-programs --global --yes --setup
+# guides already installed: the same report on its own (add --json for every finding)
+HOME="$USER_HOME" python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" readiness --global
+```
+
+`install.sh` prints the same report after `JEO_SKILLS_SELECTION=all` and after
+`JEO_SKILLS_SELECTION=bundle JEO_SKILLS_BUNDLE=github-five-programs`; set
+`JEO_SKILLS_READINESS=skip` to opt out. `scripts/install-full-tools.sh --programs` appends it to the
+tool run without counting it in the tool total or changing the exit status. `readiness` exits 0
+when every program is ready, 1 when one is blocked or not installed, and 2 when a helper could not
+report; `--setup`, `install.sh` and the full-tools helper treat 0 and 1 as a normal result, so a
+blocked program never fails an install. Report each blocked line as a missing prerequisite and do
+not repair it during blanket setup: installing or running a program is a separate approval for
+exactly that program and task.
 
 | Skill | Upstream pin | Task-triggered prerequisites and setup boundary |
 |---|---|---|
-| [fabric](.agent-skills/fabric/SKILL.md) | danielmiessler/fabric (MIT); no pin recorded | Provider keys or a local model; `fabric --setup` writes configuration; Homebrew and Arch installs expose the binary as `fabric-ai`. |
+| [fabric](.agent-skills/fabric/SKILL.md) | danielmiessler/fabric `8e8511c770b2589a6066398a86343fbf8c2a56a3` (MIT) | The binary is `fabric`, or `fabric-ai` from Homebrew, Arch and Scoop. Provider keys or a local model; `fabric --setup` writes `~/.config/fabric` and downloads patterns from GitHub at run time. `--serve` binds loopback and refuses a non-loopback address without an API key; `--scrape_url` sends the URL to Jina AI. |
 | [moneyprinter-v2](.agent-skills/moneyprinter-v2/SKILL.md) | FujiwaraChoki/MoneyPrinterV2 `a734fa924adb9ffe5ab8472aa5526e469e42a8b5` (AGPL-3.0) | Python 3.12, Ollama, a Gemini image key, a logged-in Firefox profile and ImageMagick; Go only for Outreach. Its menu force-kills every Firefox process, its in-app CRON menu never runs jobs, and Outreach emails every passing scraped row without confirmation. Never run `setup_local.sh`, install requirements, publish, schedule, scrape or send mail during setup. |
 | [agent-s](.agent-skills/agent-s/SKILL.md) | simular-ai/Agent-S `0fff0e634869dab72027435b4586e62300185d41` (Apache-2.0) | Python 3.9 to 3.11 or exactly 3.12.0 (pip refuses `gui-agents` 0.3.2 on 3.12.1 and later), `tesseract`, a model key and a grounding endpoint that receive every screenshot. Generated code is `exec()`'d with no per-action confirmation; `--enable_local_env` runs arbitrary Python and Bash. Never run it during setup. |
 | [google-maps-scraper](.agent-skills/google-maps-scraper/SKILL.md) | gosom/google-maps-scraper `903b96d7aa8863188022c04db220e44f3218c860` (MIT) | Docker or a Go build at the `go.mod` version. Crawls make live Google Maps requests; the Web UI and REST API are unauthenticated and must be bound to loopback; telemetry is on unless `DISABLE_TELEMETRY=1`. Upstream's own agent skill uses the same folder name and updates itself: check the helper's `installed-skill` line before either installer writes. Never run `PROVISION` or deploy the SaaS edition. |
 | [gitingest](.agent-skills/gitingest/SKILL.md) | coderamp-labs/gitingest `4e259a02fe72115bee538271622f1234a81c8e1a` (MIT) | Python 3.8+ and git. The `hub` to `ingest` URL trick and the hosted form send data to gitingest.com; keep private repositories on the local CLI with an environment token. The default ignore list drops a plain `.env` but not `.env.local` or key files. |
 
-Preview the selection without installing any upstream runtime:
+The Linux and macOS behavior is the same; the helpers use only the Python standard library and
+report the platform they see. Each helper supports `--help`, `--json`, optional `--repo PATH` and
+optional `--expect-commit FULL_SHA` (requires `--repo`), plus one skill-specific input: `--config`
+for moneyprinter-v2, `--queries` for google-maps-scraper, `--target` for gitingest. The JSON report
+has `skill`, `scope: offline-preflight`, `status`, `checks` and `runtime_verified: false`; `info`
+checks are advisory and never change `status`. Exit 0 means no check blocks, 1 means at least one
+blocks, 2 means invalid input. With `--repo`, a helper compares the checkout's pinned files against
+`references/source.json`; a hash difference blocks, meaning the skill's guidance was audited
+against another commit.
 
 ```bash
-python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" install --bundle github-five-programs --global --dry-run
-```
-
-Each of the four helpers supports `--help`, `--json`, optional `--repo PATH` and optional
-`--expect-commit FULL_SHA` (requires `--repo`), plus one skill-specific input: `--config` for
-moneyprinter-v2, `--queries` for google-maps-scraper, `--target` for gitingest. The JSON report has
-`skill`, `scope: offline-preflight`, `status`, `checks` and `runtime_verified: false`; `info` checks
-are advisory and never change `status`. Exit 0 means no check blocks, 1 means at least one
-blocks, 2 means invalid input. With `--repo`, each helper compares the checkout's pinned files
-against `references/source.json`; a hash difference blocks, meaning the skill's guidance was
-audited against another commit.
-
-```bash
-python3 "$SKILLS_ROOT/agent-s/scripts/preflight.py" --help
 python3 "$SKILLS_ROOT/agent-s/scripts/preflight.py" --json
 python3 "$SKILLS_ROOT/gitingest/scripts/preflight.py" --json --target "/path/to/folder"
 python3 "$SKILLS_ROOT/google-maps-scraper/scripts/preflight.py" --json --queries "/path/to/queries.txt"
@@ -3348,7 +3364,8 @@ The helpers read host facts and named local inputs only: they never run the upst
 discovered tool, open a socket, read a credential value, or write a file. Tool presence and
 `status: ok` do not prove a working Ollama, model endpoint, Docker daemon, browser login or API
 key. `--config` reports set or unset for secrets and never their values; `--target` reads file
-names and sizes, never contents. Record unchecked versions and missing prerequisites instead of
+names and sizes, never contents; `fabric` reports whether `~/.config/fabric/.env` exists and is
+owner-only without opening it. Record unchecked versions and missing prerequisites instead of
 repairing them to force a green result. MoneyPrinterV2 is AGPL-3.0: its copyleft reaches modified
 versions that are distributed or run as a network service, and these wrappers do not relicense it.
 

@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "skill": "fabric",
+  "repository": "danielmiessler/fabric",
+  "commit": "8e8511c770b2589a6066398a86343fbf8c2a56a3",
+  "committed_at": "2026-11-03T22:21:18Z",
+  "observed_at": "2026-11-06",
+  "license": {
+    "spdx": "MIT",
+    "path": "LICENSE",
+    "url": "https://github.com/danielmiessler/fabric/blob/8e8511c770b2589a6066398a86343fbf8c2a56a3/LICENSE",
+    "conclusion": "MIT per the GitHub API and the README badge. The pre-existing skill text is CC-BY-4.0; this pin covers only the offline helper and audit notes. This skill copies no upstream code."
+  },
+  "project_version": "v1.4.564 (release commit message at the pin)",
+  "binary_names": [
+    "fabric",
+    "fabric-ai"
+  ],
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "0bb1ab869699511d5a3ca214acb12bced854e20c1f7694ba320605709ed2c7af",
+      "bytes": 50971
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "42b554b17b8fd7ae4d6bc488f0857ae91d9179f04db3da466c2fc5425686f4f9",
+      "bytes": 1084
+    },
+    {
+      "path": "internal/cli/flags.go",
+      "sha256": "22b613cbdd17b3c267801931b01d6f6073d9ab10d33fd53b407e2fb387c34855",
+      "bytes": 26624
+    },
+    {
+      "path": "internal/cli/setup_server.go",
+      "sha256": "99052ec64997722db843fd0329f583a82eacd3c6d4f6233c96f451988afd5801",
+      "bytes": 2361
+    },
+    {
+      "path": "internal/server/auth.go",
+      "sha256": "4c4f38af66dd7ee5413551331a9f3359b9e2e3af33848f81d056136b8e0ac08a",
+      "bytes": 5554
+    },
+    {
+      "path": "internal/server/loopback_guard.go",
+      "sha256": "26d0f62c8b68c0b29f48b6da6e324c6668684eea1f28a80e824ddbecee0375ca",
+      "bytes": 5650
+    },
+    {
+      "path": "internal/plugins/db/fsdb/db.go",
+      "sha256": "2b2b6d20cc590d7d61b82c0c1b6485e1df6a6833a54b241016ae038565b83ec5",
+      "bytes": 4931
+    },
+    {
+      "path": "internal/tools/patterns_loader.go",
+      "sha256": "c9d2caadf863677956d4a662d9c1fe8276dc10022dec05b07d09f60545f93539",
+      "bytes": 10332
+    },
+    {
+      "path": "internal/tools/jina/jina.go",
+      "sha256": "64c7733c8e34b03e24a6d7ade2be604ae84240eb33a9844175cfa53154a4405c",
+      "bytes": 1772
+    }
+  ]
+}

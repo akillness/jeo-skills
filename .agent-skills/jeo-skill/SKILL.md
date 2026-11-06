@@ -62,6 +62,10 @@ jeo-skill install --bundle game-web --global --yes
 # Optionally run bundled tool setup / smoke verification (--setup) and hook/MCP wiring (--with-hooks):
 jeo-skill install open-ontologies openspace rtk --global --yes --setup --dry-run
 jeo-skill install open-ontologies openspace rtk --global --yes --setup
+
+# Five GitHub programs: install the guides and print one offline, read-only readiness report.
+jeo-skill install --bundle github-five-programs --global --yes --setup
+jeo-skill readiness --global            # the same report alone; add --json for every finding
 ```
 
 The CLI delegates file installation to `npx skills add ... --skill ...`; it never copies the
@@ -71,6 +75,10 @@ Pass `--setup` to also run the selected skills' bundled CLI/smoke verification h
 (for example `open-ontologies`, `okf-agent-memory`, `mex`, `openspace`, `ooo`, `rtk`,
 `semble`, `cli-anything`, `spec-kit`, `graphify`, `llm-wiki`, `jev-control-plane`, `ecc`),
 and `--with-hooks` when you also approve hook/MCP registration.
+For `fabric`, `moneyprinter-v2`, `agent-s`, `google-maps-scraper` and `gitingest`, `--setup` installs
+nothing: it runs each skill's offline `scripts/preflight.py` and prints one report. A blocked program is a
+missing prerequisite, not an install failure, so the command's exit status is unaffected; installing or running
+one of those programs stays a separate approval.
 
 ### 3. Treat overlap as a routing relationship
 

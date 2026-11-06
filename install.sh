@@ -44,6 +44,16 @@ case "$SELECTION" in
   category) SELECT_ARGS=(--category "$JEO_SKILLS_CATEGORY"); if [ -n "${JEO_SKILLS_SUBCATEGORY:-}" ]; then SELECT_ARGS+=(--subcategory "$JEO_SKILLS_SUBCATEGORY"); fi ;;
   all) SELECT_ARGS=(--all) ;;
 esac
+# Program operators (fabric, moneyprinter-v2, agent-s, google-maps-scraper, gitingest) get one offline,
+# read-only readiness report after install; it installs nothing and asks nothing. Opt out: JEO_SKILLS_READINESS=skip.
+READY_WANTED=false
+if { [ "$SELECTION" = all ] || { [ "$SELECTION" = bundle ] && [ "${JEO_SKILLS_BUNDLE:-starter}" = github-five-programs ]; }; } && [ "${JEO_SKILLS_READINESS:-}" != skip ]; then
+  READY_WANTED=true
+fi
+READY_ARGS=(readiness --agent "$AGENT")
+if [ "$GLOBAL" = true ]; then READY_ARGS+=(--global); fi
+if [ -n "${JEO_SKILLS_ASIDE_HOME:-}" ]; then READY_ARGS+=(--aside-home "$JEO_SKILLS_ASIDE_HOME"); fi
+if [ -n "${JEO_SKILLS_ASIDE_ACCOUNT:-}" ]; then READY_ARGS+=(--aside-account "$JEO_SKILLS_ASIDE_ACCOUNT"); fi
 fi
 
 if [ "$STAR_ONLY" = true ]; then
@@ -76,6 +86,9 @@ if [ "$DRY_RUN" = true ]; then
     else
       info 'Project-scoped all would skip user-global tool installation and report partial success; set INSTALL_GLOBAL=true to allow global installation.'
     fi
+  fi
+  if [ "$READY_WANTED" = true ]; then
+    printf 'Command: '; printf '%q ' python3 "$CLI_PATH" "${READY_ARGS[@]}"; printf '\n'
   fi
   if [ "$GLOBAL" = true ]; then
     printf 'Command: '; printf '%q ' python3 "$CLI_PATH" prune-retired --global; printf '\n'
@@ -274,6 +287,10 @@ if [ "$SELECTION" = all ] && [ "$GLOBAL" = true ] && [ "${JEO_SKILLS_WORKSPACE:-
   fi
 fi
 if [ -n "${FULL_TMP:-}" ]; then rm -rf "$FULL_TMP" || info 'WARNING: Full tool temporary cleanup failed.'; fi
+if [ "${READY_WANTED:-false}" = true ]; then
+  # Exit 1 means a program has a missing prerequisite: that is the report, not an install failure.
+  python3 "$CLI_PATH" "${READY_ARGS[@]}" || [ "$?" -le 1 ] || info 'WARNING: readiness report could not run; installed skills remain available.'
+fi
 # Remove stale catalog copies of retired skills (jeo, harness) from every runtime root in scope.
 if [ "$GLOBAL" = true ]; then
   python3 "$CLI_PATH" prune-retired --global || info 'WARNING: retired-skill cleanup did not complete; installed skills remain available.'

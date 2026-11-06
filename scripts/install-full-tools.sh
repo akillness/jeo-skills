@@ -12,10 +12,16 @@ SEMBLE_VERSION=0.7.0
 CLIHUB_VERSION=0.4.1
 
 EXTENDED="${JEO_FULL_TOOLS_EXTENDED:-0}"
-if [ "${1:-}" = "--extended" ]; then
-  EXTENDED=1
+# --programs adds an offline, read-only readiness report for the five program operators after the tools;
+# it is not counted in the tool total and never changes the exit status.
+PROGRAMS="${JEO_FULL_TOOLS_PROGRAMS:-0}"
+while [ "${1:-}" = "--extended" ] || [ "${1:-}" = "--programs" ]; do
+  case "$1" in
+    --extended) EXTENDED=1 ;;
+    --programs) PROGRAMS=1 ;;
+  esac
   shift
-fi
+done
 PROJECT_DIR=${1:-$PWD}
 SPEC_KIT_INTEGRATION=${SPEC_KIT_INTEGRATION:-codex}
 SCRIPT_DIR=$(cd "${BASH_SOURCE[0]%/*}" 2>/dev/null && pwd || echo "$PWD")
@@ -344,6 +350,17 @@ if [ "$EXTENDED" = 1 ]; then
   record OpenSpace install_openspace
   record Open-Ontologies install_open_ontologies
   record OKF-Agent-Memory install_okf_agent_memory
+fi
+
+if [ "$PROGRAMS" = 1 ]; then
+  printf '\n==> Program readiness (offline and read-only; not counted in the tool total)\n'
+  router="$SCRIPT_DIR/../.agent-skills/jeo-skill/scripts/jeo-skill.py"
+  [ -f "$router" ] || router="$HOME/.agents/skills/jeo-skill/scripts/jeo-skill.py"
+  if [ -f "$router" ]; then
+    python3 "$router" readiness --global || [ "$?" -le 1 ] || printf 'WARNING: the readiness report could not run.\n' >&2
+  else
+    printf 'WARNING: jeo-skill router not found; skipping the readiness report.\n' >&2
+  fi
 fi
 
 printf '\nFull-tool result: %s/%s succeeded.\n' "${#successes[@]}" "$total_tools"

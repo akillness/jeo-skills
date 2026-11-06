@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""Offline contract tests for the four source-pinned GitHub program operators.
+"""Offline contract tests for the five source-pinned GitHub program operators.
 
-Covers moneyprinter-v2, agent-s, google-maps-scraper and gitingest, plus their place in the
-github-five-programs bundle with the existing fabric skill.
+Covers fabric, moneyprinter-v2, agent-s, google-maps-scraper and gitingest: their offline helpers,
+catalog entries, the github-five-programs bundle, and the read-only readiness report that the
+router, install.sh and install-full-tools.sh print for them.
 
 Run from the repository root:
     python3 -B scripts/test_five_github_programs.py -v
@@ -12,7 +13,9 @@ git identity tests, the real git directory); no upstream project, package manage
 container tool is ever executed, and nothing touches the network.
 """
 import collections
+import contextlib
 import hashlib
+import io
 import importlib.util
 import json
 import os
@@ -52,6 +55,12 @@ SPECS = {
         "repository": "coderamp-labs/gitingest", "commit": "4e259a02fe72115bee538271622f1234a81c8e1a",
         "spdx": "MIT", "category": "cli-tools", "subcategory": "developer-cli",
         "route_outs": ["codebase-search", "semble", "research"],
+    },
+    "fabric": {
+        "repository": "danielmiessler/fabric", "commit": "8e8511c770b2589a6066398a86343fbf8c2a56a3",
+        "spdx": "MIT", "category": "cli-tools", "subcategory": "ai-cli", "route_outs": [],
+        # This older skill keeps its CC-BY-4.0 text, a prose source string and no "Triggers on:" line.
+        "skill_license": "CC-BY-4.0", "legacy_frontmatter": True,
     },
 }
 
@@ -491,6 +500,234 @@ class AgentSEnvironmentTests(HelperCase):
         self.assertEqual(self.checks(self.real("agent-s"))["tool:tesseract"]["status"], "ok")
 
 
+class FabricHostTests(HelperCase):
+    def test_binary_may_be_fabric_or_fabric_ai(self):
+        self.assertEqual(self.checks(self.real("fabric"))["tool:fabric"]["status"], "blocked")
+        self.shim("fabric-ai")
+        checks = self.checks(self.real("fabric"))
+        self.assertEqual(checks["tool:fabric"]["status"], "ok")
+        self.assertIn("fabric-ai", checks["tool:fabric"]["detail"])
+        self.assertFalse(self.marker.exists(), "the helper must not execute the binary it finds")
+
+    def test_config_env_file_is_inspected_without_being_read(self):
+        config = self.home / ".config" / "fabric"
+        (config / "patterns").mkdir(parents=True)
+        (config / "patterns" / "summarize").mkdir()
+        env_file = config / ".env"
+        env_file.write_text("OPENAI_API_KEY=sk-fixture-secret-must-not-print\n", encoding="utf-8")
+        env_file.chmod(0o644)
+        proc = self.real("fabric", env={"FABRIC_API_KEY": "fabric-fixture-secret-key"})
+        checks = self.checks(proc)
+        self.assertIn("readable by group or others", checks["config.env"]["detail"])
+        self.assertIn("1 entries", checks["config.patterns"]["detail"])
+        self.assertIn("FABRIC_API_KEY=set", checks["env"]["detail"])
+        for secret in ("sk-fixture-secret-must-not-print", "fabric-fixture-secret-key"):
+            self.assertNotIn(secret, proc.stdout + proc.stderr)
+        env_file.chmod(0o600)
+        self.assertIn("owner-only", self.checks(self.real("fabric"))["config.env"]["detail"])
+
+    def test_env_symlink_is_reported_and_not_followed(self):
+        config = self.home / ".config" / "fabric"
+        config.mkdir(parents=True)
+        target = self.tmp / "elsewhere.env"
+        target.write_text("TOKEN=sk-fixture-symlink-secret\n", encoding="utf-8")
+        (config / ".env").symlink_to(target)
+        proc = self.real("fabric")
+        self.assertIn("symlink", self.checks(proc)["config.env"]["detail"])
+        self.assertNotIn("sk-fixture-symlink-secret", proc.stdout)
+
+    def test_missing_config_directory_is_advisory_not_blocking(self):
+        checks = self.checks(self.real("fabric"))
+        self.assertEqual(checks["config.dir"]["status"], "info")
+        self.assertEqual(checks["config.env"]["status"], "info")
+        self.assertIn("downloads patterns over the network", checks["config.dir"]["detail"])
+
+
+def load_readiness():
+    path = SKILLS_DIR / "jeo-skill" / "scripts" / "skill_readiness.py"
+    spec = importlib.util.spec_from_file_location("skill_readiness_under_test", path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+class ReadinessModuleTests(HelperCase):
+    """The report layer: it must tell blocked, missing and error apart and never raise."""
+
+    def setUp(self):
+        super().setUp()
+        self.readiness = load_readiness()
+        self.root = self.tmp / "skills"
+        for name in BUNDLE_MEMBERS:
+            shutil.copytree(SKILLS_DIR / name / "scripts", self.root / name / "scripts",
+                            ignore=shutil.ignore_patterns("__pycache__"))
+            shutil.copytree(SKILLS_DIR / name / "references", self.root / name / "references",
+                            ignore=shutil.ignore_patterns("__pycache__"))
+
+    def fake_helper(self, name, body):
+        script = self.root / name / "scripts" / "preflight.py"
+        script.write_text(body, encoding="utf-8")
+
+    def test_readiness_skills_are_exactly_the_bundle(self):
+        self.assertEqual(list(self.readiness.READINESS_SKILLS), BUNDLE_MEMBERS)
+        for name in BUNDLE_MEMBERS:
+            self.assertTrue((SKILLS_DIR / name / "scripts" / "preflight.py").is_file(), name)
+
+    def test_plan_runs_each_helper_isolated_with_json(self):
+        plans = dict(self.readiness.plan(self.root, ["gitingest"]))
+        command = plans["gitingest"]
+        self.assertEqual(command[1:3], ["-I", "-B"])
+        self.assertEqual(command[-1], "--json")
+        self.assertTrue(command[3].endswith("gitingest/scripts/preflight.py"))
+        self.assertEqual(self.readiness.plan(None, ["gitingest"]), [])
+
+    def test_real_helpers_report_ready_or_blocked_and_never_execute_tools(self):
+        self.shim("docker", "go", "tesseract", "fabric", "python3.11", "python3.12", "git", "ollama", "firefox")
+        with mock.patch.dict(os.environ, {"PATH": str(self.shims), "HOME": str(self.home), "DISPLAY": ":0"}):
+            results = self.readiness.collect(self.root, BUNDLE_MEMBERS)
+        self.assertEqual([r["skill"] for r in results], BUNDLE_MEMBERS)
+        self.assertTrue(all(r["state"] in ("ready", "blocked") for r in results), results)
+        self.assertEqual(self.readiness.exit_code(results), 0 if all(r["state"] == "ready" for r in results) else 1)
+        self.assertFalse(self.marker.exists())
+        self.assertTrue(all(r["checks"] for r in results))
+
+    def test_blocked_is_not_error_and_missing_is_distinct(self):
+        with mock.patch.dict(os.environ, {"PATH": str(self.shims), "HOME": str(self.home)}):
+            blocked = self.readiness.probe(self.root, "fabric")
+        self.assertEqual(blocked["state"], "blocked")
+        self.assertEqual(blocked["blocked"][0][0], "tool:fabric")
+        shutil.rmtree(self.root / "agent-s")
+        missing = self.readiness.probe(self.root, "agent-s")
+        self.assertEqual(missing["state"], "missing")
+        self.assertEqual(self.readiness.exit_code([blocked, missing]), 1)
+        self.assertEqual(self.readiness.exit_code([blocked, {"state": "error"}]), 2)
+
+    def test_helper_failures_become_error_results_not_exceptions(self):
+        cases = {
+            "crash": "import sys\nprint('not json')\nsys.exit(0)\n",
+            "wrong-skill": "import json\nprint(json.dumps({'skill':'other','scope':'offline-preflight','status':'ok','checks':[]}))\n",
+            "wrong-scope": "import json\nprint(json.dumps({'skill':'gitingest','scope':'runtime','status':'ok','checks':[]}))\n",
+            "bad-status": "import json\nprint(json.dumps({'skill':'gitingest','scope':'offline-preflight','status':'maybe','checks':[]}))\n",
+            "invalid-input": "import json,sys\nprint(json.dumps({'skill':'gitingest','scope':'offline-preflight','status':'error','checks':[]}))\nsys.exit(2)\n",
+            "huge": "print('x' * (2 << 20))\n",
+        }
+        for label, body in cases.items():
+            with self.subTest(case=label):
+                self.fake_helper("gitingest", body)
+                result = self.readiness.probe(self.root, "gitingest")
+                self.assertEqual(result["state"], "error")
+                self.assertTrue(result["detail"])
+
+    def test_slow_helper_times_out(self):
+        self.fake_helper("gitingest", "import time\ntime.sleep(10)\n")
+        result = self.readiness.probe(self.root, "gitingest", timeout=0.5)
+        self.assertEqual(result["state"], "error")
+        self.assertIn("did not finish within 0.5 s", result["detail"])
+
+    def test_helper_error_status_is_reported_as_error_with_its_checks(self):
+        self.fake_helper("gitingest", (
+            "import json\nprint(json.dumps({'skill':'gitingest','scope':'offline-preflight','status':'error',"
+            "'checks':[{'name':'source.pin','status':'error','detail':'references/source.json is missing'}]}))\n"))
+        result = self.readiness.probe(self.root, "gitingest")
+        self.assertEqual(result["state"], "error")
+        self.assertEqual(result["blocked"], [("source.pin", "references/source.json is missing")])
+        self.assertNotIn("\n    - \n", self.readiness.render([result]))
+
+    def test_render_summarizes_and_shortens_long_details(self):
+        long_detail = "needs " + "x" * 400
+        results = [
+            {"skill": "agent-s", "state": "blocked", "blocked": [("python", long_detail)], "info": 3, "detail": "", "checks": []},
+            {"skill": "gitingest", "state": "ready", "blocked": [], "info": 0, "detail": "", "checks": []},
+            {"skill": "fabric", "state": "missing", "blocked": [], "info": 0, "detail": "no helper", "checks": []},
+        ]
+        text = self.readiness.render(results)
+        self.assertIn("- agent-s: blocked (1 blocking), 3 advisory finding(s)", text)
+        self.assertIn("- gitingest: ready", text)
+        self.assertIn("- fabric: not installed", text)
+        self.assertIn("1/3 ready.", text)
+        self.assertIn("separate approval", text)
+        self.assertTrue(all(len(line) < 230 for line in text.splitlines()), text)
+        self.assertIn("…", text)
+
+    def test_json_report_carries_every_check(self):
+        proc = subprocess.run([sys.executable, "-B", str(SKILLS_DIR / "jeo-skill" / "scripts" / "jeo-skill.py"),
+                               "readiness", "--global", "gitingest", "--json"],
+                              capture_output=True, text=True, encoding="utf-8", timeout=60,
+                              env={"PATH": str(self.shims), "HOME": str(self.tmp / "home-json"), "PYTHONDONTWRITEBYTECODE": "1"})
+        # No skills are installed under this HOME, so the result is "missing", with a stable shape.
+        payload = json.loads(proc.stdout)
+        self.assertEqual((proc.returncode, payload["scope"], payload["ready"], payload["total"]), (1, "readiness", 0, 1))
+        self.assertEqual(payload["results"][0]["state"], "missing")
+
+
+def load_router():
+    scripts = SKILLS_DIR / "jeo-skill" / "scripts"
+    sys.path.insert(0, str(scripts))
+    try:
+        spec = importlib.util.spec_from_file_location("jeo_skill_router_under_test", scripts / "jeo-skill.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+    finally:
+        sys.path.remove(str(scripts))
+    return module
+
+
+class SetupFlowTests(HelperCase):
+    """run_skill_setup: the readiness report follows the real setup plans and never fails an install."""
+
+    def setUp(self):
+        super().setUp()
+        self.router = load_router()
+        self.root = self.tmp / "skills"
+        for name in ("fabric", "gitingest"):
+            shutil.copytree(SKILLS_DIR / name / "scripts", self.root / name / "scripts",
+                            ignore=shutil.ignore_patterns("__pycache__"))
+            shutil.copytree(SKILLS_DIR / name / "references", self.root / name / "references")
+
+    def run_setup(self, plans, selected, **kwargs):
+        out = io.StringIO()
+        patched = mock.patch.object(self.router, "skill_setup_commands", return_value=(plans, []))
+        with patched, mock.patch.dict(os.environ, {"PATH": str(self.shims), "HOME": str(self.home)}), \
+                contextlib.redirect_stdout(out):
+            self.router.run_skill_setup(self.root, selected, global_install=True, with_hooks=False,
+                                        dry_run=kwargs.get("dry_run", False))
+        return out.getvalue()
+
+    def test_report_follows_a_successful_plan_and_blocked_programs_do_not_raise(self):
+        ran = self.tmp / "plan-ran"
+        plans = [("alpha", [sys.executable, "-c", f"open({str(ran)!r}, 'w').write('x')"])]
+        output = self.run_setup(plans, ["alpha", "fabric", "gitingest"])
+        self.assertTrue(ran.exists())
+        self.assertEqual(output.count("nothing was installed, started or contacted"), 1, output)
+        self.assertIn("- fabric: blocked", output)
+        self.assertIn("- gitingest: ready", output)
+
+    def test_a_failing_plan_raises_before_any_report(self):
+        plans = [("alpha", [sys.executable, "-c", "raise SystemExit(3)"])]
+        out = io.StringIO()
+        with mock.patch.object(self.router, "skill_setup_commands", return_value=(plans, [])), \
+                mock.patch.dict(os.environ, {"PATH": str(self.shims), "HOME": str(self.home)}), \
+                contextlib.redirect_stdout(out):
+            with self.assertRaises(self.router.JeoSkillError):
+                self.router.run_skill_setup(self.root, ["alpha", "gitingest"], global_install=True,
+                                            with_hooks=False, dry_run=False)
+        self.assertNotIn("nothing was installed", out.getvalue())
+
+    def test_dry_run_lists_readiness_plans_and_runs_nothing(self):
+        output = self.run_setup([], ["fabric", "gitingest", "alpha"], dry_run=True)
+        self.assertEqual(output.count("Readiness plan ("), 2, output)
+        self.assertNotIn("nothing was installed", output)
+        self.assertFalse(self.marker.exists())
+
+    def test_readiness_only_selection_reports_when_there_are_no_plans(self):
+        output = self.run_setup([], ["gitingest"])
+        self.assertEqual(output.count("nothing was installed, started or contacted"), 1, output)
+
+    def test_programs_are_never_reported_as_unsupported_setup(self):
+        plans, unsupported = self.router.skill_setup_commands(self.root, BUNDLE_MEMBERS, global_install=True, with_hooks=True)
+        self.assertEqual((plans, unsupported), ([], []))
+
+
 class CatalogTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -513,12 +750,14 @@ class CatalogTests(unittest.TestCase):
                 front = frontmatter(name)
                 self.assertEqual(front["name"], name)
                 self.assertEqual(front["metadata"]["upstream_commit"], spec["commit"])
-                self.assertEqual(front["license"], spec["spdx"])
-                self.assertEqual(front["metadata"]["source"], f"https://github.com/{spec['repository']}")
+                self.assertEqual(front["license"], spec.get("skill_license", spec["spdx"]))
+                if not spec.get("legacy_frontmatter"):
+                    self.assertEqual(front["metadata"]["source"], f"https://github.com/{spec['repository']}")
                 description = " ".join(front["description"].split())
                 self.assertLessEqual(len(description), 1024)
                 self.assertIn("Use when", description)
-                self.assertIn("Triggers on:", description)
+                if not spec.get("legacy_frontmatter"):
+                    self.assertIn("Triggers on:", description)
                 source = json.loads((SKILLS_DIR / name / "references" / "source.json").read_text(encoding="utf-8"))
                 self.assertEqual((source["skill"], source["repository"], source["commit"], source["license"]["spdx"]),
                                  (name, spec["repository"], spec["commit"], spec["spdx"]))
@@ -553,7 +792,8 @@ class CatalogTests(unittest.TestCase):
                                  (spec["category"], spec["subcategory"], "cli", f"{name}/SKILL.md"))
                 self.assertEqual((entry["version"], entry["allowed_tools"]),
                                  (front["metadata"]["version"], front["allowed-tools"].split()))
-                self.assertEqual(entry["source"], front["metadata"]["source"])
+                if not spec.get("legacy_frontmatter"):
+                    self.assertEqual(entry["source"], front["metadata"]["source"])
                 self.assertIn(name, self.manifest["categories"][spec["category"]])
                 self.assertIn(name, self.manifest["subcategories"][spec["category"]][spec["subcategory"]])
         self.assertEqual(self.manifest["skill_count"], len(self.manifest["skills"]))
@@ -561,6 +801,33 @@ class CatalogTests(unittest.TestCase):
     def test_bundle_holds_exactly_the_five_programs(self):
         self.assertEqual(self.manifest["bundles"][BUNDLE], BUNDLE_MEMBERS)
         self.assertTrue(set(BUNDLE_MEMBERS) <= self.live)
+
+    def test_starter_bundle_carries_the_image_resolver_without_the_programs(self):
+        starter = self.manifest["bundles"]["starter"]
+        self.assertIn("image-to-github-repo", starter)
+        self.assertEqual(starter[0], "jeo-skill")
+        self.assertFalse(set(starter) & (set(BUNDLE_MEMBERS) - {"fabric"}), starter)
+        row = "| `starter` | " + ", ".join(starter) + " |"
+        for readme in ("README.md", "README.ko.md", "README.es-ES.md"):
+            with self.subTest(readme=readme):
+                self.assertIn(row, (ROOT / readme).read_text(encoding="utf-8"))
+
+    def test_readiness_is_documented_where_users_look(self):
+        for readme in ("README.md", "README.ko.md", "README.es-ES.md"):
+            text = (ROOT / readme).read_text(encoding="utf-8")
+            with self.subTest(readme=readme):
+                self.assertIn("`jeo-skill readiness [--global] [--json]`", text)
+                self.assertIn("jeo-skill install --bundle github-five-programs --global --yes --setup", text)
+        guide = " ".join((ROOT / "setup-all-skills-prompt.md").read_text(encoding="utf-8").split())
+        for needle in ["jeo-skill.py\" readiness --global", "JEO_SKILLS_READINESS=skip", "install-full-tools.sh --programs",
+                       "without counting it in the tool total", "no per-program approval", "when every program is ready, 1 when one is blocked"]:
+            with self.subTest(needle=needle):
+                self.assertIn(needle, guide)
+        skill = (SKILLS_DIR / "jeo-skill" / "SKILL.md").read_text(encoding="utf-8")
+        self.assertIn("jeo-skill readiness --global", skill)
+        for changelog in (ROOT / "changelog" / "en" / "2026-11.md", ROOT / "changelog" / "ko" / "2026-11.md", ROOT / "CHANGELOG.md"):
+            with self.subTest(changelog=changelog.name):
+                self.assertIn("JEO_SKILLS_READINESS=skip", changelog.read_text(encoding="utf-8"))
 
     def test_relationship_groups_name_live_skills(self):
         groups = self.manifest["relationship_groups"]
@@ -586,7 +853,10 @@ class CatalogTests(unittest.TestCase):
             help_text = subprocess.run([sys.executable, "-B", str(helper), "--help"], capture_output=True, text=True,
                                        encoding="utf-8", env={"PATH": os.environ.get("PATH", "")}).stdout
             text = (SKILLS_DIR / name / "SKILL.md").read_text(encoding="utf-8")
-            lines = [line for line in text.splitlines() if "preflight.py" in line]
+            blocks = re.findall(r"```[a-z]*\n(.*?)```", text, re.S)
+            commands = [" ".join(block.replace("\\\n", " ").split()) for block in blocks]
+            lines = [line for block in commands for line in re.findall(r"[^\n]*preflight\.py[^\n]*", block)]
+            self.assertTrue(lines, f"{name} documents no preflight command in a code block")
             for flag in sorted({flag for line in lines for flag in re.findall(r"--[a-z][a-z-]*", line)}):
                 with self.subTest(skill=name, flag=flag):
                     self.assertIn(flag, help_text)
@@ -621,6 +891,7 @@ class CatalogTests(unittest.TestCase):
             "agent-s": ["show_permission_dialog", "3.12.1", "exec(", "run_python_script"],
             "google-maps-scraper": ["no authorization handling", "DISABLE_TELEMETRY", "ensure-latest.sh", "1.27.1"],
             "gitingest": [".env.local", "x-oauth-basic", "git_form.jinja", "prompt injection"],
+            "fabric": ["127.0.0.1:8080", "FABRIC_API_KEY", "Jina AI", "0600", "fabric-ai"],
         }
         for name, words in needles.items():
             text = (SKILLS_DIR / name / "references" / "upstream.md").read_text(encoding="utf-8")

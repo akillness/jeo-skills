@@ -13,12 +13,13 @@ compatibility: >
   model access and want repeatable prompt transforms rather than ad hoc chat.
 license: CC-BY-4.0
 metadata:
-  version: "2.1.0"
+  version: "2.2.0"
   author: supercent-io
   keyword: fabric
   platforms: All platforms
   tags: fabric, patterns, ai-prompts, prompt-orchestration, content-transforms, cli, piping, summarize, extract, custom-patterns, multi-provider
-  source: Daniel Miessler Fabric README + REST API docs + GitHub issue survey (2026-04-18)
+  source: Daniel Miessler Fabric README + REST API docs + GitHub issue survey (2026-04-18); offline helper and audit pinned to the upstream commit below
+  upstream_commit: 8e8511c770b2589a6066398a86343fbf8c2a56a3
 ---
 
 # Fabric
@@ -57,6 +58,17 @@ Read these support docs before going deeper:
 - **General LLM CLI** = ad hoc prompting without strong pattern-library expectations.
 - **Coding assistant** = repo-aware editing, implementation, and git workflows.
 - **Workflow automation / scripts** = deterministic orchestration where Fabric may be one stage.
+
+## Offline readiness
+
+Before recommending an install, a `--setup` run, or `fabric --serve`, check the host with the offline helper. It reads host facts and, with `--repo`, a checkout; it never runs Fabric, a model, `yt-dlp`, `ffmpeg`, or the network, reads no credential value, and writes nothing:
+
+```bash
+python3 .agent-skills/fabric/scripts/preflight.py --json
+python3 .agent-skills/fabric/scripts/preflight.py --repo /path/to/fabric --expect-commit 8e8511c770b2589a6066398a86343fbf8c2a56a3 --json
+```
+
+An installed skill uses `python3 "$SKILLS_ROOT/fabric/scripts/preflight.py"`. It accepts the binary as `fabric` or `fabric-ai` (Homebrew, Arch and Scoop name it `fabric-ai`), reports whether `~/.config/fabric/.env` exists and whether others can read it, and lists audited behaviors from [references/upstream.md](references/upstream.md): the server binds loopback by default and refuses a non-loopback address without an API key, patterns are downloaded from GitHub at setup time, and `--scrape_url` uses Jina AI. A blocked check means a prerequisite is missing, not that Fabric is broken; installing, `fabric --setup`, and serving remain separate approvals.
 
 ## Instructions
 
@@ -257,6 +269,9 @@ Prefer:
 7. If the task is really coding-assistant work or deterministic automation, route out early.
 
 ## References
+- [Audited Fabric facts and pin](references/upstream.md)
+- [Pinned source manifest](references/source.json)
+- [Offline helper](scripts/preflight.py)
 - [Fabric upstream README](https://github.com/danielmiessler/Fabric/blob/main/README.md)
 - [Fabric REST API docs](https://raw.githubusercontent.com/danielmiessler/Fabric/main/docs/rest-api.md)
 - [references/routing-and-mode-selection.md](references/routing-and-mode-selection.md)
