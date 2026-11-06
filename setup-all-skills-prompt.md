@@ -195,7 +195,7 @@ if [ "${JEO_SKILLS_STAR:-}" = true ] && [ "${JEO_SKILLS_DRY_RUN:-false}" != true
       tmp=$(mktemp "${TMPDIR:-/tmp}/jeo-skills-star.XXXXXXXX") || exit 1
       trap 'rm -f "$tmp"' EXIT
       curl --disable --proto '=https' --max-time 15 -fsS 'https://raw.githubusercontent.com/akillness/jeo-skills/main/install.sh' -o "$tmp" || exit 1
-      python3 -I -c 'import hashlib,sys; sys.exit(hashlib.sha256(open(sys.argv[1], "rb").read()).hexdigest() != "3e4ebf0af1fa2534d7a9a3bff269e50214400232cda6635a963938d2483385cc")' "$tmp" || exit 1
+      python3 -I -c 'import hashlib,sys; sys.exit(hashlib.sha256(open(sys.argv[1], "rb").read()).hexdigest() != "614a1a4e7eebd6a8512bf1412d789cec55dbf9604a6c70bb0c19df15c872d903")' "$tmp" || exit 1
       JEO_SKILLS_STAR_ONLY=true JEO_SKILLS_STAR=true bash "$tmp"
     else
       exit 1
@@ -1744,12 +1744,28 @@ it fetches and fast-forwards an existing checkout before reinstalling recorded t
 
 Goal: after install, the user only types queries. The root `install.sh` runs
 `scripts/setup-workspace.py` for `PROJECT_DIR` right after the full tools (selection `all`,
-`INSTALL_GLOBAL=true`, never from `$HOME`). Run it by hand to refresh or to activate a
-different project; it is idempotent and prints one `ok|pending|skipped|failed` line per step.
+`INSTALL_GLOBAL=true`, never from `$HOME`) and then `--verify`, failing the install if the rules
+would not be applied. **This guide's Steps 1–7 do not call `install.sh`, so run the commands below
+yourself right after Step 5; without them no rule file exists and nothing is activated.** Run them
+again to refresh or to activate a different project; the helper is idempotent and prints one
+`ok|pending|skipped|failed` line per step. For the rules only (no tools, no vault, no hooks), add
+`--no-activate`.
 
 ```bash
-python3 "$JEO_CHECKOUT/scripts/setup-workspace.py" --project "$PROJECT_DIR" --skills-root "$SKILLS_ROOT" --dry-run
-python3 "$JEO_CHECKOUT/scripts/setup-workspace.py" --project "$PROJECT_DIR" --skills-root "$SKILLS_ROOT"
+HELPER="${JEO_CHECKOUT:+$JEO_CHECKOUT/scripts/setup-workspace.py}"
+if [ -z "$HELPER" ] || [ ! -f "$HELPER" ]; then
+  HELPER="$(mktemp -d "${TMPDIR:-/tmp}/jeo-ws.XXXXXX")/setup-workspace.py"
+  curl -fsSL 'https://raw.githubusercontent.com/akillness/jeo-skills/main/scripts/setup-workspace.py' -o "$HELPER" || HELPER=''
+fi
+if [ -n "$HELPER" ]; then
+  python3 "$HELPER" --project "$PROJECT_DIR" --skills-root "$SKILLS_ROOT" --dry-run
+  python3 "$HELPER" --project "$PROJECT_DIR" --skills-root "$SKILLS_ROOT"
+  # Written is not applied: exit 1 means a rule file would be ignored (no `alwaysApply: true`
+  # frontmatter, stale block, or no AGENTS.md/CLAUDE.md pointer). Report it as inert, never as active.
+  python3 "$HELPER" --project "$PROJECT_DIR" --skills-root "$SKILLS_ROOT" --verify
+else
+  printf '%s\n' 'workspace activation: PARTIAL FAILURE — setup-workspace.py unavailable' >&2
+fi
 ```
 
 | Step | What it does |
@@ -1762,7 +1778,7 @@ python3 "$JEO_CHECKOUT/scripts/setup-workspace.py" --project "$PROJECT_DIR" --sk
 | `rtk-semble` | `rtk init -g --auto-patch` (Claude Code hook); verifies `semble` |
 | `jev` | reports bound profiles; inert when Jev is not installed |
 | `refresh` | `mex-agent watch` and a marked `zg index` block in `.git/hooks/post-commit`; second-brain cron schedules |
-| `rules` | marker block `JEO-WORKFLOWS` in `~/.agents/rules/jeo-workflows.md`, `<project>/.agents/rules/jeo-workflows.md`, and a pointer in the project's `AGENTS.md`/`CLAUDE.md`; when Antigravity CLI (`agy`) or `~/.gemini` exists, also a pointer block in `~/.gemini/GEMINI.md` (agy reads global rules there, not `~/.agents/rules`) |
+| `rules` | always-applied rule file `jeo-workflows.md` in `~/.agents/rules/` and `<project>/.agents/rules/`: YAML frontmatter with `alwaysApply: true` first (jeopi skips a rule without it), then the `JEO-WORKFLOWS` marker block; a legacy marker-only file is migrated in place and foreign frontmatter keys and text are kept. Also a pointer in the project's `AGENTS.md`/`CLAUDE.md`; when Antigravity CLI (`agy`) or `~/.gemini` exists, a pointer block in `~/.gemini/GEMINI.md` (agy reads global rules there, not `~/.agents/rules`) |
 | `harness2` | `.harness2/workspace.json`: method-mode component map and workflow status (benchmarks stay on demand: Vertex credentials, Docker, approval) |
 
 The installed rule fixes the per-prompt order **openspace → rtk → semble → jev**; jev runs
@@ -1801,10 +1817,11 @@ verify a live prompt per host as described in the OpenSpace section.
 
 ## Step 7 — Verify and report
 
-Also check workspace activation (Step 5B): `python3 scripts/setup-workspace.py --project "$PROJECT_DIR" --dry-run`
-must list no `failed` step; confirm `~/.agents/rules/jeo-workflows.md`, `$PROJECT_DIR/.agents/rules/jeo-workflows.md`,
-`.mex/`, `zg status --check-ready`, `.harness2/workspace.json`, and the second-brain vault. Report
-`pending` steps with their missing prerequisite.
+Also check workspace activation (Step 5B): `python3 "$HELPER" --project "$PROJECT_DIR" --dry-run`
+must list no `failed` step, and `python3 "$HELPER" --project "$PROJECT_DIR" --verify` must exit 0
+(global rule, project rule and project pointer all `ok`; `inert`, `stale` or `missing` means the
+rule is not applied). Also confirm `.mex/`, `zg status --check-ready`, `.harness2/workspace.json`,
+and the second-brain vault. Report `pending` steps with their missing prerequisite.
 
 ```bash
 if [ "${INSTALL_GLOBAL:-true}" = false ]; then

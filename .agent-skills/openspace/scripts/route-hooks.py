@@ -735,6 +735,10 @@ def main(argv: list[str] | None = None) -> int:
     if args.action == "status":
         for path in (WRAPPER, ROUTER):
             print(f"{'present' if path.is_file() else 'missing'}  {path}")
+        installed, source = read_regular(ROUTER), read_regular(ROUTER_SOURCE)
+        if installed is not None and source is not None and installed[0] != source[0]:
+            # A hook for a newer host (e.g. jeo's `--host jeo`) is silently inert against an older router.
+            print(f"stale    {ROUTER} differs from {ROUTER_SOURCE.name}; run `install` to refresh it")
     elif args.action == "remove" and not args.host and not args.dry_run and not failed:
         for path in (WRAPPER, ROUTER):
             existing = read_regular(path)

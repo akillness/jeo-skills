@@ -15,6 +15,11 @@ JEO_SKILLS_APPROVE_KNOWLEDGE_HOOKS=false / JEO_SKILLS_APPROVE_KNOWLEDGE_DATA=fal
 (veto second-brain), JEO_SKILLS_APPROVE_OPENSPACE=false,
 JEO_SKILLS_APPROVE_SKILL_ROUTING_HOOKS=false and
 JEO_SKILLS_APPROVE_ALL_HOOKS_MCP=false (veto the matching hook/MCP writes).
+
+Rules are written as always-applied harness rules: YAML frontmatter with
+``alwaysApply: true`` above the marker block, because jeopi skips a rule file
+that has neither ``alwaysApply`` nor a description. ``--verify`` re-checks the
+written rules and pointers read-only and exits 1 when one would not be applied.
 """
 from __future__ import annotations
 
@@ -65,8 +70,8 @@ Run in this order. If a tool is missing, say so in one line and continue.
 1. **openspace** — skill routing. If the host hook already appended an OpenSpace
    route note, load the named skill's `SKILL.md` before acting. Otherwise, for any
    task that could match an installed skill, run
-   `python3 ~/.agents/skills/openspace/scripts/route_prompt.py --explain "<prompt>"`
-   and load the top match.
+   `~/.agents/venvs/openspace/bin/python ~/.agents/skills/openspace/scripts/route_prompt.py --explain "<prompt>"`
+   (the system `python3` lacks the `openspace` module) and load the top match.
 2. **rtk** — every shell command goes through the rtk hook; where the hook is not
    active, prefix the command with `rtk`.
 3. **semble** — discovery before reading: `semble search "<query>" <path>`, then
@@ -85,7 +90,8 @@ Run in this order. If a tool is missing, say so in one line and continue.
   immutable. If the vault is not initialised, say "second-brain pending" and fall
   back to normal search.
 - **Code structure, callers, impact, project conventions** → mex. Read
-  `.mex/ROUTER.md` first, then `mex-agent graph query ...` and
+  `.mex/ROUTER.md` first when it exists (an empty `.mex/` means mex has not run:
+  say so and use semble), then `mex-agent graph query ...` and
   `mex-agent impact <symbol|file>` before editing. Use `mex-agent`, never bare
   `mex` (TeX Live ships a `mex`).
 - **Meaning-based search when the exact name is unknown** → `zg query "<q>" --limit 8`,
@@ -176,22 +182,80 @@ def atomic_write(path: Path, text: str, mode: int | None = None) -> None:
         raise
 
 
+def merge_block(existing: str | None, body: str, start: str, end: str, where: str) -> tuple[str, str]:
+    """Return (new_text, status) after inserting or replacing one marker block."""
+    block = f"{start}\n{body.rstrip()}\n{end}\n"
+    if existing is None:
+        return block, "created"
+    if start in existing:
+        head, _, rest = existing.partition(start)
+        if end not in rest:
+            raise ValueError(f"{where}: start marker without end marker; refusing to edit")
+        tail_text = rest.partition(end)[2].lstrip("\n")
+        new = head + block + (("\n" + tail_text) if tail_text else "")
+        return new, "unchanged" if new == existing else "updated"
+    return existing.rstrip("\n") + "\n\n" + block, "updated"
+
+
 def upsert_block(ctx: Ctx, path: Path, body: str, start: str = START, end: str = END,
                  comment: bool = False) -> str:
     """Insert or replace one marker block; text outside the markers is never touched."""
-    block = f"{start}\n{body.rstrip()}\n{end}\n"
-    existing = path.resolve().read_text(encoding="utf-8") if path.resolve().is_file() else None
-    if existing is None:
-        new, status = block, "created"
-    elif start in existing:
-        head, _, rest = existing.partition(start)
-        if end not in rest:
-            raise ValueError(f"{path}: start marker without end marker; refusing to edit")
-        tail_text = rest.partition(end)[2].lstrip("\n")
-        new = head + block + (("\n" + tail_text) if tail_text else "")
+    real = path.resolve()
+    existing = real.read_text(encoding="utf-8") if real.is_file() else None
+    new, status = merge_block(existing, body, start, end, str(path))
+    if status != "unchanged" and not ctx.dry:
+        atomic_write(path, new)
+    return status
+
+
+RULE_DESCRIPTION = "Per-prompt workflow order - openspace, rtk, semble, jev, then project memory"
+
+
+def frontmatter_key(line: str) -> str | None:
+    """Top-level YAML key of one frontmatter line (None for nested or non-key lines)."""
+    if not line or line.startswith((" ", "\t", "#", "-")) or ":" not in line:
+        return None
+    return line.split(":", 1)[0].strip()
+
+
+def split_frontmatter(text: str) -> tuple[list[str] | None, str]:
+    """Split a leading ``---`` YAML block off ``text``; (None, text) when there is none."""
+    lines = text.split("\n")
+    if lines and lines[0].rstrip() == "---":
+        for i in range(1, len(lines)):
+            if lines[i].rstrip() == "---":
+                return lines[1:i], "\n".join(lines[i + 1:])
+    return None, text
+
+
+def with_always_apply(fm: list[str] | None) -> list[str]:
+    """Force ``alwaysApply: true`` and keep every other key, so the harness injects the rule."""
+    out: list[str] = []
+    seen = False
+    for line in fm or []:
+        if frontmatter_key(line) == "alwaysApply":
+            if not seen:
+                out.append("alwaysApply: true")
+            seen = True
+        else:
+            out.append(line)
+    if not seen:
+        out.append("alwaysApply: true")
+    if not any(frontmatter_key(line) == "description" for line in out):
+        out.insert(0, f"description: {RULE_DESCRIPTION}")
+    return out
+
+
+def upsert_rule_file(ctx: Ctx, path: Path, body: str) -> str:
+    """Write the rule as an always-applied harness rule: frontmatter first, marker block below."""
+    real = path.resolve()
+    existing = real.read_text(encoding="utf-8") if real.is_file() else None
+    fm, rest = split_frontmatter(existing) if existing is not None else (None, "")
+    new_body, status = merge_block(None if existing is None else rest.lstrip("\n"),
+                                   body, START, END, str(path))
+    new = "---\n" + "\n".join(with_always_apply(fm)) + "\n---\n" + new_body
+    if existing is not None:
         status = "unchanged" if new == existing else "updated"
-    else:
-        new, status = existing.rstrip("\n") + "\n\n" + block, "updated"
     if status != "unchanged" and not ctx.dry:
         atomic_write(path, new)
     return status
@@ -390,7 +454,7 @@ def step_rules(ctx: Ctx) -> dict:
     pointer = POINTER_TEMPLATE.replace("{rule}", RULE_NAME)
     changed = []
     for path in (ctx.home / ".agents/rules" / RULE_NAME, ctx.project / ".agents/rules" / RULE_NAME):
-        changed.append(f"{path}: {upsert_block(ctx, path, text)}")
+        changed.append(f"{path}: {upsert_rule_file(ctx, path, text)}")
     anchors = [ctx.project / n for n in ("AGENTS.md", "CLAUDE.md") if (ctx.project / n).is_file()]
     for anchor in anchors or [ctx.project / "AGENTS.md"]:
         changed.append(f"{anchor.name}: {upsert_block(ctx, anchor, pointer)}")
@@ -434,6 +498,60 @@ def step_harness2(ctx: Ctx) -> dict:
     return result("ok", f"{path} (method-mode component map, preflight {pre})")
 
 
+# Hosts whose rule loading was read from the installed harness source, not assumed.
+RULE_LOADERS = (
+    ("jeopi", "frontmatter rules from .agents/rules (project walk-up and ~/.agents/rules); "
+              "injected into the system prompt only when alwaysApply is true"),
+    ("jeo", "raw guidance files from .agents/rules and ~/.agents/rules (frontmatter shown as text)"),
+    ("other hosts", "the pointer block in the project's AGENTS.md / CLAUDE.md (not exercised here)"),
+)
+
+
+def check_rule_file(path: Path, expected: str, label: str) -> dict:
+    """Read-only: would a harness that honours frontmatter inject this rule file?"""
+    entry = {"target": label, "path": str(path)}
+    if not path.is_file():
+        return {**entry, "state": "missing", "detail": "run setup-workspace.py to create it"}
+    fm, rest = split_frontmatter(path.resolve().read_text(encoding="utf-8"))
+    keys = {frontmatter_key(line): line.split(":", 1)[1].strip() for line in fm or [] if frontmatter_key(line)}
+    if fm is None or keys.get("alwaysApply", "").lower() != "true":
+        return {**entry, "state": "inert",
+                "detail": "no `alwaysApply: true` frontmatter; jeopi skips it. Re-run setup-workspace.py"}
+    if START not in rest or END not in rest:
+        return {**entry, "state": "inert", "detail": "marker block missing; re-run setup-workspace.py"}
+    if rest.partition(START)[2].partition(END)[0].strip() != expected.strip():
+        return {**entry, "state": "stale", "detail": "rule text differs from this installer's; re-run to refresh"}
+    return {**entry, "state": "ok", "detail": "alwaysApply true, marker block current"}
+
+
+def check_pointer(project: Path) -> dict:
+    entry = {"target": "project pointer", "path": str(project)}
+    for name in ("AGENTS.md", "CLAUDE.md"):
+        path = project / name
+        if path.is_file() and START in path.resolve().read_text(encoding="utf-8"):
+            return {**entry, "path": str(path), "state": "ok", "detail": f"{name} carries the workflow pointer"}
+    return {**entry, "state": "missing", "detail": "no AGENTS.md / CLAUDE.md pointer block; run setup-workspace.py"}
+
+
+def run_verify(ctx: Ctx, as_json: bool) -> int:
+    expected = rule_text(ctx)
+    checks = [
+        check_rule_file(ctx.home / ".agents/rules" / RULE_NAME, expected, "global rule"),
+        check_rule_file(ctx.project / ".agents/rules" / RULE_NAME, expected, "project rule"),
+        check_pointer(ctx.project),
+    ]
+    bad = [c for c in checks if c["state"] != "ok"]
+    if as_json:
+        print(json.dumps({"project": str(ctx.project), "checks": checks,
+                          "loaders": dict(RULE_LOADERS), "ok": not bad}, indent=2))
+    else:
+        for c in checks:
+            print(f"{c['target']:16} {c['state']:8} {c['path']} - {c['detail']}")
+        for host, how in RULE_LOADERS:
+            print(f"loader {host:12} {how}")
+    return 1 if bad else 0
+
+
 STEP_FUNCS = {
     "mex": step_mex, "zvec": step_zvec, "second-brain": step_second_brain,
     "open-ontologies": step_ontologies, "openspace": step_openspace,
@@ -454,6 +572,8 @@ def parse(argv: list[str]) -> argparse.Namespace:
                    help="write only the rules and the .harness2 manifest; run no tool")
     p.add_argument("--dry-run", action="store_true", help="report the plan; run and write nothing")
     p.add_argument("--json", action="store_true", help="machine-readable report")
+    p.add_argument("--verify", action="store_true",
+                   help="read-only: check the written rules would be applied; exit 1 if not")
     return p.parse_args(argv)
 
 
@@ -466,6 +586,8 @@ def main(argv: list[str] | None = None) -> int:
     if ctx.project in (ctx.home, Path(ctx.project.anchor)):
         print("error: refusing to activate the home directory or filesystem root as a workspace", file=sys.stderr)
         return 2
+    if args.verify:
+        return run_verify(ctx, args.json)
     for name in STEPS:
         if name in args.skip:
             ctx.results[name] = result("skipped", "--skip")

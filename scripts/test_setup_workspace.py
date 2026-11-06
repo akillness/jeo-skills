@@ -181,6 +181,84 @@ class WorkspaceSetupTests(unittest.TestCase):
         for needle in ("second-brain", "mex-agent", "zg query", "open-ontologies", "harness2", ".harness2/workspace.json"):
             self.assertIn(needle, text)
 
+    def test_rule_files_are_always_applied_harness_rules(self):
+        # jeopi injects a rule only with `alwaysApply: true` (or lists it with a description), and it parses
+        # frontmatter only at the very top of the file; a marker-first file is silently inert.
+        box = self.sandbox()
+        box.run()
+        for path in (box.home / ".agents/rules" / RULE, box.project / ".agents/rules" / RULE):
+            text = path.read_text(encoding="utf-8")
+            self.assertTrue(text.startswith("---\n"), f"{path}: frontmatter must be the first line")
+            head = text.split("\n---\n", 1)[0]
+            self.assertEqual(head.count("alwaysApply: true"), 1)
+            self.assertIn("description:", head)
+            self.assertLess(text.index("alwaysApply: true"), text.index("JEO-WORKFLOWS:START"))
+
+    def test_rule_text_uses_commands_that_run(self):
+        box = self.sandbox()
+        box.run()
+        text = (box.home / ".agents/rules" / RULE).read_text(encoding="utf-8")
+        # the system python3 cannot import `openspace`; only the venv interpreter runs the router
+        self.assertIn("venvs/openspace/bin/python ~/.agents/skills/openspace/scripts/route_prompt.py", text)
+        self.assertNotIn("`python3 ~/.agents/skills/openspace/scripts/route_prompt.py", text)
+        # an empty .mex/ has no ROUTER.md; the rule must not demand it unconditionally
+        self.assertIn("when it exists", text)
+
+    def test_legacy_rule_is_migrated_and_foreign_frontmatter_and_text_are_kept(self):
+        box = self.sandbox()
+        legacy = box.project / ".agents/rules" / RULE
+        legacy.parent.mkdir(parents=True)
+        legacy.write_text("<!-- JEO-WORKFLOWS:START -->\nold\n<!-- JEO-WORKFLOWS:END -->\n", encoding="utf-8")
+        mine = box.home / ".agents/rules" / RULE
+        mine.parent.mkdir(parents=True)
+        mine.write_text('---\nglobs: ["src/**"]\nalwaysApply: false\nnested:\n  - keep\n---\nUSER NOTE\n\n'
+                        "<!-- JEO-WORKFLOWS:START -->\nold\n<!-- JEO-WORKFLOWS:END -->\n\ntrailing text\n",
+                        encoding="utf-8")
+        proc, _ = box.run()
+        self.assertEqual(proc.returncode, 0, proc.stderr)
+        migrated = legacy.read_text(encoding="utf-8")
+        self.assertTrue(migrated.startswith("---\n"))
+        self.assertNotIn("\nold\n", migrated)
+        kept = mine.read_text(encoding="utf-8")
+        head = kept.split("\n---\n", 1)[0]
+        self.assertEqual(head.count("alwaysApply"), 1)
+        self.assertIn("alwaysApply: true", head)
+        for needle in ('globs: ["src/**"]', "nested:", "  - keep", "USER NOTE", "trailing text"):
+            self.assertIn(needle, kept)
+
+    def test_verify_reports_missing_inert_stale_and_ok_without_writing(self):
+        box = self.sandbox()
+
+        def states(proc_report):
+            return {c["target"]: c["state"] for c in proc_report["checks"]}
+
+        proc, report = box.run("--verify")
+        self.assertEqual(proc.returncode, 1)
+        self.assertEqual(set(states(report).values()), {"missing"})
+        self.assertEqual(list(box.home.rglob("*")), [], "--verify must not write")
+        self.assertEqual(list(box.project.rglob("*")), [], "--verify must not write")
+        self.assertEqual(box.calls(), [], "--verify must not run a tool")
+
+        box.run()
+        proc, report = box.run("--verify")
+        self.assertEqual((proc.returncode, report["ok"]), (0, True), proc.stdout)
+        self.assertEqual(set(states(report).values()), {"ok"})
+
+        rule = box.project / ".agents/rules" / RULE
+        good = rule.read_text(encoding="utf-8")
+        rule.write_text(good.split("\n---\n", 1)[1], encoding="utf-8")  # frontmatter stripped: inert
+        proc, report = box.run("--verify")
+        self.assertEqual(proc.returncode, 1)
+        self.assertEqual(states(report)["project rule"], "inert")
+        rule.write_text(good.replace("Workflow Rules", "OLD TITLE"), encoding="utf-8")
+        proc, report = box.run("--verify")
+        self.assertEqual(proc.returncode, 1)
+        self.assertEqual(states(report)["project rule"], "stale")
+        rule.write_text(good.replace("alwaysApply: true", "alwaysApply: false"), encoding="utf-8")
+        proc, report = box.run("--verify")
+        self.assertEqual(states(report)["project rule"], "inert")
+        self.assertEqual(rule.read_text(encoding="utf-8"), good.replace("alwaysApply: true", "alwaysApply: false"))
+
     def test_rerun_is_idempotent_and_updates_blocks_in_place(self):
         box = self.sandbox()
         (box.project / "AGENTS.md").write_text("# Mine\n", encoding="utf-8")

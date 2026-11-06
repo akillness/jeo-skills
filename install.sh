@@ -283,6 +283,13 @@ if [ "$SELECTION" = all ] && [ "$GLOBAL" = true ] && [ "${JEO_SKILLS_WORKSPACE:-
     if ! python3 "$WS_HELPER" "${WS_ARGS[@]}"; then
       info 'WARNING: Workspace activation reported failed steps (see above); re-run the installer to refresh.' >&2
       FULL_STATUS=1
+    elif grep -q -- '--verify' "$WS_HELPER"; then
+      # Written is not applied: confirm the harness would inject the rules (alwaysApply frontmatter,
+      # current marker block, project pointer) and fail the install rather than report inert rules as active.
+      if ! python3 "$WS_HELPER" --project "$PROJECT_DIR" --skills-root "$ROOT" --verify; then
+        info 'WARNING: Workflow rules were written but would not be applied (see verify output above); re-run the installer to refresh.' >&2
+        FULL_STATUS=1
+      fi
     fi
   fi
 fi

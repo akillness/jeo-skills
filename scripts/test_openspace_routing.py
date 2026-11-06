@@ -611,6 +611,17 @@ class HookInstaller(Fixture):
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
 
+    def test_status_flags_a_router_copy_that_lags_its_source(self):
+        self.assertEqual(self.hooks("install", "--host", "jeopi").returncode, 0)
+        self.assertNotIn("stale", self.hooks("status", "--host", "jeopi").stdout)
+        router = self.home / ".agents/hooks/openspace-route.py"
+        router.write_text(router.read_text(encoding="utf-8") + "\n# older build\n", encoding="utf-8")
+        stale = self.hooks("status", "--host", "jeopi")
+        self.assertEqual(stale.returncode, 0, stale.stdout + stale.stderr)
+        self.assertIn("stale", stale.stdout)
+        self.assertEqual(self.hooks("install", "--host", "jeopi").returncode, 0)
+        self.assertNotIn("stale", self.hooks("status", "--host", "jeopi").stdout)
+
     def hooks(self, *args):
         return subprocess.run([sys.executable, "-B", str(HOOKS), *args], capture_output=True, text=True,
                               env=self.hook_env, timeout=60)
