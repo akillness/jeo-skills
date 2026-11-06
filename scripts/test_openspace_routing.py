@@ -225,7 +225,7 @@ class RouterGate(Fixture):
         self.assertEqual(self.route("", raw=json.dumps({"hook_event_name": "Stop"})).stdout, "")
 
     def test_each_host_gets_its_own_envelope(self):
-        for host, event in (("claude", "UserPromptSubmit"), ("codex", "UserPromptSubmit"), ("gemini", "BeforeAgent")):
+        for host, event in (("claude", "UserPromptSubmit"), ("codex", "UserPromptSubmit"), ("jeo", "UserPromptSubmit"), ("gemini", "BeforeAgent")):
             with self.subTest(host=host):
                 output = json.loads(self.route("use graphify", host=host).stdout)["hookSpecificOutput"]
                 self.assertEqual(output["hookEventName"], event)
@@ -782,6 +782,75 @@ class HookInstaller(Fixture):
         parsed = tomllib.loads(text)
         self.assertEqual(parsed["custom"]["value"], 42)
         self.assertEqual([hook["command"] for hook in parsed["hooks"]], ["other-kimi"])
+
+    def test_jeo_registers_a_pre_prompt_entry_in_its_own_hook_registry(self):
+        jeo = self.home / ".jeo"
+        registry = jeo / "hooks.json"
+        config = jeo / "config.json"
+        jeo.mkdir()
+        config.write_text('{"defaultModel": "m", "oauth": {"anthropic": "secret"}}\n')
+        original = {"enabled": True, "hooks": [{"event": "turn-end", "run": "other-turn-end", "timeoutMs": 5000}]}
+        self.write(registry, original)
+        registry.chmod(0o640)
+        config_before = config.read_bytes()
+        status = self.hooks("status", "--host", "jeo")
+        self.assertIn("not installed", status.stdout)
+        result = self.hooks("install", "--host", "jeo")
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertIn("jeo-code build with pre-prompt hooks", result.stdout)
+        wrapper = self.home / ".agents/hooks/openspace-route.sh"
+        installed = json.loads(registry.read_text())
+        self.assertEqual(installed["enabled"], True)
+        self.assertEqual(installed["hooks"][0], original["hooks"][0])
+        self.assertEqual(installed["hooks"][1:], [{"event": "pre-prompt", "run": f"/bin/sh {wrapper} jeo", "timeoutMs": 10000}])
+        self.assertEqual(stat.S_IMODE(registry.stat().st_mode), 0o640)
+        self.assertEqual(config.read_bytes(), config_before, "credentials config is never touched")
+        self.assertIn("installed", self.hooks("status", "--host", "jeo").stdout)
+        # The registered command is the real thing: jeo's pre-prompt payload yields a Claude-style context object.
+        routed = subprocess.run(["/bin/sh", "-c", installed["hooks"][1]["run"]], input=json.dumps({"prompt": "use graphify", "hook_event_name": "UserPromptSubmit"}),
+                                text=True, capture_output=True, env=self.hook_env, timeout=60)
+        self.assertEqual((routed.returncode, routed.stderr), (0, ""))
+        self.assertIn("graphify", json.loads(routed.stdout)["hookSpecificOutput"]["additionalContext"])
+        again = self.hooks("install", "--host", "jeo")
+        self.assertIn("unchanged", again.stdout)
+        self.assertEqual(json.loads(registry.read_text()), installed)
+        removed = self.hooks("remove", "--host", "jeo")
+        self.assertEqual(removed.returncode, 0, removed.stdout + removed.stderr)
+        self.assertEqual(json.loads(registry.read_text())["hooks"], original["hooks"])
+        self.assertEqual(config.read_bytes(), config_before)
+
+    def test_jeo_install_creates_the_registry_only_when_jeo_is_present(self):
+        result = self.hooks("install", "--host", "jeo")
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertIn("skipped", result.stdout)
+        self.assertFalse((self.home / ".jeo").exists())
+        (self.home / ".jeo").mkdir()
+        self.assertEqual(self.hooks("install", "--host", "jeo").returncode, 0)
+        data = json.loads((self.home / ".jeo/hooks.json").read_text())
+        self.assertEqual([h["event"] for h in data["hooks"]], ["pre-prompt"])
+        self.assertNotIn("enabled", data, "the registry runs without an enabled flag")
+
+    def test_jeo_honors_jeo_config_dir_and_flags_a_disabled_registry(self):
+        custom = self.work / "jeo-config"
+        custom.mkdir()
+        self.hook_env["JEO_CONFIG_DIR"] = str(custom)
+        self.assertEqual(self.hooks("install", "--host", "jeo").returncode, 0)
+        self.assertTrue((custom / "hooks.json").is_file())
+        self.assertFalse((self.home / ".jeo").exists())
+        data = json.loads((custom / "hooks.json").read_text())
+        data["enabled"] = False
+        (custom / "hooks.json").write_text(json.dumps(data))
+        self.assertIn("registry disabled", self.hooks("status", "--host", "jeo").stdout)
+
+    def test_jeo_refuses_a_malformed_registry_without_touching_it(self):
+        (self.home / ".jeo").mkdir()
+        registry = self.home / ".jeo/hooks.json"
+        for content in ("{invalid json", "[]", '{"hooks": {"not": "a list"}}'):
+            with self.subTest(content=content):
+                registry.write_text(content)
+                result = self.hooks("install", "--host", "jeo")
+                self.assertNotEqual(result.returncode, 0, result.stdout + result.stderr)
+                self.assertEqual(registry.read_text(), content)
 
     def test_dry_run_writes_nothing(self):
         before = self.snapshot()

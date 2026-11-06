@@ -86,7 +86,7 @@ Profiles default to `JEV_RUNTIME_MODE=advisory` and `JEV_REVIEW_MODE=off`. Expli
 | Claude | `UserPromptSubmit` skill injection and optional `PreToolUse` review; no context filtering (Claude has no context event). |
 | jeopi / OMP / Pi / GJC | `before_agent_start` skill injection as a Jev custom message; `context` removes older Jev custom messages, and `JEV_MEMORY_MODE=extended` also compresses tool results (string or text-part arrays) and summarizes older text turns; `tool_call` review with case-insensitive matching. The generated file is `extensions/jev-control-plane.js` because these hosts load only `*.{ts,js}`. GJC loading is not live-verified. Persisted history is unchanged. |
 | AGY | `PreInvocation` skill injection and `PreToolUse` review; no context filtering. Not live-verified. |
-| jeo | `pre-tool` review only, through `~/.jeo/config.json`; jeo provides no prompt, so there is no skill selection or context filtering, and `enforce` withholds every matched tool. |
+| jeo | `pre-tool` review only, through `~/.jeo/config.json`; Jev registers no `pre-prompt` hook for jeo, so there is no skill selection or context filtering, and `enforce` withholds every matched tool. OpenSpace's separate prompt-routing hook for jeo lives in `~/.jeo/hooks.json`. |
 | Codex 0.162.1 | `UserPromptSubmit` skill injection and optional `PreToolUse` review for registered tool matchers; no automatic history pruning. Requires exact hook definitions to be trusted in `/hooks`. |
 
 For Codex, after the harness is installed:

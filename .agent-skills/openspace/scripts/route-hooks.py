@@ -12,6 +12,8 @@ model sees it, and passes the ranked skill note to the model as context:
   jeopi, omp, pi, gjc
             ~/.<host>/agent/extensions/     before_agent_start hidden custom message
   opencode  ~/.config/opencode/plugins/     chat.message      synthetic text part
+  jeo       ~/.jeo/hooks.json               pre-prompt        additionalContext (jeo-code with pre-prompt hooks)
+            (a hooks-only registry jeo reads itself; ~/.jeo/config.json is never touched)
 
 The hooks call one wrapper, ~/.agents/hooks/openspace-route.sh, which runs a
 copy of the router with the OpenSpace venv's Python and exits 0 silently when
@@ -525,6 +527,87 @@ class ManagedFile:
         return "takes effect in new sessions"
 
 
+class JeoHooks:
+    """jeo-code: one `pre-prompt` entry in the user hook registry `~/.jeo/hooks.json`.
+
+    The registry is a hooks-only file jeo reads on its own (`{"enabled"?, "hooks": [...]}`);
+    `config.json` holds credentials and is never touched. A jeo build without pre-prompt
+    support never reads this file, so installing against one is inert, not harmful.
+    Other entries and keys are preserved; only entries running this wrapper are managed.
+    """
+
+    name, host_arg = "jeo", "jeo"
+
+    def __init__(self) -> None:
+        self.dir = Path(os.environ.get("JEO_CONFIG_DIR") or HOME / ".jeo").expanduser()
+        self.path = self.dir / "hooks.json"
+
+    def detected(self) -> bool:
+        return self.dir.is_dir()
+
+    def entry(self) -> dict:
+        return {"event": "pre-prompt", "run": command(self.host_arg), "timeoutMs": TIMEOUT_SECONDS * 1000}
+
+    def load(self) -> tuple[dict, int]:
+        existing = read_regular(self.path)
+        if existing is None:
+            return {}, 0o600
+        text, mode = existing
+        data = json.loads(text) if text.strip() else {}
+        if not isinstance(data, dict):
+            raise RuntimeError(f"unexpected JSON root in {self.path}")
+        return data, mode
+
+    def entries(self, data: dict) -> list:
+        entries = data.get("hooks", [])
+        if not isinstance(entries, list):
+            raise RuntimeError(f"unexpected 'hooks' shape in {self.path}")
+        return entries
+
+    def without_ours(self, entries: list) -> list:
+        return [e for e in entries if not (isinstance(e, dict) and ours(str(e.get("run", ""))))]
+
+    def status(self) -> str:
+        if not self.path.exists():
+            return "not installed"
+        data, _ = self.load()
+        found = [e for e in self.entries(data) if isinstance(e, dict) and ours(str(e.get("run", "")))]
+        if not found:
+            return "not installed"
+        if data.get("enabled") is False:
+            return "installed (registry disabled: enabled=false in hooks.json)"
+        return "installed" if self.entry() in found else "installed (stale command)"
+
+    def install(self, dry: bool) -> str:
+        data, mode = self.load()
+        entries = self.entries(data)
+        wanted = self.without_ours(entries) + [self.entry()]
+        if wanted == entries:
+            return "unchanged"
+        if dry:
+            return "would install"
+        data["hooks"] = wanted
+        atomic_write(self.path, json.dumps(data, indent=2, ensure_ascii=False) + "\n", mode)
+        return "installed"
+
+    def remove(self, dry: bool) -> str:
+        if not self.path.exists():
+            return "not installed"
+        data, mode = self.load()
+        entries = self.entries(data)
+        kept = self.without_ours(entries)
+        if kept == entries:
+            return "not installed"
+        if dry:
+            return "would remove"
+        data["hooks"] = kept
+        atomic_write(self.path, json.dumps(data, indent=2, ensure_ascii=False) + "\n", mode)
+        return "removed"
+
+    def note(self) -> str:
+        return "needs a jeo-code build with pre-prompt hooks; older builds ignore ~/.jeo/hooks.json"
+
+
 def orca_data_dir() -> Path:
     raw = os.environ.get("ORCA_USER_DATA_PATH", "").strip()
     if raw:
@@ -577,9 +660,10 @@ def hosts() -> dict:
     for key, kind, directory in redirected_homes():
         settings = directory / ("settings.json" if kind == "claude" else "hooks.json")
         found[key] = JsonHooks(key, settings, "UserPromptSubmit", kind, directory)
-    for name in ("jeo", "jeopi", "omp", "pi", "gjc"):
+    for name in ("jeopi", "omp", "pi", "gjc"):
         agent = HOME / f".{name}" / "agent"
         found[name] = ManagedFile(name, agent / "extensions" / "openspace-route.ts", agent, pi_extension_text)
+    found["jeo"] = JeoHooks()
     opencode = XDG_CONFIG / "opencode"
     found["opencode"] = ManagedFile("opencode", opencode / "plugins" / "openspace-route.js", opencode, opencode_plugin_text)
     return found

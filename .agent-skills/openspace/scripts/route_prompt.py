@@ -8,8 +8,8 @@ expects. Because the choice is made here, before the model sees the prompt,
 routing behaves the same whichever model the host is running.
 
 Hosts call it once per prompt (``UserPromptSubmit``, ``BeforeAgent``,
-``before_agent_start``, ``chat.message``) with the host's JSON event on
-stdin; every host sends the text as ``prompt``. Nothing is printed when no
+``before_agent_start``, ``chat.message``, jeo's ``pre-prompt``) with the host's JSON
+event on stdin; every host sends the text as ``prompt``. Nothing is printed when no
 skill clears the gate, and every failure is silent with exit status 0, so a
 broken router never blocks a prompt.
 
@@ -37,7 +37,7 @@ import sys
 import tempfile
 from pathlib import Path
 
-HOSTS = ("claude", "codex", "gemini", "agy", "kimi", "pi", "opencode", "text")
+HOSTS = ("claude", "codex", "jeo", "gemini", "agy", "kimi", "pi", "opencode", "text")
 INDEX_VERSION = 4
 BODY_CHARS = 2000  # OpenSpace's BM25 corpus uses body[:2000]
 DESCRIPTION_CHARS = 150
@@ -361,7 +361,7 @@ def routing_note(suggestions: list[dict]) -> str:
 
 
 def host_output(host: str, note: str) -> str:
-    if host in ("claude", "codex"):
+    if host in ("claude", "codex", "jeo"):
         return json.dumps({"hookSpecificOutput": {"hookEventName": "UserPromptSubmit", "additionalContext": note}})
     if host == "gemini":
         return json.dumps({"hookSpecificOutput": {"hookEventName": "BeforeAgent", "additionalContext": note}})

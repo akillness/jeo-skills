@@ -1488,14 +1488,17 @@ host rather than equating an installed hook with per-prompt routing.
 | Antigravity CLI (`agy`, experimental) | `PreInvocation` | `~/.gemini/config/hooks.json` |
 | Kimi Code | `UserPromptSubmit` | `~/.kimi-code/config.toml` |
 | jeopi, omp, pi, gjc | `before_agent_start` extension | `~/.<host>/agent/extensions/openspace-route.ts` |
+| jeo-code (`jeo`; builds with `pre-prompt` hooks) | `pre-prompt` | `~/.jeo/hooks.json` |
 | OpenCode 2 (1.x: `chat.message`) | `session.hook("prompt")` plugin | `~/.config/opencode/plugins/openspace-route.js` |
 
 This table lists implemented hook surfaces, not a claim that every catalog host has a
 native hook. The experimental `agy` adapter reads `lastUserInput` and returns an
 `injectSteps` ephemeral message; `PreInvocation` runs per model call and may repeat per
 turn. It was fixture-tested for AGY CLI 1.4.12, but its native authenticated hook run
-remains unverified. For other hosts, including Cursor, Crush, Aside, Grok Build, and jeo-code,
-report automatic routing as unsupported or unverified; do not invent a native integration.
+remains unverified. jeo-code routes only in builds that have `pre-prompt` hooks (an older
+build ignores `~/.jeo/hooks.json`, so there it is manual routing). For other hosts, including
+Cursor, Crush, Aside, and Grok Build, report automatic routing as unsupported or unverified;
+do not invent a native integration.
 Where supported, preview all affected hosts with `route-hooks.py install --dry-run` before
 approval. For a host without a native hook, manually run the local router's `--explain`
 against the prompt when appropriate; that is manual routing, not per-prompt automation.

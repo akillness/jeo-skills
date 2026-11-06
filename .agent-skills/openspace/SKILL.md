@@ -13,7 +13,7 @@ description: >
   openspace-mcp, skill-discovery, delegate-task.
 
 allowed-tools: Bash Read Write Edit Glob Grep
-compatibility: Requires Python 3.12+ (uv recommended). Routing hooks support Claude Code, Codex, Gemini CLI/Antigravity, Kimi Code, jeopi, omp, pi, gjc, and OpenCode; an experimental Antigravity CLI (agy) adapter is fixture-tested but not verified in a native authenticated run. The MCP server needs an MCP-capable host. Local search, routing, evaluation, and evolution work without cloud access; sharing to the cloud hub needs an OpenSpace cloud agent key.
+compatibility: Requires Python 3.12+ (uv recommended). Routing hooks support Claude Code, Codex, Gemini CLI/Antigravity, Kimi Code, jeo-code (builds with `pre-prompt` hooks), jeopi, omp, pi, gjc, and OpenCode; an experimental Antigravity CLI (agy) adapter is fixture-tested but not verified in a native authenticated run. The MCP server needs an MCP-capable host. Local search, routing, evaluation, and evolution work without cloud access; sharing to the cloud hub needs an OpenSpace cloud agent key.
 license: MIT
 metadata:
   tags: openspace, skill-management, skill-discovery, skill-routing, prompt-hook, skill-retrieval, skill-evaluation, skill-evolution, mcp, agent-skills, quality-layer, cloud-hub
@@ -168,6 +168,7 @@ python3 scripts/route-hooks.py remove
 | Antigravity CLI (`agy`, experimental) | `PreInvocation` → `injectSteps` / `ephemeralMessage` | `~/.gemini/config/hooks.json` |
 | Kimi Code | `UserPromptSubmit` → hook message | `~/.kimi-code/config.toml` |
 | jeopi, omp, pi, gjc | `before_agent_start` → hidden custom message | `~/.<host>/agent/extensions/openspace-route.ts` |
+| jeo (jeo-code, builds with `pre-prompt` hooks) | `pre-prompt` → `additionalContext`, appended to the prompt message as a `[pre-prompt hook context]` block | `~/.jeo/hooks.json` (a hooks-only registry; `config.json` is never touched) |
 | OpenCode 2 | `session.hook("prompt")` appends to the prompt (1.x: `chat.message` synthetic part) | `~/.config/opencode/plugins/openspace-route.js` |
 
 The `agy` adapter reads `lastUserInput` and may fire more than once per turn because

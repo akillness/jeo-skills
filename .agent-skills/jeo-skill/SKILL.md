@@ -87,6 +87,24 @@ separate skills when their runtime or job differs—for example, human code-revi
 versus the `ocr` CLI. Use a canonical alias only when ordinary prompts truly compete and
 backward-compatible exact-name installation is required.
 
+### 4. Host behavior: jeopi and jeo-code both route
+
+- **jeopi / omp / pi / gjc**: the OpenSpace `before_agent_start` extension ranks the
+  installed catalog for every prompt and hands the model the matching `SKILL.md`
+  paths, so `jeo-skill` is picked up from ordinary wording. Check with
+  `python3 ../openspace/scripts/route-hooks.py --host jeopi status`.
+- **jeo (jeo-code)**: command hooks come from `~/.jeo/hooks.json` (events `pre-prompt`,
+  `turn-end`, and the tool-loop `pre-tool`, `post-turn`, `post-implementation`).
+  `python3 ../openspace/scripts/route-hooks.py install --host jeo` registers the same
+  router as a `pre-prompt` hook, so each prompt is ranked and the matching `SKILL.md`
+  paths reach the model as a `[pre-prompt hook context]` block; check with `--host jeo
+  status`. A jeo-code build without `pre-prompt` support ignores that file: there, name the
+  skill in the prompt (`jeo-skill`, or "use the jeo-skill skill"), because `jeo skills
+  list` discovers `~/.agents/skills` but the system prompt lists only about 30 of them,
+  ordered by name-token match to the task.
+- `jeo-skill usage scan` reads `~/.jeo/sessions` for jeo; jeo use outside that path is
+  not counted, so do not treat a jeo-only skill with zero uses as unused.
+
 ### Optional Jevgrep source discovery
 
 For an explicit Jevgrep request, follow [jevgrep](../jevgrep/SKILL.md) for scoped

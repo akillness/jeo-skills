@@ -1360,8 +1360,8 @@ async function hooksInstall(flags) {
       events: ['pre-tool'],
       matcher: jeoMatcher,
       limitations: [
-        'jeo pre-tool hooks receive only {event, tool, args}; jeo has no prompt-submit or context hook, so Jev cannot select skills or filter context for jeo',
-        'no task is cached for jeo, so enforce review withholds every matched tool; advisory makes no review call because jeo discards hook output on success',
+        'Jev registers only a pre-tool hook for jeo, and that payload carries no user prompt; newer jeo-code builds also offer a pre-prompt hook (see openspace route-hooks.py --host jeo) but Jev does not register one, so Jev cannot select skills or filter context for jeo',
+        'no task is cached for jeo, so enforce review withholds every matched tool; advisory makes no review call because jeo ignores plain-text hook output on success',
         'a project .jeo/hooks.json replaces the global hook list, so this hook does not run in such projects',
       ],
       executed: false,
