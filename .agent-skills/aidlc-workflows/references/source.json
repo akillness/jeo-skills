@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "skill": "aidlc-workflows",
+  "repository": "awslabs/aidlc-workflows",
+  "commit": "a8721be3631e6a254cf524ea57e5932aa56b4149",
+  "committed_at": "2026-11-04T05:46:34Z",
+  "observed_at": "2026-11-06",
+  "license": {
+    "spdx": "MIT-0",
+    "path": "LICENSE",
+    "url": "https://github.com/awslabs/aidlc-workflows/blob/a8721be3631e6a254cf524ea57e5932aa56b4149/LICENSE",
+    "conclusion": "MIT No Attribution per the LICENSE file and the GitHub API. This skill copies no upstream code or documentation."
+  },
+  "latest_release": {
+    "tag": "v2.11.3",
+    "published_at": "2026-11-04T06:09:40Z",
+    "tag_commit": "a8721be3631e6a254cf524ea57e5932aa56b4149",
+    "note": "the audited commit is the release tag's commit, which is what releases/latest/download/install.sh installs"
+  },
+  "main_observed": {
+    "commit": "df98e29e55eb413c2b84473db8f10c8650d98112",
+    "committed_at": "2026-11-06T04:46:58Z",
+    "note": "unreleased main had moved past the release; its docs differ from the pin (Kiro harness ids, Infrastructure stage count, hook set)"
+  },
+  "counts_at_pin": {
+    "agents": 14,
+    "scopes": 11,
+    "stages": 33,
+    "phases": 5,
+    "stages_by_phase": {
+      "construction": 7,
+      "ideation": 7,
+      "inception": 9,
+      "initialization": 3,
+      "operation": 7
+    }
+  },
+  "harness_ids_at_pin": [
+    "claude",
+    "codex",
+    "copilot",
+    "cursor",
+    "kiro",
+    "kiro-ide",
+    "opencode"
+  ],
+  "release_assets": [
+    "aidlc-copy-runtime-2.11.3.tar.gz",
+    "aidlc-copy-runtime-2.11.3.tar.gz.sha256",
+    "aidlc-darwin-arm64",
+    "aidlc-darwin-x64",
+    "aidlc-linux-arm64",
+    "aidlc-linux-arm64-musl",
+    "aidlc-linux-x64",
+    "aidlc-linux-x64-musl",
+    "aidlc-release.intoto.jsonl",
+    "aidlc-runtime-2.11.3.tar.gz",
+    "aidlc-windows-x64.exe",
+    "checksums.txt",
+    "install.ps1",
+    "install.sh",
+    "version.json"
+  ],
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "c82e70864e312e591d045f24fb0a582b7c5fa104d22f6b689b15bee88a5c6ff5",
+      "bytes": 10307
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "7cb750713252efd1d578837ba8785b61319109906f0c10b87adab7cf4badfc42",
+      "bytes": 947
+    },
+    {
+      "path": "docs/guide/18-install-and-lifecycle.md",
+      "sha256": "5fc4b1368eab779c2222d91124cf05e685cb3056ecb540e46b0dfd6a93531d0d",
+      "bytes": 129398
+    },
+    {
+      "path": "docs/guide/workflow-profiles.md",
+      "sha256": "b2d8c030cc8060a2240189a958bbb85dc7facecfb34fa1bf82212d12fc8dcc62",
+      "bytes": 13323
+    },
+    {
+      "path": "harness/claude/settings.json",
+      "sha256": "d46c91975739dac2e9982f31978aaabe3e49439429598ebf028f42731ba6d3af",
+      "bytes": 9194
+    },
+    {
+      "path": "harness/claude/.mcp.json",
+      "sha256": "5314da95387e5e6235d93bd8a9f314cba261b145da1edce01c90d96143fb95c8",
+      "bytes": 726
+    },
+    {
+      "path": "scripts/install.sh",
+      "sha256": "9c069d2bb9e8200ba65b012978f5349c15dfa7fac50ae955e47962b544fc3a1a",
+      "bytes": 20116
+    },
+    {
+      "path": "core/tools/aidlc-release.ts",
+      "sha256": "3b7699b5245be15c570b894c0b31dabed8fb27e4dbedec9a3946d579d9331ccd",
+      "bytes": 40913
+    },
+    {
+      "path": "core/hooks/aidlc-run-sensors.ts",
+      "sha256": "ea78eafb9e6664da7498533c205f3be34e864f4e4ccf531fb8099c601a94b0af",
+      "bytes": 13497
+    },
+    {
+      "path": "core/hooks/aidlc-fold-usage.ts",
+      "sha256": "2c12a01be504c4d503843f65feaeb5d6cab6c84849d7b22af5e88e3268a2c06a",
+      "bytes": 7068
+    }
+  ]
+}

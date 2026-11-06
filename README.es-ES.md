@@ -307,7 +307,7 @@ Consulta la [guía de instalación](setup-all-skills-prompt.md#jev-control-plane
 
 ## 📚 Lista de Habilidades
 
-> Generado desde `.agent-skills/skills.json` · 424 habilidades · despliega una categoría para ver sus habilidades.
+> Generado desde `.agent-skills/skills.json` · 425 habilidades · despliega una categoría para ver sus habilidades.
 
 ### 🌐 Web (71)
 
@@ -579,9 +579,9 @@ Subcategorías: `developer-cli` (11), `ai-cli` (15), `media-cli` (1), `automatio
 
 </details>
 
-### 🤖 IA y Agentes (75)
+### 🤖 IA y Agentes (76)
 
-Subcategorías: `orchestration` (16), `agent-frameworks` (20), `skill-authoring` (5), `evaluation` (8), `memory` (7), `planning-review` (13), `discovery` (3), `prompting` (3)
+Subcategorías: `orchestration` (17), `agent-frameworks` (20), `skill-authoring` (5), `evaluation` (8), `memory` (7), `planning-review` (13), `discovery` (3), `prompting` (3)
 
 <details>
 <summary>Ver habilidades</summary>
@@ -663,6 +663,7 @@ Subcategorías: `orchestration` (16), `agent-frameworks` (20), `skill-authoring`
 | `ruflo` |
 | `agent-beacon` |
 | `agent-s` |
+| `aidlc-workflows` |
 
 </details>
 

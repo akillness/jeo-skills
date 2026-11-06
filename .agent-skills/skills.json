@@ -1,7 +1,7 @@
 {
   "version": "2.1.0",
   "generated": "2026-10-21",
-  "skill_count": 424,
+  "skill_count": 425,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -423,7 +423,8 @@
       "harness2",
       "ruflo",
       "agent-beacon",
-      "agent-s"
+      "agent-s",
+      "aidlc-workflows"
     ],
     "engineering": [
       "audit-reference-originality",
@@ -900,7 +901,8 @@
         "jev-control-plane",
         "typesafe-computer-use",
         "jev-ultrafast",
-        "ruflo"
+        "ruflo",
+        "aidlc-workflows"
       ],
       "agent-frameworks": [
         "microsoft-agent-framework",
@@ -2001,6 +2003,15 @@
         "typesafe-computer-use"
       ],
       "note": "Two different desktop-agent projects with different loops and trust models: Agent S screenshots the desktop and executes model-generated pyautogui code; typesafe-computer-use runs deterministic OCR and accessibility checks with a TypeSafe decision step. Neither replaces the other."
+    },
+    "structured-delivery-methods": {
+      "mode": "adjacent",
+      "members": [
+        "aidlc-workflows",
+        "spec-kit",
+        "bmad"
+      ],
+      "note": "Three structured-delivery methodologies with different engines: AI-DLC is awslabs' aidlc command with staged phases, profiles and human approval gates, spec-kit is GitHub's specify pipeline from constitution to tasks, and bmad is phase-packet routing. Pick the one the team adopted; do not run two of them on the same intent."
     }
   },
   "model_policies": {
@@ -15627,6 +15638,44 @@
       "keyword": "gitingest",
       "version": "1.0.0",
       "source": "https://github.com/coderamp-labs/gitingest"
+    },
+    {
+      "name": "aidlc-workflows",
+      "description": "Operate awslabs/aidlc-workflows (AI-DLC, the AI-Driven Development Life Cycle, MIT-0): a harness-neutral workflow engine installed as the native `aidlc` command that configures Claude Code, Kiro, Codex CLI, Cursor, opencode or GitHub Copilot with agents, workflow profiles, staged phases and human approval gates, started with `/aidlc` (`$aidlc` in Codex). Use when the user names AI-DLC, AIDLC, aidlc-workflows, `aidlc config` or `/aidlc`, wants to install or pin it, pick a profile such as express, bugfix or enterprise, wire it into a project, or audit what it writes, pre-approves and registers. Choose harness and scope first, preview with `aidlc config --dry-run`, and keep MCP servers, host trust, Bedrock settings and guard bypasses behind separate approval. Do not use for a one-off coding task, for spec-kit or BMAD, or for editing the upstream repository. Triggers on: AI-DLC, AIDLC, aidlc config, /aidlc, aidlc-workflows, AI-Driven Development Life Cycle, AI 주도 개발 수명주기, 에이아이디엘씨.",
+      "category": "ai-agents",
+      "subcategory": "orchestration",
+      "interface": "workflow",
+      "path": "aidlc-workflows/SKILL.md",
+      "tags": [
+        "aidlc",
+        "ai-dlc",
+        "workflow-profiles",
+        "harness",
+        "approval-gates",
+        "claude-code",
+        "kiro",
+        "codex",
+        "cli"
+      ],
+      "platforms": [
+        "Claude",
+        "Kiro",
+        "Codex",
+        "Cursor",
+        "OpenCode",
+        "Copilot"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "aidlc-workflows",
+      "version": "1.0.0",
+      "source": "https://github.com/awslabs/aidlc-workflows"
     }
   ]
 }

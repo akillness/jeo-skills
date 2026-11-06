@@ -330,7 +330,7 @@ python3 scripts/retire-unused-skills.py --usage-report report.json --apply \
 
 ## 📚 스킬 목록
 
-> `.agent-skills/skills.json`에서 생성 · 424개 스킬 · 카테고리를 펼치면 스킬 목록이 보입니다.
+> `.agent-skills/skills.json`에서 생성 · 425개 스킬 · 카테고리를 펼치면 스킬 목록이 보입니다.
 
 ### 🌐 웹 (71개)
 
@@ -602,9 +602,9 @@ python3 scripts/retire-unused-skills.py --usage-report report.json --apply \
 
 </details>
 
-### 🤖 AI 및 에이전트 (75개)
+### 🤖 AI 및 에이전트 (76개)
 
-하위 분류: `orchestration` (16), `agent-frameworks` (20), `skill-authoring` (5), `evaluation` (8), `memory` (7), `planning-review` (13), `discovery` (3), `prompting` (3)
+하위 분류: `orchestration` (17), `agent-frameworks` (20), `skill-authoring` (5), `evaluation` (8), `memory` (7), `planning-review` (13), `discovery` (3), `prompting` (3)
 
 <details>
 <summary>스킬 보기</summary>
@@ -686,6 +686,7 @@ python3 scripts/retire-unused-skills.py --usage-report report.json --apply \
 | `ruflo` |
 | `agent-beacon` |
 | `agent-s` |
+| `aidlc-workflows` |
 
 </details>
 
@@ -919,6 +920,7 @@ python3 scripts/changelog.py check
 | **전체 도구 설치 헬퍼가 이미 `mex`·`rtk`가 있는 환경에서도 실패하지 않음** | 공개 가이드를 실제 Mac에서 돌려 보니 TeX Live가 `/opt/homebrew/bin/mex`를 이미 쓰고 있어 `npm install -g mex-agent`가 EEXIST로 멈췄고, `install-full-tools.sh`가 5/6으로 끝났습니다. 이제 다른 프로그램이 `mex` 링크를 쓰고 있으면 이를 감지해 고정 버전 패키지를 `~/.local` 아래에 `--no-bin-links`로 설치하고(기존 `mex-agent` 래퍼가 그 경로를 찾습니다) 다른 도구는 건드리지 않습니다. 같은 헬퍼를 읽다가 `rtk`에도 비슷한 빈틈을 확인했습니다. `cargo`가 없으면 고정 버전이 Homebrew 등으로 이미 설치돼 있어도 실패했습니다. 이제 PATH의 `rtk`가 고정 버전을 정확히 출력하고 `rtk gain`이 실행될 때만 통과하며, 그 밖의 상태와 `cargo install` 실패는 여전히 실패로 보고합니다. Mac 실제 실행은 `mex` 수정 뒤 6/6이었고, `rtk` 변경은 그 실행이 아니라 테스트로 검증했습니다. 테스트: `scripts/test_full_tools_independent.py`(새 케이스 6개, 변형 검증 완료). |
 | **jeo-code 프롬프트 라우팅 및 지식 훅** | `route-hooks.py install --host jeo` 가 `~/.jeo/hooks.json`(`config.json` 은 건드리지 않음)에 `pre-prompt` 항목을 등록합니다. jeo-code 0.12.23 은 OpenSpace 스킬 노트를 프롬프트에 덧붙이고 최종 응답을 `turn-end` 훅에 전달하므로 `ingest-prompt.py` / `ingest-output.py` 도 동작합니다. 이전 jeo 빌드는 파일을 무시합니다. 실제 `jeo` 실행으로 end-to-end 검증했습니다. |
 | **워크플로 규칙이 실제로 적용되고 설치 시 검증됨** | `setup-workspace.py`가 `jeo-workflows.md`를 `alwaysApply: true` frontmatter가 맨 위에 오도록 쓰고(기존 마커 우선 파일은 jeopi가 무시), 기존 파일은 제자리에서 마이그레이션하며, openspace 폴백이 OpenSpace venv 인터프리터를 쓰도록 고쳤습니다. 읽기 전용 `--verify`가 규칙마다 `ok`/`inert`/`stale`/`missing`을 보고하고, `install.sh`는 이를 실행해 규칙이 적용되지 않으면 설치를 실패로 끝냅니다. 가이드 Step 5B도 활성화와 `--verify`를 명시적으로 실행합니다. `route-hooks.py status`는 낡은 라우터 복사본도 알려 줍니다. 실제 `jeopi`·`jeo` 실행과 끄기 대조군으로 검증했습니다. |
+| **`aidlc-workflows`: AWS Labs의 AI-DLC 운영 가이드** | `awslabs/aidlc-workflows`(MIT-0)를 다루는 `ai-agents` / `orchestration` 스킬을 추가했습니다. `aidlc` 명령과 `/aidlc` 뒤에 있는 하네스 중립 워크플로 엔진입니다. 라우팅 우선 구조이며 릴리스 `v2.11.3`(`a8721be`)에 고정되고, SHA-256 매니페스트, 감사 노트, 동작 evals 6개, 오프라인 표준 라이브러리 `scripts/preflight.py`를 갖췄습니다. 이 헬퍼는 플랫폼 지원, 설치 도구, root·sudo 여부, 다운로드를 바꾸는 환경변수, 프로젝트의 핀·자동 승인 권한·훅 개수·MCP 서버를 `aidlc`를 실행하거나 값을 출력하지 않고 점검합니다. 감사 결과는 추정이 아니라 기록입니다: README는 설치 스크립트를 `sh`로 바로 넘기지만 설치 가이드에는 먼저 내려받아 증명을 검증하는 경로가 있고, 호환되는 `gh`가 없으면 출처 증명을 건너뛰며 릴리스에는 OS 코드 서명이 없습니다. 기본 Claude 설정은 `Edit(/**)`를 미리 승인하고 훅 명령 16개를 등록하며, 선택형 Claude MCP 항목은 AWS 서버 4개를 `uvx ...@latest`로 시작합니다. 릴리스 이후 `main`에서는 Kiro 하네스 ID도 바뀌었습니다. `jeo-skill install aidlc-workflows --global --yes`로 설치하며 테스트는 `scripts/test_aidlc_workflows.py`입니다. |
 
 ## 🆕 v2026-11-04 업데이트
 

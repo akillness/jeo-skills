@@ -318,7 +318,7 @@ node ~/.agents/jev/jev-harness.mjs --profile "${JEV_PROFILE:?Select the current 
 
 ## 📚 Skills List
 
-> Generated from `.agent-skills/skills.json` · 424 skills · expand a category to see its skills.
+> Generated from `.agent-skills/skills.json` · 425 skills · expand a category to see its skills.
 
 ### 🌐 Web (71)
 
@@ -590,9 +590,9 @@ Subcategories: `developer-cli` (11), `ai-cli` (15), `media-cli` (1), `automation
 
 </details>
 
-### 🤖 AI & Agents (75)
+### 🤖 AI & Agents (76)
 
-Subcategories: `orchestration` (16), `agent-frameworks` (20), `skill-authoring` (5), `evaluation` (8), `memory` (7), `planning-review` (13), `discovery` (3), `prompting` (3)
+Subcategories: `orchestration` (17), `agent-frameworks` (20), `skill-authoring` (5), `evaluation` (8), `memory` (7), `planning-review` (13), `discovery` (3), `prompting` (3)
 
 <details>
 <summary>Show AI &amp; Agents skills</summary>
@@ -674,6 +674,7 @@ Subcategories: `orchestration` (16), `agent-frameworks` (20), `skill-authoring` 
 | `ruflo` |
 | `agent-beacon` |
 | `agent-s` |
+| `aidlc-workflows` |
 
 </details>
 
@@ -907,6 +908,7 @@ Edit metadata in `skills.json`, never in the generated tables. Upstream sources 
 | **Full-tool helper no longer fails on hosts that already own `mex` or `rtk`** | Running the published guide on a real Mac exposed one failure: `npm install -g mex-agent` stopped with EEXIST because TeX Live owns `/opt/homebrew/bin/mex`, so `install-full-tools.sh` reported 5/6. It now detects a `mex` link owned by another program, installs the pinned package under `~/.local` with `--no-bin-links` (the existing `mex-agent` wrapper finds it) and never replaces the other tool. Reading the same helper showed `rtk` had a matching gap: without `cargo` it failed even when the pinned release was already installed another way (for example Homebrew). That case now passes only when `rtk` on PATH reports exactly the pinned version and `rtk gain` runs; any other state still fails, and a failed `cargo install` is still reported. The Mac run itself reached 6/6 after the `mex` fix; the `rtk` change is covered by tests, not by that run. Tests: `scripts/test_full_tools_independent.py` (6 new cases, mutation-checked). |
 | **Prompt routing and knowledge hooks for jeo-code** | `route-hooks.py install --host jeo` writes a `pre-prompt` entry to `~/.jeo/hooks.json` (never `config.json`); jeo-code 0.12.23 appends the OpenSpace skill note to the prompt and sends the final reply to `turn-end` hooks, so `ingest-prompt.py` / `ingest-output.py` work there too. Older jeo builds ignore the file. Verified end to end with a real `jeo` run. |
 | **Workflow rules are now actually applied, and verified at install** | `setup-workspace.py` writes `jeo-workflows.md` with `alwaysApply: true` frontmatter first (jeopi ignored the old marker-first file), migrates legacy files in place, and points the openspace fallback at the OpenSpace venv interpreter. New read-only `--verify` reports each rule `ok`/`inert`/`stale`/`missing`; `install.sh` runs it and fails the install instead of reporting inert rules as active, and the guide's Step 5B now runs activation and `--verify` explicitly. `route-hooks.py status` also flags a stale router copy. Verified with real `jeopi` and `jeo` runs, each with an off-switch control. |
+| **`aidlc-workflows`: operate AWS Labs' AI-DLC** | New `ai-agents` / `orchestration` skill for `awslabs/aidlc-workflows` (MIT-0), the harness-neutral workflow engine behind the `aidlc` command and `/aidlc`. It is router-first and pinned to release `v2.11.3` (`a8721be`) with a SHA-256 manifest, audited notes, 6 behavioral evals and an offline stdlib `scripts/preflight.py` that checks platform support, installer tools, root or sudo, environment overrides that redirect downloads, and a project's pin, pre-approved permissions, hook counts and MCP servers without running `aidlc` or printing values. Audit findings are recorded, not assumed: the README pipes the installer into `sh` although the install guide documents a download-first, attestation-verified path; provenance is skipped without a compatible `gh` and the release is not code-signed; the shipped Claude settings pre-approve `Edit(/**)` and register 16 hook commands; the optional Claude MCP entries start four AWS servers with `uvx ...@latest`; and Kiro's harness ids changed on `main` after the release. Install with `jeo-skill install aidlc-workflows --global --yes`. Tests: `scripts/test_aidlc_workflows.py`. |
 
 ## 🆕 What's New in v2026-11-04
 

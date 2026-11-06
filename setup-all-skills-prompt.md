@@ -3396,6 +3396,40 @@ owner-only without opening it. Record unchecked versions and missing prerequisit
 repairing them to force a green result. MoneyPrinterV2 is AGPL-3.0: its copyleft reaches modified
 versions that are distributed or run as a network service, and these wrappers do not relicense it.
 
+### AI-DLC workflows operator (on demand, installs a CLI and writes project hooks)
+
+The `aidlc-workflows` skill installs as a router-first guide, a SHA-256 manifest
+(`references/source.json`), audited notes (`references/upstream.md`), behavioral evals and one offline
+stdlib helper (`scripts/preflight.py`). It operates `awslabs/aidlc-workflows` (MIT-0), pinned to release
+`v2.11.3` at `a8721be3631e6a254cf524ea57e5932aa56b4149`. Catalog installation copies documents only. Even in
+`full` mode, do not download or run the upstream installer, run `aidlc config` in any project, register its
+MCP servers, trust a host's hooks, set Bedrock values, record a guard bypass, or start a workflow. Select one real
+project and approve the exact directory, harness, MCP choice and side effects first.
+
+```bash
+HOME="$USER_HOME" python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" install aidlc-workflows --global --yes
+python3 "$SKILLS_ROOT/aidlc-workflows/scripts/preflight.py" --help
+python3 "$SKILLS_ROOT/aidlc-workflows/scripts/preflight.py" --json
+python3 "$SKILLS_ROOT/aidlc-workflows/scripts/preflight.py" --project "/path/to/project" --json
+```
+
+The helper supports `--help`, `--json`, `--project PATH`, optional `--repo PATH` and optional
+`--expect-commit FULL_SHA` (requires `--repo`). It reads host facts, environment variable names, install
+directory names and a project's pin, permission patterns, hook counts and MCP server names; it never executes
+`aidlc`, the installer, `gh` or a harness, opens no socket, writes nothing, and never prints header, key or
+profile values. JSON reports `skill`, `scope: offline-preflight`, `status`, `checks` and
+`runtime_verified: false`. Exit 0 means the offline checks pass, 1 means a missing or mismatched prerequisite
+(for example an unsupported platform, no checksum tool, or sudo), and 2 means invalid input.
+
+What the upstream installer and `aidlc config` do is recorded in the reference, not run here: the installer is per
+user and refuses root, SHA-256 is mandatory, signed provenance is checked only with a compatible `gh`, and there is no
+OS code-signing; the README pipes the installer into `sh`, so prefer the download-first path in the install guide.
+`aidlc config` writes hooks, settings and marked instruction blocks, the shipped Claude settings pre-approve
+`Edit(/**)`, and the optional Claude MCP entries start four AWS servers with `uvx ...@latest` plus a hosted
+`context7` server that needs a key. `--yes` never grants MCP consent. Harness ids changed after v2.11.3 (Kiro's
+v3 harness is `kiro-ide` at the pin and `kiro` on main), so read `aidlc config --help` for the installed release.
+Installing `aidlc-workflows` does not configure AI-DLC, and it is separate from `spec-kit` and `bmad`.
+
 ---
 
 ## Guard Boundaries

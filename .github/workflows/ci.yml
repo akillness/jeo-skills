@@ -117,3 +117,5 @@ jobs:
         run: python3 -B scripts/test_image_to_github_repo.py -v
       - name: GitHub program operator offline contracts
         run: python3 -B scripts/test_five_github_programs.py -v
+      - name: AI-DLC workflows operator offline contracts
+        run: python3 -B scripts/test_aidlc_workflows.py -v

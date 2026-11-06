@@ -89,3 +89,11 @@ The ten game-development projects above were identified through [this LinkedIn p
 | `gitingest` | [coderamp-labs/gitingest @ 4e259a0](https://github.com/coderamp-labs/gitingest/tree/4e259a02fe72115bee538271622f1234a81c8e1a) · `gitingest` 0.3.1 on PyPI | MIT |
 
 These four guides and the `fabric` guide (listed with the older sources above) form the `github-five-programs` bundle; the programs were named in an Instagram card-news post. The guides are original, source-specific operator documentation and bundle no upstream code or runtime. Each records its audited commit and file hashes in `references/source.json`; consult the upstream repository's current terms before redistributing anything. The `image-to-github-repo` skill resolves such posts to repository URLs.
+
+## Methodology operators
+
+| Component | Source | License |
+|-----------|--------|---------|
+| `aidlc-workflows` | [awslabs/aidlc-workflows @ a8721be (v2.11.3)](https://github.com/awslabs/aidlc-workflows/tree/a8721be3631e6a254cf524ea57e5932aa56b4149) | MIT-0 |
+
+The `aidlc-workflows` guide is original operator documentation. It bundles no upstream code, documentation or runtime and records its audited commit and file hashes in `references/source.json`; the AI-DLC methodology, the `aidlc` command and the harness projections stay the upstream project's. Unreleased `main` differs from the pin, so consult the upstream repository's current terms and docs before relying on newer behavior.
