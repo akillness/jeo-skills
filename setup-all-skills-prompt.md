@@ -863,7 +863,14 @@ it for a remote source; a missing helper or any nonzero status is a partial fail
 The pins are `mex-agent` 0.8.4, `@zvec/zvec-grep` 0.2.2, `specify-cli` at
 Git commit `99e047e9b48c3ecbbc5c3e530fb45bed671960bc` (1.2.6.dev0), RTK v1.1.0,
 `semble` 0.7.0, and `cli-anything-hub` 0.4.1. Node.js 22.20+ is required by the
-skills CLI. RTK builds from its official pinned Git tag and requires Rust 1.91 or newer.
+skills CLI. RTK builds from its official pinned Git tag and requires Rust 1.91 or newer;
+without `cargo`, an `rtk` already on PATH counts only when it reports exactly the pinned
+version and `rtk gain` runs (for example Homebrew's release). Any other state, or a failed
+build, is reported as a failure.
+Another program can already own the `mex` command (TeX Live ships one, so `npm install -g
+mex-agent` stops with EEXIST). The helper then installs the pinned package under `~/.local`
+without a `mex` link, never replaces the other program, and verifies the `mex-agent`
+entrypoint instead. Use `mex-agent`, not `mex`, on such hosts.
 Linux ARM64 RTK can fail on an incompatible glibc/toolchain; report that failure while
 allowing the other tool attempts to continue. Do not claim success on
 an unsupported platform or when command verification fails.

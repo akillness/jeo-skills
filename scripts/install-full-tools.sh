@@ -69,7 +69,19 @@ EOF
 install_mex() {
   require_node_22 || return
   command -v npm >/dev/null 2>&1 || return 1
-  npm install -g "mex-agent@$MEX_VERSION" || return
+  # TeX Live (Homebrew, MacTeX) ships an unrelated `mex`. When it already owns npm's global
+  # `mex` link, npm stops with EEXIST and --force would replace that tool, so install the pinned
+  # package under ~/.local without bin links instead. The mex-agent wrapper below finds it there
+  # and is the entrypoint whose version is verified.
+  local npm_mex
+  npm_mex="$(npm prefix -g 2>/dev/null)/bin/mex"
+  if { [ -e "$npm_mex" ] || [ -L "$npm_mex" ]; } &&
+     ! python3 -c 'import os, sys; sys.exit(0 if "mex-agent" in os.path.realpath(sys.argv[1]) else 1)' "$npm_mex"; then
+    printf 'NOTE: %s belongs to another program; installing mex-agent under %s without a mex link.\n' "$npm_mex" "$HOME/.local" >&2
+    npm install -g --prefix "$HOME/.local" --no-bin-links "mex-agent@$MEX_VERSION" || return
+  else
+    npm install -g "mex-agent@$MEX_VERSION" || return
+  fi
   local wrapper_src="$SCRIPT_DIR/../.agent-skills/mex/scripts/mex-agent-wrapper.sh"
   if [ ! -f "$wrapper_src" ]; then
     wrapper_src="$HOME/.agents/skills/mex/scripts/mex-agent-wrapper.sh"
@@ -245,8 +257,15 @@ install_rtk() {
   local cargo_rtk="${CARGO_HOME:-$HOME/.cargo}/bin/rtk"
   if [ -x "$cargo_rtk" ] && [ "$("$cargo_rtk" --version 2>/dev/null || true)" = "rtk $RTK_VERSION" ]; then
     : # Already compiled and matches pinned version
+  elif ! command -v cargo >/dev/null 2>&1; then
+    # Nothing can build the pin here. A release already on PATH (for example Homebrew's) at the
+    # pinned version satisfies it; any other state still fails, so a missing toolchain is never hidden.
+    if [ "$(rtk --version 2>/dev/null || true)" = "rtk $RTK_VERSION" ] && rtk gain >/dev/null 2>&1; then
+      return 0
+    fi
+    printf 'cargo is required for pinned RTK installation (no rtk %s on PATH either).\n' "$RTK_VERSION" >&2
+    return 1
   else
-    command -v cargo >/dev/null 2>&1 || { printf 'cargo is required for pinned RTK installation.\n' >&2; return 1; }
     if [ "$(uname -s 2>/dev/null)" = Linux ] && [ "$(uname -m 2>/dev/null)" = aarch64 ]; then
       printf 'NOTE: RTK Linux ARM64 may fail because of glibc/toolchain compatibility; failure is recorded.\n' >&2
     fi

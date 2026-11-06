@@ -299,6 +299,90 @@ PY''')
         self.assertIn("PARTIAL SUCCESS - failed:", result.stdout)
         self.assertIn("OpenSpace", result.stdout.split("PARTIAL SUCCESS - failed:")[-1])
 
+    def logging_npm(self, prefix):
+        self.command("npm", '''printf 'npm %s\\n' "$*" >> "$FIXTURE_LOG"
+if [ "$1 $2" = "prefix -g" ]; then printf '%s\\n' "$FIXTURE_NPM_PREFIX"; fi
+exit 0''')
+        (prefix / "bin").mkdir(parents=True, exist_ok=True)
+        return {"FIXTURE_NPM_PREFIX": str(prefix)}
+
+    def npm_installs(self):
+        return [line for line in self.log.read_text(encoding="utf-8").splitlines()
+                if line.startswith("npm install")]
+
+    def test_mex_link_owned_by_another_program_is_never_replaced(self):
+        prefix = self.work / "npm-prefix"
+        env = self.logging_npm(prefix)
+        foreign = prefix / "bin/mex"
+        foreign.write_bytes(b"texlive mex\n")
+        result = self.run_installer(**env)
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertIn("Full-tool result: 6/6 succeeded.", result.stdout)
+        self.assertEqual(foreign.read_bytes(), b"texlive mex\n")
+        self.assertIn("belongs to another program", result.stdout)
+        installs = [line for line in self.npm_installs() if "mex-agent@" in line]
+        self.assertEqual(
+            installs,
+            [f"npm install -g --prefix {self.home}/.local --no-bin-links mex-agent@0.8.4"],
+        )
+
+    def test_dangling_foreign_mex_link_is_also_a_collision(self):
+        prefix = self.work / "npm-prefix"
+        env = self.logging_npm(prefix)
+        (prefix / "bin/mex").symlink_to(self.work / "gone/mex")
+        result = self.run_installer(**env)
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertTrue((prefix / "bin/mex").is_symlink())
+        self.assertTrue(any("--no-bin-links" in line for line in self.npm_installs()), self.npm_installs())
+
+    def test_mex_link_owned_by_mex_agent_or_absent_uses_plain_global_install(self):
+        for state in ("absent", "mex-agent"):
+            with self.subTest(state=state):
+                self.log.write_text("", encoding="utf-8")
+                prefix = self.work / f"prefix-{state}"
+                env = self.logging_npm(prefix)
+                if state == "mex-agent":
+                    cli = prefix / "lib/node_modules/mex-agent/dist/cli.js"
+                    cli.parent.mkdir(parents=True)
+                    cli.write_text("// fixture\n", encoding="utf-8")
+                    (prefix / "bin/mex").symlink_to(cli)
+                result = self.run_installer(**env)
+                self.assertEqual(result.returncode, 0, result.stdout)
+                self.assertNotIn("belongs to another program", result.stdout)
+                installs = [line for line in self.npm_installs() if "mex-agent@" in line]
+                self.assertEqual(installs, ["npm install -g mex-agent@0.8.4"])
+
+    def test_pinned_rtk_on_path_satisfies_the_pin_when_cargo_is_absent(self):
+        (self.bin / "cargo").unlink()
+        result = self.run_installer()
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertIn("Full-tool result: 6/6 succeeded.", result.stdout)
+        self.assertNotIn("cargo is required", result.stdout)
+
+    def test_rtk_without_cargo_still_fails_unless_it_is_the_working_pinned_release(self):
+        cases = {
+            "wrong version": 'if [ "$1" = "--version" ]; then echo "rtk 1.0.0"; fi',
+            "no rtk": None,
+            "gain fails": 'if [ "$1" = "--version" ]; then echo "rtk 1.1.0"; exit 0; fi; exit 9',
+        }
+        for label, body in cases.items():
+            with self.subTest(case=label):
+                (self.bin / "cargo").unlink(missing_ok=True)
+                (self.bin / "rtk").unlink(missing_ok=True)
+                if body is not None:
+                    self.command("rtk", body)
+                result = self.run_installer()
+                self.assertNotEqual(result.returncode, 0, result.stdout)
+                self.assertIn("cargo is required for pinned RTK installation", result.stdout)
+                self.assertIn("PARTIAL SUCCESS - failed: RTK", result.stdout)
+                self.assertIn("Full-tool result: 5/6 succeeded.", result.stdout)
+
+    def test_cargo_build_failure_is_still_reported_when_cargo_exists(self):
+        self.command("cargo", 'exit 1')
+        result = self.run_installer()
+        self.assertNotEqual(result.returncode, 0, result.stdout)
+        self.assertIn("PARTIAL SUCCESS - failed: RTK", result.stdout)
+
 
 if __name__ == "__main__":
     unittest.main()
