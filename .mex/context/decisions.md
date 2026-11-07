@@ -15,7 +15,7 @@ edges:
 # Decisions usually ground sparsely; add only symbols that implement the decision.
 # Entry shape: { node: "function:<tier-1-id>", fingerprint: "mh2:64:<base64url>" }
 grounds_to: []
-last_updated: [YYYY-MM-DD]
+last_updated: [2026-11-07]
 ---
 
 # Decisions
@@ -38,7 +38,7 @@ last_updated: [YYYY-MM-DD]
 ### Shared-root-only refresh + per-host symlinks (no per-host copy installs)
 **Date:** 2026-11-06
 **Status:** Accepted
-**Decision:** `scripts/skills-upgrade.sh` refreshes only the shared root `~/.agents/skills`; host roots (claude/pi/gjc/antigravity) stay as per-skill symlinks reconciled by `scripts/refresh-host-links.py`. Never re-run copy-based per-host installers after symlink conversion.
+**Decision:** `scripts/skills-upgrade.sh` refreshes only the shared root `~/.agents/skills`; host roots (claude/pi/gjc/antigravity) stay as per-skill symlinks reconciled by `scripts/refresh-host-links.py`. Never re-run copy-based per-host installers after symlink conversion. Documented for users in README.md ("Keeping installed skills current") and README.ko.md ("설치된 스킬 최신 상태 유지"), synced to surfaces by `scripts/changelog.py`.
 **Reasoning:** Copy installs create duplicate/legacy copies per host and, post-symlink, the installer rmtree can follow symlink slots into the shared root and destroy shared originals.
 **Alternatives considered:** (a) per-host copy installs + a dedupe cron (rejected: repeated divergence), (b) whole-dir host symlink (rejected: hosts need non-catalog locals alongside catalog links).
 **Consequences:** New skills propagate to all hosts without duplication; stale copies must be quarantined via `refresh-host-links.py --replace-copies`, not hand-deleted.
