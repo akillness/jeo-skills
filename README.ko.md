@@ -312,6 +312,49 @@ python3 scripts/retire-unused-skills.py --usage-report report.json --apply \
 
 </details>
 
+## 🔄 설치된 스킬 최신 상태 유지
+
+<details>
+<summary>공유 루트를 새로 고치고 심볼릭 링크 호스트를 재조정하기</summary>
+
+
+[전체 설치 가이드](setup-all-skills-prompt.md)를 따르는 머신에서는 카탈로그가 하나의 공유 루트(`~/.agents/skills`)에 있고 각 호스트의 스킬 디렉터리(claude, pi, gjc, antigravity, cursor, aside-user)가 스킬당 심볼릭 링크로 이를 가리킵니다. 이후에는 **공유 루트만** 새로 고치면 됩니다 — 호스트별 복사 설치기(`jeo-skill install -a claude-code`, `-a gjc`, …)를 실행하는 것은 위험합니다: rmtree가 심볼릭 링크 슬롯을 따라 공유 루트 원본까지 삭제할 수 있습니다.
+
+```bash
+bash scripts/skills-upgrade.sh              # pull → doctor → refresh → prune → reconcile → verify
+bash scripts/skills-upgrade.sh --dry-run    # 쓰기 없이 계획만 생성
+python3 scripts/refresh-host-links.py       # 링크 계획만 표시 (읽기 전용)
+```
+
+각 단계의 역할:
+
+1. 신뢰된 체크아웃에서 `git pull --ff-only` — non-fast-forward면 실행 중단
+2. `jeo-skill doctor`로 갱신된 카탈로그 검증
+3. `jeo-skill install --all --global --yes`로 공유 루트를 최신 카탈로그로 재작성
+4. `jeo-skill prune-retired --global`로 은퇴한 카탈로그 사본 제거 (레거시 중복 정리 단계)
+5. `scripts/refresh-host-links.py --apply` — 새로 추가된 스킬의 링크 생성, 끊긴 링크 제거, **호스트 로컬 비카탈로그 스킬은 절대 삭제하지 않음**
+6. 검증: doctor 상태 + 모든 설정된 호스트 루트의 끊긴 링크 스캔
+
+| 옵션 | 효과 |
+|---|---|
+| `--hosts <목록>` | 호스트 지정 (기본 `claude,pi,gjc,antigravity,cursor,aside-user`) |
+| `--skip-pull` | 오프라인 실행 (편집으로 해결하지 않고 나중에 stale 체크아웃 놀람을 거부) |
+| `--replace-copies` | 낡은 실제 디렉터리 사본도 링크로 변환 (먼저 격리) |
+| `SKILLS_UPGRADE_HOSTS` | 환경변수로 기본 호스트 지정 |
+
+교체된 사본과 낡은 링크는 `~/.local/state/jeo-skill/quarantine/upgrade-<UTC>/` 아래로 격리되며 절대 하드 삭제되지 않고, 전체 흐름은 멱등성을 가집니다: 건강한 설치는 no-op 계획으로 다시 실행됩니다.
+
+### 주기적 갱신
+
+`scripts/com.jeo-skills.skills-upgrade.plist`는 주 1회(월요일 09:30) 업그레이드를 실행하는 launchd 템플릿으로, 로그는 `~/.local/state/jeo-skill/upgrade.log`에 남습니다. 스크립트가 직접 최신 nvm Node bin을 `PATH`에 추가하므로 헤드리스 실행에서도 `npx`를 찾을 수 있습니다. 설치:
+
+```bash
+cp scripts/com.jeo-skills.skills-upgrade.plist ~/Library/LaunchAgents/
+launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-upgrade.plist
+```
+
+</details>
+
 ## 🔌 선택적 통합
 
 <details>
@@ -910,6 +953,12 @@ python3 scripts/changelog.py check
 
 <!-- WHATS-NEW:START -->
 
+## 🆕 v2026-11-07 업데이트
+
+| 변경 사항 | 상세 내용 |
+|--------|---------|
+| **심볼릭 링크 호스트용 원커맨드 공유 루트 업그레이드** | `scripts/skills-upgrade.sh`가 전체 설치 이후의 유지보수 부담(pull → 검증 → 갱신 → 은퇴 정리 → 호스트 링크 재조정 → 검증)을 하나의 멱등 커맨드로 통합했습니다. `setup-all-skills-prompt.md`를 따르는 머신에서는 카탈로그가 하나의 공유 루트(`~/.agents/skills`)에 있고 각 호스트 디렉터리(claude, pi, gjc, antigravity, cursor, aside-user)에 스킬당 심볼릭 링크가 생기는데, 스크립트는 그 공유 루트만 갱신하고 안전하지 않은 호스트별 복사 설치기(rmtree가 심볼릭 링크 슬롯을 따라 공유 루트 원본까지 삭제할 수 있음)는 의도적으로 피합니다. 함께 추가된 `scripts/refresh-host-links.py`는 새 스킬의 링크를 생성하고 끊긴 링크를 제거하며, 교체된 사본과 낡은 링크를 삭제하지 않고 `~/.local/state/jeo-skill/quarantine/upgrade-<UTC>/` 아래로 격리하고, 호스트 로컬 비카탈로그 스킬은 절대 만지지 않습니다. 스크립트가 직접 최신 nvm Node bin을 `PATH`에 추가해 헤드리스 실행에서도 `npx`를 찾고, `scripts/com.jeo-skills.skills-upgrade.plist`가 launchd로 주간 스케줄을 담당합니다. README와 `README.ko.md`에는 이 워크플로우를 담은 "설치된 스킬 최신 상태 유지" 섹션이 새로 생겼습니다. |
+
 ## 🆕 v2026-11-06 업데이트
 
 | 변경 사항 | 상세 내용 |
@@ -954,15 +1003,6 @@ python3 scripts/changelog.py check
 | **caveman v2.0.0: 유지되는 원본으로 교체** | 원본에서 삭제된 `mattpocock/skills` 출처 사본을 `JuliusBrussee/caveman` 4.0.1, 커밋 `d262ab3882952a59312ff3537cd86d894523c5ab`(Apache-2.0, 라이선스 사본과 변경 사항 명시)에 맞췄습니다. 결론부터 말하고, 코드·경로·오류는 그대로 두며, 임의 약어와 화살표를 쓰지 않고, 경고·되돌릴 수 없는 작업·파일에 남는 내용은 평문으로 씁니다. 근거 없던 “~75%”는 원본 자체 수치로 바꿨고 내용 없는 상투 섹션을 지웠습니다. 새 `scripts/test_ponytail_caveman_skills.py`(테스트 12개, CI 포함)가 고정 커밋, 버전, 링크, 레거시 파일, 설치 스크립트의 실행 안 함·호스트 하나 규칙을 검사합니다. |
 | **openspace v2.0: 모든 모델에서 동작하는 프롬프트 단계 스킬 라우팅** | `scripts/route_prompt.py`가 모델이 실행되기 전에 OpenSpace의 로컬 BM25(`SkillRanker.bm25_only`, LLM·임베딩·네트워크 없음)로 설치된 스킬을 순위 매기고, 맞는 스킬 최대 3개를 `SKILL.md` 경로와 함께 넘깁니다. 그래서 어떤 스킬을 고를지가 모델 성능에 달려 있지 않습니다. 프롬프트가 스킬 이름을 직접 말하거나, 드문 단어가 충분히 겹칠 때만 제안하고 나머지는 조용히 넘어갑니다. 한국어 조사 제거, 영문·한글 경계 분리, 언어별 희소도 판단을 넣었습니다. `scripts/route-hooks.py`가 Claude Code, Codex, Gemini CLI/Antigravity, Kimi Code, jeopi/omp/pi/gjc, OpenCode에 하나의 래퍼로 연결하며, 문제가 생기면 아무것도 출력하지 않습니다. 스킬 764개 기준 라벨 점검: 라우팅해야 할 33개 중 26개에 맞는 스킬, 라우팅하면 안 되는 24개 중 23개는 무출력, 프롬프트당 약 0.3초. 라우팅을 끈 대조군과 비교한 실제 실행으로 Claude Code, jeopi(`claude-haiku-4-5`, `gpt-5.6-sol` 포함 모델 3개), omp에서 확인했습니다. |
 | **OpenSpace와 ooo 분리 설치** | `ooo/scripts/install.sh`는 더 이상 OpenSpace를 확인·설치·검색하지 않으며 `--search`, `--ensure-openspace`는 사용법 오류입니다. OpenSpace 설치 스크립트는 검증한 커밋 고정, 망가진 venv 재생성, `mcp<2` 고정(MCP SDK 2에서 `openspace-mcp`가 깨짐), 라우터 점검을 합니다. MCP 등록 스크립트는 Gemini CLI와 Qwen Code가 시작을 거부하던 `toolTimeout`을 더 이상 쓰지 않고 기존 항목을 고칩니다. 새 `test_openspace_routing.py`(테스트 24개)와 `test_ooo_installer.py`(5개)가 CI에서 기존 결합 테스트를 대체합니다. |
-
-## 🆕 v2026-10-24 업데이트
-
-| 변경 사항 | 상세 내용 |
-|--------|---------|
-| **크로스 엔진 게임 스킬 컬렉션** | `gamedev-skills/awesome-gamedev-agent-skills` 커밋 `7eb1b53305fab881f4758e2eff2e371cd7869221`(Apache-2.0, LICENSE·NOTICE 확인)에 고정한 `awesome-gamedev-agent-skills` v1.0.0 운영 가이드를 추가했습니다. 카탈로그는 406→407개, `game-client`는 가이드 3→4개입니다. 원본의 개별 스킬 76개와 라우터를 통째로 복제하지 않고 선별하며, 기존 프로젝트 엔진 버전과 동명 로컬 스킬을 보존합니다. |
-| **게임 컬렉션 검증** | 전용 subprocess 테스트 6/6·설치 회귀 66/66 및 선택 공개 소스 12개 해시 일치를 확인했습니다. 로컬 작업 트리를 원본으로 삼아 임시 런처로 캐시된 실제 `skills@1.7.0`을 실행한 프로젝트 범위 설치에서 미리보기, 중첩 파일 바이트·권한, 지문이 일치하는 은퇴 `jeo` 제거, 동명 외부·현행 스킬·HOME 보존이 통과했습니다. npm 조회, 공개 저장소 설치, 실제 HOME 활성화, 엔진·프로바이더 실행은 하지 않았습니다. 라우팅·안전 평가 6개는 작성된 시나리오이며 실행된 모델 품질 결과가 아닙니다. |
-| **현재 코딩 에이전트와 Jev 프로필 바인딩** | config-only 컨트롤러가 canonical host ID를 독립 `agents.json` 프로필에 연결하고 기존 배정·사용자 필드·저장 키·LM Studio 자동 모델 선택을 보존하며 훅은 등록하지 않습니다. LM Studio 모델이 비어 있어도 자동 감지 경로로 프로필을 활성화할 수 있습니다. 현재 대상은 Gemini CLI 대신 `agy`를 사용하며 Kimi(`kimi` → `kimi-code-cli`), Grok Build(`grok`, `.grok/skills`, `GROK_HOME`)와 OpenCode를 모든 README에 명시했습니다. 공유·안전하지 않은 매핑과 링크된 런타임 상위 경로는 설정 전에 거부합니다. setup 자동 호스트 선택은 Superagent/VibeKit 이름 충돌 때문에 `grok`를 제외하며, 컨트롤러 `detect`는 구현 검증이 아닌 바이너리 존재만 보고합니다. |
-| **ECC 제안서와 미반영 회귀 테스트** | ECC 운영 가이드 v2.2.2가 현재 호스트의 Jev 프로필로 분기를 검토하며 Claude·Codex·Kimi 계획과 기본 scope/hooks에 일치하는 읽기 전용 JSON을 출력합니다. 잘못된 추가 인자는 출력 전에 거부하고 Jev 판단을 사용자 승인·호스트 권한 대신 사용하지 않습니다. helper 자체 검사와 ECC 테스트 5개를 CI에 추가했으며, 미발행 사용량·격리·은퇴 테스트 22/18/8개도 통과했습니다. 런타임 변경이나 ECC 설치·훅·프로바이더 활성화는 없고 평가 6개는 작성된 시나리오입니다. 카탈로그는 407개입니다. |
 
 > 📜 이전 기록: [`changelog/ko/`](changelog/ko/) (월별 파일, 최신순).
 

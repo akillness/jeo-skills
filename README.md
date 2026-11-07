@@ -267,6 +267,49 @@ python3 scripts/retire-unused-skills.py --usage-report report.json --apply \
 
 </details>
 
+## 🔄 Keeping installed skills current
+
+<details>
+<summary>Refresh the shared root and reconcile symlinked hosts</summary>
+
+
+On machines following the [full-install guide](setup-all-skills-prompt.md), the catalog lives in one shared root (`~/.agents/skills`) and each host's skill directory (claude, pi, gjc, antigravity, cursor, aside-user) points at it with per-skill symlinks. After that, refresh the **shared root only** — running per-host copy installers (`jeo-skill install -a claude-code`, `-a gjc`, …) is unsafe: their rmtree can follow the symlink slots back into the shared root and delete originals.
+
+```bash
+bash scripts/skills-upgrade.sh              # pull → doctor → refresh → prune → reconcile → verify
+bash scripts/skills-upgrade.sh --dry-run    # plan without writes
+python3 scripts/refresh-host-links.py       # link plan only (read-only)
+```
+
+What each step does:
+
+1. `git pull --ff-only` on the trusted checkout — any non-fast-forward stops the run
+2. `jeo-skill doctor` validates the refreshed catalog projections
+3. `jeo-skill install --all --global --yes` rewrites the shared root with the latest catalog
+4. `jeo-skill prune-retired --global` removes retired catalog copies (the legacy-dedupe step)
+5. `scripts/refresh-host-links.py --apply` creates links for newly added skills, removes dangling ones, and **never deletes host-local non-catalog skills**
+6. verification: doctor status plus a broken-link scan of every configured host root
+
+| Option | Effect |
+|---|---|
+| `--hosts <list>` | Override hosts (default `claude,pi,gjc,antigravity,cursor,aside-user`) |
+| `--skip-pull` | Run offline (refuses stale-checkout surprises later, not by editing) |
+| `--replace-copies` | Also convert stale real-dir copies into links (quarantined first) |
+| `SKILLS_UPGRADE_HOSTS` | Default hosts via environment |
+
+Replaced copies and stale links are quarantined under `~/.local/state/jeo-skill/quarantine/upgrade-<UTC>/` — never hard-deleted — and the whole flow is idempotent: a healthy installation re-runs as a no-op plan.
+
+### Scheduled refresh
+
+`scripts/com.jeo-skills.skills-upgrade.plist` is a launchd template that runs the upgrade weekly (Monday 09:30) with logs under `~/.local/state/jeo-skill/upgrade.log`. The script adds the newest nvm Node bin to `PATH` itself, so headless runs still find `npx`. Install it with:
+
+```bash
+cp scripts/com.jeo-skills.skills-upgrade.plist ~/Library/LaunchAgents/
+launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-upgrade.plist
+```
+
+</details>
+
 ## 🔌 Optional integrations
 
 <details>
@@ -898,6 +941,12 @@ Edit metadata in `skills.json`, never in the generated tables. Upstream sources 
 
 <!-- WHATS-NEW:START -->
 
+## 🆕 What's New in v2026-11-07
+
+| Change | Details |
+|--------|---------|
+| **One-command shared-root upgrade for symlinked hosts** | `scripts/skills-upgrade.sh` turns the post-full-install maintenance burden (pull → validate → refresh → prune-retired → host-link reconcile → verify) into a single idempotent command. On machines following `setup-all-skills-prompt.md`, the catalog lives in one shared root (`~/.agents/skills`) with per-skill symlinks in each host directory (claude, pi, gjc, antigravity, cursor, aside-user); the script refreshes that root only and explicitly avoids unsafe per-host copy installers, whose rmtree can follow symlink slots back into the shared root and delete originals. Paired `scripts/refresh-host-links.py` creates links for new skills, removes dangling ones, quarantines replaced copies and stale links under `~/.local/state/jeo-skill/quarantine/upgrade-<UTC>/` instead of deleting them, and never touches host-local non-catalog skills. The script adds the newest nvm Node bin to `PATH` itself so headless runs still find `npx`, and `scripts/com.jeo-skills.skills-upgrade.plist` schedules the same flow weekly via launchd. The README and `README.ko.md` now document this workflow in a new "Keeping installed skills current" section. |
+
 ## 🆕 What's New in v2026-11-06
 
 | Change | Details |
@@ -942,15 +991,6 @@ Edit metadata in `skills.json`, never in the generated tables. Upstream sources 
 | **caveman v2.0.0: maintained upstream** | The copy credited to `mattpocock/skills` (removed upstream) now follows `JuliusBrussee/caveman` 4.0.1 at `d262ab3882952a59312ff3537cd86d894523c5ab` (Apache-2.0, license copied, changes stated): answer first, payload verbatim, no invented abbreviations or arrows, plain prose for warnings, irreversible steps and anything persisted. The unsourced “~75%” is replaced by upstream's own figures, and generic filler sections are gone. New `scripts/test_ponytail_caveman_skills.py` (12 tests, in CI) checks pins, versions, links, legacy payload and the installer's no-run/one-host contract. |
 | **openspace v2.0: prompt-time skill routing for every model** | `scripts/route_prompt.py` ranks the installed skills with OpenSpace's local BM25 (`SkillRanker.bm25_only`: no LLM, embeddings or network) before the model runs and hands it at most three matches with their `SKILL.md` paths, so the choice no longer depends on the model. The gate stays silent unless the prompt names a skill or a rare term meets enough coverage; Korean particles, Latin/Hangul boundaries and per-script rarity are handled. `scripts/route-hooks.py` installs it for Claude Code, Codex, Gemini CLI/Antigravity, Kimi Code, jeopi/omp/pi/gjc and OpenCode through one fail-open wrapper. Labeled check on 764 skills: correct skill for 26 of 33 routable prompts, silent on 23 of 24 others, about 0.3 s per prompt. Live with a routing-off control: Claude Code, jeopi (three models, including `claude-haiku-4-5` and `gpt-5.6-sol`) and omp. |
 | **OpenSpace and ooo install separately** | `ooo/scripts/install.sh` no longer checks, stages or searches with OpenSpace; `--search` and `--ensure-openspace` are usage errors. OpenSpace's installer now pins the verified commit, rebuilds a dead venv, pins `mcp<2` (MCP SDK 2 broke `openspace-mcp`) and checks the router. The registrar stopped writing `toolTimeout` for Gemini CLI and Qwen Code, which refused to start on it, and repairs old entries. New `test_openspace_routing.py` (24 tests) and `test_ooo_installer.py` (5) replace the coupled suite in CI. |
-
-## 🆕 What's New in v2026-10-24
-
-| Change | Details |
-|--------|---------|
-| **Cross-engine game skill collection** | Added `awesome-gamedev-agent-skills` v1.0.0 for `gamedev-skills/awesome-gamedev-agent-skills` at `7eb1b53305fab881f4758e2eff2e371cd7869221` (Apache-2.0; LICENSE and NOTICE inspected). The catalog grows from 406 to 407 and `game-client` from three to four guides. The operator selects from 76 upstream leaves plus their router without vendoring the pack, preserves project engine versions, and protects same-name local skills. |
-| **Game collection verification** | Dedicated subprocess tests pass 6/6 and installer regressions 66/66; all 12 selected public-source hashes match. A project-scoped guide install from the local working tree passed with a transparent launcher executing cached genuine `skills@1.7.0`: preview, nested bytes/modes, fingerprinted retired-`jeo` removal and foreign/current/HOME preservation. No registry resolution, public-repository install, real-HOME activation, engine or provider execution was performed. Six routing/safety evals are authored, not executed model-quality results. |
-| **Current coding agents and bound Jev profiles** | Setup binds canonical hosts to independent `agents.json` profiles through the config-only controller, preserving assignments, custom fields, saved keys and LM Studio automatic model selection without registering hooks. The controller now allows enabling an LM Studio profile with a blank model for autodetection. Current targets use `agy` instead of Gemini CLI, add Kimi (`kimi` → `kimi-code-cli`), Grok Build (`grok`, `.grok/skills`, `GROK_HOME`) and OpenCode in every README. Shared/unsafe mappings and linked runtime ancestors are rejected before effects. Setup host auto-selection excludes `grok` because it may be Superagent/VibeKit; controller `detect` reports binary inventory, not the implementation. |
-| **ECC proposals and pending regression updates** | ECC operator guide v2.2.2 reviews branches with the current host's Jev profile and prints read-only proposal JSON matching normalized Claude/Codex/Kimi plans, including default scope/hooks. Malformed/extra arguments fail before output; Jev verdicts never replace user/provider approval. Added CI coverage: helper self-test and 5 ECC tests. The previously unpublished usage/quarantine/retirement suites pass 22/18/8 with no runtime changes. Six safety scenarios are authored, not model-evaluation results; no ECC install/hooks/provider activation. Catalog remains 407. |
 
 > 📜 Older entries: [`changelog/en/`](changelog/en/) (monthly files, newest first).
 
