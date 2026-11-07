@@ -42,16 +42,12 @@ DEFAULT_HOSTS: dict[str, Path] = {
     "pi": Path("~/.pi/agent/skills"),
     "gjc": Path("~/.gjc/agent/skills"),
     "antigravity": Path("~/.gemini/antigravity-cli/skills"),
+    "cursor": Path("~/.cursor/skills"),
+    "aside-user": Path("~/.aside/u/0/skills/user"),
+    "opencode-config": Path("~/.config/opencode/skills"),
 }
 
 SUPPORTED_HOSTS = dict(DEFAULT_HOSTS)
-SUPPORTED_HOSTS.update(
-    {
-        "cursor": Path("~/.cursor/skills"),
-        "aside-user": Path("~/.aside/u/0/skills/user"),
-        "opencode-config": Path("~/.config/opencode/skills"),
-    }
-)
 
 
 def shared_root() -> Path:

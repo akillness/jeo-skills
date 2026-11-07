@@ -273,7 +273,7 @@ python3 scripts/retire-unused-skills.py --usage-report report.json --apply \
 <summary>Refresh the shared root and reconcile symlinked hosts</summary>
 
 
-On machines following the [full-install guide](setup-all-skills-prompt.md), the catalog lives in one shared root (`~/.agents/skills`) and each host's skill directory (claude, pi, gjc, antigravity, cursor, aside-user) points at it with per-skill symlinks. After that, refresh the **shared root only** — running per-host copy installers (`jeo-skill install -a claude-code`, `-a gjc`, …) is unsafe: their rmtree can follow the symlink slots back into the shared root and delete originals.
+On machines following the [full-install guide](setup-all-skills-prompt.md), the catalog lives in one shared root (`~/.agents/skills`) and each host's skill directory (claude, pi, gjc, antigravity, cursor, aside-user, opencode-config) points at it with per-skill symlinks. After that, refresh the **shared root only** — running per-host copy installers (`jeo-skill install -a claude-code`, `-a gjc`, …) is unsafe: their rmtree can follow the symlink slots back into the shared root and delete originals.
 
 ```bash
 bash scripts/skills-upgrade.sh              # pull → doctor → refresh → prune → reconcile → verify
@@ -292,7 +292,7 @@ What each step does:
 
 | Option | Effect |
 |---|---|
-| `--hosts <list>` | Override hosts (default `claude,pi,gjc,antigravity,cursor,aside-user`) |
+| `--hosts <list>` | Override hosts (default `claude,pi,gjc,antigravity,cursor,aside-user,opencode-config`) |
 | `--skip-pull` | Run offline (refuses stale-checkout surprises later, not by editing) |
 | `--replace-copies` | Also convert stale real-dir copies into links (quarantined first) |
 | `SKILLS_UPGRADE_HOSTS` | Default hosts via environment |

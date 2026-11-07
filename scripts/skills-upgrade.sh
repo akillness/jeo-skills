@@ -25,7 +25,7 @@ REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 DRY_RUN=0
 SKIP_PULL=0
 REPLACE_COPIES=0
-HOSTS="${SKILLS_UPGRADE_HOSTS:-claude,pi,gjc,antigravity,cursor,aside-user}"
+HOSTS="${SKILLS_UPGRADE_HOSTS:-claude,pi,gjc,antigravity,cursor,aside-user,opencode-config}"
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -71,7 +71,8 @@ else
 fi
 
 step "2/6 catalog doctor"
-"$JEO_SKILL_CMD" doctor "${DRY_FLAG[@]+"${DRY_FLAG[@]}"}" || true
+# doctor is read-only and has no --dry-run flag; run it plainly in both modes.
+"$JEO_SKILL_CMD" doctor || true
 
 step "3/6 shared-root refresh (never per-host copy targets)"
 "$JEO_SKILL_CMD" install --all --global --yes "${DRY_FLAG[@]+"${DRY_FLAG[@]}"}"
@@ -80,11 +81,14 @@ step "4/6 prune retired catalog copies"
 "$JEO_SKILL_CMD" prune-retired --global "${DRY_FLAG[@]+"${DRY_FLAG[@]}"}"
 
 step "5/6 reconcile host symlinks"
-REFRESH_ARGS=(--apply)
+# refresh-host-links.py has no --dry-run; it is read-only without --apply.
+# In dry-run mode, do NOT pass --apply (the old code passed both, which
+# would have written links while claiming to be a plan).
+REFRESH_ARGS=()
+[[ "$DRY_RUN" -eq 0 ]] && REFRESH_ARGS+=(--apply)
 [[ "$REPLACE_COPIES" -eq 1 ]] && REFRESH_ARGS+=(--replace-copies)
 [[ -n "$HOSTS" ]] && REFRESH_ARGS+=(--hosts "$HOSTS")
 python3 "$REPO_DIR/scripts/refresh-host-links.py" \
-  "${DRY_FLAG[@]+"${DRY_FLAG[@]}"}" \
   "${REFRESH_ARGS[@]+"${REFRESH_ARGS[@]}"}"
 
 step "6/6 verification"

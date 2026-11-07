@@ -318,7 +318,7 @@ python3 scripts/retire-unused-skills.py --usage-report report.json --apply \
 <summary>공유 루트를 새로 고치고 심볼릭 링크 호스트를 재조정하기</summary>
 
 
-[전체 설치 가이드](setup-all-skills-prompt.md)를 따르는 머신에서는 카탈로그가 하나의 공유 루트(`~/.agents/skills`)에 있고 각 호스트의 스킬 디렉터리(claude, pi, gjc, antigravity, cursor, aside-user)가 스킬당 심볼릭 링크로 이를 가리킵니다. 이후에는 **공유 루트만** 새로 고치면 됩니다 — 호스트별 복사 설치기(`jeo-skill install -a claude-code`, `-a gjc`, …)를 실행하는 것은 위험합니다: rmtree가 심볼릭 링크 슬롯을 따라 공유 루트 원본까지 삭제할 수 있습니다.
+[전체 설치 가이드](setup-all-skills-prompt.md)를 따르는 머신에서는 카탈로그가 하나의 공유 루트(`~/.agents/skills`)에 있고 각 호스트의 스킬 디렉터리(claude, pi, gjc, antigravity, cursor, aside-user, opencode-config)가 스킬당 심볼릭 링크로 이를 가리킵니다. 이후에는 **공유 루트만** 새로 고치면 됩니다 — 호스트별 복사 설치기(`jeo-skill install -a claude-code`, `-a gjc`, …)를 실행하는 것은 위험합니다: rmtree가 심볼릭 링크 슬롯을 따라 공유 루트 원본까지 삭제할 수 있습니다.
 
 ```bash
 bash scripts/skills-upgrade.sh              # pull → doctor → refresh → prune → reconcile → verify
@@ -337,7 +337,7 @@ python3 scripts/refresh-host-links.py       # 링크 계획만 표시 (읽기 �
 
 | 옵션 | 효과 |
 |---|---|
-| `--hosts <목록>` | 호스트 지정 (기본 `claude,pi,gjc,antigravity,cursor,aside-user`) |
+| `--hosts <목록>` | 호스트 지정 (기본 `claude,pi,gjc,antigravity,cursor,aside-user,opencode-config`) |
 | `--skip-pull` | 오프라인 실행 (편집으로 해결하지 않고 나중에 stale 체크아웃 놀람을 거부) |
 | `--replace-copies` | 낡은 실제 디렉터리 사본도 링크로 변환 (먼저 격리) |
 | `SKILLS_UPGRADE_HOSTS` | 환경변수로 기본 호스트 지정 |
