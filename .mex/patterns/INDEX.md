@@ -23,3 +23,4 @@ Lookup table for all pattern files in this directory. Check here before starting
 
 | Pattern | Use when |
 |---------|----------|
+| [skills-upgrade-refresh.md](skills-upgrade-refresh.md) | Refreshing/updating installed skills on symlinked hosts (최신화·중복/레거시 방지) |

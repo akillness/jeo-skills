@@ -14,7 +14,7 @@ edges:
     condition: when setting up the dev environment or running the project for the first time
   - target: patterns/INDEX.md
     condition: when starting a task — check the pattern index for a matching pattern file
-last_updated: [YYYY-MM-DD]
+last_updated: 2026-11-06
 ---
 
 # Session Bootstrap
@@ -24,23 +24,22 @@ If you haven't already read `AGENTS.md`, read it now — it contains the project
 Then read this file fully before doing anything else in this session.
 
 ## Current Project State
-<!-- What is working. What is not yet built. Known issues.
-     Update this section whenever significant work is completed.
-     This is the primary drift prevention mechanism — it re-grounds the agent every session.
-     Length: 3 sections (Working / Not Built / Known Issues), 3-7 items each.
-     Example:
-     **Working:**
-     - User authentication and session management
-     - Core CRUD operations for all main entities
 
-     **Not yet built:**
-     - Email notification system
-     - Admin dashboard
+**Working:**
+- 2026-11 full install: 425 catalog skills in shared root `~/.agents/skills` (verified 425/425 catalog slots), non-catalog skills preserved (`other-source` entries untouched)
+- Host roots `claude`, `pi`, `gjc`, `antigravity`, `cursor`, `aside-user` are per-skill symlinked to the shared root — 425/425 healthy per host (cursor populated 2026-11-06, +423 links), broken-link scan 0
+- `scripts/skills-upgrade.sh` (pull → doctor → shared-root refresh → prune-retired → link reconcile → verify) runs end-to-end with PASS; `scripts/refresh-host-links.py` is idempotent (re-run = empty plan); cron-safe PATH fallback for npx
+- Weekly launchd job `com.jeo-skills.skills-upgrade` installed (Monday 09:30, logs in `~/.local/state/jeo-skill/upgrade.log`)
+- Catalog projections validate; root `.gitignore` covers everything by default
 
-     **Known issues:**
-     - Pagination breaks on filtered queries with more than 1000 results -->
+**Not yet built:**
+- No `update`/`sync` command inside the `jeo-skill` router CLI itself (upgrade flow lives in `scripts/skills-upgrade.sh`)
 
-## Routing Table
+**Known issues:**
+- CRITICAL: after symlink conversion, never re-run per-host copy targets (`jeo-skill install -a claude-code` / gjc / antigravity) — installer rmtree can follow symlink slots and delete shared-root originals. Shared-root refresh + `refresh-host-links.py` only.
+- Stale-opencode and stale-cursor copy cleanup matters: catalog-matched stale copies reappear if someone re-runs per-host copy installs (see `refresh-host-links.py --replace-copies` to quarantine + convert)
+- `opencode-config` host intentionally not in default link set (openspace already serves shared root; adding links would double-list skills)
+- Version numbers and statuses are point-in-time claims; re-verify before relying on them. Details belong in `context/` files.## Routing Table
 
 Load the relevant file based on the current task. Always load `context/architecture.md` first if not already in context this session.
 

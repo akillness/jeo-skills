@@ -35,6 +35,14 @@ last_updated: [YYYY-MM-DD]
 
 ## Decision Log
 
+### Shared-root-only refresh + per-host symlinks (no per-host copy installs)
+**Date:** 2026-11-06
+**Status:** Accepted
+**Decision:** `scripts/skills-upgrade.sh` refreshes only the shared root `~/.agents/skills`; host roots (claude/pi/gjc/antigravity) stay as per-skill symlinks reconciled by `scripts/refresh-host-links.py`. Never re-run copy-based per-host installers after symlink conversion.
+**Reasoning:** Copy installs create duplicate/legacy copies per host and, post-symlink, the installer rmtree can follow symlink slots into the shared root and destroy shared originals.
+**Alternatives considered:** (a) per-host copy installs + a dedupe cron (rejected: repeated divergence), (b) whole-dir host symlink (rejected: hosts need non-catalog locals alongside catalog links).
+**Consequences:** New skills propagate to all hosts without duplication; stale copies must be quarantined via `refresh-host-links.py --replace-copies`, not hand-deleted.
+
 <!-- Document key decisions using the format below.
      Include decisions that: are non-obvious, have important constraints,
      or where the reasoning prevents future mistakes.
