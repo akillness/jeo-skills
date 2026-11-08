@@ -373,7 +373,7 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 
 ## 📚 스킬 목록
 
-> `.agent-skills/skills.json`에서 생성 · 425개 스킬 · 카테고리를 펼치면 스킬 목록이 보입니다.
+> `.agent-skills/skills.json`에서 생성 · 426개 스킬 · 카테고리를 펼치면 스킬 목록이 보입니다.
 
 ### 🌐 웹 (71개)
 
@@ -590,9 +590,9 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 
 </details>
 
-### ⌨️ CLI 도구 (43개)
+### ⌨️ CLI 도구 (44개)
 
-하위 분류: `developer-cli` (11), `ai-cli` (15), `media-cli` (1), `automation-cli` (7), `search-cli` (8), `benchmark-cli` (1)
+하위 분류: `developer-cli` (12), `ai-cli` (15), `media-cli` (1), `automation-cli` (7), `search-cli` (8), `benchmark-cli` (1)
 
 <details>
 <summary>스킬 보기</summary>
@@ -642,6 +642,7 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 | `leann` |
 | `google-maps-scraper` |
 | `gitingest` |
+| `craft-anything` |
 
 </details>
 

@@ -361,7 +361,7 @@ node ~/.agents/jev/jev-harness.mjs --profile "${JEV_PROFILE:?Select the current 
 
 ## 📚 Skills List
 
-> Generated from `.agent-skills/skills.json` · 425 skills · expand a category to see its skills.
+> Generated from `.agent-skills/skills.json` · 426 skills · expand a category to see its skills.
 
 ### 🌐 Web (71)
 
@@ -578,9 +578,9 @@ Subcategories: `image` (10), `video` (18), `motion` (1), `audio` (2), `presentat
 
 </details>
 
-### ⌨️ CLI Tools (43)
+### ⌨️ CLI Tools (44)
 
-Subcategories: `developer-cli` (11), `ai-cli` (15), `media-cli` (1), `automation-cli` (7), `search-cli` (8), `benchmark-cli` (1)
+Subcategories: `developer-cli` (12), `ai-cli` (15), `media-cli` (1), `automation-cli` (7), `search-cli` (8), `benchmark-cli` (1)
 
 <details>
 <summary>Show CLI Tools skills</summary>
@@ -630,6 +630,7 @@ Subcategories: `developer-cli` (11), `ai-cli` (15), `media-cli` (1), `automation
 | `leann` |
 | `google-maps-scraper` |
 | `gitingest` |
+| `craft-anything` |
 
 </details>
 

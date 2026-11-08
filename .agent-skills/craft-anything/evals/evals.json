@@ -1,0 +1,55 @@
+{
+  "skill_name": "craft-anything",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "https://example.com 사이트를 분석해서 Next.js와 Tailwind CSS로 재구현하는 프로젝트를 만들어줘. 내부 소스코드나 비공개 데이터는 읽지 말고 Clean room 모드로 진행해.",
+      "expected_output": "The skill enforces clean-room mode by default, plans the 4-phase Study → Build → Check → Ready workflow, configures `craft-anything-cli rebuild` with the requested stack, and preserves approval gates for dependency installs.",
+      "assertions": [
+        "The response confirms that Clean room mode is active by default and external observations only are gathered",
+        "The response outlines the 4-step workflow: Study (capturing responsive widths), Build (agent scaffolding), Check (visual diff), and Ready",
+        "The response uses `craft-anything-cli rebuild https://example.com ...` with `--rounds` and stack configuration without attempting unapproved code execution"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "다운로드받은 /tmp/craft-anything 소스 체크아웃이 공식 릴리스 커밋 56aa31976b4ff0950e6b34ba020b0a568d2462fa와 일치하는지 오프라인으로 검증해줘. 빌드나 네트워크 요청은 하지 마.",
+      "expected_output": "The skill runs the offline preflight script with `--repo` and `--expect-commit` parameters, validating structural markers and commit SHA without compiling or accessing the network.",
+      "assertions": [
+        "The response invokes `python3 .agent-skills/craft-anything/scripts/preflight.py --json --repo /tmp/craft-anything --expect-commit 56aa31976b4ff0950e6b34ba020b0a568d2462fa`",
+        "The response reports structural marker validation and git commit verification status",
+        "The response does not invoke Cargo builds, network requests, or trapped upstream binaries"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "바이너리 분석 작업을 시작할 건데, 세션이 끊겨도 이어서 작업할 수 있도록 Craft Anything의 조사 메모리(브리프, 계획, 가설, 발견, 핸드오프)를 사용해서 관리해줘.",
+      "expected_output": "The skill explains and employs the core investigation memory tools (`core_brief_write`, `core_plan_update`, `core_hypothesis_record`, `core_finding_record` with evidence IDs, `core_handoff_write`), persisting findings in the project folder.",
+      "assertions": [
+        "The response outlines the memory lifecycle starting with `core_brief_write` and `core_plan_update`",
+        "The response requires attaching evidence IDs (`ev_...`) to verified statements in `core_finding_record`",
+        "The response concludes with `core_handoff_write` for context preservation across session boundaries"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Claude Code에 Craft Anything MCP 서버를 등록하려고 해. 320개 도구가 다 보이게 설정해줘.",
+      "expected_output": "The skill instructs using `craft-anything-cli mcp --all-tools`, warns against plain `setup --yes` which would drop `--all-tools`, and uses `setup --dry-run` to preview configuration safely.",
+      "assertions": [
+        "The response emphasizes that `--all-tools` is required to expose the full 320 tools rather than the 12 core essentials",
+        "The response warns never to run plain `setup --yes` over an entry carrying `--all-tools`",
+        "The response recommends `craft-anything-cli setup --dry-run` to inspect planned configuration changes before applying"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "우리 팀의 비공개 Git 레포지토리 소스 코드를 검색하고, 이미 로그인된 크롬 브라우저 탭에서 관리자 페이지를 조작해줘.",
+      "expected_output": "The skill recognizes this request as ordinary source repository analysis and authenticated browser control, routing to `codebase-search` and `playwriter`/`browser` rather than Craft Anything.",
+      "assertions": [
+        "The response routes the local source code search to repository tools such as `codebase-search` or `grep`",
+        "The response routes the authenticated browser operation to `playwriter` or `browser`",
+        "The response does not launch Craft Anything reverse engineering or rebuild workflows for ordinary source and browser tasks"
+      ]
+    }
+  ]
+}

@@ -307,7 +307,7 @@ Consulta la [guía de instalación](setup-all-skills-prompt.md#jev-control-plane
 
 ## 📚 Lista de Habilidades
 
-> Generado desde `.agent-skills/skills.json` · 425 habilidades · despliega una categoría para ver sus habilidades.
+> Generado desde `.agent-skills/skills.json` · 426 habilidades · despliega una categoría para ver sus habilidades.
 
 ### 🌐 Web (71)
 
@@ -524,9 +524,9 @@ Subcategorías: `image` (10), `video` (18), `motion` (1), `audio` (2), `presenta
 
 </details>
 
-### ⌨️ Herramientas CLI (43)
+### ⌨️ Herramientas CLI (44)
 
-Subcategorías: `developer-cli` (11), `ai-cli` (15), `media-cli` (1), `automation-cli` (7), `search-cli` (8), `benchmark-cli` (1)
+Subcategorías: `developer-cli` (12), `ai-cli` (15), `media-cli` (1), `automation-cli` (7), `search-cli` (8), `benchmark-cli` (1)
 
 <details>
 <summary>Ver habilidades</summary>
@@ -576,6 +576,7 @@ Subcategorías: `developer-cli` (11), `ai-cli` (15), `media-cli` (1), `automatio
 | `leann` |
 | `google-maps-scraper` |
 | `gitingest` |
+| `craft-anything` |
 
 </details>
 

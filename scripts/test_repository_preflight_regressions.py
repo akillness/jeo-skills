@@ -41,6 +41,7 @@ SKILLS = (
     "ruflo",
     "diagram-design",
     "artcraft",
+    "craft-anything",
 )
 
 
@@ -95,6 +96,7 @@ PUBLIC_MARKERS = (
     "skills/diagram-design/scripts/self_check.py",
     "v3/@claude-flow/cli/package.json", "v3/@claude-flow/cli/src/commands/init.ts",
     "v3/@claude-flow/cli/src/commands/memory.ts", "v3/@claude-flow/cli/src/commands/swarm.ts",
+    "apps/craft-anything-cli/Cargo.toml", "crates/setup/src/skill.md",
 )
 
 # Names are deliberately broad: a correct helper may inspect their presence,
@@ -108,6 +110,7 @@ TRAPPED_TOOLS = (
     "docker-compose", "bash", "openssl", "python", "python3",
     "browser-harness", "google-chrome", "chromium", "chromium-browser", "chrome",
     "claude", "curl", "ffmpeg", "gcloud", "pandoc", "pdftoppm",
+    "craft-anything-cli",
 )
 
 

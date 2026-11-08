@@ -1,7 +1,7 @@
 {
   "version": "2.1.0",
   "generated": "2026-10-21",
-  "skill_count": 425,
+  "skill_count": 426,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -346,7 +346,8 @@
       "hyper-extract",
       "leann",
       "google-maps-scraper",
-      "gitingest"
+      "gitingest",
+      "craft-anything"
     ],
     "ai-agents": [
       "bmad",
@@ -839,7 +840,8 @@
         "mole",
         "k-skill-setup",
         "rea",
-        "gitingest"
+        "gitingest",
+        "craft-anything"
       ],
       "ai-cli": [
         "aider-cli-workflow",
@@ -2012,6 +2014,14 @@
         "bmad"
       ],
       "note": "Three structured-delivery methodologies with different engines: AI-DLC is awslabs' aidlc command with staged phases, profiles and human approval gates, spec-kit is GitHub's specify pipeline from constitution to tasks, and bmad is phase-packet routing. Pick the one the team adopted; do not run two of them on the same intent."
+    },
+    "reverse-engineering-tools": {
+      "mode": "adjacent",
+      "members": [
+        "rea",
+        "craft-anything"
+      ],
+      "note": "rea (morluto/rea) focuses on local evidence-backed inspection of binaries, JS/Electron, and saved captures; craft-anything (storytold/craft-anything, MIT OR Apache-2.0) is a pure-Rust clean-room/deep inspection and AI rebuilding engine with 320 tools, desktop app, CLI, and MCP server."
     }
   },
   "model_policies": {
@@ -9129,9 +9139,26 @@
       "subcategory": "capture",
       "interface": "workflow",
       "path": "lightpanda/SKILL.md",
-      "tags": ["lightpanda", "headless-browser", "cdp", "mcp", "browser-automation", "web-fetch"],
-      "platforms": ["Claude", "ChatGPT", "Gemini", "Codex"],
-      "allowed_tools": ["Bash", "Read", "Glob", "Grep"],
+      "tags": [
+        "lightpanda",
+        "headless-browser",
+        "cdp",
+        "mcp",
+        "browser-automation",
+        "web-fetch"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Glob",
+        "Grep"
+      ],
       "keyword": "lightpanda",
       "version": "1.0.0",
       "source": "https://github.com/lightpanda-io/browser"
@@ -9184,9 +9211,31 @@
       "subcategory": "design",
       "interface": "workflow",
       "path": "impeccable/SKILL.md",
-      "tags": ["impeccable", "design-review", "ux-critique", "design-audit", "anti-slop", "design-detector", "design-md", "frontend-design"],
-      "platforms": ["Claude", "ChatGPT", "Gemini", "Codex", "Cursor"],
-      "allowed_tools": ["Bash", "Read", "Write", "Edit", "Glob", "Grep"],
+      "tags": [
+        "impeccable",
+        "design-review",
+        "ux-critique",
+        "design-audit",
+        "anti-slop",
+        "design-detector",
+        "design-md",
+        "frontend-design"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex",
+        "Cursor"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
       "keyword": "impeccable",
       "version": "1.0.0",
       "source": "https://github.com/pbakaus/impeccable"
@@ -15676,6 +15725,43 @@
       "keyword": "aidlc-workflows",
       "version": "1.0.0",
       "source": "https://github.com/awslabs/aidlc-workflows"
+    },
+    {
+      "name": "craft-anything",
+      "description": "Operate storytold/craft-anything, the open-source pure-Rust clean-room software reverse engineering and AI rebuilding engine, its desktop app, `craft-anything-cli`, and MCP server. Use when a user asks to inspect how shipped software works (binaries, Electron/JS, Android APK, .NET, WebAssembly, firmware, packet captures), run clean-room or deep analysis, execute `craft-anything-cli rebuild` to study and rebuild software with coding agents (Claude Code, Copilot, Grok), run `craft-anything-cli doctor/setup/mcp`, manage investigation memory (briefs, plans, hypotheses, findings, handoffs), or inspect source-pinned checkouts. Keep code execution, device changes, live network targets, and agent configuration writes approval-gated. Route generic repository searches to `codebase-search` and browser automation to `browser`.",
+      "category": "cli-tools",
+      "subcategory": "developer-cli",
+      "interface": "cli",
+      "path": "craft-anything/SKILL.md",
+      "tags": [
+        "craft-anything",
+        "reverse-engineering",
+        "clean-room",
+        "rebuild",
+        "rust",
+        "cli",
+        "mcp",
+        "disassembler",
+        "decompiler",
+        "binary-analysis"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex CLI",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "craft-anything",
+      "version": "0.4.0",
+      "source": "https://github.com/storytold/craft-anything"
     }
   ]
 }

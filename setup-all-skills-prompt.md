@@ -2476,6 +2476,39 @@ An explicit user request naming the operation and destination is sufficient; ask
 destination, or a new destructive action is unclear. Use `video-production` for programmable
 or templated video generation instead.
 
+### Craft Anything reverse-engineering and rebuild engine (on demand; CLI and MCP)
+
+The `craft-anything` skill installs as source-pinned routing documents and offline inspection helpers only. Blanket setup must not clone or compile Craft Anything, run desktop installers, register MCP clients without `--dry-run`, start the desktop workbench, execute `craft-anything-cli rebuild`, or initiate target captures. The operator is pinned to [`storytold/craft-anything@56aa31976b4ff0950e6b34ba020b0a568d2462fa`](https://github.com/storytold/craft-anything/tree/56aa31976b4ff0950e6b34ba020b0a568d2462fa).
+When a task explicitly chooses Craft Anything, preview and apply the skill installation separately:
+
+```bash
+jeo-skill install craft-anything --global --dry-run
+jeo-skill install craft-anything --global --yes
+```
+
+When a task explicitly requests reverse engineering, clean-room rebuilds, or MCP operation, use the installed release or source checkout:
+
+```bash
+# 1. offline host preflight (runs no upstream binary and makes no network calls)
+python3 "$SKILLS_ROOT/craft-anything/scripts/preflight.py" --json
+
+# 2. inspect or validate a Craft Anything project folder
+python3 "$SKILLS_ROOT/craft-anything/scripts/project_inspect.py" validate /path/to/project --json
+
+# 3. read-only binary and capability check
+craft-anything-cli --version
+craft-anything-cli doctor
+craft-anything-cli capabilities --json
+
+# 4. serve all 320 tools via stdio MCP (never run setup --yes over an entry with --all-tools)
+craft-anything-cli mcp --all-tools
+
+# 5. clean-room rebuild workflow (Study → Build → Check → Ready)
+craft-anything-cli rebuild https://example.com "Recreate this landing page" --rounds 2
+```
+
+Clean room is the default: internal target code, decompilation, and private assets are refused. Deep mode (`--deep` or `settings_set deep_mode true`) requires separate explicit authorization for software you own or are permitted to examine. Do not run `craft-anything-cli setup --yes` over an entry that already carries `--all-tools`, which would drop `--all-tools` and downgrade the tool catalog to core essentials.
+
 ### Open Generative AI studio (on demand, spends money and installs unsigned binaries)
 
 The `open-generative-ai` skill installs as routing documents plus two read-only helpers.
@@ -3282,7 +3315,7 @@ does not install ECC plugins, activate hooks, or grant provider trust.
 
 ### Harness² and 2026-10-21 operators (on demand, offline support)
 
-Five more source-pinned operator packages follow the same contract (router-first
+Six more source-pinned operator packages follow the same contract (router-first
 `SKILL.md`, pinned `references/upstream.md`, executable stdlib `scripts/preflight.py`,
 behavioral evals). Catalog installation copies documents only.
 
@@ -3293,10 +3326,11 @@ behavioral evals). Catalog installation copies documents only.
 | [voicestudio](.agent-skills/voicestudio/SKILL.md) | debpalash/VoiceStudio `28bf2c7a83b8a64836297340c52a45d716684aed` (AGPL-3.0-only) | Never install dependencies, start the Electron/FastAPI services, expose ports, download Hugging Face weights, or enter credentials during setup. Cloning a real person's voice requires that speaker's documented consent. |
 | [diagram-design](.agent-skills/diagram-design/SKILL.md) | cathrynlavery/diagram-design `f2f4d49ea8d632f17cf196ba26599277a93f767b` (MIT) | Never run its `npx skills add`, marketplace/plugin installers, Playwright/browser or font downloads during setup. The upstream kit installs under the same name `diagram-design`; keep it in a separate root. |
 | [artcraft](.agent-skills/artcraft/SKILL.md) | storytold/artcraft `40e04793b504147de97ba1f0659d3975167524e5` (MIT OR Apache-2.0) | Never run installers, npm/Cargo installs, Tauri builds, provider logins, API-key or cookie setup, model downloads, servers, or paid generation during setup; NOTICE excludes trademarks and some bundled assets. |
+| [craft-anything](.agent-skills/craft-anything/SKILL.md) | storytold/craft-anything `56aa31976b4ff0950e6b34ba020b0a568d2462fa` (MIT OR Apache-2.0) | Requires Rust 1.97+ for source builds, or an installed `craft-anything-cli` or desktop release. Never run installers, Cargo builds, `craft-anything-cli setup --yes`, coding agent rebuilds, provider logins, or live target captures during blanket setup; Clean room is default, Deep mode requires separate authorization. |
 
 ```bash
 python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" install \
-  harness2 ruflo voicestudio diagram-design artcraft --global --dry-run
+  harness2 ruflo voicestudio diagram-design artcraft craft-anything --global --dry-run
 python3 "$SKILLS_ROOT/harness2/scripts/preflight.py" --json
 python3 "$SKILLS_ROOT/harness2/scripts/preflight.py" --bench lab --json \
   --repo "/path/to/harness2" --expect-commit 1cfe254e8d25b15f37048c3730134686abe60335
@@ -3304,7 +3338,7 @@ python3 "$SKILLS_ROOT/harness2/scripts/preflight.py" --bench lab --json \
 
 `harness2/scripts/preflight.py` adds `--bench demo|method|lab|jb|wb` (default `demo`; `method` needs no tool) and
 `--substrate oc|cx`; it reports `.env` presence without reading it and never runs
-harness2, uv, gcloud, Docker, or the network. All five helpers share the JSON/exit
+harness2, uv, gcloud, Docker, or the network. All six helpers share the JSON/exit
 contract above (`runtime_verified: false`; 0 ok, 1 blocked, 2 invalid input).
 
 ### Image-to-GitHub resolver (on demand, read-only network)
