@@ -47,7 +47,7 @@ craft-anything-cli mcp [OPTIONS]
 - `--restricted`: Restricts high-privilege capabilities; disables machine-acting tools and turns off web/capture tools by default.
 - `--allow-web`: Re-enables web inspection tools (`web_site_open`, etc.) under restricted mode.
 - `--allow-capture`: Re-enables screen/window capture tools under restricted mode.
-- `--inbox <dir>`: Sets a directory where human approval cards (`core_action_approve`) and questions (`core_person_ask`) are deposited.
+- `--inbox <dir>`: Sets a directory where human approval requests (`core_action_approve`) and questions (`core_person_ask`) are deposited as `<id>.request.json` files and answered via `<id>.answer.json`.
 - `--target <JSON>`: Passes pre-configured target metadata from the desktop app.
 
 ### CRITICAL Setup Warning:

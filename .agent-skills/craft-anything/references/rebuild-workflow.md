@@ -55,7 +55,7 @@ Every rebuild project is structured in a self-contained folder:
 
 ```text
 MyProject/
-├── craft.json                  # Master manifest: target, request, status, history, stack, backend
+├── craft.json                  # Master manifest: name, target object, request, status, stack, checks
 ├── capture/                    # Harvested artifacts from target: screenshots, state DOM, harvested layout
 │   ├── desktop_1280.png
 │   ├── tablet_768.png
@@ -64,16 +64,16 @@ MyProject/
 ├── app/                        # Clean-room source code produced by the coding agent
 │   ├── Cargo.toml / package.json
 │   └── src/
-├── checks/                     # Check artifacts comparing app against capture
-│   ├── check_round_1.json
-│   └── visual_diff_desktop.png
-├── investigation.cany/         # Embedded investigation project with evidence ledgers
+├── checks/                     # Check artifacts comparing app against capture, one folder per round
+│   └── round-1/
+│       ├── build.log
+│       └── visual_diff_desktop.png
+├── investigation.cany/         # Evidence, memory and journal (a regular project)
 │   ├── project.toml
 │   └── evidence/
 └── inbox/                      # Human approval requests and user questions
-    ├── ask_01.json             # core_person_ask
-    └── approve_01.json         # core_action_approve
-```
+    ├── <id>.request.json       # Pending question or approval request waiting for answer
+    └── <id>.answer.json        # Answer file written by user/app (consumed by asker)
 
 ## `craft.json` Manifest Format
 
@@ -81,39 +81,40 @@ The `craft.json` file records the project's metadata:
 
 ```json
 {
+  "version": 3,
   "name": "example-landing-page",
-  "target": "https://example.com",
   "request": "Recreate this landing page in pure HTML and Tailwind CSS",
-  "created_at": 1794098000,
-  "status": "ready",
+  "target": {
+    "kind": "website",
+    "url": "https://example.com"
+  },
   "stack": "html-tailwind",
-  "clean_room": true,
+  "status": "ready",
+  "note": "",
+  "created_ms": 1794098000000,
+  "updated_ms": 1794098080000,
   "builder": "Claude Code",
-  "rounds_completed": 2,
-  "asset_budget_usd": 0.0,
+  "asset_budget_usd": 5.0,
   "generate_assets": false,
-  "history": [
+  "checks": [
     {
-      "step": "study",
-      "timestamp": 1794098010,
-      "summary": "Captured 3 screen widths and identified responsive breakpoints"
-    },
-    {
-      "step": "build",
-      "timestamp": 1794098050,
-      "summary": "Generated app structure and index.html in app/"
-    },
-    {
-      "step": "check",
-      "timestamp": 1794098080,
-      "summary": "Visual check: 94% desktop alignment, 91% mobile alignment"
+      "round": 1,
+      "check": "web-visual",
+      "passed": true,
+      "similarity": 94.0,
+      "note": "Visual check: 94% desktop alignment, 91% mobile alignment",
+      "artifacts": [],
+      "at_ms": 1794098080000
     }
   ]
 }
 ```
 
+> **Note on Clean room:** Clean room vs Deep mode is a runtime engine session setting (enabled by default; toggled via `--deep` on CLI or in app settings), not a serialized field in `craft.json`.
+
 ## Human-in-the-Loop & Approval Cards
 
-During automated builds, the coding agent or engine may require human input:
-- Questions (`core_person_ask`): Saved in `inbox/` as JSON cards. The desktop app displays them; in terminal mode, prompts appear on stdout.
-- Action approvals (`core_action_approve`): For commands that run package managers (`npm install`, `cargo build`) or modify local settings. With `--unattended`, approvals fail closed (are rejected) to ensure untrusted code is not run without human consent.
+During automated builds, the coding agent or engine may require human input via `inbox/`:
+- **Inbox protocol:** Requests are posted atomically as `<id>.request.json` with `kind: "question"` (from `core_person_ask`) or `kind: "approval"` (from `core_action_approve`). A request is pending if `<id>.request.json` exists without a matching `<id>.answer.json`.
+- **Answering requests:** The desktop app or `project_inbox_answer` writes `<id>.answer.json` with `allow` (`true`/`false`), `always` (`true` to remember for this action kind), `choice`, and/or `text`. Once the asker reads the answer, both files are cleaned up.
+- **Action approvals (`core_action_approve`):** For commands that run package managers (`npm install`, `cargo build`), modify outside files, or change system settings. With `--unattended`, approvals fail closed (are rejected) to ensure untrusted code is not run without human consent.

@@ -13,7 +13,7 @@ This guide covers common connection failures, agent registration issues, engine 
 | `craft-anything-cli` command not found in shell | Binary not on system `PATH` | Run via `~/.local/bin/craft-anything-cli` or add `~/.local/bin` to your environment `PATH`. |
 | Tool call fails with `details.reason: clean_room` | Tool attempted to inspect internal code while in Clean room | If examining internal code is authorized, rerun with `--deep` flag or call `settings_set deep_mode true`. |
 | Tool call fails with `engine_missing` | Required decompiler or engine not installed | Check the error remediation. For Ghidra, install Ghidra and ensure `GHIDRA_INSTALL_DIR` is set. |
-| Rebuild stalls during dependency install | Agent waiting for command approval | Check the terminal or `inbox/` for pending approval cards (`core_action_approve`). Approve or reject deliberately. |
+| Rebuild stalls during dependency install | Agent waiting for command approval | Check the terminal or `inbox/` for pending approval requests (`<id>.request.json` from `core_action_approve`). Approve or reject deliberately. |
 | Apple blocks `craft-anything-cli` on macOS | Lone command-line tool lacks attached ticket | Run `xattr -d com.apple.quarantine ~/.local/bin/craft-anything-cli` or approve in System Settings → Privacy & Security. |
 
 ## Verification and Diagnostics

@@ -34,7 +34,7 @@ Use Craft Anything when an answer or rebuild depends on software that was **buil
 ## Clean room versus Deep mode
 
 Craft Anything enforces a strict operational distinction:
-- **Clean room (default):** Nothing inside the target program is read — no source, internal bytecode, decompiled functions, or private assets. Craft Anything works exclusively from externally observable facts: screenshots, measured layout, colors, fonts, spacing, and open windows. Tools that inspect internals are refused and return `details.reason: clean_room`.
+- **Clean room (default):** Nothing inside the target program is read — no source, internal bytecode, decompiled functions, or private assets. Craft Anything works exclusively from externally observable facts: screenshots, measured layout, colors, fonts, spacing, and open windows. Tools that inspect internals are refused and return `details.reason: clean_room`. During rebuilds, coding agents are kept away from the original: direct reads, directory listings, or execution in the target's folder are off-limits, and the agent builds from harvested captures, references, and user specifications.
 - **Deep mode:** Reads internal code, disassembles, decompiles, inspects JavaScript bundles, and connects to Ghidra when installed. Deep mode is for software you own or are explicitly authorized to examine. Activate with `--deep` on the CLI or `settings_set deep_mode true` in the app.
 
 ## Instructions
@@ -75,7 +75,7 @@ Craft Anything enforces a strict operational distinction:
    ```
    - Shared host restriction: `--restricted` disables machine-acting tools.
    - Selectively enable capabilities: `--allow-web`, `--allow-capture`.
-   - Provide an inbox for human approvals: `--inbox <dir>`.
+   - Provide an inbox for human approvals: `--inbox <dir>` (deposits requests as `<id>.request.json`, answered via `<id>.answer.json`).
    - Setup client configuration: always run `craft-anything-cli setup --dry-run` first to preview changes.
    - **CRITICAL:** Never run `setup --yes` over an entry that already carries `--all-tools`, as plain `setup` writes the core-only command and drops `--all-tools`.
 

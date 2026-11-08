@@ -50,13 +50,44 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     init_parser.add_argument("path", help="Destination path for the new project folder")
     init_parser.add_argument("--target", required=True, help="Web URL, file path, or '-' for prompt-only")
     init_parser.add_argument("--request", required=True, help="Description of what to build")
-    init_parser.add_argument("--deep", action="store_true", help="Enable Deep mode (default: Clean room)")
+    init_parser.add_argument("--deep", action="store_true", help="Enable Deep mode for initial run (runtime flag, not stored in craft.json)")
     init_parser.add_argument("--backend", default="Claude Code", help="Coding agent backend name")
     init_parser.add_argument("--build-with", default=None, help="Target engine or stack name")
     init_parser.add_argument("--dry-run", action="store_true", help="Preview scaffold actions without writing")
     init_parser.add_argument("--json", action="store_true", help="Emit output as JSON")
 
     return parser.parse_args(argv)
+
+
+def parse_target_ref(target: str) -> dict[str, Any]:
+    t = target.strip().strip('"')
+    if t == "-":
+        return {"kind": "none"}
+    if t.startswith(("http://", "https://")):
+        return {"kind": "website", "url": t}
+    p = Path(t).expanduser()
+    if t and p.is_absolute() and p.exists():
+        return {"kind": "local", "path": str(p.resolve())}
+    raise ProjectError(
+        f"{target!r} is neither a web address nor an existing absolute path. "
+        "Pass https://… for a website, a full path for a program, or - for none."
+    )
+
+
+def format_target_label(target_val: Any) -> str:
+    if isinstance(target_val, dict):
+        kind = target_val.get("kind")
+        if kind == "website":
+            return str(target_val.get("url", ""))
+        if kind == "local":
+            path = str(target_val.get("path", ""))
+            return Path(path).name or path
+        if kind == "none":
+            return ""
+        return str(target_val)
+    if isinstance(target_val, str):
+        return target_val
+    return ""
 
 
 def inspect_rebuild_project(project_dir: Path) -> dict[str, Any]:
@@ -66,6 +97,9 @@ def inspect_rebuild_project(project_dir: Path) -> dict[str, Any]:
     except json.JSONDecodeError as exc:
         raise ProjectError(f"Malformed {PROJECT_MANIFEST}: {exc}") from exc
 
+    if not isinstance(data, dict):
+        raise ProjectError(f"{PROJECT_MANIFEST} must be a JSON object")
+
     app_dir = project_dir / "app"
     checks_dir = project_dir / "checks"
     capture_dir = project_dir / "capture"
@@ -73,42 +107,74 @@ def inspect_rebuild_project(project_dir: Path) -> dict[str, Any]:
     cany_dir = project_dir / "investigation.cany"
 
     app_file_count = sum(1 for _ in app_dir.rglob("*") if _.is_file()) if app_dir.is_dir() else 0
-    checks_count = len(list(checks_dir.glob("*.json"))) if checks_dir.is_dir() else 0
+    checks_list = data.get("checks", [])
+    if isinstance(checks_list, list) and checks_list:
+        checks_count = len(checks_list)
+    elif checks_dir.is_dir():
+        checks_count = len(list(checks_dir.glob("*.json"))) + len(list(checks_dir.glob("round-*")))
+    else:
+        checks_count = 0
     capture_count = len(list(capture_dir.glob("*.*"))) if capture_dir.is_dir() else 0
 
     pending_approvals = 0
     open_questions = 0
     if inbox_dir.is_dir():
-        for card in inbox_dir.glob("*.json"):
+        # Upstream inbox protocol:
+        # Request is in `<id>.request.json`. It is pending if `<id>.answer.json` does NOT exist.
+        for req_file in sorted(inbox_dir.glob("*.request.json")):
+            req_id = req_file.name[:-len(".request.json")]
+            ans_file = inbox_dir / f"{req_id}.answer.json"
+            if ans_file.is_file():
+                continue  # Already answered
             try:
-                card_data = json.loads(card.read_text(encoding="utf-8"))
+                card_data = json.loads(req_file.read_text(encoding="utf-8"))
                 kind = card_data.get("kind", "")
-                status = card_data.get("status", "pending")
-                if "approve" in kind.lower() and status == "pending":
+                if kind == "approval":
                     pending_approvals += 1
-                elif "ask" in kind.lower() and status == "pending":
+                elif kind == "question":
                     open_questions += 1
+                else:
+                    pending_approvals += 1
             except Exception:
                 pending_approvals += 1
+
+        # Resilient fallback for standalone or legacy cards:
+        for other in sorted(inbox_dir.glob("*.json")):
+            if other.name.endswith(".request.json") or other.name.endswith(".answer.json"):
+                continue
+            try:
+                card_data = json.loads(other.read_text(encoding="utf-8"))
+                kind = card_data.get("kind", "")
+                status = card_data.get("status", "pending")
+                if status == "pending":
+                    if "approve" in str(kind).lower():
+                        pending_approvals += 1
+                    elif "question" in str(kind).lower() or "ask" in str(kind).lower():
+                        open_questions += 1
+            except Exception:
+                pass
+
+    raw_target = data.get("target")
 
     return {
         "project_type": "rebuild",
         "path": str(project_dir.resolve()),
         "name": data.get("name", project_dir.name),
-        "target": data.get("target"),
-        "request": data.get("request"),
-        "status": data.get("status", "unknown"),
-        "clean_room": data.get("clean_room", True),
+        "target": raw_target,
+        "target_label": format_target_label(raw_target),
+        "request": data.get("request", ""),
+        "status": data.get("status", "new"),
+        "version": data.get("version", 0),
         "builder": data.get("builder"),
-        "stack": data.get("stack"),
-        "rounds_completed": data.get("rounds_completed", 0),
-        "app_files": app_file_count,
+        "stack": data.get("stack", ""),
         "checks_count": checks_count,
+        "app_files": app_file_count,
         "capture_count": capture_count,
         "pending_approvals": pending_approvals,
         "open_questions": open_questions,
         "has_investigation": cany_dir.is_dir(),
     }
+
 
 
 def inspect_investigation_project(project_dir: Path) -> dict[str, Any]:
@@ -170,16 +236,62 @@ def cmd_validate(path_str: str) -> tuple[int, dict[str, Any]]:
 
     proj = report["project"]
     if proj["project_type"] == "rebuild":
-        if not proj.get("request"):
+        manifest_file = target_path / PROJECT_MANIFEST
+        try:
+            raw_data = json.loads(manifest_file.read_text(encoding="utf-8"))
+        except Exception:
+            raw_data = {}
+
+        # 1. name validation
+        name = raw_data.get("name")
+        if name is None or not str(name).strip():
+            issues.append("Missing or empty required field 'name' in craft.json")
+
+        # 2. request validation
+        request = raw_data.get("request")
+        if request is None:
             issues.append("Missing required field 'request' in craft.json")
-        if proj.get("target") is None:
+        elif not isinstance(request, str):
+            issues.append("Field 'request' in craft.json must be a string")
+
+        # 3. target validation (TargetRef object or string)
+        target = raw_data.get("target")
+        if target is None:
             issues.append("Missing required field 'target' in craft.json")
+        elif isinstance(target, dict):
+            kind = target.get("kind")
+            if kind not in ("website", "local", "none"):
+                issues.append(f"Invalid target.kind {kind!r} in craft.json: must be 'website', 'local', or 'none'")
+            elif kind == "website":
+                url = target.get("url")
+                if not url or not isinstance(url, str) or not url.startswith(("http://", "https://")):
+                    issues.append("Target kind 'website' requires a valid 'url' starting with http:// or https://")
+            elif kind == "local":
+                path = target.get("path")
+                if not path or not isinstance(path, str):
+                    issues.append("Target kind 'local' requires a valid 'path'")
+            elif kind == "none":
+                pass
+        elif isinstance(target, str):
+            if not target.strip():
+                issues.append("Target string cannot be empty")
+        else:
+            issues.append(f"Invalid target format: expected object or string, got {type(target).__name__}")
+
+        # 4. version validation
+        version = raw_data.get("version")
+        if version is not None:
+            if not isinstance(version, int) or version < 0:
+                issues.append("Field 'version' in craft.json must be a non-negative integer")
+            elif version > 3:
+                issues.append(f"craft.json version ({version}) is newer than supported MANIFEST_VERSION (3)")
+
+        # 5. pending approvals validation
         if proj.get("pending_approvals", 0) > 0:
             issues.append(f"{proj['pending_approvals']} pending approval action(s) in inbox/")
     elif proj["project_type"] == "investigation":
         if proj.get("format_version", 0) < 1:
             issues.append("Invalid format_version in project.toml")
-
     is_valid = len(issues) == 0
     status = "ok" if is_valid else "blocked"
     exit_code = 0 if is_valid else 1
@@ -210,47 +322,35 @@ def cmd_init(
     if not target_clean:
         raise ProjectError("Project target cannot be empty (pass '-' for prompt-only).")
 
-    if target_clean != "-" and not target_clean.startswith(("http://", "https://", "/")):
-        raise ProjectError(f"Invalid target {target_clean!r}: must be a URL, an absolute path, or '-' for prompt-only.")
+    target_ref = parse_target_ref(target_clean)
+
+    now_ms = int(time.time() * 1000)
+    manifest_content: dict[str, Any] = {
+        "version": 3,
+        "name": dest.name,
+        "request": request_clean,
+        "target": target_ref,
+        "stack": build_with or "",
+        "status": "new",
+        "note": "",
+        "created_ms": now_ms,
+        "updated_ms": now_ms,
+        "checks": [],
+        "allowed_actions": [],
+        "last_reply": "",
+        "asset_budget_usd": 5.0,
+        "generate_assets": False,
+    }
+    if backend:
+        manifest_content["builder"] = backend
 
     planned_actions = [
         {"action": "create_dir", "path": str(dest)},
         {"action": "create_file", "path": str(dest / PROJECT_MANIFEST)},
-        {"action": "create_dir", "path": str(dest / "app")},
-        {"action": "create_dir", "path": str(dest / "checks")},
-        {"action": "create_dir", "path": str(dest / "capture")},
-        {"action": "create_dir", "path": str(dest / "inbox")},
-        {"action": "create_dir", "path": str(dest / "investigation.cany")},
     ]
-
-    manifest_content = {
-        "name": dest.name,
-        "target": target_clean,
-        "request": request_clean,
-        "created_at": int(time.time()),
-        "status": "ready",
-        "stack": build_with or "inferred",
-        "clean_room": not deep,
-        "builder": backend,
-        "rounds_completed": 0,
-        "asset_budget_usd": 0.0,
-        "generate_assets": False,
-        "history": [
-            {
-                "step": "init",
-                "timestamp": int(time.time()),
-                "summary": f"Initialized project with target '{target_clean}' via project_inspect.py",
-            }
-        ],
-    }
 
     if not dry_run:
         dest.mkdir(parents=True, exist_ok=True)
-        (dest / "app").mkdir(exist_ok=True)
-        (dest / "checks").mkdir(exist_ok=True)
-        (dest / "capture").mkdir(exist_ok=True)
-        (dest / "inbox").mkdir(exist_ok=True)
-        (dest / "investigation.cany").mkdir(exist_ok=True)
         (dest / PROJECT_MANIFEST).write_text(json.dumps(manifest_content, indent=2) + "\n", encoding="utf-8")
 
     return {
@@ -258,16 +358,15 @@ def cmd_init(
         "dry_run": dry_run,
         "project_dir": str(dest.resolve() if dest.exists() else dest),
         "manifest": manifest_content,
+        "runtime_mode": "deep" if deep else "clean_room",
         "actions": planned_actions,
     }
-
 
 def main(argv: list[str] | None = None) -> int:
     try:
         args = parse_args(argv)
     except SystemExit as exc:
-        return 2
-
+        return int(exc.code) if isinstance(exc.code, (int, bool)) else (0 if exc.code is None else 2)
     wants_json = getattr(args, "json", False)
 
     try:
@@ -279,9 +378,10 @@ def main(argv: list[str] | None = None) -> int:
                 p = result["project"]
                 print(f"[{p['project_type'].upper()}] {p['name']} ({p['path']})")
                 if p["project_type"] == "rebuild":
-                    print(f"  Target: {p['target']}")
+                    target_disp = p.get("target_label") or p.get("target") or "-"
+                    print(f"  Target: {target_disp}")
                     print(f"  Request: {p['request']}")
-                    print(f"  Status: {p['status']} (clean_room: {p['clean_room']})")
+                    print(f"  Status: {p['status']}")
                     print(f"  App files: {p['app_files']}, Checks: {p['checks_count']}, Captures: {p['capture_count']}")
                     print(f"  Inbox: {p['pending_approvals']} pending approvals, {p['open_questions']} questions")
                 else:

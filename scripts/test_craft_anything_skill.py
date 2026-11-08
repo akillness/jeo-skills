@@ -173,10 +173,23 @@ class TestCraftAnythingProjectInspect(unittest.TestCase):
         self.assertEqual(code, 0)
         self.assertTrue(data.get("dry_run"))
         self.assertFalse(dest.exists())
-        self.assertEqual(data["manifest"]["target"], "https://example.com")
-        self.assertTrue(data["manifest"]["clean_room"])
+        self.assertEqual(data["manifest"]["target"], {"kind": "website", "url": "https://example.com"})
+        self.assertEqual(data["manifest"]["version"], 3)
+        self.assertGreater(data["manifest"]["created_ms"], 0)
+        self.assertGreater(data["manifest"]["updated_ms"], 0)
+        self.assertNotIn("clean_room", data["manifest"])
+        self.assertNotIn("rounds_completed", data["manifest"])
+        self.assertNotIn("history", data["manifest"])
+        self.assertEqual(data.get("runtime_mode"), "clean_room")
+        self.assertEqual(
+            data["actions"],
+            [
+                {"action": "create_dir", "path": str(dest)},
+                {"action": "create_file", "path": str(dest / "craft.json")},
+            ],
+        )
 
-    def test_init_real_and_inspect(self) -> None:
+    def test_init_real_and_inspect_website(self) -> None:
         dest = self.work / "real-project"
         code, data, _ = self.run_inspect(
             "init", str(dest),
@@ -184,23 +197,65 @@ class TestCraftAnythingProjectInspect(unittest.TestCase):
             "--request", "Build a demo app",
             "--deep",
             "--backend", "Claude Code",
+            "--build-with", "React + TypeScript (Vite)",
             "--json",
         )
         self.assertEqual(code, 0)
         self.assertTrue(dest.is_dir())
         self.assertTrue((dest / "craft.json").is_file())
-        self.assertTrue((dest / "app").is_dir())
-        self.assertTrue((dest / "checks").is_dir())
-        self.assertFalse(data["manifest"]["clean_room"])  # deep was set
+        # Upstream Workspace::create does NOT pre-create empty subdirs (prevents create_at clashes)
+        self.assertFalse((dest / "app").exists())
+        self.assertFalse((dest / "checks").exists())
+        self.assertFalse((dest / "capture").exists())
+        self.assertFalse((dest / "inbox").exists())
+        self.assertFalse((dest / "investigation.cany").exists())
+        self.assertNotIn("clean_room", data["manifest"])
+        self.assertEqual(data["runtime_mode"], "deep")
 
         # Now inspect it
         code_ins, data_ins, _ = self.run_inspect("inspect", str(dest), "--json")
         self.assertEqual(code_ins, 0)
         p = data_ins.get("project", {})
         self.assertEqual(p.get("project_type"), "rebuild")
-        self.assertEqual(p.get("target"), "https://example.com/demo")
+        self.assertEqual(p.get("target"), {"kind": "website", "url": "https://example.com/demo"})
+        self.assertEqual(p.get("target_label"), "https://example.com/demo")
         self.assertEqual(p.get("request"), "Build a demo app")
-        self.assertFalse(p.get("clean_room"))
+        self.assertEqual(p.get("builder"), "Claude Code")
+        self.assertEqual(p.get("stack"), "React + TypeScript (Vite)")
+        self.assertEqual(p.get("status"), "new")
+        self.assertEqual(p.get("version"), 3)
+        self.assertNotIn("clean_room", p)
+
+    def test_init_prompt_only_and_local_target(self) -> None:
+        # Prompt-only target
+        dest_none = self.work / "prompt-only"
+        code, data, _ = self.run_inspect(
+            "init", str(dest_none),
+            "--target", "-",
+            "--request", "Arcade snake game",
+            "--json",
+        )
+        self.assertEqual(code, 0)
+        self.assertEqual(data["manifest"]["target"], {"kind": "none"})
+        code_val, data_val, _ = self.run_inspect("validate", str(dest_none), "--json")
+        self.assertEqual(code_val, 0)
+        self.assertTrue(data_val.get("valid"))
+
+        # Local file target
+        app_binary = self.work / "sample_app"
+        app_binary.write_text("#!/bin/sh\necho hi\n")
+        dest_local = self.work / "local-project"
+        code_loc, data_loc, _ = self.run_inspect(
+            "init", str(dest_local),
+            "--target", str(app_binary),
+            "--request", "Rebuild native utility",
+            "--json",
+        )
+        self.assertEqual(code_loc, 0)
+        self.assertEqual(data_loc["manifest"]["target"], {"kind": "local", "path": str(app_binary.resolve())})
+        code_val2, data_val2, _ = self.run_inspect("validate", str(dest_local), "--json")
+        self.assertEqual(code_val2, 0)
+        self.assertTrue(data_val2.get("valid"))
 
     def test_validate_clean_project(self) -> None:
         dest = self.work / "clean-project"
@@ -216,7 +271,7 @@ class TestCraftAnythingProjectInspect(unittest.TestCase):
         self.assertTrue(data.get("valid"))
         self.assertEqual(data.get("issues"), [])
 
-    def test_validate_pending_approvals_blocks(self) -> None:
+    def test_validate_inbox_pending_approvals_and_answers(self) -> None:
         dest = self.work / "approval-project"
         self.run_inspect(
             "init", str(dest),
@@ -224,17 +279,132 @@ class TestCraftAnythingProjectInspect(unittest.TestCase):
             "--request", "Project with pending approvals",
             "--json",
         )
-        # Drop a pending approval in inbox
-        inbox_card = dest / "inbox" / "approve_01.json"
-        inbox_card.write_text(
-            json.dumps({"kind": "core_action_approve", "status": "pending", "command": "npm install"})
+        inbox_dir = dest / "inbox"
+        inbox_dir.mkdir(parents=True, exist_ok=True)
+
+        # Upstream inbox protocol: `<id>.request.json` without `<id>.answer.json` is pending!
+        req_file = inbox_dir / "1700000000000-1234-1.request.json"
+        req_file.write_text(
+            json.dumps({
+                "id": "1700000000000-1234-1",
+                "kind": "approval",
+                "title": "Run npm install",
+                "detail": "Install dependencies",
+                "choices": [],
+                "allow_text": False,
+                "action": "bash",
+                "created_ms": 1700000000000,
+            })
         )
 
+        # Should fail validation due to pending approval
         code, data, _ = self.run_inspect("validate", str(dest), "--json")
         self.assertEqual(code, 1)
         self.assertEqual(data.get("status"), "blocked")
         self.assertFalse(data.get("valid"))
+        self.assertEqual(data["project"]["pending_approvals"], 1)
         self.assertTrue(any("pending approval" in issue for issue in data.get("issues", [])))
+
+        # Once answered with `<id>.answer.json`, it is no longer pending
+        ans_file = inbox_dir / "1700000000000-1234-1.answer.json"
+        ans_file.write_text(
+            json.dumps({
+                "choice": None,
+                "text": None,
+                "allow": True,
+                "always": True,
+            })
+        )
+        code_ans, data_ans, _ = self.run_inspect("validate", str(dest), "--json")
+        self.assertEqual(code_ans, 0)
+        self.assertEqual(data_ans.get("status"), "ok")
+        self.assertTrue(data_ans.get("valid"))
+        self.assertEqual(data_ans["project"]["pending_approvals"], 0)
+
+        # Questions in inbox (`kind: "question"`) are tracked as open questions, do not block validate
+        q_file = inbox_dir / "1700000000000-1234-2.request.json"
+        q_file.write_text(
+            json.dumps({
+                "id": "1700000000000-1234-2",
+                "kind": "question",
+                "title": "Which color scheme?",
+                "detail": "",
+                "choices": ["Blue", "Red"],
+                "allow_text": True,
+                "action": None,
+                "created_ms": 1700000001000,
+            })
+        )
+        code_q, data_q, _ = self.run_inspect("inspect", str(dest), "--json")
+        self.assertEqual(code_q, 0)
+        self.assertEqual(data_q["project"]["open_questions"], 1)
+        self.assertEqual(data_q["project"]["pending_approvals"], 0)
+
+    def test_upstream_manifest_fixtures(self) -> None:
+        # 1. MANIFEST_V0: unversioned manifest from upstream crates/engine/src/workspace.rs line 1592
+        v0_dir = self.work / "v0-project"
+        v0_dir.mkdir()
+        manifest_v0 = {
+            "name": "Example",
+            "request": "Clone it",
+            "target": {"kind": "website", "url": "https://example.com"},
+            "stack": "React + TypeScript (Vite)",
+            "status": "ready",
+            "note": "",
+            "created_ms": 1700000000000,
+            "updated_ms": 1700000005000,
+            "checks": [{"round": 1, "similarity": 71.0, "note": "1440 px: 71% alike", "at_ms": 1700000004000}],
+            "agent_session": "abc",
+            "allowed_actions": ["bash:npm"],
+            "last_reply": "Done.",
+        }
+        (v0_dir / "craft.json").write_text(json.dumps(manifest_v0, indent=2))
+        code_v0, data_v0, _ = self.run_inspect("inspect", str(v0_dir), "--json")
+        self.assertEqual(code_v0, 0)
+        self.assertEqual(data_v0["project"]["version"], 0)
+        self.assertEqual(data_v0["project"]["status"], "ready")
+        self.assertEqual(data_v0["project"]["checks_count"], 1)
+        self.assertEqual(data_v0["project"]["target_label"], "https://example.com")
+        code_val0, data_val0, _ = self.run_inspect("validate", str(v0_dir), "--json")
+        self.assertEqual(code_val0, 0)
+        self.assertTrue(data_val0["valid"])
+
+        # 2. Version 1 manifest from upstream line 1806
+        v1_dir = self.work / "v1-project"
+        v1_dir.mkdir()
+        manifest_v1 = {
+            "version": 1,
+            "name": "Old",
+            "request": "x",
+            "target": {"kind": "none"},
+            "created_ms": 1,
+            "updated_ms": 1,
+        }
+        (v1_dir / "craft.json").write_text(json.dumps(manifest_v1, indent=2))
+        code_v1, data_v1, _ = self.run_inspect("inspect", str(v1_dir), "--json")
+        self.assertEqual(code_v1, 0)
+        self.assertEqual(data_v1["project"]["version"], 1)
+        self.assertEqual(data_v1["project"]["target"], {"kind": "none"})
+        code_val1, data_val1, _ = self.run_inspect("validate", str(v1_dir), "--json")
+        self.assertEqual(code_val1, 0)
+        self.assertTrue(data_val1["valid"])
+
+        # 3. Newer unsupported version (version > 3)
+        v99_dir = self.work / "v99-project"
+        v99_dir.mkdir()
+        manifest_v99 = {
+            "version": 99,
+            "name": "Future",
+            "request": "x",
+            "target": {"kind": "none"},
+            "created_ms": 1,
+            "updated_ms": 1,
+        }
+        (v99_dir / "craft.json").write_text(json.dumps(manifest_v99, indent=2))
+        code_v99, data_v99, _ = self.run_inspect("validate", str(v99_dir), "--json")
+        self.assertEqual(code_v99, 1)
+        self.assertFalse(data_v99["valid"])
+        self.assertTrue(any("newer than supported MANIFEST_VERSION" in issue for issue in data_v99["issues"]))
 
     def test_inspect_investigation_cany_project(self) -> None:
         cany_dir = self.work / "sample.cany"
@@ -262,7 +432,6 @@ class TestCraftAnythingProjectInspect(unittest.TestCase):
         )
         self.assertEqual(code, 1)
         self.assertEqual(data.get("status"), "error")
-
 
 class TestCraftAnythingSkillIntegrity(unittest.TestCase):
     """Tests validating skill frontmatter, files, references, evals, and catalog projections."""
