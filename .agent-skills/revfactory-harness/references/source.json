@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "skill": "revfactory-harness",
+  "repository": "revfactory/harness",
+  "commit": "92d9f1b29e7af81acebf51a9fcd1832e739a1414",
+  "observed_at": "2026-11-10",
+  "upstream_version": "2.1.0",
+  "license": {
+    "spdx": "Apache-2.0",
+    "path": "LICENSE",
+    "url": "https://github.com/revfactory/harness/blob/92d9f1b29e7af81acebf51a9fcd1832e739a1414/LICENSE",
+    "conclusion": "Independently authored operator guide; upstream implementation and templates are linked, not vendored."
+  },
+  "files": [
+    {"path": "README.md", "sha256": "62a27ccb69c5706e0f7c36b01018768f5623279f33fd30cddcc460dff796a68d"},
+    {"path": "README_KO.md", "sha256": "8feaa9e25a367780fd313e186e714aeba59fcfd01c290a7c16babf8c1773f89e"},
+    {"path": "LICENSE", "sha256": "bae1caa988a742c5a756faa45e33b6c72f21f9873b8e7f1e0ce87fcf0a4c747b"},
+    {"path": ".claude-plugin/plugin.json", "sha256": "38dca6e26daae13779656a42566bd779a7e4537aed66fe6c1b565a95ef104f60"},
+    {"path": ".claude-plugin/marketplace.json", "sha256": "8f655804d24bce256b1fc59b442fda06e45dfff95239a3e0355262b7aaf60560"},
+    {"path": "skills/harness/SKILL.md", "sha256": "2d941632cc3cceedc33317334fc43e4c2f8c5c834a35b8e745fe0f2368ddf039"},
+    {"path": "skills/evolve/SKILL.md", "sha256": "c7873546dec075d3b94341567314692c2959bb4ce69dde0084d12dae2f02a02c"},
+    {"path": "skills/harness/references/execution-modes.md", "sha256": "839100f48e3196ff14c61e82e089eb6fc706622d9b9318b642373faafc8c415c"},
+    {"path": "skills/harness/references/model-selection-guide.md", "sha256": "04a68043ea3ff2100445faf05ccb2fd1eca490f0a95913e750b1a6d66d3d0f79"},
+    {"path": "skills/harness/references/orchestrator-template.md", "sha256": "b0e97c937c8a218176931aa79bc8ddc1e7b4dcc584ccc0cb89a01bbbf1ca602b"},
+    {"path": "skills/harness/references/qa-agent-guide.md", "sha256": "cd45d7f937a886aa62db13ad28495efd9b7e851f2b6140229643fbf27d23b5b2"},
+    {"path": "skills/harness/references/skill-testing-guide.md", "sha256": "9017c01a908dab03297b41ef8b1fafc20cdeaf1d100a92f1c9934ed0515c1f6a"},
+    {"path": "skills/harness/references/skill-writing-guide.md", "sha256": "7007ef5827610dad3a2ee8d3ec6dc0a6d5652d84e7bfa60c2b80b8b91e7ebd69"},
+    {"path": "skills/harness/references/team-examples.md", "sha256": "a88bc2b56dd08eafa92e2a3f5e2e2f585b6d24e6bf367f3485e4db42198632a6"},
+    {"path": "skills/harness/references/team-patterns.md", "sha256": "427ef080d16dd2b204739ec9d6c24eded987c2ac62bc82ea4ef8f75b65a78d0d"},
+    {"path": "skills/harness/references/workflow-recipes.md", "sha256": "877f87ced47a0ef776d26b806548ff55797f925f12718a8c5d2681203607c56c"},
+    {"path": "docs/quickstart.md", "sha256": "9a5146a752f319887e6977ef7907839708a62ca87d2dd9f0df5e8abffc13d57a"},
+    {"path": "docs/migration-v1-to-v2.md", "sha256": "7b3b18054c5c831b6ead451a5676c9e5d532cacf82fd62864dc383d4c93d8614"}
+  ]
+}

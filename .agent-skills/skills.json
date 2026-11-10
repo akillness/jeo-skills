@@ -1,7 +1,7 @@
 {
   "version": "2.1.0",
   "generated": "2026-10-21",
-  "skill_count": 426,
+  "skill_count": 427,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -425,7 +425,8 @@
       "ruflo",
       "agent-beacon",
       "agent-s",
-      "aidlc-workflows"
+      "aidlc-workflows",
+      "revfactory-harness"
     ],
     "engineering": [
       "audit-reference-originality",
@@ -904,7 +905,8 @@
         "typesafe-computer-use",
         "jev-ultrafast",
         "ruflo",
-        "aidlc-workflows"
+        "aidlc-workflows",
+        "revfactory-harness"
       ],
       "agent-frameworks": [
         "microsoft-agent-framework",
@@ -1849,6 +1851,14 @@
         "multi-agent-eval-harness"
       ],
       "note": "harness2 refines a whole agent harness from execution contrasts (google-research/harness2 pinned at 1cfe254e8d25b15f37048c3730134686abe60335); skill-autoresearch ratchets one SKILL.md against a frozen eval; multi-agent-eval-harness grades coordination failures."
+    },
+    "harness-project-operators": {
+      "mode": "adjacent",
+      "members": [
+        "revfactory-harness",
+        "harness2"
+      ],
+      "note": "Two distinct Apache-2.0 projects, not aliases: revfactory-harness operates revfactory/harness's Claude Code team-architecture factory and evolve plugin at 92d9f1b29e7af81acebf51a9fcd1832e739a1414; harness2 operates google-research/harness2's execution-driven recursive optimization and benchmarks. The old catalog name harness remains retired in favor of harness2."
     },
     "voice-generation": {
       "mode": "adjacent",
@@ -15762,6 +15772,38 @@
       "keyword": "craft-anything",
       "version": "0.4.0",
       "source": "https://github.com/storytold/craft-anything"
+    },
+    {
+      "name": "revfactory-harness",
+      "description": "Operate revfactory/harness, the Apache-2.0 Claude Code team-architecture factory: audit or install its plugin, design domain-specific agents and skills, select an execution mode, migrate v1 artifacts, and evolve an existing generated harness. Use when the request names revfactory/harness, Harness v2, harness-marketplace, /harness:evolve, or its Korean team-factory workflow. Triggers on: 하네스 구성, 하네스 회고, revfactory harness, harness factory, harness migration. Do not use for google-research/harness2 benchmarks or generic harness optimization (`harness2`), standalone skill authoring (`skill-standardization`), or running a Ruflo swarm (`ruflo`).",
+      "category": "ai-agents",
+      "subcategory": "orchestration",
+      "interface": "workflow",
+      "path": "revfactory-harness/SKILL.md",
+      "tags": [
+        "revfactory-harness",
+        "harness-factory",
+        "claude-code-plugin",
+        "agent-team",
+        "skill-generation",
+        "workflow",
+        "harness-evolve",
+        "migration"
+      ],
+      "platforms": [
+        "Claude Code"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "revfactory-harness",
+      "version": "1.0.0",
+      "source": "https://github.com/revfactory/harness"
     }
   ]
 }

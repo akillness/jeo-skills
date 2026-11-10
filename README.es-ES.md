@@ -307,7 +307,7 @@ Consulta la [guía de instalación](setup-all-skills-prompt.md#jev-control-plane
 
 ## 📚 Lista de Habilidades
 
-> Generado desde `.agent-skills/skills.json` · 426 habilidades · despliega una categoría para ver sus habilidades.
+> Generado desde `.agent-skills/skills.json` · 427 habilidades · despliega una categoría para ver sus habilidades.
 
 ### 🌐 Web (71)
 
@@ -580,9 +580,9 @@ Subcategorías: `developer-cli` (12), `ai-cli` (15), `media-cli` (1), `automatio
 
 </details>
 
-### 🤖 IA y Agentes (76)
+### 🤖 IA y Agentes (77)
 
-Subcategorías: `orchestration` (17), `agent-frameworks` (20), `skill-authoring` (5), `evaluation` (8), `memory` (7), `planning-review` (13), `discovery` (3), `prompting` (3)
+Subcategorías: `orchestration` (18), `agent-frameworks` (20), `skill-authoring` (5), `evaluation` (8), `memory` (7), `planning-review` (13), `discovery` (3), `prompting` (3)
 
 <details>
 <summary>Ver habilidades</summary>
@@ -665,6 +665,7 @@ Subcategorías: `orchestration` (17), `agent-frameworks` (20), `skill-authoring`
 | `agent-beacon` |
 | `agent-s` |
 | `aidlc-workflows` |
+| `revfactory-harness` |
 
 </details>
 
@@ -883,6 +884,17 @@ Edita los metadatos en `skills.json`, nunca en las tablas generadas. Las fuentes
 |---|---|
 | [jeo-code](https://github.com/akillness/jeo-code) | Agente de codificación que carga habilidades desde la raíz compartida |
 | [gajae-code (GJC)](https://github.com/akillness/gajae-code) | Entorno de agente con su propia raíz nativa de habilidades |
+
+## Fábrica de equipos Revfactory Harness
+
+[`revfactory-harness`](.agent-skills/revfactory-harness/SKILL.md) opera
+[revfactory/harness v2.1.0](https://github.com/revfactory/harness/tree/92d9f1b29e7af81acebf51a9fcd1832e739a1414):
+creación de agentes y habilidades de Claude Code, modos condicionados a las herramientas
+reales del host, migración de v1 y evolución con `/harness:evolve` basada en evidencia.
+`jeo-skill install revfactory-harness --global --yes` copia la guía y la preflight offline,
+no activa el plugin upstream. La preflight verifica hashes de 18 archivos públicos y
+mantiene `runtime_verified: false`. Consulta los [límites de instalación](setup-all-skills-prompt.md#revfactory-harness-team-architecture-factory-on-demand).
+Es distinto de `harness2`; el nombre retirado `harness` no se restaura.
 
 ---
 

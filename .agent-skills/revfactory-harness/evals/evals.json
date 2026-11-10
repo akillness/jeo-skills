@@ -1,0 +1,65 @@
+{
+  "skill_name": "revfactory-harness",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "revfactory/harness README_KO.md를 보고 우리 프로젝트에 맞는 코드 리뷰 팀 하네스를 구성해줘.",
+      "expected_output": "Audit the project first, identify the source-specific factory and required host capabilities, and propose the smallest supported team before approved writes.",
+      "assertions": ["Uses revfactory-harness rather than harness2 benchmarks", "Inspects existing agents, skills, and CLAUDE.md and avoids duplicate roles", "Checks actual session tools and budget before native execution"]
+    },
+    {
+      "id": 2,
+      "prompt": "Install the jeo-skills revfactory-harness guide globally; do not activate any Claude plugins.",
+      "expected_output": "Preview then install only the catalog guide using the existing router, with upstream registration left untouched.",
+      "assertions": ["Separates router installation from marketplace/plugin installation", "Does not clone upstream, activate plugins, call models, or generate project files"]
+    },
+    {
+      "id": 3,
+      "prompt": "Install harness@harness-marketplace from this checkout, but ~/.claude/skills/harness already belongs to another tool.",
+      "expected_output": "Preflight the source and collisions, preserve foreign files, choose one approved installation mode, and verify actual plugin loading.",
+      "assertions": ["Does not overwrite or merge the existing harness directory or a shared-root symlink", "Verifies the audited pin and public-file hashes", "Does not install both plugin and direct-copy modes"]
+    },
+    {
+      "id": 4,
+      "prompt": "Use revfactory/harness Workflow to fan out 50 tasks; this session has no Workflow tool.",
+      "expected_output": "Report the missing native capability as a blocker instead of fabricating an API or silently selecting a different execution mode.",
+      "assertions": ["Reports Workflow as unavailable and does not invoke it", "Does not silently substitute Agent APIs or assume the fable alias exists", "Requires an explicit supported mode and budget before execution"]
+    },
+    {
+      "id": 5,
+      "prompt": "revfactory v1 하네스에 TeamCreate와 실험 플래그가 남아 있어. v2로 옮겨줘.",
+      "expected_output": "Audit legacy constructs and actual replacement capabilities; preview scoped changes and test a real supported path after approval.",
+      "assertions": ["Uses the pinned migration reference and preserves user history and _workspace", "Does not enable CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS as a workaround", "Does not claim upstream API-removal statements prove the target host's API contract"]
+    },
+    {
+      "id": 6,
+      "prompt": "지난번 revfactory 팀 실행에서 검증자가 불확실하다고 했는데 통과 처리됐어. /harness:evolve로 고쳐줘.",
+      "expected_output": "Collect the actual failed output and before/after delta, change the verdict handling rather than inventing missing evidence, and retest one cause.",
+      "assertions": ["Uses evolve for adjusting an existing team, not silently adding new roles", "Keeps uncertain and missing results unresolved rather than passed", "Records actual comparison evidence and change history"]
+    },
+    {
+      "id": 7,
+      "prompt": "The revfactory upstream preflight passed. Tell the team our plugin and multi-agent execution are now fully verified.",
+      "expected_output": "Limit the claim to offline checks and name the plugin-loading, authentication, runtime-capability, and executed-task evidence still missing.",
+      "assertions": ["Keeps runtime_verified false for the offline helper", "Does not claim live plugin execution or reproduce v1 A/B gains as its own results"]
+    },
+    {
+      "id": 8,
+      "prompt": "Run google-research/harness2's local demo, then budget a LAB benchmark.",
+      "expected_output": "Route to harness2 and preserve its benchmark-specific approvals, not the revfactory plugin.",
+      "assertions": ["Routes to harness2", "Does not install revfactory/harness or restore the retired catalog harness directory"]
+    },
+    {
+      "id": 9,
+      "prompt": "Validate this SKILL.md frontmatter and synchronize its catalog projections; I do not need a team factory.",
+      "expected_output": "Route to skill-standardization for standalone authoring and structural validation.",
+      "assertions": ["Routes to skill-standardization", "Does not register a Claude marketplace or generate agents"]
+    },
+    {
+      "id": 10,
+      "prompt": "Start a Ruflo hive-mind swarm in this repository.",
+      "expected_output": "Route to ruflo for that runtime and its initialization/permission boundaries.",
+      "assertions": ["Routes to ruflo", "Does not treat revfactory-harness as a swarm runtime or harness2 alias"]
+    }
+  ]
+}

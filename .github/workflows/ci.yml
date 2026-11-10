@@ -119,3 +119,5 @@ jobs:
         run: python3 -B scripts/test_five_github_programs.py -v
       - name: AI-DLC workflows operator offline contracts
         run: python3 -B scripts/test_aidlc_workflows.py -v
+      - name: Revfactory Harness operator offline contracts
+        run: python3 -B scripts/test_revfactory_harness.py -v

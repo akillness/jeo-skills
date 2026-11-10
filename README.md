@@ -361,7 +361,7 @@ node ~/.agents/jev/jev-harness.mjs --profile "${JEV_PROFILE:?Select the current 
 
 ## 📚 Skills List
 
-> Generated from `.agent-skills/skills.json` · 426 skills · expand a category to see its skills.
+> Generated from `.agent-skills/skills.json` · 427 skills · expand a category to see its skills.
 
 ### 🌐 Web (71)
 
@@ -634,9 +634,9 @@ Subcategories: `developer-cli` (12), `ai-cli` (15), `media-cli` (1), `automation
 
 </details>
 
-### 🤖 AI & Agents (76)
+### 🤖 AI & Agents (77)
 
-Subcategories: `orchestration` (17), `agent-frameworks` (20), `skill-authoring` (5), `evaluation` (8), `memory` (7), `planning-review` (13), `discovery` (3), `prompting` (3)
+Subcategories: `orchestration` (18), `agent-frameworks` (20), `skill-authoring` (5), `evaluation` (8), `memory` (7), `planning-review` (13), `discovery` (3), `prompting` (3)
 
 <details>
 <summary>Show AI &amp; Agents skills</summary>
@@ -719,6 +719,7 @@ Subcategories: `orchestration` (17), `agent-frameworks` (20), `skill-authoring` 
 | `agent-beacon` |
 | `agent-s` |
 | `aidlc-workflows` |
+| `revfactory-harness` |
 
 </details>
 
@@ -937,6 +938,17 @@ Edit metadata in `skills.json`, never in the generated tables. Upstream sources 
 |---|---|
 | [jeo-code](https://github.com/akillness/jeo-code) | Coding agent that loads skills from the shared root |
 | [gajae-code (GJC)](https://github.com/akillness/gajae-code) | Agent runtime with its own native skills root |
+
+## Revfactory Harness team factory
+
+[`revfactory-harness`](.agent-skills/revfactory-harness/SKILL.md) adds a source-pinned
+operator for [revfactory/harness v2.1.0](https://github.com/revfactory/harness/tree/92d9f1b29e7af81acebf51a9fcd1832e739a1414):
+Claude Code team/skill generation, three capability-gated execution modes, v1 migration,
+and evidence-based `/harness:evolve`. Install with
+`jeo-skill install revfactory-harness --global --yes`; this copies the guide and offline
+helper, **not** the upstream plugin. The helper verifies 18 pinned public-file hashes
+and reports `runtime_verified: false`. See the [setup boundary](setup-all-skills-prompt.md#revfactory-harness-team-architecture-factory-on-demand).
+This is not `harness2`; the retired catalog name `harness` is not restored.
 
 ---
 

@@ -373,7 +373,7 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 
 ## 📚 스킬 목록
 
-> `.agent-skills/skills.json`에서 생성 · 426개 스킬 · 카테고리를 펼치면 스킬 목록이 보입니다.
+> `.agent-skills/skills.json`에서 생성 · 427개 스킬 · 카테고리를 펼치면 스킬 목록이 보입니다.
 
 ### 🌐 웹 (71개)
 
@@ -646,9 +646,9 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 
 </details>
 
-### 🤖 AI 및 에이전트 (76개)
+### 🤖 AI 및 에이전트 (77개)
 
-하위 분류: `orchestration` (17), `agent-frameworks` (20), `skill-authoring` (5), `evaluation` (8), `memory` (7), `planning-review` (13), `discovery` (3), `prompting` (3)
+하위 분류: `orchestration` (18), `agent-frameworks` (20), `skill-authoring` (5), `evaluation` (8), `memory` (7), `planning-review` (13), `discovery` (3), `prompting` (3)
 
 <details>
 <summary>스킬 보기</summary>
@@ -731,6 +731,7 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 | `agent-beacon` |
 | `agent-s` |
 | `aidlc-workflows` |
+| `revfactory-harness` |
 
 </details>
 
@@ -949,6 +950,17 @@ python3 scripts/changelog.py check
 |---|---|
 | [jeo-code](https://github.com/akillness/jeo-code) | 공유 루트에서 스킬을 로드하는 코딩 에이전트 |
 | [gajae-code (GJC)](https://github.com/akillness/gajae-code) | 자체 네이티브 스킬 루트를 사용하는 에이전트 런타임 |
+
+## Revfactory Harness 팀 아키텍처 팩토리
+
+[`revfactory-harness`](.agent-skills/revfactory-harness/SKILL.md)는
+[revfactory/harness v2.1.0](https://github.com/revfactory/harness/tree/92d9f1b29e7af81acebf51a9fcd1832e739a1414)에
+고정된 운영 스킬입니다. Claude Code 팀·스킬 생성, 실제 호스트 도구를 확인한 실행 모드 선택,
+v1 마이그레이션, 실행 근거에 따른 `/harness:evolve`를 안내합니다.
+`jeo-skill install revfactory-harness --global --yes`는 가이드와 오프라인 점검 도구만 복사하며
+업스트림 플러그인을 활성화하지 않습니다. 헬퍼는 공개 파일 18개의 해시를 검증하지만
+`runtime_verified: false`를 유지합니다. [설치·승인 경계](setup-all-skills-prompt.md#revfactory-harness-team-architecture-factory-on-demand)를
+확인하세요. 기존 `harness2`와 별개이며, 은퇴된 카탈로그 이름 `harness`를 복원하지 않습니다.
 
 ---
 

@@ -1,0 +1,19 @@
+N:revfactory-harness
+D:Operate revfactory/harness's Claude Code team-architecture factory and evolve plugin; not google-research/harness2 or the retired catalog harness name
+U[4]:
+  Inspect or install harness@harness-marketplace from an audited checkout
+  Audit a project and construct a small domain-specific team with one orchestrator
+  Migrate legacy artifacts only after checking actual replacement APIs
+  Evolve an existing team from real feedback and before-after evidence
+S[5]{n,action,details}:
+  1,Offline gate,Run scripts/preflight.py --json with optional --repo --expect-commit and --project
+  2,Select operation,Choose plugin setup factory extension maintenance migration or evolve
+  3,Verify capabilities,Check actual Claude tools model aliases authentication budget and supported mode
+  4,Gate side effects,Catalog copy is not plugin activation; preserve foreign harness and shared-root paths
+  5,Prove behavior,Check contracts and scoped execution; offline readiness always has runtime_verified false
+R[5]:
+  Pin 92d9f1b29e7af81acebf51a9fcd1832e739a1414 and verify 18 public-file hashes
+  Never assume Workflow Agent(name:) SendMessage or fable exists on this host
+  Plugin /harness:evolve and direct-copy /harness-evolve are different invocation surfaces
+  Failed missing and uncertain results are unresolved rather than passed
+  Route generic optimization to harness2 standalone skill work to skill-standardization and swarms to ruflo

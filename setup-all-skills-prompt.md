@@ -3341,6 +3341,45 @@ python3 "$SKILLS_ROOT/harness2/scripts/preflight.py" --bench lab --json \
 harness2, uv, gcloud, Docker, or the network. All six helpers share the JSON/exit
 contract above (`runtime_verified: false`; 0 ok, 1 blocked, 2 invalid input).
 
+### Revfactory Harness team-architecture factory (on demand)
+
+`revfactory-harness` operates [revfactory/harness v2.1.0](https://github.com/revfactory/harness/tree/92d9f1b29e7af81acebf51a9fcd1832e739a1414),
+pinned to `92d9f1b29e7af81acebf51a9fcd1832e739a1414` (Apache-2.0). It is distinct from
+`google-research/harness2`: the catalog name `harness` stays retired in favor of
+`harness2`, while the upstream Claude plugin still calls itself `harness`.
+
+Install the operator documents and offline helper through the shared-root router:
+
+```bash
+python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" install revfactory-harness --global --dry-run
+python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" install revfactory-harness --global --yes
+python3 "$SKILLS_ROOT/revfactory-harness/scripts/preflight.py" --json
+# Optional existing checkout and target-project inspection; no model or network call:
+python3 "$SKILLS_ROOT/revfactory-harness/scripts/preflight.py" --json \
+  --repo /path/to/harness --expect-commit 92d9f1b29e7af81acebf51a9fcd1832e739a1414 \
+  --project /path/to/project
+```
+
+Blanket setup must not clone upstream, add a marketplace, install/enable its plugin,
+copy into `.claude/skills/harness` or `harness-evolve`, generate agents, rewrite
+`CLAUDE.md`, or launch paid agent runs. Catalog installation is **not** plugin activation.
+On symlinked hosts, refresh the shared root only; preserve all foreign skill names.
+
+For an explicitly requested upstream installation, follow the approved pinned-checkout
+and local-marketplace procedure in the [operator reference](.agent-skills/revfactory-harness/references/upstream.md).
+Inside Claude Code, use `/plugin marketplace add /absolute/path/to/verified/harness`,
+then `/plugin install harness@harness-marketplace` and `/plugin list`; verify actual
+loading before using the factory or `/harness:evolve`. Direct-copy `/harness-evolve`
+is an alternative mode, not something to install alongside the plugin.
+
+The helper checks Python 3.10+, Claude presence without executing it, optional Git
+identity and all 18 public-file hashes, and optional destination types/collisions.
+Exit 0 means offline checks passed (warnings may remain), 1 means blocked, 2 means
+invalid input/manifest; `runtime_verified` is always `false`. Confirm the actual host
+exposes `Workflow`, named agents, messaging/task APIs, and any selected model alias
+before executing that mode. Upstream descriptions do not prove those capabilities;
+missing tools are reported as blocked, not silently emulated.
+
 ### Image-to-GitHub resolver (on demand, read-only network)
 
 The `image-to-github-repo` skill installs as documents plus one stdlib-only Python script
