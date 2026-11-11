@@ -21,6 +21,10 @@
 
 ---
 
+## License and attribution
+
+Project-authored material is available under the [MIT License](LICENSE). When distributing copies or substantial portions, retain its copyright and permission notices. Third-party components may have different terms; see [upstream sources and licenses](docs/attribution.md) and their own license and notice files.
+
 ## ✨ At a glance
 
 | Area | What you get |

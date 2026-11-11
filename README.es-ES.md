@@ -21,6 +21,10 @@
 
 ---
 
+## Licencia y atribución
+
+El material creado por el proyecto se distribuye bajo la [licencia MIT](LICENSE). Al distribuir copias o partes sustanciales, conserva los avisos de copyright y permiso. Los componentes de terceros pueden tener otras condiciones; consulta las [fuentes y licencias originales](docs/attribution.md) y sus archivos de licencia y avisos.
+
 ## ✨ A primera vista
 
 | Área | Qué ofrece |

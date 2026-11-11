@@ -2,6 +2,8 @@
 
 Skills in this catalog that adapt, wrap or operate another project credit it here. License values describe the upstream project as recorded when the skill was added; a skill folder never vendors upstream runtimes unless its own `SKILL.md` says so. Check the upstream repository for its current terms before redistributing.
 
+The root [MIT License](../LICENSE) applies to project-authored material. Third-party material retains its applicable upstream terms and notices; the root license does not replace them.
+
 | Component | Source | License |
 |-----------|--------|---------|
 | `ooo` | [Q00/ouroboros v0.29.0](https://github.com/Q00/ouroboros/tree/v0.29.0) | MIT |
