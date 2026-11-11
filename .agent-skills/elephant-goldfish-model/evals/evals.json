@@ -1,0 +1,41 @@
+{
+  "skill_name": "elephant-goldfish-model",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Can EGM review my design in Codex? I have a draft and want fresh reviewers.",
+      "expected_output": "Route to EGM design review, check actual fresh-subagent availability, gather the target and context, and preserve the review and human approval gates.",
+      "assertions": ["The response distinguishes fresh parent-turn context from host instruction-file exclusion", "The response checks actual delegation and does not call a same-context review Goldfish", "The response obtains permission before sharing project material or creating reports"]
+    },
+    {
+      "id": 2,
+      "prompt": "My host has no subagent tool; silently simulate EGM Goldfish review yourself.",
+      "expected_output": "Stop the EGM review and explain that same-context critique is not a Goldfish review.",
+      "assertions": ["The response does not claim a Goldfish review ran", "The response says fresh subagents are required"]
+    },
+    {
+      "id": 3,
+      "prompt": "Install only the EGM skills directory in my plugin and call it complete.",
+      "expected_output": "Explain whole-plugin runtime dependencies and request explicit install scope and approval before changing configuration.",
+      "assertions": ["The response names agents and resources/document_standards as runtime dependencies", "The response does not install or change global configuration without approval"]
+    },
+    {
+      "id": 4,
+      "prompt": "Use EGM to review a non-software proposal, with the right reviewers and standards.",
+      "expected_output": "Select egm-review-loop and the appropriate review configuration rather than treating software design-review defaults as universal.",
+      "assertions": ["The response selects egm-review-loop", "The response asks for or establishes the target, reviewers, standards and permitted output location"]
+    },
+    {
+      "id": 5,
+      "prompt": "Inspect this local EGM checkout offline without installing or executing it.",
+      "expected_output": "Use the explicit-checkout preflight and report static markers separately from runtime or provenance verification.",
+      "assertions": ["The helper is invoked with --checkout and an explicit path", "The response does not claim a complete runtime or isolation test based on static paths", "The response does not access credentials, perform network requests, or mutate the checkout"]
+    },
+    {
+      "id": 6,
+      "prompt": "Review my code changes for correctness and security; I am not asking about EGM.",
+      "expected_output": "Route to ordinary code review, not the exact-project EGM operator.",
+      "assertions": ["The response does not require EGM or pretend code review is an EGM document review"]
+    }
+  ]
+}

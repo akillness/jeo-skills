@@ -1,7 +1,7 @@
 {
   "version": "2.1.0",
   "generated": "2026-10-21",
-  "skill_count": 427,
+  "skill_count": 428,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -426,7 +426,8 @@
       "agent-beacon",
       "agent-s",
       "aidlc-workflows",
-      "revfactory-harness"
+      "revfactory-harness",
+      "elephant-goldfish-model"
     ],
     "engineering": [
       "audit-reference-originality",
@@ -906,7 +907,8 @@
         "jev-ultrafast",
         "ruflo",
         "aidlc-workflows",
-        "revfactory-harness"
+        "revfactory-harness",
+        "elephant-goldfish-model"
       ],
       "agent-frameworks": [
         "microsoft-agent-framework",
@@ -15804,6 +15806,27 @@
       "keyword": "revfactory-harness",
       "version": "1.0.0",
       "source": "https://github.com/revfactory/harness"
+    },
+    {
+      "name": "elephant-goldfish-model",
+      "description": "Operate google/elephant-goldfish-model (EGM), the design-with-an-elephant and fresh-context Goldfish review plugin. Use when the user names EGM, its brainstorm, draft, review, resolve, review-loop, bootstrap or drift-report skills, or asks about its harness support, whole-plugin installation, reviewer isolation or workflow. Distinguish actual fresh subagents from same-context critique and preserve human approval and installation boundaries.",
+      "category": "ai-agents",
+      "subcategory": "orchestration",
+      "interface": "workflow",
+      "path": "elephant-goldfish-model/SKILL.md",
+      "tags": [
+        "elephant-goldfish-model",
+        "egm",
+        "design-review",
+        "fresh-context",
+        "multi-agent",
+        "workflow"
+      ],
+      "platforms": [],
+      "allowed_tools": [],
+      "keyword": "elephant-goldfish-model",
+      "version": "1.0.0",
+      "source": "https://github.com/google/elephant-goldfish-model"
     }
   ]
 }

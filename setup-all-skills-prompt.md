@@ -3380,6 +3380,30 @@ exposes `Workflow`, named agents, messaging/task APIs, and any selected model al
 before executing that mode. Upstream descriptions do not prove those capabilities;
 missing tools are reported as blocked, not silently emulated.
 
+### Elephant-Goldfish Model (on demand)
+
+[`elephant-goldfish-model`](.agent-skills/elephant-goldfish-model/SKILL.md) guides
+the [google/elephant-goldfish-model](https://github.com/google/elephant-goldfish-model)
+design and fresh-context review workflow. Installing the catalog skill only copies its
+operator guidance; it does not install or activate the upstream plugin. Inspect its
+source and host support before choosing a whole-plugin installation, and obtain explicit
+approval before installation, configuration changes, or paid model execution.
+
+The operator snapshot is pinned to `67353fc4374383f69e61a6f375891e9797c82066`.
+Inspect an existing checkout without installing or running the upstream plugin:
+
+```bash
+python3 "$SKILLS_ROOT/elephant-goldfish-model/scripts/preflight.py" --checkout /path/to/checkout --json
+```
+
+The upstream plugin requires its agents and `resources/document_standards` as well as
+the skills; copying individual skills is not equivalent to installing the whole plugin.
+Host capabilities vary, so consult the operator guide before claiming fresh-review support.
+
+Use genuinely fresh, isolated subagents for Goldfish reviews when the host supports them;
+same-context critique is not equivalent. Keep design and resolution decisions with the
+human operator and report unsupported or unverified runtime behavior plainly.
+
 ### Image-to-GitHub resolver (on demand, read-only network)
 
 The `image-to-github-repo` skill installs as documents plus one stdlib-only Python script

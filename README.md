@@ -361,7 +361,7 @@ node ~/.agents/jev/jev-harness.mjs --profile "${JEV_PROFILE:?Select the current 
 
 ## 📚 Skills List
 
-> Generated from `.agent-skills/skills.json` · 427 skills · expand a category to see its skills.
+> Generated from `.agent-skills/skills.json` · 428 skills · expand a category to see its skills.
 
 ### 🌐 Web (71)
 
@@ -634,9 +634,9 @@ Subcategories: `developer-cli` (12), `ai-cli` (15), `media-cli` (1), `automation
 
 </details>
 
-### 🤖 AI & Agents (77)
+### 🤖 AI & Agents (78)
 
-Subcategories: `orchestration` (18), `agent-frameworks` (20), `skill-authoring` (5), `evaluation` (8), `memory` (7), `planning-review` (13), `discovery` (3), `prompting` (3)
+Subcategories: `orchestration` (19), `agent-frameworks` (20), `skill-authoring` (5), `evaluation` (8), `memory` (7), `planning-review` (13), `discovery` (3), `prompting` (3)
 
 <details>
 <summary>Show AI &amp; Agents skills</summary>
@@ -720,6 +720,7 @@ Subcategories: `orchestration` (18), `agent-frameworks` (20), `skill-authoring` 
 | `agent-s` |
 | `aidlc-workflows` |
 | `revfactory-harness` |
+| `elephant-goldfish-model` |
 
 </details>
 
@@ -949,6 +950,14 @@ and evidence-based `/harness:evolve`. Install with
 helper, **not** the upstream plugin. The helper verifies 18 pinned public-file hashes
 and reports `runtime_verified: false`. See the [setup boundary](setup-all-skills-prompt.md#revfactory-harness-team-architecture-factory-on-demand).
 This is not `harness2`; the retired catalog name `harness` is not restored.
+
+## Elephant-Goldfish Model
+
+[`elephant-goldfish-model`](.agent-skills/elephant-goldfish-model/SKILL.md) guides the
+[Google Elephant-Goldfish Model](https://github.com/google/elephant-goldfish-model) design and review workflow.
+Installing this catalog skill does not activate the upstream plugin. Fresh-context review
+requires actual isolated subagents; preserve human approval and installation boundaries.
+See the [setup boundary](setup-all-skills-prompt.md#elephant-goldfish-model-on-demand).
 
 ---
 

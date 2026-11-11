@@ -373,7 +373,7 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 
 ## 📚 스킬 목록
 
-> `.agent-skills/skills.json`에서 생성 · 427개 스킬 · 카테고리를 펼치면 스킬 목록이 보입니다.
+> `.agent-skills/skills.json`에서 생성 · 428개 스킬 · 카테고리를 펼치면 스킬 목록이 보입니다.
 
 ### 🌐 웹 (71개)
 
@@ -646,9 +646,9 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 
 </details>
 
-### 🤖 AI 및 에이전트 (77개)
+### 🤖 AI 및 에이전트 (78개)
 
-하위 분류: `orchestration` (18), `agent-frameworks` (20), `skill-authoring` (5), `evaluation` (8), `memory` (7), `planning-review` (13), `discovery` (3), `prompting` (3)
+하위 분류: `orchestration` (19), `agent-frameworks` (20), `skill-authoring` (5), `evaluation` (8), `memory` (7), `planning-review` (13), `discovery` (3), `prompting` (3)
 
 <details>
 <summary>스킬 보기</summary>
@@ -732,6 +732,7 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 | `agent-s` |
 | `aidlc-workflows` |
 | `revfactory-harness` |
+| `elephant-goldfish-model` |
 
 </details>
 
@@ -961,6 +962,14 @@ v1 마이그레이션, 실행 근거에 따른 `/harness:evolve`를 안내합니
 업스트림 플러그인을 활성화하지 않습니다. 헬퍼는 공개 파일 18개의 해시를 검증하지만
 `runtime_verified: false`를 유지합니다. [설치·승인 경계](setup-all-skills-prompt.md#revfactory-harness-team-architecture-factory-on-demand)를
 확인하세요. 기존 `harness2`와 별개이며, 은퇴된 카탈로그 이름 `harness`를 복원하지 않습니다.
+
+## Elephant-Goldfish Model
+
+[`elephant-goldfish-model`](.agent-skills/elephant-goldfish-model/SKILL.md)은
+[Google Elephant-Goldfish Model](https://github.com/google/elephant-goldfish-model)의 설계·검토 흐름을 안내합니다.
+카탈로그 스킬 설치만으로 업스트림 플러그인이 활성화되지는 않습니다. 새로운 컨텍스트의 검토에는
+실제로 격리된 서브에이전트가 필요하며, 사람의 승인과 설치 경계를 지켜야 합니다.
+[설치 경계](setup-all-skills-prompt.md#elephant-goldfish-model-on-demand)를 확인하세요.
 
 ---
 

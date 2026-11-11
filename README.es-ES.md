@@ -307,7 +307,7 @@ Consulta la [guía de instalación](setup-all-skills-prompt.md#jev-control-plane
 
 ## 📚 Lista de Habilidades
 
-> Generado desde `.agent-skills/skills.json` · 427 habilidades · despliega una categoría para ver sus habilidades.
+> Generado desde `.agent-skills/skills.json` · 428 habilidades · despliega una categoría para ver sus habilidades.
 
 ### 🌐 Web (71)
 
@@ -580,9 +580,9 @@ Subcategorías: `developer-cli` (12), `ai-cli` (15), `media-cli` (1), `automatio
 
 </details>
 
-### 🤖 IA y Agentes (77)
+### 🤖 IA y Agentes (78)
 
-Subcategorías: `orchestration` (18), `agent-frameworks` (20), `skill-authoring` (5), `evaluation` (8), `memory` (7), `planning-review` (13), `discovery` (3), `prompting` (3)
+Subcategorías: `orchestration` (19), `agent-frameworks` (20), `skill-authoring` (5), `evaluation` (8), `memory` (7), `planning-review` (13), `discovery` (3), `prompting` (3)
 
 <details>
 <summary>Ver habilidades</summary>
@@ -666,6 +666,7 @@ Subcategorías: `orchestration` (18), `agent-frameworks` (20), `skill-authoring`
 | `agent-s` |
 | `aidlc-workflows` |
 | `revfactory-harness` |
+| `elephant-goldfish-model` |
 
 </details>
 
@@ -895,6 +896,14 @@ reales del host, migración de v1 y evolución con `/harness:evolve` basada en e
 no activa el plugin upstream. La preflight verifica hashes de 18 archivos públicos y
 mantiene `runtime_verified: false`. Consulta los [límites de instalación](setup-all-skills-prompt.md#revfactory-harness-team-architecture-factory-on-demand).
 Es distinto de `harness2`; el nombre retirado `harness` no se restaura.
+
+## Elephant-Goldfish Model
+
+[`elephant-goldfish-model`](.agent-skills/elephant-goldfish-model/SKILL.md) guía el flujo
+de diseño y revisión de [Google Elephant-Goldfish Model](https://github.com/google/elephant-goldfish-model).
+Instalar esta habilidad del catálogo no activa el plugin original. La revisión con contexto
+nuevo requiere subagentes realmente aislados; respeta los límites de aprobación e instalación.
+Consulta los [límites de instalación](setup-all-skills-prompt.md#elephant-goldfish-model-on-demand).
 
 ---
 
