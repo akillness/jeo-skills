@@ -1,7 +1,7 @@
 import test, { after } from 'node:test';
 import assert from 'node:assert/strict';
 import { spawn, spawnSync } from 'node:child_process';
-import { chmodSync, copyFileSync, existsSync, lstatSync, mkdtempSync, mkdirSync, readFileSync, readdirSync, rmSync, statSync, symlinkSync, writeFileSync } from 'node:fs';
+import { chmodSync, copyFileSync, existsSync, lstatSync, mkdtempSync, mkdirSync, readFileSync, readdirSync, rmSync, statSync, symlinkSync, unlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -394,7 +394,7 @@ const foreignHooks = () => ({
 });
 const jevEntries = config => ({ prompt: config.hooks.beforeSubmitPrompt.filter(item => item.command.includes('jev-cursor-adapter.mjs')), tool: config.hooks.preToolUse.filter(item => item.command.includes('jev-cursor-adapter.mjs')) });
 
-test('hooks-install preview writes nothing, apply adds exactly the two entries and keeps everything else', () => {
+test('hooks-install preview writes nothing, apply adds exactly the two entries and keeps everything else', async () => {
   const f = fixture();
   write(f.hooksPath, `${JSON.stringify(foreignHooks(), null, 2)}\n`, 0o644);
   const before = readFileSync(f.hooksPath, 'utf8');
@@ -423,6 +423,8 @@ test('hooks-install preview writes nothing, apply adds exactly the two entries a
   assert.equal(mine.tool[0].matcher, '^(?:Shell|WriteShellStdin|Write|Delete)$');
   assert.ok(new RegExp(mine.tool[0].matcher).test('Shell') && !new RegExp(mine.tool[0].matcher).test('MCP:Delete_file'), 'the default matcher must not catch other tools');
   assert.match(mine.prompt[0].command, /^'.+' '.+jev-cursor-adapter\.mjs' '--event' 'beforeSubmitPrompt' '--profile' 'cursor-test'$/);
+  const { installNode } = await import(pathToFileURL(join(here, 'jev-plugin.mjs')).href);
+  assert.ok(mine.prompt[0].command.startsWith(`'${installNode().node}' `), 'the command must name the Node that installNode picks');
   assert.equal(statSync(f.hooksPath).mode & 0o777, 0o600);
   assert.equal(applied.limitations.some(item => /not been observed/.test(item)), true, 'the install result must state that live Cursor execution is unverified');
 });
@@ -629,4 +631,89 @@ test('the optional log holds metadata only and no prompt or tool text', () => {
   const quiet = fixture();
   quiet.hook('beforeSubmitPrompt', prompt());
   assert.deepEqual(readdirSync(quiet.root).filter(name => name.endsWith('.log')), []);
+});
+
+test('installNode names the Homebrew link that survives upgrades and warns about versioned paths', async () => {
+  const { installNode } = await import(pathToFileURL(join(here, 'jev-plugin.mjs')).href);
+  const prefix = mkdtempSync(join(tmpdir(), 'jev-brew-'));
+  roots.push(prefix);
+  const makeNode = (formula, version) => {
+    const bin = join(prefix, 'Cellar', formula, version, 'bin');
+    mkdirSync(bin, { recursive: true });
+    const file = join(bin, 'node');
+    writeFileSync(file, `#!/bin/sh\n# ${formula} ${version}\n`, { mode: 0o755 });
+    return file;
+  };
+  const v1 = makeNode('node', '1.0.0');
+  const v2 = makeNode('node', '2.0.0');
+  mkdirSync(join(prefix, 'bin'), { recursive: true });
+
+  // No link at all: the versioned path stays, with a warning that names it.
+  let result = installNode(v1);
+  assert.equal(result.node, v1);
+  assert.equal(result.warnings.length, 1);
+  assert.ok(result.warnings[0].startsWith(v1));
+
+  // The link points at the running binary: it is used, silently.
+  symlinkSync(v1, join(prefix, 'bin', 'node'));
+  result = installNode(v1);
+  assert.equal(result.node, join(prefix, 'bin', 'node'));
+  assert.deepEqual(result.warnings, []);
+
+  // The link points at another version, so it is not the running binary and must not be named.
+  result = installNode(v2);
+  assert.equal(result.node, v2);
+  assert.equal(result.warnings.length, 1);
+
+  // A versioned formula has an opt link of its own, while bin/node belongs to another formula.
+  const v22 = makeNode('node@22', '22.1.0');
+  mkdirSync(join(prefix, 'opt'), { recursive: true });
+  symlinkSync(join(prefix, 'Cellar', 'node@22', '22.1.0'), join(prefix, 'opt', 'node@22'));
+  result = installNode(v22);
+  assert.equal(result.node, join(prefix, 'opt', 'node@22', 'bin', 'node'));
+  assert.deepEqual(result.warnings, []);
+
+  // Version managers have no stable alias to offer.
+  for (const path of ['/Users/me/.nvm/versions/node/v22.1.0/bin/node', '/Users/me/.fnm/node-versions/v22/installation/bin/node', '/Users/me/.volta/tools/image/node/22.1.0/bin/node']) {
+    const managed = installNode(path);
+    assert.equal(managed.node, path);
+    assert.equal(managed.warnings.length, 1, path);
+    assert.ok(managed.warnings[0].startsWith(path));
+  }
+  for (const path of ['/usr/local/bin/node', '/opt/homebrew/bin/node', '/usr/bin/node']) assert.deepEqual(installNode(path), { node: path, warnings: [] }, path);
+});
+
+test('hooks-install writes the Homebrew link, not the versioned Cellar path, into hooks.json', () => {
+  const f = fixture();
+  const prefix = join(f.root, 'brew');
+  const cellarNode = join(prefix, 'Cellar', 'node', '9.9.9', 'bin', 'node');
+  mkdirSync(dirname(cellarNode), { recursive: true });
+  writeFileSync(cellarNode, '#!/bin/sh\n', { mode: 0o755 });
+  mkdirSync(join(prefix, 'bin'), { recursive: true });
+  const link = join(prefix, 'bin', 'node');
+  symlinkSync(cellarNode, link);
+  // The controller reads process.execPath; a preload lets the test choose it without a second Node binary.
+  const preload = join(f.root, 'set-exec-path.mjs');
+  write(preload, `process.execPath = ${JSON.stringify(cellarNode)};\n`);
+  const install = () => spawnSync(process.execPath, ['--import', pathToFileURL(preload).href, f.controller, 'hooks-install', '--agent', 'cursor', '--profile', PROFILE, '--apply'], { cwd: f.root, env: f.env, encoding: 'utf8', timeout: 30_000 });
+  const commands = () => {
+    const config = JSON.parse(readFileSync(f.hooksPath, 'utf8'));
+    return [...jevEntries(config).prompt, ...jevEntries(config).tool].map(entry => entry.command);
+  };
+
+  let result = install();
+  assert.equal(result.status, 0, `${result.stdout}\n${result.stderr}`);
+  assert.equal(JSON.parse(result.stdout).warnings, undefined, 'the link survives upgrades, so there is nothing to warn about');
+  assert.equal(commands().length, 2);
+  for (const command of commands()) assert.ok(command.startsWith(`'${link}' `), command);
+  assert.ok(!readFileSync(f.hooksPath, 'utf8').includes('Cellar'));
+
+  // Without the link only the versioned path is left: it is written, and the result says why that is fragile.
+  unlinkSync(link);
+  result = install();
+  assert.equal(result.status, 0, `${result.stdout}\n${result.stderr}`);
+  const warnings = JSON.parse(result.stdout).warnings;
+  assert.equal(warnings.length, 1);
+  assert.ok(warnings[0].startsWith(cellarNode));
+  for (const command of commands()) assert.ok(command.startsWith(`'${cellarNode}' `), command);
 });

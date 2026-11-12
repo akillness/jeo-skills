@@ -1282,6 +1282,24 @@ async function hook(flags, suppliedEvent) {
 
 function shellQuote(value) { return `'${String(value).replaceAll("'", "'\"'\"'")}'`; }
 
+// Homebrew installs node under <prefix>/Cellar/<formula>/<version>/bin. That versioned path disappears on the next
+// upgrade, while <prefix>/bin/node (the main formula) and <prefix>/opt/<formula>/bin/node (any formula) keep pointing at
+// the current version, so name one of those when it resolves to the very same binary.
+// nvm, fnm and Volta have no such alias: hooks that name one of their versions stop working when it is removed.
+export function installNode(execPath = process.execPath) {
+  let node = execPath;
+  const brew = /^(.*)\/Cellar\/([^/]+)\/[^/]+\/bin\/node$/.exec(execPath);
+  if (brew) {
+    for (const alias of [`${brew[1]}/bin/node`, `${brew[1]}/opt/${brew[2]}/bin/node`]) {
+      try { if (realpathSync(alias) === realpathSync(execPath)) { node = alias; break; } } catch { /* try the next one */ }
+    }
+  }
+  const warnings = /\/Cellar\/|\/\.nvm\/versions\/|\/\.fnm\/|\/\.volta\//.test(node)
+    ? [`${node} is a version-specific Node path, so the hooks stop working when that version is removed; run hooks-install under a Node whose path survives upgrades, such as a system install or a Homebrew link`]
+    : [];
+  return { node, warnings };
+}
+
 function renderManagedExtension(agent, profile, matcher) {
   const pluginIndex = join(HERE, 'plugins', agent, 'index.mjs');
   const controller = join(HERE, 'jev-plugin.mjs');
@@ -1415,7 +1433,8 @@ async function hooksInstall(flags) {
     const cursorMatcher = flags.matcher || ctx.state.values.JEV_PRETOOL_MATCHER || DEFAULT_CURSOR_MATCHER;
     // Cursor drops a hooks file whose matcher is not a valid regular expression, and with it every other hook in it.
     try { new RegExp(cursorMatcher); } catch { throw new Error('matcher must be a valid regular expression'); }
-    const runner = event => [process.execPath, adapter, '--event', event, '--profile', ctx.profile].map(shellQuote).join(' ');
+    const { node, warnings } = installNode();
+    const runner = event => [node, adapter, '--event', event, '--profile', ctx.profile].map(shellQuote).join(' ');
     const entries = {
       beforeSubmitPrompt: { command: runner('beforeSubmitPrompt'), timeout: CURSOR_HOOK_TIMEOUT_SECONDS },
       preToolUse: { command: runner('preToolUse'), matcher: cursorMatcher, timeout: CURSOR_HOOK_TIMEOUT_SECONDS },
@@ -1439,9 +1458,6 @@ async function hooksInstall(flags) {
     const changed = text !== existing;
     const wrote = Boolean(flags.apply && changed);
     if (wrote) atomicWrite(path, text);
-    const warnings = /\/Cellar\/|\/\.nvm\/versions\/|\/\.fnm\/|\/\.volta\//.test(process.execPath)
-      ? [`${process.execPath} is a version-specific Node path and the hooks stop working when that version is removed; re-run hooks-install with a stable Node such as /opt/homebrew/bin/node`]
-      : [];
     return {
       ...common('hooks-install', ctx, wrote, ctx.state.enabled),
       path,
