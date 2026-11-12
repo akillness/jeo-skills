@@ -42,6 +42,7 @@ SKILLS = (
     "diagram-design",
     "artcraft",
     "craft-anything",
+    "connectonion",
 )
 
 
@@ -97,6 +98,8 @@ PUBLIC_MARKERS = (
     "v3/@claude-flow/cli/package.json", "v3/@claude-flow/cli/src/commands/init.ts",
     "v3/@claude-flow/cli/src/commands/memory.ts", "v3/@claude-flow/cli/src/commands/swarm.ts",
     "apps/craft-anything-cli/Cargo.toml", "crates/setup/src/skill.md",
+    "install.sh", "connectonion/__init__.py", "connectonion/_version.py",
+    "connectonion/cli/__init__.py",
 )
 
 # Names are deliberately broad: a correct helper may inspect their presence,
@@ -110,7 +113,7 @@ TRAPPED_TOOLS = (
     "docker-compose", "bash", "openssl", "python", "python3",
     "browser-harness", "google-chrome", "chromium", "chromium-browser", "chrome",
     "claude", "curl", "ffmpeg", "gcloud", "pandoc", "pdftoppm",
-    "craft-anything-cli",
+    "craft-anything-cli", "co", "pip", "pip3", "codex",
 )
 
 

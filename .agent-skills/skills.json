@@ -1,7 +1,7 @@
 {
   "version": "2.1.0",
   "generated": "2026-10-21",
-  "skill_count": 428,
+  "skill_count": 429,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -347,7 +347,8 @@
       "leann",
       "google-maps-scraper",
       "gitingest",
-      "craft-anything"
+      "craft-anything",
+      "connectonion"
     ],
     "ai-agents": [
       "bmad",
@@ -872,7 +873,8 @@
         "okf",
         "rtk",
         "tokhub",
-        "google-maps-scraper"
+        "google-maps-scraper",
+        "connectonion"
       ],
       "search-cli": [
         "scrapling",
@@ -15827,6 +15829,44 @@
       "keyword": "elephant-goldfish-model",
       "version": "1.0.0",
       "source": "https://github.com/google/elephant-goldfish-model"
+    },
+    {
+      "name": "connectonion",
+      "description": "Operate openonion/connectonion, the Apache-2.0 Python agent CLI harness whose single `co` command gives an AI agent accounts and tools: Gmail, Outlook, Google Calendar/Drive, YouTube, Slack, Discord, Telegram, WhatsApp, Linear, Canny, a logged-in Chrome (`co browser`), web search/fetch, MCP connectors as commands (`co mcp`), skills indexing (`co skills`, `co sub`), `co rem` context notebooks, session handoff, remote agents (`co call`, `co host`), and deploys. Use when a user asks to install or diagnose `co` / `pip install connectonion`, discover commands (`co commands`, `co <group> --help`), connect accounts with `co auth`, read or send mail/chat/calendar through `co`, set up or undo `co init` / `co rem`, review `co approvals`, or build a ConnectOnion agent project (`co create`, `co host`, `co deploy`). Keep sends, posts, uploads, deletes, credit spends, `co init`, `co reset`, scheduler installs, `co call`, and trust changes approval-gated. Route generic browser automation to `browser`.",
+      "category": "cli-tools",
+      "subcategory": "automation-cli",
+      "interface": "cli",
+      "path": "connectonion/SKILL.md",
+      "tags": [
+        "connectonion",
+        "co-cli",
+        "agent-cli",
+        "gmail",
+        "outlook",
+        "calendar",
+        "slack",
+        "browser",
+        "mcp",
+        "rem",
+        "skills"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex CLI",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "connectonion",
+      "version": "0.1.0",
+      "source": "https://github.com/openonion/connectonion"
     }
   ]
 }

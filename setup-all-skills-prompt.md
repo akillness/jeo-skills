@@ -2509,6 +2509,33 @@ craft-anything-cli rebuild https://example.com "Recreate this landing page" --ro
 
 Clean room is the default: internal target code, decompilation, and private assets are refused. Deep mode (`--deep` or `settings_set deep_mode true`) requires separate explicit authorization for software you own or are permitted to examine. Do not run `craft-anything-cli setup --yes` over an entry that already carries `--all-tools`, which would drop `--all-tools` and downgrade the tool catalog to core essentials.
 
+### ConnectOnion `co` agent CLI (on demand; accounts, scheduler, and credits)
+
+The `connectonion` skill installs as source-pinned routing documents, references, and one offline helper only. It is pinned to [`openonion/connectonion@90028ca1a3a64f3d74b68bef3c5732860ccd5a83`](https://github.com/openonion/connectonion/tree/90028ca1a3a64f3d74b68bef3c5732860ccd5a83) (v1.9.5, Apache-2.0). Blanket setup must not run the upstream `install.sh` (it pipes a remote script to a shell and finishes with `co init --yes`, which edits `~/.codex` and `~/.claude`, installs skills, may install Codex, opens a browser login, and installs a daily REM scheduler), `pip install connectonion`, `co init`, `co setup`, `co create`, `co auth`, `co rem`, `co reset`, `co call`, or any send/post/upload command.
+When a task explicitly chooses ConnectOnion, preview and apply the skill installation separately:
+
+```bash
+jeo-skill install connectonion --global --dry-run
+jeo-skill install connectonion --global --yes
+```
+
+When a task explicitly asks to use `co`, run the offline gate first, then read-only discovery:
+
+```bash
+# 1. offline host preflight (never runs co, an installer, or the network; reports ~/.co, ~/.codex, ~/.claude existence only)
+python3 "$SKILLS_ROOT/connectonion/scripts/preflight.py" --json
+python3 "$SKILLS_ROOT/connectonion/scripts/preflight.py" --json \
+  --repo /path/to/connectonion --expect-commit 90028ca1a3a64f3d74b68bef3c5732860ccd5a83
+
+# 2. read-only discovery once `co` is installed
+co --version
+co doctor
+co commands | grep -i calendar
+co gmail send --help
+```
+
+`co gmail send` sends immediately without a preview, so show the full draft and wait for approval; commands such as `co canny status`, `co youtube put`, and `co transfer` preview first and apply only with `--yes`/`--confirm`. Never pass `--reveal` or read `~/.co/keys.env`. Prefer a virtualenv `pip install connectonion` (Python 3.11+) over the one-liner when the user only wants the CLI, and use `co init --no-rem` to skip the REM scheduler.
+
 ### Open Generative AI studio (on demand, spends money and installs unsigned binaries)
 
 The `open-generative-ai` skill installs as routing documents plus two read-only helpers.
@@ -3327,10 +3354,11 @@ behavioral evals). Catalog installation copies documents only.
 | [diagram-design](.agent-skills/diagram-design/SKILL.md) | cathrynlavery/diagram-design `f2f4d49ea8d632f17cf196ba26599277a93f767b` (MIT) | Never run its `npx skills add`, marketplace/plugin installers, Playwright/browser or font downloads during setup. The upstream kit installs under the same name `diagram-design`; keep it in a separate root. |
 | [artcraft](.agent-skills/artcraft/SKILL.md) | storytold/artcraft `40e04793b504147de97ba1f0659d3975167524e5` (MIT OR Apache-2.0) | Never run installers, npm/Cargo installs, Tauri builds, provider logins, API-key or cookie setup, model downloads, servers, or paid generation during setup; NOTICE excludes trademarks and some bundled assets. |
 | [craft-anything](.agent-skills/craft-anything/SKILL.md) | storytold/craft-anything `56aa31976b4ff0950e6b34ba020b0a568d2462fa` (MIT OR Apache-2.0) | Requires Rust 1.97+ for source builds, or an installed `craft-anything-cli` or desktop release. Never run installers, Cargo builds, `craft-anything-cli setup --yes`, coding agent rebuilds, provider logins, or live target captures during blanket setup; Clean room is default, Deep mode requires separate authorization. |
+| [connectonion](.agent-skills/connectonion/SKILL.md) | openonion/connectonion `90028ca1a3a64f3d74b68bef3c5732860ccd5a83` (Apache-2.0) | Needs the `co` command (uv one-liner or Python 3.11+ pip). Never run `install.sh`, `co init`, `co auth`, `co rem`, `co reset`, `co call`, or send/post/upload commands during blanket setup; `co init` edits Codex/Claude config and installs a daily scheduler. |
 
 ```bash
 python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" install \
-  harness2 ruflo voicestudio diagram-design artcraft craft-anything --global --dry-run
+  harness2 ruflo voicestudio diagram-design artcraft craft-anything connectonion --global --dry-run
 python3 "$SKILLS_ROOT/harness2/scripts/preflight.py" --json
 python3 "$SKILLS_ROOT/harness2/scripts/preflight.py" --bench lab --json \
   --repo "/path/to/harness2" --expect-commit 1cfe254e8d25b15f37048c3730134686abe60335
@@ -3338,7 +3366,7 @@ python3 "$SKILLS_ROOT/harness2/scripts/preflight.py" --bench lab --json \
 
 `harness2/scripts/preflight.py` adds `--bench demo|method|lab|jb|wb` (default `demo`; `method` needs no tool) and
 `--substrate oc|cx`; it reports `.env` presence without reading it and never runs
-harness2, uv, gcloud, Docker, or the network. All six helpers share the JSON/exit
+harness2, uv, gcloud, Docker, or the network. All seven helpers share the JSON/exit
 contract above (`runtime_verified: false`; 0 ok, 1 blocked, 2 invalid input).
 
 ### Revfactory Harness team-architecture factory (on demand)
