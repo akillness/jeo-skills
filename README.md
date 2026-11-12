@@ -345,7 +345,7 @@ After a separate backend opt-in, the [setup guide](setup-all-skills-prompt.md#je
 | `kimi` | `kimi` | `kimi-code-cli` | manual harness only; no Jev hooks |
 | `grok` | `grok` | `grok` | explicit-selection-only manual harness; no Jev hooks |
 | `opencode` | `opencode` | `opencode` | adapter-only; no native hooks |
-| `cursor` | `cursor` | `cursor` | manual harness only; no Jev hooks |
+| `cursor` | `cursor` | `cursor` | hook runner installed by `hooks-install --agent cursor` (advisory skill names, optional review); not live-verified |
 | `crush` | `crush` | `crush` | manual harness only; no Jev hooks |
 | `antigravity` | `antigravity` | `antigravity` | manual harness only; no Jev hooks |
 | `aside` | `aside-u<account>` | `aside` | adapter-only; account-specific, no native hooks |

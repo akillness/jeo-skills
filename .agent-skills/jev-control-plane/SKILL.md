@@ -88,6 +88,7 @@ Profiles default to `JEV_RUNTIME_MODE=advisory` and `JEV_REVIEW_MODE=off`. Expli
 | AGY | `PreInvocation` skill injection and `PreToolUse` review; no context filtering. Not live-verified. |
 | jeo | `pre-tool` review only, through `~/.jeo/config.json`; Jev registers no `pre-prompt` hook for jeo, so there is no skill selection or context filtering, and `enforce` withholds every matched tool. OpenSpace's separate prompt-routing hook for jeo lives in `~/.jeo/hooks.json`. |
 | Codex 0.162.1 | `UserPromptSubmit` skill injection and optional `PreToolUse` review for registered tool matchers; no automatic history pruning. Requires exact hook definitions to be trusted in `/hooks`. |
+| Cursor | `beforeSubmitPrompt` advisory skill names as `additional_context` (never a skill body; `assist` behaves as advisory because Cursor drops context past 10,000 characters) and optional action review of `Shell`, `WriteShellStdin`, `Write` and `Delete` through `preToolUse`, installed with `hooks-install --agent cursor`. It never returns allow or ask. Not live-verified. |
 
 For Codex, after the harness is installed:
 

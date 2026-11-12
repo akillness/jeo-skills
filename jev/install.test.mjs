@@ -18,6 +18,7 @@ const installSafety_native = [
   'plugins/claude/shared/jev-controller.mjs',
   'plugins/gjc/index.mjs', 'plugins/gjc/package.json', 'plugins/gjc/shared/jev-controller.mjs',
   'plugins/agy/index.mjs', 'plugins/agy/package.json', 'plugins/agy/hooks/hooks.json', 'plugins/agy/hooks/jev-hook.mjs', 'plugins/agy/shared/jev-controller.mjs',
+  'plugins/cursor/hooks/jev-cursor-adapter.mjs',
 ];
 const installSafety_catalog = join(installSafety_repo, '.agent-skills', 'skills.json');
 

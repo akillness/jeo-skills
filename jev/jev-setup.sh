@@ -38,6 +38,7 @@ NATIVE_PLUGIN_FILES=(
   plugins/agy/hooks/hooks.json
   plugins/agy/hooks/jev-hook.mjs
   plugins/agy/shared/jev-controller.mjs
+  plugins/cursor/hooks/jev-cursor-adapter.mjs
 )
 STANDALONE_SETUP=false
 [ -f "$SCRIPT_DIR/jev-harness.mjs" ] || STANDALONE_SETUP=true

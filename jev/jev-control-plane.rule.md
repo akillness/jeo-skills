@@ -25,7 +25,7 @@ Runtime IDs are independent profile namespaces; do not infer a host from `PATH`.
 | Antigravity CLI | `agy` | `antigravity-cli` | `agy` | `~/.gemini/antigravity-cli/skills`; project `.agents/skills` | `PreInvocation` and `PreToolUse` hooks; no context event; not live-verified |
 | Kimi Code | `kimi` | `kimi-code-cli` | `kimi` (router alias for upstream `kimi-code-cli`) | shared `~/.agents/skills`; project `.agents/skills`; optional `${KIMI_CODE_HOME:-~/.kimi-code}/skills` | explicit harness only; no native Jev loading verified |
 | Grok Build | `grok` | none | `grok` | `${GROK_HOME:-$HOME/.grok}/skills`; project `.grok/skills` | explicit-selection-only harness; Grok Build only; installed Superagent v1.0.1 `grok` has no Jev skill loader |
-| Cursor | `cursor` | none | `cursor` | shared `~/.agents/skills`; project `.agents/skills` | explicit harness only; no native Jev loading verified |
+| Cursor | `cursor` | none | `cursor` | shared `~/.agents/skills`; project `.agents/skills` | `beforeSubmitPrompt` and `preToolUse` command hooks in `~/.cursor/hooks.json` (advisory skill names and optional action review; no skill injection, no context filtering); not live-verified |
 | Crush | `crush` | none | `crush` | `~/.config/crush/skills`; project `.crush/skills` | explicit harness only; no native Jev loading verified |
 | Antigravity IDE | `antigravity` | none | `antigravity` | `~/.gemini/config/skills`; global only | explicit harness only; no native Jev loading verified |
 | Aside | `aside` | none | `aside` | `~/.aside/u/<account>/skills/user/`; account-scoped | adapter-only; select an independent account profile |
@@ -58,6 +58,8 @@ node ~/.agents/jev/jev-plugin.mjs hooks-install --agent codex --profile codex --
 ```
 
 `hooks-install` writes native `UserPromptSubmit` and `PreToolUse` definitions. Review and trust those exact definitions in Codex `/hooks`; modifications require renewed trust. Installation does not grant trust or enable the profile. `UserPromptSubmit` injects skills; `PreToolUse` reviews the proposed action for registered tool matchers. `JEV_REVIEW_MODE=off` skips review, `advisory` reports the result, and explicit `enforce` denies unless the result is `permit` from a validated backend. Never return a host permission grant, even for `permit`; host authorization still applies. Jev does not run validation commands as part of review.
+
+Cursor: `hooks-install --agent cursor --profile <profile> --apply` merges two command entries into `~/.cursor/hooks.json` (`beforeSubmitPrompt` for advisory skill names, `preToolUse` for optional review of `Shell`, `WriteShellStdin`, `Write` and `Delete`) and leaves other entries untouched. It refuses a file without `"version"` and a matcher that is not a valid regular expression. The runner returns only `additional_context` or `permission: deny`, never `allow` or `ask`, and never denies a prompt; `assist` behaves as advisory because Cursor drops context past 10,000 characters. Cursor proceeds when a hook crashes or times out, so this is not a security boundary, and live Cursor execution has not been verified.
 
 Package copying, registration, session loading, hook trust, and profile ON/OFF are separate states. A registered OFF hook skips stdin, catalog, and backend access. Host failures, untrusted or skipped hooks, and timeouts can fail open; this integration is not an OS security boundary. Callback or loopback tests do not prove live execution on every host, calibration, or decision quality.
 

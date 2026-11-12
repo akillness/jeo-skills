@@ -1040,12 +1040,17 @@ function selectedSkillContext(routed) {
 
 const DEFAULT_CODEX_MATCHER = 'Bash|apply_patch|Write|Edit|exec_command|write_stdin';
 const DEFAULT_HOST_MATCHER = 'Bash|bash|apply_patch|Write|write|Edit|edit|ast_edit|MultiEdit|NotebookEdit|exec_command|write_stdin';
+// Cursor names its tools Shell, Write (file edits), Delete and WriteShellStdin (input to a running shell). Cursor
+// tests the matcher as a regular expression, so the default is anchored: it must not catch MCP or other tools.
+const DEFAULT_CURSOR_MATCHER = '^(?:Shell|WriteShellStdin|Write|Delete)$';
+// Cursor's own deadline for a hook; the adapter's controller deadline (8 s) plus its watchdog margin must stay below it.
+const CURSOR_HOOK_TIMEOUT_SECONDS = 12;
 // jeo-code matches `match.tool` by exact `|`-separated names, not a regex.
 const JEO_DEFAULT_MATCHER = 'bash|write|edit|ast_edit|delete';
 // jeopi, OMP, Pi, and GJC discover `<agent dir>/extensions/*.{ts,js}`; `.mjs` is never loaded.
 const EXTENSION_HOSTS = new Set(['jeopi', 'omp', 'pi', 'gjc']);
 const EXTENSION_FILE = 'jev-control-plane.js';
-const HOOK_INSTALL_HOSTS = new Set(['codex', 'claude', 'agy', 'jeopi', 'jeo', 'omp', 'pi', 'gjc']);
+const HOOK_INSTALL_HOSTS = new Set(['codex', 'claude', 'agy', 'cursor', 'jeopi', 'jeo', 'omp', 'pi', 'gjc']);
 
 function sessionTaskPath(event, profile) {
   if (typeof event.session_id !== 'string' || !event.session_id || typeof event.turn_id !== 'string' || !event.turn_id) return null;
@@ -1151,7 +1156,11 @@ async function hook(flags, suppliedEvent) {
     const input = await readStdin();
     try { event = input.trim() ? JSON.parse(input) : {}; } catch { throw new Error('hook input must be JSON'); }
   }
-  const mode = runtimeMode(ctx);
+  const configuredMode = runtimeMode(ctx);
+  // Cursor drops `additional_context` longer than 10,000 characters (read from the cursor-agent 2026.11.11 bundle), and
+  // a skill body is routinely larger, so assist cannot be honored there: treat it as advisory so that no skill file is
+  // read, sent, or recorded as injected.
+  const mode = ctx.agent === 'cursor' ? 'advisory' : configuredMode;
   const memMode = event.memoryMode === 'extended' ? 'extended' : memoryMode(ctx);
   const revMode = reviewMode(ctx);
 
@@ -1385,6 +1394,67 @@ async function hooksInstall(flags) {
       path,
       events: ['PreInvocation', 'PreToolUse'],
       matcher,
+      executed: false,
+    };
+  }
+
+  if (ctx.agent === 'cursor') {
+    // Cursor runs hook commands from ~/.cursor/hooks.json (flat `{ command, matcher?, timeout? }` entries per event) and
+    // reads one JSON object from stdout. The runner never denies a prompt and never emits allow/ask; see its header.
+    const path = join(homedir(), '.cursor', 'hooks.json');
+    ensureRegular(path);
+    const existing = readText(path);
+    const config = existing === null ? { version: 1 } : JSON.parse(existing);
+    if (!config || typeof config !== 'object' || Array.isArray(config)) throw new Error('hooks.json must contain an object');
+    // A file without "version" is rejected by Cursor as a whole. Adding the key would silently switch on every other
+    // hook in it, so leave that decision to the user.
+    if (config.version === undefined) throw new Error('hooks.json has no "version" key, so Cursor ignores the whole file; add "version": 1 deliberately before installing the Jev hook');
+    if (config.hooks === undefined) config.hooks = {};
+    if (!config.hooks || typeof config.hooks !== 'object' || Array.isArray(config.hooks)) throw new Error('hooks.json hooks must contain an object');
+    const adapter = join(HERE, 'plugins', 'cursor', 'hooks', 'jev-cursor-adapter.mjs');
+    const cursorMatcher = flags.matcher || ctx.state.values.JEV_PRETOOL_MATCHER || DEFAULT_CURSOR_MATCHER;
+    // Cursor drops a hooks file whose matcher is not a valid regular expression, and with it every other hook in it.
+    try { new RegExp(cursorMatcher); } catch { throw new Error('matcher must be a valid regular expression'); }
+    const runner = event => [process.execPath, adapter, '--event', event, '--profile', ctx.profile].map(shellQuote).join(' ');
+    const entries = {
+      beforeSubmitPrompt: { command: runner('beforeSubmitPrompt'), timeout: CURSOR_HOOK_TIMEOUT_SECONDS },
+      preToolUse: { command: runner('preToolUse'), matcher: cursorMatcher, timeout: CURSOR_HOOK_TIMEOUT_SECONDS },
+    };
+    // Entries are recognised by the runner's file name, so re-running from another checkout or location replaces them
+    // in place instead of stacking a second set. Every other entry, event and top-level key is left untouched.
+    const managed = item => Boolean(item) && typeof item === 'object' && typeof item.command === 'string' && item.command.includes('jev-cursor-adapter.mjs');
+    for (const [event, entry] of Object.entries(entries)) {
+      const list = config.hooks[event] === undefined ? [] : config.hooks[event];
+      if (!Array.isArray(list)) throw new Error(`${event} hooks must be an array`);
+      const next = [];
+      let placed = false;
+      for (const item of list) {
+        if (!managed(item)) next.push(item);
+        else if (!placed) { next.push(entry); placed = true; }
+      }
+      if (!placed) next.push(entry);
+      config.hooks[event] = next;
+    }
+    const text = `${JSON.stringify(config, null, 2)}\n`;
+    const changed = text !== existing;
+    const wrote = Boolean(flags.apply && changed);
+    if (wrote) atomicWrite(path, text);
+    const warnings = /\/Cellar\/|\/\.nvm\/versions\/|\/\.fnm\/|\/\.volta\//.test(process.execPath)
+      ? [`${process.execPath} is a version-specific Node path and the hooks stop working when that version is removed; re-run hooks-install with a stable Node such as /opt/homebrew/bin/node`]
+      : [];
+    return {
+      ...common('hooks-install', ctx, wrote, ctx.state.enabled),
+      path,
+      events: ['beforeSubmitPrompt', 'preToolUse'],
+      matcher: cursorMatcher,
+      changed,
+      ...(warnings.length ? { warnings } : {}),
+      limitations: [
+        'beforeSubmitPrompt passes only the suggested skill names: Cursor drops additional_context longer than 10,000 characters and a skill body is routinely larger, so JEV_RUNTIME_MODE=assist behaves as advisory',
+        'preToolUse does nothing until the profile sets JEV_REVIEW_MODE to advisory or enforce; enforce withholds every matched tool call unless the backend tier is validated',
+        'the hook never answers a Cursor prompt or tool call with allow or ask; Cursor lets an action proceed when a hook process crashes or is killed at its timeout (failClosed is off), so this is not a security boundary',
+        'live Cursor hook execution has not been observed: payloads and the deny shape follow https://cursor.com/docs/hooks, but additional_context on beforeSubmitPrompt and preToolUse is not documented there and was confirmed only by reading the cursor-agent 2026.11.11 bundle, so the IDE may behave differently',
+      ],
       executed: false,
     };
   }
