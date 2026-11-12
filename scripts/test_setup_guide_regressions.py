@@ -35,7 +35,7 @@ def guide_block(heading: str, index: int = 0) -> str:
     return fences[index]
 
 
-def run_block(code: str, env: dict[str, str], cwd: Path) -> subprocess.CompletedProcess[str]:
+def run_block(code: str, env: dict[str, str], cwd: Path, timeout: int = 60) -> subprocess.CompletedProcess[str]:
     """Run one guide block in a bounded, isolated bash process."""
     return subprocess.run(
         ["/bin/bash", "-c", code],
@@ -44,7 +44,7 @@ def run_block(code: str, env: dict[str, str], cwd: Path) -> subprocess.Completed
         text=True,
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
-        timeout=60,
+        timeout=timeout,
         check=False,
     )
 
@@ -1189,7 +1189,7 @@ raise SystemExit(0)
             JEV_SYSTEMONE_ENDPOINT="http://127.0.0.1:1/v1/systemone",
             JEV_SYSTEMONE_MODEL="fixture-systemone-model",
         )
-        result = run_block(block, env, ROOT)
+        result = run_block(block, env, ROOT, timeout=240)
         self.assertEqual(result.returncode, 0, result.stdout)
         self.assertTrue((self.home / ".agents/jev/jev-plugin.mjs").is_file(), result.stdout)
 

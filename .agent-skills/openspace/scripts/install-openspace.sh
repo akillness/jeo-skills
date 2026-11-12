@@ -38,7 +38,12 @@ warn() { printf '\033[1;33m[openspace]\033[0m %s\n' "$*" >&2; }
 REPO_URL="https://github.com/HKUDS/OpenSpace.git"
 # route_prompt.py uses SkillRanker.bm25_only and skill_utils from this commit.
 VERIFIED_REF="618c8461dab9a075a7e7c4330b40a18e9f5514d9"
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# Parameter expansion instead of dirname(1): --dry-run must work with a PATH that has no coreutils.
+_script_src="${BASH_SOURCE[0]}"
+case "$_script_src" in
+  */*) SCRIPT_DIR="$(cd "${_script_src%/*}" && pwd)" ;;
+  *) SCRIPT_DIR="$(pwd)" ;;
+esac
 OPENSPACE_HOME="${OPENSPACE_HOME:-${HOME}/.openspace/OpenSpace}"
 SKILLS_ROOT="${SKILLS_ROOT:-${HOME}/.agents/skills}"
 OPENSPACE_VENV="${OPENSPACE_VENV:-${HOME}/.agents/venvs/openspace}"
