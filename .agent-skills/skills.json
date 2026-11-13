@@ -1,7 +1,7 @@
 {
   "version": "2.1.0",
   "generated": "2026-10-21",
-  "skill_count": 433,
+  "skill_count": 432,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -383,7 +383,6 @@
       "triage",
       "openspace",
       "agentic-skills",
-      "agenticskills",
       "prompts-chat",
       "find-skills",
       "mcp-builder",
@@ -990,7 +989,6 @@
       ],
       "prompting": [
         "agentic-skills",
-        "agenticskills",
         "prompts-chat"
       ]
     },
@@ -1782,7 +1780,6 @@
     "oh-my-gods-agent-engineering": {
       "mode": "adjacent",
       "members": [
-        "agenticskills",
         "a2a-protocol",
         "agent-benchmarking",
         "agent-guardrails",
@@ -1796,7 +1793,7 @@
         "agent-workflow",
         "agent-principles"
       ],
-      "note": "akillness/oh-my-gods .god-skills vendored at 1b2779a so they install standalone via jeo-skill; agenticskills remains the whole-bundle installer. agent-development-principles, mcp-server-design, deepagents, and langgraph-workflow were merged into their canonical skills on 2026-09-19."
+      "note": "akillness/oh-my-gods .god-skills vendored at 1b2779a so they install standalone via jeo-skill. agent-development-principles, mcp-server-design, deepagents, and langgraph-workflow were merged into their canonical skills on 2026-09-19."
     },
     "llm-observability": {
       "mode": "layered",
@@ -7065,35 +7062,6 @@
       "keyword": "agentic-skills",
       "version": "1.0",
       "source": "https://github.com/addyosmani/agent-skills"
-    },
-    {
-      "name": "agenticskills",
-      "description": "One-shot installer for the akillness/oh-my-gods agent skill bundle (80+ god-skills) — wraps the official install.sh with pinned URL and env knobs (PLATFORM, WITH_LANGCHAIN, INSTALL_MODE, SKIP_BACKUP) to copy the catalog into Claude Code, Codex CLI, Antigravity/Gemini, and OpenCode in one step.",
-      "category": "ai-agents",
-      "subcategory": "prompting",
-      "interface": "cli",
-      "path": "agenticskills/SKILL.md",
-      "tags": [
-        "agenticskills",
-        "oh-my-gods",
-        "god-skills",
-        "installer",
-        "bundle",
-        "agent-skills",
-        "multi-runtime"
-      ],
-      "platforms": [],
-      "allowed_tools": [
-        "Bash",
-        "Read",
-        "Write",
-        "Edit",
-        "Glob",
-        "Grep",
-        "WebFetch"
-      ],
-      "keyword": "agenticskills",
-      "version": "1.0.0"
     },
     {
       "name": "prompts-chat",

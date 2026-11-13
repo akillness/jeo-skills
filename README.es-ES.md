@@ -322,7 +322,7 @@ y evaluar modelos requieren aprobación separada. Consulte la
 
 ## 📚 Lista de Habilidades
 
-> Generado desde `.agent-skills/skills.json` · 433 habilidades · despliega una categoría para ver sus habilidades.
+> Generado desde `.agent-skills/skills.json` · 432 habilidades · despliega una categoría para ver sus habilidades.
 
 ### 🌐 Web (72)
 
@@ -599,9 +599,9 @@ Subcategorías: `developer-cli` (12), `ai-cli` (16), `media-cli` (1), `automatio
 
 </details>
 
-### 🤖 IA y Agentes (79)
+### 🤖 IA y Agentes (78)
 
-Subcategorías: `orchestration` (19), `agent-frameworks` (20), `skill-authoring` (5), `evaluation` (9), `memory` (7), `planning-review` (13), `discovery` (3), `prompting` (3)
+Subcategorías: `orchestration` (19), `agent-frameworks` (20), `skill-authoring` (5), `evaluation` (9), `memory` (7), `planning-review` (13), `discovery` (3), `prompting` (2)
 
 <details>
 <summary>Ver habilidades</summary>
@@ -637,7 +637,6 @@ Subcategorías: `orchestration` (19), `agent-frameworks` (20), `skill-authoring`
 | `triage` |
 | `openspace` |
 | `agentic-skills` |
-| `agenticskills` |
 | `prompts-chat` |
 | `find-skills` |
 | `mcp-builder` |

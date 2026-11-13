@@ -3267,9 +3267,7 @@ existing canonical skills on 2026-09-19 and are listed in `skills.json` `retired
 (`references/quickstart-and-backends.md`), `langgraph-workflow` → `langgraph-fundamentals`
 (`references/production-patterns.md`).
 
-- `agenticskills` remains the whole-bundle installer for the 80+ god-skills; these are
-  vendored so `jeo-skill install` can place them standalone. Do not run both on the same
-  target without checking for duplicate folders first.
+- These vendored skills can be installed individually with `jeo-skill install`.
 - `agent-manager` starts, stops, and schedules agents in tmux sessions and can register cron
   jobs; it needs tmux and Python 3 and must only be invoked on an explicit request.
 - `agent-observability` is the platform-neutral instrumentation layer; operate a specific
