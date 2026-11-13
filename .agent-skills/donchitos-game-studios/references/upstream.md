@@ -47,8 +47,12 @@ Do not copy the template over an existing `.claude/`, `CLAUDE.md`, `project.yaml
 source tree or test tree. Inventory both layouts, resolve filename/permission
 collisions, and preview a file-by-file merge. `/adopt` is an audit and migration-plan
 workflow inside an already reviewed upstream environment, not a safe installer.
-Its references inspect artifacts, classify gaps, ask before writing the plan and
-avoid regenerating existing content. Keep `UPGRADING.md` for version migrations.
+Its references inspect artifacts, classify gaps and avoid regenerating existing
+content. The collaborative protocol asks before writing; autonomous mode permits
+direct writes except configured always-ask categories, while the Phase 5 reference
+also says to ask. Because those upstream instructions conflict, obtain explicit
+approval for the adoption plan independently of the configured mode. Keep
+`UPGRADING.md` for version migrations.
 
 The pinned skill headers can execute `yaml-helper.sh resolve_config` via Claude
 Code's inline shell expansion. Merely loading one is not equivalent to reading an
@@ -81,10 +85,11 @@ not proof the upstream workflows execute on that host.
 
 ### Config and engine boundaries
 
-`project.yaml` is shared configuration. `modes.rigor` is `minimal` (default),
-`standard` or `full`, bundling six process controls. `modes.automation` is separate;
-personal `project.local.yaml` can override selected settings. Do not silently raise
-rigor or automation to get more impressive-looking output.
+`project.yaml` is shared configuration. The pinned file has no `modes` block;
+resolved `modes.rigor` defaults to `minimal`, with `standard` and `full` also
+available. `modes.automation` is separate and defaults to `collaborative`;
+personal `project.local.yaml` can override selected settings. Do not silently
+raise rigor or automation to get more impressive-looking output.
 
 The engine table records Godot `src` / `tests`, Unity `Assets` / `Assets/Tests`,
 Unreal `Source` / `Source/<Module>/Private/Tests`, Web `src` / `tests`. These are
@@ -117,10 +122,11 @@ the canonical workflows or inflate them with duplicated tutorials.
 
 ## Testing and improvement
 
-`studio-tests/README.md` documents four `/skill-test` modes:
+`studio-tests/README.md` documents four `/skill-test` modes. All four inspect
+files; none runs the skill or proves its behavior in a live agent session:
 
-- `static` reads structural observations (seven skill checks, not game tests).
-- `spec` compares against the selected behavioral specification.
+- `static` checks skill structure and adds agent, delegation and compatibility observations.
+- `spec` compares the written instructions against the selected specification.
 - `category` uses `studio-tests/quality-rubric.md`.
 - `audit` reports catalog coverage; missing coverage is not a pass.
 

@@ -20,6 +20,7 @@ The root [MIT License](../LICENSE) applies to project-authored material. Third-p
 | `fabric` | [danielmiessler/fabric @ 8e8511c](https://github.com/danielmiessler/fabric/tree/8e8511c770b2589a6066398a86343fbf8c2a56a3) (offline helper and audit notes pinned here) | MIT |
 | `harness2` | [google-research/harness2](https://github.com/google-research/harness2) | Apache-2.0 |
 | `revfactory-harness` (original operator guide; no upstream runtime or templates vendored) | [revfactory/harness v2.1.0 @ 92d9f1b](https://github.com/revfactory/harness/tree/92d9f1b29e7af81acebf51a9fcd1832e739a1414) | Apache-2.0 (upstream) |
+| `donchitos-game-studios` (original operator guide; no upstream template or runtime vendored) | [Donchitos/Claude-Code-Game-Studios @ abc0de7](https://github.com/donchitos/claude-code-game-studios/tree/abc0de79d6ceb0b5d7aa693945849b3937afbe6a) · [LICENSE](https://github.com/donchitos/claude-code-game-studios/blob/abc0de79d6ceb0b5d7aa693945849b3937afbe6a/LICENSE) | MIT (upstream) |
 | `ruflo` | [ruvnet/ruflo](https://github.com/ruvnet/ruflo) | MIT |
 | `voicestudio` | [debpalash/VoiceStudio](https://github.com/debpalash/VoiceStudio) | AGPL-3.0-only |
 | `diagram-design` | [cathrynlavery/diagram-design](https://github.com/cathrynlavery/diagram-design) | MIT |
