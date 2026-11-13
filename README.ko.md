@@ -390,6 +390,10 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 선택할 수 있습니다. 원본 훅·게임·모델은 실행하지 않으며 정적 통과를 보안 또는
 성능 향상으로 보고하지 않습니다. 원본 설치와 활성화 범위는
 [setup 가이드](setup-all-skills-prompt.md#claude-code-game-studios-on-demand-project-template-not-global-skill-pack)를 확인하세요.
+원본 `/adopt`의 승인 동작은 자동화 모드에 따라 달라지므로 도입 계획은 별도로
+승인하세요. `/skill-test`의 네 모드는 모두 파일만 검토하며 스킬을 실행하지 않습니다.
+[원본 운영 안내](.agent-skills/donchitos-game-studios/references/upstream.md)와
+[MIT 라이선스 출처](docs/attribution.md)에서 상세 내용을 확인하세요.
 
 ## 📚 스킬 목록
 

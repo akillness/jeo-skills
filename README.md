@@ -380,6 +380,10 @@ from quality-score heuristics. Its offline helper checks twelve selected public
 files without running upstream code; static pass is not security or measured agent
 improvement. The `game-client` bundle includes the guide; template cloning, project
 merges, hooks, dependencies and evaluation remain separately approved operations.
+Upstream `/adopt` approval behavior varies by automation mode; approve the adoption
+plan independently. All four `/skill-test` modes inspect files without running the
+skill. See the [pinned operations](.agent-skills/donchitos-game-studios/references/upstream.md)
+and [upstream MIT attribution](docs/attribution.md).
 See the [setup guide](setup-all-skills-prompt.md#claude-code-game-studios-on-demand-project-template-not-global-skill-pack).
 
 ## 📚 Skills List

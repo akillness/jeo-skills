@@ -330,6 +330,10 @@ El helper comprueba doce archivos públicos sin ejecutar código upstream. La gu
 está en `game-client`; clonar, fusionar proyectos, activar hooks, instalar dependencias
 y evaluar modelos requieren aprobación separada. Consulta la
 [guía de instalación](setup-all-skills-prompt.md#claude-code-game-studios-on-demand-project-template-not-global-skill-pack).
+La aprobación de `/adopt` depende del modo de automatización: aprueba el plan de
+adopción por separado. Los cuatro modos de `/skill-test` inspeccionan archivos sin
+ejecutar la habilidad. Consulta las [operaciones fijadas](.agent-skills/donchitos-game-studios/references/upstream.md)
+y la [atribución MIT upstream](docs/attribution.md).
 
 ## 📚 Lista de Habilidades
 

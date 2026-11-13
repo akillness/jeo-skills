@@ -2884,6 +2884,13 @@ For new projects use a separately approved empty directory; for existing project
 preview a file-by-file adoption preserving user rules, code and engine versions.
 Do not replace `.claude/`, run upstream hooks, install browser/Node/engine tools,
 commit/push a game, or invoke scanners or paid models as part of blanket setup.
+Upstream `/adopt` instructions differ by automation mode and its Phase 5 also
+asks for approval; explicitly approve the adoption plan regardless of mode.
+The pinned `project.yaml` starts without a `modes` block: resolved rigor defaults
+to `minimal` and automation defaults to `collaborative`. The four `/skill-test`
+modes inspect files, including specifications; none executes the skill or proves
+live agent behavior. The [attribution record](docs/attribution.md) links the pinned
+upstream MIT license.
 
 The helper is standard-library-only, noninteractive and offline. It requires POSIX
 `dir_fd`/`O_NOFOLLOW` support and canonical absolute paths (macOS `/private/tmp`, not
