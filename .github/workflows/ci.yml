@@ -111,6 +111,8 @@ jobs:
         run: python3 -B scripts/test_awesome_gamedev_agent_skills.py -v
       - name: Game source skill packaging and offline preflight contracts
         run: python3 -B scripts/test_game_source_skills.py -v
+      - name: Donchitos Game Studios offline package contracts
+        run: python3 -B scripts/test_donchitos_game_studios.py -v
       - name: UI repository source and installation boundaries
         run: python3 -B scripts/test_ui_design_skills.py -v
       - name: Image-to-GitHub resolver offline contracts
