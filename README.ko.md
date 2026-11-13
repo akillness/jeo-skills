@@ -148,6 +148,15 @@ Impeccable은 `jeo-skill install impeccable --global --dry-run`으로 선택을 
 쓰므로 어느 쪽이든 쓰기 전에 오프라인 doctor로 먼저 확인합니다. npm 실행, 엔진 다운로드·실행,
 훅, 브라우저 스캔, live 모드는 각각 별도 승인이 필요합니다. [설치 가이드](setup-all-skills-prompt.md#impeccable-design-operator-on-demand)를 참고하세요.
 
+browser-use는 `jeo-skill install browser-use --global --dry-run`으로 선택을 미리 확인한 뒤
+스킬을 설치합니다. 스킬 설치는 `browser-use/browser-use` 1.0.3 운영 가이드와 이를 실행하지 않는
+오프라인 헬퍼만 복사하며 browser-use 자체는 설치하지 않습니다. 업스트림의
+`browser-use skill install`은 같은 이름의 `SKILL.md`를 `~/.agents/skills`와 설치된 모든 에이전트
+디렉터리에 심볼릭 링크를 따라가며 덮어써 이 스킬을 대체하므로 실행하지 말고
+`browser-use skill show`를 쓰세요. CLI 설치, `login`, `Agent` 실행(기본값이 호스팅 모델과 과금되는
+클라우드 브라우저), 클라우드 브라우저, 내 크롬에 연결, MCP 등록은 각각 별도 승인이 필요합니다.
+[설치 가이드](setup-all-skills-prompt.md#browser-use-operator-on-demand-billed-and-can-control-your-chrome)를 참고하세요.
+
 설치 프로그램 변수는 파이프 오른쪽의 `bash`에 지정합니다.
 
 ```bash
@@ -375,15 +384,11 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 
 ## 📚 스킬 목록
 
-<<<<<<< HEAD
 > `.agent-skills/skills.json`에서 생성 · 432개 스킬 · 카테고리를 펼치면 스킬 목록이 보입니다.
-=======
-> `.agent-skills/skills.json`에서 생성 · 432개 스킬 · 카테고리를 펼치면 스킬 목록이 보입니다.
->>>>>>> 4212aad9 (feat(skill): add pinned NVIDIA SkillEvaluator operator skill)
 
 ### 🌐 웹 (72개)
 
-하위 분류: `frontend` (12), `backend` (3), `design` (16), `api` (2), `auth` (1), `data` (13), `testing` (4), `accessibility` (1), `performance` (1), `graphics` (12), `capture` (7)
+하위 분류: `frontend` (12), `backend` (3), `design` (16), `api` (2), `auth` (1), `data` (13), `testing` (5), `accessibility` (1), `performance` (1), `graphics` (12), `capture` (6)
 
 <details>
 <summary>스킬 보기</summary>
@@ -990,6 +995,7 @@ v1 마이그레이션, 실행 근거에 따른 `/harness:evolve`를 안내합니
 | 변경 사항 | 상세 내용 |
 |--------|---------|
 | **NVIDIA SkillEvaluator 운영 스킬** | 업스트림 `12b387f7a62b5f3e0de9eff392a3f6b7e952f2c2`에 고정한 `nvidia-skill-evaluator`를 추가했습니다. 단계별 명령, 스캐너·제공자·샌드박스·CI 승인 경계, Apache-2.0 출처, 파일 12개의 SHA-256 매니페스트와 독립 오프라인 헬퍼를 제공합니다. 스킬 432개 카탈로그, README 3개 언어 목록과 setup 가이드를 동기화했습니다. 오프라인 회귀 테스트 15개, 선택 파일 12개 해시, 격리 HOME 설치 파일 5개의 바이트 일치 검증을 통과했습니다. 라우팅 시나리오 10개는 작성만 했으며 모델로 실행하지 않았습니다. 평가기·보안 스캐너·유료 모델·실제 Tier 3 실행은 수행하지 않았습니다. |
+| **`browser-use`: Browser Use 에이전트·CLI·Cloud를 안전하게 운영하기** | 기존 `browser-use` 스킬을 [`browser-use/browser-use`](https://github.com/browser-use/browser-use/tree/dfb6a73d520809341c975c6a01c228327991e88b) 1.0.3(MIT)용 `web` / `testing` 운영 스킬로 업그레이드했습니다. 카탈로그 스킬 수는 늘지 않습니다. 요청 하나를 정확히 한 경로(`browser-use` CLI, Python 라이브러리, Browser Use Cloud, `--cli-mcp`)로 보내고 모든 부수 효과를 승인 게이트로 막으며, 감사한 레퍼런스 4개(`upstream`, `command-catalog`, `safety`, `library-and-cloud`), SHA-256 소스 매니페스트, 동작 evals 10개, 아무것도 실행하거나 값을 읽지 않고 설치 경로·로컬 브라우저·자격 증명 변수 이름·텔레메트리 기본값·상태 경로·프로젝트의 `browser-use` 핀(`--project`)을 보고하는 오프라인 표준 라이브러리 `scripts/preflight.py`를 갖췄습니다. 감사에서는 읽기 전용 CLI와 0.x 제거 오류를 임시 1.0.3 설치에서 실제로 실행해 결과를 기록했습니다. 업스트림의 `browser-use skill install`은 `~/.agents/skills/browser-use/SKILL.md`와 설치된 모든 에이전트 디렉터리를 심볼릭 링크까지 따라가며 덮어써 이 카탈로그 스킬을 대체합니다(`skill show` 사용). 텔레메트리는 기본값이 켜짐이며 `--help`와 `--version`에도 적용됩니다. `Agent(task)`만 쓰면 호스팅 게이트웨이 모델과 과금되는 클라우드 브라우저를 씁니다. 하니스 작업공간의 `agent_helpers.py`는 CLI 호출마다 실행됩니다. 업스트림 `qa`와 `x402` 스킬은 자동 가입, 공개 터널 개설, 지갑 충전을 안내합니다. `browser-evidence` 그룹과 `browser-harness`, `jev-ultrafast`와 함께하는 새 계층형 `browser-use-stack` 그룹에 속합니다. `jeo-skill install browser-use --global --yes`로 설치하며 일괄 설치는 문서만 복사합니다. `scripts/test_browser_use_skill.py`가 오프라인으로 검증하고 CI에서 실행되며, 헬퍼는 공용 preflight 계약 스위트에도 포함됩니다. |
 
 ## 🆕 v2026-11-07 업데이트
 

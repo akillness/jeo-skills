@@ -43,6 +43,7 @@ SKILLS = (
     "artcraft",
     "craft-anything",
     "connectonion",
+    "browser-use",
 )
 
 
@@ -100,6 +101,8 @@ PUBLIC_MARKERS = (
     "apps/craft-anything-cli/Cargo.toml", "crates/setup/src/skill.md",
     "install.sh", "connectonion/__init__.py", "connectonion/_version.py",
     "connectonion/cli/__init__.py",
+    "MIGRATING.md", "browser_use/__init__.py", "browser_use/cli.py",
+    "browser_use/skills/install.py", "skills/browser-use/SKILL.md",
 )
 
 # Names are deliberately broad: a correct helper may inspect their presence,
@@ -114,6 +117,7 @@ TRAPPED_TOOLS = (
     "browser-harness", "google-chrome", "chromium", "chromium-browser", "chrome",
     "claude", "curl", "ffmpeg", "gcloud", "pandoc", "pdftoppm",
     "craft-anything-cli", "co", "pip", "pip3", "codex",
+    "browser-use", "browseruse", "uvx", "google-chrome-stable", "microsoft-edge", "microsoft-edge-stable",
 )
 
 

@@ -120,7 +120,14 @@ fetch, structured data, CDP and MCP; its offline doctor checks local metadata, n
 compatibility. Browser download, installation, execution, site access, servers, credentials
 and provider calls require separate approval. See the [setup guide](setup-all-skills-prompt.md#lightpanda-browser-operator-on-demand).
 
-For Browser Use, preview `jeo-skill install browser-use --global --dry-run`. The skill provides guidance and offline preflight, not a browser or provider; installation, site access, cloud/model calls and account access are separate decisions. See the [setup guide](setup-all-skills-prompt.md#browser-use-operator-on-demand).
+For browser-use, preview `jeo-skill install browser-use --global --dry-run` before installing
+the selected skill. It installs an operator guide, not browser-use, for `browser-use/browser-use`
+1.0.3, with an offline helper that never runs it. Upstream's `browser-use skill install` writes a
+`SKILL.md` with the same name into `~/.agents/skills` and every installed agent directory,
+through symlinks too, so it replaces this skill: never run it, use `browser-use skill show`
+instead. Installing the CLI, `login`, an `Agent` run (a hosted model and a billed cloud browser by
+default), a cloud browser, attaching to your Chrome and MCP registration require separate approval.
+See the [setup guide](setup-all-skills-prompt.md#browser-use-operator-on-demand-billed-and-can-control-your-chrome).
 
 For Flide decision inference, preview `jeo-skill install flide --global --dry-run`. The guide includes an offline preflight; package/model downloads, GPU use and server startup require separate approval. See the [setup guide](setup-all-skills-prompt.md#flide-decision-inference-on-demand).
 
@@ -369,15 +376,11 @@ node ~/.agents/jev/jev-harness.mjs --profile "${JEV_PROFILE:?Select the current 
 
 ## 📚 Skills List
 
-<<<<<<< HEAD
 > Generated from `.agent-skills/skills.json` · 432 skills · expand a category to see its skills.
-=======
-> Generated from `.agent-skills/skills.json` · 432 skills · expand a category to see its skills.
->>>>>>> 4212aad9 (feat(skill): add pinned NVIDIA SkillEvaluator operator skill)
 
 ### 🌐 Web (72)
 
-Subcategories: `frontend` (12), `backend` (3), `design` (16), `api` (2), `auth` (1), `data` (13), `testing` (4), `accessibility` (1), `performance` (1), `graphics` (12), `capture` (7)
+Subcategories: `frontend` (12), `backend` (3), `design` (16), `api` (2), `auth` (1), `data` (13), `testing` (5), `accessibility` (1), `performance` (1), `graphics` (12), `capture` (6)
 
 <details>
 <summary>Show Web skills</summary>
@@ -984,6 +987,7 @@ See the [setup boundary](setup-all-skills-prompt.md#elephant-goldfish-model-on-d
 | Change | Details |
 |--------|---------|
 | **NVIDIA SkillEvaluator operator skill** | Adds `nvidia-skill-evaluator`, pinned to upstream `12b387f7a62b5f3e0de9eff392a3f6b7e952f2c2`, with tier-specific commands, scanner/provider/sandbox/CI approval boundaries, Apache-2.0 attribution, a 12-file SHA-256 manifest, and a standalone offline helper. The 432-skill catalog, three README inventories and setup guide are synchronized. Verification: 15 offline regression tests, all 12 selected-file hashes, and byte-identical five-file installation into an isolated HOME passed. Ten routing scenarios are authored, not model-executed; the evaluator, scanners, paid models and live Tier 3 runs were not executed. |
+| **`browser-use`: operate the Browser Use agent, CLI and Cloud safely** | Upgrades the existing `browser-use` skill to a `web` / `testing` operator for [`browser-use/browser-use`](https://github.com/browser-use/browser-use/tree/dfb6a73d520809341c975c6a01c228327991e88b) 1.0.3 (MIT), without adding another catalog skill. It routes one request to exactly one path (the `browser-use` CLI, the Python library, Browser Use Cloud or `--cli-mcp`) and gates every side effect, and ships four audited references (`upstream`, `command-catalog`, `safety`, `library-and-cloud`), a SHA-256 source manifest, 10 behavioral evals and an offline stdlib `scripts/preflight.py` that reports install routes, local browsers, credential variable names, the telemetry default, state paths and a project's `browser-use` pin (`--project`) without running anything or reading a value. The audit executed the read-only CLI and the 0.x removal errors on a throwaway 1.0.3 install and recorded what it found: upstream's own `browser-use skill install` overwrites `~/.agents/skills/browser-use/SKILL.md` and every installed agent directory, also through symlinks, so it replaces this catalog skill (use `skill show`); telemetry is on by default and covers `--help` and `--version`; `Agent(task)` alone uses the hosted gateway model and a billed cloud browser; an `agent_helpers.py` in the harness workspace runs on every CLI call; and upstream's `qa` and `x402` skills self-sign-up, open public tunnels and fund wallets. Joins the `browser-evidence` group and the new layered `browser-use-stack` group with `browser-harness` and `jev-ultrafast`. Install with `jeo-skill install browser-use --global --yes`; blanket setup installs documents only. `scripts/test_browser_use_skill.py` covers it offline and runs in CI, and the helper is also in the shared preflight contract suite. |
 
 ## 🆕 What's New in v2026-11-07
 

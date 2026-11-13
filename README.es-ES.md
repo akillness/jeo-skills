@@ -128,6 +128,16 @@ no Impeccable, su motor ni su hook de diseño; el instalador original usa la mis
 La ejecución de npm, la descarga y ejecución del motor, el hook, los escaneos con navegador y el
 modo live requieren aprobación por separado. Consulta la [guía de instalación](setup-all-skills-prompt.md#impeccable-design-operator-on-demand).
 
+Para browser-use, previsualiza la selección con `jeo-skill install browser-use --global --dry-run`
+antes de instalar la habilidad. Se instalan una guía de operación para `browser-use/browser-use`
+1.0.3 y un ayudante sin conexión que nunca lo ejecuta; browser-use en sí no se instala. El
+`browser-use skill install` original escribe un `SKILL.md` con el mismo nombre en `~/.agents/skills`
+y en cada directorio de agente instalado, también a través de enlaces simbólicos, y por eso
+reemplaza esta habilidad: no lo ejecutes, usa `browser-use skill show`. Instalar la CLI, `login`,
+ejecutar un `Agent` (por defecto un modelo alojado y un navegador en la nube facturado), un
+navegador en la nube, conectarse a tu Chrome y registrar MCP requieren aprobación por separado.
+Consulta la [guía de instalación](setup-all-skills-prompt.md#browser-use-operator-on-demand-billed-and-can-control-your-chrome).
+
 Las variables del instalador pertenecen a `bash`, en el lado derecho de la tubería:
 
 ```bash
@@ -311,15 +321,11 @@ Consulta la [guía de instalación](setup-all-skills-prompt.md#jev-control-plane
 
 ## 📚 Lista de Habilidades
 
-<<<<<<< HEAD
 > Generado desde `.agent-skills/skills.json` · 432 habilidades · despliega una categoría para ver sus habilidades.
-=======
-> Generado desde `.agent-skills/skills.json` · 432 habilidades · despliega una categoría para ver sus habilidades.
->>>>>>> 4212aad9 (feat(skill): add pinned NVIDIA SkillEvaluator operator skill)
 
 ### 🌐 Web (72)
 
-Subcategorías: `frontend` (12), `backend` (3), `design` (16), `api` (2), `auth` (1), `data` (13), `testing` (4), `accessibility` (1), `performance` (1), `graphics` (12), `capture` (7)
+Subcategorías: `frontend` (12), `backend` (3), `design` (16), `api` (2), `auth` (1), `data` (13), `testing` (5), `accessibility` (1), `performance` (1), `graphics` (12), `capture` (6)
 
 <details>
 <summary>Ver habilidades</summary>

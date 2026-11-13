@@ -3269,9 +3269,54 @@ with telemetry disabled. Telemetry opt-out does not prevent page or provider tra
 
 Preview `jeo-skill install flide --global --dry-run`, then install the guide with `jeo-skill install flide --global --yes` if selected. The skill does not install Flide, models or GPU dependencies. Resolve `SKILL_DIR` to the installed skill directory and run `python3 "$SKILL_DIR/scripts/preflight.py"` for offline metadata and path inspection. Consult the operation reference and separately authorize package/model downloads, GPU use, credentials, server startup and data submission. Flide requires an NVIDIA GPU on Linux or WSL2; bind the server explicitly to loopback because the upstream default listens on all interfaces.
 
-### Browser Use operator (on demand)
+<a id="browser-use-operator-on-demand"></a>
 
-Preview `jeo-skill install browser-use --global --dry-run`, then install the selected guide with `jeo-skill install browser-use --global --yes`. This installs guidance, not the Browser Use package or browser. Resolve `SKILL_DIR` to the installed skill directory and run `python3 "$SKILL_DIR/scripts/preflight.py"` for offline metadata inspection. Review the skill's operation reference before separately authorizing package installation, browser connection, site access, credentials, or cloud/model usage. The upstream Python agent defaults to a cloud browser and hosted model.
+### Browser Use operator (on demand, billed and can control your Chrome)
+
+The `browser-use` skill installs as a router-first guide, a SHA-256 manifest (`references/source.json`), audited notes
+(`references/upstream.md`, `command-catalog.md`, `safety.md`, `library-and-cloud.md`), behavioral evals and one offline
+stdlib helper (`scripts/preflight.py`). It operates [`browser-use/browser-use`](https://github.com/browser-use/browser-use/tree/dfb6a73d520809341c975c6a01c228327991e88b)
+(MIT), pinned to release `1.0.3` at `dfb6a73d520809341c975c6a01c228327991e88b`. Catalog installation copies documents only.
+Even in `full` mode, do not install or run browser-use, run `browser-use login`, `browser-use install` or
+`browser-use skill install`, attach to the user's Chrome, start a cloud browser, register `--cli-mcp` or the Cloud MCP URL
+in a host, or run an `Agent`. Select one real task and approve the exact browser, site, key and budget first.
+
+```bash
+jeo-skill install browser-use --global --dry-run
+jeo-skill install browser-use --global --yes
+python3 "$SKILLS_ROOT/browser-use/scripts/preflight.py" --help
+python3 "$SKILLS_ROOT/browser-use/scripts/preflight.py" --json
+python3 "$SKILLS_ROOT/browser-use/scripts/preflight.py" --project "/path/to/project" --json
+python3 "$SKILLS_ROOT/browser-use/scripts/preflight.py" --json \
+  --repo "/path/to/browser-use" --expect-commit dfb6a73d520809341c975c6a01c228327991e88b
+```
+
+The helper supports `--help`, `--json`, `--project PATH`, `--repo PATH` and `--expect-commit FULL_SHA` (requires `--repo`).
+It reads host facts, whether tools and browsers exist (none is executed), environment variable names, whether the stored-key
+file, an `agent_helpers.py` and recorded cloud-browser markers exist, where `browser-use skill install` would write, and a
+project's `browser-use` pin; it opens no socket, writes nothing and never prints a key, `.env` or URL value. JSON reports
+`skill`, `scope: offline-preflight`, `status`, `checks` and `runtime_verified: false`. Exit 0 means the offline checks pass,
+1 means a missing or mismatched prerequisite (no install route, a wrong pin, a symlinked path), and 2 means invalid input.
+A passing report does not prove a browser, Chrome remote debugging, a key, quota or login works.
+
+Prepare the CLI only when a task needs it, after the user approves the install, with telemetry off for every call:
+
+```bash
+uv tool install browser-use==1.0.3          # or: pip install 'browser-use==1.0.3' in a venv (Python 3.11+)
+ANONYMIZED_TELEMETRY=false BH_TELEMETRY=0 browser-use --version
+```
+
+**Name collision.** Upstream's own agent prompt tells agents to run `browser-use skill install`. On 1.0.3 in an isolated
+HOME it overwrote the real catalog copy at `~/.agents/skills/browser-use/SKILL.md`, wrote the same file into every installed agent directory, and
+wrote through a symlinked host directory into the shared root. Do not run it where this catalog skill is installed; use
+`browser-use skill show` (stdout only) or `--path <scratch dir>`. `jeo-skill install browser-use --global --yes` restores only the
+shared-root copy: a real file in another agent directory keeps upstream's text until it is deleted or re-linked, and the offline
+helper's `skill_install_collision` check lists them. Telemetry is on by default and also covers `--help` and `--version`; `login`
+stores the key in `~/.config/browser-harness/auth.json`, `Agent(task)` alone uses the Browser Use gateway model and a billed
+cloud browser, and closing CDP does not stop a cloud browser, so end it with `stop_remote_daemon(name)`. The CLI attaches to the
+user's running Chrome with their logins, and `mac-approve` clicks Chrome's "Allow remote debugging?" prompt, so each needs its own
+approval. Upstream's `qa` skill can sign up for a key without a human and open a public tunnel to `localhost`, and its `x402`
+skill funds a crypto wallet; do not start either on the user's behalf.
 
 ### Impeccable design operator (on demand)
 
