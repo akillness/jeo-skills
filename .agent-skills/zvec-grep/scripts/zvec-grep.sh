@@ -11,6 +11,7 @@
 #   zvec-grep.sh rg [rg-options] PATTERN [PATH...]
 
 set -euo pipefail
+ZVEC_GREP_VERSION="0.2.2"
 
 cmd="${1:-}"
 
@@ -32,12 +33,21 @@ node_major() {
 }
 
 require_zg() {
-  local bin
+  local bin version
   bin="$(zg_bin)"
   if [[ -z "$bin" ]]; then
     echo "error: zg is not on PATH" >&2
-    echo "       npm install -g @zvec/zvec-grep@0.2.2" >&2
+    echo "       npm install -g @zvec/zvec-grep@$ZVEC_GREP_VERSION" >&2
     exit 127
+  fi
+  if ! version="$("$bin" version 2>/dev/null)"; then
+    echo "error: cannot determine zg version; expected $ZVEC_GREP_VERSION" >&2
+    exit 1
+  fi
+  if [[ "$version" != "$ZVEC_GREP_VERSION" ]]; then
+    echo "error: unsupported zg version $version (expected $ZVEC_GREP_VERSION)" >&2
+    echo "       npm install -g @zvec/zvec-grep@$ZVEC_GREP_VERSION" >&2
+    exit 1
   fi
   printf '%s' "$bin"
 }
@@ -86,10 +96,14 @@ case "$cmd" in
     bin="$(zg_bin)"
     if [[ -n "$bin" ]]; then
       echo "  ok    zg              $bin"
-      if version="$($bin --version 2>/dev/null | head -1)"; then
-        [[ -n "$version" ]] && echo "  info  version         $version"
+      if version="$("$bin" version 2>/dev/null)"; then
+        if [[ "$version" == "$ZVEC_GREP_VERSION" ]]; then
+          echo "  info  version         $version (supported)"
+        else
+          echo "  WARN  version         $version (unsupported; expected $ZVEC_GREP_VERSION)"
+        fi
       else
-        echo "  WARN  version         binary found but could not execute in this host"
+        echo "  WARN  version         could not determine; expected $ZVEC_GREP_VERSION"
       fi
     else
       echo "  info  zg              not on PATH"

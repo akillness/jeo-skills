@@ -42,7 +42,12 @@ class Sandbox:
             d.mkdir()
         self.log.write_text("", encoding="utf-8")
         for tool in tools:
-            body = f'#!/bin/sh\necho "{tool} $*" >> "{self.log}"\nexit 0\n'
+            if tool == "zg":
+                body = (f'#!/bin/sh\necho "{tool} $*" >> "{self.log}"\n'
+                        'if [ "$1" = version ]; then echo 0.2.2; exit 0; fi\n'
+                        'exit 0\n')
+            else:
+                body = f'#!/bin/sh\necho "{tool} $*" >> "{self.log}"\nexit 0\n'
             write_exec(self.bin / tool, body)
         if skills:
             self._skills()
@@ -348,6 +353,29 @@ class WorkspaceSetupTests(unittest.TestCase):
         self.assertEqual(proc.returncode, 1)
         self.assertEqual(report["failed"], ["zvec"])
         self.assertEqual(report["steps"]["second-brain"]["status"], "ok")
+
+    def test_zvec_version_is_checked_before_indexing(self):
+        box = self.sandbox()
+        proc, report = box.run()
+        self.assertEqual(proc.returncode, 0, proc.stderr)
+        self.assertEqual(report["steps"]["zvec"]["status"], "ok")
+        calls = box.calls()
+        self.assertIn("zg version", calls)
+        self.assertIn("zg index --embedding local/potion-code-16m-v2", calls)
+        self.assertLess(calls.index("zg version"), calls.index("zg index --embedding local/potion-code-16m-v2"))
+
+    def test_zvec_incompatible_versions_fail_without_indexing(self):
+        for version in ("0.3.0", "0.2.1", "0.2.2-beta"):
+            with self.subTest(version=version):
+                box = self.sandbox()
+                write_exec(box.bin / "zg", f'#!/bin/sh\necho "zg $*" >> "{box.log}"\n'
+                           f'if [ "$1" = version ]; then echo {version}; exit 0; fi\nexit 0\n')
+                proc, report = box.run()
+                self.assertEqual(proc.returncode, 1, proc.stderr)
+                self.assertEqual(report["failed"], ["zvec"])
+                self.assertEqual(report["steps"]["zvec"]["status"], "failed")
+                self.assertIn("zg version", box.calls())
+                self.assertFalse(any(call.startswith("zg index") for call in box.calls()), box.calls())
 
     def test_refresh_hooks_preserve_existing_post_commit_and_do_not_duplicate(self):
         box = self.sandbox()

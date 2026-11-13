@@ -297,7 +297,7 @@ if name == "uname":
         executable("node", 'if [ "${1:-}" = -p ]; then echo "22 20"; else echo v22.20.0; fi')
         executable("npm", '''printf 'npm %s\n' "$*" >> "$FIXTURE_LOG"
 case "$*" in
-  *mex-agent@0.8.4*) [ "${FAIL_MEX:-0}" != 1 ] ;;
+  *mex-agent@0.8.5*) [ "${FAIL_MEX:-0}" != 1 ] ;;
   *@zvec/zvec-grep@0.2.2*) [ "${FAIL_ZVEC:-0}" != 1 ] ;;
   *) exit 41 ;;
 esac''')
@@ -310,7 +310,7 @@ case "$*" in
   *cli-anything-hub==0.4.1*) [ "${FAIL_CLI:-0}" != 1 ] ;;
   *) echo "fixture rejected package: $*" >&2; exit 41 ;;
 esac''')
-        executable("mex", 'printf "mex %s\\n" "$*" >> "$FIXTURE_LOG"; echo "${MEX_OUTPUT:-0.8.4}"')
+        executable("mex", 'printf "mex %s\\n" "$*" >> "$FIXTURE_LOG"; echo "${MEX_OUTPUT:-0.8.5}"')
         executable("zg", 'printf "zg %s\\n" "$*" >> "$FIXTURE_LOG"; [ "${1:-}" = version ] && echo "${ZVEC_OUTPUT:-0.2.2}"; exit 0')
         executable("rtk", 'printf "rtk %s\\n" "$*" >> "$FIXTURE_LOG"; [ "${1:-}" = --version ] && echo "${RTK_OUTPUT:-rtk 1.1.0}"; exit 0')
         executable("semble", 'printf "semble %s\\n" "$*" >> "$FIXTURE_LOG"; [ "${1:-}" = --version ] && echo "${SEMBLE_OUTPUT:-0.7.0}"; exit 0')
@@ -351,7 +351,7 @@ fi''')
         self.assertEqual((self.project / ".specify/templates/plan.md").read_text(), "generated")
         commands = log.read_text(encoding="utf-8")
         for pin in (
-            "mex-agent@0.8.4", "@zvec/zvec-grep@0.2.2",
+            "mex-agent@0.8.5", "@zvec/zvec-grep@0.2.2",
             "github/spec-kit.git@99e047e9b48c3ecbbc5c3e530fb45bed671960bc",
             "--tag v1.1.0", "semble==0.7.0", "cli-anything-hub==0.4.1",
         ):

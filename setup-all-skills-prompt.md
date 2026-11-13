@@ -860,7 +860,7 @@ from the user project: its full-tool target is the invocation directory, not the
 checkout directory. It resolves the helper from a local source or checkout, or fetches
 it for a remote source; a missing helper or any nonzero status is a partial failure.
 
-The pins are `mex-agent` 0.8.4, `@zvec/zvec-grep` 0.2.2, `specify-cli` at
+The pins are `mex-agent` 0.8.5, `@zvec/zvec-grep` 0.2.2, `specify-cli` at
 Git commit `99e047e9b48c3ecbbc5c3e530fb45bed671960bc` (1.2.6.dev0), RTK v1.1.0,
 `semble` 0.7.0, and `cli-anything-hub` 0.4.1. Node.js 22.20+ is required by the
 skills CLI. RTK builds from its official pinned Git tag and requires Rust 1.91 or newer;

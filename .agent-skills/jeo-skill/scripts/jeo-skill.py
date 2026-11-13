@@ -614,7 +614,7 @@ def skill_setup_commands(root: Path | None, selected: list[str], *,
         elif name == "mex":
             mex_bin = home / ".local/bin/mex-agent"
             if not (mex_bin.is_file() and os.access(mex_bin, os.X_OK)) and not shutil.which("mex-agent"):
-                plans.append((name, ["npm", "install", "-g", "mex-agent@0.8.4"]))
+                plans.append((name, ["npm", "install", "-g", "mex-agent@0.8.5"]))
             plans.append((name, ["bash", str(skill_dir / "scripts/mex.sh"), "doctor", "."]))
         elif name == "openspace":
             if with_hooks:

@@ -3,7 +3,7 @@
 # indexes, models, MCP servers, or hooks. Each tool is attempted independently.
 set -u
 
-MEX_VERSION=0.8.4
+MEX_VERSION=0.8.5
 ZVEC_GREP_VERSION=0.2.2
 SPEC_KIT_VERSION=1.2.6.dev0
 SPEC_KIT_COMMIT=99e047e9b48c3ecbbc5c3e530fb45bed671960bc

@@ -46,7 +46,7 @@ class FullToolsIndependent(unittest.TestCase):
         (self.bin / "python3").symlink_to(sys.executable)
         self.command("node", 'if [ "$1" = "-p" ]; then echo "22 20"; else echo "v22.20.0"; fi')
         self.command("npm", 'exit 0')
-        self.command("mex", 'echo 0.8.4')
+        self.command("mex", 'echo 0.8.5')
         self.command("zg", 'if [ "$1" = "version" ]; then echo 0.2.2; fi')
         self.command("cargo", 'exit 0')
         self.command("rtk", 'if [ "$1" = "--version" ]; then echo "rtk 1.1.0"; fi')
@@ -323,7 +323,7 @@ exit 0''')
         installs = [line for line in self.npm_installs() if "mex-agent@" in line]
         self.assertEqual(
             installs,
-            [f"npm install -g --prefix {self.home}/.local --no-bin-links mex-agent@0.8.4"],
+            [f"npm install -g --prefix {self.home}/.local --no-bin-links mex-agent@0.8.5"],
         )
 
     def test_dangling_foreign_mex_link_is_also_a_collision(self):
@@ -350,7 +350,7 @@ exit 0''')
                 self.assertEqual(result.returncode, 0, result.stdout)
                 self.assertNotIn("belongs to another program", result.stdout)
                 installs = [line for line in self.npm_installs() if "mex-agent@" in line]
-                self.assertEqual(installs, ["npm install -g mex-agent@0.8.4"])
+                self.assertEqual(installs, ["npm install -g mex-agent@0.8.5"])
 
     def test_pinned_rtk_on_path_satisfies_the_pin_when_cargo_is_absent(self):
         (self.bin / "cargo").unlink()

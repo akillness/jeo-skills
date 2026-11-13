@@ -42,6 +42,7 @@ STEPS = ("mex", "zvec", "second-brain", "open-ontologies", "openspace",
          "rtk-semble", "jev", "refresh", "rules", "harness2")
 ALWAYS_STEPS = ("jev", "rules", "harness2")
 ZVEC_EMBEDDING = "local/potion-code-16m-v2"
+ZVEC_GREP_VERSION = "0.2.2"
 HOST_CLIS = ("jeopi", "omp", "jeo", "codex", "claude", "pi", "gjc")
 BRAIN_TOOLS = ("crontab", "graphify", "mex-agent", "zg")
 BRAIN_DEFAULTS = {
@@ -292,7 +293,15 @@ def step_mex(ctx: Ctx) -> dict:
 
 def step_zvec(ctx: Ctx) -> dict:
     if not ctx.which("zg"):
-        return result("pending", "zg not installed (npm install -g @zvec/zvec-grep@0.2.2)")
+        return result("pending", f"zg not installed (npm install -g @zvec/zvec-grep@{ZVEC_GREP_VERSION})")
+    if ctx.dry:
+        return result("ok", f"would verify zg version {ZVEC_GREP_VERSION} and refresh the workspace index")
+    code, out = ctx.run(["zg", "version"], 120, ctx.project)
+    if code != 0:
+        return result("failed", f"zg version exit {code}: {tail(out)}")
+    version = out.strip()
+    if version != ZVEC_GREP_VERSION:
+        return result("failed", f"unsupported zg version {version or '<empty>'}; expected {ZVEC_GREP_VERSION}")
     cmd = ["zg", "index"]
     if not (ctx.project / ".zvec-grep").exists():
         cmd += ["--embedding", ZVEC_EMBEDDING]
