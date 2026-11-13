@@ -311,11 +311,11 @@ Consulta la [guía de instalación](setup-all-skills-prompt.md#jev-control-plane
 
 ## 📚 Lista de Habilidades
 
-> Generado desde `.agent-skills/skills.json` · 429 habilidades · despliega una categoría para ver sus habilidades.
+> Generado desde `.agent-skills/skills.json` · 430 habilidades · despliega una categoría para ver sus habilidades.
 
-### 🌐 Web (71)
+### 🌐 Web (72)
 
-Subcategorías: `frontend` (12), `backend` (3), `design` (16), `api` (2), `auth` (1), `data` (13), `testing` (4), `accessibility` (1), `performance` (1), `graphics` (12), `capture` (6)
+Subcategorías: `frontend` (12), `backend` (3), `design` (16), `api` (2), `auth` (1), `data` (13), `testing` (4), `accessibility` (1), `performance` (1), `graphics` (12), `capture` (7)
 
 <details>
 <summary>Ver habilidades</summary>
@@ -393,6 +393,7 @@ Subcategorías: `frontend` (12), `backend` (3), `design` (16), `api` (2), `auth`
 | `motion-primitives` |
 | `cursify` |
 | `trickle-ui` |
+| `browser-use` |
 
 </details>
 

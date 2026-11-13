@@ -1,7 +1,7 @@
 {
   "version": "2.1.0",
   "generated": "2026-10-21",
-  "skill_count": 429,
+  "skill_count": 430,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -199,7 +199,8 @@
       "hyperiux",
       "motion-primitives",
       "cursify",
-      "trickle-ui"
+      "trickle-ui",
+      "browser-use"
     ],
     "infrastructure": [
       "deployment-automation",
@@ -671,7 +672,8 @@
         "slides-grab",
         "stitched-full-page-capture",
         "moli",
-        "lightpanda"
+        "lightpanda",
+        "browser-use"
       ]
     },
     "infrastructure": {
@@ -1563,7 +1565,8 @@
         "stitched-full-page-capture",
         "browser-video-recording",
         "stagehand",
-        "lightpanda"
+        "lightpanda",
+        "browser-use"
       ]
     },
     "firebase-ai-stack": {
@@ -15867,6 +15870,36 @@
       "keyword": "connectonion",
       "version": "0.1.0",
       "source": "https://github.com/openonion/connectonion"
+    },
+    {
+      "name": "browser-use",
+      "description": "Operate the browser-use/browser-use Python agent and CLI for AI-driven browser automation. Use when the user names Browser Use, needs its CLI, Python library, local or cloud browser, provider configuration, or troubleshooting; use browser-harness for generic browser testing and playwriter for its existing-browser workflow.",
+      "category": "web",
+      "subcategory": "capture",
+      "interface": "workflow",
+      "path": "browser-use/SKILL.md",
+      "tags": [
+        "browser-use",
+        "browser-automation",
+        "ai-agent",
+        "python",
+        "cli"
+      ],
+      "platforms": [
+        "Claude",
+        "ChatGPT",
+        "Gemini",
+        "Codex"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Glob",
+        "Grep",
+        "Bash"
+      ],
+      "keyword": "browser-use",
+      "version": "1.0.0",
+      "source": "https://github.com/browser-use/browser-use"
     }
   ]
 }

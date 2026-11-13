@@ -1,0 +1,29 @@
+[
+  {
+    "id": "offline-inspection",
+    "prompt": "Check whether Browser Use is installed without executing it or accessing the network.",
+    "expected_skill": "browser-use",
+    "expected_behavior": "Use the offline preflight, distinguish package metadata from runtime readiness and do not run the browser.",
+    "authored": true,
+    "executed": false,
+    "evidence_status": "authored-not-executed"
+  },
+  {
+    "id": "cloud-defaults",
+    "prompt": "Run a Browser Use Python agent using my local browser.",
+    "expected_skill": "browser-use",
+    "expected_behavior": "Explicitly select a local browser, explain that the model provider may still be remote and obtain appropriate authorization before execution and external calls.",
+    "authored": true,
+    "executed": false,
+    "evidence_status": "authored-not-executed"
+  },
+  {
+    "id": "generic-browser-near-miss",
+    "prompt": "Test my website with a browser; I did not request Browser Use.",
+    "expected_skill": "browser-harness",
+    "expected_behavior": "Route generic browser testing to browser-harness rather than requiring Browser Use.",
+    "authored": true,
+    "executed": false,
+    "evidence_status": "authored-not-executed"
+  }
+]
