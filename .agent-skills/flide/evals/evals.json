@@ -1,0 +1,9 @@
+{
+  "skill_name": "flide",
+  "evals": [
+    {"id": 1, "prompt": "Serve OneJev with OmniJev Flide on my GPU", "expected_output": "Use flide; inspect prerequisites and permissions; bind the server to loopback and test using approved data."},
+    {"id": 2, "prompt": "Configure my Jev review profile", "expected_output": "Route to jev-control-plane; do not silently substitute Flide as a backend."},
+    {"id": 3, "prompt": "Can I expose Flide with remote media URLs for arbitrary clients?", "expected_output": "Explain default all-interface binding and remote-media reachability risks; require explicit approval and appropriate security controls."},
+    {"id": 4, "prompt": "Add Flide to the catalog and installation guide", "expected_output": "Register the flat skill in skills.json, regenerate catalog projections, and verify discovery and setup documentation."}
+  ]
+}

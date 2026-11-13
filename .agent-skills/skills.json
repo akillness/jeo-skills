@@ -1,7 +1,7 @@
 {
   "version": "2.1.0",
   "generated": "2026-10-21",
-  "skill_count": 430,
+  "skill_count": 431,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -349,7 +349,8 @@
       "google-maps-scraper",
       "gitingest",
       "craft-anything",
-      "connectonion"
+      "connectonion",
+      "flide"
     ],
     "ai-agents": [
       "bmad",
@@ -863,7 +864,8 @@
         "uzu",
         "context-mode",
         "llmfit",
-        "hyper-extract"
+        "hyper-extract",
+        "flide"
       ],
       "media-cli": [
         "compresso"
@@ -1829,9 +1831,10 @@
         "anyjev",
         "typesafe-computer-use",
         "jev-ultrafast",
-        "pg-jev"
+        "pg-jev",
+        "flide"
       ],
-      "note": "Jev control-plane operates this catalog harness; AnyJev reads logprobs from self-hosted models, typesafe-computer-use runs the separate TypeSafe-driven clicker, Jev Ultrafast runs a TypeSafe-driven web agent through Browser Harness, and pg-jev adds server-side PostgreSQL decisions. These are distinct projects, not interchangeable calibrated backends; each owns its setup and data-disclosure approval."
+      "note": "Jev control-plane operates this catalog harness; AnyJev reads logprobs from self-hosted models, typesafe-computer-use runs the separate TypeSafe-driven clicker, Jev Ultrafast runs a TypeSafe-driven web agent through Browser Harness, and pg-jev adds server-side PostgreSQL decisions. These are distinct projects, not interchangeable calibrated backends; each owns its setup and data-disclosure approval. Flide serves decision inference via its own System One API; it is not automatically a configured Jev review backend."
     },
     "local-model-fit": {
       "mode": "layered",
@@ -15900,6 +15903,37 @@
       "keyword": "browser-use",
       "version": "1.0.0",
       "source": "https://github.com/browser-use/browser-use"
+    },
+    {
+      "name": "flide",
+      "description": "Operate OmniJev Flide decision inference with exact state forking and its System One API. Use when the user asks to install, serve, verify, or troubleshoot Flide, run OneJev or other supported decision models on NVIDIA GPUs, or inspect Flide's /v1/systemone requests. For Jev harness routing use jev-control-plane; for generic hardware/model fit use llmfit.",
+      "category": "cli-tools",
+      "subcategory": "ai-cli",
+      "interface": "cli",
+      "path": "flide/SKILL.md",
+      "tags": [
+        "flide",
+        "decision-inference",
+        "onejev",
+        "system-one",
+        "nvidia",
+        "state-forking"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex CLI",
+        "Gemini CLI",
+        "OpenCode"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "flide",
+      "version": "1.0.0",
+      "source": "https://github.com/OmniJev/Flide"
     }
   ]
 }

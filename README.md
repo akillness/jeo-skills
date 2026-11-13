@@ -122,6 +122,8 @@ and provider calls require separate approval. See the [setup guide](setup-all-sk
 
 For Browser Use, preview `jeo-skill install browser-use --global --dry-run`. The skill provides guidance and offline preflight, not a browser or provider; installation, site access, cloud/model calls and account access are separate decisions. See the [setup guide](setup-all-skills-prompt.md#browser-use-operator-on-demand).
 
+For Flide decision inference, preview `jeo-skill install flide --global --dry-run`. The guide includes an offline preflight; package/model downloads, GPU use and server startup require separate approval. See the [setup guide](setup-all-skills-prompt.md#flide-decision-inference-on-demand).
+
 For Impeccable, preview `jeo-skill install impeccable --global --dry-run` before installing
 the selected skill. It installs an operator guide for `pbakaus/impeccable` 4.8.0, not
 Impeccable, its engine or its design hook; the upstream installer uses the same `impeccable`
@@ -367,7 +369,7 @@ node ~/.agents/jev/jev-harness.mjs --profile "${JEV_PROFILE:?Select the current 
 
 ## 📚 Skills List
 
-> Generated from `.agent-skills/skills.json` · 430 skills · expand a category to see its skills.
+> Generated from `.agent-skills/skills.json` · 431 skills · expand a category to see its skills.
 
 ### 🌐 Web (72)
 
@@ -585,9 +587,9 @@ Subcategories: `image` (10), `video` (18), `motion` (1), `audio` (2), `presentat
 
 </details>
 
-### ⌨️ CLI Tools (45)
+### ⌨️ CLI Tools (46)
 
-Subcategories: `developer-cli` (12), `ai-cli` (15), `media-cli` (1), `automation-cli` (8), `search-cli` (8), `benchmark-cli` (1)
+Subcategories: `developer-cli` (12), `ai-cli` (16), `media-cli` (1), `automation-cli` (8), `search-cli` (8), `benchmark-cli` (1)
 
 <details>
 <summary>Show CLI Tools skills</summary>
@@ -639,6 +641,7 @@ Subcategories: `developer-cli` (12), `ai-cli` (15), `media-cli` (1), `automation
 | `gitingest` |
 | `craft-anything` |
 | `connectonion` |
+| `flide` |
 
 </details>
 

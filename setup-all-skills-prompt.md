@@ -3230,6 +3230,10 @@ server/CDP/MCP startup, LLM/provider calls and credential use separately. Set
 help or version probe. Do not use `version --check`: it makes a network request even
 with telemetry disabled. Telemetry opt-out does not prevent page or provider traffic.
 
+### Flide decision inference (on demand)
+
+Preview `jeo-skill install flide --global --dry-run`, then install the guide with `jeo-skill install flide --global --yes` if selected. The skill does not install Flide, models or GPU dependencies. Resolve `SKILL_DIR` to the installed skill directory and run `python3 "$SKILL_DIR/scripts/preflight.py"` for offline metadata and path inspection. Consult the operation reference and separately authorize package/model downloads, GPU use, credentials, server startup and data submission. Flide requires an NVIDIA GPU on Linux or WSL2; bind the server explicitly to loopback because the upstream default listens on all interfaces.
+
 ### Browser Use operator (on demand)
 
 Preview `jeo-skill install browser-use --global --dry-run`, then install the selected guide with `jeo-skill install browser-use --global --yes`. This installs guidance, not the Browser Use package or browser. Resolve `SKILL_DIR` to the installed skill directory and run `python3 "$SKILL_DIR/scripts/preflight.py"` for offline metadata inspection. Review the skill's operation reference before separately authorizing package installation, browser connection, site access, credentials, or cloud/model usage. The upstream Python agent defaults to a cloud browser and hosted model.
