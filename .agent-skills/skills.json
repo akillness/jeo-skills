@@ -1,7 +1,7 @@
 {
   "version": "2.1.0",
   "generated": "2026-10-21",
-  "skill_count": 429,
+  "skill_count": 430,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -199,7 +199,8 @@
       "hyperiux",
       "motion-primitives",
       "cursify",
-      "trickle-ui"
+      "trickle-ui",
+      "browser-use"
     ],
     "infrastructure": [
       "deployment-automation",
@@ -643,7 +644,8 @@
         "backend-testing",
         "browser-harness",
         "playwriter",
-        "stagehand"
+        "stagehand",
+        "browser-use"
       ],
       "accessibility": [
         "web-accessibility"
@@ -1563,7 +1565,8 @@
         "stitched-full-page-capture",
         "browser-video-recording",
         "stagehand",
-        "lightpanda"
+        "lightpanda",
+        "browser-use"
       ]
     },
     "firebase-ai-stack": {
@@ -2036,6 +2039,15 @@
         "craft-anything"
       ],
       "note": "rea (morluto/rea) focuses on local evidence-backed inspection of binaries, JS/Electron, and saved captures; craft-anything (storytold/craft-anything, MIT OR Apache-2.0) is a pure-Rust clean-room/deep inspection and AI rebuilding engine with 320 tools, desktop app, CLI, and MCP server."
+    },
+    "browser-use-stack": {
+      "mode": "layered",
+      "members": [
+        "browser-use",
+        "browser-harness",
+        "jev-ultrafast"
+      ],
+      "note": "browser-use 1.0 (agent, CLI, MCP, Cloud client) runs on browser-harness 0.1.13, which owns the CDP daemon, helpers and domain skills; jev-ultrafast is a separate TypeSafe-driven agent that also runs through Browser Harness. Each skill owns its own setup and data-disclosure approval and none is a drop-in for another. browser-use is pinned to browser-use/browser-use 1.0.3 (dfb6a73d520809341c975c6a01c228327991e88b, MIT)."
     }
   },
   "model_policies": {
@@ -15867,6 +15879,44 @@
       "keyword": "connectonion",
       "version": "0.1.0",
       "source": "https://github.com/openonion/connectonion"
+    },
+    {
+      "name": "browser-use",
+      "description": "Operate browser-use/browser-use (MIT), the open-source browser agent whose model writes Python in one persistent REPL over Chrome DevTools Protocol, through exactly one path: the `browser-use` CLI (Python piped on stdin, `--doctor`, `--cli-mcp`), the pinned Python library (`Agent`, `Browser`, `Tools`, `sensitive_data`, `allowed_domains`), or hosted Browser Use Cloud (cloud browsers, `bu-*` models, Agents API, billed). Use when the user names browser-use, wants to install or pin `browser-use==1.0.3`, run `browser-use --doctor`, let a coding agent drive Chrome with Python, choose a local, own-Chromium or cloud browser, migrate 0.x code, or restrict domains and secrets. Run the offline preflight first; gate installs, `login`, cloud browsers, attaching to a logged-in Chrome and `skill install` (it overwrites this skill) behind approval. Not for plain fetches, Playwright scripts, `browser-harness`, `playwriter` or `stagehand`. Triggers on: browser-use, bu-fast, browser_exec, browser use cloud, 브라우저 유즈.",
+      "category": "web",
+      "subcategory": "testing",
+      "interface": "cli",
+      "path": "browser-use/SKILL.md",
+      "tags": [
+        "browser-use",
+        "browser-agent",
+        "browser-automation",
+        "cdp",
+        "chrome-devtools-protocol",
+        "cloud-browser",
+        "python-library",
+        "cli",
+        "mcp",
+        "migration"
+      ],
+      "platforms": [
+        "Claude Code",
+        "Codex CLI",
+        "Gemini CLI",
+        "OpenCode",
+        "Cursor"
+      ],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "browser-use",
+      "version": "1.0.0",
+      "source": "https://github.com/browser-use/browser-use"
     }
   ]
 }

@@ -1,0 +1,195 @@
+{
+  "schema_version": 1,
+  "skill": "browser-use",
+  "repository": "browser-use/browser-use",
+  "commit": "dfb6a73d520809341c975c6a01c228327991e88b",
+  "committed_at": "2026-11-12T16:52:44Z",
+  "observed_at": "2026-11-13",
+  "upstream_version": "1.0.3",
+  "license": {
+    "spdx": "MIT",
+    "path": "LICENSE",
+    "url": "https://github.com/browser-use/browser-use/blob/dfb6a73d520809341c975c6a01c228327991e88b/LICENSE",
+    "conclusion": "MIT License (Copyright (c) 2024 Gregor Zunic) per the LICENSE file, pyproject.toml and the GitHub API. This skill copies no upstream code or documentation; it paraphrases and cites it. Browser Use Cloud is a separate hosted product with its own terms."
+  },
+  "release": {
+    "tag": "1.0.3",
+    "tag_commit": "dfb6a73d520809341c975c6a01c228327991e88b",
+    "published_at": "2026-11-12T16:52:54Z",
+    "note": "the audited commit is the release tag's commit and was the head of main when observed"
+  },
+  "pypi": {
+    "package": "browser-use",
+    "version": "1.0.3",
+    "requires_python": ">=3.11,<4.0",
+    "files": [
+      {
+        "filename": "browser_use-1.0.3-py3-none-any.whl",
+        "sha256": "3721b75f6c501523694ef58cd7a3911c032cdabddbb38bca02709a249465c68f",
+        "bytes": 272764
+      },
+      {
+        "filename": "browser_use-1.0.3.tar.gz",
+        "sha256": "9d04ceb2ce82563dfbff483f5fd9df18bdcf1c1b65e252fd73b2ee5e09841cbe",
+        "bytes": 247173
+      }
+    ]
+  },
+  "pinned_runtime_dependencies": {
+    "browser-harness": "0.1.13",
+    "pydantic": "2.14.3",
+    "pydantic-ai-slim[openai,anthropic,google]": "2.66.0",
+    "google-genai": "2.34.0",
+    "genai-prices": "0.2.1",
+    "idna": "3.20",
+    "pillow": "12.3.0",
+    "python-dotenv": "1.2.4",
+    "uuid7": "0.1.0",
+    "mcp": "2.3.0"
+  },
+  "console_scripts": [
+    "browser-use",
+    "browseruse",
+    "browser-use-tui (deprecated alias)"
+  ],
+  "upstream_skills_at_pin": [
+    "browser-use",
+    "cloud",
+    "open-source",
+    "qa",
+    "remote-browser",
+    "x402"
+  ],
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "2a8538fee328ded79a680ffb26d8f8bafcf151999d9271918ed2f6da5a2cea74",
+      "bytes": 18392
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "135c57671b0ee957669b05a0ca00cc06f645496d351e2e732832c6e276da9a5e",
+      "bytes": 1069
+    },
+    {
+      "path": "pyproject.toml",
+      "sha256": "13a67077c4da273777645cbf9dfa589b4086de7e99a686528c44255d5cd90b61",
+      "bytes": 4855
+    },
+    {
+      "path": "AGENTS.md",
+      "sha256": "0916062033999ba26678332708115f2e64c4768a32f97a543a36c1b963790b6e",
+      "bytes": 3296
+    },
+    {
+      "path": "MIGRATING.md",
+      "sha256": "6b83567126b4e527d1c0059bde9e93362926bf43a94dfbabe9bd5814b363187b",
+      "bytes": 50882
+    },
+    {
+      "path": "CLOUD.md",
+      "sha256": "a2266566dcbe3e1f0eba2dfba0c7a306ed1621ab566ad6b2f78863af538a63cf",
+      "bytes": 5821
+    },
+    {
+      "path": "skills/browser-use/SKILL.md",
+      "sha256": "dcf3023dea7b8f7ddd2cf42a66848ee3aab57f00ff6bb61e4de9ebb54791928a",
+      "bytes": 10858
+    },
+    {
+      "path": "skills/open-source/SKILL.md",
+      "sha256": "5982f6ed92162d5f3d0c016fde9f2da09e7f3b2434caa207bbf57fea2cd0bc98",
+      "bytes": 5537
+    },
+    {
+      "path": "skills/cloud/SKILL.md",
+      "sha256": "e737c8edc5f3e9b3b966d352c26b8206dfb2b620210d0a50bc303a561ceb6dc5",
+      "bytes": 4091
+    },
+    {
+      "path": "skills/remote-browser/SKILL.md",
+      "sha256": "e0f874a07f4e6c2e6184c895b1ff9a9ba34e31fc5a7d25fcae9110bf5dbb4814",
+      "bytes": 2322
+    },
+    {
+      "path": "skills/qa/SKILL.md",
+      "sha256": "eb129f028cad5dd21b2f40c077a73f4b859c53e50d224f89b201f1ea0d249742",
+      "bytes": 8352
+    },
+    {
+      "path": "skills/qa/references/methodology.md",
+      "sha256": "8cf06fde72932f9fb504e8e2b1f9f1cbeeb833293792dd3671b8a9ed75f25458",
+      "bytes": 15863
+    },
+    {
+      "path": "skills/x402/SKILL.md",
+      "sha256": "d9b24297e3d60376d2115bb40a3b1d776fa704beccd9d54b8e3a6d9a39abe470",
+      "bytes": 15174
+    },
+    {
+      "path": "browser_use/cli.py",
+      "sha256": "104c5cdbe55169a320b34e1630d4e92a87db338378fc3926046d80e9a2f3f0f7",
+      "bytes": 47998
+    },
+    {
+      "path": "browser_use/skills/install.py",
+      "sha256": "6fe9b2818f8acfae6878445e8ed14a984a00baf0750115ea6f902db35bcb9f20",
+      "bytes": 6742
+    },
+    {
+      "path": "browser_use/skills/browser_use.py",
+      "sha256": "ed2f51e67921c5df53e751108af531ae9b4d7d48a9083cae1bb2e8b724786617",
+      "bytes": 4053
+    },
+    {
+      "path": "browser_use/config.py",
+      "sha256": "b285df06bc51388d64e74d4ee3b7af55b7c25ff37727cab158141654c9612950",
+      "bytes": 1736
+    },
+    {
+      "path": "browser_use/auth.py",
+      "sha256": "4e7a763a0775c8af4001609485ac10237023e58f20a75db3a8ab95676a11447b",
+      "bytes": 6800
+    },
+    {
+      "path": "browser_use/telemetry/service.py",
+      "sha256": "d37e2d193199f55a664de874a7d87b5fd4e8fbf8fd46e5e18c1be84372f06e43",
+      "bytes": 26011
+    },
+    {
+      "path": "browser_use/mcp/cli_mcp.py",
+      "sha256": "414e698a238a50b695e8624811ddca1567fbf80b08c1d8348db3966123ef9c1a",
+      "bytes": 41678
+    },
+    {
+      "path": "browser_use/browser/local.py",
+      "sha256": "36d9a679f0e082bf003f8f6619067ed18fb5aba5d4985ab5b5d6b9673aff1da9",
+      "bytes": 27666
+    },
+    {
+      "path": "browser_use/browser/browser.py",
+      "sha256": "14af07313ae43da7768234525c34f8d61d7676f12b3193e7172fad0b95c6b701",
+      "bytes": 62748
+    },
+    {
+      "path": "browser_use/harness_cloud.py",
+      "sha256": "90e0275ef1f196e5284fdc5ee838c212a7c16c04f529a801a29c1f5f3d1982b3",
+      "bytes": 13712
+    },
+    {
+      "path": "browser_use/domains.py",
+      "sha256": "b9143a0254a794f9f5c9024f55c04a9eb1cc45488a8c767550bd2a18d725affe",
+      "bytes": 20692
+    },
+    {
+      "path": "browser_use/repl/worker.py",
+      "sha256": "79172a7c6907d3a7efbda61eef64c0aff7b1c369c1d237ecec980663cb01af28",
+      "bytes": 58301
+    },
+    {
+      "path": "browser_use/agent/loop.py",
+      "sha256": "85f8a7747400900866c023f4868fa69b5634edc47ced1e977196e1983ca5f649",
+      "bytes": 71777
+    }
+  ]
+}

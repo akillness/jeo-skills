@@ -30,6 +30,7 @@ The root [MIT License](../LICENSE) applies to project-authored material. Third-p
 | `obsidian-second-brain` | [eugeniughelbur/obsidian-second-brain](https://github.com/eugeniughelbur/obsidian-second-brain) (fork: [akillness/obsidian-second-brain](https://github.com/akillness/obsidian-second-brain)) | MIT |
 | `graphify` | [safishamsi/graphify](https://github.com/safishamsi/graphify) | MIT |
 | `browser-harness` | [browser-use/browser-harness](https://github.com/browser-use/browser-harness) | MIT |
+| `browser-use` (original operator guide; no upstream code or documentation vendored) | [browser-use/browser-use 1.0.3 @ dfb6a73](https://github.com/browser-use/browser-use/tree/dfb6a73d520809341c975c6a01c228327991e88b) · `browser-use` 1.0.3 on PyPI | MIT (upstream); Browser Use Cloud is a separate hosted product with its own [terms](https://browser-use.com/legal/terms-of-service) |
 | `lightpanda` | [lightpanda-io/browser](https://github.com/lightpanda-io/browser) · [main @ 8f2c818](https://github.com/lightpanda-io/browser/tree/8f2c8185c97e3cc98de07f164e7eb3d9e2dd9020) | AGPL-3.0 (upstream) |
 | `stagehand` | [browserbase/stagehand](https://github.com/browserbase/stagehand) | MIT |
 | `scrapling` | [D4Vinci/Scrapling](https://github.com/D4Vinci/Scrapling) | BSD-3-Clause |

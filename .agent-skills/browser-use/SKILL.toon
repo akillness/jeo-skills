@@ -1,0 +1,28 @@
+N:browser-use
+D:Operate browser-use/browser-use (MIT, pinned 1.0.3): choose the CLI, the Python library or Browser Use Cloud, run an offline preflight, and gate installs, login, cloud browsers, real-Chrome attach and skill install behind approval.
+G:browser-use browser-agent cdp browser-harness cloud-browser mcp cli python-library pinned
+U[6]:
+  Install or pin browser-use==1.0.3 and check it with --doctor
+  Let a coding agent drive Chrome with Python piped to the browser-use CLI
+  Write or review code that uses Agent, Browser, Tools, sensitive_data and allowed_domains
+  Choose a local, own-Chromium or Browser Use Cloud browser and state what it costs
+  Migrate 0.x browser-use code to 1.0 using the named removal errors
+  Audit what a run can read, send and bill before it starts
+S[6]{n,action,details}:
+  1,Pick one path,CLI or Python library or Cloud API or MCP; route plain fetches and other browser tools elsewhere
+  2,Offline gate,Run scripts/preflight.py with optional --project and --repo; browser-use is never executed
+  3,Pin and install,Only if asked: uv tool install browser-use==1.0.3 with telemetry off and exact pin
+  4,Choose the browser,Own Chromium or cloud by default; the user's Chrome only with a named approval and their Allow click
+  5,Run the smallest task,Open with new_tab then verify with page_info or js or a screenshot and keep one working tab
+  6,Clean up and report,Stop cloud browsers and delete the workspace; report what was not exercised
+R[7]:
+  Helper is offline and never proves a browser or key works
+  Never run browser-use skill install: it overwrites this skill's SKILL.md and follows symlinks
+  Agent(task) alone uses the Browser Use gateway model and a billed cloud browser
+  Closing CDP does not stop a cloud browser; stop it explicitly
+  Agent-written Python runs as the user; sensitive_data and allowed_domains are not sandboxes
+  Never create an account, open a public tunnel or fund an x402 wallet on the user's behalf
+  Pin with == and do not rewrite the user's model names
+E[2]{desc,in,out}:
+  "Make the agent remember browser-use","User asks to run browser-use skill install","Refusal of the default target with skill show or --path as alternatives and the jeo-skill install line"
+  "Run the one-line Agent example","User asks for Agent(task).run_sync() and a result","Explanation of the gateway model and cloud browser defaults and a request for key and budget approval or a local Browser('chromium') alternative"

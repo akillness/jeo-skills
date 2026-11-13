@@ -148,6 +148,15 @@ Impeccable은 `jeo-skill install impeccable --global --dry-run`으로 선택을 
 쓰므로 어느 쪽이든 쓰기 전에 오프라인 doctor로 먼저 확인합니다. npm 실행, 엔진 다운로드·실행,
 훅, 브라우저 스캔, live 모드는 각각 별도 승인이 필요합니다. [설치 가이드](setup-all-skills-prompt.md#impeccable-design-operator-on-demand)를 참고하세요.
 
+browser-use는 `jeo-skill install browser-use --global --dry-run`으로 선택을 미리 확인한 뒤
+스킬을 설치합니다. 스킬 설치는 `browser-use/browser-use` 1.0.3 운영 가이드와 이를 실행하지 않는
+오프라인 헬퍼만 복사하며 browser-use 자체는 설치하지 않습니다. 업스트림의
+`browser-use skill install`은 같은 이름의 `SKILL.md`를 `~/.agents/skills`와 설치된 모든 에이전트
+디렉터리에 심볼릭 링크를 따라가며 덮어써 이 스킬을 대체하므로 실행하지 말고
+`browser-use skill show`를 쓰세요. CLI 설치, `login`, `Agent` 실행(기본값이 호스팅 모델과 과금되는
+클라우드 브라우저), 클라우드 브라우저, 내 크롬에 연결, MCP 등록은 각각 별도 승인이 필요합니다.
+[설치 가이드](setup-all-skills-prompt.md#browser-use-operator-on-demand-billed-and-can-control-your-chrome)를 참고하세요.
+
 설치 프로그램 변수는 파이프 오른쪽의 `bash`에 지정합니다.
 
 ```bash
@@ -375,11 +384,11 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 
 ## 📚 스킬 목록
 
-> `.agent-skills/skills.json`에서 생성 · 429개 스킬 · 카테고리를 펼치면 스킬 목록이 보입니다.
+> `.agent-skills/skills.json`에서 생성 · 430개 스킬 · 카테고리를 펼치면 스킬 목록이 보입니다.
 
-### 🌐 웹 (71개)
+### 🌐 웹 (72개)
 
-하위 분류: `frontend` (12), `backend` (3), `design` (16), `api` (2), `auth` (1), `data` (13), `testing` (4), `accessibility` (1), `performance` (1), `graphics` (12), `capture` (6)
+하위 분류: `frontend` (12), `backend` (3), `design` (16), `api` (2), `auth` (1), `data` (13), `testing` (5), `accessibility` (1), `performance` (1), `graphics` (12), `capture` (6)
 
 <details>
 <summary>스킬 보기</summary>
@@ -457,6 +466,7 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 | `motion-primitives` |
 | `cursify` |
 | `trickle-ui` |
+| `browser-use` |
 
 </details>
 
@@ -978,6 +988,12 @@ v1 마이그레이션, 실행 근거에 따른 `/harness:evolve`를 안내합니
 
 <!-- WHATS-NEW:START -->
 
+## 🆕 v2026-11-13 업데이트
+
+| 변경 사항 | 상세 내용 |
+|--------|---------|
+| **`browser-use`: Browser Use 에이전트·CLI·Cloud를 안전하게 운영하기** | [`browser-use/browser-use`](https://github.com/browser-use/browser-use/tree/dfb6a73d520809341c975c6a01c228327991e88b) 1.0.3(MIT)용 `web` / `testing` 스킬을 추가했습니다. 요청 하나를 정확히 한 경로(`browser-use` CLI, Python 라이브러리, Browser Use Cloud, `--cli-mcp`)로 보내고 모든 부수 효과를 승인 게이트로 막으며, 감사한 레퍼런스 4개(`upstream`, `command-catalog`, `safety`, `library-and-cloud`), SHA-256 소스 매니페스트, 동작 evals 10개, 아무것도 실행하거나 값을 읽지 않고 설치 경로·로컬 브라우저·자격 증명 변수 이름·텔레메트리 기본값·상태 경로·프로젝트의 `browser-use` 핀(`--project`)을 보고하는 오프라인 표준 라이브러리 `scripts/preflight.py`를 갖췄습니다. 감사에서는 읽기 전용 CLI와 0.x 제거 오류를 임시 1.0.3 설치에서 실제로 실행해 결과를 기록했습니다. 업스트림의 `browser-use skill install`은 `~/.agents/skills/browser-use/SKILL.md`와 설치된 모든 에이전트 디렉터리를 심볼릭 링크까지 따라가며 덮어써 이 카탈로그 스킬을 대체합니다(`skill show` 사용). 텔레메트리는 기본값이 켜짐이며 `--help`와 `--version`에도 적용됩니다. `Agent(task)`만 쓰면 호스팅 게이트웨이 모델과 과금되는 클라우드 브라우저를 씁니다. 하니스 작업공간의 `agent_helpers.py`는 CLI 호출마다 실행됩니다. 업스트림 `qa`와 `x402` 스킬은 자동 가입, 공개 터널 개설, 지갑 충전을 안내합니다. `browser-evidence` 그룹과 `browser-harness`, `jev-ultrafast`와 함께하는 새 계층형 `browser-use-stack` 그룹에 속합니다. `jeo-skill install browser-use --global --yes`로 설치하며 일괄 설치는 문서만 복사합니다. `scripts/test_browser_use_skill.py`가 오프라인으로 검증하고 CI에서 실행되며, 헬퍼는 공용 preflight 계약 스위트에도 포함됩니다. |
+
 ## 🆕 v2026-11-07 업데이트
 
 | 변경 사항 | 상세 내용 |
@@ -1013,21 +1029,6 @@ v1 마이그레이션, 실행 근거에 따른 `/harness:evolve`를 안내합니
 | **Full-tools 확장 및 다중 에이전트 spec-kit** | `scripts/install-full-tools.sh`에 기본 6/6 계약을 유지하면서 `Graphify`, `OpenSpace`(BM25 프로브 기준), `Open-Ontologies`(`smoke.py`), `OKF-Agent-Memory`(`smoke.py`)를 포함하는 `--extended`(10/10 도구) 모드를 추가했습니다. TeX Live `mex`보다 최신 nvm/npm 버전을 우선하는 `~/.local/bin/mex-agent` 래퍼 설치, `~/.local/bin/rtk -> ~/.cargo/bin/rtk`(`1.1.0`) 심볼릭 링크 연결, 다중 에이전트 `SPEC_KIT_INTEGRATION` 스테이징 및 안전한 미존재 파일 전용 병합을 지원합니다. |
 | **지식 파이프라인 및 볼트 동시성 강화** | `hooks/ctx/lock.py`, `hooks/ingest-output.py`, `hooks/ingest-prompt.py`를 레포에 패키징하고 실제 `fcntl.flock` 폴백을 내장했습니다. `Stop`/`AfterAgent`/`post-turn` 턴 종료 이벤트 시 출력이 있으면 볼트 락 하에 `ingest-output.py`로 위임하며 가시적 텍스트 블록만 추출합니다(`thinking`/`tool_use` 필터링). 고유 `capture_id`와 배타적 생성(`"x"`)으로 파일 덮어쓰기 충돌을 차단하고, 백틱 비변조 외곽 펜스를 적용했으며, 락 점유 시 `.state/deferred-index.jsonl`에 안전하게 지연 기록 후 다음 실행 시 자동 색인 병합합니다. |
 | **Jev 다중 호스트 바인딩 및 ECC 업데이트** | 감지된 10개 코딩 에이전트 호스트를 `~/.agents/jev/agents.json`의 독립 프로필에 연결하고, `echo-turn-jeopi`를 `runtimeMode: assist`로 전환하여 스킬 본문 자동 주입을 활성화했으며, Claude Code `ecc@ecc` 플러그인을 Jev 리뷰를 거쳐 `2.2.3`으로 업데이트했습니다. |
-
-## 🆕 v2026-10-30 업데이트
-
-| 변경 사항 | 상세 내용 |
-|--------|---------|
-| **Impeccable 디자인 운영 가이드** | `pbakaus/impeccable` 스킬 4.8.0 / 엔진 0.1.18, 커밋 `02523aec3e4c4580102d996d1b6a71fbe062e03f`(Apache-2.0, LICENSE·NOTICE.md 확인)에 고정한 `impeccable` v1.0.0을 추가했습니다. 카탈로그는 408→409개(`web/design`)입니다. 업스트림 명령 24개를 라우팅하고, 업스트림 스킬 없이도 작업할 수 있도록 critique/audit 방법론과 craft floor를 요약해 담았으며, 62개 규칙 탐지기와 ignore 정책을 문서화했습니다. npm 실행, 엔진 다운로드·실행, 샌드박스가 아닌 디자인 훅, 브라우저 스캔, live 모드는 각각 별도 승인합니다. 업스트림도 같은 `impeccable` 폴더 이름을 쓰므로 어느 설치 프로그램이든 쓰기 전에 먼저 확인합니다. |
-| **Impeccable 도구와 검증** | `scripts/doctor.py`는 설치본(업스트림/카탈로그 운영 가이드), 런처 순서의 엔진 후보와 선택적 고정 다이제스트 비교, 훅 매니페스트, 텔레메트리 옵트아웃, 프로젝트 컨텍스트 파일을 아무것도 실행하거나 소켓을 열거나 파일을 쓰지 않고 보고합니다. `scripts/triage_findings.py`는 `detect --json` 결과를 blocking/quality/slop/advisory 순으로 묶고 명령을 제안하며, 위치 샘플은 중복 없이 보여 주고 snippet은 출력하지 않습니다. macOS arm64의 임시 `HOME`에서 실제 동작을 확인했습니다: 공개 카탈로그 설치본이 저장소와 바이트 단위로 같았고, 고정 런처가 받은 엔진 0.1.18의 SHA-256이 고정값과 일치했으며, 바이너리의 62개 규칙 목록이 `source.json`과 같았고, 실제 `detect --json` 실행(종료 코드 2, 결과 19건)이 문서화한 스키마와 일치해 triage까지 처리됐습니다. 전용 테스트 22/22, Node 24에서 설치 회귀 72/72·설치 가이드 34/34가 통과했습니다. 평가 9개는 작성된 시나리오입니다. URL/CDP 스캔, 훅, live 모드, npm 경로, Linux/Windows 자산은 아직 검증하지 않았습니다. |
-| **mex v1.2: mex-agent 0.8 setup 대응** | 새 프로젝트에서 `scripts/install.sh`가 `mex setup` 직후 멈췄습니다. mex-agent 0.8은 스캐폴드 내용 채우기가 남아 있으면 종료 코드 2를 내는데 설치 스크립트가 `set -euo pipefail`로 실행돼 루트 `AGENTS.md` 연결, 그래프, check가 실행되지 않았고, 0.8은 파이프로 넣던 도구 메뉴 답도 무시합니다. 이제 mex-agent 0.8 이상에는 `--yes --tool <tool>`(필요 시 `--force`)을 넘기고 0.7.x에는 기존 메뉴 입력을 유지합니다. 종료 코드 2는 `mex-agent setup next --start` 안내와 함께 보고하고 계속 진행하며, 그 밖의 setup 실패에서는 멈춥니다. mex-agent가 없으면 `mex-agent@0.8.5`를 설치합니다(`MEX_AGENT_NPM_SPEC`로 변경 가능). 임시 `HOME`에서 실제 mex-agent 0.8.5로 종료 코드 0, 루트 `AGENTS.md` 생성, graph·check 실행을 확인했습니다. |
-| **obsidian-second-brain v1.0.1: 원본 설치 수정** | `WITH_UPSTREAM=1`이 macOS `/bin/bash` 3.2와 UTF-8 로케일에서 중단됐습니다(`"$dest…"`를 정의되지 않은 변수로 읽음). `GLOBAL=1`이면 `npx skills add -g`가 `~/.claude/skills/obsidian-second-brain`을 라우팅 사본 링크로 바꿔, 원본 clone은 항상 실패하는데도 `Done`이 출력됐고 재실행하면 기존 원본 checkout이 삭제됐습니다. 이제 `npx` 실행 동안 그 자리의 실제 디렉터리를 옆으로 옮겨 두었다가 복원하고, clone이 성공한 뒤에만 라우팅 링크·사본을 교체하며, 다른 디렉터리는 건드리지 않고 거부합니다. `git`이 없거나 clone 실패·거부 시 종료 코드 1을 냅니다. 실제 `skills@1.7.0`, `git`, `/bin/bash` 3.2로 첫 실행에서 원본이 설치되고 재실행에서 로컬 표식이 유지된 채 pull되는 것을 확인했습니다. |
-| **devup-ui v1.0.1과 회귀 방지** | `devup-ui/scripts/install.sh`에도 같은 `$pm…` 패턴이 있어 중괄호로 고쳤습니다. `scripts/test-runtime-config-writers.sh`가 추적 중인 셸 스크립트에서 비ASCII 문자 바로 앞의 중괄호 없는 변수를 검사하고, obsidian 원본 설치 경우(최초, 재실행, 다른 디렉터리, clone 실패, 원본만 있는 경우)를 UTF-8 로케일에서 검증합니다. `mex/scripts/test-runtime.sh`는 mex-agent 0.8 setup을 검증합니다. Node 24에서 설정 작성기 26/26, 설치 회귀 72/72, 설치 가이드 34/34가 통과했습니다. |
-| **ponytail v2.0.0: Ponytail 5.3.3 반영** | 원본 `DietrichGebert/ponytail` 5.3.3, 커밋 `7801d061243d7b753bad0e0b3c057cd250b11755`(MIT, 라이선스 사본 포함)에 맞췄습니다. 표준 라이브러리보다 코드베이스에 이미 있는 코드를 먼저 쓰고, 변경이 깨뜨리는 호출부를 모두 마무리하고, 위험한 로직에는 작은 검사를 남기고, 답변은 건너뛴 것과 위험으로 끝냅니다. `ultra`는 요청 자체에 이의를 제기하고, 표시 주석은 `shortcut: <한계>, <업그레이드 시점>`입니다(예전 `ponytail:`도 수집). `/ponytail-review`와 `/ponytail-audit`는 전체 품질 리뷰가 됐고, `/ponytail-gain`은 예전 80–94% 주장 대신 고정 커밋의 측정값(코드 −53%, 비용 −26%, 시간 −41%)을 보여 줍니다. 분류는 `engineering/code-quality`로 옮겼습니다. |
-| **ponytail 설치 안내와 레거시 제거** | `references/commands.md`와 `scripts/install.sh`가 원본 플러그인의 모든 호스트(Codex `plugin add`, Copilot CLI, Qwen, omp, OpenCode 2 `plugin add`, Antigravity, Hermes, Devin, Grok, Goose, OpenClaw, Kimi, Cursor 훅)와 설정·제거 방법을 다룹니다. `APPLY=1`은 호스트 하나만 실행하고 모호하면 거부합니다. 2 MB 데모 GIF(옛 단계), 존재하지 않는 `skills serve` MCP 안내, OpenCode 2가 거부하는 파일 경로 플러그인 안내, 사실과 다른 변경 이력 날짜를 지우고 현재 단계를 보여 주는 5 KB SVG로 바꿨습니다. 설치 용량은 2.03 MB → 33 KB입니다. 격리된 환경에서 Claude Code와 omp에 플러그인 5.3.3이 실제로 설치되는 것을 확인했습니다. |
-| **caveman v2.0.0: 유지되는 원본으로 교체** | 원본에서 삭제된 `mattpocock/skills` 출처 사본을 `JuliusBrussee/caveman` 4.0.1, 커밋 `d262ab3882952a59312ff3537cd86d894523c5ab`(Apache-2.0, 라이선스 사본과 변경 사항 명시)에 맞췄습니다. 결론부터 말하고, 코드·경로·오류는 그대로 두며, 임의 약어와 화살표를 쓰지 않고, 경고·되돌릴 수 없는 작업·파일에 남는 내용은 평문으로 씁니다. 근거 없던 “~75%”는 원본 자체 수치로 바꿨고 내용 없는 상투 섹션을 지웠습니다. 새 `scripts/test_ponytail_caveman_skills.py`(테스트 12개, CI 포함)가 고정 커밋, 버전, 링크, 레거시 파일, 설치 스크립트의 실행 안 함·호스트 하나 규칙을 검사합니다. |
-| **openspace v2.0: 모든 모델에서 동작하는 프롬프트 단계 스킬 라우팅** | `scripts/route_prompt.py`가 모델이 실행되기 전에 OpenSpace의 로컬 BM25(`SkillRanker.bm25_only`, LLM·임베딩·네트워크 없음)로 설치된 스킬을 순위 매기고, 맞는 스킬 최대 3개를 `SKILL.md` 경로와 함께 넘깁니다. 그래서 어떤 스킬을 고를지가 모델 성능에 달려 있지 않습니다. 프롬프트가 스킬 이름을 직접 말하거나, 드문 단어가 충분히 겹칠 때만 제안하고 나머지는 조용히 넘어갑니다. 한국어 조사 제거, 영문·한글 경계 분리, 언어별 희소도 판단을 넣었습니다. `scripts/route-hooks.py`가 Claude Code, Codex, Gemini CLI/Antigravity, Kimi Code, jeopi/omp/pi/gjc, OpenCode에 하나의 래퍼로 연결하며, 문제가 생기면 아무것도 출력하지 않습니다. 스킬 764개 기준 라벨 점검: 라우팅해야 할 33개 중 26개에 맞는 스킬, 라우팅하면 안 되는 24개 중 23개는 무출력, 프롬프트당 약 0.3초. 라우팅을 끈 대조군과 비교한 실제 실행으로 Claude Code, jeopi(`claude-haiku-4-5`, `gpt-5.6-sol` 포함 모델 3개), omp에서 확인했습니다. |
-| **OpenSpace와 ooo 분리 설치** | `ooo/scripts/install.sh`는 더 이상 OpenSpace를 확인·설치·검색하지 않으며 `--search`, `--ensure-openspace`는 사용법 오류입니다. OpenSpace 설치 스크립트는 검증한 커밋 고정, 망가진 venv 재생성, `mcp<2` 고정(MCP SDK 2에서 `openspace-mcp`가 깨짐), 라우터 점검을 합니다. MCP 등록 스크립트는 Gemini CLI와 Qwen Code가 시작을 거부하던 `toolTimeout`을 더 이상 쓰지 않고 기존 항목을 고칩니다. 새 `test_openspace_routing.py`(테스트 24개)와 `test_ooo_installer.py`(5개)가 CI에서 기존 결합 테스트를 대체합니다. |
 
 > 📜 이전 기록: [`changelog/ko/`](changelog/ko/) (월별 파일, 최신순).
 
