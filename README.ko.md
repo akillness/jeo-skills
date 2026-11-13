@@ -46,7 +46,7 @@
 | **메타데이터** | 카테고리, 하위 카테고리, 인터페이스, 번들 및 관계 데이터는 `.agent-skills/skills.json`에 한 번만 저장됩니다 |
 | **라우터** | `jeo-skill`로 찾아보고 검색하고 선택 항목을 미리 본 다음, 선택한 항목만 설치합니다 |
 | **런타임** | 대부분의 에이전트가 공유하는 루트와 Claude Code, GJC, Antigravity, Aside용 네이티브 루트 |
-| **수명 주기** | 사용 추적으로 어떤 에이전트도 로드하지 않은 스킬을 찾고, 정리는 미리 보고 검토하며 되돌릴 수 있습니다 |
+| **수명 주기** | 보존된 기록에서 관찰된 호출·로드 이력으로 정리 후보를 찾고, 변경 전 미리 보기와 격리 후 복원을 지원합니다 |
 | **선택 사항** | Jev 의사결정 하네스와 Jevgrep 검색 기능은 기본적으로 꺼져 있으며 별도로 설정합니다 |
 
 ## 🚀 빠른 시작
@@ -57,9 +57,9 @@
 Read https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-skills-prompt.md in full and follow it to install the jeo-skills.
 ```
 
-이 가이드는 운영체제와 에이전트를 감지하고 기본적으로 전체 카탈로그를 설치합니다("core only"를 요청하면 범위를 좁힐 수 있음). 에이전트가 설치하지 않은 스킬은 삭제하지 않습니다.
+이 가이드는 운영체제와 에이전트를 감지하고 기본 `full` 모드에서 전체 카탈로그와 고정 버전 공유 CLI 6종을 설치합니다. 먼저 전역·사용자 범위를 확인하며, 새 second-brain 볼트와 자동화는 대상·모델·비용에 대한 명시적 동의 후 준비합니다. `core only`는 `starter` 번들만, `minimal`은 라우터와 CLI 링크만 설치합니다. 사용자나 타사 스킬을 임의로 삭제하지 않습니다.
 
-가이드 설치와 아래 라우터 전용 설치는 별개입니다. OpenSpace, Jev, 메모리·컨텍스트·데이터베이스 및 제공자 설정은 각 단계의 선택과 승인, 호스트 지원 여부에 따라 별도로 진행됩니다. 설치만으로 이 기능이 활성화되지는 않습니다.
+가이드 설치와 아래 라우터 전용 설치는 별개입니다. 스킬 파일을 설치하는 것만으로 업스트림 프로그램·모델·제공자가 설치되거나 활성화되지는 않습니다. OpenSpace, Jev, MCP, 메모리·컨텍스트·데이터베이스 및 제공자 설정은 각 단계의 선택과 승인, 호스트 지원 여부에 따라 별도로 진행됩니다.
 
 GitHub 스타는 별도 선택입니다. `JEO_SKILLS_STAR=true`를 명시하면 `akillness/jeo-skills`에 `gh`로 PUT한 직후 GET으로 확인합니다. `false`면 건너뛰고, 미설정이면 대화형 환경에서 기본값이 아니요인 질문을 표시합니다. 미리 보기에서는 스타를 누르지 않으며, 일반 `--yes`는 스타에 대한 동의가 아닙니다.
 
@@ -82,7 +82,7 @@ jeo-skill install react-best-practices --global --yes      # install
 <summary>카탈로그에서 호스트까지의 흐름 보기</summary>
 
 
-1. **카탈로그.** 스킬은 `<name>/SKILL.md` 형태로 평평하게 유지됩니다. 분류 체계는 폴더가 아니라 메타데이터이므로 런타임은 항상 예상한 경로에서 스킬을 찾습니다.
+1. **카탈로그.** 스킬은 `.agent-skills/<name>/SKILL.md` 형태로 평평하게 유지됩니다. 카테고리·번들·관계 정보는 `.agent-skills/skills.json`에서 중앙 관리하며, 분류를 위한 중첩 폴더는 만들지 않습니다.
 2. **라우터.** `jeo-skill`은 `skills.json`을 기준으로 이름, 번들, 카테고리 및 하위 카테고리를 확인하고, 기록하기 전에 정확한 선택 항목을 표시합니다.
 3. **설치.** 선택 항목은 `npx skills@1.7.0 add`에 위임되며, 256 KiB 고정 버퍼 기반 단일 패스 스트리밍 복사·SHA-256 검증, 반복형 `os.scandir` 순회, 동일 파일 재기록 생략을 통해 각 대상 런타임 루트에 투영됩니다.
 4. **로드.** 각 호스트는 자체 루트에서 스킬을 검색합니다. 배치는 활성화가 아닙니다. 로딩, 권한, 모델 선택 및 실행은 호스트가 담당합니다.
@@ -126,13 +126,14 @@ jeo-skill install react-best-practices --global --yes      # install
 | 에이전트의 안내에 따라 전체 설치 | [빠른 시작](#-빠른-시작)의 설정 프롬프트를 붙여 넣습니다 |
 | 라우터만 설치(기본값) | 한 줄 명령을 그대로 사용합니다 |
 | 라우터 + `starter` 번들 | `JEO_SKILLS_SELECTION=bundle`을 지정한 한 줄 명령 |
-| 전체 카탈로그 | `JEO_SKILLS_SELECTION=all`을 지정한 한 줄 명령 |
-| 현재 프로젝트에만 설치 | `INSTALL_GLOBAL=false`를 지정한 한 줄 명령 |
+| 전체 카탈로그 + 공유 도구·워크스페이스 설정 | `JEO_SKILLS_SELECTION=all`을 지정한 한 줄 명령. 전역 모드에서는 공유 CLI 6종과 워크스페이스 설정도 실행하므로 [설치 가이드](setup-all-skills-prompt.md)의 승인 경계를 먼저 확인합니다 |
+| 전체 스킬 안내문만 선택 | `jeo-skill install --all --global --yes` (`--setup` 없이 실행) |
+| 현재 프로젝트에만 설치 | `INSTALL_GLOBAL=false`를 지정한 한 줄 명령. `all`은 전역 도구 설치를 건너뛰고 부분 실패로 보고합니다 |
 | 변경 없이 미리 보기 | `JEO_SKILLS_DRY_RUN=true`를 지정한 한 줄 명령 |
 | 특정 스킬 | `jeo-skill install <name> [<name> ...] --global --yes` |
-| 특정 스킬 + 런타임/스모크 검증 | `jeo-skill install <name> ... --global --yes --setup` (지원되는 스킬에 한해 훅/MCP 단계를 실행하려면 `--with-hooks` 추가, 도구별 지원 범위는 [설치 가이드](setup-all-skills-prompt.md#step-5--full-mode-shared-tools) 참조) |
+| 특정 스킬 + 도구 설치 또는 스모크 검증 | `jeo-skill install <name> ... --global --yes --setup` (지원되는 스킬에 한함). `--with-hooks`는 `--setup`을 포함하며 지원되는 훅/MCP 등록 단계도 실행합니다. [도구별 범위](setup-all-skills-prompt.md#step-5--full-mode-shared-tools)를 먼저 확인하세요 |
 | 번들 또는 카테고리 일부 | `jeo-skill install --bundle <bundle> --global --yes` 또는 `--category <id> [--subcategory <id>]` |
-| GitHub 프로그램 5종 + 준비 상태 리포트 | `jeo-skill install --bundle github-five-programs --global --yes --setup`. `JEO_SKILLS_SELECTION=bundle JEO_SKILLS_BUNDLE=github-five-programs`를 지정한 한 줄 명령도 같은 리포트를 출력합니다. 오프라인 읽기 전용이라 아무것도 설치하거나 실행하지 않으며 프로그램별 승인을 묻지 않습니다 |
+| GitHub 프로그램 5종 운영 가이드 + 준비 상태 리포트 | `jeo-skill install --bundle github-five-programs --global --yes --setup`. `JEO_SKILLS_SELECTION=bundle JEO_SKILLS_BUNDLE=github-five-programs`를 지정한 한 줄 명령도 가이드 설치 후 같은 리포트를 출력합니다. **리포트 단계만** 오프라인·읽기 전용이며 업스트림 프로그램을 설치·시작하거나 네트워크에 접속하지 않습니다 |
 
 게임 개발 도구별 스킬 10개는 `jeo-skill install --bundle game-source-repositories --dry-run`으로 미리 볼 수 있습니다. 물리, 지형, 재질, 이펙트, 경로 탐색, 애니메이션, 그래픽, 메시와 노이즈를 다루며 업스트림 도구 자체를 설치하거나 실행하지는 않습니다. [설치 범위](setup-all-skills-prompt.md#game-development-source-guides-on-demand)와 [출처별 라이선스](docs/attribution.md)를 확인하세요.
 
@@ -155,6 +156,8 @@ URL=https://raw.githubusercontent.com/akillness/jeo-skills/main/install.sh
 curl -fsSL "$URL" | JEO_SKILLS_SELECTION=bundle bash
 curl -fsSL "$URL" | JEO_SKILLS_DRY_RUN=true INSTALL_GLOBAL=false bash
 ```
+
+`--dry-run`은 선택 항목·대상 경로·실행 예정 명령을 확인하는 용도이며 실제 설치나 호스트 활성화를 검증하지 않습니다. `install.sh`의 미리 보기는 런타임 지원 여부·계정·카탈로그 선택의 유효성을 실제 실행 시점까지 확인하지 않습니다. 준비 상태 리포트의 `ready`도 로컬 사전 점검 통과를 뜻할 뿐, 프로그램의 실제 실행이나 서비스 연결을 보증하지 않습니다.
 
 <details>
 <summary><b>번들</b> — 엄선한 시작 세트</summary>
@@ -189,20 +192,24 @@ curl -fsSL "$URL" | JEO_SKILLS_DRY_RUN=true INSTALL_GLOBAL=false bash
 <details>
 <summary>호스트별 경로와 Jev 프로필 보기</summary>
 
+아래는 `jeo-skill install --agent <값>`의 설치 대상 경로입니다. 파일 배치와 호스트의 실제 스킬 탐색·활성화는 별도로 확인해야 합니다. GJC와 Antigravity의 전역 네이티브 경로에는 공유 루트에 설치한 선택 항목을 추가로 복사합니다.
+
 | 런타임 | `--agent` | 전역 루트 | 프로젝트 루트 |
 |---|---|---|---|
 | JeoPi · Jeo(`jeo-code`) · OMP(`oh-my-pi`) | `universal` (기본값), `jeopi`, `jeo`, `omp` | `~/.agents/skills` | `.agents/skills` |
-| Codex | `universal` | `~/.agents/skills` | `.agents/skills` |
-| Kimi Code | `kimi` (`skills@1.7.0` 대상은 `kimi-code-cli`) | `~/.agents/skills` | `.agents/skills` |
-| OpenCode · Cursor | `universal` | `~/.agents/skills` | `.agents/skills` |
-| Claude Code | `claude-code` | `~/.claude/skills` (또는 `$CLAUDE_CONFIG_DIR/skills`) | `.claude/skills` |
-| GJC | `gjc` | `~/.gjc/agent/skills` | `.gjc/skills` |
+| Codex | `codex` / `universal` | `~/.agents/skills` | `.agents/skills` |
+| Kimi Code | `kimi` / `kimi-code-cli` | `~/.agents/skills` | `.agents/skills` |
+| OpenCode · Cursor | `opencode` / `cursor` / `universal` | `~/.agents/skills` | `.agents/skills` |
+| Claude Code | `claude-code` / `claude` | `~/.claude/skills` (또는 `$CLAUDE_CONFIG_DIR/skills`) | `.claude/skills` |
+| GJC | `gjc` | `~/.gjc/agent/skills` (설정 디렉터리 재정의는 아래 참고) | `.gjc/skills` |
 | Pi | `pi` | `~/.pi/agent/skills` | `.pi/skills` |
 | Antigravity CLI (AGY) | `agy` / `antigravity-cli` | `~/.gemini/antigravity-cli/skills` | `.agents/skills` |
 | Grok Build | `grok` | `${GROK_HOME:-$HOME/.grok}/skills` | `.grok/skills` |
-| Antigravity IDE | `antigravity` | `~/.gemini/config/skills` | — |
+| Antigravity IDE | `antigravity` | `~/.gemini/config/skills` | `.agents/skills` (라우터 대상, IDE 탐색 미검증) |
 | Crush | `crush` | `~/.config/crush/skills` | `.crush/skills` |
 | Aside | `aside` + `--aside-account <id>` | `~/.aside/u/<id>/skills/user/` | — |
+
+GJC 전역 설정 디렉터리는 `GJC_CONFIG_DIR`, 다음으로 `PI_CONFIG_DIR`를 따르며, 라우터는 프로젝트 `.env`와 같은 값이나 `..`가 포함된 값을 재정의로 사용하지 않습니다. Crush 전역 경로는 현재 라우터 구현의 고정 경로인 `~/.config/crush/skills`입니다. 위 표가 호스트의 모든 추가 탐색 경로를 나열하는 것은 아닙니다.
 
 > [!NOTE]
 > 이 가이드의 현재 호스트·설정 대상에서는 이전 `gemini-cli` 호스트/설치 별칭을 사용하지 않고 Antigravity CLI의 `agy`/`antigravity-cli`를 사용합니다. Google/Gemini 제공자·모델 이름과 AGY의 `.gemini` 저장 경로는 그대로 유효합니다. `kimi`는 `kimi-code-cli`로 정규화되어 공유 루트에 설치합니다. Kimi 자체는 `${KIMI_CODE_HOME:-$HOME/.kimi-code}/skills`와 프로젝트 `.kimi-code/skills`도 검색하지만, 라우터가 그 모든 경로에 복사한다는 뜻은 아닙니다.
@@ -266,10 +273,10 @@ node ~/.agents/jev/jev-harness.mjs \
 | `jeo-skill install ... --dry-run` | 파일을 기록하지 않고 선택 항목 미리 보기 |
 | `jeo-skill doctor` | 카탈로그, `npx`/Node.js 사전 요건 및 CLI 링크 확인 |
 | `jeo-skill readiness [--global] [--json]` | fabric, moneyprinter-v2, agent-s, google-maps-scraper, gitingest의 오프라인 읽기 전용 준비 상태 리포트 |
-| `jeo-skill usage scan` / `usage report` | 설치된 스킬 중 에이전트가 실제로 로드한 항목 추적 |
-| `jeo-skill prune-unused` / `restore` / `purge-quarantine` | 한 번도 사용하지 않은 스킬 격리, 복원 또는 삭제 |
-| `jeo-skill prune-retired --global --dry-run` | 폐기된 카탈로그 스킬의 오래된 복사본 제거 |
-| `jeo-skill explore "<question>" --dry-run` | 선택적 Jevgrep 문서 검색 |
+| `jeo-skill usage scan` / `usage report` | 보존된 로컬 기록에서 호출·로드 이벤트를 수집하고 보고 |
+| `jeo-skill prune-unused` / `restore` / `purge-quarantine` | 관찰된 사용이 없는 후보를 미리 보고 격리·복원·영구 삭제 |
+| `jeo-skill prune-retired --global --dry-run` | 은퇴한 카탈로그 스킬의 오래된 사본 제거 계획 미리 보기 |
+| `jeo-skill explore "<question>" --root <dir> --dry-run` | 선택적 Jevgrep 문서 검색 계획 미리 보기 |
 
 모든 명령에서 사용할 카탈로그를 고정하려면 `JEO_SKILLS_CATALOG=/path/to/skills.json`을 설정합니다.
 
@@ -281,13 +288,13 @@ node ~/.agents/jev/jev-harness.mjs \
 <summary>사용 상태, 격리 및 복원 절차 보기</summary>
 
 
-`jeo-skill usage scan`은 로컬 런타임 기록(Claude, Codex, OpenCode, Antigravity, Aside, jeopi/GJC/OMP/Pi 세션 및 Jev 주입 원장)을 읽습니다. 사용 요약과 증분 스캔 메타데이터를 `~/.local/state/jeo-skill` 아래에 저장하며, 대화 기록 본문은 저장하지 않습니다. 에이전트가 스킬을 호출하거나 로드한 경우에만 사용으로 집계하고, 프롬프트의 언급은 집계하지 않습니다.
+`jeo-skill usage scan`은 로컬 런타임 기록(jeo, JeoPi, GJC, Pi, OMP, Claude, Codex, Gemini/Antigravity, OpenCode, Aside 세션 및 Jev 주입 원장)을 읽습니다. 사용 요약과 증분 스캔 메타데이터를 기본적으로 `~/.local/state/jeo-skill` 아래에 저장하며, 대화 기록 본문은 저장하지 않습니다. 기록에서 확인된 스킬 호출·읽기·주입 이벤트만 집계하고 프롬프트의 단순 언급은 제외하므로, 결과는 전체 사용 이력이 아닙니다.
 
 | 상태 | 의미 |
 |---|---|
 | `used` | 보존된 기록에서 한 번 이상 호출되거나 로드됨 |
 | `protected` | `jeo-skill`, `starter`/`cli-core`/`infrastructure-core` 번들, `usage keep` 고정 및 `usage relevance` 보호 |
-| `in-grace` | 아직 사용되지 않았지만 추적 시작 또는 최초 설치 후 30일 이내 |
+| `in-grace` | 관찰된 사용이 없지만 추적 시작 또는 최초 설치 후 30일 유예 기간 이내 |
 | `candidate` | 유예 기간 후에도 관찰된 사용이 없어 격리 대상 |
 
 ```bash
@@ -301,7 +308,7 @@ jeo-skill purge-quarantine --older-than 30 --apply                # permanent
 ```
 
 > [!IMPORTANT]
-> 관찰된 사용이 없다고 해서 평생 사용하지 않는다는 증거는 아닙니다. 런타임이 오래된 기록을 삭제했을 수 있습니다. `--apply`는 먼저 다시 스캔하며 현재 기록 저장소를 읽을 수 없으면 거부합니다. 이 카탈로그와 일치함을 입증할 수 있는 복사본만 이동하고, 타사 복사본과 심볼릭 링크는 유지합니다.
+> 관찰된 사용이 없다는 사실은 한 번도 쓰지 않았거나 앞으로도 필요 없다는 증거가 아닙니다. 런타임이 기록을 남기지 않거나 오래된 기록을 삭제했을 수 있습니다. `--apply`는 먼저 다시 스캔하며 현재 기록 저장소를 읽을 수 없으면 거부합니다. 이 카탈로그와 일치함을 입증할 수 있는 복사본만 이동하고, 타사 복사본과 심볼릭 링크는 유지합니다.
 
 카탈로그 자체에서 스킬을 제거하는 것은 저장소 체크아웃에서 하는 별도의 유지관리자 단계입니다. 기본은 미리 보기이며, `--apply`에는 쉼표로 구분한 승인 이름과 검토 방식 선택이 필요합니다. 적용하면 프로젝션을 다시 생성하고 검증하며 실패하면 되돌립니다.
 
@@ -320,7 +327,7 @@ python3 scripts/retire-unused-skills.py --usage-report report.json --apply \
 <summary>공유 루트를 새로 고치고 심볼릭 링크 호스트를 재조정하기</summary>
 
 
-[전체 설치 가이드](setup-all-skills-prompt.md)를 따르는 머신에서는 카탈로그가 하나의 공유 루트(`~/.agents/skills`)에 있고 각 호스트의 스킬 디렉터리(claude, pi, gjc, antigravity, cursor, aside-user, opencode-config)가 스킬당 심볼릭 링크로 이를 가리킵니다. 이후에는 **공유 루트만** 새로 고치면 됩니다 — 호스트별 복사 설치기(`jeo-skill install -a claude-code`, `-a gjc`, …)를 실행하는 것은 위험합니다: rmtree가 심볼릭 링크 슬롯을 따라 공유 루트 원본까지 삭제할 수 있습니다.
+호스트별 스킬을 공유 루트(`~/.agents/skills`)로 연결하는 **스킬별 심볼릭 링크 구성을 사용 중이라면**, 공유 루트를 갱신한 뒤 호스트 링크를 재조정하세요. [전체 설치 가이드](setup-all-skills-prompt.md)가 모든 호스트에 이 구성을 보장하는 것은 아닙니다. 링크 구성에서는 호스트별 복사 설치기(`jeo-skill install -a claude-code`, `-a gjc` 등)로 덮어쓰지 마세요. 라우터는 심볼릭 링크 대상에 대한 쓰기를 거부하며, 아래 업그레이드 도구가 링크를 별도로 관리합니다.
 
 ```bash
 bash scripts/skills-upgrade.sh              # pull → doctor → refresh → prune → reconcile → verify
@@ -331,24 +338,24 @@ python3 scripts/refresh-host-links.py       # 링크 계획만 표시 (읽기 �
 각 단계의 역할:
 
 1. 신뢰된 체크아웃에서 `git pull --ff-only` — non-fast-forward면 실행 중단
-2. `jeo-skill doctor`로 갱신된 카탈로그 검증
+2. `jeo-skill doctor`로 카탈로그 메타데이터·설치 사전 요건·CLI 링크 상태를 표시합니다. 이 단계의 실패만으로 업그레이드가 중단되지는 않으며, 전체 카탈로그 정합성 검증을 대신하지 않습니다.
 3. `jeo-skill install --all --global --yes`로 공유 루트를 최신 카탈로그로 재작성
 4. `jeo-skill prune-retired --global`로 은퇴한 카탈로그 사본 제거 (레거시 중복 정리 단계)
 5. `scripts/refresh-host-links.py --apply` — 새로 추가된 스킬의 링크 생성, 끊긴 링크 제거, **호스트 로컬 비카탈로그 스킬은 절대 삭제하지 않음**
-6. 검증: doctor 상태 + 모든 설정된 호스트 루트의 끊긴 링크 스캔
+6. 검증: 스크립트에 경로가 정의된 선택 호스트 루트의 끊긴 링크를 검사합니다. `--dry-run`에서는 이 검사를 건너뛰며, 실제 호스트 활성화나 스킬 로드는 검증하지 않습니다.
 
 | 옵션 | 효과 |
 |---|---|
 | `--hosts <목록>` | 호스트 지정 (기본 `claude,pi,gjc,antigravity,cursor,aside-user,opencode-config`) |
-| `--skip-pull` | 오프라인 실행 (편집으로 해결하지 않고 나중에 stale 체크아웃 놀람을 거부) |
+| `--skip-pull` | `git pull`만 생략합니다. 이후 `npx` 설치는 네트워크를 사용할 수 있으므로 오프라인 모드는 아닙니다 |
 | `--replace-copies` | 낡은 실제 디렉터리 사본도 링크로 변환 (먼저 격리) |
 | `SKILLS_UPGRADE_HOSTS` | 환경변수로 기본 호스트 지정 |
 
-교체된 사본과 낡은 링크는 `~/.local/state/jeo-skill/quarantine/upgrade-<UTC>/` 아래로 격리되며 절대 하드 삭제되지 않고, 전체 흐름은 멱등성을 가집니다: 건강한 설치는 no-op 계획으로 다시 실행됩니다.
+`--replace-copies`로 교체하는 실제 사본은 기본적으로 `~/.local/state/jeo-skill/quarantine/upgrade-<UTC>/` 아래에 격리합니다. 낡은 심볼릭 링크는 링크 자체를 제거하거나 다시 연결합니다. 정상 링크에 대한 재조정은 no-op이 될 수 있지만, 전체 업그레이드는 실행할 때마다 스킬 설치 명령을 호출합니다.
 
 ### 주기적 갱신
 
-`scripts/com.jeo-skills.skills-upgrade.plist`는 주 1회(월요일 09:30) 업그레이드를 실행하는 launchd 템플릿으로, 로그는 `~/.local/state/jeo-skill/upgrade.log`에 남습니다. 스크립트가 직접 최신 nvm Node bin을 `PATH`에 추가하므로 헤드리스 실행에서도 `npx`를 찾을 수 있습니다. 설치:
+`scripts/com.jeo-skills.skills-upgrade.plist`는 주 1회(월요일 09:30) 업그레이드를 실행하는 launchd 템플릿으로, 로그는 `~/.local/state/jeo-skill/upgrade.log`에 남습니다. 스크립트는 `npx`를 찾지 못하면 로컬 nvm Node bin 경로를 추가합니다. 자동 갱신을 켜기로 한 경우 설치:
 
 ```bash
 cp scripts/com.jeo-skills.skills-upgrade.plist ~/Library/LaunchAgents/
@@ -367,7 +374,7 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 | **Jev** | 의사결정 하네스: 작업을 스킬로 라우팅하고, 컨텍스트를 정리하며, 정리 제안을 검토합니다 | `bash jev/jev-setup.sh --profile <name> ...` · [jev/README.md](jev/README.md) |
 | **Jevgrep** | 선택한 스킬 또는 위키 문서의 원격 검색 | `jeo-skill explore "<question>" --root <dir> --dry-run` · [jevgrep](.agent-skills/jevgrep/SKILL.md) |
 
-둘 다 카탈로그 설치에 포함되지 않습니다. 둘 다 구성된 백엔드로 데이터를 보낼 수 있습니다. `jeo-skill`에서는 이를 호출하는 명령(`prune-unused --apply`, `usage relevance`, `explore`)이 `--allow-remote` 없이는 원격 사용을 거부합니다. 독립 실행형 Jev 하네스는 구성된 백엔드로 직접 전송하므로, 사용하기 전에 호스팅 프로필을 승인하세요.
+카탈로그에 포함된 운영 가이드를 설치해도 이 두 통합이 자동으로 활성화되지는 않습니다. 둘 다 구성된 백엔드로 데이터를 보낼 수 있습니다. `jeo-skill`에서는 이를 호출하는 명령(`prune-unused --apply`, `usage relevance`, `explore`)이 `--allow-remote` 없이는 원격 사용을 거부합니다. 독립 실행형 Jev 하네스는 구성된 백엔드로 직접 전송하므로, 사용하기 전에 호스팅 프로필을 승인하세요.
 
 명시적으로 요청한 Jev 설정이 실패해도 검증된 스킬 설치는 실패로 처리하지 않습니다. 경고를 확인하고 Jev 통합이 부분적으로 완료되었음을 별도로 확인하세요.
 
@@ -954,13 +961,18 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 | `changelog/` | 월별 릴리스 노트(영어 및 한국어) |
 | `assets/` | README 시각 자료(Codex 생성, 출처는 `assets/readme-visuals.json`) |
 
+`.agent-skills/skills.json`이 카탈로그 메타데이터의 기준입니다. README의 카테고리 개수와 스킬 목록 등 생성된 표는 직접 수정하지 말고, 매니페스트를 수정한 뒤 아래 순서로 재생성·검증하세요.
+
 ```bash
-python3 scripts/validate-catalog-projections.py        # manifest, TOON, READMEs, SKILL.md
+python3 scripts/generate-catalog-projections.py
 python3 scripts/generate-catalog-projections.py --check
+python3 scripts/validate-catalog-projections.py
+python3 scripts/repair-skill-frontmatter.py --check
+python3 flatten_skills.py --dry-run
 python3 scripts/changelog.py check
 ```
 
-메타데이터는 생성된 표가 아니라 `skills.json`에서 편집하세요. 다른 프로젝트에서 적용한 스킬의 업스트림 소스와 라이선스는 [docs/attribution.md](docs/attribution.md)에 나열되어 있습니다.
+다른 프로젝트에서 적용한 스킬의 업스트림 소스와 라이선스는 [docs/attribution.md](docs/attribution.md)에 나열되어 있습니다.
 
 ## 🤝 관련 프로젝트
 

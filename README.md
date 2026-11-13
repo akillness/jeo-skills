@@ -32,8 +32,8 @@ Project-authored material is available under the [MIT License](LICENSE). When di
 | **Catalog** | One folder per skill: `.agent-skills/<name>/SKILL.md`, the open Agent Skills format |
 | **Metadata** | Category, subcategory, interface, bundle and relationship data live once in `.agent-skills/skills.json` |
 | **Router** | `jeo-skill` browses, searches and previews selections, then installs only what you pick |
-| **Runtimes** | A shared root for most agents plus native roots for Claude Code, GJC, Antigravity and Aside |
-| **Lifecycle** | Usage tracking finds skills no agent ever loads; cleanup is previewed, reviewed and reversible |
+| **Runtimes** | Shared and native install destinations, with explicit projections for GJC, Antigravity and Aside |
+| **Lifecycle** | Local usage records identify skills with no observed loads; cleanup is previewed, reviewed and reversible |
 | **Optional** | OpenSpace routing, Jev and Jevgrep have separate setup and approval boundaries; installing skills does not activate them |
 
 ## 🚀 Quick start
@@ -44,7 +44,7 @@ Project-authored material is available under the [MIT License](LICENSE). When di
 Read https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-skills-prompt.md in full and follow it to install the jeo-skills.
 ```
 
-The guide detects your OS and agents. Its default full mode installs the catalog and pinned shared tools; ask for "core only" or "minimal" to narrow it. Memory, context, database, provider and routing setup have separate approvals and host prerequisites. The guide does not delete skills it did not install. See [the full setup guide](setup-all-skills-prompt.md) for exact boundaries.
+The guide detects your OS and agents. Its default full mode installs the catalog and six pinned shared CLIs after confirming global/user scope; ask for "core only" or "minimal" to narrow it. Workspace activation, memory, context, database, provider and routing setup have separate approvals and host prerequisites. Full setup does not install every upstream application mentioned by a skill, and the guide preserves unrelated skills. See [the full setup guide](setup-all-skills-prompt.md) for exact boundaries.
 
 **Option B: install the router, then pick skills.**
 
@@ -67,7 +67,7 @@ jeo-skill install react-best-practices --global --yes      # install
 <summary>Explore the path from catalog to host</summary>
 
 
-1. **Catalog.** Skills stay flat as `<name>/SKILL.md`. Taxonomy is metadata, not folders, so runtimes always find skills at the path they expect.
+1. **Catalog.** Skills stay flat as `.agent-skills/<name>/SKILL.md`. Taxonomy is metadata in `.agent-skills/skills.json`, not category folders.
 2. **Router.** `jeo-skill` resolves names, bundles, categories and subcategories against `skills.json` and shows the exact selection before anything is written.
 3. **Install.** Selections are delegated to `npx skills@1.7.0 add` and projected into each target runtime root using bounded-memory 256 KiB streaming copy+SHA-256 verification, iterative `os.scandir` traversal, and unchanged-file skip on re-runs.
 4. **Load.** Each host discovers skills from its own root. Placement is not activation: loading, permissions, model choice and execution stay with the host.
@@ -100,13 +100,14 @@ The full, generated list is in [Skills list](#-skills-list).
 | Everything, guided by your agent | Paste the setup prompt from [Quick start](#-quick-start) |
 | Router only (default) | the one-liner as is |
 | Router + `starter` bundle | one-liner with `JEO_SKILLS_SELECTION=bundle` |
-| The whole catalog | one-liner with `JEO_SKILLS_SELECTION=all` |
+| Full catalog, shared tools and workspace setup | one-liner with `JEO_SKILLS_SELECTION=all`; global/user scope is required for the shared tools, and project-only scope reports partial failure |
+| The whole catalog as skill files only | `jeo-skill install --all --global --yes` (omit `--setup` and `--with-hooks`) |
 | Current project only | one-liner with `INSTALL_GLOBAL=false` |
 | Preview without changes | one-liner with `JEO_SKILLS_DRY_RUN=true` |
 | Specific skills | `jeo-skill install <name> [<name> ...] --global --yes` |
 | Specific skills with setup/smoke | `jeo-skill install <name> ... --global --yes --setup` (add `--with-hooks` for supported hook steps only; see [setup guide](setup-all-skills-prompt.md#step-5--full-mode-shared-tools) for exact tool boundaries) |
 | A bundle or category slice | `jeo-skill install --bundle <bundle> --global --yes` or `--category <id> [--subcategory <id>]` |
-| Five GitHub programs and one readiness report | `jeo-skill install --bundle github-five-programs --global --yes --setup`; the one-liner with `JEO_SKILLS_SELECTION=bundle JEO_SKILLS_BUNDLE=github-five-programs` prints the same report. It is offline and read-only: nothing is installed or run, and no per-program approval is asked |
+| Five program guides and one readiness report | `jeo-skill install --bundle github-five-programs --global --yes --setup`; the one-liner with `JEO_SKILLS_SELECTION=bundle JEO_SKILLS_BUNDLE=github-five-programs` prints the same report. Installation writes skill guidance; only the report is offline and read-only, and it does not install or run the upstream programs or ask for per-program approval |
 
 For the ten source-specific game-development guides, preview `jeo-skill install --bundle game-source-repositories --dry-run`. The guides cover physics, terrain, materials, effects, navigation, animation, graphics, meshes, and noise; they do not install or run the upstream tools. See the [setup boundaries](setup-all-skills-prompt.md#game-development-source-guides-on-demand) and [source licenses](docs/attribution.md).
 
@@ -139,6 +140,8 @@ URL=https://raw.githubusercontent.com/akillness/jeo-skills/main/install.sh
 curl -fsSL "$URL" | JEO_SKILLS_SELECTION=bundle bash
 curl -fsSL "$URL" | JEO_SKILLS_DRY_RUN=true INSTALL_GLOBAL=false bash
 ```
+
+The shell dry run prints a bootstrap plan without installing files or tools; runtime support, account selection and catalog selections are validated during execution. After installing the router, use `jeo-skill install ... --dry-run` to resolve a catalog selection and preview its destinations. A preview does not verify host discovery or upstream readiness.
 
 <details>
 <summary>Choose whether to star the repository</summary>
@@ -179,13 +182,13 @@ Repository-operator skills are guides with pinned sources. Installing them does 
 <summary>Find install roots and host-specific boundaries</summary>
 
 
-| Runtime | Install target (`--agent`; router alias) | Global root | Project root |
+| Runtime | Install target (`--agent`; router alias) | Global install destination | Project install destination |
 |---|---|---|---|
 | Jeo (`jeo-code`) | `jeo` (router alias → `universal`) | `~/.agents/skills` | `.agents/skills` |
 | JeoPi | `jeopi` (router alias → `universal`) | `~/.agents/skills` | `.agents/skills` |
 | Pi | `pi` | `~/.pi/agent/skills` | `.pi/skills` |
 | OMP (`oh-my-pi`) | `omp` (router alias → `universal`) | `~/.agents/skills` | `.agents/skills` |
-| GJC | `gjc` (router alias → `universal`; native projection follows) | `~/.gjc/agent/skills` | `.gjc/skills` |
+| GJC | `gjc` (router alias → `universal`; native projection follows) | `~/.gjc/agent/skills` (configuration overrides below) | `.gjc/skills` |
 | Codex | `codex` | `~/.agents/skills` | `.agents/skills` |
 | Claude Code | `claude-code` | `~/.claude/skills` (or `$CLAUDE_CONFIG_DIR/skills`) | `.claude/skills` |
 | AGY (Antigravity CLI) | `agy` (`antigravity-cli` alias) | `~/.gemini/antigravity-cli/skills` | `.agents/skills` |
@@ -194,10 +197,10 @@ Repository-operator skills are guides with pinned sources. Installing them does 
 | OpenCode | `opencode` | `~/.agents/skills` | `.agents/skills` |
 | Cursor | `cursor` | `~/.agents/skills` | `.agents/skills` |
 | Crush | `crush` | `~/.config/crush/skills` | `.crush/skills` |
-| Antigravity IDE | `antigravity` | `~/.gemini/config/skills` | — |
+| Antigravity IDE | `antigravity` | `~/.gemini/config/skills` | `.agents/skills` (router destination; IDE discovery unverified) |
 | Aside | `aside` + `--aside-account <id>` | `~/.aside/u/<id>/skills/user/` | — |
 
-This guide uses **AGY** (`agy`) for the Antigravity CLI target; `antigravity-cli` is only its setup alias. Shared-root runtimes (Jeo, JeoPi, OMP, Codex, Kimi CLI, OpenCode and Cursor) load from `~/.agents/skills` / `.agents/skills`; GJC and AGY receive explicit native projections. Kimi Code also scans `${KIMI_CODE_HOME:-$HOME/.kimi-code}/skills`.
+These are router install destinations, not proof that a host has discovered or loaded a skill. This guide uses **AGY** (`agy`) for the Antigravity CLI target; `antigravity-cli` is also accepted. Shared-root runtimes (Jeo, JeoPi, OMP, Codex, Kimi CLI, OpenCode and Cursor) use `~/.agents/skills` / `.agents/skills`; GJC, global Antigravity CLI/IDE and Aside receive explicit native projections after shared installation. GJC's global projection honors `GJC_CONFIG_DIR`, then `PI_CONFIG_DIR`, subject to the router's project `.env` trust and path guards, otherwise falling back to `~/.gjc/agent/skills`. Kimi Code also scans `${KIMI_CODE_HOME:-$HOME/.kimi-code}/skills`. The setup guide's Antigravity IDE procedure is global-only; a project destination alone does not establish IDE support.
 
 Grok Build is the registry-native `grok` target and requires explicit setup selection: `JEO_SKILLS_AGENT=grok` for installation or `JEV_AGENT=grok` for a single Jev profile. The setup guide excludes it from host auto-selection by `PATH`, because a local `grok` binary may be the older Superagent/VibeKit CLI without an Agent Skill loader. Controller `detect` only reports binary inventory, not which implementation is installed. Confirm that separately; this guide does not replace or auto-upgrade that binary.
 
@@ -221,10 +224,10 @@ Grok Build is the registry-native `grok` target and requires explicit setup sele
 | `jeo-skill install ... --dry-run` | Preview a selection without writing files |
 | `jeo-skill doctor` | Check the catalog, `npx`/Node.js prerequisites and the CLI link |
 | `jeo-skill readiness [--global] [--json]` | Offline, read-only readiness report for fabric, moneyprinter-v2, agent-s, google-maps-scraper and gitingest |
-| `jeo-skill usage scan` / `usage report` | Track which installed skills agents actually load |
-| `jeo-skill prune-unused` / `restore` / `purge-quarantine` | Quarantine, restore or delete never-used skills |
-| `jeo-skill prune-retired --global --dry-run` | Remove stale copies of retired catalog skills |
-| `jeo-skill explore "<question>" --dry-run` | Optional Jevgrep document discovery |
+| `jeo-skill usage scan` / `usage report` | Summarize observed skill-load and invocation events from supported local records |
+| `jeo-skill prune-unused` / `restore` / `purge-quarantine` | Preview quarantine candidates, quarantine with `--apply`, restore or permanently purge quarantined copies |
+| `jeo-skill prune-retired --global --dry-run` | Preview stale copies of retired catalog skills without removing them |
+| `jeo-skill explore "<question>" --root <dir> --dry-run` | Preview optional Jevgrep document discovery over an existing source directory |
 
 Set `JEO_SKILLS_CATALOG=/path/to/skills.json` to pin the catalog used by every command.
 
@@ -242,13 +245,13 @@ Recorded local dry-run example: this preview selected two skills and showed the 
 <summary>Review usage, quarantine and restore skills</summary>
 
 
-`jeo-skill usage scan` reads local runtime records (Claude, Codex, OpenCode, Antigravity, Aside, jeopi/GJC/OMP/Pi sessions and the Jev injection ledger). It stores usage summaries and incremental scan metadata under `~/.local/state/jeo-skill`, never transcript bodies. A skill counts as used only when an agent invoked or loaded it; mentions in prompts never count.
+`jeo-skill usage scan` reads supported local records (Claude, Codex, OpenCode, Gemini/Antigravity, Aside, jeo/jeopi/GJC/OMP/Pi sessions and the Jev injection ledger). It stores usage summaries and incremental scan metadata under `${XDG_STATE_HOME:-$HOME/.local/state}/jeo-skill`, not transcript bodies. It recognizes supported load, invocation and injection events rather than ordinary prompt mentions. Coverage depends on the host's retained records and supported event formats; it is not a complete history of every skill use.
 
 | Status | Meaning |
 |---|---|
-| `used` | Invoked or loaded at least once in the retained records |
+| `used` | At least one recognized load, invocation or injection event was observed |
 | `protected` | `jeo-skill`, the `starter`/`cli-core`/`infrastructure-core` bundles, `usage keep` pins and `usage relevance` protections |
-| `in-grace` | No use yet, but within 30 days of tracking start or first install |
+| `in-grace` | No observed use yet, but within 30 days of tracking start or first install |
 | `candidate` | No observed use after the grace period; eligible for quarantine |
 
 ```bash
@@ -281,7 +284,7 @@ python3 scripts/retire-unused-skills.py --usage-report report.json --apply \
 <summary>Refresh the shared root and reconcile symlinked hosts</summary>
 
 
-On machines following the [full-install guide](setup-all-skills-prompt.md), the catalog lives in one shared root (`~/.agents/skills`) and each host's skill directory (claude, pi, gjc, antigravity, cursor, aside-user, opencode-config) points at it with per-skill symlinks. After that, refresh the **shared root only** — running per-host copy installers (`jeo-skill install -a claude-code`, `-a gjc`, …) is unsafe: their rmtree can follow the symlink slots back into the shared root and delete originals.
+For installations configured with per-skill host symlinks, refresh the **shared root only** (`~/.agents/skills`), then reconcile the host links. The [setup guide](setup-all-skills-prompt.md) also supports native copies, so not every full installation has this layout. Current per-host router installs reject symlink destinations rather than updating through them; do not replace linked host slots with copy installs.
 
 ```bash
 bash scripts/skills-upgrade.sh              # pull → doctor → refresh → prune → reconcile → verify
@@ -292,24 +295,24 @@ python3 scripts/refresh-host-links.py       # link plan only (read-only)
 What each step does:
 
 1. `git pull --ff-only` on the trusted checkout — any non-fast-forward stops the run
-2. `jeo-skill doctor` validates the refreshed catalog projections
+2. `jeo-skill doctor` reports catalog metadata, installer prerequisites and CLI-link status; it does not run the catalog-projection validators
 3. `jeo-skill install --all --global --yes` rewrites the shared root with the latest catalog
 4. `jeo-skill prune-retired --global` removes retired catalog copies (the legacy-dedupe step)
 5. `scripts/refresh-host-links.py --apply` creates links for newly added skills, removes dangling ones, and **never deletes host-local non-catalog skills**
-6. verification: doctor status plus a broken-link scan of every configured host root
+6. verification: a broken-link scan of the helper's known host roots (skipped during dry run); the earlier doctor is informational and does not gate the upgrade
 
 | Option | Effect |
 |---|---|
 | `--hosts <list>` | Override hosts (default `claude,pi,gjc,antigravity,cursor,aside-user,opencode-config`) |
-| `--skip-pull` | Run offline (refuses stale-checkout surprises later, not by editing) |
+| `--skip-pull` | Skip the checkout update; later install steps may still need network access |
 | `--replace-copies` | Also convert stale real-dir copies into links (quarantined first) |
 | `SKILLS_UPGRADE_HOSTS` | Default hosts via environment |
 
-Replaced copies and stale links are quarantined under `~/.local/state/jeo-skill/quarantine/upgrade-<UTC>/` — never hard-deleted — and the whole flow is idempotent: a healthy installation re-runs as a no-op plan.
+Replaced directory copies are quarantined under `~/.local/state/jeo-skill/quarantine/upgrade-<UTC>/`. Stale symlinks are unlinked, and incorrect managed symlinks are recreated in place; those links are not quarantined. Reconciliation leaves healthy host links unchanged; the shared-root refresh still invokes the skill installer on each run.
 
 ### Scheduled refresh
 
-`scripts/com.jeo-skills.skills-upgrade.plist` is a launchd template that runs the upgrade weekly (Monday 09:30) with logs under `~/.local/state/jeo-skill/upgrade.log`. The script adds the newest nvm Node bin to `PATH` itself, so headless runs still find `npx`. Install it with:
+`scripts/com.jeo-skills.skills-upgrade.plist` is a launchd template that runs the upgrade weekly (Monday 09:30) with logs under `~/.local/state/jeo-skill/upgrade.log`. If `npx` is missing from `PATH`, the script looks for an available nvm Node bin. Install it with:
 
 ```bash
 cp scripts/com.jeo-skills.skills-upgrade.plist ~/Library/LaunchAgents/
@@ -950,12 +953,15 @@ Subcategories: `knowledge` (8), `files` (5), `git` (4), `workspace` (1), `projec
 | `assets/` | README visuals (Codex-generated; provenance in `assets/readme-visuals.json`) |
 
 ```bash
-python3 scripts/validate-catalog-projections.py        # manifest, TOON, READMEs, SKILL.md
+python3 scripts/generate-catalog-projections.py
 python3 scripts/generate-catalog-projections.py --check
+python3 scripts/validate-catalog-projections.py
+python3 scripts/repair-skill-frontmatter.py --check
+python3 flatten_skills.py --dry-run
 python3 scripts/changelog.py check
 ```
 
-Edit metadata in `skills.json`, never in the generated tables. Upstream sources and licenses for adapted skills are listed in [docs/attribution.md](docs/attribution.md).
+The manifest `.agent-skills/skills.json` is authoritative. Edit metadata there, never hand-edit README category projections; regenerate them and run the checks above. The flat skill layout must remain `.agent-skills/<name>/SKILL.md`. Upstream sources and licenses for adapted skills are listed in [docs/attribution.md](docs/attribution.md).
 
 ## 🤝 Related projects
 

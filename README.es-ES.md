@@ -44,7 +44,7 @@ El material creado por el proyecto se distribuye bajo la [licencia MIT](LICENSE)
 Read https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-skills-prompt.md in full and follow it to install the jeo-skills.
 ```
 
-La guía detecta tu sistema operativo y tus agentes e instala todo el catálogo de forma predeterminada (pide «core only» para reducirlo). Las herramientas adicionales, los hooks, proveedores y servicios tienen decisiones de configuración y aprobación independientes; instalar archivos no activa por sí mismo un entorno ni sus integraciones.
+La guía detecta tu sistema operativo y tus agentes. Su modo `full` predeterminado instala todo el catálogo y las seis herramientas CLI fijadas, y prepara la configuración del espacio de trabajo; confirma primero el alcance global y los permisos correspondientes. Pide «core only» para instalar el paquete `starter` o «minimal» para instalar solo el enrutador. Los hooks, proveedores y servicios tienen sus propios límites de configuración y aprobación; copiar archivos de habilidades no los activa por sí solo.
 
 La estrella de GitHub es opcional y requiere consentimiento específico. En `install.sh`, `JEO_SKILLS_STAR=true` la autoriza, `false` la omite y, si no se define, solo se pregunta en modo interactivo con «no» por defecto; sin esa variable, una ejecución no interactiva la omite. El modo de prueba no realiza la acción. Tras la autorización, el instalador realiza inmediatamente un PUT y un GET con `gh` para comprobar `akillness/jeo-skills`. Si no puede verificarla, lo comunica y continúa. `--yes` no autoriza esta acción.
 
@@ -52,10 +52,10 @@ La estrella de GitHub es opcional y requiere consentimiento específico. En `ins
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/akillness/jeo-skills/main/install.sh | bash
-jeo-skill doctor                                    # check catalog and installer prerequisites
-jeo-skill search "react performance"                # find skills
-jeo-skill install react-best-practices --global --dry-run   # preview
-jeo-skill install react-best-practices --global --yes      # install
+jeo-skill doctor                                    # comprueba el catálogo y los prerrequisitos
+jeo-skill search "react performance"                # busca habilidades
+jeo-skill install react-best-practices --global --dry-run   # previsualiza
+jeo-skill install react-best-practices --global --yes      # instala
 ```
 
 > [!TIP]
@@ -68,7 +68,7 @@ jeo-skill install react-best-practices --global --yes      # install
 
 El flujo separa selección, instalación y activación: cada paso tiene su propio alcance y sus permisos.
 
-1. **Catálogo.** Las habilidades permanecen planas como `<name>/SKILL.md`. La taxonomía son metadatos, no carpetas, por lo que los entornos siempre encuentran las habilidades en la ruta que esperan.
+1. **Catálogo.** Las habilidades permanecen en una estructura plana: `.agent-skills/<name>/SKILL.md`. La taxonomía se centraliza en `.agent-skills/skills.json`, no en carpetas de categorías.
 2. **Enrutador.** `jeo-skill` resuelve nombres, paquetes, categorías y subcategorías según `skills.json` y muestra la selección exacta antes de escribir nada.
 3. **Instalación.** Las selecciones se delegan a `npx skills@1.7.0 add` y se proyectan en la raíz de cada entorno de destino mediante copia en streaming de memoria acotada (256 KiB) con verificación SHA-256, recorrido iterativo `os.scandir` y omisión de archivos sin cambios en ejecuciones repetidas.
 4. **Carga.** Cada host descubre las habilidades desde su propia raíz. La ubicación no es activación: la carga, los permisos, la elección del modelo y la ejecución permanecen bajo el control del host.
@@ -104,13 +104,16 @@ La lista completa y generada está en [Lista de Habilidades](#-lista-de-habilida
 | Todo, guiado por tu agente | Pega el prompt de configuración de [Inicio rápido](#-inicio-rápido) |
 | Solo el enrutador (predeterminado) | la línea única tal cual |
 | Enrutador + paquete `starter` | línea única con `JEO_SKILLS_SELECTION=bundle` |
-| Todo el catálogo | línea única con `JEO_SKILLS_SELECTION=all` |
+| Todo el catálogo, sin configurar herramientas adicionales | `jeo-skill install --all --global --yes` (sin `--setup`) |
 | Solo el proyecto actual | línea única con `INSTALL_GLOBAL=false` |
 | Previsualizar sin cambios | línea única con `JEO_SKILLS_DRY_RUN=true` |
+| Instalación completa con herramientas y espacio de trabajo | línea única con `JEO_SKILLS_SELECTION=all`; ejecuta también los pasos globales de herramientas y configuración del espacio de trabajo |
 | Habilidades específicas | `jeo-skill install <name> [<name> ...] --global --yes` |
 | Habilidades específicas con configuración/smoke | `jeo-skill install <name> ... --global --yes --setup` (añade `--with-hooks` solo para pasos de hook compatibles; consulta los límites de cada herramienta en la [guía de instalación](setup-all-skills-prompt.md#step-5--full-mode-shared-tools)) |
 | Un paquete o segmento de categoría | `jeo-skill install --bundle <bundle> --global --yes` o `--category <id> [--subcategory <id>]` |
-| Cinco programas de GitHub y un informe de preparación | `jeo-skill install --bundle github-five-programs --global --yes --setup`; la línea única con `JEO_SKILLS_SELECTION=bundle JEO_SKILLS_BUNDLE=github-five-programs` imprime el mismo informe. Es sin conexión y de solo lectura: no instala ni ejecuta nada y no pide aprobación por programa |
+| Cinco programas de GitHub y un informe de preparación | `jeo-skill install --bundle github-five-programs --global --yes --setup`; la línea única con `JEO_SKILLS_SELECTION=bundle JEO_SKILLS_BUNDLE=github-five-programs` imprime el mismo informe. El comando instala las guías de habilidades; solo el informe de preparación es sin conexión y de solo lectura: no instala ni ejecuta los programas originales ni pide aprobación por programa |
+
+Con `INSTALL_GLOBAL=false`, la línea única limita los archivos de habilidades al proyecto y no añade `jeo-skill` a `PATH`. Si además eliges `JEO_SKILLS_SELECTION=all`, omite las herramientas globales y devuelve un resultado parcial con código de salida distinto de cero. Si ya tienes instalado el enrutador global `jeo-skill`, usa `jeo-skill install --all --yes` para instalar todas las guías en el proyecto sin esos pasos.
 
 Para las diez guías de herramientas de desarrollo de juegos, previsualiza `jeo-skill install --bundle game-source-repositories --dry-run`. Cubren física, terreno, materiales, efectos, navegación, animación, gráficos, mallas y ruido; no instalan ni ejecutan las herramientas originales. Consulta los [límites de instalación](setup-all-skills-prompt.md#game-development-source-guides-on-demand) y las [licencias de las fuentes](docs/attribution.md).
 
@@ -120,6 +123,10 @@ fetch, datos estructurados, CDP y MCP de la versión estable 1.0.2; su diagnóst
 revisa metadatos locales, no la compatibilidad en ejecución. La descarga, instalación y ejecución
 del navegador, el acceso a sitios, los servidores, las credenciales y las llamadas a proveedores
 requieren aprobación por separado. Consulta la [guía de instalación](setup-all-skills-prompt.md#lightpanda-browser-operator-on-demand).
+
+Para Browser Use, previsualiza `jeo-skill install browser-use --global --dry-run`. La habilidad incluye instrucciones y una comprobación previa sin conexión, no el paquete ni un navegador; la instalación, el acceso a sitios, las llamadas a modelos o servicios en la nube y el acceso a cuentas requieren decisiones separadas. Consulta la [guía de instalación](setup-all-skills-prompt.md#browser-use-operator-on-demand).
+
+Para Flide, previsualiza `jeo-skill install flide --global --dry-run`. La guía incluye una comprobación previa sin conexión; la descarga de paquetes o modelos, el uso de GPU y el arranque de servidores requieren aprobación por separado. Consulta la [guía de instalación](setup-all-skills-prompt.md#flide-decision-inference-on-demand).
 
 Para Impeccable, previsualiza la selección con `jeo-skill install impeccable --global --dry-run`
 antes de instalar la habilidad. Se instala una guía de operación para `pbakaus/impeccable` 4.8.0,
@@ -155,10 +162,10 @@ curl -fsSL "$URL" | JEO_SKILLS_DRY_RUN=true INSTALL_GLOBAL=false bash
 | `product-management` | pm-skills, create-prd, user-stories, opportunity-solution-tree, north-star-metric |
 | `langchain` | langchain-fundamentals, langgraph-fundamentals, deep-agents-core, langsmith |
 | `knowledge-repositories` | 22 operadores de ontología, grafos de código, memoria y recuperación (`jeo-skill install --bundle knowledge-repositories --dry-run`) |
-| `ui-design-repositories` | 10 source-pinned UI operators (`jeo-skill install --bundle ui-design-repositories --dry-run`) |
+| `ui-design-repositories` | 10 guías de operación de interfaces con fuentes fijadas (`jeo-skill install --bundle ui-design-repositories --dry-run`) |
 | `github-five-programs` | fabric, moneyprinter-v2, agent-s, google-maps-scraper, gitingest: cinco operadores de programas de código abierto, cuatro con fuentes fijadas (`jeo-skill install --bundle github-five-programs --dry-run`) |
 
-Las habilidades operadoras de repositorios son guías con fuentes fijadas. Instalar una no instala, ejecuta ni conecta los proyectos upstream; esos pasos requieren aprobación por separado.
+Las habilidades operadoras documentan los repositorios y sus límites. Instalar una no instala, ejecuta ni conecta los proyectos originales; esos pasos requieren aprobación por separado.
 
 </details>
 
@@ -169,9 +176,9 @@ Las habilidades operadoras de repositorios son guías con fuentes fijadas. Insta
 <details>
 <summary>Consultar destinos y raíces por entorno</summary>
 
-`--agent` distingue el destino de instalación; las rutas indican dónde busca cada runtime. Que exista una ruta no demuestra activación nativa. Esta guía usa `agy` para Antigravity CLI y no presenta Gemini CLI como host actual.
+`--agent` selecciona el destino de instalación. La tabla recoge las raíces que usa el enrutador y las proyecciones indicadas en la guía de configuración; no demuestra que el host las descubra ni que esté activado. Esta guía usa `agy` para Antigravity CLI y no presenta Gemini CLI como host actual.
 
-| Entorno (ID canónico) | `--agent` / alias | Raíz global | Raíz del proyecto |
+| Entorno (ID canónico) | `--agent` / alias | Destino global | Destino del proyecto |
 |---|---|---|---|
 | Jeo (`jeo`) | `jeo` | `~/.agents/skills` | `.agents/skills` |
 | GJC (`gjc`) | `gjc` | `${GJC_CONFIG_DIR:-$HOME/.gjc}/agent/skills` | `.gjc/skills` |
@@ -185,14 +192,16 @@ Las habilidades operadoras de repositorios son guías con fuentes fijadas. Insta
 | Grok Build (`grok`) | `grok` | `${GROK_HOME:-$HOME/.grok}/skills` | `.grok/skills` |
 | OpenCode (`opencode`) | `opencode` | `~/.agents/skills` | `.agents/skills` |
 | Cursor (`cursor`) | `cursor` | `~/.agents/skills` | `.agents/skills` |
-| Crush (`crush`) | `crush` | `${XDG_CONFIG_HOME:-$HOME/.config}/crush/skills` | `.crush/skills` |
-| Antigravity IDE (`antigravity`) | `antigravity` | `~/.gemini/config/skills` | — |
+| Crush (`crush`) | `crush` | `~/.config/crush/skills` | `.crush/skills` |
+| Antigravity IDE (`antigravity`) | `antigravity` | `~/.gemini/config/skills` | `.agents/skills` (destino del enrutador; descubrimiento por el IDE no verificado) |
 | Aside (`aside`) | `aside` + `--aside-account <id>` | `~/.aside/u/<id>/skills/user/` | — |
+
+Para GJC, el enrutador también admite `PI_CONFIG_DIR` como alternativa a `GJC_CONFIG_DIR`; descarta valores idénticos a los del `.env` del proyecto y rutas normalizadas con componentes `..`. Kimi utiliza la raíz compartida; la raíz adicional de su CLI no implica una copia adicional. Aside permite cambiar `~/.aside` con `--aside-home` y exige seleccionar una cuenta con `--aside-account` cuando no hay exactamente una cuenta disponible.
 
 `grok` identifica el destino de registro de Grok Build y requiere selección explícita en la guía de setup: `JEO_SKILLS_AGENT=grok` para instalar o `JEV_AGENT=grok` para un único perfil Jev. El setup no lo selecciona automáticamente por `PATH`, porque el ejecutable local puede ser el CLI antiguo de Superagent/VibeKit sin cargador de Agent Skills. El `detect` del controlador solo informa del inventario de binarios, no verifica la implementación. Confírmala por separado; la guía no sustituye ni actualiza ese binario automáticamente.
 
 > [!NOTE]
-> La instalación escribe archivos de habilidades en una raíz. No inicia sesión, inicia ni recarga un entorno. Recarga el host si una habilidad recién instalada no aparece.
+> Copiar habilidades no inicia sesión ni arranca o recarga un entorno. Recarga el host si una habilidad recién instalada no aparece; la configuración adicional solicitada con `--setup` o el modo completo tiene un alcance distinto.
 
 </details>
 
@@ -211,15 +220,17 @@ Esta captura muestra una previsualización local real de dos habilidades; no dem
 | `jeo-skill list -c <category> [-s <subcategory>]` | Habilidades de un segmento |
 | `jeo-skill search "<query>"` | Busca nombres, descripciones y taxonomía |
 | `jeo-skill related <name>` | Habilidades superpuestas o secuenciales para considerar juntas |
-| `jeo-skill install ... --dry-run` | Previsualiza una selección sin escribir archivos |
+| `jeo-skill install ... --dry-run` | Previsualiza la selección, los destinos y los comandos sin instalar ni configurar habilidades |
 | `jeo-skill doctor` | Comprueba el catálogo, los prerrequisitos de `npx`/Node.js y el enlace de la CLI |
 | `jeo-skill readiness [--global] [--json]` | Informe de preparación sin conexión y de solo lectura para fabric, moneyprinter-v2, agent-s, google-maps-scraper y gitingest |
-| `jeo-skill usage scan` / `usage report` | Registra qué habilidades instaladas cargan realmente los agentes |
-| `jeo-skill prune-unused` / `restore` / `purge-quarantine` | Pone en cuarentena, restaura o elimina habilidades nunca usadas |
-| `jeo-skill prune-retired --global --dry-run` | Elimina copias obsoletas de habilidades retiradas del catálogo |
-| `jeo-skill explore "<question>" --dry-run` | Descubrimiento opcional de documentos con Jevgrep |
+| `jeo-skill usage scan` / `usage report` | Recopila e informa de invocaciones o cargas observadas en los registros locales compatibles |
+| `jeo-skill prune-unused` / `restore` / `purge-quarantine` | Previsualiza la cuarentena de candidatas sin uso observado, su restauración o su purga; solo `--apply` modifica los archivos |
+| `jeo-skill prune-retired --global --dry-run` | Previsualiza la retirada de copias obsoletas del catálogo, sin eliminarlas |
+| `jeo-skill explore "<question>" --root <dir> --dry-run` | Descubrimiento opcional de documentos con Jevgrep |
 
 Define `JEO_SKILLS_CATALOG=/path/to/skills.json` para fijar el catálogo que usa cada comando.
+
+Desde este repositorio, el catálogo local permite previsualizar sin descargarlo. Si no hay un catálogo local, la CLI intenta obtenerlo por red y recurre a la caché si falla; la previsualización no guarda el catálogo descargado. La previsualización de `install.sh` solo imprime el plan de arranque: no valida todavía la compatibilidad del entorno, la cuenta ni la selección del catálogo.
 
 </details>
 
@@ -228,23 +239,23 @@ Define `JEO_SKILLS_CATALOG=/path/to/skills.json` para fijar el catálogo que usa
 <details>
 <summary>Revisar el uso observado y gestionar la cuarentena</summary>
 
-`jeo-skill usage scan` lee los registros locales de ejecución (sesiones de Claude, Codex, OpenCode, Antigravity, Aside, jeopi/GJC/OMP/Pi y el registro de inyecciones de Jev). Almacena resúmenes de uso y metadatos de escaneo incremental en `~/.local/state/jeo-skill`, nunca el contenido de las transcripciones. Una habilidad cuenta como usada solo cuando un agente la invoca o carga; las menciones en los prompts nunca cuentan.
+`jeo-skill usage scan` lee los registros locales compatibles de ejecución (sesiones de Claude, Codex, OpenCode, Gemini/Antigravity, Aside, jeo/jeopi/GJC/OMP/Pi y el registro de inyecciones de Jev). Almacena resúmenes de uso y metadatos de escaneo incremental en `~/.local/state/jeo-skill` por defecto, nunca el contenido de las transcripciones. Cuenta evidencia de invocación o carga reconocida por sus analizadores; las menciones en los prompts no cuentan y los registros disponibles no ofrecen cobertura completa de todos los hosts ni de todo su historial.
 
 | Estado | Significado |
 |---|---|
 | `used` | Invocada o cargada al menos una vez en los registros conservados |
 | `protected` | `jeo-skill`, los paquetes `starter`/`cli-core`/`infrastructure-core`, las fijaciones de `usage keep` y las protecciones de `usage relevance` |
-| `in-grace` | Aún sin uso, pero dentro de los 30 días desde el inicio del seguimiento o la primera instalación |
+| `in-grace` | Sin uso observado, pero dentro de los 30 días desde el inicio del seguimiento o la primera instalación |
 | `candidate` | Sin uso observado después del periodo de gracia; apta para cuarentena |
 
 ```bash
 jeo-skill usage scan
 jeo-skill usage report --status candidate
-jeo-skill prune-unused --global                                   # preview only
-jeo-skill prune-unused --global --apply --skip-jev-review         # or --jev-profile <p> --allow-remote
+jeo-skill prune-unused --global                                   # solo previsualiza
+jeo-skill prune-unused --global --apply --skip-jev-review         # o --jev-profile <p> --allow-remote
 jeo-skill restore --list
 jeo-skill restore --batch <batch-id> --apply
-jeo-skill purge-quarantine --older-than 30 --apply                # permanent
+jeo-skill purge-quarantine --older-than 30 --apply                # permanente
 ```
 
 > [!IMPORTANT]
@@ -254,9 +265,9 @@ Eliminar una habilidad del propio catálogo es un paso separado para mantenedore
 
 ```bash
 jeo-skill usage report --json > report.json
-python3 scripts/retire-unused-skills.py --usage-report report.json                     # preview
+python3 scripts/retire-unused-skills.py --usage-report report.json                     # previsualiza
 python3 scripts/retire-unused-skills.py --usage-report report.json --apply \
-  --approve name-a,name-b --skip-jev-review          # or --jev-profile <p> --allow-remote
+  --approve name-a,name-b --skip-jev-review          # o --jev-profile <p> --allow-remote
 ```
 
 </details>
@@ -317,7 +328,7 @@ La [investigación](.agent-skills/donchitos-game-studios/references/research.md)
 distingue 75 flujos canónicos y tres alias, la especificación y las heurísticas.
 El helper comprueba doce archivos públicos sin ejecutar código upstream. La guía
 está en `game-client`; clonar, fusionar proyectos, activar hooks, instalar dependencias
-y evaluar modelos requieren aprobación separada. Consulte la
+y evaluar modelos requieren aprobación separada. Consulta la
 [guía de instalación](setup-all-skills-prompt.md#claude-code-game-studios-on-demand-project-template-not-global-skill-pack).
 
 ## 📚 Lista de Habilidades
@@ -890,13 +901,17 @@ Subcategorías: `knowledge` (8), `files` (5), `git` (4), `workspace` (1), `proje
 | `changelog/` | Notas de versión mensuales (en inglés y coreano) |
 | `assets/` | Recursos visuales del README (generados por Codex; procedencia en `assets/readme-visuals.json`) |
 
+El manifiesto `.agent-skills/skills.json` es la fuente de verdad. Edita allí los metadatos; no modifiques a mano las tablas y los recuentos de categorías generados en los README. Tras actualizar el catálogo, regenera y comprueba las proyecciones:
+
 ```bash
-python3 scripts/validate-catalog-projections.py        # manifest, TOON, READMEs, SKILL.md
+python3 scripts/generate-catalog-projections.py
 python3 scripts/generate-catalog-projections.py --check
-python3 scripts/changelog.py check
+python3 scripts/validate-catalog-projections.py
+python3 scripts/repair-skill-frontmatter.py --check
+python3 flatten_skills.py --dry-run
 ```
 
-Edita los metadatos en `skills.json`, nunca en las tablas generadas. Las fuentes upstream y las licencias de las habilidades adaptadas se indican en [docs/attribution.md](docs/attribution.md).
+Las fuentes originales y las licencias de las habilidades adaptadas se indican en [docs/attribution.md](docs/attribution.md).
 
 ## 🤝 Proyectos relacionados
 
