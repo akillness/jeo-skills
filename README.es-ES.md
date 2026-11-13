@@ -943,6 +943,14 @@ Consulta los [límites de instalación](setup-all-skills-prompt.md#elephant-gold
 
 <!-- WHATS-NEW:START -->
 
+## Novedades en v2026-11-13
+
+| Cambio | Detalles |
+|--------|---------|
+| **Operador NVIDIA SkillEvaluator** | Añadida la guía `nvidia-skill-evaluator`, fijada al commit `12b387f7a62b5f3e0de9eff392a3f6b7e952f2c2`, con comandos por nivel, límites de aprobación para escáneres, proveedores, sandbox y CI, atribución Apache-2.0, un manifiesto SHA-256 de 12 archivos y una preflight sin conexión. Instalar la guía no ejecuta evaluadores, escáneres ni modelos de pago. |
+| **Catálogo actual** | El manifiesto actual contiene 432 habilidades en 10 categorías, incluidas `donchitos-game-studios` y `nvidia-skill-evaluator`; se ha retirado el instalador del paquete `agenticskills`. Las tablas del catálogo se regeneran desde `.agent-skills/skills.json`. |
+| **Guías README alineadas en tres idiomas** | Inglés, coreano y español distinguen instalación de activación, documentan los límites del uso observado y de los destinos de cada entorno e incluyen los comandos de mantenimiento del catálogo. Para la instalación y actualización actuales, consulta las secciones operativas anteriores en lugar de los resúmenes históricos. |
+
 ## 🆕 Novedades en v2026-11-04
 
 | Cambio | Detalles |
