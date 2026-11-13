@@ -1,7 +1,7 @@
 {
   "version": "2.1.0",
   "generated": "2026-10-21",
-  "skill_count": 432,
+  "skill_count": 433,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -15944,6 +15944,26 @@
       "keyword": "flide",
       "version": "1.0.0",
       "source": "https://github.com/OmniJev/Flide"
+    },
+    {
+      "name": "context7",
+      "description": "Operate Context7 itself: choose CLI, MCP or REST, inspect availability, configure or troubleshoot an integration, and interpret library indexing and version results. Use when the user names Context7, ctx7, its MCP server or API, or asks to manage its setup, source indexing, permissions or usage. For ordinary library API lookup without an explicit Context7 operator request, use documentation-lookup instead.",
+      "category": "cli-tools",
+      "subcategory": "ai-cli",
+      "interface": "workflow",
+      "path": "context7/SKILL.md",
+      "tags": [
+        "context7",
+        "documentation",
+        "mcp",
+        "cli",
+        "library-versions"
+      ],
+      "platforms": [],
+      "allowed_tools": [],
+      "keyword": "context7",
+      "version": "1.0.0",
+      "source": "https://github.com/upstash/context7"
     },
     {
       "name": "donchitos-game-studios",

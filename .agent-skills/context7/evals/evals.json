@@ -1,0 +1,11 @@
+{
+  "skill_name": "context7",
+  "evals": [
+    {"id": 1, "prompt": "Help me set up Context7 MCP for this project without changing my global configuration.", "expected_output": "A scoped setup plan with approval before writes and a collision check.", "assertions": ["Selects the Context7 operator skill", "Distinguishes project from global setup", "Requires approval before configuration writes"]},
+    {"id": 2, "prompt": "How do React hooks work?", "expected_output": "Route ordinary library documentation lookup to documentation-lookup, not Context7 operator setup.", "assertions": ["Does not make Context7 configuration changes", "Uses the generic documentation-lookup route"]},
+    {"id": 3, "prompt": "Use Context7 for this library version and tell me whether the exact version was served.", "expected_output": "Resolve or use the supplied ID, query with approved data, inspect actual served version, and disclose any fallback.", "assertions": ["Checks served version rather than assuming the requested version", "Does not send secrets or proprietary content without authorization"]},
+    {"id": 4, "prompt": "Check whether Context7 is installed, without network or credentials.", "expected_output": "Run the offline preflight and report path discovery only, not authentication or connectivity.", "assertions": ["Does not run npx or contact a service", "Does not claim MCP or Node version was verified"]},
+    {"id": 5, "prompt": "Add my private repository to Context7 and update team policies.", "expected_output": "Identify the external submission and policy mutations, review scope and ask for explicit approval before acting.", "assertions": ["Does not upload private content without approval", "Requires separate approval for policy changes"]},
+    {"id": 6, "prompt": "Find an exact default in a library with Context7 query-code.", "expected_output": "Check availability and schema, use a source-backed ID and scoped source search, then cite source and version.", "assertions": ["Does not assume the experimental tool is enabled", "Uses pattern rather than a free-text question", "Reports indexing or unavailable source honestly"]}
+  ]
+}

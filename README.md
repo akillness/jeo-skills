@@ -388,7 +388,7 @@ See the [setup guide](setup-all-skills-prompt.md#claude-code-game-studios-on-dem
 
 ## 📚 Skills List
 
-> Generated from `.agent-skills/skills.json` · 432 skills · expand a category to see its skills.
+> Generated from `.agent-skills/skills.json` · 433 skills · expand a category to see its skills.
 
 ### 🌐 Web (72)
 

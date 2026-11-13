@@ -337,7 +337,7 @@ y la [atribución MIT upstream](docs/attribution.md).
 
 ## 📚 Lista de Habilidades
 
-> Generado desde `.agent-skills/skills.json` · 432 habilidades · despliega una categoría para ver sus habilidades.
+> Generado desde `.agent-skills/skills.json` · 433 habilidades · despliega una categoría para ver sus habilidades.
 
 ### 🌐 Web (72)
 
