@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "skill": "nvidia-skill-evaluator",
+  "repository": "NVIDIA/SkillEvaluator",
+  "commit": "12b387f7a62b5f3e0de9eff392a3f6b7e952f2c2",
+  "license": {
+    "path": "LICENSE",
+    "conclusion": "Apache-2.0",
+    "url": "https://github.com/NVIDIA/SkillEvaluator/blob/12b387f7a62b5f3e0de9eff392a3f6b7e952f2c2/LICENSE"
+  },
+  "tools": [
+    {
+      "name": "python3",
+      "purpose": "Run the bundled stdlib-only offline preflight; upstream runtime separately requires Python 3.12–3.14"
+    },
+    {
+      "name": "uv",
+      "purpose": "Approved evaluator install and managed scanner provisioning"
+    },
+    {
+      "name": "git",
+      "purpose": "Inspect or obtain an explicitly approved pinned source checkout"
+    },
+    {
+      "name": "skillevaluator",
+      "purpose": "Run separately installed NVIDIA SkillEvaluator commands after lane-specific approval"
+    },
+    {
+      "name": "docker",
+      "purpose": "Approved Tier 3 Docker sandbox execution; not required for quality-check"
+    },
+    {
+      "name": "gh",
+      "purpose": "Approved GitHub CI onboarding and setup PR operations"
+    }
+  ],
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "5f3041585bbcce1087d889fe4e1848aee63a8560a13a091e8bb9cb6e2345c2b5",
+      "url": "https://github.com/NVIDIA/SkillEvaluator/blob/12b387f7a62b5f3e0de9eff392a3f6b7e952f2c2/README.md"
+    },
+    {
+      "path": "pyproject.toml",
+      "sha256": "e064d6517b35761d26414278f547389a0c0d9882da8c9abc36eed1b04863c57a",
+      "url": "https://github.com/NVIDIA/SkillEvaluator/blob/12b387f7a62b5f3e0de9eff392a3f6b7e952f2c2/pyproject.toml"
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "61423261b7a3f50cbeef78c828dafc95fbc24e0f228e53ce3f31c101cb62eb7b",
+      "url": "https://github.com/NVIDIA/SkillEvaluator/blob/12b387f7a62b5f3e0de9eff392a3f6b7e952f2c2/LICENSE"
+    },
+    {
+      "path": "NOTICE",
+      "sha256": "94363c3a794b0e4d0c157bdfe747fe2e488086397b8a5513c474ed91c4e6e127",
+      "url": "https://github.com/NVIDIA/SkillEvaluator/blob/12b387f7a62b5f3e0de9eff392a3f6b7e952f2c2/NOTICE"
+    },
+    {
+      "path": "docs/installation.mdx",
+      "sha256": "ee3ef66545a74b4c2a296b6ea636f99bf0d7245d1165c193941b0fd33e5f61a8",
+      "url": "https://github.com/NVIDIA/SkillEvaluator/blob/12b387f7a62b5f3e0de9eff392a3f6b7e952f2c2/docs/installation.mdx"
+    },
+    {
+      "path": "docs/tier1-validation.mdx",
+      "sha256": "d3e26c8babff8db7fd605e1c27c681a290f45b6770a40f6ccc77deeaf6577cf4",
+      "url": "https://github.com/NVIDIA/SkillEvaluator/blob/12b387f7a62b5f3e0de9eff392a3f6b7e952f2c2/docs/tier1-validation.mdx"
+    },
+    {
+      "path": "docs/tier2-deduplication.mdx",
+      "sha256": "d21cf57b3e04479eb4347f1dd36cec5da53f6bb9a4a11df69f4d94d6afa07ebf",
+      "url": "https://github.com/NVIDIA/SkillEvaluator/blob/12b387f7a62b5f3e0de9eff392a3f6b7e952f2c2/docs/tier2-deduplication.mdx"
+    },
+    {
+      "path": "docs/tier3-live-evaluation.mdx",
+      "sha256": "f708a8b6e5515cc672cb7c38bd43688b30ecdb384ff7b485bbe01bd0ab24b775",
+      "url": "https://github.com/NVIDIA/SkillEvaluator/blob/12b387f7a62b5f3e0de9eff392a3f6b7e952f2c2/docs/tier3-live-evaluation.mdx"
+    },
+    {
+      "path": "docs/cli-reference.mdx",
+      "sha256": "aad15615d15467cf58fac0b5ca6c541e3859588992dc1b7a7d5dba0d398fab11",
+      "url": "https://github.com/NVIDIA/SkillEvaluator/blob/12b387f7a62b5f3e0de9eff392a3f6b7e952f2c2/docs/cli-reference.mdx"
+    },
+    {
+      "path": "docs/reports.mdx",
+      "sha256": "1ceb71aca7f53f23f3c8c31d535ce4022383b52bad33eec96c8d5d6df3ee3f90",
+      "url": "https://github.com/NVIDIA/SkillEvaluator/blob/12b387f7a62b5f3e0de9eff392a3f6b7e952f2c2/docs/reports.mdx"
+    },
+    {
+      "path": "src/skillevaluator/cli.py",
+      "sha256": "9b95fa4d6836a226b5481f18ff58a6094c65a12f612e6605a4806d48410e4fef",
+      "url": "https://github.com/NVIDIA/SkillEvaluator/blob/12b387f7a62b5f3e0de9eff392a3f6b7e952f2c2/src/skillevaluator/cli.py"
+    },
+    {
+      "path": "src/skillevaluator/ci_onboarding.py",
+      "sha256": "20e88b46426310a47aab67052a76524e645e30c716d85d4f64fbbd7cd755a030",
+      "url": "https://github.com/NVIDIA/SkillEvaluator/blob/12b387f7a62b5f3e0de9eff392a3f6b7e952f2c2/src/skillevaluator/ci_onboarding.py"
+    }
+  ]
+}

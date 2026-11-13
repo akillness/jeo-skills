@@ -14,7 +14,7 @@ edges:
     condition: when setting up the dev environment or running the project for the first time
   - target: patterns/INDEX.md
     condition: when starting a task — check the pattern index for a matching pattern file
-last_updated: 2026-11-06
+last_updated: 2026-11-13
 ---
 
 # Session Bootstrap
@@ -31,6 +31,7 @@ Then read this file fully before doing anything else in this session.
 - `scripts/skills-upgrade.sh` (pull → doctor → shared-root refresh → prune-retired → link reconcile → verify) runs end-to-end with PASS; `scripts/refresh-host-links.py` is idempotent (re-run = empty plan); cron-safe PATH fallback for npx
 - Weekly launchd job `com.jeo-skills.skills-upgrade` installed (Monday 09:30, logs in `~/.local/state/jeo-skill/upgrade.log`)
 - Catalog projections validate; root `.gitignore` covers everything by default
+- 2026-11-13: added `nvidia-skill-evaluator` at upstream `12b387f7a62b5f3e0de9eff392a3f6b7e952f2c2`; source catalog 432 skills. Standards, catalog projections, 15 focused offline tests, 12 selected-source hashes and isolated-HOME five-file installation passed. The initial real-manifest smoke caught raw-versus-blob URL drift; a shipped-manifest regression now guards that boundary. This is operator/support verification, not an evaluator, scanner, provider or Tier 3 runtime claim.
 
 **Not yet built:**
 - No `update`/`sync` command inside the `jeo-skill` router CLI itself (upgrade flow lives in `scripts/skills-upgrade.sh`)

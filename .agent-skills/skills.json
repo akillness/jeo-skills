@@ -1,7 +1,7 @@
 {
   "version": "2.1.0",
   "generated": "2026-10-21",
-  "skill_count": 431,
+  "skill_count": 432,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -369,6 +369,7 @@
       "langsmith",
       "opik",
       "skill-autoresearch",
+      "nvidia-skill-evaluator",
       "kadath",
       "mex",
       "bmad-idea",
@@ -949,6 +950,7 @@
         "langsmith",
         "opik",
         "skill-autoresearch",
+        "nvidia-skill-evaluator",
         "kadath",
         "agent-benchmarking",
         "agent-observability",
@@ -1537,6 +1539,15 @@
         "upskill",
         "article-prompts-to-skills"
       ]
+    },
+    "skill-evaluation": {
+      "mode": "related",
+      "members": [
+        "nvidia-skill-evaluator",
+        "skill-standardization",
+        "skill-autoresearch"
+      ],
+      "note": "nvidia-skill-evaluator operates NVIDIA/SkillEvaluator's tiered skill evaluation and quality checks; skill-standardization checks format and catalog compliance; skill-autoresearch ratchets one skill against a frozen evaluation. Quality checks and selected-file hashes are not safety or measured-impact proof."
     },
     "knowledge-vaults": {
       "mode": "related",
@@ -6681,6 +6692,34 @@
       "keyword": "skill-autoresearch",
       "version": "1.2.0",
       "source": "https://github.com/olelehmann100kMRR/autoresearch-skill"
+    },
+    {
+      "name": "nvidia-skill-evaluator",
+      "description": "Use when operating NVIDIA/SkillEvaluator: choose keyless quality checks or scanner-backed Tier 1, inspect Tier 2 overlap and provider egress, plan paired Tier 3 skill-impact runs, interpret incomplete reports, or prepare approval-gated repository CI. Covers skillevaluator, quality-check, tier1/tier2/tier3, validate, doctor, and ci init at a pinned revision. Route skill-format compliance to skill-standardization, reusable skill improvement to skill-autoresearch, and general agent benchmarks to agent-evaluation.",
+      "category": "ai-agents",
+      "subcategory": "evaluation",
+      "interface": "cli",
+      "path": "nvidia-skill-evaluator/SKILL.md",
+      "tags": [
+        "skill-management",
+        "skill-evaluation",
+        "nvidia",
+        "quality-check",
+        "security-scanning",
+        "skill-impact",
+        "ci",
+        "cli"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Grep",
+        "Glob"
+      ],
+      "keyword": "nvidia-skill-evaluator",
+      "version": "1.0.0",
+      "source": "https://github.com/NVIDIA/SkillEvaluator"
     },
     {
       "name": "bmad-idea",

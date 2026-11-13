@@ -2824,6 +2824,41 @@ references under MIT attribution, so it needs no install and no network to work.
   routes to `web-accessibility`.
 - `LICENSE.upstream.txt` carries the MIT notice for the bundled rules; keep it with the skill.
 
+### NVIDIA SkillEvaluator (on demand, evaluation and CI writes gated)
+
+`nvidia-skill-evaluator` installs only this catalog's operator documents, source manifest,
+and offline helper. It does not install or run `NVIDIA/SkillEvaluator` during blanket setup.
+The source-verified snapshot is pinned to `12b387f7a62b5f3e0de9eff392a3f6b7e952f2c2`:
+
+```bash
+SKILL_DIR="$SKILLS_ROOT/nvidia-skill-evaluator"
+python3 "$SKILL_DIR/scripts/preflight.py" --json
+# Optional selected-file comparison against an existing upstream checkout:
+python3 "$SKILL_DIR/scripts/preflight.py" --json --repo /path/to/SkillEvaluator
+```
+Use canonical real paths for `SKILL_DIR` and `--repo`, not per-host skill symlinks;
+on macOS use `/private/tmp` instead of the `/tmp` alias. This helper requires POSIX
+`dir_fd`/`O_NOFOLLOW` support and fails closed where secure traversal is unavailable;
+that limitation is separate from the upstream CLI's platform support.
+
+
+- Load `.agent-skills/nvidia-skill-evaluator/SKILL.md` for SkillEvaluator installation,
+  quality checks, tiered evaluation, report interpretation, or CI setup. The helper performs
+  offline inspection only; selected-file hashes do not prove the checkout's HEAD, runtime,
+  scanner readiness, security, or measured skill impact.
+- Keep the Python 3.12+ `uv` source-install path on demand (this pin requires
+  `>=3.12,<3.15`; the documented install selects Python 3.13). Review the pinned
+  install instructions and destination first; separately approve source acquisition,
+  dependency installation, and scanner downloads before executing them.
+- Approve provider data egress and metered calls against the exact inputs, provider, model,
+  and cost ceiling. Tier 3 Docker evaluation requires its own container-execution approval.
+- Review generated paths and obtain separate approval for CI initialization writes and PR
+  creation. Installing this skill does not activate CI or authorize repository publication.
+- A passing `quality-check` is not proof of safety or behavioral impact. Keep structural
+  quality, scanner findings, and measured evaluation evidence separate; use
+  `skill-standardization` for format/catalog compliance and `skill-autoresearch` for a
+  bounded skill-improvement experiment.
+
 ### MCP server builder (on demand, evaluation spends credits)
 
 `mcp-builder` installs as routing and design documents plus a local eval-contract validator:

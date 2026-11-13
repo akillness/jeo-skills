@@ -369,7 +369,11 @@ node ~/.agents/jev/jev-harness.mjs --profile "${JEV_PROFILE:?Select the current 
 
 ## 📚 Skills List
 
-> Generated from `.agent-skills/skills.json` · 431 skills · expand a category to see its skills.
+<<<<<<< HEAD
+> Generated from `.agent-skills/skills.json` · 432 skills · expand a category to see its skills.
+=======
+> Generated from `.agent-skills/skills.json` · 432 skills · expand a category to see its skills.
+>>>>>>> 4212aad9 (feat(skill): add pinned NVIDIA SkillEvaluator operator skill)
 
 ### 🌐 Web (72)
 
@@ -645,9 +649,9 @@ Subcategories: `developer-cli` (12), `ai-cli` (16), `media-cli` (1), `automation
 
 </details>
 
-### 🤖 AI & Agents (78)
+### 🤖 AI & Agents (79)
 
-Subcategories: `orchestration` (19), `agent-frameworks` (20), `skill-authoring` (5), `evaluation` (8), `memory` (7), `planning-review` (13), `discovery` (3), `prompting` (3)
+Subcategories: `orchestration` (19), `agent-frameworks` (20), `skill-authoring` (5), `evaluation` (9), `memory` (7), `planning-review` (13), `discovery` (3), `prompting` (3)
 
 <details>
 <summary>Show AI &amp; Agents skills</summary>
@@ -670,6 +674,7 @@ Subcategories: `orchestration` (19), `agent-frameworks` (20), `skill-authoring` 
 | `langsmith` |
 | `opik` |
 | `skill-autoresearch` |
+| `nvidia-skill-evaluator` |
 | `kadath` |
 | `mex` |
 | `bmad-idea` |
@@ -974,6 +979,12 @@ See the [setup boundary](setup-all-skills-prompt.md#elephant-goldfish-model-on-d
 
 <!-- WHATS-NEW:START -->
 
+## 🆕 What's New in v2026-11-13
+
+| Change | Details |
+|--------|---------|
+| **NVIDIA SkillEvaluator operator skill** | Adds `nvidia-skill-evaluator`, pinned to upstream `12b387f7a62b5f3e0de9eff392a3f6b7e952f2c2`, with tier-specific commands, scanner/provider/sandbox/CI approval boundaries, Apache-2.0 attribution, a 12-file SHA-256 manifest, and a standalone offline helper. The 432-skill catalog, three README inventories and setup guide are synchronized. Verification: 15 offline regression tests, all 12 selected-file hashes, and byte-identical five-file installation into an isolated HOME passed. Ten routing scenarios are authored, not model-executed; the evaluator, scanners, paid models and live Tier 3 runs were not executed. |
+
 ## 🆕 What's New in v2026-11-07
 
 | Change | Details |
@@ -1009,21 +1020,6 @@ See the [setup boundary](setup-all-skills-prompt.md#elephant-goldfish-model-on-d
 | **Extended full-tools & multi-agent spec-kit** | `scripts/install-full-tools.sh` adds `--extended` mode (10/10 tools) covering `Graphify`, `OpenSpace` (BM25 probe), `Open-Ontologies` (`smoke.py`), and `OKF-Agent-Memory` (`smoke.py`) while preserving the 6/6 default baseline. It installs the unambiguous `~/.local/bin/mex-agent` wrapper (prioritizing active npm and newest nvm Node ahead of TeX Live `mex`), automatically links `~/.local/bin/rtk -> ~/.cargo/bin/rtk` (`1.1.0`), and supports multi-agent `SPEC_KIT_INTEGRATION` (`auto` or comma-separated) with staging and absent-only atomic merge. |
 | **Knowledge pipeline & vault concurrency** | Packaged `hooks/ctx/lock.py`, `hooks/ingest-output.py`, and `hooks/ingest-prompt.py` in the repository with real `fcntl.flock` fallbacks. Turn-end events (`Stop`, `AfterAgent`, `post-turn`) with output payloads delegate to `ingest-output.py` under the vault layer lock, capturing visible text only (filtering `thinking`/`tool_use`). File collisions are eliminated with `capture_id` and exclusive creation (`"x"` mode), raw captures use non-mutating outer fences, and lock contention defers indexing to `.state/deferred-index.jsonl` with automatic reconciliation on the next unlocked run. |
 | **Jev multi-host binding & ECC update** | Bound all 10 detected coding agent hosts to independent profiles in `~/.agents/jev/agents.json`, switched `echo-turn-jeopi` to `runtimeMode: assist` for automated skill instruction injection, and updated Claude Code `ecc@ecc` plugin to `2.2.3` with Jev proposal reviews. |
-
-## 🆕 What's New in v2026-10-30
-
-| Change | Details |
-|--------|---------|
-| **Impeccable design operator** | Added `impeccable` v1.0.0 for `pbakaus/impeccable` skill 4.8.0 / engine 0.1.18 at `02523aec3e4c4580102d996d1b6a71fbe062e03f` (Apache-2.0; LICENSE and NOTICE.md inspected). The catalog grows from 408 to 409 in `web/design`. It routes the 24 upstream commands, carries a paraphrased critique/audit method and craft floor so work proceeds without the upstream skill, documents the 62-rule detector and ignore policy, and gates npm execution, engine download and runs, the unsandboxed design hook, browser scans and live mode separately. Upstream uses the same `impeccable` folder name; the guide checks before either installer writes. |
-| **Impeccable helpers and verification** | `scripts/doctor.py` reports installs (upstream vs catalog operator), engine candidates in launcher order with optional pinned-digest checks, hook manifests, telemetry opt-outs and project context files without executing anything, opening sockets or writing files. `scripts/triage_findings.py` ranks `detect --json` findings into blocking/quality/slop/advisory bands with suggested commands, lists distinct sample locations and never echoes snippets. Runtime check in a throwaway `HOME` on macOS arm64: the public catalog install matched the repository byte for byte, the pinned launcher's engine 0.1.18 matched its pinned SHA-256, the binary's 62-rule catalog matched `source.json`, and a real `detect --json` run (exit 2, 19 findings) matched the documented schema and fed triage. Dedicated tests pass 22/22; installer 72/72 and setup-guide 34/34 pass on Node 24. Nine evals are authored, not executed. URL/CDP scans, hooks, live mode, the npm route and Linux/Windows assets remain unverified. |
-| **mex v1.2: mex-agent 0.8 setup** | On a fresh project `scripts/install.sh` stopped right after `mex setup`: mex-agent 0.8 exits 2 while scaffold population is pending, the installer runs under `set -euo pipefail`, so the root `AGENTS.md` bridge, graph and check never ran; 0.8 also ignores the piped tool menu. The installer now passes `--yes --tool <tool>` (and `--force`) to mex-agent >= 0.8, keeps the piped menu for 0.7.x, reports exit 2 with the `mex-agent setup next --start` next step and continues, and stops on any other setup failure. A missing mex-agent is installed as `mex-agent@0.8.5` (`MEX_AGENT_NPM_SPEC` overrides). Real mex-agent 0.8.5 in a throwaway `HOME`: exit 0, root `AGENTS.md` written, graph and check ran. |
-| **obsidian-second-brain v1.0.1: upstream install** | `WITH_UPSTREAM=1` aborted on macOS `/bin/bash` 3.2 under a UTF-8 locale (`"$dest…"` read as an unbound variable). With `GLOBAL=1`, `npx skills add -g` links `~/.claude/skills/obsidian-second-brain` to the routing copy, so the upstream clone always failed while the installer printed `Done`, and a re-run deleted an existing upstream checkout. The installer now parks a real directory there while `npx` runs, replaces the routing link or copy only after a successful clone, refuses any other directory, and exits 1 on a missing `git`, a failed clone or a refusal. Real `skills@1.7.0`, `git` and `/bin/bash` 3.2: the first run cloned upstream; a re-run kept a local marker and pulled. |
-| **devup-ui v1.0.1 and regression guards** | `devup-ui/scripts/install.sh` had the same unbraced `$pm…` expansion. `scripts/test-runtime-config-writers.sh` now scans tracked shell scripts for an unbraced variable directly before non-ASCII text and covers the obsidian upstream cases (fresh, re-run, foreign directory, clone failure, upstream-only) under a UTF-8 locale; `mex/scripts/test-runtime.sh` covers mex-agent 0.8 setup. Config-writer tests 26/26, installer regressions 72/72 and setup guide 34/34 pass on Node 24. |
-| **ponytail v2.0.0: Ponytail 5.3.3** | Rebased on upstream `DietrichGebert/ponytail` 5.3.3 at `7801d061243d7b753bad0e0b3c057cd250b11755` (MIT, license copied). Reuse code already in the codebase before stdlib, finish every caller a change breaks, leave one small check for risky logic, end replies with what was skipped and any risk; `ultra` now pushes back on the request; markers are `shortcut: <limit>, <when to upgrade>` (older `ponytail:` still harvested). `/ponytail-review` and `/ponytail-audit` are full quality reviews, `/ponytail-gain` shows the pinned benchmark (−53% code, −26% cost, −41% time) instead of the old 80–94% claims. Moved to `engineering/code-quality`. |
-| **ponytail installs and legacy removal** | `references/commands.md` and `scripts/install.sh` cover every upstream plugin host (Codex `plugin add`, Copilot CLI, Qwen, omp, OpenCode 2 `plugin add`, Antigravity, Hermes, Devin, Grok, Goose, OpenClaw, Kimi, Cursor hooks) plus settings and uninstall; `APPLY=1` runs one host and refuses ambiguity. Removed the 2 MB demo GIF (old ladder), the README `skills serve` MCP setup (no such command), OpenCode file-path plugin lines that OpenCode 2 rejects, and invented changelog dates; a 5 KB SVG shows the current ladder. Install payload: 2.03 MB → 33 KB. Real isolated installs: Claude Code and omp both installed plugin 5.3.3. |
-| **caveman v2.0.0: maintained upstream** | The copy credited to `mattpocock/skills` (removed upstream) now follows `JuliusBrussee/caveman` 4.0.1 at `d262ab3882952a59312ff3537cd86d894523c5ab` (Apache-2.0, license copied, changes stated): answer first, payload verbatim, no invented abbreviations or arrows, plain prose for warnings, irreversible steps and anything persisted. The unsourced “~75%” is replaced by upstream's own figures, and generic filler sections are gone. New `scripts/test_ponytail_caveman_skills.py` (12 tests, in CI) checks pins, versions, links, legacy payload and the installer's no-run/one-host contract. |
-| **openspace v2.0: prompt-time skill routing for every model** | `scripts/route_prompt.py` ranks the installed skills with OpenSpace's local BM25 (`SkillRanker.bm25_only`: no LLM, embeddings or network) before the model runs and hands it at most three matches with their `SKILL.md` paths, so the choice no longer depends on the model. The gate stays silent unless the prompt names a skill or a rare term meets enough coverage; Korean particles, Latin/Hangul boundaries and per-script rarity are handled. `scripts/route-hooks.py` installs it for Claude Code, Codex, Gemini CLI/Antigravity, Kimi Code, jeopi/omp/pi/gjc and OpenCode through one fail-open wrapper. Labeled check on 764 skills: correct skill for 26 of 33 routable prompts, silent on 23 of 24 others, about 0.3 s per prompt. Live with a routing-off control: Claude Code, jeopi (three models, including `claude-haiku-4-5` and `gpt-5.6-sol`) and omp. |
-| **OpenSpace and ooo install separately** | `ooo/scripts/install.sh` no longer checks, stages or searches with OpenSpace; `--search` and `--ensure-openspace` are usage errors. OpenSpace's installer now pins the verified commit, rebuilds a dead venv, pins `mcp<2` (MCP SDK 2 broke `openspace-mcp`) and checks the router. The registrar stopped writing `toolTimeout` for Gemini CLI and Qwen Code, which refused to start on it, and repairs old entries. New `test_openspace_routing.py` (24 tests) and `test_ooo_installer.py` (5) replace the coupled suite in CI. |
 
 > 📜 Older entries: [`changelog/en/`](changelog/en/) (monthly files, newest first).
 
