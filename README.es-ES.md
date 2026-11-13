@@ -147,7 +147,7 @@ curl -fsSL "$URL" | JEO_SKILLS_DRY_RUN=true INSTALL_GLOBAL=false bash
 | `web-backend` | api-design, authentication-setup, database-schema-design, backend-testing |
 | `web-design` | web-design, design-system, responsive-design, web-accessibility |
 | `infrastructure-core` | deployment-automation, environment-setup, monitoring-observability, security-best-practices |
-| `game-client` | unity-gamedev-skill-pack, game-studio-harness, game-performance-profiler, awesome-gamedev-agent-skills |
+| `game-client` | unity-gamedev-skill-pack, game-studio-harness, game-performance-profiler, awesome-gamedev-agent-skills, donchitos-game-studios |
 | `game-web` | web-game-development, threejs-fundamentals, implement-fog-of-war |
 | `game-art` | game-vfx, rfxgen, perfectpixel, open-design-game-ui-concept, unirig |
 | `media-video` | video-production, video-shotcraft, video-motion-previs, shopping-shorts, filmcraft |
@@ -309,13 +309,20 @@ Consulta la [guía de instalación](setup-all-skills-prompt.md#jev-control-plane
 
 </details>
 
+## Claude Code Game Studios
+
+[`donchitos-game-studios`](.agent-skills/donchitos-game-studios/SKILL.md) opera
+la plantilla del proyecto en una revisión fija; no instala 78 habilidades globales.
+La [investigación](.agent-skills/donchitos-game-studios/references/research.md)
+distingue 75 flujos canónicos y tres alias, la especificación y las heurísticas.
+El helper comprueba doce archivos públicos sin ejecutar código upstream. La guía
+está en `game-client`; clonar, fusionar proyectos, activar hooks, instalar dependencias
+y evaluar modelos requieren aprobación separada. Consulte la
+[guía de instalación](setup-all-skills-prompt.md#claude-code-game-studios-on-demand-project-template-not-global-skill-pack).
+
 ## 📚 Lista de Habilidades
 
-<<<<<<< HEAD
-> Generado desde `.agent-skills/skills.json` · 432 habilidades · despliega una categoría para ver sus habilidades.
-=======
-> Generado desde `.agent-skills/skills.json` · 432 habilidades · despliega una categoría para ver sus habilidades.
->>>>>>> 4212aad9 (feat(skill): add pinned NVIDIA SkillEvaluator operator skill)
+> Generado desde `.agent-skills/skills.json` · 433 habilidades · despliega una categoría para ver sus habilidades.
 
 ### 🌐 Web (72)
 
@@ -430,9 +437,9 @@ Subcategorías: `deployment` (2), `environment` (2), `observability` (3), `secur
 
 </details>
 
-### 🎮 Juego (39)
+### 🎮 Juego (40)
 
-Subcategorías: `client` (9), `web` (2), `server` (1), `design-ui` (7), `audio` (1), `animation` (3), `motion-vfx` (3), `sprite-image` (1), `art-resources` (1), `storytelling` (0), `tooling` (5), `qa-performance` (4), `release` (2)
+Subcategorías: `client` (9), `web` (2), `server` (1), `design-ui` (7), `audio` (1), `animation` (3), `motion-vfx` (3), `sprite-image` (1), `art-resources` (1), `storytelling` (0), `tooling` (6), `qa-performance` (4), `release` (2)
 
 <details>
 <summary>Ver habilidades</summary>
@@ -478,6 +485,7 @@ Subcategorías: `client` (9), `web` (2), `server` (1), `design-ui` (7), `audio` 
 | `the-forge` |
 | `meshoptimizer` |
 | `fastnoise2` |
+| `donchitos-game-studios` |
 
 </details>
 

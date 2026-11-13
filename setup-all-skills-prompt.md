@@ -2859,6 +2859,45 @@ that limitation is separate from the upstream CLI's platform support.
   `skill-standardization` for format/catalog compliance and `skill-autoresearch` for a
   bounded skill-improvement experiment.
 
+### Claude Code Game Studios (on demand, project template not global skill pack)
+
+[`donchitos-game-studios`](.agent-skills/donchitos-game-studios/SKILL.md) installs
+this catalog's operator guide, research, source manifest, offline helper and authored
+eval cases only. It is also selected by the
+`game-client` bundle. It does not copy 78 upstream skills, clone a game project,
+merge `.claude/settings.json`, launch Claude Code or activate any upstream hook.
+
+```bash
+HOME="$USER_HOME" python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" install donchitos-game-studios --global --yes
+# SKILLS_ROOT must be the real canonical shared skill root, not a host symlink.
+python3 "$SKILLS_ROOT/donchitos-game-studios/scripts/preflight.py" --json
+# Optional: twelve selected public-file hashes in an existing real source checkout.
+python3 "$SKILLS_ROOT/donchitos-game-studios/scripts/preflight.py" \
+  --repo /absolute/real/path/to/game-studios --json
+```
+
+Read the [pinned operations](.agent-skills/donchitos-game-studios/references/upstream.md)
+and [research conclusions](.agent-skills/donchitos-game-studios/references/research.md)
+first. The source snapshot is `abc0de79d6ceb0b5d7aa693945849b3937afbe6a`: 75 canonical
+workflows plus three compatibility aliases, not 78 independent global packages.
+For new projects use a separately approved empty directory; for existing projects
+preview a file-by-file adoption preserving user rules, code and engine versions.
+Do not replace `.claude/`, run upstream hooks, install browser/Node/engine tools,
+commit/push a game, or invoke scanners or paid models as part of blanket setup.
+
+The helper is standard-library-only, noninteractive and offline. It requires POSIX
+`dir_fd`/`O_NOFOLLOW` support and canonical absolute paths (macOS `/private/tmp`, not
+`/tmp`). Exit 0 is inventory or selected-file match, 1 is missing/mismatched source,
+2 is unsafe/invalid input; missing optional executables are informational. It does
+not execute discovered tools and always reports `runtime_verified=false`; selected
+bytes do not establish Git HEAD, full revision, dependency readiness or security.
+The prior quality-check baseline passed 78 files, but all publications remain
+`incomplete`; paired agent performance and gameplay quality were not measured.
+For generic five-role production use `game-studio-harness`, cross-engine collection
+selection use `awesome-gamedev-agent-skills`, and evaluator commands use
+`nvidia-skill-evaluator`. Eval cases here are authored, not executed model results.
+
+
 ### MCP server builder (on demand, evaluation spends credits)
 
 `mcp-builder` installs as routing and design documents plus a local eval-contract validator:

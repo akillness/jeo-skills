@@ -167,7 +167,7 @@ curl -fsSL "$URL" | JEO_SKILLS_DRY_RUN=true INSTALL_GLOBAL=false bash
 | `web-backend` | api-design, authentication-setup, database-schema-design, backend-testing |
 | `web-design` | web-design, design-system, responsive-design, web-accessibility |
 | `infrastructure-core` | deployment-automation, environment-setup, monitoring-observability, security-best-practices |
-| `game-client` | unity-gamedev-skill-pack, game-studio-harness, game-performance-profiler, awesome-gamedev-agent-skills |
+| `game-client` | unity-gamedev-skill-pack, game-studio-harness, game-performance-profiler, awesome-gamedev-agent-skills, donchitos-game-studios |
 | `game-web` | web-game-development, threejs-fundamentals, implement-fog-of-war |
 | `game-art` | game-vfx, rfxgen, perfectpixel, open-design-game-ui-concept, unirig |
 | `media-video` | video-production, video-shotcraft, video-motion-previs, shopping-shorts, filmcraft |
@@ -373,13 +373,20 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 
 </details>
 
+## Claude Code Game Studios
+
+명명된 프로젝트 템플릿용 [`donchitos-game-studios`](.agent-skills/donchitos-game-studios/SKILL.md)
+운영 스킬을 추가했습니다. [딥리서치 결론](.agent-skills/donchitos-game-studios/references/research.md)은
+75개 정규 워크플로우와 별칭 3개, 스킬 표준과 점수 휴리스틱을 구분합니다.
+78개를 전역 설치하거나 별칭을 불필요하게 늘리는 대신 소스 고정·작업별 라우팅·
+승인 경계·선택 공개 파일 12개의 오프라인 검사를 제공합니다. `game-client` 번들로도
+선택할 수 있습니다. 원본 훅·게임·모델은 실행하지 않으며 정적 통과를 보안 또는
+성능 향상으로 보고하지 않습니다. 원본 설치와 활성화 범위는
+[setup 가이드](setup-all-skills-prompt.md#claude-code-game-studios-on-demand-project-template-not-global-skill-pack)를 확인하세요.
+
 ## 📚 스킬 목록
 
-<<<<<<< HEAD
-> `.agent-skills/skills.json`에서 생성 · 432개 스킬 · 카테고리를 펼치면 스킬 목록이 보입니다.
-=======
-> `.agent-skills/skills.json`에서 생성 · 432개 스킬 · 카테고리를 펼치면 스킬 목록이 보입니다.
->>>>>>> 4212aad9 (feat(skill): add pinned NVIDIA SkillEvaluator operator skill)
+> `.agent-skills/skills.json`에서 생성 · 433개 스킬 · 카테고리를 펼치면 스킬 목록이 보입니다.
 
 ### 🌐 웹 (72개)
 
@@ -494,9 +501,9 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 
 </details>
 
-### 🎮 게임 (39개)
+### 🎮 게임 (40개)
 
-하위 분류: `client` (9), `web` (2), `server` (1), `design-ui` (7), `audio` (1), `animation` (3), `motion-vfx` (3), `sprite-image` (1), `art-resources` (1), `storytelling` (0), `tooling` (5), `qa-performance` (4), `release` (2)
+하위 분류: `client` (9), `web` (2), `server` (1), `design-ui` (7), `audio` (1), `animation` (3), `motion-vfx` (3), `sprite-image` (1), `art-resources` (1), `storytelling` (0), `tooling` (6), `qa-performance` (4), `release` (2)
 
 <details>
 <summary>스킬 보기</summary>
@@ -542,6 +549,7 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 | `the-forge` |
 | `meshoptimizer` |
 | `fastnoise2` |
+| `donchitos-game-studios` |
 
 </details>
 

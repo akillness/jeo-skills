@@ -1,0 +1,21 @@
+{
+  "retrieved_at": "2026-11-13T05:32:21.277069+00:00",
+  "sources": [
+    {
+      "url": "https://agentskills.io/specification.md",
+      "sha256": "bf4137a702014f82a022de532e597c5f92ea86fb53fe29ea27bee3bbc1d19738",
+      "bytes": 7685
+    },
+    {
+      "url": "https://agentskills.io/skill-creation/using-scripts.md",
+      "sha256": "c8a0792d224d8bdc98741cf741c2cd9e0cd36457cb3930df791f18e81fca31d0",
+      "bytes": 12376
+    },
+    {
+      "url": "https://agentskills.io/skill-creation/evaluating-skills.md",
+      "sha256": "a799805f3a285390c1b6e906b691f56684fa1031b499d177f664f464d99fb684",
+      "bytes": 16973
+    }
+  ],
+  "limitation": "Hashes identify retrieved bytes only, not immutable URLs. Claude Code skills/hooks retrieval did not succeed."
+}

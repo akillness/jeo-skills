@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "skill": "donchitos-game-studios",
+  "repository": "donchitos/claude-code-game-studios",
+  "commit": "abc0de79d6ceb0b5d7aa693945849b3937afbe6a",
+  "license": "MIT",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "97e1e304719718c83de08616951eb62144951c5c26d2d290f7cce6519898e423",
+      "url": "https://github.com/donchitos/claude-code-game-studios/blob/abc0de79d6ceb0b5d7aa693945849b3937afbe6a/README.md"
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "6ecc068715c0edffc4bc21e5dca450803e0a45af145f72221da23d14e7588359",
+      "url": "https://github.com/donchitos/claude-code-game-studios/blob/abc0de79d6ceb0b5d7aa693945849b3937afbe6a/LICENSE"
+    },
+    {
+      "path": "CLAUDE.md",
+      "sha256": "f3009779b291829d8624003b31a8d656f5453dd20753ef3f7677354bede7c3e1",
+      "url": "https://github.com/donchitos/claude-code-game-studios/blob/abc0de79d6ceb0b5d7aa693945849b3937afbe6a/CLAUDE.md"
+    },
+    {
+      "path": "project.yaml",
+      "sha256": "91761faf7566aa56238fce765823ff79dfc7f56182846a96ff7f0774fd679a58",
+      "url": "https://github.com/donchitos/claude-code-game-studios/blob/abc0de79d6ceb0b5d7aa693945849b3937afbe6a/project.yaml"
+    },
+    {
+      "path": ".claude/settings.json",
+      "sha256": "3ab03c78bdc1d1e2c26567f5af640157b2691c5014a46e4bd19573057d2026ff",
+      "url": "https://github.com/donchitos/claude-code-game-studios/blob/abc0de79d6ceb0b5d7aa693945849b3937afbe6a/.claude/settings.json"
+    },
+    {
+      "path": ".claude/skills/help/SKILL.md",
+      "sha256": "48cb6e4b1632d16227bf035875231ed2647f2a71a57f299f1136e2296f718b56",
+      "url": "https://github.com/donchitos/claude-code-game-studios/blob/abc0de79d6ceb0b5d7aa693945849b3937afbe6a/.claude/skills/help/SKILL.md"
+    },
+    {
+      "path": ".claude/skills/settings/SKILL.md",
+      "sha256": "eb547a6431e99ac8548ab4f536311a46fe5dfe9e4f3f912e2b0e769f19c8e1bf",
+      "url": "https://github.com/donchitos/claude-code-game-studios/blob/abc0de79d6ceb0b5d7aa693945849b3937afbe6a/.claude/skills/settings/SKILL.md"
+    },
+    {
+      "path": ".claude/skills/changelog/SKILL.md",
+      "sha256": "d14f48f7a9012ff23ce3431140660a310a7afee11876c466b322b502dfc98c11",
+      "url": "https://github.com/donchitos/claude-code-game-studios/blob/abc0de79d6ceb0b5d7aa693945849b3937afbe6a/.claude/skills/changelog/SKILL.md"
+    },
+    {
+      "path": ".claude/skills/prototype/SKILL.md",
+      "sha256": "80f4212c6f3081e501a0527d23b88d5989cfa8fe2d9d3f80531162cf96e7a326",
+      "url": "https://github.com/donchitos/claude-code-game-studios/blob/abc0de79d6ceb0b5d7aa693945849b3937afbe6a/.claude/skills/prototype/SKILL.md"
+    },
+    {
+      "path": "studio-tests/README.md",
+      "sha256": "6fa5c47bca7ba52267820e4b6b6140612b981e05d93f78ed4f998b8d6607ef42",
+      "url": "https://github.com/donchitos/claude-code-game-studios/blob/abc0de79d6ceb0b5d7aa693945849b3937afbe6a/studio-tests/README.md"
+    },
+    {
+      "path": "studio-tests/catalog.yaml",
+      "sha256": "98c471578543d3ae795d6fe392b04b2453ccc7ada88c11428dc3a67dba2cabd4",
+      "url": "https://github.com/donchitos/claude-code-game-studios/blob/abc0de79d6ceb0b5d7aa693945849b3937afbe6a/studio-tests/catalog.yaml"
+    },
+    {
+      "path": ".claude/scripts/skill-lint.sh",
+      "sha256": "15a49fd625d5782b373ab154581d8c228d7e16a2ba01bd7c9189a7793cbd8a5c",
+      "url": "https://github.com/donchitos/claude-code-game-studios/blob/abc0de79d6ceb0b5d7aa693945849b3937afbe6a/.claude/scripts/skill-lint.sh"
+    }
+  ],
+  "tools": [
+    {
+      "name": "claude",
+      "purpose": "discovery only; optional route dependency"
+    },
+    {
+      "name": "git",
+      "purpose": "discovery only; optional route dependency"
+    },
+    {
+      "name": "python3",
+      "purpose": "discovery only; optional route dependency"
+    },
+    {
+      "name": "bash",
+      "purpose": "discovery only; optional route dependency"
+    },
+    {
+      "name": "node",
+      "purpose": "discovery only; optional route dependency"
+    },
+    {
+      "name": "jq",
+      "purpose": "discovery only; optional route dependency"
+    },
+    {
+      "name": "godot",
+      "purpose": "discovery only; optional route dependency"
+    },
+    {
+      "name": "skillevaluator",
+      "purpose": "discovery only; optional route dependency"
+    }
+  ]
+}

@@ -158,7 +158,7 @@ Starring is a separate GitHub account action, not consent implied by installatio
 | `web-backend` | api-design, authentication-setup, database-schema-design, backend-testing |
 | `web-design` | web-design, design-system, responsive-design, web-accessibility |
 | `infrastructure-core` | deployment-automation, environment-setup, monitoring-observability, security-best-practices |
-| `game-client` | unity-gamedev-skill-pack, game-studio-harness, game-performance-profiler, awesome-gamedev-agent-skills |
+| `game-client` | unity-gamedev-skill-pack, game-studio-harness, game-performance-profiler, awesome-gamedev-agent-skills, donchitos-game-studios |
 | `game-web` | web-game-development, threejs-fundamentals, implement-fog-of-war |
 | `game-art` | game-vfx, rfxgen, perfectpixel, open-design-game-ui-concept, unirig |
 | `media-video` | video-production, video-shotcraft, video-motion-previs, shopping-shorts, filmcraft |
@@ -367,13 +367,21 @@ node ~/.agents/jev/jev-harness.mjs --profile "${JEV_PROFILE:?Select the current 
 
 </details>
 
+## Claude Code Game Studios
+
+[`donchitos-game-studios`](.agent-skills/donchitos-game-studios/SKILL.md) adds a
+pinned operator for the named project template, not 78 standalone global skills.
+The [source-backed review](.agent-skills/donchitos-game-studios/references/research.md)
+separates 75 canonical workflows from three aliases and specification requirements
+from quality-score heuristics. Its offline helper checks twelve selected public
+files without running upstream code; static pass is not security or measured agent
+improvement. The `game-client` bundle includes the guide; template cloning, project
+merges, hooks, dependencies and evaluation remain separately approved operations.
+See the [setup guide](setup-all-skills-prompt.md#claude-code-game-studios-on-demand-project-template-not-global-skill-pack).
+
 ## 📚 Skills List
 
-<<<<<<< HEAD
-> Generated from `.agent-skills/skills.json` · 432 skills · expand a category to see its skills.
-=======
-> Generated from `.agent-skills/skills.json` · 432 skills · expand a category to see its skills.
->>>>>>> 4212aad9 (feat(skill): add pinned NVIDIA SkillEvaluator operator skill)
+> Generated from `.agent-skills/skills.json` · 433 skills · expand a category to see its skills.
 
 ### 🌐 Web (72)
 
@@ -488,9 +496,9 @@ Subcategories: `deployment` (2), `environment` (2), `observability` (3), `securi
 
 </details>
 
-### 🎮 Game (39)
+### 🎮 Game (40)
 
-Subcategories: `client` (9), `web` (2), `server` (1), `design-ui` (7), `audio` (1), `animation` (3), `motion-vfx` (3), `sprite-image` (1), `art-resources` (1), `storytelling` (0), `tooling` (5), `qa-performance` (4), `release` (2)
+Subcategories: `client` (9), `web` (2), `server` (1), `design-ui` (7), `audio` (1), `animation` (3), `motion-vfx` (3), `sprite-image` (1), `art-resources` (1), `storytelling` (0), `tooling` (6), `qa-performance` (4), `release` (2)
 
 <details>
 <summary>Show Game skills</summary>
@@ -536,6 +544,7 @@ Subcategories: `client` (9), `web` (2), `server` (1), `design-ui` (7), `audio` (
 | `the-forge` |
 | `meshoptimizer` |
 | `fastnoise2` |
+| `donchitos-game-studios` |
 
 </details>
 

@@ -1,7 +1,7 @@
 {
   "version": "2.1.0",
   "generated": "2026-10-21",
-  "skill_count": 432,
+  "skill_count": 433,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -260,7 +260,8 @@
       "ozz-animation",
       "the-forge",
       "meshoptimizer",
-      "fastnoise2"
+      "fastnoise2",
+      "donchitos-game-studios"
     ],
     "creative-media": [
       "aura-asset-images",
@@ -763,7 +764,8 @@
         "underworld-overseer-save-mapper",
         "godogen",
         "meshoptimizer",
-        "fastnoise2"
+        "fastnoise2",
+        "donchitos-game-studios"
       ],
       "qa-performance": [
         "game-build-log-triage",
@@ -1237,7 +1239,8 @@
       "unity-gamedev-skill-pack",
       "game-studio-harness",
       "game-performance-profiler",
-      "awesome-gamedev-agent-skills"
+      "awesome-gamedev-agent-skills",
+      "donchitos-game-studios"
     ],
     "game-web": [
       "web-game-development",
@@ -15973,6 +15976,34 @@
       "keyword": "flide",
       "version": "1.0.0",
       "source": "https://github.com/OmniJev/Flide"
+    },
+    {
+      "name": "donchitos-game-studios",
+      "description": "Inspect, adopt, and maintain Donchitos/Claude-Code-Game-Studios at a pinned source revision. Use when users name this template, need its prototype-to-production workflow, project.yaml rigor settings, legacy slash-command migration, or its studio-tests skill checks. Preserve the complete project-relative references, scripts and hooks; do not install its 78 skill folders as standalone global skills. Not for generic game-production teams (use game-studio-harness), cross-engine skill collections (use awesome-gamedev-agent-skills), or evaluator operation (use nvidia-skill-evaluator). Installing this guide does not install the upstream template or activate hooks.",
+      "category": "game",
+      "subcategory": "tooling",
+      "interface": "workflow",
+      "path": "donchitos-game-studios/SKILL.md",
+      "tags": [
+        "game-development",
+        "project-template",
+        "claude-code",
+        "prototype",
+        "skill-curation",
+        "source-verification"
+      ],
+      "platforms": [
+        "Claude Code"
+      ],
+      "allowed_tools": [
+        "Read",
+        "Glob",
+        "Grep",
+        "Bash"
+      ],
+      "keyword": "donchitos-game-studios",
+      "version": "1.0.0",
+      "source": "https://github.com/donchitos/claude-code-game-studios"
     }
   ]
 }

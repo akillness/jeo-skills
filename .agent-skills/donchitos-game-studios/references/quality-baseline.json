@@ -1,0 +1,525 @@
+{
+  "source_commit": "abc0de79d6ceb0b5d7aa693945849b3937afbe6a",
+  "evaluator_commit": "12b387f7a62b5f3e0de9eff392a3f6b7e952f2c2",
+  "lane": "quality-check",
+  "min_score": 70,
+  "report_count": 78,
+  "mean": 86.54615384615384,
+  "median": 87.2,
+  "range": [
+    75.2,
+    89.8
+  ],
+  "findings_by_report": {
+    "SKILL_SPEC recommended field missing: 'version'": 78,
+    "No examples provided": 24,
+    "Description doesn't mention WHEN to use this skill": 43,
+    "Broad description without negative triggers may cause over-triggering": 10,
+    "No troubleshooting section documented": 78,
+    "No prerequisites/requirements documented": 78,
+    "No '## Purpose' section": 76,
+    "SKILL_SPEC recommended field missing: 'metadata.author'": 78,
+    "SKILL_SPEC recommended field missing: 'metadata.tags'": 78,
+    "No limitations documented": 78,
+    "Large skill (6361 tokens, recommended max <5000). Per agentskills.io, SKILL.md should be concise (~500 lines) — large skill bodies increase token cost after invocation; long or unfocused top-level descriptions can degrade agent routing accuracy": 1,
+    "Large skill (5100 tokens, recommended max <5000). Per agentskills.io, SKILL.md should be concise (~500 lines) — large skill bodies increase token cost after invocation; long or unfocused top-level descriptions can degrade agent routing accuracy": 1,
+    "Description very long (215 chars, recommend 50-150)": 1,
+    "No mention of error handling or validation": 9,
+    "Guide-only skill has very little content (17 lines)": 3,
+    "Description very long (203 chars, recommend 50-150)": 1,
+    "Description very long (208 chars, recommend 50-150)": 2,
+    "Large skill (5157 tokens, recommended max <5000). Per agentskills.io, SKILL.md should be concise (~500 lines) — large skill bodies increase token cost after invocation; long or unfocused top-level descriptions can degrade agent routing accuracy": 1,
+    "Description very long (249 chars, recommend 50-150)": 1,
+    "Skill name very short: 'cut'": 1,
+    "Large skill (6962 tokens, recommended max <5000). Per agentskills.io, SKILL.md should be concise (~500 lines) — large skill bodies increase token cost after invocation; long or unfocused top-level descriptions can degrade agent routing accuracy": 1,
+    "Large skill (5465 tokens, recommended max <5000). Per agentskills.io, SKILL.md should be concise (~500 lines) — large skill bodies increase token cost after invocation; long or unfocused top-level descriptions can degrade agent routing accuracy": 1,
+    "Skill name very short: 'help'": 1,
+    "Large skill (5238 tokens, recommended max <5000). Per agentskills.io, SKILL.md should be concise (~500 lines) — large skill bodies increase token cost after invocation; long or unfocused top-level descriptions can degrade agent routing accuracy": 1,
+    "Large skill (5608 tokens, recommended max <5000). Per agentskills.io, SKILL.md should be concise (~500 lines) — large skill bodies increase token cost after invocation; long or unfocused top-level descriptions can degrade agent routing accuracy": 1,
+    "Large skill (5761 tokens, recommended max <5000). Per agentskills.io, SKILL.md should be concise (~500 lines) — large skill bodies increase token cost after invocation; long or unfocused top-level descriptions can degrade agent routing accuracy": 1,
+    "Large skill (5506 tokens, recommended max <5000). Per agentskills.io, SKILL.md should be concise (~500 lines) — large skill bodies increase token cost after invocation; long or unfocused top-level descriptions can degrade agent routing accuracy": 1,
+    "Description very long (216 chars, recommend 50-150)": 1,
+    "Description very long (372 chars, recommend 50-150)": 1,
+    "Large skill (5552 tokens, recommended max <5000). Per agentskills.io, SKILL.md should be concise (~500 lines) — large skill bodies increase token cost after invocation; long or unfocused top-level descriptions can degrade agent routing accuracy": 1,
+    "Non-descriptive filename: web.md": 1,
+    "Large skill (7178 tokens, recommended max <5000). Per agentskills.io, SKILL.md should be concise (~500 lines) — large skill bodies increase token cost after invocation; long or unfocused top-level descriptions can degrade agent routing accuracy": 1,
+    "Description very long (296 chars, recommend 50-150)": 1,
+    "Large skill (5604 tokens, recommended max <5000). Per agentskills.io, SKILL.md should be concise (~500 lines) — large skill bodies increase token cost after invocation; long or unfocused top-level descriptions can degrade agent routing accuracy": 1,
+    "Large skill (6486 tokens, recommended max <5000). Per agentskills.io, SKILL.md should be concise (~500 lines) — large skill bodies increase token cost after invocation; long or unfocused top-level descriptions can degrade agent routing accuracy": 1,
+    "Large skill (5606 tokens, recommended max <5000). Per agentskills.io, SKILL.md should be concise (~500 lines) — large skill bodies increase token cost after invocation; long or unfocused top-level descriptions can degrade agent routing accuracy": 1,
+    "Large skill (5648 tokens, recommended max <5000). Per agentskills.io, SKILL.md should be concise (~500 lines) — large skill bodies increase token cost after invocation; long or unfocused top-level descriptions can degrade agent routing accuracy": 1,
+    "Large skill (5300 tokens, recommended max <5000). Per agentskills.io, SKILL.md should be concise (~500 lines) — large skill bodies increase token cost after invocation; long or unfocused top-level descriptions can degrade agent routing accuracy": 1
+  },
+  "skills": [
+    {
+      "name": "adopt",
+      "score": 84.2,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "architecture-decision",
+      "score": 87.2,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "architecture-review",
+      "score": 85.5,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "art-bible",
+      "score": 85.0,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "asset-audit",
+      "score": 87.2,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "asset-spec",
+      "score": 85.0,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "balance-check",
+      "score": 86.0,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "brainstorm",
+      "score": 86.8,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "bug-report",
+      "score": 89.8,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "bug-triage",
+      "score": 89.8,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "changelog",
+      "score": 77.8,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "code-review",
+      "score": 87.2,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "consistency-check",
+      "score": 89.8,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "content-audit",
+      "score": 87.2,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "create-architecture",
+      "score": 85.5,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "create-control-manifest",
+      "score": 88.5,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "create-epics",
+      "score": 86.0,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "create-stories",
+      "score": 87.5,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "cut",
+      "score": 86.0,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "day-one-patch",
+      "score": 89.8,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "design-review",
+      "score": 87.5,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "design-system",
+      "score": 88.0,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "dev-story",
+      "score": 87.5,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "estimate",
+      "score": 87.2,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "gate-check",
+      "score": 85.5,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "help",
+      "score": 75.2,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "hotfix",
+      "score": 86.0,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "launch-checklist",
+      "score": 87.2,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "localize",
+      "score": 85.0,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "map-systems",
+      "score": 83.2,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "milestone-review",
+      "score": 87.2,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "next-step",
+      "score": 87.5,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "onboard",
+      "score": 88.5,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "patch-notes",
+      "score": 87.2,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "perf-profile",
+      "score": 87.2,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "playtest-report",
+      "score": 84.8,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "project-settings",
+      "score": 87.5,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "project-stage-detect",
+      "score": 86.0,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "propagate-design-change",
+      "score": 86.0,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "prototype",
+      "score": 88.0,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "qa-plan",
+      "score": 89.8,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "quick-design",
+      "score": 89.8,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "regression-suite",
+      "score": 87.2,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "release-checklist",
+      "score": 87.2,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "retrospective",
+      "score": 89.8,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "reverse-document",
+      "score": 89.8,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "review-all-gdds",
+      "score": 85.5,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "scope-check",
+      "score": 87.2,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "security-audit",
+      "score": 83.8,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "settings",
+      "score": 77.8,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "setup-engine",
+      "score": 83.5,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "skill-improve",
+      "score": 87.2,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "skill-test",
+      "score": 86.2,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "smoke-check",
+      "score": 85.5,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "soak-test",
+      "score": 89.8,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "sprint-plan",
+      "score": 87.2,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "sprint-status",
+      "score": 89.8,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "start",
+      "score": 88.5,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "story-done",
+      "score": 87.5,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "story-readiness",
+      "score": 88.5,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "team-audio",
+      "score": 85.5,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "team-combat",
+      "score": 85.5,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "team-level",
+      "score": 88.0,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "team-live-ops",
+      "score": 88.0,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "team-narrative",
+      "score": 88.0,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "team-polish",
+      "score": 85.5,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "team-qa",
+      "score": 85.0,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "team-release",
+      "score": 83.2,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "team-ui",
+      "score": 83.2,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "tech-debt",
+      "score": 89.8,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "test-evidence-review",
+      "score": 86.0,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "test-flakiness",
+      "score": 87.2,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "test-helpers",
+      "score": 87.2,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "test-setup",
+      "score": 85.5,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "ux-design",
+      "score": 86.8,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "ux-review",
+      "score": 87.2,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "vertical-slice",
+      "score": 86.2,
+      "passed": true,
+      "publication_status": "incomplete"
+    },
+    {
+      "name": "write-changelog",
+      "score": 87.2,
+      "passed": true,
+      "publication_status": "incomplete"
+    }
+  ],
+  "security_verified": false,
+  "behavioral_lift_verified": false
+}

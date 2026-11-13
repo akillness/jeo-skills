@@ -1,4 +1,6 @@
 # Pattern Index
+<!-- last_updated: 2026-11-13 -->
+
 
 Lookup table for all pattern files in this directory. Check here before starting any task — if a pattern exists, follow it.
 
@@ -23,5 +25,6 @@ Lookup table for all pattern files in this directory. Check here before starting
 
 | Pattern | Use when |
 |---------|----------|
+| [skill-quality-triage.md](skill-quality-triage.md) | Interpreting quality-check findings, aliases and optional metadata before bulk skill rewrites |
 | [skills-upgrade-refresh.md](skills-upgrade-refresh.md) | Refreshing/updating installed skills on symlinked hosts (최신화·중복/레거시 방지) |
 | [source-pinned-skills.md](source-pinned-skills.md) | Adding source-pinned operator skills with references, selected-file helpers and real-manifest smoke tests |

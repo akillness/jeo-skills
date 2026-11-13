@@ -15,7 +15,7 @@ edges:
 # Decisions usually ground sparsely; add only symbols that implement the decision.
 # Entry shape: { node: "function:<tier-1-id>", fingerprint: "mh2:64:<base64url>" }
 grounds_to: []
-last_updated: [2026-11-07]
+last_updated: 2026-11-13
 ---
 
 # Decisions
@@ -34,6 +34,14 @@ last_updated: [2026-11-07]
      The history must be preserved — this is the event clock. -->
 
 ## Decision Log
+
+### One named-project operator instead of importing 78 coupled workflows
+**Date:** 2026-11-13
+**Status:** Accepted for package structure; behavioral improvement unmeasured
+**Decision:** Add `donchitos-game-studios` as a guide-only operator; keep upstream project-relative scripts, hooks, references and configuration together rather than globally installing every workflow.
+**Reasoning:** Source inspection found 75 canonical workflows and three deliberate compatibility aliases. Their quality scores are not independent runtime measures, and optional metadata warnings do not override catalog-only taxonomy. The evaluator rejected `claude` in the initial local name; renaming the guide preserved all gates and upstream URLs.
+**Alternatives considered:** Importing all 78 folders loses project dependencies and adds competing routes; inflating the three wrappers duplicates canonical instructions. Neither is justified by the static scores.
+**Consequences:** Offline preflight and package tests establish only selected-file/package properties. Keep publication incomplete and defer paid/security/paired behavioral evaluation to separately approved runs. Evidence and limits are in [the research report](../../.agent-skills/donchitos-game-studios/references/research.md) and [triage runbook](../patterns/skill-quality-triage.md).
 
 ### Shared-root-only refresh + per-host symlinks (no per-host copy installs)
 **Date:** 2026-11-06
