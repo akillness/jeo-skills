@@ -70,10 +70,10 @@
     {
       "id": 7,
       "prompt": "Donchitos 템플릿은 안 쓸 거야. 내 게임 제작에 director, designer, PM, programmer, QA 다섯 역할과 단계 게이트를 설계해줘.",
-      "expected_output": "Route to game-studio-harness rather than installing or invoking the named upstream template.",
+      "expected_output": "Route to bmad-gds for game-production planning rather than installing or invoking the named upstream template; do not claim it provides the requested five-role process.",
       "files": [],
       "assertions": [
-        "Selects game-studio-harness for the generic five-role production cycle.",
+        "Routes game-production planning to bmad-gds without claiming an equivalent five-role process.",
         "Does not activate Game Studios hooks or add its upstream workflows."
       ]
     },

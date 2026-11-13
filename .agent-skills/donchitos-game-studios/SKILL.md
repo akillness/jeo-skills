@@ -1,7 +1,7 @@
 ---
 name: donchitos-game-studios
 description: >
-  Inspect, adopt, and maintain Donchitos/Claude-Code-Game-Studios at a pinned source revision. Use when users name this template, need its prototype-to-production workflow, project.yaml rigor settings, legacy slash-command migration, or its studio-tests skill checks. Preserve the complete project-relative references, scripts and hooks; do not install its 78 skill folders as standalone global skills. Not for generic game-production teams (use game-studio-harness), cross-engine skill collections (use awesome-gamedev-agent-skills), or evaluator operation (use nvidia-skill-evaluator). Installing this guide does not install the upstream template or activate hooks.
+  Inspect, adopt, and maintain Donchitos/Claude-Code-Game-Studios at a pinned source revision. Use when users name this template, need its prototype-to-production workflow, project.yaml rigor settings, legacy slash-command migration, or its studio-tests skill checks. Preserve the complete project-relative references, scripts and hooks; do not install its 78 skill folders as standalone global skills. Not for generic game production (use bmad-gds), cross-engine skill collections (use awesome-gamedev-agent-skills), or evaluator operation (use nvidia-skill-evaluator). Installing this guide does not install the upstream template or activate hooks.
 allowed-tools: Read Glob Grep Bash
 compatibility: Offline helper requires Python 3.10+ with POSIX dir_fd and O_NOFOLLOW. Upstream workflows require Claude Code, Git, Python 3 and Bash; browser and engine tools depend on the selected route.
 metadata:

@@ -36,7 +36,7 @@ Streamline Unity project workflows and automation through the command line.
 
 - For interactive game development workflows → use `unity-gamedev-skill-pack`
 - For graphics/rendering tasks → use `threejs-*` or engine-specific skills
-- For UI design in game context → use `game-studio-harness` or `open-design-game-ui-*`
+- For UI design in game context → use `game-ui-ux` or `open-design-game-ui-*`
 - For VFX or animation → use `game-vfx` or `video-motion-previs`
 
 ## Instructions

@@ -58,6 +58,10 @@ jeo-skill install react-best-practices --global --dry-run   # previsualiza
 jeo-skill install react-best-practices --global --yes      # instala
 ```
 
+Si una selección de `jeo-skill install` incluye `context7`, el enrutador también instala `ctx7@0.11.1` con npm (requiere Node.js 22.20 o posterior), salvo que ya encuentre `ctx7`. `--dry-run` previsualiza sin descargar. El destino de proyecto es `.agents/context7` y el global es `~/.local/share/jeo-skill/context7`; añade el `node_modules/.bin` correspondiente a `PATH`. Si el destino existente está incompleto, la instalación falla sin sobrescribirlo. Instalar la CLI no activa el servicio: el inicio de sesión, el registro MCP, los cambios de configuración y las solicitudes externas requieren aprobación separada. `npx skills add` directamente no instala esta CLI.
+
+La instalación automática de Context7 no está admitida en Windows y falla de forma segura; las guías y CLI instaladas por separado no forman parte de esa ruta automática.
+
 > [!TIP]
 > Añade `$HOME/.local/bin` a `PATH` si `jeo-skill` no se encuentra después de la instalación.
 
@@ -104,7 +108,7 @@ La lista completa y generada está en [Lista de Habilidades](#-lista-de-habilida
 | Todo, guiado por tu agente | Pega el prompt de configuración de [Inicio rápido](#-inicio-rápido) |
 | Solo el enrutador (predeterminado) | la línea única tal cual |
 | Enrutador + paquete `starter` | línea única con `JEO_SKILLS_SELECTION=bundle` |
-| Todo el catálogo, sin configurar herramientas adicionales | `jeo-skill install --all --global --yes` (sin `--setup`) |
+| Todo el catálogo sin configuración opcional | `jeo-skill install --all --global --yes` (sin `--setup`; incluye la instalación de Context7 descrita arriba) |
 | Solo el proyecto actual | línea única con `INSTALL_GLOBAL=false` |
 | Previsualizar sin cambios | línea única con `JEO_SKILLS_DRY_RUN=true` |
 | Instalación completa con herramientas y espacio de trabajo | línea única con `JEO_SKILLS_SELECTION=all`; ejecuta también los pasos globales de herramientas y configuración del espacio de trabajo |
@@ -154,7 +158,7 @@ curl -fsSL "$URL" | JEO_SKILLS_DRY_RUN=true INSTALL_GLOBAL=false bash
 | `web-backend` | api-design, authentication-setup, database-schema-design, backend-testing |
 | `web-design` | web-design, design-system, responsive-design, web-accessibility |
 | `infrastructure-core` | deployment-automation, environment-setup, monitoring-observability, security-best-practices |
-| `game-client` | unity-gamedev-skill-pack, game-studio-harness, game-performance-profiler, awesome-gamedev-agent-skills, donchitos-game-studios |
+| `game-client` | unity-gamedev-skill-pack, game-performance-profiler, awesome-gamedev-agent-skills, donchitos-game-studios |
 | `game-web` | web-game-development, threejs-fundamentals, implement-fog-of-war |
 | `game-art` | game-vfx, rfxgen, perfectpixel, open-design-game-ui-concept, unirig |
 | `media-video` | video-production, video-shotcraft, video-motion-previs, shopping-shorts, filmcraft |
@@ -165,7 +169,7 @@ curl -fsSL "$URL" | JEO_SKILLS_DRY_RUN=true INSTALL_GLOBAL=false bash
 | `ui-design-repositories` | 10 guías de operación de interfaces con fuentes fijadas (`jeo-skill install --bundle ui-design-repositories --dry-run`) |
 | `github-five-programs` | fabric, moneyprinter-v2, agent-s, google-maps-scraper, gitingest: cinco operadores de programas de código abierto, cuatro con fuentes fijadas (`jeo-skill install --bundle github-five-programs --dry-run`) |
 
-Las habilidades operadoras documentan los repositorios y sus límites. Instalar una no instala, ejecuta ni conecta los proyectos originales; esos pasos requieren aprobación por separado.
+La mayoría de las habilidades operadoras documentan repositorios sin instalar, ejecutar ni conectar los proyectos originales. La instalación de la CLI de Context7 descrita arriba es una excepción; la activación y conexión requieren aprobación separada.
 
 </details>
 
@@ -337,7 +341,7 @@ y la [atribución MIT upstream](docs/attribution.md).
 
 ## 📚 Lista de Habilidades
 
-> Generado desde `.agent-skills/skills.json` · 433 habilidades · despliega una categoría para ver sus habilidades.
+> Generado desde `.agent-skills/skills.json` · 432 habilidades · despliega una categoría para ver sus habilidades.
 
 ### 🌐 Web (72)
 
@@ -452,9 +456,9 @@ Subcategorías: `deployment` (2), `environment` (2), `observability` (3), `secur
 
 </details>
 
-### 🎮 Juego (40)
+### 🎮 Juego (39)
 
-Subcategorías: `client` (9), `web` (2), `server` (1), `design-ui` (7), `audio` (1), `animation` (3), `motion-vfx` (3), `sprite-image` (1), `art-resources` (1), `storytelling` (0), `tooling` (6), `qa-performance` (4), `release` (2)
+Subcategorías: `client` (9), `web` (2), `server` (1), `design-ui` (7), `audio` (1), `animation` (3), `motion-vfx` (3), `sprite-image` (1), `art-resources` (1), `storytelling` (0), `tooling` (5), `qa-performance` (4), `release` (2)
 
 <details>
 <summary>Ver habilidades</summary>
@@ -475,7 +479,6 @@ Subcategorías: `client` (9), `web` (2), `server` (1), `design-ui` (7), `audio` 
 | `dalamud-vfx-editor` |
 | `game-vfx` |
 | `perfectpixel` |
-| `game-studio-harness` |
 | `underworld-overseer-save-mapper` |
 | `godogen` |
 | `game-build-log-triage` |
@@ -556,15 +559,16 @@ Subcategorías: `image` (10), `video` (18), `motion` (1), `audio` (2), `presenta
 
 </details>
 
-### ⌨️ Herramientas CLI (46)
+### ⌨️ Herramientas CLI (47)
 
-Subcategorías: `developer-cli` (12), `ai-cli` (16), `media-cli` (1), `automation-cli` (8), `search-cli` (8), `benchmark-cli` (1)
+Subcategorías: `developer-cli` (12), `ai-cli` (17), `media-cli` (1), `automation-cli` (8), `search-cli` (8), `benchmark-cli` (1)
 
 <details>
 <summary>Ver habilidades</summary>
 
 | Skill |
 |---|
+| `context7` |
 | `soup` |
 | `caveman` |
 | `ccpi-marketplace` |

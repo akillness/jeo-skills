@@ -1,7 +1,7 @@
 {
   "version": "2.1.0",
   "generated": "2026-10-21",
-  "skill_count": 433,
+  "skill_count": 432,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -236,7 +236,6 @@
       "dalamud-vfx-editor",
       "game-vfx",
       "perfectpixel",
-      "game-studio-harness",
       "underworld-overseer-save-mapper",
       "godogen",
       "game-build-log-triage",
@@ -306,6 +305,7 @@
       "artcraft"
     ],
     "cli-tools": [
+      "context7",
       "soup",
       "caveman",
       "ccpi-marketplace",
@@ -759,7 +759,6 @@
       ],
       "storytelling": [],
       "tooling": [
-        "game-studio-harness",
         "underworld-overseer-save-mapper",
         "godogen",
         "meshoptimizer",
@@ -852,6 +851,7 @@
         "craft-anything"
       ],
       "ai-cli": [
+        "context7",
         "aider-cli-workflow",
         "claudekit",
         "fabric",
@@ -1235,7 +1235,6 @@
     ],
     "game-client": [
       "unity-gamedev-skill-pack",
-      "game-studio-harness",
       "game-performance-profiler",
       "awesome-gamedev-agent-skills",
       "donchitos-game-studios"
@@ -4343,45 +4342,6 @@
       "keyword": "perfectpixel",
       "version": "1.0.0",
       "source": "gykim80/perfectpixel-studio"
-    },
-    {
-      "name": "game-studio-harness",
-      "description": "Five-role game production studio harness: director, numeric-balance designer, revenue-band PM, verification-strict programmer, archetype-rotation QA. Runs the 3-stage operating cycle (concept/presentation/core build → balance/core-loop/novelty → ops stability/play impact) behind 8 numeric quality gates with survey-grounded trends, signed designer↔PM negotiation records, and QA broadcast discipline. Writes the repository rule file (CLAUDE.md/AGENTS.md) so the contract outlives the session, and keeps one live `_workspace/current/` beside a read-only archive.",
-      "category": "game",
-      "subcategory": "tooling",
-      "interface": "workflow",
-      "path": "game-studio-harness/SKILL.md",
-      "tags": [
-        "game-production",
-        "game-studio",
-        "bmad-gds",
-        "numeric-balance",
-        "core-loop",
-        "novelty",
-        "monetization",
-        "qa-archetypes",
-        "stage-gates",
-        "repo-rules",
-        "artifact-contract"
-      ],
-      "platforms": [
-        "Claude Code",
-        "Codex",
-        "Gemini",
-        "OpenCode"
-      ],
-      "allowed_tools": [
-        "Read",
-        "Write",
-        "Edit",
-        "Glob",
-        "Grep",
-        "Bash",
-        "Task"
-      ],
-      "keyword": "game-studio-harness",
-      "version": "1.1.0",
-      "source": "akillness/jeo-skills"
     },
     {
       "name": "underworld-overseer-save-mapper",
@@ -15967,7 +15927,7 @@
     },
     {
       "name": "donchitos-game-studios",
-      "description": "Inspect, adopt, and maintain Donchitos/Claude-Code-Game-Studios at a pinned source revision. Use when users name this template, need its prototype-to-production workflow, project.yaml rigor settings, legacy slash-command migration, or its studio-tests skill checks. Preserve the complete project-relative references, scripts and hooks; do not install its 78 skill folders as standalone global skills. Not for generic game-production teams (use game-studio-harness), cross-engine skill collections (use awesome-gamedev-agent-skills), or evaluator operation (use nvidia-skill-evaluator). Installing this guide does not install the upstream template or activate hooks.",
+      "description": "Inspect, adopt, and maintain Donchitos/Claude-Code-Game-Studios at a pinned source revision. Use when users name this template, need its prototype-to-production workflow, project.yaml rigor settings, legacy slash-command migration, or its studio-tests skill checks. Preserve the complete project-relative references, scripts and hooks; do not install its 78 skill folders as standalone global skills. Not for generic game production (use bmad-gds), cross-engine skill collections (use awesome-gamedev-agent-skills), or evaluator operation (use nvidia-skill-evaluator). Installing this guide does not install the upstream template or activate hooks.",
       "category": "game",
       "subcategory": "tooling",
       "interface": "workflow",

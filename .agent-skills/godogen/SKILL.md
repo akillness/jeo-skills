@@ -66,7 +66,7 @@ Do not use this skill for:
 - Standalone auto-rigging: use `unirig`
 - SFX, VFX, playtesting, or store launch: use `rfxgen`, `game-vfx`, `wai-play`, or
   `steam-store-launch-ops`
-- A multi-role studio process independent of Godogen: use `game-studio-harness`
+- A game-production process independent of Godogen: use `bmad-gds`
 
 ## Instructions
 

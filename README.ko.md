@@ -59,7 +59,9 @@ Read https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-skill
 
 이 가이드는 운영체제와 에이전트를 감지하고 기본 `full` 모드에서 전체 카탈로그와 고정 버전 공유 CLI 6종을 설치합니다. 먼저 전역·사용자 범위를 확인하며, 새 second-brain 볼트와 자동화는 대상·모델·비용에 대한 명시적 동의 후 준비합니다. `core only`는 `starter` 번들만, `minimal`은 라우터와 CLI 링크만 설치합니다. 사용자나 타사 스킬을 임의로 삭제하지 않습니다.
 
-가이드 설치와 아래 라우터 전용 설치는 별개입니다. 스킬 파일을 설치하는 것만으로 업스트림 프로그램·모델·제공자가 설치되거나 활성화되지는 않습니다. OpenSpace, Jev, MCP, 메모리·컨텍스트·데이터베이스 및 제공자 설정은 각 단계의 선택과 승인, 호스트 지원 여부에 따라 별도로 진행됩니다.
+가이드 설치와 아래 라우터 전용 설치는 별개입니다. 대부분의 스킬은 안내 파일만 설치합니다. 예외로 `jeo-skill install`에서 `context7`을 선택하면 기존 `ctx7`이 없을 때 npm으로 `ctx7@0.11.1`을 설치합니다(Node.js 22.20 이상 필요). `--dry-run`은 다운로드 없이 미리 봅니다. 프로젝트 설치는 `.agents/context7`, 전역 설치는 `~/.local/share/jeo-skill/context7` 아래에 두며 사용하려면 해당 `node_modules/.bin`을 `PATH`에 추가하세요. 불완전한 기존 대상은 덮어쓰지 않고 실패합니다. CLI 설치는 서비스 활성화가 아닙니다. 로그인, MCP 등록, 설정 변경 및 외부 요청에는 별도 승인이 필요합니다. 직접 실행하는 `npx skills add`는 이 CLI를 설치하지 않습니다.
+
+Windows에서는 Context7 자동 설치를 지원하지 않아 안전하게 실패합니다. 별도로 설치한 가이드와 CLI는 이 자동 경로의 대상이 아닙니다.
 
 GitHub 스타는 별도 선택입니다. `JEO_SKILLS_STAR=true`를 명시하면 `akillness/jeo-skills`에 `gh`로 PUT한 직후 GET으로 확인합니다. `false`면 건너뛰고, 미설정이면 대화형 환경에서 기본값이 아니요인 질문을 표시합니다. 미리 보기에서는 스타를 누르지 않으며, 일반 `--yes`는 스타에 대한 동의가 아닙니다.
 
@@ -127,7 +129,7 @@ jeo-skill install react-best-practices --global --yes      # install
 | 라우터만 설치(기본값) | 한 줄 명령을 그대로 사용합니다 |
 | 라우터 + `starter` 번들 | `JEO_SKILLS_SELECTION=bundle`을 지정한 한 줄 명령 |
 | 전체 카탈로그 + 공유 도구·워크스페이스 설정 | `JEO_SKILLS_SELECTION=all`을 지정한 한 줄 명령. 전역 모드에서는 공유 CLI 6종과 워크스페이스 설정도 실행하므로 [설치 가이드](setup-all-skills-prompt.md)의 승인 경계를 먼저 확인합니다 |
-| 전체 스킬 안내문만 선택 | `jeo-skill install --all --global --yes` (`--setup` 없이 실행) |
+| 선택적 설정 없이 전체 카탈로그 설치 | `jeo-skill install --all --global --yes` (`--setup` 없이 실행; 위에 설명한 Context7 CLI 설치 포함) |
 | 현재 프로젝트에만 설치 | `INSTALL_GLOBAL=false`를 지정한 한 줄 명령. `all`은 전역 도구 설치를 건너뛰고 부분 실패로 보고합니다 |
 | 변경 없이 미리 보기 | `JEO_SKILLS_DRY_RUN=true`를 지정한 한 줄 명령 |
 | 특정 스킬 | `jeo-skill install <name> [<name> ...] --global --yes` |
@@ -170,7 +172,7 @@ curl -fsSL "$URL" | JEO_SKILLS_DRY_RUN=true INSTALL_GLOBAL=false bash
 | `web-backend` | api-design, authentication-setup, database-schema-design, backend-testing |
 | `web-design` | web-design, design-system, responsive-design, web-accessibility |
 | `infrastructure-core` | deployment-automation, environment-setup, monitoring-observability, security-best-practices |
-| `game-client` | unity-gamedev-skill-pack, game-studio-harness, game-performance-profiler, awesome-gamedev-agent-skills, donchitos-game-studios |
+| `game-client` | unity-gamedev-skill-pack, game-performance-profiler, awesome-gamedev-agent-skills, donchitos-game-studios |
 | `game-web` | web-game-development, threejs-fundamentals, implement-fog-of-war |
 | `game-art` | game-vfx, rfxgen, perfectpixel, open-design-game-ui-concept, unirig |
 | `media-video` | video-production, video-shotcraft, video-motion-previs, shopping-shorts, filmcraft |
@@ -181,7 +183,7 @@ curl -fsSL "$URL" | JEO_SKILLS_DRY_RUN=true INSTALL_GLOBAL=false bash
 | `ui-design-repositories` | 10 source-pinned UI operators (`jeo-skill install --bundle ui-design-repositories --dry-run`) |
 | `github-five-programs` | fabric, moneyprinter-v2, agent-s, google-maps-scraper, gitingest: 오픈소스 프로그램 5종 운영 가이드, 그중 4종은 source-pinned (`jeo-skill install --bundle github-five-programs --dry-run`) |
 
-리포지터리 운영 스킬은 고정된 소스를 안내하는 가이드입니다. 설치해도 업스트림 프로젝트를 설치하거나 실행하거나 연결하지 않으며, 해당 단계에는 별도 승인이 필요합니다.
+대부분의 리포지터리 운영 스킬은 고정된 소스를 안내하며, 설치해도 업스트림 프로젝트를 설치·실행·연결하지 않습니다. 위에 설명한 Context7 CLI 설치는 예외이며, 활성화와 연결에는 별도 승인이 필요합니다.
 
 </details>
 
@@ -397,7 +399,7 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 
 ## 📚 스킬 목록
 
-> `.agent-skills/skills.json`에서 생성 · 433개 스킬 · 카테고리를 펼치면 스킬 목록이 보입니다.
+> `.agent-skills/skills.json`에서 생성 · 432개 스킬 · 카테고리를 펼치면 스킬 목록이 보입니다.
 
 ### 🌐 웹 (72개)
 
@@ -512,9 +514,9 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 
 </details>
 
-### 🎮 게임 (40개)
+### 🎮 게임 (39개)
 
-하위 분류: `client` (9), `web` (2), `server` (1), `design-ui` (7), `audio` (1), `animation` (3), `motion-vfx` (3), `sprite-image` (1), `art-resources` (1), `storytelling` (0), `tooling` (6), `qa-performance` (4), `release` (2)
+하위 분류: `client` (9), `web` (2), `server` (1), `design-ui` (7), `audio` (1), `animation` (3), `motion-vfx` (3), `sprite-image` (1), `art-resources` (1), `storytelling` (0), `tooling` (5), `qa-performance` (4), `release` (2)
 
 <details>
 <summary>스킬 보기</summary>
@@ -535,7 +537,6 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 | `dalamud-vfx-editor` |
 | `game-vfx` |
 | `perfectpixel` |
-| `game-studio-harness` |
 | `underworld-overseer-save-mapper` |
 | `godogen` |
 | `game-build-log-triage` |
@@ -616,15 +617,16 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 
 </details>
 
-### ⌨️ CLI 도구 (46개)
+### ⌨️ CLI 도구 (47개)
 
-하위 분류: `developer-cli` (12), `ai-cli` (16), `media-cli` (1), `automation-cli` (8), `search-cli` (8), `benchmark-cli` (1)
+하위 분류: `developer-cli` (12), `ai-cli` (17), `media-cli` (1), `automation-cli` (8), `search-cli` (8), `benchmark-cli` (1)
 
 <details>
 <summary>스킬 보기</summary>
 
 | Skill |
 |---|
+| `context7` |
 | `soup` |
 | `caveman` |
 | `ccpi-marketplace` |

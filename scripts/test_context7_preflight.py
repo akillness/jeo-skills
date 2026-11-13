@@ -18,7 +18,7 @@ class Context7PreflightTests(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory(prefix="context7-preflight-")
         self.addCleanup(self.tmp.cleanup)
-        self.work = Path(self.tmp.name)
+        self.work = Path(self.tmp.name).resolve()
         self.bin = self.work / "bin"
         self.bin.mkdir()
         self.home = self.work / "home"
@@ -97,6 +97,54 @@ class Context7PreflightTests(unittest.TestCase):
         self.assertFalse(report["network_used"])
         self.assertFalse(self.marker.exists(), "preflight executed a discovered tool")
         self.assertNotIn("SECRET_CONTEXT7_TOKEN", result.stdout + result.stderr)
+
+    def test_scoped_executables_take_precedence_and_skip_nonexecutable(self):
+        project_bin = self.work / ".agents" / "context7" / "node_modules" / ".bin"
+        global_bin = self.home / ".local" / "share" / "jeo-skill" / "context7" / "node_modules" / ".bin"
+        project_bin.mkdir(parents=True)
+        global_bin.mkdir(parents=True)
+        project = self.executable("ctx7", project_bin)
+        global_tool = self.executable("ctx7", global_bin)
+        path_tool = self.executable("ctx7")
+        for disabled, expected in (((), project), ((project,), global_tool), ((project, global_tool), path_tool)):
+            with self.subTest(expected=str(expected)):
+                for candidate in (project, global_tool):
+                    candidate.chmod(0o600 if candidate in disabled else 0o700)
+                result = self.invoke()
+                self.assertEqual(result.returncode, 0, result.stderr)
+                self.assertEqual(json.loads(result.stdout)["ctx7"], str(expected))
+                self.assertFalse(self.marker.exists(), "preflight attempted an unsafe operation")
+
+    def test_scoped_symlink_must_resolve_inside_its_prefix(self):
+        prefix = self.work / ".agents" / "context7"
+        bin_dir = prefix / "node_modules" / ".bin"
+        bin_dir.mkdir(parents=True)
+        target = self.executable("real-ctx7", prefix)
+        link = bin_dir / "ctx7"
+        link.symlink_to(target)
+        path_tool = self.executable("ctx7")
+        result = self.invoke()
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(json.loads(result.stdout)["ctx7"], str(link))
+        link.unlink()
+        link.symlink_to(path_tool)
+        result = self.invoke()
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(json.loads(result.stdout)["ctx7"], str(path_tool))
+        self.assertFalse(self.marker.exists(), "preflight attempted an unsafe operation")
+
+    def test_symlinked_project_prefix_is_not_trusted(self):
+        external = self.work / "external"
+        bin_dir = external / "node_modules" / ".bin"
+        bin_dir.mkdir(parents=True)
+        self.executable("ctx7", bin_dir)
+        (self.work / ".agents").mkdir()
+        (self.work / ".agents" / "context7").symlink_to(external, target_is_directory=True)
+        path_tool = self.executable("ctx7")
+        result = self.invoke()
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(json.loads(result.stdout)["ctx7"], str(path_tool))
+        self.assertFalse(self.marker.exists(), "preflight attempted an unsafe operation")
 
     def test_installed_helper_runs_from_unrelated_repository(self):
         installed = self.work / "installed" / "context7"

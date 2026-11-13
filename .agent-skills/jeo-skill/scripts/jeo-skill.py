@@ -549,6 +549,61 @@ def command_prune_retired(args: argparse.Namespace) -> None:
 
 
 
+def validate_context7(binary: str) -> None:
+    try:
+        result = subprocess.run([binary, "--version"], capture_output=True, text=True,
+                                check=False, timeout=10)
+    except (OSError, subprocess.TimeoutExpired) as error:
+        raise JeoSkillError(f"Context7 executable could not be validated: {binary}: {error}") from error
+    match = re.fullmatch(r"\s*v?(\d+)\.(\d+)\.(\d+)\s*", result.stdout)
+    if result.returncode or not match or tuple(map(int, match.groups())) < (0, 11, 1):
+        raise JeoSkillError(f"Context7 executable is broken or older than 0.11.1: {binary}; it was not replaced")
+
+
+def provision_context7(selected: list[str], *, global_install: bool, dry_run: bool) -> None:
+    if "context7" not in selected:
+        return
+    if os.name == "nt":
+        raise JeoSkillError("Automatic Context7 provisioning is not supported on Windows; install ctx7 separately")
+    prefix = (Path.home() / ".local/share/jeo-skill/context7" if global_install
+              else Path.cwd() / ".agents/context7")
+    base = Path.home() if global_install else Path.cwd()
+    for path in reversed((prefix, *prefix.parents)):
+        if path == base:
+            continue
+        if path.is_relative_to(base) and path.is_symlink():
+            raise JeoSkillError(f"Context7 install path contains a symlink: {path}")
+    binary = prefix / "node_modules/.bin/ctx7"
+    if binary.is_file() and not binary.resolve().is_relative_to(prefix.resolve()):
+        raise JeoSkillError(f"Context7 executable escapes its install destination: {binary}")
+    existing = str(binary) if binary.is_file() and os.access(binary, os.X_OK) else shutil.which("ctx7")
+    if existing:
+        if dry_run:
+            print(f"Context7: would validate and preserve existing executable {existing}; version not checked")
+        else:
+            validate_context7(existing)
+            print(f"Context7: validated and preserved existing executable {existing}")
+        return
+    if prefix.exists() or prefix.is_symlink():
+        raise JeoSkillError(f"Context7 install destination already exists without an executable: {prefix}")
+    command = ["npm", "install", "--prefix", str(prefix), "--no-save", "--ignore-scripts",
+               "--no-audit", "--no-fund", "ctx7@0.11.1"]
+    print("Context7 install plan: " + shlex.join(command), flush=True)
+    print(f"Context7 executable: {binary}; add its directory to PATH. No login or service setup.", flush=True)
+    if dry_run:
+        return
+    try:
+        completed = subprocess.run(command, check=False)
+    except OSError as error:
+        raise JeoSkillError(f"Context7 provisioning failed: {error}") from error
+    if completed.returncode:
+        raise JeoSkillError(f"Context7 provisioning failed (exit {completed.returncode}); inspect {prefix} before retrying")
+    if not binary.is_file() or not os.access(binary, os.X_OK):
+        raise JeoSkillError(f"Context7 provisioning did not produce an executable: {binary}")
+    validate_context7(str(binary))
+    print(f"Context7 installed: {binary}")
+
+
 SUPPORTED_SETUP_SKILLS = frozenset({
     "open-ontologies", "okf-agent-memory", "mex", "openspace", "ooo", "rtk",
     "cli-anything", "spec-kit", "ecc", "jev-control-plane", "graphify",
@@ -595,6 +650,8 @@ def skill_setup_commands(root: Path | None, selected: list[str], *,
     for name in ordered_selected:
         if name in skill_readiness.READINESS_SKILLS:
             continue  # reported by run_readiness_report, which never installs or fails the install
+        if name == "context7":
+            continue  # provisioned by every install, independently of --setup
         if name == "llm-wiki" and "obsidian-second-brain" in selected:
             print("Legacy llm-wiki setup omitted: obsidian-second-brain owns this new knowledge installation; select llm-wiki alone for its separate setup")
             continue
@@ -780,6 +837,7 @@ def finish_install(args: argparse.Namespace, selected: list[str]) -> None:
     projection = projection_root(args)
     if root is None:
         print(f"Upstream installer completed for {args.agent}; destination verification unavailable for this runtime.")
+        provision_context7(selected, global_install=args.global_install, dry_run=False)
         return
     verify_installed(root, selected)
     if projection:
@@ -790,6 +848,7 @@ def finish_install(args: argparse.Namespace, selected: list[str]) -> None:
     # One batched sweep (same as the dry-run preview) so links into a removed shared copy
     # are judged against the full set of removals.
     clean_retired((root, projection), dry_run=False, global_install=args.global_install)
+    provision_context7(selected, global_install=args.global_install, dry_run=False)
     if getattr(args, "setup", False) or getattr(args, "with_hooks", False):
         run_skill_setup(projection or root, selected, agent=args.agent, global_install=args.global_install,
                         with_hooks=getattr(args, "with_hooks", False), dry_run=False)
@@ -812,6 +871,8 @@ def installer_prerequisite_errors() -> list[str]:
 
 def command_install(args: argparse.Namespace, catalog: dict[str, Any]) -> None:
     selected = resolve_install_selection(args, catalog)
+    if "context7" in selected and os.name == "nt":
+        raise JeoSkillError("Automatic Context7 provisioning is not supported on Windows; install the skill and ctx7 separately")
     root = install_root(args)
     projection = projection_root(args)
     for destination in (root, projection):
@@ -826,6 +887,7 @@ def command_install(args: argparse.Namespace, catalog: dict[str, Any]) -> None:
     if projection:
         print(f"Copy selected skills: {root} -> {projection}")
     if args.dry_run:
+        provision_context7(selected, global_install=args.global_install, dry_run=True)
         if getattr(args, "setup", False) or getattr(args, "with_hooks", False):
             run_skill_setup(projection or root, selected, agent=args.agent, global_install=args.global_install,
                             with_hooks=getattr(args, "with_hooks", False), dry_run=True)

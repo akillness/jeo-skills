@@ -15,6 +15,8 @@ metadata:
 
 # Context7 operator
 
+Selecting this skill through ordinary `jeo-skill install` also provisions the pinned CLI when needed; see [installation and lifecycle](references/operations.md#setup-and-lifecycle). This does not activate or configure Context7.
+
 ## Workflow
 
 1. Select the task: documentation lookup, setup/removal, API/integration, indexing or troubleshooting. Read [operations](references/operations.md) for the chosen surface; the source snapshot and scope are recorded there.

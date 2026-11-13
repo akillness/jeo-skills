@@ -116,7 +116,7 @@ depend on a developer-specific path. CI runs compile plus tests on push and PR.
 | Generic browser automation, scripted E2E with no game model | `browser-harness`, `playwriter` |
 | Extracting page content rather than playing a game | `scrapling` |
 | Building the web game itself | `web-game-development` |
-| Broader production coordination and milestone pressure | `game-studio-harness`, `bmad-gds` |
+| Broader production coordination and milestone pressure | `bmad-gds` |
 
 The honest boundary: WAI Play answers "does this web game actually play, and
 where does it break". It is not an engine profiler, not a build system, and

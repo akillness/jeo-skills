@@ -1359,6 +1359,163 @@ class InstallerRegressions(unittest.TestCase):
         self.successful(self.cli("install", "alpha", "--agent", "universal", "--yes", "--source", str(self.source), "--dry-run"))
         self.assertEqual(self.snapshot(), before)
 
+    def context7_fixture(self):
+        source = self.source / ".agent-skills/context7"
+        shutil.copytree(ROOT / ".agent-skills/context7", source)
+        catalog = json.loads(self.catalog.read_text())
+        catalog["skills"].append({"name": "context7", "category": "engineering",
+                                  "subcategory": "testing", "description": "fixture"})
+        self.catalog.write_text(json.dumps(catalog))
+        npm = self.bin / "npm"
+        npm.write_text(f"#!{sys.executable}\n" + r'''import json, os, sys
+from pathlib import Path
+args = sys.argv[1:]
+Path(os.environ["NPM_RECORD"]).write_text(json.dumps(args))
+if os.environ.get("NPM_FAIL"):
+    raise SystemExit(17)
+if not os.environ.get("NPM_NO_BINARY"):
+    binary = Path(args[args.index("--prefix") + 1]) / "node_modules/.bin/ctx7"
+    binary.parent.mkdir(parents=True, exist_ok=True)
+    binary.write_text("#!/bin/sh\nprintf '0.11.1\\n'\n")
+    binary.chmod(0o755)
+''')
+        npm.chmod(0o700)
+        self.env["NPM_RECORD"] = str(self.work / "npm-record.json")
+
+    def context7_install(self, *extra, installed_router=False, extra_env=None):
+        command = ([str(self.home / ".local/bin/jeo-skill")] if installed_router
+                   else [sys.executable, str(ROUTER)])
+        return self.execute([*command, "install", "context7", "--agent", "universal",
+                             "--yes", "--source", str(self.source), *extra], extra_env)
+
+    def test_context7_installed_router_provisions_cli_without_optional_setup(self):
+        self.context7_fixture()
+        self.successful(self.bootstrap(INSTALL_GLOBAL="true", JEO_SKILLS_AGENT="universal",
+                                       JEO_SKILLS_SELECTION="router", JEO_SKILLS_JEV="skip"))
+        settings = self.home / ".claude/settings.json"
+        settings.parent.mkdir(parents=True, exist_ok=True)
+        settings.write_text('{"custom":"preserve"}\n')
+        result = self.context7_install("--global", installed_router=True)
+        self.successful(result)
+        self.assertEqual((self.home / ".agents/skills/context7/SKILL.md").read_bytes(),
+                         (self.source / ".agent-skills/context7/SKILL.md").read_bytes())
+        binary = self.home / ".local/share/jeo-skill/context7/node_modules/.bin/ctx7"
+        executed = self.execute([str(binary), "--version"])
+        self.successful(executed)
+        self.assertEqual(executed.stdout.strip(), "0.11.1")
+        preflight = self.execute([sys.executable, str(self.home / ".agents/skills/context7/scripts/preflight.py")])
+        self.successful(preflight)
+        self.assertEqual(json.loads(preflight.stdout)["ctx7"], str(binary))
+        self.assertFalse(json.loads(preflight.stdout)["network_used"])
+        self.assertEqual(settings.read_text(), '{"custom":"preserve"}\n')
+
+    def test_context7_dry_run_previews_without_writes_or_external_installs(self):
+        self.context7_fixture()
+        self.env["TRANSPORT_RECORD"] = str(self.work / "transport-record.json")
+        before = self.snapshot()
+        result = self.context7_install("--global", "--dry-run")
+        self.successful(result)
+        self.assertIn("ctx7@0.11.1", result.stdout)
+        self.assertEqual(self.snapshot(), before)
+        self.assertFalse(Path(self.env["NPM_RECORD"]).exists())
+        self.assertFalse(Path(self.env["TRANSPORT_RECORD"]).exists())
+
+    def test_context7_preview_does_not_execute_existing_binary(self):
+        self.context7_fixture()
+        existing = self.bin / "ctx7"
+        existing.write_text("#!/bin/sh\ntouch \"$HOME/executed\"\nexit 1\n")
+        existing.chmod(0o755)
+        before = self.snapshot()
+        result = self.context7_install("--global", "--dry-run")
+        self.successful(result)
+        self.assertEqual(self.snapshot(), before)
+        self.assertFalse((self.home / "executed").exists())
+        self.assertFalse(Path(self.env["NPM_RECORD"]).exists())
+
+    def test_unrelated_skill_does_not_provision_context7(self):
+        self.context7_fixture()
+        self.successful(self.cli("install", "alpha", "--agent", "universal", "--global", "--yes",
+                                 "--source", str(self.source)))
+        self.assert_skill(self.home / ".agents/skills", "alpha")
+        self.assertFalse(Path(self.env["NPM_RECORD"]).exists())
+        self.assertFalse((self.home / ".local/share/jeo-skill/context7").exists())
+
+    def test_context7_reuses_existing_executable_without_modifying_user_files(self):
+        self.context7_fixture()
+        existing = self.bin / "ctx7"
+        existing.write_text("#!/bin/sh\nprintf '0.11.1\\n'\n")
+        existing.chmod(0o755)
+        before = existing.read_bytes()
+        result = self.context7_install("--global")
+        self.successful(result)
+        self.assertEqual(existing.read_bytes(), before)
+        self.assertFalse(Path(self.env["NPM_RECORD"]).exists())
+        self.assertFalse((self.home / ".local/share/jeo-skill/context7").exists())
+
+    def test_context7_project_install_stays_in_project(self):
+        self.context7_fixture()
+        result = self.context7_install()
+        self.successful(result)
+        binary = self.project / ".agents/context7/node_modules/.bin/ctx7"
+        executed = self.execute([str(binary), "--version"])
+        self.successful(executed)
+        self.assertEqual(executed.stdout.strip(), "0.11.1")
+        preflight = self.execute([sys.executable, str(self.project / ".agents/skills/context7/scripts/preflight.py")])
+        self.successful(preflight)
+        self.assertEqual(json.loads(preflight.stdout)["ctx7"], str(binary))
+        self.assertFalse(json.loads(preflight.stdout)["network_used"])
+        self.assertFalse((self.home / ".local/share/jeo-skill/context7").exists())
+
+    def test_context7_invalid_existing_executable_is_not_replaced(self):
+        self.context7_fixture()
+        existing = self.bin / "ctx7"
+        existing.write_text("#!/bin/sh\nprintf '0.1.0\\n'\n")
+        existing.chmod(0o755)
+        before = existing.read_bytes()
+        result = self.context7_install("--global")
+        self.assertNotEqual(result.returncode, 0, result.stdout)
+        self.assertIn("context7", result.stdout.lower())
+        self.assertEqual(existing.read_bytes(), before)
+        self.assertFalse(Path(self.env["NPM_RECORD"]).exists())
+
+    def test_context7_refuses_symlinked_install_prefix(self):
+        self.context7_fixture()
+        outside = self.work / "outside"
+        binary = outside / "node_modules/.bin/ctx7"
+        binary.parent.mkdir(parents=True)
+        binary.write_text("#!/bin/sh\ntouch \"$HOME/executed\"\nprintf '0.11.1\\n'\n")
+        binary.chmod(0o755)
+        prefix = self.project / ".agents/context7"
+        prefix.parent.mkdir(parents=True)
+        prefix.symlink_to(outside, target_is_directory=True)
+        result = self.context7_install()
+        self.assertNotEqual(result.returncode, 0, result.stdout)
+        self.assertFalse((self.home / "executed").exists())
+        self.assertFalse(Path(self.env["NPM_RECORD"]).exists())
+        self.assertTrue(prefix.is_symlink())
+
+    def test_context7_failures_report_error_and_preserve_existing_state(self):
+        self.context7_fixture()
+        for failure in ("occupied", "npm", "missing-binary"):
+            with self.subTest(failure=failure):
+                prefix = self.home / ".local/share/jeo-skill/context7"
+                if failure == "occupied":
+                    prefix.mkdir(parents=True)
+                    (prefix / "user-data").write_text("keep me\n")
+                env = {"NPM_FAIL": "1"} if failure == "npm" else (
+                    {"NPM_NO_BINARY": "1"} if failure == "missing-binary" else {})
+                result = self.context7_install("--global", extra_env=env)
+                self.assertNotEqual(result.returncode, 0, result.stdout)
+                self.assertIn("context7", result.stdout.lower())
+                self.assertEqual((self.home / ".agents/skills/context7/SKILL.md").read_bytes(),
+                                 (self.source / ".agent-skills/context7/SKILL.md").read_bytes())
+                if failure == "occupied":
+                    self.assertEqual((prefix / "user-data").read_text(), "keep me\n")
+                    self.assertFalse(Path(self.env["NPM_RECORD"]).exists())
+                if prefix.exists():
+                    shutil.rmtree(prefix)
+                Path(self.env["NPM_RECORD"]).unlink(missing_ok=True)
+
     def aside_account(self, home, account):
         skills = home / "u" / account / "skills"
         skills.mkdir(parents=True)

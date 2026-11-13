@@ -72,6 +72,7 @@ if [ "$DRY_RUN" = true ]; then
   printf 'Command: '; printf '%q ' python3 "$CLI_PATH" bootstrap "${TARGET_ARGS[@]}"; printf '\n'
   if [ "$SELECTION" != router ]; then
     printf 'Command: '; printf '%q ' python3 "$CLI_PATH" install "${TARGET_ARGS[@]}" "${SELECT_ARGS[@]}" --yes; printf '\n'
+    info 'If the resolved selection includes context7, the router also provisions ctx7@0.11.1 in the selected project/global scope (or preserves a validated existing executable). This bootstrap preview does not resolve the selection or access the network.'
   fi
   if [ "$SELECTION" = all ]; then
     if [ "$GLOBAL" = true ]; then

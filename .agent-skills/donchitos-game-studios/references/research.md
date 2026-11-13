@@ -97,7 +97,7 @@ Agent Skills specification에서 필수 frontmatter는 `name`, `description`이�
 | P2 | 43건 설명·24건 예시 경고의 실제 오류만 수정 | 정규 스킬별 old/new paired 평가, 성공률·오라우팅·비용·위반 비교 | 후속 업스트림 작업 |
 | P2 | 원본 전체 보안·중복·효과 평가 | Tier 1/2/3별 승인·환경·송신 범위·샌드박스·비용 고정 | 별도 승인 후 |
 
-새 가이드는 일반적인 `game-studio-harness`의 5역할 생산 사이클이나
+새 가이드는 일반적인 게임 제작 계획을 위한 `bmad-gds`나
 `awesome-gamedev-agent-skills`의 크로스엔진 컬렉션 선택을 대체하지 않는다.
 이번 패키지 설치는 원본 템플릿 설치, 모델 접근, 훅 실행을 포함하지 않는다.
 

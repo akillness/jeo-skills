@@ -2731,7 +2731,7 @@ experience:
 - Start from `references/hypothesis-example.json`, replace the example claims, and run `python3 "$SKILLS_ROOT/game-design-theory/scripts/validate-design-hypothesis.py" game-design-hypothesis.json` plus the same helper with `--self-test`.
 - Keep observations, telemetry, player reports, implementation facts, and assumptions separate. Do not turn MDA, self-determination needs, Bartle types, retention, or session length into universal proof.
 - Do not invent reward intervals, difficulty curves, ratios, sample sizes, or engagement targets. Use a reversible controlled variant and project-owned evidence.
-- Route full GDD/production to `bmad-gds` or `game-studio-harness`, feel tuning to `game-feel`, and interface work to `game-ui-ux`.
+- Route full GDD/production to `bmad-gds`, feel tuning to `game-feel`, and interface work to `game-ui-ux`.
 
 ### Game feel response-chain contract (on demand)
 
@@ -2900,7 +2900,7 @@ not execute discovered tools and always reports `runtime_verified=false`; select
 bytes do not establish Git HEAD, full revision, dependency readiness or security.
 The prior quality-check baseline passed 78 files, but all publications remain
 `incomplete`; paired agent performance and gameplay quality were not measured.
-For generic five-role production use `game-studio-harness`, cross-engine collection
+For game production use `bmad-gds`, cross-engine collection
 selection use `awesome-gamedev-agent-skills`, and evaluator commands use
 `nvidia-skill-evaluator`. Eval cases here are authored, not executed model results.
 
@@ -3315,7 +3315,9 @@ Preview `jeo-skill install flide --global --dry-run`, then install the guide wit
 
 ### Context7 operator (on demand)
 
-Preview `jeo-skill install context7 --global --dry-run`, then install the selected guide with `jeo-skill install context7 --global --yes`. Installing the guide does not install or configure Context7, register an MCP server, or supply credentials. Follow the guide to choose CLI, MCP, or REST; approve installations, configuration writes, credentials, and external requests separately. For ordinary library documentation lookup without an explicit Context7 operator request, use `documentation-lookup`.
+Preview `jeo-skill install context7 --global --dry-run`; the preview does not download or configure anything. An ordinary `jeo-skill install context7 --global --yes` (also when selected via a bundle, category or all) installs the guide and, if `ctx7` is not already available, provisions `ctx7@0.11.1` with npm and lifecycle scripts disabled. Node.js 22.20+ and npm are required. The global target is `~/.local/share/jeo-skill/context7`; the project target is `.agents/context7`. Add the chosen target's `node_modules/.bin` to `PATH`. An incomplete occupied target is not overwritten and causes failure. Direct `npx skills add` does not provision the CLI. Installing the CLI does not log in, configure a client, register MCP or activate a service. Follow the guide to choose CLI, MCP, or REST; separately approve configuration writes, credentials and external requests. For ordinary library documentation lookup without an explicit Context7 operator request, use `documentation-lookup`.
+
+Automatic Context7 CLI provisioning is unsupported on Windows and fails closed; a separately installed guide and CLI remain separate from this automatic path.
 
 ### Browser Use operator (on demand)
 

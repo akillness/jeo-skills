@@ -87,7 +87,7 @@
       "prompt": "게임 전체 GDD와 제작 일정까지 game-design-theory로 만들어줘.",
       "expected_output": "The skill bounds the theory question and routes full production outward.",
       "assertions": [
-        "The response routes full GDD and production to bmad-gds or game-studio-harness",
+        "The response routes full GDD and production to bmad-gds",
         "The response offers to isolate one design hypothesis rather than absorbing all production work"
       ]
     },

@@ -56,6 +56,10 @@ jeo-skill install react-best-practices --global --dry-run   # preview
 jeo-skill install react-best-practices --global --yes      # install
 ```
 
+When a `jeo-skill install` selection includes `context7`, the router also provisions `ctx7@0.11.1` with npm (Node.js 22.20+ required), unless an existing `ctx7` is found. `--dry-run` previews without downloading. The project install lives under `.agents/context7`; the global install lives under `~/.local/share/jeo-skill/context7`. Add the selected directory's `node_modules/.bin` to `PATH` to use it. An occupied incomplete target fails rather than being overwritten. This installs a CLI, not an activated service: login, MCP registration, configuration writes and remote requests require separate approval. Direct `npx skills add` does not perform this provisioning.
+
+Automatic Context7 provisioning is unsupported on Windows and fails closed; separately installed guides and CLIs are not managed by that automatic path.
+
 > [!TIP]
 > Add `$HOME/.local/bin` to `PATH` if `jeo-skill` is not found after installation.
 
@@ -101,7 +105,7 @@ The full, generated list is in [Skills list](#-skills-list).
 | Router only (default) | the one-liner as is |
 | Router + `starter` bundle | one-liner with `JEO_SKILLS_SELECTION=bundle` |
 | Full catalog, shared tools and workspace setup | one-liner with `JEO_SKILLS_SELECTION=all`; global/user scope is required for the shared tools, and project-only scope reports partial failure |
-| The whole catalog as skill files only | `jeo-skill install --all --global --yes` (omit `--setup` and `--with-hooks`) |
+| Whole catalog without optional setup | `jeo-skill install --all --global --yes` (omit `--setup` and `--with-hooks`; includes Context7 CLI provisioning as described above) |
 | Current project only | one-liner with `INSTALL_GLOBAL=false` |
 | Preview without changes | one-liner with `JEO_SKILLS_DRY_RUN=true` |
 | Specific skills | `jeo-skill install <name> [<name> ...] --global --yes` |
@@ -161,7 +165,7 @@ Starring is a separate GitHub account action, not consent implied by installatio
 | `web-backend` | api-design, authentication-setup, database-schema-design, backend-testing |
 | `web-design` | web-design, design-system, responsive-design, web-accessibility |
 | `infrastructure-core` | deployment-automation, environment-setup, monitoring-observability, security-best-practices |
-| `game-client` | unity-gamedev-skill-pack, game-studio-harness, game-performance-profiler, awesome-gamedev-agent-skills, donchitos-game-studios |
+| `game-client` | unity-gamedev-skill-pack, game-performance-profiler, awesome-gamedev-agent-skills, donchitos-game-studios |
 | `game-web` | web-game-development, threejs-fundamentals, implement-fog-of-war |
 | `game-art` | game-vfx, rfxgen, perfectpixel, open-design-game-ui-concept, unirig |
 | `media-video` | video-production, video-shotcraft, video-motion-previs, shopping-shorts, filmcraft |
@@ -172,7 +176,7 @@ Starring is a separate GitHub account action, not consent implied by installatio
 | `ui-design-repositories` | 10 source-pinned UI operators (`jeo-skill install --bundle ui-design-repositories --dry-run`) |
 | `github-five-programs` | fabric, moneyprinter-v2, agent-s, google-maps-scraper, gitingest: five open-source program operators, four of them source-pinned (`jeo-skill install --bundle github-five-programs --dry-run`) |
 
-Repository-operator skills are guides with pinned sources. Installing them does not install, run or connect the upstream projects; those steps need separate approval.
+Most repository-operator skills are guides with pinned sources; installing them does not install, run or connect the upstream projects. Context7 CLI provisioning is the exception described above; activation and connections still need separate approval.
 
 </details>
 
@@ -388,7 +392,7 @@ See the [setup guide](setup-all-skills-prompt.md#claude-code-game-studios-on-dem
 
 ## 📚 Skills List
 
-> Generated from `.agent-skills/skills.json` · 433 skills · expand a category to see its skills.
+> Generated from `.agent-skills/skills.json` · 432 skills · expand a category to see its skills.
 
 ### 🌐 Web (72)
 
@@ -503,9 +507,9 @@ Subcategories: `deployment` (2), `environment` (2), `observability` (3), `securi
 
 </details>
 
-### 🎮 Game (40)
+### 🎮 Game (39)
 
-Subcategories: `client` (9), `web` (2), `server` (1), `design-ui` (7), `audio` (1), `animation` (3), `motion-vfx` (3), `sprite-image` (1), `art-resources` (1), `storytelling` (0), `tooling` (6), `qa-performance` (4), `release` (2)
+Subcategories: `client` (9), `web` (2), `server` (1), `design-ui` (7), `audio` (1), `animation` (3), `motion-vfx` (3), `sprite-image` (1), `art-resources` (1), `storytelling` (0), `tooling` (5), `qa-performance` (4), `release` (2)
 
 <details>
 <summary>Show Game skills</summary>
@@ -526,7 +530,6 @@ Subcategories: `client` (9), `web` (2), `server` (1), `design-ui` (7), `audio` (
 | `dalamud-vfx-editor` |
 | `game-vfx` |
 | `perfectpixel` |
-| `game-studio-harness` |
 | `underworld-overseer-save-mapper` |
 | `godogen` |
 | `game-build-log-triage` |
@@ -607,15 +610,16 @@ Subcategories: `image` (10), `video` (18), `motion` (1), `audio` (2), `presentat
 
 </details>
 
-### ⌨️ CLI Tools (46)
+### ⌨️ CLI Tools (47)
 
-Subcategories: `developer-cli` (12), `ai-cli` (16), `media-cli` (1), `automation-cli` (8), `search-cli` (8), `benchmark-cli` (1)
+Subcategories: `developer-cli` (12), `ai-cli` (17), `media-cli` (1), `automation-cli` (8), `search-cli` (8), `benchmark-cli` (1)
 
 <details>
 <summary>Show CLI Tools skills</summary>
 
 | Skill |
 |---|
+| `context7` |
 | `soup` |
 | `caveman` |
 | `ccpi-marketplace` |

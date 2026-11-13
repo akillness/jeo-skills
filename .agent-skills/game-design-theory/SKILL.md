@@ -40,8 +40,8 @@ Use it to:
 - define the smallest prototype that could disprove a design belief.
 
 Do not use it to write a full GDD, run production, tune moment-to-moment feedback, design a
-HUD, or implement an engine system. Route those to `bmad-gds`, `game-studio-harness`,
-`game-feel`, `game-ui-ux`, or the narrowest engine skill.
+HUD, or implement an engine system. Route those to `bmad-gds`, `game-feel`,
+`game-ui-ux`, or the narrowest engine skill.
 
 ## Instructions
 
@@ -164,7 +164,7 @@ progression evidence.
 
 ### Full game production request
 
-Route to `bmad-gds` or `game-studio-harness`. Use this skill only for the bounded theoretical
+Route to `bmad-gds`. Use this skill only for the bounded theoretical
 question inside that production flow.
 
 ## Best practices
