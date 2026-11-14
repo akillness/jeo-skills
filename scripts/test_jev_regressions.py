@@ -1802,8 +1802,14 @@ class JevRegressions(unittest.TestCase):
         pid_file = self.work / "mock-jevos.pid"
         mock_server_script = (
             f"#!{sys.executable}\n"
-            "import json, os, sys\n"
+            "import json, os, socketserver, sys\n"
             "from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer\n"
+            "class FastServer(ThreadingHTTPServer):\n"
+            "    allow_reuse_address = True\n"
+            "    daemon_threads = True\n"
+            "    def server_bind(self):\n"
+            "        socketserver.TCPServer.server_bind(self)\n"
+            "        self.server_name, self.server_port = self.server_address[:2]\n"
             "args = sys.argv[1:]\n"
             "host = args[args.index('--host') + 1] if '--host' in args else '127.0.0.1'\n"
             "port = int(args[args.index('--port') + 1]) if '--port' in args else 8017\n"
@@ -1835,7 +1841,7 @@ class JevRegressions(unittest.TestCase):
             "                p = 0.05 if 'prose' in qid else 0.92\n"
             "                answers[qid] = {'type':'noul','noul':p}\n"
             "        self._json(200, {'model':'jevos-v5','answers':answers,'usage':{'input_tokens':12,'output_tokens':0}})\n"
-            "ThreadingHTTPServer((host, port), H).serve_forever()\n"
+            "FastServer((host, port), H).serve_forever()\n"
         ).encode("utf-8")
 
         tar_buf = io.BytesIO()
@@ -2004,8 +2010,14 @@ class JevRegressions(unittest.TestCase):
         mock_llama = self.bin / "llama-server"
         mock_llama.write_text(
             f"#!{sys.executable}\n"
-            "import json, os, sys\n"
+            "import json, os, socketserver, sys\n"
             "from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer\n"
+            "class FastServer(ThreadingHTTPServer):\n"
+            "    allow_reuse_address = True\n"
+            "    daemon_threads = True\n"
+            "    def server_bind(self):\n"
+            "        socketserver.TCPServer.server_bind(self)\n"
+            "        self.server_name, self.server_port = self.server_address[:2]\n"
             "args = sys.argv[1:]\n"
             "host = args[args.index('--host') + 1] if '--host' in args else '127.0.0.1'\n"
             "port = int(args[args.index('--port') + 1]) if '--port' in args else 8017\n"
@@ -2039,7 +2051,7 @@ class JevRegressions(unittest.TestCase):
             "                p = 0.05 if 'prose' in qid else 0.92\n"
             "                answers[qid] = {'type':'noul','noul':p}\n"
             "        self._json(200, {'model': alias, 'answers': answers, 'usage': {'input_tokens': 20, 'output_tokens': 0}})\n"
-            "ThreadingHTTPServer((host, port), H).serve_forever()\n",
+            "FastServer((host, port), H).serve_forever()\n",
             encoding="utf-8",
         )
         mock_llama.chmod(0o755)

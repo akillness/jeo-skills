@@ -285,7 +285,7 @@ class LocalServerBoundaryRegressions(unittest.TestCase):
         cls.home.cleanup()
 
     def setUp(self) -> None:
-        self.server = self.server_module.ThreadingHTTPServer(("127.0.0.1", 0), self.server_module.Handler)
+        self.server = self.server_module.ReusableThreadingHTTPServer(("127.0.0.1", 0), self.server_module.Handler)
         self.thread = threading.Thread(target=self.server.serve_forever)
         self.thread.start()
         self.addCleanup(self._stop_server)
