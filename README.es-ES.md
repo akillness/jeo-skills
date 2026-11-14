@@ -341,11 +341,11 @@ y la [atribución MIT upstream](docs/attribution.md).
 
 ## 📚 Lista de Habilidades
 
-> Generado desde `.agent-skills/skills.json` · 433 habilidades · despliega una categoría para ver sus habilidades.
+> Generado desde `.agent-skills/skills.json` · 434 habilidades · despliega una categoría para ver sus habilidades.
 
-### 🌐 Web (72)
+### 🌐 Web (73)
 
-Subcategorías: `frontend` (12), `backend` (3), `design` (16), `api` (2), `auth` (1), `data` (13), `testing` (4), `accessibility` (1), `performance` (1), `graphics` (12), `capture` (7)
+Subcategorías: `frontend` (13), `backend` (3), `design` (16), `api` (2), `auth` (1), `data` (13), `testing` (4), `accessibility` (1), `performance` (1), `graphics` (12), `capture` (7)
 
 <details>
 <summary>Ver habilidades</summary>
@@ -424,6 +424,7 @@ Subcategorías: `frontend` (12), `backend` (3), `design` (16), `api` (2), `auth`
 | `cursify` |
 | `trickle-ui` |
 | `browser-use` |
+| `modern-web-guidance` |
 
 </details>
 

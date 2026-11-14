@@ -123,7 +123,7 @@ See [the ten-source audit](docs/ui-design-repositories.md) before selecting a so
 Select `superdesign`, `better-design` or `design-taste` for the named design workflow;
 `canvas-ui`, `paper-shaders`, `ui-layouts`, `hyperiux`, `motion-primitives`, `cursify`
 or `trickle-ui` for that exact effect/component source. Existing `design-system`,
-`design-taste-frontend`, `web-design`, `react-bits`, `responsive-design` and
+`design-taste-frontend`, `web-design`, `react-bits`, `responsive-design`, `modern-web-guidance` and
 `optimize-web-animations` retain their separate jobs; this bundle does not replace them.
 
 Blanket setup must not run npm/npx/Bun installers, registry add commands, upstream
@@ -2823,6 +2823,18 @@ references under MIT attribution, so it needs no install and no network to work.
 - Contrast and reduced motion are ship gates, not polish. Deeper accessibility remediation
   routes to `web-accessibility`.
 - `LICENSE.upstream.txt` carries the MIT notice for the bundled rules; keep it with the skill.
+
+### Modern Web Guidance (on demand, Google Chrome DevRel)
+
+`modern-web-guidance` is a specialized search and retrieval skill for standardized modern web development best practices (HTML5 dialogs/popovers, modern CSS anchor positioning and scroll-driven animations, Core Web Vitals, WebAssembly, built-in AI, form validation, and client-side JS APIs).
+
+- **Catalog copy**: `.agent-skills/modern-web-guidance/SKILL.md` contains the primary search and retrieval workflow.
+- **Offline bundle**: All 17 guidance categories (`accessibility`, `built-in-ai`, `css`, `forms`, `html`, `js`, `performance`, `privacy`, `pwa`, `security`, `ui-atoms`, `ui-behaviors`, `ui-components`, `user-experience`, `visual-design`, `wasm`, `webmcp`) are mirrored locally in `.agent-skills/modern-web-guidance/guides/`.
+- **Execution pattern**:
+  - Preferred (online): `npx -y modern-web-guidance@latest search "<query>"`
+  - Bundled local runner (offline fallback): `bash .agent-skills/modern-web-guidance/scripts/modern-web-guidance.sh search "<query>"`
+  - Direct local python engine: `python3 .agent-skills/modern-web-guidance/scripts/local-search.py search "<query>"`
+- **Upstream source**: [GoogleChrome/modern-web-guidance](https://github.com/GoogleChrome/modern-web-guidance) (Apache-2.0).
 
 ### NVIDIA SkillEvaluator (on demand, evaluation and CI writes gated)
 

@@ -1,7 +1,7 @@
 {
   "version": "2.1.0",
   "generated": "2026-10-21",
-  "skill_count": 433,
+  "skill_count": 434,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -200,7 +200,8 @@
       "motion-primitives",
       "cursify",
       "trickle-ui",
-      "browser-use"
+      "browser-use",
+      "modern-web-guidance"
     ],
     "infrastructure": [
       "deployment-automation",
@@ -596,7 +597,8 @@
         "hyperiux",
         "motion-primitives",
         "cursify",
-        "trickle-ui"
+        "trickle-ui",
+        "modern-web-guidance"
       ],
       "backend": [
         "amrouter",
@@ -15981,6 +15983,39 @@
       "keyword": "kagent",
       "version": "1.0.1",
       "source": "https://github.com/kagent-dev/kagent"
+    },
+    {
+      "name": "modern-web-guidance",
+      "description": "Search tool for modern web development best practices. Execute first for all HTML/CSS and client-side JS tasks: modals, dialogs, popovers, tables, dark mode, anchor positioning, container queries, view transitions, scroll animations, forms, validation, autofill, accessibility, custom selects, scrollbars, Core Web Vitals (LCP, INP, CLS), content-visibility, fetch priority, image optimization, passkeys, HTML sanitization, web components, dates, timezones, and WebAssembly.",
+      "category": "web",
+      "subcategory": "frontend",
+      "interface": "workflow",
+      "path": "modern-web-guidance/SKILL.md",
+      "tags": [
+        "web",
+        "frontend",
+        "modern-web",
+        "html",
+        "css",
+        "javascript",
+        "web-components",
+        "accessibility",
+        "performance",
+        "cwv",
+        "google-chrome"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep",
+        "WebFetch"
+      ],
+      "keyword": "modern-web-guidance",
+      "version": "1.0.0"
     }
   ]
 }

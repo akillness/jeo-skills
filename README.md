@@ -392,11 +392,11 @@ See the [setup guide](setup-all-skills-prompt.md#claude-code-game-studios-on-dem
 
 ## 📚 Skills List
 
-> Generated from `.agent-skills/skills.json` · 433 skills · expand a category to see its skills.
+> Generated from `.agent-skills/skills.json` · 434 skills · expand a category to see its skills.
 
-### 🌐 Web (72)
+### 🌐 Web (73)
 
-Subcategories: `frontend` (12), `backend` (3), `design` (16), `api` (2), `auth` (1), `data` (13), `testing` (4), `accessibility` (1), `performance` (1), `graphics` (12), `capture` (7)
+Subcategories: `frontend` (13), `backend` (3), `design` (16), `api` (2), `auth` (1), `data` (13), `testing` (4), `accessibility` (1), `performance` (1), `graphics` (12), `capture` (7)
 
 <details>
 <summary>Show Web skills</summary>
@@ -475,6 +475,7 @@ Subcategories: `frontend` (12), `backend` (3), `design` (16), `api` (2), `auth` 
 | `cursify` |
 | `trickle-ui` |
 | `browser-use` |
+| `modern-web-guidance` |
 
 </details>
 
