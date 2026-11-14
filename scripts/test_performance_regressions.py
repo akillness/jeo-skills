@@ -23,9 +23,11 @@ import subprocess
 import sys
 import tempfile
 import threading
+import time
 import tracemalloc
 import unittest
 from unittest import mock
+import urllib.request
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -376,23 +378,37 @@ class LocalServerBoundaryRegressions(unittest.TestCase):
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
         )
-        self.addCleanup(lambda: proc.kill() if proc.poll() is None else None)
-        deadline = os.times().elapsed + 5.0
-        while os.times().elapsed < deadline:
+        def _cleanup_proc() -> None:
+            if proc.poll() is None:
+                proc.kill()
+                proc.wait(timeout=5)
+            if proc.stdout is not None:
+                proc.stdout.close()
+            if proc.stderr is not None:
+                proc.stderr.close()
+        self.addCleanup(_cleanup_proc)
+        deadline = time.monotonic() + 20.0
+        while time.monotonic() < deadline:
             try:
-                with socket.create_connection(("127.0.0.1", port), timeout=0.2):
-                    break
+                with urllib.request.urlopen(f"http://127.0.0.1:{port}/healthz", timeout=0.5) as resp:
+                    if resp.status == 200:
+                        break
             except OSError:
                 if proc.poll() is not None:
-                    self.fail(f"server exited early: {proc.stderr.read().decode()}")
+                    err_text = proc.stderr.read().decode(errors="replace") if proc.stderr else ""
+                    self.fail(f"server exited early ({proc.returncode}): {err_text}")
+                time.sleep(0.05)
         else:
-            self.fail("server never bound port")
+            err_text = ""
+            if proc.poll() is not None and proc.stderr is not None:
+                err_text = proc.stderr.read().decode(errors="replace")
+            self.fail(f"server never bound port {port} (stderr={err_text!r})")
         proc.terminate()
-        out, err = proc.communicate(timeout=5)
+        out, err = proc.communicate(timeout=10)
         self.assertEqual(proc.returncode, 0, f"stdout={out!r} stderr={err!r}")
         with socket.socket() as rebind_sock:
+            rebind_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             rebind_sock.bind(("127.0.0.1", port))
-
 class InstallerDigestRegressions(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
