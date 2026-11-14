@@ -145,6 +145,21 @@ export default function (pi: any) {{
     const content = await route(prompt, "pi");
     return content ? {{ message: {{ customType: "openspace-route", content, display: false }} }} : {{}};
   }});
+  pi.on("context", (event: any) => {{
+    const messages = Array.isArray(event?.messages) ? event.messages : null;
+    if (!messages) return {{}};
+    let lastUserIdx = -1;
+    for (let i = messages.length - 1; i >= 0; i--) {{
+      if (messages[i]?.role === "user") {{
+        lastUserIdx = i;
+        break;
+      }}
+    }}
+    const filtered = messages.filter(
+      (msg: any, idx: number) => idx > lastUserIdx || msg?.customType !== "openspace-route"
+    );
+    return filtered.length === messages.length ? {{}} : {{ messages: filtered }};
+  }});
 }}
 """
 
