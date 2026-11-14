@@ -234,8 +234,10 @@ function parseArgs(argv) {
 
 async function runHook(flags) {
   const startedAt = Date.now();
+  let watchdog;
   const done = (out, outcome, extra = {}) => {
     if (emitted) return;
+    clearTimeout(watchdog);
     log({ event: flags.event, profile: flags.profile, outcome, ms: Date.now() - startedAt, outputKeys: Object.keys(out || {}), ...extra });
     emit(out);
   };
@@ -248,7 +250,7 @@ async function runHook(flags) {
   const enforcing = active && flags.event === 'preToolUse' && reviewMode !== 'off' && reviewMode !== 'advisory';
   const degraded = (outcome, extra) => done(enforcing ? { permission: 'deny', user_message: UNREVIEWABLE, agent_message: UNREVIEWABLE } : {}, outcome, extra);
 
-  const watchdog = setTimeout(() => degraded('watchdog'), TIMEOUT_MS + WATCHDOG_MARGIN_MS);
+  watchdog = setTimeout(() => degraded('watchdog'), TIMEOUT_MS + WATCHDOG_MARGIN_MS);
   watchdog.unref?.();
 
   // Drain stdin first so Cursor's writer never sees a closed pipe.

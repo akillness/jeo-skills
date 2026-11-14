@@ -20,7 +20,8 @@ const DEFAULT_TOOL_MATCHER_RE = new RegExp(`^(?:${DEFAULT_PRETOOL_MATCHER})$`, '
 const TOOL_OUTPUT_OMITTED = '[Jev: tool output omitted to save context]';
 const CONTROLLER_TIMEOUT_GRACE_MS = 100;
 const CONTROLLER_TIMEOUT_STARTUP_GRACE_MS = 50;
-
+const MAX_CONTROLLER_STDOUT_BYTES = 4 * 1024 * 1024;
+const MAX_CONTROLLER_STDERR_BYTES = 256 * 1024;
 function normalizeControllerTimeout(timeoutMs) {
   const value = Number(timeoutMs);
   return Number.isFinite(value) && value > 0 ? value : DEFAULT_CONTROLLER_TIMEOUT_MS;
@@ -92,17 +93,26 @@ export function invokeControllerHook({ agent, profile, input, inputStream, contr
     const finish = (result) => {
       if (settled) return;
       settled = true;
-      if (timeoutTimer !== undefined) clearTimeout(timeoutTimer);
-      if (forceKillTimer !== undefined) clearTimeout(forceKillTimer);
+      clearTimeout(timeoutTimer);
+      clearTimeout(forceKillTimer);
       if (inputStream && typeof inputStream.unpipe === 'function') inputStream.unpipe(child.stdin);
       child.stdin.destroy();
+      child.stdout?.destroy();
+      child.stderr?.destroy();
       resolveResult(result);
     };
-    child.once('spawn', () => { timeoutTimer = setTimeout(onTimeout, timeout + CONTROLLER_TIMEOUT_STARTUP_GRACE_MS); });
+    child.once('spawn', () => {
+      if (settled || timedOut) return;
+      timeoutTimer = setTimeout(onTimeout, timeout + CONTROLLER_TIMEOUT_STARTUP_GRACE_MS);
+    });
     child.stdout.setEncoding('utf8');
     child.stderr.setEncoding('utf8');
-    child.stdout.on('data', (chunk) => { stdout += chunk; });
-    child.stderr.on('data', (chunk) => { stderr += chunk; });
+    child.stdout.on('data', (chunk) => {
+      if (stdout.length < MAX_CONTROLLER_STDOUT_BYTES) stdout += chunk.slice(0, MAX_CONTROLLER_STDOUT_BYTES - stdout.length);
+    });
+    child.stderr.on('data', (chunk) => {
+      if (stderr.length < MAX_CONTROLLER_STDERR_BYTES) stderr += chunk.slice(0, MAX_CONTROLLER_STDERR_BYTES - stderr.length);
+    });
     child.stdin.on('error', (error) => { stdinError = error; });
     child.on('error', (error) => {
       if (timedOut) finish(timeoutResult);

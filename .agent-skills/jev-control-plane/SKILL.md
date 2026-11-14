@@ -63,7 +63,7 @@ node ~/.agents/jev/jev-plugin.mjs status --agent "$JEV_AGENT" --profile "$JEV_PR
 The backend registry has exactly five kinds: `api`, `local`, `ollama`, `lmstudio`, and `systemone`.
 
 - `api`: TypeSafe `POST <JEV_API_ENDPOINT>` with `{state, model, questions}` and `Authorization: Bearer JEV_API_KEY`.
-- `local`: defaults to `qev-0.8b-text-Q8_0` (~775 MB, ~1.0 GB RAM/VRAM, tuned for 16 GB RAM / 6 GB VRAM via `llama-server` at `http://127.0.0.1:8017/v1/systemone`); pass `--model h2o-lightning-4b-Q4_K_M`, `--model jevos-v5`, or `--model jev-9b-local` for alternatives.
+- `local`: defaults to `qev-0.8b-text-Q8_0` (~775 MB, ~1.0 GB RAM/VRAM, tuned for 16 GB RAM / 6 GB VRAM via `llama-server` at `http://127.0.0.1:8017/v1/systemone`); pass `--model h2o-lightning-4b-Q4_K_M`, `--model jevos-v5`, or `--model jev-9b-local` for alternatives. Managed servers track PIDs in `~/.agents/jev/run/local-<port>.pid`, stop cleanly on `jev-setup.sh [--profile <id>] --stop`, and automatically replace a prior managed model on the same port.
 - `ollama`: native `/api/chat` JSON-from-chat adapter.
 - `lmstudio`: OpenAI-compatible `/v1/chat/completions` JSON-from-chat adapter.
 - `systemone`: `JEV_SYSTEMONE_DRIVER=typesafe` (default), `decide` (`<endpoint>/v1/decide`), or `vllm-jev-decision` (`<endpoint>/v1/completions` with logprobs).

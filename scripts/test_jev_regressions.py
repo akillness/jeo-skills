@@ -1895,7 +1895,21 @@ class JevRegressions(unittest.TestCase):
         def stop_mock_jevos():
             if pid_file.exists():
                 try:
-                    os.kill(int(pid_file.read_text().strip()), signal.SIGTERM)
+                    pid = int(pid_file.read_text().strip())
+                except (OSError, ValueError):
+                    return
+                try:
+                    os.kill(pid, signal.SIGTERM)
+                except OSError:
+                    return
+                for _ in range(20):
+                    try:
+                        os.kill(pid, 0)
+                    except OSError:
+                        return
+                    time.sleep(0.1)
+                try:
+                    os.kill(pid, signal.SIGKILL)
                 except OSError:
                     pass
         self.addCleanup(stop_mock_jevos)
@@ -1965,6 +1979,24 @@ class JevRegressions(unittest.TestCase):
         self.assertEqual(routed_json["selection"]["choiceCap"], 26)
         self.assertEqual(routed_json["backend"]["kind"], "local")
         self.assertEqual(routed_json["backend"]["tier"], "unvalidated")
+        managed_pid_file = self.home / f".agents/jev/run/local-{jevos_port}.pid"
+        self.assertTrue(managed_pid_file.is_file())
+        old_jevos_pid = int(managed_pid_file.read_text().split("\t")[0])
+
+        stop_res = self.execute(["/bin/bash", str(SETUP), "--profile", "jevos-prof", "--stop"], cwd=ROOT, timeout=30)
+        self.successful(stop_res)
+        self.assertFalse(managed_pid_file.exists())
+        for _ in range(20):
+            try:
+                os.kill(old_jevos_pid, 0)
+            except OSError:
+                break
+            time.sleep(0.1)
+        else:
+            self.fail(f"jevos server PID {old_jevos_pid} remained alive after --stop")
+        stopped_status = self.run_cli("status", env={"JEV_PROFILE": "jevos-prof"})
+        self.assertEqual(stopped_status.returncode, 3)
+        self.assertFalse(json.loads(stopped_status.stdout)["ready"])
 
     def test_local_default_qev_download_verify_and_host(self):
         pid_file = self.work / "mock-qev.pid"
@@ -2039,7 +2071,21 @@ class JevRegressions(unittest.TestCase):
         def stop_mock():
             if pid_file.exists():
                 try:
-                    os.kill(int(pid_file.read_text().strip()), signal.SIGTERM)
+                    pid = int(pid_file.read_text().strip())
+                except (OSError, ValueError):
+                    return
+                try:
+                    os.kill(pid, signal.SIGTERM)
+                except OSError:
+                    return
+                for _ in range(20):
+                    try:
+                        os.kill(pid, 0)
+                    except OSError:
+                        return
+                    time.sleep(0.1)
+                try:
+                    os.kill(pid, signal.SIGKILL)
                 except OSError:
                     pass
         self.addCleanup(stop_mock)
@@ -2111,6 +2157,59 @@ class JevRegressions(unittest.TestCase):
         self.assertEqual(len(calls), 1)  # batched: 1 request for gate + which + 12 fits
         self.assertEqual(calls[0]["qcount"], 16)
         self.assertTrue(all(v is None for v in calls[0]["which"]["criteria"].values()))
+
+        managed_pid_file = self.home / f".agents/jev/run/local-{port}.pid"
+        self.assertTrue(managed_pid_file.is_file())
+        first_pid = int(managed_pid_file.read_text().split("\t")[0])
+
+        # Switching model on the same port must cleanly stop the previous managed server (no duplicate/leak).
+        h2o_bytes = b"GGUF-fixture-h2o-lightning-4b-Q4_K_M"
+        h2o_sha = hashlib.sha256(h2o_bytes).hexdigest()
+        class H2OHandler(BaseHTTPRequestHandler):
+            def log_message(self, *a): pass
+            def do_GET(self):
+                if self.path == "/h2o-lightning-4b-Q4_K_M.gguf":
+                    self.send_response(200)
+                    self.send_header("Content-Length", str(len(h2o_bytes)))
+                    self.end_headers()
+                    self.wfile.write(h2o_bytes)
+                else:
+                    self.send_response(404); self.end_headers()
+        h2o_srv = ThreadingHTTPServer(("127.0.0.1", 0), H2OHandler)
+        threading.Thread(target=h2o_srv.serve_forever, daemon=True).start()
+        self.addCleanup(h2o_srv.shutdown)
+        self.addCleanup(h2o_srv.server_close)
+        h2o_base = f"http://127.0.0.1:{h2o_srv.server_address[1]}"
+
+        switch_res = self.execute(
+            ["/bin/bash", str(SETUP), "--profile", "qev-prof", "--mode", "local", "--model", "h2o-lightning-4b-Q4_K_M"],
+            {"JEV_QEV_MODEL_BASE": h2o_base, "JEV_QEV_SHA256": h2o_sha, "JEV_ENDPOINT": endpoint, "JEV_LLAMA_SERVER_BIN": str(mock_llama), "JEV_CATALOG_PATH": str(big_catalog)},
+            cwd=ROOT,
+            timeout=60,
+        )
+        self.successful(switch_res)
+        for _ in range(20):
+            try:
+                os.kill(first_pid, 0)
+            except OSError:
+                break
+            time.sleep(0.1)
+        else:
+            self.fail(f"previous qev server PID {first_pid} was not stopped on model switch")
+        second_pid = int(managed_pid_file.read_text().split("\t")[0])
+        self.assertNotEqual(second_pid, first_pid)
+
+        stop_res = self.execute(["/bin/bash", str(SETUP), "--profile", "qev-prof", "--stop"], cwd=ROOT, timeout=30)
+        self.successful(stop_res)
+        self.assertFalse(managed_pid_file.exists())
+        for _ in range(20):
+            try:
+                os.kill(second_pid, 0)
+            except OSError:
+                break
+            time.sleep(0.1)
+        else:
+            self.fail(f"switched server PID {second_pid} remained alive after --stop")
 
 if __name__ == "__main__":
     unittest.main()

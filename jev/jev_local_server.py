@@ -14,13 +14,15 @@ Request:  POST /v1/systemone  {"state": ..., "questions": {id: {type, instructio
 Response: {"model": ..., "answers": {id: {"probability": p} | {"choice": [...], "probabilities": {...}}}}
 Health:   GET /healthz
 """
+import gc
 import json
 import math
 import os
 import re
+import signal
 import sys
+import threading
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
-
 
 def selected_profile(args):
     profile = os.environ.get("JEV_PROFILE") or None
@@ -122,8 +124,25 @@ def load_model():
     print(f"[jev-local] loading {MODEL_DIR} ...", flush=True)
     _tokenizer = AutoTokenizer.from_pretrained(MODEL_DIR, local_files_only=True)
     _model = AutoModelForCausalLM.from_pretrained(MODEL_DIR, dtype="auto", device_map="auto", local_files_only=True)
+    if getattr(_model, "config", None) is not None and hasattr(_model.config, "use_cache"):
+        _model.config.use_cache = False
     _model.eval()
     print(f"[jev-local] ready on http://{HOST}:{PORT}/v1/systemone", flush=True)
+
+
+def unload_model():
+    global _model, _tokenizer
+    _model = None
+    _tokenizer = None
+    gc.collect()
+    torch = sys.modules.get("torch")
+    if torch is not None:
+        cuda = getattr(torch, "cuda", None)
+        if cuda is not None and getattr(cuda, "is_available", lambda: False)():
+            cuda.empty_cache()
+        mps = getattr(torch, "mps", None)
+        if mps is not None and hasattr(mps, "empty_cache") and getattr(getattr(torch.backends, "mps", None), "is_available", lambda: False)():
+            mps.empty_cache()
 
 
 def _next_token_logprobs(prompt, candidates):
@@ -131,16 +150,27 @@ def _next_token_logprobs(prompt, candidates):
     import torch
     messages = [{"role": "user", "content": prompt}]
     text = _tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
-    inputs = _tokenizer(text, return_tensors="pt").to(_model.device)
-    with torch.no_grad():
-        logits = _model(**inputs).logits[0, -1]
-    logprobs = torch.log_softmax(logits, dim=-1)
-    out = {}
-    for cand in candidates:
-        ids = _tokenizer.encode(cand, add_special_tokens=False)
-        out[cand] = logprobs[ids[0]].item() if ids else -math.inf
-    return out
-
+    inputs = None
+    outputs = None
+    logits = None
+    logprobs = None
+    no_grad_ctx = getattr(torch, "inference_mode", torch.no_grad)
+    try:
+        inputs = _tokenizer(text, return_tensors="pt").to(_model.device)
+        with no_grad_ctx():
+            try:
+                outputs = _model(**inputs, use_cache=False)
+            except TypeError:
+                outputs = _model(**inputs)
+            logits = outputs.logits[0, -1]
+            logprobs = torch.log_softmax(logits, dim=-1)
+            out = {}
+            for cand in candidates:
+                ids = _tokenizer.encode(cand, add_special_tokens=False)
+                out[cand] = logprobs[ids[0]].item() if ids else -math.inf
+            return out
+    finally:
+        del inputs, outputs, logits, logprobs
 
 def answer_noul(state_text, instructions):
     prompt = (
@@ -204,12 +234,14 @@ class Handler(BaseHTTPRequestHandler):
 
     def _send(self, code, payload):
         data = json.dumps(payload).encode()
-        self.send_response(code)
-        self.send_header("Content-Type", "application/json")
-        self.send_header("Content-Length", str(len(data)))
-        self.end_headers()
-        self.wfile.write(data)
-
+        try:
+            self.send_response(code)
+            self.send_header("Content-Type", "application/json")
+            self.send_header("Content-Length", str(len(data)))
+            self.end_headers()
+            self.wfile.write(data)
+        except (BrokenPipeError, ConnectionResetError):
+            pass
     def do_GET(self):
         if self.path == "/healthz":
             self._send(200, {"ok": True, "model": MODEL_NAME, "modelDir": MODEL_DIR})
@@ -235,17 +267,33 @@ class Handler(BaseHTTPRequestHandler):
         print("[jev-local]", fmt % args, flush=True)
 
 
+class ReusableThreadingHTTPServer(ThreadingHTTPServer):
+    allow_reuse_address = True
+    daemon_threads = True
+
+
 def main():
     if "--check" in sys.argv:  # structural smoke check without loading weights
         print(json.dumps({"host": HOST, "port": PORT, "modelDir": MODEL_DIR, "modelPresent": os.path.isdir(MODEL_DIR)}))
         return
     load_model()
-    server = ThreadingHTTPServer((HOST, PORT), Handler)
+    server = ReusableThreadingHTTPServer((HOST, PORT), Handler)
+    shutting_down = threading.Event()
+
+    def _request_shutdown(_signum, _frame):
+        if not shutting_down.is_set():
+            shutting_down.set()
+            threading.Thread(target=server.shutdown, daemon=True).start()
+
+    old_term = signal.signal(signal.SIGTERM, _request_shutdown)
+    old_int = signal.signal(signal.SIGINT, _request_shutdown)
     try:
         server.serve_forever()
     finally:
+        signal.signal(signal.SIGTERM, old_term)
+        signal.signal(signal.SIGINT, old_int)
         server.server_close()
-
+        unload_model()
 
 if __name__ == "__main__":
     main()

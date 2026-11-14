@@ -325,14 +325,16 @@ function isTimeout(error) { return error?.name === 'AbortError' || error?.name =
 async function fetchWithTimeout(url, options = {}, timeoutMs = 3000, what = null) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
+  let response = null;
   try {
-    const response = await fetch(url, { ...options, signal: controller.signal });
+    response = await fetch(url, { ...options, signal: controller.signal });
     let payload = null;
     let text = '';
     if (response.ok) payload = await response.json();
     else { try { text = (await response.text()).slice(0, 200); } catch { text = ''; } }
     return { response, payload, text };
   } catch (error) {
+    if (response?.body && !response.bodyUsed) await response.body.cancel().catch(() => {});
     // Report the deadline that actually elapsed, not the operation budget.
     if (error.name === 'AbortError') throw timeoutError(timeoutMs, what);
     throw error;
@@ -420,6 +422,7 @@ async function driverDecide(backend, state, questions, timeoutMs) {
   return { model, answers };
 }
 
+const MAX_VLLM_ASSETS_CACHE = 16;
 const vllmAssets = new Map();
 async function loadVllmAssets(backend) {
   const key = `${backend.headJson}|${backend.calibrationJson}`;
@@ -429,6 +432,10 @@ async function loadVllmAssets(backend) {
   if (!head?.slots?.ranges || !Array.isArray(head.verbalizer_ids) || !Array.isArray(head.bias)) throw new Error('Malformed JEV_SYSTEMONE_HEAD_JSON');
   if (!calibration?.per_kind) throw new Error('Malformed JEV_SYSTEMONE_CALIBRATION_JSON');
   const assets = { head, calibration };
+  if (vllmAssets.size >= MAX_VLLM_ASSETS_CACHE) {
+    const oldestKey = vllmAssets.keys().next().value;
+    if (oldestKey !== undefined) vllmAssets.delete(oldestKey);
+  }
   vllmAssets.set(key, assets);
   return assets;
 }
@@ -1658,20 +1665,25 @@ export async function review(task, proposal, { mock = false, validation = { ok: 
 async function probeOnce(url, timeoutMs, headers = {}) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
+  let response = null;
   try {
-    const response = await fetch(url, { signal: controller.signal, headers });
+    response = await fetch(url, { signal: controller.signal, headers });
     let payload = null;
     // A body that stalls is a timeout (retried once by probe()); a body that is
     // not JSON is a malformed discovery response, never "ready".
     if (response.ok) {
       try { payload = await response.json(); }
       catch (error) {
+        if (response.body && !response.bodyUsed) await response.body.cancel().catch(() => {});
         if (error.name === 'AbortError') throw timeoutError(timeoutMs, 'probe body');
         throw new Error(`malformed probe response from ${new URL(url).pathname}: ${error.message}`);
       }
+    } else if (response.body && !response.bodyUsed) {
+      await response.body.cancel().catch(() => {});
     }
     return { response, payload };
   } catch (error) {
+    if (response?.body && !response.bodyUsed) await response.body.cancel().catch(() => {});
     if (error.name === 'AbortError') throw timeoutError(timeoutMs, 'probe');
     throw error;
   } finally { clearTimeout(timer); }

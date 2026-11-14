@@ -135,14 +135,15 @@ while [ "$#" -gt 0 ]; do
     --enable) ACTION=enable; shift ;;
     --disable) ACTION=disable; shift ;;
     --status) ACTION=status; shift ;;
+    --stop) ACTION=stop; shift ;;
     --help|-h)
       printf 'Usage: jev-setup.sh [--profile <id>] [--agent <runtime>] [--mode api|local|jevos|ollama|lmstudio|systemone]\n'
       printf '       [--config-only] [--endpoint <url>] [--model <id>] [--model-dir <path>] [--key-env <ENVNAME>]\n'
       printf '       [--route-backend <kind>] [--prune-backend <kind>] [--review-backend <kind>]\n'
       printf '       [--fallback <op>=<kind[,kind]>] [--validated-model <id>]\n'
       printf '       jev-setup.sh --profile <id> --enable|--disable|--status\n'
+      printf '       jev-setup.sh [--profile <id>] --stop\n'
       exit 0 ;;
-    *) fail "Unknown option: $1" ;;
   esac
 done
 validate_env_name() {
@@ -264,10 +265,87 @@ set_profile_enabled() {
   fi
 }
 
+RUN_DIR="$JEV_HOME/run"
+
+write_pid_file() {
+  local pid_file="$1" pid="$2" engine="$3" model="$4" host="$5" port="$6" tmp
+  [ ! -L "$JEV_HOME" ] || fail "Refusing symlink destination: $JEV_HOME"
+  [ ! -L "$RUN_DIR" ] || fail "Refusing symlink destination: $RUN_DIR"
+  mkdir -p "$RUN_DIR"
+  [ ! -L "$pid_file" ] || fail "Refusing symlink destination: $pid_file"
+  [ ! -d "$pid_file" ] || fail "PID destination is a directory: $pid_file"
+  umask 177
+  tmp="$(mktemp "$RUN_DIR/.pid.XXXXXX")" || fail 'Cannot create PID temporary file'
+  printf '%s\t%s\t%s\t%s\t%s\n' "$pid" "$engine" "$model" "$host" "$port" > "$tmp"
+  if ! chmod 600 "$tmp" || ! mv -f "$tmp" "$pid_file"; then
+    rm -f "$tmp"
+    fail "Cannot write PID file: $pid_file"
+  fi
+}
+
+stop_managed_server() {
+  local pid_file="$1" old_pid="" old_engine="" old_model="" old_host="" old_port="" i
+  [ ! -L "$RUN_DIR" ] || fail "Refusing symlink destination: $RUN_DIR"
+  [ ! -L "$pid_file" ] || fail "Refusing symlink PID file: $pid_file"
+  [ -f "$pid_file" ] || return 1
+  IFS=$'\t' read -r old_pid old_engine old_model old_host old_port < "$pid_file" || true
+  if [[ "$old_pid" =~ ^[0-9]+$ ]] && [ "$old_pid" -gt 1 ] && kill -0 "$old_pid" 2>/dev/null; then
+    info "Stopping Jev local server (${old_engine:-local}/${old_model:-unknown}, PID $old_pid)..."
+    kill -TERM "$old_pid" 2>/dev/null || true
+    for i in $(seq 1 20); do
+      if ! kill -0 "$old_pid" 2>/dev/null; then
+        break
+      fi
+      sleep 0.25
+    done
+    if kill -0 "$old_pid" 2>/dev/null; then
+      kill -KILL "$old_pid" 2>/dev/null || true
+      for i in $(seq 1 4); do
+        if ! kill -0 "$old_pid" 2>/dev/null; then
+          break
+        fi
+        sleep 0.25
+      done
+    fi
+    rm -f "$pid_file"
+    return 0
+  fi
+  rm -f "$pid_file"
+  return 1
+}
+
 if [ "$ACTION" = enable ] || [ "$ACTION" = disable ]; then
   [ -n "$PROFILE" ] || fail "--$ACTION requires --profile <id>"
   if [ "$ACTION" = enable ]; then set_profile_enabled true; info "Profile '$PROFILE' enabled; verify with jev-setup.sh --profile $PROFILE --status."
   else set_profile_enabled false; info "Profile '$PROFILE' disabled; its backend settings and credentials were retained."
+  fi
+  exit 0
+fi
+
+if [ "$ACTION" = stop ]; then
+  stopped=0
+  if [ -n "$PROFILE" ] && [ -f "$PROFILE_DIR/$PROFILE.local.env" ]; then
+    target_port="$(awk -F= '$1 == "JEV_LOCAL_PORT" { gsub(/^[[:space:]]+|[[:space:]]+$/, "", $2); print $2; exit }' "$PROFILE_DIR/$PROFILE.local.env")"
+    if [ -z "$target_port" ]; then
+      target_ep="$(awk -F= '$1 == "JEV_LOCAL_ENDPOINT" { gsub(/^[[:space:]]+|[[:space:]]+$/, "", $2); print $2; exit }' "$PROFILE_DIR/$PROFILE.local.env")"
+      if [ -n "$target_ep" ]; then
+        ep_info="$(validate_local_endpoint "$target_ep" 2>/dev/null || true)"
+        target_port="${ep_info#*$'\n'}"
+      fi
+    fi
+    if [ -n "${target_port:-}" ] && [ -f "$RUN_DIR/local-${target_port}.pid" ]; then
+      if stop_managed_server "$RUN_DIR/local-${target_port}.pid"; then stopped=$((stopped + 1)); fi
+    fi
+  elif [ -d "$RUN_DIR" ] && [ ! -L "$RUN_DIR" ]; then
+    for pid_file in "$RUN_DIR"/local-*.pid; do
+      [ -e "$pid_file" ] || continue
+      if stop_managed_server "$pid_file"; then stopped=$((stopped + 1)); fi
+    done
+  fi
+  if [ "$stopped" -gt 0 ]; then
+    info "Stopped $stopped Jev local server(s)."
+  else
+    info 'No running Jev-managed local server found.'
   fi
   exit 0
 fi
@@ -530,7 +608,10 @@ native_preflight() {
 
 native_preflight
 SETUP_STAGE="$(mktemp -d "${TMPDIR:-/tmp}/jev-setup.XXXXXX")" || fail 'Cannot create Jev setup staging directory'
-trap 'rm -rf "$SETUP_STAGE"' EXIT
+cleanup_setup_stage() { rm -rf "${SETUP_STAGE:-}"; }
+trap cleanup_setup_stage EXIT
+trap 'cleanup_setup_stage; exit 130' INT
+trap 'cleanup_setup_stage; exit 143' TERM
 mkdir -p "$SETUP_STAGE/files"
 PUBLISH_FILES=()
 PUBLISH_NATIVE=false
@@ -989,24 +1070,43 @@ PY
       _profile_disabled=true
     fi
     if [ "$_profile_disabled" != true ] && [ "${JEV_SKIP_SERVER_START:-false}" != true ] && [ "${JEV_SKIP_MODEL_DOWNLOAD:-false}" != true ] && [ -x "$JEVOS_BIN" ] && [ -f "$MODEL_DIR/openvino_model.bin" ]; then
+      PID_FILE="$RUN_DIR/local-${local_port}.pid"
+      if [ -f "$PID_FILE" ] && [ ! -L "$PID_FILE" ]; then
+        IFS=$'\t' read -r old_pid old_engine old_model _old_host _old_port < "$PID_FILE" || true
+        if [[ ! "${old_pid:-}" =~ ^[0-9]+$ ]] || ! kill -0 "$old_pid" 2>/dev/null; then
+          rm -f "$PID_FILE"
+        elif [ "${old_engine:-}" != "jevos" ] || [ "${old_model:-}" != "$LOCAL_MODEL" ]; then
+          stop_managed_server "$PID_FILE" || true
+        fi
+      fi
       if curl -fsS --max-time 2 "$health_url" >/dev/null 2>&1; then
         info "jevos server already listening on http://$local_host:$local_port"
       else
         mkdir -p "$JEVOS_ROOT"
         info "Starting jevos server on http://$local_host:$local_port ..."
         nohup "$JEVOS_BIN" serve --host "$local_host" --port "$local_port" --model-dir "$MODEL_DIR" </dev/null > "$JEVOS_ROOT/jevos.log" 2>&1 &
+        server_pid=$!
+        write_pid_file "$PID_FILE" "$server_pid" "jevos" "$LOCAL_MODEL" "$local_host" "$local_port"
         jevos_ready=false
+        jevos_crashed=false
         for _wait_sec in $(seq 1 60); do
           if curl -fsS --max-time 1 "$health_url" >/dev/null 2>&1; then
             jevos_ready=true
             break
           fi
+          if ! kill -0 "$server_pid" 2>/dev/null; then
+            rm -f "$PID_FILE"
+            jevos_crashed=true
+            break
+          fi
           sleep 0.25
         done
         if [ "$jevos_ready" = true ]; then
-          info "jevos server ready on $LOCAL_ENDPOINT_VAL"
+          info "jevos server ready on $LOCAL_ENDPOINT_VAL (PID $server_pid)"
+        elif [ "$jevos_crashed" = true ]; then
+          info "jevos server exited early before becoming ready (check $JEVOS_ROOT/jevos.log)"
         else
-          info "jevos server still warming up (check $JEVOS_ROOT/jevos.log)"
+          info "jevos server still warming up (PID $server_pid; check $JEVOS_ROOT/jevos.log)"
         fi
       fi
     fi
@@ -1129,24 +1229,43 @@ PY
       _profile_disabled=true
     fi
     if [ "$_profile_disabled" != true ] && [ "${JEV_SKIP_SERVER_START:-false}" != true ] && [ "${JEV_SKIP_MODEL_DOWNLOAD:-false}" != true ] && [ -x "$LLAMA_BIN" ] && [ -f "$MODEL_FILE" ]; then
+      PID_FILE="$RUN_DIR/local-${local_port}.pid"
+      if [ -f "$PID_FILE" ] && [ ! -L "$PID_FILE" ]; then
+        IFS=$'\t' read -r old_pid old_engine old_model _old_host _old_port < "$PID_FILE" || true
+        if [[ ! "${old_pid:-}" =~ ^[0-9]+$ ]] || ! kill -0 "$old_pid" 2>/dev/null; then
+          rm -f "$PID_FILE"
+        elif [ "${old_engine:-}" != "qev" ] || [ "${old_model:-}" != "$LOCAL_MODEL" ]; then
+          stop_managed_server "$PID_FILE" || true
+        fi
+      fi
       if curl -fsS --max-time 2 "$health_url" >/dev/null 2>&1; then
         info "Local qev llama-server already listening on http://$local_host:$local_port"
       else
         mkdir -p "$MODEL_DIR"
         info "Starting $LOCAL_MODEL via llama-server on http://$local_host:$local_port ..."
         nohup "$LLAMA_BIN" -m "$MODEL_FILE" --alias "$LOCAL_MODEL" --host "$local_host" --port "$local_port" -c 16384 -np 1 --no-kv-unified -fa on -b 2048 -ub 1024 -ctk q8_0 -ctv q8_0 -ngl 99 --no-webui </dev/null > "$MODEL_DIR/llama-server.log" 2>&1 &
+        server_pid=$!
+        write_pid_file "$PID_FILE" "$server_pid" "qev" "$LOCAL_MODEL" "$local_host" "$local_port"
         qev_ready=false
+        qev_crashed=false
         for _wait_sec in $(seq 1 80); do
           if curl -fsS --max-time 1 "$health_url" >/dev/null 2>&1; then
             qev_ready=true
             break
           fi
+          if ! kill -0 "$server_pid" 2>/dev/null; then
+            rm -f "$PID_FILE"
+            qev_crashed=true
+            break
+          fi
           sleep 0.25
         done
         if [ "$qev_ready" = true ]; then
-          info "Local $LOCAL_MODEL ready on $LOCAL_ENDPOINT_VAL"
+          info "Local $LOCAL_MODEL ready on $LOCAL_ENDPOINT_VAL (PID $server_pid)"
+        elif [ "$qev_crashed" = true ]; then
+          info "Local $LOCAL_MODEL exited early before becoming ready (check $MODEL_DIR/llama-server.log)"
         else
-          info "Local $LOCAL_MODEL still warming up (check $MODEL_DIR/llama-server.log)"
+          info "Local $LOCAL_MODEL still warming up (PID $server_pid; check $MODEL_DIR/llama-server.log)"
         fi
       fi
     fi

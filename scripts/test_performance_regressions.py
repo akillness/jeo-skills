@@ -346,6 +346,52 @@ class LocalServerBoundaryRegressions(unittest.TestCase):
         self.assertTrue(response.startswith(b"HTTP/1.0 400"))
         self.assertIn("timed out", self._json_body(response)["error"])
 
+    def test_reusable_server_flags_and_unload_model_release_references(self) -> None:
+        self.assertTrue(self.server_module.ReusableThreadingHTTPServer.allow_reuse_address)
+        self.assertTrue(self.server_module.ReusableThreadingHTTPServer.daemon_threads)
+        self.server_module._model = object()
+        self.server_module._tokenizer = object()
+        self.server_module.unload_model()
+        self.assertIsNone(self.server_module._model)
+        self.assertIsNone(self.server_module._tokenizer)
+
+    def test_sigterm_shuts_down_server_cleanly_and_releases_port(self) -> None:
+        with socket.socket() as probe_sock:
+            probe_sock.bind(("127.0.0.1", 0))
+            port = probe_sock.getsockname()[1]
+        runner = (
+            "import importlib.util, sys\n"
+            f"spec = importlib.util.spec_from_file_location('srv', {str(LOCAL_SERVER_PATH)!r})\n"
+            "mod = importlib.util.module_from_spec(spec)\n"
+            "spec.loader.exec_module(mod)\n"
+            "mod.PORT = int(sys.argv[1])\n"
+            "mod.load_model = lambda: None\n"
+            "mod._model = object()\n"
+            "mod._tokenizer = object()\n"
+            "mod.main()\n"
+        )
+        proc = subprocess.Popen(
+            [sys.executable, "-c", runner, str(port)],
+            env={**os.environ, "HOME": self.home.name},
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        self.addCleanup(lambda: proc.kill() if proc.poll() is None else None)
+        deadline = os.times().elapsed + 5.0
+        while os.times().elapsed < deadline:
+            try:
+                with socket.create_connection(("127.0.0.1", port), timeout=0.2):
+                    break
+            except OSError:
+                if proc.poll() is not None:
+                    self.fail(f"server exited early: {proc.stderr.read().decode()}")
+        else:
+            self.fail("server never bound port")
+        proc.terminate()
+        out, err = proc.communicate(timeout=5)
+        self.assertEqual(proc.returncode, 0, f"stdout={out!r} stderr={err!r}")
+        with socket.socket() as rebind_sock:
+            rebind_sock.bind(("127.0.0.1", port))
 
 class InstallerDigestRegressions(unittest.TestCase):
     @classmethod
