@@ -1,0 +1,30 @@
+{
+  "skill_name": "trulens",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "How do I implement the RAG Triad evaluations (Context Relevance, Groundedness, Answer Relevance) using TruLens in Python?",
+      "expected_output": "Guide the user to instantiate TruSession, create a feedback provider (e.g., OpenAI, Snowflake Cortex, Bedrock), define the three feedback functions (context_relevance, groundedness_measure_with_cot_reasons, and relevance), instrument the application with TruChain/TruLlama/TruCustomApp passing the feedbacks list, record an execution with `with tru_recorder as recording:`, and view results in the TruLens dashboard."
+    },
+    {
+      "id": 2,
+      "prompt": "I want to prevent my RAG bot from returning answers that are not grounded in the retrieved documentation. Can TruLens guardrails block hallucinated responses?",
+      "expected_output": "Explain TruLens guardrails using `@with_feedback_filter(feedback_function=f_groundedness, threshold=0.8, action='raise_exception')` on the answering method, blocking responses that fail the groundedness threshold before they reach users."
+    },
+    {
+      "id": 3,
+      "prompt": "Format my custom SKILL.md file and check for frontmatter errors.",
+      "expected_output": "Route format-only skill linting to skill-standardization rather than trulens."
+    },
+    {
+      "id": 4,
+      "prompt": "How do I deploy a Kubernetes-native AI agent with custom sandboxes and CRDs?",
+      "expected_output": "Route Kubernetes agent deployment and sandbox execution to kagent rather than trulens, explaining that TruLens focuses on LLM evaluation, tracing, and feedback functions."
+    },
+    {
+      "id": 5,
+      "prompt": "How do I launch the TruLens web dashboard to inspect our evaluation metrics and cost across runs?",
+      "expected_output": "Provide `trulens dashboard` via CLI or `run_dashboard()` from `trulens.dashboard` in Python, noting default port 8501 and how to configure custom database URLs."
+    }
+  ]
+}

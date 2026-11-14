@@ -3339,6 +3339,10 @@ Preview `jeo-skill install browser-use --global --dry-run`, then install the sel
 
 Preview `jeo-skill install kagent --global --dry-run`, then install the selected guide with `jeo-skill install kagent --global --yes`. Installing `kagent` copies operator guidance and support tools only, not the kagent controller, CLI, Substrate or PostgreSQL. Resolve `SKILL_DIR` to the installed skill directory and run `python3 "$SKILL_DIR/scripts/preflight.py"` for offline CLI discovery and environment inspection without network calls or binary execution. Review the skill's operations and architecture references before separately authorizing Kubernetes cluster modifications (`kagent apply`, `kubectl apply`), gRPC/A2A session creation, sandbox provisioning or command execution.
 
+### TruLens operator (on demand)
+
+Preview `jeo-skill install trulens --global --dry-run`, then install the selected guide with `jeo-skill install trulens --global --yes`. Installing `trulens` copies operator guidance, RAG Triad evaluators, feedback function templates, and support tools only, not the TruLens package, Snowflake connectors, or provider API keys. Resolve `SKILL_DIR` to the installed skill directory and run `python3 "$SKILL_DIR/scripts/preflight.py"` for offline package discovery and database inspection without network calls or binary execution. Review the skill's operations and RAG Triad references before separately authorizing model provider calls (`OpenAI`, `Cortex`, `Bedrock`), database migrations, or dashboard launch (`trulens dashboard`).
+
 ### Impeccable design operator (on demand)
 
 To select it independently, preview `jeo-skill install impeccable --global --dry-run`

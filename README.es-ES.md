@@ -341,7 +341,7 @@ y la [atribución MIT upstream](docs/attribution.md).
 
 ## 📚 Lista de Habilidades
 
-> Generado desde `.agent-skills/skills.json` · 434 habilidades · despliega una categoría para ver sus habilidades.
+> Generado desde `.agent-skills/skills.json` · 435 habilidades · despliega una categoría para ver sus habilidades.
 
 ### 🌐 Web (73)
 
@@ -619,9 +619,9 @@ Subcategorías: `developer-cli` (12), `ai-cli` (17), `media-cli` (1), `automatio
 
 </details>
 
-### 🤖 IA y Agentes (79)
+### 🤖 IA y Agentes (80)
 
-Subcategorías: `orchestration` (19), `agent-frameworks` (21), `skill-authoring` (5), `evaluation` (9), `memory` (7), `planning-review` (13), `discovery` (3), `prompting` (2)
+Subcategorías: `orchestration` (19), `agent-frameworks` (21), `skill-authoring` (5), `evaluation` (10), `memory` (7), `planning-review` (13), `discovery` (3), `prompting` (2)
 
 <details>
 <summary>Ver habilidades</summary>
@@ -707,6 +707,7 @@ Subcategorías: `orchestration` (19), `agent-frameworks` (21), `skill-authoring`
 | `revfactory-harness` |
 | `elephant-goldfish-model` |
 | `kagent` |
+| `trulens` |
 
 </details>
 
@@ -953,6 +954,13 @@ Consulta los [límites de instalación](setup-all-skills-prompt.md#elephant-gold
 
 <!-- WHATS-NEW:START -->
 
+
+## Novedades en v2026-11-14
+
+| Cambio | Detalles |
+|--------|---------|
+| **Operador TruLens para evaluación y seguimiento** | Añadida la guía `trulens`, fijada al commit `32f57106c7f897a05806107737c413e65665fe46` (v2.16.0), con evaluaciones de la Tríada RAG (relevancia del contexto, fundamentación, relevancia de respuesta), definición de funciones de feedback con Snowflake Cortex, OpenAI, Bedrock y LiteLLM, instrumentación de aplicaciones (`TruChain`, `TruLlama`, `TruCustomApp`), filtros de guardarraíles y una preflight sin conexión. El catálogo de 435 habilidades, tres inventarios README y la guía de setup están sincronizados. |
+| **Catálogo actual** | El manifiesto actual contiene 435 habilidades en 10 categorías, incluidas `kagent`, `modern-web-guidance` y `trulens`. Las tablas del catálogo se regeneran desde `.agent-skills/skills.json`. |
 ## Novedades en v2026-11-13
 
 | Cambio | Detalles |

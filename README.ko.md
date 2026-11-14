@@ -399,7 +399,7 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 
 ## 📚 스킬 목록
 
-> `.agent-skills/skills.json`에서 생성 · 434개 스킬 · 카테고리를 펼치면 스킬 목록이 보입니다.
+> `.agent-skills/skills.json`에서 생성 · 435개 스킬 · 카테고리를 펼치면 스킬 목록이 보입니다.
 
 ### 🌐 웹 (73개)
 
@@ -677,9 +677,9 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 
 </details>
 
-### 🤖 AI 및 에이전트 (79개)
+### 🤖 AI 및 에이전트 (80개)
 
-하위 분류: `orchestration` (19), `agent-frameworks` (21), `skill-authoring` (5), `evaluation` (9), `memory` (7), `planning-review` (13), `discovery` (3), `prompting` (2)
+하위 분류: `orchestration` (19), `agent-frameworks` (21), `skill-authoring` (5), `evaluation` (10), `memory` (7), `planning-review` (13), `discovery` (3), `prompting` (2)
 
 <details>
 <summary>스킬 보기</summary>
@@ -765,6 +765,7 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 | `revfactory-harness` |
 | `elephant-goldfish-model` |
 | `kagent` |
+| `trulens` |
 
 </details>
 
@@ -1012,6 +1013,13 @@ v1 마이그레이션, 실행 근거에 따른 `/harness:evolve`를 안내합니
 
 <!-- WHATS-NEW:START -->
 
+
+## 🆕 v2026-11-14 업데이트
+
+| 변경 사항 | 상세 내용 |
+|--------|---------|
+| **TruLens 평가 및 트래킹 운영 스킬** | 업스트림 `32f57106c7f897a05806107737c413e65665fe46` (v2.16.0)에 고정한 `trulens`를 추가했습니다. RAG Triad 평가(문맥 관련성, 근거성, 답변 관련성), Snowflake Cortex·OpenAI·Bedrock·LiteLLM 제공자 기반 피드백 함수 정의, 애플리케이션 계측(`TruChain`, `TruLlama`, `TruCustomApp`), 가드레일 필터, 표준 라이브러리 오프라인 프리플라이트 헬퍼를 제공합니다. 스킬 435개 카탈로그, README 3개 언어 목록과 setup 가이드를 동기화했습니다. |
+| **현재 카탈로그** | 현재 매니페스트는 `kagent`, `modern-web-guidance`, `trulens`를 포함한 스킬 435개·카테고리 10개를 담고 있습니다. 카탈로그 표는 `.agent-skills/skills.json`에서 다시 생성합니다. |
 ## 🆕 v2026-11-13 업데이트
 
 | 변경 사항 | 상세 내용 |

@@ -1,0 +1,22 @@
+N:trulens
+D:Use when instrumenting, evaluating, tracing, or benchmarking LLM applications and AI agents with TruLens. Covers RAG Triad evaluations (Context Relevance, Groundedness, Answer Relevance), feedback function definition with Snowflake Cortex, OpenAI, Bedrock, LiteLLM or HuggingFace providers, instrumenting LangChain (TruChain), LlamaIndex (TruLlama), LiteLLM, or custom apps (TruCustomApp), setting up guardrail filters, and launching the TruLens dashboard. Route format-only skill linting to skill-standardization, standalone Kubernetes agent infrastructure to kagent, and raw telemetry export to agent-observability.
+G:trulens evaluation rag-triad llm-evaluation feedback-functions agent-benchmarking guardrails observability snowflake-cortex langchain llamaindex
+U[5]:
+  Instrument LangChain, LlamaIndex, LiteLLM, or custom apps with TruLens wrappers
+  Implement the RAG Triad: Context Relevance, Groundedness, and Answer Relevance
+  Configure feedback functions with OpenAI, Snowflake Cortex, Bedrock, or custom providers
+  Apply guardrail filters to block or flag low-scoring generations
+  Start and navigate the TruLens dashboard for evaluation tracking and experiment comparison
+S[6]{n,action,details}:
+  1,Preflight,Run scripts/preflight.py --json to inspect trulens CLI and package installation offline
+  2,Session,Initialize TruSession with local SQLite or remote database connection
+  3,Feedback,Construct Feedback functions using TruLens providers (groundedness, context, answer relevance)
+  4,Instrument,Wrap pipeline using TruChain, TruLlama, or TruCustomApp with feed_functions
+  5,Guardrails,Attach feedback filters to prevent responses failing quality thresholds
+  6,Dashboard,Launch TruLens dashboard with trulens dashboard or run_dashboard() to analyze records
+R[5]:
+  Run scripts/preflight.py --json before executing live trulens or model evaluation operations
+  Separate evaluation execution from critical-path user latency using async feedback functions
+  Store API keys in environment variables; never embed keys in TruLens session manifests
+  Verify database migration compatibility when upgrading between TruLens 0.x and 2.x
+  Route format linting to skill-standardization and raw telemetry streaming to agent-observability

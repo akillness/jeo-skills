@@ -392,7 +392,7 @@ See the [setup guide](setup-all-skills-prompt.md#claude-code-game-studios-on-dem
 
 ## 📚 Skills List
 
-> Generated from `.agent-skills/skills.json` · 434 skills · expand a category to see its skills.
+> Generated from `.agent-skills/skills.json` · 435 skills · expand a category to see its skills.
 
 ### 🌐 Web (73)
 
@@ -670,9 +670,9 @@ Subcategories: `developer-cli` (12), `ai-cli` (17), `media-cli` (1), `automation
 
 </details>
 
-### 🤖 AI & Agents (79)
+### 🤖 AI & Agents (80)
 
-Subcategories: `orchestration` (19), `agent-frameworks` (21), `skill-authoring` (5), `evaluation` (9), `memory` (7), `planning-review` (13), `discovery` (3), `prompting` (2)
+Subcategories: `orchestration` (19), `agent-frameworks` (21), `skill-authoring` (5), `evaluation` (10), `memory` (7), `planning-review` (13), `discovery` (3), `prompting` (2)
 
 <details>
 <summary>Show AI &amp; Agents skills</summary>
@@ -758,6 +758,7 @@ Subcategories: `orchestration` (19), `agent-frameworks` (21), `skill-authoring` 
 | `revfactory-harness` |
 | `elephant-goldfish-model` |
 | `kagent` |
+| `trulens` |
 
 </details>
 
@@ -1003,6 +1004,13 @@ See the [setup boundary](setup-all-skills-prompt.md#elephant-goldfish-model-on-d
 
 <!-- WHATS-NEW:START -->
 
+
+## 🆕 What's New in v2026-11-14
+
+| Change | Details |
+|--------|---------|
+| **TruLens evaluation and tracking operator skill** | Adds `trulens`, pinned to upstream `32f57106c7f897a05806107737c413e65665fe46` (v2.16.0), with RAG Triad evaluations (Context Relevance, Groundedness, Answer Relevance), feedback function definitions across Snowflake Cortex, OpenAI, Bedrock, and LiteLLM providers, application instrumentation (`TruChain`, `TruLlama`, `TruCustomApp`), guardrail filters, and an offline stdlib preflight helper. The 435-skill catalog, three README inventories, and setup guide are synchronized. |
+| **Current catalog** | The current manifest contains 435 skills in 10 categories, including `kagent`, `modern-web-guidance`, and `trulens`. Catalog tables are regenerated from `.agent-skills/skills.json`. |
 ## 🆕 What's New in v2026-11-13
 
 | Change | Details |
