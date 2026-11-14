@@ -3323,6 +3323,10 @@ Automatic Context7 CLI provisioning is unsupported on Windows and fails closed; 
 
 Preview `jeo-skill install browser-use --global --dry-run`, then install the selected guide with `jeo-skill install browser-use --global --yes`. This installs guidance, not the Browser Use package or browser. Resolve `SKILL_DIR` to the installed skill directory and run `python3 "$SKILL_DIR/scripts/preflight.py"` for offline metadata inspection. Review the skill's operation reference before separately authorizing package installation, browser connection, site access, credentials, or cloud/model usage. The upstream Python agent defaults to a cloud browser and hosted model.
 
+### kagent operator (on demand)
+
+Preview `jeo-skill install kagent --global --dry-run`, then install the selected guide with `jeo-skill install kagent --global --yes`. Installing `kagent` copies operator guidance and support tools only, not the kagent controller, CLI, Substrate or PostgreSQL. Resolve `SKILL_DIR` to the installed skill directory and run `python3 "$SKILL_DIR/scripts/preflight.py"` for offline CLI discovery and environment inspection without network calls or binary execution. Review the skill's operations and architecture references before separately authorizing Kubernetes cluster modifications (`kagent apply`, `kubectl apply`), gRPC/A2A session creation, sandbox provisioning or command execution.
+
 ### Impeccable design operator (on demand)
 
 To select it independently, preview `jeo-skill install impeccable --global --dry-run`

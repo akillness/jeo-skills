@@ -399,7 +399,7 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 
 ## 📚 스킬 목록
 
-> `.agent-skills/skills.json`에서 생성 · 432개 스킬 · 카테고리를 펼치면 스킬 목록이 보입니다.
+> `.agent-skills/skills.json`에서 생성 · 433개 스킬 · 카테고리를 펼치면 스킬 목록이 보입니다.
 
 ### 🌐 웹 (72개)
 
@@ -676,9 +676,9 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 
 </details>
 
-### 🤖 AI 및 에이전트 (78개)
+### 🤖 AI 및 에이전트 (79개)
 
-하위 분류: `orchestration` (19), `agent-frameworks` (20), `skill-authoring` (5), `evaluation` (9), `memory` (7), `planning-review` (13), `discovery` (3), `prompting` (2)
+하위 분류: `orchestration` (19), `agent-frameworks` (21), `skill-authoring` (5), `evaluation` (9), `memory` (7), `planning-review` (13), `discovery` (3), `prompting` (2)
 
 <details>
 <summary>스킬 보기</summary>
@@ -763,6 +763,7 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 | `aidlc-workflows` |
 | `revfactory-harness` |
 | `elephant-goldfish-model` |
+| `kagent` |
 
 </details>
 
@@ -1015,7 +1016,7 @@ v1 마이그레이션, 실행 근거에 따른 `/harness:evolve`를 안내합니
 | 변경 사항 | 상세 내용 |
 |--------|---------|
 | **NVIDIA SkillEvaluator 운영 스킬** | 업스트림 `12b387f7a62b5f3e0de9eff392a3f6b7e952f2c2`에 고정한 `nvidia-skill-evaluator`를 추가했습니다. 단계별 명령, 스캐너·제공자·샌드박스·CI 승인 경계, Apache-2.0 출처, 파일 12개의 SHA-256 매니페스트와 독립 오프라인 헬퍼를 제공합니다. 스킬 432개 카탈로그, README 3개 언어 목록과 setup 가이드를 동기화했습니다. 오프라인 회귀 테스트 15개, 선택 파일 12개 해시, 격리 HOME 설치 파일 5개의 바이트 일치 검증을 통과했습니다. 라우팅 시나리오 10개는 작성만 했으며 모델로 실행하지 않았습니다. 평가기·보안 스캐너·유료 모델·실제 Tier 3 실행은 수행하지 않았습니다. |
-| **현재 카탈로그** | 현재 매니페스트는 `donchitos-game-studios`와 `nvidia-skill-evaluator`를 포함한 스킬 432개·카테고리 10개를 담고 있으며, `agenticskills` 번들 설치기는 제거했습니다. 카탈로그 표는 `.agent-skills/skills.json`에서 다시 생성합니다. |
+| **현재 카탈로그** | 현재 매니페스트는 `donchitos-game-studios`, `nvidia-skill-evaluator`, `kagent`를 포함한 스킬 433개·카테고리 10개를 담고 있으며, `agenticskills` 번들 설치기는 제거했습니다. 카탈로그 표는 `.agent-skills/skills.json`에서 다시 생성합니다. |
 | **README 3개 언어의 운영 안내 정렬** | 영어·한국어·스페인어 안내에서 설치와 활성화, 관찰된 사용 기록과 런타임 설치 경로의 한계를 구분하고 카탈로그 유지관리 명령을 추가했습니다. 현재 설치·갱신 동작은 과거 업데이트 요약보다 README의 운영 안내를 기준으로 확인하세요. |
 
 ## 🆕 v2026-11-07 업데이트

@@ -1,7 +1,7 @@
 {
   "version": "2.1.0",
   "generated": "2026-10-21",
-  "skill_count": 432,
+  "skill_count": 433,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -431,7 +431,8 @@
       "agent-s",
       "aidlc-workflows",
       "revfactory-harness",
-      "elephant-goldfish-model"
+      "elephant-goldfish-model",
+      "kagent"
     ],
     "engineering": [
       "audit-reference-originality",
@@ -938,7 +939,8 @@
         "a2a-protocol",
         "anyjev",
         "agentic-graphrag-blueprint",
-        "agent-s"
+        "agent-s",
+        "kagent"
       ],
       "skill-authoring": [
         "article-prompts-to-skills",
@@ -15952,6 +15954,33 @@
       "keyword": "donchitos-game-studios",
       "version": "1.0.0",
       "source": "https://github.com/donchitos/claude-code-game-studios"
+    },
+    {
+      "name": "kagent",
+      "description": "Use when configuring, invoking, testing, or troubleshooting kagent Kubernetes-native AI agents, Agent and Harness CRDs, gRPC/A2A Sessions, or Substrate sandboxes. Covers discovering agents and templates, managing conversations via Sessions, streaming tasks over A2A, executing commands and transferring files in isolated sandboxes, or inspecting Kubernetes custom resources. Route format-only skill linting to skill-standardization, raw multi-agent protocol design to a2a-protocol, and standalone Kubernetes cluster deployment to deployment-automation.",
+      "category": "ai-agents",
+      "subcategory": "agent-frameworks",
+      "interface": "cli",
+      "path": "kagent/SKILL.md",
+      "tags": [
+        "kagent",
+        "kubernetes",
+        "cloud-native",
+        "agent-framework",
+        "sandboxes",
+        "a2a-protocol",
+        "mcp"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Grep",
+        "Glob"
+      ],
+      "keyword": "kagent",
+      "version": "1.0.1",
+      "source": "https://github.com/kagent-dev/kagent"
     }
   ]
 }

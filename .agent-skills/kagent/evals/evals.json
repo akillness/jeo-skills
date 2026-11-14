@@ -1,0 +1,30 @@
+{
+  "skill_name": "kagent",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "How do I create and invoke a kagent agent conversation via CLI?",
+      "expected_output": "Instructions to use `kagent agent session create --agent NAME --request-id REQ_ID` to create a session and retain the Session ID, then invoke with `kagent agent invoke --session ID --task TASK [--stream]`, explaining that invocation uses A2A."
+    },
+    {
+      "id": 2,
+      "prompt": "I need an isolated environment to run a data transformation script without modifying my local machine. Can kagent sandboxes do this?",
+      "expected_output": "Guide the user to standalone sandboxes using `kagent sandbox create` or MCP sandbox tools, uploading the script with `kagent sandbox upload` or `write_sandbox_file`, executing with `kagent sandbox exec`, retrieving artifacts with download, and deleting the sandbox afterward. Emphasize that sandboxes do not require creating a full Agent or Session, and note egress constraints."
+    },
+    {
+      "id": 3,
+      "prompt": "Format my custom SKILL.md file and check for frontmatter errors.",
+      "expected_output": "Route format-only skill linting to skill-standardization rather than kagent."
+    },
+    {
+      "id": 4,
+      "prompt": "Deploy a complete multi-node Kubernetes cluster from scratch.",
+      "expected_output": "Route generic cluster deployment to deployment-automation or environment-setup, explaining that kagent operates on an existing Kubernetes cluster with kagent CRDs and controller installed."
+    },
+    {
+      "id": 5,
+      "prompt": "What are the core CRDs in kagent v1alpha3 and how are they organized?",
+      "expected_output": "Explain Agent (pairs behavior with Harness), Harness (runtime adapter: kagent, Codex, Claude), AgentTemplate (reusable prompts, tools, models), and SandboxTemplate (tools image and resources for standalone sandboxes). Explain that Session is stored in PostgreSQL and exposed via gRPC/A2A, not as a Kubernetes CRD."
+    }
+  ]
+}

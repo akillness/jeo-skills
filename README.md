@@ -392,7 +392,7 @@ See the [setup guide](setup-all-skills-prompt.md#claude-code-game-studios-on-dem
 
 ## 📚 Skills List
 
-> Generated from `.agent-skills/skills.json` · 432 skills · expand a category to see its skills.
+> Generated from `.agent-skills/skills.json` · 433 skills · expand a category to see its skills.
 
 ### 🌐 Web (72)
 
@@ -669,9 +669,9 @@ Subcategories: `developer-cli` (12), `ai-cli` (17), `media-cli` (1), `automation
 
 </details>
 
-### 🤖 AI & Agents (78)
+### 🤖 AI & Agents (79)
 
-Subcategories: `orchestration` (19), `agent-frameworks` (20), `skill-authoring` (5), `evaluation` (9), `memory` (7), `planning-review` (13), `discovery` (3), `prompting` (2)
+Subcategories: `orchestration` (19), `agent-frameworks` (21), `skill-authoring` (5), `evaluation` (9), `memory` (7), `planning-review` (13), `discovery` (3), `prompting` (2)
 
 <details>
 <summary>Show AI &amp; Agents skills</summary>
@@ -756,6 +756,7 @@ Subcategories: `orchestration` (19), `agent-frameworks` (20), `skill-authoring` 
 | `aidlc-workflows` |
 | `revfactory-harness` |
 | `elephant-goldfish-model` |
+| `kagent` |
 
 </details>
 
@@ -1006,7 +1007,7 @@ See the [setup boundary](setup-all-skills-prompt.md#elephant-goldfish-model-on-d
 | Change | Details |
 |--------|---------|
 | **NVIDIA SkillEvaluator operator skill** | Adds `nvidia-skill-evaluator`, pinned to upstream `12b387f7a62b5f3e0de9eff392a3f6b7e952f2c2`, with tier-specific commands, scanner/provider/sandbox/CI approval boundaries, Apache-2.0 attribution, a 12-file SHA-256 manifest, and a standalone offline helper. The 432-skill catalog, three README inventories and setup guide are synchronized. Verification: 15 offline regression tests, all 12 selected-file hashes, and byte-identical five-file installation into an isolated HOME passed. Ten routing scenarios are authored, not model-executed; the evaluator, scanners, paid models and live Tier 3 runs were not executed. |
-| **Current catalog** | The current manifest contains 432 skills in 10 categories, including `donchitos-game-studios` and `nvidia-skill-evaluator`; the `agenticskills` bundle installer has been removed. Catalog tables are regenerated from `.agent-skills/skills.json`. |
+| **Current catalog** | The current manifest contains 433 skills in 10 categories, including `donchitos-game-studios`, `nvidia-skill-evaluator`, and `kagent`; the `agenticskills` bundle installer has been removed. Catalog tables are regenerated from `.agent-skills/skills.json`. |
 | **README guidance aligned across languages** | English, Korean and Spanish now distinguish installation from activation, document observed usage and runtime-destination limits, and include catalog maintenance commands. For current installation and refresh behavior, consult the README's operational sections rather than older release summaries. |
 
 ## 🆕 What's New in v2026-11-07

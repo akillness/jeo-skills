@@ -341,7 +341,7 @@ y la [atribución MIT upstream](docs/attribution.md).
 
 ## 📚 Lista de Habilidades
 
-> Generado desde `.agent-skills/skills.json` · 432 habilidades · despliega una categoría para ver sus habilidades.
+> Generado desde `.agent-skills/skills.json` · 433 habilidades · despliega una categoría para ver sus habilidades.
 
 ### 🌐 Web (72)
 
@@ -618,9 +618,9 @@ Subcategorías: `developer-cli` (12), `ai-cli` (17), `media-cli` (1), `automatio
 
 </details>
 
-### 🤖 IA y Agentes (78)
+### 🤖 IA y Agentes (79)
 
-Subcategorías: `orchestration` (19), `agent-frameworks` (20), `skill-authoring` (5), `evaluation` (9), `memory` (7), `planning-review` (13), `discovery` (3), `prompting` (2)
+Subcategorías: `orchestration` (19), `agent-frameworks` (21), `skill-authoring` (5), `evaluation` (9), `memory` (7), `planning-review` (13), `discovery` (3), `prompting` (2)
 
 <details>
 <summary>Ver habilidades</summary>
@@ -705,6 +705,7 @@ Subcategorías: `orchestration` (19), `agent-frameworks` (20), `skill-authoring`
 | `aidlc-workflows` |
 | `revfactory-harness` |
 | `elephant-goldfish-model` |
+| `kagent` |
 
 </details>
 
@@ -956,7 +957,7 @@ Consulta los [límites de instalación](setup-all-skills-prompt.md#elephant-gold
 | Cambio | Detalles |
 |--------|---------|
 | **Operador NVIDIA SkillEvaluator** | Añadida la guía `nvidia-skill-evaluator`, fijada al commit `12b387f7a62b5f3e0de9eff392a3f6b7e952f2c2`, con comandos por nivel, límites de aprobación para escáneres, proveedores, sandbox y CI, atribución Apache-2.0, un manifiesto SHA-256 de 12 archivos y una preflight sin conexión. Instalar la guía no ejecuta evaluadores, escáneres ni modelos de pago. |
-| **Catálogo actual** | El manifiesto actual contiene 432 habilidades en 10 categorías, incluidas `donchitos-game-studios` y `nvidia-skill-evaluator`; se ha retirado el instalador del paquete `agenticskills`. Las tablas del catálogo se regeneran desde `.agent-skills/skills.json`. |
+| **Catálogo actual** | El manifiesto actual contiene 433 habilidades en 10 categorías, incluidas `donchitos-game-studios`, `nvidia-skill-evaluator` y `kagent`; se ha retirado el instalador del paquete `agenticskills`. Las tablas del catálogo se regeneran desde `.agent-skills/skills.json`. |
 | **Guías README alineadas en tres idiomas** | Inglés, coreano y español distinguen instalación de activación, documentan los límites del uso observado y de los destinos de cada entorno e incluyen los comandos de mantenimiento del catálogo. Para la instalación y actualización actuales, consulta las secciones operativas anteriores en lugar de los resúmenes históricos. |
 
 ## 🆕 Novedades en v2026-11-04

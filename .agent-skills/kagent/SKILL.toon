@@ -1,0 +1,22 @@
+N:kagent
+D:Use when configuring, invoking, testing, or troubleshooting kagent Kubernetes-native AI agents, Agent and Harness CRDs, gRPC/A2A Sessions, or Substrate sandboxes. Covers discovering agents and templates, managing conversations via Sessions, streaming tasks over A2A, executing commands and transferring files in isolated sandboxes, or inspecting Kubernetes custom resources. Route format-only skill linting to skill-standardization, raw multi-agent protocol design to a2a-protocol, and standalone Kubernetes cluster deployment to deployment-automation.
+G:kagent kubernetes cloud-native agent-framework agent-template harness substrate sandbox a2a-protocol grpc sessions mcp
+U[5]:
+  Discover agent definitions, templates, and runtime harnesses in Kubernetes
+  Create and manage agent conversation sessions and stream tasks through A2A
+  Create standalone Substrate sandboxes for isolated script execution and artifact generation
+  Transfer files to and from sandboxes and observe process outputs safely
+  Inspect and author Agent, AgentTemplate, Harness, and SandboxTemplate v1alpha3 CRDs
+S[6]{n,action,details}:
+  1,Preflight,Run scripts/preflight.py --json to inspect kagent and kubectl CLI discovery offline
+  2,Discover,Use kagent agent list and kagent agent template list to find registered agents
+  3,Session,Create a conversation session with kagent agent session create --agent NAME --request-id ID
+  4,Invoke,Stream tasks to the session using kagent agent invoke --session ID --task TASK
+  5,Sandbox,Use kagent sandbox create and exec for isolated task execution without agent overhead
+  6,Cleanup,Retrieve output artifacts and delete scratch sessions and sandboxes
+R[5]:
+  Do not run kagent apply, kubectl, or sandbox commands without explicit user authorization
+  Do not embed sensitive API keys in AgentTemplate YAML; use Kubernetes Secret references
+  Remember sandboxes have no default network egress; supply all needed scripts and dependencies
+  Session is stored in PostgreSQL and exposed via gRPC/A2A; it is not a Kubernetes custom resource
+  Route format linting to skill-standardization and generic cluster setup to deployment-automation
