@@ -131,10 +131,16 @@ def load_model():
     print(f"[jev-local] ready on http://{HOST}:{PORT}/v1/systemone", flush=True)
 
 
+_candidate_token_ids = {}
+_candidate_tokenizer_id = None
+
+
 def unload_model():
-    global _model, _tokenizer
+    global _model, _tokenizer, _candidate_tokenizer_id
     _model = None
     _tokenizer = None
+    _candidate_token_ids.clear()
+    _candidate_tokenizer_id = None
     gc.collect()
     torch = sys.modules.get("torch")
     if torch is not None:
@@ -165,10 +171,19 @@ def _next_token_logprobs(prompt, candidates):
                 outputs = _model(**inputs)
             logits = outputs.logits[0, -1]
             logprobs = torch.log_softmax(logits, dim=-1)
+            global _candidate_tokenizer_id
+            tok_id = id(_tokenizer)
+            if _candidate_tokenizer_id != tok_id:
+                _candidate_token_ids.clear()
+                _candidate_tokenizer_id = tok_id
             out = {}
             for cand in candidates:
-                ids = _tokenizer.encode(cand, add_special_tokens=False)
-                out[cand] = logprobs[ids[0]].item() if ids else -math.inf
+                tok = _candidate_token_ids.get(cand)
+                if tok is None and cand not in _candidate_token_ids:
+                    ids = _tokenizer.encode(cand, add_special_tokens=False)
+                    tok = ids[0] if ids else None
+                    _candidate_token_ids[cand] = tok
+                out[cand] = logprobs[tok].item() if tok is not None else -math.inf
             return out
     finally:
         del inputs, outputs, logits, logprobs

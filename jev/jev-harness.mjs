@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { createHash } from 'node:crypto';
 import { chmodSync, existsSync, lstatSync, mkdirSync, readFileSync, realpathSync, renameSync, unlinkSync, writeFileSync } from 'node:fs';
-import { readFile, realpath } from 'node:fs/promises';
+import { open, readFile, realpath, stat } from 'node:fs/promises';
 
 // Pre-warm Node's internal fetch/Response JSON pipeline without opening any socket.
 try { await new Response('{}').json(); new Request('http://127.0.0.1'); } catch {}
@@ -110,19 +110,39 @@ if (!PROFILE_ERROR) {
   try {
     if (PROFILE) {
       const basePath = join(PROFILE_DIR, `${PROFILE}.env`);
-      baseFilePresent = existsSync(basePath);
       baseReadPending = true;
-      baseConfig = await readEnvFile(basePath);
+      try {
+        baseConfig = parseEnv(await readFile(basePath, 'utf8'));
+        baseFilePresent = true;
+      } catch (error) {
+        if (error.code !== 'ENOENT') throw error;
+        baseFilePresent = false;
+        baseConfig = {};
+      }
       baseReadPending = false;
-      for (const kind of BACKEND_KINDS) {
+      const kindResults = await Promise.all(BACKEND_KINDS.map(async kind => {
         const path = join(PROFILE_DIR, `${PROFILE}.${kind}.env`);
-        kindFilePresent[kind] = existsSync(path);
-        kindFiles[kind] = kindFilePresent[kind] ? await readEnvFile(path) : {};
+        try {
+          return [kind, true, parseEnv(await readFile(path, 'utf8'))];
+        } catch (error) {
+          if (error.code === 'ENOENT') return [kind, false, {}];
+          throw error;
+        }
+      }));
+      for (const [kind, present, parsed] of kindResults) {
+        kindFilePresent[kind] = present;
+        kindFiles[kind] = parsed;
       }
     } else {
       const legacyPath = join(homedir(), '.agents', 'jev', '.env');
-      baseFilePresent = existsSync(legacyPath);
-      baseConfig = await readEnvFile(legacyPath);
+      try {
+        baseConfig = parseEnv(await readFile(legacyPath, 'utf8'));
+        baseFilePresent = true;
+      } catch (error) {
+        if (error.code !== 'ENOENT') throw error;
+        baseFilePresent = false;
+        baseConfig = {};
+      }
       for (const kind of BACKEND_KINDS) { kindFiles[kind] = {}; kindFilePresent[kind] = false; }
     }
   } catch (error) {
@@ -830,20 +850,75 @@ function simulateAnswers(state, questions) {
 }
 
 // ── Catalog ──────────────────────────────────────────────────────────────────
+const MAX_CATALOG_CACHE = 4;
+const MAX_EXCERPT_READ_BYTES = 16384;
+const CATALOG_CACHE = new Map();
+const CATALOG_META = new WeakMap();
+
 async function loadCatalog() {
   const errors = [];
   for (const candidate of CATALOG_CANDIDATES) {
+    let info;
+    try { info = await stat(candidate, { bigint: true }); }
+    catch (err) { errors.push(`${candidate}: ${err.message}`); continue; }
+    const cached = CATALOG_CACHE.get(candidate);
+    if (cached && cached.mtimeNs === info.mtimeNs && cached.size === info.size && cached.ino === info.ino) {
+      return cached.catalog;
+    }
     let catalog;
     try { catalog = JSON.parse(await readFile(candidate, 'utf8')); }
     catch (err) { errors.push(`${candidate}: ${err.message}`); continue; }
     try {
       if (!Array.isArray(catalog.skills) || !catalog.categories || typeof catalog.categories !== 'object') throw new Error('Unexpected skills catalog schema');
-      for (const skill of catalog.skills) if (!skill.name || !skill.category || !skill.description) throw new Error(`Malformed skill entry in catalog (${skill.name || '<unnamed>'})`);
+      const byName = Object.create(null);
+      const entries = new Array(catalog.skills.length);
+      let fullTokens = 0;
+      for (let i = 0; i < catalog.skills.length; i++) {
+        const skill = catalog.skills[i];
+        if (!skill.name || !skill.category || !skill.description) throw new Error(`Malformed skill entry in catalog (${skill.name || '<unnamed>'})`);
+        byName[skill.name] = skill;
+        fullTokens += tokenEstimate(`${skill.name} ${skill.description}`);
+        entries[i] = {
+          skill,
+          nameLower: skill.name.toLowerCase(),
+          corpusLower: `${skill.description} ${Array.isArray(skill.tags) && skill.tags.length ? skill.tags.join(' ') : ''} ${skill.keyword || ''}`.toLowerCase(),
+        };
+      }
       if (catalog.model_policies !== undefined && (typeof catalog.model_policies !== 'object' || Array.isArray(catalog.model_policies))) throw new Error('model_policies must be an object');
-      return { ...catalog, __path: candidate };
+      const result = { ...catalog, __path: candidate };
+      CATALOG_META.set(result, { byName, fullTokens, entries });
+      if (CATALOG_CACHE.size >= MAX_CATALOG_CACHE) {
+        const oldest = CATALOG_CACHE.keys().next().value;
+        if (oldest !== undefined) CATALOG_CACHE.delete(oldest);
+      }
+      CATALOG_CACHE.set(candidate, { mtimeNs: info.mtimeNs, size: info.size, ino: info.ino, catalog: result });
+      return result;
     } catch (err) { errors.push(`${candidate}: ${err.message}`); }
   }
   throw new Error(`Cannot load a valid skills catalog. Tried:\n  ${errors.join('\n  ')}`);
+}
+
+async function resolveExcerptRoot(catalog) {
+  try {
+    return await realpath(catalog.__path === CATALOG_SNAPSHOT ? SHARED_SKILLS_ROOT : dirname(catalog.__path));
+  } catch { return null; }
+}
+
+async function readBoundedText(file) {
+  const fh = await open(file, 'r');
+  try {
+    const info = await fh.stat();
+    if (info.size <= MAX_EXCERPT_READ_BYTES) return await fh.readFile('utf8');
+    const buf = Buffer.allocUnsafe(MAX_EXCERPT_READ_BYTES);
+    const { bytesRead } = await fh.read(buf, 0, MAX_EXCERPT_READ_BYTES, 0);
+    const head = buf.toString('utf8', 0, bytesRead);
+    if (head.startsWith('---') && !/^---[\s\S]*?\n---\s*(?:\n|$)/.test(head)) {
+      return await readFile(file, 'utf8');
+    }
+    return head;
+  } finally {
+    await fh.close();
+  }
 }
 
 // Excerpts come from the catalog's own tree: the checkout for a checkout catalog,
@@ -851,13 +926,14 @@ async function loadCatalog() {
 // snapshot jev-setup.sh installs. Excerpts are sent to the answering backend, so
 // containment is checked on canonical paths: neither `../` in an untrusted catalog
 // nor an in-root symlink (directory or SKILL.md) may reach a file outside the root.
-async function skillExcerpt(catalog, skill) {
+async function skillExcerpt(catalog, skill, resolvedRoot = undefined) {
   if (typeof skill.path !== 'string' || !skill.path) return '';
   try {
-    const root = await realpath(catalog.__path === CATALOG_SNAPSHOT ? SHARED_SKILLS_ROOT : dirname(catalog.__path));
+    const root = resolvedRoot !== undefined ? resolvedRoot : await resolveExcerptRoot(catalog);
+    if (!root) return '';
     const file = await realpath(resolve(root, skill.path));
     if (!file.startsWith(root + sep) || basename(file) !== 'SKILL.md') return '';
-    const text = await readFile(file, 'utf8');
+    const text = await readBoundedText(file);
     const body = text.replace(/^---[\s\S]*?\n---\s*\n?/, '');
     return body.replace(/\s+/g, ' ').trim().slice(0, EXCERPT_CHARS);
   } catch { return ''; }
@@ -869,11 +945,20 @@ export function taskTerms(task) {
   const terms = task.toLowerCase().match(/[a-z0-9][a-z0-9+#.-]*|[가-힣]{2,}/g) || [];
   return [...new Set(terms.filter(t => t.length > 1 && !STOPWORDS.has(t)))];
 }
+function scoreIndexed(nameLower, corpusLower, terms) {
+  let score = 0;
+  for (let i = 0; i < terms.length; i++) {
+    const term = terms[i];
+    if (nameLower.includes(term)) score += 3;
+    if (corpusLower.includes(term)) score += 1;
+  }
+  return score;
+}
 export function scoreSkill(skill, task) {
   const terms = Array.isArray(task) ? task : taskTerms(task);
   const name = skill.name.toLowerCase();
   const corpus = `${skill.description} ${(skill.tags || []).join(' ')} ${skill.keyword || ''}`.toLowerCase();
-  return terms.reduce((score, term) => score + (name.includes(term) ? 3 : 0) + (corpus.includes(term) ? 1 : 0), 0);
+  return scoreIndexed(name, corpus, terms);
 }
 export function selectionStrategy(catalogSize, choiceCap) {
   const shards = Math.max(1, Math.ceil(catalogSize / Math.max(2, choiceCap || 2)));
@@ -952,14 +1037,18 @@ async function selectSharded(catalog, task, backend, kind, shards, topK) {
   if (first.error || !first.answers) return { error: first, envelope: first };
   const gate = gateFrom(first.answers);
   if (gate.value !== null && gate.value < GATE_THRESHOLD) return { gate, finalists: [], ranked: [], reason: 'gate', envelope: first, requests: first.requests ?? 1 };
-  const byName = Object.fromEntries(catalog.skills.map(s => [s.name, s]));
+  const byName = CATALOG_META.get(catalog)?.byName || Object.fromEntries(catalog.skills.map(s => [s.name, s]));
   const finalists = [];
   groups.forEach((group, i) => {
     const probs = first.answers[`shard::${i}`]?.probabilities || {};
     Object.entries(probs).sort((a, b) => b[1] - a[1]).slice(0, SHARD_FINALISTS).forEach(([name, p]) => finalists.push({ name, shard: i, shardProbability: p }));
   });
-  const candidates = [];
-  for (const f of finalists) candidates.push({ ...f, description: byName[f.name].description, excerpt: await skillExcerpt(catalog, byName[f.name]) });
+  const excerptRoot = await resolveExcerptRoot(catalog);
+  const candidates = await Promise.all(finalists.map(async f => ({
+    ...f,
+    description: byName[f.name].description,
+    excerpt: await skillExcerpt(catalog, byName[f.name], excerptRoot),
+  })));
   const budgeted = budgetCandidates(task, candidates, backend.maxStateChars);
   const second = await requestJev(budgeted, verifyQuestions(task, budgeted, backend, { withGate: false }), { op: 'route-skills', kinds: [kind], model: backend.modelOverride });
   if (second.error || !second.answers) return { error: second, envelope: second };
@@ -968,13 +1057,36 @@ async function selectSharded(catalog, task, backend, kind, shards, topK) {
   return { gate, finalists: ranked, ranked: rankCandidates(ranked), reason: null, envelope: second, requests: (first.requests ?? 1) + (second.requests ?? 1) };
 }
 
-async function selectShortlist(catalog, task, backend, kind, topK) {
+function topScoredSkills(catalog, task) {
   const terms = taskTerms(task);
-  const scored = catalog.skills.map(s => ({ skill: s, score: scoreSkill(s, terms) })).filter(x => x.score > 0)
-    .sort((a, b) => b.score - a.score || a.skill.name.localeCompare(b.skill.name)).slice(0, SHORTLIST_SIZE);
+  const meta = CATALOG_META.get(catalog);
+  const scored = [];
+  if (meta) {
+    for (let i = 0; i < meta.entries.length; i++) {
+      const entry = meta.entries[i];
+      const score = scoreIndexed(entry.nameLower, entry.corpusLower, terms);
+      if (score > 0) scored.push({ skill: entry.skill, score });
+    }
+  } else {
+    for (let i = 0; i < catalog.skills.length; i++) {
+      const s = catalog.skills[i];
+      const score = scoreSkill(s, terms);
+      if (score > 0) scored.push({ skill: s, score });
+    }
+  }
+  return scored.sort((a, b) => b.score - a.score || a.skill.name.localeCompare(b.skill.name)).slice(0, SHORTLIST_SIZE);
+}
+
+async function selectShortlist(catalog, task, backend, kind, topK) {
+  const scored = topScoredSkills(catalog, task);
   if (!scored.length) return { gate: null, finalists: [], ranked: [], reason: 'shortlist-empty', envelope: null, requests: 0 };
-  const candidates = [];
-  for (const { skill, score } of scored) candidates.push({ name: skill.name, lexical: score, description: skill.description, excerpt: await skillExcerpt(catalog, skill) });
+  const excerptRoot = await resolveExcerptRoot(catalog);
+  const candidates = await Promise.all(scored.map(async ({ skill, score }) => ({
+    name: skill.name,
+    lexical: score,
+    description: skill.description,
+    excerpt: await skillExcerpt(catalog, skill, excerptRoot),
+  })));
   const budgeted = budgetCandidates(task, candidates, backend.maxStateChars);
   const envelope = await requestJev(budgeted, verifyQuestions(task, budgeted, backend), { op: 'route-skills', kinds: [kind], model: backend.modelOverride });
   if (envelope.error || !envelope.answers) return { error: envelope, envelope };
@@ -991,9 +1103,7 @@ function rankCandidates(items) {
 }
 
 function selectMock(catalog, task, topK) {
-  const terms = taskTerms(task);
-  const scored = catalog.skills.map(s => ({ skill: s, score: scoreSkill(s, terms) })).filter(x => x.score > 0)
-    .sort((a, b) => b.score - a.score || a.skill.name.localeCompare(b.skill.name)).slice(0, SHORTLIST_SIZE);
+  const scored = topScoredSkills(catalog, task);
   const max = scored[0]?.score || 1;
   const sum = scored.reduce((n, x) => n + x.score, 0) || 1;
   const ranked = scored.map(({ skill, score }) => ({ name: skill.name, fits: score / max, probability: score / sum, lexical: score }));
@@ -1010,10 +1120,10 @@ export async function routeSkills(task, { mock = false, topK = 3, override = nul
   if (PROFILE_ERROR) throw new Error(PROFILE_ERROR);
   if (PROFILE_DISABLED) throw new Error(`Jev profile '${PROFILE}' is disabled`);
   const catalog = await loadCatalog();
-  const byName = Object.fromEntries(catalog.skills.map(s => [s.name, s]));
-  const fullTokens = catalog.skills.reduce((n, s) => n + tokenEstimate(`${s.name} ${s.description}`), 0);
+  const meta = CATALOG_META.get(catalog);
+  const byName = meta?.byName || Object.fromEntries(catalog.skills.map(s => [s.name, s]));
+  const fullTokens = meta ? meta.fullTokens : catalog.skills.reduce((n, s) => n + tokenEstimate(`${s.name} ${s.description}`), 0);
   const base = { task, mode: mock ? 'mock' : 'jev', fullCatalogSkills: catalog.skills.length, estimatedFullTokens: fullTokens };
-
   let outcome = null;
   let selection = null;
   let backendUsed = null;
@@ -1122,15 +1232,24 @@ function mockKeep(text) { return !NOISE_HINTS.test(text) && (KEEP_HINTS.test(tex
 // block that exceeds the limit is preserved (never dropped unseen).
 export function planPruneBatches(blocks, maxStateChars) {
   const batches = [];
-  let current = [];
-  const size = items => JSON.stringify({ blocks: items }).length;
   const oversized = [];
-  blocks.forEach((block, index) => {
+  const overhead = 13; // '{"blocks":[]}'.length
+  let current = [];
+  let currentLen = overhead;
+  for (let index = 0; index < blocks.length; index++) {
+    const block = blocks[index];
     const item = { index, id: block.id, text: block.text };
-    if (size([item]) > maxStateChars) { oversized.push(index); return; }
-    if (current.length && size([...current, item]) > maxStateChars) { batches.push(current); current = []; }
+    const itemLen = JSON.stringify(item).length;
+    if (overhead + itemLen > maxStateChars) { oversized.push(index); continue; }
+    const nextLen = currentLen + (current.length ? 1 : 0) + itemLen;
+    if (current.length && nextLen > maxStateChars) {
+      batches.push(current);
+      current = [];
+      currentLen = overhead;
+    }
+    currentLen += (current.length ? 1 : 0) + itemLen;
     current.push(item);
-  });
+  }
   if (current.length) batches.push(current);
   return { batches, oversized };
 }
@@ -1716,17 +1835,18 @@ async function backendStatus(kind, { timeoutMs = 3000, referenced = true } = {})
   try {
     if (kind === 'local') {
       if (backend.driver === 'qev') {
-        const { response, payload } = await probe(backend.endpoint.replace(/\/v1\/systemone\/?$/, '/health'), timeoutMs);
+        const [healthRes, modelsRes] = await Promise.all([
+          probe(backend.endpoint.replace(/\/v1\/systemone\/?$/, '/health'), timeoutMs),
+          probe(backend.endpoint.replace(/\/v1\/systemone\/?$/, '/v1/models'), timeoutMs).catch(() => null),
+        ]);
+        const { response, payload } = healthRes;
         if (!response.ok || (payload?.status !== 'ok' && payload?.status !== 'ready' && payload?.ok !== true)) {
           throw new Error(`qev health check failed (${response.status})`);
         }
-        try {
-          const modelsRes = await probe(backend.endpoint.replace(/\/v1\/systemone\/?$/, '/v1/models'), timeoutMs);
-          const list = Array.isArray(modelsRes.payload?.data) ? modelsRes.payload.data : Array.isArray(modelsRes.payload?.models) ? modelsRes.payload.models : [];
-          entry.servedModel = list.map(m => m?.id || m?.name).find(Boolean) || null;
-        } catch {
-          entry.servedModel = null;
-        }
+        const list = modelsRes
+          ? (Array.isArray(modelsRes.payload?.data) ? modelsRes.payload.data : Array.isArray(modelsRes.payload?.models) ? modelsRes.payload.models : [])
+          : [];
+        entry.servedModel = list.map(m => m?.id || m?.name).find(Boolean) || null;
         entry.modelDir = backend.modelDir;
       } else if (backend.driver === 'jevos') {
         const { response, payload } = await probe(backend.endpoint.replace(/\/v1\/systemone\/?$/, '/health'), timeoutMs);
@@ -1822,7 +1942,8 @@ export async function jevStatus({ timeoutMs = 3000, operation = null } = {}) {
     chains[op] = resolved;
     resolved.chain.forEach(k => referenced.add(k));
   }
-  for (const kind of BACKEND_KINDS) status.backends[kind] = await backendStatus(kind, { timeoutMs, referenced: referenced.has(kind) });
+  const statuses = await Promise.all(BACKEND_KINDS.map(kind => backendStatus(kind, { timeoutMs, referenced: referenced.has(kind) })));
+  BACKEND_KINDS.forEach((kind, index) => { status.backends[kind] = statuses[index]; });
   let anyUnusable = false;
   let allReady = true;
   for (const op of ops) {

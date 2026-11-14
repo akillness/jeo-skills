@@ -998,7 +998,8 @@ function memoryMode(ctx) {
 }
 
 function replaceSetting(text, key, value) {
-  const lines = (text || '').split(/\r?\n/).filter(line => !new RegExp(`^\\s*${key}\\s*=`).test(line));
+  const keyRe = new RegExp(`^\\s*${key}\\s*=`);
+  const lines = (text || '').split(/\r?\n/).filter(line => !keyRe.test(line));
   while (lines.length && lines.at(-1) === '') lines.pop();
   return `${lines.join('\n')}${lines.length ? '\n' : ''}${key}=${value}\n`;
 }
@@ -1009,27 +1010,45 @@ function within(root, path) {
 }
 
 function selectedSkillContext(routed) {
+  const picks = Array.isArray(routed?.topK) ? routed.topK.slice(0, 3) : [];
+  const wanted = new Set();
+  for (const selected of picks) {
+    if (SKILL_ID.test(selected?.name || '')) wanted.add(selected.name);
+  }
+  if (!wanted.size) return { context: '', injected: [] };
   const snapshot = join(homes().jev, 'skills.json');
   const catalogPath = process.env.JEV_CATALOG_PATH || snapshot;
   const catalog = JSON.parse(readFileSync(catalogPath, 'utf8'));
+  const skillsByName = new Map();
+  if (Array.isArray(catalog.skills)) {
+    for (let i = 0; i < catalog.skills.length; i++) {
+      const item = catalog.skills[i];
+      if (item && wanted.has(item.name) && !skillsByName.has(item.name)) {
+        skillsByName.set(item.name, item);
+        if (skillsByName.size === wanted.size) break;
+      }
+    }
+  }
   const root = realpathSync(resolve(catalogPath) === resolve(snapshot) ? join(homedir(), '.agents', 'skills') : dirname(catalogPath));
   const sections = [];
   const injected = [];
   let size = 0;
-  for (const selected of (routed.topK || []).slice(0, 3)) {
-    if (!SKILL_ID.test(selected.name || '')) continue;
-    const skill = catalog.skills?.find(item => item.name === selected.name);
+  for (const selected of picks) {
+    const skill = skillsByName.get(selected?.name);
     if (!skill || skill.path !== `${skill.name}/SKILL.md`) continue;
     try {
       const path = realpathSync(join(root, skill.path));
       const info = lstatSync(path);
       if (!within(root, path) || !info.isFile() || info.size > 65_536) continue;
       const body = readFileSync(path, 'utf8');
+      const bodyBytes = Buffer.byteLength(body);
+      if (bodyBytes > 65_536) continue;
       const section = `### Skill: ${skill.name}\nSource: ${path}\nResolve referenced files relative to this source.\n\n${body}`;
-      if (Buffer.byteLength(body) > 65_536 || size + Buffer.byteLength(section) > 98_304) continue;
+      const sectionBytes = Buffer.byteLength(section);
+      if (size + sectionBytes > 98_304) continue;
       sections.push(section);
       injected.push(skill.name);
-      size += Buffer.byteLength(section);
+      size += sectionBytes;
     } catch { /* Missing or escaped skills are never injected. */ }
   }
   return {
@@ -1068,17 +1087,25 @@ function fallbackSessionTaskPath(event, profile, agent) {
 function saveSessionTask(path, task) {
   ensureParent(path);
   ensureRegular(path);
+  const sessionDir = dirname(path);
+  const now = Date.now();
+  const expiryCutoff = now - 86_400_000;
+  let checked = 0;
   // Only our own hashed, regular cache files are eligible for expiry cleanup.
-  for (const name of readdirSync(dirname(path)).filter(name => /^[a-f0-9]{64}\.json$/.test(name)).slice(0, 512)) {
-    const candidate = join(dirname(path), name);
-    const info = lstatSync(candidate);
-    if (info.isFile() && info.mtimeMs < Date.now() - 86_400_000) unlinkSync(candidate);
+  for (const entry of readdirSync(sessionDir, { withFileTypes: true })) {
+    if (!entry.isFile() || !/^[a-f0-9]{64}\.json$/.test(entry.name)) continue;
+    if (checked++ >= 512) break;
+    const candidate = join(sessionDir, entry.name);
+    try {
+      const info = lstatSync(candidate);
+      if (info.isFile() && info.mtimeMs < expiryCutoff) unlinkSync(candidate);
+    } catch { /* Ignore files removed concurrently. */ }
   }
   if (task.length > 100_000) {
     if (existsSync(path)) unlinkSync(path);
     return;
   }
-  atomicWrite(path, JSON.stringify({ task, time: Date.now() }));
+  atomicWrite(path, JSON.stringify({ task, time: now }));
 }
 
 function codexDecision(context, decision, reason) {
