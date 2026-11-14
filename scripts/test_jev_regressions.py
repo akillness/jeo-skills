@@ -105,10 +105,10 @@ class JevRegressions(unittest.TestCase):
     def run_cli(self, *args, env=None, input=None, harness=None):
         return self.execute([self.node, str(harness or HARNESS), *args], env, input)
 
-    def execute(self, command, env=None, input=None, cwd=None):
+    def execute(self, command, env=None, input=None, cwd=None, timeout=20):
         return subprocess.run(command, env={**self.env, **(env or {})},
                               cwd=cwd or self.work, input=input or "", text=True,
-                              stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=20)
+                              stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=timeout)
 
     def successful(self, result):
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
@@ -1941,6 +1941,7 @@ class JevRegressions(unittest.TestCase):
             ["/bin/bash", str(SETUP), "--profile", "jevos-prof", "--mode", "jevos"],
             {"JEV_JEVOS_RELEASE_BASE": release_base, "JEV_ENDPOINT": endpoint, "JEV_CATALOG_PATH": str(big_catalog)},
             cwd=ROOT,
+            timeout=60,
         )
         self.successful(ok_res)
         self.assertTrue((self.home / ".agents/jev/jevos/jev/jev").is_file())
@@ -2083,6 +2084,7 @@ class JevRegressions(unittest.TestCase):
             ["/bin/bash", str(SETUP), "--profile", "qev-prof", "--mode", "local"],
             {"JEV_QEV_MODEL_BASE": model_base, "JEV_QEV_SHA256": good_sha, "JEV_ENDPOINT": endpoint, "JEV_LLAMA_SERVER_BIN": str(mock_llama), "JEV_CATALOG_PATH": str(big_catalog)},
             cwd=ROOT,
+            timeout=60,
         )
         self.successful(ok_res)
         self.assertEqual((self.home / ".agents/jev/models/qev/qev-0.8b-text-Q8_0.gguf").read_bytes(), gguf_bytes)

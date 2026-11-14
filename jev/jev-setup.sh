@@ -994,14 +994,14 @@ PY
       else
         mkdir -p "$JEVOS_ROOT"
         info "Starting jevos server on http://$local_host:$local_port ..."
-        nohup "$JEVOS_BIN" serve --host "$local_host" --port "$local_port" --model-dir "$MODEL_DIR" > "$JEVOS_ROOT/jevos.log" 2>&1 &
+        nohup "$JEVOS_BIN" serve --host "$local_host" --port "$local_port" --model-dir "$MODEL_DIR" </dev/null > "$JEVOS_ROOT/jevos.log" 2>&1 &
         jevos_ready=false
-        for _wait_sec in $(seq 1 25); do
+        for _wait_sec in $(seq 1 60); do
           if curl -fsS --max-time 1 "$health_url" >/dev/null 2>&1; then
             jevos_ready=true
             break
           fi
-          sleep 1
+          sleep 0.25
         done
         if [ "$jevos_ready" = true ]; then
           info "jevos server ready on $LOCAL_ENDPOINT_VAL"
@@ -1134,14 +1134,14 @@ PY
       else
         mkdir -p "$MODEL_DIR"
         info "Starting $LOCAL_MODEL via llama-server on http://$local_host:$local_port ..."
-        nohup "$LLAMA_BIN" -m "$MODEL_FILE" --alias "$LOCAL_MODEL" --host "$local_host" --port "$local_port" -c 16384 -np 1 --no-kv-unified -fa on -b 2048 -ub 1024 -ctk q8_0 -ctv q8_0 -ngl 99 --no-webui > "$MODEL_DIR/llama-server.log" 2>&1 &
+        nohup "$LLAMA_BIN" -m "$MODEL_FILE" --alias "$LOCAL_MODEL" --host "$local_host" --port "$local_port" -c 16384 -np 1 --no-kv-unified -fa on -b 2048 -ub 1024 -ctk q8_0 -ctv q8_0 -ngl 99 --no-webui </dev/null > "$MODEL_DIR/llama-server.log" 2>&1 &
         qev_ready=false
-        for _wait_sec in $(seq 1 30); do
+        for _wait_sec in $(seq 1 80); do
           if curl -fsS --max-time 1 "$health_url" >/dev/null 2>&1; then
             qev_ready=true
             break
           fi
-          sleep 1
+          sleep 0.25
         done
         if [ "$qev_ready" = true ]; then
           info "Local $LOCAL_MODEL ready on $LOCAL_ENDPOINT_VAL"
