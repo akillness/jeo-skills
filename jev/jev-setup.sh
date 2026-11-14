@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 # Interactive (TUI) optional setup for the Jev control plane, run from install.sh
-# or standalone. Non-interactive override: JEO_SKILLS_JEV=skip|api|local|ollama|lmstudio|systemone
+# or standalone. Non-interactive override: JEO_SKILLS_JEV=skip|api|local|jevos|ollama|lmstudio|systemone
 #   api      also reads JEV_API_KEY from the environment
-#   local    also downloads autotrust/JEV-9B unless JEV_SKIP_MODEL_DOWNLOAD=true
+#   local    defaults to qev-0.8b-text-Q8_0 (775 MB, ~1.0 GB RAM/VRAM, 16GB RAM / 6GB VRAM baseline) via llama-server on 127.0.0.1:8017 unless JEV_SKIP_MODEL_DOWNLOAD=true; pass --model h2o-lightning-4b-Q4_K_M, --model jevos-v5, or --model jev-9b-local
+#   jevos    alias for local with jevos-v5 (CPU-only OpenVINO INT8)
 #   ollama   pulls the quantized GGUF (Q4_K_M, ~5.6 GB) via the ollama CLI
 #   lmstudio points the harness at LM Studio's OpenAI server (macOS)
 #   systemone configures an operator-provided System One endpoint (no downloads or server start)
@@ -100,7 +101,7 @@ while [ "$#" -gt 0 ]; do
       [ "$#" -ge 2 ] || fail '--agent requires a runtime target'
       AGENT_TARGET="$2"; shift 2 ;;
     --mode)
-      [ "$#" -ge 2 ] || fail '--mode requires api, local, ollama, lmstudio, or systemone'
+      [ "$#" -ge 2 ] || fail '--mode requires api, local, jevos, ollama, lmstudio, or systemone'
       MODE="$2"; MODE_CLI_SET=true; shift 2 ;;
     --config-only)
       CONFIG_ONLY=true; shift ;;
@@ -135,7 +136,7 @@ while [ "$#" -gt 0 ]; do
     --disable) ACTION=disable; shift ;;
     --status) ACTION=status; shift ;;
     --help|-h)
-      printf 'Usage: jev-setup.sh [--profile <id>] [--agent <runtime>] [--mode api|local|ollama|lmstudio|systemone]\n'
+      printf 'Usage: jev-setup.sh [--profile <id>] [--agent <runtime>] [--mode api|local|jevos|ollama|lmstudio|systemone]\n'
       printf '       [--config-only] [--endpoint <url>] [--model <id>] [--model-dir <path>] [--key-env <ENVNAME>]\n'
       printf '       [--route-backend <kind>] [--prune-backend <kind>] [--review-backend <kind>]\n'
       printf '       [--fallback <op>=<kind[,kind]>] [--validated-model <id>]\n'
@@ -184,12 +185,16 @@ validate_local_endpoint() {
     *) host="$authority"; port="" ;;
   esac
   case "$host" in 127.0.0.1|localhost|::1) ;; *) fail 'Local endpoint host must be loopback' ;; esac
-  [ -n "$port" ] || port=8763
+  [ -n "$port" ] || port="${DEFAULT_LOCAL_PORT:-8017}"
   printf '%s\n%s\n' "$host" "$port"
 }
 if [ "$CONFIG_ONLY" = true ]; then
   [ -n "$PROFILE" ] || fail '--config-only requires --profile <id>'
   [ -n "$MODE" ] || fail '--config-only requires --mode <backend>'
+  if [ "$MODE" = jevos ]; then
+    MODE=local
+    if [ "$MODEL_OVERRIDE_SET" = false ]; then MODEL_OVERRIDE='jevos-v5'; MODEL_OVERRIDE_SET=true; fi
+  fi
   case "$MODE" in api|local|ollama|lmstudio|systemone) ;; *) fail "Unknown config-only backend '$MODE'" ;; esac
   [ -z "$AGENT_TARGET" ] || { validate_flag_value "$AGENT_TARGET" 'Agent id'; case "$AGENT_TARGET" in *[!a-z0-9-]*|-*|*-|*--*) fail 'Agent id must contain lowercase letters, digits, and single hyphens only' ;; esac; }
   [ "$ENDPOINT_OVERRIDE_SET" = false ] || validate_endpoint_url "$ENDPOINT_OVERRIDE"
@@ -205,8 +210,14 @@ if [ "$CONFIG_ONLY" = true ]; then
     CONFIG_SECRET_VALUE=""
   fi
   [ "$MODEL_DIR_OVERRIDE_SET" = false ] || [ "$MODE" = local ] || fail '--model-dir is only valid with local backend'
-  if [ "$MODE" = local ] && [ "$ENDPOINT_OVERRIDE_SET" = true ]; then validate_local_endpoint "$ENDPOINT_OVERRIDE" >/dev/null; fi
-  if [ "$MODE" = local ] && [ "$MODEL_OVERRIDE_SET" = true ] && [ "$MODEL_OVERRIDE" != 'jev-9b-local' ]; then fail 'Local model id must be jev-9b-local'; fi
+  if [ "$MODE" = local ] && [ "$MODEL_OVERRIDE_SET" = true ]; then
+    case "$MODEL_OVERRIDE" in jev-9b-local|jevos|jevos-*|qev-0.8b*|h2o-lightning-4b*) ;; *) fail 'Local model id must be qev-0.8b-text-Q8_0 (or qev-0.8b*), h2o-lightning-4b-Q4_K_M, jevos-v5, or jev-9b-local' ;; esac
+  fi
+  if [ "$MODE" = local ] && [ "$ENDPOINT_OVERRIDE_SET" = true ]; then
+    DEFAULT_LOCAL_PORT=8017
+    if [ "$MODEL_OVERRIDE" = 'jev-9b-local' ] || [ "${JEV_LOCAL_ENGINE:-}" = legacy ]; then DEFAULT_LOCAL_PORT=8763; fi
+    validate_local_endpoint "$ENDPOINT_OVERRIDE" >/dev/null
+  fi
  fi
 if [ -n "$PROFILE" ]; then
   case "$PROFILE" in *[!a-z0-9-]*|-*|*-|*--*) fail 'Profile id must contain lowercase letters, digits, and single hyphens only' ;; esac
@@ -299,8 +310,8 @@ if [ -z "$MODE" ]; then
   case "$yn" in y|Y|yes|YES) ;; *) info 'Skipped. Re-run jev-setup.sh any time to enable it.'; exit 0 ;; esac
   printf '\nBackend mode:\n'
   printf '  %s1)%s API      — hosted TypeSafe System One (needs a JEV API key, paid)\n' "$bold" "$reset"
-  printf '  %s2)%s Local    — full-precision autotrust/JEV-9B via transformers (~18 GB\n' "$bold" "$reset"
-  printf '              download, needs ~18 GB RAM, runs offline)\n'
+  printf '  %s2)%s Local    — qev-0.8b-text-Q8_0 via llama-server (~775 MB download, ~1.0 GB\n' "$bold" "$reset"
+  printf '              RAM/VRAM, tuned for 16GB RAM / 6GB VRAM, hosts on 127.0.0.1:8017)\n'
   printf '  %s3)%s Ollama   — quantized JEV-9B GGUF Q4_K_M (~5.6 GB download, ~6 GB RAM,\n' "$bold" "$reset"
   printf '              runs offline; recommended on 16 GB machines)\n'
   if [ "$(uname -s)" = Darwin ]; then
@@ -318,7 +329,11 @@ if [ -z "$MODE" ]; then
     case "$pick" in 1) MODE=api ;; 2) MODE=local ;; 3) MODE=ollama ;; 4) MODE=systemone ;; *) fail 'Pick a listed number' ;; esac
   fi
 fi
-case "$MODE" in skip) info 'JEO_SKILLS_JEV=skip — not installing Jev.'; exit 0 ;; api|local|ollama|lmstudio|systemone) ;; *) fail "JEO_SKILLS_JEV must be skip, api, local, ollama, lmstudio, or systemone (got '$MODE')" ;; esac
+if [ "$MODE" = jevos ]; then
+  MODE=local
+  if [ "$MODEL_OVERRIDE_SET" = false ] && [ -z "${JEV_LOCAL_MODEL:-}" ]; then JEV_LOCAL_MODEL='jevos-v5'; fi
+fi
+case "$MODE" in skip) info 'JEO_SKILLS_JEV=skip — not installing Jev.'; exit 0 ;; api|local|ollama|lmstudio|systemone) ;; *) fail "JEO_SKILLS_JEV must be skip, api, local, jevos, ollama, lmstudio, or systemone (got '$MODE')" ;; esac
 export JEV_MODE="$MODE"
 if [ -n "$PROFILE" ] && [ "$CONFIG_ONLY" != true ]; then
   load_profile_defaults "$PROFILE_DIR/$PROFILE.$MODE.env"
@@ -336,7 +351,13 @@ if [ "$CONFIG_ONLY" != true ]; then
     esac
   fi
   if [ "$ENDPOINT_OVERRIDE_SET" = true ]; then
-    if [ "$MODE" = local ]; then validate_local_endpoint "$ENDPOINT_OVERRIDE" >/dev/null; else validate_endpoint_url "$ENDPOINT_OVERRIDE"; fi
+    if [ "$MODE" = local ]; then
+      DEFAULT_LOCAL_PORT=8017
+      if [ "$MODEL_OVERRIDE" = 'jev-9b-local' ] || [ "${JEV_LOCAL_MODEL:-}" = 'jev-9b-local' ] || [ "${JEV_LOCAL_ENGINE:-}" = legacy ]; then DEFAULT_LOCAL_PORT=8763; fi
+      validate_local_endpoint "$ENDPOINT_OVERRIDE" >/dev/null
+    else
+      validate_endpoint_url "$ENDPOINT_OVERRIDE"
+    fi
     case "$MODE" in
       api) JEV_API_ENDPOINT="$ENDPOINT_OVERRIDE"; JEV_ENDPOINT="$ENDPOINT_OVERRIDE" ;;
       local) JEV_LOCAL_ENDPOINT="$ENDPOINT_OVERRIDE"; JEV_ENDPOINT="$ENDPOINT_OVERRIDE" ;;
@@ -348,7 +369,9 @@ if [ "$CONFIG_ONLY" != true ]; then
   if [ "$MODEL_OVERRIDE_SET" = true ]; then
     validate_flag_value "$MODEL_OVERRIDE" 'Model id'
     case "$MODEL_OVERRIDE" in *[[:space:]]*) fail 'Model id must not contain whitespace' ;; esac
-    if [ "$MODE" = local ] && [ "$MODEL_OVERRIDE" != 'jev-9b-local' ]; then fail 'Local model id must be jev-9b-local'; fi
+    if [ "$MODE" = local ]; then
+      case "$MODEL_OVERRIDE" in jev-9b-local|jevos|jevos-*|qev-0.8b*|h2o-lightning-4b*) ;; *) fail 'Local model id must be qev-0.8b-text-Q8_0 (or qev-0.8b*), h2o-lightning-4b-Q4_K_M, jevos-v5, or jev-9b-local' ;; esac
+    fi
     case "$MODE" in
       api) JEV_API_MODEL="$MODEL_OVERRIDE" ;;
       local) JEV_LOCAL_MODEL="$MODEL_OVERRIDE" ;;
@@ -358,7 +381,29 @@ if [ "$CONFIG_ONLY" != true ]; then
   fi
 fi
 MODEL_REPO="autotrust/JEV-9B"
-if [ "$CONFIG_ONLY" = true ]; then MODEL_DIR="${MODEL_DIR_OVERRIDE:-$JEV_HOME/models/JEV-9B}"; else MODEL_DIR="${JEV_LOCAL_MODEL_DIR:-$JEV_HOME/models/JEV-9B}"; fi
+JEVOS_RELEASE_BASE="${JEV_JEVOS_RELEASE_BASE:-https://github.com/feder-cr/jev/releases/download/jevos-v5}"
+JEVOS_ROOT="$JEV_HOME/jevos"
+JEVOS_APP_DIR="$JEVOS_ROOT/jev"
+JEVOS_BIN="$JEVOS_APP_DIR/jev"
+LLAMA_ROOT="$JEV_HOME/llama.cpp"
+LLAMA_RELEASE_BASE="${JEV_LLAMA_RELEASE_BASE:-https://github.com/ggml-org/llama.cpp/releases/download/b12359}"
+QEV_MODELS_ROOT="$JEV_HOME/models/qev"
+LOCAL_ENGINE_KIND="qev"
+if [ "$MODE" = local ]; then
+  _eff_local_model="${MODEL_OVERRIDE:-${JEV_LOCAL_MODEL:-}}"
+  if [ "$_eff_local_model" = 'jev-9b-local' ] || [ "${JEV_LOCAL_ENGINE:-}" = legacy ]; then
+    LOCAL_ENGINE_KIND="legacy"
+  elif [ "${JEV_LOCAL_ENGINE:-}" = jevos ] || [[ "$_eff_local_model" == jevos* ]]; then
+    LOCAL_ENGINE_KIND="jevos"
+  fi
+fi
+if [ "$LOCAL_ENGINE_KIND" = legacy ]; then
+  if [ "$CONFIG_ONLY" = true ]; then MODEL_DIR="${MODEL_DIR_OVERRIDE:-$JEV_HOME/models/JEV-9B}"; else MODEL_DIR="${JEV_LOCAL_MODEL_DIR:-$JEV_HOME/models/JEV-9B}"; fi
+elif [ "$LOCAL_ENGINE_KIND" = jevos ]; then
+  if [ "$CONFIG_ONLY" = true ]; then MODEL_DIR="${MODEL_DIR_OVERRIDE:-$JEVOS_APP_DIR/model}"; else MODEL_DIR="${JEV_LOCAL_MODEL_DIR:-$JEVOS_APP_DIR/model}"; fi
+else
+  if [ "$CONFIG_ONLY" = true ]; then MODEL_DIR="${MODEL_DIR_OVERRIDE:-$QEV_MODELS_ROOT}"; else MODEL_DIR="${JEV_LOCAL_MODEL_DIR:-$QEV_MODELS_ROOT}"; fi
+fi
 PROFILE_MODE_CONFIG="${PROFILE_DIR:+$PROFILE_DIR/$PROFILE.$MODE.env}"
 if [ "$CONFIG_ONLY" != true ] && [ "$MODE" = api ]; then
   KEY="${JEV_API_KEY:-}"
@@ -422,7 +467,7 @@ for f in "${FILES[@]}" jev-plugin.mjs; do
   [ ! -e "$JEV_HOME/$f" ] || [ -f "$JEV_HOME/$f" ] || fail "Refusing non-file destination: $JEV_HOME/$f"
 done
 if [ "$MODE" = local ]; then
-  for destination in "$JEV_HOME/venv" "$JEV_HOME/venv/bin" "$JEV_HOME/models" "$MODEL_DIR"; do
+  for destination in "$JEV_HOME/venv" "$JEV_HOME/venv/bin" "$JEV_HOME/models" "$JEV_HOME/models/JEV-9B" "$QEV_MODELS_ROOT" "$LLAMA_ROOT" "$JEVOS_ROOT" "$JEVOS_APP_DIR" "$JEVOS_APP_DIR/model" "$MODEL_DIR"; do
     [ ! -L "$destination" ] || fail "Refusing symlink destination: $destination"
   done
   destination="$MODEL_DIR"
@@ -723,14 +768,34 @@ if [ "$CONFIG_ONLY" = true ]; then
       ;;
     local)
       [ "$MODEL_DIR_OVERRIDE_SET" = false ] || :
-      endpoint="${ENDPOINT_OVERRIDE:-$(profile_value JEV_LOCAL_ENDPOINT)}"; [ -n "$endpoint" ] || endpoint='http://127.0.0.1:8763/v1/systemone'
-      local_info="$(validate_local_endpoint "$endpoint")"
-      local_host="${local_info%%$'\n'*}"; local_port="${local_info#*$'\n'}"
-      model="${MODEL_OVERRIDE:-$(profile_value JEV_LOCAL_MODEL)}"; [ -n "$model" ] || model='jev-9b-local'
-      [ "$model" = 'jev-9b-local' ] || fail 'Local model id must be jev-9b-local'
-      model_dir="${MODEL_DIR_OVERRIDE:-$(profile_value JEV_LOCAL_MODEL_DIR)}"; [ -n "$model_dir" ] || model_dir="$JEV_HOME/models/JEV-9B"
-      validate_flag_value "$model_dir" 'Model directory'
-      printf 'JEV_LOCAL_ENDPOINT=%s\nJEV_LOCAL_HOST=%s\nJEV_LOCAL_PORT=%s\nJEV_LOCAL_MODEL=%s\nJEV_LOCAL_MODEL_DIR=%s\n' "$endpoint" "$local_host" "$local_port" "$model" "$model_dir" | write_config_only_selected
+      model="${MODEL_OVERRIDE:-$(profile_value JEV_LOCAL_MODEL)}"; [ -n "$model" ] || model='qev-0.8b-text-Q8_0'
+      case "$model" in jev-9b-local|jevos|jevos-*|qev-0.8b*|h2o-lightning-4b*) ;; *) fail 'Local model id must be qev-0.8b-text-Q8_0 (or qev-0.8b*), h2o-lightning-4b-Q4_K_M, jevos-v5, or jev-9b-local' ;; esac
+      if [ "$model" = 'jev-9b-local' ]; then
+        DEFAULT_LOCAL_PORT=8763
+        endpoint="${ENDPOINT_OVERRIDE:-$(profile_value JEV_LOCAL_ENDPOINT)}"; [ -n "$endpoint" ] || endpoint='http://127.0.0.1:8763/v1/systemone'
+        local_info="$(validate_local_endpoint "$endpoint")"
+        local_host="${local_info%%$'\n'*}"; local_port="${local_info#*$'\n'}"
+        model_dir="${MODEL_DIR_OVERRIDE:-$(profile_value JEV_LOCAL_MODEL_DIR)}"; [ -n "$model_dir" ] || model_dir="$JEV_HOME/models/JEV-9B"
+        validate_flag_value "$model_dir" 'Model directory'
+        printf 'JEV_LOCAL_ENGINE=legacy\nJEV_LOCAL_ENDPOINT=%s\nJEV_LOCAL_HOST=%s\nJEV_LOCAL_PORT=%s\nJEV_LOCAL_MODEL=%s\nJEV_LOCAL_MODEL_DIR=%s\n' "$endpoint" "$local_host" "$local_port" "$model" "$model_dir" | write_config_only_selected
+      elif [[ "$model" == jevos* ]]; then
+        DEFAULT_LOCAL_PORT=8017
+        endpoint="${ENDPOINT_OVERRIDE:-$(profile_value JEV_LOCAL_ENDPOINT)}"; [ -n "$endpoint" ] || endpoint='http://127.0.0.1:8017/v1/systemone'
+        local_info="$(validate_local_endpoint "$endpoint")"
+        local_host="${local_info%%$'\n'*}"; local_port="${local_info#*$'\n'}"
+        model_dir="${MODEL_DIR_OVERRIDE:-$(profile_value JEV_LOCAL_MODEL_DIR)}"; [ -n "$model_dir" ] || model_dir="$JEVOS_APP_DIR/model"
+        validate_flag_value "$model_dir" 'Model directory'
+        printf 'JEV_LOCAL_ENGINE=jevos\nJEV_LOCAL_ENDPOINT=%s\nJEV_LOCAL_HOST=%s\nJEV_LOCAL_PORT=%s\nJEV_LOCAL_MODEL=%s\nJEV_LOCAL_MODEL_DIR=%s\nJEV_LOCAL_BIN=%s\n' "$endpoint" "$local_host" "$local_port" "$model" "$model_dir" "$JEVOS_BIN" | write_config_only_selected
+      else
+        DEFAULT_LOCAL_PORT=8017
+        endpoint="${ENDPOINT_OVERRIDE:-$(profile_value JEV_LOCAL_ENDPOINT)}"; [ -n "$endpoint" ] || endpoint='http://127.0.0.1:8017/v1/systemone'
+        local_info="$(validate_local_endpoint "$endpoint")"
+        local_host="${local_info%%$'\n'*}"; local_port="${local_info#*$'\n'}"
+        model_dir="${MODEL_DIR_OVERRIDE:-$(profile_value JEV_LOCAL_MODEL_DIR)}"; [ -n "$model_dir" ] || model_dir="$QEV_MODELS_ROOT"
+        validate_flag_value "$model_dir" 'Model directory'
+        model_file="$model_dir/$model.gguf"
+        printf 'JEV_LOCAL_ENGINE=qev\nJEV_LOCAL_ENDPOINT=%s\nJEV_LOCAL_HOST=%s\nJEV_LOCAL_PORT=%s\nJEV_LOCAL_MODEL=%s\nJEV_LOCAL_MODEL_DIR=%s\nJEV_LOCAL_MODEL_FILE=%s\n' "$endpoint" "$local_host" "$local_port" "$model" "$model_dir" "$model_file" | write_config_only_selected
+      fi
       ;;
     ollama)
       [ "$MODEL_DIR_OVERRIDE_SET" = false ] || fail '--model-dir is only valid with local backend'
@@ -823,37 +888,271 @@ elif [ "$MODE" = systemone ]; then
   fi
   info "System One mode configured${PROFILE:+ for profile '$PROFILE'} (operator endpoint; no downloads or server start)."
 else
-  PYBIN="$(command -v python3 || true)"; [ -n "$PYBIN" ] || fail 'python3 is required for local mode'
-  VENV="$JEV_HOME/venv"
-  if [ ! -x "$VENV/bin/python" ] || ! "$VENV/bin/python" -c 'import sys; sys.exit(sys.prefix == sys.base_prefix)' >/dev/null 2>&1 || ! "$VENV/bin/python" -m pip --version >/dev/null 2>&1; then
-    info 'Creating/repairing Python venv (one-time)...'
-    "$PYBIN" -m venv "$VENV" 2>/dev/null || "$PYBIN" -m venv --without-pip "$VENV"
-  fi
-  if ! "$VENV/bin/python" -c 'import torch, transformers, accelerate, huggingface_hub' >/dev/null 2>&1; then
-    info 'Installing missing local backend dependencies...'
-    "$VENV/bin/python" -m pip install --quiet --upgrade pip
-    "$VENV/bin/python" -m pip install --quiet torch transformers accelerate "huggingface_hub[cli]" || fail 'pip install failed'
-  fi
-  if [ "${JEV_SKIP_MODEL_DOWNLOAD:-false}" != true ]; then
-    info "Downloading/resuming $MODEL_REPO to $MODEL_DIR (~18 GB; cached files are reused)..."
-    "$VENV/bin/python" - "$MODEL_REPO" "$MODEL_DIR" <<'PY' || fail 'Model download failed'
+  if [ "$LOCAL_ENGINE_KIND" = legacy ]; then
+    PYBIN="$(command -v python3 || true)"; [ -n "$PYBIN" ] || fail 'python3 is required for legacy local mode (jev-9b-local)'
+    VENV="$JEV_HOME/venv"
+    if [ ! -x "$VENV/bin/python" ] || ! "$VENV/bin/python" -c 'import sys; sys.exit(sys.prefix == sys.base_prefix)' >/dev/null 2>&1 || ! "$VENV/bin/python" -m pip --version >/dev/null 2>&1; then
+      info 'Creating/repairing Python venv (one-time)...'
+      "$PYBIN" -m venv "$VENV" 2>/dev/null || "$PYBIN" -m venv --without-pip "$VENV"
+    fi
+    if ! "$VENV/bin/python" -c 'import torch, transformers, accelerate, huggingface_hub' >/dev/null 2>&1; then
+      info 'Installing missing local backend dependencies...'
+      "$VENV/bin/python" -m pip install --quiet --upgrade pip
+      "$VENV/bin/python" -m pip install --quiet torch transformers accelerate "huggingface_hub[cli]" || fail 'pip install failed'
+    fi
+    if [ "${JEV_SKIP_MODEL_DOWNLOAD:-false}" != true ]; then
+      info "Downloading/resuming $MODEL_REPO to $MODEL_DIR (~18 GB; cached files are reused)..."
+      "$VENV/bin/python" - "$MODEL_REPO" "$MODEL_DIR" <<'PY' || fail 'Model download failed'
 import sys
 from huggingface_hub import snapshot_download
 snapshot_download(repo_id=sys.argv[1], local_dir=sys.argv[2])
 PY
-  fi
-  if [ -n "$PROFILE" ]; then
-    printf 'JEV_LOCAL_MODEL_DIR=%s\nJEV_LOCAL_ENDPOINT=%s\nJEV_LOCAL_HOST=%s\nJEV_LOCAL_PORT=%s\n' "$MODEL_DIR" "${JEV_LOCAL_ENDPOINT:-${JEV_ENDPOINT:-http://127.0.0.1:8763/v1/systemone}}" "${JEV_LOCAL_HOST:-127.0.0.1}" "${JEV_LOCAL_PORT:-8763}" | write_selected_config
-    JEV_MODE=local "$VENV/bin/python" "$JEV_HOME/jev_local_server.py" --check --profile "$PROFILE" >/dev/null || fail 'Local server structural check failed'
-    info "Local mode configured for profile '$PROFILE'. Start the backend with:"
-    info "  JEV_PROFILE=$PROFILE $VENV/bin/python $JEV_HOME/jev_local_server.py --profile $PROFILE"
+    fi
+    if [ -n "$PROFILE" ]; then
+      printf 'JEV_LOCAL_ENGINE=legacy\nJEV_LOCAL_MODEL=jev-9b-local\nJEV_LOCAL_MODEL_DIR=%s\nJEV_LOCAL_ENDPOINT=%s\nJEV_LOCAL_HOST=%s\nJEV_LOCAL_PORT=%s\n' "$MODEL_DIR" "${JEV_LOCAL_ENDPOINT:-${JEV_ENDPOINT:-http://127.0.0.1:8763/v1/systemone}}" "${JEV_LOCAL_HOST:-127.0.0.1}" "${JEV_LOCAL_PORT:-8763}" | write_selected_config
+      JEV_MODE=local "$VENV/bin/python" "$JEV_HOME/jev_local_server.py" --check --profile "$PROFILE" >/dev/null || fail 'Local server structural check failed'
+      info "Local mode configured for profile '$PROFILE'. Start the backend with:"
+      info "  JEV_PROFILE=$PROFILE $VENV/bin/python $JEV_HOME/jev_local_server.py --profile $PROFILE"
+    else
+      printf 'JEV_MODE=local\nJEV_LOCAL_ENGINE=legacy\nJEV_LOCAL_MODEL=jev-9b-local\nJEV_LOCAL_MODEL_DIR=%s\nJEV_ENDPOINT=%s\n' "$MODEL_DIR" "${JEV_ENDPOINT:-http://127.0.0.1:8763/v1/systemone}" | write_env
+      "$VENV/bin/python" "$JEV_HOME/jev_local_server.py" --check >/dev/null || fail 'Local server structural check failed'
+      info 'Local mode configured. Start the backend with:'
+      info "  $VENV/bin/python $JEV_HOME/jev_local_server.py"
+    fi
+    info 'Note: JEV-9B is a third-party distillation of Jev 1.13, not the original hosted model.'
+  elif [ "$LOCAL_ENGINE_KIND" = jevos ]; then
+    LOCAL_MODEL="${JEV_LOCAL_MODEL:-jevos-v5}"
+    DEFAULT_LOCAL_PORT=8017
+    LOCAL_ENDPOINT_VAL="${JEV_LOCAL_ENDPOINT:-${JEV_ENDPOINT:-http://127.0.0.1:8017/v1/systemone}}"
+    local_info="$(validate_local_endpoint "$LOCAL_ENDPOINT_VAL")"
+    local_host="${local_info%%$'\n'*}"; local_port="${local_info#*$'\n'}"
+    jevos_asset=""
+    case "$(uname -s):$(uname -m)" in
+      Darwin:arm64) jevos_asset="jev-macos-arm64.tar.gz" ;;
+      Linux:x86_64|Linux:amd64) jevos_asset="jev-linux-x64.tar.gz" ;;
+    esac
+    jevos_model_present=false
+    if [ -f "$MODEL_DIR/model.json" ] && [ -f "$MODEL_DIR/openvino_model.bin" ] && [ -f "$MODEL_DIR/openvino_model.xml" ] && [ -f "$MODEL_DIR/tokenizer.gguf" ]; then
+      jevos_model_present=true
+    fi
+    if [ "${JEV_SKIP_MODEL_DOWNLOAD:-false}" != true ] && { [ ! -x "$JEVOS_BIN" ] || [ "$jevos_model_present" != true ]; }; then
+      [ -n "$jevos_asset" ] || fail "Prebuilt jevos-v5 binaries support macOS arm64 and Linux x86_64; use default qev-0.8b-text-Q8_0 or --model jev-9b-local"
+      command -v curl >/dev/null 2>&1 || fail 'curl is required to download jevos-v5'
+      command -v tar >/dev/null 2>&1 || fail 'tar is required to unpack jevos-v5'
+      command -v unzip >/dev/null 2>&1 || fail 'unzip is required to unpack jevos-v5-openvino-int8.zip'
+      verify_sha256() {
+        local sums_file="$1" target_file="$2" base expected actual
+        base="$(basename "$target_file")"
+        expected="$(awk -v name="$base" '{ gsub(/\r$/, "") } $2 == name || $2 == ("*" name) { print $1; exit }' "$sums_file")"
+        [ -n "$expected" ] || fail "Missing SHA-256 entry for $base in SHA256SUMS.txt"
+        if command -v shasum >/dev/null 2>&1; then
+          actual="$(shasum -a 256 "$target_file" | awk '{print $1}')"
+        elif command -v sha256sum >/dev/null 2>&1; then
+          actual="$(sha256sum "$target_file" | awk '{print $1}')"
+        else
+          actual="$(python3 -c 'import hashlib,sys; print(hashlib.sha256(open(sys.argv[1],"rb").read()).hexdigest())' "$target_file")"
+        fi
+        [ "$actual" = "$expected" ] || fail "SHA-256 verification failed for $base"
+      }
+      JEVOS_STAGE="$SETUP_STAGE/jevos"
+      mkdir -p "$JEVOS_STAGE/model-unpack"
+      info "Downloading jevos-v5 ($jevos_asset + OpenVINO INT8 model, ~650 MB)..."
+      curl -fsSL "$JEVOS_RELEASE_BASE/SHA256SUMS.txt" -o "$JEVOS_STAGE/SHA256SUMS.txt" || fail 'Failed to download jevos-v5 SHA256SUMS.txt'
+      if [ ! -x "$JEVOS_BIN" ]; then
+        curl -fsSL "$JEVOS_RELEASE_BASE/$jevos_asset" -o "$JEVOS_STAGE/$jevos_asset" || fail "Failed to download $jevos_asset"
+        verify_sha256 "$JEVOS_STAGE/SHA256SUMS.txt" "$JEVOS_STAGE/$jevos_asset"
+        mkdir -p "$JEVOS_ROOT"
+        tar -xzf "$JEVOS_STAGE/$jevos_asset" -C "$JEVOS_ROOT" || fail "Failed to extract $jevos_asset"
+      fi
+      if [ "$jevos_model_present" != true ]; then
+        curl -fsSL "$JEVOS_RELEASE_BASE/jevos-v5-openvino-int8.zip" -o "$JEVOS_STAGE/jevos-v5-openvino-int8.zip" || fail 'Failed to download jevos-v5-openvino-int8.zip'
+        verify_sha256 "$JEVOS_STAGE/SHA256SUMS.txt" "$JEVOS_STAGE/jevos-v5-openvino-int8.zip"
+        unzip -oq "$JEVOS_STAGE/jevos-v5-openvino-int8.zip" -d "$JEVOS_STAGE/model-unpack" || fail 'Failed to extract jevos-v5-openvino-int8.zip'
+        mkdir -p "$MODEL_DIR"
+        if [ -d "$JEVOS_STAGE/model-unpack/model" ]; then
+          cp -R "$JEVOS_STAGE/model-unpack/model/." "$MODEL_DIR/"
+        else
+          cp -R "$JEVOS_STAGE/model-unpack/." "$MODEL_DIR/"
+        fi
+      fi
+    elif [ -x "$JEVOS_BIN" ] && [ "$jevos_model_present" = true ]; then
+      info "jevos-v5 binary and OpenVINO INT8 model already present at $JEVOS_APP_DIR."
+    fi
+    if [ -n "$PROFILE" ]; then
+      printf 'JEV_LOCAL_ENGINE=jevos\nJEV_LOCAL_MODEL=%s\nJEV_LOCAL_MODEL_DIR=%s\nJEV_LOCAL_BIN=%s\nJEV_LOCAL_ENDPOINT=%s\nJEV_LOCAL_HOST=%s\nJEV_LOCAL_PORT=%s\n' "$LOCAL_MODEL" "$MODEL_DIR" "$JEVOS_BIN" "$LOCAL_ENDPOINT_VAL" "$local_host" "$local_port" | write_selected_config
+    else
+      printf 'JEV_MODE=local\nJEV_LOCAL_ENGINE=jevos\nJEV_LOCAL_MODEL=%s\nJEV_LOCAL_MODEL_DIR=%s\nJEV_LOCAL_BIN=%s\nJEV_ENDPOINT=%s\n' "$LOCAL_MODEL" "$MODEL_DIR" "$JEVOS_BIN" "$LOCAL_ENDPOINT_VAL" | write_env
+    fi
+    health_url="http://$local_host:$local_port/health"
+    _profile_disabled=false
+    if [ -n "$PROFILE" ] && [ -f "$PROFILE_CONFIG" ] && grep -q '^JEV_ENABLED=false$' "$PROFILE_CONFIG"; then
+      _profile_disabled=true
+    fi
+    if [ "$_profile_disabled" != true ] && [ "${JEV_SKIP_SERVER_START:-false}" != true ] && [ "${JEV_SKIP_MODEL_DOWNLOAD:-false}" != true ] && [ -x "$JEVOS_BIN" ] && [ -f "$MODEL_DIR/openvino_model.bin" ]; then
+      if curl -fsS --max-time 2 "$health_url" >/dev/null 2>&1; then
+        info "jevos server already listening on http://$local_host:$local_port"
+      else
+        mkdir -p "$JEVOS_ROOT"
+        info "Starting jevos server on http://$local_host:$local_port ..."
+        nohup "$JEVOS_BIN" serve --host "$local_host" --port "$local_port" --model-dir "$MODEL_DIR" > "$JEVOS_ROOT/jevos.log" 2>&1 &
+        jevos_ready=false
+        for _wait_sec in $(seq 1 25); do
+          if curl -fsS --max-time 1 "$health_url" >/dev/null 2>&1; then
+            jevos_ready=true
+            break
+          fi
+          sleep 1
+        done
+        if [ "$jevos_ready" = true ]; then
+          info "jevos server ready on $LOCAL_ENDPOINT_VAL"
+        else
+          info "jevos server still warming up (check $JEVOS_ROOT/jevos.log)"
+        fi
+      fi
+    fi
+    info "Local mode configured${PROFILE:+ for profile '$PROFILE'} with $LOCAL_MODEL ($LOCAL_ENDPOINT_VAL)."
+    info "Note: jevos-v5 is an open-source OpenVINO INT8 decision model (feder-cr/jev), not the original hosted TypeSafe Jev model."
   else
-    printf 'JEV_MODE=local\nJEV_LOCAL_MODEL_DIR=%s\nJEV_ENDPOINT=%s\n' "$MODEL_DIR" "${JEV_ENDPOINT:-http://127.0.0.1:8763/v1/systemone}" | write_env
-    "$VENV/bin/python" "$JEV_HOME/jev_local_server.py" --check >/dev/null || fail 'Local server structural check failed'
-    info 'Local mode configured. Start the backend with:'
-    info "  $VENV/bin/python $JEV_HOME/jev_local_server.py"
+    LOCAL_MODEL="${JEV_LOCAL_MODEL:-qev-0.8b-text-Q8_0}"
+    DEFAULT_LOCAL_PORT=8017
+    LOCAL_ENDPOINT_VAL="${JEV_LOCAL_ENDPOINT:-${JEV_ENDPOINT:-http://127.0.0.1:8017/v1/systemone}}"
+    local_info="$(validate_local_endpoint "$LOCAL_ENDPOINT_VAL")"
+    local_host="${local_info%%$'\n'*}"; local_port="${local_info#*$'\n'}"
+    case "$LOCAL_MODEL" in
+      h2o-lightning-4b*)
+        QEV_REPO_BASE="${JEV_QEV_MODEL_BASE:-https://huggingface.co/h2oai/h2o-lightning-4b-gguf/resolve/main}"
+        GGUF_NAME="${LOCAL_MODEL%.gguf}.gguf"
+        GGUF_SHA256="${JEV_QEV_SHA256:-}"
+        if [ "$GGUF_NAME" = 'h2o-lightning-4b-Q4_K_M.gguf' ] && [ -z "$GGUF_SHA256" ]; then
+          GGUF_SHA256="5ec969c6edbad5f1750141742f635cc7f01576bf9432151f730f0a6c30042768"
+        fi
+        ;;
+      *)
+        QEV_REPO_BASE="${JEV_QEV_MODEL_BASE:-https://huggingface.co/labqoat/qev-0.8b-GGUF/resolve/main}"
+        GGUF_NAME="${LOCAL_MODEL%.gguf}.gguf"
+        GGUF_SHA256="${JEV_QEV_SHA256:-}"
+        if [ "$GGUF_NAME" = 'qev-0.8b-text-Q8_0.gguf' ] && [ -z "$GGUF_SHA256" ]; then
+          GGUF_SHA256="07856dd5d6c7d1e19a9579ef324e5377649890a6438f7735ea5ac8935f2b2140"
+        fi
+        ;;
+    esac
+    MODEL_FILE="${JEV_LOCAL_MODEL_FILE:-$MODEL_DIR/$GGUF_NAME}"
+    sha256_file() {
+      local f="$1"
+      if command -v shasum >/dev/null 2>&1; then
+        shasum -a 256 "$f" | awk '{print $1}'
+      elif command -v sha256sum >/dev/null 2>&1; then
+        sha256sum "$f" | awk '{print $1}'
+      else
+        python3 -c 'import hashlib,sys; print(hashlib.sha256(open(sys.argv[1],"rb").read()).hexdigest())' "$f"
+      fi
+    }
+    LLAMA_BIN="${JEV_LLAMA_SERVER_BIN:-}"
+    if [ -z "$LLAMA_BIN" ]; then
+      for cand in \
+        "$(command -v llama-server 2>/dev/null || true)" \
+        "$HOME/.unsloth/llama.cpp/build/bin/llama-server" \
+        "$LLAMA_ROOT/llama-server" \
+        "$LLAMA_ROOT/build/bin/llama-server"; do
+        if [ -n "$cand" ] && [ -x "$cand" ]; then
+          LLAMA_BIN="$cand"
+          break
+        fi
+      done
+    fi
+    if [ "${JEV_SKIP_MODEL_DOWNLOAD:-false}" != true ]; then
+      command -v curl >/dev/null 2>&1 || fail 'curl is required to download local qev/llama-server assets'
+      if [ -z "$LLAMA_BIN" ] || [ ! -x "$LLAMA_BIN" ]; then
+        llama_asset=""; llama_sha=""
+        case "$(uname -s):$(uname -m)" in
+          Darwin:arm64)
+            llama_asset="llama-b12359-bin-macos-arm64.tar.gz"
+            llama_sha="82b00abc740160e1b9980e6cc79c117345fa34af058c80e6c0a69aa8ddccde75"
+            ;;
+          Darwin:x86_64)
+            llama_asset="llama-b12359-bin-macos-x64.tar.gz"
+            llama_sha="25320d529077ef5a3d16e7b5da26438f7221d88c8c0930a32b0c79457f5eede56"
+            ;;
+          Linux:x86_64|Linux:amd64)
+            if command -v nvidia-smi >/dev/null 2>&1; then
+              llama_asset="llama-b12359-bin-ubuntu-cuda-12.8-x64.tar.gz"
+              llama_sha="50c937bec5bbd9f74c99138034f7403283ee21f1943f2429d7b1e4c079eafc11"
+            else
+              llama_asset="llama-b12359-bin-ubuntu-x64.tar.gz"
+              llama_sha="0bc1f091e8916102b6d8f2cf944233a620e90a0f856c72d0ce41150c65c2e72e"
+            fi
+            ;;
+          Linux:aarch64|Linux:arm64)
+            llama_asset="llama-b12359-bin-ubuntu-arm64.tar.gz"
+            llama_sha="dc7aa17a67884619b7223870aca9fd6addbc01717713b04a714add1c31137359"
+            ;;
+        esac
+        [ -n "$llama_asset" ] || fail "No prebuilt llama-server binary for $(uname -s)/$(uname -m); install llama-server (>= b11622) or pass --model jevos-v5"
+        command -v tar >/dev/null 2>&1 || fail 'tar is required to unpack llama-server'
+        LLAMA_STAGE="$SETUP_STAGE/llama"
+        mkdir -p "$LLAMA_STAGE/unpack"
+        info "Downloading llama-server ($llama_asset)..."
+        curl -fsSL "$LLAMA_RELEASE_BASE/$llama_asset" -o "$LLAMA_STAGE/$llama_asset" || fail "Failed to download $llama_asset"
+        actual_llama_sha="$(sha256_file "$LLAMA_STAGE/$llama_asset")"
+        [ "$actual_llama_sha" = "$llama_sha" ] || fail "SHA-256 verification failed for $llama_asset"
+        tar -xzf "$LLAMA_STAGE/$llama_asset" -C "$LLAMA_STAGE/unpack" || fail "Failed to extract $llama_asset"
+        mkdir -p "$LLAMA_ROOT"
+        found_srv="$(find "$LLAMA_STAGE/unpack" -name 'llama-server' -type f -print -quit)"
+        [ -n "$found_srv" ] || fail "llama-server binary not found inside $llama_asset"
+        cp -R "$(dirname "$found_srv")/." "$LLAMA_ROOT/"
+        chmod 755 "$LLAMA_ROOT/llama-server"
+        LLAMA_BIN="$LLAMA_ROOT/llama-server"
+      fi
+      if [ ! -f "$MODEL_FILE" ] || [ ! -s "$MODEL_FILE" ]; then
+        mkdir -p "$MODEL_DIR"
+        MODEL_STAGE="$SETUP_STAGE/$GGUF_NAME"
+        info "Downloading $LOCAL_MODEL ($GGUF_NAME, tuned for 16GB RAM / 6GB VRAM)..."
+        curl -fsSL "$QEV_REPO_BASE/$GGUF_NAME" -o "$MODEL_STAGE" || fail "Failed to download $GGUF_NAME"
+        if [ -n "$GGUF_SHA256" ]; then
+          actual_gguf_sha="$(sha256_file "$MODEL_STAGE")"
+          [ "$actual_gguf_sha" = "$GGUF_SHA256" ] || fail "SHA-256 verification failed for $GGUF_NAME"
+        fi
+        mv -f "$MODEL_STAGE" "$MODEL_FILE"
+      else
+        info "$LOCAL_MODEL already present at $MODEL_FILE."
+      fi
+    fi
+    [ -n "$LLAMA_BIN" ] || LLAMA_BIN="$LLAMA_ROOT/llama-server"
+    if [ -n "$PROFILE" ]; then
+      printf 'JEV_LOCAL_ENGINE=qev\nJEV_LOCAL_MODEL=%s\nJEV_LOCAL_MODEL_DIR=%s\nJEV_LOCAL_MODEL_FILE=%s\nJEV_LOCAL_BIN=%s\nJEV_LOCAL_ENDPOINT=%s\nJEV_LOCAL_HOST=%s\nJEV_LOCAL_PORT=%s\n' "$LOCAL_MODEL" "$MODEL_DIR" "$MODEL_FILE" "$LLAMA_BIN" "$LOCAL_ENDPOINT_VAL" "$local_host" "$local_port" | write_selected_config
+    else
+      printf 'JEV_MODE=local\nJEV_LOCAL_ENGINE=qev\nJEV_LOCAL_MODEL=%s\nJEV_LOCAL_MODEL_DIR=%s\nJEV_LOCAL_MODEL_FILE=%s\nJEV_LOCAL_BIN=%s\nJEV_ENDPOINT=%s\n' "$LOCAL_MODEL" "$MODEL_DIR" "$MODEL_FILE" "$LLAMA_BIN" "$LOCAL_ENDPOINT_VAL" | write_env
+    fi
+    health_url="http://$local_host:$local_port/health"
+    _profile_disabled=false
+    if [ -n "$PROFILE" ] && [ -f "$PROFILE_CONFIG" ] && grep -q '^JEV_ENABLED=false$' "$PROFILE_CONFIG"; then
+      _profile_disabled=true
+    fi
+    if [ "$_profile_disabled" != true ] && [ "${JEV_SKIP_SERVER_START:-false}" != true ] && [ "${JEV_SKIP_MODEL_DOWNLOAD:-false}" != true ] && [ -x "$LLAMA_BIN" ] && [ -f "$MODEL_FILE" ]; then
+      if curl -fsS --max-time 2 "$health_url" >/dev/null 2>&1; then
+        info "Local qev llama-server already listening on http://$local_host:$local_port"
+      else
+        mkdir -p "$MODEL_DIR"
+        info "Starting $LOCAL_MODEL via llama-server on http://$local_host:$local_port ..."
+        nohup "$LLAMA_BIN" -m "$MODEL_FILE" --alias "$LOCAL_MODEL" --host "$local_host" --port "$local_port" -c 16384 -np 1 --no-kv-unified -fa on -b 2048 -ub 1024 -ctk q8_0 -ctv q8_0 -ngl 99 --no-webui > "$MODEL_DIR/llama-server.log" 2>&1 &
+        qev_ready=false
+        for _wait_sec in $(seq 1 30); do
+          if curl -fsS --max-time 1 "$health_url" >/dev/null 2>&1; then
+            qev_ready=true
+            break
+          fi
+          sleep 1
+        done
+        if [ "$qev_ready" = true ]; then
+          info "Local $LOCAL_MODEL ready on $LOCAL_ENDPOINT_VAL"
+        else
+          info "Local $LOCAL_MODEL still warming up (check $MODEL_DIR/llama-server.log)"
+        fi
+      fi
+    fi
+    info "Local mode configured${PROFILE:+ for profile '$PROFILE'} with $LOCAL_MODEL ($LOCAL_ENDPOINT_VAL)."
+    info "Note: $LOCAL_MODEL is an open-weight System One decision model (~1.0 GB RAM/VRAM), not TypeSafe's calibrated cloud Jev."
   fi
-  info 'Note: JEV-9B is a third-party distillation of Jev 1.13, not the original hosted model.'
 fi
 
 

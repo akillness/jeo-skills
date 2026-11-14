@@ -6,21 +6,27 @@ Only external installer/service CLIs are faked; Jev setup and invocation are rea
 """
 
 from contextlib import contextmanager
+import hashlib
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+import io
 import json
 import os
 from pathlib import Path
+import platform
 import re
 import shutil
+import signal
 import socket
 import subprocess
 import sys
+import tarfile
 import tempfile
 import threading
+import time
 import unittest
 import urllib.error
 import urllib.request
-
+import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
 HARNESS = ROOT / "jev/jev-harness.mjs"
@@ -450,7 +456,8 @@ class JevRegressions(unittest.TestCase):
         model.mkdir(parents=True)
         (model / "partial.fixture").write_bytes(b'partial prior download')
         with self.backend() as (base, requests):
-            env = {"JEO_SKILLS_JEV": "local", "JEV_SKIP_MODEL_DOWNLOAD": "false",
+            env = {"JEO_SKILLS_JEV": "local", "JEV_LOCAL_MODEL": "jev-9b-local",
+                   "JEV_SKIP_MODEL_DOWNLOAD": "false",
                    "JEV_ENDPOINT": base + "/v1/systemone", "PYTHONPATH": str(dependencies)}
             self.successful(self.execute(["/bin/bash", str(SETUP)], env))
             self.assertEqual((model / "weights.fixture").read_bytes(), b'completed download')
@@ -1765,6 +1772,343 @@ class JevRegressions(unittest.TestCase):
         with self.backend() as (base, requests):
             self.assertEqual(self.fixture_systemone(base, {"state": {}, "questions": {}}), 422)
 
+    def test_systemone_models_discovery_accepts_typesafe_models_array(self):
+        payload = json.dumps({"models": [{"name": "jevos-v5"}, {"name": "jev-latest"}]}).encode()
+        with self.backend(discovery_raw=payload) as (base, _requests):
+            self.write_profile(
+                base={"JEV_MODE": "systemone"},
+                kinds={"systemone": {
+                    "JEV_SYSTEMONE_ENDPOINT": base + "/v1/systemone",
+                    "JEV_SYSTEMONE_DRIVER": "typesafe",
+                    "JEV_SYSTEMONE_MODEL": "jevos-v5",
+                }},
+            )
+            status = self.run_cli("status", "--operation", "review", env={"JEV_PROFILE": "fixture"})
+            self.assertEqual(status.returncode, 0, status.stdout + status.stderr)
+            report = json.loads(status.stdout)
+            self.assertTrue(report["backends"]["systemone"]["ready"])
+            self.assertEqual(report["backends"]["systemone"]["servedModel"], "jevos-v5")
+
+    def test_local_default_jevos_download_verify_and_host(self):
+        system = platform.system()
+        machine = platform.machine().lower()
+        if system == "Darwin" and machine == "arm64":
+            asset_name = "jev-macos-arm64.tar.gz"
+        elif system == "Linux" and machine in ("x86_64", "amd64"):
+            asset_name = "jev-linux-x64.tar.gz"
+        else:
+            self.skipTest(f"Unsupported prebuilt jevos platform {system}/{machine}")
+
+        pid_file = self.work / "mock-jevos.pid"
+        mock_server_script = (
+            f"#!{sys.executable}\n"
+            "import json, os, sys\n"
+            "from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer\n"
+            "args = sys.argv[1:]\n"
+            "host = args[args.index('--host') + 1] if '--host' in args else '127.0.0.1'\n"
+            "port = int(args[args.index('--port') + 1]) if '--port' in args else 8017\n"
+            f"open({str(pid_file)!r}, 'w').write(str(os.getpid()))\n"
+            "class H(BaseHTTPRequestHandler):\n"
+            "    def log_message(self, *a): pass\n"
+            "    def _json(self, code, data):\n"
+            "        raw = json.dumps(data).encode()\n"
+            "        self.send_response(code); self.send_header('Content-Type','application/json')\n"
+            "        self.send_header('Content-Length', str(len(raw))); self.end_headers(); self.wfile.write(raw)\n"
+            "    def do_GET(self):\n"
+            "        if self.path == '/health':\n"
+            "            self._json(200, {'status':'ready','model':'jevos-v5'})\n"
+            "        elif self.path == '/v1/models':\n"
+            "            self._json(200, {'models':[{'name':'jevos-v5'},{'name':'jev-latest'}]})\n"
+            "        else:\n"
+            "            self._json(404, {'detail':'Not Found'})\n"
+            "    def do_POST(self):\n"
+            "        n = int(self.headers.get('Content-Length','0'))\n"
+            "        body = json.loads(self.rfile.read(n) or b'{}')\n"
+            "        answers = {}\n"
+            "        for qid, q in (body.get('questions') or {}).items():\n"
+            "            if q.get('type') == 'choice':\n"
+            "                opts = list((q.get('criteria') or {}).keys())\n"
+            "                assert len(opts) <= 26, f'choiceCap exceeded: {len(opts)}'\n"
+            "                probs = {o: (0.9 if i == 0 else 0.1 / max(1, len(opts) - 1)) for i, o in enumerate(opts)}\n"
+            "                answers[qid] = {'type':'choice','choice':opts[0],'probabilities':probs,'confidence':0.88}\n"
+            "            else:\n"
+            "                p = 0.05 if 'prose' in qid else 0.92\n"
+            "                answers[qid] = {'type':'noul','noul':p}\n"
+            "        self._json(200, {'model':'jevos-v5','answers':answers,'usage':{'input_tokens':12,'output_tokens':0}})\n"
+            "ThreadingHTTPServer((host, port), H).serve_forever()\n"
+        ).encode("utf-8")
+
+        tar_buf = io.BytesIO()
+        with tarfile.open(fileobj=tar_buf, mode="w:gz") as tf:
+            info = tarfile.TarInfo("jev/jev")
+            info.size = len(mock_server_script)
+            info.mode = 0o755
+            tf.addfile(info, io.BytesIO(mock_server_script))
+        tar_bytes = tar_buf.getvalue()
+
+        zip_buf = io.BytesIO()
+        with zipfile.ZipFile(zip_buf, "w") as zf:
+            zf.writestr("model/model.json", '{"name":"jevos-v5"}\n')
+            zf.writestr("model/openvino_model.bin", b"openvino-weights")
+            zf.writestr("model/openvino_model.xml", "<net/>")
+            zf.writestr("model/tokenizer.gguf", b"GGUF")
+        zip_bytes = zip_buf.getvalue()
+
+        good_sums = (
+            f"{hashlib.sha256(tar_bytes).hexdigest()}  {asset_name}\n"
+            f"{hashlib.sha256(zip_bytes).hexdigest()}  jevos-v5-openvino-int8.zip\n"
+        ).encode("utf-8")
+        bad_sums = (
+            f"{'0' * 64}  {asset_name}\n"
+            f"{hashlib.sha256(zip_bytes).hexdigest()}  jevos-v5-openvino-int8.zip\n"
+        ).encode("utf-8")
+
+        state = {"sums": bad_sums}
+        class ReleaseHandler(BaseHTTPRequestHandler):
+            def log_message(self, *a): pass
+            def do_GET(self):
+                files = {
+                    "/SHA256SUMS.txt": state["sums"],
+                    f"/{asset_name}": tar_bytes,
+                    "/jevos-v5-openvino-int8.zip": zip_bytes,
+                }
+                blob = files.get(self.path)
+                if blob is None:
+                    self.send_response(404); self.end_headers(); return
+                self.send_response(200)
+                self.send_header("Content-Length", str(len(blob)))
+                self.end_headers()
+                self.wfile.write(blob)
+
+        rel_srv = ThreadingHTTPServer(("127.0.0.1", 0), ReleaseHandler)
+        rel_thread = threading.Thread(target=rel_srv.serve_forever, daemon=True)
+        rel_thread.start()
+        self.addCleanup(rel_srv.shutdown)
+        self.addCleanup(rel_srv.server_close)
+        release_base = f"http://127.0.0.1:{rel_srv.server_address[1]}"
+
+        with socket.socket() as sock:
+            sock.bind(("127.0.0.1", 0))
+            jevos_port = sock.getsockname()[1]
+        endpoint = f"http://127.0.0.1:{jevos_port}/v1/systemone"
+
+        def stop_mock_jevos():
+            if pid_file.exists():
+                try:
+                    os.kill(int(pid_file.read_text().strip()), signal.SIGTERM)
+                except OSError:
+                    pass
+        self.addCleanup(stop_mock_jevos)
+
+        self.stub("npx", "exit 0")
+        curl_shim = self.bin / "curl"
+        curl_shim.write_text(
+            f"#!{sys.executable}\n"
+            "import sys, urllib.request\n"
+            "args = sys.argv[1:]\n"
+            "url = next((a for a in args if a.startswith('http://127.0.0.1:')), None)\n"
+            "if not url: sys.exit(91)\n"
+            "out = args[args.index('-o') + 1] if '-o' in args else None\n"
+            "try:\n"
+            "    with urllib.request.urlopen(url, timeout=5) as r:\n"
+            "        data = r.read()\n"
+            "        if out: open(out, 'wb').write(data)\n"
+            "        else: sys.stdout.buffer.write(data)\n"
+            "except Exception:\n"
+            "    sys.exit(22)\n",
+            encoding="utf-8",
+        )
+        curl_shim.chmod(0o700)
+
+        big_catalog = self.work / "big-catalog.json"
+        big_skills = [
+            {"name": f"web-skill-{i}", "category": "web", "description": f"React performance skill {i}."}
+            for i in range(120)
+        ]
+        big_catalog.write_text(json.dumps({"categories": {"web": {}}, "skills": big_skills, "model_policies": {}}))
+
+        bad_res = self.execute(
+            ["/bin/bash", str(SETUP), "--profile", "jevos-bad", "--mode", "jevos"],
+            {"JEV_JEVOS_RELEASE_BASE": release_base, "JEV_ENDPOINT": endpoint},
+            cwd=ROOT,
+        )
+        self.assertNotEqual(bad_res.returncode, 0)
+        self.assertIn("SHA-256 verification failed", bad_res.stderr)
+        self.assertFalse((self.home / ".agents/jev/jevos/jev/jev").exists())
+
+        state["sums"] = good_sums
+        ok_res = self.execute(
+            ["/bin/bash", str(SETUP), "--profile", "jevos-prof", "--mode", "jevos"],
+            {"JEV_JEVOS_RELEASE_BASE": release_base, "JEV_ENDPOINT": endpoint, "JEV_CATALOG_PATH": str(big_catalog)},
+            cwd=ROOT,
+        )
+        self.successful(ok_res)
+        self.assertTrue((self.home / ".agents/jev/jevos/jev/jev").is_file())
+        self.assertTrue((self.home / ".agents/jev/jevos/jev/model/openvino_model.bin").is_file())
+        local_env = (self.home / ".agents/jev/profiles/jevos-prof.local.env").read_text()
+        self.assertIn("JEV_LOCAL_ENGINE=jevos", local_env)
+        self.assertIn("JEV_LOCAL_MODEL=jevos-v5", local_env)
+        self.assertIn(f"JEV_LOCAL_ENDPOINT={endpoint}", local_env)
+
+        status = self.run_cli("status", env={"JEV_PROFILE": "jevos-prof"})
+        self.assertEqual(status.returncode, 0, status.stdout + status.stderr)
+        status_json = json.loads(status.stdout)
+        self.assertTrue(status_json["ready"])
+        self.assertEqual(status_json["backends"]["local"]["driver"], "jevos")
+        self.assertEqual(status_json["backends"]["local"]["servedModel"], "jevos-v5")
+
+        routed = self.run_cli("route-skills", "--top-k", "1", TASK, env={"JEV_PROFILE": "jevos-prof", "JEV_CATALOG_PATH": str(big_catalog)})
+        self.successful(routed)
+        routed_json = json.loads(routed.stdout)
+        self.assertEqual(routed_json["selection"]["strategy"], "shortlist")
+        self.assertEqual(routed_json["selection"]["choiceCap"], 26)
+        self.assertEqual(routed_json["backend"]["kind"], "local")
+        self.assertEqual(routed_json["backend"]["tier"], "unvalidated")
+
+    def test_local_default_qev_download_verify_and_host(self):
+        pid_file = self.work / "mock-qev.pid"
+        calls_file = self.work / "mock-qev-calls.jsonl"
+        mock_llama = self.bin / "llama-server"
+        mock_llama.write_text(
+            f"#!{sys.executable}\n"
+            "import json, os, sys\n"
+            "from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer\n"
+            "args = sys.argv[1:]\n"
+            "host = args[args.index('--host') + 1] if '--host' in args else '127.0.0.1'\n"
+            "port = int(args[args.index('--port') + 1]) if '--port' in args else 8017\n"
+            "alias = args[args.index('--alias') + 1] if '--alias' in args else 'qev-0.8b-text-Q8_0'\n"
+            f"open({str(pid_file)!r}, 'w').write(str(os.getpid()))\n"
+            "class H(BaseHTTPRequestHandler):\n"
+            "    def log_message(self, *a): pass\n"
+            "    def _json(self, code, data):\n"
+            "        raw = json.dumps(data).encode()\n"
+            "        self.send_response(code); self.send_header('Content-Type','application/json')\n"
+            "        self.send_header('Content-Length', str(len(raw))); self.end_headers(); self.wfile.write(raw)\n"
+            "    def do_GET(self):\n"
+            "        if self.path == '/health':\n"
+            "            self._json(200, {'status':'ok'})\n"
+            "        elif self.path == '/v1/models':\n"
+            "            self._json(200, {'data':[{'id': alias}]})\n"
+            "        else:\n"
+            "            self._json(404, {'error':'not found'})\n"
+            "    def do_POST(self):\n"
+            "        n = int(self.headers.get('Content-Length','0'))\n"
+            "        body = json.loads(self.rfile.read(n) or b'{}')\n"
+            f"        open({str(calls_file)!r}, 'a').write(json.dumps({{'qcount': len(body.get('questions') or {{}}), 'which': (body.get('questions') or {{}}).get('which')}}) + '\\n')\n"
+            "        answers = {}\n"
+            "        for qid, q in (body.get('questions') or {}).items():\n"
+            "            if q.get('type') == 'choice':\n"
+            "                opts = list((q.get('criteria') or {}).keys())\n"
+            "                assert len(opts) <= 24, f'choiceCap exceeded: {len(opts)}'\n"
+            "                probs = {o: (0.9 if i == 0 else 0.1 / max(1, len(opts) - 1)) for i, o in enumerate(opts)}\n"
+            "                answers[qid] = {'type':'choice','choice':opts[0],'probabilities':probs,'confidence':0.88}\n"
+            "            else:\n"
+            "                p = 0.05 if 'prose' in qid else 0.92\n"
+            "                answers[qid] = {'type':'noul','noul':p}\n"
+            "        self._json(200, {'model': alias, 'answers': answers, 'usage': {'input_tokens': 20, 'output_tokens': 0}})\n"
+            "ThreadingHTTPServer((host, port), H).serve_forever()\n",
+            encoding="utf-8",
+        )
+        mock_llama.chmod(0o755)
+
+        gguf_bytes = b"GGUF-fixture-qev-0.8b-text-Q8_0"
+        good_sha = hashlib.sha256(gguf_bytes).hexdigest()
+        class ModelHandler(BaseHTTPRequestHandler):
+            def log_message(self, *a): pass
+            def do_GET(self):
+                if self.path == "/qev-0.8b-text-Q8_0.gguf":
+                    self.send_response(200)
+                    self.send_header("Content-Length", str(len(gguf_bytes)))
+                    self.end_headers()
+                    self.wfile.write(gguf_bytes)
+                else:
+                    self.send_response(404); self.end_headers()
+
+        srv = ThreadingHTTPServer(("127.0.0.1", 0), ModelHandler)
+        threading.Thread(target=srv.serve_forever, daemon=True).start()
+        self.addCleanup(srv.shutdown)
+        self.addCleanup(srv.server_close)
+        model_base = f"http://127.0.0.1:{srv.server_address[1]}"
+
+        with socket.socket() as sock:
+            sock.bind(("127.0.0.1", 0))
+            port = sock.getsockname()[1]
+        endpoint = f"http://127.0.0.1:{port}/v1/systemone"
+
+        def stop_mock():
+            if pid_file.exists():
+                try:
+                    os.kill(int(pid_file.read_text().strip()), signal.SIGTERM)
+                except OSError:
+                    pass
+        self.addCleanup(stop_mock)
+
+        self.stub("npx", "exit 0")
+        curl_shim = self.bin / "curl"
+        curl_shim.write_text(
+            f"#!{sys.executable}\n"
+            "import sys, urllib.request\n"
+            "args = sys.argv[1:]\n"
+            "url = next((a for a in args if a.startswith('http://127.0.0.1:')), None)\n"
+            "if not url: sys.exit(91)\n"
+            "out = args[args.index('-o') + 1] if '-o' in args else None\n"
+            "try:\n"
+            "    with urllib.request.urlopen(url, timeout=5) as r:\n"
+            "        data = r.read()\n"
+            "        if out: open(out, 'wb').write(data)\n"
+            "        else: sys.stdout.buffer.write(data)\n"
+            "except Exception:\n"
+            "    sys.exit(22)\n",
+            encoding="utf-8",
+        )
+        curl_shim.chmod(0o700)
+
+        big_catalog = self.work / "qev-big-catalog.json"
+        big_skills = [
+            {"name": f"web-skill-{i}", "category": "web", "description": f"React performance skill {i}."}
+            for i in range(120)
+        ]
+        big_catalog.write_text(json.dumps({"categories": {"web": {}}, "skills": big_skills, "model_policies": {}}))
+
+        bad_res = self.execute(
+            ["/bin/bash", str(SETUP), "--profile", "qev-bad", "--mode", "local"],
+            {"JEV_QEV_MODEL_BASE": model_base, "JEV_QEV_SHA256": "0" * 64, "JEV_ENDPOINT": endpoint, "JEV_LLAMA_SERVER_BIN": str(mock_llama)},
+            cwd=ROOT,
+        )
+        self.assertNotEqual(bad_res.returncode, 0)
+        self.assertIn("SHA-256 verification failed", bad_res.stderr)
+        self.assertFalse((self.home / ".agents/jev/models/qev/qev-0.8b-text-Q8_0.gguf").exists())
+
+        ok_res = self.execute(
+            ["/bin/bash", str(SETUP), "--profile", "qev-prof", "--mode", "local"],
+            {"JEV_QEV_MODEL_BASE": model_base, "JEV_QEV_SHA256": good_sha, "JEV_ENDPOINT": endpoint, "JEV_LLAMA_SERVER_BIN": str(mock_llama), "JEV_CATALOG_PATH": str(big_catalog)},
+            cwd=ROOT,
+        )
+        self.successful(ok_res)
+        self.assertEqual((self.home / ".agents/jev/models/qev/qev-0.8b-text-Q8_0.gguf").read_bytes(), gguf_bytes)
+        local_env = (self.home / ".agents/jev/profiles/qev-prof.local.env").read_text()
+        self.assertIn("JEV_LOCAL_ENGINE=qev", local_env)
+        self.assertIn("JEV_LOCAL_MODEL=qev-0.8b-text-Q8_0", local_env)
+        self.assertIn(f"JEV_LOCAL_ENDPOINT={endpoint}", local_env)
+
+        status = self.run_cli("status", env={"JEV_PROFILE": "qev-prof"})
+        self.assertEqual(status.returncode, 0, status.stdout + status.stderr)
+        status_json = json.loads(status.stdout)
+        self.assertTrue(status_json["ready"])
+        self.assertEqual(status_json["backends"]["local"]["driver"], "qev")
+        self.assertEqual(status_json["backends"]["local"]["servedModel"], "qev-0.8b-text-Q8_0")
+
+        routed = self.run_cli("route-skills", "--top-k", "1", TASK, env={"JEV_PROFILE": "qev-prof", "JEV_CATALOG_PATH": str(big_catalog)})
+        self.successful(routed)
+        routed_json = json.loads(routed.stdout)
+        self.assertEqual(routed_json["selection"]["strategy"], "shortlist")
+        self.assertEqual(routed_json["selection"]["choiceCap"], 24)
+        self.assertEqual(routed_json["backend"]["kind"], "local")
+        self.assertEqual(routed_json["backend"]["tier"], "unvalidated")
+        calls = [json.loads(line) for line in calls_file.read_text().splitlines() if line.strip()]
+        self.assertEqual(len(calls), 1)  # batched: 1 request for gate + which + 12 fits
+        self.assertEqual(calls[0]["qcount"], 16)
+        self.assertTrue(all(v is None for v in calls[0]["which"]["criteria"].values()))
 
 if __name__ == "__main__":
     unittest.main()

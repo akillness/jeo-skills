@@ -35,7 +35,7 @@ The registry has exactly five backend kinds: `api`, `local`, `ollama`, `lmstudio
 | Kind | Canonical setup side effects and prerequisites | Runtime transport / driver |
 |---|---|---|
 | `api` | Requires a TypeSafe API key; persists configuration. Hosted inference may incur charges. | TypeSafe `POST <JEV_API_ENDPOINT>` with `{state, model, questions}` and `Authorization: Bearer JEV_API_KEY`; model defaults to `jev-latest`. |
-| `local` | Requires Python 3 and the configured server/dependencies; model download is explicit and separate. | Existing `jev_local_server.py` at `http://127.0.0.1:8763/v1/systemone`; reads base `AutoModelForCausalLM` logits. |
+| `local` | Defaults to `qev-0.8b-text-Q8_0` (`labqoat/qev-0.8b-GGUF`, ~775 MB, ~1.0 GB RAM/VRAM, tuned for 16 GB RAM / 6 GB VRAM) hosted via `llama-server` on `http://127.0.0.1:8017/v1/systemone`. Pass `--model h2o-lightning-4b-Q4_K_M`, `--model jevos-v5` (or `--mode jevos`), or `--model jev-9b-local` for alternatives. | `qev-0.8b` / `h2o-lightning-4b` TypeSafe `/v1/systemone` (`llama-server`, `choiceCap=24`, `/health`), `jevos-v5`, or legacy `jev_local_server.py` (`8763`). |
 | `ollama` | Requires Ollama; model pull/start is explicit and may download a quantized third-party model. | Native `/api/chat` JSON-from-chat adapter, default `http://127.0.0.1:11434`. |
 | `lmstudio` | Requires LM Studio; model download/load and server startup are explicit. | OpenAI-compatible `/v1/chat/completions` JSON-from-chat adapter, default `http://127.0.0.1:1234`. |
 | `systemone` | Configures an endpoint, model, and optional key; no model download is implied. | `JEV_SYSTEMONE_DRIVER=typesafe` (default), `decide`, or `vllm-jev-decision`. |
@@ -283,8 +283,12 @@ jev/                                  # source in this repository
 │   ├── <id>.ollama.env                # Ollama settings
 │   ├── <id>.lmstudio.env              # LM Studio settings
 │   └── <id>.systemone.env             # System One endpoint/driver/model
-├── venv/                             # local mode only
-└── models/JEV-9B/                    # local weights, only when downloaded
+├── llama.cpp/                        # llama-server binary when auto-downloaded for default local mode
+├── jevos/                            # jevos-v5 binary + OpenVINO INT8 model/ (--mode jevos)
+├── venv/                             # legacy local mode (--model jev-9b-local)
+└── models/
+    ├── qev/                          # default local GGUF weights (qev-0.8b-text-Q8_0.gguf)
+    └── JEV-9B/                       # legacy local weights, only when downloaded
 
 ~/.agents/rules/jev-control-plane.md   # host rule copy, not a native hook
 ~/.agents/skills/jev-control-plane/   # portable Agent Skill (when installed)

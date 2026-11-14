@@ -31,6 +31,7 @@ const OP_PARENT = {
 const SYSTEMONE_DRIVERS = ['typesafe', 'decide', 'vllm-jev-decision'];
 const DEFAULT_API_URL = 'https://api.typesafe.ai/v1/systemone';
 const DEFAULT_LOCAL_URL = 'http://127.0.0.1:8763/v1/systemone';
+const DEFAULT_JEVOS_URL = 'http://127.0.0.1:8017/v1/systemone';
 const THRESHOLD = 0.8;
 export const GATE_THRESHOLD = 0.30;
 export const FITS_THRESHOLD = 0.30;
@@ -44,7 +45,7 @@ const GEN_DEFAULTS = {
   ollama: { endpoint: 'http://127.0.0.1:11434', model: 'hf.co/mradermacher/JEV-9B-GGUF:Q4_K_M', start: 'ollama serve' },
   lmstudio: { endpoint: 'http://127.0.0.1:1234', model: null, start: 'lms server start (or LM Studio → Developer → Start Server), then load JEV-9B-GGUF' },
 };
-const CHOICE_CAPS = { api: 255, local: 16, ollama: 16, lmstudio: 16, systemone: { typesafe: 255, decide: 256, 'vllm-jev-decision': 16 } };
+const CHOICE_CAPS = { api: 255, qev: 24, jevos: 26, local: 16, ollama: 16, lmstudio: 16, systemone: { typesafe: 255, decide: 256, 'vllm-jev-decision': 16 } };
 const TIMEOUTS = { api: 15000, systemone: { typesafe: 15000, decide: 60000, 'vllm-jev-decision': 60000 }, local: 30000, ollama: 180000, lmstudio: 180000 };
 export const STOPWORDS = new Set(('a an the and or but if then else for to of in on at by with from as is are was were be been being ' +
   'this that these those it its my our your their his her we you they i me us them do does did done have has had having can could ' +
@@ -190,9 +191,30 @@ export function describeBackend(kind, { model: modelOverride } = {}) {
       choiceCap: CHOICE_CAPS.api, batch: true, timeoutMs: TIMEOUTS.api, maxStateChars: MAX_STATE_CHARS.api };
   }
   if (kind === 'local') {
-    return { ...base, driver: 'local', endpoint: legacyEndpoint || cfg('local', 'JEV_LOCAL_ENDPOINT') || DEFAULT_LOCAL_URL,
+    const localEngine = cfg('local', 'JEV_LOCAL_ENGINE') || null;
+    const savedModel = kindFilePresent.local || DEFAULT_KIND === 'local' ? cfg('local', 'JEV_LOCAL_MODEL') : null;
+    const localModel = modelOverride || savedModel || null;
+    const localEndpoint = legacyEndpoint || cfg('local', 'JEV_LOCAL_ENDPOINT') || null;
+    const isQev = localEngine === 'qev'
+      || (!localEngine && /(?:^|\/)(?:qev|h2o-lightning)/i.test(localModel || ''))
+      || (!localEngine && !localModel && !localEndpoint);
+    const isJevos = !isQev && (localEngine === 'jevos' || (!localEngine && /^jevos/i.test(localModel || '')));
+    if (isJevos) {
+      return { ...base, driver: 'jevos', endpoint: localEndpoint || DEFAULT_JEVOS_URL,
+        model: localModel || 'jevos-v5', modelDir: cfg('local', 'JEV_LOCAL_MODEL_DIR') || null,
+        binPath: cfg('local', 'JEV_LOCAL_BIN') || null,
+        choiceCap: CHOICE_CAPS.jevos, batch: true, timeoutMs: 60000, maxStateChars: MAX_STATE_CHARS.local };
+    }
+    if (isQev) {
+      return { ...base, driver: 'qev', endpoint: localEndpoint || DEFAULT_JEVOS_URL,
+        model: localModel || 'qev-0.8b-text-Q8_0', modelDir: cfg('local', 'JEV_LOCAL_MODEL_DIR') || null,
+        modelFile: cfg('local', 'JEV_LOCAL_MODEL_FILE') || null,
+        binPath: cfg('local', 'JEV_LOCAL_BIN') || null,
+        choiceCap: CHOICE_CAPS.qev, batch: true, timeoutMs: 60000, maxStateChars: 12000 };
+    }
+    return { ...base, driver: 'local', endpoint: localEndpoint || DEFAULT_LOCAL_URL,
       // Legacy single-file installs share JEV_LOCAL_MODEL with the generative kinds; only honor it here when it is scoped to `local`.
-      model: modelOverride || (kindFilePresent.local || DEFAULT_KIND === 'local' ? cfg('local', 'JEV_LOCAL_MODEL') : null) || 'jev-9b-local', modelDir: cfg('local', 'JEV_LOCAL_MODEL_DIR') || null,
+      model: localModel || 'jev-9b-local', modelDir: cfg('local', 'JEV_LOCAL_MODEL_DIR') || null,
       choiceCap: CHOICE_CAPS.local, batch: true, timeoutMs: TIMEOUTS.local, maxStateChars: MAX_STATE_CHARS.local };
   }
   if (kind === 'ollama' || kind === 'lmstudio') {
@@ -527,7 +549,7 @@ async function driverGenerative(backend, state, questions, timeoutMs) {
   return { model, answers };
 }
 
-const DRIVERS = { typesafe: driverTypesafe, local: driverLocal, decide: driverDecide, 'vllm-jev-decision': driverVllmDecision, generative: driverGenerative };
+const DRIVERS = { typesafe: driverTypesafe, qev: driverTypesafe, jevos: driverTypesafe, local: driverLocal, decide: driverDecide, 'vllm-jev-decision': driverVllmDecision, generative: driverGenerative };
 
 // Only drivers that read a calibrated decision head can ever be attested:
 // hosted/compatible `/v1/systemone`, AutoTrust `/v1/decide`, and the vLLM
@@ -558,7 +580,7 @@ function stripScope(questions) {
   return Object.fromEntries(Object.entries(questions).map(([id, q]) => { const { state: _state, ...wire } = q; return [id, wire]; }));
 }
 export function groupByScope(state, questions, backend) {
-  const scoped = !backend.batch || backend.kind === 'local';
+  const scoped = !backend.batch || backend.driver === 'local';
   if (!scoped) return [{ state, questions: stripScope(questions) }];
   const groups = new Map();
   for (const [id, q] of Object.entries(questions)) {
@@ -837,7 +859,7 @@ async function skillExcerpt(catalog, skill) {
 // ── Skill selection ──────────────────────────────────────────────────────────
 function tokenEstimate(text) { return Math.ceil(text.length / 4); }
 export function taskTerms(task) {
-  const terms = task.toLowerCase().match(/[a-z0-9][a-z0-9+#.-]*/g) || [];
+  const terms = task.toLowerCase().match(/[a-z0-9][a-z0-9+#.-]*|[가-힣]{2,}/g) || [];
   return [...new Set(terms.filter(t => t.length > 1 && !STOPWORDS.has(t)))];
 }
 export function scoreSkill(skill, task) {
@@ -904,7 +926,7 @@ function verifyQuestions(task, budgeted, backend, { withGate = true } = {}) {
   const questions = withGate ? gateQuestions(task) : {};
   if (budgeted.candidates.length <= backend.choiceCap) {
     questions.which = { ...choice('Which of these candidate skills, if any, is the right one to load to help with the user\'s `request`? Read each candidate\'s full description in `candidates`.',
-      Object.fromEntries(budgeted.candidates.map(c => [c.name, describeFor(c, c.excerpt)]))), state: budgeted };
+      Object.fromEntries(budgeted.candidates.map(c => [c.name, backend.driver === 'qev' ? null : describeFor(c, c.excerpt)]))), state: budgeted };
   }
   for (const c of budgeted.candidates) {
     questions[`fits::${c.name}`] = { ...noul(`Does the skill \`${c.name}\` (described in \`candidates\`) genuinely do what the user's \`request\` asks for?`), state: { request: task, candidates: [c] } };
@@ -1681,9 +1703,29 @@ async function backendStatus(kind, { timeoutMs = 3000, referenced = true } = {})
   if (kind === 'api') return { ...entry, ready: null, state: 'unverified', keySource: 'env-or-dotenv', hint: 'API configured; credentials and inference readiness have not been verified' };
   try {
     if (kind === 'local') {
-      const { response, payload } = await probe(backend.endpoint.replace(/\/v1\/systemone\/?$/, '/healthz'), timeoutMs);
-      if (!response.ok || payload?.ok !== true) throw new Error(`local health check failed (${response.status})`);
-      entry.modelDir = backend.modelDir;
+      if (backend.driver === 'qev') {
+        const { response, payload } = await probe(backend.endpoint.replace(/\/v1\/systemone\/?$/, '/health'), timeoutMs);
+        if (!response.ok || (payload?.status !== 'ok' && payload?.status !== 'ready' && payload?.ok !== true)) {
+          throw new Error(`qev health check failed (${response.status})`);
+        }
+        try {
+          const modelsRes = await probe(backend.endpoint.replace(/\/v1\/systemone\/?$/, '/v1/models'), timeoutMs);
+          const list = Array.isArray(modelsRes.payload?.data) ? modelsRes.payload.data : Array.isArray(modelsRes.payload?.models) ? modelsRes.payload.models : [];
+          entry.servedModel = list.map(m => m?.id || m?.name).find(Boolean) || null;
+        } catch {
+          entry.servedModel = null;
+        }
+        entry.modelDir = backend.modelDir;
+      } else if (backend.driver === 'jevos') {
+        const { response, payload } = await probe(backend.endpoint.replace(/\/v1\/systemone\/?$/, '/health'), timeoutMs);
+        if (!response.ok || (payload?.status !== 'ready' && payload?.ok !== true)) throw new Error(`jevos health check failed (${response.status})`);
+        entry.servedModel = typeof payload?.model === 'string' ? payload.model : null;
+        entry.modelDir = backend.modelDir;
+      } else {
+        const { response, payload } = await probe(backend.endpoint.replace(/\/v1\/systemone\/?$/, '/healthz'), timeoutMs);
+        if (!response.ok || payload?.ok !== true) throw new Error(`local health check failed (${response.status})`);
+        entry.modelDir = backend.modelDir;
+      }
     } else if (kind === 'ollama' || kind === 'lmstudio') {
       entry.model = await resolveGenModel(backend, timeoutMs);
     } else if (kind === 'systemone') {
@@ -1705,8 +1747,9 @@ async function backendStatus(kind, { timeoutMs = 3000, referenced = true } = {})
           : `${stripV1(backend.endpoint)}/v1/models`;
         const { response, payload } = await probe(modelsUrl, timeoutMs, headers);
         if (!response.ok) throw new Error(`${new URL(modelsUrl).pathname} responded ${response.status}`);
-        if (!Array.isArray(payload?.data)) throw new Error(`${new URL(modelsUrl).pathname} returned no model list`);
-        const ids = payload.data.map(m => m?.id).filter(id => typeof id === 'string');
+        const list = Array.isArray(payload?.data) ? payload.data : Array.isArray(payload?.models) ? payload.models : null;
+        if (!list) throw new Error(`${new URL(modelsUrl).pathname} returned no model list`);
+        const ids = list.map(m => m?.id || m?.name).filter(id => typeof id === 'string');
         if (ids.length && backend.model && !ids.includes(backend.model)) throw new Error(`model not served: ${backend.model}`);
         served = ids.includes(backend.model) ? backend.model : null;
         entry.modelsUrl = modelsUrl;
@@ -1729,7 +1772,11 @@ async function backendStatus(kind, { timeoutMs = 3000, referenced = true } = {})
     entry.ready = false;
     entry.state = classifyProbeError(err);
     const start = kind === 'local'
-      ? (PROFILE ? `JEV_PROFILE=${PROFILE} ~/.agents/jev/venv/bin/python ~/.agents/jev/jev_local_server.py --profile ${PROFILE}` : 'start ~/.agents/jev/venv/bin/python ~/.agents/jev/jev_local_server.py')
+      ? (backend.driver === 'qev'
+          ? `${backend.binPath || 'llama-server'} -m ${backend.modelFile || '~/.agents/jev/models/qev/qev-0.8b-text-Q8_0.gguf'} --host 127.0.0.1 --port 8017 -c 16384 -np 1 --no-kv-unified -fa on -b 2048 -ub 1024 -ctk q8_0 -ctv q8_0 -ngl 99`
+          : backend.driver === 'jevos'
+            ? `${backend.binPath || '~/.agents/jev/jevos/jev/jev'} serve --model-dir ${backend.modelDir || '~/.agents/jev/jevos/jev/model'}`
+            : (PROFILE ? `JEV_PROFILE=${PROFILE} ~/.agents/jev/venv/bin/python ~/.agents/jev/jev_local_server.py --profile ${PROFILE}` : 'start ~/.agents/jev/venv/bin/python ~/.agents/jev/jev_local_server.py'))
       : backend.start || `start the ${kind} server at ${backend.endpoint}`;
     entry.hint = `${kind} backend ${entry.state} (${err.message}); ${start}`;
   }
