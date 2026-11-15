@@ -53,3 +53,7 @@ code/memory → `.mex/`, semantic search → `zg query`, ontology → open-ontol
 harness changes → `.harness2/`. Full rules: `.agents/rules/jeo-workflows.md` (global copy
 `~/.agents/rules/jeo-workflows.md`).
 <!-- JEO-WORKFLOWS:END -->
+
+<!-- mex-setup:start -->
+MEX setup is not finished (0/6). Run `mex setup next --start` first and do what it prints; repeat until it says setup is complete.
+<!-- mex-setup:end -->

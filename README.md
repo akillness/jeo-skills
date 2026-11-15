@@ -392,7 +392,7 @@ See the [setup guide](setup-all-skills-prompt.md#claude-code-game-studios-on-dem
 
 ## 📚 Skills List
 
-> Generated from `.agent-skills/skills.json` · 437 skills · expand a category to see its skills.
+> Generated from `.agent-skills/skills.json` · 438 skills · expand a category to see its skills.
 
 ### 🌐 Web (73)
 
@@ -911,9 +911,9 @@ Subcategories: `marketing` (5), `support` (2), `publishing` (1), `pm-toolkit` (5
 
 </details>
 
-### 🔧 Utilities (28)
+### 🔧 Utilities (29)
 
-Subcategories: `knowledge` (8), `files` (5), `git` (4), `workspace` (1), `project-management` (4), `productivity` (3), `general` (3)
+Subcategories: `knowledge` (9), `files` (5), `git` (4), `workspace` (1), `project-management` (4), `productivity` (3), `general` (3)
 
 <details>
 <summary>Show Utilities skills</summary>
@@ -922,6 +922,7 @@ Subcategories: `knowledge` (8), `files` (5), `git` (4), `workspace` (1), `projec
 |---|
 | `lapian-notes` |
 | `llm-wiki` |
+| `repo-knowledge-wiki` |
 | `notebooklm` |
 | `obsidian-mind` |
 | `obsidian-second-brain` |

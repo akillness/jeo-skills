@@ -341,7 +341,7 @@ y la [atribución MIT upstream](docs/attribution.md).
 
 ## 📚 Lista de Habilidades
 
-> Generado desde `.agent-skills/skills.json` · 437 habilidades · despliega una categoría para ver sus habilidades.
+> Generado desde `.agent-skills/skills.json` · 438 habilidades · despliega una categoría para ver sus habilidades.
 
 ### 🌐 Web (73)
 
@@ -860,9 +860,9 @@ Subcategorías: `marketing` (5), `support` (2), `publishing` (1), `pm-toolkit` (
 
 </details>
 
-### 🔧 Utilidades (28)
+### 🔧 Utilidades (29)
 
-Subcategorías: `knowledge` (8), `files` (5), `git` (4), `workspace` (1), `project-management` (4), `productivity` (3), `general` (3)
+Subcategorías: `knowledge` (9), `files` (5), `git` (4), `workspace` (1), `project-management` (4), `productivity` (3), `general` (3)
 
 <details>
 <summary>Ver habilidades</summary>
@@ -871,6 +871,7 @@ Subcategorías: `knowledge` (8), `files` (5), `git` (4), `workspace` (1), `proje
 |---|
 | `lapian-notes` |
 | `llm-wiki` |
+| `repo-knowledge-wiki` |
 | `notebooklm` |
 | `obsidian-mind` |
 | `obsidian-second-brain` |

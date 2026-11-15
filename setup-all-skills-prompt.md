@@ -195,7 +195,7 @@ if [ "${JEO_SKILLS_STAR:-}" = true ] && [ "${JEO_SKILLS_DRY_RUN:-false}" != true
       tmp=$(mktemp "${TMPDIR:-/tmp}/jeo-skills-star.XXXXXXXX") || exit 1
       trap 'rm -f "$tmp"' EXIT
       curl --disable --proto '=https' --max-time 15 -fsS 'https://raw.githubusercontent.com/akillness/jeo-skills/main/install.sh' -o "$tmp" || exit 1
-      python3 -I -c 'import hashlib,sys; sys.exit(hashlib.sha256(open(sys.argv[1], "rb").read()).hexdigest() != "1972b6bb140aed5f53f57f9c9e2ca4a362ff8a4003bcaea3048edba70acbab84")' "$tmp" || exit 1
+      python3 -I -c 'import hashlib,sys; sys.exit(hashlib.sha256(open(sys.argv[1], "rb").read()).hexdigest() != "e68f7c4904ed87a3acd28e513986d565d359e7f39095dd3cd32d500872f18e0b")' "$tmp" || exit 1
       JEO_SKILLS_STAR_ONLY=true JEO_SKILLS_STAR=true bash "$tmp"
     else
       exit 1
@@ -1771,6 +1771,7 @@ fi
 | Step | What it does |
 |---|---|
 | `mex` | `mex` skill `install.sh --skip-skill`: `.mex/` scaffold, code graph, drift check |
+| `knowledge` | `repo-knowledge-wiki` `bootstrap.py`: idempotent `knowledge/` (`raw/`, `queries/`, `work/active/`, `work/archive/`, `concepts/`) + `.mex/context/knowledge-pairings.md` symbol-grounding bridge |
 | `zvec` | `zg index` (first run `--embedding local/potion-code-16m-v2`, later incremental) then `zg status --check-ready` |
 | `second-brain` | writes `~/.jeo/second-brain-config.json` (0600, never overwritten) for a **new** vault `~/vaults/jeo-second-brain`, host/model `auto`, $0.50/run, $5/day, 300 s, all automation consents; runs the packaged `setup.py`. Graphify's external provider is **not** enabled |
 | `open-ontologies` | builds the pinned binary when absent (needs `cargo`), runs the offline smoke test |
@@ -1778,13 +1779,12 @@ fi
 | `rtk-semble` | `rtk init -g --auto-patch` (Claude Code hook); verifies `semble` |
 | `jev` | reports bound profiles; inert when Jev is not installed |
 | `refresh` | `mex-agent watch` and a marked `zg index` block in `.git/hooks/post-commit`; second-brain cron schedules |
-| `rules` | always-applied rule file `jeo-workflows.md` in `~/.agents/rules/` and `<project>/.agents/rules/`: YAML frontmatter with `alwaysApply: true` first (jeopi skips a rule without it), then the `JEO-WORKFLOWS` marker block; a legacy marker-only file is migrated in place and foreign frontmatter keys and text are kept. Also a pointer in the project's `AGENTS.md`/`CLAUDE.md`; when Antigravity CLI (`agy`) or `~/.gemini` exists, a pointer block in `~/.gemini/GEMINI.md` (agy reads global rules there, not `~/.agents/rules`) |
+| `rules` | always-applied rule file `jeo-workflows.md` in `~/.agents/rules/` and `<project>/.agents/rules/` (plus `<project>/.cursor/rules/jeo-workflows.mdc` when Cursor is present), and pointer blocks in `<project>/AGENTS.md`, `<project>/CLAUDE.md`, and installed host globals (`~/.claude/CLAUDE.md`, `~/.codex/AGENTS.md`, `~/.pi/agent/AGENTS.md`, `~/.gjc/agent/AGENTS.md`, `~/.config/opencode/AGENTS.md`, `~/.gemini/GEMINI.md`) |
 | `harness2` | `.harness2/workspace.json`: method-mode component map and workflow status (benchmarks stay on demand: Vertex credentials, Docker, approval) |
 
 The installed rule fixes the per-prompt order **openspace → rtk → semble → jev**; jev runs
 only after rtk and semble ran for that prompt and only when a profile is enabled. It then
-routes by query type: knowledge to the vault, code/memory to `.mex/`, meaning search to
-`zg query`, RDF/OWL to `open-ontologies`, harness changes to `.harness2/`.
+routes by query type: repo-local knowledge/history/work checks to `knowledge/` + `.mex/context/knowledge-pairings.md` (and personal notes to the second-brain vault), code/memory to `.mex/` (`mex-agent wiki for-code`), scoped meaning search (`zg query` with `-g 'knowledge/**' -g '!knowledge/raw/**'` vs `-g '!knowledge/**'`), RDF/OWL to `open-ontologies`, and harness changes to `.harness2/`.
 
 Fully automatic means these were chosen by the user at install time; they are
 not silent defaults. Opt-outs: `JEO_SKILLS_WORKSPACE=skip` (installer), `--no-activate`

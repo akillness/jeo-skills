@@ -78,7 +78,7 @@ if [ "$DRY_RUN" = true ]; then
     if [ "$GLOBAL" = true ]; then
       info "Would obtain scripts/install-full-tools.sh from $REPO_URL and run it for project $PROJECT_DIR."
       info 'Would install or update mex-agent, zvec-grep, specify-cli, RTK, Semble, and cli-anything-hub in the user-global scope; no tools are run during dry run.'
-      info "Would run scripts/setup-workspace.py for project $PROJECT_DIR (rules, mex, zvec, second-brain, open-ontologies, openspace, rtk/semble, jev, harness2 manifest); set JEO_SKILLS_WORKSPACE=skip to opt out."
+      info "Would run scripts/setup-workspace.py for project $PROJECT_DIR (rules, mex, knowledge, zvec, second-brain, open-ontologies, openspace, rtk/semble, jev, harness2 manifest); set JEO_SKILLS_WORKSPACE=skip to opt out."
       if [ -n "${JEO_SECOND_BRAIN_CONFIG:-}" ]; then
         info "Would configure obsidian-second-brain from $JEO_SECOND_BRAIN_CONFIG after explicit target/model/cost/automation consent; no setup runs during dry run."
       else
@@ -259,8 +259,8 @@ if [ "$SELECTION" = all ] && [ "$GLOBAL" = true ]; then
     fi
   fi
 fi
-# Workspace activation: after install, wire rules, mex, zvec, second-brain, open-ontologies,
-# openspace, rtk/semble, jev and the harness2 manifest so queries alone drive the workflows.
+# Workspace activation: after install, wire rules, mex, knowledge, zvec, second-brain,
+# open-ontologies, openspace, rtk/semble, jev and the harness2 manifest so queries alone drive the workflows.
 # JEO_SKILLS_WORKSPACE=skip opts out; JEO_SKILLS_APPROVE_KNOWLEDGE_{HOOKS,DATA}=false veto second-brain.
 if [ "$SELECTION" = all ] && [ "$GLOBAL" = true ] && [ "${JEO_SKILLS_WORKSPACE:-}" != skip ]; then
   WS_HELPER=''

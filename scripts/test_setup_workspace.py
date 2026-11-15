@@ -65,6 +65,7 @@ class Sandbox:
         write_exec(self.skills / "openspace/scripts/route-hooks.py", py("route-hooks"))
         write_exec(self.skills / "open-ontologies/scripts/smoke.py", py("oo-smoke"))
         write_exec(self.skills / "harness2/scripts/preflight.py", py("h2-preflight"))
+        write_exec(self.skills / "repo-knowledge-wiki/scripts/bootstrap.py", py("knowledge-bootstrap"))
         setup = (py("brain-setup")
                  + 'cfg = sys.argv[sys.argv.index("--config") + 1]\n'
                    f'open({str(self.log)!r}, "a").write("CONFIG " + open(cfg).read().replace("\\n", " ") + "\\n")\n')
@@ -103,7 +104,7 @@ class WorkspaceSetupTests(unittest.TestCase):
         self.assertEqual(proc.returncode, 0, proc.stderr + proc.stdout)
         statuses = {k: v["status"] for k, v in report["steps"].items()}
         self.assertEqual(set(statuses.values()), {"ok"}, statuses)
-        for prefix in ("mex-install", "zg index", "zg status --check-ready", "brain-setup",
+        for prefix in ("mex-install", "knowledge-bootstrap", "zg index", "zg status --check-ready", "brain-setup",
                        "oo-smoke", "openspace-install", "route-hooks install", "rtk init -g --auto-patch"):
             self.assertTrue(box.called(prefix), f"{prefix} not called: {box.calls()}")
         self.assertIn(f"mex-install {box.project} --skip-skill", box.calls())
@@ -183,7 +184,7 @@ class WorkspaceSetupTests(unittest.TestCase):
         order = [text.index(k) for k in ("**openspace**", "**rtk**", "**semble**", "**jev**")]
         self.assertEqual(order, sorted(order), "per-prompt order must be openspace, rtk, semble, jev")
         self.assertIn("only after steps 2 and 3 both ran", text)
-        for needle in ("second-brain", "mex-agent", "zg query", "open-ontologies", "harness2", ".harness2/workspace.json"):
+        for needle in ("knowledge/", "knowledge-pairings.md", "second-brain", "mex-agent", "zg query", "-g 'knowledge/**' -g '!knowledge/raw/**'", "open-ontologies", "harness2", ".harness2/workspace.json"):
             self.assertIn(needle, text)
 
     def test_rule_files_are_always_applied_harness_rules(self):

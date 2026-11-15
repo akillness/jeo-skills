@@ -38,7 +38,7 @@ END = "<!-- JEO-WORKFLOWS:END -->"
 HOOK_START = "# JEO-WORKFLOWS:START zvec refresh"
 HOOK_END = "# JEO-WORKFLOWS:END"
 RULE_NAME = "jeo-workflows.md"
-STEPS = ("mex", "zvec", "second-brain", "open-ontologies", "openspace",
+STEPS = ("mex", "knowledge", "zvec", "second-brain", "open-ontologies", "openspace",
          "rtk-semble", "jev", "refresh", "rules", "harness2")
 ALWAYS_STEPS = ("jev", "rules", "harness2")
 ZVEC_EMBEDDING = "local/potion-code-16m-v2"
@@ -86,17 +86,19 @@ Run in this order. If a tool is missing, say so in one line and continue.
 
 ## Route by query type
 
-- **Knowledge, past decisions, notes** → second-brain vault `{vault}`. Read its
-  index and `wiki/` pages first; file durable findings under `wiki/`. `raw/**` is
-  immutable. If the vault is not initialised, say "second-brain pending" and fall
-  back to normal search.
+- **Knowledge, past decisions, notes** → repo-local `knowledge/` (`knowledge/index.md`,
+  `knowledge/work/active/`, paired to code via `.mex/context/knowledge-pairings.md`)
+  and second-brain vault `{vault}`. Read `knowledge/index.md` or vault `index.md`
+  first; `raw/**` is immutable. If neither is initialised, say "second-brain pending"
+  and fall back to normal search.
 - **Code structure, callers, impact, project conventions** → mex. Read
   `.mex/ROUTER.md` first when it exists (an empty `.mex/` means mex has not run:
-  say so and use semble), then `mex-agent graph query ...` and
-  `mex-agent impact <symbol|file>` before editing. Use `mex-agent`, never bare
-  `mex` (TeX Live ships a `mex`).
-- **Meaning-based search when the exact name is unknown** → `zg query "<q>" --limit 8`,
-  then confirm with `rg` or a file read. Exact identifiers go to `rg`, not `zg`.
+  say so and use semble), then `mex-agent wiki for-code <nodeId>`,
+  `mex-agent graph query ...`, and `mex-agent impact <symbol|file>` before editing.
+  Use `mex-agent`, never bare `mex` (TeX Live ships a `mex`).
+- **Meaning-based search when the exact name is unknown (Context Gate)** →
+  - Past queries/work/concepts: `zg query "<q>" -g 'knowledge/**' -g '!knowledge/raw/**' -g '!knowledge/work/archive/**' --preview none --limit 5`, then read matched line ranges only.
+  - Code only: `zg query "<q>" -g '!knowledge/**' --preview none --limit 8`, then confirm with `rg` or a file read. Exact identifiers go to `rg`, not `zg`.
   If `zg status --check-ready` fails, run `zg index` (incremental), then query.
 - **RDF / OWL / SHACL / ontology work** → the `open-ontologies` skill, via its CLI
   `batch -` mode. Start no network listener and register no MCP server on your own.
@@ -291,6 +293,19 @@ def step_mex(ctx: Ctx) -> dict:
     return result("ok", ".mex/ scaffold, code graph and drift check ready")
 
 
+def step_knowledge(ctx: Ctx) -> dict:
+    bootstrap = ctx.skill_script("repo-knowledge-wiki", "bootstrap.py")
+    if not bootstrap:
+        return result("pending", "repo-knowledge-wiki skill not installed under the skills root")
+    cmd = [sys.executable, str(bootstrap), "--project", str(ctx.project), "--json"]
+    if ctx.dry:
+        cmd.append("--dry-run")
+    code, out = ctx.run(cmd, 120)
+    if code != 0:
+        return result("failed", f"repo-knowledge-wiki bootstrap exit {code}: {tail(out)}")
+    return result("ok", "knowledge/ scaffold and .mex/context/knowledge-pairings.md bridge ready")
+
+
 def step_zvec(ctx: Ctx) -> dict:
     if not ctx.which("zg"):
         return result("pending", f"zg not installed (npm install -g @zvec/zvec-grep@{ZVEC_GREP_VERSION})")
@@ -467,17 +482,28 @@ def step_rules(ctx: Ctx) -> dict:
     anchors = [ctx.project / n for n in ("AGENTS.md", "CLAUDE.md") if (ctx.project / n).is_file()]
     for anchor in anchors or [ctx.project / "AGENTS.md"]:
         changed.append(f"{anchor.name}: {upsert_block(ctx, anchor, pointer)}")
-    # Antigravity CLI (agy) auto-reads global rules from ~/.gemini/GEMINI.md, not ~/.agents/rules.
-    gemini_dir = ctx.home / ".gemini"
-    if gemini_dir.is_dir() or ctx.which("agy"):
-        changed.append(f"agy ~/.gemini/GEMINI.md: {upsert_block(ctx, gemini_dir / 'GEMINI.md', pointer)}")
+    # Propagate pointer block to installed host global instruction files without creating dirs for absent hosts.
+    host_globals = (
+        ("agy", ctx.home / ".gemini", ctx.home / ".gemini/GEMINI.md", ("agy",)),
+        ("claude", ctx.home / ".claude", ctx.home / ".claude/CLAUDE.md", ("claude",)),
+        ("codex", ctx.home / ".codex", ctx.home / ".codex/AGENTS.md", ("codex",)),
+        ("pi", ctx.home / ".pi/agent", ctx.home / ".pi/agent/AGENTS.md", ("pi",)),
+        ("gjc", ctx.home / ".gjc/agent", ctx.home / ".gjc/agent/AGENTS.md", ("gjc",)),
+        ("opencode", ctx.home / ".config/opencode", ctx.home / ".config/opencode/AGENTS.md", ("opencode",)),
+    )
+    for label, host_dir, target, bins in host_globals:
+        if host_dir.is_dir() or any(ctx.which(b) for b in bins):
+            changed.append(f"{label} {target}: {upsert_block(ctx, target, pointer)}")
+    if (ctx.project / ".cursor").is_dir() or (ctx.home / ".cursor").is_dir() or ctx.which("cursor"):
+        cursor_rule = ctx.project / ".cursor/rules/jeo-workflows.mdc"
+        changed.append(f"cursor {cursor_rule}: {upsert_rule_file(ctx, cursor_rule, text)}")
     return result("ok", "; ".join(changed))
 
 
 COMPONENTS = {
     "c1_system_prompt": ("AGENTS.md", "CLAUDE.md"),
     "c2_guardrails": (".agents/rules",),
-    "c3_memory": (".mex",),
+    "c3_memory": (".mex", "knowledge"),
     "c4_tool_guidance": (".agents/rules/" + RULE_NAME,),
     "c5_subagents": (".claude/agents",),
     "c6_skills": (".agents/skills", ".claude/skills"),
@@ -562,7 +588,8 @@ def run_verify(ctx: Ctx, as_json: bool) -> int:
 
 
 STEP_FUNCS = {
-    "mex": step_mex, "zvec": step_zvec, "second-brain": step_second_brain,
+    "mex": step_mex, "knowledge": step_knowledge, "zvec": step_zvec,
+    "second-brain": step_second_brain,
     "open-ontologies": step_ontologies, "openspace": step_openspace,
     "rtk-semble": step_rtk_semble, "jev": step_jev, "refresh": step_refresh,
     "rules": step_rules, "harness2": step_harness2,

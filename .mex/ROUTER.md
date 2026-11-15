@@ -12,6 +12,8 @@ edges:
     condition: when making architectural choices or understanding why something is built a certain way
   - target: context/setup.md
     condition: when setting up the dev environment or running the project for the first time
+  - target: context/knowledge-pairings.md
+    condition: when checking code-to-knowledge pairings, query history links, or active work memory
   - target: patterns/INDEX.md
     condition: when starting a task — check the pattern index for a matching pattern file
 last_updated: 2026-11-13

@@ -1,7 +1,7 @@
 {
   "version": "2.1.0",
   "generated": "2026-10-21",
-  "skill_count": 437,
+  "skill_count": 438,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -558,6 +558,7 @@
     "utilities": [
       "lapian-notes",
       "llm-wiki",
+      "repo-knowledge-wiki",
       "notebooklm",
       "obsidian-mind",
       "obsidian-second-brain",
@@ -1167,6 +1168,7 @@
       "knowledge": [
         "lapian-notes",
         "llm-wiki",
+        "repo-knowledge-wiki",
         "notebooklm",
         "obsidian-mind",
         "obsidian-second-brain",
@@ -8205,6 +8207,36 @@
       "keyword": "llm-wiki",
       "version": "1.0",
       "source": "https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f"
+    },
+    {
+      "name": "repo-knowledge-wiki",
+      "description": "Manage a repository-local LLM wiki, query history, and active work-check memory alongside code in one Git repository without mixing noise into code search. Pairs `knowledge/` documents with code symbols via `.mex/context/knowledge-pairings.md` (`mex-agent` `grounds_to`) and enforces scoped semantic retrieval via `zvec-grep` (`zg query -g 'knowledge/**' -g '!knowledge/raw/**' --preview none`). Use when setting up or querying repo-local knowledge, pairing docs to code symbols, archiving completed work notes, or gating context retrieval.",
+      "category": "utilities",
+      "subcategory": "knowledge",
+      "interface": "workflow",
+      "path": "repo-knowledge-wiki/SKILL.md",
+      "tags": [
+        "repo-knowledge-wiki",
+        "llm-wiki",
+        "mex",
+        "zvec-grep",
+        "knowledge-base",
+        "code-doc-pairing",
+        "work-memory",
+        "context-gate"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "repo-knowledge-wiki",
+      "version": "1.0.0",
+      "source": "https://github.com/akillness/jeo-skills"
     },
     {
       "name": "notebooklm",
