@@ -1,7 +1,7 @@
 {
   "version": "2.1.0",
   "generated": "2026-10-21",
-  "skill_count": 436,
+  "skill_count": 437,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -435,7 +435,8 @@
       "revfactory-harness",
       "elephant-goldfish-model",
       "kagent",
-      "trulens"
+      "trulens",
+      "fastmcp"
     ],
     "engineering": [
       "audit-reference-originality",
@@ -945,7 +946,8 @@
         "anyjev",
         "agentic-graphrag-blueprint",
         "agent-s",
-        "kagent"
+        "kagent",
+        "fastmcp"
       ],
       "skill-authoring": [
         "article-prompts-to-skills",
@@ -16077,6 +16079,37 @@
       "keyword": "gamefactory-3a",
       "version": "1.0.0",
       "source": "https://github.com/OpenDCAI/GameFactory-3A"
+    },
+    {
+      "name": "fastmcp",
+      "description": "Build, inspect, deploy, and evaluate MCP (Model Context Protocol) servers, clients, and agent skills with FastMCP 4.2+ (Python/TypeScript). Use when authoring tools, resources, and prompts with @mcp.tool, @mcp.resource, and @mcp.prompt; declaring dependencies via Annotated[T, Depends(...)]; hosting or consuming agent skills through Skill, SkillCatalogProvider, and Client.read_skill() under SEP-2640; managing transports (stdio, SSE, streamable HTTP); configuring auth middleware and error masking; running local CLI discovery and testing with fastmcp run, dev, inspect, list, call, and install; or verifying in-process workflows with Client. Route generic API wrapping without FastMCP to mcp-builder, and format-only skill linting to skill-standardization.",
+      "category": "ai-agents",
+      "subcategory": "agent-frameworks",
+      "interface": "cli",
+      "path": "fastmcp/SKILL.md",
+      "tags": [
+        "fastmcp",
+        "mcp",
+        "model-context-protocol",
+        "mcp-server",
+        "mcp-client",
+        "agent-framework",
+        "skills-extension",
+        "tools",
+        "prefect"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Grep",
+        "Glob",
+        "Write",
+        "Edit"
+      ],
+      "keyword": "fastmcp",
+      "version": "4.2.0",
+      "source": "https://github.com/PrefectHQ/fastmcp"
     }
   ]
 }

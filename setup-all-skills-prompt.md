@@ -3360,6 +3360,10 @@ Preview `jeo-skill install kagent --global --dry-run`, then install the selected
 
 Preview `jeo-skill install trulens --global --dry-run`, then install the selected guide with `jeo-skill install trulens --global --yes`. Installing `trulens` copies operator guidance, RAG Triad evaluators, feedback function templates, and support tools only, not the TruLens package, Snowflake connectors, or provider API keys. Resolve `SKILL_DIR` to the installed skill directory and run `python3 "$SKILL_DIR/scripts/preflight.py"` for offline package discovery and database inspection without network calls or binary execution. Review the skill's operations and RAG Triad references before separately authorizing model provider calls (`OpenAI`, `Cortex`, `Bedrock`), database migrations, or dashboard launch (`trulens dashboard`).
 
+### FastMCP operator (on demand)
+
+Preview `jeo-skill install fastmcp --global --dry-run`, then install the selected guide with `jeo-skill install fastmcp --global --yes`. Installing `fastmcp` copies operator guidance, server authoring patterns, skills extension (SEP-2640) templates, and offline support tools only, not the FastMCP package, Python dependencies, or client configurations. Resolve `SKILL_DIR` to the installed skill directory and run `python3 "$SKILL_DIR/scripts/preflight.py"` for offline CLI discovery and environment inspection without network calls or binary execution. Review the skill's operations, server authoring, and skills extension references before separately launching live servers (`fastmcp run`, `fastmcp dev`), executing command-line calls (`fastmcp call`), or mounting remote skills.
+
 ### Impeccable design operator (on demand)
 
 To select it independently, preview `jeo-skill install impeccable --global --dry-run`

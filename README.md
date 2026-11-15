@@ -392,7 +392,7 @@ See the [setup guide](setup-all-skills-prompt.md#claude-code-game-studios-on-dem
 
 ## 📚 Skills List
 
-> Generated from `.agent-skills/skills.json` · 436 skills · expand a category to see its skills.
+> Generated from `.agent-skills/skills.json` · 437 skills · expand a category to see its skills.
 
 ### 🌐 Web (73)
 
@@ -671,9 +671,9 @@ Subcategories: `developer-cli` (12), `ai-cli` (17), `media-cli` (1), `automation
 
 </details>
 
-### 🤖 AI & Agents (80)
+### 🤖 AI & Agents (81)
 
-Subcategories: `orchestration` (19), `agent-frameworks` (21), `skill-authoring` (5), `evaluation` (10), `memory` (7), `planning-review` (13), `discovery` (3), `prompting` (2)
+Subcategories: `orchestration` (19), `agent-frameworks` (22), `skill-authoring` (5), `evaluation` (10), `memory` (7), `planning-review` (13), `discovery` (3), `prompting` (2)
 
 <details>
 <summary>Show AI &amp; Agents skills</summary>
@@ -760,6 +760,7 @@ Subcategories: `orchestration` (19), `agent-frameworks` (21), `skill-authoring` 
 | `elephant-goldfish-model` |
 | `kagent` |
 | `trulens` |
+| `fastmcp` |
 
 </details>
 

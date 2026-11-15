@@ -1,0 +1,22 @@
+N:fastmcp
+D:Build, inspect, deploy, and evaluate MCP (Model Context Protocol) servers, clients, and agent skills with FastMCP 4.2+ (Python/TypeScript). Use when authoring tools, resources, and prompts with @mcp.tool, @mcp.resource, and @mcp.prompt; declaring dependencies via Annotated[T, Depends(...)]; hosting or consuming agent skills through Skill, SkillCatalogProvider, and Client.read_skill() under SEP-2640; managing transports (stdio, SSE, streamable HTTP); configuring auth middleware and error masking; running local CLI discovery and testing with fastmcp run, dev, inspect, list, call, and install; or verifying in-process workflows with Client. Route generic API wrapping without FastMCP to mcp-builder, and format-only skill linting to skill-standardization.
+G:fastmcp mcp model-context-protocol mcp-server mcp-client agent-framework skills-extension tools prefect
+U[5]:
+  Author typed MCP tools, resources, and prompts with Pydantic validation and docstrings
+  Configure dependency injection using Annotated[T, Depends(...)] and execution Context
+  Host and distribute Agent Skills via SkillCatalogProvider and consume with Client.read_skill()
+  Manage stdio, SSE, and streamable HTTP transports with AuthMiddleware and error masking
+  Discover, inspect, and invoke MCP tools via the fastmcp CLI and in-process Client tests
+S[6]{n,action,details}:
+  1,Preflight,Run scripts/preflight.py --json to inspect fastmcp binary and package presence offline
+  2,Server,Instantiate FastMCP and register @mcp.tool, @mcp.resource, and @mcp.prompt endpoints
+  3,Dependencies,Attach reusable dependencies with Annotated[T, Depends(...)] and use Context for progress
+  4,Skills,Mount Agent Skills with Skill.from_directory() and SkillCatalogProvider for SEP-2640 delivery
+  5,Transport,Configure stdio, SSE, or streamable HTTP transport with ToolError masking for safe deployment
+  6,CLI&Test,Inspect with fastmcp list/call or verify programmatically using in-process Client(server)
+R[5]:
+  Run scripts/preflight.py --json before launching servers or invoking live CLI operations
+  Separate SHA-256 manifest byte verification from authoritative host approval before execution
+  Use ToolError for user-facing errors and mask_error_details=True to prevent backend credential leaks
+  Use Annotated[T, Depends(...)] instead of parameter default values to preserve clean JSON Schemas
+  Route generic REST API design to mcp-builder and SKILL.md frontmatter linting to skill-standardization

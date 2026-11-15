@@ -1,0 +1,30 @@
+{
+  "skill_name": "fastmcp",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "How do I create an MCP server in Python with a tool that uses dependency injection for a database connection and logs progress using FastMCP?",
+      "expected_output": "Guide the user to instantiate `FastMCP(\"ServerName\")`, declare a dependency function (e.g. `get_db()`), write a `@mcp.tool` function using `Annotated[dict, Depends(get_db)]` and `ctx: Context`, perform context logging with `await ctx.info(...)`, and run the server with `mcp.run()`."
+    },
+    {
+      "id": 2,
+      "prompt": "FastMCP 4.2 has a new Skills feature. How do I serve an agent skill from my server and read it on the client side with verified hashes?",
+      "expected_output": "Explain using `Skill.from_directory(\"skills/deploy\")` with `SkillCatalogProvider` or `SkillsDirectoryProvider` on the server (`mcp.add_provider(...)`), and on the client using `async with Client(mcp) as client:` calling `await client.list_skills()` and `await client.read_skill(\"deploy\")` which verifies SHA-256 digests and file sizes under SEP-2640 before exporting with `skill.to_directory(...)`."
+    },
+    {
+      "id": 3,
+      "prompt": "I have an MCP server in `server.py`. How can I discover what tools it offers and test calling one from the terminal without opening Claude Desktop?",
+      "expected_output": "Show `fastmcp list server.py --input-schema` to inspect tool names and schemas, and `fastmcp call server.py <tool_name> arg=value --json` to invoke the tool directly with automated type coercion."
+    },
+    {
+      "id": 4,
+      "prompt": "I want to design a general REST API specification and endpoint schema from scratch without using Python or the FastMCP library.",
+      "expected_output": "Route general REST API schema design and endpoint specifications to `api-design` or `mcp-builder` rather than fastmcp, explaining that fastmcp is specifically for authoring and operating MCP servers and clients using the FastMCP framework."
+    },
+    {
+      "id": 5,
+      "prompt": "Please validate the frontmatter YAML syntax and directory structure of my custom SKILL.md file.",
+      "expected_output": "Route format-only skill linting and frontmatter boundary checks to `skill-standardization` rather than fastmcp."
+    }
+  ]
+}
