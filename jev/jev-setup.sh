@@ -1186,22 +1186,44 @@ PY
             llama_asset="llama-b12359-bin-ubuntu-arm64.tar.gz"
             llama_sha="dc7aa17a67884619b7223870aca9fd6addbc01717713b04a714add1c31137359"
             ;;
+          MINGW*:x86_64|MINGW*:amd64|MSYS*:x86_64|MSYS*:amd64|CYGWIN*:x86_64|CYGWIN*:amd64|Windows_NT:x86_64|Windows_NT:amd64)
+            llama_asset="llama-b12359-bin-win-cpu-x64.zip"
+            llama_sha="837c1655e87df3b66989f4be33a792a1399c785bf259038dc75c900096683e69"
+            ;;
+          MINGW*:aarch64|MINGW*:arm64|MSYS*:aarch64|MSYS*:arm64|CYGWIN*:aarch64|CYGWIN*:arm64|Windows_NT:aarch64|Windows_NT:arm64)
+            llama_asset="llama-b12359-bin-win-cpu-arm64.zip"
+            llama_sha="d27564c754478d2832789dfcebfc5ace018e36a224c41d810b7cbc1ba8243ec0"
+            ;;
         esac
         [ -n "$llama_asset" ] || fail "No prebuilt llama-server binary for $(uname -s)/$(uname -m); install llama-server (>= b11622) or pass --model jevos-v5"
-        command -v tar >/dev/null 2>&1 || fail 'tar is required to unpack llama-server'
         LLAMA_STAGE="$SETUP_STAGE/llama"
         mkdir -p "$LLAMA_STAGE/unpack"
         info "Downloading llama-server ($llama_asset)..."
         curl -fsSL "$LLAMA_RELEASE_BASE/$llama_asset" -o "$LLAMA_STAGE/$llama_asset" || fail "Failed to download $llama_asset"
         actual_llama_sha="$(sha256_file "$LLAMA_STAGE/$llama_asset")"
         [ "$actual_llama_sha" = "$llama_sha" ] || fail "SHA-256 verification failed for $llama_asset"
-        tar -xzf "$LLAMA_STAGE/$llama_asset" -C "$LLAMA_STAGE/unpack" || fail "Failed to extract $llama_asset"
+        case "$llama_asset" in
+          *.zip)
+            if command -v unzip >/dev/null 2>&1; then
+              unzip -q "$LLAMA_STAGE/$llama_asset" -d "$LLAMA_STAGE/unpack" || fail "Failed to extract $llama_asset"
+            elif command -v python3 >/dev/null 2>&1; then
+              python3 -m zipfile -e "$LLAMA_STAGE/$llama_asset" "$LLAMA_STAGE/unpack" || fail "Failed to extract $llama_asset"
+            else
+              fail 'unzip or python3 is required to unpack llama-server zip'
+            fi
+            ;;
+          *)
+            command -v tar >/dev/null 2>&1 || fail 'tar is required to unpack llama-server'
+            tar -xzf "$LLAMA_STAGE/$llama_asset" -C "$LLAMA_STAGE/unpack" || fail "Failed to extract $llama_asset"
+            ;;
+        esac
         mkdir -p "$LLAMA_ROOT"
-        found_srv="$(find "$LLAMA_STAGE/unpack" -name 'llama-server' -type f -print -quit)"
+        found_srv="$(find "$LLAMA_STAGE/unpack" \( -name 'llama-server' -o -name 'llama-server.exe' \) -type f -print -quit)"
         [ -n "$found_srv" ] || fail "llama-server binary not found inside $llama_asset"
         cp -R "$(dirname "$found_srv")/." "$LLAMA_ROOT/"
-        chmod 755 "$LLAMA_ROOT/llama-server"
-        LLAMA_BIN="$LLAMA_ROOT/llama-server"
+        srv_name="$(basename "$found_srv")"
+        chmod 755 "$LLAMA_ROOT/$srv_name"
+        LLAMA_BIN="$LLAMA_ROOT/$srv_name"
       fi
       if [ ! -f "$MODEL_FILE" ] || [ ! -s "$MODEL_FILE" ]; then
         mkdir -p "$MODEL_DIR"
@@ -1217,7 +1239,12 @@ PY
         info "$LOCAL_MODEL already present at $MODEL_FILE."
       fi
     fi
-    [ -n "$LLAMA_BIN" ] || LLAMA_BIN="$LLAMA_ROOT/llama-server"
+    if [ -z "$LLAMA_BIN" ]; then
+      case "$(uname -s)" in
+        MINGW*|MSYS*|CYGWIN*|Windows_NT) LLAMA_BIN="$LLAMA_ROOT/llama-server.exe" ;;
+        *) LLAMA_BIN="$LLAMA_ROOT/llama-server" ;;
+      esac
+    fi
     if [ -n "$PROFILE" ]; then
       printf 'JEV_LOCAL_ENGINE=qev\nJEV_LOCAL_MODEL=%s\nJEV_LOCAL_MODEL_DIR=%s\nJEV_LOCAL_MODEL_FILE=%s\nJEV_LOCAL_BIN=%s\nJEV_LOCAL_ENDPOINT=%s\nJEV_LOCAL_HOST=%s\nJEV_LOCAL_PORT=%s\n' "$LOCAL_MODEL" "$MODEL_DIR" "$MODEL_FILE" "$LLAMA_BIN" "$LOCAL_ENDPOINT_VAL" "$local_host" "$local_port" | write_selected_config
     else
