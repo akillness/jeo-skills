@@ -38,8 +38,8 @@ END = "<!-- JEO-WORKFLOWS:END -->"
 HOOK_START = "# JEO-WORKFLOWS:START zvec refresh"
 HOOK_END = "# JEO-WORKFLOWS:END"
 RULE_NAME = "jeo-workflows.md"
-STEPS = ("mex", "knowledge", "zvec", "second-brain", "open-ontologies", "openspace",
-         "rtk-semble", "jev", "refresh", "rules", "harness2")
+STEPS = ("mex", "knowledge", "rules", "zvec", "second-brain", "open-ontologies", "openspace",
+         "rtk-semble", "jev", "refresh", "harness2")
 ALWAYS_STEPS = ("jev", "rules", "harness2")
 ZVEC_EMBEDDING = "local/potion-code-16m-v2"
 ZVEC_GREP_VERSION = "0.2.2"
@@ -473,16 +473,9 @@ def step_refresh(ctx: Ctx) -> dict:
     return result("ok", ", ".join(notes) if notes else "nothing to hook (mex/zg absent)")
 
 
-def step_rules(ctx: Ctx) -> dict:
-    text = rule_text(ctx)
-    pointer = POINTER_TEMPLATE.replace("{rule}", RULE_NAME)
-    changed = []
-    for path in (ctx.home / ".agents/rules" / RULE_NAME, ctx.project / ".agents/rules" / RULE_NAME):
-        changed.append(f"{path}: {upsert_rule_file(ctx, path, text)}")
-    anchors = [ctx.project / n for n in ("AGENTS.md", "CLAUDE.md") if (ctx.project / n).is_file()]
-    for anchor in anchors or [ctx.project / "AGENTS.md"]:
-        changed.append(f"{anchor.name}: {upsert_block(ctx, anchor, pointer)}")
-    # Propagate pointer block to installed host global instruction files without creating dirs for absent hosts.
+def host_rule_targets(ctx: Ctx) -> list[tuple[str, Path, str]]:
+    """Return (label, path, mode) for installed host instruction files."""
+    targets: list[tuple[str, Path, str]] = []
     host_globals = (
         ("agy", ctx.home / ".gemini", ctx.home / ".gemini/GEMINI.md", ("agy",)),
         ("claude", ctx.home / ".claude", ctx.home / ".claude/CLAUDE.md", ("claude",)),
@@ -493,10 +486,24 @@ def step_rules(ctx: Ctx) -> dict:
     )
     for label, host_dir, target, bins in host_globals:
         if host_dir.is_dir() or any(ctx.which(b) for b in bins):
-            changed.append(f"{label} {target}: {upsert_block(ctx, target, pointer)}")
+            targets.append((label, target, "pointer"))
     if (ctx.project / ".cursor").is_dir() or (ctx.home / ".cursor").is_dir() or ctx.which("cursor"):
-        cursor_rule = ctx.project / ".cursor/rules/jeo-workflows.mdc"
-        changed.append(f"cursor {cursor_rule}: {upsert_rule_file(ctx, cursor_rule, text)}")
+        targets.append(("cursor", ctx.project / ".cursor/rules/jeo-workflows.mdc", "rule"))
+    return targets
+
+
+def step_rules(ctx: Ctx) -> dict:
+    text = rule_text(ctx)
+    pointer = POINTER_TEMPLATE.replace("{rule}", RULE_NAME)
+    changed = []
+    for path in (ctx.home / ".agents/rules" / RULE_NAME, ctx.project / ".agents/rules" / RULE_NAME):
+        changed.append(f"{path}: {upsert_rule_file(ctx, path, text)}")
+    anchors = [ctx.project / n for n in ("AGENTS.md", "CLAUDE.md") if (ctx.project / n).is_file()]
+    for anchor in anchors or [ctx.project / "AGENTS.md"]:
+        changed.append(f"{anchor.name}: {upsert_block(ctx, anchor, pointer)}")
+    for label, target, mode in host_rule_targets(ctx):
+        status = upsert_rule_file(ctx, target, text) if mode == "rule" else upsert_block(ctx, target, pointer)
+        changed.append(f"{label} {target}: {status}")
     return result("ok", "; ".join(changed))
 
 
@@ -568,13 +575,32 @@ def check_pointer(project: Path) -> dict:
     return {**entry, "state": "missing", "detail": "no AGENTS.md / CLAUDE.md pointer block; run setup-workspace.py"}
 
 
+def check_pointer_block(path: Path, expected_pointer: str, label: str) -> dict:
+    entry = {"target": label, "path": str(path)}
+    if not path.is_file():
+        return {**entry, "state": "missing", "detail": "run setup-workspace.py to create it"}
+    text = path.resolve().read_text(encoding="utf-8")
+    if START not in text or END not in text:
+        return {**entry, "state": "missing", "detail": "JEO-WORKFLOWS pointer block missing; run setup-workspace.py"}
+    if text.partition(START)[2].partition(END)[0].strip() != expected_pointer.strip():
+        return {**entry, "state": "stale", "detail": "pointer block differs from this installer's; re-run to refresh"}
+    return {**entry, "state": "ok", "detail": "marker block current"}
+
+
 def run_verify(ctx: Ctx, as_json: bool) -> int:
     expected = rule_text(ctx)
+    pointer = POINTER_TEMPLATE.replace("{rule}", RULE_NAME)
     checks = [
         check_rule_file(ctx.home / ".agents/rules" / RULE_NAME, expected, "global rule"),
         check_rule_file(ctx.project / ".agents/rules" / RULE_NAME, expected, "project rule"),
         check_pointer(ctx.project),
     ]
+    for label, target, mode in host_rule_targets(ctx):
+        checks.append(
+            check_rule_file(target, expected, f"host {label}")
+            if mode == "rule"
+            else check_pointer_block(target, pointer, f"host {label}")
+        )
     bad = [c for c in checks if c["state"] != "ok"]
     if as_json:
         print(json.dumps({"project": str(ctx.project), "checks": checks,

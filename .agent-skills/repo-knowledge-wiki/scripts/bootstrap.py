@@ -6,6 +6,7 @@ import argparse
 import json
 import os
 import tempfile
+from datetime import date
 from pathlib import Path
 
 INDEX_TEMPLATE = """# Knowledge Index
@@ -39,11 +40,15 @@ LOG_TEMPLATE = """# Knowledge Log
 PAIRINGS_TEMPLATE = """---
 name: knowledge-pairings
 description: Bridge entities pairing root knowledge/ documents (queries, work checks, concepts) with grounded code symbols.
+type: component
+status: promoted
+grounds_to: []
+last_updated: {today}
 ---
 
 # Knowledge Pairings
 
-Add `<!-- mex:entity ... -->` entries via `mex-agent wiki apply` to bind code symbols (`grounds_to`) to `knowledge/` documents.
+Add `<!-- mex:entity ... -->` entries via `pair_sync.py --sync` or `mex-agent wiki apply` to bind code symbols (`grounds_to`) to `knowledge/` documents.
 """
 
 DIRS = (
@@ -91,6 +96,38 @@ def ensure_gitignore_allowlist(project: Path, dry_run: bool) -> str:
     return "planned" if dry_run else "updated"
 
 
+def ensure_mex_router_edge(project: Path, dry_run: bool) -> str:
+    router = project / ".mex/ROUTER.md"
+    if not router.is_file():
+        return "unchanged (no .mex/ROUTER.md)"
+    text = router.read_text(encoding="utf-8")
+    if "context/knowledge-pairings.md" in text:
+        return "unchanged (edge present)"
+    lines = text.splitlines()
+    edge_block = [
+        "  - target: context/knowledge-pairings.md",
+        "    condition: when checking code-to-knowledge pairings, query history links, or active work memory",
+    ]
+    out: list[str] = []
+    inserted = False
+    in_edges = False
+    for line in lines:
+        if line.strip() == "edges:":
+            in_edges = True
+            out.append(line)
+            continue
+        if in_edges and not inserted and (line.startswith("last_updated:") or line == "---"):
+            out.extend(edge_block)
+            inserted = True
+            in_edges = False
+        out.append(line)
+    if not inserted:
+        return "unchanged (no edges block)"
+    if not dry_run:
+        atomic_write(router, "\n".join(out) + ("\n" if text.endswith("\n") else ""))
+    return "planned" if dry_run else "updated"
+
+
 def bootstrap(project: Path, dry_run: bool = False) -> dict:
     created: list[str] = []
     unchanged: list[str] = []
@@ -102,18 +139,20 @@ def bootstrap(project: Path, dry_run: bool = False) -> dict:
                 d.mkdir(parents=True, exist_ok=True)
             created.append(rel + "/")
         keep = d / ".gitkeep"
-        if rel in ("knowledge/raw", "knowledge/work/archive") and not any(d.iterdir()) if d.is_dir() else rel in ("knowledge/raw", "knowledge/work/archive"):
+        is_empty_dir = (not d.is_dir()) or (not any(d.iterdir()))
+        if rel in ("knowledge/raw", "knowledge/work/archive") and is_empty_dir:
             if not keep.exists():
                 if not dry_run:
                     atomic_write(keep, "")
                 created.append(f"{rel}/.gitkeep")
 
+    today = date.today().isoformat()
     files = {
         "knowledge/index.md": INDEX_TEMPLATE,
         "knowledge/log.md": LOG_TEMPLATE,
     }
     if (project / ".mex").is_dir():
-        files[".mex/context/knowledge-pairings.md"] = PAIRINGS_TEMPLATE
+        files[".mex/context/knowledge-pairings.md"] = PAIRINGS_TEMPLATE.format(today=today)
 
     for rel, content in files.items():
         target = project / rel
@@ -125,12 +164,14 @@ def bootstrap(project: Path, dry_run: bool = False) -> dict:
             created.append(rel)
 
     gitignore_status = ensure_gitignore_allowlist(project, dry_run)
+    router_status = ensure_mex_router_edge(project, dry_run)
     return {
         "project": str(project),
         "dry_run": dry_run,
         "created": created,
         "unchanged": unchanged,
         "gitignore": gitignore_status,
+        "router": router_status,
         "ok": True,
     }
 
@@ -151,7 +192,8 @@ def main() -> int:
         print(json.dumps(res, indent=2))
     else:
         print(f"repo-knowledge-wiki bootstrap ({'dry-run' if args.dry_run else 'applied'}): "
-              f"{len(res['created'])} created, {len(res['unchanged'])} unchanged, gitignore={res['gitignore']}")
+              f"{len(res['created'])} created, {len(res['unchanged'])} unchanged, "
+              f"gitignore={res['gitignore']}, router={res['router']}")
     return 0
 
 

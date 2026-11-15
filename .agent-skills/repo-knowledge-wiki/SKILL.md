@@ -69,19 +69,20 @@ overwriting existing files. If `.gitignore` uses a root `/*` allowlist, adds
 
 Every durable note in `knowledge/queries/`, `knowledge/work/active/`, or
 `knowledge/concepts/` uses frontmatter `status`, `paired_files`, and
-`paired_symbols` (`path/to/file.py#symbol_name`). Audit pairing coverage:
+`paired_symbols` (`path/to/file.py#symbol_name` or `path/to/file.py:line`). Audit or sync pairings:
 
 ```bash
 python3 .agent-skills/repo-knowledge-wiki/scripts/pair_sync.py --project /path/to/repo --json
+python3 .agent-skills/repo-knowledge-wiki/scripts/pair_sync.py --project /path/to/repo --sync --dry-run --json
+python3 .agent-skills/repo-knowledge-wiki/scripts/pair_sync.py --project /path/to/repo --sync --json
 ```
 
-When a note pairs to new code symbols, register a bridge entry in
-`.mex/context/knowledge-pairings.md` with `mex-agent wiki apply` and verify with
-`mex-agent check` and `zg index`.
+`--sync` generates an idempotent `mex-agent wiki apply` batch under `.mex/local/setup-ops/pair-sync.json`, refreshes `.mex/graph.db` and `.zvec-grep/`, and verifies pairing integrity.
 
 ### 4. Archive completed work checks
 
 When a `knowledge/work/active/<task>.md` checklist finishes:
+
 1. Update `status: done` in frontmatter and move it to `knowledge/work/archive/`.
 2. Update `knowledge/index.md` and append one line to `knowledge/log.md`.
 3. Run `zg index` so default active-work queries exclude the archived note.
