@@ -1,0 +1,49 @@
+{
+  "skill_name": "gamefactory-3a",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "GameFactory-3A로 새로운 3D 액션 게임을 만들고 싶어. 모델 생성부터 시작하면 될까?",
+      "expected_output": "Reject jumping directly to model generation; enforce the 5-step lifecycle starting with clarifying the brief, game design planning, and building a playable whitebox first.",
+      "files": [],
+      "assertions": [
+        "Enforces the 5-step workflow: Brief -> Plan -> Playable Whitebox -> Asset Refinement -> Validate & Iterate.",
+        "Refuses to run expensive 3D asset generation before the core gameplay loop and mechanics are proven in a whitebox.",
+        "References setting_overview.md and game_design/SKILL.md."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Unreal Engine 5 게임에 나이아가라 폭발 이펙트를 붙이고 싶어. 파이썬 스크립트로 에디터 모듈을 호스트 에이전트에 직접 임포트해도 돼?",
+      "expected_output": "Warn that host Python must not import Unreal Editor modules directly; route to create-vfx-effects and enforce UEClient transport boundary.",
+      "files": [],
+      "assertions": [
+        "Identifies that UEClient is the sole host-side interface to Unreal Engine.",
+        "Explains that engine-specific VFX scripts must live in engine_adapters/ue5/ or inside the Unreal project.",
+        "Routes to create-vfx-effects/SKILL.md."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "캐릭터 모델을 메쉬 생성 모델로 뽑았는데 바로 게임에 넣어도 될까?",
+      "expected_output": "Enforce 5-view orthographic preview sheet review and orientation inspection before importing into the game engine.",
+      "files": [],
+      "assertions": [
+        "Requires inspecting mesh facing, scale, and watertight geometry via preview_sheet.",
+        "Warns that raw image-to-3D outputs often suffer from inverted forward axes or improper scale.",
+        "References asset_qa/3d_object/SKILL.md and orientation_review.md."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "코드가 성공적으로 컴파일되었고 에러 로그가 없으니 게임 검증이 완료된 것으로 볼 수 있지?",
+      "expected_output": "Explicitly reject compilation or clean logs as playability verification; mandate actual gameplay recording and review against the 7 failure areas.",
+      "files": [],
+      "assertions": [
+        "Asserts that 'it compiles' or 'it launches' is not playability validation.",
+        "Requires exercising player operations (locomotion, attack, pickup, death/respawn, UI).",
+        "Checks recorded video against facing while moving, attachment sockets, lighting leaks, and physics stability."
+      ]
+    }
+  ]
+}

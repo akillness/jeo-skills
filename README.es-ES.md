@@ -341,7 +341,7 @@ y la [atribución MIT upstream](docs/attribution.md).
 
 ## 📚 Lista de Habilidades
 
-> Generado desde `.agent-skills/skills.json` · 435 habilidades · despliega una categoría para ver sus habilidades.
+> Generado desde `.agent-skills/skills.json` · 436 habilidades · despliega una categoría para ver sus habilidades.
 
 ### 🌐 Web (73)
 
@@ -457,9 +457,9 @@ Subcategorías: `deployment` (2), `environment` (2), `observability` (3), `secur
 
 </details>
 
-### 🎮 Juego (39)
+### 🎮 Juego (40)
 
-Subcategorías: `client` (9), `web` (2), `server` (1), `design-ui` (7), `audio` (1), `animation` (3), `motion-vfx` (3), `sprite-image` (1), `art-resources` (1), `storytelling` (0), `tooling` (5), `qa-performance` (4), `release` (2)
+Subcategorías: `client` (9), `web` (2), `server` (1), `design-ui` (7), `audio` (1), `animation` (3), `motion-vfx` (3), `sprite-image` (1), `art-resources` (1), `storytelling` (0), `tooling` (6), `qa-performance` (4), `release` (2)
 
 <details>
 <summary>Ver habilidades</summary>
@@ -505,6 +505,7 @@ Subcategorías: `client` (9), `web` (2), `server` (1), `design-ui` (7), `audio` 
 | `meshoptimizer` |
 | `fastnoise2` |
 | `donchitos-game-studios` |
+| `gamefactory-3a` |
 
 </details>
 

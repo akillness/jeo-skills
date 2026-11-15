@@ -2916,6 +2916,23 @@ For game production use `bmad-gds`, cross-engine collection
 selection use `awesome-gamedev-agent-skills`, and evaluator commands use
 `nvidia-skill-evaluator`. Eval cases here are authored, not executed model results.
 
+### 3AGameFactory (on demand, 3A game generation and asset QA)
+
+[`gamefactory-3a`](.agent-skills/gamefactory-3a/SKILL.md) installs this catalog's operator guide, research, source manifest, offline helper, and authored eval cases only. It covers the OpenDCAI/GameFactory-3A framework across Unreal Engine 5, Unity, Godot 4, Blender, and Three.js. It does not download model weights, launch game engines, or run generative pipelines without approval.
+
+```bash
+HOME="$USER_HOME" python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" install gamefactory-3a --global --yes
+# SKILLS_ROOT must be the real canonical shared skill root, not a host symlink.
+python3 "$SKILLS_ROOT/gamefactory-3a/scripts/preflight.py" --json
+# Optional: twelve selected public-file hashes in an existing real source checkout.
+python3 "$SKILLS_ROOT/gamefactory-3a/scripts/preflight.py" \
+  --repo /absolute/real/path/to/GameFactory-3A --json
+```
+
+Read the [pinned operations](.agent-skills/gamefactory-3a/references/upstream.md) and [research conclusions](.agent-skills/gamefactory-3a/references/research.md) first. The source snapshot is `f9e927c04ed6abd1dd6f805d52638f1ffe884798`. Enforce the 5-step lifecycle: Clarify Brief -> Plan -> Playable Whitebox -> Asset Refinement -> Validate & Iterate. Never skip the whitebox phase to generate assets early. Video evidence and player operation checks are mandatory; "it compiles" is never playability validation. Keep engine code strictly inside engine adapters (`engine_adapters/`) or target project assets.
+
+The helper is standard-library-only, noninteractive, and offline. It requires POSIX `dir_fd`/`O_NOFOLLOW` support and canonical absolute paths. Exit 0 is inventory or selected-file match, 1 is missing/mismatched source, 2 is unsafe/invalid input; missing optional executables are informational. It does not execute discovered tools and always reports `runtime_verified=false`.
+
 
 ### MCP server builder (on demand, evaluation spends credits)
 

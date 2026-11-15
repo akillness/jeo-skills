@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "skill": "gamefactory-3a",
+  "repository": "OpenDCAI/GameFactory-3A",
+  "commit": "f9e927c04ed6abd1dd6f805d52638f1ffe884798",
+  "license": "Apache-2.0",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "b95700185aaaca813703b44de44eed0fb46a57ba0975bb69d4ad58007e9976cf",
+      "url": "https://github.com/OpenDCAI/GameFactory-3A/blob/f9e927c04ed6abd1dd6f805d52638f1ffe884798/README.md"
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "758427a1643f76d7a4e4cb382392e264f50598b20f6ecf103a6121ebfa01c4c3",
+      "url": "https://github.com/OpenDCAI/GameFactory-3A/blob/f9e927c04ed6abd1dd6f805d52638f1ffe884798/LICENSE"
+    },
+    {
+      "path": "agent_skills/setting_overview.md",
+      "sha256": "c693d4acf921f38650a64c6082d98934f3cfebe7df7a3da5094c501e18f5c8c7",
+      "url": "https://github.com/OpenDCAI/GameFactory-3A/blob/f9e927c04ed6abd1dd6f805d52638f1ffe884798/agent_skills/setting_overview.md"
+    },
+    {
+      "path": "agent_skills/game_design/SKILL.md",
+      "sha256": "bfa8a969daf95c7167ac18ee34f2e44b004c3c0e58b733226d9f5a949d6a6d02",
+      "url": "https://github.com/OpenDCAI/GameFactory-3A/blob/f9e927c04ed6abd1dd6f805d52638f1ffe884798/agent_skills/game_design/SKILL.md"
+    },
+    {
+      "path": "agent_skills/game-feel/SKILL.md",
+      "sha256": "bdce90a6f694628992a2d8a766263e29c9c3c76f02881ae89c7305675fe175ad",
+      "url": "https://github.com/OpenDCAI/GameFactory-3A/blob/f9e927c04ed6abd1dd6f805d52638f1ffe884798/agent_skills/game-feel/SKILL.md"
+    },
+    {
+      "path": "agent_skills/asset_qa/3d_object/SKILL.md",
+      "sha256": "bf5138e790c4cd608dbb0db7935a0ed826f0660b5fc0f915c80d8f6ce43349f1",
+      "url": "https://github.com/OpenDCAI/GameFactory-3A/blob/f9e927c04ed6abd1dd6f805d52638f1ffe884798/agent_skills/asset_qa/3d_object/SKILL.md"
+    },
+    {
+      "path": "agent_skills/asset_qa/3d_scene/SKILL.md",
+      "sha256": "695744b6b63c52648b1b5d85d242e7a3aa8c245de98bc416b25311ba9f4d5fbc",
+      "url": "https://github.com/OpenDCAI/GameFactory-3A/blob/f9e927c04ed6abd1dd6f805d52638f1ffe884798/agent_skills/asset_qa/3d_scene/SKILL.md"
+    },
+    {
+      "path": "agent_skills/asset_qa/motion/SKILL.md",
+      "sha256": "83058e42f541add273f83aff781f2445d778b97284401cfd8d921de2784fb9b4",
+      "url": "https://github.com/OpenDCAI/GameFactory-3A/blob/f9e927c04ed6abd1dd6f805d52638f1ffe884798/agent_skills/asset_qa/motion/SKILL.md"
+    },
+    {
+      "path": "agent_skills/asset_qa/image/SKILL.md",
+      "sha256": "75dc2d98968efc18bb5de8fc5a912885a98188122a80e4d3b49f9bdae93fdbfc",
+      "url": "https://github.com/OpenDCAI/GameFactory-3A/blob/f9e927c04ed6abd1dd6f805d52638f1ffe884798/agent_skills/asset_qa/image/SKILL.md"
+    },
+    {
+      "path": "agent_skills/asset_qa/audio/SKILL.md",
+      "sha256": "3dfab50c9f61663e3f7f783a756e71f26170fd08633c43ae8a865f6b4a6f4a91",
+      "url": "https://github.com/OpenDCAI/GameFactory-3A/blob/f9e927c04ed6abd1dd6f805d52638f1ffe884798/agent_skills/asset_qa/audio/SKILL.md"
+    },
+    {
+      "path": "agent_skills/asset_qa/cg_video/SKILL.md",
+      "sha256": "2c662c4202dd0ee7977ba7865da07d8ccd7f4bd95e9122c502875ab78b904eaa",
+      "url": "https://github.com/OpenDCAI/GameFactory-3A/blob/f9e927c04ed6abd1dd6f805d52638f1ffe884798/agent_skills/asset_qa/cg_video/SKILL.md"
+    },
+    {
+      "path": "agent_skills/engine_context/engine_overview.md",
+      "sha256": "da7c760b76cda9cfd2feddd0d4d762c578208225f6aa37ea6d4760b8a8a7825f",
+      "url": "https://github.com/OpenDCAI/GameFactory-3A/blob/f9e927c04ed6abd1dd6f805d52638f1ffe884798/agent_skills/engine_context/engine_overview.md"
+    }
+  ],
+  "tools": [
+    {
+      "name": "python3",
+      "purpose": "offline preflight helper and pipeline runner execution"
+    },
+    {
+      "name": "git",
+      "purpose": "version tracking and subproject repository checks"
+    },
+    {
+      "name": "blender",
+      "purpose": "headless 3D asset inspection and rendering"
+    },
+    {
+      "name": "node",
+      "purpose": "Three.js and web browser game runner support"
+    },
+    {
+      "name": "claude",
+      "purpose": "coding agent command-line interface"
+    },
+    {
+      "name": "bash",
+      "purpose": "pipeline shell script execution"
+    }
+  ]
+}

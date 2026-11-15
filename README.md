@@ -392,7 +392,7 @@ See the [setup guide](setup-all-skills-prompt.md#claude-code-game-studios-on-dem
 
 ## 📚 Skills List
 
-> Generated from `.agent-skills/skills.json` · 435 skills · expand a category to see its skills.
+> Generated from `.agent-skills/skills.json` · 436 skills · expand a category to see its skills.
 
 ### 🌐 Web (73)
 
@@ -508,9 +508,9 @@ Subcategories: `deployment` (2), `environment` (2), `observability` (3), `securi
 
 </details>
 
-### 🎮 Game (39)
+### 🎮 Game (40)
 
-Subcategories: `client` (9), `web` (2), `server` (1), `design-ui` (7), `audio` (1), `animation` (3), `motion-vfx` (3), `sprite-image` (1), `art-resources` (1), `storytelling` (0), `tooling` (5), `qa-performance` (4), `release` (2)
+Subcategories: `client` (9), `web` (2), `server` (1), `design-ui` (7), `audio` (1), `animation` (3), `motion-vfx` (3), `sprite-image` (1), `art-resources` (1), `storytelling` (0), `tooling` (6), `qa-performance` (4), `release` (2)
 
 <details>
 <summary>Show Game skills</summary>
@@ -556,6 +556,7 @@ Subcategories: `client` (9), `web` (2), `server` (1), `design-ui` (7), `audio` (
 | `meshoptimizer` |
 | `fastnoise2` |
 | `donchitos-game-studios` |
+| `gamefactory-3a` |
 
 </details>
 
