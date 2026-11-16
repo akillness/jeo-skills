@@ -1,22 +1,10 @@
 #!/usr/bin/env python3
 """API-key driven agent loop for a local Animato server (github.com/otdnnc/Animato).
 
-Default loop (`animate --mode local`) keeps the inference budget at one call and keeps the
-generated script auditable:
-
-    upload -> POST /api/prompt -> one LLM call with your key -> static gate -> POST /api/run
-
-`--mode server` hands the same job to Animato's own `/api/chat` (server calls the model and
-executes the script immediately, so the static gate cannot run first).
-
-Stdlib only: no extra install beyond the Animato server itself.
-
-Environment:
-  ANIMATO_SERVER        Animato base URL            (default http://localhost:8000)
-  ANIMATO_API_KEY       LLM key; falls back to GEMINI_API_KEY / OPENAI_API_KEY
-  ANIMATO_LLM_ENDPOINT  provider base incl. version (default Gemini generativelanguage v1beta)
-  ANIMATO_MODEL         model id                    (default gemini-3-flash-preview)
-  ANIMATO_PROVIDER      gemini | openai             (default gemini)
+Default loop (`animate --mode local`): upload -> /api/prompt -> one LLM call -> static gate -> /api/run.
+`--mode server` delegates to `/api/chat` (runs without the local static gate). Stdlib only.
+Env: ANIMATO_SERVER (http://localhost:8000), ANIMATO_API_KEY / GEMINI_API_KEY / OPENAI_API_KEY,
+ANIMATO_LLM_ENDPOINT, ANIMATO_MODEL (gemini-3-flash-preview), ANIMATO_PROVIDER (gemini|openai).
 """
 from __future__ import annotations
 

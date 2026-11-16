@@ -57,6 +57,7 @@ else
 
     mkdir -p "${INSTALL_DIR}" && cp -r "${TMP_DIR}/repo/agent-manager/." "${INSTALL_DIR}/"
     echo "  ✓ Installed to ${INSTALL_DIR}"
+  fi
 fi
 
 # Also install to alt path if it doesn't exist

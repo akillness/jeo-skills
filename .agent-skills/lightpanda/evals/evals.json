@@ -48,7 +48,7 @@
     "id": "http-mcp-session-boundary",
     "prompt": "Plan local Lightpanda HTTP MCP clients sharing a session, explain whether the session ID authenticates them, and close the session after use.",
     "expected_skill": "lightpanda",
-    "expected_behavior": "Require separate approval for starting the server, client configuration and navigation; disable telemetry on the server process. Explain initialize and Mcp-Session-Id reuse shares a browsing context, distinct sessions separate contexts, and the session ID is not client authentication: other local processes or holders of the ID may gain access. Describe session_close or an HTTP DELETE request to the /mcp endpoint with its session header, and stop the server after use without claiming live verification."
+    "expected_behavior": "Require separate approval for starting the server, client configuration and navigation; disable telemetry on the server process. Explain initialize and Mcp-Session-Id reuse shares a browsing context, distinct sessions separate contexts, and the session ID is not client authentication: other local processes or holders of the ID may gain access. Describe session_close or an HTTP DELETE request to the /mcp endpoint with its session header, and stop the server after use without claiming live verification.",
     "authored": true,
     "executed": false,
     "evidence_status": "authored-not-executed"

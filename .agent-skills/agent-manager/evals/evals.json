@@ -27,7 +27,7 @@
       "expected_output": "A verification-focused answer that uses the install/setup path when needed and explicitly recommends the doctor command before live lifecycle changes.",
       "assertions": [
         "Response mentions `scripts/install.sh`, `scripts/setup.sh`, or the CLI alias setup path",
-        "Response mentions the agent-manager `doctor` command or `python3 scripts/main.py doctor`"
+        "Response mentions the agent-manager `doctor` command or `python3 scripts/main.py doctor`",
         "Response frames doctor as the verification step before starting or scheduling agents"
       ]
     },
