@@ -119,7 +119,7 @@ stdlib JSON-RPC 2.0으로 5개 도구만 노출 (동일한 OpenCode/Claude/Codex
 - [x] **M1 — jeox.py 스키마 + extractor + CLI 그래프 명령** (jeo-skills에 `jeox build` → `who-calls/what-calls/where-defined/impact` 동작) — 2026-11-16 완료
 - [x] **M2 — FTS5 검색 + 스코프 glob** (`jeox query '지식 아키텍처' -g 'knowledge/**'`) — 2026-11-16 완료
 - [x] **M3 — MCP 서버 + OpenCode 설정 연결** — `tools.jeox.*` 5도구 실측 응답 확인 — 2026-11-16 완료
-- [ ] **M4 — jeopi 이식** (동일 스크립트 복사 + `jeox build` + Rust `fn` 추출 보강 확인)
+- [x] **M4 — jeopi 이식** (동일 스크립트 복사 + `jeox build` + Rust `fn` 추출 보강 확인) — 2026-11-16 완료: 전역 심볼릭 링크로 복사 불필요. jeopi DB 58MB, symbols 28,135 / edges 513,617 / chunks 12,610, crates/ 내 function 5,598 + class 729. `.opencode/opencode.json` MCP 등록 후 tools/list 실측 5도구.
 - [x] **M5 — 테스트**: `scripts/test_jeox.py` (pytest) — 추출/스코프/CLI 회귀 — 11/11 통과 (2026-11-16)
 
 ## Acceptance (실측 결과 반영)
@@ -128,7 +128,7 @@ stdlib JSON-RPC 2.0으로 5개 도구만 노출 (동일한 OpenCode/Claude/Codex
 2. `jeox query 'mex zvec 경계' -g 'knowledge/**' --limit 5` → 2026-11-15 쿼리 문서 + 계획서 상위 반환 ✅ (질의 84ms)
 3. DB 용량 실측 ~30MB (마크다운 스킬 코퍼스 21k 청크 특성상 기존 <10MB 목표를 <40MB로 조정) ✅
 4. MCP 도구 5개가 OpenCode 세션에서 정상 응답 ✅ (Code Mode 카탈로그에 `tools.jeox.*` 로드 확인)
-5. jeopi `jeox build` — M4에서 검증 예정
+5. jeopi `jeox build` ✅ — Rust `fn` 추출 확인 (`crates/pi-walker/src/cache.rs` `normalize_worker_count` → who-calls resolved `CacheEntry` L37, where-defined 정확, `query 'cache worker count'` Rust 스니펫 반환)
 
 ## Non-goals / 미정 (다음 인터뷰 후보)
 
