@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "skill": "canyonos",
+  "repository": "CanyonCodeCoreAI/canyonos",
+  "commit": "49e9bd042735aa88e694c9e1fc5069223ba19820",
+  "license": {
+    "path": "LICENSE",
+    "conclusion": "AGPL-3.0",
+    "url": "https://github.com/CanyonCodeCoreAI/canyonos/blob/49e9bd042735aa88e694c9e1fc5069223ba19820/LICENSE"
+  },
+  "tools": [
+    {
+      "name": "python3",
+      "purpose": "run local agent code, adapter validation, and prepare helper"
+    },
+    {
+      "name": "uv",
+      "purpose": "package resolution and lockfile compilation via uv pip compile"
+    },
+    {
+      "name": "docker",
+      "purpose": "container runtime and compose v2 for agent replicas"
+    },
+    {
+      "name": "canyonos",
+      "purpose": "CLI toolchain for validation, deployment, observability, and test"
+    },
+    {
+      "name": "git",
+      "purpose": "version control inspection and repo root tracking"
+    }
+  ],
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "e40b757749439b3211ef014591f029c92eb53122085f08426d2af72567385480",
+      "url": "https://github.com/CanyonCodeCoreAI/canyonos/blob/49e9bd042735aa88e694c9e1fc5069223ba19820/README.md"
+    },
+    {
+      "path": "pyproject.toml",
+      "sha256": "249079e5bc16be97022dbe93c218a3c330379f292332bbc69a43c20858b6cfaf",
+      "url": "https://github.com/CanyonCodeCoreAI/canyonos/blob/49e9bd042735aa88e694c9e1fc5069223ba19820/pyproject.toml"
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "b7c7f46d9f96037291ae5b264d088c0d43a98e194f00f0efc401b8aa8c953e36",
+      "url": "https://github.com/CanyonCodeCoreAI/canyonos/blob/49e9bd042735aa88e694c9e1fc5069223ba19820/LICENSE"
+    },
+    {
+      "path": "AGENTS.md",
+      "sha256": "c7e6a0610b22eb1a70deb1b8ca5d26bbd6261474b26f72db03bdd5b5e1ad69eb",
+      "url": "https://github.com/CanyonCodeCoreAI/canyonos/blob/49e9bd042735aa88e694c9e1fc5069223ba19820/AGENTS.md"
+    },
+    {
+      "path": "CLAUDE.md",
+      "sha256": "fec72b2cd6a685df6b260082e73aa0e55a6a3de2ed65da966a29850feeaf32a7",
+      "url": "https://github.com/CanyonCodeCoreAI/canyonos/blob/49e9bd042735aa88e694c9e1fc5069223ba19820/CLAUDE.md"
+    },
+    {
+      "path": "packages/cli/pyproject.toml",
+      "sha256": "e7681c3cc19dd50b8c2606e4c0d5d5a70d66208bc413375d97d416a8ef8847e3",
+      "url": "https://github.com/CanyonCodeCoreAI/canyonos/blob/49e9bd042735aa88e694c9e1fc5069223ba19820/packages/cli/pyproject.toml"
+    },
+    {
+      "path": "packages/core/pyproject.toml",
+      "sha256": "9e453992830a92dd80868011b2d27cd0de359dedaa28657933a11d9fb6fdaf03",
+      "url": "https://github.com/CanyonCodeCoreAI/canyonos/blob/49e9bd042735aa88e694c9e1fc5069223ba19820/packages/core/pyproject.toml"
+    },
+    {
+      "path": "skills/converting-to-canyonos/SKILL.md",
+      "sha256": "026247eda57011877555df3c9f78243331516a32fdc7dc9394eb0e5c8f506117",
+      "url": "https://github.com/CanyonCodeCoreAI/canyonos/blob/49e9bd042735aa88e694c9e1fc5069223ba19820/skills/converting-to-canyonos/SKILL.md"
+    },
+    {
+      "path": "skills/converting-to-canyonos/prepare.py",
+      "sha256": "581e05491cb4331f77918e1d5bcb3c965c3667d13a92e8fe7b19fde58205054b",
+      "url": "https://github.com/CanyonCodeCoreAI/canyonos/blob/49e9bd042735aa88e694c9e1fc5069223ba19820/skills/converting-to-canyonos/prepare.py"
+    },
+    {
+      "path": "skills/scaling-agents/SKILL.md",
+      "sha256": "433b8df257e2fb8383bfdf7d21e30196d8ba1d65fbe9f506e531a6feef9a056f",
+      "url": "https://github.com/CanyonCodeCoreAI/canyonos/blob/49e9bd042735aa88e694c9e1fc5069223ba19820/skills/scaling-agents/SKILL.md"
+    },
+    {
+      "path": "skills/prompt-management/SKILL.md",
+      "sha256": "7013f7aedcf845357d528bcdeb653504ae998f4a4c1ab97bed213a81d2b81ab0",
+      "url": "https://github.com/CanyonCodeCoreAI/canyonos/blob/49e9bd042735aa88e694c9e1fc5069223ba19820/skills/prompt-management/SKILL.md"
+    },
+    {
+      "path": "docs/guides/WORKFLOW_CONFIG.md",
+      "sha256": "af4bff365479f50ef0c4c04554b1e762d3a36e66220350305e04779158a4a269",
+      "url": "https://github.com/CanyonCodeCoreAI/canyonos/blob/49e9bd042735aa88e694c9e1fc5069223ba19820/docs/guides/WORKFLOW_CONFIG.md"
+    }
+  ]
+}

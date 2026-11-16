@@ -1,0 +1,30 @@
+{
+  "skill_name": "canyonos",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I have an existing multi-agent Python application with two LangChain agents. How do I port it to CanyonOS without changing my existing application code?",
+      "expected_output": "Instruct the user to run `python3 <skill_dir>/prepare.py <import-root> .canyon` to create the isolated `.canyon` directory, create agent adapters alongside existing classes, configure `workflow_config.yaml` with the serving `endpoint` and agent `functions`, store a sample query in `.canyon/config/test_query.txt`, and keep `.env` in the root folder without copying it to `.canyon`."
+    },
+    {
+      "id": 2,
+      "prompt": "One of my agents keeps in-memory conversation history on `self`, while another calls an expensive LLM. How should I configure state and scaling in CanyonOS?",
+      "expected_output": "Guide the user to set `stateful: true` and `replicas: 1` in `workflow_config.yaml` for the in-memory agent so requests do not diverge across replicas. For the expensive LLM agent, guide them to configure `scaling.yaml` with min/max replica boundaries and `llms.yaml` with monthly spend and rate limits."
+    },
+    {
+      "id": 3,
+      "prompt": "How do I check if my CanyonOS project is ready for deployment before actually launching Docker containers?",
+      "expected_output": "Instruct the user to run `canyonos validate` from the application root. Explain that it checks import paths, schema definitions, and dependency resolution with `uv pip compile` without starting containers or daemons, and must exit 0 before deployment."
+    },
+    {
+      "id": 4,
+      "prompt": "I need to write custom Kubernetes CRDs, reconcile loops, and gRPC A2A session protocols for my agents on an existing Kubernetes cluster.",
+      "expected_output": "Route declarative Kubernetes CRD controller authoring and gRPC A2A cluster sessions to `kagent` rather than canyonos, explaining that canyonos handles high-level multi-agent containerization and scaling from plain Python code."
+    },
+    {
+      "id": 5,
+      "prompt": "I want to build a Model Context Protocol server exposing typed tools with `@mcp.tool` and Pydantic validation.",
+      "expected_output": "Route MCP server authoring and `@mcp.tool` decorators to `fastmcp` or `mcp-builder` rather than canyonos."
+    }
+  ]
+}

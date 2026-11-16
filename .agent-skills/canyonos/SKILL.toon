@@ -1,0 +1,22 @@
+N:canyonos
+D:Deploy, observe, and scale multi-agent Python applications without decorators or SDK modifications using CanyonOS (v0.2.2). Use when converting plain Python, LangChain, or LangGraph projects into containerized agent replicas via .canyon and prepare.py; defining workflow topologies, entrypoints, and adapters; configuring state isolation, replicas, and autoscaling in scaling.yaml; managing LLM access and cost caps in llms.yaml; extracting versioned system prompts into prompts.yaml; generating OpenTelemetry metrics and traces; or running canyonos doctor, new-app, validate, deploy, status, test, logs, clean, and stop. Route Kubernetes-only CRD declarative cluster controllers to kagent, MCP application authoring to fastmcp, and LLM evaluation benchmarks to trulens or agent-evaluation.
+G:canyonos multi-agent orchestration agent-deployment scaling observability containerization opentelemetry python
+U[5]:
+  Convert existing Python or LangChain multi-agent projects into CanyonOS container topologies
+  Configure agent state boundaries, replicas, and autoscaling policies in scaling.yaml
+  Govern model access, budget limits, and token rate caps across agents in llms.yaml
+  Extract and version hardcoded system prompts in prompts.yaml without modifying source code
+  Validate and deploy multi-agent services with OpenTelemetry tracing and GPU metrics
+S[6]{n,action,details}:
+  1,Preflight,Run scripts/preflight.py --json to verify tool binaries and pinned source manifest offline
+  2,Convert,Execute prepare.py to generate isolated .canyon configuration and agent adapters
+  3,Topology,Define workflow endpoint, agent functions, and replica parameters in workflow_config.yaml
+  4,Policies,Establish autoscaling rules in scaling.yaml, LLM budgets in llms.yaml, and prompts.yaml
+  5,Validate,Run canyonos validate to statically check imports, entrypoints, and uv lockfile dependencies
+  6,Deploy&Test,Deploy with canyonos deploy --serve false and dispatch verification queries with canyonos test
+R[5]:
+  Run scripts/preflight.py --json before executing container commands or provisioning infrastructure
+  Never copy or commit .env files into .canyon; keep secrets strictly in project root for container runtime
+  Static pre-deployment validation via canyonos validate must exit 0 before requesting deployment approval
+  Isolate in-process stateful agents to single replicas (replicas: 1) to prevent distributed state divergence
+  Route raw Kubernetes CRD controllers to kagent and generic MCP server authoring to fastmcp
