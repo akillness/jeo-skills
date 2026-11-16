@@ -38,9 +38,9 @@ END = "<!-- JEO-WORKFLOWS:END -->"
 HOOK_START = "# JEO-WORKFLOWS:START zvec refresh"
 HOOK_END = "# JEO-WORKFLOWS:END"
 RULE_NAME = "jeo-workflows.md"
-STEPS = ("mex", "knowledge", "rules", "zvec", "second-brain", "open-ontologies", "openspace",
+STEPS = ("mex", "knowledge", "rules", "jeox", "zvec", "second-brain", "open-ontologies", "openspace",
          "rtk-semble", "jev", "refresh", "harness2")
-ALWAYS_STEPS = ("jev", "rules", "harness2")
+ALWAYS_STEPS = ("jev", "rules", "jeox", "harness2")
 ZVEC_EMBEDDING = "local/potion-code-16m-v2"
 ZVEC_GREP_VERSION = "0.2.2"
 HOST_CLIS = ("jeopi", "omp", "jeo", "codex", "claude", "pi", "gjc")
@@ -100,6 +100,10 @@ Run in this order. If a tool is missing, say so in one line and continue.
   - Past queries/work/concepts: `zg query "<q>" -g 'knowledge/**' -g '!knowledge/raw/**' -g '!knowledge/work/archive/**' --preview none --limit 5`, then read matched line ranges only.
   - Code only: `zg query "<q>" -g '!knowledge/**' --preview none --limit 8`, then confirm with `rg` or a file read. Exact identifiers go to `rg`, not `zg`.
   If `zg status --check-ready` fails, run `zg index` (incremental), then query.
+- **Code graph / DB fallback (jeox)** — when `.mex/` is missing or mex is unavailable,
+  use `jeox` (per-repo DB `.jeo/db/jeo.db`): `jeox who-calls|what-calls|where-defined|
+  impact <name>`, `jeox query "<q>" -g GLOB...`, `jeox build` to refresh. MCP hosts can
+  call the same via the `jeox` server (`jeox_where_defined`, `jeox_who_calls`, ...).
 - **RDF / OWL / SHACL / ontology work** → the `open-ontologies` skill, via its CLI
   `batch -` mode. Start no network listener and register no MCP server on your own.
 - **Improving this agent harness (rules, prompts, skills, hooks)** → harness2 method
@@ -119,8 +123,9 @@ POINTER_TEMPLATE = """\
 Every prompt: openspace route → rtk shell → semble search → jev (only after rtk and
 semble, if a profile is enabled) → then by query: knowledge → second-brain vault,
 code/memory → `.mex/`, semantic search → `zg query`, ontology → open-ontologies,
-harness changes → `.harness2/`. Full rules: `.agents/rules/{rule}` (global copy
-`~/.agents/rules/{rule}`).
+harness changes → `.harness2/`. Code graph/DB search fallback: `jeox` (`.jeo/db/jeo.db` —
+`jeox who-calls|what-calls|where-defined|impact|query`, MCP `tools.jeox.*`). Full rules:
+`.agents/rules/{rule}` (global copy `~/.agents/rules/{rule}`).
 """
 
 
@@ -304,6 +309,48 @@ def step_knowledge(ctx: Ctx) -> dict:
     if code != 0:
         return result("failed", f"repo-knowledge-wiki bootstrap exit {code}: {tail(out)}")
     return result("ok", "knowledge/ scaffold and .mex/context/knowledge-pairings.md bridge ready")
+
+
+def step_jeox(ctx: Ctx) -> dict:
+    """Per-repo code-graph + BM25 DB (scripts/jeox.py → .jeo/db/jeo.db)."""
+    src = ctx.project / "scripts/jeox.py"
+    if not src.is_file():
+        return result("skipped", "scripts/jeox.py not found (not the jeo-skills checkout)")
+    notes = []
+    bin_dir = ctx.home / ".local/bin"
+    if not ctx.dry:
+        bin_dir.mkdir(parents=True, exist_ok=True)
+    link = bin_dir / "jeox"
+    want = str(src)
+    if link.is_symlink() and os.readlink(link) == want:
+        notes.append("jeox symlink current")
+    else:
+        if ctx.dry:
+            notes.append(f"jeox symlink would update {link}")
+        else:
+            tmp = link.with_suffix(".tmp")
+            tmp.unlink(missing_ok=True)
+            os.symlink(want, tmp)
+            os.replace(tmp, link)
+            notes.append(f"jeox symlink {link}")
+    code, out = ctx.run([sys.executable or "python3", str(src), "build", "--repo", str(ctx.project)], 300, ctx.project)
+    notes.append("jeox build " + (tail(out) if code == 0 else f"exit {code}"))
+    if code != 0:
+        return result("failed", "; ".join(notes))
+    oc = ctx.project / ".opencode/opencode.json"
+    if oc.parent.is_dir() and not ctx.dry:
+        try:
+            cfg = json.loads(oc.read_text(encoding="utf-8")) if oc.is_file() else {}
+        except json.JSONDecodeError:
+            cfg = {}
+        mcp = cfg.setdefault("mcp", {})
+        if mcp.get("jeox") != {"type": "local", "command": [sys.executable or "python3", "scripts/jeox.py", "mcp"], "enabled": True}:
+            mcp["jeox"] = {"type": "local", "command": [sys.executable or "python3", "scripts/jeox.py", "mcp"], "enabled": True}
+            oc.write_text(json.dumps(cfg, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+            notes.append("opencode mcp jeox registered")
+        else:
+            notes.append("opencode mcp jeox current")
+    return result("ok", "; ".join(notes))
 
 
 def step_zvec(ctx: Ctx) -> dict:
@@ -618,7 +665,7 @@ STEP_FUNCS = {
     "second-brain": step_second_brain,
     "open-ontologies": step_ontologies, "openspace": step_openspace,
     "rtk-semble": step_rtk_semble, "jev": step_jev, "refresh": step_refresh,
-    "rules": step_rules, "harness2": step_harness2,
+    "rules": step_rules, "harness2": step_harness2, "jeox": step_jeox,
 }
 
 
