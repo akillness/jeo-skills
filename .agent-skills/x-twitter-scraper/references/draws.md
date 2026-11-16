@@ -42,14 +42,14 @@ const draw = await xquikFetch("/draws", {
 });
 
 // Step 2: Get draw details with winners
-const details = await xquikFetch(`/draws/${draw.id}`);
+const details = await xquikFetch("/draws/" + draw.id);
 // details.winners: [
 //   { position: 1, authorUsername: "winner1", tweetId: "...", isBackup: false },
 //   ...
 // ]
 
 // Step 3: Export results
-const exportUrl = `${BASE}/draws/${draw.id}/export?format=csv`;
+const exportUrl = BASE + "/draws/" + draw.id + "/export?format=csv";
 ```
 
 ## Cost

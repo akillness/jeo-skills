@@ -2,6 +2,7 @@
 name: k-skill-setup
 description: Install the k-skill bundle, use the unified CLI, resolve credentials, verify the runtime, and optionally configure update checks and GitHub starring.
 license: MIT
+allowed-tools: Bash Read
 metadata:
   category: setup
   locale: ko-KR

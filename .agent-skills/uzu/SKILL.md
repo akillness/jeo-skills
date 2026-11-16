@@ -7,6 +7,7 @@ description: >
   and platform-fit guidance. Do not route llama.cpp, LM Studio, arbitrary GGUF conversion,
   CUDA/Linux-GPU claims, or unverified Windows production support here.
 allowed-tools: Bash Read
+permissions: [env]
 compatibility: Requires Python 3.10+ for the offline preflight helper; source builds require the pinned repository's Rust toolchain. The primary runtime is Apple Silicon macOS with Metal; other source targets are CPU-oriented and/or in progress.
 metadata:
   version: "1.1.0"

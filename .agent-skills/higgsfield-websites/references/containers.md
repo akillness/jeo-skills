@@ -46,7 +46,8 @@ image, not the website. It must run an HTTP server on the `port` from the manife
 ```dockerfile
 # app/container/Dockerfile  (example: ffmpeg + a tiny Node server)
 FROM node:20-slim
-RUN apt-get update && apt-get install -y ffmpeg && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y ffmpeg
+RUN rm -rf /var/lib/apt/lists/*
 WORKDIR /srv
 COPY server.mjs .
 EXPOSE 8080

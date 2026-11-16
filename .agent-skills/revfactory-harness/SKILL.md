@@ -11,6 +11,7 @@ description: >
   (`harness2`), standalone skill authoring (`skill-standardization`), or running a
   Ruflo swarm (`ruflo`).
 allowed-tools: Bash Read Write Edit Glob Grep
+permissions: [env]
 compatibility: >
   Python 3.10+ for the offline helper. Upstream execution requires an installed,
   authenticated Claude Code with the selected tools and model aliases actually

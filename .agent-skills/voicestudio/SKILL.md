@@ -3,6 +3,7 @@ name: voicestudio
 description: >
   Use when operating debpalash/VoiceStudio as a local-first voice cloning, voice design, speech generation, transcription, and video-dubbing repository: inspect the Electron and FastAPI surfaces, check host fit offline, prepare approval-gated installs and launches, map Hugging Face model downloads and licenses, use the local MCP/API, and troubleshoot model, device, port, and media failures without claiming runtime proof. Require documented speaker consent before cloning a real person's voice and refuse impersonation or fraud. Route hosted ElevenLabs TTS to `elevenlabs-tts`, programmatic or templated video assembly to `video-production`, timeline editing to `opencut`, and hosted generative video to `open-generative-ai`.
 allowed-tools: Bash Read
+permissions: [env]
 compatibility: Requires Python 3.11+ for VoiceStudio, Bun/Node for Electron source workflows, and ffmpeg for media paths; GPU acceleration is host-dependent.
 license: AGPL-3.0-only
 metadata:

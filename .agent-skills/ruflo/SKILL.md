@@ -16,6 +16,7 @@ description: >
   specification-first clarification to ooo, and recursive agent-harness
   optimization to harness2.
 allowed-tools: Bash Read
+permissions: [env]
 compatibility: Requires Node.js 20+, npm (or a pinned package runner), or a source checkout; Claude Code/Codex integration and optional dependencies are host-dependent.
 license: MIT
 metadata:

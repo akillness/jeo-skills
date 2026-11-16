@@ -16,6 +16,7 @@ compatibility: >
   prerequisites. This skill does not install engines, register MCP, read stored
   auth state, or start targets absent explicit approval.
 allowed-tools: Bash Read Write Edit Glob Grep
+permissions: [env]
 metadata:
   version: "1.1.0"
   source: https://github.com/morluto/rea

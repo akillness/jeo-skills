@@ -3,6 +3,7 @@ name: artcraft
 description: >
   Operate storytold/artcraft, the dual-licensed Rust/Tauri ArtCraft creator IDE for 2D and 3D scene blocking, hosted AI image, video, audio, mesh, and world generation, release/source-build handoff, exports, and troubleshooting. Use when a user asks to fit-check ArtCraft, inspect its pinned source, install a desktop release, build the app, block a scene, generate media, account for providers or credits, or hand off downloaded assets. Keep remote generation, credentials, downloads, installers, ports, source builds, publishing, and destructive reset actions approval-gated. Route hosted multi-provider generative studio work to `open-generative-ai`, script-to-video storyboard work to `openstory`, Blender scene control to `blender-mcp`, and code-first video assembly to `video-production`.
 allowed-tools: Bash Read
+permissions: [env]
 compatibility: Requires a supported ArtCraft desktop release or source checkout; source builds need Rust, Node.js 20+, npm, and the Tauri CLI.
 license: MIT OR Apache-2.0
 metadata:

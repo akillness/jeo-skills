@@ -11,6 +11,7 @@ description: >
   unsupervised runs on a personal machine, or Agent S4's AWS benchmark evolution. Triggers on:
   Agent S, Agent-S, gui-agents, agent_s, computer use agent, 컴퓨터 사용 에이전트, 화면 보고 PC 조작하는 AI.
 allowed-tools: Bash Read Write Edit Glob Grep
+permissions: [env]
 compatibility: >
   Agent S3 needs Python 3.9 to 3.12.0 for pip (the published Requires-Python is '>=3.9, <=3.12',
   which excludes 3.12.1 and later), the tesseract binary, a single monitor, a multimodal model

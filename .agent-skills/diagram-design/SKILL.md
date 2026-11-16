@@ -3,6 +3,7 @@ name: diagram-design
 description: >
   Use when creating source-grounded branded diagrams with cathrynlavery/diagram-design: run its offline preflight, choose a semantic pattern and visual type, author self-contained HTML with inline SVG, verify accessibility and geometry, open or screenshot local output when a browser is available, export manually to SVG or PNG, import and redraw Mermaid, draw.io, or Excalidraw content, and adapt the style guide to approved brand tokens. Keep static output, local paths, and font/network boundaries explicit. Require explicit approval before installing or publishing. Route editable .drawio diagrams and draw.io CLI exports to `drawio`, academic paper figures to `paperbanana`, and slide decks to `slides-grab` or `presentation-builder`.
 allowed-tools: Bash Read Write Edit Glob
+permissions: [env]
 compatibility: Requires Python 3.10+ and a pinned diagram-design checkout for source inspection; browser and Playwright are optional for render and PNG export.
 license: MIT
 metadata:

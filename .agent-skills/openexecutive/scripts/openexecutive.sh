@@ -128,7 +128,7 @@ print_env_presence() {
              ENABLE_WEB_SEARCH BACKEND_SHARED_SECRET \
              SLACK_BOT_TOKEN DISCORD_BOT_TOKEN TELEGRAM_BOT_TOKEN \
              EXEC_EMAIL_ADDRESS GOOGLE_OAUTH_CLIENT_ID HONCHO_ENABLED; do
-    eval "value=\${$key:-}"
+    value="${!key:-}"
     if [[ -n "$value" ]]; then
       printf '  set     %s\n' "$key"
     else

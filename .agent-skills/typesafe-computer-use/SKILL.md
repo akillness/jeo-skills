@@ -8,6 +8,7 @@ description: >
   TypeSafe computer use, or this repository's run folders. This exact-project operator is not a
   generic desktop-automation or TypeSafe SDK skill.
 allowed-tools: Bash Read
+permissions: [env]
 compatibility: Python 3.12+ and uv; macOS 14+ is primary; Windows 10/11 support is experimental
 license: MIT
 metadata:

@@ -34,7 +34,7 @@ function run(command, args = []) {
   return {
     ok: result.status === 0,
     output: (result.stdout || "").trim(),
-    error: result.status === 0 ? undefined : `exit-${result.status}`,
+    error: result.status === 0 ? undefined : "exit-" + result.status,
   };
 }
 
@@ -96,17 +96,17 @@ async function readProjectFiles(project) {
 }
 
 function printHuman(result) {
-  console.log(`Stagehand preflight: ${result.status}`);
-  console.log(`target=${result.target} language=${result.language} project=${result.project}`);
+  console.log("Stagehand preflight: " + result.status);
+  console.log("target=" + result.target + " language=" + result.language + " project=" + result.project);
   for (const item of result.checks) {
     const marker = item.ok ? "PASS" : item.required ? "BLOCK" : "WARN";
-    console.log(`${marker} ${item.name}: ${item.detail}`);
+    console.log(marker + " " + item.name + ": " + item.detail);
   }
   if (result.blockers.length > 0) {
-    console.log(`blockers=${result.blockers.length}`);
+    console.log("blockers=" + result.blockers.length);
   }
   if (result.warnings.length > 0) {
-    console.log(`warnings=${result.warnings.length}`);
+    console.log("warnings=" + result.warnings.length);
   }
 }
 
@@ -126,7 +126,7 @@ const checks = [];
 
 // Verified Aside-runtime signals: the daemon exports ASIDE_SKILL_RUNTIME and runs
 // the tool node from <home>/.aside/runtime/. Neither is set by a host CLI shell.
-const asideMarker = `${path.sep}.aside${path.sep}runtime${path.sep}`;
+const asideMarker = path.sep + ".aside" + path.sep + "runtime" + path.sep;
 const inAsideSandbox = Boolean(process.env.ASIDE_SKILL_RUNTIME)
   || process.execPath.includes(asideMarker);
 if (inAsideSandbox) {
@@ -145,14 +145,14 @@ check(
   checks,
   "node",
   atLeast(nodeVersion, "22.18.0"),
-  `${nodeVersion} (SDK requires >=22.18.0)`,
+  nodeVersion + " (SDK requires >=22.18.0)",
   nodeRequired,
 );
 
 if (language === "cli" || language === "all") {
   const major = versionParts(nodeVersion)[0] || 0;
   const cliNodeOk = atLeast(nodeVersion, "22.12.0") || (major === 20 && atLeast(nodeVersion, "20.19.0"));
-  check(checks, "browse-cli-node", cliNodeOk, `${nodeVersion} (CLI accepts ^20.19.0 or >=22.12.0)`, true);
+  check(checks, "browse-cli-node", cliNodeOk, nodeVersion + " (CLI accepts ^20.19.0 or >=22.12.0)", true);
 }
 
 if (language === "ts" || language === "cli" || language === "all") {
@@ -161,7 +161,7 @@ if (language === "ts" || language === "cli" || language === "all") {
     checks,
     "node-package-manager",
     Boolean(packageManager.command),
-    packageManager.command ? `${packageManager.command} ${packageManager.version}` : "pnpm/npm not found",
+    packageManager.command ? packageManager.command + " " + packageManager.version : "pnpm/npm not found",
     true,
   );
 }
@@ -172,7 +172,7 @@ if (language === "python" || language === "all") {
     checks,
     "python",
     Boolean(python.command) && atLeast(python.version, "3.11.0"),
-    python.command ? `${python.command} ${python.version} (SDK requires >=3.11)` : "python3/python not found",
+    python.command ? python.command + " " + python.version + " (SDK requires >=3.11)" : "python3/python not found",
     true,
   );
 }
@@ -183,7 +183,7 @@ if (language === "go" || language === "all") {
     checks,
     "go",
     Boolean(go.command) && atLeast(go.version, "1.26.0"),
-    go.command ? `${go.command} ${go.version} (SDK requires >=1.26)` : "go not found",
+    go.command ? go.command + " " + go.version + " (SDK requires >=1.26)" : "go not found",
     true,
   );
 }
@@ -219,7 +219,7 @@ if (target === "local" || hasFlag("--local")) {
   if (inAsideSandbox) {
     localOk = false;
     browserDetail = browser
-      ? `${browser} found, but launching it inside the Aside session sandbox aborts (SIGABRT/exit 134) — use --remote (Browserbase) or attach to an externally started CDP endpoint`
+      ? browser + " found, but launching it inside the Aside session sandbox aborts (SIGABRT/exit 134) — use --remote (Browserbase) or attach to an externally started CDP endpoint"
       : "Chrome/Chromium not found, and the Aside session sandbox cannot launch one — use --remote (Browserbase) or an externally started CDP endpoint";
   }
   check(checks, "local-chromium", localOk, browserDetail, true);
@@ -230,7 +230,7 @@ if (target === "remote" || hasFlag("--remote")) {
     checks,
     "browserbase-api-key",
     Boolean(process.env.BROWSERBASE_API_KEY),
-    `present=${Boolean(process.env.BROWSERBASE_API_KEY)} (value not printed)`,
+    "present=" + Boolean(process.env.BROWSERBASE_API_KEY) + " (value not printed)",
     true,
   );
 }
@@ -248,7 +248,7 @@ if (hasFlag("--model")) {
     checks,
     "model-api-key",
     present.length > 0,
-    present.length > 0 ? `present=${present.join(",")} (values not printed)` : "no supported model key found",
+    present.length > 0 ? "present=" + present.join(",") + " (values not printed)" : "no supported model key found",
     true,
   );
 }

@@ -159,8 +159,22 @@ def check_config(config: dict, *, require_vault: bool = True) -> dict:
 
 
 def _run(argv: list[str], vault: Path, timeout: float, *, ready_probe: bool = False) -> dict:
-    environment = dict(os.environ)
-    environment.pop("GRAPHIFY_OUT", None)
+    allowed_keys = (
+        "PATH", "HOME", "USER_HOME", "TMPDIR", "TEMP", "TMP",
+        "LANG", "LC_ALL", "LC_CTYPE", "LC_MESSAGES", "LC_COLLATE", "LC_MONETARY", "LC_NUMERIC", "LC_TIME",
+        "USER", "LOGNAME", "SHELL", "TZ", "TERM",
+        "XDG_CONFIG_HOME", "XDG_DATA_HOME", "XDG_CACHE_HOME", "XDG_STATE_HOME",
+        "PYTHONDONTWRITEBYTECODE", "PYTHONUTF8", "PYTHONIOENCODING", "PYTHONPATH", "VIRTUAL_ENV",
+        "NODE_ENV", "NODE_OPTIONS", "SSL_CERT_FILE", "SSL_CERT_DIR", "REQUESTS_CA_BUNDLE", "CURL_CA_BUNDLE",
+        "HTTP_PROXY", "HTTPS_PROXY", "NO_PROXY", "http_proxy", "https_proxy", "no_proxy",
+        "JEO_HOME", "JEO_CONFIG", "JEO_SECOND_BRAIN_HOST", "JEO_SECOND_BRAIN_MODEL",
+        "JEO_SECOND_BRAIN_CONFIG", "JEO_SECOND_BRAIN_SOURCE", "JEOPI_HOME", "JEOPI_AGENT_DIR",
+        "OBSIDIAN_VAULT", "OBSIDIAN_CONFIG", "OBSIDIAN_CLI", "OBSIDIAN_HOME",
+        "MEX_HOME", "MEX_ROOT", "MEX_CONFIG",
+        "ZVEC_GREP_HOME", "ZVEC_HOME", "GRAPHIFY_BACKEND", "GRAPHIFY_MODEL", "CTX_HOME", "CTX_CONFIG",
+        "SB_CALLS", "SB_RESPONSE", "SB_CRON", "SB_TREE", "SB_PIN", "SB_HELP", "SB_INDEX_FAIL", "SB_CTX_FAIL",
+    )
+    environment = {key: os.environ[key] for key in allowed_keys if key in os.environ}
     environment.update(LLM_WIKI_VAULT=str(vault), CTX_VAULT=str(vault),
                        GRAPHIFY_NO_BACKUP="1", GRAPHIFY_NO_TIPS="1")
     process = subprocess.Popen(argv, cwd=vault, env=environment, stdout=subprocess.PIPE,

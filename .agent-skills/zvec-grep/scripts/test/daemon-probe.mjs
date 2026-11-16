@@ -22,7 +22,27 @@ if (isDaemon) {
     try { record = JSON.parse(readFileSync(join(HOME, "daemon", "instance.lock"), "utf8")); } catch { return; }
     if (record.pid !== process.pid || record.ready !== true) return;
     clearInterval(timer);
-    const result = { pid: process.pid, envNames: Object.keys(process.env).sort() };
+    const TARGET_ENV_VARS = [
+      "PATH",
+      "HOME",
+      "TMPDIR",
+      "ZVEC_GREP_HOME",
+      "ZVEC_GREP_PACKAGE_DIR",
+      "ZVEC_GREP_SERVER_TOKEN",
+      "ZVEC_GREP_SERVER_TOKEN_FILE",
+      "ZVEC_GREP_API_KEY",
+      "ZVEC_MANAGED_OS_SANDBOX",
+      "ZVEC_TEST_PROBE_OUT",
+      "OPENAI_API_KEY",
+      "ANTHROPIC_API_KEY",
+      "GITHUB_TOKEN",
+      "AWS_SECRET_ACCESS_KEY",
+      "AWS_ACCESS_KEY_ID",
+      "GH_TOKEN",
+      "NPM_TOKEN",
+    ];
+    const envNames = TARGET_ENV_VARS.filter((name) => Object.prototype.hasOwnProperty.call(process.env, name)).sort();
+    const result = { pid: process.pid, envNames };
     try {
       const requireFromPackage = createRequire(join(PACKAGE, "package.json"));
       const cjsPath = requireFromPackage.resolve("@zvec/zvec");

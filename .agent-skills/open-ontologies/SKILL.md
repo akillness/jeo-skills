@@ -2,6 +2,7 @@
 name: "open-ontologies"
 description: "Operate fabio-rovai/open-ontologies, the Rust RDF/OWL semantic planning and verification engine: inspect and validate ontologies, plan changes, query/reason, produce certificates, or connect its MCP interface. Use when users name Open Ontologies, `open-ontologies`, `oo-cert`, or ask for change-impact/certified ontology operations. This is an ontology engine and CLI/MCP server, not a visual ontology editor; route visual editing to Protégé or a workbench skill."
 allowed-tools: Bash Read Grep Glob
+permissions: [file_write]
 compatibility: "Runtime operations need an Open Ontologies binary. scripts/install.sh builds the pinned revision from source: Rust/Cargo 1.88+ (cargo 1.87 refuses the locked dependency set), a C/C++ compiler and libclang for the Oxigraph RocksDB bindings, git, python3. Lean 4 checker workflows additionally require Lean 4 tooling."
 metadata:
   version: "1.2.0"

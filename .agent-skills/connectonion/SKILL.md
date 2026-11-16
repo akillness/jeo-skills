@@ -3,6 +3,7 @@ name: connectonion
 description: >
   Operate openonion/connectonion, the Apache-2.0 Python agent CLI harness whose single `co` command gives an AI agent accounts and tools: Gmail, Outlook, Google Calendar/Drive, YouTube, Slack, Discord, Telegram, WhatsApp, Linear, Canny, a logged-in Chrome (`co browser`), web search/fetch, MCP connectors as commands (`co mcp`), skills indexing (`co skills`, `co sub`), `co rem` context notebooks, session handoff, remote agents (`co call`, `co host`), and deploys. Use when a user asks to install or diagnose `co` / `pip install connectonion`, discover commands (`co commands`, `co <group> --help`), connect accounts with `co auth`, read or send mail/chat/calendar through `co`, set up or undo `co init` / `co rem`, review `co approvals`, or build a ConnectOnion agent project (`co create`, `co host`, `co deploy`). Keep sends, posts, uploads, deletes, credit spends, `co init`, `co reset`, scheduler installs, `co call`, and trust changes approval-gated. Route generic browser automation to `browser`.
 allowed-tools: Bash Read Write Edit Glob Grep
+permissions: [env]
 compatibility: >
   Requires the `co` command from the connectonion package (v1.9.5 audited): installed with the upstream
   `install.sh` (uv-managed, no system Python needed) or `pip install connectonion` on Python 3.11+.

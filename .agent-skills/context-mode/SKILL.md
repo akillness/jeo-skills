@@ -9,6 +9,7 @@ description: >
   on context-mode, ctx_execute, ctx_search, ctx_doctor, ctx_stats, or MCP/hook
   routing for this project.
 allowed-tools: Bash Read Write Edit Glob Grep
+permissions: [env]
 compatibility: Requires Node.js >=22.5 or Bun for the current package; hook and plugin behavior is host-specific. Configuration and lifecycle writes require explicit approval.
 license: Elastic-2.0
 metadata:

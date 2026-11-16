@@ -12,6 +12,7 @@ description: >
   calendar event, Forms, Apps Script, Admin SDK, shared drive, Google Chat,
   workspace automation, domain user, send email, approval flow.
 allowed-tools: Bash Read Write Edit Glob Grep
+permissions: [env, network]
 license: Apache-2.0
 compatibility: Requires Python 3.8+ plus google-api-python-client / google-auth libraries for direct API use. Apps Script routes are valid when the workflow should live inside Workspace.
 metadata:

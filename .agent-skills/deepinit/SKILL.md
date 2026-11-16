@@ -2,6 +2,7 @@
 name: deepinit
 description: Create or refresh hierarchical AGENTS.md documentation for Claude Code, Codex/OMX, Gemini, and Antigravity/OMA projects, preserving manual notes while excluding runtime state such as root .omc, .omx, .survey, .codex, and generated build folders.
 level: 4
+allowed-tools: Bash Read Write Edit Glob Grep
 ---
 
 # Deep Init Skill

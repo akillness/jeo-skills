@@ -127,8 +127,10 @@ Bare form auto-detects the shell and installs. `--dry-run` previews config
 changes. Manual wiring:
 
 ```bash
-eval "$(mole completion bash)"
-eval "$(mole completion zsh)"
+mole completion bash > ~/.local/share/mole/completion.bash
+source ~/.local/share/mole/completion.bash
+mole completion zsh > ~/.local/share/mole/completion.zsh
+source ~/.local/share/mole/completion.zsh
 mole completion fish | source
 ```
 

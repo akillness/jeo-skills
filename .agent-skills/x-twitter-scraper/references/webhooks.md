@@ -73,14 +73,13 @@ const server = createServer((req, res) => {
 
     switch (event.eventType) {
       case "tweet.new":
-        console.log(`New tweet from @${event.username}: ${event.data.text}`);
+        console.log("New tweet from @" + event.username + ": " + event.data.text);
         break;
       case "tweet.reply":
-        console.log(`Reply from @${event.username}: ${event.data.text}`);
+        console.log("Reply from @" + event.username + ": " + event.data.text);
         break;
       case "tweet.retweet":
-        console.log(`@${event.username} retweeted`);
-        break;
+        console.log("@" + event.username + " retweeted");
     }
 
     res.writeHead(200).end("OK");

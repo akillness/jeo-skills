@@ -10,6 +10,7 @@ description: >
   hybrid workspace search, semantic repository search, zvec MCP, zvec_grep_search,
   managed ripgrep, `.zvec-grep`, or Remote Embedding authorization.
 allowed-tools: Bash Read Write Edit Glob Grep WebFetch
+permissions: [env, mcp]
 compatibility: Requires Node.js 22 or newer for the current @zvec/zvec-grep package; native zvec runtime support depends on the host platform.
 metadata:
   tags: zvec-grep, zvec, workspace-search, hybrid-search, semantic-search, bm25, ripgrep, mcp, cli, local-first, embeddings, node

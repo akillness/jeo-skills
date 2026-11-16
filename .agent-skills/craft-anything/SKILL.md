@@ -3,6 +3,7 @@ name: craft-anything
 description: >
   Operate storytold/craft-anything, the open-source pure-Rust clean-room software reverse engineering and AI rebuilding engine, its desktop app, `craft-anything-cli`, and MCP server. Use when a user asks to inspect how shipped software works (binaries, Electron/JS, Android APK, .NET, WebAssembly, firmware, packet captures), run clean-room or deep analysis, execute `craft-anything-cli rebuild` to study and rebuild software with coding agents (Claude Code, Copilot, Grok), run `craft-anything-cli doctor/setup/mcp`, manage investigation memory (briefs, plans, hypotheses, findings, handoffs), or inspect source-pinned checkouts. Keep code execution, device changes, live network targets, and agent configuration writes approval-gated. Route generic repository searches to `codebase-search` and browser automation to `browser`.
 allowed-tools: Bash Read Write Edit Glob Grep
+permissions: [env]
 compatibility: >
   Requires Rust 1.97+ for source builds, or installed `craft-anything` / `craft-anything-cli`
   desktop/CLI release for macOS, Windows, Linux, or FreeBSD. Coding agent integration requires

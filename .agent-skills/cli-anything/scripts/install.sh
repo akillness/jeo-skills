@@ -37,7 +37,8 @@ elif command -v pip3 >/dev/null 2>&1; then
     || pip3 install --user --break-system-packages --upgrade "${CLI_ANYTHING_HUB_SPEC}"
 else
   echo "ERROR: neither uv nor pip is installed." >&2
-  echo "  Install uv:   curl -LsSf https://astral.sh/uv/install.sh | sh" >&2
+  echo "  Install uv:   brew install uv   # or: pipx install uv" >&2
+  echo "  Or download and inspect https://astral.sh/uv/install.sh before running it." >&2
   echo "  Or pip:       python3 -m ensurepip --upgrade" >&2
   exit 1
 fi

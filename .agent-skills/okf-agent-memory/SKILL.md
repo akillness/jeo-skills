@@ -6,6 +6,7 @@ description: >
   or MCP setup; route Google OKF v0.1 atoms to `okf` and architecture selection to
   `agent-memory-architecture`.
 allowed-tools: Bash Read Write Edit Glob Grep
+permissions: [env]
 compatibility: >
   Source and documentation reviewed at upstream commit
   ad7beb01b9d4294d8dd28c25494d274374985b69. Installation, builds, bootstrap,

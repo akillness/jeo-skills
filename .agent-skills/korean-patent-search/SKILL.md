@@ -2,6 +2,8 @@
 name: korean-patent-search
 description: Search Korean patent and utility-model publications through the official KIPRIS Plus Open API with keyword search plus application-number detail lookup.
 license: MIT
+allowed-tools: Bash Read
+permissions: [env, network]
 metadata:
   category: ip
   locale: ko-KR

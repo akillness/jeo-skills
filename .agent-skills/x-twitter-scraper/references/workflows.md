@@ -21,7 +21,7 @@ async function xquikFetch(path, options = {}) {
   const baseDelay = 1000;
 
   for (let attempt = 0; attempt <= 3; attempt++) {
-    const response = await fetch(`${BASE}${path}`, {
+    const response = await fetch(BASE + path, {
       ...options,
       headers: { ...headers, ...options.headers },
     });
@@ -31,7 +31,7 @@ async function xquikFetch(path, options = {}) {
     const retryable = response.status === 429 || response.status >= 500;
     if (!retryable || attempt === 3) {
       const error = await response.json();
-      throw new Error(`Xquik API ${response.status}: ${error.error}`);
+      throw new Error("Xquik API " + response.status + ": " + error.error);
     }
 
     const retryAfter = response.headers.get("Retry-After");
@@ -57,7 +57,7 @@ async function fetchAllPages(path, dataKey) {
     const params = new URLSearchParams({ limit: "100" });
     if (cursor) params.set("after", cursor);
 
-    const data = await xquikFetch(`${path}?${params}`);
+    const data = await xquikFetch(path + "?" + params);
     results.push(...data[dataKey]);
 
     if (!data.hasMore) break;
@@ -84,7 +84,7 @@ const estimate = await xquikFetch("/extractions/estimate", {
 });
 
 if (!estimate.allowed) {
-  console.log(`Need ${estimate.creditsRequired} credits; available ${estimate.creditsAvailable}`);
+  console.log("Need " + estimate.creditsRequired + " credits; available " + estimate.creditsAvailable);
   return;
 }
 
@@ -101,7 +101,7 @@ let job = await xquikFetch("/extractions", {
 // Step 3: Poll until complete
 while (job.status === "pending" || job.status === "running") {
   await new Promise((r) => setTimeout(r, 2000));
-  job = await xquikFetch(`/extractions/${job.id}`);
+  job = await xquikFetch("/extractions/" + job.id);
 }
 
 // Step 4: Retrieve paginated results (up to 1,000 per page)
@@ -109,7 +109,7 @@ let cursor;
 const allResults = [];
 
 while (true) {
-  const path = `/extractions/${job.id}${cursor ? `?after=${cursor}` : ""}`;
+  const path = "/extractions/" + job.id + (cursor ? "?after=" + cursor : "");
   const page = await xquikFetch(path);
   allResults.push(...page.results);
 
@@ -118,7 +118,7 @@ while (true) {
 }
 
 // Step 5: Export as CSV/JSON/MD/MD-document/PDF/TXT/XLSX (100,000 row limit; PDF 10,000)
-const exportUrl = `${BASE}/extractions/${job.id}/export?format=csv`;
+const exportUrl = BASE + "/extractions/" + job.id + "/export?format=csv";
 const csvResponse = await fetch(exportUrl, { headers });
 const csvData = await csvResponse.text();
 ```

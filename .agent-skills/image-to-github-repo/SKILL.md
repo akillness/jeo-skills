@@ -12,6 +12,7 @@ description: >
   카드뉴스 깃허브, find the GitHub URL in this screenshot, which repository is this,
   image to repo, repo link from a post.
 allowed-tools: Bash Read Write Glob Grep WebFetch
+permissions: [env]
 compatibility: Needs an agent that can read images (or a local OCR such as tesseract) and Python 3.9+. Verification needs network access to api.github.com; GITHUB_TOKEN is optional and only raises rate limits.
 license: MIT
 metadata:

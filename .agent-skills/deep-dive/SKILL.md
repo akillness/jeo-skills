@@ -1,6 +1,7 @@
 ---
 name: deep-dive
 description: "Cross-runtime 2-stage pipeline for Claude Code, Codex/OMX, and Gemini/Antigravity/OMA: trace causal hypotheses, inject evidence into deep-interview style requirements crystallization, then hand off to the right runtime planner/executor."
+allowed-tools: Bash Read Write Edit Glob Grep
 ---
 
 

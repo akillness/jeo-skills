@@ -10,6 +10,7 @@ description: >
   local and loopback-only; distinguish read-only inspection from data,
   credential, network, cloud-cost, and destructive operations.
 allowed-tools: Bash Read Write Edit Glob Grep
+permissions: [env]
 compatibility: >
   Requires a filesystem-capable agent. Docker Desktop/Engine with Compose v2 is
   required for the container install; macOS Apple Silicon is the validated

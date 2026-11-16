@@ -157,7 +157,7 @@ schema at the pinned version and provide the token privately.
     "commandPolicy": {
       "enabled": true,
       "defaultPolicy": "ask",
-      "deny": ["sudo", "dd", "mkfs", "shutdown", "reboot"]
+      "deny": ["su", "dd", "mkfs", "shutdown", "reboot"]
     },
     "approvalQueue": {
       "enabled": true,

@@ -15,6 +15,7 @@ description: >
   Route provider-neutral programmatic video pipelines to `video-production` and
   local desktop video editing to `opencut`.
 allowed-tools: Bash Read Write Edit Glob Grep
+permissions: [env]
 compatibility: >
   Desktop releases target macOS arm64/x64, Windows x64, and Linux
   AppImage/DEB. Source builds need Node.js 18+, npm workspaces, and recursive

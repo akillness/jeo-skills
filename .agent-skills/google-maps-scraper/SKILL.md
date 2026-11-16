@@ -11,6 +11,7 @@ description: >
   agent skill. Triggers on: google-maps-scraper, gosom, Google Maps scraper, 구글 지도 업체 정보 수집,
   지역 업체 리드, scrape Google Maps, local business leads.
 allowed-tools: Bash Read Write Edit Glob Grep
+permissions: [env]
 compatibility: >
   Docker (recommended) or a Go toolchain at the go.mod version; a graphical browser is not needed.
   The Docker command may not work on macOS (upstream offers a Go build route); Windows goes

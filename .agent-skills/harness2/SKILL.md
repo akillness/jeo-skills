@@ -13,6 +13,7 @@ description: >
   tracing to `agent-observability`, and runtime team execution to `paperclip`, `ruflo`, or
   `zeroshot`.
 allowed-tools: Bash Read Write Edit Glob Grep
+permissions: [env]
 compatibility: >
   Python 3.12-3.13 and uv. The local demo needs no credentials. Benchmarks are documented for
   Linux and need Node.js 20+, npm, Vertex AI Application Default Credentials, and per-benchmark

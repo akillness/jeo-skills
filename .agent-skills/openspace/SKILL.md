@@ -13,6 +13,7 @@ description: >
   openspace-mcp, skill-discovery, delegate-task.
 
 allowed-tools: Bash Read Write Edit Glob Grep
+permissions: [env]
 compatibility: Requires Python 3.12+ (uv recommended). Routing hooks support Claude Code, Codex, Gemini CLI/Antigravity, Kimi Code, jeo-code (builds with `pre-prompt` hooks), jeopi, omp, pi, gjc, and OpenCode; an experimental Antigravity CLI (agy) adapter is fixture-tested but not verified in a native authenticated run. The MCP server needs an MCP-capable host. Local search, routing, evaluation, and evolution work without cloud access; sharing to the cloud hub needs an OpenSpace cloud agent key.
 license: MIT
 metadata:

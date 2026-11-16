@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Mole skill helper — read-only inspection only.
 # Never installs, updates, cleans, uninstalls, purges, or deletes anything.
-# `json` is hard-restricted to Mole's three read-only JSON surfaces.
+# json is hard-restricted to Mole's three read-only JSON surfaces.
 #
 # Usage:
 #   mole.sh doctor                  # host + install report

@@ -7,6 +7,7 @@ description: >
   workflows — not generic one-off chat prompting, repo-aware coding, or fully
   deterministic automation.
 allowed-tools: Read Write Bash Grep Glob
+permissions: [env]
 compatibility: >
   Works on macOS, Linux, and Windows where the Fabric CLI can be installed and
   configured. Best for CLI-centric users who already have provider keys or local

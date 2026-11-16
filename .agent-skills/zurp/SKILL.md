@@ -9,6 +9,7 @@ description: >
   403, token, rate-limit, startup, or SSL failures. Triggers on Zurp, bug-bounty-research,
   FBDL MCP, Meta Context, SPARTA, zurp.jar, or BB_RESEARCH_TOKEN.
 allowed-tools: Bash Read Write Edit Glob Grep
+permissions: [env]
 compatibility: >
   Audited against upstream commit c30c04edd8a0a85f3ee980324b7edc8e814fadb3.
   The Burp extension needs Burp Suite 2024.7+; a source build needs Java 17+ and

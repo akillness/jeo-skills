@@ -3,6 +3,7 @@ name: lightpanda
 description: >
   Operate lightpanda-io/browser, the headless browser for AI and automation: offline preflight, release selection, approved fetch and CDP/MCP integration. Use when users name Lightpanda or need its source-pinned setup and runtime boundaries; route generic browser automation to browser-harness or playwriter.
 allowed-tools: Read Glob Grep Bash
+permissions: [env]
 compatibility: >
   Official release binaries target macOS and glibc Linux on x86_64 and aarch64; Windows requires WSL2. Feature availability varies by release.
 metadata:

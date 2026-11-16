@@ -504,7 +504,26 @@ def writer_lock(path: Path):
 
 
 def invoke(argv: list[str], prompt: bytes, config: dict) -> bytes:
-    environment = os.environ.copy()
+    allowed_keys = (
+        "PATH", "HOME", "USER_HOME", "TMPDIR", "TEMP", "TMP",
+        "LANG", "LC_ALL", "LC_CTYPE", "LC_MESSAGES", "LC_COLLATE", "LC_MONETARY", "LC_NUMERIC", "LC_TIME",
+        "USER", "LOGNAME", "SHELL", "TZ", "TERM",
+        "XDG_CONFIG_HOME", "XDG_DATA_HOME", "XDG_CACHE_HOME", "XDG_STATE_HOME",
+        "PYTHONDONTWRITEBYTECODE", "PYTHONUTF8", "PYTHONIOENCODING",
+        "SSL_CERT_FILE", "SSL_CERT_DIR", "REQUESTS_CA_BUNDLE", "NODE_EXTRA_CA_CERTS",
+        "HTTP_PROXY", "HTTPS_PROXY", "NO_PROXY", "http_proxy", "https_proxy", "no_proxy",
+        "CLAUDE_CONFIG_DIR", "CLAUDECODE", "CLAUDE_CODE_ENTRYPOINT", "CLAUDE_MODEL",
+        "CODEX_HOME", "CODEX_THREAD_ID", "CODEX_SANDBOX", "CODEX_MODEL",
+        "JEO_CONFIG", "JEO_HOME", "JEO_MODEL", "JEO_SECOND_BRAIN_HOST", "JEO_SECOND_BRAIN_MODEL",
+        "JEOPI_HOME", "JEOPI_AGENT_DIR", "JEOPI_MODEL",
+        "OMP_HOME", "OMP_AGENT_DIR", "OMP_MODEL",
+        "PI_CODING_AGENT_DIR", "PI_HOME", "PI_MODEL",
+        "GJC_HOME", "GJC_MODEL",
+        "SECOND_BRAIN_HOST", "SECOND_BRAIN_MODEL", "JEV_AGENT",
+        "OBSIDIAN_VAULT", "OBSIDIAN_CONFIG", "OBSIDIAN_CLI", "OBSIDIAN_HOME", "LLM_WIKI_VAULT",
+        "SB_CALLS", "SB_RESPONSE", "SB_CRON", "SB_TREE", "SB_PIN", "SB_HELP", "SB_INDEX_FAIL", "SB_CTX_FAIL",
+    )
+    environment = {key: os.environ[key] for key in allowed_keys if key in os.environ}
     environment["SECOND_BRAIN_RUNNING"] = "1"
     environment["CLAUDE_CODE_SAFE_MODE"] = "1"
     # Temporary output streams bound memory even for a malfunctioning CLI.

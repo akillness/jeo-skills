@@ -178,7 +178,7 @@ skip instead of queueing behind a running scan. A Claude Code `SessionEnd` hook 
 `~/.claude/settings.json` (and in any `CLAUDE_CONFIG_DIR` profile you use):
 
 ```json
-{"hooks": {"SessionEnd": [{"hooks": [{"type": "command", "timeout": 5,
+{"hooks": {"SessionEnd": [{"hooks": [{"type": "command",
   "command": "nohup \"$HOME\"/.local/bin/jeo-skill usage scan --if-idle >/dev/null 2>&1 &"}]}]}}
 ```
 
@@ -208,7 +208,10 @@ runtime loading and account activation are separate checks.
 - GJC and Antigravity global installs automatically project to native roots when the target is selected.
 - Aside is account-scoped; use `--agent aside --aside-account <id>`.
 - Other upstream runtime IDs pass through to the pinned installer; do not assume universal discovery or activation.
-- **Placement ≠ Activation:** These commands only materialize skill files to roots. They do not authenticate, start, or verify that a runtime has loaded the skills. See your runtime's documentation for activation/registration steps (e.g., Claude Code plugin install, GJC CLI reachability, IDE skill auto-discovery).
+- **Placement ≠ Activation:** These commands only materialize skill files to roots. They do not
+  authenticate, start, or verify that a runtime has loaded the skills. See your runtime's
+  documentation for activation/registration steps (e.g., Claude Code plugin install, GJC CLI
+  reachability, IDE skill auto-discovery).
 
 ## Installation Workflows
 

@@ -12,6 +12,7 @@ description: >
   secrets. Triggers on: gitingest, git ingest, hub to ingest, repo to prompt, 깃허브 코드 전체를
   프롬프트로, 코드베이스 텍스트 덤프, digest.txt.
 allowed-tools: Bash Read Write Edit Glob Grep
+permissions: [env]
 compatibility: >
   Python 3.8 or newer and pip; git for remote URLs. The hosted gitingest.com site receives the
   repository URL and any token typed into its form, so private repositories belong on the local

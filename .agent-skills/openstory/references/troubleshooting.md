@@ -24,8 +24,9 @@ transaction. So drizzle-kit's table-rebuild pattern (`CREATE __new_X` →
 3. Avoid `ON DELETE CASCADE` on FKs pointing at `user`, `teams`, `sequences`
 
 **Guardrail** — `scripts/check-migrations.ts` (Lefthook pre-commit) flags
-`DROP TABLE`, `TRUNCATE`, `DELETE FROM`, `ALTER TABLE … DROP COLUMN`. Bypass
-only deliberately: `bun scripts/check-migrations.ts --allow-destructive`.
+destructive SQL statements (`DROP TABLE` / `TRUNCATE` / `DELETE FROM` /
+`ALTER TABLE … DROP COLUMN`). Bypass only deliberately:
+`bun scripts/check-migrations.ts --allow-destructive`.
 
 ## 2. Schema-drift trap (#898)
 

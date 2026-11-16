@@ -18,7 +18,7 @@ def call(self, state: GenericState) -> NodeOutput: ...
 | Return type | Meaning |
 |---|---|
 | `dict` / `TypedDict` | merge keys into state, continue to `next_node_ids` |
-| `Command(update=..., goto=...)` | update state and jump to specific node(s) |
+| `langgraph.types.Command(update=..., goto=...)` | update state and jump to specific node(s) |
 | `List[str]` | branch routing — pick these outgoing handles |
 | `Sequence[Send]` | fan out (map-reduce), one parallel branch per `Send` |
 | `None` | no update |
@@ -31,7 +31,7 @@ def call(self, state: GenericState) -> NodeOutput: ...
 2. `pre_call(state)` — the **fan-in barrier**. If the node has more than one
    `pre_node_ids` and has not reached its topological depth
    (`node_level >= step + 1`), it returns
-   `Command(update={"step": step+1}, goto=[self.id])` to re-queue itself, so
+   `langgraph.types.Command(update={"step": step+1}, goto=[self.id])` to re-queue itself, so
    it truly runs only once every upstream branch has arrived. `END` and
    `ANSWER` skip this.
 3. `self.call(state)` — your logic.

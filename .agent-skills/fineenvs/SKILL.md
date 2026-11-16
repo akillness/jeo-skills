@@ -7,6 +7,7 @@ description: >
   wants to author an environment against its bundled contracts. Route generic training, RL
   algorithms, serving, and provider operations to their owning skills.
 allowed-tools: Bash Read Write Edit Glob Grep
+permissions: [env]
 compatibility: >
   Python repository using uv. Most projects require Python 3.11+; the optional NeMo Gym path
   requires Python 3.12+. Cloud services, credentials, downloads, sandboxes, and GPUs are opt-in.

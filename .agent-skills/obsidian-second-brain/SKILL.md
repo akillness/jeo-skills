@@ -7,6 +7,7 @@ description: >-
   pinned operating documents and a shared tool-free proposal runtime; native
   PostCompact wiring is scoped to the new Claude vault, not every host.
 allowed-tools: Read Write Edit Bash Grep Glob WebFetch
+permissions: [env]
 aliases: /create-command /idea-discovery /notebooklm /obsidian-adr /obsidian-agenda /obsidian-architect /obsidian-board /obsidian-calendar /obsidian-capture /obsidian-catchup /obsidian-challenge /obsidian-connect /obsidian-daily /obsidian-decide /obsidian-emerge /obsidian-export /obsidian-find /obsidian-graduate /obsidian-health /obsidian-init /obsidian-ingest /obsidian-learn /obsidian-log /obsidian-meeting /obsidian-panel /obsidian-person /obsidian-project /obsidian-projects /obsidian-recap /obsidian-reconcile /obsidian-recurring /obsidian-review /obsidian-save /obsidian-schedule /obsidian-synthesize /obsidian-task /obsidian-visualize /obsidian-world /podcast /research /research-deep /vault-deep-synthesis /x-pulse /x-read /youtube
 compatibility: >
   Python 3.10+ and POSIX for consented new-vault setup/runtime. Copied operating

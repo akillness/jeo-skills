@@ -10,6 +10,7 @@ description: >
   generic browser automation to `browser-harness` or `playwriter`, and hosted Jev API
   work to `typesafe-ai`.
 allowed-tools: Bash Read
+permissions: [env, network]
 compatibility: Python >=3.12, uv, Browser Harness 0.1.13; interactive runs need a compatible Chrome/CDP session
 license: MIT
 metadata:

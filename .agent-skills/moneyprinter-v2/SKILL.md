@@ -11,6 +11,7 @@ description: >
   platform-evasion automation. Triggers on: MoneyPrinterV2, MoneyPrinter V2, MPV2,
   유튜브 쇼츠 자동화, 트위터 봇, 제휴 마케팅 자동화, 콜드 메일 자동화, 돈 버는 프로그램.
 allowed-tools: Bash Read Write Edit Glob Grep
+permissions: [env]
 compatibility: >
   Audited commit needs Python 3.12, a local or remote Ollama server, a Gemini image API key
   for image generation, Firefox with a logged-in profile for Twitter/YouTube/affiliate flows,

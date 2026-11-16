@@ -132,182 +132,6 @@ def parse_env_keys(path: Path) -> list[str]:
     return sorted(set(keys))
 
 
-def audit_source(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
-    raw_root = Path(args.repo).expanduser()
-    if raw_root.is_symlink():
-        return blocked("repo_path_is_symlink")
-    if not raw_root.is_dir():
-        return blocked("repo_not_found")
-    root = raw_root.resolve()
-
-    required = [
-        "README.md",
-        "LICENSE",
-        "Makefile",
-        "src/go.mod",
-        "src/pkg/paths/paths.go",
-        "src/cmd/openocta/commands/gateway.go",
-        "src/pkg/config/schema.go",
-        "src/pkg/agent/eino/cozeloop.go",
-        "src/pkg/agent/tools/local_agent_tool.go",
-        "docs/security.md",
-        "docs/environment-variables.md",
-    ]
-    missing = [name for name in required if not (root / name).is_file()]
-    required_symlinks = [name for name in required if has_symlink_component(root, name)]
-
-    def source_text(name: str) -> str:
-        return "" if name in required_symlinks else read_regular_text(root / name)
-
-    origin = git(root, "remote", "get-url", "origin")
-    commit = git(root, "rev-parse", "HEAD")
-    tags = sorted(filter(None, git(root, "tag", "--points-at", "HEAD").splitlines()))
-    issues: list[str] = []
-    warnings: list[str] = []
-
-    if missing:
-        issues.append("missing_required_files")
-    if required_symlinks:
-        issues.append("required_file_symlink")
-    if origin not in EXPECTED_ORIGINS:
-        issues.append("unexpected_origin")
-    expected = args.expect_commit or PINNED_COMMIT
-    if not re.fullmatch(r"[0-9a-f]{40}", commit or ""):
-        issues.append("commit_unavailable")
-    elif expected and commit != expected:
-        issues.append("commit_mismatch")
-
-    license_text = source_text("LICENSE")
-    license_ok = "Apache License" in license_text and "Version 2.0" in license_text
-    if not license_ok:
-        issues.append("apache_license_marker_missing")
-
-    go_text = source_text("src/go.mod")
-    go_match = re.search(r"^go\s+([^\s]+)", go_text, re.MULTILINE)
-    go_version = go_match.group(1) if go_match else None
-
-    readme = source_text("README.md")
-    readme_match = re.search(r"Latest\s+\[?(v\d+\.\d+\.\d+)", readme)
-    readme_latest = readme_match.group(1) if readme_match else None
-    head_version_tags = [tag for tag in tags if re.fullmatch(r"v\d+\.\d+\.\d+", tag)]
-    if readme_latest and head_version_tags and readme_latest not in head_version_tags:
-        warnings.append("readme_release_version_drift")
-
-    paths_text = source_text("src/pkg/paths/paths.go")
-    port_match = re.search(r"defaultGatewayPort\s*=\s*(\d+)", paths_text)
-    source_port = int(port_match.group(1)) if port_match else None
-    gateway_text = source_text("src/cmd/openocta/commands/gateway.go")
-    help_match = re.search(r"Gateway port \(default (\d+)\)", gateway_text)
-    help_port = int(help_match.group(1)) if help_match else None
-    if source_port and help_port and source_port != help_port:
-        warnings.append("gateway_help_port_drift")
-
-    schema_text = source_text("src/pkg/config/schema.go")
-    cozeloop_text = source_text("src/pkg/agent/eino/cozeloop.go")
-    local_agent_text = source_text("src/pkg/agent/tools/local_agent_tool.go")
-    cozeloop_bundled_defaults = bool(
-        re.search(r'DefaultCozeLoopAPIToken\s*=\s*"[^"]+"', schema_text)
-        and "enabled = true" in cozeloop_text
-        and "DefaultCozeLoopAPIToken" in cozeloop_text
-    )
-    local_agents_default_enabled = bool(
-        "func (c *LocalAgentsConfig) IsEnabled()" in schema_text
-        and "if c == nil || c.Enabled == nil" in schema_text
-        and "return true" in schema_text
-        and "AppendLocalAgentTool" in local_agent_text
-    )
-    local_agents_require_approval_referenced = "RequireApproval" in local_agent_text
-    if cozeloop_bundled_defaults:
-        warnings.append("cozeloop_trace_export_defaults_enabled_with_bundled_credentials")
-    if local_agents_default_enabled:
-        warnings.append("local_cli_agent_delegation_defaults_enabled")
-    if "RequireApproval" in schema_text and not local_agents_require_approval_referenced:
-        warnings.append("local_agents_require_approval_field_not_enforced_in_tool")
-
-    dangling_known = [
-        name
-        for name in ("docs/compare-openclaw-hermes.md", "CONTRIBUTING.md", "SECURITY.md")
-        if not (root / name).is_file()
-    ]
-    if "compare-openclaw-hermes.md" in readme and "docs/compare-openclaw-hermes.md" in dangling_known:
-        warnings.append("readme_compare_link_dangling")
-    if "CONTRIBUTING.md" in readme and "CONTRIBUTING.md" in dangling_known:
-        warnings.append("readme_contributing_link_dangling")
-    if "SECURITY.md" in dangling_known:
-        warnings.append("security_disclosure_file_absent")
-
-    archive_names: list[str] = []
-    archives_without_license_file: list[str] = []
-    archive_root = root / "deploy/inner_skills"
-    if not issues and archive_root.is_dir() and not has_symlink_component(root, "deploy/inner_skills"):
-        for archive in sorted(archive_root.glob("*.zip")):
-            if archive.is_symlink():
-                warnings.append("bundled_archive_symlink_skipped")
-                continue
-            archive_names.append(archive.name)
-            try:
-                with zipfile.ZipFile(archive) as handle:
-                    members = handle.namelist()
-                if not any(LICENSE_NAME.search(name) for name in members):
-                    archives_without_license_file.append(archive.name)
-            except (OSError, zipfile.BadZipFile):
-                warnings.append("bundled_archive_unreadable")
-    if archives_without_license_file:
-        warnings.append("bundled_archives_without_license_file")
-
-    env_keys: list[str] = []
-    if not issues:
-        for env_name in ("src/.env", "src/embed/.env", "ui/.env"):
-            if has_symlink_component(root, env_name):
-                warnings.append("tracked_env_symlink_skipped")
-                continue
-            env_keys.extend(parse_env_keys(root / env_name))
-        env_keys = sorted(set(env_keys))
-    go_tests = (
-        len(list((root / "src").rglob("*_test.go")))
-        if not issues and (root / "src").is_dir()
-        else 0
-    )
-    ui_tests = 0
-    if not issues and (root / "ui").is_dir() and not has_symlink_component(root, "ui"):
-        ui_tests = sum(
-            1
-            for path in (root / "ui").rglob("*")
-            if path.is_file()
-            and ("test" in path.name.lower() or ".spec." in path.name.lower())
-        )
-
-    status = "BLOCKED" if issues else ("WARN" if warnings else "PASS")
-    report: dict[str, Any] = {
-        "tool": PACK,
-        "mode": "source",
-        "status": status,
-        "deep_inspection_performed": not issues,
-        "origin": origin or None,
-        "commit": commit or None,
-        "head_tags": head_version_tags,
-        "license": "Apache-2.0" if license_ok else "unverified",
-        "go_version": go_version,
-        "readme_latest": readme_latest,
-        "source_default_gateway_port": source_port,
-        "cli_help_gateway_port": help_port,
-        "go_test_files": go_tests,
-        "ui_test_like_files": ui_tests,
-        "cozeloop_trace_export_uses_bundled_defaults": cozeloop_bundled_defaults,
-        "local_cli_agents_default_enabled": local_agents_default_enabled,
-        "local_agents_require_approval_referenced_by_tool": local_agents_require_approval_referenced,
-        "tracked_env_key_names": env_keys,
-        "bundled_archives": archive_names,
-        "bundled_archives_without_license_file": archives_without_license_file,
-        "missing_required_files": missing,
-        "required_file_symlinks": required_symlinks,
-        "known_absent_files": dangling_known,
-        "warnings": sorted(set(warnings)),
-        "issues": sorted(set(issues)),
-    }
-    return report, 2 if issues else 0
-
-
 def sensitive_fields(value: Any, prefix: str = "") -> list[str]:
     found: list[str] = []
     if isinstance(value, dict):
@@ -643,6 +467,182 @@ def audit_release(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
         else None,
         "asset_count": len(assets),
         "issues": issues,
+    }
+    return report, 2 if issues else 0
+
+
+def audit_source(args: argparse.Namespace) -> tuple[dict[str, Any], int]:
+    raw_root = Path(args.repo).expanduser()
+    if raw_root.is_symlink():
+        return blocked("repo_path_is_symlink")
+    if not raw_root.is_dir():
+        return blocked("repo_not_found")
+    root = raw_root.resolve()
+
+    required = [
+        "README.md",
+        "LICENSE",
+        "Makefile",
+        "src/go.mod",
+        "src/pkg/paths/paths.go",
+        "src/cmd/openocta/commands/gateway.go",
+        "src/pkg/config/schema.go",
+        "src/pkg/agent/eino/cozeloop.go",
+        "src/pkg/agent/tools/local_agent_tool.go",
+        "docs/security.md",
+        "docs/environment-variables.md",
+    ]
+    missing = [name for name in required if not (root / name).is_file()]
+    required_symlinks = [name for name in required if has_symlink_component(root, name)]
+
+    def source_text(name: str) -> str:
+        return "" if name in required_symlinks else read_regular_text(root / name)
+
+    origin = git(root, "remote", "get-url", "origin")
+    commit = git(root, "rev-parse", "HEAD")
+    tags = sorted(filter(None, git(root, "tag", "--points-at", "HEAD").splitlines()))
+    issues: list[str] = []
+    warnings: list[str] = []
+
+    if missing:
+        issues.append("missing_required_files")
+    if required_symlinks:
+        issues.append("required_file_symlink")
+    if origin not in EXPECTED_ORIGINS:
+        issues.append("unexpected_origin")
+    expected = args.expect_commit or PINNED_COMMIT
+    if not re.fullmatch(r"[0-9a-f]{40}", commit or ""):
+        issues.append("commit_unavailable")
+    elif expected and commit != expected:
+        issues.append("commit_mismatch")
+
+    license_text = source_text("LICENSE")
+    license_ok = "Apache License" in license_text and "Version 2.0" in license_text
+    if not license_ok:
+        issues.append("apache_license_marker_missing")
+
+    go_text = source_text("src/go.mod")
+    go_match = re.search(r"^go\s+([^\s]+)", go_text, re.MULTILINE)
+    go_version = go_match.group(1) if go_match else None
+
+    readme = source_text("README.md")
+    readme_match = re.search(r"Latest\s+\[?(v\d+\.\d+\.\d+)", readme)
+    readme_latest = readme_match.group(1) if readme_match else None
+    head_version_tags = [tag for tag in tags if re.fullmatch(r"v\d+\.\d+\.\d+", tag)]
+    if readme_latest and head_version_tags and readme_latest not in head_version_tags:
+        warnings.append("readme_release_version_drift")
+
+    paths_text = source_text("src/pkg/paths/paths.go")
+    port_match = re.search(r"defaultGatewayPort\s*=\s*(\d+)", paths_text)
+    source_port = int(port_match.group(1)) if port_match else None
+    gateway_text = source_text("src/cmd/openocta/commands/gateway.go")
+    help_match = re.search(r"Gateway port \(default (\d+)\)", gateway_text)
+    help_port = int(help_match.group(1)) if help_match else None
+    if source_port and help_port and source_port != help_port:
+        warnings.append("gateway_help_port_drift")
+
+    schema_text = source_text("src/pkg/config/schema.go")
+    cozeloop_text = source_text("src/pkg/agent/eino/cozeloop.go")
+    local_agent_text = source_text("src/pkg/agent/tools/local_agent_tool.go")
+    cozeloop_bundled_defaults = bool(
+        re.search(r'DefaultCozeLoopAPIToken\s*=\s*"[^"]+"', schema_text)
+        and "enabled = true" in cozeloop_text
+        and "DefaultCozeLoopAPIToken" in cozeloop_text
+    )
+    local_agents_default_enabled = bool(
+        "func (c *LocalAgentsConfig) IsEnabled()" in schema_text
+        and "if c == nil || c.Enabled == nil" in schema_text
+        and "return true" in schema_text
+        and "AppendLocalAgentTool" in local_agent_text
+    )
+    local_agents_require_approval_referenced = "RequireApproval" in local_agent_text
+    if cozeloop_bundled_defaults:
+        warnings.append("cozeloop_trace_export_defaults_enabled_with_bundled_credentials")
+    if local_agents_default_enabled:
+        warnings.append("local_cli_agent_delegation_defaults_enabled")
+    if "RequireApproval" in schema_text and not local_agents_require_approval_referenced:
+        warnings.append("local_agents_require_approval_field_not_enforced_in_tool")
+
+    dangling_known = [
+        name
+        for name in ("docs/compare-openclaw-hermes.md", "CONTRIBUTING.md", "SECURITY.md")
+        if not (root / name).is_file()
+    ]
+    if "compare-openclaw-hermes.md" in readme and "docs/compare-openclaw-hermes.md" in dangling_known:
+        warnings.append("readme_compare_link_dangling")
+    if "CONTRIBUTING.md" in readme and "CONTRIBUTING.md" in dangling_known:
+        warnings.append("readme_contributing_link_dangling")
+    if "SECURITY.md" in dangling_known:
+        warnings.append("security_disclosure_file_absent")
+
+    archive_names: list[str] = []
+    archives_without_license_file: list[str] = []
+    archive_root = root / "deploy/inner_skills"
+    if not issues and archive_root.is_dir() and not has_symlink_component(root, "deploy/inner_skills"):
+        for archive in sorted(archive_root.glob("*.zip")):
+            if archive.is_symlink():
+                warnings.append("bundled_archive_symlink_skipped")
+                continue
+            archive_names.append(archive.name)
+            try:
+                with zipfile.ZipFile(archive) as handle:
+                    members = handle.namelist()
+                if not any(LICENSE_NAME.search(name) for name in members):
+                    archives_without_license_file.append(archive.name)
+            except (OSError, zipfile.BadZipFile):
+                warnings.append("bundled_archive_unreadable")
+    if archives_without_license_file:
+        warnings.append("bundled_archives_without_license_file")
+
+    env_keys: list[str] = []
+    if not issues:
+        for env_name in ("src/.env", "src/embed/.env", "ui/.env"):
+            if has_symlink_component(root, env_name):
+                warnings.append("tracked_env_symlink_skipped")
+                continue
+            env_keys.extend(parse_env_keys(root / env_name))
+        env_keys = sorted(set(env_keys))
+    go_tests = (
+        len(list((root / "src").rglob("*_test.go")))
+        if not issues and (root / "src").is_dir()
+        else 0
+    )
+    ui_tests = 0
+    if not issues and (root / "ui").is_dir() and not has_symlink_component(root, "ui"):
+        ui_tests = sum(
+            1
+            for path in (root / "ui").rglob("*")
+            if path.is_file()
+            and ("test" in path.name.lower() or ".spec." in path.name.lower())
+        )
+
+    status = "BLOCKED" if issues else ("WARN" if warnings else "PASS")
+    report: dict[str, Any] = {
+        "tool": PACK,
+        "mode": "source",
+        "status": status,
+        "deep_inspection_performed": not issues,
+        "origin": origin or None,
+        "commit": commit or None,
+        "head_tags": head_version_tags,
+        "license": "Apache-2.0" if license_ok else "unverified",
+        "go_version": go_version,
+        "readme_latest": readme_latest,
+        "source_default_gateway_port": source_port,
+        "cli_help_gateway_port": help_port,
+        "go_test_files": go_tests,
+        "ui_test_like_files": ui_tests,
+        "cozeloop_trace_export_uses_bundled_defaults": cozeloop_bundled_defaults,
+        "local_cli_agents_default_enabled": local_agents_default_enabled,
+        "local_agents_require_approval_referenced_by_tool": local_agents_require_approval_referenced,
+        "tracked_env_key_names": env_keys,
+        "bundled_archives": archive_names,
+        "bundled_archives_without_license_file": archives_without_license_file,
+        "missing_required_files": missing,
+        "required_file_symlinks": required_symlinks,
+        "known_absent_files": dangling_known,
+        "warnings": sorted(set(warnings)),
+        "issues": sorted(set(issues)),
     }
     return report, 2 if issues else 0
 

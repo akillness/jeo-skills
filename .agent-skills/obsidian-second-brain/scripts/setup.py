@@ -562,8 +562,17 @@ def verified_local_assets(source: Path, *, preview: bool) -> dict[str, bytes]:
     assets = source_assets(source)
     if not preview:
         git = executable(None, "git")
-        git_env = {key: value for key, value in os.environ.items() if not key.startswith("GIT_")}
-        git_env.update(GIT_NO_REPLACE_OBJECTS="1", GIT_CONFIG_NOSYSTEM="1", GIT_CONFIG_GLOBAL=os.devnull)
+        allowed_git_env = (
+            "PATH", "HOME", "USER_HOME", "TMPDIR", "TEMP", "TMP",
+            "LANG", "LC_ALL", "LC_CTYPE", "LC_MESSAGES", "LC_COLLATE", "LC_MONETARY", "LC_NUMERIC", "LC_TIME",
+            "USER", "LOGNAME", "SHELL", "XDG_CONFIG_HOME",
+            "SystemRoot", "SYSTEMROOT", "WINDIR", "COMSPEC", "PATHEXT",
+            "PYTHONDONTWRITEBYTECODE", "JEO_SECOND_BRAIN_SOURCE",
+            "SB_CALLS", "SB_TREE", "SB_PIN",
+        )
+        git_env = {key: os.environ[key] for key in allowed_git_env if key in os.environ}
+        git_env.update(GIT_NO_REPLACE_OBJECTS="1", GIT_CONFIG_NOSYSTEM="1", GIT_CONFIG_GLOBAL=os.devnull,
+                       GIT_TERMINAL_PROMPT="0", GIT_OPTIONAL_LOCKS="0", GIT_ALLOW_PROTOCOL="")
         proc = subprocess.run([git, "-C", str(source), "ls-tree", "-r", "-z", REF], env=git_env, capture_output=True, check=True, timeout=30)
         blobs = {}
         for row in proc.stdout.split(b"\0"):

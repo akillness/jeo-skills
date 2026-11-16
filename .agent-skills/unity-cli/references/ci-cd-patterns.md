@@ -141,13 +141,13 @@ pipeline {
 
     stage('Build') {
       steps {
-        sh '''
-          unity-cli build \\
-            --project . \\
-            --platform WebGL \\
-            --output ./dist \\
-            --verbose
-        '''
+        sh(script: [
+          'unity-cli build',
+          '  --project .',
+          '  --platform WebGL',
+          '  --output ./dist',
+          '  --verbose',
+        ].join(' '))
       }
     }
 
@@ -386,10 +386,8 @@ Increase timeout and enable cache:
 # GitHub Actions
 timeout-minutes: 120
 
-# Jenkins
-timeout(time: 2, unit: 'HOURS') {
-  sh 'unity-cli build ...'
-}
+# Jenkins: configure a 2-hour build timeout in pipeline options
+# and invoke: unity-cli build --project . --platform WebGL --output ./dist
 ```
 
 ### Out of disk space
