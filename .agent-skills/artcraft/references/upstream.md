@@ -10,7 +10,7 @@ This reference covers `storytold/artcraft` at commit `40e04793b504147de97ba1f065
 | Stable download from `getartcraft.com` | obtain the desktop release advertised by the README | downloads and runs an installer; explicit approval required | README download links |
 | GitHub Releases | inspect latest ArtCraft release artifacts | network/download/install; explicit approval required | README and release workflows |
 | `npm ci` in `frontend` | install the checked-in frontend workspace dependencies | package downloads and writes `node_modules`; explicit approval required | `_docs/dev_setup.md`, `frontend/package.json` |
-| `npx nx run artcraft:build` | build the frontend before Tauri packaging | local build output and dependency execution; explicit approval required | Windows/macOS publish workflows |
+| `npm exec --offline -- nx run artcraft:build` | build the frontend before Tauri packaging | local build output and dependency execution; explicit approval required | Windows/macOS publish workflows |
 | `./script/artcraft/unix_dev.sh` | run Vite plus Rust/Tauri on macOS/Linux | starts local listeners and a desktop process; explicit approval required | `_docs/dev_setup.md` |
 | `windows_frontend_dev.ps1` plus `windows_rust_dev.ps1` | run the two Windows development halves | starts local dev processes; explicit approval required | `_docs/dev_setup.md` |
 | `SQLX_OFFLINE=true cargo check -p artcraft` | compile-check the desktop Rust crate using checked-in SQLx metadata | local compilation and `target` writes; explicit approval required | `_docs/dev_setup.md` |
@@ -24,7 +24,7 @@ This reference covers `storytold/artcraft` at commit `40e04793b504147de97ba1f065
 
 - The README identifies ArtCraft as an interactive AI image/video IDE with 2D composition and 3D scene staging, and links stable Windows/macOS downloads, GitHub releases, and a source-build guide. Linux is documented in the source-development path, not as a stable download target.
 - `_docs/dev_setup.md` calls the app Rust/Tauri, requires Rust, npm or nvm, and Tauri CLI `2.10.0` as a version that worked at the pinned documentation snapshot. It says Node.js `20+` is required for the Unix launcher and that Node `24.13.0` worked at the time of writing.
-- The root workspace is Rust with a Tauri desktop crate at `crates/desktop/artcraft`; the frontend workspace is private npm/Nx/Vite code under `frontend`. The Tauri config uses `frontend/apps/artcraft/dist`, `nx run artcraft:dev`, and `npx nx run artcraft:build`.
+- The root workspace is Rust with a Tauri desktop crate at `crates/desktop/artcraft`; the frontend workspace is private npm/Nx/Vite code under `frontend`. The Tauri config uses `frontend/apps/artcraft/dist`, `nx run artcraft:dev`, and `npm exec --offline -- nx run artcraft:build`.
 - The normal source path uses the user's ArtCraft app-data directory and Cargo target directory. The launcher chooses a free loopback port beginning at `5193`; it does not create an isolated account/data profile.
 
 ## Release and platform limits

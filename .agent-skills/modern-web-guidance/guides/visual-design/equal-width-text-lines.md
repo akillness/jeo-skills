@@ -19,7 +19,7 @@ Implementation guidelines:
 - `grow` cannot be combined with `shrink`. Either set the base `font-size` to a maximum or a minimum depending on what would be a better fallback or easier to calculate, and set `text-fit` to `shrink` or `grow` accordingly. If you don’t have a reason to use `shrink`, prefer `grow` + setting `font-size` to a minimum, as it's safer for most cases.
 - Always limit growth or shrinkage with the percentage (e.g. `300%`) as a guardrail.
 - The container needs a definite inline size. `text-fit` never changes intrinsic size, so it does nothing on `fit-content`/`max-content` widths or content-sized flex/grid items.
-- Trim the leading above the first and below the last line: see `precise-text-alignment` (via `npx -y modern-web-guidance@latest retrieve "precise-text-alignment"`).
+- Trim the leading above the first and below the last line: see `precise-text-alignment` (via `npx -y modern-web-guidance@1.0.0 retrieve "precise-text-alignment"`).
 - Keep `line-height` small, `1` or under, otherwise gaps between lines of different font-sizes become unwieldy.
 - IMPORTANT: Note that computed `font-size` is unchanged, so `em` spacing does not scale.
 - To avoid accidental over-emphasized orphans, apply `text-wrap: balance` or `text-wrap: pretty` if there are free lines.
@@ -28,7 +28,7 @@ Implementation guidelines:
 ### Spacing
 
 If all lines are forced, this produces more control over spacing:
-- Apply `text-box: trim-both cap alphabetic` to each line block so its box hugs its own glyphs. It trims using the scaled metrics. See `precise-text-alignment` (via `npx -y modern-web-guidance@latest retrieve "precise-text-alignment"`) for more details.
+- Apply `text-box: trim-both cap alphabetic` to each line block so its box hugs its own glyphs. It trims using the scaled metrics. See `precise-text-alignment` (via `npx -y modern-web-guidance@1.0.0 retrieve "precise-text-alignment"`) for more details.
 - Space lines using Flexbox or Grid + `gap` on the heading, not `line-height`. Gaps are then uniform instead of growing with each line's font-size.
 
 If some lines are free, do not use `text-box`: it only trims the first and last line, so the outer lines would hug the glyphs while interior gaps keep their leading. Let `line-height` govern all spacing.

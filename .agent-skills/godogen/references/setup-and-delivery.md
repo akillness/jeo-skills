@@ -19,7 +19,7 @@ Verified against upstream commit `05cebffc8b10c5817e8a3db495b82e7b6004ab84`.
 Ubuntu/Debian system packages documented upstream:
 
 ```bash
-sudo apt-get install vulkan-tools xvfb ffmpeg imagemagick
+apt-get install vulkan-tools xvfb ffmpeg imagemagick   # requires admin privileges
 ```
 
 macOS packages documented upstream:
@@ -53,7 +53,7 @@ macOS upstream install path:
 
 ```bash
 brew install --cask godot-mono
-sudo ln -sf /Applications/Godot_mono.app/Contents/MacOS/Godot /usr/local/bin/godot
+ln -sf /Applications/Godot_mono.app/Contents/MacOS/Godot /usr/local/bin/godot   # requires admin permissions if writing /usr/local/bin
 ```
 
 ### Bevy lane

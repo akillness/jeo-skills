@@ -25,7 +25,7 @@ docker run \
   -v gmaps-playwright-cache:/opt \
   -v "$PWD/example-queries.txt:/queries.txt:ro" \
   -v "$PWD/gmaps-output:/out" \
-  gosom/google-maps-scraper \
+  gosom/google-maps-scraper:v1.18.1 \
   -input /queries.txt -results /out/results.csv -depth 1 -exit-on-inactivity 3m
 ```
 
@@ -33,24 +33,27 @@ From source (README): `go mod download`, `go build`, then `./google-maps-scraper
 
 Input file: one query per line, plain searches (`dentists in Berlin Germany`) or direct Google Maps URLs; `Matsuhisa Athens #!#MyCustomID` sets a custom input id. `example-queries.txt` holds restaurant and cafe queries for several cities.
 
-Flags (README; run `-h` for the full list): `-input`, `-results` (default stdout), `-json`, `-resume` (file output only; not with stdout, `-writer`, `-leadsdb-api-key` or `-fast-mode`), `-depth` (default 10), `-c` (default half the CPU cores), `-email`, `-extra-reviews` (use JSON), `-lang`, `-geo`, `-zoom`, `-radius`, `-grid-bbox` with `-grid-cell`, `-web`, `-addr` (default `:8080`), `-data-folder`, `-dsn` with `-produce`, `-proxies`, `-proxies-file`, `-leadsdb-api-key`, `-exit-on-inactivity`, `-fast-mode` (beta, up to 21 results per query), `-debug`, `-writer`, `-browser-pool-size`, `-pages-per-browser`. `-fast-mode` and `-grid-bbox` cannot be combined.
+Flags (README; run `-h` for the full list): `-input`, `-results` (default stdout), `-json`, `-resume` (file output only; not with stdout, `-writer`, `-leadsdb-api-key` or `-fast-mode`), `-depth` (default 10), `-c` (default half the CPU cores), `-email`, `-extra-reviews` (use JSON), `-lang`, `-geo`, `-zoom`, `-radius`, `-grid-bbox` with `-grid-cell`,
+`-web`, `-addr` (default `:8080`), `-data-folder`, `-dsn` with `-produce`, `-proxies`, `-proxies-file`, `-leadsdb-api-key`, `-exit-on-inactivity`, `-fast-mode` (beta, up to 21 results per query), `-debug`, `-writer`, `-browser-pool-size`, `-pages-per-browser`. `-fast-mode` and `-grid-bbox` cannot be combined.
 
 ## Results
 
-36 documented fields (README): `input_id`, `link`, `title`, `category`, `address`, `open_hours`, `popular_times`, `website`, `phone`, `plus_code`, `review_count`, `review_rating`, `reviews_per_rating`, `latitude`, `longitude`, `cid`, `status`, `descriptions`, `reviews_link`, `thumbnail`, `timezone`, `price_range`, `data_id`, `street_view_url`, `place_id`, `images`, `reservations`, `order_online`, `menu`, `owner`, `complete_address`, `credit_cards_accepted`, `about`, `user_reviews`, `user_reviews_extended` (needs `-extra-reviews`), `emails` (needs `-email`). Phone numbers, emails and review text are personal data in many jurisdictions. Review a sample for duplicates and empty columns before scaling.
+36 documented fields (README): `input_id`, `link`, `title`, `category`, `address`, `open_hours`, `popular_times`, `website`, `phone`, `plus_code`, `review_count`, `review_rating`, `reviews_per_rating`, `latitude`, `longitude`, `cid`, `status`, `descriptions`, `reviews_link`, `thumbnail`, `timezone`, `price_range`, `data_id`, `street_view_url`, `place_id`, `images`, `reservations`, `order_online`, `menu`, `owner`, `complete_address`, `credit_cards_accepted`, `about`, `user_reviews`, `user_reviews_extended` (needs `-extra-reviews`), `emails` (needs `-email`).
+Phone numbers, emails and review text are personal data in many jurisdictions. Review a sample for duplicates and empty columns before scaling.
 
 ## Reliability
 
 - The README's throughput figure is about 120 places per minute at `-c 8 -depth 1`; its table assumes 16 results per keyword (100 keywords is about 13 minutes). Treat these as upstream estimates.
 - Blocking and rate limits grow with volume and concurrency; upstream says proxies help but are not a guarantee. `-c`, `-browser-pool-size` and `-pages-per-browser` trade throughput for CPU and memory.
-- Proxy flags: protocols `socks5`, `socks5h`, `http`, `https`. `-proxies` and `-proxies-file` cannot be combined. `docs/proxies.md` recommends `-proxies-file` (one URL per line, `#` comments, `chmod 600`, stored outside project repositories) so credentials stay out of command lines.
+- Proxy flags: protocols `socks5`, `socks5h`, `http`, `https`. `-proxies` and `-proxies-file` cannot be combined. `docs/proxies.md` recommends `-proxies-file` (one URL per line, `#` comments, mode 600 permissions, stored outside project repositories) so credentials stay out of command lines.
 - `-resume` writes `<results>.resume.json` beside the output and skips completed queries and already written places; rerun with the same input and options.
 - Web mode results take at least three minutes to appear (minimum configured runtime).
 
 ## Server modes
 
-- **Web UI and REST API** (`-web`, or the README's Docker command with `-data-folder`): routes include `/scrape`, `/download`, `/delete`, `/jobs`, `/view`, `/api/docs` and `/api/v1/jobs`, `/api/v1/jobs/{id}`, `/api/v1/jobs/{id}/download`. The job body fields in `web/job.go` are `keywords`, `lang`, `zoom`, `lat`, `lon`, `fast_mode`, `radius`, `depth`, `email`, `extra_reviews`, `max_time`, `proxies`. `web/web.go` contains no authorization handling, and the README's Docker command publishes `-p 8080:8080` on all host interfaces. Bind to loopback.
-- **SaaS edition** (`docs/saas.md`): API keys, admin UI, queue, workers, cloud provisioning. Its install line is `curl -fsSL .../PROVISION | sh`, which runs a downloaded script. Out of scope for this skill.
+- **Web UI and REST API** (`-web`, or the README's Docker command with `-data-folder`): routes include `/scrape, /download, /delete, /jobs, /view, /api/docs` and `/api/v1/jobs, /api/v1/jobs/{id}, /api/v1/jobs/{id}/download`.
+  The job body fields in `web/job.go` are `keywords`, `lang`, `zoom`, `lat`, `lon`, `fast_mode`, `radius`, `depth`, `email`, `extra_reviews`, `max_time`, `proxies`. `web/web.go` contains no authorization handling, and the README's Docker command publishes `-p 8080:8080` on all host interfaces. Bind to loopback.
+- **SaaS edition** (`docs/saas.md`): API keys, admin UI, queue, workers, cloud provisioning. Its install step fetches a remote `PROVISION` script and pipes it into `sh`. Out of scope for this skill.
 - **PostgreSQL provider and Kubernetes**: for distributed runs with `-dsn`; the README's examples put database credentials on the command line.
 
 ## Boundaries

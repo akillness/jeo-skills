@@ -13,6 +13,8 @@ description: >
   observability design to `monitoring-observability` and raw log triage to
   `log-analysis`.
 allowed-tools: Bash Read Write Edit Glob Grep
+permissions:
+  - env
 compatibility: >
   Release builds target Windows and macOS desktop use plus Linux service packages.
   Source builds at the audited pin require Go 1.26, npm for the Vite UI, and Wails

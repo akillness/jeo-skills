@@ -23,8 +23,8 @@ vercel link
 vercel env pull
 
 # Option B: manual API key (Vercel dashboard → AI Gateway → API Keys)
-cp .env.example .env.local
-# then set AI_GATEWAY_API_KEY=... in .env.local
+# Option B: set AI_GATEWAY_API_KEY in your local environment (Vercel dashboard -> AI Gateway -> API Keys)
+export AI_GATEWAY_API_KEY="<your-gateway-key>"
 ```
 
 | Env var | Required | Description |
@@ -45,7 +45,7 @@ pnpm typecheck   # tsc --noEmit
 ## Adding shadcn/ui components
 
 ```bash
-npx shadcn@latest add button
+npx shadcn@4.23.0 add button
 ```
 
 Component registry/config lives in `components.json`.

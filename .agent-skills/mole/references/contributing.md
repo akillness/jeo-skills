@@ -154,7 +154,7 @@ edits narrow and run the listed tests.
 | dev-tool and AI-agent caches | `lib/clean/dev.sh` | `clean_dev_caches`, `dev_extended` |
 | optimize task registration | `lib/optimize/tasks.sh` | `optimize`, `optimize_db` |
 | clean orchestration and section output | `bin/clean.sh` | `clean_core`, `clean_apps`, `cli` |
-| self-update and self-heal | `lib/manage/update.sh` | `update` |
+| CLI version updates and repair | `lib/manage/update.sh` | `update` |
 | the deletion funnel | `lib/core/file_ops.sh` | `file_ops_mole_delete`, `file_ops_size`, `file_ops_safe_remove_symlink`, `user_file_ops`, `core_safe_functions` |
 | installer discovery and delete plan | `bin/installer.sh` | `installer`, `installer_fd`, `installer_zip` |
 | analyze Update chain / scanner / cache | `cmd/analyze/{update,scanner,cache}.go` | `go test ./cmd/analyze` |

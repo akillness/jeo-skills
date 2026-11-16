@@ -296,8 +296,10 @@ ls bmad/config.yaml
 # Check installation
 plannotator --version
 
-# Re-install
-curl -sSfL https://plannotator.ai/install.sh | sh
+# Re-install (download, inspect, then execute)
+curl -sSfL https://plannotator.ai/install.sh -o /tmp/plannotator-install.sh
+less /tmp/plannotator-install.sh
+sh /tmp/plannotator-install.sh
 ```
 
 **Hook not firing on plan exit:**

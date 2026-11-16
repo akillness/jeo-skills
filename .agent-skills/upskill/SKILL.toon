@@ -4,7 +4,7 @@ T:Bash|Read|Write|Edit|Glob|Grep|WebFetch
 G:upskill|up-skill|flash to pro|teacher student distillation|ralph loop skill validation|distill agent failures into skills
 F:Claude Code
 S:
-  1:Install — `curl -sSL https://raw.githubusercontent.com/HKUDS/Upskill/main/cc-integration/install.sh | bash -s -- --remote` (or `scripts/install.sh`)
+  1:Install — `bash scripts/install.sh` (or `LOCAL_REPO=/path/to/UpSkill bash scripts/install.sh`)
   2:Configure — edit `~/.claude/upskill.conf`: UPSKILL_TEACHER (strong), UPSKILL_STUDENT (weak); Daily model stays independent
   3:Enable per project — `/upskill-configure` merges SessionStart/SessionEnd/UserPromptSubmit hooks
   4:Build — `/upskill-build` after a failure (or on a success) runs Teacher-analyze → generate → Ralph-validate against Student (up to 3 rounds)

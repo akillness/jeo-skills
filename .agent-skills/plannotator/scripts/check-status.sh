@@ -42,12 +42,16 @@ echo ""
 # ── 2. Hook Configuration ──────────────────────────
 echo -e "${BLUE}Hook Configuration${NC}"
 
-SETTINGS_FILE="$HOME/.claude/settings.json"
+CLAUDE_SUBDIR=".claude"
+CLAUDE_DIR="$HOME/${CLAUDE_SUBDIR}"
+SETTINGS_FILE="${CLAUDE_DIR}/settings.json"
 HOOK_CONFIGURED=false
 
-if [ -f "$SETTINGS_FILE" ]; then
+if [ -L "$SETTINGS_FILE" ]; then
+  check_warn "Claude settings file is a symlink (skipping read): ${SETTINGS_FILE}"
+elif [ -f "$SETTINGS_FILE" ]; then
   if grep -q "plannotator" "$SETTINGS_FILE" 2>/dev/null; then
-    check_pass "plannotator hook found in ~/.claude/settings.json"
+    check_pass "plannotator hook found in ${SETTINGS_FILE}"
     HOOK_CONFIGURED=true
 
     # Check hook is for ExitPlanMode
@@ -57,16 +61,16 @@ if [ -f "$SETTINGS_FILE" ]; then
       check_warn "Hook found but not bound to ExitPlanMode"
     fi
   else
-    check_warn "No plannotator hook in ~/.claude/settings.json"
+    check_warn "No plannotator hook in ${SETTINGS_FILE}"
     echo -e "    ${GRAY}Fix: run ./setup-hook.sh${NC}"
   fi
 else
-  check_warn "~/.claude/settings.json not found"
+  check_warn "Claude settings file not found at ${SETTINGS_FILE}"
   echo -e "    ${GRAY}Fix: run ./setup-hook.sh to create it${NC}"
 fi
 
 # Check for plugin install (alternative to manual hook)
-PLUGIN_DIR="$HOME/.claude/plugins"
+PLUGIN_DIR="${CLAUDE_DIR}/plugins"
 if [ -d "$PLUGIN_DIR" ] && ls "$PLUGIN_DIR" 2>/dev/null | grep -qi plannotator; then
   check_pass "plannotator Claude Code plugin detected"
   HOOK_CONFIGURED=true
@@ -127,26 +131,32 @@ echo ""
 # ── 3b. Gemini CLI Hook ─────────────────────────────────────
 echo -e "${BLUE}Gemini CLI Hook${NC}"
 
-GEMINI_SETTINGS="$HOME/.gemini/settings.json"
-if [ -f "$GEMINI_SETTINGS" ]; then
+GEMINI_SUBDIR=".gemini"
+GEMINI_DIR="$HOME/${GEMINI_SUBDIR}"
+GEMINI_SETTINGS="${GEMINI_DIR}/settings.json"
+if [ -L "$GEMINI_SETTINGS" ]; then
+  check_warn "Gemini settings file is a symlink (skipping read): ${GEMINI_SETTINGS}"
+elif [ -f "$GEMINI_SETTINGS" ]; then
   if grep -q "plannotator" "$GEMINI_SETTINGS" 2>/dev/null; then
-    check_pass "plannotator hook found in ~/.gemini/settings.json"
+    check_pass "plannotator hook found in ${GEMINI_SETTINGS}"
     if grep -q "ExitPlanMode" "$GEMINI_SETTINGS" 2>/dev/null; then
       check_pass "Hook bound to ExitPlanMode"
     else
       check_warn "Hook found but not bound to ExitPlanMode"
     fi
   else
-    check_warn "No plannotator hook in ~/.gemini/settings.json"
+    check_warn "No plannotator hook in ${GEMINI_SETTINGS}"
     echo -e "    ${GRAY}Fix: run ./setup-gemini-hook.sh${NC}"
   fi
 else
-  echo -e "  ${GRAY}-${NC} ~/.gemini/settings.json not found (run ./setup-gemini-hook.sh to configure)"
+  echo -e "  ${GRAY}-${NC} Gemini settings file not found at ${GEMINI_SETTINGS} (run ./setup-gemini-hook.sh to configure)"
 fi
 
-GEMINI_MD="$HOME/.gemini/GEMINI.md"
-if [ -f "$GEMINI_MD" ] && grep -q "plannotator" "$GEMINI_MD" 2>/dev/null; then
-  check_pass "plannotator instructions found in ~/.gemini/GEMINI.md"
+GEMINI_MD="${GEMINI_DIR}/GEMINI.md"
+if [ -L "$GEMINI_MD" ]; then
+  check_warn "GEMINI.md is a symlink (skipping read): ${GEMINI_MD}"
+elif [ -f "$GEMINI_MD" ] && grep -q "plannotator" "$GEMINI_MD" 2>/dev/null; then
+  check_pass "plannotator instructions found in ${GEMINI_MD}"
 else
   echo -e "  ${GRAY}-${NC} No plannotator instructions in GEMINI.md (run ./setup-gemini-hook.sh)"
 fi
@@ -156,23 +166,29 @@ echo ""
 # ── 3c. Codex CLI Configuration ────────────────────────────
 echo -e "${BLUE}Codex CLI Configuration${NC}"
 
-CODEX_CONFIG="$HOME/.codex/config.toml"
-if [ -f "$CODEX_CONFIG" ]; then
+CODEX_SUBDIR=".codex"
+CODEX_DIR="$HOME/${CODEX_SUBDIR}"
+CODEX_CONFIG="${CODEX_DIR}/config.toml"
+if [ -L "$CODEX_CONFIG" ]; then
+  check_warn "Codex config is a symlink (skipping read): ${CODEX_CONFIG}"
+elif [ -f "$CODEX_CONFIG" ]; then
   if grep -q "plannotator" "$CODEX_CONFIG" 2>/dev/null; then
-    check_pass "plannotator found in ~/.codex/config.toml developer_instructions"
+    check_pass "plannotator found in ${CODEX_CONFIG} developer_instructions"
   else
-    check_warn "No plannotator reference in ~/.codex/config.toml"
+    check_warn "No plannotator reference in ${CODEX_CONFIG}"
     echo -e "    ${GRAY}Fix: run ./setup-codex-hook.sh${NC}"
   fi
 else
-  echo -e "  ${GRAY}-${NC} ~/.codex/config.toml not found (run ./setup-codex-hook.sh to configure)"
+  echo -e "  ${GRAY}-${NC} Codex config not found at ${CODEX_CONFIG} (run ./setup-codex-hook.sh to configure)"
 fi
 
-CODEX_PROMPT="$HOME/.codex/prompts/plannotator.md"
-if [ -f "$CODEX_PROMPT" ]; then
-  check_pass "plannotator prompt file found at ~/.codex/prompts/plannotator.md"
+CODEX_PROMPT="${CODEX_DIR}/prompts/plannotator.md"
+if [ -L "$CODEX_PROMPT" ]; then
+  check_warn "Codex prompt is a symlink (skipping read): ${CODEX_PROMPT}"
+elif [ -f "$CODEX_PROMPT" ]; then
+  check_pass "plannotator prompt file found at ${CODEX_PROMPT}"
 else
-  echo -e "  ${GRAY}-${NC} No plannotator prompt at ~/.codex/prompts/ (run ./setup-codex-hook.sh)"
+  echo -e "  ${GRAY}-${NC} No plannotator prompt at ${CODEX_PROMPT} (run ./setup-codex-hook.sh)"
 fi
 
 echo ""

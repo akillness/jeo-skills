@@ -10,7 +10,7 @@ Combining semantic `<form>` markup, `<input autocomplete="one-time-code" inputmo
 
 ## Security considerations
 
-SMS OTP verifies possession of a phone number and provides convenient step-up verification, but SMS transport and phone numbers can be subject to SIM swapping, number recycling, and interception. Always pair client-side autofill and the WebOTP API with the origin-bound `@domain #code` SMS format so the browser and OS verify that the target domain matches before suggesting or delivering the code. For primary phishing-resistant authentication, prefer passkeys over SMS-based codes (see `passkeys` (via `npx -y modern-web-guidance@latest retrieve "passkeys"`)).
+SMS OTP verifies possession of a phone number and provides convenient step-up verification, but SMS transport and phone numbers can be subject to SIM swapping, number recycling, and interception. Always pair client-side autofill and the WebOTP API with the origin-bound `@domain #code` SMS format so the browser and OS verify that the target domain matches before suggesting or delivering the code. For primary phishing-resistant authentication, prefer passkeys over SMS-based codes (see `passkeys` (via `npx -y modern-web-guidance@1.0.0 retrieve "passkeys"`)).
 
 ## Semantic form markup
 
@@ -91,21 +91,21 @@ const otpInput = document.getElementById('otp-input');
 
 let otpAbortController = null;
 
-function stopSmsOtpListener() {
+function stopSmsOtpWatcher() {
   if (otpAbortController) {
     otpAbortController.abort();
     otpAbortController = null;
   }
 }
 
-async function startSmsOtpListener() {
+async function startSmsOtpWatcher() {
   // Feature-detect WebOTP support
   if (!otpInput || !('OTPCredential' in window)) {
     return;
   }
 
   // Cancel any previous pending WebOTP request (e.g., when re-sending an SMS code)
-  stopSmsOtpListener();
+  stopSmsOtpWatcher();
   const ac = new AbortController();
   otpAbortController = ac;
 
@@ -133,7 +133,7 @@ async function startSmsOtpListener() {
 
 otpForm.addEventListener('submit', async (event) => {
   // MANDATORY: Abort any in-flight WebOTP request when the form is submitted
-  stopSmsOtpListener();
+  stopSmsOtpWatcher();
 
   // Application-specific submission logic (e.g., AJAX fetch or native POST)
   event.preventDefault();
@@ -142,7 +142,7 @@ otpForm.addEventListener('submit', async (event) => {
 });
 
 // Start listening when the OTP verification step becomes active
-startSmsOtpListener();
+startSmsOtpWatcher();
 ```
 
 ## Cross-origin iframe verification

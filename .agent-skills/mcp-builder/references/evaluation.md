@@ -83,5 +83,5 @@ Do not run the harness "just to see". Do not run it against production.
 ## Reporting honestly
 
 Report the pass count out of ten and what failed. "Evaluations were created" is
-not a result. If the harness was not run — because of cost, missing key, or no
-approval — say that plainly rather than implying the server was validated.
+not a result. If the harness was not run — because of cost, missing key, or missing
+authorization — say that plainly rather than implying the server was validated.

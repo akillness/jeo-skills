@@ -4,17 +4,14 @@
 from __future__ import annotations
 
 import argparse
-import datetime as dt
+import http.client
 import json
 import os
 from pathlib import Path
 import re
 import sys
 from typing import Any, Optional
-from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
-from urllib.request import Request, urlopen
-
 
 API_BASE = "https://api.elevenlabs.io"
 DEFAULT_MODEL_ID = "eleven_multilingual_v2"
@@ -23,6 +20,16 @@ DEFAULT_OUTPUT_DIR = Path("outputs/voiceovers")
 DEFAULT_HOME_CONFIG = Path.home() / "local" / "elevenlabs" / "profiles.json"
 PROJECT_CONFIG_PATHS = (
     Path("config/local/elevenlabs-tts.json"),
+)
+_ALLOWED_ENV_KEYS = (
+    "ELEVENLABS_API_KEY",
+    "ELEVENLABS_TTS_CONFIG",
+    "ELEVENLABS_TTS_PROFILE",
+    "ELEVENLABS_TTS_VOICE_ID",
+    "ELEVENLABS_TTS_VOICE_NAME",
+    "ELEVENLABS_TTS_MODEL_ID",
+    "ELEVENLABS_TTS_OUTPUT_FORMAT",
+    "ELEVENLABS_TTS_SETTINGS_JSON",
 )
 
 
@@ -64,7 +71,11 @@ def find_env_file(start: Path) -> Optional[Path]:
 
 
 def load_env(env_file: Optional[str]) -> dict[str, str]:
-    values = dict(os.environ)
+    values: dict[str, str] = {}
+    for key in _ALLOWED_ENV_KEYS:
+        val = os.environ.get(key)
+        if val is not None:
+            values[key] = val
     candidate = Path(env_file).expanduser() if env_file else find_env_file(Path.cwd())
     if candidate:
         for key, value in parse_env_file(candidate).items():
@@ -119,41 +130,48 @@ def select_profile(config: dict[str, Any], profile_name: Optional[str]) -> tuple
     return profile, str(selected_name)
 
 
-def api_json(path: str, api_key: str, params: Optional[dict[str, Any]] = None) -> dict[str, Any]:
+def _request_api(
+    method: str,
+    path: str,
+    api_key: str,
+    headers: dict[str, str],
+    params: Optional[dict[str, Any]] = None,
+    body: Optional[bytes] = None,
+) -> bytes:
+    if API_BASE != "https://api.elevenlabs.io":
+        raise ElevenLabsError("Unexpected ElevenLabs API base URL.")
+    if not path.startswith(("/v1/", "/v2/")) or "://" in path or ".." in path:
+        raise ElevenLabsError(f"Invalid ElevenLabs API path: {path}")
     query = f"?{urlencode(params)}" if params else ""
-    request = Request(
-        f"{API_BASE}{path}{query}",
-        headers={"xi-api-key": api_key, "Accept": "application/json"},
-        method="GET",
-    )
-    with open_request(request) as response:
-        return json.loads(response.read().decode("utf-8"))
+    conn = http.client.HTTPSConnection("api.elevenlabs.io", 443, timeout=90)
+    try:
+        conn.request(method, f"{path}{query}", body=body, headers={"xi-api-key": api_key, **headers})
+        response = conn.getresponse()
+        raw = response.read()
+        if response.status >= 400:
+            detail = raw.decode("utf-8", errors="replace")
+            raise ElevenLabsError(f"ElevenLabs API returned {response.status}: {detail}")
+        return raw
+    except (OSError, http.client.HTTPException) as error:
+        raise ElevenLabsError(f"Could not reach ElevenLabs API: {error}") from error
+    finally:
+        conn.close()
+
+
+def api_json(path: str, api_key: str, params: Optional[dict[str, Any]] = None) -> dict[str, Any]:
+    raw = _request_api("GET", path, api_key, {"Accept": "application/json"}, params=params)
+    return json.loads(raw.decode("utf-8"))
 
 
 def api_audio(path: str, api_key: str, payload: dict[str, Any], params: dict[str, Any]) -> bytes:
-    request = Request(
-        f"{API_BASE}{path}?{urlencode(params)}",
-        data=json.dumps(payload).encode("utf-8"),
-        headers={
-            "xi-api-key": api_key,
-            "Content-Type": "application/json",
-            "Accept": "audio/mpeg",
-        },
-        method="POST",
+    return _request_api(
+        "POST",
+        path,
+        api_key,
+        {"Content-Type": "application/json", "Accept": "audio/mpeg"},
+        params=params,
+        body=json.dumps(payload).encode("utf-8"),
     )
-    with open_request(request) as response:
-        return response.read()
-
-
-def open_request(request: Request):
-    try:
-        return urlopen(request, timeout=90)
-    except HTTPError as error:
-        detail = error.read().decode("utf-8", errors="replace")
-        raise ElevenLabsError(f"ElevenLabs API returned {error.code}: {detail}") from error
-    except URLError as error:
-        raise ElevenLabsError(f"Could not reach ElevenLabs API: {error.reason}") from error
-
 
 def resolve_voice_id(api_key: str, voice_name: str) -> tuple[str, dict[str, Any]]:
     data = api_json("/v2/voices", api_key, {"search": voice_name, "page_size": 100})
@@ -262,7 +280,9 @@ def main() -> int:
     profile, profile_name = select_profile(config, args.profile or env_profile)
 
     voice_id_env_name = profile.get("voice_id_env")
-    voice_id_from_env = env.get(str(voice_id_env_name)) if voice_id_env_name else None
+    voice_id_from_env = None
+    if isinstance(voice_id_env_name, str) and re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", voice_id_env_name):
+        voice_id_from_env = env.get(voice_id_env_name) or os.environ.get(voice_id_env_name)
     voice_id = choose_value(args.voice_id, env.get("ELEVENLABS_TTS_VOICE_ID"), voice_id_from_env, profile.get("voice_id"))
     voice_name = choose_value(args.voice_name, env.get("ELEVENLABS_TTS_VOICE_NAME"), profile.get("voice_name"))
     model_id = choose_value(args.model_id, env.get("ELEVENLABS_TTS_MODEL_ID"), profile.get("model_id"), DEFAULT_MODEL_ID)

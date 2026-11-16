@@ -8,7 +8,7 @@ Use 2–5 word action queries focusing on the user-visible capability or HTML/CS
 
 ```sh
 # Remote / npm
-npx -y modern-web-guidance@latest search "accessible modal dialog"
+npx -y modern-web-guidance@1.0.0 search "accessible modal dialog"
 
 # Bundled local fallback
 bash .agent-skills/modern-web-guidance/scripts/modern-web-guidance.sh search "accessible modal dialog"
@@ -30,10 +30,10 @@ Retrieve one or more guides by ID:
 
 ```sh
 # Remote
-npx -y modern-web-guidance@latest retrieve "ui-components/modal-dialog"
+npx -y modern-web-guidance@1.0.0 retrieve "ui-components/modal-dialog"
 
 # Multiple IDs
-npx -y modern-web-guidance@latest retrieve "ui-components/modal-dialog,accessibility/focus-management"
+npx -y modern-web-guidance@1.0.0 retrieve "ui-components/modal-dialog,accessibility/focus-management"
 
 # Local script
 bash .agent-skills/modern-web-guidance/scripts/modern-web-guidance.sh retrieve "ui-components/modal-dialog"
@@ -44,7 +44,7 @@ bash .agent-skills/modern-web-guidance/scripts/modern-web-guidance.sh retrieve "
 Detect legacy patterns (e.g. jQuery animations, outdated date parsing, non-semantic div modals):
 
 ```sh
-npx -y modern-web-guidance@latest legacy-scan ./src --json
+npx -y modern-web-guidance@1.0.0 legacy-scan ./src --json
 ```
 
 ## Offline & Sandbox Environment Guidance

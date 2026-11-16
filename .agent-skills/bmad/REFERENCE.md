@@ -265,7 +265,7 @@ bmad_version: "6.0.0"
 agent_overrides_folder: "bmad/agent-overrides"
 ```
 
-### Global Config (~/.claude/config/bmad/config.yaml)
+### Global Config ($CLAUDE_CONFIG_DIR/config/bmad/config.yaml)
 
 ```yaml
 version: "6.0.0"
@@ -297,7 +297,7 @@ verbose_mode: false
 ### Config Priority
 
 1. Project config (bmad/config.yaml) - highest priority
-2. Global config (~/.claude/config/bmad/config.yaml) - default values
+2. Global config ($CLAUDE_CONFIG_DIR/config/bmad/config.yaml) - default values
 3. Built-in defaults - fallback
 
 ## File Operations
@@ -315,7 +315,7 @@ Extract: project_name, project_type, project_level, output_folder
 **Load global config:**
 ```
 Tool: Read
-Path: ~/.claude/config/bmad/config.yaml
+Path: $CLAUDE_CONFIG_DIR/config/bmad/config.yaml
 Parse: YAML
 Extract: user_name, communication_language, default_output_folder
 ```

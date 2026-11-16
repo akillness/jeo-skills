@@ -12,7 +12,7 @@
         "Close both Stagehand and browser handles."
       ],
       "must_not": [
-        "Start a Browserbase session without approval.",
+        "Start a Browserbase session before obtaining explicit user approval.",
         "Print a credential value."
       ]
     },
@@ -122,12 +122,12 @@
       "id": "catalog-change",
       "prompt": "Add Stagehand to this jeo-skills repository and make it discoverable.",
       "expected": [
-        "Write the skill folder and support files first.",
-        "Update skills.json as the source of truth, regenerate skills.toon and README projections, and run catalog validation.",
+        "Author the skill directory and support files first.",
+        "Register in skills.json as the source of truth, regenerate skills.toon and README projections, and run catalog validation.",
         "Leave unrelated untracked runtime scaffolds and historical retired-skill notes untouched."
       ],
       "must_not": [
-        "Hand-edit skills.toon or the generated catalog tables instead of the manifest.",
+        "Directly hand-author skills.toon or the generated catalog tables instead of the manifest.",
         "Create an agent-browser folder as a substitute."
       ]
     },

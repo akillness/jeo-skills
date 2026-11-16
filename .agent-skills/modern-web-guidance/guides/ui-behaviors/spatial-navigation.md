@@ -10,10 +10,10 @@ This guide covers building performant, accessible 2D directional navigation insi
 
 When implementing custom arrow-key spatial focus, adhere to these foundational rules:
 
-1. **Limit to composite widgets**: Do not override arrow keys on normal document text flow or simple vertical list layouts where default sequential Tab navigation is expected. It must only be used if there is an appropriate composite role that matches the interaction. See `accessibility` (via `npx -y modern-web-guidance@latest retrieve "accessibility"`) for general document flow guidance.
+1. **Limit to composite widgets**: Do not override arrow keys on normal document text flow or simple vertical list layouts where default sequential Tab navigation is expected. It must only be used if there is an appropriate composite role that matches the interaction. See `accessibility` (via `npx -y modern-web-guidance@1.0.0 retrieve "accessibility"`) for general document flow guidance.
 2. **Preserve native boundary scrolling**: If there is no focusable element in the pressed direction, **do not prevent default browser behavior**. Let the event bubble so the browser can scroll the viewport natively. Overriding arrow keys unconditionally breaks accessibility (WCAG 1.4.10).
 3. **Ensure focus visibility and alignment**: When focus changes, ensure the newly focused element is scrolled into view (e.g., using `scrollIntoView({ block: 'nearest', inline: 'nearest' })`) so that it remains fully visible.
-4. **Coordinate with the layout system**: Determine focus candidate positions from live bounding geometries (`getBoundingClientRect()`) while handling each keypress. Avoid assuming that DOM order or a fixed grid structure represents the visual layout. See `css-layout` (via `npx -y modern-web-guidance@latest retrieve "css-layout"`) for modern layout recommendations.
+4. **Coordinate with the layout system**: Determine focus candidate positions from live bounding geometries (`getBoundingClientRect()`) while handling each keypress. Avoid assuming that DOM order or a fixed grid structure represents the visual layout. See `css-layout` (via `npx -y modern-web-guidance@1.0.0 retrieve "css-layout"`) for modern layout recommendations.
 
 ---
 

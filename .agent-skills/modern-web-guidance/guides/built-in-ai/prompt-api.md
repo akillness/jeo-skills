@@ -331,7 +331,7 @@ output. Some ideas:
 
 - Streaming for long content: For summaries or chat, streaming creates a per-token typewriter effect by default. This can feel natural and provide immediate feedback.
 - Non-streaming for short tasks (or long async tasks): For short outputs, for example, alt-text, non-streaming can create a more polished UI. It also provides time to speculatively prepare the next AI task while the current one renders. This approach also works for longer asynchronous or background tasks. If the user is not blocked on the output to continue their journey, there is no urgent need to produce the output as it happens. Signal that the process is ongoing in the UI.
-- Visual transitions for updates: When translating or rewriting text, use animations, for example, word-morphing. For respecting reduced-motion preferences, see `motion` (via `npx -y modern-web-guidance@latest retrieve "motion"`).
+- Visual transitions for updates: When translating or rewriting text, use animations, for example, word-morphing. For respecting reduced-motion preferences, see `motion` (via `npx -y modern-web-guidance@1.0.0 retrieve "motion"`).
 
 **Don't:** Update the UI without visual cues, or without announcing the update to assistive technology users.
 

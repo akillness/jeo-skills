@@ -28,7 +28,7 @@ metadata:
 
 Use this skill when the job is **safe release execution after the system is already buildable**.
 
-`deployment-automation` is the repo's release-execution anchor for:
+`deployment-automation` is the repository release-execution anchor for:
 - preview releases and shareable review environments
 - staging → production promotion and sign-off gates
 - rollout strategy choice: replace, rolling, blue-green, canary, progressive

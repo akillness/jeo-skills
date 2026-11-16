@@ -8,7 +8,7 @@ This guide covers common connection failures, agent registration issues, engine 
 |---|---|---|
 | `craft-anything` tools missing in coding agent | Client configuration missing or stale | Run `craft-anything-cli doctor`. If client missing, run `craft-anything-cli setup --client <id> --dry-run` and review plan before applying. |
 | Agent config has tools, but agent fails to call them | Process started before config write | Fully restart or reconnect the coding agent application so it reloads its configuration. |
-| Tool set is small (only 12 core tools) | Client config launched without `--all-tools` | Check the client configuration file (e.g. `~/.claude/settings.json`, `~/.cursor/mcp.json`). Ensure `args` includes `--all-tools`. |
+| Tool set is small (only 12 core tools) | Client config launched without `--all-tools` | Check the active coding-agent MCP configuration file for that client and ensure `args` includes `--all-tools`. |
 | `setup --yes` stripped `--all-tools` | Default `setup` rewrote entry without flag | Restore `--all-tools` by editing the client config or restoring from `.craft-anything.backup`. |
 | `craft-anything-cli` command not found in shell | Binary not on system `PATH` | Run via `~/.local/bin/craft-anything-cli` or add `~/.local/bin` to your environment `PATH`. |
 | Tool call fails with `details.reason: clean_room` | Tool attempted to inspect internal code while in Clean room | If examining internal code is authorized, rerun with `--deep` flag or call `settings_set deep_mode true`. |

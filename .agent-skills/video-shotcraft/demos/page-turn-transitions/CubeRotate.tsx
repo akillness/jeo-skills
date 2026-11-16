@@ -1,11 +1,11 @@
 // 立方体空间翻转（cube-rotate）——cube transition 转场自实现。
 // FakeDashboard A / B 各缩放 0.82 居中，当立方体相邻两面：perspective 1400px，
 // 面宽 W=1920*0.82，两面各 rotateY(面角) translateZ(W/2)，场景整体先
-// translateZ(-W/2) 再 rotateY(θ)（把正面拉回 z=0，保证 hold 时精确 0.82 尺度）。
+// translateZ(-W/2) 再 rotateY(theta)（把正面拉回 z=0，保证 hold 时精确 0.82 尺度）。
 // 旧面 A 转出画面 brightness 1→0.55 压暗，新面 B 从 +90° 侧转入 0.55→1 亮起；
-// 接缝两侧各一条竖向渐变阴影，随角度 sin(pπ) 加深再消失；转动中段叠 blur(1.5px)，
+// 接缝两侧各一条竖向渐变阴影，随角度 sin(p*pi) 加深再消失；转动中段叠 blur(1.5px)，
 // 落定摘掉（filter 条件挂载，保证收尾逐帧完全相同）。
-// 关键帧：0–30 静止展示 A → 30–68 θ 0→-90°（inOut cubic）翻转 → 68–140 B 真静止 72f。
+// 关键帧：0–30 静止展示 A → 30–68 theta 0→-90°（inOut cubic）翻转 → 68–140 B 真静止 72f。
 import React from 'react';
 import { useCurrentFrame, interpolate, Easing } from 'remotion';
 import { G, FakeDashboard, TitleBlock } from '../_fixtures/Fixtures';

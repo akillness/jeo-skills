@@ -27,7 +27,7 @@ button:active { scale: 0.97; } /* example value */
 
 ### Open disclosures from their trigger
 
-Popovers and dropdowns should visibly open from the control that triggered them: scale out from the corner touching the trigger, or slide out from its side. Menus and hovercards have their own open motion; follow `menu` (via `npx -y modern-web-guidance@latest retrieve "menu"`) and `hovercard` (via `npx -y modern-web-guidance@latest retrieve "hovercard"`). For other popovers, place the popover next to its trigger and align `transform-origin` with the corner that touches it. To flip dropdowns at viewport edges, see `viewport-aware-dropdowns` (via `npx -y modern-web-guidance@latest retrieve "viewport-aware-dropdowns"`).
+Popovers and dropdowns should visibly open from the control that triggered them: scale out from the corner touching the trigger, or slide out from its side. Menus and hovercards have their own open motion; follow `menu` (via `npx -y modern-web-guidance@1.0.0 retrieve "menu"`) and `hovercard` (via `npx -y modern-web-guidance@1.0.0 retrieve "hovercard"`). For other popovers, place the popover next to its trigger and align `transform-origin` with the corner that touches it. To flip dropdowns at viewport edges, see `viewport-aware-dropdowns` (via `npx -y modern-web-guidance@1.0.0 retrieve "viewport-aware-dropdowns"`).
 
 ```css
 .dropdown {
@@ -50,9 +50,9 @@ Popovers and dropdowns should visibly open from the control that triggered them:
 @keyframes fade-in { from { opacity: 0; } }
 ```
 
-- Keep animations on the compositor (`transform`, its individual properties, and `opacity`) and respect reduced-motion preferences; see `motion` (via `npx -y modern-web-guidance@latest retrieve "motion"`). This example animates the opening only; for exit transitions, see `animate-to-from-top-layer` (via `npx -y modern-web-guidance@latest retrieve "animate-to-from-top-layer"`).
-- Trigger popovers declaratively using `<button popovertarget="dropdown-id">` (see `declarative-dialog-popover-control` (via `npx -y modern-web-guidance@latest retrieve "declarative-dialog-popover-control"`)) to get native click, keyboard, and dismiss behavior without JavaScript.
-- For a springy open, use a `linear()` curve that overshoots slightly before settling (an output value above 1); see `physics-based-easing` (via `npx -y modern-web-guidance@latest retrieve "physics-based-easing"`).
+- Keep animations on the compositor (`transform`, its individual properties, and `opacity`) and respect reduced-motion preferences; see `motion` (via `npx -y modern-web-guidance@1.0.0 retrieve "motion"`). This example animates the opening only; for exit transitions, see `animate-to-from-top-layer` (via `npx -y modern-web-guidance@1.0.0 retrieve "animate-to-from-top-layer"`).
+- Trigger popovers declaratively using `<button popovertarget="dropdown-id">` (see `declarative-dialog-popover-control` (via `npx -y modern-web-guidance@1.0.0 retrieve "declarative-dialog-popover-control"`)) to get native click, keyboard, and dismiss behavior without JavaScript.
+- For a springy open, use a `linear()` curve that overshoots slightly before settling (an output value above 1); see `physics-based-easing` (via `npx -y modern-web-guidance@1.0.0 retrieve "physics-based-easing"`).
 
 ### Make horizontal scrollers swipeable
 
@@ -73,8 +73,8 @@ Any horizontally scrollable row of items, such as a carousel, gallery, or row of
 
 - Native overflow scrolling gives swiping its physics and momentum, and snapping makes each swipe come to rest on an item, with no touch listeners.
 - If none of the scroller's items contains a link, button, or other focusable element, make the scroller itself focusable and labeled (`<div class="scroller" role="region" aria-label="Featured items" tabindex="0">`), so keyboard users can reach it and scroll it with the arrow keys. When items are focusable, tabbing to them already scrolls them into view.
-- To highlight the item that snaps into place, see `carousel-snap-highlights` (via `npx -y modern-web-guidance@latest retrieve "carousel-snap-highlights"`). To swipe a list item aside to reveal actions, see `swipe-to-reveal` (via `npx -y modern-web-guidance@latest retrieve "swipe-to-reveal"`). For side menus that close when swiped away, see `navigation-drawer` (via `npx -y modern-web-guidance@latest retrieve "navigation-drawer"`).
-- For carousel controls such as previous and next buttons and scroll markers, see `carousel` (via `npx -y modern-web-guidance@latest retrieve "carousel"`).
+- To highlight the item that snaps into place, see `carousel-snap-highlights` (via `npx -y modern-web-guidance@1.0.0 retrieve "carousel-snap-highlights"`). To swipe a list item aside to reveal actions, see `swipe-to-reveal` (via `npx -y modern-web-guidance@1.0.0 retrieve "swipe-to-reveal"`). For side menus that close when swiped away, see `navigation-drawer` (via `npx -y modern-web-guidance@1.0.0 retrieve "navigation-drawer"`).
+- For carousel controls such as previous and next buttons and scroll markers, see `carousel` (via `npx -y modern-web-guidance@1.0.0 retrieve "carousel"`).
 
 ### Add motion blur to large, fast movements (optional)
 
@@ -106,7 +106,7 @@ For large, rapid translations (such as a full-screen sheet sliding into view), a
 }
 ```
 
-For tooltips and previews triggered on hover, focus, or long-press, see `interest-triggered-tooltips` (via `npx -y modern-web-guidance@latest retrieve "interest-triggered-tooltips"`) and `interest-triggered-action-previews` (via `npx -y modern-web-guidance@latest retrieve "interest-triggered-action-previews"`).
+For tooltips and previews triggered on hover, focus, or long-press, see `interest-triggered-tooltips` (via `npx -y modern-web-guidance@1.0.0 retrieve "interest-triggered-tooltips"`) and `interest-triggered-action-previews` (via `npx -y modern-web-guidance@1.0.0 retrieve "interest-triggered-action-previews"`).
 
 ## Fallback strategies
 

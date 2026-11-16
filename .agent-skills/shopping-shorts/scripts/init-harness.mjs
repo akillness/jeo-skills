@@ -13,7 +13,7 @@ const sources = [
 ];
 
 function usage(exitCode = 0) {
-  console.log(`Usage: node scripts/init-harness.mjs --target /absolute/project [--apply]\n\nDefault is a read-only preview. --apply creates new files. Existing different files are never overwritten.`);
+  console.log('Usage: node scripts/init-harness.mjs --target /absolute/project [--apply]\n\nDefault is a read-only preview. --apply creates new files. Existing different files are never overwritten.');
   process.exit(exitCode);
 }
 
@@ -24,13 +24,13 @@ for (let i = 0; i < args.length; i += 1) {
   if (args[i] === '--target') target = args[++i];
   else if (args[i] === '--apply') apply = true;
   else if (args[i] === '--help' || args[i] === '-h') usage(0);
-  else throw new Error(`Unknown argument: ${args[i]}`);
+  else throw new Error(('Unknown argument: ' + args[i]));
 }
 if (!target) usage(2);
 if (!path.isAbsolute(target)) throw new Error('--target must be an absolute path');
 
 const targetStat = await fs.stat(target).catch(() => null);
-if (!targetStat?.isDirectory()) throw new Error(`Target must be an existing directory: ${target}`);
+if (!targetStat?.isDirectory()) throw new Error(('Target must be an existing directory: ' + target));
 const targetReal = await fs.realpath(target);
 if (targetReal === path.parse(targetReal).root) throw new Error('Refusing to initialize at filesystem root');
 
@@ -38,8 +38,8 @@ const parts = Object.fromEntries(new Intl.DateTimeFormat('en-CA', {
   timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit',
   hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23'
 }).formatToParts(new Date()).filter((part) => part.type !== 'literal').map((part) => [part.type, part.value]));
-const runId = `${parts.year}${parts.month}${parts.day}-${parts.hour}${parts.minute}-product-slug`;
-const createdAtKst = `${parts.year}-${parts.month}-${parts.day}T${parts.hour}:${parts.minute}:${parts.second}+09:00`;
+const runId = (String(parts.year) + parts.month + parts.day + '-' + parts.hour + parts.minute + '-product-slug');
+const createdAtKst = (parts.year + '-' + parts.month + '-' + parts.day + 'T' + parts.hour + ':' + parts.minute + ':' + parts.second + '+09:00');
 function renderTemplate(bytes) {
   return Buffer.from(bytes.toString('utf8')
     .replaceAll('__RUN_ID__', runId)
@@ -51,7 +51,7 @@ async function walk(root, rel = '') {
   const entries = await fs.readdir(path.join(root, rel), { withFileTypes: true });
   for (const entry of entries.sort((a, b) => a.name.localeCompare(b.name))) {
     const next = path.join(rel, entry.name);
-    if (entry.isSymbolicLink()) throw new Error(`Template contains a symlink: ${next}`);
+    if (entry.isSymbolicLink()) throw new Error(('Template contains a symlink: ' + next));
     if (entry.isDirectory()) out.push(...await walk(root, next));
     else if (entry.isFile()) out.push(next);
   }
@@ -98,4 +98,4 @@ for (const item of plan) {
   await fs.mkdir(path.dirname(to), { recursive: true });
   await fs.writeFile(to, renderedByPath.get(item.path), { flag: 'wx' });
 }
-console.log(`Installed shopping-shorts harness into ${targetReal}`);
+console.log(('Installed shopping-shorts harness into ' + targetReal));

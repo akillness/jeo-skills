@@ -6,6 +6,8 @@ description: >
   speech audio, or voice generation; load voice names, voice ids, emails, owners, and
   account-specific defaults only from local config outside the skill.
 allowed-tools: Bash Read Write Edit Glob Grep WebFetch
+permissions:
+  - env
 compatibility: Authored for Codex CLI workflows; portable to any agent with filesystem and shell access. Some steps need the tool named in the skill body (browser capture, ffmpeg, Gmail, X/Twitter, ElevenLabs).
 license: MIT
 metadata:

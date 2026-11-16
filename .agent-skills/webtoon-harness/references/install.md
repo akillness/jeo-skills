@@ -12,10 +12,10 @@
 
 ```bash
 # From the jeo-skills repo (recommended)
-npx skills add https://github.com/akillness/jeo-skills --skill webtoon-harness
+npx -y skills@1.7.0 add https://github.com/akillness/jeo-skills --skill webtoon-harness
 
 # Global install (all detected agents)
-npx skills add -g https://github.com/akillness/jeo-skills --skill webtoon-harness
+npx -y skills@1.7.0 add -g https://github.com/akillness/jeo-skills --skill webtoon-harness
 ```
 
 
@@ -41,7 +41,7 @@ Env knobs:
 | Var | Default | Effect |
 |-----|---------|--------|
 | `TARGET` | `.` (cwd) | Project root to scaffold `.claude/agents` + `.claude/skills` into |
-| `GLOBAL` | `0` | `1` → also run `npx skills add -g … --skill webtoon-harness` |
+| `GLOBAL` | `0` | `1` → also run `npx -y skills@1.7.0 add -g … --skill webtoon-harness` |
 | `REF` | `main` | Upstream git ref to clone |
 | `UPSTREAM_URL` | `https://github.com/revfactory/webtoon-harness` | Source repo |
 

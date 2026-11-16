@@ -16,7 +16,7 @@ This is not for switching between views of the same page (tabs) or for site-wide
 .breadcrumb > ol > li + li::before { content: "/" / ""; }
 ```
 
-- A styled character (`/`, `›`, `>`) generated as above is the simplest divider. For an icon divider such as a chevron, render it the way the codebase renders icons and keep it decorative; see `icons` (via `npx -y modern-web-guidance@latest retrieve "icons"`).
+- A styled character (`/`, `›`, `>`) generated as above is the simplest divider. For an icon divider such as a chevron, render it the way the codebase renders icons and keep it decorative; see `icons` (via `npx -y modern-web-guidance@1.0.0 retrieve "icons"`).
 
 ## 2. Styling
 
@@ -25,7 +25,12 @@ This is not for switching between views of the same page (tabs) or for site-wide
 - **DO NOT** drop the separator in chip-like styles. Pills, tags and a segmented bar without one look like tabs or filters (items on the same level), not a hierarchy. Plain text with no divider is also weak, since order is then the only cue; avoid it.
 - Choose a visual variant:
   - **Plain (slash or chevron):** use when the trail should stay visually quiet. Underline links at rest, or at least on hover and focus, so they never rely on color alone.
-  - **Bar:** one bordered, segmented container with `overflow: clip`; use when segments need large, clear touch targets. Keep a separator in each segment after the first. A bar must not wrap: when its segments no longer fit on one row, stack it in a column in a container query set just above the bar's natural width (measure it and round up, so it stacks only when it would not fit), with compact rows (smaller block padding), separated by a 1px `border-block-start` and the chevron turned to point down and use a fixed `border-radius` for a joined pill, since `999px` becomes an oval once it grows tall. For a joined pill, round the container (`border-radius: 999px`) and separate segments with a 1px `border-inline-start` and no gap. Give the current page's `<li>` the same background as its link, so the chevron outside the link does not sit on the bar's background. Round the container, not the individual links, so the clip handles the end caps, and give the end links the same end radius so an inset focus ring follows the rounded ends instead of being cut off.
+  - **Bar:** one bordered, segmented container with `overflow: clip`; use when segments need large, clear touch targets. Keep a separator in each segment after the first. A bar must not wrap: when its
+    segments no longer fit on one row, stack it in a column in a container query set just above the bar's natural width (measure it and round up, so it stacks only when it would not fit), with compact
+    rows (smaller block padding), separated by a 1px `border-block-start` and the chevron turned to point down and use a fixed `border-radius` for a joined pill, since `999px` becomes an oval once it
+    grows tall. For a joined pill, round the container (`border-radius: 999px`) and separate segments with a 1px `border-inline-start` and no gap. Give the current page's `<li>` the same background as its
+    link, so the chevron outside the link does not sit on the bar's background. Round the container, not the individual links, so the clip handles the end caps, and give the end links the same end radius
+    so an inset focus ring follows the rounded ends instead of being cut off.
   - **Pills / tags:** use rounded or shaped links when the trail is a prominent control, with a separator between them. Show backgrounds only on hover for tags.
 - Style the current page distinctly (weight, color) and non-current links with a hover state.
 - Custom palettes must meet WCAG AA contrast (4.5:1 for text) for links, hover, and the current page against their actual backgrounds (e.g. dark red on light gray). Keep a non-color cue on the current page, such as font weight.
@@ -117,9 +122,9 @@ Use `border-shape` only for shapes `corner-shape` cannot make, such as a notched
 
 These are optional. Implement them only when the trail needs them, and choose the implementation yourself.
 
-- **Sibling menus:** when ancestors have meaningful siblings (e.g. docs sections), let an ancestor expose its siblings in a menu. Keep the ancestor link navigating and put the toggle in a separate button, never inside the `<a>`. For menu mechanics, see `menu` (via `npx -y modern-web-guidance@latest retrieve "menu"`).
+- **Sibling menus:** when ancestors have meaningful siblings (e.g. docs sections), let an ancestor expose its siblings in a menu. Keep the ancestor link navigating and put the toggle in a separate button, never inside the `<a>`. For menu mechanics, see `menu` (via `npx -y modern-web-guidance@1.0.0 retrieve "menu"`).
 - **Long trails:** collapse the middle of a trail with more than 3 items on narrow containers instead of letting it wrap, keeping the first item and the last two. Put the hidden links in a popup opened from a "…" button, and keep the full trail when script is unavailable.
-- **Long labels:** keep every item on one line and never truncate the current page. See `single-line-overflow` (via `npx -y modern-web-guidance@latest retrieve "single-line-overflow"`) for techniques for truncating ancestor labels and revealing the full label on demand without UX friction.
+- **Long labels:** keep every item on one line and never truncate the current page. See `single-line-overflow` (via `npx -y modern-web-guidance@1.0.0 retrieve "single-line-overflow"`) for techniques for truncating ancestor labels and revealing the full label on demand without UX friction.
 
 ## Fallback strategy
 

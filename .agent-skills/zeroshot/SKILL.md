@@ -96,7 +96,7 @@ Write a run contract with:
 
 ```yaml
 zeroshot_plan:
-  product: node | rust | python
+  product: node  # node, rust, or python
   source_version: exact tag or commit
   repository: absolute path or remote
   base_branch: exact branch
@@ -374,7 +374,7 @@ Do not add `--ship`, call merge, or close the issue unless separately requested.
 
 **Action:** Read `status <id> --json`, bounded logs, agent states, last activity, and
 worktree/ledger presence. Identify the first blocked boundary. Do not resume, kill,
-finish, clean, or delete state until the user chooses the recovery action.
+finish, clean, or remove state until the user chooses the recovery action.
 
 ### Example 4: Verify an export safely
 

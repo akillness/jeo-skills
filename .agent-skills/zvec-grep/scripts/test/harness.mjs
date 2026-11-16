@@ -650,7 +650,7 @@ export async function mcpToolNames(daemon) {
   }
 }
 
-/** Call any tool by name (including ones that must not exist). Resolves { isError, text }. */
+/** Invoke an MCP tool by name (including ones that must not exist). Resolves { isError, text }. */
 export async function mcpCallTool(daemon, name, args, { timeoutMs = 30_000 } = {}) {
   const client = await mcpConnect(daemon);
   try {

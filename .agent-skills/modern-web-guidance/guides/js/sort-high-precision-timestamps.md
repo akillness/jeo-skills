@@ -46,7 +46,7 @@ function analyzeTrace(sortedEvents) {
     // since() returns a Temporal.Duration that retains nanosecond precision.
     const gap = curr.timestamp.since(prev.timestamp);
 
-    // 4. toLocaleString() formats the duration for people (e.g., "3μs 456ns").
+    // 4. toLocaleString() formats the duration for people (e.g., "3us 456ns").
     // Avoid gap.total('nanoseconds'): spans over ~104 days exceed Number.MAX_SAFE_INTEGER.
     // 'en-US' is used here for deterministic output; pass undefined to use the user's locale.
     console.log(`${prev.eventType} → ${curr.eventType}: ${gap.toLocaleString('en-US', { style: 'narrow' })}`);

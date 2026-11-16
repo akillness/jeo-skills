@@ -89,8 +89,12 @@ info "Checking LangSmith CLI..."
 if ! command -v langsmith >/dev/null 2>&1; then
   read -rp "Install LangSmith CLI? [y/N]: " install_cli
   if [[ "$install_cli" =~ ^[Yy]$ ]]; then
-    curl -sSL https://raw.githubusercontent.com/langchain-ai/langsmith-cli/main/scripts/install.sh | sh
-    ok "LangSmith CLI installed"
+    if command -v go >/dev/null 2>&1; then
+      go install github.com/langchain-ai/langsmith-cli/cmd/langsmith@latest
+      ok "LangSmith CLI installed via go install"
+    else
+      warn "Install LangSmith CLI from verified GitHub Releases: https://github.com/langchain-ai/langsmith-cli/releases"
+    fi
   fi
 else
   ok "LangSmith CLI already installed: $(langsmith --version 2>/dev/null || echo 'version unknown')"

@@ -16,7 +16,7 @@ Do NOT add one just because it is a common pattern on developer sites: the devel
 
 ## Implementation
 
-First, follow all steps in `dark-mode` (via `npx -y modern-web-guidance@latest retrieve "dark-mode"`) to support both schemes, defaulting to the system preference.
+First, follow all steps in `dark-mode` (via `npx -y modern-web-guidance@1.0.0 retrieve "dark-mode"`) to support both schemes, defaulting to the system preference.
 
 ### Data model
 
@@ -30,7 +30,7 @@ This state is usually stored in `localStorage` and reflected in a `<meta name="c
 ### Reflect the override in CSS
 
 The `<meta>` is only a *presentational hint*: any `color-scheme` declaration in author CSS overrides it.
-Since `dark-mode` (via `npx -y modern-web-guidance@latest retrieve "dark-mode"`) sets `color-scheme: light dark` on `:root`, updating the `<meta>` alone is a **no-op** — CSS wins.
+Since `dark-mode` (via `npx -y modern-web-guidance@1.0.0 retrieve "dark-mode"`) sets `color-scheme: light dark` on `:root`, updating the `<meta>` alone is a **no-op** — CSS wins.
 Map the `<meta>` back to the property so the cascade follows it:
 
 ```css
@@ -79,7 +79,7 @@ Overriding the color scheme adds an additional complication: the system preferen
 Do NOT rely exclusively on JS-applied classes like `.dark` for branching, as they will be incorrect if JS doesn't load and the OS default is dark.
 
 You can combine the media query with a `:root:has(> head > meta[name="color-scheme"][content="dark"])` (or `light`) selector to branch.
-See `selector-atrule-combinations` (via `npx -y modern-web-guidance@latest retrieve "selector-atrule-combinations"`) for details on how to implement this elegantly.
+See `selector-atrule-combinations` (via `npx -y modern-web-guidance@1.0.0 retrieve "selector-atrule-combinations"`) for details on how to implement this elegantly.
 
 The control's own options are non-color branches too: include both states in the markup (icon plus visually hidden action text, e.g. "Switch to dark theme") and hide the inactive one via these selectors.
 `display: none` also removes the redundant option from the AT so the control needs no JS to stay current when the system preference changes.

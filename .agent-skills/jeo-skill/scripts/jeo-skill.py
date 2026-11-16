@@ -55,6 +55,62 @@ SKILL_ALIASES = {
     "speckit": "spec-kit",
     "jev": "jev-control-plane",
 }
+_SAFE_SETUP_ENV_KEYS = (
+    "PATH",
+    "HOME",
+    "USER",
+    "SHELL",
+    "TERM",
+    "TMPDIR",
+    "TEMP",
+    "TMP",
+    "LANG",
+    "LC_ALL",
+    "LC_CTYPE",
+    "LC_MESSAGES",
+    "XDG_CONFIG_HOME",
+    "XDG_DATA_HOME",
+    "XDG_CACHE_HOME",
+    "XDG_STATE_HOME",
+    "PYTHONDONTWRITEBYTECODE",
+    "PYTHONPATH",
+    "VIRTUAL_ENV",
+    "CLAUDE_CONFIG_DIR",
+    "CODEX_HOME",
+    "GEMINI_CLI_HOME",
+    "GROK_HOME",
+    "KIMI_CODE_HOME",
+    "JEO_SECOND_BRAIN_CONFIG",
+    "JEO_SECOND_BRAIN_SOURCE",
+    "LLM_WIKI_VAULT",
+    "JEV_PROFILE",
+    "JEV_AGENT",
+    "JEO_SKILL_JEV_HARNESS",
+    "JEO_HARNESS_LOG",
+    "JEO_SKILLS_CATALOG",
+    "JEO_SKILL_STATE_DIR",
+    "JEO_SKILLS_APPROVE_HOOKS",
+    "ACTION_LOG",
+    "HTTPS_PROXY",
+    "https_proxy",
+    "HTTP_PROXY",
+    "http_proxy",
+    "NO_PROXY",
+    "no_proxy",
+    "SSL_CERT_FILE",
+    "SSL_CERT_DIR",
+    "NODE_EXTRA_CA_CERTS",
+    "UV_CACHE_DIR",
+    "UV_PYTHON",
+    "UV_TOOL_DIR",
+    "UV_TOOL_BIN_DIR",
+    "NPM_CONFIG_PREFIX",
+    "NPM_CONFIG_CACHE",
+    "npm_config_prefix",
+    "npm_config_cache",
+    "CARGO_HOME",
+    "RUSTUP_HOME",
+)
 
 
 class JeoSkillError(RuntimeError):
@@ -777,7 +833,7 @@ def run_skill_setup(root: Path | None, selected: list[str], *,
         if not dry_run:
             run_readiness_report(root, selected)
         return
-    env = os.environ.copy()
+    env = {key: val for key in _SAFE_SETUP_ENV_KEYS if (val := os.environ.get(key)) is not None}
     home = Path.home()
     env["PATH"] = f"{home / '.local/bin'}:{home / '.cargo/bin'}:/opt/homebrew/bin:" + env.get("PATH", "")
     env["SKIP_SKILL"] = "1"
@@ -856,7 +912,7 @@ def finish_install(args: argparse.Namespace, selected: list[str]) -> None:
 def installer_prerequisite_errors() -> list[str]:
     errors = []
     if shutil.which("npx") is None:
-        errors.append("npx is required to install skills")
+        errors.append("The skills CLI runner (npx) is required to install skills")
     try:
         version = subprocess.run(["node", "--version"], capture_output=True,
                                  text=True, check=False, timeout=10)
@@ -880,7 +936,7 @@ def command_install(args: argparse.Namespace, catalog: dict[str, Any]) -> None:
             preflight_destination(destination, selected)
             print(f"Destination: {destination}")
     if root is None:
-        print(f"Unverified passthrough target: {args.agent}; npx validates runtime support during installation, not during dry-run.")
+        print(f"Unverified passthrough target: {args.agent}; the skills CLI validates runtime support during installation, not during dry-run.")
     command = install_command(args, selected)
     print(f"Selected {len(selected)} skill(s): {', '.join(selected)}")
     print("Command: " + shlex.join(command))

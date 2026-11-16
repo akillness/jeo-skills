@@ -4,19 +4,19 @@
     {
       "id": 1,
       "prompt": "Set up react-grab in my Next.js app so I can copy component context into Claude Code.",
-      "expected_output": "Default to `npx -y grab@latest init`, state the Node.js >=22 prerequisite, and explain the hover + Cmd/Ctrl+C clipboard workflow.",
+      "expected_output": "Default to `npx -y grab@0.2.0 init`, state the Node.js >=22 prerequisite, and explain the hover + Cmd/Ctrl+C clipboard workflow.",
       "assertions": [
         "States the Node.js >=22 prerequisite before or alongside install guidance",
-        "Uses `npx -y grab@latest init` as the default install path",
+        "Uses `npx -y grab@0.2.0 init` as the default install path",
         "Explains dev-server -> hover element -> Cmd/Ctrl+C -> paste into Claude Code"
       ]
     },
     {
       "id": 2,
       "prompt": "Install react-grab MCP so my agent can fetch the selected component context without pasting.",
-      "expected_output": "Use `npx -y grab@latest add mcp` and explain browser selection first, MCP tool call second.",
+      "expected_output": "Use `npx -y grab@0.2.0 add mcp` and explain browser selection first, MCP tool call second.",
       "assertions": [
-        "Shows `npx -y grab@latest add mcp`",
+        "Shows `npx -y grab@0.2.0 add mcp`",
         "Explains that the user must select or hover an element in the browser before the MCP tool returns context",
         "Distinguishes MCP retrieval from the clipboard workflow"
       ]

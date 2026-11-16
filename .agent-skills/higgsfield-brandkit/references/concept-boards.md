@@ -83,7 +83,7 @@ When the user selects a type pair, immediately call the Brandkit state script's 
 
 Render a combined board only when all three slots are approved and the user requested a full identity/Brandkit or asks to see them together. Otherwise show the available individual review boards. Use `python3 "$SKILL_ROOT/scripts/brandkit.py" preview` with one `stage: "essential"` review containing the approved logo, palette, and type slots.
 
-Publish the returned HTML board per `inline-widgets.md` (inline PNG + full-screen/editable HTML links). This board is a presentation view, not another approval gate. Do not ask the user to approve the system again.
+Publish the returned HTML board per `inline-widgets.md` (inline PNG + full-screen/editable HTML links). This board is a presentation view, not another approval gate. Do not repeat the system approval prompt.
 
 ## Continue the original request
 

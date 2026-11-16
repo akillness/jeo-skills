@@ -77,7 +77,7 @@ Good fallback signals:
 - explicit cross-file mentions or index references
 - repo discovery docs that already list the relevant nodes
 
-Fallback output rule:
+Fallback reporting policy:
 - still write the normal durable artifact names when possible
 - label the result as a **graphify-style structural fallback**, not a native semantic graph build
 - explain why the fallback was chosen

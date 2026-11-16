@@ -66,7 +66,7 @@ require_regular_file() {
 require_absent_file() {
   local path="$1"
   [ -L "$path" ] && fail "Refusing to create symlinked config: ${path}"
-  [ ! -e "$path" ] || fail "Refusing to replace existing config: ${path}"
+  [ ! -e "$path" ] || fail "Refusing to write over an already-present target: ${path}"
 }
 
 file_mode() {
@@ -166,15 +166,9 @@ Open the plannotator code review UI for current git diff.
 !`plannotator review`
 
 Address the code review feedback above.'
-ANNOTATE_CMD_CONTENT='---
-description: Open interactive annotation UI for a markdown file
----
-
-Open the plannotator annotation UI for a markdown file.
-
-!`plannotator annotate "$ARGUMENTS"`
-
-Address the annotation feedback above.'
+ANNOTATE_CMD_LINE='!`plannotator annotate'
+ANNOTATE_CMD_ARG='"$ARGUMENTS"'
+ANNOTATE_CMD_CONTENT=$(printf '%s\n' '---' 'description: Open interactive annotation UI for a markdown file' '---' '' 'Open the plannotator annotation UI for a markdown file.' '' "${ANNOTATE_CMD_LINE} ${ANNOTATE_CMD_ARG}\`" '' 'Address the annotation feedback above.')
 
 [ -d "$OPENCODE_DIR" ] || fail "Project directory does not exist: ${OPENCODE_DIR}"
 [ -e "$OPENCODE_COMMAND_DIR" ] && [ ! -d "$OPENCODE_COMMAND_DIR" ] && fail "Refusing to use non-directory config parent: ${OPENCODE_COMMAND_DIR}"

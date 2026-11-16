@@ -69,7 +69,7 @@ import { tool } from "@langchain/core/tools";
 import { z } from "zod";
 
 const searchPapers = tool(
-  async ({ query }) => `Found 10 papers about ${query}`,
+  async ({ query }) => "Found 10 papers about " + query,
   { name: "search_papers", description: "Search papers", schema: z.object({ query: z.string() }) }
 );
 
@@ -306,6 +306,7 @@ const agent = await createDeepAgent({
 Complete workflow: trigger an interrupt, check state, approve action, and resume execution.
 
 ```python
+import langgraph.types as lg_types
 from deepagents import create_deep_agent
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.types import Command
@@ -328,7 +329,7 @@ if state.next:
     print(f"Pending action")
 
 # Step 3: Approve and resume
-result = agent.invoke(Command(resume={"decisions": [{"type": "approve"}]}), config=config)
+result = agent.invoke(lg_types.Command(resume={"decisions": [{"type": "approve"}]}), config=config)
 ```
 </python>
 <typescript>
@@ -370,7 +371,7 @@ Reject a pending action with feedback, prompting the agent to try a different ap
 
 ```python
 result = agent.invoke(
-    Command(resume={"decisions": [{"type": "reject", "message": "Run tests first"}]}),
+    lg_types.Command(resume={"decisions": [{"type": "reject", "message": "Run tests first"}]}),
     config=config,
 )
 ```
@@ -393,7 +394,7 @@ Edit the proposed action arguments before allowing execution.
 
 ```python
 result = agent.invoke(
-    Command(resume={"decisions": [{
+    lg_types.Command(resume={"decisions": [{
         "type": "edit",
         "edited_action": {
             "name": "execute_sql",
@@ -459,7 +460,7 @@ agent.invoke({"messages": [...]})
 config = {"configurable": {"thread_id": "session-1"}}
 agent.invoke({...}, config=config)
 # Resume with Command using same config
-agent.invoke(Command(resume={"decisions": [{"type": "approve"}]}), config=config)
+agent.invoke(lg_types.Command(resume={"decisions": [{"type": "approve"}]}), config=config)
 ```
 </python>
 <typescript>
@@ -486,7 +487,7 @@ Interrupts happen BETWEEN invoke() calls, not mid-execution.
 result = agent.invoke({...}, config=config)       # Step 1: triggers interrupt
 if "__interrupt__" in result:                      # Step 2: check for interrupt
     result = agent.invoke(                         # Step 3: resume
-        Command(resume={"decisions": [{"type": "approve"}]}),
+        lg_types.Command(resume={"decisions": [{"type": "approve"}]}),
         config=config,
     )
 ```

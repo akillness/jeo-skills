@@ -72,7 +72,7 @@ Default every outbound workflow to preview or dry run. Before live action:
 5. obtain approval for that exact payload and target;
 6. send once;
 7. read back provider state, message ID, post URL, or thread position;
-8. do not retry after ambiguous success without checking remote state.
+8. verify remote state before retrying after ambiguous success.
 
 ## Archive and deletion
 

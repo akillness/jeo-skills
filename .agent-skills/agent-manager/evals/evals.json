@@ -7,8 +7,8 @@
       "expected_output": "A lifecycle-management answer that stays on agent-manager, starts the named agent, and verifies runtime health with explicit status or monitoring commands.",
       "assertions": [
         "Response chooses `agent-manager` as the execution surface",
-        "Response includes a start command such as `$CLI start NAME`",
-        "Response includes a verification command such as `$CLI status NAME` or `$CLI monitor NAME --follow`"
+        "Response includes a start command such as `agent-manager start NAME`",
+        "Response includes a verification command such as `agent-manager status NAME` or `agent-manager monitor NAME --follow`"
       ]
     },
     {
@@ -27,7 +27,7 @@
       "expected_output": "A verification-focused answer that uses the install/setup path when needed and explicitly recommends the doctor command before live lifecycle changes.",
       "assertions": [
         "Response mentions `scripts/install.sh`, `scripts/setup.sh`, or the CLI alias setup path",
-        "Response mentions `$CLI doctor` or `python3 .../main.py doctor`",
+        "Response mentions the agent-manager `doctor` command or `python3 scripts/main.py doctor`"
         "Response frames doctor as the verification step before starting or scheduling agents"
       ]
     },

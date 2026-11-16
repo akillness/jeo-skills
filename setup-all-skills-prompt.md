@@ -1781,10 +1781,11 @@ fi
 | `refresh` | `mex-agent watch` and a marked `zg index` block in `.git/hooks/post-commit`; second-brain cron schedules |
 | `rules` | always-applied rule file `jeo-workflows.md` in `~/.agents/rules/` and `<project>/.agents/rules/` (plus `<project>/.cursor/rules/jeo-workflows.mdc` when Cursor is present), and pointer blocks in `<project>/AGENTS.md`, `<project>/CLAUDE.md`, and installed host globals (`~/.claude/CLAUDE.md`, `~/.codex/AGENTS.md`, `~/.pi/agent/AGENTS.md`, `~/.gjc/agent/AGENTS.md`, `~/.config/opencode/AGENTS.md`, `~/.gemini/GEMINI.md`) |
 | `harness2` | `.harness2/workspace.json`: method-mode component map and workflow status (benchmarks stay on demand: Vertex credentials, Docker, approval) |
+| `jeox` | `scripts/jeox.py` symlinked to `~/.local/bin/jeox`, builds per-repo SQLite + FTS5 graph `.jeo/db/jeo.db`, and registers local `jeox` MCP entry when `.opencode/opencode.json` is configured |
 
 The installed rule fixes the per-prompt order **openspace → rtk → semble → jev**; jev runs
 only after rtk and semble ran for that prompt and only when a profile is enabled. It then
-routes by query type: repo-local knowledge/history/work checks to `knowledge/` + `.mex/context/knowledge-pairings.md` (and personal notes to the second-brain vault), code/memory to `.mex/` (`mex-agent wiki for-code`), scoped meaning search (`zg query` with `-g 'knowledge/**' -g '!knowledge/raw/**'` vs `-g '!knowledge/**'`), RDF/OWL to `open-ontologies`, and harness changes to `.harness2/`.
+routes by query type: repo-local knowledge/history/work checks to `knowledge/` + `.mex/context/knowledge-pairings.md` (and personal notes to the second-brain vault), code/memory to `.mex/` (`mex-agent wiki for-code`, falling back to `jeox` `.jeo/db/jeo.db` when `.mex/` is missing or mex is unavailable), scoped meaning search (`zg query` with `-g 'knowledge/**' -g '!knowledge/raw/**'` vs `-g '!knowledge/**'`), RDF/OWL to `open-ontologies`, and harness changes to `.harness2/`.
 
 Fully automatic means these were chosen by the user at install time; they are
 not silent defaults. Opt-outs: `JEO_SKILLS_WORKSPACE=skip` (installer), `--no-activate`
@@ -1844,6 +1845,7 @@ command -v rtk >/dev/null 2>&1 && rtk gain
 command -v semble >/dev/null 2>&1 && semble --help >/dev/null
 (command -v "$USER_HOME/.local/bin/mex-agent" >/dev/null 2>&1 && "$USER_HOME/.local/bin/mex-agent" --version) \
   || (command -v mex >/dev/null 2>&1 && mex --version)
+command -v jeox >/dev/null 2>&1 && jeox status --repo "$PROJECT_DIR"
 command -v zg >/dev/null 2>&1 && zg version
 command -v graphify >/dev/null 2>&1 && graphify --version
 command -v cli-hub >/dev/null 2>&1 && cli-hub --version
@@ -3371,6 +3373,10 @@ Preview `jeo-skill install pmtiles --global --dry-run`, then install the selecte
 ### CanyonOS operator (on demand)
 
 Preview `jeo-skill install canyonos --global --dry-run`, then install the selected guide with `jeo-skill install canyonos --global --yes`. Installing `canyonos` copies operator guidance, `.canyon` configuration architecture, and offline support tools only, not the CanyonOS CLI, Docker Engine, agent containers, or provider credentials. Resolve `SKILL_DIR` to the installed skill directory and run `python3 "$SKILL_DIR/scripts/preflight.py"` for offline tool discovery and source manifest verification without network calls or binary execution. Review the skill's operations, adapter contracts, and scaling references before separately authorizing static validation (`canyonos validate`), container deployment (`canyonos deploy`), test query dispatch, or cluster target modifications.
+
+### NVIDIA SkillEvaluator operator (on demand)
+
+Preview `jeo-skill install nvidia-skill-evaluator --global --dry-run`, then install the selected guide with `jeo-skill install nvidia-skill-evaluator --global --yes`. Installing `nvidia-skill-evaluator` copies operator guidance, a pinned 12-file SHA-256 manifest (`NVIDIA/SkillEvaluator` v0.8.0 at `12b387f7a62b5f3e0de9eff392a3f6b7e952f2c2`), and the offline stdlib helper `scripts/preflight.py` only — it does not install `skillevaluator`, external scanners (`SkillSpector`, `Gitleaks`, `Bandit`, `Semgrep`), Docker, or provider keys. Run `python3 -B "$SKILL_DIR/scripts/preflight.py" --json` for offline inventory/hash checks (`runtime_verified: false`), and keep `PYTHONDONTWRITEBYTECODE=1` when running skill scripts so `.agent-skills/` never accumulates `__pycache__` bytecode artifacts. Across the 440-skill catalog, static `skillevaluator security-scan` (`SkillSpector 2.13.3`) remediation lowered `CRITICAL` findings from 4 to 0 and raised `LOW/SAFE` coverage from 318 to 409/440 skills; approve scanner downloads, Tier 2 egress, Tier 3 sandboxes, and CI mutations separately before running `tier1`, `tier2`, `tier3`, or `ci init`.
 
 ### Impeccable design operator (on demand)
 

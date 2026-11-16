@@ -37,10 +37,10 @@ notice: unauthorized scraping may violate terms of service.
 - Review a results CSV or JSON for duplicates, missing fields, and personal data before use.
 - Not for Google's Places API, for sending email to scraped addresses (see `moneyprinter-v2`'s Outreach warnings), or for installing upstream's own `google-maps-scraper` agent skill.
 
-Name collision: upstream's `npx skills add gosom/google-maps-scraper` installs a skill folder with the
+Name collision: upstream's skills-CLI command (`gosom/google-maps-scraper`) installs a skill folder with the
 same name, `google-maps-scraper`, in the same roots this catalog uses, and that skill updates itself
 on every run. Check `installed-skill` in the preflight and never overwrite one kind with the other
-without approval.
+unless the user explicitly approves.
 
 ## Instructions
 
@@ -67,7 +67,7 @@ An installed skill uses `python3 "$SKILLS_ROOT/google-maps-scraper/scripts/prefl
 
 Require separate explicit approval for each:
 
-1. `docker pull gosom/google-maps-scraper` or a source build (it downloads Go modules and Playwright browser libraries on first run).
+1. Pulling the `gosom/google-maps-scraper` image (`v1.18.1`) or running a source build (it downloads Go modules and Playwright browser libraries on first run).
 2. Any crawl: it makes live requests to Google Maps from the user's IP. Start with a 1 to 3 line query file, `-depth 1`, the default `-c`, and `-exit-on-inactivity 3m`.
 3. `-email`: it also visits each business website. Say so before enabling it.
 4. Proxies: use `-proxies-file` (mode 600, outside the repo), never inline `-proxies`, and never ask for credentials in chat. The two flags cannot be combined.

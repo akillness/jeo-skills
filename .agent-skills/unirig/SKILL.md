@@ -75,12 +75,12 @@ bash scripts/doctor.sh --json     # machine-readable, for agent branching
 `torch_cluster`, `flash_attn`, `bpy`, `trimesh`, the UniRig checkout, its `launch/inference`
 scripts, and Hugging Face reachability. It exits `1` when a **blocking** item is missing, so an
 agent can stop before promising a rig that cannot run. Use `--unirig-home <path>` (or
-`UNIRIG_HOME`) when the checkout is not at `~/.cache/unirig/UniRig`.
+`UNIRIG_HOME`) when the checkout is not at `$HOME/.cache/unirig/UniRig`.
 
 ### Step 3: Install the skill and, when the machine qualifies, the upstream repo
 
 ```bash
-npx skills add https://github.com/akillness/jeo-skills --skill unirig
+npx skills@1.9.0 add https://github.com/akillness/jeo-skills --skill unirig
 ```
 
 ```bash

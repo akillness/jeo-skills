@@ -132,7 +132,7 @@ Apply this operating policy to knowledge-note writes; host proposal validation e
 - Frontmatter is for **LLM retrieval**, not human review (type, tags, recency markers, sources verbatim).
 - **Rewrite, don't append**: when a source adds depth or contradicts a page, rewrite that page and record why.
 - **Bi-temporal facts**: track when a fact was true AND when the vault learned it ("You believed X on Tuesday; after ingesting Y on Wednesday, you shifted to Z").
-- **Two-Output Rule** is interactive guidance: file relevant knowledge alongside the answer when authorized; it is not automatic capture of every host response.
+- **Dual-Output Policy** is interactive guidance: file relevant knowledge alongside the answer when authorized; it is not automatic capture of every host response.
 - **All `raw/` trees are immutable**, including videos and archived-root sources; preserve originals and rewrite only derived knowledge. The portable lifecycle has no legacy GC or unapproved deletion.
 
 ### Step 3 — Run the matching command and propagate updates

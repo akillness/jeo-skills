@@ -12,7 +12,7 @@ Pick the first rule that matches. If unsure, use Rule 1.
 
 Use for confirmations, forms, sign-in, destructive actions, and any "modal", "dialog", "lightbox" or "popup" request that does not say otherwise.
 
-Use `<dialog>` opened as a modal, declaratively with `command="show-modal"` (see `declarative-dialog-popover-control` (via `npx -y modern-web-guidance@latest retrieve "declarative-dialog-popover-control"`)) or from script with `showModal()`.
+Use `<dialog>` opened as a modal, declaratively with `command="show-modal"` (see `declarative-dialog-popover-control` (via `npx -y modern-web-guidance@1.0.0 retrieve "declarative-dialog-popover-control"`)) or from script with `showModal()`.
 
 ```html
 <button type="button" command="show-modal" commandfor="confirm">Delete</button>
@@ -31,7 +31,7 @@ The browser provides: inert page, focus containment, top layer, `::backdrop`, `E
 
 - **DON'T** add `role="dialog"`, `aria-modal`, a focus trap, `inert` toggling or an `Esc` handler.
 - **DON'T** open it with `show()` or the `open` attribute.
-- **DO** stop the page scrolling behind it with the CSS below. See `prevent-page-scroll-under-modal-dialog` (via `npx -y modern-web-guidance@latest retrieve "prevent-page-scroll-under-modal-dialog"`) for the details.
+- **DO** stop the page scrolling behind it with the CSS below. See `prevent-page-scroll-under-modal-dialog` (via `npx -y modern-web-guidance@1.0.0 retrieve "prevent-page-scroll-under-modal-dialog"`) for the details.
 - **DON'T** lock scrolling with `overflow: hidden` or `position: fixed` on `html` or `body`.
 
 ```css
@@ -101,7 +101,7 @@ The default depends on how the dialog is opened. If `closedby` is absent or inva
 
 ### Opening
 
-- **DO** open declaratively with `command="show-modal"` and `commandfor` on a `<button>`. See `declarative-dialog-popover-control` (via `npx -y modern-web-guidance@latest retrieve "declarative-dialog-popover-control"`).
+- **DO** open declaratively with `command="show-modal"` and `commandfor` on a `<button>`. See `declarative-dialog-popover-control` (via `npx -y modern-web-guidance@1.0.0 retrieve "declarative-dialog-popover-control"`).
 - **DO** use `dialog.showModal()` when opening from script.
 
 ### Closing
@@ -127,7 +127,7 @@ The default depends on how the dialog is opened. If `closedby` is absent or inva
 ### Backdrop and styling
 
 - **DO** style `::backdrop` and use `dialog:modal` to target modal-only styles.
-- **DO** leave animation to `animate-to-from-top-layer` (via `npx -y modern-web-guidance@latest retrieve "animate-to-from-top-layer"`), dragging to `drag` (via `npx -y modern-web-guidance@latest retrieve "drag"`), and reparenting to `persistent-top-layer-ui` (via `npx -y modern-web-guidance@latest retrieve "persistent-top-layer-ui"`).
+- **DO** leave animation to `animate-to-from-top-layer` (via `npx -y modern-web-guidance@1.0.0 retrieve "animate-to-from-top-layer"`), dragging to `drag` (via `npx -y modern-web-guidance@1.0.0 retrieve "drag"`), and reparenting to `persistent-top-layer-ui` (via `npx -y modern-web-guidance@1.0.0 retrieve "persistent-top-layer-ui"`).
 - **DON'T** set `display` on `dialog` unconditionally. It overrides the closed state. Scope it with `dialog[open]`.
 
 ### Accessibility

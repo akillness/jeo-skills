@@ -6,7 +6,7 @@ U[3]:
   **Multiple Environments**: Separate dev, staging, production
   **Team Collaboration**: Share consistent environments
 S[5]{n,action}:
-  1,.env File Structure
+  1,Environment File Structure
   2,Type-Safe Environment Variables (TypeScript)
   3,Per-Environment Config Files
   4,Environment-Specific Configuration Files

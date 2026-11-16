@@ -56,7 +56,9 @@ Environment:
   SKILLS_ROOT      Destination root for skill folders (default: \$HOME/.agents/skills)
 
 Known sub-skills:
-$(printf '  - %s\n' "${ALL_SKILLS[@]}")
+EOF
+  printf '  - %s\n' "${ALL_SKILLS[@]}"
+  cat <<EOF
 
 Examples:
   fetch-upstream-skills.sh --skill build-threejs-enemy-systems --skill tune-enemy-ai

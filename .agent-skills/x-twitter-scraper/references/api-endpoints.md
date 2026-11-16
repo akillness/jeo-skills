@@ -1196,7 +1196,7 @@ GET /x/dm/{userId}/history
 
 Get DM conversation history with a user. Requires a connected X account. Metered (1 credit/result).
 
-**Sensitive:** Returns private DM conversations. Confirm with user before calling. Do not forward to other tools without consent.
+**Sensitive:** Returns private DM conversations. Confirm with user before calling. Require explicit consent before forwarding to other tools.
 
 ### Update Profile
 

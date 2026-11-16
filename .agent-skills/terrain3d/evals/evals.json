@@ -70,7 +70,7 @@
       "expected_behavior": [
         "Separate security/build/editor approvals",
         "Warn experimental web and source/engine compatibility",
-        "Do not override security or claim export supported merely because binary exists"
+        "Do not bypass platform security gates or claim export supported merely because binary exists"
       ]
     }
   ]

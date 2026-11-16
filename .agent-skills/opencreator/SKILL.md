@@ -13,6 +13,8 @@ description: >
   timeline editing to `opencut`, and general skill authoring to
   `skill-standardization`.
 allowed-tools: Bash Read Write Edit WebFetch
+permissions:
+  - env
 compatibility: >
   Source audited at commit b01a9f71165b9010216e25c462653b0cfa33cbce. The
   observed v3.2.7 release has separate Desktop, CLI, and Server assets. Agent
@@ -104,8 +106,8 @@ installer.
 OpenCreator uses Codex CLI for agent conversations and can expose additional
 creator services. Check the app's visible provider/account status for the
 specific task. Existing Codex sign-in may be reusable; do not read
-`~/.codex/auth.json`, shell history, `.env`, browser storage, or any credential
-to prove that. Never ask the user to paste a password, API key, cookie, or
+`<codex-home>/auth.json`, shell history, `.env`, browser storage, or any credential
+to prove that. Do not ask the user to paste a password, API key, cookie, or
 verification code into chat or a report.
 
 Before a paid or remote operation, identify the selected provider/model, the

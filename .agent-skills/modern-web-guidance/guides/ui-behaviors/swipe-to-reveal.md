@@ -2,7 +2,7 @@
 
 Swipe-to-reveal patterns let users slide a foreground row or content pane horizontally to expose hidden UI—such as contextual action buttons (*Pin*, *Mute*, *Archive*, *Delete*) or a secondary side menu—**without automatically activating any action**. Instead of committing an action during the swipe, the container snaps open to reveal interactive controls that the user can inspect and activate, or swipe back to close.
 
-> For a full-width swipe gesture that immediately commits and dismisses an item past a threshold, see `swipe-to-remove` (via `npx -y modern-web-guidance@latest retrieve "swipe-to-remove"`). For revealing a hidden header at the top of a vertical scroll container, see `pull-to-reveal` (via `npx -y modern-web-guidance@latest retrieve "pull-to-reveal"`).
+> For a full-width swipe gesture that immediately commits and dismisses an item past a threshold, see `swipe-to-remove` (via `npx -y modern-web-guidance@1.0.0 retrieve "swipe-to-remove"`). For revealing a hidden header at the top of a vertical scroll container, see `pull-to-reveal` (via `npx -y modern-web-guidance@1.0.0 retrieve "pull-to-reveal"`).
 
 ## How to implement
 
@@ -178,7 +178,7 @@ for (const trigger of document.querySelectorAll('.SwipeReveal-content [aria-labe
 }
 ```
 
-Along with this, use `scroll-snap-realtime-feedback` (via `npx -y modern-web-guidance@latest retrieve "scroll-snap-realtime-feedback"`) to ensure that the accessibility state information is kept up to date, if someone swipes open the associated content, rather than triggering it directly with the button.
+Along with this, use `scroll-snap-realtime-feedback` (via `npx -y modern-web-guidance@1.0.0 retrieve "scroll-snap-realtime-feedback"`) to ensure that the accessibility state information is kept up to date, if someone swipes open the associated content, rather than triggering it directly with the button.
 
 ## Best practices and pitfalls
 

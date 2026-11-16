@@ -64,7 +64,7 @@ test('large search frame and cancellation retain their identities', {timeout:800
   assert.deepEqual(lines.find(m=>m.id==='large-id')?.result,{cancelled:true});
 });
 
-test('backpressured Unix SSE streams the full response without truncation', {timeout:12000}, async t=>{
+test('backpressured Unix SSE streams the full untruncated response', {timeout:12000}, async t=>{
   const sb=createSandbox(), socket=join(sb.root,'stream.sock');
   const code=`import http from 'node:http';
     const {launchUnixSupervisor,attachPrivateChannels}=await import(process.argv[1]);

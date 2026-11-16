@@ -10,7 +10,7 @@ This reference records the upstream facts used by `okf-agent-memory`. It is inte
 ## Commit-pinned source map
 
 - [README.md](https://github.com/okf-memory/okf-agent-memory/blob/ad7beb01b9d4294d8dd28c25494d274374985b69/README.md): project scope, repository layout, build, bootstrap, MCP, and test entry point.
-- [Embedded skill](https://github.com/okf-memory/okf-agent-memory/blob/ad7beb01b9d4294d8dd28c25494d274374985b69/.agents/skills/okf-memory/SKILL.md): upstream's agent-facing memory workflow.
+- [Embedded skill](https://github.com/okf-memory/okf-agent-memory/tree/ad7beb01b9d4294d8dd28c25494d274374985b69/.agents/skills/okf-memory): upstream's agent-facing memory workflow.
 - [Getting-started guide](https://github.com/okf-memory/okf-agent-memory/blob/ad7beb01b9d4294d8dd28c25494d274374985b69/docs/guides/GETTING_STARTED.md): install options, bootstrap targets, and MCP configuration.
 - [CLI & MCP reference](https://github.com/okf-memory/okf-agent-memory/blob/ad7beb01b9d4294d8dd28c25494d274374985b69/docs/guides/CLI.md): command syntax, scope resolution, flags, and exit codes.
 - [Security & privacy policy](https://github.com/okf-memory/okf-agent-memory/blob/ad7beb01b9d4294d8dd28c25494d274374985b69/docs/security/SECURITY.md): prohibited stored data, provenance, privacy, and memory-poisoning guidance.

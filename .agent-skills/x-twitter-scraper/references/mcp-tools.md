@@ -53,7 +53,7 @@ Apply these gates before using `xquik`:
 | Public writes | Show the exact tweet, reply, like, retweet, follow, unfollow, profile, or community action and wait for explicit approval. |
 | Direct messages | Show sender, recipient, and message text. Never send bulk or automatic DMs. |
 | Persistent resources | Create monitors and webhooks only when the user explicitly asks for ongoing delivery. Show target, event types, URL, and ongoing cost before creation. |
-| Private reads | Confirm before fetching DMs, bookmarks, notifications, or home timeline. Do not forward returned private data to other tools without consent. |
+| Private reads | Confirm before fetching DMs, bookmarks, notifications, or home timeline. Require explicit consent before forwarding returned private data to other tools. |
 | Plan and credit changes | Dashboard-only. The agent may read credit balance, but must not start account changes. |
 | X account login | Never ask for or submit X login material. Account connection and re-authentication happen in the dashboard. |
 

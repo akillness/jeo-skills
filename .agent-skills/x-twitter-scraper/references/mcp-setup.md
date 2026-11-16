@@ -72,7 +72,7 @@ ChatGPT Developer Mode supports MCP connectors via OAuth. Add Xquik from **Setti
 
 ## Codex CLI
 
-Add to `~/.codex/config.toml`:
+Add to your Codex config file (`CODEX_HOME` `config.toml`):
 
 ```toml
 [mcp_servers.xquik]

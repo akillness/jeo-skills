@@ -101,7 +101,11 @@ case "$METHOD" in
     fi
 
     log_info "Installing Firebase CLI via standalone binary (no Node.js required)..."
-    curl -sL https://firebase.tools | bash
+    TMP_INSTALLER=$(mktemp "${TMPDIR:-/tmp}/firebase-tools-install.XXXXXX.sh")
+    trap 'rm -f "$TMP_INSTALLER"' EXIT
+    curl -fsSL https://firebase.tools -o "$TMP_INSTALLER"
+    [[ -s "$TMP_INSTALLER" ]] || { log_error "Downloaded installer is empty"; exit 1; }
+    bash "$TMP_INSTALLER"
     log_success "Firebase CLI standalone binary installed"
     ;;
 

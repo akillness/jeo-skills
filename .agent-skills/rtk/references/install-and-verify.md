@@ -28,7 +28,10 @@ Use this when Homebrew is present and the user wants a standard package-manager 
 ### Repository install script
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/akillness/rtk/refs/heads/master/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/akillness/rtk/refs/heads/master/install.sh -o /tmp/rtk-install.sh
+# Review /tmp/rtk-install.sh before running:
+sh /tmp/rtk-install.sh
+# Delete the temporary installer file once verification succeeds
 ```
 
 Notes:

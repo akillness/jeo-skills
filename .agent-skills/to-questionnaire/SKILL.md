@@ -33,7 +33,7 @@ This skill is imported from `mattpocock/skills` (MIT) and is **user-invoked** up
 
 Turn something the user can't answer alone into a **questionnaire**: a Markdown document they hand to one person to fill in async, or fill out together over a meeting. The recipient holds knowledge the user lacks; the questionnaire pulls it out of them.
 
-**Grill the send, not the subject.** Interview the user only about the _send_, which they can always answer: who it goes to, and what they need back. The questions in the document then target the **gap** between what the recipient knows and what the user needs.
+**Grill the send, not the subject.** Interview the user only about the _send_, which they already know: who it goes to, and what they need back. The questions in the document then target the **gap** between what the recipient knows and what the user needs.
 
 
 1. **Who is it going to?** Ask, in one exchange, the recipient's role, expertise, and relationship to the user. This fixes the questionnaire's tone and how much context it must carry. Done when you know who the recipient is and what they know that the user doesn't.
@@ -94,5 +94,5 @@ A closing catch-all: anything we didn't ask that we should know?
 ## References
 
 - Upstream skill: `mattpocock/skills` `skills/productivity/to-questionnaire/SKILL.md` (commit `3cca18b`, MIT)
-- Project standards: `.agent-skills/skill-standardization/SKILL.md`
+- Project standards: `skill-standardization` (`.agent-skills/skill-standardization/`)
 - Validator script: `.agent-skills/skill-standardization/scripts/validate_skill.sh`

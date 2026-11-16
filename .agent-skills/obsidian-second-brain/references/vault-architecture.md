@@ -92,7 +92,7 @@ verified changes of belief.
 These are model-quality instructions, not proof that a provider synthesizes well.
 Host validation enforces JSON shape, destination, bounds and prior-content hashes;
 it does not establish factual correctness or semantic quality. The upstream
-Two-Output Rule is interactive operating guidance, not a claim that this adapter
+Dual-Output Policy is interactive operating guidance, not a claim that this adapter
 captures every host conversation or updates the vault after every answer.
 
 ## Consented events, not always-on host parity

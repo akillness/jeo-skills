@@ -35,7 +35,8 @@ Three things are required for interrupts to work:
 Pause execution for human review and resume with Command.
 
 ```python
-from langgraph.types import interrupt, Command
+from langgraph import types as lg_types
+from langgraph.types import interrupt
 from langgraph.checkpoint.memory import InMemorySaver
 from langgraph.graph import StateGraph, START, END
 from typing_extensions import TypedDict
@@ -66,7 +67,7 @@ print(result["__interrupt__"])
 # [Interrupt(value='Do you approve this action?')]
 
 # Resume with the human's response
-result = graph.invoke(Command(resume=True), config)
+result = graph.invoke(lg_types.Command(resume=True), config)
 print(result["approved"])  # True
 ```
 </python>
@@ -120,7 +121,8 @@ A common pattern: interrupt to show a draft, then route based on the human's dec
 Interrupt for human review, then route to send or end based on the decision.
 
 ```python
-from langgraph.types import interrupt, Command
+from langgraph import types as lg_types
+from langgraph.types import interrupt
 from langgraph.graph import StateGraph, START, END
 from typing import Literal
 from typing_extensions import TypedDict
@@ -144,13 +146,13 @@ def human_review(state: EmailAgentState) -> Command[Literal["send_reply", "__end
 
     # Process the human's decision
     if human_decision.get("approved"):
-        return Command(
+        return lg_types.Command(
             update={"draft_response": human_decision.get("edited_response", state.get("draft_response", ""))},
             goto="send_reply"
         )
     else:
         # Rejection — human will handle directly
-        return Command(update={}, goto=END)
+        return lg_types.Command(update={}, goto=END)
 ```
 </python>
 <typescript>
@@ -220,10 +222,10 @@ config = {"configurable": {"thread_id": "form-1"}}
 first = graph.invoke({"age": None}, config)
 # __interrupt__: "What is your age?"
 
-retry = graph.invoke(Command(resume="thirty"), config)
+retry = graph.invoke(lg_types.Command(resume="thirty"), config)
 # __interrupt__: "'thirty' is not a valid age..."
 
-final = graph.invoke(Command(resume=30), config)
+final = graph.invoke(lg_types.Command(resume=30), config)
 print(final["age"])  # 30
 ```
 </python>
@@ -302,7 +304,7 @@ resume_map = {
     i.id: f"answer for {i.value}"
     for i in result["__interrupt__"]
 }
-result = graph.invoke(Command(resume=resume_map), config)
+result = graph.invoke(lg_types.Command(resume=resume_map), config)
 # result["vals"] = ["a:answer for question_a", "b:answer for question_b"]
 ```
 </python>
@@ -347,7 +349,7 @@ const resumeMap: Record<string, string> = {};
 if (isInterrupted(interruptedResult)) {
   for (const i of interruptedResult[INTERRUPT]) {
     if (i.id != null) {
-      resumeMap[i.id] = `answer for ${i.value}`;
+      resumeMap[i.id] = "answer for " + i.value;
     }
   }
 }
@@ -482,7 +484,7 @@ async function nodeInSubgraph(state: State) {
 
 ## Command(resume) Warning
 
-`Command(resume=...)` is the **only** Command pattern intended as input to `invoke()`/`stream()`. Do NOT pass `Command(update=...)` as input — it resumes from the latest checkpoint and the graph appears stuck. See the fundamentals skill for the full antipattern explanation.
+Using `resume=...` on `Command` is the **only** pattern intended as input to `invoke()`/`stream()`. Do NOT pass `update=...` as input — it resumes from the latest checkpoint and the graph appears stuck. See the fundamentals skill for the full antipattern explanation.
 
 ---
 
@@ -522,7 +524,7 @@ Use Command to resume from an interrupt (regular dict restarts graph).
 graph.invoke({"resume_data": "approve"}, config)
 
 # CORRECT
-graph.invoke(Command(resume="approve"), config)
+graph.invoke(lg_types.Command(resume="approve"), config)
 ```
 </python>
 <typescript>

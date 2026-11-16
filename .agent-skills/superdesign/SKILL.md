@@ -46,7 +46,7 @@ Generic recipe selection belongs to `web-design`; shared foundations belong to
 
 Source-only requests stop at a documented plan. Before any CLI runner, install,
 login, upload or generation, obtain permission covering that action and destination.
-The upstream `npx --yes @superdesign/cli@latest` runner can download and execute
+The upstream `@superdesign/cli` package runner (`@latest` in upstream docs) can download and execute
 code; it is not a read-only health check. Never run it merely to explain this skill.
 Show the resolved context-file list and relevant images before external transfer.
 Exclude credentials, private keys, auth files, `.env` files and unrelated source.

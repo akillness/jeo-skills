@@ -44,7 +44,7 @@ The agent will clone the repo and link it into your skills directory. Or install
 with the [skills](https://skills.sh/) CLI / manually:
 
 ```bash
-npx skills add Vincentwei1021/video-shotcraft
+npx skills@1.9.0 add Vincentwei1021/video-shotcraft
 ```
 
 ```bash

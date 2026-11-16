@@ -110,4 +110,4 @@ Use when the build completes but the real problem is frame time, memory, hitchin
 Use when the team is really asking about Steam page, demo timing, or public launch operations rather than build automation.
 
 ## Boundary reminder
-`game-ci-cd-pipeline` owns repeated structural pipeline decisions. It should not become a general-purpose log debugger or a whole-studio producer/orchestrator.
+`game-ci-cd-pipeline` owns repeated structural pipeline decisions. It should not turn into a generic log debugger or a whole-studio producer/orchestrator.

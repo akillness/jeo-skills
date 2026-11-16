@@ -24,16 +24,16 @@ for (let i = 0; i < args.length; i += 1) {
   else if (args[i] === '--max-seconds') maxSeconds = Number(args[++i]);
   else if (args[i] === '--require-audio') requireAudio = true;
   else if (args[i] === '--help' || args[i] === '-h') usage(0);
-  else throw new Error(`Unknown argument: ${args[i]}`);
+  else throw new Error(('Unknown argument: ' + args[i]));
 }
 if (!file) usage(2);
 file = path.resolve(file);
 const stat = await fs.lstat(file).catch(() => null);
-if (!stat?.isFile() || stat.isSymbolicLink()) throw new Error(`File is missing or symlinked: ${file}`);
+if (!stat?.isFile() || stat.isSymbolicLink()) throw new Error(('File is missing or symlinked: ' + file));
 
 async function findBinary(envName, name) {
   if (process.env[envName]) return process.env[envName];
-  for (const candidate of [`/opt/homebrew/bin/${name}`, `/usr/local/bin/${name}`, `/usr/bin/${name}`, path.join(process.env.HOME || '', '.local', 'bin', name)]) {
+  for (const candidate of [('/opt/homebrew/bin/' + name), ('/usr/local/bin/' + name), ('/usr/bin/' + name), path.join(process.env.HOME || '', '.local', 'bin', name)]) {
     const candidateStat = await fs.stat(candidate).catch(() => null);
     if (candidateStat?.isFile()) return candidate;
   }
@@ -61,18 +61,18 @@ const fps = ratio(video?.avg_frame_rate || video?.r_frame_rate);
 
 if (!video) errors.push('missing video stream');
 else {
-  if (video.width !== width || video.height !== height) errors.push(`expected ${width}x${height}, got ${video.width}x${video.height}`);
-  if (video.codec_name !== 'h264') errors.push(`expected h264, got ${video.codec_name}`);
-  if (video.pix_fmt !== 'yuv420p') errors.push(`expected yuv420p, got ${video.pix_fmt}`);
-  if (!(fps >= 24 && fps <= 60)) errors.push(`fps must be 24..60, got ${fps}`);
+  if (video.width !== width || video.height !== height) errors.push(('expected ' + width + 'x' + height + ', got ' + video.width + 'x' + video.height));
+  if (video.codec_name !== 'h264') errors.push(('expected h264, got ' + video.codec_name));
+  if (video.pix_fmt !== 'yuv420p') errors.push(('expected yuv420p, got ' + video.pix_fmt));
+  if (!(fps >= 24 && fps <= 60)) errors.push(('fps must be 24..60, got ' + fps));
 }
 const durationTolerance = Number.isFinite(fps) && fps > 0 ? Math.max(0.05, 2 / fps) : 0.1;
-if (!(duration >= minSeconds - durationTolerance && duration <= maxSeconds + durationTolerance)) errors.push(`duration must be ${minSeconds}..${maxSeconds}s within ${durationTolerance.toFixed(3)}s frame tolerance, got ${duration}`);
+if (!(duration >= minSeconds - durationTolerance && duration <= maxSeconds + durationTolerance)) errors.push(('duration must be ' + minSeconds + '..' + maxSeconds + 's within ' + durationTolerance.toFixed(3) + 's frame tolerance, got ' + duration));
 if (requireAudio && !audio) errors.push('audio stream is required');
 let audioPeakDbfs = null;
 if (!audio) warnings.push('no audio stream');
 else {
-  if (audio.codec_name !== 'aac') warnings.push(`audio codec is ${audio.codec_name}, not aac`);
+  if (audio.codec_name !== 'aac') warnings.push(('audio codec is ' + audio.codec_name + ', not aac'));
   const ffmpegBin = await findBinary('FFMPEG_BIN', 'ffmpeg');
   const volume = spawnSync(ffmpegBin, ['-hide_banner', '-nostats', '-i', file, '-vn', '-af', 'volumedetect', '-f', 'null', '-'], { encoding: 'utf8', maxBuffer: 8 * 1024 * 1024, timeout: 120_000 });
   if (volume.error || volume.status !== 0) warnings.push('audio peak measurement failed');

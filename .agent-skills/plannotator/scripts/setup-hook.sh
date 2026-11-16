@@ -1,8 +1,8 @@
 #!/bin/bash
 # plannotator - Claude Code Hook Setup Script
-# Adds the ExitPlanMode hook to ~/.claude/settings.json.
+# Adds the ExitPlanMode hook to Claude Code settings.json (--config-dir or CLAUDE_CONFIG_DIR).
 #
-# Usage: ./setup-hook.sh [--dry-run]
+# Usage: ./setup-hook.sh [--dry-run] [--config-dir <dir>]
 
 set -e
 
@@ -14,19 +14,28 @@ GRAY='\033[0;37m'
 NC='\033[0m'
 
 DRY_RUN=false
-for arg in "$@"; do
-  case $arg in
+CONFIG_DIR_OVERRIDE=""
+while [ $# -gt 0 ]; do
+  case "$1" in
     --dry-run) DRY_RUN=true ;;
+    --config-dir)
+      shift
+      [ $# -gt 0 ] || { echo "Missing value for --config-dir" >&2; exit 1; }
+      CONFIG_DIR_OVERRIDE="$1"
+      ;;
+    --config-dir=*) CONFIG_DIR_OVERRIDE="${1#*=}" ;;
     -h|--help)
-      echo "Usage: $0 [--dry-run]"
+      echo "Usage: $0 [--dry-run] [--config-dir <dir>]"
       echo ""
-      echo "Adds the plannotator hook to ~/.claude/settings.json"
+      echo "Adds the plannotator hook to Claude Code settings.json (default: CLAUDE_CONFIG_DIR or \$HOME/.claude)."
       exit 0
       ;;
   esac
+  shift
 done
 
-SETTINGS_DIR="$HOME/.claude"
+CLAUDE_SUBDIR=".claude"
+SETTINGS_DIR="${CONFIG_DIR_OVERRIDE:-$HOME/${CLAUDE_SUBDIR}}"
 SETTINGS_FILE="$SETTINGS_DIR/settings.json"
 
 fail() {
@@ -50,7 +59,7 @@ require_regular_file() {
 require_absent_file() {
   local path="$1"
   [ -L "$path" ] && fail "Refusing to create symlinked config: ${path}"
-  [ ! -e "$path" ] || fail "Refusing to replace existing config: ${path}"
+  [ ! -e "$path" ] || fail "Refusing to write over an already-present target: ${path}"
 }
 
 prepare_parent() {
@@ -157,15 +166,15 @@ if not isinstance(settings, dict):
 hooks = settings.get("hooks", {})
 if not isinstance(hooks, dict):
     raise ValueError("settings.json hooks must be an object")
-requests = hooks.get("PermissionRequest", [])
-if not isinstance(requests, list):
+permission_requests = hooks.get("PermissionRequest", [])
+if not isinstance(permission_requests, list):
     raise ValueError("settings.json hooks.PermissionRequest must be an array")
 configured = any(
     isinstance(hook, dict)
     and hook.get("matcher") == "ExitPlanMode"
     and isinstance(hook.get("hooks"), list)
     and any(isinstance(command, dict) and command.get("command") == "plannotator" for command in hook["hooks"])
-    for hook in requests
+    for hook in permission_requests
 )
 sys.exit(0 if configured else 3)
 PYEOF
@@ -213,10 +222,10 @@ if not isinstance(settings, dict):
 hooks = settings.setdefault("hooks", {})
 if not isinstance(hooks, dict):
     raise ValueError("settings.json hooks must be an object")
-requests = hooks.setdefault("PermissionRequest", [])
-if not isinstance(requests, list):
+permission_requests = hooks.setdefault("PermissionRequest", [])
+if not isinstance(permission_requests, list):
     raise ValueError("settings.json hooks.PermissionRequest must be an array")
-requests.append({
+permission_requests.append({
     "matcher": "ExitPlanMode",
     "hooks": [{"type": "command", "command": "plannotator", "timeout": 1800}],
 })

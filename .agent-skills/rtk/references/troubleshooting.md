@@ -64,7 +64,7 @@ rtk git status
 
 ```bash
 rtk init -g --opencode
-ls -la ~/.config/opencode/plugins/rtk.ts
+test -f "$HOME/.config/opencode/plugins/rtk.ts"
 ```
 
 Then restart OpenCode.
@@ -89,7 +89,7 @@ rtk --version
 Use:
 
 ```bash
-RTK_DISABLED=1 <your command>
+RTK_DISABLED=1 git status
 ```
 
 Do this before suggesting uninstall or config changes.

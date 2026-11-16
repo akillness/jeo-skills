@@ -25,7 +25,7 @@ Currently, WebMCP **only supports Tools**. It does not support the "Resources" o
 * **Web Development Best Practices**: WebMCP tools run as client-side JavaScript in the browser tab. They must adhere to regular web development best practices (e.g., keeping secrets out of client-side code, accessing backend databases through secure API layers, and using Web Workers, WASM, or WebGPU for heavy compute).
 
 ### When to Discourage WebMCP
-* **High-Risk Actions without Guardrails**: Avoid auto-submitting tools for destructive or irreversible actions (e.g., deleting data) unless the UI requires manual user confirmation outside the agent's control.
+* **High-Risk Actions Lacking Guardrails**: Avoid auto-submitting tools for destructive or irreversible actions (e.g., deleting data) unless the UI requires manual user confirmation outside the agent's control.
 * **Hyper-Dynamic State**: If data changes faster than the agent can react, it may work with stale context.
 
 ### Anti-Patterns & Warnings (DO NOT DO THIS)

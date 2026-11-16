@@ -3,7 +3,7 @@
     "id": "okf-agent-memory-explicit-tool",
     "prompt": "Use okf search to inspect the existing knowledge bundle in my repo before we change the auth module.",
     "expected_skill": "okf-agent-memory",
-    "expected_behavior": "Use the named OKF v0.2 project-memory CLI, default to the explicit project bundle, search before proposing edits, and verify retrieved constraints against current source. Do not execute a write or edit MCP configuration without approval."
+    "expected_behavior": "Use the named OKF v0.2 project-memory CLI, default to the explicit project bundle, search before proposing edits, and verify retrieved constraints against current source. Require explicit approval before executing a write or editing MCP configuration."
   },
   {
     "id": "okf-agent-memory-bootstrap-approval",

@@ -29,7 +29,7 @@ MAX_LINE_BYTES = 1048576
 MAX_PENDING_MESSAGES = 128
 MAX_MODEL_PAGES = 100
 MAX_MODELS = 10000
-
+QUEUE_PUT_WAIT_SECONDS = 0.1
 
 class SetupError(Exception):
     """A safe-to-display setup failure, with no provider payload attached."""
@@ -52,7 +52,7 @@ def codex_inventory(cli: str) -> dict:
             message = line if len(line) <= MAX_LINE_BYTES else SetupError('Codex discovery line exceeded safe size.')
             while not stopped.is_set():
                 try:
-                    messages.put(message or None, timeout=0.1)
+                    messages.put(message or None, timeout=QUEUE_PUT_WAIT_SECONDS)
                     break
                 except queue.Full:
                     continue

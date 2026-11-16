@@ -41,7 +41,7 @@ R[14]:
   Clean purge kill-all force-stop uninstall update schedules provider-live tests and publication each need the matching approval
 
 E[9]{type,command}:
-  Install skill,npx skills add https://github.com/akillness/jeo-skills --skill zeroshot
+  Install skill,npx -y skills@1.7.0 add https://github.com/akillness/jeo-skills --skill zeroshot
   Read-only doctor,bash .agent-skills/zeroshot/scripts/zeroshot.sh doctor /path/to/repo
   Read-only setup plan,bash .agent-skills/zeroshot/scripts/zeroshot.sh setup-plan /path/to/repo
   Safe run preflight,bash .agent-skills/zeroshot/scripts/zeroshot.sh preflight --repo /path/to/repo --input 'Add JSON output with tests' --isolation worktree --delivery none --provider codex

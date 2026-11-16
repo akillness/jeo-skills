@@ -34,7 +34,7 @@ R[7]:
   Refusal/KL numbers are platform- and hardware-dependent; report the environment; re-evaluate before shipping
 
 E[5]{type,command}:
-  Install skill,npx skills add https://github.com/akillness/jeo-skills --skill heretic
+  Install skill,npx skills@1.9.0 add https://github.com/akillness/jeo-skills --skill heretic
   Install tool,pip install -U heretic-llm   (RESEARCH=1 bash scripts/install.sh for extras)
   Decensor,heretic Qwen/Qwen3-4B-Instruct-2507
   Fit in VRAM,heretic <model> --quantization bnb_4bit

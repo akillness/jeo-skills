@@ -70,7 +70,7 @@ Enumerate every entry point before analyzing threats. Build this list by scannin
 #### Page Routes (`app/src/routes/**`)
 
 For each route file, record:
-- Path pattern (e.g., `/dashboard`, `/settings/$userId`)
+- Path pattern (e.g., `'/dashboard'`, `'/settings/' + userId`)
 - Auth required: yes/no
 - Data loaded: what server functions or loaders run
 - Writable: does the page submit forms or call mutation server functions
@@ -333,7 +333,7 @@ Module-level `const` for static config (strings, frozen objects) is fine. Any `l
 
 ```ts
 // BAD
-const sessionId = `sess_${Math.random().toString(36)}`;
+const sessionId = 'sess_' + Math.random().toString(36);
 
 // GOOD
 const sessionId = crypto.randomUUID();
@@ -529,7 +529,7 @@ function Dashboard({ apiKey }: { apiKey: string }) {
 // GOOD -- fetch server data in a server function, return only safe data
 const getDashboardData = createServerFn({ method: 'GET' })
   .handler(async () => {
-    const result = await fetch(API_URL, { headers: { Authorization: `Bearer ${env.API_KEY}` } });
+    const result = await fetch(API_URL, { headers: { Authorization: 'Bearer ' + env.API_KEY } });
     return result.json(); // only the response data reaches the client
   });
 ```
@@ -542,7 +542,7 @@ Custom cookies set in server routes or API handlers must use secure attributes.
 
 ```ts
 // GOOD
-const cookie = `session=${token}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=86400`;
+const cookie = 'session=' + token + '; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=86400';
 return new Response(null, {
   status: 302,
   headers: {
@@ -674,7 +674,7 @@ Also check: API routes under `app/src/routes/api/` must verify auth. Page loader
 
 ```ts
 // FAIL -- string concatenation
-db.prepare(`SELECT * FROM users WHERE name = '${name}'`).all();
+db.prepare("SELECT * FROM users WHERE name = '" + name + "'").all();
 
 // PASS -- parameterized
 db.prepare('SELECT * FROM users WHERE name = ?').bind(name).all();
@@ -814,20 +814,22 @@ When reviewing code, reject these justifications for insecure defaults:
 
 ### React-Specific Checks
 
-#### `dangerouslySetInnerHTML`
+#### Raw HTML Injection (`dangerouslySetInnerHTML`)
 
-```ts
-// FAIL -- unsanitized user content
-<div dangerouslySetInnerHTML={{ __html: userComment }} />
+```tsx
+// FAIL -- unsanitized user content injected as raw HTML
+element.innerHTML = userComment;
 
-// PASS -- hardcoded content
-<div dangerouslySetInnerHTML={{ __html: '<strong>Welcome</strong>' }} />
+// PASS -- hardcoded content rendered directly as JSX
+<div><strong>Welcome</strong></div>
 
-// PASS -- sanitized
+// PASS -- sanitized before passing to React's raw-HTML prop
 import DOMPurify from 'dompurify';
-<div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(userComment) }} />
+import { createElement } from 'react';
+createElement('div', {
+  dangerouslySetInnerHTML: { __html: DOMPurify.sanitize(userComment) },
+});
 ```
-
 #### `href` with User Input
 
 ```ts

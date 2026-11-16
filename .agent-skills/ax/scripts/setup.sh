@@ -22,6 +22,12 @@ NC='\033[0m' # No Color
 AX_VERSION="${AX_VERSION:-1.1.2}"
 AX_REPO="${AX_REPO:-https://github.com/yusukebe/ax}"
 AX_INSTALL_SCRIPT="${AX_INSTALL_SCRIPT:-https://ax.yusuke.run/install}"
+AUTO_YES=false
+for arg in "$@"; do
+  case "$arg" in
+    -y|--yes) AUTO_YES=true ;;
+  esac
+done
 
 # Detect OS and architecture
 detect_platform() {
@@ -118,18 +124,39 @@ install_official() {
     return 1
   fi
   
-  if curl -fsSL "$AX_INSTALL_SCRIPT" | bash; then
-    log_success "ax installed successfully"
-    
-    # Verify installation
-    if verify_installation; then
+  if [[ "$AUTO_YES" == false && -t 0 ]]; then
+    read -r -p "Download and execute official ax installer from ${AX_INSTALL_SCRIPT}? [y/N] " confirm_install
+    if [[ ! "$confirm_install" =~ ^[Yy]$ ]]; then
+      log_info "Installation cancelled"
       return 0
+    fi
+  fi
+  local tmp_script
+  tmp_script="$(mktemp "${TMPDIR:-/tmp}/ax-install.XXXXXX.sh")"
+  trap 'rm -f -- "$tmp_script"' RETURN
+  if curl -fsSL --proto '=https' --tlsv1.2 "$AX_INSTALL_SCRIPT" -o "$tmp_script" && [ -s "$tmp_script" ]; then
+    if [ -n "${AX_INSTALL_SHA256:-}" ]; then
+      local actual_sha256
+      actual_sha256="$(shasum -a 256 "$tmp_script" | awk '{print $1}')"
+      if [ "$actual_sha256" != "$AX_INSTALL_SHA256" ]; then
+        log_error "Checksum verification failed (expected ${AX_INSTALL_SHA256}, got ${actual_sha256})"
+        return 1
+      fi
+    fi
+    if bash "$tmp_script"; then
+      log_success "ax installed successfully"
+      if verify_installation; then
+        return 0
+      else
+        log_warn "Installation completed but verification failed"
+        return 1
+      fi
     else
-      log_warn "Installation completed but verification failed"
+      log_error "Installation failed"
       return 1
     fi
   else
-    log_error "Installation failed"
+    log_error "Failed to download installer from $AX_INSTALL_SCRIPT"
     return 1
   fi
 }
@@ -195,18 +222,23 @@ install_project_local() {
   local binary_url="https://ax.yusuke.run/download/ax-${os}-${arch}"
   log_info "Downloading from $binary_url..."
   
-  if curl -fsSL "$binary_url" -o "$bin_dir/ax"; then
-    chmod +x "$bin_dir/ax"
+  local tmp_bin
+  tmp_bin="$(mktemp "${bin_dir}/.ax.XXXXXX")"
+  if curl -fsSL --proto '=https' --tlsv1.2 "$binary_url" -o "$tmp_bin" && [ -s "$tmp_bin" ]; then
+    if [ -n "${AX_BINARY_SHA256:-}" ]; then
+      local actual_bin_sha256
+      actual_bin_sha256="$(shasum -a 256 "$tmp_bin" | awk '{print $1}')"
+      if [ "$actual_bin_sha256" != "$AX_BINARY_SHA256" ]; then
+        unlink "$tmp_bin"
+        log_error "Binary checksum verification failed"
+        return 1
+      fi
+    fi
+    install -m 0755 "$tmp_bin" "$bin_dir/ax"
+    unlink "$tmp_bin"
     log_success "ax downloaded to $bin_dir/ax"
-    
-    # Create .env for project
-    cat > "$project_dir/.env.ax" << 'EOF'
-# ax project configuration
-export PATH="$(pwd)/.bin:$PATH"
-EOF
-    
-    log_info "Created .env.ax — source it to use project-local ax:"
-    log_info "  source .env.ax"
+    log_info "Add $bin_dir to your PATH for this shell:"
+    log_info "  export PATH=\"$bin_dir:\$PATH\""
     log_info "Then run: ax --version"
     
     return 0
@@ -282,8 +314,7 @@ uninstall() {
     else
       log_warn "Could not detect installation method"
       log_info "Manual uninstall:"
-      log_info "  rm ~/.local/bin/ax"
-      log_info "  rm -rf ~/.cache/ax"
+      log_info "  Remove the installed binary from ~/.local/bin/ax and any unused ax cache directory."
     fi
   else
     log_info "ax is not installed"
@@ -316,7 +347,7 @@ Examples:
 
   # Project-local (no system modifications)
   ./setup.sh --project
-  source .env.ax
+  export PATH="$PWD/.bin:$PATH"
 
   # Verify installation
   ./setup.sh --verify

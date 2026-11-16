@@ -5,7 +5,7 @@ U[6]:
   Design a versioned MI data-flow contract without inventing an upstream implementation
   Audit existing artifact bytes and dependency fingerprints with the offline Node CLI
   Plan the smallest safe resume boundary without running collectors or rebuilding state
-  Distinguish weekly health holds from limited backfill window exceptions
+  Distinguish weekly health holds from limited backfill period exceptions
   Review evidence-linked candidate signals and human-only decision handoffs
   Separate authorized vendor access, content quality, integrity, and observed completion
 R[10]:

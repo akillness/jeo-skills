@@ -4,7 +4,7 @@ description: >
   用镜头配方卡 + 已验收模板 + 代码/音频资产制作电影感产品视频（Remotion + 真实页面截图 + 2.5D 运镜 + 节奏卡点 + 声音设计）。
   Use when making a cinematic product promo or desktop demo video, naming the Ink Press template, reproducing template video effects, or building single motion-design shots with recipe cards.
   Triggers on: video-shotcraft, Ink Press template, product video, cinematic promo, shot recipe card, remotion video.
-allowed-tools: Bash Read Write Edit Glob Grep
+allowed-tools: Bash Read Write Edit Glob Grep WebFetch
 compatibility: Designed for Claude Code and compatible agent clients with filesystem access
 metadata:
   tags: video-production, remotion, motion-design, product-promo, shot-cards, cinematic-video

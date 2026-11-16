@@ -13,7 +13,7 @@ Choose semantics for the content and its interaction separately:
 - keep links and buttons for independent actions as separate native controls;
 - use a radio button or checkbox with an associated `<label>`, or an `option` in a native `<select>`, when the card is a choice.
 
-Keep media, title, supporting content, and actions in meaningful source order; don't use CSS `order` to contradict it (see `css-layout` (via `npx -y modern-web-guidance@latest retrieve "css-layout"`)).
+Keep media, title, supporting content, and actions in meaningful source order; don't use CSS `order` to contradict it (see `css-layout` (via `npx -y modern-web-guidance@1.0.0 retrieve "css-layout"`)).
 
 ## Implementation
 
@@ -129,4 +129,4 @@ Style the selected card with `:has(:checked)`. Never change layout-affecting pro
 
 The visible checkbox or radio is itself a non-color indicator of selection, so the color change alone is sufficient. If the control is visually hidden (keep it focusable and in the accessibility tree, never `display: none`), add a non-color indicator that does not affect layout, such as a check icon or a thicker `outline`.
 
-When choices belong in a dropdown picker whose options are laid out as cards, use a native `<select>` with `appearance: base-select` and style `::picker(select)` and `<option>` elements rather than replacing the select with `<div>` cards; see `custom-select-picker-layouts` (via `npx -y modern-web-guidance@latest retrieve "custom-select-picker-layouts"`) for more details and fallbacks.
+When choices belong in a dropdown picker whose options are laid out as cards, use a native `<select>` with `appearance: base-select` and style `::picker(select)` and `<option>` elements rather than replacing the select with `<div>` cards; see `custom-select-picker-layouts` (via `npx -y modern-web-guidance@1.0.0 retrieve "custom-select-picker-layouts"`) for more details and fallbacks.

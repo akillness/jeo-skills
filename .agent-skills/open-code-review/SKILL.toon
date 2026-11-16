@@ -26,7 +26,7 @@ R[7]:
   Use --preview and --max-tokens-budget to bound scan scope and cost
   Use a commit SHA for --to in CI so fork PRs resolve
   Lower --concurrency to dodge LLM rate limits
-  Custom rule.json layers (project/global/--rule) override system rules first-match-wins
+  Custom rule.json layers (project/global/--rule) supersede built-in rules first-match-wins
   Never fabricate API keys; ask the user when credentials are missing
 
 E[6]{type,command}:

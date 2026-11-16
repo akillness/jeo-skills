@@ -2,7 +2,7 @@
 
 Hovercards provide an interactive preview of content when a user expresses interest in a link (via hover or focus). This is shown to users before they navigate, and either provides the user with the content they need or helps verify that the link will contain the content they are looking for.
 
-If you need plain-text, non-interactive tooltips rather than structured link previews, see `interest-triggered-tooltips` (via `npx -y modern-web-guidance@latest retrieve "interest-triggered-tooltips"`).
+If you need plain-text, non-interactive tooltips rather than structured link previews, see `interest-triggered-tooltips` (via `npx -y modern-web-guidance@1.0.0 retrieve "interest-triggered-tooltips"`).
 
 ## 1. Triggering the hovercard
 
@@ -129,7 +129,7 @@ Use `@starting-style` to define the entry animation and `transition-behavior: al
 
 ## 4. OPTIONAL: Seamlessly morphing to the next page
 
-You can optionally use **Cross-Document View Transitions** to create a seamless "morph" animation between the hovercard and the destination page. See `consistent-cross-document-transitions` (via `npx -y modern-web-guidance@latest retrieve "consistent-cross-document-transitions"`) for guidance on implementation.
+You can optionally use **Cross-Document View Transitions** to create a seamless "morph" animation between the hovercard and the destination page. See `consistent-cross-document-transitions` (via `npx -y modern-web-guidance@1.0.0 retrieve "consistent-cross-document-transitions"`) for guidance on implementation.
 
 By assigning matching `view-transition-name` values to elements in the hovercard and their counterparts on the next page, the browser will animate them across the navigation. You can name multiple elements (e.g. titles, images, bylines) to create a complex, multi-element morphing effect. Assign the `view-transition-name` to elements on the open popover using `:popover-open`, to avoid creating duplicate `view-transition-name`s or requiring link-specific `view-transition-name`s.
 

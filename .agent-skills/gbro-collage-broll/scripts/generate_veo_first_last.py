@@ -92,6 +92,8 @@ def main():
         raise SystemExit(f"Veo failed: {operation.error}")
 
     uri = operation.result.generated_videos[0].video.uri
+    if not isinstance(uri, str) or not uri.startswith("gs://") or any(ch.isspace() for ch in uri):
+        raise ValueError(f"Unexpected GCS URI returned by Veo: {uri!r}")
     native_video = output / f"veo-native-{args.native_duration}s.mp4"
     final_video = output / f"final-{args.final_duration}s.mp4"
     subprocess.run(["gcloud", "storage", "cp", uri, str(native_video)], check=True)

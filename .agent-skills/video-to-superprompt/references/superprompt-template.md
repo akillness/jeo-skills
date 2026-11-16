@@ -31,7 +31,7 @@ GLOBAL DESIGN SYSTEM
 MOTION SYSTEM
 - Overall motion feel:
 - Easing/duration:
-- Reveal rules:
+- Reveal behavior:
 - Scroll rules:
 - Hover/tap/focus states:
 - Ambient loops:

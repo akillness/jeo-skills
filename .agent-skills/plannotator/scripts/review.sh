@@ -84,7 +84,7 @@ if [ $EXIT_CODE -eq 0 ]; then
 else
   echo -e "${YELLOW}Review exited with code ${EXIT_CODE}${NC}"
   echo ""
-  echo -e "${GRAY}If the browser didn't open, check:${NC}"
+  echo -e "${GRAY}If the browser did not open, check:${NC}"
   echo -e "  • Is PLANNOTATOR_REMOTE=1 set? Access at http://localhost:${PLANNOTATOR_PORT:-19432}"
   echo -e "  • Run ${GREEN}./check-status.sh${NC} to diagnose"
 fi

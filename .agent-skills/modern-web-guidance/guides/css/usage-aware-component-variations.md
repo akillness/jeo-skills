@@ -10,7 +10,7 @@ Style queries let **both sides stay decoupled**: the featured surfaces never nam
 
 This guide covers *behavioral* changes: a component deciding **what to render, how to arrange itself, or which variant to present** in response to its context — hiding or showing a badge, switching layout direction, or swapping a button variant.
 
-If instead you need *token-level* changes — density modes, themes, or other higher-order tokens that uniformly shift values like padding and color across many components — see `design-token-reactivity` (via `npx -y modern-web-guidance@latest retrieve "design-token-reactivity"`).
+If instead you need *token-level* changes — density modes, themes, or other higher-order tokens that uniformly shift values like padding and color across many components — see `design-token-reactivity` (via `npx -y modern-web-guidance@1.0.0 retrieve "design-token-reactivity"`).
 
 ## Choosing the right tool
 

@@ -133,8 +133,13 @@ install_with_brew() {
 install_with_script() {
   have_cmd curl || die "curl is required for --method script."
   local url="https://raw.githubusercontent.com/${REPO}/refs/heads/master/install.sh"
-  log "Installing RTK via ${url}"
-  curl -fsSL "$url" | sh
+  local tmp_script
+  tmp_script="$(mktemp "${TMPDIR:-/tmp}/rtk-install.XXXXXX.sh")"
+  trap 'rm -f "$tmp_script"' EXIT
+  log "Downloading RTK installer from ${url}"
+  curl -fsSL "$url" -o "$tmp_script"
+  [ -s "$tmp_script" ] || die "Downloaded installer script is empty."
+  sh "$tmp_script"
 }
 
 install_with_cargo() {

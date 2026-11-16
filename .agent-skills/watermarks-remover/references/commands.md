@@ -1,7 +1,7 @@
 # Watermarks Remover command reference
 
 Curated from `python3 <script>.py --help` in the upstream repo
-(`skills/remove-ai-marks/scripts/`), grouped by workflow stage. Run any
+(`skills/remove-ai-marks/scripts/`), grouped by workflow stage. Invoke each
 script with `--help` for the authoritative, version-pinned flag list.
 `SCRIPTS` below means `<clone>/skills/remove-ai-marks/scripts`.
 
@@ -101,10 +101,10 @@ assets — download and run `audit_dir.py` locally for that level of detail.
 
 ```
 make docker-synthid-build && docker run --rm --user "$(id -u):$(id -g)" --read-only --tmpfs /tmp \
-  -v "$(pwd):/data" watermarks-remover-synthid-scorer /data/shot.png
+  -v "$(pwd):/data" watermarks-remover-synthid-scorer:local /data/shot.png
 
 make docker-ctrlregen-build && docker run --rm -e HF_TOKEN="$HF_TOKEN" --user "$(id -u):$(id -g)" \
-  -v "$(pwd):/data" watermarks-remover-ctrlregen /data/shot.png -o /data/shot.ctrlregen.png
+  -v "$(pwd):/data" watermarks-remover-ctrlregen:local /data/shot.png -o /data/shot.ctrlregen.png
 ```
 
 Both images are built locally from the upstream source; neither backend

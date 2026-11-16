@@ -40,7 +40,7 @@ Manage multiple AI agents without running a server, wiring HTTP APIs, or pulling
 
 - Start with `scripts/install.sh` and `scripts/setup.sh` when the environment is new or unclear.
 - Recommend `$CLI doctor` before the first real run, after moving the repo, or before enabling schedules and heartbeats.
-- Use `schedule sync --dry-run` and `heartbeat sync --dry-run` before writing to crontab.
+- Use `schedule sync --dry-run` and `heartbeat sync --dry-run` before applying live schedule updates.
 
 ### Step 3: Model agents through markdown frontmatter
 
@@ -58,14 +58,13 @@ Manage multiple AI agents without running a server, wiring HTTP APIs, or pulling
 
 ```bash
 # Install
-bash ~/.agent-skills/agent-manager/scripts/install.sh
+bash scripts/install.sh
 
 # Setup in your project
-bash ~/.agent-skills/agent-manager/scripts/setup.sh
+bash scripts/setup.sh
 
-# Define CLI alias (pick path matching your install)
-CLI="python3 ~/.claude/skills/agent-manager/scripts/main.py"
-
+# Define CLI alias (point to your installed agent-manager main.py entrypoint)
+CLI="python3 /path/to/agent-manager/scripts/main.py"
 # Use
 $CLI list
 $CLI start EMP_0001
@@ -160,7 +159,7 @@ schedules:
 
 ```bash
 $CLI schedule list           # Show all scheduled jobs
-$CLI schedule sync           # Write to system crontab
+$CLI schedule sync           # Apply configured schedule entries (preview with --dry-run first)
 $CLI schedule sync --dry-run # Preview changes
 $CLI schedule run dev --job daily-standup  # Manual trigger
 ```
@@ -178,7 +177,7 @@ heartbeat:
 
 ```bash
 $CLI heartbeat list          # Show all heartbeat configs
-$CLI heartbeat sync          # Sync to crontab
+$CLI heartbeat sync          # Apply configured heartbeat schedule (preview with --dry-run first)
 $CLI heartbeat run EMP_0001  # Manual trigger
 $CLI heartbeat trace --agent EMP_0001 --since 2026-01-01T00:00:00Z
 $CLI heartbeat slo           # Daily SLO summary (target: ≥99% success)
@@ -207,12 +206,7 @@ skills:
   - bsc-contract-development
 ```
 
-Skills resolved from (first match wins):
-1. `<repo>/.agent/skills/<skill>/SKILL.md`
-2. `~/.agent/skills/<skill>/SKILL.md`
-3. `<repo>/.claude/skills/<skill>/SKILL.md`
-4. `~/.claude/skills/<skill>/SKILL.md`
-
+Skills resolved from the project or user skills directory configured for the agent launcher (`skills/` under the active workspace or user runtime scope).
 ## Architecture
 
 ```
@@ -280,7 +274,7 @@ Output shape:
 ## Best practices
 
 - Run `$CLI doctor` before enabling schedules or heartbeats in a new repo.
-- Use `schedule sync --dry-run` and `heartbeat sync --dry-run` before touching crontab.
+- Use `schedule sync --dry-run` and `heartbeat sync --dry-run` before applying live schedule changes.
 - Keep each agent config narrow and stable instead of turning one tmux session into a catch-all worker.
 - Prefer `assign --task-file` for long prompts or recurring jobs so the assignment stays reviewable.
 - Use `enabled: false` for maintenance windows instead of deleting agent definitions.

@@ -216,8 +216,8 @@ for (const file of files) {
 await fs.rm(args.zip, { force: true });
 await execFileAsync('zip', ['-q', '-r', args.zip, handoffName], { cwd: path.dirname(args.dir) });
 const zipStat = await fs.stat(args.zip);
-const { stdout: zipListing } = await execFileAsync('unzip', ['-Z1', args.zip]);
-const zipEntries = new Set(zipListing.split(/\r?\n/).filter(Boolean));
+const { stdout: zipOutput } = await execFileAsync('unzip', ['-Z1', args.zip]);
+const zipEntries = new Set(zipOutput.split(/\r?\n/).filter(Boolean));
 for (const reference of validatedReferences) {
   const archiveReference = `${handoffName}/${reference}`;
   const present = reference.endsWith('/')

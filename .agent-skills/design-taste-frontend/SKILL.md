@@ -17,7 +17,7 @@ description: >
 allowed-tools: Bash Read Write Edit Glob Grep
 compatibility: >
   Design guidance is stack-neutral but assumes a modern web frontend. The
-  upstream skill installs through `npx skills` and targets Claude Code and
+  upstream skill installs through `npx skills@1.9.0` and targets Claude Code and
   compatible runtimes. Design-system install commands assume npm.
 license: MIT
 metadata:
@@ -45,7 +45,7 @@ Bundled from `Leonxlnx/taste-skill` commit
 
 > **Name collision warning.** Upstream's frontmatter `name:` is also
 > `design-taste-frontend` (its folder is `skills/taste-skill/`). Running
-> `npx skills add ... --skill design-taste-frontend` installs a *second* skill
+> `npx skills@1.9.0 add ... --skill design-taste-frontend` installs a *second* skill
 > under this same name and can shadow or overwrite this catalog copy. Do not run
 > it as a setup step.
 
@@ -100,7 +100,7 @@ appendices), or to confirm whether the pinned rules have since changed:
 
 ```bash
 # read-only provenance check; installs nothing
-curl -fsS https://raw.githubusercontent.com/Leonxlnx/taste-skill/ccbc15639c97057cbfcf32ecebc38ef716e4bb37/skills/taste-skill/SKILL.md | head -40
+curl -fsS https://raw.githubusercontent.com/Leonxlnx/taste-skill/ccbc15639c97057cbfcf32ecebc38ef716e4bb37/README.md | head -40
 ```
 
 If a user explicitly wants the upstream skill installed alongside this one,

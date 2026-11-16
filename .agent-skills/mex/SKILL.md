@@ -69,7 +69,7 @@ bash .agent-skills/mex/scripts/install.sh /path/to/project
 
 This is the fully automated path: it registers the skill, resolves an actual
 mex-agent executable in the order `MEX_AGENT_BIN` → `mex-agent` →
-`~/.local/bin/mex-agent` → bare `mex` only when its version is a mex-agent
+`$HOME/.local/bin/mex-agent` → bare `mex` only when its version is a mex-agent
 semantic version, and installs mex-agent plus an unambiguous wrapper when none
 is available (`mex-agent@0.8.5` by default; `MEX_AGENT_NPM_SPEC` overrides). It
 then runs `mex-agent setup` non-interactively (skipped if `.mex/` already
@@ -173,7 +173,7 @@ Load:
 - context/conventions.md
 - patterns/http-handlers.md
 
-Don't load:
+Avoid loading:
 - context/decisions.md (unless the endpoint changes a prior decision)
 ```
 
@@ -258,8 +258,7 @@ must remain byte-identical.
 - [Mex Docs](https://mexmemory.com)
 - [Mex MCP server status](https://github.com/mex-memory/mex#mcp-server) —
   confirm publication status before promising MCP integration
-- Project standards:
-  `.agent-skills/skill-standardization/SKILL.md`
+- Project standards: `skill-standardization`
 
 ## Examples
 

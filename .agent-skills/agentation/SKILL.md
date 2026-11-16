@@ -2,7 +2,7 @@
 name: agentation
 description: >-
   Exact rendered-UI feedback router → choose copy-paste review, watch-loop sync, self-driving
-  critique, or platform setup. MCP: npx add-mcp "npx -y agentation-mcp server"
+  critique, or platform setup. MCP: add-mcp@2.6.1 with agentation-mcp@1.3.2.
 compatibility: React 18+, Node.js 18+
 allowed-tools: Read Write Bash Grep Glob
 metadata:
@@ -99,16 +99,16 @@ For most setups, the practical order is:
 npm install agentation -D
 
 # MCP bridge / auto-registration for supported agents
-npx add-mcp "npx -y agentation-mcp server"
+npx add-mcp@2.6.1 "npx -y agentation-mcp@1.3.2 server"
 
 # verify the bridge
-npx agentation-mcp doctor
+npx agentation-mcp@1.3.2 doctor
 ```
 
 Claude Code users can also install the upstream official skill when that is the simplest way to bootstrap the experience:
 
 ```bash
-npx skills add benjitaylor/agentation -g
+npx skills@1.9.0 add benjitaylor/agentation -g
 # then use /agentation in Claude Code
 ```
 
@@ -152,7 +152,7 @@ Good for:
 Use the bundled verification script before trusting the loop:
 
 ```bash
-bash .agent-skills/agentation/scripts/verify-loop.sh
+bash scripts/verify-loop.sh
 ```
 
 #### C. Self-driving critique

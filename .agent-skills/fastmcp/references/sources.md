@@ -34,6 +34,6 @@
    - `fastmcp install`: Register server configuration into client applications.
 
 4. **Bundled Upstream Skills**:
-   - Evaluated `skills/fastmcp-server/SKILL.md` (authoring and evaluation patterns).
-   - Evaluated `skills/fastmcp-client-cli/SKILL.md` (CLI list/call operations).
+   - Evaluated the upstream `fastmcp-server` skill (authoring and evaluation patterns).
+   - Evaluated the upstream `fastmcp-client-cli` skill (CLI list/call operations).
    - Unified and upgraded both into the comprehensive `jeo-skills` catalog skill standard.

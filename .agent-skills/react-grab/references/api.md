@@ -522,7 +522,7 @@ The MCP server exposes one tool:
 - Context is consumed once then cleared (one-shot)
 - Returns: `{ componentName, filePath, lineNumber, htmlPreview, stackString, selector }`
 
-Setup: `npx -y grab@latest add mcp`
+Setup: `npx -y grab@0.2.0 add mcp`
 
 Transport: Supports both **stdio** (for editor MCP clients) and **HTTP** (Streamable HTTP, default port configurable).
 

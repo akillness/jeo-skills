@@ -126,7 +126,7 @@ Animations that change the size of large layout areas can be particularly disrup
     /* 
        EXAMPLE: Replacing disruptive layout animations with a subtle fade-in.
        Setting the block-size instantly and transitioning opacity 
-       provides a clear state change without large-scale motion.
+      provides a distinct state change without large-scale motion.
     */
     transition: opacity 1.5s ease;
   }

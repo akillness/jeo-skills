@@ -81,7 +81,7 @@ result (or wire the self-updating CodeFlow Card onto a README).
 | A modern browser | The whole app runs client-side; nothing is installed |
 | `git` (optional) | Only to self-host: `git clone` the one-file repo |
 | A GitHub token (optional) | For private repos and higher rate limits — kept in browser memory only, never stored |
-| Node.js (optional) | Only the `npx skills` installer or the parser unit tests (`node --test tests/`) need it |
+| Node.js (optional) | Only the `npx skills@1.9.0` installer or the parser unit tests (`node --test tests/`) need it |
 
 ## Instructions
 
@@ -95,10 +95,10 @@ result (or wire the self-updating CodeFlow Card onto a README).
 
 Self-host is a single command — there is **no build step**:
 
-bash
+```bash
 git clone https://github.com/braedonsaunders/codeflow.git
 open codeflow/index.html   # or: xdg-open / start, depending on OS
-
+```
 
 The skill ships [`scripts/install.sh`](scripts/install.sh) to clone (or
 update) the repo locally and open it.
@@ -153,22 +153,22 @@ security), an **activity heatmap**, and **PR impact analysis**. See
 This skill folder is plugin-installable through the standard jeo-skills flow so
 the wrapper, references, and installer land on disk for any supported runtime:
 
-bash
+```bash
 # Project install (writes into .agents/skills/codeflow/)
-npx skills add https://github.com/akillness/jeo-skills --skill codeflow
+npx skills@1.9.0 add https://github.com/akillness/jeo-skills --skill codeflow
 
 # Global install for every detected agent
-npx skills add -g https://github.com/akillness/jeo-skills --skill codeflow
+npx skills@1.9.0 add -g https://github.com/akillness/jeo-skills --skill codeflow
 
 # Target specific agents
-npx skills add -g https://github.com/akillness/jeo-skills --skill codeflow -a claude-code -a codex -y
-
+npx skills@1.9.0 add -g https://github.com/akillness/jeo-skills --skill codeflow -a claude-code -a codex -y
+```
 
 ## Output format
 
 When the user asks `codeflow` for help, return a compact brief:
 
-markdown
+```markdown
 # codeflow Routing Brief
 
 ## Scope
@@ -188,6 +188,7 @@ markdown
 - `codebase-search` for a repo-navigation packet before refactoring
 - `graphify` for a durable, committed knowledge graph
 
+```
 
 ## Best practices
 

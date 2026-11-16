@@ -16,7 +16,7 @@ Use this map to bring Meng's real context into X writing without copying whole a
 | Reference-first design | `articles/2026-06-04-avoid-ai-slop-design-workflow/content.md`, `articles/2026-07-02-floral-scroll-animation-prompts/content.md`, daily `ui-inspiration-capture` articles | Screenshots, motion evidence, section crops, interaction details, and precise references reduce generic output | Use rules and mechanisms, never copy a source brand or page |
 | Founder and personal context | `articles/2026-06-12-dreamcut-failed-sales-strategy/content.md`, authored X corpus | Shipping, weak sales proof, travel, building from mobile, family time, aging, intuition, learning, and human taste | Personal details must be present in trusted sources and relevant to the post |
 | X strategy and proof | `articles/2026-07-13-x-history-teaching-strategy.md`, `data/x-growth/owned-posts/`, `data/x-growth/scorecards/` | Bookmarks as a learning signal, complete tutorials, proof clips, source-backed metrics | Read the newest snapshot and timestamp every metric |
-| Current X drafting rules | `docs/x-growth-voice.md`, `skills/daily-x-growth/SKILL.md`, `data/x-growth/bookmark-quote-posts/` | Format, safety, source gates, approval state, and recent queue continuity | Generated drafts are not primary voice evidence |
+| Current X drafting rules | `docs/x-growth-voice.md`, `daily-x-growth` skill, `data/x-growth/bookmark-quote-posts/` | Format, safety, source gates, approval state, and recent queue continuity | Generated drafts are not primary voice evidence |
 
 ## Focused Retrieval
 

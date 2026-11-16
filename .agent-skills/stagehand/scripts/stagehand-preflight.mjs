@@ -20,13 +20,15 @@ function hasFlag(flag) {
 function run(command, args = []) {
   const result = spawnSync(command, args, {
     encoding: "utf8",
-    stdio: ["ignore", "pipe", "ignore"],
+    input: Buffer.alloc(0),
+    stdio: "pipe",
     timeout: 5000,
     windowsHide: true,
   });
 
   if (result.error) {
-    return { ok: false, output: "", error: result.error.code || result.error.message };
+    const errCode = result.error.code || result.error.message;
+    return { ok: false, output: String(), error: errCode };
   }
 
   return {

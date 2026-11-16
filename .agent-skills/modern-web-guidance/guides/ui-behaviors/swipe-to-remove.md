@@ -4,7 +4,7 @@ Swipe-to-remove patterns are common in mobile applications but can be challengin
 
 The same pattern works for any single-action swipe (remove, archive, mark as read, snooze). The action visuals change; the mechanics do not.
 
-> If you instead want a horizontal swipe to snap open a set of action buttons or a side menu **without** automatically committing an action during the swipe, see `swipe-to-reveal` (via `npx -y modern-web-guidance@latest retrieve "swipe-to-reveal"`).
+> If you instead want a horizontal swipe to snap open a set of action buttons or a side menu **without** automatically committing an action during the swipe, see `swipe-to-reveal` (via `npx -y modern-web-guidance@1.0.0 retrieve "swipe-to-reveal"`).
 
 ## How to implement
 
@@ -419,7 +419,7 @@ async function removeItem(item, content, direction, entry) {
   }
 }
 
-function setupList(list) {
+function initSwipeList(list) {
   // Observe items already in the list.
   for (const item of list.children) {
     if (item.matches('.SwipeableList-item')) {
@@ -459,7 +459,7 @@ function setupList(list) {
   });
 }
 
-document.querySelectorAll('.SwipeableList').forEach(setupList);
+document.querySelectorAll('.SwipeableList').forEach(initSwipeList);
 ```
 
 ### Step 5: Use the action and label that fits your use case
@@ -538,7 +538,7 @@ With this setup, the spacers no longer need their own background-color (the trac
 
 ## Accessibility considerations
 
-To adhere to WCAG 2.5.1 Pointer Gestures, functionality must not be available solely through swiping gestures. Visible button elements are an accessible alternative way to activate the same functionality. Buttons provide people with disabilities, particularly people using voice control software, with a usable way of activating the same functionality. Make each button at least 24×24 CSS pixels (WCAG 2.5.8 Target Size (Minimum)), name it after the item it acts on, and ensure that there's a way of moving focus to the button and operating it using a keyboard alone. Once a row contains a button, don't add `tabindex` to the track: arrow keys on a focused track commit the action with no confirmation.
+To adhere to WCAG 2.5.1 Pointer Gestures, functionality must not be available solely through swiping gestures. Visible button elements are an accessible alternative way to activate the same functionality. Buttons provide people with disabilities, particularly people using voice control software, with a usable way of activating the same functionality. Make each button at least 24×24 CSS pixels (WCAG 2.5.8 Target Size (Minimum)), name it after the item it acts on, and ensure that there's a way of moving focus to the button and operating it using a keyboard alone. Once a row contains a button, don't add `tabindex` to the track: arrow keys on a focused track commit the action without a confirmation step.
 
 Another way of adhering to the 2.5.1 Pointer Gestures success criterion is by ensuring that the functionality exists elsewhere. For example, in an email app's inbox, if the email can be swiped left to be favorited, but this can also be achieved via a "Favorite email" button after navigating to an email, this would be sufficient, as long as that button can also be reached and operated with a keyboard. If the intended use case may require many repeated actions, this approach will be less usable, as it would require people with disabilities to have to spend more time accessing the alternative control. A menu opened with a long press that offers the same actions can also be a sufficient alternative, but it's often not as discoverable as permanently visible buttons. If the buttons only appear on hover or focus, also show them when the item is tapped, so touch users can reach them.
 

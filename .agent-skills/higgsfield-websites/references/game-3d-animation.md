@@ -16,7 +16,7 @@
 > `enable_rigging` / `enable_animation` + `animation_action_id`, extra clips
 > via model `3d_rigging` on the result GLB, clip ids via
 > `higgsfield preset list animation-action`. Billed in workspace credits — **no
-> external API key exists or is needed; never ask the user for one.** The raw
+> external API key exists or is needed; do not request one from the user.** The raw
 > provider API (`meshy-api.md`) is a fallback ONLY when no native 3D
 > tool is available in the environment.
 

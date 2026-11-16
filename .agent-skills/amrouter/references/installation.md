@@ -22,7 +22,7 @@ cd AMRouter
 npm install
 
 # 3. Configure environment
-cp backend/.env.template backend/.env
+export REQUIRE_LOGIN=true ADMIN_PASSWORD="<strong-random-password>"
 
 # 4. Start development server
 npm run dev
@@ -48,8 +48,7 @@ npm install
 cd frontend && npm run build && cd ..
 
 # 4. Configure environment
-cp backend/.env.template backend/.env
-# Edit .env: set NODE_ENV=production, ADMIN_PASSWORD, provider keys
+# Set production env vars via secret manager or mode-600 environment config (NODE_ENV=production, REQUIRE_LOGIN=true, ADMIN_PASSWORD)
 
 # 5. Start server
 NODE_ENV=production npm start
@@ -65,14 +64,14 @@ pm2 save
 
 ```bash
 # Build image
-docker build -t amrouter:latest .
+docker build -t amrouter:2.0.0 .
 
 # Run container
 docker run -d \
   -p 3001:3001 \
-  --env-file .env \
+  -e NODE_ENV=production \
   --name amrouter \
-  amrouter:latest
+  amrouter:2.0.0
 
 # View logs
 docker logs -f amrouter
@@ -258,18 +257,17 @@ jobs:
         echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
         docker push amrouter:${{ github.sha }}
     
-    - name: Deploy to production
-      env:
-        DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+    - name: Setup SSH
+      uses: webfactory/ssh-agent@v0.9.0
+      with:
+        ssh-private-key: ${{ secrets.DEPLOY_KEY }}
+    - name: Verify host key and deploy to production
       run: |
-        mkdir -p ~/.ssh
-        echo "$DEPLOY_KEY" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        ssh -o StrictHostKeyChecking=no deploy@prod.example.com \
-          "docker pull amrouter:${{ github.sha }} && \
+        ssh-keyscan -H prod.example.com >> "$RUNNER_TEMP/known_hosts"
+        ssh -o UserKnownHostsFile="$RUNNER_TEMP/known_hosts" deploy@prod.example.com \
+          "docker pull amrouter:2.0.0 && \
            docker stop amrouter || true && \
-           docker run -d -p 3001:3001 --name amrouter amrouter:${{ github.sha }}"
-```
+           docker run -d -p 3001:3001 --name amrouter amrouter:2.0.0"
 
 ### Method 6: AWS (EC2 + ECS)
 
@@ -277,9 +275,9 @@ jobs:
 
 ```bash
 aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin <ACCOUNT>.dkr.ecr.us-east-1.amazonaws.com
-docker build -t amrouter:latest .
-docker tag amrouter:latest <ACCOUNT>.dkr.ecr.us-east-1.amazonaws.com/amrouter:latest
-docker push <ACCOUNT>.dkr.ecr.us-east-1.amazonaws.com/amrouter:latest
+docker build -t amrouter:2.0.0 .
+docker tag amrouter:2.0.0 <ACCOUNT>.dkr.ecr.us-east-1.amazonaws.com/amrouter:2.0.0
+docker push <ACCOUNT>.dkr.ecr.us-east-1.amazonaws.com/amrouter:2.0.0
 ```
 
 **ECS Task Definition:**
@@ -294,7 +292,7 @@ docker push <ACCOUNT>.dkr.ecr.us-east-1.amazonaws.com/amrouter:latest
   "containerDefinitions": [
     {
       "name": "amrouter",
-      "image": "<ACCOUNT>.dkr.ecr.us-east-1.amazonaws.com/amrouter:latest",
+      "image": "<ACCOUNT>.dkr.ecr.us-east-1.amazonaws.com/amrouter:2.0.0",
       "portMappings": [
         {
           "containerPort": 3001,
@@ -325,11 +323,11 @@ docker push <ACCOUNT>.dkr.ecr.us-east-1.amazonaws.com/amrouter:latest
 ```bash
 # Server
 PORT=3001
-NODE_ENV=development
+NODE_ENV=production
 
 # Authentication
-REQUIRE_LOGIN=false
-ADMIN_PASSWORD=admin
+REQUIRE_LOGIN=true
+ADMIN_PASSWORD=<generate-random-password>
 
 # Providers (add as needed)
 OPENAI_API_KEY=
@@ -453,12 +451,12 @@ Expected output: `1536` (OpenAI embedding dimension)
 
 | Issue | Fix |
 |---|---|
-| **Port 3001 in use** | Change `PORT` in `.env` or kill process: `lsof -i :3001 \| grep LISTEN \| awk '{print $2}' \| xargs kill -9` |
+| **Port 3001 in use** | Change `PORT` env var or check listening PID: `lsof -i :3001` |
 | **Module not found** | Run `npm install` again, ensure Node 20+ |
 | **Dashboard 404** | Frontend not built; run `cd frontend && npm run build && cd ..` |
 | **Provider key invalid** | Check key format, test in provider's dashboard |
 | **Quota exceeded** | Check dashboard quota tab, add more keys or adjust combos |
-| **CORS errors** | Set `CORS_ORIGIN` to your domain in `.env` |
+| **CORS errors** | Set `CORS_ORIGIN` to your allowed origin |
 | **Authentication fails** | Reset password: delete JWT token from browser storage, clear cookies |
 
 ## Maintenance
@@ -475,8 +473,8 @@ npm restart  # or `pm2 restart amrouter`
 ### Backup Configuration
 
 ```bash
-# Backup .env and provider configs
-cp backend/.env ~/backup/.env.backup.$(date +%s)
+# Backup provider configs (keep backups mode 600 and outside version control)
+install -m 600 backend/config.env ~/backup/amrouter.env.backup.$(date +%s)
 
 # Backup database (if using PostgreSQL)
 pg_dump -h localhost -U amrouter > ~/backup/amrouter.sql

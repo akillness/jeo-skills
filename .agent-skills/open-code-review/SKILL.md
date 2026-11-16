@@ -173,11 +173,11 @@ When asked to review, return a compact, priority-grouped brief:
 **Issues**: X high / Y medium
 
 ### High priority
-- **`path/to/file.go:42`** — what is wrong
+- **`<file>:<line>`** — what is wrong
   > Recommendation: how to fix
 
 ### Medium priority
-- **`path/to/other.ts:88`** — concern + context
+- **`<other-file>:<line>`** — concern + context
 
 ### Decision
 - ran <command>; fixes applied | fixes proposed (awaiting approval) | route-out to <skill>

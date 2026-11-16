@@ -31,7 +31,7 @@ R[8]:
   Trust the refusals: "When Mole cannot prove an item is safe to change, it skips or refuses it" — a skip with a reason is the product working
 
 E[5]{type,command}:
-  Install skill,npx skills add https://github.com/akillness/jeo-skills --skill mole
+  Install skill,npx skills@1.9.0 add https://github.com/akillness/jeo-skills --skill mole
   Install Mole,brew install mole
   Readiness check,bash .agent-skills/mole/scripts/mole.sh doctor
   Read-only disk map,bash .agent-skills/mole/scripts/mole.sh json analyze ~/Library

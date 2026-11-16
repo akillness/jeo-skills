@@ -57,7 +57,7 @@ Before attempting to deploy global security policies, focus on code-level hygien
 
 ### 1.2 Avoid Dangerous DOM Sinks
 - **DO**: Prefer `textContent` or `innerText` over `innerHTML` when setting text content.
-- **DO**: Use `setHTML()` (part of the Sanitizer API; see `sanitize-untrusted-html` (via `npx -y modern-web-guidance@latest retrieve "sanitize-untrusted-html"`)) when available to safely insert untrusted HTML without going through `innerHTML`.
+- **DO**: Use `setHTML()` (part of the Sanitizer API; see `sanitize-untrusted-html` (via `npx -y modern-web-guidance@1.0.0 retrieve "sanitize-untrusted-html"`)) when available to safely insert untrusted HTML without going through `innerHTML`.
 - **DO NOT**: Use `innerHTML` or `setHTMLUnsafe` with untrusted or unsanitized input.
 - **DO**: Use DOMParser or create elements programmatically (`document.createElement`) instead of concatenating HTML strings.
 
@@ -109,7 +109,7 @@ Content-Security-Policy: frame-ancestors 'self' https://trusted-partner.com;
 
 ### 1.5 Secure Window Messaging (postMessage)
 If your application communicates with other origins using `window.postMessage`, you must strictly validate the sender and receiver.
-- **DO**: Always validate the `event.origin` of incoming messages on the receiver side using strict equality against a list of trusted origins (or use the `Origin` API when comparing against URLs/elements, checking schemeful same-site relationships, or distinguishing opaque sandboxed iframe origins; see `validate-origins` (via `npx -y modern-web-guidance@latest retrieve "validate-origins"`)). Do **not** trust wildcards (`*`), substring checks, or unverified payloads.
+- **DO**: Always validate the `event.origin` of incoming messages on the receiver side using strict equality against a list of trusted origins (or use the `Origin` API when comparing against URLs/elements, checking schemeful same-site relationships, or distinguishing opaque sandboxed iframe origins; see `validate-origins` (via `npx -y modern-web-guidance@1.0.0 retrieve "validate-origins"`)). Do **not** trust wildcards (`*`), substring checks, or unverified payloads.
 - **DO**: Always specify a target origin (rather than the wildcard `*`) when calling `postMessage` to send sensitive data, ensuring only the intended origin can receive it.
 - **DO**: Validate and sanitize the properties of incoming message payloads before performing operations or writing them to DOM sinks. Manual JSON serialization is unnecessary as `postMessage` handles object cloning internally.
 
@@ -259,7 +259,7 @@ Trusted Types enforces source-level guidance at runtime by blocking raw string a
 - **DO**: Enforce Trusted Types in your `Content-Security-Policy` header by including the `require-trusted-types-for 'script'` directive.
 - **DO**: Sanitize any HTML sink assignments through a named `trustedTypes.createPolicy(...)` instance rather than assigning raw strings (or prefer `element.setHTML()` directly, which sanitizes HTML without needing a Trusted Types policy).
 - **DO NOT**: Create a pass-through policy (such as `createHTML: (s) => s`) that returns unsanitized input unchanged, as this neutralizes Trusted Types protection.
-- **DO**: Consult the dedicated `trusted-types` (via `npx -y modern-web-guidance@latest retrieve "trusted-types"`) guide for full implementation details, including `trusted-types` policy allowlisting and rollout strategies.
+- **DO**: Consult the dedicated `trusted-types` (via `npx -y modern-web-guidance@1.0.0 retrieve "trusted-types"`) guide for full implementation details, including `trusted-types` policy allowlisting and rollout strategies.
 
 ```javascript
 const htmlPolicy = window.trustedTypes?.createPolicy('app-html', {
@@ -293,7 +293,8 @@ Set CORP explicitly on each response based on whether it should be embeddable in
 
 Highest deployment breakage risk. You only need to deploy this infrastructure if the application requires features relying on `SharedArrayBuffer` (e.g., WebAssembly multi-threading or shared memory architectures). If not required, skip this policy group.
 
-- **Preferred path (Chromium environments)**: Enable `Document-Isolation-Policy: isolate-and-credentialless`. This provides client-side isolation comparable to COEP while instructing the browser to strip cookies and authentication credentials from non-CORS cross-origin resource fetches rather than blocking them outright. Note that this is supported primarily in Chrome (142+) and other vendors have not yet shown interest, so evaluate carefully based on your target audience. Apps that need to *block* cross-origin resources lacking explicit CORP opt-in (rather than load them with credentials stripped) can adopt `isolate-and-require-corp` instead. This is stricter and harder to deploy — it requires the same subresource audit as the cross-browser path below.
+- **Preferred path (Chromium environments)**: Enable `Document-Isolation-Policy: isolate-and-credentialless`. This provides client-side isolation comparable to COEP while instructing the browser to strip cookies and authentication credentials from non-CORS cross-origin resource fetches rather than blocking them outright.
+  Note that this is supported primarily in Chromium-based browsers (142+) and other vendors have not yet shown interest, so evaluate carefully based on your target audience. Apps that need to *block* cross-origin resources lacking explicit CORP opt-in (rather than load them with credentials stripped) can adopt `isolate-and-require-corp` instead. This is stricter and harder to deploy — it requires the same subresource audit as the cross-browser path below.
 - **Cross-browser path (Complex enforcement)**: Require `Cross-Origin-Opener-Policy: same-origin` coupled with `Cross-Origin-Embedder-Policy: require-corp`. Every embedded subresource (images, styles, external media) MUST serve an explicit `Cross-Origin-Resource-Policy` header or the browser will prevent it from loading.
 
 ```http
@@ -362,7 +363,7 @@ Permissions-Policy: camera=(), geolocation=(), microphone=(), focus-without-user
 ```
 
 #### Subresource Integrity (SRI)
-- **DO**: Use the `integrity` attribute with a cryptographic hash (preferring `sha384`, `sha512`, or `sha256`) when loading third-party scripts and stylesheets, combined with `crossorigin="anonymous"` (see `secure-external-subresources` (via `npx -y modern-web-guidance@latest retrieve "secure-external-subresources"`) for securing HTML and CSS subresources with SRI, CORS, and Referrer Policy).
+- **DO**: Use the `integrity` attribute with a cryptographic hash (preferring `sha384`, `sha512`, or `sha256`) when loading third-party scripts and stylesheets, combined with `crossorigin="anonymous"` (see `secure-external-subresources` (via `npx -y modern-web-guidance@1.0.0 retrieve "secure-external-subresources"`) for securing HTML and CSS subresources with SRI, CORS, and Referrer Policy).
 - **DO**: Ensure the server/CDN sends an appropriate `Access-Control-Allow-Origin` header so the browser can compute the hash.
 - **DO NOT**: Use SRI for dynamic or unversioned assets — silent updates will cause script execution to fail. SRI is strictly for immutable, versioned assets.
 

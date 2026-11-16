@@ -111,7 +111,7 @@ Login is browser navigation, not an SDK call:
 
 ```ts
 function login(returnPath = window.location.pathname + window.location.search) {
-  window.location.href = `/__auth/login?return=${encodeURIComponent(returnPath)}`
+  window.location.href = '/__auth/login?return=' + encodeURIComponent(returnPath)
 }
 ```
 
@@ -129,7 +129,7 @@ Logout is also browser navigation:
 
 ```ts
 function logout(returnPath = '/') {
-  window.location.href = `/__auth/logout?return=${encodeURIComponent(returnPath)}`
+  window.location.href = '/__auth/logout?return=' + encodeURIComponent(returnPath)
 }
 ```
 
@@ -173,7 +173,7 @@ export async function downloadAuthenticatedFile(
   })
 
   if (!response.ok) {
-    throw new Error(`Download failed (${response.status})`)
+    throw new Error('Download failed (' + response.status + ')')
   }
 
   const blobUrl = URL.createObjectURL(await response.blob())
@@ -367,7 +367,7 @@ function SignInRequired() {
           <Button
             onClick={() => {
               const returnPath = window.location.pathname + window.location.search
-              window.location.href = `/__auth/login?return=${encodeURIComponent(returnPath)}`
+              window.location.href = '/__auth/login?return=' + encodeURIComponent(returnPath)
             }}
           >
             Sign in
@@ -391,7 +391,7 @@ await fetch('/api/user')                 // good in browser code
 
 ```ts
 fetch('https://fnf.internal/user', {
-  headers: { Authorization: `Bearer ${token}` },
+  headers: { Authorization: 'Bearer ' + token },
 }) // bad; platform attaches identity automatically
 ```
 

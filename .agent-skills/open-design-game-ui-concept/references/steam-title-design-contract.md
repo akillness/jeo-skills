@@ -154,7 +154,7 @@ Remote state must never gate the first frame.
 - `#home` and every current meta surface remain runtime-owned and frozen.
 - `Enter Hall` targets the existing `#home`; the standalone does not reproduce Home.
 - `cloudMeta.js` currently supports local-first hydration and debounced cloud mirroring. It has no conflict or
-  reset API. Conflict and reset states are design contracts, not permission to invent persistence calls.
+  clear-save API. Conflict and clear-save states are design contracts, not permission to invent persistence calls.
 - Quit Desktop is a capability presentation contract. No desktop bridge exists in the current runtime, so the
   command is hidden when `desktopQuit` is false.
 - Audio controls reference the current SFX/BGM/mute capabilities. Do not invent extra audio channels.

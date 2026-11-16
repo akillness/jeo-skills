@@ -89,7 +89,7 @@ Map the log to one primary bucket and optional secondary bucket.
 ### Step 4: Produce the triage brief
 Return a concise report with this exact structure:
 
-```markdown
+````markdown
 # Game Log Triage
 
 ## Engine
@@ -129,7 +129,7 @@ Return a concise report with this exact structure:
 
 ## What not to do yet
 - Avoid shotgun cleanup or broad asset deletion until the primary blocker is verified
-```
+````
 
 ### Step 5: Tailor the next checks to the engine
 **For Unity, prefer checks like:**

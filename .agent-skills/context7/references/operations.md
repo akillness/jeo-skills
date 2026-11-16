@@ -12,7 +12,11 @@ IDs are Context7 paths such as `/vercel/next.js` or `/websites/uploadcare`, with
 
 ## Setup and lifecycle
 
-Selecting `context7` through `jeo-skill install` by name, bundle, category or all provisions `ctx7@0.11.1` with npm, with lifecycle scripts disabled, unless an existing `ctx7` is found. A real install checks its version; an invalid or older-than-0.11.1 executable fails without replacement. Dry-run leaves its version unverified. Node.js 22.20+ and npm are required. The target is `.agents/context7` for project scope or `~/.local/share/jeo-skill/context7` for global scope; add its `node_modules/.bin` to `PATH`. An occupied incomplete target fails without being overwritten; inspect it before retrying. `--dry-run` only previews and does not download. Direct `npx skills add` does not provision the CLI. Installation neither logs in nor registers MCP, changes client configuration, or activates a service.
+Selecting `context7` through `jeo-skill install` by name, bundle, category or all provisions `ctx7@0.11.1` with npm, with lifecycle scripts disabled, unless an existing `ctx7` is found.
+A real install checks its version; an invalid or older-than-0.11.1 executable fails without replacement. Dry-run leaves its version unverified. Node.js 22.20+ and npm are required.
+The target is `.agents/context7` for project scope or `~/.local/share/jeo-skill/context7` for global scope; add its `node_modules/.bin` to `PATH`.
+An occupied incomplete target fails without being overwritten; inspect it before retrying. `--dry-run` only previews and does not download.
+Direct skills-CLI installation does not provision the CLI. Installation neither logs in nor registers MCP, changes client configuration, or activates a service.
 
 Automatic provisioning is unsupported on Windows and fails closed; a separately installed skill and CLI remain separate from this automatic path.
 

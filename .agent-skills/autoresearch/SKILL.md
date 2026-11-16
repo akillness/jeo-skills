@@ -133,7 +133,7 @@ If the user wants to change the evaluator, start a **new comparison track**, not
 Use this path when the repo is not yet runnable.
 
 ```bash
-curl -LsSf https://astral.sh/uv/install.sh | sh
+# Prerequisite: uv installed (e.g. `brew install uv` or `python3 -m pip install --user uv`)
 git clone https://github.com/karpathy/autoresearch
 cd autoresearch
 uv sync

@@ -251,7 +251,7 @@ def posture_findings(report: dict[str, object]) -> list[dict[str, str]]:
                 "level": "INFO",
                 "topic": "addon",
                 "message": "No installed addon found in the scanned directories. Run "
-                "'uvx blender-mcp install-addon', or set BLENDERMCP_ADDONS_DIR if Blender "
+                "'uvx blender-mcp==1.9.4 install-addon', or set BLENDERMCP_ADDONS_DIR if Blender "
                 "lives somewhere unusual.",
             }
         )
@@ -261,7 +261,7 @@ def posture_findings(report: dict[str, object]) -> list[dict[str, str]]:
                 "level": "WARN",
                 "topic": "addon",
                 "message": f"{len(outdated)} installed addon file(s) are older than protocol "
-                f"{EXPECTED_ADDON_PROTOCOL_VERSION}. Run 'uvx blender-mcp install-addon', then "
+                f"{EXPECTED_ADDON_PROTOCOL_VERSION}. Run 'uvx blender-mcp==1.9.4 install-addon', then "
                 "re-enable the addon and start the server again.",
             }
         )

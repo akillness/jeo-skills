@@ -767,7 +767,7 @@
       "${CLAUDE_CONFIG_DIR:-~/.claude}/skills",
       "~/.agents/skills",
       "${XDG_CONFIG_HOME:-~/.config}/devin/skills",
-      "~/.gemini/config/skills",
+      "${GEMINI_CONFIG_DIR:-~/.gemini}/config/skills",
       "~/.grok/skills",
       "${HERMES_HOME:-~/.hermes}/skills",
       "${DSH_HOME:-~/.dsh}/skills",

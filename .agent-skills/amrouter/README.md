@@ -64,9 +64,9 @@ cd AMRouter
 # 2. Install
 npm install
 
-# 3. Configure
-cp backend/.env.template backend/.env
-# Edit backend/.env: set ADMIN_PASSWORD, add provider keys (optional)
+# 3. Configure environment variables (or copy backend/config.env.template to a mode-600 config file)
+export REQUIRE_LOGIN=true
+export ADMIN_PASSWORD="<strong-random-password>"
 
 # 4. Run
 npm run dev
@@ -111,7 +111,7 @@ console.log(res.choices[0].message.content);
 ### Task 2: Create a Fallback Combo
 
 Via dashboard (http://localhost:5177):
-1. **Login** (password: check `.env` `ADMIN_PASSWORD`)
+1. **Login** (password: configured `ADMIN_PASSWORD`)
 2. **Providers** → **New Combo**
 3. Name: `budget`; add providers: Groq, Mistral, Gemini (in fallback order)
 4. **Save**

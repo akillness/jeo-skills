@@ -17,6 +17,8 @@ description: >
   `game-demo-feedback-triage`, and generic browser automation to
   `browser-harness`.
 allowed-tools: Bash Read Write Edit Glob Grep
+permissions:
+  - env
 compatibility: >
   Python 3.12 recommended. Runs locally as a Streamlit app with Playwright
   Chromium (`streamlit`, `playwright`, `openai`, `python-dotenv`). DeepSeek
@@ -252,4 +254,4 @@ queueing, quotas, URL restrictions, and data cleanup that do not exist yet.
 - [scripts/wai-play.sh](scripts/wai-play.sh) — read-only `doctor`, `check` passthrough, foreground `demo` server
 - [scripts/check_integration.py](scripts/check_integration.py) — stdlib-only static contract check for an integration file
 - [WAI Play GitHub Repository](https://github.com/waiterve/wai-play)
-- Project standards: `.agent-skills/skill-standardization/SKILL.md`
+- Project standards: `skill-standardization`

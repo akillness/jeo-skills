@@ -8,7 +8,10 @@ description: >
   wants overlapping skills connected instead of duplicated; or wants a category,
   bundle, or named skills installed without copying the full repository.
 allowed-tools: Bash Read Write Edit Glob Grep
-compatibility: Requires Python 3.9+ and npx only when installing skills
+permissions:
+  - env
+  - network
+compatibility: Requires Python 3.9+ and Node.js/npm only when installing skills
 metadata:
   tags: skill-management, taxonomy, selective-install, categories, deduplication, cli
   version: "1.0.0"
@@ -68,7 +71,7 @@ jeo-skill install --bundle github-five-programs --global --yes --setup
 jeo-skill readiness --global            # the same report alone; add --json for every finding
 ```
 
-The CLI delegates file installation to `npx skills add ... --skill ...`; it never copies the
+The CLI delegates file installation to `npx --yes skills@1.7.0 add ... --skill ...`; it never copies the
 whole repository unless the user explicitly selects every skill. Omit `--global` for a
 project-local install. Use `--agent <runtime>` to target a specific supported runtime.
 Pass `--setup` to also run the selected skills' bundled CLI/smoke verification helpers
@@ -394,6 +397,6 @@ jeo-skill install --all --global --yes
 
 - Catalog: `.agent-skills/skills.json`
 - Compact projection: `.agent-skills/skills.toon`
-- Agent Skills installer: `npx skills --help`
+- Agent Skills installer: `npx --yes skills@1.7.0 --help`
 - Setup automation: `setup-all-skills-prompt.md`
 - Catalog validator: `scripts/validate-catalog-projections.py`

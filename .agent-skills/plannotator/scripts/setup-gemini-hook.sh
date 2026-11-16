@@ -1,6 +1,6 @@
 #!/bin/bash
 # plannotator - Gemini CLI Hook Setup Script
-# Adds the ExitPlanMode hook to ~/.gemini/settings.json and instructions to GEMINI.md.
+# Adds the ExitPlanMode hook to Gemini CLI settings.json and instructions to GEMINI.md.
 
 set -e
 
@@ -14,19 +14,28 @@ NC='\033[0m'
 DRY_RUN=false
 MD_ONLY=false
 HOOK_ONLY=false
-for arg in "$@"; do
-  case $arg in
+CONFIG_DIR_OVERRIDE=""
+while [ $# -gt 0 ]; do
+  case "$1" in
     --dry-run) DRY_RUN=true ;;
     --md-only) MD_ONLY=true ;;
     --hook-only) HOOK_ONLY=true ;;
+    --config-dir)
+      shift
+      [ $# -gt 0 ] || { echo "Missing value for --config-dir" >&2; exit 1; }
+      CONFIG_DIR_OVERRIDE="$1"
+      ;;
+    --config-dir=*) CONFIG_DIR_OVERRIDE="${1#*=}" ;;
     -h|--help)
-      echo "Usage: $0 [--dry-run] [--md-only] [--hook-only]"
+      echo "Usage: $0 [--dry-run] [--md-only] [--hook-only] [--config-dir <dir>]"
       exit 0
       ;;
   esac
+  shift
 done
 
-GEMINI_DIR="$HOME/.gemini"
+GEMINI_SUBDIR=".gemini"
+GEMINI_DIR="${CONFIG_DIR_OVERRIDE:-$HOME/${GEMINI_SUBDIR}}"
 SETTINGS_FILE="$GEMINI_DIR/settings.json"
 GEMINI_MD="$GEMINI_DIR/GEMINI.md"
 
@@ -61,7 +70,7 @@ require_regular_file() {
 require_absent_file() {
   local path="$1"
   [ -L "$path" ] && fail "Refusing to create symlinked config: ${path}"
-  [ ! -e "$path" ] || fail "Refusing to replace existing config: ${path}"
+  [ ! -e "$path" ] || fail "Refusing to write over an already-present target: ${path}"
 }
 
 file_mode() {
@@ -211,14 +220,14 @@ if not isinstance(settings, dict):
 hooks = settings.get("hooks", {})
 if not isinstance(hooks, dict):
     raise ValueError("settings.json hooks must be an object")
-requests = hooks.get("PermissionRequest", [])
-if not isinstance(requests, list):
+permission_requests = hooks.get("PermissionRequest", [])
+if not isinstance(permission_requests, list):
     raise ValueError("settings.json hooks.PermissionRequest must be an array")
 configured = any(
     isinstance(hook, dict) and hook.get("matcher") == "ExitPlanMode"
     and isinstance(hook.get("hooks"), list)
     and any(isinstance(command, dict) and command.get("command") == "plannotator" for command in hook["hooks"])
-    for hook in requests
+    for hook in permission_requests
 )
 sys.exit(0 if configured else 3)
 PYEOF
@@ -246,10 +255,10 @@ if not isinstance(settings, dict):
 hooks = settings.setdefault("hooks", {})
 if not isinstance(hooks, dict):
     raise ValueError("settings.json hooks must be an object")
-requests = hooks.setdefault("PermissionRequest", [])
-if not isinstance(requests, list):
+permission_requests = hooks.setdefault("PermissionRequest", [])
+if not isinstance(permission_requests, list):
     raise ValueError("settings.json hooks.PermissionRequest must be an array")
-requests.append({"matcher": "ExitPlanMode", "hooks": [{"type": "command", "command": "plannotator", "timeout": 1800}]})
+permission_requests.append({"matcher": "ExitPlanMode", "hooks": [{"type": "command", "command": "plannotator", "timeout": 1800}]})
 with open(output_path, "w", encoding="utf-8") as f:
     json.dump(settings, f, indent=2)
     f.write("\n")

@@ -46,7 +46,7 @@ html {
 }
 ```
 
-Alternatively, shrink the bar to under 80% of its height as the user scrolls; see `shrinking-header-on-scroll` (via `npx -y modern-web-guidance@latest retrieve "shrinking-header-on-scroll"`).
+Alternatively, shrink the bar to under 80% of its height as the user scrolls; see `shrinking-header-on-scroll` (via `npx -y modern-web-guidance@1.0.0 retrieve "shrinking-header-on-scroll"`).
 
 ### Put secondary UI in popovers and drawers
 
@@ -61,9 +61,9 @@ Use the `popover` attribute for menus, overflow actions, tooltips, hover cards, 
 </nav>
 ```
 
-- Popovers open in the center of the screen by default. To place a popover next to its button, see `viewport-aware-dropdowns` (via `npx -y modern-web-guidance@latest retrieve "viewport-aware-dropdowns"`).
-- Buttons can also open popovers with `commandfor` and `command="toggle-popover"`; see `declarative-dialog-popover-control` (via `npx -y modern-web-guidance@latest retrieve "declarative-dialog-popover-control"`).
-- For larger sets of options, use an off-canvas drawer: a `popover` panel pinned to one side of the screen that slides in over the page (see `navigation-drawer` (via `npx -y modern-web-guidance@latest retrieve "navigation-drawer"`) for swipe-to-close and animation). Show rows of related items as a horizontally scrolling carousel instead of a long stacked list.
+- Popovers open in the center of the screen by default. To place a popover next to its button, see `viewport-aware-dropdowns` (via `npx -y modern-web-guidance@1.0.0 retrieve "viewport-aware-dropdowns"`).
+- Buttons can also open popovers with `commandfor` and `command="toggle-popover"`; see `declarative-dialog-popover-control` (via `npx -y modern-web-guidance@1.0.0 retrieve "declarative-dialog-popover-control"`).
+- For larger sets of options, use an off-canvas drawer: a `popover` panel pinned to one side of the screen that slides in over the page (see `navigation-drawer` (via `npx -y modern-web-guidance@1.0.0 retrieve "navigation-drawer"`) for swipe-to-close and animation). Show rows of related items as a horizontally scrolling carousel instead of a long stacked list.
 
 ### Collapse secondary content with `details`
 

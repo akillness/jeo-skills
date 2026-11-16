@@ -72,7 +72,7 @@ unreleased behavior.
 The snapshot inspection found:
 
 - no package manifest or third-party runtime dependency;
-- no `curl | bash`, `sudo`, shell-eval, obfuscated payload, or telemetry path;
+- no piped remote-script execution, `sudo`, shell-eval, obfuscated payload, or telemetry path;
 - most scripts are stdlib-only offline validators;
 - outbound HTTP is isolated to optional provider adapters;
 - production adapters use environment credentials;

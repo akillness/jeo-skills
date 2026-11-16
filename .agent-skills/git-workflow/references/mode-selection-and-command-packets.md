@@ -103,16 +103,10 @@ Use `skip` only when dropping the conflicted patch is intentional.
 ## Push-safety packet
 Normal branch push / upstream setup:
 
-```bash
-git push -u origin <branch>
-```
-
-After intentional history rewrite:
-
-```bash
-git push --force-with-lease origin <branch>
-```
-
+| Case | Command |
+|---|---|
+| Normal push / upstream | `git push -u origin <branch>` |
+| After intentional rewrite | Lease-safe push (`--force-with-lease` on `origin <branch>`) |
 Rejected push packet:
 
 ```bash
@@ -138,7 +132,7 @@ Wrong-branch commit pattern:
 git branch feature/correct-branch
 # inspect before resetting the old branch
 # git log --oneline --decorate -5
-git reset --hard HEAD~1
+git reset --keep HEAD~1
 ```
 
 Detached HEAD rescue:

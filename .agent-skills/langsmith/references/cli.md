@@ -1,13 +1,14 @@
 # LangSmith CLI Reference
 
 > Source: https://docs.langchain.com/langsmith/langsmith-cli
-> Install: `curl -sSL https://raw.githubusercontent.com/langchain-ai/langsmith-cli/main/scripts/install.sh | sh`
+> Install: `go install github.com/langchain-ai/langsmith-cli/cmd/langsmith@latest` or download a verified release binary from GitHub Releases.
 
 ## Installation
 
 ```bash
 # Recommended (install script)
-curl -sSL https://raw.githubusercontent.com/langchain-ai/langsmith-cli/main/scripts/install.sh | sh
+# Download and inspect the release installer or binary from:
+# https://github.com/langchain-ai/langsmith-cli/releases
 
 # Go install
 go install github.com/langchain-ai/langsmith-cli/cmd/langsmith@latest

@@ -10,7 +10,7 @@ To optimize rendering, you can utilize the CSS `content-visibility` property and
 | :--- | :--- | :--- |
 | **1. Below the fold** (Delay initial load) | **`content-visibility: auto`** | Browser automatically offloads layout/paint workload until the container scrolls close to view, keeping standard page load speed frictionless. |
 | **2. Toggle State** (Fast view switching) | **`content-visibility: hidden`** | Skips layout calculations for hidden divs but preserves style containment state, allowing for instantaneous toggling without structural shifts (superior to `display: none`). |
-| **3. Searchable & Deferred** (Collapsible disclosures) | **`hidden="until-found"`** | For detailed instructions on combining rendering performance with find-in-page search accessibility, see `search-hidden-content` (via `npx -y modern-web-guidance@latest retrieve "search-hidden-content"`). |
+| **3. Searchable & Deferred** (Collapsible disclosures) | **`hidden="until-found"`** | For detailed instructions on combining rendering performance with find-in-page search accessibility, see `search-hidden-content` (via `npx -y modern-web-guidance@1.0.0 retrieve "search-hidden-content"`). |
 
 ## How to implement `content-visibility: auto`
 
@@ -73,7 +73,7 @@ The `contain-intrinsic-size` CSS shorthand property acts as a placeholder dimens
 }
 ```
 
-Because `content-visibility: hidden` excludes the element and its children from the accessibility tree and find-in-page search, **DO NOT** use it if the content must remain discoverable while hidden. If you need hidden content to remain searchable via native Find-in-page, use `hidden="until-found"` as described in `search-hidden-content` (via `npx -y modern-web-guidance@latest retrieve "search-hidden-content"`).
+Because `content-visibility: hidden` excludes the element and its children from the accessibility tree and find-in-page search, **DO NOT** use it if the content must remain discoverable while hidden. If you need hidden content to remain searchable via native Find-in-page, use `hidden="until-found"` as described in `search-hidden-content` (via `npx -y modern-web-guidance@1.0.0 retrieve "search-hidden-content"`).
 
 ## Best Practices
 

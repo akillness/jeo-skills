@@ -234,34 +234,34 @@ URL-based ones install directly.
 ```
 (`@shadcn` is built in. Verify a URL at wire-time if an `add` 404s.)
 
-### shadcn/ui — base layer + app blocks · `npx shadcn@latest add <name>`
+### shadcn/ui — base layer + app blocks · `npx shadcn@4.23.0 add <name>`
 Primitives (mostly `[S]`/`[C]`): `button` `card` `input` `select` `dialog` `drawer` `sheet` `sonner` `tabs` `accordion` `breadcrumb` `navigation-menu` `command` (⌘K) `table` `skeleton` `spinner`. Rich `[C]`: `carousel` (embla), `data-table` (TanStack Table), `chart` (recharts), `date-picker`. Full blocks: `sidebar-07/03/08/15/16`, `dashboard-01`, `login-01/03/04`, `calendar-01…32`, `products-01`.
 
-### Magic UI — effects/backgrounds/text · `npx shadcn@latest add "https://magicui.design/r/<name>.json"`
-Backgrounds: `light-rays` `[W]`, `warp-background` `[C]`, `retro-grid` `[S]`, `ripple` `[S]`, `meteors` `[S]`, `particles` `[C]`, `flickering-grid` `[C]`, `dot-pattern`/`grid-pattern` `[S]`, `border-beam` `[S]`. Cards: `magic-card` `[C]`, `neon-gradient-card` `[S]`, `bento-grid` `[S]`, `shine-border` `[S]`. Buttons: `shimmer-button`/`rainbow-button`/`interactive-hover-button`/`pulsating-button` `[S]`. Text: `aurora-text`/`animated-shiny-text` `[S]`, `sparkles-text`/`morphing-text`/`hyper-text`/`number-ticker` `[C]`. Scroll/marquee: `text-reveal`/`blur-fade` `[C]`, `marquee` `[S]`, `scroll-based-velocity` `[C]`. Misc: `globe` `[W]`, `orbiting-circles` `[S]`, `animated-beam` `[C]`, `confetti` `[C]`, `dock` `[C]`, `terminal` `[C]`, `safari`/`iphone` mockups `[S]`, `smooth-cursor` `[C]`.
+### Magic UI — effects/backgrounds/text · `npx shadcn@4.23.0 add "https://magicui.design/r/<name>.json"`
+Backgrounds: `light-rays` `[W]`, `warp-background` `[C]`, `retro-grid` `[S]`, `ripple` `[S]`, `meteors` `[S]`, `particles` `[C]`, `flickering-grid` `[C]`, `dot-pattern`/`grid-pattern` `[S]`, `border-beam` `[S]`. Cards: `magic-card` `[C]`, `neon-gradient-card` `[S]`, `bento-grid` `[S]`, `shine-border` `[S]`. Buttons: `shimmer-button`/`rainbow-button`/`interactive-hover-button`/`pulsating-button` `[S]`. Text: `aurora-text`/`animated-shiny-text` `[S]`, `sparkles-text`/`morphing-text`/`hyper-text`/`number-ticker` `[C]`. Scroll/marquee: `text-reveal`/`blur-fade` `[C]`, `marquee` `[S]`, `scroll-based-velocity` `[C]`. Misc: `globe` `[W]`, `orbiting-circles` `[S]`, `animated-beam` `[C]`, `confetti` `[C]`, `dock` `[C]`, `terminal` `[C]`, `safari`/`iphone` mockups `[S]` `[C]`.
 
-### Cult UI (free) · `npx shadcn@latest add https://www.cult-ui.com/r/<name>.json`
-Heroes: `hero-liquid-metal`/`hero-dithering`/`hero-heatmap` `[W]`, `hero-color-panel` `[C]`, `hero-static-radial-gradient` `[S]`. Backgrounds/shader: `shader-lens-blur`/`canvas-fractal-grid`/`distorted-glass`/`dither-image`/`morph-surface` `[W]`, `bg-animated-gradient`/`bg-media` `[C]`, `stripe-bg-guides` `[S]`. Text: `gradient-heading` `[S]`, `text-animate`/`typewriter`/`pixel-heading-word`/`text-gif` `[C]`. Buttons: `texture-button`/`metal-button`/`neumorph-button` `[S]`, `family-button`/`bg-animate-button`/`border-beam-button` `[C]`. Cards: `texture-card`/`minimal-card`/`cutout-card` `[S]`, `expandable-card`/`shift-card` `[C]`. Nav/misc `[C]`: `dock`/`floating-panel`/`side-panel`/`direction-aware-tabs`/`three-d-carousel`/`feature-carousel`/`logo-carousel`/`dynamic-island`/`sortable-list`/`color-picker`/`terminal-animation`/`animated-number`.
+### Cult UI (free) · `npx shadcn@4.23.0 add https://www.cult-ui.com/r/<name>.json`
+Heroes: `hero-liquid-metal`/`hero-dithering`/`hero-heatmap` `[W]`, `hero-color-panel` `[C]`, `hero-static-radial-gradient` `[S]`. Backgrounds/shader: `shader-lens-blur`/`canvas-fractal-grid`/`distorted-glass`/`dither-image`/`morph-surface` `[W]`, `bg-animated-gradient`/`bg-media` `[C]`, `stripe-bg-guides` `[S]`. Text: `gradient-heading` `[S]`, `text-animate`/`typewriter`/`pixel-heading-word`/`text-gif` `[C]`. Buttons: `texture-button`/`metal-button`/`neumorph-button` `[S]`, `family-button`/`bg-animate-button`/`border-beam-button` `[C]`. Cards: `texture-card`/`minimal-card`/`cutout-card` `[S]`, `expandable-card`/`shift-card` `[C]`. Nav/misc `[C]`: `dock`/`floating-panel`/`side-panel`/`direction-aware-tabs`/`three-d-carousel`/`feature-carousel`/`logo-carousel`/`dynamic-island`/`pricing-cards`/`testimonial-card`.
 
-### SmoothUI · `npx shadcn@latest add @smoothui/<name>`
+### SmoothUI · `npx shadcn@4.23.0 add @smoothui/<name>`
 Cards: `apple-invites`/`app-download-stack`/`expandable-cards`/`glow-hover-card`/`scrollable-card-stack` `[C]`. Text: `reveal-text`/`scramble-hover`/`typewriter-text`/`wave-text`/`number-flow`/`price-flow`/`scroll-reveal-paragraph` `[C]`. Buttons: `magnetic-button`/`clip-corners-button`/`dot-morph-button`/`button-copy` `[C]`. Inputs: `power-off-slide`/`exposure-slider`/`scrubber`/`animated-file-upload` `[C]`. Misc: `siri-orb`/`dynamic-island`/`animated-tabs`/`gooey-popover`/`cursor-follow`/`infinite-slider`/`reviews-carousel`/`book`/`animated-avatar-group` `[C]`, `contribution-graph` `[S]`.
 
-### chanhdai (@ncdai) · `npx shadcn@latest add @ncdai/<name>`
+### chanhdai (@ncdai) · `npx shadcn@4.23.0 add @ncdai/<name>`
 Text: `apple-hello-effect` (handwritten SVG signature)/`shimmering-text`/`fluid-gradient-text`/`text-flip` `[C]`, `spinning-circular-text` `[S]`. Hero/bg/cards `[C]`: `hero-01`/`dot-grid-spotlight`/`glow-card-grid`/`testimonial-spotlight`/`team-01`. Inputs `[C]`: `wheel-picker`/`elastic-slider`/`slide-to-unlock`. Marquee/nav: `testimonials-marquee` `[S]`, `logos-carousel`/`line-nav`/`share-menu`/`toc-minimap`/`scroll-fade-effect` `[C]`. Misc `[C]`: `theme-switcher`/`copy-button`/`spotlight-logo`/`icon-swap`/`github-contributions`.
 
-### motion-primitives · `npx shadcn@latest add "https://motion-primitives.com/c/<name>.json"`
+### motion-primitives · `npx shadcn@4.23.0 add "https://motion-primitives.com/c/<name>.json"`
 Text `[C]`: `text-effect`/`text-shimmer`/`text-morph`/`text-scramble`/`text-roll`/`text-loop`/`spinning-text`/`animated-number`/`sliding-number`. Scroll `[C]`: `in-view`/`animated-group`/`scroll-progress`. Surfaces: `glow-effect`/`spotlight`/`border-trail`/`tilt`/`animated-background` `[C]`, `progressive-blur` `[S]`. Interaction `[C]`: `magnetic`/`cursor`/`dock`/`infinite-slider`/`carousel`/`image-comparison`/`morphing-dialog`/`morphing-popover`/`transition-panel`/`disclosure`/`accordion`.
 
-### Kokonut UI (free) · `npx shadcn@latest add @kokonutui/<name>`
+### Kokonut UI (free) · `npx shadcn@4.23.0 add @kokonutui/<name>`
 Backgrounds/hero `[C]`: `background-paths`/`beams-background`/`shape-hero`. Cards: `liquid-glass-card`/`tweet-card`/`bento-grid` `[S]`, `card-flip`/`card-stack`/`apple-activity-card`/`carousel-cards` `[C]`. Text: `shimmer-text`/`glitch-text` `[S]`, `type-writer`/`matrix-text`/`dynamic-text`/`scroll-text` `[C]`. Buttons: `gradient-button`/`social-button`/`switch-button` `[S]`, `particle-button`/`attract-button`/`hold-button` `[C]`. AI inputs `[C]`: `ai-prompt`/`ai-input-search`/`ai-voice`/`action-search-bar`/`file-upload`. Nav/misc `[C]`: `smooth-tab`/`toolbar`/`profile-dropdown`/`smooth-drawer`.
 
-### Tailark — full marketing blocks · `npx shadcn@latest add @tailark/<name>` (themes: `dusk` dark, `mist` light) — nearly all `[S]`
+### Tailark — full marketing blocks · `npx shadcn@4.23.0 add @tailark/<name>` (themes: `dusk` dark, `mist` light) — nearly all `[S]`
 Heroes: `hero-section-1/4/7/9`, `mist-hero-section-1`. Features: `features-2/8/11`, `mist-features-3`. Pricing: `pricing-1/4`, `mist-pricing-1`. Testimonials: `testimonials-1/4`, `mist-testimonials-2`. CTA: `call-to-action-1/3`. Footer: `footer-1/4`, `mist-footer-2`. Also: `faqs-2` `[C]`, `stats-1`, `logo-cloud-1`, `integrations-1`, `team-1`, `comparator-1`, `content-1`, `contact-1`/`login-1`/`sign-up-1` `[C]`.
 
-### Animata · `npx shadcn add https://animata.design/r/<category>/<name>.json`
+### Animata · `npx shadcn@4.23.0 add https://animata.design/r/<category>/<name>.json`
 Backgrounds: `animated-beam`/`blurry-blob`/`moving-gradient` `[S]`, `shooting-stars`/`interactive-grid` `[C]`, `boids-ecosystem` `[W]`. Buttons: `ai-button`/`shining-button`/`duolingo`/`slide-arrow-button` `[S]`, `ripple-button` `[C]`. Cards: `flip-card`/`animated-border-trail` `[S]`, `glowing-card`/`tilted-card`/`card-stack`/`expandable` `[C]`. Text: `animated-gradient-text`/`glitch-text` `[S]`, `typing-text`/`wave-reveal`/`counter`/`scroll-reveal` `[C]`. Misc: `marquee`/`spinner` `[S]`, `animated-dock`/`cursor-tracker`/`trailing-image`/`images-reveal`/`orbiting-items`/`split-reveal` `[C]`.
 
-### Eldora UI (@eldoraui) · `npx shadcn@latest add @eldoraui/<name>`
+### Eldora UI (@eldoraui) · `npx shadcn@4.23.0 add @eldoraui/<name>`
 Text `[C]`: `wavytext`/`blurintext`/`wordpullup`/`letterpullup`/`fadetext`/`gradualspacing`/`multidirectionslide`/`scaleletter`/`docktext`. Backgrounds: `novatrixbackground` `[W]`, `grid`/`hackerbackground`/`photonbeam` `[C]`. 3D/maps: `cobeglobe` `[W]`, `map`/`animatedframeworks` `[C]`. Sections/misc: `marquee` `[S]`, `animatedlist`/`testimonialslider`/`logotimeline`/`integrations`/`terminal` `[C]`, `cardfliphover`/`animatedbadge`/`animatedshinybutton`/`livebutton` `[S]`, device frames (`safaribrowser`/`macbookpro`/`iphone17pro`/`ipad`/`browser`) `[S]`.
 
 ---

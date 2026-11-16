@@ -30,9 +30,13 @@ Brand-image generation via the `higgsfield product-photoshoot create` command. T
 
 Before any other command:
 
-1. If `higgsfield` is not on `$PATH`, install it:
+1. If `higgsfield` is not on `$PATH`, ask the user to install it after inspecting the official installer script from `https://github.com/higgsfield-ai/cli`:
    ```bash
-   curl -fsSL https://raw.githubusercontent.com/higgsfield-ai/cli/main/install.sh | sh
+   TMP_INSTALLER="$(mktemp)"
+   curl -fsSL https://raw.githubusercontent.com/higgsfield-ai/cli/main/install.sh -o "$TMP_INSTALLER"
+   less "$TMP_INSTALLER"   # review the script before executing
+   sh "$TMP_INSTALLER"
+   rm -f -- "$TMP_INSTALLER"
    ```
 2. If `higgsfield account status` fails with `Session expired` / `Not authenticated`, ask the user to run `higgsfield auth login` (interactive) and wait for confirmation.
 

@@ -124,7 +124,7 @@ The experimental `com.unity.pipeline` package enables localhost API calls to a r
    unity-cli open ./MyGame --api-port 14000
    ```
 
-3. Generate or retrieve access token (set by Editor on startup):
+3. Generate or retrieve the local Pipeline session token (written by Editor on startup with owner-only permissions):
    ```bash
    export PIPELINE_TOKEN=$(cat ~/.unity/pipeline-token.txt)
    ```

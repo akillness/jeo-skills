@@ -38,7 +38,7 @@ def parse_simple_frontmatter(text: str) -> dict[str, object]:
                 data[key] = []
                 current_list_key = key
             else:
-                data[key] = val.strip("'\"")
+                data[key] = val.strip().strip("'").strip('"')
     return data
 
 

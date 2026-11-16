@@ -107,7 +107,7 @@ execution, `--dry-run`, `/api/chat` mode, missing-key failure, and `doctor`.
 ### Animate a model that is already uploaded, with an OpenAI-compatible provider
 
 ```bash
-ANIMATO_PROVIDER=openai ANIMATO_LLM_ENDPOINT=https://api.example.com/v1 ANIMATO_MODEL=my-model \
+ANIMATO_PROVIDER=openai ANIMATO_LLM_ENDPOINT=http://localhost:11434/v1 ANIMATO_MODEL=my-model \
 python3 .agent-skills/animato/scripts/animato_agent.py animate \
   --filename X-Bot.fbx --message "idle breathing loop, 3 seconds" --dry-run
 ```

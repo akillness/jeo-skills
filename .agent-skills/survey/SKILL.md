@@ -251,7 +251,7 @@ Return a short summary only after files are written and validated:
 
 Do **not** slide into planning or implementation unless the user explicitly asks for the next step.
 
-## Output rules
+## Reporting standards
 - Facts first, recommendations second only if requested.
 - One bounded question per survey artifact.
 - Keep solution names deduplicated, and deduplicate recommendation-grade repositories across lanes before final ranking while preserving raw evidence.

@@ -210,7 +210,7 @@ the task's answer, then call `delete_sandbox`:
 - **Expiration:** Activity and resume do not extend `expires_at`. Expiration
   rejects guest operations and triggers deletion, even for suspended sandboxes.
   Delete also removes files; a retained ID is not a backup. Replaying a creation
-  request does not reset state, renew the TTL, or recreate a deleted sandbox.
+  request does not reinitialize the sandbox, renew the TTL, or recreate a deleted sandbox.
 
 ## Enable sandbox tools for a kagent agent
 

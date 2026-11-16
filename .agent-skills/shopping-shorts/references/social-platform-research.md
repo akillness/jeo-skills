@@ -159,7 +159,7 @@
 - unaudited client의 게시물은 private viewing mode로 제한된다. 공개 게시에는 app audit가 필요하다.
 - `creator_info/query`의 최신 privacy options를 보여주고 사용자가 고른 값을 그대로 사용해야 한다.
 - Direct Post의 `brand_content_toggle`, `brand_organic_toggle`은 필수 필드이고 `is_aigc=true`는 AI label을 적용한다.
-- 사용자 access token당 init 요청은 분당 6회이며 일일 게시·active-user cap도 존재한다.
+- 사용자 OAuth 인증 토큰당 init 요청은 분당 6회이며 일일 게시·active-user cap도 존재한다.
 - `PULL_FROM_URL`은 URL prefix 또는 domain ownership verification이 필요하다.
 - 이 하네스에는 audited TikTok app·scope·public read-back adapter가 없으므로 `production_supported: false`가 기본이다.
 

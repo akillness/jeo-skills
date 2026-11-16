@@ -5,7 +5,7 @@
 Use the upstream CLI from the project root:
 
 ```bash
-npx -y grab@latest init
+npx -y grab@0.2.0 init
 ```
 
 Why this is the default:
@@ -128,7 +128,7 @@ Route elsewhere when the real need is:
 
 | Situation | Best move |
 |-----------|-----------|
-| User just wants react-grab installed | `npx -y grab@latest init` |
+| User just wants react-grab installed | `npx -y grab@0.2.0 init` |
 | Auto-detect fails or user needs exact insertion point | Use manual framework snippet |
 | User wants tool-based element retrieval | `grab add mcp` |
 | User wants a custom action or hook | Plugin/API path |

@@ -55,8 +55,8 @@ machine-changing and networked:
 cargo tools setup
 ```
 
-It may install rustup, uv, pnpm, Rust targets, and Metal tooling. Do not run it as a probe or
-without approval. A narrower documented Rust build is:
+It may install rustup, uv, pnpm, Rust targets, and Metal tooling. Do not run it as a probe;
+explicit approval is required first. A narrower documented Rust build is:
 
 ```sh
 cargo tools build rust --targets apple
@@ -87,11 +87,11 @@ cargo run --release -p cli -- server \
 The pinned README documents `GET /v1/models` and `POST /v1/chat/completions` (also at root paths).
 After the process is deliberately started, check the model list before a minimal streaming request:
 
-```sh
-curl http://127.0.0.1:8000/v1/models
-curl http://127.0.0.1:8000/v1/chat/completions \
-  -H 'Content-Type: application/json' \
-  -d '{"model":"trymirai/Qwen3.5-4B-M","messages":[{"role":"user","content":"Hello!"}],"stream":true}'
+```text
+GET  http://127.0.0.1:8000/v1/models
+POST http://127.0.0.1:8000/v1/chat/completions
+Content-Type: application/json
+{"model":"trymirai/Qwen3.5-4B-M","messages":[{"role":"user","content":"Hello!"}],"stream":true}
 ```
 
 Documented request controls include `temperature`, `top_p`, `top_k`, and `max_tokens`. Do not

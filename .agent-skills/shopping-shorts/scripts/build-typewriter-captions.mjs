@@ -16,7 +16,7 @@ for (let index = 0; index < args.length; index += 1) {
   if (args[index] === '--input') inputPath = args[++index];
   else if (args[index] === '--output') outputPath = args[++index];
   else if (args[index] === '--help' || args[index] === '-h') usage(0);
-  else throw new Error(`Unknown argument: ${args[index]}`);
+  else throw new Error(('Unknown argument: ' + args[index]));
 }
 if (!inputPath || !outputPath) usage(2);
 
@@ -27,13 +27,13 @@ async function assertNoSymlinkSegments(rootPath, targetPath, label) {
   const rootAbsolute = path.resolve(rootPath);
   const targetAbsolute = path.resolve(targetPath);
   const relative = path.relative(rootAbsolute, targetAbsolute);
-  if (relative.startsWith('..') || path.isAbsolute(relative)) throw new Error(`${label} must stay inside the lexical run root`);
+  if (relative.startsWith('..') || path.isAbsolute(relative)) throw new Error((label + ' must stay inside the lexical run root'));
   let current = rootAbsolute;
   for (const segment of ['', ...relative.split(path.sep).filter(Boolean)]) {
     if (segment) current = path.join(current, segment);
     const stat = await fs.lstat(current).catch(() => null);
-    if (!stat) throw new Error(`${label} contains a missing path segment`);
-    if (stat.isSymbolicLink()) throw new Error(`${label} contains a symlinked path segment`);
+    if (!stat) throw new Error((label + ' contains a missing path segment'));
+    if (stat.isSymbolicLink()) throw new Error((label + ' contains a symlinked path segment'));
   }
 }
 
@@ -48,7 +48,7 @@ if (outputStat?.isSymbolicLink()) throw new Error('caption output must not be a 
 const inputReal = await fs.realpath(inputPath);
 const runRoot = await fs.realpath(lexicalRunRoot);
 const outputParent = await fs.realpath(path.dirname(outputPath)).catch(() => null);
-if (!outputParent || (outputParent !== runRoot && !outputParent.startsWith(`${runRoot}${path.sep}`))) throw new Error('caption output must stay inside the run root');
+if (!outputParent || (outputParent !== runRoot && !outputParent.startsWith((String(runRoot) + path.sep)))) throw new Error('caption output must stay inside the run root');
 if (outputPath === inputReal) throw new Error('caption output must differ from input');
 
 const inputBytes = await fs.readFile(inputReal);
@@ -61,7 +61,7 @@ if (validation.errors.length) {
 }
 const ass = renderCaptionAss(plan, inputSha256);
 await fs.writeFile(outputPath, ass, { flag: 'wx' }).catch((error) => {
-  if (error.code === 'EEXIST') throw new Error(`Refusing to overwrite existing caption output: ${outputPath}`);
+  if (error.code === 'EEXIST') throw new Error(('Refusing to overwrite existing caption output: ' + outputPath));
   throw error;
 });
 console.log(JSON.stringify({ verdict: 'PASS', input: inputReal, input_sha256: inputSha256, output: outputPath, cue_count: validation.normalizedCues.length, event_count: validation.eventCount, max_lines: 2, animation: 'typewriter', artifact_sha256: captionPlanSha256(Buffer.from(ass)) }, null, 2));

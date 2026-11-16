@@ -14,6 +14,8 @@ description: >
   BLENDER_MCP_SAFE_MODE, Poly Haven, Hyper3D Rodin, Hunyuan3D, Sketchfab
   import, Poly Pizza, Blender addon port 9876.
 allowed-tools: Bash Read Write Edit Glob Grep
+permissions:
+  - env
 compatibility: >
   Blender 3.0+ with the companion addon, Python 3.10+, and uv or pipx on macOS,
   Windows, or Linux. The MCP server talks to Blender over a local socket that
@@ -31,7 +33,7 @@ blender-mcp is two halves that must both be running:
 
 ```text
 MCP client (Claude Desktop, Cursor, VS Code, Codex, OpenCode)
-   -> blender-mcp server process (uvx blender-mcp)
+   -> blender-mcp server process (uvx blender-mcp==1.9.4)
    -> local socket on 127.0.0.1:9876
    -> Blender addon listening inside a running Blender
 ```
@@ -131,8 +133,8 @@ The server is published on PyPI as `blender-mcp` and is normally run through
 `uvx`, not installed globally:
 
 ```bash
-uvx blender-mcp                       # run the server
-uvx blender-mcp install-addon         # copy the addon into Blender's addons dir
+uvx blender-mcp==1.9.4                       # run the server
+uvx blender-mcp==1.9.4 install-addon         # copy the addon into Blender's addons dir
 ```
 
 Install `uv` with its official installer, not `pip install uv`, which can hide
@@ -239,7 +241,7 @@ claiming the bridge works.
 ### Example 2: Harden a session that will browse asset libraries
 
 ```bash
-BLENDER_MCP_SAFE_MODE=1 uvx blender-mcp
+BLENDER_MCP_SAFE_MODE=1 uvx blender-mcp==1.9.4
 ```
 
 Safe mode still allows modeling, materials, rendering, saving, and import or
@@ -257,7 +259,7 @@ name what it collects before starting client work.
 ### Example 4: Run two Blender instances
 
 ```bash
-uvx blender-mcp --port 9877
+uvx blender-mcp==1.9.4 --port 9877
 ```
 
 Set the matching port in that instance's addon panel; the flag alone does not

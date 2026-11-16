@@ -159,13 +159,13 @@ supported agent runtime:
 
 ```bash
 # Project install (writes into .agents/skills/spec-kit/)
-npx skills add https://github.com/akillness/jeo-skills --skill spec-kit
+npx -y skills@1.7.0 add https://github.com/akillness/jeo-skills --skill spec-kit
 
 # Global install for every detected agent
-npx skills add -g https://github.com/akillness/jeo-skills --skill spec-kit
+npx -y skills@1.7.0 add -g https://github.com/akillness/jeo-skills --skill spec-kit
 
 # Target specific agents
-npx skills add -g https://github.com/akillness/jeo-skills --skill spec-kit -a claude-code -a codex -y
+npx -y skills@1.7.0 add -g https://github.com/akillness/jeo-skills --skill spec-kit -a claude-code -a codex -y
 ```
 
 The skill also ships [`scripts/install.sh`](scripts/install.sh) as a

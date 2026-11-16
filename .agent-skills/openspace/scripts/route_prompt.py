@@ -383,12 +383,12 @@ def prompt_from_stdin(raw: str, host: str) -> str:
         if host == "agy":
             value = event.get("lastUserInput")
             return value if isinstance(value, str) else ""
-        prompt = event.get("prompt")
-        if isinstance(prompt, str):
-            return prompt
-        if host == "kimi" and isinstance(prompt, list):
+        user_text = event.get("prompt")
+        if isinstance(user_text, str):
+            return user_text
+        if host == "kimi" and isinstance(user_text, list):
             return "\n".join(
-                part["text"] for part in prompt
+                part["text"] for part in user_text
                 if isinstance(part, dict) and part.get("type") == "text" and isinstance(part.get("text"), str)
             )
     return ""

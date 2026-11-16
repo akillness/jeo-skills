@@ -107,8 +107,8 @@ Core rules:
 - Prefer amend or interactive rebase only on local or safely rewritable history.
 - Prefer rebase when the branch is mostly yours and a cleaner review history helps.
 - Prefer merge when the branch is shared or preserving integration context matters more than linear history.
-- Prefer `git push --force-with-lease`, never raw `--force`, after intentional history rewrites.
-- Prefer `git revert` over `reset --hard` when the bad commit is already shared.
+- Prefer lease-protected pushes (`--force-with-lease`), never unguarded force-pushing, after intentional history rewrites.
+- Prefer `git revert` over a hard reset when the bad commit is already shared.
 - Prefer `git reflog` and a rescue branch before panic cleanup.
 
 ### Step 4: Apply the decision ladder
@@ -131,7 +131,7 @@ Use these callouts explicitly:
 ### Step 5: Build the Git Workflow Brief
 Return this exact structure:
 
-```markdown
+````markdown
 # Git Workflow Brief
 
 ## Recommended mode
@@ -170,7 +170,7 @@ Return this exact structure:
 - Use `code-review` when ...
 - Use `debugging` when ...
 - Use `task-planning` when ...
-```
+````
 
 ### Step 6: Use concise mode packets
 - **branch-and-stage hygiene** — branch name, dirty/clean state, selective staging, stash only when it lowers risk
@@ -186,7 +186,7 @@ Use the detailed command packets in [references/mode-selection-and-command-packe
 Before finalizing:
 - Do **not** turn this into a hosted PR tutorial.
 - Do **not** pretend every branch should be rebased.
-- Do **not** recommend `reset --hard` casually without naming the data-loss risk.
+- Do **not** recommend a hard reset casually without naming the data-loss risk.
 - Do **not** hide the solo-vs-shared branch distinction.
 - Do **not** drift into code-review judgment, root-cause analysis, or backlog design.
 
@@ -210,8 +210,8 @@ Required qualities:
 **Output sketch**
 - Mode: `push-safety`
 - State whether the branch looks solo or shared
-- Recommend `git push --force-with-lease origin <branch>` only if rewrite is expected
-- Watch-out warns against raw `--force`
+- Recommend pushing with lease protection (`--force-with-lease` on `origin <branch>`) only if rewrite is expected
+- Watch-out warns against unguarded force-pushing
 
 ### Example 2: clean up local commits before review
 **Input**

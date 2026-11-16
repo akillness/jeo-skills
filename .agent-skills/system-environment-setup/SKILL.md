@@ -112,7 +112,7 @@ Use these rules:
 ### Step 4: Build the environment plan
 Return this exact structure:
 
-```markdown
+````markdown
 # Environment Setup Brief
 
 ## Recommended mode
@@ -152,7 +152,7 @@ Return this exact structure:
 - Use `environment-setup` for ...
 - Use `deployment-automation` for ...
 - Use `security-best-practices` for ...
-```
+````
 
 ### Step 5: Apply mode-specific guidance
 

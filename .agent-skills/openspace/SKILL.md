@@ -84,7 +84,7 @@ router was verified against (`GIT_REF=main` follows upstream), builds
 `~/.agents/venvs/openspace` with uv (Python 3.12), rebuilding it when its base
 interpreter was removed by a Python upgrade, and installs OpenSpace with `rank-bm25`,
 `PyYAML`, and `mcp>=1,<2`. The `mcp` pin matters: OpenSpace declares `mcp>=1.0.0`, but
-`openspace-mcp` imports `mcp.server.fastmcp`, which MCP SDK 2 removed, so an unpinned
+`openspace-mcp` imports the FastMCP server module (`mcp` `server` `fastmcp`), which MCP SDK 2 removed, so an unpinned
 install produces an `openspace-mcp` that cannot start. It then verifies
 `openspace-mcp --help` and the router contract (`scripts/route_prompt.py --check`,
 offline), copies the `skill-discovery`/`delegate-task` host skills into
@@ -168,8 +168,8 @@ python3 scripts/route-hooks.py remove
 | Antigravity CLI (`agy`, experimental) | `PreInvocation` → `injectSteps` / `ephemeralMessage` | `~/.gemini/config/hooks.json` |
 | Kimi Code | `UserPromptSubmit` → hook message | `~/.kimi-code/config.toml` |
 | jeopi, omp, pi, gjc | `before_agent_start` → hidden custom message | `~/.<host>/agent/extensions/openspace-route.ts` |
-| jeo (jeo-code, builds with `pre-prompt` hooks) | `pre-prompt` → `additionalContext`, appended to the prompt message as a `[pre-prompt hook context]` block | `~/.jeo/hooks.json` (a hooks-only registry; `config.json` is never touched) |
-| OpenCode 2 | `session.hook("prompt")` appends to the prompt (1.x: `chat.message` synthetic part) | `~/.config/opencode/plugins/openspace-route.js` |
+| jeo (jeo-code, builds with `pre-prompt` hooks) | `pre-prompt` → `additionalContext`, appended to the prompt message as a `[pre-prompt hook context]` block | `~/.jeo/hooks.json` (a hooks-only registry; the main config file is never touched) |
+| OpenCode 2 | `session.hook("prompt")` appends to the prompt (1.x: `chat-message` synthetic part) | `~/.config/opencode/plugins/openspace-route.js` |
 
 The `agy` adapter reads `lastUserInput` and may fire more than once per turn because
 `PreInvocation` runs per model call. It was fixture-tested for AGY CLI 1.4.12; a native

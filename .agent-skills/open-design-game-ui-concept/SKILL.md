@@ -1,6 +1,9 @@
 ---
 name: open-design-game-ui-concept
 description: Prepare, generate, and review game UI concepts through the local nexu-io/Open Design app using real runtime screenshots and project assets. Use when Codex must design or redesign Darkbone Archer UI for phone, tablet, desktop, Steam, controller, or multiple locales; create an Open Design handoff/project; drive a local Codex design run; inspect an Open Design HTML artifact; or complete a design-first approval loop before runtime implementation.
+allowed-tools: Bash Read Write Edit WebFetch
+permissions:
+  - env
 ---
 
 # Open Design Game UI Concept

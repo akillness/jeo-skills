@@ -66,7 +66,7 @@ if command -v uv &>/dev/null; then
   log "uv: ${UV_VER}"
   UV_OK=1
 else
-  warn "uv not found — run: curl -LsSf https://astral.sh/uv/install.sh | sh"
+  warn "uv not found — install via: brew install uv (or: python3 -m pip install --user uv)"
   READY=0
 fi
 

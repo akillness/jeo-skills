@@ -48,8 +48,8 @@ or the user asking for a plan. Permission must cover the actual execution.
 ## CLI-backed authentication
 
 For CLI-backed providers, the provider CLI owns login, key storage, refresh, model
-catalogs, and account limits. Prefer its normal login or password-manager flow. Never
-ask the user to paste provider passwords, session cookies, or long-lived keys into a
+catalogs, and account limits. Prefer its normal login or password-manager flow. Avoid
+asking the user to paste provider passwords, session cookies, or long-lived keys into a
 prompt or repository.
 
 Presence checks must print only `SET` or `MISSING`, never a credential value. The
@@ -114,7 +114,7 @@ environment passthrough.
 
 A worktree separates branch and checkout paths. The agent still runs as the user and can
 reach host files, processes, credentials, and network services allowed by its provider
-and tool policy. Use Docker or a more constrained host when the risk is not limited to
+and tool policy. Use Docker or a more constrained host when the risk is not restricted to
 Git contamination.
 
 The upstream worker rule allows Git operations only in isolation. Keep validators

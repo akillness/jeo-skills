@@ -53,17 +53,17 @@ function validate(payload) {
       fail(`${label}.id duplicates ${item.id}`);
     }
     ids.add(item.id);
-    nonEmptyString(item.prompt, `${label}.prompt`);
-    nonEmptyString(item.expected_output, `${label}.expected_output`);
+    nonEmptyString(item.prompt, label + '.prompt');
+    nonEmptyString(item.expected_output, label + '.expected_output');
     if (!Array.isArray(item.assertions) || item.assertions.length < 3) {
-      fail(`${label}.assertions must contain at least three items`);
+      fail(label + '.assertions must contain at least three items');
     }
     for (let assertionIndex = 0; assertionIndex < item.assertions.length; assertionIndex += 1) {
-      nonEmptyString(item.assertions[assertionIndex], `${label}.assertions[${assertionIndex}]`);
+      nonEmptyString(item.assertions[assertionIndex], label + '.assertions[' + assertionIndex + ']');
     }
     assertionCount += item.assertions.length;
 
-    const searchable = `${item.expected_output}\n${item.assertions.join('\n')}`;
+    const searchable = [item.expected_output, ...item.assertions].join('\n');
     if (/confirmation|token|secret|read-only|refuses|blocks?|approval|without printing/i.test(searchable)) {
       safetyCaseCount += 1;
     }

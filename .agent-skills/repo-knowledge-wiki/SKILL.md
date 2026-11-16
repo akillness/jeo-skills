@@ -8,7 +8,7 @@ description: >
   `zvec-grep` (`zg query -g 'knowledge/**' -g '!knowledge/raw/**' --preview none`).
   Use when setting up or querying repo-local knowledge, pairing docs to code
   symbols, archiving completed work notes, or gating context retrieval.
-allowed-tools: Bash Read Write Edit Glob Grep
+allowed-tools: Bash Read Write Edit Glob Grep Env
 compatibility: >
   Python 3.10+, mex-agent >= 0.8.5 (optional for symbol grounding), and
   @zvec/zvec-grep 0.2.2 (optional for scoped semantic search).

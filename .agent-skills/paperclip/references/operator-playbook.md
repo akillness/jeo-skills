@@ -51,7 +51,7 @@ The reviewed `skills/paperclip/scripts/paperclip-upload-artifact.sh` helper is m
 - Live upload requires API URL/key, company ID, task ID, and run ID.
 - `--dry-run` prints the resolved upload settings without calling the API.
 - By default it uploads an issue attachment and creates an attachment-backed artifact work product with status `ready_for_review` and `isPrimary: true`; optional `--chat-comment` also creates an issue comment linked to the attachment.
-- It hashes the file and reconciles existing attachments from the same run before uploading. An unresolved transport outcome leaves an uncertainty marker; the helper waits/reconciles instead of silently sending a duplicate.
+- It hashes the file and reconciles existing attachments from the same run before uploading. An unresolved transport outcome leaves an uncertainty marker; the helper waits and reconciles instead of automatically sending a duplicate.
 - `--retry-unknown-upload` explicitly accepts duplicate-file risk. Do not add it unless the user has confirmed the prior operation did not commit or explicitly accepts that risk.
 - A saved comment is not evidence that an external chat provider delivered a message.
 

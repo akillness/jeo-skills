@@ -69,7 +69,7 @@ Render a dedicated settings panel allowing users to easily audit and manage thei
     *   **Registration Date**: The database-persisted raw epoch timestamp `registeredAt` formatted to a human-readable date for client display.
     *   **Last Used Date**: The database-persisted raw epoch timestamp `lastUsedAt` formatted to a human-readable date (if present) for client display.
     *   **Rename Button**: Triggers a rename action to update the credential's custom nickname on the server (`PUT /api/credential/:id`). Note: Renaming an individual passkey's nickname is a server-side label change and does NOT invoke `signalCurrentUserDetails()`.
-    *   **Delete Button**: Triggers deletion of the credential (`DELETE /api/credential/:id`) and synchronizes the remaining credential IDs via `signalAllAcceptedCredentials()`.
+    *   **Delete Button**: Triggers deletion of the credential (HTTP `DELETE` to `/api/credential/:id`) and synchronizes the remaining credential IDs via `signalAllAcceptedCredentials()`.
 4.  **User Account Rename UI**:
     *   Provide a control allowing the user to update their account username (`name`) or `displayName` (`PUT /api/user`), and immediately synchronize the updated user details with the password manager via `PublicKeyCredential.signalCurrentUserDetails()`.
 5.  **Conditional "Create Passkey" Button**:

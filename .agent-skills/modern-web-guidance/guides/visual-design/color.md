@@ -24,7 +24,7 @@
 ### Light and dark color schemes
 
 - **Support light and dark color schemes**: Honor `@media (prefers-color-scheme: dark)` and pair it with the `color-scheme` CSS property so form controls, scrollbars, and other UA-rendered surfaces match.
-See `dark-mode` (via `npx -y modern-web-guidance@latest retrieve "dark-mode"`) for more details.
+See `dark-mode` (via `npx -y modern-web-guidance@1.0.0 retrieve "dark-mode"`) for more details.
 
 ### Forced Colors Mode
 

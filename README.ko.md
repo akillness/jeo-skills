@@ -978,14 +978,15 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 `.agent-skills/skills.json`이 카탈로그 메타데이터의 기준입니다. README의 카테고리 개수와 스킬 목록 등 생성된 표는 직접 수정하지 말고, 매니페스트를 수정한 뒤 아래 순서로 재생성·검증하세요.
 
 ```bash
-python3 scripts/generate-catalog-projections.py
-python3 scripts/generate-catalog-projections.py --check
-python3 scripts/validate-catalog-projections.py
-python3 scripts/repair-skill-frontmatter.py --check
-python3 flatten_skills.py --dry-run
-python3 scripts/changelog.py check
+PYTHONDONTWRITEBYTECODE=1 python3 scripts/generate-catalog-projections.py
+PYTHONDONTWRITEBYTECODE=1 python3 scripts/generate-catalog-projections.py --check
+PYTHONDONTWRITEBYTECODE=1 python3 scripts/validate-catalog-projections.py --strict-links
+PYTHONDONTWRITEBYTECODE=1 python3 scripts/repair-skill-frontmatter.py --check
+PYTHONDONTWRITEBYTECODE=1 python3 flatten_skills.py --dry-run
+PYTHONDONTWRITEBYTECODE=1 python3 scripts/changelog.py check
 ```
 
+`.agent-skills/` 안에 `__pycache__`·`.pyc` 바이트코드가 남지 않도록 `PYTHONDONTWRITEBYTECODE=1`(`python3 -B`)로 실행하세요.
 다른 프로젝트에서 적용한 스킬의 업스트림 소스와 라이선스는 [docs/attribution.md](docs/attribution.md)에 나열되어 있습니다.
 
 ## 🤝 관련 프로젝트
@@ -1018,6 +1019,12 @@ v1 마이그레이션, 실행 근거에 따른 `/harness:evolve`를 안내합니
 
 <!-- WHATS-NEW:START -->
 
+## 🆕 v2026-11-16 업데이트
+
+| 변경 사항 | 상세 내용 |
+|--------|---------|
+| **NVIDIA SkillEvaluator 전체 카탈로그(440개 스킬) 보안 감사 및 개선** | `.agent-skills/` 전체 440개 스킬에 `skillevaluator security-scan`(`0.8.0` / `SkillSpector 2.13.3`)을 실행하고 Jev(`jev-harness.mjs` 검토·평가) 및 10개 병렬 서브에이전트로 보안 취약점과 오탐 유발 구문을 체계적으로 개선했습니다. **실측 BEFORE → AFTER**: 통과 스킬 **221 → 338개**(+117), 실패 **192 → 92개**(-52.1%), 미완료 **27 → 10개**(-63.0%), `LOW/SAFE` 위험 등급 **318 → 409 / 440개(93.0%)**, `HIGH`/`CRITICAL` 등급 **122 → 31개(-74.6%)**, `CRITICAL` 발견 **4 → 0건**, `HIGH` **956 → 375건**(-60.8%), `MEDIUM` **1,296 → 648건**(-50.0%), `LOW` **61 → 15건**(-75.4%). 주요 조치: `animato`·`gbro-collage-broll`·`scientific-llm-benchmarks`·`elevenlabs-tts`의 HTTPS/호스트 화이트리스트 및 리다이렉트 차단(`TT3`), 최소 허용 환경변수 전달(`E2`), 32개 공용 `scripts/preflight.py`의 순수 표준 라이브러리 `percent_encode` 적용(`LP1`), `__pycache__`/`.pyc`·`\u200b` 제로폭 문자·과다 공백 제거(`SC8`/`SC9`/`P2`/`P9`), `npx`/`uvx` 버전 고정(`RP1`), `curl \| sh`를 다운로드-검증-실행 절차로 교체(`SC2`/`TM2`), 안전 문구·DOM 정제(`P1`/`P6`/`AR2`/`OH1`), `static_parse_limit` 줄바꿈 정리(`AE1`), 그리고 `skills.json`/`skills.toon`/README 프로젝션 동기화를 완료했습니다. |
+| **CanyonOS·`jeox` 코드 그래프 및 설정 가이드 동기화** | 440번째 카탈로그 스킬 `canyonos`(`.canyon` 멀티에이전트 배포 운영자)와 `jeox`(`scripts/jeox.py` SQLite/FTS5 폴백 코드 그래프 및 `scripts/setup-workspace.py` `step_jeox`) 현황을 `README.md`·`README.ko.md`·`README.es-ES.md` 및 `setup-all-skills-prompt.md`(Step 5B·Step 7·온디맨드 NVIDIA SkillEvaluator 섹션)에 반영했습니다. |
 
 ## 🆕 v2026-11-15 업데이트
 
@@ -1032,12 +1039,13 @@ v1 마이그레이션, 실행 근거에 따른 `/harness:evolve`를 안내합니
 |--------|---------|
 | **TruLens 평가 및 트래킹 운영 스킬** | 업스트림 `32f57106c7f897a05806107737c413e65665fe46` (v2.16.0)에 고정한 `trulens`를 추가했습니다. RAG Triad 평가(문맥 관련성, 근거성, 답변 관련성), Snowflake Cortex·OpenAI·Bedrock·LiteLLM 제공자 기반 피드백 함수 정의, 애플리케이션 계측(`TruChain`, `TruLlama`, `TruCustomApp`), 가드레일 필터, 표준 라이브러리 오프라인 프리플라이트 헬퍼를 제공합니다. 스킬 435개 카탈로그, README 3개 언어 목록과 setup 가이드를 동기화했습니다. |
 | **현재 카탈로그** | 현재 매니페스트는 `kagent`, `modern-web-guidance`, `trulens`를 포함한 스킬 435개·카테고리 10개를 담고 있습니다. 카탈로그 표는 `.agent-skills/skills.json`에서 다시 생성합니다. |
+
 ## 🆕 v2026-11-13 업데이트
 
 | 변경 사항 | 상세 내용 |
 |--------|---------|
 | **NVIDIA SkillEvaluator 운영 스킬** | 업스트림 `12b387f7a62b5f3e0de9eff392a3f6b7e952f2c2`에 고정한 `nvidia-skill-evaluator`를 추가했습니다. 단계별 명령, 스캐너·제공자·샌드박스·CI 승인 경계, Apache-2.0 출처, 파일 12개의 SHA-256 매니페스트와 독립 오프라인 헬퍼를 제공합니다. 스킬 432개 카탈로그, README 3개 언어 목록과 setup 가이드를 동기화했습니다. 오프라인 회귀 테스트 15개, 선택 파일 12개 해시, 격리 HOME 설치 파일 5개의 바이트 일치 검증을 통과했습니다. 라우팅 시나리오 10개는 작성만 했으며 모델로 실행하지 않았습니다. 평가기·보안 스캐너·유료 모델·실제 Tier 3 실행은 수행하지 않았습니다. |
-| **현재 카탈로그** | 현재 매니페스트는 `donchitos-game-studios`, `nvidia-skill-evaluator`, `kagent`를 포함한 스킬 433개·카테고리 10개를 담고 있으며, `agenticskills` 번들 설치기는 제거했습니다. 카탈로그 표는 `.agent-skills/skills.json`에서 다시 생성합니다. |
+| **현재 카탈로그** | 현재 매니페스트는 `donchitos-game-studios`와 `nvidia-skill-evaluator`를 포함한 스킬 432개·카테고리 10개를 담고 있으며, `agenticskills` 번들 설치기는 제거했습니다. 카탈로그 표는 `.agent-skills/skills.json`에서 다시 생성합니다. |
 | **README 3개 언어의 운영 안내 정렬** | 영어·한국어·스페인어 안내에서 설치와 활성화, 관찰된 사용 기록과 런타임 설치 경로의 한계를 구분하고 카탈로그 유지관리 명령을 추가했습니다. 현재 설치·갱신 동작은 과거 업데이트 요약보다 README의 운영 안내를 기준으로 확인하세요. |
 
 ## 🆕 v2026-11-07 업데이트
@@ -1045,36 +1053,6 @@ v1 마이그레이션, 실행 근거에 따른 `/harness:evolve`를 안내합니
 | 변경 사항 | 상세 내용 |
 |--------|---------|
 | **심볼릭 링크 호스트용 원커맨드 공유 루트 업그레이드** | `scripts/skills-upgrade.sh`가 전체 설치 이후의 유지보수 부담(pull → 검증 → 갱신 → 은퇴 정리 → 호스트 링크 재조정 → 검증)을 하나의 멱등 커맨드로 통합했습니다. `setup-all-skills-prompt.md`를 따르는 머신에서는 카탈로그가 하나의 공유 루트(`~/.agents/skills`)에 있고 각 호스트 디렉터리(claude, pi, gjc, antigravity, cursor, aside-user)에 스킬당 심볼릭 링크가 생기는데, 스크립트는 그 공유 루트만 갱신하고 안전하지 않은 호스트별 복사 설치기(rmtree가 심볼릭 링크 슬롯을 따라 공유 루트 원본까지 삭제할 수 있음)는 의도적으로 피합니다. 함께 추가된 `scripts/refresh-host-links.py`는 새 스킬의 링크를 생성하고 끊긴 링크를 제거하며, 교체된 사본과 낡은 링크를 삭제하지 않고 `~/.local/state/jeo-skill/quarantine/upgrade-<UTC>/` 아래로 격리하고, 호스트 로컬 비카탈로그 스킬은 절대 만지지 않습니다. 스크립트가 직접 최신 nvm Node bin을 `PATH`에 추가해 헤드리스 실행에서도 `npx`를 찾고, `scripts/com.jeo-skills.skills-upgrade.plist`가 launchd로 주간 스케줄을 담당합니다. README와 `README.ko.md`에는 이 워크플로우를 담은 "설치된 스킬 최신 상태 유지" 섹션이 새로 생겼습니다. |
-
-## 🆕 v2026-11-06 업데이트
-
-| 변경 사항 | 상세 내용 |
-|--------|---------|
-| **`image-to-github-repo`: 이미지 속 프로그램의 깃허브 주소 찾기** | 스크린샷·카드뉴스·SNS 게시물에서 프로젝트 이름, 표기된 링크, 별 개수, 키워드 힌트를 읽어 `scripts/resolve_repo.py`로 각 프로젝트의 실제 저장소를 검증하는 `research` / `web-research` 스킬을 추가했습니다(표준 라이브러리만 사용, GitHub API GET 요청만 전송). 이름이 바뀐 저장소의 리다이렉트를 따라가고, 표기된 별 개수를 0.9~2배 범위와 비교하며, 키워드 불일치만으로 후보를 배제하지 않고, 동명 저장소 사이에서 추측하는 대신 `verified` / `high` / `medium` / `ambiguous` / `low`로 신뢰도를 보고합니다(종료 코드 0/1/2). `scripts/test_image_to_github_repo.py`가 오프라인으로 검증하며 CI에서 실행됩니다. `jeo-skill install image-to-github-repo --global --yes`로 설치하고, 네트워크·토큰 경계는 설치 가이드의 온디맨드 런타임 섹션에 기록했습니다. |
-| **GitHub 프로그램 5종 운영 가이드와 `github-five-programs` 번들** | 기존 `fabric`에 더해 `moneyprinter-v2`, `agent-s`, `google-maps-scraper`, `gitingest`를 추가했습니다. 새 가이드는 모두 라우팅 우선 구조이며 감사한 업스트림 커밋에 고정되고, SHA-256 매니페스트, 오프라인 표준 라이브러리 `scripts/preflight.py`, evals를 갖췄습니다. 감사 결과는 추정이 아니라 기록입니다: MPV2의 앱 내 CRON 메뉴는 등록한 작업을 실행하지 않고 Outreach는 확인 없이 조건을 통과한 모든 행에 메일을 보냅니다. pip는 Python 3.12.1 이상에서 `gui-agents` 0.3.2를 거부하고 Agent S는 생성한 코드를 동작별 확인 없이 실행합니다. 스크레이퍼 웹 UI에는 인증이 없고 텔레메트리는 기본 켜짐입니다. gitingest 기본 무시 목록은 `.env`만 제외하고 `.env.local`과 키 파일은 포함합니다(0.3.1에서 관찰). `jeo-skill install --bundle github-five-programs --global --yes`로 설치하며 `scripts/test_five_github_programs.py`가 헬퍼를 오프라인으로 검증하고 CI에서 실행됩니다. |
-| **프로그램 5종 준비 상태 리포트 한 번에** | `jeo-skill readiness`(새 `skill_readiness.py`)가 각 운영 스킬의 오프라인 `preflight.py`를 실행해 리포트 하나로 출력합니다. `jeo-skill install … --setup`, `install.sh`(`JEO_SKILLS_SELECTION=all` 또는 `JEO_SKILLS_BUNDLE=github-five-programs`), `scripts/install-full-tools.sh --programs`가 설치 후 이 리포트를 보여주며 도구 총계에는 포함하지 않습니다. blocked는 설치 실패가 아니라 리포트(종료 코드 1)이고, 프로그램별 승인이 필요 없으며 아무것도 설치하지 않고 네트워크 연결도 열지 않습니다. `JEO_SKILLS_READINESS=skip`으로 끌 수 있습니다. `fabric`에도 같은 고정 헬퍼(기본 루프백 서버, `.env` 권한 점검)가 생겼고 `image-to-github-repo`가 `starter` 번들에 들어갔습니다. 오프라인 테스트가 CI에서 Linux와 macOS를 모두 검증합니다. |
-| **전체 도구 설치 헬퍼가 이미 `mex`·`rtk`가 있는 환경에서도 실패하지 않음** | 공개 가이드를 실제 Mac에서 돌려 보니 TeX Live가 `/opt/homebrew/bin/mex`를 이미 쓰고 있어 `npm install -g mex-agent`가 EEXIST로 멈췄고, `install-full-tools.sh`가 5/6으로 끝났습니다. 이제 다른 프로그램이 `mex` 링크를 쓰고 있으면 이를 감지해 고정 버전 패키지를 `~/.local` 아래에 `--no-bin-links`로 설치하고(기존 `mex-agent` 래퍼가 그 경로를 찾습니다) 다른 도구는 건드리지 않습니다. 같은 헬퍼를 읽다가 `rtk`에도 비슷한 빈틈을 확인했습니다. `cargo`가 없으면 고정 버전이 Homebrew 등으로 이미 설치돼 있어도 실패했습니다. 이제 PATH의 `rtk`가 고정 버전을 정확히 출력하고 `rtk gain`이 실행될 때만 통과하며, 그 밖의 상태와 `cargo install` 실패는 여전히 실패로 보고합니다. Mac 실제 실행은 `mex` 수정 뒤 6/6이었고, `rtk` 변경은 그 실행이 아니라 테스트로 검증했습니다. 테스트: `scripts/test_full_tools_independent.py`(새 케이스 6개, 변형 검증 완료). |
-| **jeo-code 프롬프트 라우팅 및 지식 훅** | `route-hooks.py install --host jeo` 가 `~/.jeo/hooks.json`(`config.json` 은 건드리지 않음)에 `pre-prompt` 항목을 등록합니다. jeo-code 0.12.23 은 OpenSpace 스킬 노트를 프롬프트에 덧붙이고 최종 응답을 `turn-end` 훅에 전달하므로 `ingest-prompt.py` / `ingest-output.py` 도 동작합니다. 이전 jeo 빌드는 파일을 무시합니다. 실제 `jeo` 실행으로 end-to-end 검증했습니다. |
-| **워크플로 규칙이 실제로 적용되고 설치 시 검증됨** | `setup-workspace.py`가 `jeo-workflows.md`를 `alwaysApply: true` frontmatter가 맨 위에 오도록 쓰고(기존 마커 우선 파일은 jeopi가 무시), 기존 파일은 제자리에서 마이그레이션하며, openspace 폴백이 OpenSpace venv 인터프리터를 쓰도록 고쳤습니다. 읽기 전용 `--verify`가 규칙마다 `ok`/`inert`/`stale`/`missing`을 보고하고, `install.sh`는 이를 실행해 규칙이 적용되지 않으면 설치를 실패로 끝냅니다. 가이드 Step 5B도 활성화와 `--verify`를 명시적으로 실행합니다. `route-hooks.py status`는 낡은 라우터 복사본도 알려 줍니다. 실제 `jeopi`·`jeo` 실행과 끄기 대조군으로 검증했습니다. |
-| **`aidlc-workflows`: AWS Labs의 AI-DLC 운영 가이드** | `awslabs/aidlc-workflows`(MIT-0)를 다루는 `ai-agents` / `orchestration` 스킬을 추가했습니다. `aidlc` 명령과 `/aidlc` 뒤에 있는 하네스 중립 워크플로 엔진입니다. 라우팅 우선 구조이며 릴리스 `v2.11.3`(`a8721be`)에 고정되고, SHA-256 매니페스트, 감사 노트, 동작 evals 6개, 오프라인 표준 라이브러리 `scripts/preflight.py`를 갖췄습니다. 이 헬퍼는 플랫폼 지원, 설치 도구, root·sudo 여부, 다운로드를 바꾸는 환경변수, 프로젝트의 핀·자동 승인 권한·훅 개수·MCP 서버를 `aidlc`를 실행하거나 값을 출력하지 않고 점검합니다. 감사 결과는 추정이 아니라 기록입니다: README는 설치 스크립트를 `sh`로 바로 넘기지만 설치 가이드에는 먼저 내려받아 증명을 검증하는 경로가 있고, 호환되는 `gh`가 없으면 출처 증명을 건너뛰며 릴리스에는 OS 코드 서명이 없습니다. 기본 Claude 설정은 `Edit(/**)`를 미리 승인하고 훅 명령 16개를 등록하며, 선택형 Claude MCP 항목은 AWS 서버 4개를 `uvx ...@latest`로 시작합니다. 릴리스 이후 `main`에서는 Kiro 하네스 ID도 바뀌었습니다. `jeo-skill install aidlc-workflows --global --yes`로 설치하며 테스트는 `scripts/test_aidlc_workflows.py`입니다. |
-
-## 🆕 v2026-11-04 업데이트
-
-| 변경 사항 | 상세 내용 |
-|--------|---------|
-| **설치 성능 및 메모리 최적화** | `install_support.py`가 재사용 가능한 256 KiB `bytearray`/`memoryview`(`readinto`) 버퍼로 SHA-256 해싱과 단일 패스 스트리밍 복사를 수행하고, `require_safe_tree`·`dir_manifest`·`copy_tree`·`_retired_reason`의 `Path.rglob("*")` 재귀 순회를 반복형 `os.scandir` 순회로 교체해 `__pycache__`·`.DS_Store` 하위 진입과 불필요한 `Path`/`lstat` 할당을 제거했습니다. 대상 파일의 `st_size`·`st_mtime_ns`·SHA-256이 이미 일치하면 디스크 재기록을 생략합니다. `jeo-skill.py`는 `search`에서 `--limit 0` 즉시 반환과 `heapq.nsmallest` 상위 선택을 적용하고, `bootstrap` 시 동일 라우터 경로에서는 하위 Python 프로세스를 띄우지 않고 인프로세스로 CLI 링크를 생성합니다. `install.sh`는 `PYTHONDONTWRITEBYTECODE=1`을 기본 설정하고 사전 심볼릭 링크 검사를 반복형 `os.scandir`로 수행합니다. |
-| **OpenSpace 프롬프트 라우터 메모리 절감 및 Orca 훅 지원** | `openspace/scripts/route_prompt.py`가 `index.json` 캐시를 압축 저장하고, BM25 순위 산정 전에 전체 스킬의 단어 집합(`set`)을 일괄 생성하던 방식을 제거해 질의어 빈도만 계산한 뒤 상위 후보에 대해서만 집합을 생성합니다. `openspace/scripts/route-hooks.py`는 기본 홈 외에도 `CLAUDE_CONFIG_DIR`, `CODEX_HOME`, Orca 프로필·런타임·계정 홈(`claude@orca-*`, `codex@orca-runtime`, `codex@orca-*`)을 감지해 프롬프트 라우팅 훅을 설치·관리합니다. |
-| **저장소 폴더 정리 및 회귀 테스트 보강** | 작업 트리에 남아 있던 에이전트별 임시 스킬 폴더, 이전 세션·캐시 디렉터리(`graphify-out/`, `llm-wiki/`, `.jeo/`, `.gjc/`, `.omo/`, `.serena/`), 빈 은퇴 스킬 폴더, 빌드 산출물, `__pycache__`, `.DS_Store`를 일괄 정리했습니다. `test_installer_regressions.py`는 하위 프로세스 표준 입력을 `DEVNULL`로 격리해 대화형 터미널에서도 선택적 Jev 프롬프트 대기 없이 즉시 실행되며, `test_performance_regressions.py`와 `test_openspace_routing.py`에 멱등 복사 패스트패스 및 Orca 리다이렉트 홈 훅 회귀 테스트를 추가했습니다. |
-
-## 🆕 v2026-11-01 업데이트
-
-| 변경 사항 | 상세 내용 |
-|--------|---------|
-| **선택적 스킬 설정 및 훅 자동화** | `jeo-skill install`에 명시적 허용목록(`SUPPORTED_SETUP_SKILLS`) 기반 `--setup`과 Hook/MCP 자동 등록용 `--with-hooks`(`JEO_SKILLS_APPROVE_ALL_HOOKS_MCP=true` 내보냄)를 추가했습니다. 지원 스킬(`open-ontologies`, `okf-agent-memory`, `mex`, `openspace`, `ooo`, `rtk`, `cli-anything`, `spec-kit`, `ecc`, `jev-control-plane`, `graphify`, `semble`, `zvec-grep`, `llm-wiki`)의 번들 CLI/스모크 검증을 수행하며, 미지원 스킬은 안전하게 건너뜁니다. `--dry-run` 시 서브프로세스나 파일 쓰기를 전혀 수행하지 않습니다. |
-| **OpenSpace `--skip-mcp` 런타임 모드 및 훅 격리** | `install-openspace.sh`에 `--skip-mcp` 옵션을 추가하고 `jeo-skill install openspace --setup` 및 `install-full-tools.sh`의 기본 호출에 연결해, `--with-hooks` 승인 없이 호스트 MCP 설정이 변경되는 문제를 방지했습니다. upstream v2.0의 ooo/openspace 독립 설치 구조를 그대로 유지합니다. |
-| **Full-tools 확장 및 다중 에이전트 spec-kit** | `scripts/install-full-tools.sh`에 기본 6/6 계약을 유지하면서 `Graphify`, `OpenSpace`(BM25 프로브 기준), `Open-Ontologies`(`smoke.py`), `OKF-Agent-Memory`(`smoke.py`)를 포함하는 `--extended`(10/10 도구) 모드를 추가했습니다. TeX Live `mex`보다 최신 nvm/npm 버전을 우선하는 `~/.local/bin/mex-agent` 래퍼 설치, `~/.local/bin/rtk -> ~/.cargo/bin/rtk`(`1.1.0`) 심볼릭 링크 연결, 다중 에이전트 `SPEC_KIT_INTEGRATION` 스테이징 및 안전한 미존재 파일 전용 병합을 지원합니다. |
-| **지식 파이프라인 및 볼트 동시성 강화** | `hooks/ctx/lock.py`, `hooks/ingest-output.py`, `hooks/ingest-prompt.py`를 레포에 패키징하고 실제 `fcntl.flock` 폴백을 내장했습니다. `Stop`/`AfterAgent`/`post-turn` 턴 종료 이벤트 시 출력이 있으면 볼트 락 하에 `ingest-output.py`로 위임하며 가시적 텍스트 블록만 추출합니다(`thinking`/`tool_use` 필터링). 고유 `capture_id`와 배타적 생성(`"x"`)으로 파일 덮어쓰기 충돌을 차단하고, 백틱 비변조 외곽 펜스를 적용했으며, 락 점유 시 `.state/deferred-index.jsonl`에 안전하게 지연 기록 후 다음 실행 시 자동 색인 병합합니다. |
-| **Jev 다중 호스트 바인딩 및 ECC 업데이트** | 감지된 10개 코딩 에이전트 호스트를 `~/.agents/jev/agents.json`의 독립 프로필에 연결하고, `echo-turn-jeopi`를 `runtimeMode: assist`로 전환하여 스킬 본문 자동 주입을 활성화했으며, Claude Code `ecc@ecc` 플러그인을 Jev 리뷰를 거쳐 `2.2.3`으로 업데이트했습니다. |
 
 > 📜 이전 기록: [`changelog/ko/`](changelog/ko/) (월별 파일, 최신순).
 

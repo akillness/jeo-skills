@@ -13,8 +13,8 @@ compatibility: >
   The audited upstream revision requires Node.js 22.19+, 24.11+, or 26+ and
   npm. Static JavaScript analysis needs no native engine; native, Android,
   firmware, browser, and runtime workflows have target-specific host/provider
-  prerequisites. This skill does not install engines, register MCP, access
-  credentials, or start targets without explicit approval.
+  prerequisites. This skill does not install engines, register MCP, read stored
+  auth state, or start targets absent explicit approval.
 allowed-tools: Bash Read Write Edit Glob Grep
 metadata:
   version: "1.1.0"

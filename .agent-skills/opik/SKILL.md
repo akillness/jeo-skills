@@ -146,7 +146,7 @@ metric = Hallucination()
 score = metric.score(
     input="What is the capital of France?",
     output="Paris",
-    context=["France is a country in Europe."],
+    context=[ "France is a country in Europe." ],
 )
 print(score)
 ```
@@ -179,13 +179,13 @@ supported agent runtime:
 
 ```bash
 # Project install (writes into .agents/skills/opik/)
-npx skills add https://github.com/akillness/jeo-skills --skill opik
+npx skills@1.9.0 add https://github.com/akillness/jeo-skills --skill opik
 
 # Global install for every detected agent
-npx skills add -g https://github.com/akillness/jeo-skills --skill opik
+npx skills@1.9.0 add -g https://github.com/akillness/jeo-skills --skill opik
 
 # Target specific agents
-npx skills add -g https://github.com/akillness/jeo-skills --skill opik -a claude-code -a codex -y
+npx skills@1.9.0 add -g https://github.com/akillness/jeo-skills --skill opik -a claude-code -a codex -y
 ```
 
 The skill also ships [`scripts/install.sh`](scripts/install.sh) as a

@@ -63,7 +63,7 @@ Return partial updates only, not the full state object.
 // WRONG: Returning entire state
 const myNode = async (state: typeof State.State) => {
   state.field = "updated";
-  return state;  // Don't do this!
+  return state;  // Do not do this!
 };
 
 // CORRECT: Return partial updates

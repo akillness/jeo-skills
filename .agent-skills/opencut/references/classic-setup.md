@@ -13,15 +13,7 @@ running at opencut.app today).
 ## Setup (web app)
 
 1. Fork and clone the repository.
-2. Copy the env file:
-
-   ```bash
-   # Unix/Linux/Mac
-   cp apps/web/.env.example apps/web/.env.local
-   # Windows PowerShell
-   Copy-Item apps/web/.env.example apps/web/.env.local
-   ```
-
+2. Copy the env template (`apps/web/.env.example`) to your local web environment config file (see `apps/web/README.md` for the exact filename).
    The example defaults already match the Docker Compose config, so it should
    work out of the box once Docker services are up.
 3. Start the database and Redis:
@@ -54,7 +46,12 @@ build instead of the published package.
 Prerequisites (install once):
 
 ```bash
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh   # Rust toolchain
+# Rust toolchain (download and review the installer from https://rustup.rs before executing)
+TMP_RUSTUP="$(mktemp)"
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -o "$TMP_RUSTUP"
+less "$TMP_RUSTUP"
+sh "$TMP_RUSTUP"
+rm -f -- "$TMP_RUSTUP"
 cargo install wasm-pack
 cargo install cargo-watch   # used by `bun dev:wasm`
 ```

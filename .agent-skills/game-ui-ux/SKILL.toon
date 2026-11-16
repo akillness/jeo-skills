@@ -34,7 +34,7 @@ R[9]:
   Static screenshots do not prove navigation state updates or accessibility
 
 E[4]{type,command}:
-  Install skill,npx skills add https://github.com/akillness/jeo-skills --skill game-ui-ux
+  Install skill,npx skills@1.9.0 add https://github.com/akillness/jeo-skills --skill game-ui-ux
   Validate example,python3 .agent-skills/game-ui-ux/scripts/validate-game-ui.py .agent-skills/game-ui-ux/references/contract-example.json
   Self-test validator,python3 .agent-skills/game-ui-ux/scripts/validate-game-ui.py --self-test
   Validate skill,bash .agent-skills/skill-standardization/scripts/validate_skill.sh .agent-skills/game-ui-ux

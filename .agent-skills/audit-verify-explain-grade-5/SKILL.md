@@ -34,7 +34,7 @@ Treat every answer as three jobs:
 2. Verify it with direct evidence.
 3. Explain it like the reader is smart but new to the topic.
 
-Do not skip verification when local files, commands, logs, tests, screenshots, or source data are available. Do not pretend something was verified if it was only inferred.
+Always run verification when local files, commands, logs, tests, screenshots, or source data are available. Do not pretend something was verified if it was only inferred.
 
 ## Workflow
 
@@ -111,7 +111,7 @@ Translate technical ideas like this:
 
 Do not say "everything works" unless the full workflow was tested. Say "the checked parts work" when verification covered only part of the system.
 
-## Output Rules
+## Response Format
 
 Lead with the answer. Keep the tone calm and clear.
 

@@ -21,14 +21,15 @@ Environment:
 from __future__ import annotations
 
 import argparse
+import http.client
 import json
 import mimetypes
 import os
 import re
 import subprocess
 import sys
-import urllib.error
-import urllib.request
+import tempfile
+import urllib.parse
 import uuid
 from pathlib import Path
 
@@ -37,6 +38,15 @@ DEFAULT_ENDPOINT = os.environ.get("ANIMATO_LLM_ENDPOINT", "https://generativelan
 DEFAULT_MODEL = os.environ.get("ANIMATO_MODEL", "gemini-3-flash-preview")
 DEFAULT_PROVIDER = os.environ.get("ANIMATO_PROVIDER", "gemini")
 KEY_VARS = ("ANIMATO_API_KEY", "GEMINI_API_KEY", "OPENAI_API_KEY")
+LOCAL_HOSTS = frozenset({"localhost", "127.0.0.1", "::1"})
+PROVIDER_KEY_VARS: dict[str, tuple[str, ...]] = {
+    "gemini": ("ANIMATO_API_KEY", "GEMINI_API_KEY"),
+    "openai": ("ANIMATO_API_KEY", "OPENAI_API_KEY"),
+}
+DISALLOWED_HOST_FOR_PROVIDER: dict[str, frozenset[str]] = {
+    "gemini": frozenset({"api.openai.com"}),
+    "openai": frozenset({"generativelanguage.googleapis.com"}),
+}
 FENCE_RE = re.compile(r"```(?:python|py)?\s*\n(.*?)```", re.S)
 VALIDATOR = Path(__file__).resolve().parent / "validate_bpy_script.py"
 
@@ -45,27 +55,82 @@ class AnimatoError(RuntimeError):
     pass
 
 
-def resolve_key(explicit: str | None) -> str:
-    if explicit:
-        return explicit
-    for var in KEY_VARS:
-        value = os.environ.get(var)
-        if value:
-            return value
-    raise AnimatoError(f"no API key: pass --api-key or set one of {', '.join(KEY_VARS)}")
+def validate_url(
+    url: str, *, allow_local_http: bool = True, label: str = "URL"
+) -> tuple[str, str, int | None, str]:
+    parsed = urllib.parse.urlparse(url)
+    if parsed.scheme not in ("http", "https"):
+        raise AnimatoError(f"{label} must use http:// or https:// (got {url!r})")
+    if not parsed.hostname:
+        raise AnimatoError(f"{label} is missing a host (got {url!r})")
+    if parsed.username is not None or parsed.password is not None:
+        raise AnimatoError(f"{label} must not embed user credentials (got {url!r})")
+    if parsed.fragment:
+        raise AnimatoError(f"{label} must not contain a URL fragment (got {url!r})")
+    try:
+        port = parsed.port
+    except ValueError as exc:
+        raise AnimatoError(f"{label} has an invalid port: {exc}") from exc
+    host_lower = parsed.hostname.lower()
+    if parsed.scheme == "http" and not (allow_local_http and host_lower in LOCAL_HOSTS):
+        raise AnimatoError(
+            f"{label} must use https:// for non-local hosts; http:// is restricted to localhost/127.0.0.1 (got {url!r})"
+        )
+    target = parsed.path or "/"
+    if parsed.query:
+        target = f"{target}?{parsed.query}"
+    return parsed.scheme, parsed.hostname, port, target
+
+
+def validate_provider_endpoint(endpoint: str, provider: str) -> str:
+    _, host, _, _ = validate_url(endpoint, allow_local_http=True, label="LLM endpoint")
+    host_lower = host.lower()
+    if host_lower in DISALLOWED_HOST_FOR_PROVIDER.get(provider, frozenset()):
+        raise AnimatoError(
+            f"refusing to use provider '{provider}' with mismatched host '{host}'"
+        )
+    return endpoint.rstrip("/")
+
+
+def resolve_key(explicit: str | None, *, provider: str, endpoint: str) -> str:
+    validate_provider_endpoint(endpoint, provider)
+    _, host, _, _ = validate_url(endpoint, allow_local_http=True, label="LLM endpoint")
+    host_lower = host.lower()
+    key = explicit
+    if not key:
+        allowed_vars = PROVIDER_KEY_VARS.get(provider, KEY_VARS)
+        for var in allowed_vars:
+            value = os.environ.get(var)
+            if value:
+                key = value
+                break
+    if not key:
+        allowed_vars = PROVIDER_KEY_VARS.get(provider, KEY_VARS)
+        raise AnimatoError(f"no API key: pass --api-key or set one of {', '.join(allowed_vars)}")
+    if host_lower == "generativelanguage.googleapis.com" and key.startswith("sk-"):
+        raise AnimatoError("refusing to send an OpenAI-style key to generativelanguage.googleapis.com")
+    if host_lower == "api.openai.com" and key.startswith("AIza"):
+        raise AnimatoError("refusing to send a Gemini-style key to api.openai.com")
+    return key
 
 
 def request(url: str, *, data: bytes | None = None, headers: dict | None = None, method: str | None = None,
             timeout: int = 360) -> tuple[int, bytes]:
-    req = urllib.request.Request(url, data=data, headers=headers or {}, method=method)
+    scheme, host, port, target = validate_url(url, allow_local_http=True, label="request URL")
+    req_method = method or ("POST" if data is not None else "GET")
+    conn: http.client.HTTPConnection
+    if scheme == "https":
+        conn = http.client.HTTPSConnection(host, port or 443, timeout=timeout)
+    else:
+        conn = http.client.HTTPConnection(host, port or 80, timeout=timeout)
     try:
-        with urllib.request.urlopen(req, timeout=timeout) as resp:
-            return resp.status, resp.read()
-    except urllib.error.HTTPError as exc:
-        return exc.code, exc.read()
-    except urllib.error.URLError as exc:
-        raise AnimatoError(f"cannot reach {url}: {exc.reason}") from exc
-
+        conn.request(req_method, target, body=data, headers=headers or {})
+        resp = conn.getresponse()
+        return resp.status, resp.read()
+    except (OSError, http.client.HTTPException) as exc:
+        raise AnimatoError(f"cannot reach {url}: {exc}") from exc
+    finally:
+        conn.close()
 
 def get_json(url: str, timeout: int = 60) -> dict | list:
     status, body = request(url, timeout=timeout)
@@ -134,7 +199,7 @@ def extract_code(text: str) -> str:
 
 
 def call_llm(prompt: str, *, provider: str, endpoint: str, model: str, api_key: str) -> str:
-    endpoint = endpoint.rstrip("/")
+    endpoint = validate_provider_endpoint(endpoint, provider)
     if provider == "gemini":
         url = f"{endpoint}/models/{model}:generateContent"
         payload = {"contents": [{"role": "user", "parts": [{"text": prompt}]}]}
@@ -156,8 +221,11 @@ def call_llm(prompt: str, *, provider: str, endpoint: str, model: str, api_key: 
 
 
 def gate(code: str, model_path: str | None) -> dict:
-    scratch = Path(".animato-candidate.py")
-    scratch.write_text(code, encoding="utf-8")
+    with tempfile.NamedTemporaryFile(
+        mode="w", suffix=".py", prefix="animato-candidate-", delete=False, encoding="utf-8"
+    ) as handle:
+        handle.write(code)
+        scratch = Path(handle.name)
     try:
         cmd = [sys.executable, str(VALIDATOR), str(scratch), "--json"]
         if model_path:
@@ -169,9 +237,8 @@ def gate(code: str, model_path: str | None) -> dict:
             raise AnimatoError(f"validator failed: {proc.stdout}{proc.stderr}") from exc
     finally:
         scratch.unlink(missing_ok=True)
-
-
 def cmd_doctor(args: argparse.Namespace) -> int:
+    validate_url(args.server, allow_local_http=True, label="server")
     ok = True
     try:
         files = get_json(f"{args.server}/api/files", timeout=15)
@@ -197,16 +264,19 @@ def cmd_doctor(args: argparse.Namespace) -> int:
 
 
 def cmd_files(args: argparse.Namespace) -> int:
+    validate_url(args.server, allow_local_http=True, label="server")
     print(json.dumps(get_json(f"{args.server}/api/files"), indent=2))
     return 0
 
 
 def cmd_upload(args: argparse.Namespace) -> int:
+    validate_url(args.server, allow_local_http=True, label="server")
     print(json.dumps(upload(args.server, Path(args.file)), indent=2))
     return 0
 
 
 def cmd_prompt(args: argparse.Namespace) -> int:
+    validate_url(args.server, allow_local_http=True, label="server")
     data = build_prompt(args.server, args.filename, args.message)
     text = data.get("prompt", "")
     if args.out:
@@ -224,6 +294,7 @@ def cmd_validate(args: argparse.Namespace) -> int:
 
 
 def cmd_run(args: argparse.Namespace) -> int:
+    validate_url(args.server, allow_local_http=True, label="server")
     code = Path(args.script).read_text(encoding="utf-8")
     if not args.skip_gate:
         result = gate(code, args.model_path)
@@ -238,13 +309,16 @@ def cmd_run(args: argparse.Namespace) -> int:
 
 
 def cmd_remove(args: argparse.Namespace) -> int:
+    validate_url(args.server, allow_local_http=True, label="server")
     data = post_json(f"{args.server}/api/animation/remove", {"filename": args.filename, "name": args.name})
     print(json.dumps(data, indent=2))
     return 0
 
 
 def cmd_animate(args: argparse.Namespace) -> int:
-    api_key = resolve_key(args.api_key)
+    validate_url(args.server, allow_local_http=True, label="server")
+    validate_provider_endpoint(args.endpoint, args.provider)
+    api_key = resolve_key(args.api_key, provider=args.provider, endpoint=args.endpoint)
     filename = args.filename
     if args.file:
         uploaded = upload(args.server, Path(args.file))

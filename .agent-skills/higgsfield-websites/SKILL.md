@@ -6,7 +6,7 @@ description: |
   Use when: "build me a website", "make a landing page", "create a web app", "build a SaaS dashboard / portfolio", "make me a game", "deploy this site", "publish". Also owns GAME ART: "make a spritesheet", "tileable texture", "animate a 3D character", game music/SFX — see the game-* references.
   NOT for: single image/video/audio generation (higgsfield-generate), product photos (higgsfield-product-photoshoot), marketplace cards (higgsfield-marketplace-cards).
 argument-hint: "[what to build or edit] [--type website|app|game]"
-allowed-tools: Bash
+allowed-tools: Bash Read
 ---
 
 # Higgsfield website builder (CLI) — three product types, three flows
@@ -97,9 +97,11 @@ are rejected — if that happens, try a close variant.
 
 ## Prerequisites
 
-1. If `higgsfield` is not on `$PATH`, install it:
+1. If `higgsfield` is not on `$PATH`, download, review, and run the installer:
    ```bash
-   curl -fsSL https://raw.githubusercontent.com/higgsfield-ai/cli/main/install.sh | sh
+   curl -fsSL https://raw.githubusercontent.com/higgsfield-ai/cli/main/install.sh -o install.sh
+   # Review install.sh before running:
+   sh install.sh
    ```
 2. If `higgsfield account status` reports `Session expired` / `Not authenticated`,
    ask the user to run `higgsfield auth login` (interactive) and wait for

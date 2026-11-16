@@ -36,7 +36,7 @@ ax https://docs.example.com --md --budget 500
 
 ```bash
 # Official installer (recommended)
-curl -fsSL https://ax.yusuke.run/install | sh
+curl -fsSL https://ax.yusuke.run/install -o ax-install.sh && less ax-install.sh && sh ax-install.sh
 
 # Or Homebrew
 brew install yusukebe/tap/ax
@@ -251,7 +251,7 @@ ax-wrapper monitor https://api.example.com 60
 ## Troubleshooting
 
 **Q: "ax is not installed"**  
-A: Run `curl -fsSL https://ax.yusuke.run/install | sh`
+A: Download and run the installer (`curl -fsSL https://ax.yusuke.run/install -o ax-install.sh && less ax-install.sh && sh ax-install.sh`) or `bash scripts/setup.sh --system`.
 
 **Q: "Selector found 0 matches"**  
 A: Run `ax <url> --outline` to see the actual structure
@@ -266,7 +266,7 @@ See [references/installation.md](./references/installation.md) for more troubles
 
 ## Next Steps
 
-1. **Install:** `curl -fsSL https://ax.yusuke.run/install | sh`
+1. **Install:** `bash scripts/setup.sh --system` (or `brew install yusukebe/tap/ax`)
 2. **Explore:** `ax --help` and `ax agent-context`
 3. **Read:** [SKILL.md](./SKILL.md) for full guide
 4. **Scaffold:** `./scripts/scaffold-integration.sh <name> --python` (or --node, --bash)

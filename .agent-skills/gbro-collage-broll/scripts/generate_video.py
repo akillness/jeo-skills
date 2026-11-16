@@ -8,20 +8,42 @@ Uses the official google-genai SDK.
 
 import argparse
 from concurrent.futures import ThreadPoolExecutor, as_completed
+import http.client
 import json
 import os
 import re
 import sys
 import time
-import urllib.request
-import urllib.error
+import urllib.parse
 import uuid
 from google import genai
-
 # Load local upload helper logic inline to prevent dependency issues
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from upload_file import upload_file, wait_for_active
 
+GEMINI_FILES_HOST = "generativelanguage.googleapis.com"
+
+
+def validate_gemini_download_url(file_uri):
+    """Validates that file_uri uses https:// on generativelanguage.googleapis.com before sending API credentials."""
+    parsed = urllib.parse.urlparse(file_uri)
+    if parsed.scheme != "https":
+        raise ValueError(f"Refusing non-HTTPS file URI: {file_uri!r}")
+    if parsed.hostname is None or parsed.hostname.lower() != GEMINI_FILES_HOST:
+        raise ValueError(
+            f"Refusing to send Gemini API key to unexpected host {parsed.hostname!r}: {file_uri!r}"
+        )
+    if parsed.username is not None or parsed.password is not None:
+        raise ValueError(f"Refusing URI with embedded credentials: {file_uri!r}")
+    if parsed.port not in (None, 443):
+        raise ValueError(f"Refusing non-standard port in file URI: {file_uri!r}")
+    if not parsed.path.startswith("/"):
+        raise ValueError(f"Invalid path in file URI: {file_uri!r}")
+    query_items = urllib.parse.parse_qsl(parsed.query, keep_blank_values=True)
+    if not any(k == "alt" for k, _ in query_items):
+        query_items.append(("alt", "media"))
+    request_path = f"{parsed.path}?{urllib.parse.urlencode(query_items)}"
+    return parsed.hostname, parsed.port or 443, request_path
 def get_api_key(args):
     """Retrieves API key from command args or environment."""
     if args.api_key:
@@ -157,29 +179,34 @@ def resolve_or_upload_asset(asset_path, mime_type, api_key, strip_audio=False):
 
 def download_video_file(file_uri, output_path, api_key):
     """Downloads generated video file from URI using alt=media standard in a memory-safe, chunked manner."""
-    separator = "&" if "?" in file_uri else "?"
-    download_url = f"{file_uri}{separator}alt=media"
-    
-    print(f"Downloading video from {file_uri} to {output_path} in chunked mode...")
-    req = urllib.request.Request(download_url)
-    req.add_header("x-goog-api-key", api_key)
-    
-    try:
-        with urllib.request.urlopen(req, timeout=480) as resp:
-            parent_dir = os.path.dirname(output_path)
-            if parent_dir:
-                os.makedirs(parent_dir, exist_ok=True)
-                
-            with open(output_path, "wb") as f:
-                while True:
-                    chunk = resp.read(8192)
-                    if not chunk:
-                        break
-                    f.write(chunk)
-        print(f"Video successfully saved to: {output_path}")
-    except urllib.error.HTTPError as e:
-        raise RuntimeError(f"Error downloading video file: {e.code} - {e.read().decode()}")
+    host, port, request_path = validate_gemini_download_url(file_uri)
 
+    print(f"Downloading video from {file_uri} to {output_path} in chunked mode...")
+    conn = http.client.HTTPSConnection(host, port, timeout=480)
+    try:
+        conn.request("GET", request_path, headers={"x-goog-api-key": api_key})
+        resp = conn.getresponse()
+        if 300 <= resp.status < 400:
+            raise RuntimeError(
+                f"Refusing redirect while downloading video file: HTTP {resp.status}"
+            )
+        if resp.status >= 400:
+            body = resp.read().decode("utf-8", "replace")
+            raise RuntimeError(f"Error downloading video file: {resp.status} - {body}")
+
+        parent_dir = os.path.dirname(output_path)
+        if parent_dir:
+            os.makedirs(parent_dir, exist_ok=True)
+
+        with open(output_path, "wb") as f:
+            while True:
+                chunk = resp.read(8192)
+                if not chunk:
+                    break
+                f.write(chunk)
+    finally:
+        conn.close()
+    print(f"Video successfully saved to: {output_path}")
 def generate_video(prompt, api_key, model="gemini-omni-flash-preview", aspect_ratio="16:9", duration=None, image_path=None, video_path=None, output_path="output.mp4", strip_audio=False, previous_interaction_id=None):
     """Creates an interaction with the video model and downloads the resulting video using the official google-genai SDK."""
     duration = parse_and_validate_duration(duration)

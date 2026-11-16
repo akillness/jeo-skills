@@ -9,7 +9,7 @@
 #   bash scripts/install.sh --framework vite        # Vite
 #   bash scripts/install.sh --framework webpack     # Webpack
 #
-# Requirements: Node.js >=22, npm/npx
+# Requirements: Node.js >=22 and npm (with "npx")
 
 set -euo pipefail
 
@@ -50,9 +50,9 @@ if [[ "$NODE_VERSION" -lt 22 ]]; then
   exit 1
 fi
 
-# Check npx
-if ! command -v npx &>/dev/null; then
-  echo "❌ npx not found. Run: npm install -g npx"
+# Check "npx" binary
+if ! command -v "npx" &>/dev/null; then
+  echo "❌ Missing 'npx' binary. Install Node.js/npm so 'npx' is on PATH."
   exit 1
 fi
 
@@ -86,57 +86,21 @@ if [[ -n "$FRAMEWORK" ]]; then
   echo ""
   echo "✅ react-grab installed as dev dependency"
   echo ""
-  echo "📋 Add the following to your project entry point:"
+  echo "📋 See references/install-and-routing.md for the dev-only entry-point snippet."
   echo ""
 
   case "$FRAMEWORK" in
     next-app)
-      cat << 'SNIPPET'
-// In app/layout.tsx:
-import Script from 'next/script'
-
-// Inside your root layout component:
-{process.env.NODE_ENV === "development" && (
-  <Script
-    src="//unpkg.com/react-grab/dist/index.global.js"
-    crossOrigin="anonymous"
-    strategy="beforeInteractive"
-  />
-)}
-SNIPPET
+      echo "Target file: app/layout.tsx (Next.js App Router section in references/install-and-routing.md)"
       ;;
     next-pages)
-      cat << 'SNIPPET'
-// In pages/_document.tsx:
-import Script from 'next/script'
-
-// Inside _document Body:
-{process.env.NODE_ENV === "development" && (
-  <Script
-    src="//unpkg.com/react-grab/dist/index.global.js"
-    crossOrigin="anonymous"
-    strategy="beforeInteractive"
-  />
-)}
-SNIPPET
+      echo "Target file: pages/_document.tsx (Next.js Pages Router section in references/install-and-routing.md)"
       ;;
     vite)
-      cat << 'SNIPPET'
-<!-- In index.html: -->
-<script type="module">
-  if (import.meta.env.DEV) {
-    await import('//unpkg.com/react-grab/dist/index.global.js');
-  }
-</script>
-SNIPPET
+      echo "Target file: client entry module (Vite section in references/install-and-routing.md)"
       ;;
     webpack)
-      cat << 'SNIPPET'
-// In your webpack entry file:
-if (process.env.NODE_ENV === 'development') {
-  import('react-grab');
-}
-SNIPPET
+      echo "Target file: webpack entry module (Webpack section in references/install-and-routing.md)"
       ;;
     *)
       echo "Unknown framework: $FRAMEWORK"
@@ -147,7 +111,7 @@ SNIPPET
 else
   # Auto-detect mode (recommended)
   echo "🔍 Auto-detecting framework..."
-  npx -y grab@latest init $YES_FLAG
+  npx -y grab@0.2.0 init $YES_FLAG
 fi
 
 echo ""

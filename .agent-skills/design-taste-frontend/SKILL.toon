@@ -31,7 +31,7 @@ R[10]:
   Deeper accessibility remediation routes to web-accessibility and layout adaptation to responsive-design
 
 E[4]{type,command}:
-  Install skill,npx skills add https://github.com/akillness/jeo-skills --skill design-taste-frontend
-  Check provenance,curl -fsS https://raw.githubusercontent.com/Leonxlnx/taste-skill/ccbc15639c97057cbfcf32ecebc38ef716e4bb37/skills/taste-skill/SKILL.md | head -40
+  Install skill,npx skills@1.9.0 add https://github.com/akillness/jeo-skills --skill design-taste-frontend
+  Check provenance,curl -fsS https://raw.githubusercontent.com/Leonxlnx/taste-skill/ccbc15639c97057cbfcf32ecebc38ef716e4bb37/README.md | head -40
   Validate evals,node .agent-skills/design-taste-frontend/scripts/validate-evals.mjs --json
   Validate skill,bash .agent-skills/skill-standardization/scripts/validate_skill.sh .agent-skills/design-taste-frontend

@@ -5,6 +5,11 @@ description: |
   Create and extend complete visual brand systems through the Higgsfield CLI and bundled deterministic local tooling: palettes, SVG logo marks, typography, mockups, social graphics, packaging, signage, merchandise, posters, presentation decks, and editable PPTX/PDF brandbooks. Preserves official supplied assets, persists approvals locally, and regenerates only dependent outputs. Use when: "create a brand kit", "make a visual identity", "design a logo and brandbook", "apply this logo to branded assets", "make packaging or signage", or "extend our existing branding". Chain with higgsfield-generate for general image production and Marketing Studio brand-kits when importing website metadata for ads. NOT for unbranded image generation (use higgsfield-generate), product catalog photography (use higgsfield-product-photoshoot), website implementation (use higgsfield-websites), or native Figma/Canva/PSD/AI delivery.
 argument-hint: "[brand brief or existing assets] [requested deliverables]"
 allowed-tools: Bash
+permissions:
+  - env
+  - file_read
+  - file_write
+  - network
 ---
 
 # Higgsfield Brandkit
@@ -25,7 +30,10 @@ Build a coherent identity and its requested applications. Treat supplied brand f
 3. If `higgsfield` is missing, install it only after permission:
 
    ```bash
-   curl -fsSL https://raw.githubusercontent.com/higgsfield-ai/cli/main/install.sh | sh
+   curl -fsSL https://raw.githubusercontent.com/higgsfield-ai/cli/main/install.sh -o /tmp/higgsfield-install.sh
+   # Review /tmp/higgsfield-install.sh before executing:
+   sh /tmp/higgsfield-install.sh
+   unlink /tmp/higgsfield-install.sh
    ```
 
 4. If `higgsfield account status` fails with an authentication or workspace error, ask the user to run `higgsfield auth login` or select a workspace, then wait.
@@ -87,7 +95,7 @@ Local image paths passed with `--image` are auto-uploaded. Keep HTML, SVG, PPTX,
    - text-bearing social/packaging/poster/signage → logo + palette + typography
    - Brandbook/deck → logo + palette + typography
 6. **Build missing foundation slots.** Read [Design Brain](references/brandkit-design-brain.md), [concept boards](references/concept-boards.md), [inline reviews](references/inline-widgets.md), and only the needed [palette](references/palette.md), [logo](references/logo.md), or [typography](references/typography.md) module.
-7. **Continue the original request** as soon as its required slots are approved. Never ask the user to choose scope again.
+7. **Continue the original request** as soon as its required slots are approved. Skip re-asking the user to choose scope.
 8. **Load only the requested production module:**
    - [mockups](references/mockups.md)
    - [social graphics](references/social-templates.md)

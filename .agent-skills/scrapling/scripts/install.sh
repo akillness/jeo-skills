@@ -8,7 +8,7 @@
 # Idempotent and safe to re-run.
 #
 # Env knobs:
-#   GLOBAL=1            - install the skill globally (npx skills add -g)
+#   GLOBAL=1            - install the skill globally (npx skills@1.9.0 add -g)
 #   AGENTS=<list>       - comma/space agents for -a targeting (e.g. "claude-code,codex")
 #   SKIP_SKILL=1        - skip the jeo-skills plugin registration step
 #   SKIP_PACKAGE=1      - skip the `pip install scrapling[...]` step
@@ -67,14 +67,14 @@ install_skill() {
     return 0
   fi
   if ! command -v npx >/dev/null 2>&1; then
-    warn "Node.js/npx not found. Manual install:"
+      warn "Node.js not found. Manual install:"
     warn "  git clone $REPO_URL && cp -r jeo-skills/.agent-skills/$SKILL ~/.agents/skills/$SKILL"
     return 0
   fi
-  log "Installing '$SKILL' routing skill via npx skills…"
+  log "Installing '$SKILL' routing skill via skills CLI…"
   # shellcheck disable=SC2086
-  npx skills add "$REPO_URL" --skill "$SKILL" $GLOBAL_FLAG $AGENT_FLAGS --yes \
-    || warn "npx skills add failed — install manually (git clone)."
+  npx skills@1.9.0 add "$REPO_URL" --skill "$SKILL" $GLOBAL_FLAG $AGENT_FLAGS --yes \
+    || warn "skills CLI add failed — install manually (git clone)."
 }
 
 # ---- step 2: upstream Scrapling Python package ----

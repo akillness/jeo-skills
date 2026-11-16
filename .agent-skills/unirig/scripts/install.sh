@@ -24,7 +24,7 @@
 # Env knobs:
 #   UNIRIG_HOME=<path>  checkout location (default: ~/.cache/unirig/UniRig)
 #   PYTHON_BIN=<path>   interpreter used to create the venv (default: python3.11, then python3)
-#   GLOBAL=1            install the skill globally (npx skills add -g)
+#   GLOBAL=1            install the skill globally (npx skills@1.9.0 add -g)
 #   AGENTS=<list>       comma/space agent IDs for -a targeting (e.g. "claude-code,codex")
 #   SKIP_SKILL=1        skip the jeo-skills plugin registration step
 #   SKIP_REPO=1         skip the UniRig clone/update step
@@ -78,14 +78,14 @@ install_skill() {
     return 0
   fi
   if ! command -v npx >/dev/null 2>&1; then
-    warn "Node.js/npx not found. Manual install:"
+    warn "Node.js not found. Manual install:"
     warn "  git clone $REPO_URL && cp -r jeo-skills/.agent-skills/$SKILL ~/.agents/skills/$SKILL"
     return 0
   fi
-  log "Registering the '$SKILL' skill via npx skills…"
+  log "Registering the '$SKILL' skill via skills CLI…"
   # shellcheck disable=SC2086
-  npx skills add "$REPO_URL" --skill "$SKILL" $GLOBAL_FLAG $AGENT_FLAGS --yes \
-    || warn "npx skills add failed — install manually (git clone)."
+  npx skills@1.9.0 add "$REPO_URL" --skill "$SKILL" $GLOBAL_FLAG $AGENT_FLAGS --yes \
+    || warn "skills CLI add failed — install manually (git clone)."
 }
 
 # ---- step 2: upstream checkout ----

@@ -61,7 +61,7 @@ git clone https://github.com/krillinai/OpenCreator.git
 cd OpenCreator
 corepack enable && pnpm install
 cp -r skills/krillinai-tts skills/<your-skill>
-# edit skills/<your-skill>/SKILL.md
+# customize the copied skill definition
 pnpm web:dev
 ```
 
@@ -100,7 +100,7 @@ creator task, or output quality.
 The pinned root `LICENSE` contains the Apache License 2.0 terms. That grant is
 for the licensed project work; do not extend it to provider models, downloaded
 rendering components, third-party media, fonts/assets, input material, or
-outputs without checking their own licenses and service terms. Keep the
+outputs before checking their own licenses and service terms. Keep the
 upstream license and notices when redistributing covered source. This skill
 contains operating guidance, not bundled OpenCreator code or media.
 

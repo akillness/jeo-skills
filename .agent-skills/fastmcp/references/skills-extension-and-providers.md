@@ -97,4 +97,4 @@ async with Client("http://localhost:8000/mcp") as client:
 
 2. **Host Approval Boundary**:
    - As established in SEP-2640 and source audits, a matching hash proves only that the bytes match the server's manifest. It does **not** prove that the server is trustworthy or that the instructions are safe to execute.
-   - FastMCP clients must never automatically execute code or grant broad tool access (`allowed-tools`) based solely on `verified: true`. The host system must maintain independent origin binding and explicit user approval before loading instructions into model context.
+   - FastMCP clients must never run code unprompted or grant broad tool access (`allowed-tools`) based solely on `verified: true`. The host system must maintain independent origin binding and explicit user approval before loading instructions into model context.

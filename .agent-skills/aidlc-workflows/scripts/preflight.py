@@ -239,7 +239,20 @@ INSTALL_ENV = ("AIDLC_RELEASE_BASE_URL", "AIDLC_RELEASE_REPOSITORY", "AIDLC_RELE
                "AIDLC_GH_BIN", "AIDLC_INSTALL_ROOT", "AIDLC_BIN_DIR", "AIDLC_ALLOW_ROOT", "AIDLC_OFFLINE",
                "AWS_AIDLC_DEFAULT_SCOPE")
 TRUST_ENV = ("AIDLC_RELEASE_BASE_URL", "AIDLC_RELEASE_REPOSITORY", "AIDLC_RELEASE_WORKFLOW", "AIDLC_CA_BUNDLE", "AIDLC_GH_BIN")
-BYPASS_PREFIXES = ("AIDLC_SKIP_", "AIDLC_DISABLE_")
+BYPASS_ENV = (
+    "AIDLC_SKIP_ARTIFACT_GUARD",
+    "AIDLC_SKIP_HUMAN_PRESENCE_GUARD",
+    "AIDLC_DISABLE_SENSORS",
+    "AIDLC_DISABLE_PLAN_APPROVAL_GUARD",
+    "AIDLC_DISABLE_LEARNINGS",
+    "AIDLC_DISABLE_SUMMARY_CONFIRMATION",
+    "AIDLC_SKIP_REVIEWS",
+    "AIDLC_DISABLE_REVIEWS",
+    "AIDLC_SKIP_SENSORS",
+    "AIDLC_SKIP_CHECKPOINT",
+    "AIDLC_DISABLE_TELEMETRY",
+    "AIDLC_SKIP_TELEMETRY",
+)
 BEDROCK_NAMES = ("CLAUDE_CODE_USE_BEDROCK", "AWS_PROFILE", "AWS_REGION")
 MAX_LIST = 20
 MUSL_DIRS = ("/lib", "/usr/lib")
@@ -317,7 +330,27 @@ def existing_install(checks):
     if found:
         default_bin = (Path(os.environ["LOCALAPPDATA"]) / "aidlc" / "bin") if platform.system() == "Windows" and os.environ.get("LOCALAPPDATA") else Path.home() / ".local" / "bin"
         if Path(found).parent != default_bin and not os.environ.get("AIDLC_BIN_DIR"):
-            add(checks, "install.command", "info", f"`aidlc` resolves to {found}, outside the default {default_bin}; the installer yields to an existing Homebrew or Nix command and refuses a mixed-ownership one")
+            add(
+                checks,
+                "install.command",
+                "info",
+                f"aidlc resolves to {found}, outside the default {default_bin}; "
+                "the installer yields to an existing Homebrew or Nix command and refuses a mixed-ownership one",
+            )
+
+def _extract_url_host(url):
+    if "://" not in url:
+        return None
+    authority = url.split("://", 1)[1].split("/", 1)[0].split("?", 1)[0].split("#", 1)[0]
+    hostport = authority.rsplit("@", 1)[-1]
+    if not hostport:
+        return None
+    if hostport.startswith("["):
+        end = hostport.find("]")
+        return hostport[1:end].lower() if end != -1 else None
+    host = hostport.split(":", 1)[0].lower()
+    return host or None
+
 
 
 def env_checks(checks):
@@ -326,7 +359,7 @@ def env_checks(checks):
     if changed:
         add(checks, "env.trust-root", "info",
             "set: " + ", ".join(changed) + "; these change where the installer downloads from and which repository and signer workflow provenance trusts; confirm they are intended")
-    bypass = sorted(key for key, value in os.environ.items() if key.startswith(BYPASS_PREFIXES) and value.strip())
+    bypass = sorted(key for key in BYPASS_ENV if os.environ.get(key, "").strip())
     add(checks, "env.guard-bypass", "info",
         ("set in this shell: " + ", ".join(bypass) + "; each switches a guard or ceremony off here, and `aidlc config flags --show` lists the ones recorded for a project")
         if bypass else "no AIDLC_SKIP_* or AIDLC_DISABLE_* variable is set; values are never read out")
@@ -401,11 +434,7 @@ def mcp_servers(checks, project, rel):
             unpinned.append(name)
         url = spec.get("url")
         if isinstance(url, str):
-            try:
-                from urllib.parse import urlsplit
-                host = urlsplit(url).hostname
-            except ValueError:
-                host = None
+            host = _extract_url_host(url)
             remote.append(f"{name} ({host or 'unparsed host'})")
     names = ", ".join(sorted(str(name)[:40] for name in servers)[:MAX_LIST])
     add(checks, "project.mcp:" + rel, "info",

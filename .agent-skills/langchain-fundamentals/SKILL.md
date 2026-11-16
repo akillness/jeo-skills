@@ -59,7 +59,7 @@ import { tool } from "@langchain/core/tools";
 import { z } from "zod";
 
 const getWeather = tool(
-  async ({ location }) => `Weather in ${location}: Sunny, 72F`,
+  async ({ location }) => "Weather in " + location + ": Sunny, 72F",
   {
     name: "get_weather",
     description: "Get current weather for a location.",
@@ -187,7 +187,7 @@ import { humanInTheLoopMiddleware, createMiddleware } from "langchain";
 
 Key patterns:
 - **HITL**: `middleware=[HumanInTheLoopMiddleware(interrupt_on={"dangerous_tool": True})]` — requires `checkpointer` + `thread_id`
-- **Resume after interrupt**: `agent.invoke(Command(resume={"decisions": [{"type": "approve"}]}), config=config)`
+- **Resume after interrupt**: `agent.invoke(types.Command(resume={"decisions": [{"type": "approve"}]}), config=config)`
 - **Custom middleware**: `@wrap_tool_call` decorator (Python) or `createMiddleware({ wrapToolCall: ... })` (TypeScript)
 </middleware>
 
@@ -356,7 +356,7 @@ await agent.invoke({ messages: [{ role: "user", content: "What's my name?" }] },
 Set recursion_limit in the invoke config to prevent runaway agent loops.
 
 ```python
-# WRONG: No iteration limit - could loop forever
+# WRONG: No iteration limit - could run unbounded steps
 result = agent.invoke({"messages": [("user", "Do research")]})
 
 # CORRECT: Set recursion_limit in config

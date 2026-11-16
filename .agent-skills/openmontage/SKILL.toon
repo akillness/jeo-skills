@@ -32,7 +32,7 @@ R[10]:
   Render success or final.mp4 existence is not proof; inspect ffprobe data timeline frames audio subtitles delivery promise and full playback
 
 E[7]{type,command}:
-  Install skill,npx skills add https://github.com/akillness/jeo-skills --skill openmontage
+  Install skill,npx -y skills@1.7.0 add https://github.com/akillness/jeo-skills --skill openmontage
   Read-only doctor,bash .agent-skills/openmontage/scripts/openmontage.sh doctor /path/to/OpenMontage
   Strict pipeline inventory,bash .agent-skills/openmontage/scripts/openmontage.sh pipelines /path/to/OpenMontage --strict
   Human-sized provider preflight,bash .agent-skills/openmontage/scripts/openmontage.sh preflight /path/to/OpenMontage

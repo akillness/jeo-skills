@@ -11,7 +11,7 @@ S[6]{n,action,details}:
   1,Capture provenance,Record source URLs and evidence labels before adaptation
   2,Extract patterns,Keep reusable workflow units and drop unverifiable claims
   3,Run safety gates,Check license recency determinism and version assumptions
-  4,Package locally,Write SKILL.md SKILL.toon and evals for the curated workflow
+  4,Package locally,Author SKILL.md SKILL.toon and evals for the curated workflow
   5,Document risk and rollback,Include imported/excluded scope plus revert plan in PR
   6,Validate,Run JSON check diff hygiene and available skill validators before merge
 R[5]:

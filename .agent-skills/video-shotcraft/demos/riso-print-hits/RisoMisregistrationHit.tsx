@@ -1,6 +1,6 @@
 // 套印错位冲击帧（riso-misregistration-hit）——标题撞停瞬间裂成两份单色"印版"
 // （浅灰琥珀版 G.mid + 深墨版 G.ink，mix-blend-mode: multiply 叠加），像 riso 印刷
-// 没对准版；两版反向错位（x 为主 y 少量）做衰减震荡 offset = A*cos(ωt)*exp(-t/τ)
+// 没对准版；两版反向错位（x 为主 y 少量）做衰减震荡 offset = A*cos(omega*t)*exp(-t/tau)
 // 抖两下，帧 72 啪地硬切回单一正体（套准合一），带 4f scale 1.03→1 脉冲收束。
 // 结构：0–19f 空场 hold（只有底部装饰线）；20–28f 标题从右画外 Easing.in(cubic)
 // 撞入屏心（帧 28 命中）；28–71f 双版错位震荡；72–75f 套准脉冲；76–119f 真静止 44f。

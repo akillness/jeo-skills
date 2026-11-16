@@ -18,6 +18,21 @@ from xml.sax.saxutils import escape
 
 
 COMMAND_TIMEOUT_SECONDS = 90
+_SAFE_ENV_KEYS = (
+    "PATH",
+    "HOME",
+    "TMPDIR",
+    "TEMP",
+    "TMP",
+    "LANG",
+    "LC_ALL",
+    "LC_CTYPE",
+    "XDG_CONFIG_HOME",
+    "XDG_CACHE_HOME",
+    "XDG_DATA_HOME",
+    "DISPLAY",
+    "SAL_USE_VCLPLUGIN",
+)
 
 
 def family_key(value: str) -> str:
@@ -86,10 +101,12 @@ def main() -> None:
         encoding="utf-8",
     )
     environment = {
-        **os.environ,
-        "FONTCONFIG_FILE": str(font_config),
-        "FONTCONFIG_PATH": str(work_dir),
+        key: value
+        for key in _SAFE_ENV_KEYS
+        if (value := os.environ.get(key)) is not None
     }
+    environment["FONTCONFIG_FILE"] = str(font_config)
+    environment["FONTCONFIG_PATH"] = str(work_dir)
 
     run("Brandbook font cache", ["fc-cache", "-f", str(fonts_dir)], environment)
     for family in families:

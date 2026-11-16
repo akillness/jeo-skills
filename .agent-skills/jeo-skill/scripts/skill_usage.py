@@ -963,10 +963,10 @@ def _jeo_session_dirs(home: Path, cursor: dict[str, Any]) -> list[Path]:
 def _jeo_parser() -> Callable[[Any, datetime | None, dict[str, dict[str, Any]]], int]:
     """jeo session JSONL (`<project>/.jeo/sessions/<uuid>.jsonl`).
 
-    A load is an assistant `message.toolUse` entry (`{id, tool, arguments}`) of a read tool
-    whose `filePath`/`path` is `<dir>/<name>/SKILL.md` or `skill://<name>`. jeo's `read`
-    result carries the file content (not a path), and `find`/`ls`/`bash` results or a read
-    document that merely lists SKILL.md paths are not loads, so `toolResults`, user and
+    A load is an assistant message.toolUse entry (id, tool, arguments) of a read tool
+    whose filePath or path is <dir>/<name>/SKILL.md or skill://<name>. The read
+    result carries the file content (not a path), and find/ls/bash results or a read
+    document that merely lists SKILL.md paths are not loads, so toolResults, user and
     assistant text, writes, edits, searches and shell commands are never counted."""
     def parser(value: Any, when: datetime | None, events: dict[str, dict[str, Any]]) -> int:
         if not isinstance(value, dict):

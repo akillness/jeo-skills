@@ -53,7 +53,7 @@
         "Identifies the observed HEAD change as SECURITY.md policy maintenance, not a core taste rewrite",
         "Keeps design-taste-frontend absent an authorized, evidence-backed migration",
         "Warns about installation destinations and the design-taste name collision",
-        "Does not execute the upstream installer or modify global agent paths without approval"
+        "Does not execute the upstream installer or modify global agent paths unless explicitly approved"
       ]
     }
   ]

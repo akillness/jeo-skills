@@ -21,7 +21,7 @@ installer, screenshots, demos, servers or builds were executed.
 | --- | --- |
 | [README.md](https://github.com/madebymustafa/design-taste/blob/c4a6bff0871eb4b15371b0e7d2751628b0ed4608/README.md) | `The catalog`, `How they compose`, `Install (5 seconds)`: core, ten genre packs and craft/code skills; installer targets multiple agent directories. Entire README read. |
 | [skills/design-taste/SKILL.md](https://github.com/madebymustafa/design-taste/blob/c4a6bff0871eb4b15371b0e7d2751628b0ed4608/skills/design-taste/SKILL.md#L22-L109) | L22 design read; L38 contextual default avoidance; L55 typography; L66 color; L74 layout; L82 surface; L89 motion; L96 pre-flight. Entire file read. |
-| [skills/corporate-trust/SKILL.md](https://github.com/madebymustafa/design-taste/blob/c4a6bff0871eb4b15371b0e7d2751628b0ed4608/skills/corporate-trust/SKILL.md) | Sections 1–6: system sans, restrained blue, conventional grids, evidence and tables, nearly static motion. Entire file read. |
+| [skills/corporate-trust](https://github.com/madebymustafa/design-taste/tree/c4a6bff0871eb4b15371b0e7d2751628b0ed4608/skills/corporate-trust) | Sections 1–6: system sans, restrained blue, conventional grids, evidence and tables, nearly static motion. Entire pack skill file read. |
 | [LICENSE](https://github.com/madebymustafa/design-taste/blob/c4a6bff0871eb4b15371b0e7d2751628b0ed4608/LICENSE) | Entire MIT license read; full text below. |
 
 The README identifies these genre names: `editorial-minimal`,

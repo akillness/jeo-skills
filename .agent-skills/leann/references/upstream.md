@@ -20,7 +20,7 @@ leann build handbook --docs ./docs
 leann search handbook "sync behavior" --top-k 5
 ```
 
-The README's source-build section notes platform-dependent native prerequisites: macOS DiskANN requires macOS 13.3 or later and uses Homebrew dependencies; Linux DiskANN has distro/toolchain requirements. The Linux README warns that uv hardlink installs can trip a hardened file loader in some builds and documents `UV_LINK_MODE=copy` as a workaround. These are setup caveats, not proof that a particular machine is compatible. Optional GPU backends require CUDA; don't select them without checking backend-specific requirements.
+The README's source-build section notes platform-dependent native prerequisites: macOS DiskANN requires macOS 13.3 or later and uses Homebrew dependencies; Linux DiskANN has distro/toolchain requirements. The Linux README warns that uv hardlink installs can trip a hardened file loader in some builds and documents `UV_LINK_MODE=copy` as a workaround. These are setup caveats, not proof that a particular machine is compatible. Optional GPU backends require CUDA; verify backend-specific requirements before selecting them.
 
 ## Effects, data and limitations
 

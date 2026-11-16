@@ -54,7 +54,7 @@ By combining `:has()` with `:user-invalid`, we can declaratively style any ances
 }
 ```
 
-Parent styling only adds emphasis: it doesn't say which field is wrong or why, so each field still needs its own visible error text. See `required-field-feedback` (via `npx -y modern-web-guidance@latest retrieve "required-field-feedback"`).
+Parent styling only adds emphasis: it doesn't say which field is wrong or why, so each field still needs its own visible error text. See `required-field-feedback` (via `npx -y modern-web-guidance@1.0.0 retrieve "required-field-feedback"`).
 
 ## Fallbacking & Browser Support
 

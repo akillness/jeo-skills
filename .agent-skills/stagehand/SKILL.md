@@ -3,7 +3,7 @@ name: "stagehand"
 description: "Operate Browserbase Stagehand, the MIT-licensed browser-agent SDK and `browse` CLI for local or Browserbase Chromium automation, natural-language `act`, `observe`, and `extract`, typed WebMCP calls, cloud Search/Fetch, Playwright migrations, and Browserbase MCP integration. Use when a user wants to build, run, debug, or migrate a Stagehand browser agent, choose local versus cloud browser execution, or configure the `browse` command surface. Triggers on: stagehand, @browserbasehq/stagehand, browserbase.launch, localBrowser.launch, act(), observe(), extract(), WebMCP, browse CLI, Browserbase MCP."
 license: "MIT"
 compatibility: "Stagehand v4 local runs need Chromium and an explicitly supplied model provider key; Browserbase cloud, Model Gateway, Search/Fetch, and MCP need a Browserbase key and may incur usage charges. The bundled preflight is read-only and uses only the standard Node.js library. Inside an Aside session sandbox a local Chromium launch aborts, so the preflight blocks the local target there and the working paths are Browserbase cloud or an externally started CDP endpoint."
-allowed-tools: Bash Read Write Edit Glob Grep WebFetch
+allowed-tools: Bash Read Write Edit Glob Grep WebFetch Env
 ---
 
 # Stagehand — typed browser agents with a deterministic escape hatch

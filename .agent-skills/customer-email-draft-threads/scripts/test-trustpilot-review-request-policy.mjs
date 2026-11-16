@@ -125,7 +125,7 @@ function validateMermaidFlowchart(markdown) {
     /Actionable customer case\?/,
     /Identity and canonical-thread match\?/,
     /Explicit approval for exact financial action and target\?/,
-    /Customer explicitly confirms the post-fix outcome is positive\?/,
+    /Customer explicitly confirms the post[-]fix outcome is positive\?/,
     /Exactly one positively confirmed product proven by canonical evidence\?/,
     /Prior invitation or closure already sent/,
     /Official configured Trustpilot profile and link match that product\?/,
@@ -144,20 +144,20 @@ function validateMermaidFlowchart(markdown) {
 let mermaidStats = null;
 if (documents.family) {
   requireText("family", [
-    /customer's own reply after\s+the fix/i,
+    /customer\x27s own reply after\s+the fix/i,
     /canonical.*duplicate.*drafts.*`SENT`/is,
     /never send a\s+second invitation/i,
     /official configured Trustpilot profile and review link/i,
     /multiple products.*ambiguous.*omit the invitation/is,
-    /Never reuse another product's\s+Trustpilot profile or link/is,
+    /Never reuse another product\x27s\s+Trustpilot profile or link/is,
   ]);
   mermaidStats = validateMermaidFlowchart(documents.family);
 }
 requireText("account", [
-  /customer's own reply after\s+the fix/i,
+  /customer\x27s own reply after\s+the fix/i,
   /never send a\s+second invitation/i,
   /multiple products.*ambiguous.*omit the invitation/is,
-  /Never reuse another\s+product's link/is,
+  /Never reuse another\s+product\x27s link/is,
   /refunds,\s+failed payments,\s+cancellations.*disputes,\s+complaints/is,
 ]);
 requireText("billing", [
@@ -165,23 +165,23 @@ requireText("billing", [
   /Never add a Trustpilot review invitation/i,
 ]);
 requireText("email", [
-  /customer's own new inbound reply after\s+the fix/i,
+  /customer\x27s own new inbound reply after\s+the fix/i,
   /Search canonical and duplicate threads, drafts, and `SENT`/i,
   /never send a\s+second invitation/i,
   /multiple products.*ambiguous.*omit the invitation/is,
-  /Never reuse another product's review profile or link/is,
+  /Never reuse another product\x27s review profile or link/is,
 ]);
 requireText("runbook", [
-  /latest inbound message.*customer's own reply after the fix/is,
+  /latest inbound message.*customer\x27s own reply after the fix/is,
   /If a prior invitation was sent for this case,\s+never invite again/is,
   /official configured Trustpilot profile and review link/i,
   /multiple products.*ambiguous.*omit the invitation/is,
-  /Never reuse another product's review\s+profile or link/is,
+  /Never reuse another product\x27s review\s+profile or link/is,
   /explicit current approval|request owner approved/i,
 ]);
 requireText("verification", [
   /Trustpilot closure proof/i,
-  /customer's own latest positive confirmation after\s+the fix/i,
+  /customer\x27s own latest positive confirmation after\s+the fix/i,
   /no prior\s+invite/is,
   /exactly one positively confirmed product/is,
   /link belongs to another\s+product/is,

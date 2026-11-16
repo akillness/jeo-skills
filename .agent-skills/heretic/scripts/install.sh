@@ -37,7 +37,13 @@ CHECK="${CHECK:-0}"
 DRY="${DRY:-0}"
 
 run() {
-  if [ "$DRY" = "1" ]; then printf '\033[1;36m[dry]\033[0m %s\n' "$*"; else eval "$*"; fi
+  if [ "$DRY" = "1" ]; then
+    printf '\033[1;36m[dry]\033[0m'
+    printf ' %q' "$@"
+    printf '\n'
+  else
+    "$@"
+  fi
 }
 
 # Resolve a Python interpreter for the torch check.
@@ -49,7 +55,12 @@ done
 # --- CHECK mode: verify an existing install and exit ---
 if [ "$CHECK" = "1" ]; then
   command -v heretic >/dev/null 2>&1 || die "heretic not found on PATH — run the installer first"
-  run "heretic --help >/dev/null" && log "heretic --help OK"
+  if [ "$DRY" = "1" ]; then
+    printf '\033[1;36m[dry]\033[0m heretic --help >/dev/null\n'
+  else
+    heretic --help >/dev/null
+  fi
+  log "heretic --help OK"
   exit 0
 fi
 
@@ -87,23 +98,31 @@ if [ "$UV" = "1" ]; then
     log "Reusing existing clone at $DEST"
   else
     log "Cloning $UPSTREAM_URL@$REF into $DEST"
-    run "git clone --depth 1 --branch '$REF' '$UPSTREAM_URL' '$DEST'" \
-      || run "git clone --depth 1 '$UPSTREAM_URL' '$DEST'" \
+    run git clone --depth 1 --branch "$REF" "$UPSTREAM_URL" "$DEST" \
+      || run git clone --depth 1 "$UPSTREAM_URL" "$DEST" \
       || die "Failed to clone $UPSTREAM_URL"
   fi
   if [ "$RESEARCH" = "1" ]; then
     log "Syncing pinned dependencies with uv (+ research extra)"
-    run "cd '$DEST' && uv sync --extra research"
+    if [ "$DRY" = "1" ]; then
+      printf '\033[1;36m[dry]\033[0m cd %q && uv sync --extra research\n' "$DEST"
+    else
+      (cd "$DEST" && uv sync --extra research)
+    fi
   else
     log "Syncing pinned dependencies with uv"
-    run "cd '$DEST' && uv sync"
+    if [ "$DRY" = "1" ]; then
+      printf '\033[1;36m[dry]\033[0m cd %q && uv sync\n' "$DEST"
+    else
+      (cd "$DEST" && uv sync)
+    fi
   fi
   log "Run Heretic with:  cd '$DEST' && uv run heretic <model>"
 else
   # Simplest: pip install the published package
   command -v "$PIP" >/dev/null 2>&1 || die "'$PIP' not found — set PIP=<pip executable>"
   log "Installing heretic-llm${EXTRA} via $PIP"
-  run "$PIP install -U 'heretic-llm${EXTRA}'"
+  run "$PIP" install -U "heretic-llm${EXTRA}"
   log "Installed. Verify with:  heretic --help"
 fi
 

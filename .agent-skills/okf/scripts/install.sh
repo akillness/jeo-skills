@@ -8,7 +8,7 @@
 # Env knobs:
 #   SKIP_PYYAML=1     - skip pyyaml install check
 #   BUNDLE_PATH=<dir> - validate the given bundle after install (default: skip)
-#   GLOBAL=1          - install the skill globally (npx skills add -g)
+#   GLOBAL=1          - install the skill globally (npx skills@1.9.0 add -g)
 #
 # Usage:
 #   bash scripts/install.sh
@@ -93,13 +93,13 @@ PYEOF
 install_skill() {
   if command -v npx >/dev/null 2>&1; then
     if [ "${GLOBAL:-0}" = "1" ]; then
-      log "Installing okf skill globally via npx skills…"
-      npx skills add "$REPO_URL" --skill okf -g \
-        || warn "npx skills add failed — install manually (git clone)."
+      log "Installing okf skill globally via skills CLI…"
+      npx skills@1.9.0 add "$REPO_URL" --skill okf -g \
+        || warn "skills CLI install failed — install manually (git clone)."
     else
-      log "Installing okf skill via npx skills…"
-      npx skills add "$REPO_URL" --skill okf \
-        || warn "npx skills add failed — install manually (git clone)."
+      log "Installing okf skill via skills CLI…"
+      npx skills@1.9.0 add "$REPO_URL" --skill okf \
+        || warn "skills CLI install failed — install manually (git clone)."
     fi
   else
     warn "Node.js/npx not found. Manual install:"

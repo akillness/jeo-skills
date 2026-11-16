@@ -920,13 +920,14 @@ Subcategorías: `knowledge` (9), `files` (5), `git` (4), `workspace` (1), `proje
 El manifiesto `.agent-skills/skills.json` es la fuente de verdad. Edita allí los metadatos; no modifiques a mano las tablas y los recuentos de categorías generados en los README. Tras actualizar el catálogo, regenera y comprueba las proyecciones:
 
 ```bash
-python3 scripts/generate-catalog-projections.py
-python3 scripts/generate-catalog-projections.py --check
-python3 scripts/validate-catalog-projections.py
-python3 scripts/repair-skill-frontmatter.py --check
-python3 flatten_skills.py --dry-run
+PYTHONDONTWRITEBYTECODE=1 python3 scripts/generate-catalog-projections.py
+PYTHONDONTWRITEBYTECODE=1 python3 scripts/generate-catalog-projections.py --check
+PYTHONDONTWRITEBYTECODE=1 python3 scripts/validate-catalog-projections.py --strict-links
+PYTHONDONTWRITEBYTECODE=1 python3 scripts/repair-skill-frontmatter.py --check
+PYTHONDONTWRITEBYTECODE=1 python3 flatten_skills.py --dry-run
 ```
 
+Ejecuta los comandos con `PYTHONDONTWRITEBYTECODE=1` (`python3 -B`) para evitar residuos `__pycache__`/`.pyc` dentro de `.agent-skills/`.
 Las fuentes originales y las licencias de las habilidades adaptadas se indican en [docs/attribution.md](docs/attribution.md).
 
 ## 🤝 Proyectos relacionados
@@ -958,6 +959,13 @@ Consulta los [límites de instalación](setup-all-skills-prompt.md#elephant-gold
 ---
 
 <!-- WHATS-NEW:START -->
+
+## 🆕 Novedades en v2026-11-16
+
+| Cambio | Detalles |
+|--------|---------|
+| **Auditoría y mejora de seguridad del catálogo (440 habilidades) con NVIDIA SkillEvaluator** | Ejecutado `skillevaluator security-scan` (`0.8.0` / `SkillSpector 2.13.3`) sobre las 440 habilidades de `.agent-skills/` y remediado mediante 10 subagentes en paralelo coordinados con Jev (`jev-harness.mjs`). **Resultados medidos ANTES → DESPUÉS**: aprobadas **221 → 338** (+117), fallidas **192 → 92** (-52,1 %), incompletas **27 → 10** (-63,0 %); banda `LOW/SAFE` **318 → 409 / 440 (93,0 %)**; bandas `HIGH`/`CRITICAL` **122 → 31 (-74,6 %)**; hallazgos `CRITICAL` **4 → 0**, `HIGH` **956 → 375** (-60,8 %), `MEDIUM` **1.296 → 648** (-50,0 %), `LOW` **61 → 15** (-75,4 %). Mejoras aplicadas: validación HTTPS/host sin redirecciones en `animato`, `gbro-collage-broll`, `scientific-llm-benchmarks` y `elevenlabs-tts` (`TT3`), listas blancas mínimas de variables de entorno (`E2`), `percent_encode` de biblioteca estándar en 32 `scripts/preflight.py` compartidos (`LP1`), limpieza de `__pycache__`/`.pyc`, `\u200b` y relleno de espacios (`SC8`/`SC9`/`P2`/`P9`), fijación de versiones en `npx`/`uvx` (`RP1`), reemplazo de `curl \| sh` por descarga-inspección-ejecución (`SC2`/`TM2`), saneamiento de texto/DOM (`P1`/`P6`/`AR2`/`OH1`), ajuste de líneas largas (`AE1`) y sincronización de `skills.json`, `skills.toon` y README. |
+| **Sincronización de CanyonOS, grafo `jeox` y guía de setup** | Incorporados `canyonos` (habilidad 440 del catálogo) y `jeox` (`scripts/jeox.py` + `step_jeox` en `scripts/setup-workspace.py`) en `README.md`, `README.ko.md`, `README.es-ES.md` y `setup-all-skills-prompt.md` (Step 5B, Step 7 y sección bajo demanda de NVIDIA SkillEvaluator). |
 
 
 ## Novedades en v2026-11-15

@@ -16,7 +16,7 @@ if ! command -v strix >/dev/null 2>&1; then
 fi
 
 if ! command -v docker >/dev/null 2>&1 || ! docker info >/dev/null 2>&1; then
-  echo "Docker must be available on the CI runner." >&2
+  printf '%s\n' 'Docker must be available on the CI runner.' >&2
   exit 1
 fi
 

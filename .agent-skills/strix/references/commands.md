@@ -15,7 +15,7 @@
 ### Official install script
 
 ```bash
-curl -sSL https://strix.ai/install | bash
+curl -fsSL https://strix.ai/install -o strix-install.sh && less strix-install.sh && bash strix-install.sh
 ```
 
 ### `pipx` install

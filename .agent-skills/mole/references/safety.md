@@ -19,7 +19,7 @@ Upstream docs: `SECURITY.md`, `SECURITY_AUDIT.md`, `docs/SECURITY_DESIGN.md`.
 | `mo remove` | removes Mole itself | Reinstall |
 
 This table is the single most important thing to state before a real run.
-`mo clean`'s permanence is exactly why the dry-run is mandatory.
+The permanence of `mo clean` is exactly why the dry-run is mandatory.
 
 ## The five protection layers
 
@@ -39,7 +39,7 @@ This table is the single most important thing to state before a real run.
    GarageBand / iWork / MainStage allow-list), `DATA_PROTECTED_BUNDLES`.
 4. **Trash routing by default** for user-facing removals — `mo analyze` uses a
    Finder AppleScript move with a 30s timeout; permanent deletion requires an
-   explicit `--permanent` or `mo clean`'s batched path.
+   explicit `--permanent` or the `mo clean` batched path.
 5. **Test mode, dry run, and property tests** — `tests/path_validation_fuzz.bats`
    asserts every adversarial path in `tests/fuzz_corpus/dangerous_paths.txt` is
    rejected, plus a Go fuzz target (`go test -fuzz=FuzzValidatePath ./cmd/analyze`).
@@ -75,7 +75,7 @@ path): `/Applications`, `/Library`, `/Library/Application Support`,
 - Apple app group containers, including `group.com.apple.notes`
 - Time Machine data during an active backup
 - `com.apple.*` LaunchAgents / LaunchDaemons, and user
-  `~/Library/LaunchAgents/*.plist`
+  launch-agent configuration files under `~/Library/LaunchAgents/`
 - iCloud `Mobile Documents`
 
 ## Hard refusals

@@ -67,12 +67,11 @@ Watch-out: do not leave contributors in detached `HEAD` if they intend to commit
 
 ### 7. remove-and-cleanup
 ```bash
-git submodule deinit -f path/to/submodule
-git rm -f path/to/submodule
-rm -rf .git/modules/path/to/submodule
+git submodule deinit -f <submodule-path>
+git rm <submodule-path>
 git commit -m "chore: remove submodule"
 ```
-Watch-out: `.gitmodules` state and `.git/modules/...` cleanup are both part of a real removal.
+Watch-out: `.gitmodules` state and any remaining cached module directory under `.git/modules/` (inspect and remove only the matching module directory once removal is confirmed) are both part of a real removal.
 
 ### 8. ci-checkout
 For GitHub Actions:

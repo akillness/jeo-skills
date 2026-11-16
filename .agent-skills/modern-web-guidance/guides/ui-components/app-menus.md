@@ -4,7 +4,7 @@ An application menu bar (File, Edit, View, Help) is a row of menus that behaves 
 
 Do not use it for site navigation (a short list of links users `Tab` through) or for a few unrelated menu buttons in a toolbar or page header. Those are standalone menus: each trigger is its own `Tab` stop, looks like a separate button, and has none of the bar behavior below.
 
-Each menu in the bar is a complete popup menu: invoker-triggered popover, nested focusgroup, submenus, separators, checkable items, positioning, pointer handling, and fallbacks. Build them as described in `menu` (via `npx -y modern-web-guidance@latest retrieve "menu"`); this guide covers only what the bar adds on top of each menu.
+Each menu in the bar is a complete popup menu: invoker-triggered popover, nested focusgroup, submenus, separators, checkable items, positioning, pointer handling, and fallbacks. Build them as described in `menu` (via `npx -y modern-web-guidance@1.0.0 retrieve "menu"`); this guide covers only what the bar adds on top of each menu.
 
 ## Structure
 
@@ -177,7 +177,7 @@ Supported by: Chrome 137 (May 2025), Edge 137 (May 2025), Firefox 147 (Jan 2026)
 
 If targeting earlier implementations where `showPopover({ source })` does not establish an implicit anchor (no `source` on `ToggleEvent.prototype`), give each trigger a unique `anchor-name` and each menu a matching `position-anchor` from script, instead of writing per-menu CSS rules.
 
-For browsers without anchor positioning at all, see `viewport-aware-dropdowns` (via `npx -y modern-web-guidance@latest retrieve "viewport-aware-dropdowns"`) for the polyfill route.
+For browsers without anchor positioning at all, see `viewport-aware-dropdowns` (via `npx -y modern-web-guidance@1.0.0 retrieve "viewport-aware-dropdowns"`) for the polyfill route.
 
 ### Fallbacks & browser support for Invoker commands
 

@@ -241,6 +241,6 @@ scripts/scrapingant.sh probe https://blocked.example.com --proxy residential --c
   [credits cost](https://docs.scrapingant.com/credits-cost) ·
   [API basics](https://docs.scrapingant.com/api-basics) ·
   [Markdown endpoint](https://docs.scrapingant.com/llm-markdown)
-- Partnership context: [`docs/scrapingant-partnership.md`](../../docs/scrapingant-partnership.md)
+- Partnership context: see `scrapingant-partnership` in the repository `docs/` directory
 - Related skills: `scrapling` (local Python scraping and crawls),
   `x-twitter-scraper` (platform-specific), `ax` (agent-facing fetch/extraction)

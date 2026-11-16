@@ -28,7 +28,7 @@ shopping-shorts-director ┤                                ├─ research fan-
 
 ## File-based rule
 
-에이전트 역할은 Task 프롬프트에 즉석으로 넣지 않는다. 모두 `.claude/agents/{name}.md`에 저장하고 재사용한다. 오케스트레이션 계약은 `.claude/skills/shopping-shorts-orchestrator/SKILL.md`에 둔다.
+에이전트 역할은 Task 프롬프트에 즉석으로 넣지 않는다. 모두 `.claude/agents/{name}.md`에 저장하고 재사용한다. 오케스트레이션 계약은 `shopping-shorts-orchestrator` 에이전트 지침에 둔다.
 
 Claude Code Agent Teams를 사용할 때:
 

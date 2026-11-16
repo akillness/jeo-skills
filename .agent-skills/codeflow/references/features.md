@@ -53,7 +53,7 @@ Upstream: <https://github.com/braedonsaunders/codeflow> · Live: <https://codefl
 | Method | Rate limit |
 |--------|------------|
 | No token | 60 requests/hour |
-| Personal Access Token (`repo` scope) | 5,000 requests/hour |
+| Fine-grained GitHub PAT (`repo` scope) | 5,000 requests/hour |
 | GitHub App (installation token) | 5,000 requests/hour per installation — fine-grained, revocable, audited |
 
 Tokens are held only in browser memory and cleared when the tab closes.

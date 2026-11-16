@@ -58,7 +58,7 @@ while [[ $# -gt 0 ]]; do
       echo "  --message <msg>       Deploy message"
       echo "  --project <id>        Firebase project ID"
       echo "  --dry-run             Preview deployment without executing"
-      echo "  --force               Skip confirmation prompts"
+      echo "  --force               Confirm function deletions non-interactively"
       echo "  --debug               Verbose debug output"
       echo "  --non-interactive     Disable interactive prompts (for CI)"
       exit 0
@@ -83,27 +83,27 @@ if [[ ! -f "firebase.json" ]]; then
 fi
 
 # ─── Build deploy command ─────────────────────────────────────────────────────
-DEPLOY_CMD="firebase deploy"
+DEPLOY_CMD=(firebase deploy)
 
-[[ -n "$PROJECT" ]]         && DEPLOY_CMD+=" --project ${PROJECT}"
-[[ -n "$ONLY_TARGET" ]]     && DEPLOY_CMD+=" --only ${ONLY_TARGET}"
-[[ -n "$EXCEPT_TARGET" ]]   && DEPLOY_CMD+=" --except ${EXCEPT_TARGET}"
-[[ -n "$MESSAGE" ]]         && DEPLOY_CMD+=" --message \"${MESSAGE}\""
-[[ "$FORCE" == "true" ]]    && DEPLOY_CMD+=" --force"
-[[ "$DEBUG" == "true" ]]    && DEPLOY_CMD+=" --debug"
-[[ "$NON_INTERACTIVE" == "true" ]] && DEPLOY_CMD+=" --non-interactive"
+[[ -n "$PROJECT" ]]         && DEPLOY_CMD+=(--project "${PROJECT}")
+[[ -n "$ONLY_TARGET" ]]     && DEPLOY_CMD+=(--only "${ONLY_TARGET}")
+[[ -n "$EXCEPT_TARGET" ]]   && DEPLOY_CMD+=(--except "${EXCEPT_TARGET}")
+[[ -n "$MESSAGE" ]]         && DEPLOY_CMD+=(--message "${MESSAGE}")
+[[ "$FORCE" == "true" ]]    && DEPLOY_CMD+=(--force)
+[[ "$DEBUG" == "true" ]]    && DEPLOY_CMD+=(--debug)
+[[ "$NON_INTERACTIVE" == "true" ]] && DEPLOY_CMD+=(--non-interactive)
 
 # ─── Preview channel deploy ───────────────────────────────────────────────────
 if [[ -n "$CHANNEL" ]]; then
   log_info "Deploying to preview channel: ${CHANNEL}"
   log_info "Channel expires: ${CHANNEL_EXPIRES}"
 
-  CHANNEL_CMD="firebase hosting:channel:deploy ${CHANNEL} --expires ${CHANNEL_EXPIRES}"
-  [[ -n "$PROJECT" ]] && CHANNEL_CMD+=" --project ${PROJECT}"
-  [[ "$DEBUG" == "true" ]] && CHANNEL_CMD+=" --debug"
+  CHANNEL_CMD=(firebase hosting:channel:deploy "${CHANNEL}" --expires "${CHANNEL_EXPIRES}")
+  [[ -n "$PROJECT" ]] && CHANNEL_CMD+=(--project "${PROJECT}")
+  [[ "$DEBUG" == "true" ]] && CHANNEL_CMD+=(--debug)
 
   if [[ "$DRY_RUN" == "true" ]]; then
-    log_info "[DRY RUN] Would execute: ${CHANNEL_CMD}"
+    log_info "[DRY RUN] Would execute: ${CHANNEL_CMD[*]}"
     exit 0
   fi
 
@@ -112,7 +112,7 @@ if [[ -n "$CHANNEL" ]]; then
   firebase hosting:channel:create "${CHANNEL}" --expires "${CHANNEL_EXPIRES}" 2>/dev/null || true
 
   log_info "Deploying to channel..."
-  eval "$CHANNEL_CMD"
+  "${CHANNEL_CMD[@]}"
 
   CHANNEL_URL=$(firebase hosting:channel:open "${CHANNEL}" --json 2>/dev/null | python3 -c "import sys,json; print(json.load(sys.stdin).get('url',''))" 2>/dev/null || echo "")
   log_success "Channel deploy complete!"
@@ -122,7 +122,7 @@ fi
 
 # ─── Dry run ─────────────────────────────────────────────────────────────────
 if [[ "$DRY_RUN" == "true" ]]; then
-  log_info "[DRY RUN] Would execute: ${DEPLOY_CMD}"
+  log_info "[DRY RUN] Would execute: ${DEPLOY_CMD[*]}"
   log_info ""
   log_info "firebase.json targets configured:"
   python3 -c "
@@ -140,10 +140,10 @@ fi
 
 # ─── Deploy ───────────────────────────────────────────────────────────────────
 log_info "Starting Firebase deploy..."
-log_info "Command: ${DEPLOY_CMD}"
+log_info "Command: ${DEPLOY_CMD[*]}"
 
 START_TIME=$(date +%s)
-eval "$DEPLOY_CMD"
+"${DEPLOY_CMD[@]}"
 END_TIME=$(date +%s)
 DURATION=$((END_TIME - START_TIME))
 

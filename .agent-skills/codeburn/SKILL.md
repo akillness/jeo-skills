@@ -9,13 +9,13 @@ description: >
   waste in a Claude Code / agent setup, cap a session's budget before it runs
   away, compare which model is actually worth its price, check whether AI
   spend shipped or was reverted, or wire live usage/savings data into an
-  agent over MCP. Triggers on: "codeburn", "npx codeburn", "AI token usage",
+  agent over MCP. Triggers on: "codeburn", "codeburn CLI", "AI token usage",
   "AI coding cost", "where did my Claude spend go", "codeburn optimize",
   "codeburn guard", "codeburn compare models", "codeburn yield", "token
   waste in CLAUDE.md", "AI spend dashboard".
 allowed-tools: Bash Read Write Edit Glob Grep
 compatibility: >
-  Node.js 22.13+. Run instantly with `npx codeburn` (no install needed), or
+  Node.js 22.13+. Run instantly with `npx codeburn@0.9.28` (no install needed), or
   `npm install -g codeburn` / `bunx codeburn` / `pnpm dlx codeburn` /
   `brew install codeburn` (macOS) for a permanent command. Cursor and
   OpenCode auto-install `better-sqlite3`. Requires at least one supported
@@ -73,7 +73,7 @@ panel, and an MCP server) all read the same on-disk source of truth.
 ### Step 1: Run it instantly, no install
 
 ```bash
-npx codeburn                 # opens the interactive TUI dashboard, last 7 days
+npx codeburn@0.9.28          # opens the interactive TUI dashboard, last 7 days
 ```
 
 For a permanent command: `npm install -g codeburn` (or `bunx`/`pnpm dlx`/
@@ -125,7 +125,7 @@ preview with `--dry-run` before `--apply --yes` in an automated flow.
 
 ```bash
 codeburn guard install            # hooks into this project's .claude/settings.json
-codeburn guard install --global   # or into ~/.claude/settings.json
+codeburn guard install --global   # or into user-level Claude settings
 codeburn guard status             # caps, install locations, flagged projects
 codeburn guard allow              # lift the hard cap for the current session only
 ```
@@ -148,7 +148,7 @@ run from a git repository.
 ### Step 7: Wire usage/savings into an agent (MCP)
 
 ```bash
-claude mcp add codeburn -- npx -y codeburn mcp
+claude mcp add codeburn -- npx -y codeburn@0.9.28 mcp
 ```
 
 Exposes `get_usage` (fast breakdowns by tool/model/project/task) and
@@ -196,7 +196,7 @@ and a one-line verdict per provider.
 - [references/commands.md](references/commands.md) — curated command reference by workflow stage
 - [CodeBurn GitHub Repository](https://github.com/getagentseal/codeburn)
 - [Supported providers](https://github.com/getagentseal/codeburn/tree/main/docs/providers) — per-tool data location and quirks
-- Project standards: `.agent-skills/skill-standardization/SKILL.md`
+- Project standards: `skill-standardization`
 
 ## Examples
 

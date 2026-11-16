@@ -6,7 +6,7 @@ This reference covers `cathrynlavery/diagram-design` at commit `f2f4d49ea8d632f1
 
 | Surface | Use | Side-effect boundary | Evidence or output |
 | --- | --- | --- | --- |
-| `npx skills add cathrynlavery/diagram-design` | documented standalone Agent Skills install | **installs files; explicit approval required**; never run implicitly | copied or linked skill package |
+| `npx skills@1.9.0 add cathrynlavery/diagram-design` | documented standalone Agent Skills install | **installs files; explicit approval required**; never run implicitly | copied or linked skill package |
 | `/plugin marketplace add cathrynlavery/diagram-design` then `/plugin install diagram-design@diagram-design` | documented Claude Code marketplace install | **marketplace and plugin install; explicit approval required** | managed plugin |
 | `codex plugin marketplace add cathrynlavery/diagram-design` then `codex plugin add diagram-design@diagram-design` | documented Codex plugin install | **marketplace and plugin install; explicit approval required** | managed plugin |
 | `git clone https://github.com/cathrynlavery/diagram-design.git` | documented editable checkout setup | **network and filesystem write; explicit approval required** | local source checkout |
@@ -21,7 +21,7 @@ This reference covers `cathrynlavery/diagram-design` at commit `f2f4d49ea8d632f1
 | `/diagram-design:profile ...` or `commands/profile.md` procedure | save/load client style profiles | profile writes or deletion require explicit approval | profile or marker state |
 | `/diagram-design:doctor [--strict] [--json]` or `references/doctor.md` procedure | inspect local readiness | read-only when following the command contract | diagnostic report |
 
-The exact install command documented by upstream is `npx skills add cathrynlavery/diagram-design`. Installation is not part of this catalog skill's preflight.
+The exact install command documented by upstream is `npx skills@1.9.0 add cathrynlavery/diagram-design`. Installation is not part of this catalog skill's preflight.
 
 ## Source shape and supported output
 

@@ -12,6 +12,8 @@ description: >
   Docker changes, paid uploads, and deletion. Route generic crawling to scrapling
   and existing authenticated browser tasks to the browser or platform skill.
 allowed-tools: Bash Read Write Edit Glob Grep WebFetch
+permissions:
+  - env
 compatibility: Offline helper needs Python 3.9+; Agent Reach needs Python 3.10+. Optional backends have separate Node, browser, CLI, MCP, and account requirements.
 metadata:
   version: "1.0.0"
@@ -137,7 +139,7 @@ material. Respect rate limits, platform terms, consent, and copyright.
 `agent-reach transcribe` can download media, use ffmpeg, and upload audio to Groq
 or OpenAI. Confirm rights to the input, the provider, retention expectations, and
 cost before running it. Use an explicit `--provider`; do not add
-`--allow-provider-fallback` without approval for the second provider. Free-tier
+`--allow-provider-fallback` unless the second provider is explicitly approved. Free-tier
 marketing is not a guarantee of no charges. Prefer existing captions when adequate.
 
 ### 7. Maintain deliberately and verify narrowly

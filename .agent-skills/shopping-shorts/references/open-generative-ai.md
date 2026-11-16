@@ -65,7 +65,7 @@ README나 GitHub 설명의 `400+`, `500+` 표기는 서로 다르다. 하네스�
 계약:
 
 ```text
-POST https://api.muapi.ai/api/v1/<verified-endpoint>
+POST <muapi-base-url>/api/v1/<verified-endpoint>
 Content-Type: application/json
 x-api-key: $MUAPI_API_KEY
 body: model-specific payload

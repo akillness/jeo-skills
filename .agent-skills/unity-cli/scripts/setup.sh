@@ -1,13 +1,46 @@
 #!/bin/bash
 # Unity CLI Setup Script
 # Installs or validates the Unity Command Line Interface
-# Usage: bash setup.sh [--install|--ci|--check|--diagnose]
+# Usage: bash setup.sh [--install|--ci|--check|--diagnose] [--yes]
 
 set -e
 
 COMMAND="${1:---check}"
+AUTO_YES=false
+for arg in "$@"; do
+  case "$arg" in
+    -y|--yes) AUTO_YES=true ;;
+  esac
+done
 UNITY_CLI_CHANNEL="${UNITY_CLI_CHANNEL:-stable}"
 
+download_and_run_installer() {
+  local url="https://public-cdn.cloud.unity3d.com/hub/prod/cli/install.sh"
+  if [[ "$AUTO_YES" == false && -t 0 ]]; then
+    read -r -p "Download and run official Unity CLI installer from ${url}? [y/N] " confirm
+    if [[ ! "$confirm" =~ ^[Yy]$ ]]; then
+      echo "Cancelled."
+      exit 0
+    fi
+  fi
+  local tmp_script
+  tmp_script="$(mktemp "${TMPDIR:-/tmp}/unity-cli-install.XXXXXX.sh")"
+  trap 'rm -f -- "$tmp_script"' RETURN
+  curl -fsSL --proto '=https' --tlsv1.2 "$url" -o "$tmp_script"
+  if [[ ! -s "$tmp_script" ]]; then
+    echo "Downloaded installer is empty." >&2
+    exit 1
+  fi
+  if [[ -n "${UNITY_CLI_INSTALL_SHA256:-}" ]]; then
+    local actual_sha256
+    actual_sha256="$(shasum -a 256 "$tmp_script" | awk '{print $1}')"
+    if [[ "$actual_sha256" != "$UNITY_CLI_INSTALL_SHA256" ]]; then
+      echo "Checksum verification failed (expected ${UNITY_CLI_INSTALL_SHA256}, got ${actual_sha256})." >&2
+      exit 1
+    fi
+  fi
+  bash "$tmp_script"
+}
 echo "[Unity CLI Setup]"
 
 case "$COMMAND" in
@@ -16,15 +49,15 @@ case "$COMMAND" in
     if [[ "$OSTYPE" == "darwin"* ]]; then
       # macOS
       echo "Detected macOS"
-      curl -L https://public-cdn.cloud.unity3d.com/hub/prod/cli/install.sh | bash
+      download_and_run_installer
     elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
       # Linux
       echo "Detected Linux"
-      curl -L https://public-cdn.cloud.unity3d.com/hub/prod/cli/install.sh | bash
+      download_and_run_installer
     elif [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" ]]; then
       # Windows
       echo "Detected Windows"
-      powershell -Command "& {\n  [Net.ServicePointManager]::SecurityProtocol = 'Tls12'; \n  irm https://public-cdn.cloud.unity3d.com/hub/prod/cli/install.ps1 | iex \n}"
+      echo "Download https://public-cdn.cloud.unity3d.com/hub/prod/cli/install.ps1, inspect it, and run it in PowerShell."
     else
       echo "Unknown OS: $OSTYPE"
       exit 1
@@ -49,7 +82,7 @@ case "$COMMAND" in
     fi
     
     # Install Unity CLI
-    bash "$(dirname "$0")/setup.sh" --install
+    bash "$(dirname "$0")/setup.sh" --install --yes
     
     # Validate
     bash "$(dirname "$0")/setup.sh" --check

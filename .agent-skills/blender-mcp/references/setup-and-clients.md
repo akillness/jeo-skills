@@ -25,7 +25,7 @@ python3 .agent-skills/blender-mcp/scripts/blender-mcp-check.py doctor
 The server is run on demand rather than installed globally:
 
 ```bash
-uvx blender-mcp
+uvx blender-mcp==1.9.4
 ```
 
 Locked-down machines can use pipx instead, then point the client at the
@@ -40,8 +40,8 @@ which blender-mcp   # or: where blender-mcp
 ## Install the addon
 
 ```bash
-uvx blender-mcp install-addon     # copies the addon in as blender_mcp.py
-uvx blender-mcp addon-paths       # lists detected Blender addons folders
+uvx blender-mcp==1.9.4 install-addon     # copies the addon in as blender_mcp.py
+uvx blender-mcp==1.9.4 addon-paths       # lists detected Blender addons folders
 ```
 
 `install-addon` prints the destination and keeps a `.bak` of any file it
@@ -102,7 +102,7 @@ quit from the system tray, not just the window.
 If a previous failed attempt keeps replaying after a fix, clear the cache:
 
 ```bash
-uv cache clean blender-mcp && uvx --refresh blender-mcp
+uv cache clean blender-mcp && uvx --refresh blender-mcp==1.9.4
 ```
 
 ### Supported clients
@@ -148,16 +148,16 @@ The `-i` flag is required because the server speaks over stdin and stdout. The
 image defaults to `BLENDER_HOST=host.docker.internal`, which reaches the host on
 macOS and Windows with Docker Desktop.
 
-On Linux, `host.docker.internal` does not exist and the addon only listens on
-localhost, so use host networking:
+On Linux, add `host.docker.internal` via `--add-host=host.docker.internal:host-gateway`
+instead of widening container networking to the host namespace:
 
 ```json
 {
   "mcpServers": {
     "blender": {
       "command": "docker",
-      "args": ["run", "-i", "--rm", "--network=host",
-               "-e", "BLENDER_HOST=localhost", "blender-mcp"]
+      "args": ["run", "-i", "--rm", "--add-host=host.docker.internal:host-gateway",
+               "-e", "BLENDER_HOST=host.docker.internal", "blender-mcp"]
     }
   }
 }

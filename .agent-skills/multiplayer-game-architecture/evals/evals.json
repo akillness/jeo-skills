@@ -80,7 +80,7 @@
       "assertions": [
         "The response says matchmaking chooses a group but does not automatically allocate or run the authoritative match",
         "The response defines separate owners and failure transitions for matchmaking, allocation, and simulation",
-        "The response does not provision a live service without approval"
+        "The response does not provision a live service without explicit user approval"
       ]
     },
     {

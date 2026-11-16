@@ -96,7 +96,7 @@ before trusting it.
 - `-H 'Name: Value'` (repeatable) — initial navigation headers only, not
   every subresource
 - `--cookie-file <path>` (repeatable) — import cookies
-- `--profile-dir <path>` — persist state across invocations; also the
+- `--profile-dir <path>` — store browser profile data across runs; also the
   default HTTP cache location unless `--http-cache-dir` is set
 - `--http-proxy`, `--http-no-proxy`, `--http-host-resolve HOST:PORT:ADDR`
 - `--user-agent` or `--user-agent-suffix` (not both)

@@ -21,7 +21,7 @@ function parseArgs(argv) {
       console.log("Usage: update-tweet-corpus.mjs [--input batch.json|jsonl] [--ledger path] [--dry-run] [--check]");
       process.exit(0);
     } else {
-      throw new Error(`Unknown argument: ${value}`);
+      throw new Error("Unknown argument: " + value);
     }
   }
 
@@ -64,22 +64,22 @@ function normalizePost(post) {
   const id = String(post.id ?? post.postId ?? statusIdFromUrl(url)).trim();
   const createdAt = String(post.createdAt ?? post.created_at ?? post.timestamp ?? "").trim();
 
-  if (!id) throw new Error(`Post is missing an ID: ${JSON.stringify(post)}`);
-  if (!url) throw new Error(`Post ${id} is missing a canonical URL.`);
-  if (!text) throw new Error(`Post ${id} has empty authored text.`);
+  if (!id) throw new Error("Post is missing an ID: " + JSON.stringify(post));
+  if (!url) throw new Error("Post " + id + " is missing a canonical URL.");
+  if (!text) throw new Error("Post " + id + " has empty authored text.");
   if (!/^https:\/\/x\.com\/MengTo\/status\/\d+$/.test(url)) {
-    throw new Error(`Post ${id} has a non-canonical Meng status URL: ${url}`);
+    throw new Error("Post " + id + " has a non-canonical Meng status URL: " + url);
   }
   if (statusIdFromUrl(url) !== id) {
-    throw new Error(`Post ${id} does not match its status URL: ${url}`);
+    throw new Error("Post " + id + " does not match its status URL: " + url);
   }
   if (!createdAt || Number.isNaN(Date.parse(createdAt))) {
-    throw new Error(`Post ${id} has an invalid timestamp: ${createdAt}`);
+    throw new Error("Post " + id + " has an invalid timestamp: " + createdAt);
   }
 
   const format = normalizeFormat(post);
   if (!new Set(["original", "reply", "quote"]).has(format)) {
-    throw new Error(`Post ${id} has an invalid format: ${format}`);
+    throw new Error("Post " + id + " has an invalid format: " + format);
   }
 
   return {
@@ -99,7 +99,7 @@ function parseRecords(path) {
 
   if (raw.startsWith("[")) {
     const parsed = JSON.parse(raw);
-    if (!Array.isArray(parsed)) throw new Error(`${path} must contain a JSON array or JSONL records.`);
+    if (!Array.isArray(parsed)) throw new Error(path + " must contain a JSON array or JSONL records.");
     return parsed;
   }
 
@@ -107,7 +107,7 @@ function parseRecords(path) {
     try {
       return JSON.parse(line);
     } catch (error) {
-      throw new Error(`${path}:${index + 1} is not valid JSON: ${error.message}`);
+      throw new Error(path + ":" + (index + 1) + " is not valid JSON: " + error.message);
     }
   });
 }
@@ -208,11 +208,11 @@ const merged = sortPosts([...byId.values()]);
 const duplicates = findDuplicates(merged);
 const invalidCount = Object.values(duplicates).reduce((total, values) => total + values.length, 0);
 if (invalidCount > 0) {
-  throw new Error(`Final corpus contains duplicates: ${JSON.stringify(duplicates)}`);
+  throw new Error("Final corpus contains duplicates: " + JSON.stringify(duplicates));
 }
 
 if (!args.dryRun) {
-  writeFileSync(args.ledger, `${merged.map((post) => JSON.stringify(post)).join("\n")}\n`);
+  writeFileSync(args.ledger, merged.map((post) => JSON.stringify(post)).join("\n") + "\n");
 }
 
 console.log(JSON.stringify({

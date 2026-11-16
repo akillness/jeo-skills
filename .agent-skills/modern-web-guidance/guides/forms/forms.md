@@ -108,7 +108,7 @@
 - **DO** use `enterkeyhint` to set the Enter key label (e.g., `next`, `done`).
 - **DO** turn off text correction on fields that hold identifiers rather than prose: `autocorrect="off"` (plus `autocapitalize="none"` and `spellcheck="false"`) on usernames, emails, URLs, codes, and search inputs. Leave the defaults on for free-text fields like messages and comments.
 - **DO** use single-field inputs for complex numbers (credit cards, phones) to help autofill.
-- **DO** use a single `<input type="text" inputmode="numeric" autocomplete="one-time-code">` and the WebOTP API for SMS one-time passcode verification. See guide `sms-otp-form` (via `npx -y modern-web-guidance@latest retrieve "sms-otp-form"`).
+- **DO** use a single `<input type="text" inputmode="numeric" autocomplete="one-time-code">` and the WebOTP API for SMS one-time passcode verification. See guide `sms-otp-form` (via `npx -y modern-web-guidance@1.0.0 retrieve "sms-otp-form"`).
 
 - **DON'T** use `type="number"` for credit cards, ZIP codes, or one-time passcodes (causes UI scroll issues and removes leading zeros).
 - **DON'T** split a single value (such as a 6-digit OTP, phone number, or credit card) across multiple `<input>` boxes that auto-advance focus on keypress. Instead, use `type="text"` with `inputmode="numeric"` (`type=number` adds spinner buttons). If needed, styling can convey a similar UI. JS can set a `--value-length` CSS variable for higher fidelity styling that resembles these inputs, without their usability and accessibility issues.
@@ -253,7 +253,7 @@ input {
 
 ### Guidelines
 
-- **DO** check `KeyboardEvent.isComposing` before treating the `Enter` key as a submit action in chat or text inputs to ensure IME text composition is not interrupted. See guide `ime-safe-enter-submit` (via `npx -y modern-web-guidance@latest retrieve "ime-safe-enter-submit"`).
+- **DO** check `KeyboardEvent.isComposing` before treating the `Enter` key as a submit action in chat or text inputs to ensure IME text composition is not interrupted. See guide `ime-safe-enter-submit` (via `npx -y modern-web-guidance@1.0.0 retrieve "ime-safe-enter-submit"`).
 - **DO** prevent default navigation on form submit for AJAX (`e.preventDefault()`).
 - **DO** use `ValidityState` interfaces for real-time validation checks.
 - **DO** announce AJAX submission results via `role="status"` or `aria-live`.

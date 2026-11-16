@@ -18,5 +18,5 @@ S[6]{n,action}:
 R[4]:
   `git status`
   `git add -p`
-  `git push --force-with-lease origin <branch>`
+  `git push` with `--force-with-lease` (never unguarded force push)
   `git reflog`

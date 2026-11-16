@@ -43,12 +43,12 @@
     },
     {
       "id": 5,
-      "prompt": "Check whether this machine and my harness2 checkout at the pinned commit are ready for LAB, but don't run harness2, uv, gcloud, or Docker, and don't open my .env.",
-      "expected_output": "The skill runs the offline preflight with --bench lab and --repo/--expect-commit, reporting path-only tool discovery (including pandoc and pdftoppm), .env presence without contents, and runtime_verified=false.",
+      "prompt": "Check whether this machine and my harness2 checkout at the pinned commit are ready for LAB, but don't run harness2, uv, gcloud, or Docker, and don't open my dotenv file.",
+      "expected_output": "The skill runs the offline preflight with --bench lab and --repo/--expect-commit, reporting path-only tool discovery (including pandoc and pdftoppm), dotenv presence without contents, and runtime_verified=false.",
       "assertions": [
         "The response uses `preflight.py --bench lab --repo PATH --expect-commit 1cfe254e8d25b15f37048c3730134686abe60335 --json`",
         "The response treats missing pandoc or pdftoppm as blocked and missing gcloud as blocked only for a known Vertex configuration",
-        "The response preserves runtime_verified=false and never reads .env contents or executes any discovered tool"
+        "The response preserves runtime_verified=false and never reads dotenv contents or executes any discovered tool"
       ]
     }
   ]

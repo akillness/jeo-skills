@@ -6,7 +6,9 @@ This guide keeps install/setup advice practical instead of turning the main skil
 
 ### macOS / Linux
 ```bash
-curl -fsSL https://raw.githubusercontent.com/danielmiessler/fabric/main/scripts/installer/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/danielmiessler/fabric/main/scripts/installer/install.sh -o /tmp/fabric-install.sh
+less /tmp/fabric-install.sh   # inspect before running
+bash /tmp/fabric-install.sh
 ```
 
 ### Homebrew

@@ -5,9 +5,9 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SKILL_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
-# Try npx if internet is reachable and npx exists
+# Try pinned npm package runner if internet is reachable and Node.js runner exists
 if command -v npx >/dev/null 2>&1; then
-  if npx -y modern-web-guidance@latest "$@" 2>/dev/null; then
+  if npx -y modern-web-guidance@1.0.0 "$@" 2>/dev/null; then
     exit 0
   fi
 fi

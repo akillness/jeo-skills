@@ -5,7 +5,7 @@
 - Repository: [paperclipai/paperclip](https://github.com/paperclipai/paperclip)
 - Reviewed commit: [`0f14d261233c545aa6a8a38ec253c498a5130fff`](https://github.com/paperclipai/paperclip/tree/0f14d261233c545aa6a8a38ec253c498a5130fff), dated 2026-09-27.
 - License at that snapshot: [MIT](https://github.com/paperclipai/paperclip/blob/0f14d261233c545aa6a8a38ec253c498a5130fff/LICENSE).
-- This catalog skill is a locally authored operator/router guide. It does not vendor or execute Paperclip's scripts, API examples, or upstream skill. Links below are reference material, not instructions to run without checking the installed version and user scope.
+- This catalog skill is a locally authored operator/router guide. It does not vendor or execute Paperclip's scripts, API examples, or upstream skill. Links below are reference material, not instructions to run before verifying the installed version and user scope.
 
 ## Core skill and references
 

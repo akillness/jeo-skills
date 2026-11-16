@@ -1,10 +1,10 @@
 #!/bin/bash
 # plannotator - Codex CLI Setup Script
 # Configures plannotator for Codex CLI by:
-#   1. Adding developer_instructions to ~/.codex/config.toml
-#   2. Creating a plannotator prompt at ~/.codex/prompts/plannotator.md
+#   1. Adding developer_instructions to Codex config.toml (--config-dir or CODEX_HOME)
+#   2. Creating a plannotator prompt at prompts/plannotator.md inside the Codex config dir
 #
-# Usage: ./setup-codex-hook.sh [--dry-run]
+# Usage: ./setup-codex-hook.sh [--dry-run] [--config-dir <dir>]
 
 set -e
 
@@ -16,28 +16,98 @@ GRAY='\033[0;37m'
 NC='\033[0m'
 
 DRY_RUN=false
-for arg in "$@"; do
-  case $arg in
+CONFIG_DIR_OVERRIDE=""
+while [ $# -gt 0 ]; do
+  case "$1" in
     --dry-run) DRY_RUN=true ;;
+    --config-dir)
+      shift
+      [ $# -gt 0 ] || { echo "Missing value for --config-dir" >&2; exit 1; }
+      CONFIG_DIR_OVERRIDE="$1"
+      ;;
+    --config-dir=*) CONFIG_DIR_OVERRIDE="${1#*=}" ;;
     -h|--help)
-      echo "Usage: $0 [--dry-run]"
+      echo "Usage: $0 [--dry-run] [--config-dir <dir>]"
       echo ""
       echo "Configures plannotator for Codex CLI:"
-      echo "  1. Adds plannotator instructions to ~/.codex/config.toml developer_instructions"
-      echo "  2. Creates ~/.codex/prompts/plannotator.md for agent role"
+      echo "  1. Adds plannotator instructions to config.toml developer_instructions (default: CODEX_HOME or \$HOME/.codex)"
+      echo "  2. Creates prompts/plannotator.md inside that Codex config dir"
       echo ""
       echo "Options:"
-      echo "  --dry-run   Show what would change without writing"
-      echo "  -h, --help  Show this help"
+      echo "  --dry-run           Show what would change without writing"
+      echo "  --config-dir <dir>  Override Codex config directory"
+      echo "  -h, --help          Show this help"
       exit 0
       ;;
   esac
+  shift
 done
 
-CODEX_DIR="$HOME/.codex"
+CODEX_SUBDIR=".codex"
+CODEX_DIR="${CONFIG_DIR_OVERRIDE:-$HOME/${CODEX_SUBDIR}}"
 CODEX_CONFIG="$CODEX_DIR/config.toml"
 CODEX_PROMPTS="$CODEX_DIR/prompts"
 PLANNOTATOR_PROMPT="$CODEX_PROMPTS/plannotator.md"
+
+fail() {
+  echo -e "${RED}✗ $1${NC}" >&2
+  exit 1
+}
+
+cleanup_owned_temp() {
+  local temp="${1:-}"
+  if [ -n "$temp" ] && [ ! -L "$temp" ] && [ -f "$temp" ]; then
+    rm -f "$temp" || true
+  fi
+}
+
+require_regular_file() {
+  local path="$1"
+  [ -L "$path" ] && fail "Refusing to modify symlinked config: ${path}"
+  [ -f "$path" ] || fail "Refusing to modify missing or non-regular config: ${path}"
+}
+
+require_absent_file() {
+  local path="$1"
+  [ -L "$path" ] && fail "Refusing to create symlinked config: ${path}"
+  [ ! -e "$path" ] || fail "Refusing to write over an already-present target: ${path}"
+}
+
+file_mode() {
+  if [ "$(uname)" = "Darwin" ]; then
+    stat -f '%Lp' "$1"
+  else
+    stat -c '%a' "$1"
+  fi
+}
+
+create_backup() {
+  local source="$1" parent="$2" template="$3" backup
+  backup="$(mktemp "${parent}/${template}.XXXXXX")" || fail "Unable to create configuration backup"
+  if [ -L "$backup" ] || [ ! -f "$backup" ]; then
+    cleanup_owned_temp "$backup"
+    fail "Refusing to use unsafe configuration backup: ${backup}"
+  fi
+  require_regular_file "$source"
+  if ! cp -p "$source" "$backup"; then
+    cleanup_owned_temp "$backup"
+    fail "Unable to back up ${source}"
+  fi
+  printf '%s\n' "$backup"
+}
+
+replace_temp() {
+  local temp="$1" destination="$2" expected="$3"
+  if [ -L "$temp" ] || [ ! -f "$temp" ]; then
+    fail "Temporary config file became unsafe: ${temp}"
+  fi
+  if [ "$expected" = existing ]; then
+    require_regular_file "$destination"
+  else
+    require_absent_file "$destination"
+  fi
+  mv -f "$temp" "$destination" || fail "Unable to install ${destination}"
+}
 
 echo ""
 echo -e "${BLUE}╔════════════════════════════════════════════╗${NC}"
@@ -60,7 +130,14 @@ if ! command -v codex &>/dev/null; then
   echo ""
 fi
 
-mkdir -p "$CODEX_DIR" "$CODEX_PROMPTS"
+[ -e "$CODEX_DIR" ] && [ ! -d "$CODEX_DIR" ] && fail "Refusing to use non-directory config parent: ${CODEX_DIR}"
+[ -L "$CODEX_CONFIG" ] && fail "Refusing to modify symlinked config: ${CODEX_CONFIG}"
+[ -e "$CODEX_CONFIG" ] && [ ! -f "$CODEX_CONFIG" ] && fail "Refusing to modify non-regular config: ${CODEX_CONFIG}"
+[ -L "$PLANNOTATOR_PROMPT" ] && fail "Refusing to modify symlinked prompt file: ${PLANNOTATOR_PROMPT}"
+[ -e "$PLANNOTATOR_PROMPT" ] && [ ! -f "$PLANNOTATOR_PROMPT" ] && fail "Refusing to modify non-regular prompt file: ${PLANNOTATOR_PROMPT}"
+if [ "$DRY_RUN" = false ]; then
+  mkdir -p "$CODEX_DIR" "$CODEX_PROMPTS"
+fi
 
 # ════════════════════════════════════════════════════════════
 # PART 1: developer_instructions in config.toml
@@ -79,24 +156,30 @@ else
     echo "  $PLANNOTATOR_INSTRUCTION"
   else
     if [ ! -f "$CODEX_CONFIG" ]; then
-      cat > "$CODEX_CONFIG" <<EOF
-developer_instructions = "${PLANNOTATOR_INSTRUCTION}"
-EOF
+      TEMP_FILE="$(mktemp "${CODEX_DIR}/.config.toml.XXXXXX")" || fail "Unable to create temporary config file"
+      if ! printf 'developer_instructions = "%s"\n' "$PLANNOTATOR_INSTRUCTION" > "$TEMP_FILE"; then
+        cleanup_owned_temp "$TEMP_FILE"
+        fail "Unable to write temporary config file"
+      fi
+      replace_temp "$TEMP_FILE" "$CODEX_CONFIG" absent
       echo -e "${GREEN}✓ Created ${CODEX_CONFIG} with plannotator instructions${NC}"
     else
-      BACKUP="${CODEX_CONFIG}.bak.$(date +%Y%m%d%H%M%S)"
-      cp "$CODEX_CONFIG" "$BACKUP"
-      echo -e "${GRAY}  Backup saved: ${BACKUP}${NC}"
-
-      if grep -q "^developer_instructions" "$CODEX_CONFIG"; then
+      require_regular_file "$CODEX_CONFIG"
+      ORIGINAL_MODE="$(file_mode "$CODEX_CONFIG")" || fail "Unable to determine permissions for ${CODEX_CONFIG}"
+      TEMP_FILE="$(mktemp "${CODEX_DIR}/.config.toml.XXXXXX")" || fail "Unable to create temporary config file"
+      if ! cp -p "$CODEX_CONFIG" "$TEMP_FILE"; then
+        cleanup_owned_temp "$TEMP_FILE"
+        fail "Unable to stage ${CODEX_CONFIG}"
+      fi
+      if grep -q "^developer_instructions" "$TEMP_FILE"; then
         if command -v python3 &>/dev/null; then
-          python3 - "$CODEX_CONFIG" "$PLANNOTATOR_INSTRUCTION" <<'PYEOF'
+          if ! python3 - "$TEMP_FILE" "$PLANNOTATOR_INSTRUCTION" <<'PYEOF'
 import sys, re
 
 path = sys.argv[1]
 addition = sys.argv[2]
 
-with open(path) as f:
+with open(path, encoding="utf-8") as f:
     content = f.read()
 
 pattern = r'^(developer_instructions\s*=\s*")(.+?)(")'
@@ -107,24 +190,34 @@ if match:
     if "plannotator" not in current:
         new_val = current + " " + addition
         content = content[:match.start()] + f'developer_instructions = "{new_val}"' + content[match.end():]
-        with open(path, "w") as f:
+        with open(path, "w", encoding="utf-8") as f:
             f.write(content)
         print("Appended to developer_instructions.")
     else:
         print("plannotator already in developer_instructions — no change.")
 else:
-    with open(path, "a") as f:
+    with open(path, "a", encoding="utf-8") as f:
         f.write(f'\ndeveloper_instructions = "{addition}"\n')
     print("Added developer_instructions line.")
 PYEOF
+          then
+            cleanup_owned_temp "$TEMP_FILE"
+            fail "Unable to update developer_instructions in ${CODEX_CONFIG}"
+          fi
         else
-          echo "developer_instructions = \"${PLANNOTATOR_INSTRUCTION}\"" >> "$CODEX_CONFIG"
+          printf '\ndeveloper_instructions = "%s"\n' "$PLANNOTATOR_INSTRUCTION" >> "$TEMP_FILE"
         fi
-        echo -e "${GREEN}✓ Updated developer_instructions in ${CODEX_CONFIG}${NC}"
       else
-        printf '\ndeveloper_instructions = "%s"\n' "$PLANNOTATOR_INSTRUCTION" >> "$CODEX_CONFIG"
-        echo -e "${GREEN}✓ Added developer_instructions to ${CODEX_CONFIG}${NC}"
+        printf '\ndeveloper_instructions = "%s"\n' "$PLANNOTATOR_INSTRUCTION" >> "$TEMP_FILE"
       fi
+      if ! chmod "$ORIGINAL_MODE" "$TEMP_FILE"; then
+        cleanup_owned_temp "$TEMP_FILE"
+        fail "Unable to preserve permissions on ${CODEX_CONFIG}"
+      fi
+      BACKUP="$(create_backup "$CODEX_CONFIG" "$CODEX_DIR" ".config.toml.bak")"
+      echo -e "${GRAY}  Backup saved: ${BACKUP}${NC}"
+      replace_temp "$TEMP_FILE" "$CODEX_CONFIG" existing
+      echo -e "${GREEN}✓ Updated developer_instructions in ${CODEX_CONFIG}${NC}"
     fi
   fi
 fi
@@ -199,7 +292,12 @@ if [ -f "$PLANNOTATOR_PROMPT" ]; then
 elif [ "$DRY_RUN" = true ]; then
   echo -e "${YELLOW}[DRY RUN] Would create ${PLANNOTATOR_PROMPT}${NC}"
 else
-  printf '%s\n' "$PROMPT_CONTENT" > "$PLANNOTATOR_PROMPT"
+  TEMP_PROMPT="$(mktemp "${CODEX_PROMPTS}/.plannotator.md.XXXXXX")" || fail "Unable to create temporary prompt file"
+  if ! printf '%s\n' "$PROMPT_CONTENT" > "$TEMP_PROMPT"; then
+    cleanup_owned_temp "$TEMP_PROMPT"
+    fail "Unable to write temporary prompt file"
+  fi
+  replace_temp "$TEMP_PROMPT" "$PLANNOTATOR_PROMPT" absent
   echo -e "${GREEN}✓ Created ${PLANNOTATOR_PROMPT}${NC}"
 fi
 echo ""

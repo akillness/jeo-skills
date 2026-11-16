@@ -136,7 +136,7 @@ import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
 
 const loader = new PDFLoader("./document.pdf");
 const docs = await loader.load();
-console.log(`Loaded ${docs.length} pages`);
+console.log("Loaded " + docs.length + " pages");
 ```
 </typescript>
 </ex-loading-pdf>
@@ -309,7 +309,7 @@ const results = await vectorstore.similaritySearch(query, 5);
 // With scores
 const resultsWithScore = await vectorstore.similaritySearchWithScore(query, 5);
 for (const [doc, score] of resultsWithScore) {
-  console.log(`Score: ${score}, Content: ${doc.pageContent}`);
+  console.log("Score: " + score + ", Content: " + doc.pageContent);
 }
 ```
 </typescript>
@@ -516,7 +516,7 @@ const retriever = vectorstore.asRetriever();  // Uses same embeddings
 
 <fix-faiss-deserialization>
 <python>
-Only opt in to FAISS deserialization for trusted local indexes. Python FAISS indexes include pickle-backed metadata, and untrusted pickle files can execute arbitrary code during loading.
+Only opt in to FAISS deserialization for trusted local indexes. Python FAISS indexes include pickle-backed metadata, and untrusted pickle files can run untrusted code during loading.
 
 ```python
 # WRONG: Loading a downloaded, shared, cloud-hosted, or third-party-controlled

@@ -18,7 +18,7 @@ const allowedRights = new Set(['owned', 'written-permission', 'licensed-commerci
 const experiencePattern = /(써\s*봤|사용해\s*봤|직접\s*써|직접\s*사용|내가\s*샀|제가\s*샀|우리\s*집에서|친구\s*집에서|써보니|사용해보니)/i;
 const coupangClickInducementPattern = /(링크(?:를|는|가)?\s*(?:클릭|눌러|누르)|(?:클릭|눌러|누르)\s*(?:해|하세요|해\s*주세요|부탁|도와|응원)|수익을\s*위해\s*(?:클릭|눌러|누르))/i;
 const coupangRestrictedMetricPattern = /(?:\bCTR\b|클릭률|노출수|클릭수)/i;
-const expectedGateKeys = Array.from({ length: 10 }, (_, index) => `G${index}`);
+const expectedGateKeys = Array.from({ length: 10 }, (_, index) => ('G' + index));
 const allowedGateValues = new Set(['PENDING', 'PASS', 'FAIL', 'BLOCKED']);
 
 function usage(code = 0) {
@@ -33,12 +33,12 @@ for (let i = 0; i < args.length; i += 1) {
   if (args[i] === '--root') root = args[++i];
   else if (args[i] === '--stage') stage = args[++i];
   else if (args[i] === '--help' || args[i] === '-h') usage(0);
-  else throw new Error(`Unknown argument: ${args[i]}`);
+  else throw new Error(('Unknown argument: ' + args[i]));
 }
 if (!root || !stages.includes(stage)) usage(2);
 root = path.resolve(root);
 const rootStat = await fs.lstat(root).catch(() => null);
-if (!rootStat?.isDirectory() || rootStat.isSymbolicLink()) throw new Error(`Root must be a real directory: ${root}`);
+if (!rootStat?.isDirectory() || rootStat.isSymbolicLink()) throw new Error(('Root must be a real directory: ' + root));
 const rootReal = await fs.realpath(root);
 const errors = [];
 const warnings = [];
@@ -47,7 +47,7 @@ const checked = [];
 function underRoot(filePath) {
   const normalized = String(filePath || '').replace(/^_workspace[\\/]current[\\/]/, '');
   const absolute = path.resolve(rootReal, normalized);
-  if (absolute !== rootReal && !absolute.startsWith(`${rootReal}${path.sep}`)) throw new Error(`Path escapes run root: ${filePath}`);
+  if (absolute !== rootReal && !absolute.startsWith((String(rootReal) + path.sep))) throw new Error(('Path escapes run root: ' + filePath));
   return absolute;
 }
 
@@ -68,7 +68,7 @@ async function inspectContainedFile(filePath) {
   const stat = await fs.lstat(absolute).catch(() => null);
   if (!stat?.isFile() || stat.isSymbolicLink() || await containsSymlinkSegment(absolute)) return { absolute, stat, safe: false };
   const real = await fs.realpath(absolute).catch(() => null);
-  const safe = Boolean(real && (real === rootReal || real.startsWith(`${rootReal}${path.sep}`)));
+  const safe = Boolean(real && (real === rootReal || real.startsWith((String(rootReal) + path.sep))));
   return { absolute, stat, real, safe };
 }
 
@@ -80,7 +80,7 @@ async function readJson(rel, required = true) {
     checked.push(rel);
     return parsed;
   } catch (error) {
-    if (required) errors.push(`${rel}: ${error.code === 'ENOENT' ? 'missing' : `invalid or unsafe JSON (${error.message})`}`);
+    if (required) errors.push((rel + ': ' + (error.code === 'ENOENT' ? 'missing' : ('invalid or unsafe JSON (' + error.message + ')'))));
     return null;
   }
 }
@@ -93,7 +93,7 @@ async function readText(rel, required = true) {
     checked.push(rel);
     return value;
   } catch (error) {
-    if (required) errors.push(`${rel}: ${error.code === 'ENOENT' ? 'missing' : `invalid or unsafe text (${error.message})`}`);
+    if (required) errors.push((rel + ': ' + (error.code === 'ENOENT' ? 'missing' : ('invalid or unsafe text (' + error.message + ')'))));
     return null;
   }
 }
@@ -155,7 +155,7 @@ if (run) {
   requireValue(Array.isArray(run.output_paths) && run.output_paths.length <= 1, 'run.json: output_paths must contain at most one path');
   const gateKeys = Object.keys(run.gates || {});
   requireValue(gateKeys.length === expectedGateKeys.length && expectedGateKeys.every((key) => gateKeys.includes(key)), 'run.json: gates must contain exactly G0..G9');
-  for (const [key, value] of Object.entries(run.gates || {})) requireValue(allowedGateValues.has(value), `run.json: ${key} has invalid gate value ${String(value)}`);
+  for (const [key, value] of Object.entries(run.gates || {})) requireValue(allowedGateValues.has(value), ('run.json: ' + key + ' has invalid gate value ' + String(value)));
 }
 
 if (stage === 'intake') {
@@ -181,38 +181,38 @@ if (run && product) requireValue(run.product_id === product.product_id, 'run.jso
 if (evidence) {
   requireValue(Array.isArray(evidence.claims), 'evidence.json: claims must be an array');
   for (const [index, claim] of (evidence.claims || []).entries()) {
-    const label = `evidence.json claims[${index}]`;
-    requireValue(/^c\d{2,}$/.test(claim.claim_id || ''), `${label}: invalid claim_id`);
-    requireValue(!allClaimIds.has(claim.claim_id), `${label}: duplicate claim_id`);
+    const label = ('evidence.json claims[' + index + ']');
+    requireValue(/^c\d{2,}$/.test(claim.claim_id || ''), (label + ': invalid claim_id'));
+    requireValue(!allClaimIds.has(claim.claim_id), (label + ': duplicate claim_id'));
     allClaimIds.add(claim.claim_id);
-    requireValue(['verified', 'inferred', 'unverified'].includes(claim.status), `${label}: invalid status`);
-    requireValue(/^https?:\/\//.test(claim.source_url || ''), `${label}: source_url must be http(s)`);
-    requireValue(typeof claim.quote_or_coordinate === 'string' && claim.quote_or_coordinate.length > 0, `${label}: quote_or_coordinate is required`);
-    requireValue(Array.isArray(claim.used_in), `${label}: used_in must be an array`);
+    requireValue(['verified', 'inferred', 'unverified'].includes(claim.status), (label + ': invalid status'));
+    requireValue(/^https?:\/\//.test(claim.source_url || ''), label + ': source_url must be http(s)');
+    requireValue(typeof claim.quote_or_coordinate === 'string' && claim.quote_or_coordinate.length > 0, (label + ': quote_or_coordinate is required'));
+    requireValue(Array.isArray(claim.used_in), (label + ': used_in must be an array'));
     if (claim.status === 'verified') verifiedClaims.add(claim.claim_id);
-    if ((claim.used_in || []).length > 0) requireValue(claim.status === 'verified', `${label}: a used claim must be verified`);
+    if ((claim.used_in || []).length > 0) requireValue(claim.status === 'verified', (label + ': a used claim must be verified'));
   }
   const used = (evidence.claims || []).filter((claim) => (claim.used_in || []).length > 0);
   const computedCoverage = used.length === 0 ? 1 : used.filter((claim) => claim.status === 'verified').length / used.length;
-  requireValue(evidence.coverage === computedCoverage, `evidence.json: coverage ${evidence.coverage} does not match computed ${computedCoverage}`);
+  requireValue(evidence.coverage === computedCoverage, ('evidence.json: coverage ' + evidence.coverage + ' does not match computed ' + computedCoverage));
 }
 
 if (rights) {
   requireValue(Array.isArray(rights.assets), 'rights.json: assets must be an array');
   for (const [index, asset] of (rights.assets || []).entries()) {
-    const label = `rights.json assets[${index}]`;
-    requireValue(/^a\d{2,}$/.test(asset.asset_id || ''), `${label}: invalid asset_id`);
-    requireValue(!assetIds.has(asset.asset_id), `${label}: duplicate asset_id`);
+    const label = ('rights.json assets[' + index + ']');
+    requireValue(/^a\d{2,}$/.test(asset.asset_id || ''), (label + ': invalid asset_id'));
+    requireValue(!assetIds.has(asset.asset_id), (label + ': duplicate asset_id'));
     assetIds.add(asset.asset_id);
-    requireValue(allowedRights.has(asset.rights_basis), `${label}: unsupported rights_basis`);
-    requireValue(asset.commercial_use === true && asset.transformation_allowed === true, `${label}: commercial use and transformation must be allowed`);
-    requireValue(/^[a-f0-9]{64}$/.test(asset.sha256 || ''), `${label}: invalid sha256`);
-    requireValue(typeof asset.permission_evidence === 'string' && asset.permission_evidence.length > 0, `${label}: permission_evidence is required`);
+    requireValue(allowedRights.has(asset.rights_basis), (label + ': unsupported rights_basis'));
+    requireValue(asset.commercial_use === true && asset.transformation_allowed === true, (label + ': commercial use and transformation must be allowed'));
+    requireValue(/^[a-f0-9]{64}$/.test(asset.sha256 || ''), (label + ': invalid sha256'));
+    requireValue(typeof asset.permission_evidence === 'string' && asset.permission_evidence.length > 0, (label + ': permission_evidence is required'));
     const local = await inspectContainedFile(asset.local_path);
-    requireValue(local.safe, `${label}: local asset missing, symlinked, or outside run root`);
+    requireValue(local.safe, (label + ': local asset missing, symlinked, or outside run root'));
     if (local.safe) {
       const actual = await sha256(local.absolute);
-      requireValue(actual === asset.sha256, `${label}: sha256 mismatch`);
+      requireValue(actual === asset.sha256, (label + ': sha256 mismatch'));
     }
   }
 }
@@ -243,17 +243,17 @@ const storyboardTable = parseStoryboardRows(storyboard);
 
 requireValue(run?.commerce_mode === 'commerce-ready' || run?.commerce_mode === 'creative-only', 'pre-render: commerce_mode must be commerce-ready or creative-only');
 requireValue(run?.commerce_mode !== 'blocked', 'pre-render: commerce is blocked');
-for (const gate of expectedGateKeys.slice(0, 6)) requireValue(run?.gates?.[gate] === 'PASS', `pre-render: ${gate} must be PASS`);
+for (const gate of expectedGateKeys.slice(0, 6)) requireValue(run?.gates?.[gate] === 'PASS', ('pre-render: ' + gate + ' must be PASS'));
 requireValue(Array.isArray(concepts?.concepts) && concepts.concepts.length >= 1 && concepts.concepts.length <= 3, 'concepts.json: expected 1..3 concepts');
 requireValue(typeof selected?.concept_id === 'string', 'selected-concept.json: concept_id is required');
 requireValue(selected?.approved === true && typeof selected?.approval_reference === 'string' && selected.approval_reference.length > 0, 'selected-concept.json: approved concept and approval_reference are required');
 requireValue((concepts?.concepts || []).some((item) => item.concept_id === selected?.concept_id), 'selected-concept.json: concept_id not found in concepts');
 requireValue(Array.isArray(selected?.shots) && selected.shots.length >= 1 && selected.shots.length <= 8 && new Set(selected.shots).size === selected.shots.length, 'selected-concept.json: shots must contain 1..8 unique ids');
 requireValue(typeof storyboard === 'string' && !storyboard.includes('| pending |') && storyboard.includes('generated_text_policy: forbid-generated-typography'), 'storyboard.md: approved storyboard and generated text policy are required');
-requireValue(storyboard?.includes(`- Selected concept SHA-256: \`${selectedConceptSha}\``), 'storyboard.md: selected concept digest is missing or stale');
-requireValue(storyboard?.includes(`- Render plan SHA-256: \`${renderPlanSha}\``), 'storyboard.md: render plan digest is missing or stale');
-requireValue(!storyboardTable.error, `storyboard.md: ${storyboardTable.error || 'table is invalid'}`);
-for (const claimId of selected?.claim_ids || []) requireValue(verifiedClaims.has(claimId), `selected-concept.json: claim ${claimId} is not verified`);
+requireValue(storyboard?.includes(('- Selected concept SHA-256: `' + selectedConceptSha + '`')), 'storyboard.md: selected concept digest is missing or stale');
+requireValue(storyboard?.includes(('- Render plan SHA-256: `' + renderPlanSha + '`')), 'storyboard.md: render plan digest is missing or stale');
+requireValue(!storyboardTable.error, ('storyboard.md: ' + (storyboardTable.error || 'table is invalid')));
+for (const claimId of selected?.claim_ids || []) requireValue(verifiedClaims.has(claimId), ('selected-concept.json: claim ' + claimId + ' is not verified'));
 const selectedText = allStrings(selected || {}).join('\n');
 requireValue(!experiencePattern.test(selectedText), 'selected-concept.json: possible unsupported first-person experience claim');
 if (commerceRoute?.monetization_program === 'coupang-partners') {
@@ -265,20 +265,20 @@ if (renderPlan) {
   requireValue(renderPlan.source_repo === PINNED_REPO, 'render-plan.json: source_repo mismatch');
   requireValue(renderPlan.source_sha === PINNED_SHA, 'render-plan.json: source_sha mismatch');
   requireValue(['muapi-api', 'open-generative-ai-gui', 'wan2gp-gradio'].includes(renderPlan.execution_surface), 'render-plan.json: invalid execution_surface');
-  for (const policyError of validateGeneratedTypographyPolicy(renderPlan)) requireValue(false, `render-plan.json: ${policyError}`);
+  for (const policyError of validateGeneratedTypographyPolicy(renderPlan)) requireValue(false, ('render-plan.json: ' + policyError));
   requireValue(renderPlan.output?.width === 1080 && renderPlan.output?.height === 1920, 'render-plan.json: output must be 1080x1920');
   requireValue(Array.isArray(renderPlan.shots) && renderPlan.shots.length >= 1 && renderPlan.shots.length <= 8, 'render-plan.json: expected 1..8 shots');
   let duration = 0;
   const shotIds = new Set();
   for (const [index, shot] of (renderPlan.shots || []).entries()) {
-    const label = `render-plan.json shots[${index}]`;
-    requireValue(!shotIds.has(shot.shot_id), `${label}: duplicate shot_id`);
+    const label = ('render-plan.json shots[' + index + ']');
+    requireValue(!shotIds.has(shot.shot_id), (label + ': duplicate shot_id'));
     shotIds.add(shot.shot_id);
-    requireValue(shot.aspect_ratio === '9:16', `${label}: aspect_ratio must be 9:16`);
-    requireValue(Number.isFinite(shot.duration_seconds) && shot.duration_seconds > 0 && shot.duration_seconds <= 30, `${label}: invalid duration`);
+    requireValue(shot.aspect_ratio === '9:16', (label + ': aspect_ratio must be 9:16'));
+    requireValue(Number.isFinite(shot.duration_seconds) && shot.duration_seconds > 0 && shot.duration_seconds <= 30, (label + ': invalid duration'));
     duration += Number(shot.duration_seconds || 0);
-    for (const assetId of shot.source_asset_ids || []) requireValue(assetIds.has(assetId), `${label}: unknown asset ${assetId}`);
-    for (const claimId of shot.claim_ids || []) requireValue(verifiedClaims.has(claimId), `${label}: unverified claim ${claimId}`);
+    for (const assetId of shot.source_asset_ids || []) requireValue(assetIds.has(assetId), (label + ': unknown asset ' + assetId));
+    for (const claimId of shot.claim_ids || []) requireValue(verifiedClaims.has(claimId), (label + ': unverified claim ' + claimId));
   }
   requireValue(Math.abs(duration - Number(renderPlan.output?.duration_seconds || 0)) <= 0.5, 'render-plan.json: shot durations must equal output duration');
   requireValue(JSON.stringify([...shotIds]) === JSON.stringify(selected?.shots || []), 'render-plan.json: shot ids and order must match selected concept');
@@ -286,16 +286,16 @@ if (renderPlan) {
   let storyboardStart = 0;
   for (const [index, shot] of renderPlan.shots.entries()) {
     const row = storyboardTable.rows[index];
-    const label = `storyboard.md row ${index + 1}`;
-    requireValue(row?.shot_id === shot.shot_id, `${label}: shot id or order differs from render plan`);
-    requireValue(Number.isFinite(row?.start_seconds) && Math.abs(row.start_seconds - storyboardStart) <= 0.01, `${label}: start time differs from render plan`);
+    const label = ('storyboard.md row ' + (index + 1));
+    requireValue(row?.shot_id === shot.shot_id, (label + ': shot id or order differs from render plan'));
+    requireValue(Number.isFinite(row?.start_seconds) && Math.abs(row.start_seconds - storyboardStart) <= 0.01, (label + ': start time differs from render plan'));
     storyboardStart += Number(shot.duration_seconds || 0);
-    requireValue(Number.isFinite(row?.end_seconds) && Math.abs(row.end_seconds - storyboardStart) <= 0.01, `${label}: end time differs from render plan`);
-    requireValue(Boolean(row?.visual_proof) && !/pending/iu.test(row.visual_proof), `${label}: visual proof is missing`);
-    requireValue(Boolean(row?.voiceover) && !/pending/iu.test(row.voiceover), `${label}: voiceover is missing`);
-    requireValue(Boolean(row?.overlay_text) && !/pending/iu.test(row.overlay_text), `${label}: overlay text decision is missing`);
-    requireValue(JSON.stringify(row?.claim_ids || []) === JSON.stringify(shot.claim_ids || []), `${label}: claim ids differ from render plan`);
-    requireValue(JSON.stringify(row?.asset_ids || []) === JSON.stringify(shot.source_asset_ids || []), `${label}: asset ids differ from render plan`);
+    requireValue(Number.isFinite(row?.end_seconds) && Math.abs(row.end_seconds - storyboardStart) <= 0.01, (label + ': end time differs from render plan'));
+    requireValue(Boolean(row?.visual_proof) && !/pending/iu.test(row.visual_proof), (label + ': visual proof is missing'));
+    requireValue(Boolean(row?.voiceover) && !/pending/iu.test(row.voiceover), (label + ': voiceover is missing'));
+    requireValue(Boolean(row?.overlay_text) && !/pending/iu.test(row.overlay_text), (label + ': overlay text decision is missing'));
+    requireValue(JSON.stringify(row?.claim_ids || []) === JSON.stringify(shot.claim_ids || []), (label + ': claim ids differ from render plan'));
+    requireValue(JSON.stringify(row?.asset_ids || []) === JSON.stringify(shot.source_asset_ids || []), (label + ': asset ids differ from render plan'));
   }
   if (run?.status === 'approved_for_render' || ['rendering', 'assembling', 'reviewing', 'ready_for_release', 'released'].includes(run?.status)) {
     requireValue(renderPlan.estimated_cost !== null && Number.isFinite(renderPlan.estimated_cost), 'render-plan.json: estimated_cost required before render approval');
@@ -310,22 +310,22 @@ const timeline = await readJson('assembly/timeline.json');
 const qa = await readJson('validation/qa.json');
 const release = await readJson('release/package.json');
 requireValue(finalStatuses.has(run?.status), 'final: run status must be ready_for_release or released');
-for (const gate of expectedGateKeys.slice(0, 9)) requireValue(run?.gates?.[gate] === 'PASS', `final: ${gate} must be PASS`);
+for (const gate of expectedGateKeys.slice(0, 9)) requireValue(run?.gates?.[gate] === 'PASS', ('final: ' + gate + ' must be PASS'));
 requireValue(timeline?.width === 1080 && timeline?.height === 1920, 'timeline.json: dimensions must be 1080x1920');
 requireValue(Number.isFinite(timeline?.fps) && timeline.fps >= 24 && timeline.fps <= 60, 'timeline.json: fps must be 24..60');
 requireValue(Array.isArray(timeline?.clips) && timeline.clips.length >= 1 && timeline.clips.length <= 8, 'timeline.json: clips must contain 1..8 entries');
 let timelineDuration = 0;
 for (const [index, clip] of (timeline?.clips || []).entries()) {
-  requireValue(Number.isFinite(clip.duration_seconds) && clip.duration_seconds > 0, `timeline.json clips[${index}]: duration is invalid`);
+  requireValue(Number.isFinite(clip.duration_seconds) && clip.duration_seconds > 0, ('timeline.json clips[' + index + ']: duration is invalid'));
   timelineDuration += Number(clip.duration_seconds || 0);
-  const clipFile = typeof clip.path === 'string' ? await inspectContainedFile(`assembly/${clip.path}`) : null;
-  requireValue(clipFile?.safe, `timeline.json clips[${index}]: file is missing, symlinked, or outside run root`);
+  const clipFile = typeof clip.path === 'string' ? await inspectContainedFile(('assembly/' + clip.path)) : null;
+  requireValue(clipFile?.safe, ('timeline.json clips[' + index + ']: file is missing, symlinked, or outside run root'));
 }
 requireValue(Math.abs(timelineDuration - Number(timeline?.output_duration_seconds || 0)) <= 0.5, 'timeline.json: clip durations must equal output duration');
 for (const field of ['voiceover', 'music']) {
   if (typeof timeline?.[field] === 'string') {
-    const mediaFile = await inspectContainedFile(`assembly/${timeline[field]}`);
-    requireValue(mediaFile.safe, `timeline.json: ${field} is missing, symlinked, or outside run root`);
+    const mediaFile = await inspectContainedFile(('assembly/' + timeline[field]));
+    requireValue(mediaFile.safe, ('timeline.json: ' + field + ' is missing, symlinked, or outside run root'));
   }
 }
 requireValue(qa?.verdict === 'PASS', 'qa.json: verdict must be PASS');
@@ -369,28 +369,28 @@ if (reviewedMedia?.safe && path.extname(reviewedMedia.absolute).toLowerCase() ==
     }
   }
 }
-const expectedSourceClips = [...new Set((timeline?.clips || []).map((clip) => path.relative(rootReal, underRoot(`assembly/${clip.path}`)).split(path.sep).join('/')))];
+const expectedSourceClips = [...new Set((timeline?.clips || []).map((clip) => path.relative(rootReal, underRoot(('assembly/' + clip.path))).split(path.sep).join('/')))];
 requireValue(Array.isArray(textReview?.source_clips) && textReview.source_clips.length === expectedSourceClips.length, 'qa.json: generated text review source clip count mismatch');
 for (const [index, expectedPath] of expectedSourceClips.entries()) {
   const clipReview = textReview?.source_clips?.[index];
-  requireValue(clipReview?.path === expectedPath, `qa.json: generated text review source clip ${index} path mismatch`);
+  requireValue(clipReview?.path === expectedPath, ('qa.json: generated text review source clip ' + index + ' path mismatch'));
   const reviewedClip = typeof clipReview?.path === 'string' ? await inspectContainedFile(clipReview.path) : null;
-  requireValue(reviewedClip?.safe, `qa.json: generated text review source clip ${index} is unsafe or missing`);
-  if (reviewedClip?.safe) requireValue(clipReview.sha256 === await sha256(reviewedClip.absolute), `qa.json: generated text review source clip ${index} digest mismatch`);
-  requireValue(clipReview?.unexpected_generated_typography_found === false && clipReview?.unexpected_watermark_found === false, `qa.json: generated text review source clip ${index} failed`);
+  requireValue(reviewedClip?.safe, ('qa.json: generated text review source clip ' + index + ' is unsafe or missing'));
+  if (reviewedClip?.safe) requireValue(clipReview.sha256 === await sha256(reviewedClip.absolute), ('qa.json: generated text review source clip ' + index + ' digest mismatch'));
+  requireValue(clipReview?.unexpected_generated_typography_found === false && clipReview?.unexpected_watermark_found === false, ('qa.json: generated text review source clip ' + index + ' failed'));
 }
 const expectedFramePositions = ['start', 'middle', 'end'];
 const expectedFrameTimes = [0.1, Number(timeline?.output_duration_seconds || 0) / 2, Math.max(0, Number(timeline?.output_duration_seconds || 0) - 0.1)];
 requireValue(Array.isArray(textReview?.frame_checks) && textReview.frame_checks.length === 3, 'qa.json: generated text review needs three frame checks');
 for (const [index, position] of expectedFramePositions.entries()) {
   const frame = textReview?.frame_checks?.[index];
-  requireValue(frame?.position === position, `qa.json: generated text review ${position} frame is missing or out of order`);
-  requireValue(frame?.source_media_sha256 === reviewedMediaSha, `qa.json: generated text review ${position} frame is not bound to final media`);
-  requireValue(Number.isFinite(frame?.timestamp_seconds) && Math.abs(frame.timestamp_seconds - expectedFrameTimes[index]) <= 0.25, `qa.json: generated text review ${position} timestamp mismatch`);
+  requireValue(frame?.position === position, ('qa.json: generated text review ' + position + ' frame is missing or out of order'));
+  requireValue(frame?.source_media_sha256 === reviewedMediaSha, ('qa.json: generated text review ' + position + ' frame is not bound to final media'));
+  requireValue(Number.isFinite(frame?.timestamp_seconds) && Math.abs(frame.timestamp_seconds - expectedFrameTimes[index]) <= 0.25, ('qa.json: generated text review ' + position + ' timestamp mismatch'));
   const frameFile = typeof frame?.path === 'string' ? await inspectContainedFile(frame.path) : null;
-  requireValue(frameFile?.safe, `qa.json: generated text review ${position} frame is unsafe or missing`);
-  if (frameFile?.safe) requireValue(frame.sha256 === await sha256(frameFile.absolute), `qa.json: generated text review ${position} frame digest mismatch`);
-  requireValue(frame?.unexpected_generated_typography_found === false && frame?.unexpected_watermark_found === false, `qa.json: generated text review ${position} frame failed`);
+  requireValue(frameFile?.safe, ('qa.json: generated text review ' + position + ' frame is unsafe or missing'));
+  if (frameFile?.safe) requireValue(frame.sha256 === await sha256(frameFile.absolute), ('qa.json: generated text review ' + position + ' frame digest mismatch'));
+  requireValue(frame?.unexpected_generated_typography_found === false && frame?.unexpected_watermark_found === false, ('qa.json: generated text review ' + position + ' frame failed'));
 }
 const technical = qa?.technical;
 requireValue(technical?.width === 1080 && technical?.height === 1920, 'qa.json: technical dimensions must be 1080x1920');
@@ -413,12 +413,12 @@ if (captionOverlay?.source === 'assembly-generated') {
   requireValue(captionOverlay.animation === 'typewriter' && captionOverlay.max_lines === 2, 'qa.json: assembly captions must use typewriter and at most two lines');
   requireValue(captionOverlay.font_verified === true && captionOverlay.burn_in_verified === true, 'qa.json: caption font and burn-in must be verified');
   requireValue(typeof timeline?.caption_plan === 'string' && typeof timeline?.captions === 'string', 'timeline.json: caption plan and rendered captions are required');
-  const captionPlanPath = typeof timeline?.caption_plan === 'string' ? `assembly/${timeline.caption_plan}` : null;
-  const captionOutputPath = typeof timeline?.captions === 'string' ? `assembly/${timeline.captions}` : null;
+  const captionPlanPath = typeof timeline?.caption_plan === 'string' ? ('assembly/' + timeline.caption_plan) : null;
+  const captionOutputPath = typeof timeline?.captions === 'string' ? ('assembly/' + timeline.captions) : null;
   const captionPlan = captionPlanPath ? await readJson(captionPlanPath) : null;
   const captionOutput = captionOutputPath ? await inspectContainedFile(captionOutputPath) : null;
   const captionValidation = captionPlan ? validateCaptionPlan(captionPlan, { durationSeconds: timeline?.output_duration_seconds }) : { errors: ['caption plan is missing'] };
-  for (const captionError of captionValidation.errors) requireValue(false, `caption plan: ${captionError}`);
+  for (const captionError of captionValidation.errors) requireValue(false, ('caption plan: ' + captionError));
   requireValue(path.extname(captionOutputPath || '').toLowerCase() === '.ass', 'timeline.json: rendered captions must use the .ass extension');
   requireValue(captionOutput?.safe, 'timeline.json: rendered captions are missing, symlinked, or outside run root');
   if (captionPlanPath && captionPlan && captionOutput?.safe && !captionValidation.errors.length) {
@@ -447,7 +447,7 @@ if (release) {
   requireValue(Boolean(releaseSurface?.release_adapter_id), 'release package: platform must have a public release adapter');
   requireValue(release.platform === commerceRoute?.publication_surface, 'release package: platform must match the commerce route');
   requireValue(typeof release.channel_id === 'string' && release.channel_id.length > 0, 'release package: channel_id is required');
-  const releaseText = `${release.title || ''}\n${release.description || ''}`;
+  const releaseText = ((release.title || '') + '\n' + (release.description || ''));
   requireValue(!experiencePattern.test(releaseText), 'release package: possible unsupported first-person experience claim');
   if (commerceRoute?.monetization_program === 'coupang-partners') {
     requireValue(!coupangClickInducementPattern.test(releaseText), 'release package: Coupang click inducement is prohibited');
@@ -467,7 +467,7 @@ if (release) {
 if (stage === 'final') finish();
 const releaseReceipt = await readJson('release/receipt.json');
 requireValue(run?.status === 'released', 'release: run status must be released');
-for (const gate of expectedGateKeys) requireValue(run?.gates?.[gate] === 'PASS', `release: ${gate} must be PASS`);
+for (const gate of expectedGateKeys) requireValue(run?.gates?.[gate] === 'PASS', ('release: ' + gate + ' must be PASS'));
 requireValue(release?.publication_approved === true, 'release: publication_approved must be true after exact confirmation');
 requireValue(/^https?:\/\//.test(release?.published_url || ''), 'release: published_url is required');
 requireValue(releaseReceipt?.schema_version === 1 && releaseReceipt?.verification === 'PASS', 'release receipt: verification must be PASS');

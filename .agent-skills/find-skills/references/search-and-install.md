@@ -81,8 +81,8 @@ found" report.
 
 ```bash
 npx skills add <owner/repo> --skill <name> --agent claude-code --yes --copy
-find .claude/skills -maxdepth 2 -name SKILL.md
-head -5 .claude/skills/<name>/SKILL.md
+npx skills list
+head -n 5 <installed-skill-dir>/SKILL.md
 ```
 
 Confirm the frontmatter `name:` matches what was requested. The CLI's

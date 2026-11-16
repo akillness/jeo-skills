@@ -50,7 +50,7 @@ Open Design game UI, `game-feel`, Unity, or Three.js specialists.
 
 Inspect the runtime, design files, screenshots, controller maps, supported devices, locales,
 and accessibility settings. Record each screen, overlay, modal, loading/empty/error state,
-and game phase. A mockup is partial evidence and must not delete states or information it does
+and game phase. A mockup is partial evidence and must not drop states or information it does
 not show.
 
 For each screen, name the player decision it supports. If an element supports no decision,

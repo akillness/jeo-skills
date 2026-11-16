@@ -159,7 +159,7 @@ fi
 # ── Write to shell profile ─────────────────────────
 echo -e "${BLUE}Adding to ${SHELL_PROFILE}:${NC}"
 echo ""
-printf "  %b" "$LINES_TO_ADD" | sed 's/^/  /'
+printf "  %b" "$LINES_TO_ADD" | sed "s/^/  /"
 echo ""
 
 read -rp "Write to ${SHELL_PROFILE}? [Y/n]: " CONFIRM
@@ -169,6 +169,10 @@ if [[ "$CONFIRM" =~ ^[Nn]$ ]]; then
   echo ""
   printf "%b" "$LINES_TO_ADD"
   exit 0
+fi
+if [ -L "$SHELL_PROFILE" ]; then
+  echo -e "${RED}✗ Refusing to modify symlinked shell profile: ${SHELL_PROFILE}${NC}" >&2
+  exit 1
 fi
 
 {

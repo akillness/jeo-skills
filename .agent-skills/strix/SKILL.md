@@ -187,7 +187,7 @@ bash scripts/run-scan.sh \
 5. Expect the first run to be slower because Strix may pull its sandbox image.
 6. Treat `strix_runs/` as evidence: archive useful runs, especially when findings are heading into triage or remediation.
 7. Be explicit about scope, exclusions, credentials, and rate limits so Strix does not waste time exploring irrelevant surfaces.
-8. Distinguish this repo's `strix` skill from Strix internal skills to avoid instruction confusion.
+8. Distinguish this catalog `strix` skill from Strix internal skills to avoid instruction confusion.
 
 ## References
 

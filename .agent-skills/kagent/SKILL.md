@@ -47,7 +47,7 @@ kagent agent template get <template-name>
 
 - `Agent` (`api.kagent.dev/v1alpha3`) pairs inline or referenced template behavior with a referenced Harness adapter.
 - `AgentTemplate` (`api.kagent.dev/v1alpha3`) describes prompts, tools, subagents, and LLM configuration.
-- Catalog commands use the current kubeconfig context and selected namespace.
+- Catalog commands use the current Kubernetes client context and selected namespace.
 - Apply declarative configurations with `kagent apply -f <manifest.yaml>` or `kubectl apply -f <manifest.yaml>`.
 
 ### 3. Manage Sessions and invoke tasks via A2A

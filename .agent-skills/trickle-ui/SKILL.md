@@ -57,8 +57,9 @@ packet. Analysis can finish without any installation or execution.
 Source-only inspection is the default when no target mutation was requested. For a
 separately authorized integration, inspect the registry item before invoking its CLI:
 
-```bash
-npx shadcn@latest add https://tricklekit.dev/r/typewriter.json
+```text
+# Upstream docs example (unpinned @latest; resolve and pin version before approved execution):
+shadcn add https://tricklekit.dev/r/typewriter.json
 ```
 
 This is an upstream-documented, **unexecuted** example, not a pinned reproducible install.

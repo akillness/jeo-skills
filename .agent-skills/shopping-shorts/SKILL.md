@@ -1,6 +1,7 @@
 ---
 name: "shopping-shorts"
 description: "상품 링크나 권리 확인된 제품 사진을 근거 중심의 9:16 쇼핑 쇼츠 패키지로 전환한다. Use when 쇼핑 쇼츠·상품 추천 숏폼·어필리에이트 영상·AI 제품 광고를 조사, 기획, 생성, 검수하거나 YouTube·Instagram Reels·TikTok·X·네이버 클립과 YPP·쿠팡·지그재그 등 한국 크리에이터 수익 경로를 현재 공식 조건으로 비교할 때. Open-Generative-AI를 영상 생성 표면으로 연결하되 가짜 체험담, 경쟁 영상 복제, 대량 양산, 무고지 제휴, 승인 없는 가입·유료 생성·업로드에는 사용하지 않는다."
+allowed-tools: Bash Read Write Edit Glob Grep WebFetch Env
 ---
 
 # Shopping Shorts
@@ -47,7 +48,7 @@ node scripts/init-harness.mjs --target /absolute/project/path
 node scripts/init-harness.mjs --target /absolute/project/path --apply
 ```
 
-기존 `_workspace/current/run.json`이 닫히지 않았으면 새 실행으로 덮지 않는다. `blocked`, `rejected`, `ready_for_release`, `released` 중 하나로 근거를 남긴 뒤 다음 실행을 시작한다.
+기존 `<run-dir>/run.json` (대상 프로젝트의 `_workspace/current` 아래 상태 파일)이 닫히지 않았으면 새 실행으로 덮지 않는다. `blocked`, `rejected`, `ready_for_release`, `released` 중 하나로 근거를 남긴 뒤 다음 실행을 시작한다.
 
 ### 3. Gate G0a: research current revenue programs
 
@@ -63,7 +64,7 @@ node scripts/init-harness.mjs --target /absolute/project/path --apply
 
 ```bash
 node scripts/validate-commerce-research.mjs \
-  --platforms _workspace/current/research/commerce-platforms.json
+  --platforms <run-dir>/research/commerce-platforms.json
 ```
 
 ### 4. Gate G0b: select and verify one commerce route
@@ -74,7 +75,7 @@ node scripts/validate-commerce-research.mjs \
 - `creative-only`: 영상 초안은 만들 수 있으나 제품 태그·제휴 링크·수익 경로 중 하나 이상이 미확인임.
 - `blocked`: 금지 또는 고위험 상품, 허위 주장, 사용할 수 없는 자산, 자동 클릭·어뷰징 등 규정상 제작하면 안 됨.
 
-`strategy/commerce-route.json`은 platform research SHA-256을 고정하고, `validation/commerce.json`은 매트릭스와 경로의 현재 SHA-256을 확인한다. YPP·제휴 가입 여부를 과거 메모리나 방문 이력으로 추정하지 않는다. 알 수 없으면 `creative-only`로 낮추고 수익·전환을 약속하지 않는다. `creative-only`에서는 제품 태그·제휴 링크·비용이 드는 자동 렌더를 사용하지 않는다.
+`<run-dir>/strategy/commerce-route.json`은 platform research SHA-256을 고정하고, `<run-dir>/validation/commerce.json`은 매트릭스와 경로의 현재 SHA-256을 확인한다. YPP·제휴 가입 여부를 과거 메모리나 방문 이력으로 추정하지 않는다. 알 수 없으면 `creative-only`로 낮추고 수익·전환을 약속하지 않는다. `creative-only`에서는 제품 태그·제휴 링크·비용이 드는 자동 렌더를 사용하지 않는다.
 
 현재 public release adapter는 `youtube-shorts-v1`만 지원한다. Instagram Reels·TikTok·X·네이버 클립은 `--stage research`와 creative plan까지만 지원하고 pre-render에는 진입하지 않는다. 계정·공식 API가 존재해도 라벨·제품 태그·scope·audit·공개 read-back adapter가 없으면 자동 게시 가능으로 표시하지 않는다.
 
@@ -115,7 +116,7 @@ Instagram의 한국 연령 조건은 program별 공식 도움말로 확인하고
 start state → trigger → visible action → result → proof/caveat → disclosed CTA
 ```
 
-단일 생성 클립에 전체 쇼츠를 맡기지 않는다. Open-Generative-AI 카탈로그의 영상 모델 대부분은 짧은 클립을 생성하므로 여러 클립과 로컬 조립을 전제로 한다. 샷 구조를 먼저 초안으로 만든다. 다음 단계에서 draft render plan이 완성되면 `production/storyboard.md`에 선택 콘셉트와 render plan의 SHA-256을 봉인하고, 각 행의 샷 순서·누적 시간·claim id·asset id를 render plan과 정확히 맞춘 뒤 pre-render를 검증한다. 생성 프롬프트에는 합성 글씨·자막·워터마크 금지를 넣고, 읽히는 텍스트를 생성하라는 긍정형 지시는 검증기가 차단한다. 실제 제품에 인쇄된 표시는 보존한다. 후반 오버레이 자막만 `assembly/captions.json`이 소유하며 `typewriter`, 최대 2줄을 계약으로 고정한다. 대사는 강한 문장만 남기고 나머지는 화면으로 증명한다.
+단일 생성 클립에 전체 쇼츠를 맡기지 않는다. Open-Generative-AI 카탈로그의 영상 모델 대부분은 짧은 클립을 생성하므로 여러 클립과 로컬 조립을 전제로 한다. 샷 구조를 먼저 초안으로 만든다. 다음 단계에서 draft render plan이 완성되면 `<run-dir>/production/storyboard.md`에 선택 콘셉트와 render plan의 SHA-256을 봉인하고, 각 행의 샷 순서·누적 시간·claim id·asset id를 render plan과 정확히 맞춘 뒤 pre-render를 검증한다. 생성 프롬프트에는 합성 글씨·자막·워터마크 금지를 넣고, 읽히는 텍스트를 생성하라는 긍정형 지시는 검증기가 차단한다. 실제 제품에 인쇄된 표시는 보존한다. 후반 오버레이 자막만 `<run-dir>/assembly/captions.json`이 소유하며 `typewriter`, 최대 2줄을 계약으로 고정한다. 대사는 강한 문장만 남기고 나머지는 화면으로 증명한다.
 
 ### 8. Prepare the Open-Generative-AI render plan
 
@@ -129,8 +130,8 @@ Open-Generative-AI는 자체 생성 엔진이 아니라 MuAPI 원격 API와 사�
 
 ```bash
 node scripts/prepare-render-plan.mjs \
-  --input _workspace/current/production/render-plan.json \
-  --out _workspace/current/production/provider-requests.json
+  --input <run-dir>/production/render-plan.json \
+  --out <run-dir>/production/provider-requests.json
 ```
 
 README의 “free”, “self-hosted”, 모델 개수 표현을 사실로 쓰지 않는다. `ClippingStudio`의 빈 좌표를 15초 간격과 가짜 점수로 채우는 fallback은 사용 금지다. `references/higgsfield-cli-evaluation.md`의 판정은 HOLD다. admission 9개를 모두 충족하기 전에는 `higgsfield-cli`를 execution surface로 추가하거나 고정 `source_repo`/`source_sha` 가드를 우회하지 않는다. PyPI의 동명 비공식 쿠키 스크래퍼는 사용하지 않는다.
@@ -141,16 +142,16 @@ Open-Generative-AI에는 클립 연결, 자막 번인, BGM 믹싱을 소유하�
 
 ```bash
 node scripts/build-typewriter-captions.mjs \
-  --input _workspace/current/assembly/captions.json \
-  --output _workspace/current/assembly/captions.ass
+  --input <run-dir>/assembly/captions.json \
+  --output <run-dir>/assembly/captions.ass
 
 node scripts/assemble-short.mjs \
-  --timeline _workspace/current/assembly/timeline.json \
-  --output _workspace/current/assembly/final.mp4
+  --timeline <run-dir>/assembly/timeline.json \
+  --output <run-dir>/assembly/final.mp4
 # 명령 검토 후에만
 node scripts/assemble-short.mjs \
-  --timeline _workspace/current/assembly/timeline.json \
-  --output _workspace/current/assembly/final.mp4 --execute
+  --timeline <run-dir>/assembly/timeline.json \
+  --output <run-dir>/assembly/final.mp4 --execute
 ```
 
 완성본은 시작·중간·끝 프레임과 전체 재생을 눈으로 확인한다. 제품 형태·구성품·작동 방식·문구가 실제 제품과 일치하는지 별도로 대조한다. ASS는 caption plan에서 결정론적으로 재생성한 바이트와 정확히 같아야 하며, 조립기는 입력·출력의 중간 경로와 출력 leaf symlink를 모두 거부한다. 최종 검증은 확장자·해시만 믿지 않고 `verify-media.mjs`로 실제 MP4 스트림을 probe해 QA 기술값과 대조한다.
@@ -182,28 +183,30 @@ node scripts/assemble-short.mjs \
 
 ## Output contract
 
-- `_workspace/current/run.json`
-- `intake/product.json`
-- `research/commerce-platforms.json`
-- `research/evidence.json`
-- `research/rights.json`
-- `research/screens/*.{png,jpg,jpeg,webp}`(플랫폼 screen control을 선택한 경우)
-- `strategy/commerce-route.json`
-- `strategy/concepts.json`
-- `strategy/selected-concept.json`
-- `production/storyboard.md`
-- `production/render-plan.json`
-- `production/provider-requests.json`
-- `assembly/timeline.json`
-- `assembly/captions.json`
-- `assembly/captions.ass`
-- `assembly/final.mp4`
-- `validation/commerce.json`
-- `validation/qa.json`
-- `validation/frames/{start,middle,end}.*`
-- `release/package.json`
-- `release/receipt.json`
-- `run-summary.md`
+대상 프로젝트의 `<run-dir>` (`_workspace/current`, 초기 스캐폴드는 `templates/run/`) 아래에 다음 산출물을 둔다:
+
+- `<run-dir>/run.json`
+- `<run-dir>/intake/product.json`
+- `<run-dir>/research/commerce-platforms.json`
+- `<run-dir>/research/evidence.json`
+- `<run-dir>/research/rights.json`
+- `<run-dir>/research/screens/*.{png,jpg,jpeg,webp}`(플랫폼 screen control을 선택한 경우)
+- `<run-dir>/strategy/commerce-route.json`
+- `<run-dir>/strategy/concepts.json`
+- `<run-dir>/strategy/selected-concept.json`
+- `<run-dir>/production/storyboard.md`
+- `<run-dir>/production/render-plan.json`
+- `<run-dir>/production/provider-requests.json`
+- `<run-dir>/assembly/timeline.json`
+- `<run-dir>/assembly/captions.json`
+- `<run-dir>/assembly/captions.ass`
+- `<run-dir>/assembly/final.mp4`
+- `<run-dir>/validation/commerce.json`
+- `<run-dir>/validation/qa.json`
+- `<run-dir>/validation/frames/{start,middle,end}.*`
+- `<run-dir>/release/package.json`
+- `<run-dir>/release/receipt.json`
+- `<run-dir>/run-summary.md`
 
 각 JSON의 필수 필드는 `schemas/`와 `REFERENCE.md`에 정의돼 있다.
 

@@ -11,7 +11,7 @@ S:
   5:Distribute — tarball, git repo (recommended for freshness via timestamp), or filesystem mount
   6:Consume — walk bundle with pyyaml, filter by frontmatter.type, inject relevant atoms into agent context
   7:Integrate with llm-wiki — promote raw wiki captures to OKF format (add required frontmatter + organize into typed subdirectories)
-  8:Plugin install — `npx skills add https://github.com/akillness/jeo-skills --skill okf`
+  8:Plugin install — `npx skills@1.9.0 add https://github.com/akillness/jeo-skills --skill okf`
 R:
   okf-agent-memory:Separate OKF v0.2 Go CLI/MCP project-memory runtime
   llm-wiki:Raw source capture, summarization, and git/Obsidian vault maintenance

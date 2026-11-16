@@ -7,7 +7,7 @@
       "expected_output": "The skill preflights the host, then sets up both halves and says the addon must be started in Blender.",
       "assertions": [
         "The response runs or references `scripts/blender-mcp-check.py doctor` before installing anything",
-        "The response covers both halves: `uvx blender-mcp` for the server and `uvx blender-mcp install-addon` plus enabling the addon",
+        "The response covers both halves: `uvx blender-mcp==1.9.4` for the server and `uvx blender-mcp==1.9.4 install-addon` plus enabling the addon",
         "The response says the addon must be started from the Blender sidebar and that a passing check is not a live connection"
       ]
     },
@@ -64,7 +64,7 @@
     },
     {
       "id": 7,
-      "prompt": "Claude Desktop에서 spawn uvx ENOENT 에러가 나. uvx는 터미널에서 잘 되는데.",
+      "prompt": "Claude Desktop에서 spawn 'uvx' ENOENT 에러가 나. uvx는 터미널에서 잘 되는데.",
       "expected_output": "The skill identifies the GUI PATH problem and gives the absolute-path fix.",
       "assertions": [
         "The response explains that GUI-launched clients do not inherit the terminal PATH",

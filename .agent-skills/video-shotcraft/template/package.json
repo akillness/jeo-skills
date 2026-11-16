@@ -8,13 +8,13 @@
     "still": "remotion still src/index.ts AiflPromo"
   },
   "dependencies": {
-    "@remotion/cli": "4.0.484",
+    "@remotion/cli": "4.0.544",
     "react": "19.2.7",
     "react-dom": "19.2.7",
-    "remotion": "4.0.484"
+    "remotion": "4.0.544"
   },
   "devDependencies": {
-    "@types/react": "^19.2.17",
-    "typescript": "^6.0.3"
+    "@types/react": "19.2.17",
+    "typescript": "6.0.3"
   }
 }

@@ -86,9 +86,9 @@ fi
 if [[ "$EXPORT_ONLY" == "true" ]]; then
   EXPORT_TARGET="${EXPORT_DIR:-./emulator-data}"
   log_info "Exporting emulator data to: ${EXPORT_TARGET}"
-  CMD="firebase emulators:export ${EXPORT_TARGET} --force"
-  [[ -n "$PROJECT" ]] && CMD+=" --project ${PROJECT}"
-  eval "$CMD"
+  CMD=(firebase emulators:export "${EXPORT_TARGET}" --force)
+  [[ -n "$PROJECT" ]] && CMD+=(--project "${PROJECT}")
+  "${CMD[@]}"
   log_success "Data exported to ${EXPORT_TARGET}"
   exit 0
 fi
@@ -103,21 +103,19 @@ fi
 
 # ─── Build command ────────────────────────────────────────────────────────────
 if [[ -n "$TEST_SCRIPT" ]]; then
-  CMD="firebase emulators:exec"
+  CMD=(firebase emulators:exec)
 else
-  CMD="firebase emulators:start"
+  CMD=(firebase emulators:start)
 fi
 
-[[ -n "$PROJECT" ]]          && CMD+=" --project ${PROJECT}"
-[[ -n "$ONLY" ]]             && CMD+=" --only ${ONLY}"
-[[ -n "$IMPORT_DIR" ]]       && CMD+=" --import ${IMPORT_DIR}"
-[[ -n "$EXPORT_DIR" ]]       && [[ -z "$TEST_SCRIPT" ]] && CMD+=" --export-on-exit ${EXPORT_DIR}"
-[[ -n "$EXPORT_DIR" ]]       && [[ -n "$TEST_SCRIPT" ]] && CMD+=" --export-on-exit ${EXPORT_DIR}"
-[[ "$INSPECT" == "true" ]]   && CMD+=" --inspect-functions ${INSPECT_PORT}"
-[[ "$NO_UI" == "true" ]]     && CMD+=" --no-ui"
-[[ -n "$LOG_VERBOSITY" ]]    && CMD+=" --log-verbosity ${LOG_VERBOSITY}"
-[[ -n "$TEST_SCRIPT" ]]      && CMD+=" \"${TEST_SCRIPT}\""
-
+[[ -n "$PROJECT" ]]          && CMD+=(--project "${PROJECT}")
+[[ -n "$ONLY" ]]             && CMD+=(--only "${ONLY}")
+[[ -n "$IMPORT_DIR" ]]       && CMD+=(--import "${IMPORT_DIR}")
+[[ -n "$EXPORT_DIR" ]]       && CMD+=(--export-on-exit "${EXPORT_DIR}")
+[[ "$INSPECT" == "true" ]]   && CMD+=(--inspect-functions "${INSPECT_PORT}")
+[[ "$NO_UI" == "true" ]]     && CMD+=(--no-ui)
+[[ -n "$LOG_VERBOSITY" ]]    && CMD+=(--log-verbosity "${LOG_VERBOSITY}")
+[[ -n "$TEST_SCRIPT" ]]      && CMD+=("${TEST_SCRIPT}")
 # ─── Default ports info ───────────────────────────────────────────────────────
 log_info "Starting Firebase Emulator Suite..."
 log_info ""
@@ -131,8 +129,8 @@ log_info "  Storage:     http://localhost:9199"
 log_info "  Pub/Sub:     http://localhost:8085"
 log_info "  Emulator UI: http://localhost:4000"
 log_info ""
-log_info "Command: ${CMD}"
+log_info "Command: ${CMD[*]}"
 log_info ""
 
 # ─── Execute ──────────────────────────────────────────────────────────────────
-eval "$CMD"
+"${CMD[@]}"

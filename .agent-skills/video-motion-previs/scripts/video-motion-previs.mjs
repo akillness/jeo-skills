@@ -16,40 +16,42 @@ const ACTIONS = new Set([
 ]);
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-const print = (value) => process.stdout.write(`${JSON.stringify(value, null, 2)}\n`);
+const print = (value) => process.stdout.write(JSON.stringify(value, null, 2) + '\n');
 
 function fail(message, details, code = 1) {
   const payload = { ok: false, error: message };
   if (details !== undefined) payload.details = details;
-  process.stderr.write(`${JSON.stringify(payload, null, 2)}\n`);
+  process.stderr.write(JSON.stringify(payload, null, 2) + '\n');
   process.exitCode = code;
 }
 
 function usage() {
-  return `video-motion-previs — CLI for a running Motion Previs Studio v4 app
-
-Usage:
-  video-motion-previs check
-  video-motion-previs install [--packaged | --source [DIR]]
-  video-motion-previs launch
-  video-motion-previs link
-  video-motion-previs state
-  video-motion-previs import-file PATH
-  video-motion-previs import-url URL
-  video-motion-previs set-range START_SECONDS END_SECONDS
-  video-motion-previs set-mode camera_only|actor_motion|object_motion|full_scene
-  video-motion-previs set-settings JSON
-  video-motion-previs analyze
-  video-motion-previs wait [--timeout SECONDS] [--interval SECONDS]
-  video-motion-previs export
-  video-motion-previs list-bundle
-  video-motion-previs send-to-blockout reference|depth|ai_depth|pose|openpose
-  video-motion-previs screenshot OUTPUT.png
-  video-motion-previs workflow PATH_OR_URL --start N --end N [--mode MODE]
-                            [--sample-fps N] [--resolution auto|720p]
-                            [--timeout SECONDS]
-  video-motion-previs call ACTION [JSON]
-`;
+  return [
+    'video-motion-previs — CLI for a running Motion Previs Studio v4 app',
+    '',
+    'Usage:',
+    '  video-motion-previs check',
+    '  video-motion-previs install [--packaged | --source [DIR]]',
+    '  video-motion-previs launch',
+    '  video-motion-previs link',
+    '  video-motion-previs state',
+    '  video-motion-previs import-file PATH',
+    '  video-motion-previs import-url URL',
+    '  video-motion-previs set-range START_SECONDS END_SECONDS',
+    '  video-motion-previs set-mode camera_only|actor_motion|object_motion|full_scene',
+    '  video-motion-previs set-settings JSON',
+    '  video-motion-previs analyze',
+    '  video-motion-previs wait [--timeout SECONDS] [--interval SECONDS]',
+    '  video-motion-previs export',
+    '  video-motion-previs list-bundle',
+    '  video-motion-previs send-to-blockout reference|depth|ai_depth|pose|openpose',
+    '  video-motion-previs screenshot OUTPUT.png',
+    '  video-motion-previs workflow PATH_OR_URL --start N --end N [--mode MODE]',
+    '                            [--sample-fps N] [--resolution auto|720p]',
+    '                            [--timeout SECONDS]',
+    '  video-motion-previs call ACTION [JSON]',
+    '',
+  ].join('\n');
 }
 
 function discoveryPath() {
@@ -106,22 +108,22 @@ function sourcePrepared(source) {
 
 function readDescriptor() {
   const file = discoveryPath();
-  if (!existsSync(file)) throw new Error(`Motion Previs Studio is not running; discovery file is missing: ${file}`);
+  if (!existsSync(file)) throw new Error('Motion Previs Studio is not running; discovery file is missing: ' + file);
   let descriptor;
   try {
     descriptor = JSON.parse(readFileSync(file, 'utf8'));
   } catch (error) {
-    throw new Error(`Invalid discovery descriptor at ${file}: ${error.message}`);
+    throw new Error('Invalid discovery descriptor at ' + file + ': ' + error.message);
   }
   if (descriptor.protocolVersion !== 1 || !Number.isInteger(descriptor.port) || typeof descriptor.token !== 'string') {
-    throw new Error(`Unsupported discovery descriptor at ${file}`);
+    throw new Error('Unsupported discovery descriptor at ' + file);
   }
   return { file, descriptor };
 }
 
 async function healthFromDescriptor(descriptor, timeoutMs = 2000) {
   try {
-    const response = await fetch(`http://127.0.0.1:${descriptor.port}/health`, {
+    const response = await fetch('http://127.0.0.1:' + descriptor.port + '/health', {
       signal: AbortSignal.timeout(timeoutMs)
     });
     const body = await response.json();
@@ -172,14 +174,14 @@ async function check() {
 }
 
 async function rpc(action, params = {}) {
-  if (!ACTIONS.has(action)) throw new Error(`Unknown action "${action}". Allowed: ${[...ACTIONS].join(', ')}`);
+  if (!ACTIONS.has(action)) throw new Error('Unknown action "' + action + '". Allowed: ' + [...ACTIONS].join(', '));
   const { descriptor } = readDescriptor();
   const health = await healthFromDescriptor(descriptor);
-  if (!health.reachable) throw new Error(`Motion Previs Studio control server is not healthy: ${health.error || health.status}`);
-  const response = await fetch(`http://127.0.0.1:${descriptor.port}/rpc`, {
+  if (!health.reachable) throw new Error('Motion Previs Studio control server is not healthy: ' + (health.error || health.status));
+  const response = await fetch('http://127.0.0.1:' + descriptor.port + '/rpc', {
     method: 'POST',
     headers: {
-      authorization: `Bearer ${descriptor.token}`,
+      authorization: 'Bearer ' + descriptor.token,
       'content-type': 'application/json'
     },
     body: JSON.stringify({ action, params }),
@@ -189,10 +191,10 @@ async function rpc(action, params = {}) {
   try {
     result = await response.json();
   } catch {
-    throw new Error(`Control server returned non-JSON HTTP ${response.status}`);
+    throw new Error('Control server returned non-JSON HTTP ' + response.status);
   }
   if (!response.ok || result.ok !== true) {
-    throw new Error(result.error || `Control action ${action} failed with HTTP ${response.status}`);
+    throw new Error(result.error || ('Control action ' + action + ' failed with HTTP ' + response.status));
   }
   return result.data;
 }
@@ -221,27 +223,27 @@ async function waitForAnalysis(args) {
     state = await rpc('get_state');
     const status = state?.analysis?.status;
     if (status === 'done') return state;
-    if (status === 'error') throw new Error(`Analysis failed${state.analysis.error ? `: ${state.analysis.error}` : ''}`);
-    if (status !== 'running') throw new Error(`Analysis is not running (status: ${status ?? 'unknown'})`);
+    if (status === 'error') throw new Error('Analysis failed' + (state.analysis.error ? ': ' + state.analysis.error : ''));
+    if (status !== 'running') throw new Error('Analysis is not running (status: ' + (status ?? 'unknown') + ')');
     await sleep(intervalSeconds * 1000);
   }
-  throw new Error(`Analysis did not finish within ${timeoutSeconds} seconds`);
+  throw new Error('Analysis did not finish within ' + timeoutSeconds + ' seconds');
 }
 
 async function latestWindowsInstaller() {
   const response = await fetch('https://api.github.com/repos/wassermanproductions/motion-previs-studio/releases/latest', {
     headers: { accept: 'application/vnd.github+json', 'user-agent': 'video-motion-previs-cli' }
   });
-  if (!response.ok) throw new Error(`GitHub release lookup failed with HTTP ${response.status}`);
+  if (!response.ok) throw new Error('GitHub release lookup failed with HTTP ' + response.status);
   const release = await response.json();
   const asset = release.assets?.find((item) => /win.*x64.*\.exe$/i.test(item.name) || /x64.*\.exe$/i.test(item.name));
-  return { release: release.tag_name, url: asset?.browser_download_url || `${OFFICIAL_REPO}/releases/latest` };
+  return { release: release.tag_name, url: asset?.browser_download_url || (OFFICIAL_REPO + '/releases/latest') };
 }
 
 function run(command, args, options = {}) {
   const result = spawnSync(command, args, { stdio: 'inherit', ...options });
   if (result.error) throw result.error;
-  if (result.status !== 0) throw new Error(`${command} exited with status ${result.status}`);
+  if (result.status !== 0) throw new Error(command + ' exited with status ' + result.status);
 }
 
 async function install(args) {
@@ -260,7 +262,7 @@ async function install(args) {
       : findSource() || path.join(homedir(), '.local', 'share', 'motion-previs-studio');
     if (!existsSync(path.join(target, '.git'))) {
       mkdirSync(path.dirname(target), { recursive: true });
-      run('git', ['clone', '--depth', '1', `${OFFICIAL_REPO}.git`, target]);
+      run('git', ['clone', '--depth', '1', OFFICIAL_REPO + '.git', target]);
     }
     run('npm', ['ci'], { cwd: target });
     return { ok: true, installed: { kind: 'source', path: target }, note: 'npm ci also prepares pinned runtime assets through upstream postinstall.' };
@@ -268,9 +270,9 @@ async function install(args) {
 
   if (platform() === 'darwin') {
     if (arch() !== 'arm64') throw new Error('The packaged macOS release supports Apple Silicon only; use install --source on Intel.');
-    const script = path.join(tmpdir(), `motion-previs-install-${process.pid}.sh`);
+    const script = path.join(tmpdir(), 'motion-previs-install-' + process.pid + '.sh');
     const response = await fetch(INSTALLER_URL);
-    if (!response.ok) throw new Error(`Official installer download failed with HTTP ${response.status}`);
+    if (!response.ok) throw new Error('Official installer download failed with HTTP ' + response.status);
     writeFileSync(script, await response.text(), { mode: 0o700 });
     try {
       run('bash', [script]);
@@ -303,7 +305,7 @@ async function launch() {
   } else if (sourcePrepared(source)) {
     spawn('npm', ['run', 'dev'], { cwd: source, detached: true, stdio: 'ignore' }).unref();
   } else if (source) {
-    throw new Error(`Source checkout is not prepared: ${source}. Run video-motion-previs install --source "${source}" first.`);
+    throw new Error('Source checkout is not prepared: ' + source + '. Run video-motion-previs install --source "' + source + '" first.');
   } else {
     throw new Error('No installation found. Run video-motion-previs install first.');
   }
@@ -428,7 +430,7 @@ async function main() {
       mkdirSync(binDir, { recursive: true });
       if (platform() === 'win32') {
         const target = path.join(binDir, 'video-motion-previs.cmd');
-        writeFileSync(target, `@echo off\r\nnode "${scriptPath}" %*\r\n`);
+        writeFileSync(target, '@echo off\r\nnode "' + scriptPath + '" %*\r\n');
         print({ ok: true, path: target, note: 'Add this directory to PATH if it is not already present.' });
       } else {
         const target = path.join(binDir, 'video-motion-previs');
@@ -439,7 +441,7 @@ async function main() {
       return;
     }
     default:
-      throw new Error(`Unknown command "${command}". Run video-motion-previs --help.`);
+      throw new Error('Unknown command "' + command + '". Run video-motion-previs --help.');
   }
 }
 

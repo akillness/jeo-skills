@@ -94,8 +94,7 @@ Use a separate profile so the harness can safely create clean sessions:
 google-chrome --remote-debugging-port=9222 --user-data-dir=/tmp/chrome-debug
 
 # Windows PowerShell
-& "C:\Program Files\Google\Chrome\Application\chrome.exe" `
-  --remote-debugging-port=9222 --user-data-dir="$env:TEMP\chrome-debug"
+& "C:\Program Files\Google\Chrome\Application\chrome.exe" --remote-debugging-port=9222 --user-data-dir="$env:TEMP\chrome-debug"
 ```
 
 Verify:

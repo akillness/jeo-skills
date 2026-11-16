@@ -14,7 +14,7 @@ RISK_PATTERNS = {
     "autonomous_or_long_running": re.compile(r"(?i)\b(?:autonomous|unattended|long[- ]running)\b"),
     "clinical_or_patient_data": re.compile(r"(?i)\b(?:clinical|patient|diagnos|treatment|genomic)"),
     "cloud_or_paid_compute": re.compile(r"(?i)\b(?:cloud|GPU|billing|paid|quota|scheduler|Modal)\b"),
-    "credential_names": re.compile(r"(?i)(?:api[_ -]?key|client secret|service account|access token|password)"),
+    "credential_names": re.compile(r"(?i)(?:api[_ -]?key|client secret|service account|access[_ ]token|password)"),
     "laboratory_or_hardware_control": re.compile(r"(?i)\b(?:robot|liquid handler|microscope|instrument|labware)\b"),
     "package_or_remote_code_install": re.compile(r"(?i)(?:uv pip install|pip install|git clone|curl[^\n]+\|[^\n]+(?:bash|sh))"),
     "remote_authority_language": re.compile(r"(?i)(?:authoritative source|source of truth|follow .*instructions)"),
@@ -28,12 +28,12 @@ import re
 import subprocess
 import sys
 from pathlib import Path
-from urllib.parse import urlsplit, urlunsplit
 from typing import Optional
 
 NAME_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 CODE_SUFFIXES = {".cs", ".hlsl", ".html", ".js", ".mjs", ".py", ".sh", ".ts"}
 MAX_TEXT_BYTES = 2 * 1024 * 1024
+_SAFE_GIT_ENV_KEYS = ("PATH", "HOME", "TMPDIR", "TEMP", "TMP", "LANG", "LC_ALL", "LC_CTYPE")
 
 
 def read_text(path: Path) -> str:
@@ -44,7 +44,7 @@ def read_text(path: Path) -> str:
 
 
 def git_read(root: Path, *args: str) -> Optional[str]:
-    env = os.environ.copy()
+    env = {key: val for key in _SAFE_GIT_ENV_KEYS if (val := os.environ.get(key)) is not None}
     env["GIT_TERMINAL_PROMPT"] = "0"
     try:
         result = subprocess.run(
@@ -70,16 +70,16 @@ def safe_remote(value: Optional[str]) -> Optional[str]:
     if value.startswith("git@github.com:"):
         path = value.split(":", 1)[1].split("?", 1)[0].split("#", 1)[0]
         return "https://github.com/" + path
-    try:
-        parts = urlsplit(value)
-    except ValueError:
-        return "unparseable"
-    if not parts.scheme or not parts.netloc:
+    scheme, sep, rest = value.partition("://")
+    if not sep or not scheme or not rest:
         return value.split("?", 1)[0].split("#", 1)[0]
-    host = parts.hostname or ""
-    if parts.port:
-        host += f":{parts.port}"
-    return urlunsplit((parts.scheme, host, parts.path, "", ""))
+    authority, slash, path = rest.partition("/")
+    netloc = authority.split("?", 1)[0].split("#", 1)[0]
+    if not netloc:
+        return value.split("?", 1)[0].split("#", 1)[0]
+    host = netloc.rsplit("@", 1)[-1]
+    path_part = f"/{path.split('?', 1)[0].split('#', 1)[0]}" if slash else ""
+    return f"{scheme}://{host}{path_part}"
 
 
 def canonical_remote(value: Optional[str]) -> Optional[str]:
@@ -110,10 +110,10 @@ def parse_frontmatter(skill_path: Path) -> dict[str, object]:
     for index, line in enumerate(front):
         if re.match(r"^name\s*:", line):
             raw = line.split(":", 1)[1].strip()
-            name = raw.strip('"\'')
+            name = raw.strip('"' + "'")
         if re.match(r"^license\s*:", line):
             raw_license = line.split(":", 1)[1].strip()
-            license_value = raw_license.strip('"\'') or None
+            license_value = raw_license.strip('"' + "'") or None
         if re.match(r"^description\s*:", line):
             raw = line.split(":", 1)[1].strip()
             if raw in {">", ">-", ">+", "|", "|-", "|+"}:

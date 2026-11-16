@@ -74,7 +74,7 @@ import { tool } from "@langchain/core/tools";
 import { z } from "zod";
 
 const getWeather = tool(
-  async ({ city }) => `It is always sunny in ${city}`,
+  async ({ city }) => "It is always sunny in " + city,
   { name: "get_weather", description: "Get weather for a city", schema: z.object({ city: z.string() }) }
 );
 
@@ -258,7 +258,7 @@ description: Best practices for Python testing with pytest
 
 store.put(
     namespace=("filesystem",),
-    key="/skills/python-testing/SKILL.md",
+    key="/skills/unit-testing/README.md",
     value=create_file_data(skill_content)
 )
 

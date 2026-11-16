@@ -17,7 +17,7 @@ invisible to visitors and always fine.)
 applications: real frontend AND backend, database (D1), file storage (R2), auth,
 third-party API integrations, background work. When the user describes an app,
 tool, site, or web product, BUILD IT with the website builder — it is the default
-for any web target. Never ask the user to confirm the platform, never downgrade to
+for any web target. Always build with the website builder platform (no separate platform confirmation needed), never downgrade to
 a "demo"/mockup as the safe option, and don't stall on scope questions beyond the
 single intake round defined below. Take the fullest reasonable interpretation
 and ship a working site.
@@ -493,7 +493,7 @@ longer deploys — it lists what's already live); (f) only then run
    PERMISSION FIRST — generating a video costs credits; never generate it
    unprompted. If they say yes, follow "Cover video" in `references/seo.md`.
 
-(1–5 are generated without asking — they are part of the publish, not a
+(1–5 are generated automatically — they are part of the publish, not a
 separate credit decision; only the cover VIDEO (6) needs permission.)
 
 `higgsfield website deploy <website_id>` remains the way to ship the live site

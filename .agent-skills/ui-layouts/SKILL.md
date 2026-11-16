@@ -56,7 +56,7 @@ The CLI README uses `ui-layouts`; a component page uses `uilayouts@latest` and s
 Treat that disagreement as unresolved package identity until the actual published artifact is verified.
 Prefer a reviewed, immutable source-copy plan when execution or package identity is unavailable.
 The inspected CLI reads mutable `main` URLs, writes files, and invokes a package manager automatically.
-Even its `list` mode downloads registry data and its npx wrapper executes downloaded code.
+Even its `list` mode downloads registry data and its package-runner wrapper executes downloaded code.
 Before any CLI/package-manager run, obtain approval for the exact executable, version, endpoint, writes, and dependencies.
 Approve overwrites explicitly; the inspected component downloader does not establish an overwrite confirmation gate.
 Remote images, deployments, publishing, MCP setup, accounts, and paid operations need separate approval.

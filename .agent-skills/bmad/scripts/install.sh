@@ -71,11 +71,13 @@ else
   echo ""
 
   if [ "$DRY_RUN" = true ]; then
-    echo -e "  ${GRAY}[DRY RUN] Would run: curl -sSfL https://plannotator.ai/install.sh | sh${NC}"
+    echo -e "  ${GRAY}[DRY RUN] Would download https://plannotator.ai/install.sh, verify non-empty, and execute${NC}"
     PLANNOTATOR_OK=false
   else
     # Install plannotator
-    if curl -sSfL https://plannotator.ai/install.sh | sh; then
+    PLANNOTATOR_TMP="$(mktemp)"
+    if curl -sSfL https://plannotator.ai/install.sh -o "$PLANNOTATOR_TMP" && [ -s "$PLANNOTATOR_TMP" ] && sh "$PLANNOTATOR_TMP"; then
+      rm -f "$PLANNOTATOR_TMP"
       echo ""
       echo -e "  ${GREEN}✓ plannotator installed${NC}"
       PLANNOTATOR_OK=true
@@ -83,6 +85,7 @@ else
       # Reload PATH so plannotator is found immediately
       export PATH="$HOME/.local/bin:$HOME/bin:$PATH"
     else
+      rm -f "$PLANNOTATOR_TMP"
       echo ""
       echo -e "  ${RED}✗ plannotator install failed.${NC}"
       echo -e "  ${GRAY}  Manual install: https://plannotator.ai${NC}"

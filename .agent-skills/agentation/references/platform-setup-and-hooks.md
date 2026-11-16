@@ -4,8 +4,8 @@
 
 ```bash
 npm install agentation -D
-npx add-mcp "npx -y agentation-mcp server"
-npx agentation-mcp doctor
+npx add-mcp@2.6.1 "npx -y agentation-mcp@1.3.2 server"
+npx agentation-mcp@1.3.2 doctor
 ```
 
 This covers the common case: install the toolbar, register the MCP bridge, then verify the bridge before assuming the queue works.
@@ -14,13 +14,13 @@ This covers the common case: install the toolbar, register the MCP bridge, then 
 
 ### Upstream official skill path
 ```bash
-npx skills add benjitaylor/agentation -g
+npx skills@1.9.0 add benjitaylor/agentation -g
 # then use /agentation
 ```
 
 ### Direct MCP registration
 ```bash
-claude mcp add agentation -- npx -y agentation-mcp server
+claude mcp add agentation -- npx -y agentation-mcp@1.3.2 server
 ```
 
 ### Hook use case
@@ -42,7 +42,7 @@ If the goal is to inject pending annotations into each prompt, configure a `User
 ## Verification checklist
 1. Toolbar renders in development.
 2. `agentation-mcp` server starts successfully.
-3. `npx agentation-mcp doctor` passes.
+3. `npx agentation-mcp@1.3.2 doctor` passes.
 4. A new annotation appears in the queue.
 5. The agent loop can see or consume the pending annotation.
 6. ACK / resolve behavior works before real work starts.

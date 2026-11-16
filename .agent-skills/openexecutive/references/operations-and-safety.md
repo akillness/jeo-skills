@@ -26,7 +26,7 @@ Classify an operation before running it.
 - `POST /fixtures/reset` — irreversible factory reset of live state **and** the
   snapshot; it re-seeds the eight default departments afterwards, which can
   make the wipe look like a benign reinitialization
-- `POST /fixtures/unload` and `DELETE /fixtures/{name}`
+- `POST /fixtures/unload` and the fixture-removal endpoint (`DELETE`)
 - `openexecutive consolidate-initiatives --apply` — deletes merged rows and
   takes an immediate SQLite write lock
 - `make clean` — removes the virtualenv, `node_modules`, `.next`, and caches
@@ -34,7 +34,7 @@ Classify an operation before running it.
   3000, not only Open Executive
 - any proactive DM or email send
 - `flyctl secrets set` or `unset`, which restarts a live machine
-- merging to `main`, which auto-deploys the dev environment
+- merging to `main`, which triggers automated deployment of the dev environment
 
 Never use a destructive route to work around a smaller problem, and never run
 one on a machine or deployment you did not confirm with the user.

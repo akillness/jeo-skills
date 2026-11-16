@@ -23,11 +23,11 @@ shot-transitions 六式和 transition-travel/hidden-cut 都把页面当"场景"
 ## 参数表
 | 参数 | 典型值 | 调节手感 |
 |------|--------|----------|
-| A 结构命门 | 场景层 `translateZ(−W/2) rotateY(θ)` 把正面拉回 z=0 | 少了这层 hold 段页面尺度不对（被 perspective 推远） |
-| A 转速 | θ 0→−90° / 38f inOut cubic；中段叠 blur 1.5px 落定摘 | <28f 读不出体块感；>50f 读作慢慢挪 |
-| A 亮度对切 | 旧面 1→0.55、新面 0.55→1 + 接缝竖向渐变阴影 sin(pπ) | 无明暗对切两面读作同一张图在转 |
+| A 结构命门 | 场景层 `translateZ(-W/2) rotateY(theta)` 把正面拉回 z=0 | 少了这层 hold 段页面尺度不对（被 perspective 推远） |
+| A 转速 | theta 0→-90° / 38f inOut cubic；中段叠 blur 1.5px 落定摘 | <28f 读不出体块感；>50f 读作慢慢挪 |
+| A 亮度对切 | 旧面 1→0.55、新面 0.55→1 + 接缝竖向渐变阴影 sin(p*pi) | 无明暗对切两面读作同一张图在转 |
 | B 预告 | 裂前中缝 2px 细线闪现两次（18–22/25–29f） | 直接裂开观众没看到裂点在哪 |
-| B 滑出 | 各 translateX ∓980px / 20f Easing.in(cubic) 加速 | ease-out 滑出是"被推走"，ease-in 才是"让位" |
+| B 滑出 | 各 translateX +/-980px / 20f Easing.in(cubic) 加速 | ease-out 滑出是"被推走"，ease-in 才是"让位" |
 | B 撕裂边 | 内边缘 3px G.ink 亮线 + 8px 投影 | 无边线两半读作普通左右擦除 |
 | 收尾 | 新页落定真静止 ≥40f | R1 |
 
@@ -38,7 +38,7 @@ shot-transitions 六式和 transition-travel/hidden-cut 都把页面当"场景"
   **全片 ≤2 次**，连续两缝都用体块读作 PPT 翻页
 - A 式官方 `@remotion/transitions` cube() 是付费件——本卡是 CSS 自实现，
   backlog 已有"评估官方转场原语"待选项，若引入官方件可对照
-- B 式两半必须**对位拼合无缝**（右半内层 translateX(−960px)）——
+- B 式两半必须**对位拼合无缝**（右半内层 translateX(-960px)）——
   静止时看出接缝就穿帮；真实截图注意奇数宽度取整
 - 转场前后两页都要有 ≥30f 静止建立/收尾——两端都在动，体块感被
   运动淹没

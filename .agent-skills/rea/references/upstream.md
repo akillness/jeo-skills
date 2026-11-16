@@ -196,5 +196,5 @@ All citations below are pinned to
 - [MCP contracts](https://github.com/morluto/rea/blob/ee50ed121e38cc6e1a2ff0dc8b789f15f71c5402/docs/mcp-contracts.md)
 - [AGENTS](https://github.com/morluto/rea/blob/ee50ed121e38cc6e1a2ff0dc8b789f15f71c5402/AGENTS.md)
 - [package/entrypoint](https://github.com/morluto/rea/blob/ee50ed121e38cc6e1a2ff0dc8b789f15f71c5402/package.json)
-- [upstream skill](https://github.com/morluto/rea/blob/ee50ed121e38cc6e1a2ff0dc8b789f15f71c5402/.agents/skills/reverse-engineer-anything/SKILL.md)
+- [upstream skill directory](https://github.com/morluto/rea/tree/ee50ed121e38cc6e1a2ff0dc8b789f15f71c5402/.agents/skills/reverse-engineer-anything)
 - [MIT license](https://github.com/morluto/rea/blob/ee50ed121e38cc6e1a2ff0dc8b789f15f71c5402/LICENSE)

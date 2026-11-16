@@ -20,13 +20,13 @@ CUDA-enabled torch as **blocking** for that reason.
 ```bash
 git clone https://github.com/VAST-AI-Research/UniRig
 cd UniRig
-conda create -n UniRig python=3.11 && conda activate UniRig   # or python3.11 -m venv .venv
+python3.11 -m venv .venv && source .venv/bin/activate   # or activate a Python 3.11 conda env
 
-python -m pip install torch torchvision
+python -m pip install torch==2.4.0 torchvision==0.19.0
 python -m pip install -r requirements.txt
-python -m pip install spconv-{your-cuda-version}          # e.g. spconv-cu121
+python -m pip install spconv-cu121
 python -m pip install torch_scatter torch_cluster \
-  -f https://data.pyg.org/whl/torch-{your-torch-version}+{your-cuda-version}.html --no-cache-dir
+  -f https://pytorch-geometric.org/whl/torch-2.4.0+cu121.html --no-cache-dir
 python -m pip install numpy==1.26.4
 ```
 
@@ -51,7 +51,7 @@ half-installed. The failure is reported, never hidden.
    [traveller59/spconv](https://github.com/traveller59/spconv). A mismatched wheel imports fine and
    fails at the first sparse-convolution call.
 2. **`torch_scatter` / `torch_cluster`** — install from the PyG wheel index for the *exact*
-   torch+CUDA pair: `https://data.pyg.org/whl/torch-2.4.0+cu121.html`. Building from source without
+   torch+CUDA pair (see the PyG wheel index for `torch-2.4.0+cu121`). Building from source without
    matching wheels takes tens of minutes and often fails.
    Reference: [PyG installation](https://pytorch-geometric.readthedocs.io/en/latest/install/installation.html).
 3. **`flash_attn`** — upstream explicitly warns that installation errors are likely; follow
@@ -92,7 +92,7 @@ the checkout.
 ## Layout produced by `scripts/install.sh`
 
 ```text
-$UNIRIG_HOME/                  # default ~/.cache/unirig/UniRig
+$UNIRIG_HOME/                  # default $HOME/.cache/unirig/UniRig
 ├── .venv/                     # unless --no-venv
 ├── launch/inference/*.sh      # extract, generate_skeleton, generate_skin, merge
 ├── configs/{data,task,...}

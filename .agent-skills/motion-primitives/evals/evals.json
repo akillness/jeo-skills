@@ -10,7 +10,7 @@
       "expectations": [
         "Identifies ibelick/motion-primitives and copied component source, not a runtime export from the private root package.",
         "Explains per=line means newline splitting, and keeps speedReveal/speedSegment positive and finite.",
-        "Preserves sr-only text in word/character modes and does not execute npx during source inspection."
+        "Preserves sr-only text in word/character modes and does not execute package-runner installers during source inspection."
       ]
     },
     {

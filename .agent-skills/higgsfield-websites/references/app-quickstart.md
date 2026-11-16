@@ -64,9 +64,9 @@ export async function fetchCurrentUser() {
 
 // Login / logout are browser NAVIGATION, not SDK calls:
 const login = (ret = location.pathname + location.search) =>
-  { location.href = `/__auth/login?return=${encodeURIComponent(ret)}` }
+  { location.href = '/__auth/login?return=' + encodeURIComponent(ret) }
 const logout = (ret = '/') =>
-  { location.href = `/__auth/logout?return=${encodeURIComponent(ret)}` }
+  { location.href = '/__auth/logout?return=' + encodeURIComponent(ret) }
 ```
 
 A signed-out surface renders a sign-in action that calls `login()`; a server-side
@@ -244,7 +244,7 @@ import { toast } from '@higgsfield/quanta/sonner'
 // Put this app-local component in app/src/components/; it uses Quanta tokens.
 const cssRatio = (ratio: string) => {
   const [width, height] = ratio.split(':').map(Number)
-  return width > 0 && height > 0 ? `${width} / ${height}` : '1 / 1'
+  return width > 0 && height > 0 ? width + ' / ' + height : '1 / 1'
 }
 
 <div

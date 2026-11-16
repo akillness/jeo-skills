@@ -84,7 +84,7 @@ choose `default-value` when a placeholder keeps the flow meaningful.
 | `AssignerNode` | `assigner` | Variable ops (over-write/append/extend/add/subtract/clear/set …). Persists conversation variables to DB |
 | `DocExtractorNode` | `document-extractor` | Extracts text by MIME type (pdf, docx, xlsx, ppt, epub, eml, csv, …) |
 
-> `CodeNode` executes DSL- or model-provided Python. The parser's `safe_check()`
+> `CodeNode` executes DSL- or model-provided Python. The parser `safe_check()`
 > AST guard is disabled/TODO upstream. Treat its input as **trusted only**.
 
 ### LLM and agents

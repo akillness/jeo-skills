@@ -32,7 +32,7 @@ async function waitFor(predicate, message, ms = 4000) {
   assert.fail(message);
 }
 
-test('stdio accepts fragmented complete multi-megabyte requests and responses without truncation', {timeout:10000}, async t => {
+test('stdio accepts fragmented complete multi-megabyte requests and untruncated responses', {timeout:10000}, async t => {
   const f = fixture(t, `
     import {createInterface} from 'node:readline';
     createInterface({input:process.stdin}).on('line', line => {

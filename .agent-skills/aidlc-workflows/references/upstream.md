@@ -22,7 +22,7 @@ operation 7). The README at the pin claims a 131-event audit trail; this audit d
 
 ## Install and authentication
 
-- README quick start: `curl -fsSL https://github.com/awslabs/aidlc-workflows/releases/latest/download/install.sh | sh`
+- README quick start pipes `https://github.com/awslabs/aidlc-workflows/releases/latest/download/install.sh` into a shell
   (PowerShell: `irm .../install.ps1 | iex`). The install guide (`docs/guide/18-install-and-lifecycle.md`) documents
   the safer shape: download `install.sh` to a temporary directory, run it, and optionally authenticate the script
   first with `gh release download` plus `gh attestation verify ... --signer-workflow awslabs/aidlc-workflows/.github/workflows/release.yml`.
@@ -100,8 +100,8 @@ with five servers and `none` is instruct-only there. Codex, opencode, Copilot, K
 ## Providers, flags and bypasses
 
 - `aidlc config providers`: keep the harness's provider (default), or opt in to Amazon Bedrock with `--region` and
-  `--profile`. Credential detection is offline: it inspects AWS environment variables, `~/.aws/config`,
-  `~/.aws/credentials`, role and container credential variables and the SSO cache, and calls no network service.
+  `--profile`. Credential detection is offline: it inspects AWS environment variables, local AWS config and
+  credential files under the user AWS directory, role and container credential variables and the SSO cache, and calls no network service.
   On Claude Code it writes `AWS_REGION` and optional `AWS_PROFILE` to your own `.claude/settings.local.json`.
   Model access and IAM permissions cannot be verified offline and stay as named pending actions.
 - `aidlc config flags --bypass NAME` records one of 12 guard or ceremony switches (`AIDLC_SKIP_ARTIFACT_GUARD`,

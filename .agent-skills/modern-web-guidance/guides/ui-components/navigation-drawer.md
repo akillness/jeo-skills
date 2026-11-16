@@ -61,7 +61,7 @@ The drawer is a single `<dialog>` containing a horizontal scroller, which contai
 </main>
 ```
 
-See `icons` (via `npx -y modern-web-guidance@latest retrieve "icons"`) for maintaining accessibility when using icons.
+See `icons` (via `npx -y modern-web-guidance@1.0.0 retrieve "icons"`) for maintaining accessibility when using icons.
 
 ### 2. Styles
 

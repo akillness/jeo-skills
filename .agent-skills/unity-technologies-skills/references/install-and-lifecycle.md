@@ -5,7 +5,7 @@
 Upstream documents the moving-main shortcut:
 
 ```bash
-npx skills add Unity-Technologies/skills
+npx --yes skills@1.5.23 add Unity-Technologies/skills
 ```
 
 That is convenient but not reproducible and may prompt for broad installation.

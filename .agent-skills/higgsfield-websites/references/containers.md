@@ -92,10 +92,10 @@ http.createServer(async (req, res) => {
 async function runJob(job) {
   // ... run ffmpeg, etc. (can take many minutes) ...
   // If you need Higgsfield data, call YOUR app (NOT fnf directly) with the token:
-  //   await fetch(`${job.appBaseUrl}/api/whatever`,
-  //     { headers: { Authorization: `Bearer ${job.containerToken}` } });
+  //   await fetch(job.appBaseUrl + '/api/whatever',
+  //     { headers: { Authorization: 'Bearer ' + job.containerToken } });
   jobs.set(job.jobId, { ...jobs.get(job.jobId), status: "done", progress: 100,
-                        outputKey: `jobs/${job.jobId}/out.mp4` });
+                        outputKey: "jobs/" + job.jobId + "/out.mp4" });
 }
 ```
 
@@ -153,7 +153,7 @@ export class AppContainer extends Container {
         body: JSON.stringify(job),
         signal: AbortSignal.timeout(BOOT_TIMEOUT_MS), // generous, NOT 6s
       });
-    } catch (e) { console.log(`[DO] bootAndStart ${job.jobId} THREW ${e}`); }
+    } catch (e) { console.log("[DO] bootAndStart " + job.jobId + " THREW " + e); }
   }
 
   // Kickoff hands the full job here. Boot in the background; start the monitor.
@@ -198,11 +198,11 @@ export class AppContainer extends Container {
     // Up → poll THIS job's status (fast; the port is open).
     let s: any = null;
     try {
-      const r = await this.containerFetch(`http://c/status?jobId=${jobId}`, { signal: AbortSignal.timeout(POLL_TIMEOUT_MS) });
+      const r = await this.containerFetch("http://c/status?jobId=" + jobId, { signal: AbortSignal.timeout(POLL_TIMEOUT_MS) });
       const body = await r.text();
       if (r.ok && body.trimStart().startsWith("{")) s = JSON.parse(body);
-      else console.log(`[DO] status non-json http=${r.status} ${body.slice(0, 200)}`); // surfaces runtime errors verbatim
-    } catch (e) { console.log(`[DO] status unreachable ${e}`); }
+      else console.log("[DO] status non-json http=" + r.status + " " + body.slice(0, 200)); // surfaces runtime errors verbatim
+    } catch (e) { console.log("[DO] status unreachable " + e); }
 
     if (!s) { this.schedule(3, "tick", p); return; }   // booting/race → retry soon
 
@@ -288,9 +288,9 @@ Instead it calls **your website's own API** as the viewer, using a short-lived
    `/start` (as `containerToken` above).
 3. **The container**, when it needs fnf, calls **your website** (not fnf):
    ```js
-   await fetch(`${appBaseUrl}/api/generate`, {
-     method: "POST",
-     headers: { Authorization: `Bearer ${containerToken}` },
+  await fetch(appBaseUrl + "/api/generate", {
+    method: "POST",
+    headers: { Authorization: "Bearer " + containerToken },
      body: JSON.stringify({ ... }),
    });
    ```

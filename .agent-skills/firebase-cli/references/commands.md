@@ -314,7 +314,7 @@ firebase deploy --except hosting,storage
 | `--only <targets>` | Comma-separated deploy targets |
 | `--except <targets>` | Comma-separated targets to skip |
 | `-m`, `--message <msg>` | Deploy message stored with the release |
-| `--force` | Delete Functions not in local source; bypass prompts |
+| `--force` | Delete Functions not in local source; confirm non-interactively |
 | `--non-interactive` | Disable interactive prompts |
 | `--debug` | Verbose debug output |
 | `--dry-run` | Preview without deploying |
@@ -539,7 +539,7 @@ firebase functions:delete myFunction --force
 | Flag | Description |
 |------|-------------|
 | `--region <region>` | Function region (e.g., `us-central1`) |
-| `--force` | Skip confirmation |
+| `--force` | Confirm without interactive prompt |
 
 ### `firebase functions:shell`
 
@@ -589,8 +589,8 @@ firebase functions:secrets:get SECRET_NAME
 ### `firebase functions:secrets:access`
 
 ```bash
-firebase functions:secrets:access SECRET_NAME
-firebase functions:secrets:access SECRET_NAME@VERSION
+firebase functions:secrets:access <key-name>
+firebase functions:secrets:access <key-name>@VERSION
 ```
 
 ### `firebase functions:secrets:prune`
@@ -650,7 +650,7 @@ echo '{"foo":"bar"}' | firebase database:set /import --confirm
 | Flag | Description |
 |------|-------------|
 | `-d`, `--data <json>` | Inline JSON data |
-| `-y`, `--confirm` | Skip confirmation |
+| `-y`, `--confirm` | Confirm without interactive prompt |
 | `-i`, `--instance <name>` | Non-default DB instance |
 
 ### `firebase database:push`
@@ -670,7 +670,7 @@ firebase database:update /path data.json
 ### `firebase database:remove`
 
 ```bash
-firebase database:remove /path
+firebase database:remove <db-path>
 firebase database:remove / --confirm    # WARNING: deletes entire database
 ```
 
@@ -732,7 +732,7 @@ firebase firestore:delete --all-collections --recursive --force
 |------|-------------|
 | `-r`, `--recursive` | Recursively delete subcollections |
 | `--all-collections` | Delete all Firestore data |
-| `-y`, `--force` | Skip confirmation |
+| `-y`, `--force` | Confirm without interactive prompt |
 | `--database <id>` | Target named database |
 
 ### `firebase firestore:indexes`
@@ -834,7 +834,7 @@ firebase remoteconfig:rollback -v 5 --force
 | Flag | Description |
 |------|-------------|
 | `-v`, `--version-number <n>` | **(Required)** Version to roll back to |
-| `--force` | Skip confirmation |
+| `--force` | Confirm without interactive prompt |
 
 ### `firebase remoteconfig:versions:list`
 
@@ -1013,8 +1013,8 @@ firebase apphosting:rollouts:create BACKEND_ID --location us-central1
 ### App Hosting Secrets
 
 ```bash
-firebase apphosting:secrets:set SECRET_NAME
-firebase apphosting:secrets:grantaccess SECRET_NAME --backend BACKEND_ID
+firebase apphosting:secrets:set <key-name>
+firebase apphosting:secrets:grantaccess <key-name> --backend BACKEND_ID
 ```
 
 ---

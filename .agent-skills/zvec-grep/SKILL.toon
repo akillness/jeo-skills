@@ -1,6 +1,6 @@
 N:zvec-grep
 D:Drive zvec-grep (`zg`), zvec-ai's local-first workspace search CLI and MCP server, to index code and documents, run hybrid, vector, BM25, or exhaustive managed ripgrep searches, configure agent integrations, and diagnose index or server freshness. Use when a task needs local workspace-grounded retrieval across code, Markdown, text, structured data, or images. Triggers on: zvec-grep, zvec grep, `zg`, @zvec/zvec-grep, local-first workspace search, hybrid workspace search, semantic repository search, zvec MCP, zvec_grep_search, managed ripgrep, `.zvec-grep`, or Remote Embedding authorization.
-G:zvec-grep|zvec|workspace-search|hybrid-search|semantic-search|bm25|ripgrep|mcp|cli|local-first|embeddings|node
+G:node|zvec-grep|zvec|workspace-search|hybrid-search|semantic-search|bm25|ripgrep|mcp|cli|local-first|embeddings
 U[8]:
   Index a scoped local workspace with an explicit model and file filters
   Choose ranked hybrid, FTS, vector, or exhaustive managed ripgrep retrieval

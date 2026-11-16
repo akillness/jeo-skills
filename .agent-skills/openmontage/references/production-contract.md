@@ -208,7 +208,7 @@ If `human_approval_default` is true:
 5. end the turn;
 6. after a later approval, write `completed` with `human_approved=True`.
 
-The writer fails closed for a gated completion without approval. Predecessor checkpoints
+The writer fails closed for a gated completion when explicit approval is absent. Predecessor checkpoints
 must also exist, be valid, be completed, and contain required approval evidence.
 
 ### Resume

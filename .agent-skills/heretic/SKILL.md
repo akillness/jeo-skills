@@ -187,7 +187,7 @@ CLI/config: [references/cli-and-config.md](references/cli-and-config.md).
 
 ```sh
 # As a jeo-skills plugin (routing skill):
-npx skills add https://github.com/akillness/jeo-skills --skill heretic
+npx skills@1.9.0 add https://github.com/akillness/jeo-skills --skill heretic
 ```
 
 # Install the Heretic tool itself into a Python env (PyTorch 2.2+ preinstalled):

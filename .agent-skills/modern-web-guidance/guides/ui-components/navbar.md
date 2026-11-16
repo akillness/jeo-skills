@@ -2,9 +2,9 @@
 
 Build a site navigation bar that uses one semantic navigation tree at every size, presents a native popover when the links do not fit, becomes an inline navigation when they do, and identifies the current page.
 
-This guide describes site-navigation integration. It is navigation, not an application menu: links stay in the `Tab` order, with no `focusgroup`, `role="menubar"`, `role="menu"`, `role="menuitem"`, `aria-haspopup="menu"`, or arrow-key handling. For application command menus, see `menu` (via `npx -y modern-web-guidance@latest retrieve "menu"`); for menubars, see `app-menus` (via `npx -y modern-web-guidance@latest retrieve "app-menus"`). For the menu and chevron icons, see `icons` (via `npx -y modern-web-guidance@latest retrieve "icons"`).
+This guide describes site-navigation integration. It is navigation, not an application menu: links stay in the `Tab` order, with no `focusgroup`, `role="menubar"`, `role="menu"`, `role="menuitem"`, `aria-haspopup="menu"`, or arrow-key handling. For application command menus, see `menu` (via `npx -y modern-web-guidance@1.0.0 retrieve "menu"`); for menubars, see `app-menus` (via `npx -y modern-web-guidance@1.0.0 retrieve "app-menus"`). For the menu and chevron icons, see `icons` (via `npx -y modern-web-guidance@1.0.0 retrieve "icons"`).
 
-For component-driven layouts, fluid sizing, and typographic line-wrapping, see `size-aware-styling` (via `npx -y modern-web-guidance@latest retrieve "size-aware-styling"`), `fluid-scaling` (via `npx -y modern-web-guidance@latest retrieve "fluid-scaling"`), and `improve-text-layout-and-legibility` (via `npx -y modern-web-guidance@latest retrieve "improve-text-layout-and-legibility"`).
+For component-driven layouts, fluid sizing, and typographic line-wrapping, see `size-aware-styling` (via `npx -y modern-web-guidance@1.0.0 retrieve "size-aware-styling"`), `fluid-scaling` (via `npx -y modern-web-guidance@1.0.0 retrieve "fluid-scaling"`), and `improve-text-layout-and-legibility` (via `npx -y modern-web-guidance@1.0.0 retrieve "improve-text-layout-and-legibility"`).
 
 
 ## Core Markup
@@ -52,7 +52,7 @@ Use one `<nav>` landmark for narrow and wide layouts. Wrap it in a semantic `<he
 </header>
 ```
 
-The button declaratively controls the menu with `popovertarget` and `aria-controls`. The `nav` remains the navigation landmark while the menu is closed. The trigger icon is decorative and the visible "Menu" text is the accessible name, so hide the icon from assistive technologies. For how to insert and hide icons, see `icons` (via `npx -y modern-web-guidance@latest retrieve "icons"`). For the general popover control contract, see `declarative-dialog-popover-control` (via `npx -y modern-web-guidance@latest retrieve "declarative-dialog-popover-control"`). Unlike the menu guide, use `popovertarget`: one toggle needs no invoker commands. As in the menu guide, place each popover (the menu list, and the submenu list) immediately after its trigger so browsers add no implicit `aria-details`.
+The button declaratively controls the menu with `popovertarget` and `aria-controls`. The `nav` remains the navigation landmark while the menu is closed. The trigger icon is decorative and the visible "Menu" text is the accessible name, so hide the icon from assistive technologies. For how to insert and hide icons, see `icons` (via `npx -y modern-web-guidance@1.0.0 retrieve "icons"`). For the general popover control contract, see `declarative-dialog-popover-control` (via `npx -y modern-web-guidance@1.0.0 retrieve "declarative-dialog-popover-control"`). Unlike the menu guide, use `popovertarget`: one toggle needs no invoker commands. As in the menu guide, place each popover (the menu list, and the submenu list) immediately after its trigger so browsers add no implicit `aria-details`.
 
 
 ## Narrow Layout: Popover Navigation
@@ -88,7 +88,7 @@ There is no hard-coded breakpoint. Script collapses the navigation only when the
 }
 ```
 
-The `anchor()` declaration places the menu below the button; see Fallbacks for browsers without Anchor Positioning. For collision-aware positioning near viewport edges, see `viewport-aware-dropdowns` (via `npx -y modern-web-guidance@latest retrieve "viewport-aware-dropdowns"`).
+The `anchor()` declaration places the menu below the button; see Fallbacks for browsers without Anchor Positioning. For collision-aware positioning near viewport edges, see `viewport-aware-dropdowns` (via `npx -y modern-web-guidance@1.0.0 retrieve "viewport-aware-dropdowns"`).
 
 
 ## Wide Layout: Inline Navigation
@@ -124,7 +124,13 @@ When the row fits, hide the collapsed-layout trigger and reset the popover prese
 }
 ```
 
-CSS changes the presentation, but JavaScript decides which layout applies and must also synchronize the `popover` attribute with it. Measure the inline row: show it inline, compare `scrollWidth` with `clientWidth` on the header's inner row, then toggle `is-wide`. Add a temporary `is-measuring` class that sets `transition: none` on descendants for the measurement and remove it in `requestAnimationFrame`, otherwise the menu animates from its inline styles on every resize and flickers. Keep the navigation as a popover only in the collapsed layout; remove the attribute in the inline layout. Removing it closes an open popover, so note whether the menu was open and call `showPopover()` again if the layout is still collapsed; otherwise a resize closes the open menu. Run one shared function from `ResizeObserver`s on the header and the navigation list, so font loading and text changes are caught without special cases. Remeasure while inline on every notification, but while collapsed only when the header's width has grown. Switching to inline just to measure on every shrink makes the layout thrash. The tradeoff is that a collapsed menu that gets smaller by itself (for example a shorter translation) stays collapsed until the header grows. Do not infer the layout from a hidden trigger.
+CSS changes the presentation, but JavaScript decides which layout applies and must also synchronize the `popover` attribute with it. Measure the inline row: show it inline, compare `scrollWidth` with
+`clientWidth` on the header's inner row, then toggle `is-wide`. Add a temporary `is-measuring` class that sets `transition: none` on descendants for the measurement and remove it in
+`requestAnimationFrame`, otherwise the menu animates from its inline styles on every resize and flickers. Keep the navigation as a popover only in the collapsed layout; remove the attribute in the
+inline layout. Removing it closes an open popover, so note whether the menu was open and call `showPopover()` again if the layout is still collapsed; otherwise a resize closes the open menu. Run one
+shared function from `ResizeObserver`s on the header and the navigation list, so font loading and text changes are caught without special cases. Remeasure while inline on every notification, but while
+collapsed only when the header's width has grown. Switching to inline just to measure on every shrink makes the layout thrash. The tradeoff is that a collapsed menu that gets smaller by itself (for
+example a shorter translation) stays collapsed until the header grows. Do not infer the layout from a hidden trigger.
 
 
 ## Nested Site Navigation
@@ -152,7 +158,7 @@ Do not add document-level click-outside, Escape or focus-restoration handlers. T
 
 In the wide layout, open the submenu (`submenu.showPopover({ source: trigger })`) on `pointerenter` of the parent `<li>` when `matchMedia("(hover: hover)").matches` and `event.pointerType !== "touch"`, and hide it on `pointerleave` if it is still only hover-previewed (if the user clicks the trigger while previewing, clear the preview flag and call `event.preventDefault()` so the click pins it open instead of toggling it closed). Do not open it when the trigger receives keyboard focus; only `Enter` or `Space` toggles it. Close the open submenu when focus moves to an element outside the submenu's whole list item (`focusout` with a non-null `relatedTarget` outside it), so tabbing or `Shift`+`Tab`bing away closes it.
 
-Position the wide submenu below its trigger with CSS Anchor Positioning (`position-area: block-end span-inline-end` and `position-try-fallbacks: flip-block, flip-inline`). For collision-aware positioning of a plain popover, see `viewport-aware-dropdowns` (via `npx -y modern-web-guidance@latest retrieve "viewport-aware-dropdowns"`). Add a `::before` bridge across any margin gap above the submenu (with `overflow: visible` on the popover) so moving the pointer from the trigger into the submenu does not fire `pointerleave`, and set `height: auto` to prevent Safari from stretching the positioned popover to its placement area:
+Position the wide submenu below its trigger with CSS Anchor Positioning (`position-area: block-end span-inline-end` and `position-try-fallbacks: flip-block, flip-inline`). For collision-aware positioning of a plain popover, see `viewport-aware-dropdowns` (via `npx -y modern-web-guidance@1.0.0 retrieve "viewport-aware-dropdowns"`). Add a `::before` bridge across any margin gap above the submenu (with `overflow: visible` on the popover) so moving the pointer from the trigger into the submenu does not fire `pointerleave`, and set `height: auto` to prevent Safari from stretching the positioned popover to its placement area:
 
 ```css
 .site-header.is-wide {
@@ -194,16 +200,16 @@ Use `aria-current="page"` to identify the current page. Set it at build time or 
 
 ## Transitions and Accessibility
 
-If the navigation is animated (optional; add it when the abrupt open and close feels out of place), use `@starting-style`, include `display` and `overlay` in `transition`, and declare `transition-behavior: allow-discrete` as a separate property after `transition` (DO NOT put `allow-discrete` in the `transition` shorthand, which makes older browsers ignore the entire `transition` declaration) for both the mobile menu and the wide floating submenu. Animate only `opacity` and `translate`, and respect `prefers-reduced-motion`. For the reusable transition pattern, see `animate-element-entry-exit` (via `npx -y modern-web-guidance@latest retrieve "animate-element-entry-exit"`).
+If the navigation is animated (optional; add it when the abrupt open and close feels out of place), use `@starting-style`, include `display` and `overlay` in `transition`, and declare `transition-behavior: allow-discrete` as a separate property after `transition` (DO NOT put `allow-discrete` in the `transition` shorthand, which makes older browsers ignore the entire `transition` declaration) for both the mobile menu and the wide floating submenu. Animate only `opacity` and `translate`, and respect `prefers-reduced-motion`. For the reusable transition pattern, see `animate-element-entry-exit` (via `npx -y modern-web-guidance@1.0.0 retrieve "animate-element-entry-exit"`).
 
 ### Optional: Narrow submenu slide-down
 
 Optional. In the narrow layout the submenu is an inline list toggled with `hidden`, which opens instantly by default and is fully functional that way. To slide it open and closed:
 
-- Keep the `[hidden]` list rendered with `display: grid` and `block-size: 0`, then transition `block-size` to `auto` with `interpolate-size: allow-keywords` and `clip-path: inset(-6px)` to clip the slide without cutting off the focus ring (not `overflow: clip`, which clips the ring; `6px` is an example, use at least the ring's outline width plus offset).
+- Keep the `[hidden]` list rendered with `display: grid` and `block-size: 0`, then transition `block-size` to `auto` with `interpolate-size: allow-keywords` and `clip-path: inset(-6px)` to clip the slide without clipping the focus ring (not `overflow: clip`, which clips the ring; `6px` is an example, use at least the ring's outline width plus offset).
 - Set `content-visibility: hidden` on the `[hidden]` list, include `content-visibility` in `transition`, and declare `transition-behavior: allow-discrete` separately after `transition` so the content stays rendered until the close finishes.
 - Scope it to the collapsed layout and `prefers-reduced-motion: no-preference`; outside it, `[hidden]` must stay `display: none`. In the wide layout the submenu is a popover and must not be clipped.
-- For the general technique, see `animate-to-intrinsic-sizes` (via `npx -y modern-web-guidance@latest retrieve "animate-to-intrinsic-sizes"`).
+- For the general technique, see `animate-to-intrinsic-sizes` (via `npx -y modern-web-guidance@1.0.0 retrieve "animate-to-intrinsic-sizes"`).
 
 Use logical properties for sizing, spacing, and positioning. Use `dvw` and `dvh` for viewport-relative limits, provide visible `:focus-visible` indicators, and adapt custom borders and current-page indicators under `forced-colors: active`.
 

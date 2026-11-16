@@ -132,7 +132,7 @@ cat ~/.config/mole/clean-list.txt  # every candidate from the last `mo clean --d
 
 `~/.config/mole/clean-list.txt` is written by `mo clean --dry-run` only.
 `mo purge --dry-run` and `mo installer --dry-run` print candidates to the
-terminal and write no file.
+terminal and do not emit a candidate file.
 
 `mo status` auto-switches to JSON when stdout is not a TTY, but pass `--json`
 explicitly in scripts so intent stays obvious. Never leave `--watch` running
@@ -145,7 +145,7 @@ Read-only helper: `bash .agent-skills/mole/scripts/mole.sh doctor`.
 
 ```bash
 brew install mole                                                    # homebrew-core
-curl -fsSL https://raw.githubusercontent.com/tw93/mole/main/install.sh | bash   # script
+curl -fsSL https://raw.githubusercontent.com/tw93/mole/main/install.sh -o mole-install.sh && less mole-install.sh && bash mole-install.sh   # script
 ```
 
 Channel rules that cause most install failures:
@@ -182,7 +182,7 @@ Default purge scan dirs when `purge_paths` is unset: `~/Projects`, `~/GitHub`,
 Optional Raycast/Alfred launchers:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/tw93/Mole/main/scripts/setup-quick-launchers.sh | bash
+curl -fsSL https://raw.githubusercontent.com/tw93/Mole/main/scripts/setup-quick-launchers.sh -o setup-launchers.sh && less setup-launchers.sh && bash setup-launchers.sh
 ```
 
 Environment knobs (full list in `references/commands.md`): `MO_DEBUG=1`,
@@ -223,7 +223,7 @@ Read `AGENTS.md` in the repo first — `CLAUDE.md` is a symlink to it and it is
 the cross-agent source of truth. Hard rules: route deletions through
 `mole_delete` / `safe_remove` in `lib/core/file_ops.sh`; raw `rm -rf` needs an
 inline `# SAFE: <reason>` annotation that CI checks for; Bash 3.2 compatible
-with BSD (not GNU) command flags; never let verification block on a real sudo
+with BSD (not GNU) command flags; never let verification block on a real privilege-elevation
 or `osascript` prompt — use `MOLE_TEST_NO_AUTH=1`.
 
 Details and hotspot ownership: `references/contributing.md`.
@@ -259,7 +259,7 @@ Details and hotspot ownership: `references/contributing.md`.
 - [scripts/mole.sh](scripts/mole.sh) — read-only `doctor` / `surfaces` / `json` helper; never deletes, installs, or updates
 - [Mole repository](https://github.com/tw93/Mole) · [mole.fit](https://mole.fit) (paid GUI, separate product)
 - Upstream agent contract: [AGENTS.md](https://github.com/tw93/Mole/blob/main/AGENTS.md) · [SECURITY.md](https://github.com/tw93/Mole/blob/main/SECURITY.md) · [docs/SECURITY_DESIGN.md](https://github.com/tw93/Mole/blob/main/docs/SECURITY_DESIGN.md)
-- Project standards: `.agent-skills/skill-standardization/SKILL.md`
+- Project standards: `skill-standardization`
 
 ## Examples
 

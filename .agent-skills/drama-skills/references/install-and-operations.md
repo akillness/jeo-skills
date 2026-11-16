@@ -58,9 +58,10 @@ Every directory under `skills/` is an independent install unit.
 
 ```bash
 cd /absolute/path/to/drama-skills
-mkdir -p "$HOME/.claude/skills"
+CLAUDE_SKILLS_DIR="${CLAUDE_CONFIG_DIR:-$HOME/.claude}/skills"
+mkdir -p "$CLAUDE_SKILLS_DIR"
 for skill in skills/*; do
-  target="$HOME/.claude/skills/$(basename "$skill")"
+  target="$CLAUDE_SKILLS_DIR/$(basename "$skill")"
   if [ -e "$target" ] || [ -L "$target" ]; then
     printf 'skip existing: %s\n' "$target"
   else
@@ -166,7 +167,7 @@ python3 "$CORE/scripts/dashboard_server.py" \
 Security contract:
 
 - loopback host only;
-- per-launch access token and randomized API prefix;
+- per-launch session token and randomized API prefix;
 - Host and Origin validation;
 - text-extension allowlist;
 - no symlink/reparse-point traversal;

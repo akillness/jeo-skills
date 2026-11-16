@@ -136,7 +136,7 @@ rsync -a --delete "$TMP/skills/" "$TARGET/$SKILLS_DIR_REL/"
 ```
 
 Because `--delete` applies to the entire destination skills directory, existing sibling
-skills under `.claude/skills/` or `.agents/skills/` can be removed even without
+skills in the target skills folder can be overwritten even without
 `--force`. This is why the supported default is a fresh game repository.
 
 Run the bundled read-only gate before publication:

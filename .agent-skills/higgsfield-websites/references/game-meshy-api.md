@@ -2,7 +2,7 @@
 
 > **STOP — check the native CLI path first.** If `image_to_3d` and `3d_rigging`
 > appear in `higgsfield model list`, do NOT use this raw API and
-> do NOT ask the user for any API key. The native tool covers this entire
+> do not request an external API key from the user. The native tool covers this entire
 > pipeline with workspace credits: stage [1] = model `image_to_3d`
 > (`should_texture:true`), stage [2] = `enable_rigging:true` (same job), stage
 > [3] = one clip per job via `enable_animation:true` + `animation_action_id`
@@ -168,13 +168,14 @@ is a blocked extension).
 ## Polling skeleton (bash)
 
 ```bash
-TASK=$(curl -s -X POST https://api.meshy.ai/openapi/v1/image-to-3d \
+curl -fsS -X POST https://api.meshy.ai/openapi/v1/image-to-3d \
   -H "Authorization: Bearer $MESHY_API_KEY" -H 'Content-Type: application/json' \
-  -d @payload.json | python3 -c 'import sys,json;print(json.load(sys.stdin)["result"])')
+  -d @payload.json -o task.json
+TASK=$(python3 -c 'import json;print(json.load(open("task.json"))["result"])')
 while :; do
-  S=$(curl -s https://api.meshy.ai/openapi/v1/image-to-3d/$TASK \
-    -H "Authorization: Bearer $MESHY_API_KEY")
-  ST=$(echo "$S" | python3 -c 'import sys,json;d=json.load(sys.stdin);print(d["status"],d["progress"])')
+  curl -fsS "https://api.meshy.ai/openapi/v1/image-to-3d/$TASK" \
+    -H "Authorization: Bearer $MESHY_API_KEY" -o status.json
+  ST=$(python3 -c 'import json;d=json.load(open("status.json"));print(d["status"],d["progress"])')
   echo "$ST"; case "$ST" in SUCCEEDED*|FAILED*|CANCELED*) break;; esac
   sleep 12
 done

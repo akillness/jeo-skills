@@ -23,7 +23,7 @@ Use one role per asset:
 - `content-only`
 - `unknown`
 
-Ask the user only when confusing two roles would change the output—for example, an official logo versus a visual reference. Never treat inspiration as an official asset without confirmation.
+Ask the user only when confusing two roles would change the output—for example, an official logo versus a visual reference. Require explicit confirmation before treating inspiration as an official asset.
 
 After confirming authority, immediately persist each official Essential Kit slot with `lock_authoritative_logo`, `lock_authoritative_palette`, or `lock_authoritative_typography`. Preserve the exact local path, URL, upload ID, or job ID plus the source summary and `user_supplied` origin. Do not wait for generated missing elements.
 

@@ -27,6 +27,6 @@ Refresh the document when:
 
 ## Anti-patterns
 - giant catch-all docs that combine tutorial, reference, marketing, and ops content
-- stale commands with no verification note
+- stale commands lacking a verification timestamp or note
 - copying API portal content into an internal spec instead of linking it
 - hiding rollback or escalation details at the bottom of a long narrative

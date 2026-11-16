@@ -26,6 +26,12 @@ if [ -z "$PROJECT_NAME" ]; then
   echo "Usage: $0 <project-name> [--python|--bash|--node]"
   exit 1
 fi
+case "$PROJECT_NAME" in
+  /*|*..*)
+    echo "Refusing unsafe project name: $PROJECT_NAME" >&2
+    exit 1
+    ;;
+esac
 
 # Ensure project directory exists
 mkdir -p "./$PROJECT_NAME/tools"
@@ -63,7 +69,7 @@ cat > "./$PROJECT_NAME/scripts/ax-wrapper.sh" << 'EOF'
 set -euo pipefail
 
 if ! command -v ax &> /dev/null; then
-  echo "Error: ax is not installed. Run: curl -fsSL https://ax.yusuke.run/install | sh"
+  echo "Error: ax is not installed. Run bash scripts/setup.sh --system or brew install yusukebe/tap/ax"
   exit 1
 fi
 
@@ -164,7 +170,7 @@ class AxTool:
         try:
             subprocess.run(["ax", "--version"], capture_output=True, check=True)
         except (FileNotFoundError, subprocess.CalledProcessError):
-            raise RuntimeError("ax is not installed. Install: curl -fsSL https://ax.yusuke.run/install | sh")
+            raise RuntimeError("ax is not installed. Install via scripts/setup.sh --system or brew install yusukebe/tap/ax")
     
     def discover(self, url: str) -> str:
         """Get page structure without raw HTML."""
@@ -560,7 +566,7 @@ This project is scaffolded to use **ax** for web scraping and data extraction.
 
 ```bash
 # System-wide
-curl -fsSL https://ax.yusuke.run/install | sh
+brew install yusukebe/tap/ax
 
 # Or verify existing
 ax --version

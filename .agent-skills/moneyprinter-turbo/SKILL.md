@@ -12,6 +12,8 @@ description: >
   moneyprinter-turbo, MoneyPrinterTurbo, moneyprinter, topic to video, text to short video, ai
   short video generator, 一键短视频, edge-tts video, pexels video generator, batch shorts generation.
 allowed-tools: Bash Read Write Edit Glob Grep WebFetch
+permissions:
+  - env
 compatibility: >
   Universal on macOS, Linux, and Windows. Requires Python 3.11+ and FFmpeg on PATH. Recommended to
   run via `uv run` with the bundled `scripts/mpt_agent.py` helper. Free Edge TTS requires no API

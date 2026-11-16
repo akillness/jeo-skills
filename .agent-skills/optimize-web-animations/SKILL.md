@@ -113,11 +113,12 @@ npm run build
    - If unrelated dirty changes exist, use an isolated index:
 
 ```bash
-rm -f /tmp/<task>-index
-GIT_INDEX_FILE=/tmp/<task>-index git read-tree HEAD
+TMP_DIR="$(mktemp -d)"
+GIT_INDEX_FILE="$TMP_DIR/index" git read-tree HEAD
 # Apply only the intended hunks to the temporary index.
-GIT_INDEX_FILE=/tmp/<task>-index git diff --cached --check
-GIT_INDEX_FILE=/tmp/<task>-index git commit -m "Pause offscreen <page> animations"
+GIT_INDEX_FILE="$TMP_DIR/index" git diff --cached --check
+GIT_INDEX_FILE="$TMP_DIR/index" git commit -m "Pause offscreen <page> animations"
+unlink "$TMP_DIR/index" && rmdir "$TMP_DIR"
 git restore --staged <files> 2>/dev/null || true
 ```
 

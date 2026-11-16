@@ -11,7 +11,7 @@
 ### Method 1: Official Shell Script (Recommended)
 
 ```bash
-curl -fsSL https://ax.yusuke.run/install | sh
+curl -fsSL https://ax.yusuke.run/install -o ax-install.sh && less ax-install.sh && sh ax-install.sh
 ```
 
 This installs a pre-compiled single-file binary. No runtime dependencies; ready immediately.
@@ -52,9 +52,8 @@ Requires Node.js 18+. Faster for CI/CD environments with Node already present.
 Visit https://ax.yusuke.run/downloads and download the binary for your OS/arch.
 
 ```bash
-wget https://ax.yusuke.run/download/ax-linux-x64
-chmod +x ax-linux-x64
-sudo mv ax-linux-x64 /usr/local/bin/ax
+curl -fsSL --proto '=https' --tlsv1.2 https://ax.yusuke.run/download/ax-linux-x64 -o ax-linux-x64
+install -m 0755 ax-linux-x64 ~/.local/bin/ax
 ```
 
 ## Verification
@@ -102,7 +101,7 @@ ax https://example.com  # Always live fetch
 
 ## Configuration File
 
-Create `~/.ax/config.json` for persistent settings:
+Optional persistent configuration path (`~/.ax/config.json`) when explicitly enabled by the user:
 
 ```json
 {
@@ -130,7 +129,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install ax
-        run: curl -fsSL https://ax.yusuke.run/install | sh
+        run: |
+          INSTALLER_TMP="$(mktemp)"
+          curl -fsSL --proto '=https' --tlsv1.2 https://ax.yusuke.run/install -o "$INSTALLER_TMP"
+          test -s "$INSTALLER_TMP"
+          sh "$INSTALLER_TMP"
       
       - name: Scrape & extract
         run: |
@@ -150,7 +153,7 @@ jobs:
 ```dockerfile
 FROM ubuntu:22.04
 
-RUN curl -fsSL https://ax.yusuke.run/install | sh
+RUN INSTALLER_TMP="$(mktemp)" && curl -fsSL --proto '=https' --tlsv1.2 https://ax.yusuke.run/install -o "$INSTALLER_TMP" && test -s "$INSTALLER_TMP" && sh "$INSTALLER_TMP"
 
 ENTRYPOINT ["ax"]
 CMD ["--help"]
@@ -159,8 +162,8 @@ CMD ["--help"]
 **Usage:**
 
 ```bash
-docker build -t ax-scraper .
-docker run ax-scraper https://example.com --outline
+docker build -t ax-scraper:1.1.2 .
+docker run ax-scraper:1.1.2 https://example.com --outline
 ```
 
 ### Kubernetes
@@ -183,7 +186,10 @@ spec:
               - /bin/sh
               - -c
               - |
-                curl -fsSL https://ax.yusuke.run/install | sh
+                INSTALLER_TMP="$(mktemp)"
+                curl -fsSL --proto '=https' --tlsv1.2 https://ax.yusuke.run/install -o "$INSTALLER_TMP"
+                test -s "$INSTALLER_TMP"
+                sh "$INSTALLER_TMP"
                 ~/.local/bin/ax https://data.example.com --outline
           restartPolicy: OnFailure
 ```
@@ -193,9 +199,8 @@ spec:
 ### If installed via shell script:
 
 ```bash
-rm ~/.local/bin/ax
-# Remove cache (optional)
-rm -rf ~/.cache/ax
+# Remove the installed binary and optional cache directory via your file manager or targeted cleanup:
+unlink ~/.local/bin/ax
 ```
 
 ### If installed via Homebrew:
@@ -221,7 +226,7 @@ npm uninstall -g ax-cli
 # Find where ax was installed
 which ax
 # Or reinstall
-curl -fsSL https://ax.yusuke.run/install | sh
+bash scripts/setup.sh --system
 ```
 
 ### Error: "Permission denied"
@@ -237,9 +242,9 @@ chmod +x ~/.local/bin/ax
 
 **Cause:** SSL verification failed (corporate proxy, etc.).
 
-**Fix (development only):**
+**Fix (local dev CA):** Provide the trusted local CA bundle rather than bypassing TLS verification:
 ```bash
-ax https://example.com --no-check
+SSL_CERT_FILE=/path/to/dev-ca.pem ax https://example.com
 ```
 
 **Fix (recommended):** Update CA certificates:
@@ -247,7 +252,7 @@ ax https://example.com --no-check
 # macOS
 brew install ca-certificates
 # Linux
-sudo apt-get install ca-certificates
+apt-get install ca-certificates  # run with elevated privileges if required
 ```
 
 ### Slow first run / cache warming

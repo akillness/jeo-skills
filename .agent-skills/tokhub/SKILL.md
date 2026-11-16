@@ -62,7 +62,7 @@ Ask (or infer) whether the user wants to:
 bash
 git clone https://github.com/yaojingang/TokHub.git
 cd TokHub
-cp -n .env.example .env || true
+# Copy .env.example to your local environment file per README.md
 docker compose up -d --build
 
 

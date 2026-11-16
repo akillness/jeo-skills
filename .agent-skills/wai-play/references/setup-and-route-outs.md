@@ -61,8 +61,8 @@ python3 -m http.server 8768 --bind 127.0.0.1 --directory web_examples/five_games
 ## Docker
 
 ```bash
-docker build -t wai-play .
-docker run --rm -p 8501:8501 --env-file .env wai-play
+docker build -t wai-play:1.0.0 .
+docker run --rm -p 8501:8501 --env-file .env wai-play:1.0.0
 ```
 
 When the container tests a game running on the host, replace `127.0.0.1` in

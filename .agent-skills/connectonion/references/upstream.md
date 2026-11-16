@@ -23,7 +23,7 @@ ConnectOnion has two halves:
 
 | Route | Command | What it changes |
 |---|---|---|
-| Upstream one-liner | `curl -fsSL https://raw.githubusercontent.com/openonion/connectonion/main/install.sh \| sh` | Installs `uv` if missing, runs `uv tool install --python ">=3.11" --force connectonion`, edits the shell PATH via `uv tool update-shell`, then runs **`co init --yes`** (identity, managed key, Codex/Claude skills and command index, REM with a daily scheduler). |
+| Upstream installer | Download `https://raw.githubusercontent.com/openonion/connectonion/main/install.sh`, inspect it, then run `sh install.sh` | Installs `uv` if missing, runs `uv tool install --python ">=3.11" --force connectonion`, edits the shell PATH via `uv tool update-shell`, then runs **`co init --yes`** (identity, managed key, Codex/Claude skills and command index, REM with a daily scheduler). |
 | Tool install only | `uv tool install --python ">=3.11" connectonion` | `co` on PATH; no global config until a `co` setup command runs. Derived from the installer script, not a documented upstream flag. |
 | pip | `python3.11 -m venv .venv && .venv/bin/pip install connectonion` | Package only; run `co init` separately if wanted. |
 | Preview | `... \| CO_VERSION=1.9.2b10 sh` | Pins a pre-release; same side effects as the one-liner. |

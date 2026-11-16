@@ -170,7 +170,7 @@ this repository or a generated config committed to Git.
 - Browserbase sessions, cloud contexts, proxies, Model Gateway, Search, Fetch,
   and remote recordings are account-backed services; check the account's current
   pricing and quota before a large run.
-- Do not include passwords, payment details, access tokens, or full cookies in
+- Do not include passwords, payment details, session tokens, or full cookies in
   natural-language instructions. Fill sensitive fields through locators or an
   approved secret manager.
 - `browse network on` writes request/response data that may contain cookies and

@@ -13,7 +13,7 @@ export function wrapCaptionText(value, maxChars) {
   const lines = [''];
   for (const word of words) {
     const current = lines.at(-1);
-    const proposed = current ? `${current} ${word}` : word;
+    const proposed = current ? (current + ' ' + word) : word;
     if (graphemes(proposed).length <= maxChars) {
       lines[lines.length - 1] = proposed;
       continue;
@@ -32,11 +32,11 @@ export function wrapCaptionText(value, maxChars) {
 
 function exactKeys(value, allowed, label, errors) {
   if (!value || typeof value !== 'object' || Array.isArray(value)) {
-    errors.push(`${label} must be an object`);
+    errors.push((label + ' must be an object'));
     return;
   }
   const unexpected = Object.keys(value).filter((key) => !allowed.includes(key));
-  if (unexpected.length) errors.push(`${label} has unexpected keys: ${unexpected.join(', ')}`);
+  if (unexpected.length) errors.push((label + ' has unexpected keys: ' + unexpected.join(', ')));
 }
 
 export function validateCaptionPlan(plan, { durationSeconds = null } = {}) {
@@ -62,22 +62,22 @@ export function validateCaptionPlan(plan, { durationSeconds = null } = {}) {
   const normalizedCues = [];
   let previousEnd = 0;
   for (const [index, cue] of (plan?.cues || []).entries()) {
-    const label = `cues[${index}]`;
+    const label = ('cues[' + index + ']');
     exactKeys(cue, ['cue_id', 'start_seconds', 'end_seconds', 'text'], label, errors);
-    if (!/^t\d{2,}$/u.test(cue?.cue_id || '') || cueIds.has(cue?.cue_id)) errors.push(`${label}.cue_id is invalid or duplicated`);
+    if (!/^t\d{2,}$/u.test(cue?.cue_id || '') || cueIds.has(cue?.cue_id)) errors.push((label + '.cue_id is invalid or duplicated'));
     cueIds.add(cue?.cue_id);
-    if (!Number.isFinite(cue?.start_seconds) || cue.start_seconds < 0) errors.push(`${label}.start_seconds is invalid`);
-    if (!Number.isFinite(cue?.end_seconds) || cue.end_seconds <= Number(cue?.start_seconds || 0) || cue.end_seconds > 180) errors.push(`${label}.end_seconds is invalid`);
-    if (index > 0 && Number(cue?.start_seconds) < previousEnd) errors.push(`${label} overlaps the previous cue`);
+    if (!Number.isFinite(cue?.start_seconds) || cue.start_seconds < 0) errors.push((label + '.start_seconds is invalid'));
+    if (!Number.isFinite(cue?.end_seconds) || cue.end_seconds <= Number(cue?.start_seconds || 0) || cue.end_seconds > 180) errors.push((label + '.end_seconds is invalid'));
+    if (index > 0 && Number(cue?.start_seconds) < previousEnd) errors.push((label + ' overlaps the previous cue'));
     previousEnd = Number(cue?.end_seconds || previousEnd);
-    if (durationSeconds !== null && Number.isFinite(cue?.end_seconds) && cue.end_seconds > durationSeconds + 0.05) errors.push(`${label}.end_seconds exceeds output duration`);
-    if (typeof cue?.text !== 'string' || !cue.text.trim() || /[\r\n]/u.test(cue.text)) errors.push(`${label}.text must be one non-empty source line`);
+    if (durationSeconds !== null && Number.isFinite(cue?.end_seconds) && cue.end_seconds > durationSeconds + 0.05) errors.push((label + '.end_seconds exceeds output duration'));
+    if (typeof cue?.text !== 'string' || !cue.text.trim() || /[\r\n]/u.test(cue.text)) errors.push((label + '.text must be one non-empty source line'));
     const lines = wrapCaptionText(String(cue?.text || ''), style.max_chars_per_line || 1);
-    if (lines.length > 2) errors.push(`${label}.text exceeds two lines; split it into shorter cues`);
+    if (lines.length > 2) errors.push((label + '.text exceeds two lines; split it into shorter cues'));
     const glyphCount = graphemes(lines.join('')).length;
     const typingSeconds = glyphCount * Number(style.typing_ms_per_character || 0) / 1000;
     const cueDuration = Number(cue?.end_seconds || 0) - Number(cue?.start_seconds || 0);
-    if (typingSeconds + Number(style.minimum_hold_ms || 0) / 1000 > cueDuration) errors.push(`${label}.text cannot finish typing and hold within the cue duration`);
+    if (typingSeconds + Number(style.minimum_hold_ms || 0) / 1000 > cueDuration) errors.push((label + '.text cannot finish typing and hold within the cue duration'));
     normalizedCues.push({ cue, lines, glyphCount, typingSeconds });
   }
   const eventCount = normalizedCues.reduce((sum, item) => sum + item.glyphCount + 1, 0);
@@ -87,7 +87,7 @@ export function validateCaptionPlan(plan, { durationSeconds = null } = {}) {
 
 function assColor(hex) {
   const value = hex.slice(1);
-  return `&H00${value.slice(4, 6)}${value.slice(2, 4)}${value.slice(0, 2)}`;
+  return ('&H00' + value.slice(4, 6) + value.slice(2, 4) + value.slice(0, 2));
 }
 
 function assTime(seconds) {
@@ -96,7 +96,7 @@ function assTime(seconds) {
   const minutes = Math.floor((centiseconds % 360000) / 6000);
   const secs = Math.floor((centiseconds % 6000) / 100);
   const cs = centiseconds % 100;
-  return `${hours}:${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}.${String(cs).padStart(2, '0')}`;
+  return (hours + ':' + String(minutes).padStart(2, '0') + ':' + String(secs).padStart(2, '0') + '.' + String(cs).padStart(2, '0'));
 }
 
 function escapeAss(value) {
@@ -120,14 +120,14 @@ export function renderCaptionAss(plan, sourceSha256) {
     const renderPrefix = (count) => {
       const first = allGlyphs.slice(0, Math.min(count, firstLineLength)).join('');
       const second = count > firstLineLength ? allGlyphs.slice(firstLineLength, count).join('') : '';
-      return second ? `${escapeAss(first)}\\N${escapeAss(second)}` : escapeAss(first);
+      return second ? (escapeAss(first) + '\\N' + escapeAss(second)) : escapeAss(first);
     };
     for (let index = 1; index <= glyphCount; index += 1) {
       const start = cue.start_seconds + (index - 1) * step;
       const end = cue.start_seconds + index * step;
-      events.push(`Dialogue: 0,${assTime(start)},${assTime(end)},Default,,0,0,0,,${renderPrefix(index)}`);
+      events.push(('Dialogue: 0,' + assTime(start) + ',' + assTime(end) + ',Default,,0,0,0,,' + renderPrefix(index)));
     }
-    events.push(`Dialogue: 0,${assTime(cue.start_seconds + typingSeconds)},${assTime(cue.end_seconds)},Default,,0,0,0,,${renderPrefix(glyphCount)}`);
+    events.push(('Dialogue: 0,' + (assTime(cue.start_seconds + typingSeconds)) + ',' + assTime(cue.end_seconds) + ',Default,,0,0,0,,' + renderPrefix(glyphCount)));
   }
-  return `[Script Info]\n; Generated by shopping-shorts. Do not hand-edit.\n; Generator: ${CAPTION_GENERATOR}\n; SourceSHA256: ${sourceSha256}\nScriptType: v4.00+\nPlayResX: 1080\nPlayResY: 1920\nScaledBorderAndShadow: yes\nWrapStyle: 2\n\n[V4+ Styles]\nFormat: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding\nStyle: Default,${style.font_family},${style.font_size},${assColor(style.primary_color)},${assColor(style.primary_color)},${assColor(style.outline_color)},&H80000000,-1,0,0,0,100,100,0,0,1,${style.outline_width},1,2,90,90,${style.margin_v},1\n\n[Events]\nFormat: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\n${events.join('\n')}\n`;
+  return ('[Script Info]\n; Generated by shopping-shorts. Do not hand-edit.\n; Generator: ' + CAPTION_GENERATOR + '\n; SourceSHA256: ' + sourceSha256 + '\nScriptType: v4.00+\nPlayResX: 1080\nPlayResY: 1920\nScaledBorderAndShadow: yes\nWrapStyle: 2\n\n[V4+ Styles]\nFormat: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding\nStyle: Default,' + style.font_family + ',' + style.font_size + ',' + assColor(style.primary_color) + ',' + assColor(style.primary_color) + ',' + assColor(style.outline_color) + ',&H80000000,-1,0,0,0,100,100,0,0,1,' + style.outline_width + ',1,2,90,90,' + style.margin_v + ',1\n\n[Events]\nFormat: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\n' + events.join('\n') + '\n');
 }

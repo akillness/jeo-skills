@@ -23,6 +23,7 @@ WITH_PLUGIN=false
 WITH_GEMINI=false
 WITH_CODEX=false
 WITH_OPENCODE=false
+AUTO_YES=false
 
 for arg in "$@"; do
   case $arg in
@@ -36,6 +37,7 @@ for arg in "$@"; do
       WITH_CODEX=true
       WITH_OPENCODE=true
       ;;
+    -y|--yes)        AUTO_YES=true ;;
     -h|--help)
       echo "Usage: $0 [OPTIONS]"
       echo ""
@@ -45,6 +47,7 @@ for arg in "$@"; do
       echo "  --with-codex     Configure Codex CLI (runs setup-codex-hook.sh)"
       echo "  --with-opencode  Register OpenCode plugin (runs setup-opencode-plugin.sh)"
       echo "  --all            All of the above"
+      echo "  -y, --yes        Skip interactive confirmation before running downloaded installer"
       echo "  -h, --help       Show this help"
       echo ""
       echo "Prerequisites:"
@@ -102,12 +105,34 @@ fi
 
 case "$OS" in
   macos|linux|wsl)
-    if curl -fsSL https://plannotator.ai/install.sh | bash; then
-      echo ""
-      echo -e "${GREEN}✓ plannotator CLI installed successfully${NC}"
+    if [ "$AUTO_YES" = false ] && [ -t 0 ]; then
+      read -r -p "Download and execute official installer from https://plannotator.ai/install.sh? [y/N] " CONFIRM_INSTALL
+      if [[ ! "$CONFIRM_INSTALL" =~ ^[Yy]$ ]]; then
+        echo "Cancelled. Manual install: curl -fsSL https://plannotator.ai/install.sh -o install-plannotator.sh && less install-plannotator.sh && bash install-plannotator.sh"
+        exit 0
+      fi
+    fi
+    INSTALLER_TMP="$(mktemp "${TMPDIR:-/tmp}/plannotator-install.XXXXXX.sh")"
+    trap 'rm -f -- "$INSTALLER_TMP"' EXIT
+    if curl -fsSL --proto '=https' --tlsv1.2 https://plannotator.ai/install.sh -o "$INSTALLER_TMP" && [ -s "$INSTALLER_TMP" ]; then
+      if [ -n "${PLANNOTATOR_INSTALL_SHA256:-}" ]; then
+        ACTUAL_SHA256="$(shasum -a 256 "$INSTALLER_TMP" | awk '{print $1}')"
+        if [ "$ACTUAL_SHA256" != "$PLANNOTATOR_INSTALL_SHA256" ]; then
+          echo -e "${RED}✗ Checksum verification failed (expected ${PLANNOTATOR_INSTALL_SHA256}, got ${ACTUAL_SHA256})${NC}" >&2
+          exit 1
+        fi
+      fi
+      if bash "$INSTALLER_TMP"; then
+        echo ""
+        echo -e "${GREEN}✓ plannotator CLI installed successfully${NC}"
+      else
+        echo -e "${RED}✗ Installation failed${NC}"
+        echo -e "${YELLOW}Try manual install: curl -fsSL https://plannotator.ai/install.sh -o install-plannotator.sh && less install-plannotator.sh && bash install-plannotator.sh${NC}"
+        exit 1
+      fi
     else
-      echo -e "${RED}✗ Installation failed${NC}"
-      echo -e "${YELLOW}Try manual install: curl -fsSL https://plannotator.ai/install.sh | bash${NC}"
+      echo -e "${RED}✗ Failed to download installer from https://plannotator.ai/install.sh${NC}"
+      echo -e "${YELLOW}Try manual install: curl -fsSL https://plannotator.ai/install.sh -o install-plannotator.sh && less install-plannotator.sh && bash install-plannotator.sh${NC}"
       exit 1
     fi
     ;;

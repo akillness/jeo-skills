@@ -63,7 +63,7 @@ Detailed packet examples and route-outs live in [references/intake-packets-and-r
 Register this routing skill as a jeo-skills plugin, then install the upstream Scrapling package profile.
 
 ```bash
-npx skills add https://github.com/akillness/jeo-skills --skill scrapling
+npx skills@1.9.0 add https://github.com/akillness/jeo-skills --skill scrapling
 ```
 
 Use a virtual environment for the Python package unless the user explicitly wants a system install.
@@ -220,7 +220,7 @@ from scrapling.spiders import Spider, Response
 
 class QuotesSpider(Spider):
     name = "quotes"
-    start_urls = ["https://quotes.toscrape.com/"]
+    start_urls = [ "https://quotes.toscrape.com/" ]
 
     async def parse(self, response: Response):
         for quote in response.css(".quote"):
@@ -240,7 +240,7 @@ script-backed skill pattern from
 python3 scripts/research_harvest_gate.py "https://arxiv.org/abs/2401.00001"
 ```
 
-The gate is stdlib-only and prints one ` ```review ` fenced JSON block
+The gate is stdlib-only and prints one `review` fenced JSON block
 flagging a `robots.txt` disallow/crawl-delay and a known-paywalled-publisher
 heuristic. It never claims a scrape is authorized — resolve or explicitly
 accept every finding before harvesting. Full pattern and hand-off guidance
@@ -290,7 +290,7 @@ rendered abstract page.
 - [references/cli-and-mcp.md](references/cli-and-mcp.md)
 - [references/spiders.md](references/spiders.md)
 - [references/research-harvesting.md](references/research-harvesting.md) — deterministic gate pattern for scientific literature/dataset harvesting, modeled on [ai4s-research/open-science](https://github.com/ai4s-research/open-science)
-- [scripts/install.sh](scripts/install.sh) — installs this skill as a plugin (`npx skills add`) plus the upstream Python package profile
+- [scripts/install.sh](scripts/install.sh) — installs this skill as a plugin (`npx skills@1.9.0 add`) plus the upstream Python package profile
 - [scripts/research_harvest_gate.py](scripts/research_harvest_gate.py) — stdlib-only robots.txt + paywall-heuristic gate for research harvesting
 
 - [scripts/run-extract.sh](scripts/run-extract.sh)

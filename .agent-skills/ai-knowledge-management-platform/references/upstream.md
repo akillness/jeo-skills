@@ -4,15 +4,33 @@
 
 ## Architecture from code
 
-- The `backend` is a CDK TypeScript app. Its backend README describes a Lambda container with Bedrock client/orchestrator, API Gateway REST API, Cognito authentication, DynamoDB chat history, SSM parameters, VPC/subnets, Aurora PostgreSQL for both semantic search and SQL, and SageMaker Processing Jobs for ingestion.
-- The pinned agent config reads region/model parameter names from environment and SSM, resolves database credentials from Secrets Manager, and builds PGVector/SQLAlchemy connection settings. This is runtime credential access: do not imitate it by exposing secret material or requesting credentials in chat.
-- `rag.py` constructs Bedrock embeddings and opens an **existing** PGVector index by configured collection name/connection string. Its retriever uses `k=5, fetch_k=50`; it returns no source documents in the final answer in this snapshot. This does not prove what any live deployment currently returns.
-- `sqlqa.py` constrains generated SQL using table metadata/schema, asks for a limited query and delegates execution through the SQL QA chain. The exact permitted table names include `extracted_entities` in this snapshot. Treat model-generated SQL as untrusted; inspect query and target before execution.
-- Root structure separates `data-pipelines`, `experiments`, backend, and frontend. Notebooks and `data-pipelines/README.md` describe ingestion; do not infer that ingestion has run just because the infrastructure exists.
+- The `backend` is a CDK TypeScript app. Its backend README describes a Lambda container with Bedrock
+  client/orchestrator, API Gateway REST API, Cognito authentication, DynamoDB chat history, SSM
+  parameters, VPC/subnets, Aurora PostgreSQL for both semantic search and SQL, and SageMaker
+  Processing Jobs for ingestion.
+- The pinned agent config reads region/model parameter names from environment and SSM, resolves
+  database credentials from Secrets Manager, and builds PGVector/SQLAlchemy connection settings.
+  This is runtime credential access: do not imitate it by exposing secret material or requesting
+  credentials in chat.
+- `rag.py` constructs Bedrock embeddings and opens an **existing** PGVector index by configured
+  collection name/connection string. Its retriever uses `k=5, fetch_k=50`; it returns no source
+  documents in the final answer in this snapshot. This does not prove what any live deployment
+  currently returns.
+- `sqlqa.py` constrains generated SQL using table metadata/schema, asks for a limited query and
+  delegates execution through the SQL QA chain. The exact permitted table names include
+  `extracted_entities` in this snapshot. Treat model-generated SQL as untrusted; inspect query and
+  target before execution.
+- Root structure separates `data-pipelines`, `experiments`, backend, and frontend. Notebooks and
+  `data-pipelines/README.md` describe ingestion; do not infer that ingestion has run just because
+  the infrastructure exists.
 
 ## Setup and operations
 
-The root README's setup lists provider/model configuration, credentials, backend/frontend environments, database and vector storage as prerequisites. The backend README lists CDK `synth`, `diff`, and `deploy` as useful commands. Those commands are documentation only in this task. Before giving an exact runnable command, inspect the checked-out `backend/package.json`, `cdk.json`, requirements, region, and deployment docs because the checked snapshot may be stale.
+The root README's setup lists provider/model configuration, credentials, backend/frontend
+environments, database and vector storage as prerequisites. The backend README lists CDK `synth`,
+`diff`, and `deploy` as useful commands. Those commands are documentation only in this task. Before
+giving an exact runnable command, inspect the checked-out `backend/package.json`, `cdk.json`,
+requirements, region, and deployment docs because the checked snapshot may be stale.
 
 Suggested read-only diagnosis order:
 
@@ -24,7 +42,11 @@ Suggested read-only diagnosis order:
 
 ## Effect and cost gates
 
-Approval is required before dependency installation or source downloads; AWS authentication/credential entry; importing private documents; cloud access, model-provider calls, or billing; creating/updating/deleting AWS resources; database writes; enabling a public endpoint; or uploading data to an external provider. Treat each as a separate scope, especially CDK deploy versus public API exposure. Do not run CDK, ingestion, model calls, or SQL in this task.
+Approval is required before dependency installation or source downloads; AWS
+authentication/credential entry; importing private documents; cloud access, model-provider calls,
+or billing; creating/updating/deleting AWS resources; database writes; enabling a public endpoint;
+or uploading data to an external provider. Treat each as a separate scope, especially CDK deploy
+versus public API exposure. Do not run CDK, ingestion, model calls, or SQL in this task.
 
 ## Offline source preflight
 
@@ -34,7 +56,15 @@ Parent-provided command form:
 python3 .agent-skills/ai-knowledge-management-platform/scripts/preflight.py --repo /absolute/upstream --json
 ```
 
-Installed-root form: `python3 /absolute/installed/ai-knowledge-management-platform/scripts/preflight.py --json`. Without `--repo`, the helper performs inventory-only checks. It is read-only stdlib code with no subprocess, network, credential-file reads, or writes. The explicit `--repo` path must be absolute and nonsymlink. Its secure traversal requires Python 3.10+ on POSIX Linux/macOS or WSL2 on Windows; unsupported native platforms fail closed. This is helper support, not an upstream app-platform guarantee. It hashes only selected pinned public files, not Git HEAD, all source, package/runtime integrity, AWS settings, or deployment state; PATH checks indicate command presence only, not version. Exit 0 = offline checks pass; 1 = source missing/mismatch; 2 = invalid input. `runtime_verified` is false. These commands are not run here.
+Installed-root form: `python3 /absolute/installed/ai-knowledge-management-platform/scripts/preflight.py --json`.
+Without `--repo`, the helper performs inventory-only checks. It is read-only stdlib code with no
+subprocess, network, credential-file reads, or writes. The explicit `--repo` path must be absolute
+and nonsymlink. Its secure traversal requires Python 3.10+ on POSIX Linux/macOS or WSL2 on Windows;
+unsupported native platforms fail closed. This is helper support, not an upstream app-platform
+guarantee. It hashes only selected pinned public files, not Git HEAD, all source, package/runtime
+integrity, AWS settings, or deployment state; PATH checks indicate command presence only, not
+version. Exit 0 = offline checks pass; 1 = source missing/mismatch; 2 = invalid input. `runtime_verified`
+is false. These commands are not run here.
 
 ## Pinned source links
 

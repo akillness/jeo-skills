@@ -155,7 +155,7 @@ The disclosed content lives in the `::details-content` pseudo-element. While clo
 
 `summary` renders as a list item, so its disclosure triangle is a `::marker`. Remove it with `list-style: none` and draw your own with `::before`, which unlike `::marker` can be sized, positioned, and animated.
 Render the icon as a mask so it follows the text color, and rotate it for the closed state so one icon serves both states and both writing directions.
-See `icons` (via `npx -y modern-web-guidance@latest retrieve "icons"`) for more details on including and customizing icons via CSS.
+See `icons` (via `npx -y modern-web-guidance@1.0.0 retrieve "icons"`) for more details on including and customizing icons via CSS.
 
 Prefer keeping the marker directly next to the label text, not pushed to the opposite edge of the summary, especially for accordions that can get wide.
 A marker far from its label makes it harder for users to associate with the correct label, and falls outside the field of view of users with low vision or screen magnification.
@@ -229,11 +229,11 @@ details:not([open])::details-content {
 }
 ```
 
-See `animate-to-intrinsic-sizes` (via `npx -y modern-web-guidance@latest retrieve "animate-to-intrinsic-sizes"`) for more details.
+See `animate-to-intrinsic-sizes` (via `npx -y modern-web-guidance@1.0.0 retrieve "animate-to-intrinsic-sizes"`) for more details.
 
 ## Excluding a `details` element’s contents from find-in-page
 
-If it’s undesirable for a `details` element’s contents to be included in what’s matched with the browser’s find-in-page feature, hide the closed contents with `display: none`. To keep the slide animation, set the collapsed size in `@starting-style`. See `animate-element-entry-exit` (via `npx -y modern-web-guidance@latest retrieve "animate-element-entry-exit"`) for more details.
+If it’s undesirable for a `details` element’s contents to be included in what’s matched with the browser’s find-in-page feature, hide the closed contents with `display: none`. To keep the slide animation, set the collapsed size in `@starting-style`. See `animate-element-entry-exit` (via `npx -y modern-web-guidance@1.0.0 retrieve "animate-element-entry-exit"`) for more details.
 
 ```css
 .accordion.unsearchable > details {
@@ -286,7 +286,7 @@ document.addEventListener("beforematch", event => {
 ```
 
 To make it exclusive, hide the other items' content and reset their triggers in both handlers, since find-in-page can also open an item.
-See `custom-button-actions` (via `npx -y modern-web-guidance@latest retrieve "custom-button-actions"`) for more details on custom commands and `search-hidden-content` (via `npx -y modern-web-guidance@latest retrieve "search-hidden-content"`) for `hidden="until-found"`.
+See `custom-button-actions` (via `npx -y modern-web-guidance@1.0.0 retrieve "custom-button-actions"`) for more details on custom commands and `search-hidden-content` (via `npx -y modern-web-guidance@1.0.0 retrieve "search-hidden-content"`) for `hidden="until-found"`.
 
 ## Fallback strategies
 
@@ -318,7 +318,7 @@ if (!Object.hasOwn(HTMLDetailsElement.prototype, "name")) {
 Baseline status for Invoker commands: Newly available. It's been Baseline since 2025-12-12.
 Supported by: Chrome 135 (Apr 2025), Edge 135 (Apr 2025), Firefox 144 (Oct 2025), and Safari 26.2 (Dec 2025).
 
-If your Baseline target does not support invoker commands, the button does nothing. Feature-detect with `Object.hasOwn(HTMLButtonElement.prototype, "commandForElement")` and fall back to a `click` listener that runs the same loop. See `custom-button-actions` (via `npx -y modern-web-guidance@latest retrieve "custom-button-actions"`) for more details.
+If your Baseline target does not support invoker commands, the button does nothing. Feature-detect with `Object.hasOwn(HTMLButtonElement.prototype, "commandForElement")` and fall back to a `click` listener that runs the same loop. See `custom-button-actions` (via `npx -y modern-web-guidance@1.0.0 retrieve "custom-button-actions"`) for more details.
 
 ### Open and close animation
 

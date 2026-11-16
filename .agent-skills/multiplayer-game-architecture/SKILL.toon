@@ -33,7 +33,7 @@ R[8]:
   The validator is Python 3.9+, standard-library only, read-only, and rejects placeholders
 
 E[4]{type,command}:
-  Install skill,npx skills add https://github.com/akillness/jeo-skills --skill multiplayer-game-architecture
+  Install skill,npx skills@1.9.0 add https://github.com/akillness/jeo-skills --skill multiplayer-game-architecture
   Validate example,python3 .agent-skills/multiplayer-game-architecture/scripts/validate-contract.py .agent-skills/multiplayer-game-architecture/references/contract-example.json
   Self-test validator,python3 .agent-skills/multiplayer-game-architecture/scripts/validate-contract.py --self-test
   Validate skill,bash .agent-skills/skill-standardization/scripts/validate_skill.sh .agent-skills/multiplayer-game-architecture

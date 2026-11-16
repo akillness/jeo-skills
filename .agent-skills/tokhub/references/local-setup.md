@@ -5,7 +5,7 @@
 bash
 git clone https://github.com/yaojingang/TokHub.git
 cd TokHub
-cp -n .env.example .env || true
+# Copy .env.example to your local environment file per README.md
 docker compose up -d --build
 curl http://localhost:8080/healthz
 curl http://localhost:8080/readyz
@@ -31,7 +31,7 @@ or `test` is explicitly set. Production must keep `TOKHUB_SEED_MODE=prod` and
 bash
 npm ci
 go mod download
-cp -n .env.example .env
+# Copy .env.example to your local environment file per README.md
 docker compose up -d --build   # still needed for Postgres/TimescaleDB/Redis/NATS
 
 
@@ -74,7 +74,7 @@ Recommended production settings:
 Run before going live:
 
 bash
-deploy/scripts/preflight.sh --env-file .env.production
+deploy/scripts/preflight.sh --env-file <production-env-file>
 deploy/scripts/release-check.sh
 
 

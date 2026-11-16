@@ -1,6 +1,6 @@
 # RTK Commands And Config
 
-Use this file when the user asks what RTK can optimize, how to call it directly, or how to control rewrite behavior.
+Use this file when the user asks what RTK can optimize, how to call it directly, or how to control output-rewriting behavior.
 
 ## Direct command families
 
@@ -65,7 +65,7 @@ Use explicit `rtk` commands when:
 - You want deterministic compact output regardless of hook state
 - You are testing RTK itself
 
-## Rewrite behavior and escape hatches
+## Output-rewriting behavior and escape hatches
 
 ### One-off passthrough
 

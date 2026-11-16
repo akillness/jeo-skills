@@ -47,7 +47,7 @@ autoclip jobs clean <job_id>
 
 ### 5. Secrets and Configuration
 ```bash
-# Store provider API keys securely in OS keyring
+# Store provider API keys securely in OS credential store
 autoclip config set-secret anthropic
 autoclip config set-secret openai
 autoclip config set-secret gemini

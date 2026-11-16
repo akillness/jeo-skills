@@ -71,9 +71,9 @@ Completion: every selected import and required helper has a source coordinate.
 The following are documented commands, not instructions to execute during inspection:
 
 ```text
-npx hyperiux init
-npx hyperiux add rectangular-text-reveal --dry-run
-npx hyperiux add rectangular-text-reveal
+npx hyperiux@1.1.4 init
+npx hyperiux@1.1.4 add rectangular-text-reveal --dry-run
+npx hyperiux@1.1.4 add rectangular-text-reveal
 ```
 
 Resolve a reviewed CLI version before approved execution; an unversioned `npx` can drift.

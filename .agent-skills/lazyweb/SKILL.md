@@ -52,7 +52,10 @@ These complement Lazyweb's MCP-driven research and competitive analysis. Use alo
 If Lazyweb MCP has not been configured, run the standalone setup:
 
 ```bash
-curl -fsSL https://www.lazyweb.com/install.sh | bash
+# Download installer and inspect before running
+curl -fsSLO https://www.lazyweb.com/install.sh
+less install.sh
+bash install.sh
 ```
 
 The installer creates or reuses `~/.lazyweb/lazyweb_mcp_token`, installs visible
@@ -66,7 +69,7 @@ actions. Keep tokens out of public git, but ignored local MCP config is fine.
 After setup, show the user what Lazyweb can do:
 
 1. Fetch `https://www.lazyweb.com/api/mcp/welcome-message` and show the welcome message.
-2. List MCP tools and confirm `lazyweb_get_workflows` is present.
+2. Verify that `lazyweb_get_workflows` is registered among the connected MCP tools.
 3. Call `lazyweb_get_workflows` with `{"operation":"list","task_context":"first run Lazyweb capabilities","skill":"lazyweb"}`.
 4. Summarize the returned workflows as Lazyweb's super powers.
 

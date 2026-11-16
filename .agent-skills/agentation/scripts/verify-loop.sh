@@ -10,7 +10,14 @@ fail() { echo -e "${RED}FAIL${NC} $*"; FAILURES=$((FAILURES + 1)); }
 info() { echo -e "${YELLOW}....${NC} $*"; }
 
 FAILURES=0
-BASE_URL="http://localhost:4747"
+BASE_URL="${AGENTATION_URL:-http://127.0.0.1:4747}"
+case "$BASE_URL" in
+  http://127.0.0.1:*|http://localhost:*|http://127.0.0.1|http://localhost) ;;
+  *)
+    echo "Refusing non-loopback AGENTATION_URL: $BASE_URL" >&2
+    exit 1
+    ;;
+esac
 QUICK=false
 [[ "${1:-}" == "--quick" ]] && QUICK=true
 
@@ -28,7 +35,7 @@ info "1a. Health check"
 if curl -sf --connect-timeout 3 "${BASE_URL}/health" >/dev/null 2>&1; then
   pass "GET /health — server reachable"
 else
-  fail "GET /health — server not reachable. Start with: npx agentation-mcp server"
+  fail "GET /health — server not reachable. Start with: npx agentation-mcp@1.3.2 server"
   echo ""
   echo "Cannot continue without server. Exiting."
   exit 1
@@ -81,8 +88,8 @@ else
 fi
 
 info "2c. Verify pending count = 1"
-P_COUNT=$(curl -sf "${BASE_URL}/sessions/${SESSION_ID}/pending" 2>/dev/null \
-  | python3 -c "import sys,json; print(json.load(sys.stdin).get('count',0))" 2>/dev/null || echo 0)
+PENDING_RESP=$(curl -sf "${BASE_URL}/sessions/${SESSION_ID}/pending" 2>/dev/null || echo "")
+P_COUNT=$(python3 -c "import sys,json; print(json.load(sys.stdin).get('count',0))" <<< "$PENDING_RESP" 2>/dev/null || echo 0)
 if [[ "$P_COUNT" -eq 1 ]]; then
   pass "GET /sessions/:id/pending — count: 1"
 else
@@ -119,8 +126,8 @@ else
 fi
 
 info "3c. Verify pending count = 0"
-FINAL_COUNT=$(curl -sf "${BASE_URL}/sessions/${SESSION_ID}/pending" 2>/dev/null \
-  | python3 -c "import sys,json; print(json.load(sys.stdin).get('count',0))" 2>/dev/null || echo -1)
+FINAL_RESP=$(curl -sf "${BASE_URL}/sessions/${SESSION_ID}/pending" 2>/dev/null || echo "")
+FINAL_COUNT=$(python3 -c "import sys,json; print(json.load(sys.stdin).get('count',0))" <<< "$FINAL_RESP" 2>/dev/null || echo -1)
 if [[ "$FINAL_COUNT" -eq 0 ]]; then
   pass "GET pending after resolve — count: 0 (all resolved)"
 else

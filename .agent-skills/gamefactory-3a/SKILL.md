@@ -79,7 +79,7 @@ Every game creation task must proceed strictly in this order; never generate ass
 
 ### 4. Enforce the playability anti-cheat review gate
 
-Never judge a game from source code or single screenshots. Capture a short gameplay recording exercising player locomotion, camera, primary action, damage, death/respawn, and UI, then inspect against these 7 areas:
+Do not evaluate a game from source code or single screenshots alone. Capture a short gameplay recording exercising player locomotion, camera, primary action, damage, death/respawn, and UI, then inspect against these 7 areas:
 
 1. **Image Quality**: Mesh silhouette artifacts, texture seams, LOD popping, missing floor collision.
 2. **Lighting**: Light leaking through geometry, harsh missing shadows, exposure mismatches between assets.

@@ -5,16 +5,17 @@ import { spawn } from 'node:child_process';
 import { createRequire } from 'node:module';
 
 function usage() {
-  console.log(`Usage:
-  node stitch_full_page_capture.mjs --manifest <manifest.json> [options]
-
-Options:
-  --item <n>              Repair one 1-based item index instead of all items.
-  --viewport <WxH>        Viewport size. Default: 1440x1100.
-  --step <px>             Scroll/crop step. Default: min(height - 150, height).
-  --wait <ms>             Wait after each scroll before screenshot. Default: 2000.
-  --quality <n>           ffmpeg JPEG quality. Default: 3.
-`);
+  console.log([
+    'Usage:',
+    '  node stitch_full_page_capture.mjs --manifest <manifest.json> [options]',
+    '',
+    'Options:',
+    '  --item <n>              Repair one 1-based item index instead of all items.',
+    '  --viewport <WxH>        Viewport size. Default: 1440x1100.',
+    '  --step <px>             Scroll/crop step. Default: min(height - 150, height).',
+    '  --wait <ms>             Wait after each scroll before screenshot. Default: 2000.',
+    '  --quality <n>           ffmpeg JPEG quality. Default: 3.'
+  ].join('\n'));
 }
 
 function parseArgs(argv) {
@@ -35,10 +36,10 @@ function parseArgs(argv) {
     else if (arg === '--step') args.step = Number(argv[++i] || 0);
     else if (arg === '--wait') args.wait = Number(argv[++i] || args.wait);
     else if (arg === '--quality') args.quality = Number(argv[++i] || args.quality);
-    else throw new Error(`Unknown argument: ${arg}`);
+    else throw new Error('Unknown argument: ' + arg);
   }
   const match = args.viewport.match(/^(\d+)x(\d+)$/);
-  if (!match) throw new Error(`Invalid --viewport: ${args.viewport}`);
+  if (!match) throw new Error('Invalid --viewport: ' + args.viewport);
   args.width = Number(match[1]);
   args.height = Number(match[2]);
   if (!args.step) args.step = Math.max(1, args.height - 150);
@@ -47,12 +48,13 @@ function parseArgs(argv) {
 
 function run(command, args) {
   return new Promise((resolve, reject) => {
-    const child = spawn(command, args, { stdio: ['ignore', 'pipe', 'pipe'] });
+    const child = spawn(command, args, { stdio: 'pipe' });
+    child.stdin.end();
     let stderr = '';
     child.stderr.on('data', d => stderr += d);
     child.on('close', code => {
       if (code === 0) resolve();
-      else reject(new Error(`${command} ${args.join(' ')}\n${stderr}`));
+      else reject(new Error(command + ' ' + args.join(' ') + '\n' + stderr));
     });
   });
 }
@@ -97,15 +99,15 @@ async function main() {
       .map((item, index) => ({ item, index }))
       .filter(({ index }) => !args.item || index === args.item - 1);
 
-    if (!targets.length) throw new Error(`No manifest items matched --item ${args.item}`);
+    if (!targets.length) throw new Error('No manifest items matched --item ' + args.item);
     for (const { item, index } of targets) {
-      if (!item.pageUrl) throw new Error(`Item ${index + 1} is missing pageUrl`);
-      if (!item.fullPageImage) throw new Error(`Item ${index + 1} is missing fullPageImage`);
+      if (!item.pageUrl) throw new Error('Item ' + (index + 1) + ' is missing pageUrl');
+      if (!item.fullPageImage) throw new Error('Item ' + (index + 1) + ' is missing fullPageImage');
       if (!Array.isArray(item.sectionImages) || item.sectionImages.length === 0) {
-        throw new Error(`Item ${index + 1} is missing sectionImages`);
+        throw new Error('Item ' + (index + 1) + ' is missing sectionImages');
       }
 
-      const name = `${String(index + 1).padStart(2, '0')}-${(item.title || 'item').toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+      const name = String(index + 1).padStart(2, '0') + '-' + (item.title || 'item').toLowerCase().replace(/[^a-z0-9]+/g, '-');
       const workDir = path.join(tempRoot, name);
       const rawDir = path.join(workDir, 'raw');
       const segmentDir = path.join(workDir, 'segments');
@@ -136,18 +138,18 @@ async function main() {
         const y = positions[s];
         await page.evaluate(scrollY => window.scrollTo(0, scrollY), y);
         await page.waitForTimeout(args.wait);
-        const rawFile = path.join(rawDir, `${String(s + 1).padStart(2, '0')}.jpg`);
+        const rawFile = path.join(rawDir, String(s + 1).padStart(2, '0') + '.jpg');
         await page.screenshot({ path: rawFile, type: 'jpeg', quality: 86, fullPage: false });
         const segmentHeight = Math.min(args.step, scrollHeight - y);
-        const segmentFile = path.join(segmentDir, `${String(s + 1).padStart(2, '0')}.jpg`);
-        await run('ffmpeg', ['-y', '-i', rawFile, '-vf', `crop=${args.width}:${segmentHeight}:0:0`, '-q:v', String(args.quality), segmentFile]);
+        const segmentFile = path.join(segmentDir, String(s + 1).padStart(2, '0') + '.jpg');
+        await run('ffmpeg', ['-y', '-i', rawFile, '-vf', 'crop=' + args.width + ':' + segmentHeight + ':0:0', '-q:v', String(args.quality), segmentFile]);
         segmentFiles.push(segmentFile);
       }
       await page.close();
 
       const fullFile = path.join(articleDir, item.fullPageImage);
       const stackInputs = segmentFiles.flatMap(file => ['-i', file]);
-      const stackFilter = segmentFiles.map((_, i) => `[${i}:v]`).join('') + `vstack=inputs=${segmentFiles.length}`;
+      const stackFilter = segmentFiles.map((_, i) => '[' + i + ':v]').join('') + 'vstack=inputs=' + segmentFiles.length;
       await run('ffmpeg', ['-y', ...stackInputs, '-filter_complex', stackFilter, '-q:v', String(args.quality), fullFile]);
 
       const stitchedHeight = await imageHeight(fullFile);
@@ -167,7 +169,7 @@ async function main() {
 
       for (const section of item.sectionImages) {
         const cropFile = path.join(articleDir, section.file);
-        await run('ffmpeg', ['-y', '-i', fullFile, '-vf', `crop=${args.width}:${section.height}:0:${section.yStart}`, '-q:v', String(args.quality), cropFile]);
+        await run('ffmpeg', ['-y', '-i', fullFile, '-vf', 'crop=' + args.width + ':' + section.height + ':0:' + section.yStart, '-q:v', String(args.quality), cropFile]);
       }
 
       item.sourceInspection = {

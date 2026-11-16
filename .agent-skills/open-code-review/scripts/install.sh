@@ -45,8 +45,14 @@ case "$METHOD" in
     fi
     # Official one-shot installer: picks the right release binary, verifies the
     # SHA-256 checksum, and installs it as `ocr`. Honors OCR_INSTALL_DIR / OCR_VERSION.
-    OCR_INSTALL_DIR="${INSTALL_DIR}" OCR_VERSION="${OCR_VERSION}" \
-      sh -c "$(curl -fsSL "https://raw.githubusercontent.com/${REPO}/main/install.sh")"
+    installer_tmp="$(mktemp)"
+    trap 'rm -f "$installer_tmp"' EXIT
+    curl -fsSL "https://raw.githubusercontent.com/${REPO}/main/install.sh" -o "$installer_tmp"
+    if [[ ! -s "$installer_tmp" ]]; then
+      echo "Downloaded release installer is empty." >&2
+      exit 1
+    fi
+    OCR_INSTALL_DIR="${INSTALL_DIR}" OCR_VERSION="${OCR_VERSION}" sh "$installer_tmp"
     ;;
   source)
     for tool in git make; do
@@ -58,10 +64,12 @@ case "$METHOD" in
     target="${INSTALL_DIR:-/usr/local/bin}"
     if [[ -w "$target" ]]; then
       cp "$workdir/open-code-review/dist/opencodereview" "$target/ocr"
+      rm -rf "$workdir"
     else
-      sudo cp "$workdir/open-code-review/dist/opencodereview" "$target/ocr"
+      echo "Target directory $target is not writable. Re-run with --dir \"\$HOME/.local/bin\" or copy $workdir/open-code-review/dist/opencodereview manually." >&2
+      rm -rf "$workdir"
+      exit 1
     fi
-    rm -rf "$workdir"
     ;;
   *)
     echo "Unsupported method: $METHOD (expected npm, release, or source)" >&2

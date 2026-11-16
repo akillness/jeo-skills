@@ -6,9 +6,9 @@ description: >
   Vercel AI Gateway. It ships streaming markdown chat, tool calling (a
   server-executed GitHub repo lookup, provider-native web search, and a
   human-in-the-loop `ask_user` questionnaire), and one-click Vercel deploy with
-  OIDC gateway auth. Use when the user wants to spin up a Next.js AI chat app
-  fast, add a custom tool with a typed UI part, swap or restrict the model
-  list, or harden the public `/api/chat` route before shipping. Triggers on:
+  OIDC gateway auth. Use when scaffolding a Next.js AI chat app, adding a
+  custom tool with a typed UI part, swapping or restricting the model list,
+  or hardening the public `/api/chat` route before shipping. Triggers on:
   "chatbot-template", "shadcn chatbot", "AI SDK chat app", "Next.js AI SDK
   starter", "Vercel AI Gateway chat", "streaming chat with shadcn/typeset",
   "ask_user questionnaire tool", "shadcn/react message scroller".
@@ -90,9 +90,8 @@ or create an API key in the Vercel dashboard (**AI Gateway → API Keys**) and
 set it locally:
 
 ```bash
-cp .env.example .env.local
-# then set AI_GATEWAY_API_KEY=... in .env.local
-```
+# Option B: copy .env.example to your local gitignored config file and set AI_GATEWAY_API_KEY
+export AI_GATEWAY_API_KEY="<your-gateway-key>"
 
 ### Step 3: Run the dev server
 
@@ -126,7 +125,7 @@ table and file map.
 ### Step 6: Add shadcn/ui components as needed
 
 ```bash
-npx shadcn@latest add button
+npx shadcn@4.23.0 add button
 ```
 
 ### Step 7: Harden before public traffic
@@ -164,7 +163,7 @@ pnpm build
 4. **Use pnpm, not npm/yarn** — the repo ships `pnpm-lock.yaml` and
    `pnpm-workspace.yaml`; a different package manager will produce a
    divergent lockfile.
-5. **Prefer `npx shadcn@latest add <component>` over hand-copying UI code** —
+5. **Prefer `npx shadcn@4.23.0 add <component>` over hand-copying UI code** —
    it keeps components in sync with the project's `components.json` config.
 6. **Local dev needs a gateway credential; Vercel deploys don't** — don't
    add `AI_GATEWAY_API_KEY` handling for the Vercel-deployed path, OIDC
@@ -178,7 +177,7 @@ pnpm build
 - [AI SDK docs](https://ai-sdk.dev)
 - [shadcn/ui docs](https://ui.shadcn.com)
 - [Vercel AI Gateway docs](https://vercel.com/docs/ai-gateway)
-- Project standards: `.agent-skills/skill-standardization/SKILL.md`
+- Project standards: `skill-standardization`
 
 ## Examples
 
@@ -188,8 +187,7 @@ pnpm build
 git clone --depth 1 https://github.com/shadcn-ui/chatbot-template.git
 cd chatbot-template
 pnpm install
-cp .env.example .env.local
-# set AI_GATEWAY_API_KEY=... in .env.local
+export AI_GATEWAY_API_KEY="<your-gateway-key>"
 pnpm dev
 ```
 

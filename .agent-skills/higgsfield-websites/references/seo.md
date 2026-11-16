@@ -165,7 +165,7 @@ export const Route = createFileRoute('/robots')({
           'User-agent: *',
           'Allow: /',
           '',
-          `Sitemap: ${origin}/sitemap.xml`,
+          'Sitemap: ' + origin + '/sitemap.xml',
         ].join('\n');
 
         return new Response(body, {
@@ -196,15 +196,17 @@ export const Route = createFileRoute('/sitemap')({
         const origin = new URL(request.url).origin;
         const today = new Date().toISOString().split('T')[0];
 
-        const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>${origin}</loc>
-    <lastmod>${today}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-  </url>
-</urlset>`;
+        const xml = [
+          '<?xml version="1.0" encoding="UTF-8"?>',
+          '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+          '  <url>',
+          '    <loc>' + origin + '</loc>',
+          '    <lastmod>' + today + '</lastmod>',
+          '    <changefreq>weekly</changefreq>',
+          '    <priority>1.0</priority>',
+          '  </url>',
+          '</urlset>',
+        ].join('\n');
 
         return new Response(xml, {
           status: 200,
@@ -236,19 +238,21 @@ export const Route = createFileRoute('/sitemap')({
         const origin = new URL(request.url).origin;
         const today = new Date().toISOString().split('T')[0];
 
-        const urls = ROUTES.map(
-          (r) => `  <url>
-    <loc>${origin}${r.path === '/' ? '' : r.path}</loc>
-    <lastmod>${today}</lastmod>
-    <changefreq>${r.changefreq}</changefreq>
-    <priority>${r.priority}</priority>
-  </url>`
-        ).join('\n');
+        const urls = ROUTES.map((r) => [
+          '  <url>',
+          '    <loc>' + origin + (r.path === '/' ? '' : r.path) + '</loc>',
+          '    <lastmod>' + today + '</lastmod>',
+          '    <changefreq>' + r.changefreq + '</changefreq>',
+          '    <priority>' + r.priority + '</priority>',
+          '  </url>',
+        ].join('\n')).join('\n');
 
-        const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${urls}
-</urlset>`;
+        const xml = [
+          '<?xml version="1.0" encoding="UTF-8"?>',
+          '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+          urls,
+          '</urlset>',
+        ].join('\n');
 
         return new Response(xml, {
           status: 200,
@@ -356,7 +360,7 @@ This is a structural SEO advantage over client-rendered SPAs. Don't undermine it
 1. **Forgetting to update the sitemap ROUTES array.** Every new page route needs a corresponding sitemap entry. Dead sitemap URLs actively hurt crawl efficiency.
 2. **CSP blocking inline styles from the design system.** The default CSP includes `'unsafe-inline'` for styles. If you tighten it, test that Tailwind/CSS-in-JS still works.
 3. **robots.txt with a hardcoded origin.** The route derives origin from the request URL, so any host the site is served from gets correct sitemaps automatically. Don't hardcode URLs.
-4. **Missing canonical on dynamic routes.** Routes with params (`/blog/$slug`) must build the canonical URL from the param value, not use a static string.
+4. **Missing canonical on dynamic routes.** Routes with params ("/blog/$slug") must build the canonical URL from the param value, not use a static string.
 5. **Trailing slash redirect loops.** The normalization redirect must be the FIRST check in `fetch()`, before `handler.fetch`. Placing it after can cause double-processing or loops with Cloudflare's own redirects.
 
 ## Schema markup
@@ -380,13 +384,13 @@ Load this skill for any website build with a public face. Structured data (JSON-
 Create `app/src/components/StructuredData.tsx`:
 
 ```tsx
+import { createElement } from 'react';
+
 export function StructuredData({ json }: { json: string }) {
-  return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: json }}
-    />
-  );
+  return createElement('script', {
+    type: 'application/ld+json',
+    dangerouslySetInnerHTML: { __html: json.replace(/</g, '\\u003c') },
+  });
 }
 ```
 

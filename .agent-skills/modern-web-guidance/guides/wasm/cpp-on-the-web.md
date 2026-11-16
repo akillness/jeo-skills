@@ -137,7 +137,7 @@ Use one of these approaches to keep the UI responsive:
 ## 4. Test Runtime Execution and Memory Limits
 
 Always run and verify the compiled WebAssembly module in a real browser
-environment and confirm that no warnings or unhandled errors appear in the
+environment and confirm that zero warnings or unhandled errors appear in the
 console:
 
 - **Validate with `-sASSERTIONS` during development**: Build and test with

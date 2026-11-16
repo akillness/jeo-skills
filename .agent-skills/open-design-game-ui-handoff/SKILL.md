@@ -1,6 +1,7 @@
 ---
 name: open-design-game-ui-handoff
 description: Build and validate Open Design handoffs from the real Darkbone Archer runtime — game UI (upgrade-only preservation contracts) AND VFX/skill/RIG design packages. Use whenever Codex must prepare, regenerate, or audit an Open Design handoff; feed an existing Claude Design handoff zip into Open Design; collect current screenshots, animation videos, keyframes, source anchors, assets, responsive states, or preservation boundaries; or prevent a standalone concept from deleting existing identity, motion, interaction, copy, or data that it does not show.
+allowed-tools: Bash Read Write Glob Grep WebFetch
 ---
 
 # Open Design Game UI Handoff

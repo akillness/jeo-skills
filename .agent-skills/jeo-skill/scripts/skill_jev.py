@@ -24,6 +24,37 @@ HARNESS_ENV = "JEO_SKILL_JEV_HARNESS"
 DEFAULT_HARNESS = Path.home() / ".agents" / "jev" / "jev-harness.mjs"
 FIT_THRESHOLD = 0.30
 SUMMARY_LIMIT = 6 * 1024
+_SAFE_JEV_ENV_KEYS = (
+    "PATH",
+    "HOME",
+    "TMPDIR",
+    "TEMP",
+    "TMP",
+    "LANG",
+    "LC_ALL",
+    "LC_CTYPE",
+    "XDG_CONFIG_HOME",
+    "XDG_DATA_HOME",
+    "XDG_CACHE_HOME",
+    "XDG_STATE_HOME",
+    "JEV_PROFILE",
+    "JEV_AGENT",
+    "JEV_MODE",
+    "JEO_CALL_LOG",
+    "JEO_ROUTE_JSON",
+    "JEO_FAKE_MODE",
+    "JEO_HARNESS_LOG",
+    "PYTHONDONTWRITEBYTECODE",
+    "NODE_EXTRA_CA_CERTS",
+    "SSL_CERT_FILE",
+    "SSL_CERT_DIR",
+    "HTTPS_PROXY",
+    "https_proxy",
+    "HTTP_PROXY",
+    "http_proxy",
+    "NO_PROXY",
+    "no_proxy",
+)
 
 
 class JevGateError(RuntimeError):
@@ -329,7 +360,7 @@ def relevance(candidates: list[str], catalog: dict[str, Any], repos: list[Path],
     with tempfile.TemporaryDirectory(prefix="jeo-skill-jev-") as temporary:
         catalog_path = Path(temporary) / "skills.json"
         catalog_path.write_text(json.dumps(restricted, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
-        env = os.environ.copy()
+        env = {key: val for key in _SAFE_JEV_ENV_KEYS if (val := os.environ.get(key)) is not None}
         env["JEV_CATALOG_PATH"] = str(catalog_path)
         for root, summary in normalized:
             task = summary or "Repository summary unavailable: no readable README.md or AGENTS.md."

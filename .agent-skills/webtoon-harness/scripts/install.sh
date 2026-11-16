@@ -10,7 +10,7 @@
 #
 # Env knobs:
 #   TARGET=<dir>   - project root to scaffold into (default: current directory)
-#   GLOBAL=1       - also install this routing skill globally (npx skills add -g)
+#   GLOBAL=1       - also install this routing skill globally (npx -y skills@1.7.0 add -g)
 #   REF=<gitref>   - upstream ref to clone (default: main)
 #   UPSTREAM_URL=  - source repo (default: https://github.com/revfactory/webtoon-harness)
 #
@@ -37,8 +37,8 @@ command -v git >/dev/null 2>&1 || die "git is required"
 # 1) Optionally install this routing skill globally
 if [ "$GLOBAL" = "1" ]; then
   if command -v npx >/dev/null 2>&1; then
-    log "Installing '$SKILL' skill globally via npx skills add -g"
-    npx --yes skills add -g "$REPO_URL" --skill "$SKILL" --yes 2>/dev/null \
+    log "Installing '$SKILL' skill globally via npx -y skills@1.7.0 add -g"
+    npx -y skills@1.7.0 add -g "$REPO_URL" --skill "$SKILL" --yes 2>/dev/null \
       || warn "Global skill install failed — continuing with project scaffold"
   else
     warn "npx not found — skipping global skill install"

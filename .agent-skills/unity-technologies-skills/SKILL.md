@@ -15,6 +15,8 @@ description: >
   to `unity-gamedev-skill-pack`, CLI-only work to `unity-cli`, build failures to
   `game-build-log-triage`, and game CI design to `game-ci-cd-pipeline`.
 allowed-tools: Bash Read Write Edit Glob Grep
+permissions:
+  - env
 compatibility: >
   Pack discovery and auditing need Python 3.9+ and Git. Selective installation
   examples use the Agent Skills CLI. Individual upstream skills vary; many
@@ -60,7 +62,7 @@ Do not use this wrapper for these nearby jobs:
 
 - Curating an arbitrary third-party Unity skill repository into local docs:
   use `unity-gamedev-skill-pack`.
-- Operating the already installed local Unity CLI workflow without asking for
+- Operating the already installed local Unity CLI workflow directly rather than referencing
   this official pack: use `unity-cli`.
 - Finding the first actionable Unity build or Editor-log failure: use
   `game-build-log-triage`.

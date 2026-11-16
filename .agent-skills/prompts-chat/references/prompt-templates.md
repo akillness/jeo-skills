@@ -251,7 +251,7 @@ When prompting for classification, generation, or analysis, include 2-3 concrete
 ```bash
 # Generate docs using curated prompt
 PROMPT=$(cat prompts/approved/api-documentation.md)
-claude-api --model claude-3-sonnet --system "$PROMPT" < code.py
+your-configured-llm-cli --system "$PROMPT" < code.py
 ```
 
 ### Integration with Content Pipeline

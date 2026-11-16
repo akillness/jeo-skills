@@ -24,7 +24,7 @@ Build a button that copies the text of another element (code block, inline value
 - Use `type="button"` so the button never submits a form.
 - Size the button at least 24×24 CSS px with `min-inline-size`/`min-block-size` (not `inline-size`/`block-size`), so content can grow the target but never shrink it.
 - Name an icon-only button with `aria-label`. If the button shows visible text, that text is the name; do not add an `aria-label` that differs from it.
-- Render the icon with whatever the codebase uses for icons (see `icons` (via `npx -y modern-web-guidance@latest retrieve "icons"`)) and mark it decorative; the button's accessible name comes from `aria-label`, not the icon.
+- Render the icon with whatever the codebase uses for icons (see `icons` (via `npx -y modern-web-guidance@1.0.0 retrieve "icons"`)) and mark it decorative; the button's accessible name comes from `aria-label`, not the icon.
 
 ### 2. Copying logic
 

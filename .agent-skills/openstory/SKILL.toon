@@ -32,7 +32,7 @@ R[8]:
   Regenerate rather than hand-write: bun motion:codegen, bun auth:generate, bun db:generate, bun cf:typegen
 
 E[5]{type,command}:
-  Install skill,npx skills add https://github.com/akillness/jeo-skills --skill openstory
+  Install skill,npx -y skills@1.7.0 add https://github.com/akillness/jeo-skills --skill openstory
   First run,git clone https://github.com/openstory-so/openstory.git && cd openstory && bun install && bun dev
   Readiness check,bash .agent-skills/openstory/scripts/openstory.sh doctor ./openstory
   Env presence (names only),bash .agent-skills/openstory/scripts/openstory.sh env-check ./openstory

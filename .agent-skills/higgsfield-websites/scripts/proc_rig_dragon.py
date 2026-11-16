@@ -5,8 +5,8 @@
 #
 # Builds a 16-bone skeleton for a winged quadruped (dragon) purely from
 # bounding-box fractions — no mesh-specific magic numbers, so the SAME
-# script reruns on the textured mesh later (texture-swap rule, see
-# references/procedural-animation.md).
+# script reruns on the textured mesh later (see
+# references/game-procedural-animation.md).
 #
 # Layout: spine -> chest -> neck -> head; tail x4 (opposite the head);
 # wing_L/R x2 (inner+outer); legs x4.

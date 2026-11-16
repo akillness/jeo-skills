@@ -62,7 +62,7 @@ When handling mutually exclusive content regions, like an exclusive accordion, u
 ### Using `hidden="until-found"` attribute
 
 ```html
-<!-- The browser automatically removes hidden="until-found" upon a search match -->
+<!-- The browser clears hidden="until-found" upon a search match -->
 <div class="hidden-container" hidden="until-found">
   <p>This content is visually hidden.</p>
 </div>

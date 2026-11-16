@@ -207,7 +207,7 @@ Stdlib-only. It runs the upstream checklist deterministically: tracked
 `.env*`/key/log files, **`.env*` blobs still reachable in git history**,
 hard-coded internal IPs and endpoints, `.gitignore` coverage, `LICENSE`
 presence, the open-CORS-with-credentials combination, the MD5 auth map, and
-`CodeNode`'s `exec` path. It prints one ` ```review ` fenced JSON block and
+the `CodeNode` `exec` path. It prints one `review` fenced JSON block and
 exits `1` on a blocker.
 
 The non-negotiable rule it encodes: untracking `.env` does **not** remove it
@@ -306,4 +306,4 @@ LangGraph is lighter — route out and say so.
 - [scripts/preflight_audit.py](scripts/preflight_audit.py) — stdlib-only pre-publish security gate
 - [scripts/check_goalflow_skill.py](scripts/check_goalflow_skill.py) — stdlib-only runtime-`SKILL.md` frontmatter and injection-cost check
 - [goalflow GitHub Repository](https://github.com/wanmol/goal-flow)
-- Project standards: `.agent-skills/skill-standardization/SKILL.md`
+- Project standards: `skill-standardization`

@@ -3,7 +3,7 @@
 ## Evidence and selection
 
 - The official stable release [1.0.2](https://github.com/lightpanda-io/browser/releases/tag/1.0.2) resolves to source commit `c5f7bb29b127040c899d4e181b5709f76fc71a6f`. The separately reviewed [main README](https://github.com/lightpanda-io/browser/blob/8f2c8185c97e3cc98de07f164e7eb3d9e2dd9020/README.md) is newer. Stable already documents fetch, CDP, MCP and agent mode; check the selected artifact's help rather than assuming every feature matches either source snapshot.
-- The [release API metadata](https://api.github.com/repos/lightpanda-io/browser/releases/tags/1.0.2) lists assets and SHA-256 digests. Match the exact OS and CPU and compare the downloaded file's SHA-256 to that release metadata before execution. A checksum from the same source is an integrity check, not independent proof of authenticity. Check current release provenance and trust policy. Nightly, Homebrew and AUR are mutable; record the actual artifact and digest if using them.
+- The GitHub Releases API metadata for release 1.0.2 lists assets and SHA-256 digests. Match the exact OS and CPU and compare the downloaded file's SHA-256 to that release metadata before execution. A checksum from the same source is an integrity check, not independent proof of authenticity. Check current release provenance and trust policy. Nightly, Homebrew and AUR are mutable; record the actual artifact and digest if using them.
 - Official builds: macOS and Linux x86_64/aarch64; Linux binaries require glibc, not Alpine musl or Android Bionic. Native Windows is not supported; use Linux inside WSL2. No runtime was tested by this skill's offline inspection.
 
 ## Doctor contract

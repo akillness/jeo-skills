@@ -257,7 +257,8 @@ import sys
 def stream_inference(prompt, model_path):
     """Stream tokens from Colibri inference."""
     
-    env = os.environ.copy()
+    allowlist = ('PATH', 'HOME', 'TMPDIR', 'TEMP', 'TMP', 'LANG', 'LC_ALL', 'OMP_NUM_THREADS', 'COLI_CACHE_SIZE_MB', 'COLI_MTP', 'COLI_TEMPERATURE', 'COLI_TOP_P', 'COLI_GPU_DEVICE')
+    env = {k: v for k in allowlist if (v := os.environ.get(k)) is not None}
     env['COLI_MODEL'] = model_path
     
     # Run coli (output includes token-by-token streaming in real time)
@@ -423,7 +424,8 @@ def monitor(proc, interval=0.5):
 
 if __name__ == '__main__':
     import os
-    env = os.environ.copy()
+    allowlist = ('PATH', 'HOME', 'TMPDIR', 'TEMP', 'TMP', 'LANG', 'LC_ALL', 'OMP_NUM_THREADS', 'COLI_CACHE_SIZE_MB', 'COLI_MTP', 'COLI_TEMPERATURE', 'COLI_TOP_P', 'COLI_GPU_DEVICE')
+    env = {k: v for k in allowlist if (v := os.environ.get(k)) is not None}
     env['COLI_MODEL'] = '/nvme/glm52_i4'
     
     proc = subprocess.Popen(

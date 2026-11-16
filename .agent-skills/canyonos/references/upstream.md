@@ -24,8 +24,10 @@ Catalog and setup installation copies this skill's documentation and support fil
 ### Upstream Installation Methods (requires approval)
 
 ```bash
-# 1. Official standalone installer script
-curl -fsSL https://raw.githubusercontent.com/CanyonCodeCoreAI/canyonos/main/packages/cli/install.sh | sh
+# 1. Official standalone installer script (download, inspect, then execute)
+curl -fsSL https://raw.githubusercontent.com/CanyonCodeCoreAI/canyonos/main/packages/cli/install.sh -o install.sh
+# Review install.sh before running:
+sh install.sh
 
 # 2. uv tool install
 uv tool install canyonos

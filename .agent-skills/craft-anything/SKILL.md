@@ -129,7 +129,7 @@ python3 .agent-skills/craft-anything/scripts/project_inspect.py validate \
 - **Distinguish observation, derivation, and inference:** Direct bytes and captures are observed; call graphs and CFGs are derived; intent and names are inferred. Label every claim.
 - **Always cite Evidence IDs (`ev_...`):** Every finding must link to stored evidence records in `investigation.cany/`.
 - **Clean room by default:** Default to clean-room analysis for external software. Only switch to Deep mode when internal inspection is explicitly authorized.
-- **Never bypass approval gates:** Do not automate away `core_action_approve` or `consent_required` dialogs.
+- **Always enforce approval gates:** Keep `core_action_approve` and `consent_required` dialogs active; never skip or automate them away.
 - **Respect trademark and licensing limits:** ArtCraft brand marks in `docs/brand/` are proprietary trademarks; rebuild outputs must not duplicate protected brand names, logos, or commercial assets.
 
 ## References

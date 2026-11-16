@@ -4,7 +4,7 @@ The single highest-leverage step in the pipeline. The reference boards ARE the
 design: a generic board guarantees a generic site, and no amount of code craft
 recovers from it. Budget real effort here.
 
-## The output rule
+## Per-section board contract
 
 Generate **ONE horizontal design-reference image PER SECTION** with
 `higgsfield generate create <job_type> --prompt "…"` (strong model:

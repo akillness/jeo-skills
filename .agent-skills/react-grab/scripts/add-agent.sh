@@ -39,7 +39,7 @@ show_help() {
   echo "  bash scripts/add-agent.sh mcp"
   echo ""
   echo "Remove an integration:"
-  echo "  npx -y grab@latest remove <agent>"
+  echo "  npx -y grab@0.2.0 remove <agent>"
 }
 
 if [[ $# -eq 0 ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-h" ]]; then
@@ -77,9 +77,9 @@ if [[ "$NODE_VERSION" -lt 22 ]]; then
   exit 1
 fi
 
-# Check npx
-if ! command -v npx &>/dev/null; then
-  echo "❌ npx not found. Run: npm install -g npx"
+# Check "npx" binary
+if ! command -v "npx" &>/dev/null; then
+  echo "❌ Missing 'npx' binary. Install Node.js/npm so 'npx' is on PATH."
   exit 1
 fi
 
@@ -87,7 +87,7 @@ echo "🔗 Connecting react-grab to: $AGENT"
 echo ""
 
 # Run grab add
-npx -y grab@latest add "$AGENT"
+npx -y grab@0.2.0 add "$AGENT"
 
 echo ""
 echo "✅ react-grab connected to $AGENT!"
@@ -118,4 +118,4 @@ case "$AGENT" in
 esac
 
 echo ""
-echo "To remove this integration: npx -y grab@latest remove $AGENT"
+echo "To remove this integration: npx -y grab@0.2.0 remove $AGENT"

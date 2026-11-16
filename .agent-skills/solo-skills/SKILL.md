@@ -15,6 +15,8 @@ description: >
   persistence. Route generic agent-team design to the catalog's `harness2`
   and reusable skill authoring to `skill-standardization`.
 allowed-tools: Bash Read Write Edit Glob Grep
+permissions:
+  - env
 compatibility: >
   Pack auditing needs Python 3.9+ and Git. Selective installation examples use
   the Agent Skills CLI. Individual upstream skills may require macOS, Orca,

@@ -36,7 +36,7 @@ Sets up a PreToolUse hook that intercepts and blocks dangerous git commands befo
 ### What Gets Blocked
 
 - `git push` (all variants including `--force`)
-- `git reset --hard`
+- `git reset` with `--hard`
 - `git clean -f` / `git clean -fd`
 - `git branch -D`
 - `git checkout .` / `git restore .`
@@ -47,7 +47,7 @@ When blocked, Claude sees a message telling it that it does not have authority t
 
 #### 1. Ask scope
 
-Ask the user: install for **this project only** (`.claude/settings.json`) or **all projects** (`~/.claude/settings.json`)?
+Ask the user: install for **this project only** or **all projects**?
 
 #### 2. Copy the hook script
 
@@ -55,36 +55,16 @@ The bundled script is at: [scripts/block-dangerous-git.sh](scripts/block-dangero
 
 Copy it to the target location based on scope:
 
-- **Project**: `.claude/hooks/block-dangerous-git.sh`
-- **Global**: `~/.claude/hooks/block-dangerous-git.sh`
+- **Project**: `<project-root>/hooks/block-dangerous-git.sh`
+- **Global**: `<user-hooks-dir>/block-dangerous-git.sh`
 
 Make it executable with `chmod +x`.
 
 #### 3. Add hook to settings
 
-Add to the appropriate settings file:
+Register the command hook via `/hooks` (or your Claude Code hook configuration) for the selected scope:
 
-**Project** (`.claude/settings.json`):
-
-```json
-{
-  "hooks": {
-    "PreToolUse": [
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/block-dangerous-git.sh"
-          }
-        ]
-      }
-    ]
-  }
-}
-```
-
-**Global** (`~/.claude/settings.json`):
+**Project**:
 
 ```json
 {
@@ -95,7 +75,7 @@ Add to the appropriate settings file:
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/hooks/block-dangerous-git.sh"
+            "command": "\"$CLAUDE_PROJECT_DIR\"/hooks/block-dangerous-git.sh"
           }
         ]
       }
@@ -104,7 +84,27 @@ Add to the appropriate settings file:
 }
 ```
 
-If the settings file already exists, merge the hook into the existing `hooks.PreToolUse` array. Don't overwrite other settings.
+**Global**:
+
+```json
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "<user-hooks-dir>/block-dangerous-git.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+If a hook configuration already exists, merge the hook into the existing `PreToolUse` array rather than overwriting other hooks.
 
 #### 4. Ask about customization
 
@@ -133,7 +133,6 @@ Should exit with code 2 and print a BLOCKED message to stderr.
 
 ## References
 
-- Upstream skill: `mattpocock/skills` `skills/misc/git-guardrails-claude-code/SKILL.md` (commit `3cca18b`, MIT)
+- Upstream skill: `mattpocock/skills` (`git-guardrails-claude-code`, commit `3cca18b`, MIT)
 - Script: `scripts/block-dangerous-git.sh`
-- Project standards: `.agent-skills/skill-standardization/SKILL.md`
-- Validator script: `.agent-skills/skill-standardization/scripts/validate_skill.sh`
+- Project standards: `skill-standardization`

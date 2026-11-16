@@ -15,7 +15,7 @@ Python environment. `scripts/install.sh` handles layer 2.
 ## Skill (plugin) install
 
 ```sh
-npx skills add https://github.com/akillness/jeo-skills --skill heretic
+npx skills@1.9.0 add https://github.com/akillness/jeo-skills --skill heretic
 ```
 
 

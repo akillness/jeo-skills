@@ -27,7 +27,7 @@ metadata:
 - Run its offline tests, static checks, or local browser-guard checks and interpret what
   they do and do not prove.
 - Start the local inspector, run a bounded browser task, or review a recorded run.
-- Audit or update this skill's pinned source details after an upstream change.
+- Audit or refresh pinned upstream source notes after a new commit review.
 
 Do not use this skill for generic browser automation or as a general TypeSafe SDK guide.
 Route general browser/CDP setup to `browser-harness` and authenticated existing-session
@@ -100,7 +100,7 @@ confirm that browser use is in scope. Do not substitute a live-site task for thi
 For demo/library runs, read the corresponding branch in `references/upstream.md` first.
 The live Flights example makes TypeSafe calls and writes run evidence; it searches and
 independently checks results but does not select or book a flight. Do not run it against a
-real site without approval for the URL, data sent, provider spend, browser session, and output
+real site unless the user approves the URL, data sent, provider spend, browser session, and output
 files. Keep task count and stop conditions bounded.
 
 ### 5. Report evidence, not inferred success

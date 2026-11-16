@@ -137,7 +137,7 @@ printf 'Running:' >&2
 for part in "${CMD[@]}"; do
   printf ' %q' "$part" >&2
 done
-printf '\n' >&2
+printf '%s\n' "" >&2
 
 if [[ "$DRY_RUN" == true ]]; then
   exit 0

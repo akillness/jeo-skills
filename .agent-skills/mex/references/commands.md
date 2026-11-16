@@ -1,7 +1,7 @@
 # Mex command reference
 
 All commands run from the project root. Prefer the unambiguous `mex-agent`
-wrapper installed by this skill; use `npx mex-agent` when no wrapper is
+wrapper installed by this skill; use `npx mex-agent@0.8.5` when no wrapper is
 available. Use bare `mex` only after its version prints a mex-agent semantic
 version. Verified against mex-agent 0.7.1 `--help` and the upstream README
 (https://github.com/mex-memory/mex#core-commands) — the README's own "Core
@@ -24,9 +24,9 @@ mex --version
 ```
 
 If PATH resolves bare `mex` to the wrong tool, use `mex-agent <command>` or
-`npx mex-agent <command>` instead. For a nonstandard install, set
+`npx mex-agent@0.8.5 <command>` instead. For a nonstandard install, set
 `MEX_AGENT_BIN=/absolute/path/to/mex-agent`. `scripts/install.sh` creates the
-unambiguous `~/.local/bin/mex-agent` wrapper when needed, and both installer
+unambiguous `$HOME/.local/bin/mex-agent` wrapper when needed, and both installer
 and helper resolve it before considering bare `mex`. `doctor` still reports
 the collision so stale docs or scripts using bare `mex` remain visible.
 
@@ -35,7 +35,7 @@ the collision so stale docs or scripts using bare `mex` remain visible.
 ```bash
 npm install -g mex-agent@0.8.5   # the version scripts/install.sh installs when missing
 mex-agent --version           # unambiguous wrapper installed by this skill
-npx mex-agent setup           # fallback without the wrapper
+npx mex-agent@0.8.5 setup           # fallback without the wrapper
 ```
 
 ## One-shot auto-install (this skill)

@@ -52,7 +52,13 @@ done
 case "$profile" in release|dev) ;; *) echo "PROFILE must be release or dev: $profile" >&2; exit 2 ;; esac
 
 step() { printf '\n==> %s\n' "$*"; }
-version_ok() { [[ "$(printf '%s\n%s\n' "$min_rust" "$1" | sort -V | head -1)" == "$min_rust" ]]; }
+version_ge() {
+  local req_maj req_min cur_maj cur_min
+  IFS=. read -r req_maj req_min _ <<< "$1"
+  IFS=. read -r cur_maj cur_min _ <<< "$2"
+  (( 10#$cur_maj > 10#$req_maj || (10#$cur_maj == 10#$req_maj && 10#$cur_min >= 10#$req_min) ))
+}
+version_ok() { version_ge "$min_rust" "$1"; }
 cargo_version_of() { "$@" --version 2>/dev/null | awk '{print $2}'; }
 
 step "checking prerequisites"
@@ -70,7 +76,7 @@ if ! version_ok "$cargo_version" && [[ -z "$toolchain" ]] && command -v rustup >
     v="$(cargo_version_of cargo "+$name")" || v=""
     # skip unusable toolchains, pre-release versions (1.100.0-nightly), and too-old ones
     if [[ -z "$v" || "$v" == *-* ]] || ! version_ok "$v"; then continue; fi
-    [[ -z "$best" || "$(printf '%s\n%s\n' "$best_v" "$v" | sort -V | tail -1)" == "$v" ]] && { best="$name"; best_v="$v"; }
+    [[ -z "$best" ]] || version_ge "$best_v" "$v" && { best="$name"; best_v="$v"; }
   done < <(rustup toolchain list)
   if [[ -n "$best" ]]; then
     echo "active cargo $cargo_version < $min_rust; using installed toolchain $best ($best_v)"

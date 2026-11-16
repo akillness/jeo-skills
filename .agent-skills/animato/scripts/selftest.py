@@ -11,6 +11,7 @@ Usage: python3 selftest.py    (exit 0 = all cases passed)
 from __future__ import annotations
 
 import json
+import os
 import subprocess
 import sys
 import threading
@@ -133,8 +134,9 @@ def main() -> int:
 
         # 5. missing key is a hard stop, not a silent unauthenticated call
         cmd = [sys.executable, str(AGENT), "--server", base, "animate", "--filename", "X-Bot.fbx", "--message", "x"]
-        env = {k: v for k, v in __import__("os").environ.items() if k not in
-               ("ANIMATO_API_KEY", "GEMINI_API_KEY", "OPENAI_API_KEY")}
+        env = dict(os.environ)
+        for key_var in ("ANIMATO_API_KEY", "GEMINI_API_KEY", "OPENAI_API_KEY"):
+            env.pop(key_var, None)
         proc = subprocess.run(cmd, capture_output=True, text=True, cwd=workdir, env=env)
         if proc.returncode == 0 or "no API key" not in proc.stderr:
             failures.append(f"missing key must fail loudly: rc={proc.returncode} {proc.stderr}")
@@ -144,10 +146,28 @@ def main() -> int:
         if "Animato server reachable" not in proc.stdout:
             failures.append(f"doctor did not detect the server: {proc.stdout}")
 
+        # 7. non-local http:// URLs and mismatched provider/host credentials are rejected
+        cmd_bad_http = [
+            sys.executable, str(AGENT), "--server", "http://remote.invalid:8000",
+            "files",
+        ]
+        proc = subprocess.run(cmd_bad_http, capture_output=True, text=True, cwd=workdir)
+        if proc.returncode == 0 or "https://" not in proc.stderr:
+            failures.append(f"non-local http server must be rejected: rc={proc.returncode} {proc.stderr}")
+
+        cmd_bad_host = [
+            sys.executable, str(AGENT), "--server", base, "--provider", "gemini",
+            "--endpoint", "https://api.openai.com/v1", "--api-key", "test-key",
+            "animate", "--filename", "X-Bot.fbx", "--message", "wave", "--dry-run",
+        ]
+        proc = subprocess.run(cmd_bad_host, capture_output=True, text=True, cwd=workdir)
+        if proc.returncode == 0 or "mismatched host" not in proc.stderr:
+            failures.append(f"mismatched provider/host must be rejected: rc={proc.returncode} {proc.stderr}")
+
     server.shutdown()
     for item in failures:
         print(f"[fail] {item}")
-    print("selftest: 6 cases, " + ("all passed" if not failures else f"{len(failures)} failure(s)"))
+    print("selftest: 8 cases, " + ("all passed" if not failures else f"{len(failures)} failure(s)"))
     return 1 if failures else 0
 
 

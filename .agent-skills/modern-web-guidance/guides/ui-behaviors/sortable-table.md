@@ -2,9 +2,9 @@
 
 Use this pattern to let users sort a data table by clicking its column headers. Start from a complete, semantic `<table>` that is readable without JavaScript, then enhance it.
 
-This guide covers the header controls, sort state, sorting logic, and applying the new order to the DOM. For keeping state inside rows while they move, see `move-dom-element-without-losing-state` (via `npx -y modern-web-guidance@latest retrieve "move-dom-element-without-losing-state"`). For other narrow-screen table patterns, see `responsive-table` (via `npx -y modern-web-guidance@latest retrieve "responsive-table"`).
+This guide covers the header controls, sort state, sorting logic, and applying the new order to the DOM. For keeping state inside rows while they move, see `move-dom-element-without-losing-state` (via `npx -y modern-web-guidance@1.0.0 retrieve "move-dom-element-without-losing-state"`). For other narrow-screen table patterns, see `responsive-table` (via `npx -y modern-web-guidance@1.0.0 retrieve "responsive-table"`).
 
-For sorting lists and card grids that are not tables, see `dynamic-sort` (via `npx -y modern-web-guidance@latest retrieve "dynamic-sort"`).
+For sorting lists and card grids that are not tables, see `dynamic-sort` (via `npx -y modern-web-guidance@1.0.0 retrieve "dynamic-sort"`).
 
 ## Header markup
 
@@ -12,7 +12,7 @@ For sorting lists and card grids that are not tables, see `dynamic-sort` (via `n
 * Set `aria-sort="ascending"` or `aria-sort="descending"` on the `<th>` of the currently sorted column only, and remove it from all other headers. Do not set `aria-sort="none"`, and do not put `aria-sort` on the button.
 * Leave non-sortable columns as plain `<th>` text with no button. Keep their padding, alignment and font weight matching the sortable headers: drop the cell padding only on `th:has(> button)`, since the button supplies it.
 * Keep the table's `<caption>` as its accessible name, and keep data rows in a `<tbody>` so sorting reorders only body rows and never the `<thead>` row.
-* Use a decorative icon for the sort direction (`aria-hidden="true"`, `currentColor`, see `icons` (via `npx -y modern-web-guidance@latest retrieve "icons"`)). Drive its appearance from `th[aria-sort]` in CSS, not from extra classes or JavaScript. The icon is visual only and hidden from assistive technology, so always convey the sort state with `aria-sort` on the `<th>`.
+* Use a decorative icon for the sort direction (`aria-hidden="true"`, `currentColor`, see `icons` (via `npx -y modern-web-guidance@1.0.0 retrieve "icons"`)). Drive its appearance from `th[aria-sort]` in CSS, not from extra classes or JavaScript. The icon is visual only and hidden from assistive technology, so always convey the sort state with `aria-sort` on the `<th>`.
 * Give the button a minimum 24px target and a `:focus-visible` outline. Make it fill the cell.
 
 ## Wire buttons with invoker commands
@@ -83,7 +83,7 @@ function reorder(container, orderedRows) {
 
 ## Optionally animate the reorder
 
-Animation is an enhancement; the sort works without it. For when to animate, reduced-motion handling and rapid-click behavior, see `dynamic-sort` (via `npx -y modern-web-guidance@latest retrieve "dynamic-sort"`). Skip it for large tables.
+Animation is an enhancement; the sort works without it. For when to animate, reduced-motion handling and rapid-click behavior, see `dynamic-sort` (via `npx -y modern-web-guidance@1.0.0 retrieve "dynamic-sort"`). Skip it for large tables.
 
 ```css
 tbody tr {
@@ -136,5 +136,5 @@ Browser support for moveBefore(): Limited availability.
 Supported by: Chrome 133 (Feb 2025), Edge 133 (Feb 2025), and Firefox 144 (Oct 2025).
 Unsupported in: Safari.
 
-If your Baseline target does not support `moveBefore()` or element-scoped view transitions, follow the fallbacks in `dynamic-sort` (via `npx -y modern-web-guidance@latest retrieve "dynamic-sort"`); the table still sorts and the announcement is unchanged.
+If your Baseline target does not support `moveBefore()` or element-scoped view transitions, follow the fallbacks in `dynamic-sort` (via `npx -y modern-web-guidance@1.0.0 retrieve "dynamic-sort"`); the table still sorts and the announcement is unchanged.
 

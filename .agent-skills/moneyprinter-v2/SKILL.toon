@@ -18,7 +18,7 @@ R[6]:
   Helper is offline and never proves the runtime works
   MPV2 force-kills every running Firefox before automation
   In-app CRON menu registers jobs that nothing runs; use OS scheduling
-  Outreach sends to every passing row with no confirmation or unsubscribe
+  Outreach sends to every passing row unconfirmed and with no unsubscribe
   Never expose SMTP passwords API keys or Firefox profile contents
   Refuse bulk spam impersonation and platform-evasion uses
 E[2]{desc,in,out}:

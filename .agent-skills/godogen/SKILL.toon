@@ -12,7 +12,7 @@ U[7]:
   Contribute a narrow upstream change after an issue is approved
 
 S[7]{n,step,details}:
-  1,Enforce safety,Prefer a fresh empty target | refresh only a recognized same-lane runtime with no sibling skills after commit/backup | --force removes the resolved target | never print keys | approve a priced asset plan before the first provider call
+  1,Enforce safety,Prefer a fresh empty target | refresh only a recognized same-lane runtime with no sibling skills after commit/backup | --force wipes the resolved target | never print keys | approve a priced asset plan before the first provider call
   2,Choose one mode,preflight | publish | run-delivery | asset-spend | engine-capture | troubleshoot | contribute
   3,Preflight,Run scripts/godogen.sh doctor for only the selected lane; shared Bash Git rsync Python 3.10 ffmpeg and rendering checks stay read-only and keys print SET or MISSING only
   4,Publish,Run scripts/godogen.sh plan first; render ./publish.sh --engine godot/bevy/babylon --agent claude/codex --out DIR into a new target or recognized refresh; never --force an update; inspect manifest guide asset-gen .gitignore and Git diff
@@ -31,7 +31,7 @@ R[8]:
   Compile success is not visual proof; inspect the running game and watch the final recording
 
 E[6]{type,command}:
-  Install skill,npx skills add https://github.com/akillness/jeo-skills --skill godogen
+  Install skill,npx skills@1.9.0 add https://github.com/akillness/jeo-skills --skill godogen
   Read-only doctor,bash .agent-skills/godogen/scripts/godogen.sh doctor all
   Safe publish preview,bash .agent-skills/godogen/scripts/godogen.sh plan --engine godot --agent claude --out /tmp/new-game
   Show pinned sources,bash .agent-skills/godogen/scripts/godogen.sh upstream

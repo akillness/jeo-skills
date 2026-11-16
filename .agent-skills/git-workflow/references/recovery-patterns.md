@@ -64,12 +64,10 @@ Use `skip` only when you are intentionally dropping the conflicted patch.
 ## 5. Safe push after rewritten history
 After `amend`, `rebase`, or squash cleanup:
 
-```bash
-git push --force-with-lease origin <branch>
-```
-
-Never recommend raw `--force` unless the environment explicitly requires it and the risk is understood.
-
+| Action | Command / Rule |
+|---|---|
+| Lease-safe push | Lease-protected push (`--force-with-lease` on `origin <branch>`) |
+| Safety rule | Never recommend an unguarded force push unless the environment explicitly requires it and the risk is understood. |
 ## 6. Wrong branch commit
 If the commit is local and recent:
 
@@ -77,7 +75,7 @@ If the commit is local and recent:
 # create the correct branch at current HEAD
 git branch feature/correct-branch
 # return wrong branch to previous commit
-git reset --hard HEAD~1
+git reset --keep HEAD~1
 # switch to the rescued branch
 git checkout feature/correct-branch
 ```

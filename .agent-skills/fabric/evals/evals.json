@@ -17,7 +17,7 @@
       "expected_output": "Chooses custom-pattern lane, provides a system.md-style scaffold, and explains when to fork a custom pattern instead of only naming stock patterns.",
       "assertions": [
         "Output recommends custom-pattern lane or equivalent repeated-workflow framing",
-        "Output includes the core custom pattern sections such as IDENTITY AND PURPOSE, STEPS, OUTPUT INSTRUCTIONS, and INPUT",
+        "Output includes the core custom pattern sections such as IDENTITY AND PURPOSE, STEPS, RESPONSE FORMAT, and INPUT",
         "Output explains why a custom pattern is better than a one-off prompt for this repeated job"
       ]
     },
@@ -60,7 +60,7 @@
         "States that a non-loopback --address requires an API key in the audited version",
         "Recommends FABRIC_API_KEY from the environment over --api-key on the command line",
         "Warns that the server's configuration endpoint can write provider keys into .env",
-        "Does not start the server without approval"
+        "Requires explicit user confirmation before starting the server"
       ]
     }
   ]

@@ -374,7 +374,7 @@ Returns: component name, source file, line number, HTML structure.
 astryx generate component MyCard
 
 # Or use the CLI directly
-npx @astryxdesign/cli component --name MyCard --destination src/components
+npx --no-install @astryxdesign/cli component --name MyCard --destination src/components
 ```
 
 ### Task 2: Customize an existing component

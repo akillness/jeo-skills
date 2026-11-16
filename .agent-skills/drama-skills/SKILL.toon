@@ -34,7 +34,7 @@ R[10]:
   Generic programmable video routes to video-production; webtoon panels to webtoon-harness; OpenStory codebase work to openstory
 
 E[6]{type,command}:
-  Install this routing skill,npx skills add https://github.com/akillness/jeo-skills --skill drama-skills
+  Install this routing skill,npx skills@1.9.0 add https://github.com/akillness/jeo-skills --skill drama-skills
   Read-only suite check,bash .agent-skills/drama-skills/scripts/drama-skills.sh doctor /path/to/drama-skills
   Print stage routes,bash .agent-skills/drama-skills/scripts/drama-skills.sh routes
   Read-only project check,bash .agent-skills/drama-skills/scripts/drama-skills.sh project /path/to/project

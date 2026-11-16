@@ -395,7 +395,7 @@ longer deploys — it lists what's already live); (f) only then run
    `references/cover-animator.md` (the ~5s end-frame reveal of the launch cover
    via `seedance_2_0`).
 
-(1–5 are generated without asking — they are part of the publish, not a
+(1–5 are generated automatically — they are part of the publish, not a
 separate credit decision; only the cover VIDEO (6) needs permission.)
 
 `higgsfield website deploy <website_id>` remains the way to ship the live site

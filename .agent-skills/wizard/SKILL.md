@@ -88,5 +88,5 @@ Hold the bar the template sets: open the URL before asking for its value, use `a
 - Upstream skill: `mattpocock/skills` `skills/engineering/wizard/SKILL.md` (commit `3cca18b`, MIT)
 - Companion doc: [references/template.sh](references/template.sh)
 - Asset: `references/template.sh`
-- Project standards: `.agent-skills/skill-standardization/SKILL.md`
+- Project standards: `skill-standardization` (`.agent-skills/skill-standardization/`)
 - Validator script: `.agent-skills/skill-standardization/scripts/validate_skill.sh`

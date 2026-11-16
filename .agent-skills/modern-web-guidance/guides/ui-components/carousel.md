@@ -17,10 +17,10 @@ Build a carousel for a finite set of related items. Use native scrolling and CSS
 
 ## Related patterns
 
-- For styling the active slide itself, see `carousel-snap-highlights` (via `npx -y modern-web-guidance@latest retrieve "carousel-snap-highlights"`).
-- For a continuous progress indicator instead of discrete markers, see `scroll-progress-indicator` (via `npx -y modern-web-guidance@latest retrieve "scroll-progress-indicator"`).
-- For scroll-driven slide effects, see `carousel-slide-effects` (via `npx -y modern-web-guidance@latest retrieve "carousel-slide-effects"`).
-- For synchronizing other UI with snap events, see `scroll-snap-state-sync` (via `npx -y modern-web-guidance@latest retrieve "scroll-snap-state-sync"`).
+- For styling the active slide itself, see `carousel-snap-highlights` (via `npx -y modern-web-guidance@1.0.0 retrieve "carousel-snap-highlights"`).
+- For a continuous progress indicator instead of discrete markers, see `scroll-progress-indicator` (via `npx -y modern-web-guidance@1.0.0 retrieve "scroll-progress-indicator"`).
+- For scroll-driven slide effects, see `carousel-slide-effects` (via `npx -y modern-web-guidance@1.0.0 retrieve "carousel-slide-effects"`).
+- For synchronizing other UI with snap events, see `scroll-snap-state-sync` (via `npx -y modern-web-guidance@1.0.0 retrieve "scroll-snap-state-sync"`).
 
 ## Example: horizontal carousel
 
@@ -152,7 +152,12 @@ Write a small script that adapts to your markup and covers these requirements:
 
 ## Looping (continuous navigation)
 
-Loop previous and next navigation from the last slide to the first and back by keeping the track endless instead of disabling controls at the ends (unless the carousel has fewer than three slides or finite navigation is requested). Do not clone slides or move them in the DOM, which conflicts with frameworks and duplicates content for assistive technology. Instead, park an end slide beside the current one with CSS `order`, and only when the carousel is at or one step from that end. Parking one step early puts the neighbor in place before scrolling reaches an end, so the previous and next buttons never disable mid-scroll. The track then always has a neighbor on both sides, and keyboard scrolling, touch, and snapping all keep working. Only the first and last slides ever get `order`. Because parking starts one step before an end, a short carousel can have an end slide parked at every position (with 4 slides, always; with 3, both ends at the middle slide). DOM order applies unchanged only at positions that are more than one step from both ends, which needs 5 or more slides.
+Loop previous and next navigation from the last slide to the first and back by keeping the track endless instead of disabling controls at the ends (unless the carousel has fewer than three slides or
+finite navigation is requested). Do not clone slides or move them in the DOM, which conflicts with frameworks and duplicates content for assistive technology. Instead, park an end slide beside the
+current one with CSS `order`, and only when the carousel is at or one step from that end. Parking one step early puts the neighbor in place before scrolling reaches an end, so the previous and next
+buttons never disable mid-scroll. The track then always has a neighbor on both sides, and keyboard scrolling, touch, and snapping all keep working. Only the first and last slides ever get `order`.
+Because parking starts one step before an end, a short carousel can have an end slide parked at every position (with 4 slides, always; with 3, both ends at the middle slide). DOM order applies
+unchanged only at positions that are more than one step from both ends, which needs 5 or more slides.
 
 - Keep a `--current` custom property on the track: the zero-based index of the current slide. Do not give it a default in CSS: while it is undefined, `order` falls back to 0, so no slide is parked and the carousel starts on the first slide without JavaScript. The script sets it on load. Park the last slide before the first (`order: -1`) when `--current` is `0` or `1`, and park the first slide after the last (`order: 1`) when `--current` is the last or second-to-last index. Set `order` only on the first and last slides (`:first-child` and `:last-child`), not on every slide. `sibling-count()` is needed to find the last indexes. The formulas below are the part that is easy to get wrong.
 - When scrolling settles, update `--current` from the scroll position. If the parking changes, measure the current slide's offset along the scrolling axis before and after, then instantly scroll by the difference in the same task so the change is invisible. Turn scroll snapping off (`scroll-snap-type: none`) around the reorder and the compensating scroll and restore it afterward, because some browsers otherwise re-snap to another slide and keep scrolling. Also lock overflow on the scrolling axis (`overflow-x: hidden`, or `overflow-y: hidden` for vertical) for the same step and restore it two animation frames later: Safari on iOS otherwise paints the reordered layout for a frame before the compensating scroll lands, which flickers. Restoring it immediately breaks looping, so keep the delay. This also applies when a parked slide is released after the user leaves an end slide.

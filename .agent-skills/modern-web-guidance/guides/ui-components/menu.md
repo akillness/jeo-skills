@@ -2,14 +2,14 @@
 
 This guide covers one popup menu: a list of commands or links that users move through with arrow keys. What opens it does not matter: a button (an "Actions" or overflow button), an item in another menu (a submenu), or no visible trigger at all (a context menu).
 
-Several triggers on one page are independent menus unless you build a bar: each is its own `Tab` stop, and nothing links them. A row of menus that act as one widget (File, Edit, View: one `Tab` stop, `ArrowLeft`/`ArrowRight` between them, hover switching) is an application menu bar. Build each menu as described here, then see `app-menus` (via `npx -y modern-web-guidance@latest retrieve "app-menus"`) for what links them.
+Several triggers on one page are independent menus unless you build a bar: each is its own `Tab` stop, and nothing links them. A row of menus that act as one widget (File, Edit, View: one `Tab` stop, `ArrowLeft`/`ArrowRight` between them, hover switching) is an application menu bar. Build each menu as described here, then see `app-menus` (via `npx -y modern-web-guidance@1.0.0 retrieve "app-menus"`) for what links them.
 
 ## Commands, links, and what makes a menu
 
 Two independent choices. Everything else here applies to both.
 
 * **Element, per item.** A command is a `<button type="button">`; a destination is an `<a href>` that still opens in a new tab, copies as a URL, and works without script. A menu may mix them freely: two links and six commands, or one command and six links, changes nothing below.
-* **Interaction model, per menu.** Arrow keys, `Home`/`End`, and `Esc` make it a menu: add the focusgroup, let it infer `menuitem` on every item whether button or link, and make it look like one (a trigger with a dropdown indicator, or a continuous bar for an application menu bar). A short list of links users `Tab` through is navigation: no focusgroup, no `role="menu"`, `role="menuitem"`, or `aria-haspopup="menu"`; keep the popover, `Esc`, and focus restoration. For navigation, see `navbar` (via `npx -y modern-web-guidance@latest retrieve "navbar"`).
+* **Interaction model, per menu.** Arrow keys, `Home`/`End`, and `Esc` make it a menu: add the focusgroup, let it infer `menuitem` on every item whether button or link, and make it look like one (a trigger with a dropdown indicator, or a continuous bar for an application menu bar). A short list of links users `Tab` through is navigation: no focusgroup, no `role="menu"`, `role="menuitem"`, or `aria-haspopup="menu"`; keep the popover, `Esc`, and focus restoration. For navigation, see `navbar` (via `npx -y modern-web-guidance@1.0.0 retrieve "navbar"`).
 
 Content never decides the roles. A "Products" dropdown of links can be a menu; an "Account" dropdown of commands cannot be navigation.
 
@@ -83,7 +83,7 @@ Use CSS anchor positioning, not JavaScript coordinates. Both `command="toggle-po
 
 Keep `--below` last so it applies only when neither side fits. It opens directly under the trigger, so on a narrow screen it covers the sibling items beneath the trigger; that is the accepted trade-off for staying next to the trigger. Also let the submenu shrink to the area (`min-inline-size: 0`, `max-inline-size` minus the indent). A fallback that does not fit is skipped, and if none fit the browser keeps the base placement, so a submenu that is a few pixels too wide silently covers its trigger.
 
-For how the flip fallbacks work on a plain popover, see `viewport-aware-dropdowns` (via `npx -y modern-web-guidance@latest retrieve "viewport-aware-dropdowns"`). That guide positions a button group, not a menu; for menus, the submenu placement and `--below` fallback above take precedence.
+For how the flip fallbacks work on a plain popover, see `viewport-aware-dropdowns` (via `npx -y modern-web-guidance@1.0.0 retrieve "viewport-aware-dropdowns"`). That guide positions a button group, not a menu; for menus, the submenu placement and `--below` fallback above take precedence.
 
 ### Animate open and close
 
@@ -376,7 +376,7 @@ Supported by: Chrome 137 (May 2025), Edge 137 (May 2025), Firefox 147 (Jan 2026)
 
 If targeting earlier implementations where `showPopover({ source })` does not establish an implicit anchor (no `source` on `ToggleEvent.prototype`), give each trigger a unique `anchor-name` and each menu a matching `position-anchor` from script, instead of writing per-menu CSS rules.
 
-For browsers without anchor positioning at all, see `viewport-aware-dropdowns` (via `npx -y modern-web-guidance@latest retrieve "viewport-aware-dropdowns"`) for the polyfill route.
+For browsers without anchor positioning at all, see `viewport-aware-dropdowns` (via `npx -y modern-web-guidance@1.0.0 retrieve "viewport-aware-dropdowns"`) for the polyfill route.
 
 ### Fallbacks & browser support for Invoker commands
 

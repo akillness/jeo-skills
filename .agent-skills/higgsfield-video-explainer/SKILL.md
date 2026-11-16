@@ -39,10 +39,14 @@ Never use the monolithic `video_explainer` job in this skill.
 
 ## Bootstrap
 
-1. If `higgsfield` is unavailable, install it:
+1. If `higgsfield` is unavailable, ask the user to install it after inspecting the official installer script from `https://github.com/higgsfield-ai/cli`:
 
    ```bash
-   curl -fsSL https://raw.githubusercontent.com/higgsfield-ai/cli/main/install.sh | sh
+   TMP_INSTALLER="$(mktemp)"
+   curl -fsSL https://raw.githubusercontent.com/higgsfield-ai/cli/main/install.sh -o "$TMP_INSTALLER"
+   less "$TMP_INSTALLER"   # review the script before executing
+   sh "$TMP_INSTALLER"
+   rm -f -- "$TMP_INSTALLER"
    ```
 
 2. If `higgsfield account status` fails, ask the user to run `higgsfield auth login`, then wait.

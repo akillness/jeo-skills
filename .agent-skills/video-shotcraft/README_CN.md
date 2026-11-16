@@ -42,7 +42,7 @@ agent 会克隆仓库并链接到 skills 目录。也可以用 [skills](https://
 或手动安装：
 
 ```bash
-npx skills add Vincentwei1021/video-shotcraft
+npx skills@1.9.0 add Vincentwei1021/video-shotcraft
 ```
 
 ```bash

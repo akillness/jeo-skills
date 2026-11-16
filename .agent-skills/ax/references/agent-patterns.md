@@ -515,7 +515,7 @@ tail -100 scraper.log | grep ERROR
 | "Truncated to N rows" | Results hit token budget | Increase `--budget` or narrow `--where` filter |
 | Slow first run | Network latency + parsing | Subsequent calls use cache (~50ms) |
 | Rate limited | Too many requests | Add `--delay <ms>` or use cache |
-| SSL errors | Certificate issue | `--no-check` (dev only) or update CA certs |
+| SSL errors | Certificate issue | Update CA certs or set `SSL_CERT_FILE` |
 
 ---
 

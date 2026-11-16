@@ -53,7 +53,7 @@ Read the complete pinned MIT license, retain copyright/permission/disclaimer whe
 1. Inspect target toolchain/ABI, compiler, static/shared choice and existing package. Configure a disposable, approved output directory, not the source tree. Disable tools explicitly for a core-only standalone build: `FASTNOISE2_TOOLS=OFF`.
 2. Integrate source using `add_subdirectory` and `target_link_libraries(... FastNoise)`; use `#include <FastNoise/FastNoise.h>`. CMake supplies include/linked dependencies and the static define. Manual static consumers must define `FASTNOISE_STATIC_LIB`.
 3. For installed packages inspect the exported config/targets. Current source installs package FastNoise2 and namespace `FastNoise2::`; the old wiki's `find_package(FastNoise ...)` and `FASTNOISE2_NOISETOOL` examples are stale. The source-derived `FastNoise2::FastNoise` recipe needs testing against the actual installed artifacts.
-4. On Windows discuss upstream's MSVC SIMD correctness warning and ClangCL recommendation. Do not change the compiler or claim ABI compatibility was locally tested without approval/evidence.
+4. On Windows discuss upstream's MSVC SIMD correctness warning and ClangCL recommendation. Changing the compiler or claiming locally tested ABI compatibility requires prior explicit approval and evidence.
 5. After authorized build, verify one batch fixture, allocation capacity and static/shared deployment. Compiler success, generated-noise correctness and speed are separate checks.
 
 **node-graph**

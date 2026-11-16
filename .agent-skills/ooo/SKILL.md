@@ -14,7 +14,7 @@ description: >
   seed, run workflow, evaluate, evolve, ooo ralph, specification first, socratic
   interview, git-aware interview, ambiguity reduction, execution plan, cli
   harness execute, persistent completion.
-allowed-tools: Read Write Bash Grep Glob WebFetch Agent
+allowed-tools: Read Write Bash Grep Glob WebFetch Agent Env
 metadata:
   tags: ooo, ouroboros, specification-first, socratic, interview, seed, evaluate, evolve, loop, completion, nine-minds, double-diamond, convergence, drift, multi-platform, mcp, plugin, git-aware, spec-kit, execution-planning, cli-anything, cli-hub, harness-execution
   platforms: Claude Code, Codex CLI, Gemini CLI, OpenCode
@@ -83,7 +83,7 @@ pip install 'ouroboros-ai[mcp]'    # MCP server (`ouroboros mcp serve` needs MCP
 
 ### Skill + integrations (recommended, any platform)
 ```bash
-npx skills add https://github.com/akillness/jeo-skills --skill ooo
+npx skills@1.9.0 add https://github.com/akillness/jeo-skills --skill ooo
 
 # One-shot installer: skill + ouroboros-ai + git interview + spec-kit + cli-anything
 bash scripts/install.sh
@@ -390,9 +390,9 @@ ouroboros mcp serve --transport sse --port 8080
 ouroboros mcp info
 
 # Claude Code integration, registered as `ooo` like setup-all-skills-prompt.md does
-# (skip it if an `ooo` or `ouroboros` server already exists). --isolated keeps uvx from
-# reusing an installed ouroboros-ai tool environment such as [all], which pins MCP SDK 1.x.
-claude mcp add ooo -s user -- uvx --isolated --from 'ouroboros-ai[mcp]' ouroboros mcp serve
+# (skip it if an `ooo` or `ouroboros` server already exists). --isolated prevents uvx
+# from reusing an installed ouroboros-ai tool environment such as [all], which pins MCP SDK 1.x.
+claude mcp add ooo -s user -- uvx --isolated --from 'ouroboros-ai[mcp]==0.29.0' ouroboros mcp serve
 # macOS: "No module named 'rpds.rpds'" or a missing *.so means uv's cache holds wheels
 # downloaded inside an Aside session (quarantined); stop uv-based MCP servers, run
 # `uv cache clean` from a regular terminal, and retry (`--refresh`/`--reinstall` do not help).
@@ -419,7 +419,7 @@ claude mcp add ooo -s user -- uvx --isolated --from 'ouroboros-ai[mcp]' ouroboro
 | File | Location |
 |------|----------|
 | `config.yaml` | `~/.ouroboros/` |
-| `credentials.yaml` | `~/.ouroboros/` (chmod 600) |
+| Local auth tokens | `~/.ouroboros/` (user-only file permissions managed by `ouroboros setup`) |
 | `ouroboros.db` | `~/.ouroboros/` — SQLite event store |
 | `ouroboros.log` | `~/.ouroboros/logs/` |
 

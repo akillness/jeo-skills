@@ -1,6 +1,6 @@
 # Build Accessible Switch Controls
 
-Use the HTML `switch` attribute on `<input type="checkbox" switch>` with an associated `<label>` to build a binary on/off toggle that preserves native form submission, keyboard navigation, and screen reader semantics (see `checkbox` (via `npx -y modern-web-guidance@latest retrieve "checkbox"`) and `forms` (via `npx -y modern-web-guidance@latest retrieve "forms"`)).
+Use the HTML `switch` attribute on `<input type="checkbox" switch>` with an associated `<label>` to build a binary on/off toggle that preserves native form submission, keyboard navigation, and screen reader semantics (see `checkbox` (via `npx -y modern-web-guidance@1.0.0 retrieve "checkbox"`) and `forms` (via `npx -y modern-web-guidance@1.0.0 retrieve "forms"`)).
 
 ## Markup
 
@@ -18,7 +18,7 @@ Add the boolean `switch` attribute to a standard checkbox input:
 
 ## Styling
 
-Customize the control's highlight color using `accent-color` (see `brand-consistent-forms` (via `npx -y modern-web-guidance@latest retrieve "brand-consistent-forms"`)) and ensure visible focus styling:
+Customize the control's highlight color using `accent-color` (see `brand-consistent-forms` (via `npx -y modern-web-guidance@1.0.0 retrieve "brand-consistent-forms"`)) and ensure visible focus styling:
 
 ```css
 input[type="checkbox"][switch] {

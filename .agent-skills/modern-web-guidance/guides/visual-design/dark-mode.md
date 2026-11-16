@@ -138,13 +138,13 @@ Any JS reading `matchMedia("(prefers-color-scheme: dark)").matches` MUST also ha
 If you want to allow users to manually override their system default for this site, you can implement a dark mode toggle.
 Most sites do not need a persistent toggle in the site UI.
 Simply defaulting to the system color scheme is usually enough, optionally with a setting in a separate settings surface.
-See `dark-mode-toggle` (via `npx -y modern-web-guidance@latest retrieve "dark-mode-toggle"`) for best practices around implementing a dark mode toggle (persistent or not).
+See `dark-mode-toggle` (via `npx -y modern-web-guidance@1.0.0 retrieve "dark-mode-toggle"`) for best practices around implementing a dark mode toggle (persistent or not).
 
 ## OPTIONAL: Component-specific overrides
 
 You can override the global theme for specific elements by setting `color-scheme` on them.
 
-For more information and gotchas, see `component-specific-light-dark-theme` (via `npx -y modern-web-guidance@latest retrieve "component-specific-light-dark-theme"`).
+For more information and gotchas, see `component-specific-light-dark-theme` (via `npx -y modern-web-guidance@1.0.0 retrieve "component-specific-light-dark-theme"`).
 
 ## Known issues to be aware of
 

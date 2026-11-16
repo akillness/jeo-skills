@@ -23,7 +23,7 @@ Use this packet chooser before doing any detection work.
 - Need remediation or hardening design? → `security-best-practices` or `code-review`
 - Need alert thresholds, telemetry coverage, or incident operations? → `monitoring-observability`
 
-## Portable output rule
+## Portable reporting checklist
 Every packet should end with:
 1. grouped candidate findings
 2. confidence and false-positive risk

@@ -13,7 +13,7 @@ allowed-tools: Read Write Edit Bash Grep Glob WebFetch
 compatibility: >
   Universal — pure Markdown + YAML, no runtime dependencies. Works in any agent
   that can read and write files (Claude Code, Codex, Gemini CLI, OpenCode,
-  Cursor, Copilot). Plugin-installable via `npx skills add`. Routes raw source
+  Cursor, Copilot). Plugin-installable via `npx skills@1.9.0 add`. Routes raw source
   collection to `llm-wiki`, Obsidian vault automation to `obsidian`, durable
   knowledge graphs to `graphify`, web scraping into OKF docs to `scrapling`, and
   the separate OKF v0.2 Go CLI/MCP runtime to `okf-agent-memory`.
@@ -302,7 +302,7 @@ git remote add origin https://github.com/acme/knowledge-bundle.git
 git push -u origin main
 
 # As a filesystem mount in a Docker container
-# docker run -v $(pwd)/my-knowledge-bundle:/knowledge ...
+# docker run alpine:3.20 ... (mount $(pwd)/my-knowledge-bundle at /knowledge)
 ```
 
 ### Step 6 — Consume a bundle from an AI agent
@@ -366,13 +366,13 @@ OKF bundles are compatible with the repo's `llm-wiki` skill workflow:
 
 ```bash
 # Project install
-npx skills add https://github.com/akillness/jeo-skills --skill okf
+npx skills@1.9.0 add https://github.com/akillness/jeo-skills --skill okf
 
 # Global install
-npx skills add -g https://github.com/akillness/jeo-skills --skill okf
+npx skills@1.9.0 add -g https://github.com/akillness/jeo-skills --skill okf
 
 # Target specific agents
-npx skills add -g https://github.com/akillness/jeo-skills --skill okf -a claude-code -a codex -y
+npx skills@1.9.0 add -g https://github.com/akillness/jeo-skills --skill okf -a claude-code -a codex -y
 ```
 
 Also ships [`scripts/install.sh`](scripts/install.sh) — a one-shot helper that

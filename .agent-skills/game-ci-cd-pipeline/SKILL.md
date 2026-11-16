@@ -128,7 +128,7 @@ Choose one primary blocker and at most one secondary blocker.
 Typical mappings:
 - "Works on one machine but not in CI" → `reproducibility-drift`
 - "Our workflow is one giant job and we cannot tell what failed" → `stage-boundary-blur`
-- "We keep deleting caches until it passes" → `dependency-cache-policy`
+- "We keep clearing caches until it passes" → `dependency-cache-policy`
 - "QA never knows which build is correct" → `artifact-release-hygiene`
 - "Android/iOS/console packaging fails late" → `platform-toolchain-readiness`
 - "Builds are slow and nobody trusts the signal" → `feedback-speed-confidence`

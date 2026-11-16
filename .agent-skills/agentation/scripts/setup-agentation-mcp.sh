@@ -48,6 +48,26 @@ remove_config_temp() {
 
   [[ -z "$temp" ]] || rm -f -- "$temp"
 }
+create_config_backup() {
+  local config="$1"
+  local backup=""
+
+  if ! backup="$(mktemp "${config}.bak.XXXXXX")"; then
+    err "Could not create backup beside $config"
+    return 1
+  fi
+  if [[ -L "$backup" || ! -f "$backup" ]]; then
+    remove_config_temp "$backup"
+    err "Refusing to use unsafe backup file: $backup"
+    return 1
+  fi
+  if ! cp -p "$config" "$backup"; then
+    remove_config_temp "$backup"
+    err "Could not copy $config to backup $backup"
+    return 1
+  fi
+  info "Backup saved: $backup"
+}
 validate_toml() {
   local config="$1"
 
@@ -120,6 +140,10 @@ merge_json_config() {
     remove_config_temp "$temp"
     return 1
   fi
+  if ! create_config_backup "$config"; then
+    remove_config_temp "$temp"
+    return 1
+  fi
   if ! mv -f "$temp" "$config"; then
     err "Could not atomically replace $config"
     remove_config_temp "$temp"
@@ -137,7 +161,7 @@ create_config() {
     return 1
   fi
   if [[ -e "$config" ]]; then
-    err "Refusing to overwrite existing config: $config"
+    err "Refusing to write over an already-present target: $config"
     return 1
   fi
   if ! mkdir -p "${config%/*}"; then
@@ -145,7 +169,7 @@ create_config() {
     return 1
   fi
   if [[ -L "$config" || -e "$config" ]]; then
-    err "Refusing to overwrite existing config: $config"
+    err "Refusing to write over an already-present target: $config"
     return 1
   fi
   if ! temp="$(config_temp "$config")"; then
@@ -179,7 +203,7 @@ create_config() {
       ;;
   esac
   if [[ -L "$config" || -e "$config" ]]; then
-    err "Refusing to overwrite existing config: $config"
+    err "Refusing to write over an already-present target: $config"
     remove_config_temp "$temp"
     return 1
   fi
@@ -275,6 +299,10 @@ append_codex_section() {
     remove_config_temp "$temp"
     return 1
   fi
+  if ! create_config_backup "$config"; then
+    remove_config_temp "$temp"
+    return 1
+  fi
   if ! mv -f "$temp" "$config"; then
     err "Could not atomically replace $config"
     remove_config_temp "$temp"
@@ -289,6 +317,7 @@ SETUP_CLAUDE=false
 SETUP_CODEX=false
 SETUP_GEMINI=false
 SETUP_OPENCODE=false
+CONFIG_DIR_OVERRIDE=""
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -297,6 +326,12 @@ while [[ $# -gt 0 ]]; do
     --gemini)   SETUP_GEMINI=true ;;
     --opencode) SETUP_OPENCODE=true ;;
     --all)      SETUP_CLAUDE=true; SETUP_CODEX=true; SETUP_GEMINI=true; SETUP_OPENCODE=true ;;
+    --config-dir)
+      shift
+      [[ $# -gt 0 ]] || { err "Missing value for --config-dir"; exit 1; }
+      CONFIG_DIR_OVERRIDE="$1"
+      ;;
+    --config-dir=*) CONFIG_DIR_OVERRIDE="${1#*=}" ;;
     *) warn "Unknown flag: $1" ;;
   esac
   shift
@@ -312,10 +347,11 @@ echo "║  agentation MCP Setup                    ║"
 echo "╚══════════════════════════════════════════╝"
 echo ""
 
-# ─── Claude Code (~/.claude/claude_desktop_config.json) ───────────────────
+# ─── Claude Code ───────────────────────────────────────────────────────────
 if [[ "$SETUP_CLAUDE" == "true" ]]; then
   info "Setting up Claude Code..."
-  CLAUDE_CFG="$HOME/.claude/claude_desktop_config.json"
+  CLAUDE_SUBDIR=".claude"
+  CLAUDE_CFG="${CONFIG_DIR_OVERRIDE:-$HOME/${CLAUDE_SUBDIR}}/claude_desktop_config.json"
   MCP_JSON='{"command":"npx","args":["-y","agentation-mcp","server"]}'
 
   if setup_json_config "Claude Code" "$CLAUDE_CFG" "$MCP_JSON" '.mcpServers.agentation = $entry' <<'EOF'
@@ -336,10 +372,11 @@ EOF
   echo ""
 fi
 
-# ─── Codex CLI (~/.codex/config.toml) ─────────────────────────────────────
+# ─── Codex CLI ─────────────────────────────────────────────────────────────
 if [[ "$SETUP_CODEX" == "true" ]]; then
   info "Setting up Codex CLI..."
-  CODEX_CFG="$HOME/.codex/config.toml"
+  CODEX_SUBDIR=".codex"
+  CODEX_CFG="${CONFIG_DIR_OVERRIDE:-$HOME/${CODEX_SUBDIR}}/config.toml"
   CODEX_ENTRY=$'\n# agentation MCP Server\n[mcp_servers.agentation]\ncommand = "npx"\nargs = ["-y", "agentation-mcp", "server"]\n'
 
   if [[ -L "$CODEX_CFG" ]]; then
@@ -368,10 +405,11 @@ EOF
   echo ""
 fi
 
-# ─── Gemini CLI (~/.gemini/settings.json) ─────────────────────────────────
+# ─── Gemini CLI ────────────────────────────────────────────────────────────
 if [[ "$SETUP_GEMINI" == "true" ]]; then
   info "Setting up Gemini CLI..."
-  GEMINI_CFG="$HOME/.gemini/settings.json"
+  GEMINI_SUBDIR=".gemini"
+  GEMINI_CFG="${CONFIG_DIR_OVERRIDE:-$HOME/${GEMINI_SUBDIR}}/settings.json"
   MCP_JSON='{"command":"npx","args":["-y","agentation-mcp","server"]}'
 
   if setup_json_config "Gemini CLI" "$GEMINI_CFG" "$MCP_JSON" '.mcpServers.agentation = $entry' <<'EOF'
@@ -392,10 +430,11 @@ EOF
   echo ""
 fi
 
-# ─── OpenCode (~/.config/opencode/opencode.json) ──────────────────────────
+# ─── OpenCode ──────────────────────────────────────────────────────────────
 if [[ "$SETUP_OPENCODE" == "true" ]]; then
   info "Setting up OpenCode..."
-  OC_CFG="$HOME/.config/opencode/opencode.json"
+  OC_SUBDIR=".config/opencode"
+  OC_CFG="${CONFIG_DIR_OVERRIDE:-$HOME/${OC_SUBDIR}}/opencode.json"
   MCP_ENTRY='{"type":"local","command":["npx","-y","agentation-mcp","server"]}'
 
   if setup_json_config "OpenCode" "$OC_CFG" "$MCP_ENTRY" '.mcp.agentation = $entry' <<'EOF'
@@ -428,9 +467,9 @@ echo "╚═══════════════════════�
 echo ""
 echo "Next steps:"
 echo "  1. Restart your agent(s)"
-echo "  2. Start agentation MCP server:  npx agentation-mcp server"
+echo "  2. Start agentation MCP server:  npx agentation-mcp@1.3.2 server"
 echo "  3. Add to your app:              import { Agentation } from 'agentation'"
 echo "     <Agentation endpoint=\"http://localhost:4747\" />"
 echo ""
 echo "Available MCP tools: agentation_watch_annotations, agentation_resolve, agentation_acknowledge, ..."
-echo "Run 'npx agentation-mcp doctor' to verify."
+echo "Run 'npx agentation-mcp@1.3.2 doctor' to verify."

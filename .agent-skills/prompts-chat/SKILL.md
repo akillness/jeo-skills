@@ -61,7 +61,7 @@ Access the prompts.chat repository to find relevant prompts:
 ```bash
 # Clone or fetch the latest prompts collection
 git clone https://github.com/f/prompts.chat.git /tmp/prompts-chat 2>/dev/null || \
-  curl -s https://api.github.com/repos/f/prompts.chat/contents/ | jq '.[] | select(.type=="dir") | .name'
+  gh api repos/f/prompts.chat/contents --jq '.[].name'
 
 # List available categories
 ls /tmp/prompts-chat 2>/dev/null || echo "Use online repository"
@@ -113,14 +113,8 @@ Embed prompts into agent workflows:
 ```bash
 # Reference prompt files in scripts
 PROMPT=$(cat prompts/approved/technical-writing.md)
-curl -s https://api.openai.com/v1/chat/completions \
-  -H "Authorization: Bearer $API_KEY" \
-  -d @- <<EOF
-{
-  "model": "gpt-4",
-  "messages": [{"role": "system", "content": "$PROMPT"}]
-}
-EOF
+# Pass $PROMPT as the system prompt to your configured local or API model runner
+printf '%s\n' "$PROMPT" | your-configured-llm-cli --stdin
 ```
 
 ### Step 7: Monitor and iterate

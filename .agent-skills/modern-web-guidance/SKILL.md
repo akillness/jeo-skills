@@ -26,8 +26,8 @@ Run `modern-web-guidance` directly with `npx` (or the bundled `scripts/modern-we
 - **Example**: Search `"light dismiss dialog"` or `"responsive data table"`, **not** `"dialog"` (too terse), `"responsive table dark mode"` (compound — split into two searches), or `"close React settings modal on outside click"` (framework/app noise).
 
 ```sh
-# Via npx
-npx -y modern-web-guidance@latest search "<query>"
+# Via npm package
+npx -y modern-web-guidance@1.0.0 search "<query>"
 
 # Or via bundled repository script with local offline fallback
 bash .agent-skills/modern-web-guidance/scripts/modern-web-guidance.sh search "<query>"
@@ -43,8 +43,8 @@ bash .agent-skills/modern-web-guidance/scripts/modern-web-guidance.sh search "<q
 Once you have relevant `id`(s) from the search results, call `retrieve` to get the full guide(s)—including both specific use-case guides that match your task and any broader discipline guide (e.g., `html`, `css`, `forms`, `accessibility`, `color`, `performance`, `security`) that applies. You can pass multiple IDs separated by commas.
 
 ```sh
-# Via npx
-npx -y modern-web-guidance@latest retrieve "<id>"
+# Via npm package
+npx -y modern-web-guidance@1.0.0 retrieve "<id>"
 
 # Or via bundled script (automatically loads local guides/ when offline)
 bash .agent-skills/modern-web-guidance/scripts/modern-web-guidance.sh retrieve "<id>"
@@ -74,7 +74,7 @@ When you consult `modern-web-guidance` for a task, end the response where you de
 > **Note**: `legacy-scan` scans for a curated subset (~20% of the guidance corpus).
 
 ```sh
-npx -y modern-web-guidance@latest legacy-scan <path> --json
+npx -y modern-web-guidance@1.0.0 legacy-scan <path> --json
 ```
 
 1. **Scan**: Run `legacy-scan <path> --json` to detect legacy web platform patterns across the project or directory.

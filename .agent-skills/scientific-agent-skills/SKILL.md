@@ -16,6 +16,8 @@ description: >
   `deep-research`, figures to `paperbanana`, and scientific LLM evaluation to
   `scientific-llm-benchmarks`.
 allowed-tools: Bash Read Write Edit Glob Grep
+permissions:
+  - env
 compatibility: >
   Pack auditing needs Python 3.10+ and Git. Selective installation uses an
   Agent Skills-compatible installer. Individual upstream skills may require

@@ -106,8 +106,8 @@ EOF
   # .gitignore
   cat > .gitignore << 'EOF'
 node_modules/
-.env
-.env.local
+config.env
+*.env
 *.log
 dist/
 build/
@@ -131,19 +131,12 @@ import { fileURLToPath } from 'url';
 
 // Load environment
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-if (!fs.existsSync(path.join(__dirname, '.env'))) {
-  throw new Error('.env not found. Copy from .env.example and configure.');
-}
-
-import dotenv from 'dotenv';
-dotenv.config();
-
 const AMROUTER_URL = process.env.AMROUTER_URL || 'http://localhost:3001';
 const AMROUTER_KEY = process.env.AMROUTER_KEY;
 const PRIMARY_MODEL = process.env.PRIMARY_MODEL || 'openai/gpt-4o';
 
 if (!AMROUTER_KEY) {
-  throw new Error('AMROUTER_KEY not set in .env');
+  throw new Error('AMROUTER_KEY environment variable is required');
 }
 
 // Create OpenAI client pointing to AMRouter
@@ -341,8 +334,8 @@ Simple AI agent using AMRouter as LLM backend.
 
 2. **Configure**
    ```bash
-   cp .env.example .env
-   # Edit .env with your AMRouter URL and API key
+   export AMROUTER_URL=http://localhost:3001
+   export AMROUTER_KEY="<your-amrouter-api-key>"
    ```
 
 3. **Run**
@@ -423,7 +416,7 @@ EOF
 __pycache__/
 *.py[cod]
 *$py.class
-.env
+*.env
 .venv
 venv/
 .DS_Store
@@ -441,18 +434,14 @@ Simple agent using AMRouter for LLM backend
 """
 
 import os
-from dotenv import load_dotenv
 from openai import OpenAI
 
-# Load environment
-load_dotenv()
-
 AMROUTER_URL = os.getenv('AMROUTER_URL', 'http://localhost:3001')
-AMROUTER_KEY = os.getenv('AMROUTER_KEY')
+AMROUTER_KEY = os.environ.get('AMROUTER_KEY')
 PRIMARY_MODEL = os.getenv('PRIMARY_MODEL', 'openai/gpt-4o')
 
 if not AMROUTER_KEY:
-    raise ValueError('AMROUTER_KEY not set in .env')
+    raise ValueError('AMROUTER_KEY environment variable is required')
 
 # Create OpenAI client pointing to AMRouter
 client = OpenAI(
@@ -608,8 +597,8 @@ Simple AI agent using AMRouter as LLM backend.
 
 2. **Configure**
    ```bash
-   cp .env.example .env
-   # Edit .env with your AMRouter URL and API key
+   export AMROUTER_URL=http://localhost:3001
+   export AMROUTER_KEY="<your-amrouter-api-key>"
    ```
 
 3. **Run**
@@ -650,8 +639,7 @@ EOF
   
   # .gitignore
   cat > .gitignore << 'EOF'
-.env
-.env.local
+*.env
 *.log
 .DS_Store
 EOF
@@ -667,20 +655,9 @@ EOF
 set -e
 
 # Load environment
-if [[ ! -f .env ]]; then
-  echo "Error: .env not found. Copy from .env.example"
-  exit 1
-fi
-source .env
-
 AMROUTER_URL="${AMROUTER_URL:-http://localhost:3001}"
-AMROUTER_KEY="${AMROUTER_KEY}"
+AMROUTER_KEY="${AMROUTER_KEY:?Error: AMROUTER_KEY environment variable is required}"
 PRIMARY_MODEL="${PRIMARY_MODEL:-openai/gpt-4o}"
-
-if [[ -z "$AMROUTER_KEY" ]]; then
-  echo "Error: AMROUTER_KEY not set"
-  exit 1
-fi
 
 echo "🤖 AMRouter Agent (Bash)"
 echo "📡 Backend: $AMROUTER_URL"
@@ -737,14 +714,13 @@ function amrouter_chat() {
   local key="$2"
   local model="$3"
   local message="$4"
-  
+  local payload
+  payload="$(jq -n --arg model "$model" --arg msg "$message" '{model: $model, messages: [{role: "user", content: $msg}]}')"
+
   curl -s -X POST "$url/v1/chat/completions" \
     -H "Authorization: Bearer $key" \
     -H "Content-Type: application/json" \
-    -d "{
-      \"model\": \"$model\",
-      \"messages\": [{\"role\": \"user\", \"content\": \"$message\"}]
-    }" | jq '.choices[0].message.content'
+    -d "$payload" | jq '.choices[0].message.content'
 }
 
 # Get quota
@@ -770,8 +746,8 @@ Simple shell agent using AMRouter via curl and jq.
 
 1. **Configure**
    ```bash
-   cp .env.example .env
-   # Edit .env with your AMRouter URL and API key
+   export AMROUTER_URL=http://localhost:3001
+   export AMROUTER_KEY="<your-amrouter-api-key>"
    ```
 
 2. **Run**
@@ -792,7 +768,7 @@ brew install jq
 
 Install on Linux (Ubuntu/Debian):
 ```bash
-sudo apt-get install curl jq
+apt-get install curl jq  # run with elevated privileges if needed
 ```
 
 ## Usage
@@ -845,6 +821,12 @@ while [[ $# -gt 0 ]]; do
       ;;
   esac
 done
+case "$PROJECT_NAME" in
+  ""|/*|*..*)
+    print_error "Refusing unsafe project name: '$PROJECT_NAME'"
+    exit 1
+    ;;
+esac
 
 # Scaffold based on language
 case "$LANGUAGE" in
@@ -869,6 +851,6 @@ print_success "Scaffolding complete!"
 echo ""
 echo "Next steps:"
 echo "  cd $OUTPUT_DIR/$PROJECT_NAME"
-echo "  # Edit .env with your AMRouter credentials"
+echo "  # Export AMROUTER_URL and AMROUTER_KEY in your environment"
 echo "  # Run the agent (see README.md for commands)"
 echo ""

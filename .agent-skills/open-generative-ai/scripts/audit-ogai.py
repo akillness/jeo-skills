@@ -63,7 +63,11 @@ def read_text(path: Path) -> str:
 
 
 def git(root: Path, *args: str) -> str:
-    env = os.environ.copy()
+    env = {
+        key: os.environ[key]
+        for key in ("PATH", "HOME", "LANG", "LC_ALL", "TMPDIR", "TEMP", "TMP")
+        if key in os.environ
+    }
     env["GIT_TERMINAL_PROMPT"] = "0"
     try:
         result = subprocess.run(

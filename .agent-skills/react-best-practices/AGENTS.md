@@ -1767,35 +1767,34 @@ function ThemeWrapper({ children }: { children: ReactNode }) {
 
 Component first renders with default value (`light`), then updates after hydration, causing a visible flash of incorrect content.
 
-**Correct: no flicker, no hydration mismatch**
+**Correct: no flicker, no hydration mismatch, CSP-safe**
 
 ```tsx
+// app/components/ThemeWrapper.tsx
 function ThemeWrapper({ children }: { children: ReactNode }) {
   return (
     <>
       <div id="theme-wrapper">
         {children}
       </div>
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `
-            (function() {
-              try {
-                var theme = localStorage.getItem('theme') || 'light';
-                var el = document.getElementById('theme-wrapper');
-                if (el) el.className = theme;
-              } catch (e) {}
-            })();
-          `,
-        }}
-      />
+      <script src="/theme-init.js" />
     </>
   )
 }
 ```
 
-The inline script executes synchronously before showing the element, ensuring the DOM already has the correct value. No flickering, no hydration mismatch.
+```js
+// public/theme-init.js (served as a static asset before hydration)
+(function () {
+  try {
+    var theme = localStorage.getItem('theme') || 'light';
+    var el = document.getElementById('theme-wrapper');
+    if (el) el.className = theme;
+  } catch (e) {}
+})();
+```
 
+The blocking external script executes synchronously before showing the element, ensuring the DOM already has the correct value without inline script injection (`unsafe-inline`) or hydration mismatch.
 This pattern is especially useful for theme toggles, user preferences, authentication states, and any client-only data that should render immediately without flashing default values.
 
 ### 6.6 Use Activity Component for Show/Hide

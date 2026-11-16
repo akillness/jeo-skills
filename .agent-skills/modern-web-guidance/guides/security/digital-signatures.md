@@ -1,6 +1,6 @@
 # Sign and verify data with WebCrypto
 
-Use the Web Cryptography API (`crypto.subtle`) to sign and verify messages, tokens, or artifacts in the browser using quantum-resistant (ML-DSA) or classical (`'Ed25519'`, `'ECDSA'`) asymmetric keys. Digital signatures guarantee data integrity and signer authenticity without requiring shared secret keys. For establishing shared secrets and encrypting confidential payloads, see `client-side-encryption` (via `npx -y modern-web-guidance@latest retrieve "client-side-encryption"`).
+Use the Web Cryptography API (`crypto.subtle`) to sign and verify messages, tokens, or artifacts in the browser using quantum-resistant (ML-DSA) or classical (`'Ed25519'`, `'ECDSA'`) asymmetric keys. Digital signatures guarantee data integrity and signer authenticity without requiring shared secret keys. For establishing shared secrets and encrypting confidential payloads, see `client-side-encryption` (via `npx -y modern-web-guidance@1.0.0 retrieve "client-side-encryption"`).
 
 ## 1. Choose an algorithm and generate a key pair
 

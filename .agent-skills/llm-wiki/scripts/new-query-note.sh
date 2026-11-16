@@ -77,23 +77,9 @@ insert_marker_line() {
   local file="$1"
   local marker="$2"
   local line="$3"
-  python3 - "$file" "$marker" "$line" <<'PY'
-from pathlib import Path
-import sys
-
-path = Path(sys.argv[1])
-marker = sys.argv[2]
-line = sys.argv[3]
-text = path.read_text(encoding="utf-8")
-anchor = f"<!-- {marker}:END -->"
-if line in text:
-    raise SystemExit(0)
-if anchor not in text:
-    text = text.rstrip() + "\n\n" + line + "\n"
-else:
-    text = text.replace(anchor, line + "\n" + anchor)
-path.write_text(text, encoding="utf-8")
-PY
+  local script_dir
+  script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+  python3 -B "${script_dir}/insert_marker.py" "$file" "$marker" "$line"
 }
 
 append_log() {

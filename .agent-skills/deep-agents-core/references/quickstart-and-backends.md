@@ -11,10 +11,10 @@ they do not spell out.
 ## Install
 
 ```bash
-pip install -qU deepagents                      # Python >= 3.11
+pip install -q "deepagents>=0.1"                 # Python >= 3.11
 uv add deepagents                               # inside a uv-managed project
-pip install -qU langchain-anthropic langchain-openai langchain-google-genai   # providers
-pip install -qU langchain-mcp-adapters                                        # MCP tools
+pip install -q "langchain-anthropic>=0.3" "langchain-openai>=0.3" "langchain-google-genai>=2.0"  # providers
+pip install -q "langchain-mcp-adapters>=0.1"     # MCP tools
 ```
 
 Any LangChain chat model that supports tool calling works; the simplest selector is
@@ -59,7 +59,8 @@ agent = create_deep_agent(
 )
 config = {"configurable": {"thread_id": "job-7"}}
 first = agent.invoke({"messages": [...]}, config=config, version="v2")
-second = agent.invoke(Command(resume=[{"decision": "approve"}]), config=config, version="v2")
+decision = Command(resume=[{"decision": "approve"}])
+second = agent.invoke(decision, config=config, version="v2")
 ```
 
 Narrow `allowed_decisions` for lower-risk tools when editing should not be possible.

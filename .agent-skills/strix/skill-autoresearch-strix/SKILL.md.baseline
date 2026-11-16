@@ -28,7 +28,7 @@ Only use Strix against systems you own or are explicitly authorized to test.
 
 ## Instructions
 
-1. Install Strix with `bash scripts/install.sh` or `curl -sSL https://strix.ai/install | bash`
+1. Install Strix with `bash scripts/install.sh` (or download `https://strix.ai/install`, inspect it, and run `bash strix-install.sh`)
 2. Configure `STRIX_LLM` and `LLM_API_KEY`
 3. Run `strix --target ./app`
 4. Use `--scan-mode quick|standard|deep` as needed

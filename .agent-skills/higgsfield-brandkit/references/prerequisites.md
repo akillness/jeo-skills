@@ -20,7 +20,7 @@ FFmpeg and ffprobe are not used. Brandkit does not produce motion, audio, or vid
 ## Check
 
 ```bash
-for tool in python3 higgsfield node npx rsvg-convert magick convert soffice pdftoppm pdfimages pdffonts fc-cache fc-match; do
+for tool in python3 higgsfield node rsvg-convert magick convert soffice pdftoppm pdfimages pdffonts fc-cache fc-match npx; do
   command -v "$tool" >/dev/null 2>&1 && printf '%-14s ok\n' "$tool" || printf '%-14s missing\n' "$tool"
 done
 ```
@@ -62,7 +62,10 @@ higgsfield workspace status
 If the CLI is missing, ask permission before installing:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/higgsfield-ai/cli/main/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/higgsfield-ai/cli/main/install.sh -o /tmp/higgsfield-install.sh
+# Review /tmp/higgsfield-install.sh before executing:
+sh /tmp/higgsfield-install.sh
+unlink /tmp/higgsfield-install.sh
 ```
 
 Authentication requires an interactive user login:
@@ -71,7 +74,7 @@ Authentication requires an interactive user login:
 higgsfield auth login
 ```
 
-Never ask the user to paste an access token into chat.
+Require interactive login instead of requesting credentials in chat.
 
 ## Network requirements
 

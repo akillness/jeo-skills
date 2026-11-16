@@ -8,7 +8,7 @@ the approved cover.
 > **PERMISSION-GATED.** The cover video costs credits. OFFER it when publishing
 > ("want a short cover video for the feed card?") and only generate it after
 > the user says yes — never unprompted. Everything else in the publish gate
-> (cover image, OG, favicon) ships without asking; the video is the one
+> (cover image, OG, favicon) ships automatically; the video is the one
 > exception (see `references/app-flow.md` publish gate item 6).
 
 ## The trick: end-frame reveal

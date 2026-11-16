@@ -70,7 +70,7 @@ When the handle has focus, move the element with the arrow keys and call `preven
 
 ## Dialog-specific note
 
-A `<dialog>` or `[popover]` can use this mechanism with its header in addition to a separate drag handle. Set `margin: 0` before assigning `left` and `top`, because the browser's default margins interfere with manual positioning. For dialog and popover opening, closing, focus, and dismissal behavior, see `declarative-dialog-popover-control` (via `npx -y modern-web-guidance@latest retrieve "declarative-dialog-popover-control"`) and `platform-controls-dismiss-dialog` (via `npx -y modern-web-guidance@latest retrieve "platform-controls-dismiss-dialog"`).
+A `<dialog>` or `[popover]` can use this mechanism with its header in addition to a separate drag handle. Set `margin: 0` before assigning `left` and `top`, because the browser's default margins interfere with manual positioning. For dialog and popover opening, closing, focus, and dismissal behavior, see `declarative-dialog-popover-control` (via `npx -y modern-web-guidance@1.0.0 retrieve "declarative-dialog-popover-control"`) and `platform-controls-dismiss-dialog` (via `npx -y modern-web-guidance@1.0.0 retrieve "platform-controls-dismiss-dialog"`).
 
 ## Accessibility requirements
 

@@ -18,7 +18,7 @@
       "assertions": [
         "The response lists the documented ruff, pytest, and node --check commands accurately",
         "The response does not substitute scripts/check_guards.py or a live demo for offline checks",
-        "The response does not install dependencies or call providers without approval"
+        "The response requires explicit approval before installing dependencies or calling providers"
       ]
     },
     {

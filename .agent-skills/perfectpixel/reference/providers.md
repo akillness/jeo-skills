@@ -18,7 +18,7 @@
 | fal.ai | `fal` | `FAL_KEY` / `FAL_API_KEY` | `fal-ai/nano-banana-pro` | `fal-ai/nano-banana`, `fal-ai/flux-pro/v1.1-ultra` |
 | BytePlus (ARK) | `byteplus` | `BYTEPLUS_API_KEY` / `ARK_API_KEY` | `seedream-4-0-250828` | `seedream-3-0-t2i-250415` |
 
-## .env 예시
+## 환경변수 파일(dotenv) 예시
 
 ```dotenv
 # 사용할 프로바이더의 키만 채우면 된다.

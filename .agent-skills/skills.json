@@ -3361,7 +3361,7 @@
     },
     {
       "name": "agentation",
-      "description": "Exact rendered-UI feedback router → choose copy-paste review, watch-loop sync, self-driving critique, or platform setup. MCP: npx add-mcp \"npx -y agentation-mcp server\"",
+      "description": "Exact rendered-UI feedback router → choose copy-paste review, watch-loop sync, self-driving critique, or platform setup. MCP: add-mcp@2.6.1 with agentation-mcp@1.3.2.",
       "category": "web",
       "subcategory": "capture",
       "interface": "mcp",
@@ -8871,7 +8871,7 @@
     },
     {
       "name": "codeburn",
-      "description": "Drive CodeBurn, a free open-source local-first CLI/TUI/web/menubar tool that reads the session files already on disk from 40 AI coding tools (Claude Code, Codex, Cursor, Gemini CLI, Grok, OpenCode, and more) and breaks down token usage and dollar cost by task, model, tool, and project. Use when the user wants to see where their AI coding spend went, find and fix token waste in a Claude Code / agent setup, cap a session's budget before it runs away, compare which model is actually worth its price, check whether AI spend shipped or was reverted, or wire live usage/savings data into an agent over MCP. Triggers on: \"codeburn\", \"npx codeburn\", \"AI token usage\", \"AI coding cost\", \"where did my Claude spend go\", \"codeburn optimize\", \"codeburn guard\", \"codeburn compare models\", \"codeburn yield\", \"token waste in CLAUDE.md\", \"AI spend dashboard\".",
+      "description": "Drive CodeBurn, a free open-source local-first CLI/TUI/web/menubar tool that reads the session files already on disk from 40 AI coding tools (Claude Code, Codex, Cursor, Gemini CLI, Grok, OpenCode, and more) and breaks down token usage and dollar cost by task, model, tool, and project. Use when the user wants to see where their AI coding spend went, find and fix token waste in a Claude Code / agent setup, cap a session's budget before it runs away, compare which model is actually worth its price, check whether AI spend shipped or was reverted, or wire live usage/savings data into an agent over MCP. Triggers on: \"codeburn\", \"codeburn CLI\", \"AI token usage\", \"AI coding cost\", \"where did my Claude spend go\", \"codeburn optimize\", \"codeburn guard\", \"codeburn compare models\", \"codeburn yield\", \"token waste in CLAUDE.md\", \"AI spend dashboard\".",
       "category": "cli-tools",
       "subcategory": "developer-cli",
       "interface": "workflow",
@@ -8949,7 +8949,7 @@
     },
     {
       "name": "watermarks-remover",
-      "description": "Strip multi-vendor AI provenance marks from text and files using the guillaumemeyer/watermarks-remover Python toolkit: invisible Unicode/space homoglyphs (Layer A, deterministic), statistical token-sampling watermarks via agent-guided rewrite (Layer B, best-effort), and C2PA/EXIF/XMP/doc-props metadata on PNG, JPEG, SVG, PDF, DOCX, ODT, HTML, and Markdown. Covers Claude, Gemini/SynthID-Text, OpenAI provenance surfaces, and open-LLM Kirchenbauer-style marks, plus optional external backends for SynthID pixel scoring and CtrlRegen pixel-domain removal. Use when the user wants to strip AI watermarks, remove C2PA / Content Credentials, clean AI metadata from a file, remove invisible Unicode / zero-width characters from AI-generated text, or audit a directory/website for AI provenance signals. Triggers on: \"remove watermark\", \"strip C2PA\", \"remove AI metadata\", \"clean invisible unicode\", \"remove-ai-marks\", \"SynthID removal\", \"audit_dir.py\", \"Layer A / Layer B watermark removal\".",
+      "description": "Strip multi-vendor AI provenance marks from text and files using the guillaumemeyer/watermarks-remover Python toolkit: invisible Unicode/space homoglyphs (Layer A, deterministic), statistical token-sampling watermarks via agent-guided rewrite (Layer B, best-effort), and C2PA/EXIF/XMP/doc-props metadata on PNG, JPEG, SVG, PDF, DOCX, ODT, HTML, and Markdown. Covers Claude, Gemini/SynthID-Text, OpenAI provenance surfaces, and open-LLM Kirchenbauer-style marks, plus optional external backends for SynthID pixel scoring and CtrlRegen pixel-domain removal. Use when the user wants to strip AI watermarks, remove C2PA / Content Credentials, clean AI metadata from a file, remove invisible Unicode / zero-width characters from AI-generated text, or audit a directory/website for AI provenance signals. Triggers on: watermark removal, C2PA metadata cleanup, AI metadata cleanup, invisible unicode cleanup, remove-ai-marks, SynthID analysis, audit_dir.py, Layer A / Layer B provenance cleanup.",
       "category": "utilities",
       "subcategory": "files",
       "interface": "workflow",
@@ -8986,7 +8986,7 @@
     },
     {
       "name": "chatbot-template",
-      "description": "Scaffold and extend chatbot-template, shadcn/ui's minimal Next.js starter for building an AI chatbot with the AI SDK, shadcn/react, shadcn/typeset, and the Vercel AI Gateway. It ships streaming markdown chat, tool calling (a server-executed GitHub repo lookup, provider-native web search, and a human-in-the-loop `ask_user` questionnaire), and one-click Vercel deploy with OIDC gateway auth. Use when the user wants to spin up a Next.js AI chat app fast, add a custom tool with a typed UI part, swap or restrict the model list, or harden the public `/api/chat` route before shipping. Triggers on: \"chatbot-template\", \"shadcn chatbot\", \"AI SDK chat app\", \"Next.js AI SDK starter\", \"Vercel AI Gateway chat\", \"streaming chat with shadcn/typeset\", \"ask_user questionnaire tool\", \"shadcn/react message scroller\".",
+      "description": "Scaffold and extend chatbot-template, shadcn/ui's minimal Next.js starter for building an AI chatbot with the AI SDK, shadcn/react, shadcn/typeset, and the Vercel AI Gateway. It ships streaming markdown chat, tool calling (a server-executed GitHub repo lookup, provider-native web search, and a human-in-the-loop `ask_user` questionnaire), and one-click Vercel deploy with OIDC gateway auth. Use when scaffolding a Next.js AI chat app, adding a custom tool with a typed UI part, swapping or restricting the model list, or hardening the public `/api/chat` route before shipping. Triggers on: \"chatbot-template\", \"shadcn chatbot\", \"AI SDK chat app\", \"Next.js AI SDK starter\", \"Vercel AI Gateway chat\", \"streaming chat with shadcn/typeset\", \"ask_user questionnaire tool\", \"shadcn/react message scroller\".",
       "category": "web",
       "subcategory": "frontend",
       "interface": "workflow",
@@ -9242,7 +9242,7 @@
     },
     {
       "name": "impeccable",
-      "description": "Operate pbakaus/impeccable, the design vocabulary and slop detector for coding agents: offline preflight, collision-aware install planning, routing to its commands (shape, init, document, extract, critique, audit, polish, bolder, quieter, distill, harden, onboard, animate, colorize, typeset, layout, delight, overdrive, clarify, adapt, optimize, live, generate), detector triage, and a standalone method when the upstream skill is absent. Use when users name Impeccable, /impeccable or $impeccable commands, npx impeccable, its design hook or 62-rule detector, or its PRODUCT.md/DESIGN.md workflow. Route generic anti-generic taste work to design-taste-frontend, accessibility remediation to web-accessibility, token governance to design-system, and visual recipes to web-design. Installing this guide does not install Impeccable, its engine or hooks.",
+      "description": "Operate pbakaus/impeccable, the design vocabulary and slop detector for coding agents: offline preflight, collision-aware install planning, routing to its commands (shape, init, document, extract, critique, audit, polish, bolder, quieter, distill, harden, onboard, animate, colorize, typeset, layout, delight, overdrive, clarify, adapt, optimize, live, generate), detector triage, and a standalone method when the upstream skill is absent. Use when users name Impeccable, /impeccable or $impeccable commands, the impeccable CLI, its design hook or 62-rule detector, or its PRODUCT.md/DESIGN.md workflow. Route generic anti-generic taste work to design-taste-frontend, accessibility remediation to web-accessibility, token governance to design-system, and visual recipes to web-design.",
       "category": "web",
       "subcategory": "design",
       "interface": "workflow",
@@ -15217,7 +15217,7 @@
     },
     {
       "name": "diagram-design",
-      "description": "Use when creating source-grounded branded diagrams with cathrynlavery/diagram-design: run its offline preflight, choose a semantic pattern and visual type, author self-contained HTML with inline SVG, verify accessibility and geometry, open or screenshot local output when a browser is available, export manually to SVG or PNG, import and redraw Mermaid, draw.io, or Excalidraw content, and adapt the style guide to approved brand tokens. Keep static output, local paths, and font/network boundaries explicit. Never install or publish without approval. Route editable .drawio diagrams and draw.io CLI exports to `drawio`, academic paper figures to `paperbanana`, and slide decks to `slides-grab` or `presentation-builder`.",
+      "description": "Use when creating source-grounded branded diagrams with cathrynlavery/diagram-design: run its offline preflight, choose a semantic pattern and visual type, author self-contained HTML with inline SVG, verify accessibility and geometry, open or screenshot local output when a browser is available, export manually to SVG or PNG, import and redraw Mermaid, draw.io, or Excalidraw content, and adapt the style guide to approved brand tokens. Keep static output, local paths, and font/network boundaries explicit. Require explicit approval before installing or publishing. Route editable .drawio diagrams and draw.io CLI exports to `drawio`, academic paper figures to `paperbanana`, and slide decks to `slides-grab` or `presentation-builder`.",
       "category": "creative-media",
       "subcategory": "diagram",
       "interface": "workflow",

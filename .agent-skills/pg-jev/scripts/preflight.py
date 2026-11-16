@@ -84,12 +84,14 @@ def audit(args: argparse.Namespace) -> tuple[dict[str, object], int]:
             else:
                 try:
                     resolved_repo = repo.resolve()
-                    safe_env = {key: os.environ[key] for key in
-                                ("PATH", "SystemRoot", "SYSTEMROOT", "WINDIR", "COMSPEC", "PATHEXT", "TEMP", "TMP", "TMPDIR")
-                                if key in os.environ}
-                    safe_env.update({"GIT_ALLOW_PROTOCOL": "", "GIT_TERMINAL_PROMPT": "0",
-                                     "GIT_OPTIONAL_LOCKS": "0", "GIT_CONFIG_NOSYSTEM": "1",
-                                     "GIT_CONFIG_GLOBAL": os.devnull})
+                    safe_env = {
+                        "PATH": str(Path(git_path).parent),
+                        "GIT_ALLOW_PROTOCOL": "",
+                        "GIT_TERMINAL_PROMPT": "0",
+                        "GIT_OPTIONAL_LOCKS": "0",
+                        "GIT_CONFIG_NOSYSTEM": "1",
+                        "GIT_CONFIG_GLOBAL": os.devnull,
+                    }
                     result = subprocess.run(
                         [git_path, "-C", str(resolved_repo), "rev-parse", "--show-toplevel", "--verify", "HEAD"],
                         capture_output=True, text=True, timeout=5, check=False, env=safe_env,

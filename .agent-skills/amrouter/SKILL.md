@@ -3,6 +3,7 @@ name: amrouter
 description: >-
   Self-hosted AI gateway with one OpenAI-compatible endpoint for multi-provider LLM, embedding,
   image, and audio routing, automatic fallback, load balancing, and cost optimization.
+allowed-tools: Bash Read Write Edit Glob Grep WebFetch Env
 ---
 # AMRouter Skill for AI Agents
 
@@ -79,7 +80,8 @@ npm install
 ### Step 3: Configure Environment
 
 ```bash
-cp backend/.env.template backend/.env
+cp backend/config.env.template backend/config.env
+chmod 600 backend/config.env
 ```
 
 Key environment variables:
@@ -501,7 +503,7 @@ Real benchmarks (vs single-provider setup):
 | `503 Service Unavailable` | All fallback providers failed; check quota and provider configs in dashboard |
 | `Model not found` | Run `curl ${AMROUTER_URL}/v1/models` to see available models |
 | `CORS errors` | Add `Access-Control-Allow-Origin: *` in backend (or configure for specific origins) |
-| Backend won't start | Check `.env` file, ensure `NODE_ENV` is set, check port conflicts |
+| Backend won't start | Check your exported environment variables (`NODE_ENV`, `PORT`), check port conflicts |
 | Embeddings dimension mismatch | Different models have different dimensions (OpenAI: 1536, Gemini: 768). Store model name with vectors. |
 
 ---
@@ -521,7 +523,7 @@ CMD ["npm", "start"]
 
 ```bash
 docker build -t amrouter .
-docker run -p 3001:3001 --env-file .env amrouter
+docker run -p 3001:3001 -e NODE_ENV=production -e PORT=3001 amrouter:2.0.0
 ```
 
 ### Kubernetes

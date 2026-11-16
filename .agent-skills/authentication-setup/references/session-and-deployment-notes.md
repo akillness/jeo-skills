@@ -22,7 +22,7 @@ Usually prefer:
 
 ### API-heavy or multi-service traffic
 Usually prefer:
-- short-lived access tokens
+- short-lived bearer credentials
 - refresh/session rotation story
 - service-to-service and machine-token distinction
 

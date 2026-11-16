@@ -80,7 +80,7 @@ const normalizedItems = manifest.items.map((item, index) => {
 });
 
 process.stdout.write(
-  `${JSON.stringify(
+  JSON.stringify(
     {
       valid: true,
       manifestPath,
@@ -91,5 +91,5 @@ process.stdout.write(
     },
     null,
     2
-  )}\n`
+  ) + "\n"
 );

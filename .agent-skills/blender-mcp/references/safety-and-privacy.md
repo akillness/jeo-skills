@@ -24,7 +24,7 @@ Practical consequences to state before a modeling session:
 Safe mode is **opt-in**:
 
 ```bash
-BLENDER_MCP_SAFE_MODE=1 uvx blender-mcp
+BLENDER_MCP_SAFE_MODE=1 uvx blender-mcp==1.9.4
 ```
 
 Accepted truthy values are `true`, `1`, `yes`, and `on`. In Docker, add

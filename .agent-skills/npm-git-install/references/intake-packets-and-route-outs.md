@@ -98,7 +98,7 @@ Capture:
 Good outcomes:
 - publish-first / private registry recommendation
 - artifact fallback only when registry overhead is still genuinely too high
-- clear statement that floating Git refs are not durable shared infrastructure
+- explicit statement that floating Git refs are not durable shared infrastructure
 
 Route out when:
 - the next job is package-host administration, release setup, or registry configuration → `github-repo-management`

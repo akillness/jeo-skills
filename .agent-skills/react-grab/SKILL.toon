@@ -12,18 +12,18 @@ U[5]:
 S[4]{n,action,details}:
   1,Classify,choose clipboard install/use vs MCP vs plugin/API vs troubleshooting/removal
   2,Prereqs,confirm upstream truth: Node.js >=22 and development-only browser overlay
-  3,Default path,use npx -y grab@latest init unless the user explicitly needs MCP or manual framework setup
+  3,Default path,use npx -y grab@0.2.0 init unless the user explicitly needs MCP or manual framework setup
   4,Route,send generic browser automation to browser-harness/playwriter and UI review to agentation
 
 R[5]:
-  Use npx -y grab@latest init as the default install path from project root
-  For tool-based retrieval after browser selection use npx -y grab@latest add mcp
+  Use npx -y grab@0.2.0 init as the default install path from project root
+  For tool-based retrieval after browser selection use npx -y grab@0.2.0 add mcp
   Keep react-grab dev-only; never position it as a production feature
   Use references/install-and-routing.md, references/agent-workflows.md, references/troubleshooting.md, and references/api.md for depth
   State the Node.js >=22 prerequisite truthfully before recommending install commands
 
 E[4]{type,command}:
-  Default install,npx -y grab@latest init
-  MCP workflow,npx -y grab@latest add mcp
-  Agent integration,npx -y grab@latest add claude-code
-  Removal,npx -y grab@latest remove cursor
+  Default install,npx -y grab@0.2.0 init
+  MCP workflow,npx -y grab@0.2.0 add mcp
+  Agent integration,npx -y grab@0.2.0 add claude-code
+  Removal,npx -y grab@0.2.0 remove cursor

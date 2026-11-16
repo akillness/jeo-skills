@@ -24,6 +24,22 @@ from typing import Any
 HERE = Path(__file__).resolve().parent
 HOOK = HERE.parent / "scripts" / "jeo-code-policy-hook.py"
 INSTALLER = HERE.parent / "scripts" / "setup-claude-code-policy-hook.sh"
+_SAFE_TEST_ENV_KEYS = (
+    "PATH",
+    "HOME",
+    "TMPDIR",
+    "TEMP",
+    "TMP",
+    "LANG",
+    "LC_ALL",
+    "LC_CTYPE",
+    "XDG_CACHE_HOME",
+    "PYTHONDONTWRITEBYTECODE",
+)
+
+
+def _safe_base_env() -> dict[str, str]:
+    return {key: val for key in _SAFE_TEST_ENV_KEYS if (val := os.environ.get(key)) is not None}
 
 
 class HookContractTests(unittest.TestCase):
@@ -44,7 +60,7 @@ class HookContractTests(unittest.TestCase):
         self._write_fake_executable("graphify")
         self._write_fake_executable("headroom")
 
-        self.environment = os.environ.copy()
+        self.environment = _safe_base_env()
         self.environment.update(
             {
                 "PATH": f"{self.bin_dir}{os.pathsep}{self.environment.get('PATH', '')}",
@@ -247,7 +263,7 @@ class InstallerContractTests(unittest.TestCase):
         self.addCleanup(self.tempdir.cleanup)
         self.config_dir = Path(self.tempdir.name) / "claude-config"
         self.settings_file = self.config_dir / "settings.json"
-        self.environment = os.environ.copy()
+        self.environment = _safe_base_env()
         self.environment["CLAUDE_CONFIG_DIR"] = str(self.config_dir)
 
     def _run_installer(self) -> None:

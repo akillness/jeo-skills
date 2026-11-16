@@ -12,7 +12,6 @@ import re
 import shutil
 import stat
 import sys
-from urllib.parse import quote
 
 MAX_BYTES = 8 * 1024 * 1024
 MAX_MANIFEST_BYTES = 128 * 1024
@@ -21,6 +20,7 @@ REPO = re.compile(r"[A-Za-z0-9](?:[A-Za-z0-9-]{0,37}[A-Za-z0-9])?/[A-Za-z0-9_.-]
 COMMAND = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.+-]{0,63}\Z")
 SHA = re.compile(r"[0-9a-f]{40}\Z")
 HASH = re.compile(r"[0-9a-f]{64}\Z")
+SAFE_PATH_BYTES = frozenset(b"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~/")
 BLOCKED = {".git", ".ssh", ".aws", ".azure", ".config", ".netrc", ".npmrc", ".pypirc", ".git-credentials", "id_rsa", "id_ed25519"}
 SENSITIVE_STEMS = {"credential", "credentials", "secret", "secrets", "password", "passwords", "token", "tokens", "api_key", "api-key", "apikey"}
 
@@ -37,6 +37,10 @@ class OutputError(Exception):
 class Parser(argparse.ArgumentParser):
     def error(self, message):
         raise CheckError("invalid_arguments")
+
+
+def percent_encode(value):
+    return "".join(bytes([b]).decode("ascii") if b in SAFE_PATH_BYTES else f"%{b:02X}" for b in value.encode("utf-8"))
 
 
 def public_path(value):
@@ -161,7 +165,7 @@ def load_manifest(path):
         seen_files.add(target)
         if not (isinstance(expected_hash, str) and HASH.match(expected_hash)):
             raise CheckError("invalid_manifest_file_hash")
-        quoted_path = quote(target, safe="/")
+        quoted_path = percent_encode(target)
         expected_url = f"https://github.com/{repo}/blob/{commit}/{quoted_path}"
         if url != expected_url:
             raise CheckError("manifest_url_mismatch")

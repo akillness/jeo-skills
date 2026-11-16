@@ -12,9 +12,9 @@ description: >
   strip AI watermarks, remove C2PA / Content Credentials, clean AI metadata
   from a file, remove invisible Unicode / zero-width characters from
   AI-generated text, or audit a directory/website for AI provenance signals.
-  Triggers on: "remove watermark", "strip C2PA", "remove AI metadata", "clean
-  invisible unicode", "remove-ai-marks", "SynthID removal", "audit_dir.py",
-  "Layer A / Layer B watermark removal".
+  Triggers on: watermark removal, C2PA metadata cleanup, AI metadata cleanup,
+  invisible unicode cleanup, remove-ai-marks, SynthID analysis, audit_dir.py,
+  Layer A / Layer B provenance cleanup.
 
 allowed-tools: Bash Read Write Edit Glob Grep
 compatibility: >
@@ -223,9 +223,9 @@ bash .agent-skills/watermarks-remover/scripts/watermarks-remover.sh clean <repo-
 - [references/commands.md](references/commands.md) — curated command reference by workflow stage
 - [scripts/watermarks-remover.sh](scripts/watermarks-remover.sh) — read-only doctor + thin inspect/clean wrappers
 - Upstream repo: [guillaumemeyer/watermarks-remover](https://github.com/guillaumemeyer/watermarks-remover)
-- Upstream skill: [`skills/remove-ai-marks/SKILL.md`](https://github.com/guillaumemeyer/watermarks-remover/blob/main/skills/remove-ai-marks/SKILL.md)
-- Upstream ethics notes: [`skills/remove-ai-marks/references/ethics.md`](https://github.com/guillaumemeyer/watermarks-remover/blob/main/skills/remove-ai-marks/references/ethics.md)
-- Project standards: `.agent-skills/skill-standardization/SKILL.md`
+- Upstream skill folder: [guillaumemeyer/watermarks-remover](https://github.com/guillaumemeyer/watermarks-remover/tree/main/skills/remove-ai-marks)
+- Upstream ethics notes: [ethics.md](https://github.com/guillaumemeyer/watermarks-remover/blob/main/skills/remove-ai-marks/references/ethics.md)
+- Project standards: `skill-standardization`
 
 ## Examples
 

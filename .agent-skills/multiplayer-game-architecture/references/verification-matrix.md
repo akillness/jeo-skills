@@ -21,7 +21,7 @@ authority, recovery, fairness, security, capacity, or playability on real networ
 |---|---|---|
 | Connect and join | Two independent clients authenticate and reach one canonical match | Bad token, wrong origin, incompatible protocol, full match, and allocation failure are rejected cleanly |
 | Authority | Legal input changes canonical state once | Impossible movement, stale cooldown, forged inventory, hidden-state request, and duplicate command leave state unchanged |
-| Ordering and idempotency | Commands apply in one documented order | Duplicate, delayed, reordered, and replayed commands do not duplicate rewards or corrupt state |
+| Ordering and idempotency | Commands apply in one documented order | Duplicate, delayed, reordered, and replayed commands do not duplicate rewards or leave canonical state inconsistent |
 | Replication | Relevant clients converge on canonical state | Dropped or stale updates trigger interpolation, replacement, correction, or resync as designed |
 | Prediction | Owned actions feel responsive and reconcile by sequence | Misprediction is corrected without permanent divergence or applying an input twice |
 | Reconnect | A client resumes from a canonical snapshot | Disconnect during mutation, expired token, replaced session, and repeated reconnect stay safe |

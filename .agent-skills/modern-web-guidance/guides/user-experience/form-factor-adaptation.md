@@ -2,7 +2,7 @@
 
 The same interface runs on phones, laptops, and foldables, with touch, mouse, or keyboard. Size controls for the input, let components adapt to their container, and keep text and controls clear of system UI.
 
-For page-level responsive techniques (dynamic viewport units, aspect ratios, and fluid type), see `responsive-design` (via `npx -y modern-web-guidance@latest retrieve "responsive-design"`).
+For page-level responsive techniques (dynamic viewport units, aspect ratios, and fluid type), see `responsive-design` (via `npx -y modern-web-guidance@1.0.0 retrieve "responsive-design"`).
 
 ## Implementation
 
@@ -45,8 +45,8 @@ Use container queries instead of viewport-width media queries for component layo
 
 DO NOT query `height` or `block-size` on an `inline-size` container: it measures only width. Use `container-type: size` only on a container with a definite height.
 
-- For more container query patterns, such as card layouts, see `size-aware-styling` (via `npx -y modern-web-guidance@latest retrieve "size-aware-styling"`).
-- To change a component's layout based on what child elements it contains (for example, switching a card to a side-by-side layout when it includes an image), see `content-based-styling` (via `npx -y modern-web-guidance@latest retrieve "content-based-styling"`).
+- For more container query patterns, such as card layouts, see `size-aware-styling` (via `npx -y modern-web-guidance@1.0.0 retrieve "size-aware-styling"`).
+- To change a component's layout based on what child elements it contains (for example, switching a card to a side-by-side layout when it includes an image), see `content-based-styling` (via `npx -y modern-web-guidance@1.0.0 retrieve "content-based-styling"`).
 
 ### Keep UI clear of notches and system bars
 
@@ -68,11 +68,11 @@ Pad UI anchored to the top edge the same way with `safe-area-inset-top`.
 
 ### Balance headings and prettify body text
 
-Apply `text-wrap: balance` to short headings (`h1, h2, h3`) and `text-wrap: pretty` to body text (`p, li`) to prevent typographic orphans. For full text-wrapping rules, see `improve-text-layout-and-legibility` (via `npx -y modern-web-guidance@latest retrieve "improve-text-layout-and-legibility"`). DO NOT apply either property to `*`: both incur layout overhead, and `balance` only helps short blocks of text.
+Apply `text-wrap: balance` to short headings (`h1, h2, h3`) and `text-wrap: pretty` to body text (`p, li`) to prevent typographic orphans. For full text-wrapping rules, see `improve-text-layout-and-legibility` (via `npx -y modern-web-guidance@1.0.0 retrieve "improve-text-layout-and-legibility"`). DO NOT apply either property to `*`: both incur layout overhead, and `balance` only helps short blocks of text.
 
 ### Label icon-only buttons
 
-Give every icon-only button an accessible name using `aria-label`, an `<img alt>`, or visually hidden text, and hide decorative icons with `aria-hidden="true"`. For more accessible naming patterns, see `accessibility` (via `npx -y modern-web-guidance@latest retrieve "accessibility"`).
+Give every icon-only button an accessible name using `aria-label`, an `<img alt>`, or visually hidden text, and hide decorative icons with `aria-hidden="true"`. For more accessible naming patterns, see `accessibility` (via `npx -y modern-web-guidance@1.0.0 retrieve "accessibility"`).
 
 ### Keep content inside its box
 
@@ -92,7 +92,7 @@ body { overflow-wrap: anywhere; }
 
 - Use `min-block-size` instead of a fixed `height` on anything that contains text.
 - DO NOT truncate headings with `text-overflow: ellipsis`, and do not clip controls with `overflow: hidden` on their parents.
-- To allow text and layouts to scale with operating system accessibility settings, see `respect-os-text-scale` (via `npx -y modern-web-guidance@latest retrieve "respect-os-text-scale"`). To size form controls dynamically as users type, see `form-fields-automatically-fit-contents` (via `npx -y modern-web-guidance@latest retrieve "form-fields-automatically-fit-contents"`).
+- To allow text and layouts to scale with operating system accessibility settings, see `respect-os-text-scale` (via `npx -y modern-web-guidance@1.0.0 retrieve "respect-os-text-scale"`). To size form controls dynamically as users type, see `form-fields-automatically-fit-contents` (via `npx -y modern-web-guidance@1.0.0 retrieve "form-fields-automatically-fit-contents"`).
 
 ## Fallback strategies
 

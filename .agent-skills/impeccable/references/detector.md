@@ -10,7 +10,7 @@ come from the pinned `crates/detect/src/cli.rs`, `crates/foundation/src/registry
 | Mode | Command | Runs |
 |---|---|---|
 | Engine via installed skill | `<upstream-skill>/scripts/impeccable detect --json <files-or-dirs>` | the engine binary (first run may download it, checksum-verified) |
-| npm CLI | `npx impeccable detect --json <files-or-dirs>` | npm fetch of the CLI package, then the engine |
+| npm CLI | `npx impeccable@4.8.0 detect --json <files-or-dirs>` | npm fetch of the CLI package, then the engine |
 | Rendered page | `... detect --json http://localhost:5173` (`--viewport 390x844` for a mobile pass) | headless Chrome/Edge from the host; loads the page and its subresources |
 | Desktop app | `... detect --cdp 9222 --target <url-or-title-substring> --json` | attaches to a loopback DevTools port; page left as found |
 | CI annotations | `... detect --github src/` | GitHub Actions annotations on stdout |

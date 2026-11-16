@@ -98,7 +98,7 @@ For prompts like "create a Nano Banana generation app", "build a Seedance form",
   `HiggsfieldGenerationCard` and `selectGenerationMedia`, or equivalent logic
   using SDK selectors (`getPreviewUrl`, `getRawUrl`, `getMediaType`,
   `getJobPhase`, `hasResult`, `isTerminalJobStatus`).
-- Show prompt, model, status, created time, and failure reason where available.
+- Render the generation input, model, status, created time, and failure reason where available.
   Do not render completed jobs as blank cards with only status/id text.
 - Keep one truthful export-format contract for every media type. Preserve and
   label provider-native output, or carry a supported model format field through
@@ -666,7 +666,7 @@ const adapter = createWorkflowPlatformAdapter({
 
 Rules:
 
-- Never auto-confirm (`confirm: async () => {}` with no browser modal defeats
+- Require explicit user confirmation (`confirm: async () => {}` with no browser modal defeats
   the gate). The modal is mandatory for real generation websites.
 - Branch on `error.code === 'confirmation_rejected'` and render it as a
   user-cancelled state (quiet), not an error toast.
@@ -776,7 +776,7 @@ For browser UI, use `/api/user` from `references/auth.md`. Use the SDK profile
 client server-side when the website is already performing SDK-backed account,
 workspace, wallet, or credit operations.
 
-Credit display rule:
+Credit presentation contract:
 
 - `profile.getWallet()` returns raw backend credit-cent values.
 - `profile.getCredits()` returns display credits.

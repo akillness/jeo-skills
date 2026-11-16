@@ -281,12 +281,10 @@ services:
       - .:/build
       - /build/Library
     working_dir: /build
-    command: >
-      bash -c "
-        bash .agent-skills/unity-cli/scripts/setup.sh --ci &&
-        unity-cli build --project . --platform WebGL --output ./dist
-      "
-
+    command:
+      - bash
+      - -c
+      - bash .agent-skills/unity-cli/scripts/setup.sh --ci && unity-cli build --project . --platform WebGL --output ./dist
   deploy:
     image: nginx:alpine
     ports:
@@ -357,8 +355,7 @@ Keep builds lean:
 
 ```bash
 # Clean before build
-rm -rf dist/
-mkdir -p dist
+find ./dist -mindepth 1 -delete 2>/dev/null || mkdir -p ./dist
 
 # Build only what's needed
 unity-cli build --project . --platform WebGL --output ./dist
@@ -399,6 +396,5 @@ timeout(time: 2, unit: 'HOURS') {
 
 ```bash
 # Clean build artifacts between runs
-rm -rf Library/Artifacts/
-rm -rf Library/ScriptAssemblies/
+find Library/Artifacts Library/ScriptAssemblies -mindepth 1 -delete 2>/dev/null || true
 ```

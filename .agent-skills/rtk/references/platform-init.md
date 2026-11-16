@@ -38,7 +38,7 @@ rtk init -g --codex
 rtk init -g --codex --uninstall
 ```
 
-Codex is prompt-guided, not a transparent shell-hook rewrite path. Direct `rtk` commands still matter.
+Codex is prompt-guided, not a transparent shell-hook command-rewriting path. Direct `rtk` commands still matter.
 
 ### Gemini CLI
 

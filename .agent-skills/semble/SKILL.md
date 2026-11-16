@@ -32,38 +32,12 @@ claude mcp add semble -s user -- uvx --from "semble[mcp]" semble
 ```
 
 ### MCP (Codex)
-Add to `~/.codex/config.toml`:
-```toml
-[mcp_servers.semble]
-command = "uvx"
-args = ["--from", "semble[mcp]", "semble"]
+```bash
+codex mcp add semble -- uvx --from "semble[mcp]" semble
 ```
 
-### MCP (Cursor)
-Add to `~/.cursor/mcp.json`:
-```json
-{
-  "mcpServers": {
-    "semble": {
-      "command": "uvx",
-      "args": ["--from", "semble[mcp]", "semble"]
-    }
-  }
-}
-```
-
-### MCP (OpenCode)
-Add to `~/.opencode/config.json`:
-```json
-{
-  "mcp": {
-    "semble": {
-      "type": "local",
-      "command": ["uvx", "--from", "semble[mcp]", "semble"]
-    }
-  }
-}
-```
+### MCP (Cursor / OpenCode)
+Register `semble` as a local MCP server in your editor's MCP server settings UI with command `uvx` and args `["--from", "semble[mcp]", "semble"]`.
 
 ### CLI / pip
 ```bash
@@ -73,7 +47,7 @@ uv tool install semble    # uv (recommended for CLI use)
 
 ### Skill (any platform)
 ```bash
-npx skills add https://github.com/akillness/jeo-skills --skill semble
+npx skills@1.9.0 add https://github.com/akillness/jeo-skills --skill semble
 ```
 
 ## When to use
@@ -143,27 +117,27 @@ print(result.chunk.content)     # the function/class body
 
 Add this section to your project's `AGENTS.md` or `CLAUDE.md` to enable semble for all agents:
 
-```markdown
+````markdown
 ## Code Search
 
 Use `semble search` to find code by describing what it does or naming a symbol, instead of grep:
 
-​```bash
+```bash
 semble search "authentication flow" ./my-project
 semble search "save_pretrained" ./my-project
 semble search "save model to disk" ./my-project --top-k 10
-​```
+```
 
 Use `semble find-related` to discover code similar to a known location (pass `file_path` and `line` from a prior search result):
 
-​```bash
+```bash
 semble find-related src/auth.py 42 ./my-project
-​```
+```
 
 `path` defaults to the current directory when omitted; git URLs are accepted.
 
 If `semble` is not on `$PATH`, use `uvx --from "semble[mcp]" semble` in its place.
-```
+````
 
 For Claude Code sub-agents, initialize once in the project root:
 ```bash

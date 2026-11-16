@@ -156,8 +156,8 @@ async function main() {
       console.log(JSON.stringify(result, null, 2));
     } else {
       console.log(
-        `PASS: ${result.skill} — ${result.eval_count} evals, ${result.assertion_count} assertions, ` +
-          `${result.safety_cases} safety cases, ${result.route_out_cases} route-out cases`
+        'PASS: ' + result.skill + ' — ' + result.eval_count + ' evals, ' + result.assertion_count + ' assertions, ' +
+          result.safety_cases + ' safety cases, ' + result.route_out_cases + ' route-out cases'
       );
     }
     return 0;

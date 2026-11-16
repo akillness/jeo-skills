@@ -16,7 +16,7 @@ S[6]{n,action,details}:
   6,Deploy&Test,Deploy with canyonos deploy --serve false and dispatch verification queries with canyonos test
 R[5]:
   Run scripts/preflight.py --json before executing container commands or provisioning infrastructure
-  Never copy or commit .env files into .canyon; keep secrets strictly in project root for container runtime
+  Never copy or commit dotenv files into .canyon; keep secrets strictly in project root for container runtime
   Static pre-deployment validation via canyonos validate must exit 0 before requesting deployment approval
   Isolate in-process stateful agents to single replicas (replicas: 1) to prevent distributed state divergence
   Route raw Kubernetes CRD controllers to kagent and generic MCP server authoring to fastmcp

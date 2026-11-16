@@ -215,7 +215,7 @@ Save to the adapter's spec directory:
 
 After saving:
 - Persist `trace_path` in adapter state
-- Keep any ephemeral trace/interview scratch artifacts under the adapter state directory; do not write temporary files to the repo root or arbitrary working paths
+- Keep any ephemeral trace/interview scratch artifacts under the adapter state directory; do not place temporary files in the repo root or arbitrary working paths
 - Run `python3 .agent-skills/deep-dive/scripts/validate_deep_dive_artifacts.py --trace <trace_path>`
 - Update `current_phase: "trace-complete"`
 

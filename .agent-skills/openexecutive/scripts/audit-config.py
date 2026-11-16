@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Offline posture audit for an Open Executive environment file.
 
-Reads a .env file and reports provider coverage, billable-feature posture,
+Reads a runtime environment file and reports provider coverage, billable-feature posture,
 outbound-messaging exposure, and access-control gaps.
 
 It performs no network request, starts nothing, and never prints a credential or
@@ -342,19 +342,22 @@ def summarize_presence(values: dict[str, str]) -> list[dict[str, str]]:
 def main() -> int:
     parser = argparse.ArgumentParser(
         description=(
-            "Audit an Open Executive .env file offline. Never prints secret values and makes no "
+            "Audit an Open Executive environment file offline. Never prints secret values and makes no "
             "network request."
         )
     )
-    parser.add_argument("env_file", nargs="?", default=".env", help="path to the .env file")
+    parser.add_argument("env_file", nargs="?", default="config.env", help="path to the runtime environment file")
     parser.add_argument("--json", action="store_true", help="emit machine-readable JSON")
     args = parser.parse_args()
 
     path = Path(args.env_file)
+    if path.is_symlink():
+        print(f"error: refusing to read symlinked environment file: {path}", file=sys.stderr)
+        return 1
     if not path.is_file():
         print(
             f"error: no environment file at {path}\n"
-            "       Copy .env.example to .env and edit it. Note that unset variables fall back to "
+            "       Copy .env.example to your gitignored runtime env file and edit it. Note that unset variables fall back to "
             "code defaults, and the web-search default is ON and billed.",
             file=sys.stderr,
         )

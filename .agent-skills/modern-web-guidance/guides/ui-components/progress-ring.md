@@ -10,7 +10,7 @@ This guide implements a progress ring by:
 
 This approach is preferred over SVG-only solutions because it uses the semantic `<progress>` element rather than ARIA, and more easily integrates with existing layout, design systems and typography.
 
-See the `spinner` (via `npx -y modern-web-guidance@latest retrieve "spinner"`) for handling indeterminate loading states.
+See the `spinner` (via `npx -y modern-web-guidance@1.0.0 retrieve "spinner"`) for handling indeterminate loading states.
 
 ## Implementation
 

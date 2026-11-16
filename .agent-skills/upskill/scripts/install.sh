@@ -11,7 +11,7 @@
 #   UPSKILL_REF=<ref>  — Git ref to clone when LOCAL_REPO is unset and a clone
 #                        is needed (default: main)
 #   GLOBAL=1           — also install this routing skill globally
-#                        (npx skills add -g)
+#                        (npx skills@1.9.0 add -g)
 #   DRY_RUN=1          — pass --dry-run through to the upstream installer
 #
 # Usage:
@@ -40,11 +40,11 @@ command -v git >/dev/null 2>&1 || die "git is required"
 # 1) Optionally install this routing skill globally
 if [ "$GLOBAL" = "1" ]; then
   if command -v npx >/dev/null 2>&1; then
-    log "Installing '$SKILL' skill globally via npx skills add -g"
-    npx --yes skills add -g "$REPO_URL" --skill "$SKILL" --yes 2>/dev/null \
+    log "Installing '$SKILL' skill globally via skills CLI"
+    npx --yes skills@1.9.0 add -g "$REPO_URL" --skill "$SKILL" --yes 2>/dev/null \
       || warn "Global skill install failed — continuing with UpSkill install"
   else
-    warn "npx not found — skipping global skill install"
+    warn "Node.js not found — skipping global skill install"
   fi
 fi
 
@@ -60,8 +60,10 @@ else
   # 2b) Remote one-line install (downloads each file individually — no full clone)
   command -v curl >/dev/null 2>&1 || die "curl is required for remote install (or set LOCAL_REPO=<clone>)"
   log "Installing remotely from $UPSTREAM_URL@$UPSKILL_REF"
-  curl -sSL "https://raw.githubusercontent.com/HKUDS/Upskill/${UPSKILL_REF}/cc-integration/install.sh" \
-    | bash -s -- --remote "${DRY_RUN_FLAG[@]}"
+  UPSTREAM_INSTALLER="$(mktemp "${TMPDIR:-/tmp}/upskill-install.XXXXXX.sh")"
+  trap 'rm -f "$UPSTREAM_INSTALLER"' EXIT
+  curl -fsSL "https://raw.githubusercontent.com/HKUDS/Upskill/${UPSKILL_REF}/cc-integration/install.sh" -o "$UPSTREAM_INSTALLER"
+  bash "$UPSTREAM_INSTALLER" --remote "${DRY_RUN_FLAG[@]}"
 fi
 
 log "Done. Next steps:"

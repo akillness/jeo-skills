@@ -68,13 +68,14 @@ can connect to — no bundled Chromium, ChromeDriver, or geckodriver required.
 
 ### Step 1: Install (or locate) the `moli` binary
 
-```bash
-# Linux / macOS
-curl --proto '=https' --tlsv1.2 -fsSL \
-  https://github.com/lexmount/moli/releases/latest/download/moli-installer.sh | sh
+Download and verify the prebuilt release archive (or build from source with `cargo build --release`) from the official GitHub Releases page (<https://github.com/lexmount/moli/releases>):
 
-# Windows (PowerShell)
-irm https://github.com/lexmount/moli/releases/latest/download/moli-installer.ps1 | iex
+```bash
+# Download installer/release artifact and inspect before running
+curl --proto '=https' --tlsv1.2 -fsSLO \
+  https://github.com/lexmount/moli/releases/latest/download/moli-installer.sh
+less moli-installer.sh
+sh moli-installer.sh
 ```
 
 Resolve `moli` from `PATH` first; only install if it is missing. Default
@@ -184,7 +185,7 @@ the user gave no explicit limit).
 - [references/commands.md](references/commands.md) — `moli fetch`/`moli serve` flag reference by workflow stage
 - [Moli GitHub Repository](https://github.com/lexmount/moli)
 - [Moli's own agent skills](https://github.com/lexmount/moli/tree/main/skills) (`moli-webfetch`, `moli-cdp-server`)
-- Project standards: `.agent-skills/skill-standardization/SKILL.md`
+- Project standards: `skill-standardization`
 
 ## Examples
 

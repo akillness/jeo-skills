@@ -285,8 +285,7 @@ If the upstream component gets an important security fix or bug fix, review it:
 To stop using a swizzled component and return to the library version:
 
 ```bash
-# Remove the swizzled component
-rm -rf src/components/Button
+# Delete the ejected component folder (e.g. src/components/Button)
 
 # Remove any build tool aliases you created
 # (in next.config.js, vite.config.ts, etc.)

@@ -16,7 +16,10 @@ firebase --version
 Useful when Node.js is unavailable and you only need the CLI binary.
 
 ```bash
-curl -sL https://firebase.tools | bash
+curl -fsSL https://firebase.tools -o /tmp/firebase-tools-install.sh
+# Review /tmp/firebase-tools-install.sh before running:
+bash /tmp/firebase-tools-install.sh
+# Delete the temporary installer file once verification succeeds
 firebase --version
 ```
 

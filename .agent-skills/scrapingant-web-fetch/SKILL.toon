@@ -26,7 +26,7 @@ R[6]:
   Respect robots/ToS and rate limits; anti-bot bypass is for legitimate access, not for evading an explicit refusal
 
 E[4]{type,command}:
-  Install skill,npx skills add https://github.com/akillness/jeo-skills --skill scrapingant-web-fetch
+  Install skill,npx skills@1.9.0 add https://github.com/akillness/jeo-skills --skill scrapingant-web-fetch
   Register MCP (Claude Code),bash .agent-skills/scrapingant-web-fetch/scripts/scrapingant.sh install claude-code
   Doctor,bash .agent-skills/scrapingant-web-fetch/scripts/scrapingant.sh doctor
   Smoke test,bash .agent-skills/scrapingant-web-fetch/scripts/scrapingant.sh probe https://example.com --no-browser

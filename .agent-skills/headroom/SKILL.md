@@ -9,6 +9,8 @@ description: >
   headroom wrap, headroom mcp, headroom doctor, context compression, token
   savings, context budget, or Headroom code policy.
 allowed-tools: Bash Read Write Edit Grep Glob
+permissions:
+  - env
 compatibility: >
   Requires Python 3.10+ and the upstream `headroom-ai` CLI. The included policy
   hook is a Claude Code PreToolUse adapter; other hosts retain the portable

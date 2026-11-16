@@ -31,7 +31,7 @@ elif command -v pipx >/dev/null 2>&1; then
   pipx install --force "${SPEC_KIT_REPO}"
 else
   echo "ERROR: neither uv nor pipx is installed." >&2
-  echo "  Install uv:   curl -LsSf https://astral.sh/uv/install.sh | sh" >&2
+  echo "  Install uv:   brew install uv  (or see https://docs.astral.sh/uv/getting-started/installation/)" >&2
   echo "  Or pipx:      python3 -m pip install --user pipx && pipx ensurepath" >&2
   exit 1
 fi
@@ -64,7 +64,8 @@ if [ -n "${SPEC_KIT_INTEGRATION:-}" ] && [ -n "${SPEC_KIT_PROJECT_DIR:-}" ]; the
   stage=$(mktemp -d "${TMPDIR:-/tmp}/jeo-spec-kit.XXXXXX")
   manifest="$stage/collisions.txt"
   merge_status=0
-  for integ in $(printf '%s' "${SPEC_KIT_INTEGRATION}" | tr ',' ' '); do
+  IFS=',' read -r -a _integrations <<< "${SPEC_KIT_INTEGRATION}"
+  for integ in "${_integrations[@]}"; do
     [ -n "$integ" ] || continue
     if ! (cd "$stage" && specify init --here --force --non-interactive --integration "$integ"); then
       rm -rf "$stage"

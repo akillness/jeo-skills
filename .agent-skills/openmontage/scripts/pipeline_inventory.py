@@ -41,7 +41,9 @@ def scalar(raw: str | None) -> Any:
         try:
             return ast.literal_eval(value)
         except (SyntaxError, ValueError):
-            return value.strip("'\"")
+            if len(value) >= 2 and value[0] == value[-1] and value[0] in ("'", '"'):
+                return value[1:-1]
+            return value
     lowered = value.lower()
     if lowered == "true":
         return True

@@ -210,10 +210,10 @@ PROBES = (
     {"name": "go-version", "path": "go.mod", "pattern": r"^go 1\.(2[7-9]|[3-9][0-9])",
      "hit": "go.mod requires Go 1.27 or newer (the README still says Go 1.26.6+); build from source with the go.mod version",
      "miss": "go.mod's go directive is below 1.27; check it against the README"},
-    {"name": "provision-pipe", "path": "README.md", "pattern": r"curl -fsSL \S*PROVISION \| sh",
+    {"name": "provision-pipe", "path": "README.md", "pattern": r"PROVISION\s*\|\s*sh",
      "hit": "README installs the SaaS edition by piping a remote script into sh",
      "miss": "README no longer pipes PROVISION into sh"},
-    {"name": "upstream-skill-self-update", "path": "skills/google-maps-scraper/SKILL.md", "pattern": r"ensure-latest\.sh",
+    {"name": "upstream-skill-auto-refresh", "path": "skills/google-maps-scraper/SKILL.md", "pattern": r"ensure-latest\.sh",
      "hit": "the upstream agent skill runs ensure-latest.sh at the start of every workflow to update itself",
      "miss": "the upstream agent skill no longer references ensure-latest.sh"},
 )
@@ -248,7 +248,7 @@ def host_checks(checks, args):
                     else "another skill with the same name, likely upstream gosom's, which updates itself")
             found.append(f"~/{rel}: {kind}")
     add(checks, "installed-skill", "info", "; ".join(found) if found
-        else "no installed skill folder named google-maps-scraper in ~/.agents/skills or ~/.claude/skills")
+        else "no installed skill folder named google-maps-scraper under the agent or Claude skill directories")
 
 
 def extras(checks, args):

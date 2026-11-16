@@ -52,8 +52,8 @@ automatically on every prompt instead).
 5. For any selected skill validated on a **different** model, ask the user to
    confirm a switch — **never invoke `/model` programmatically**, it is a TUI
    command only the human can run; pause and wait for them to reply "done".
-6. Read the selected `SKILL.md` (or, for the legacy format,
-   `CLAUDE.md` + `.claude/skills/solve-task/SKILL.md`) and execute the
+6. Read the selected skill prompt (or, for the legacy format,
+   the generated `CLAUDE.md` and `solve-task` prompt) and execute the
    original task with that guidance applied.
 
 ## `upskill-store.sh` CLI (backend for list/status/remove/sync)

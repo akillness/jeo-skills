@@ -37,8 +37,19 @@ warn() { echo "[setup] WARN:  $*" >&2; }
 
 # ── Step 1: Install uv if missing ───────────────────────────────────────────
 if ! command -v uv &>/dev/null; then
-  log "Installing uv..."
-  curl -LsSf https://astral.sh/uv/install.sh | sh
+  if command -v pipx &>/dev/null; then
+    log "Installing uv via pipx..."
+    pipx install uv
+  elif command -v python3 &>/dev/null; then
+    log "Installing uv via pip..."
+    python3 -m pip install --user uv
+  elif command -v brew &>/dev/null; then
+    log "Installing uv via Homebrew..."
+    brew install uv
+  else
+    err "uv is required. Install via Homebrew (brew install uv) or pip (python3 -m pip install --user uv)."
+    exit 1
+  fi
   export PATH="${HOME}/.local/bin:${PATH}"
   if ! command -v uv &>/dev/null; then
     err "uv install succeeded but binary not found. Restart shell and retry."

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Offline Godogen asset cost estimate at a pinned upstream rate table.
 
-This script performs no network requests and calls no provider. Rates were verified
+This script performs no HTTP calls and contacts no provider. Rates were verified
 against htdt/godogen commit 05cebffc8b10c5817e8a3db495b82e7b6004ab84.
 """
 

@@ -29,8 +29,8 @@ only deliberately: `bun scripts/check-migrations.ts --allow-destructive`.
 
 ## 2. Schema-drift trap (#898)
 
-drizzle-kit only diffs **exported** top-level tables. Remove a table's named
-export from `src/lib/db/schema/index.ts` and the next `bun db:generate` emits
+drizzle-kit only diffs **exported** top-level tables. If a table's named
+export is omitted from `src/lib/db/schema/index.ts`, the next `bun db:generate` emits
 `DROP TABLE`.
 
 Also: never change a column's SQL `.default()` without generating the migration
@@ -114,7 +114,7 @@ failure.
 
 | You typed | It did | You wanted |
 |---|---|---|
-| `bun test` | Bun's runner, ignoring `vitest.config.ts` | `bun run test` |
+| `bun test` | Bun's runner, without loading `vitest.config.ts` | `bun run test` |
 | `bun build` | Bun's bundler | `bun run build` |
 | `tsc` | wrong type checker | `bun typecheck` (`tsgo`) |
 

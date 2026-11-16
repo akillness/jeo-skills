@@ -23,7 +23,7 @@ Before implementation, decide **who** is acting:
 
 ## Source-backed notes
 - Google Workspace auth overview explicitly calls out OAuth client IDs, service accounts, scopes, and domain-wide delegation as the core decision points.
-- The “Develop on Google Workspace” getting-started docs point to creating access credentials after API enablement rather than treating auth as a postscript.
+- The “Develop on Google Workspace” getting-started docs point to creating OAuth/service client configuration after API enablement rather than treating auth as a postscript.
 
 ## Quick checks
 1. Which Google account or admin identity is acting?

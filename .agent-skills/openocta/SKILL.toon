@@ -43,7 +43,7 @@ R[16]:
   Generic monitoring design routes to monitoring-observability and supplied log triage to log-analysis
 
 E[7]{type,command}:
-  Install skill,npx skills add https://github.com/akillness/jeo-skills --skill openocta
+  Install skill,npx --yes skills@1.7.0 add https://github.com/akillness/jeo-skills --skill openocta
   Audit pinned source,python3 .agent-skills/openocta/scripts/audit-openocta.py source --repo /path/to/openocta --expect-commit 6b130c72cdc40d8b3bed304d3e6a64345e3d2622 --format json
   Audit config posture,python3 .agent-skills/openocta/scripts/audit-openocta.py config --config /path/to/openocta.json --run-mode service --format json
   Plan release asset,python3 .agent-skills/openocta/scripts/audit-openocta.py release --metadata /path/to/release.json --os darwin --arch arm64 --format json

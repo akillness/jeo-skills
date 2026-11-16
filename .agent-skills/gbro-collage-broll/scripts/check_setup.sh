@@ -21,7 +21,7 @@ fi
 if command -v ffmpeg >/dev/null 2>&1 && command -v ffprobe >/dev/null 2>&1; then
   ok "ffmpeg / ffprobe 可用"
 else
-  bad "ffmpeg / ffprobe 缺失（macOS: brew install ffmpeg；Debian/Ubuntu: sudo apt install ffmpeg）"
+  bad "ffmpeg / ffprobe 缺失（macOS: brew install ffmpeg；Debian/Ubuntu: apt install ffmpeg）"
 fi
 
 # 3. Python >= 3.10

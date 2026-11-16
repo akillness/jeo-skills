@@ -191,7 +191,7 @@ from `src/lib/db/schema/index.ts` makes the next `db:generate` emit
   not a fork), provisions everything in the default `wrangler.jsonc` block,
   and prompts only for `BETTER_AUTH_SECRET` + `API_KEY_ENCRYPTION_KEY`. AI
   keys go in afterwards via Settings → API Keys or `wrangler secret put`.
-- **Upstream repo**: Workers Builds auto-deploys `main`
+- **Upstream repo**: Workers Builds deploys `main`
   (`bun run build` with `CLOUDFLARE_ENV=production`, then
   `bun run deploy:production`).
 - **Manual**: `bun cf:typegen && bun cf:deploy:prd`.

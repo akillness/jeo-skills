@@ -118,7 +118,7 @@ test('accepts a steam-title new surface only with real Home context and frozen r
     id,
     treatment: 'redesign',
     changeScope: ['layout', 'identity', 'motion', 'interaction', 'copy'],
-    changeBrief: `Design the new title ${id} without inventing persistence data.`,
+    changeBrief: 'Design the new title ' + id + ' without inventing persistence data.',
     proofRequired: ['immutable preview matrix'],
     authority: { ...titleAuthority },
     standaloneMotionPolicy: 'authoritative-upgrade-spec',

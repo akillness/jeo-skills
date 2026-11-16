@@ -12,9 +12,9 @@ Reach for a custom element only when you need encapsulated behavior, lifecycle, 
 - The thing is purely presentational with no behavior. A class on a native element is more performant, and scopable with `@layer` or `@scope`.
 - You only need style scoping on the server with no interactivity; a scoped stylesheet or Declarative Shadow DOM (without an upgrade) may be enough.
 
-Rebuilding native semantics (a custom `<my-button>` that re-creates focus, activation, and ARIA) is the most common misuse: you inherit the platform's accessibility for free only if you reuse the native element. When a `<my-button>`-style wrapper *is* warranted — usually for shared styling hooks, extra markup, or behavior a native element can't express — wrap the real `<button>` rather than re-implementing it (see `styling-web-components` (via `npx -y modern-web-guidance@latest retrieve "styling-web-components"`) for forwarding styles to an internal native element).
+Rebuilding native semantics (a custom `<my-button>` that re-creates focus, activation, and ARIA) is the most common misuse: you inherit the platform's accessibility for free only if you reuse the native element. When a `<my-button>`-style wrapper *is* warranted — usually for shared styling hooks, extra markup, or behavior a native element can't express — wrap the real `<button>` rather than re-implementing it (see `styling-web-components` (via `npx -y modern-web-guidance@1.0.0 retrieve "styling-web-components"`) for forwarding styles to an internal native element).
 
-The test is whether you need **encapsulated state, a scriptable API, or behavior the native element can't express** — not merely a different look. A like/favorite toggle qualifies: it carries latched domain state, exposes that state as a styling hook for the surrounding page, and dispatches its own `change` event — none of which a styled `<button>` gives you. A button that only changes color when pressed does not: reach for `<button>` + CSS. When you do build it, model its state with a custom state or attribute as appropriate (see `custom-elements` (via `npx -y modern-web-guidance@latest retrieve "custom-elements"`)).
+The test is whether you need **encapsulated state, a scriptable API, or behavior the native element can't express** — not merely a different look. A like/favorite toggle qualifies: it carries latched domain state, exposes that state as a styling hook for the surrounding page, and dispatches its own `change` event — none of which a styled `<button>` gives you. A button that only changes color when pressed does not: reach for `<button>` + CSS. When you do build it, model its state with a custom state or attribute as appropriate (see `custom-elements` (via `npx -y modern-web-guidance@1.0.0 retrieve "custom-elements"`)).
 
 ## Match the tool to the codebase
 
@@ -42,9 +42,9 @@ Identify the task and retrieve its guide:
 
 | If you need to… | Retrieve |
 | :--- | :--- |
-| Define a new semantic tag with behavior and lifecycle | `custom-elements` (via `npx -y modern-web-guidance@latest retrieve "custom-elements"`) |
-| Scope styles and markup to a component, and project consumer content into it | `shadow-dom` (via `npx -y modern-web-guidance@latest retrieve "shadow-dom"`) |
-| Render a component's shadow tree on the server (SSR) without a flash of unstyled content | `prerendering-custom-elements` (via `npx -y modern-web-guidance@latest retrieve "prerendering-custom-elements"`) |
-| Style across the shadow boundary (theming, `::part`, custom properties) | `styling-web-components` (via `npx -y modern-web-guidance@latest retrieve "styling-web-components"`) |
-| Submit a custom control's value to a surrounding `<form>` | `form-associated-custom-elements` (via `npx -y modern-web-guidance@latest retrieve "form-associated-custom-elements"`) |
-| Make a custom element accessible (roles, focus, ARIA across shadow roots) | `accessible-web-components` (via `npx -y modern-web-guidance@latest retrieve "accessible-web-components"`) |
+| Define a new semantic tag with behavior and lifecycle | `custom-elements` (via `npx -y modern-web-guidance@1.0.0 retrieve "custom-elements"`) |
+| Scope styles and markup to a component, and project consumer content into it | `shadow-dom` (via `npx -y modern-web-guidance@1.0.0 retrieve "shadow-dom"`) |
+| Render a component's shadow tree on the server (SSR) without a flash of unstyled content | `prerendering-custom-elements` (via `npx -y modern-web-guidance@1.0.0 retrieve "prerendering-custom-elements"`) |
+| Style across the shadow boundary (theming, `::part`, custom properties) | `styling-web-components` (via `npx -y modern-web-guidance@1.0.0 retrieve "styling-web-components"`) |
+| Submit a custom control's value to a surrounding `<form>` | `form-associated-custom-elements` (via `npx -y modern-web-guidance@1.0.0 retrieve "form-associated-custom-elements"`) |
+| Make a custom element accessible (roles, focus, ARIA across shadow roots) | `accessible-web-components` (via `npx -y modern-web-guidance@1.0.0 retrieve "accessible-web-components"`) |

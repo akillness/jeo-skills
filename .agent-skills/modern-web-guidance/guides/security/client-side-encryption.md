@@ -1,6 +1,6 @@
 # Encrypt data client-side with WebCrypto
 
-Use the Web Cryptography API (`crypto.subtle`) to establish shared secrets over untrusted networks using quantum-resistant Key Encapsulation Mechanisms (KEMs) or classical key agreement, and encrypt sensitive data in the browser with Authenticated Encryption with Associated Data (AEAD). For signing and verifying messages or artifacts without encrypting them, see `digital-signatures` (via `npx -y modern-web-guidance@latest retrieve "digital-signatures"`).
+Use the Web Cryptography API (`crypto.subtle`) to establish shared secrets over untrusted networks using quantum-resistant Key Encapsulation Mechanisms (KEMs) or classical key agreement, and encrypt sensitive data in the browser with Authenticated Encryption with Associated Data (AEAD). For signing and verifying messages or artifacts without encrypting them, see `digital-signatures` (via `npx -y modern-web-guidance@1.0.0 retrieve "digital-signatures"`).
 
 An end-to-end envelope encryption flow splits into two phases:
 

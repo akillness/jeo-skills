@@ -1,6 +1,6 @@
 # Rearrange Items with Drag and Drop
 
-Add reordering to an existing list or row, vertical or horizontal. Reorder the real children in the DOM (not via CSS `order` or `flex-direction: *-reverse`) so visual, keyboard, and reading order stay aligned. For free-form 2D repositioning of a floating element such as a dialog or toolbar, see `drag` (via `npx -y modern-web-guidance@latest retrieve "drag"`). This guide covers one axis at a time; it does not cover reordering a grid or wrapped layout, or moving items between lists.
+Add reordering to an existing list or row, vertical or horizontal. Reorder the real children in the DOM (not via CSS `order` or `flex-direction: *-reverse`) so visual, keyboard, and reading order stay aligned. For free-form 2D repositioning of a floating element such as a dialog or toolbar, see `drag` (via `npx -y modern-web-guidance@1.0.0 retrieve "drag"`). This guide covers one axis at a time; it does not cover reordering a grid or wrapped layout, or moving items between lists.
 
 When items contain interactive controls or selectable text, provide a dedicated drag handle rather than making the entire item draggable. Then set up the pointer drag:
 
@@ -34,7 +34,13 @@ Don't reorder while the pointer moves: shifting siblings feel jittery. Keep the 
 
 ## Scroll while dragging
 
-If the items live in a scrollable container, scroll it while the pointer is near or beyond its start or end edge on the list's axis (top and bottom, or left and right for a row, using `scrollTop` or `scrollLeft`), so off-screen items stay reachable (especially on small viewports). Run a `requestAnimationFrame` loop for the duration of the drag that scales scroll speed with how far the pointer is into an edge zone (the dragged item's size on the list axis, capped at a third of the container's size so the two zones never overlap), continuing to increase beyond the edge up to a cap, and uses frame time rather than a fixed step. After each scroll change, re-run drop-spot detection with the last pointer position, clamped into the container's bounds, because the pointer hasn't moved. Avoid `scroll-behavior: smooth` on that container. Give it space on every side so focus rings and elevation shadows aren't clipped: the space must cover the focus ring's outline width and offset plus the grabbed item's scale growth (about 1rem for a 3px outline, 2px offset, and `scale(1.02)`), and `overflow-y: auto` also clips on the x axis. Put the end space (bottom, or inline-end for a row) on the last item's margin rather than the container's padding, because some engines omit a grid or flex container's end padding from its scrollable overflow. Cancel the loop when the drag ends.
+If the items live in a scrollable container, scroll it while the pointer is near or beyond its start or end edge on the list's axis (top and bottom, or left and right for a row, using `scrollTop` or
+`scrollLeft`), so off-screen items stay reachable (especially on small viewports). Run a `requestAnimationFrame` loop for the duration of the drag that scales scroll speed with how far the pointer is
+into an edge zone (the dragged item's size on the list axis, capped at a third of the container's size so the two zones never overlap), continuing to increase beyond the edge up to a cap, and uses
+frame time rather than a fixed step. After each scroll change, re-run drop-spot detection with the last pointer position, clamped into the container's bounds, because the pointer hasn't moved. Avoid
+`scroll-behavior: smooth` on that container. Give it space on every side so focus rings and elevation shadows aren't clipped: the space must cover the focus ring's outline width and offset plus the
+grabbed item's scale growth (about 1rem for a 3px outline, 2px offset, and `scale(1.02)`), and `overflow-y: auto` also clips on the x axis. Put the end space (bottom, or inline-end for a row) on the
+last item's margin rather than the container's padding, because some engines omit a grid or flex container's end padding from its scrollable overflow. Cancel the loop when the drag ends.
 
 ## Support keyboard reordering
 

@@ -19,7 +19,7 @@
       "expected_behavior": [
         "Read the selected payload and identify component destination, dependencies and token payload.",
         "Warn that hosted URL content is mutable and the item can affect global tokens.",
-        "Do not execute npx shadcn or the Better Design setup installer."
+        "Do not execute the shadcn CLI or the Better Design setup installer."
       ]
     },
     {

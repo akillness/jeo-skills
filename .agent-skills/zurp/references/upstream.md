@@ -69,11 +69,11 @@ All five exist under `bug-bounty-research/skills/` at the audited commit:
 
 | Upstream skill | Use |
 |---|---|
-| [`meta-context`](https://github.com/facebookincubator/Zurp/blob/c30c04edd8a0a85f3ee980324b7edc8e814fadb3/bug-bounty-research/skills/meta-context/SKILL.md) | Choose scan, batch, or single identifier resolution; interpret empty results, budgets, and token errors. |
-| [`sparta`](https://github.com/facebookincubator/Zurp/blob/c30c04edd8a0a85f3ee980324b7edc8e814fadb3/bug-bounty-research/skills/sparta/SKILL.md) | List/scan/get/build findings; keep leads and PoC templates separate from confirmed vulnerabilities. |
-| [`use-fbdl-mcp`](https://github.com/facebookincubator/Zurp/blob/c30c04edd8a0a85f3ee980324b7edc8e814fadb3/bug-bounty-research/skills/use-fbdl-mcp/SKILL.md) | Read-only language tools versus API-backed runs, cooldowns, archive flow, and error handling. |
-| [`generate-fbdl`](https://github.com/facebookincubator/Zurp/blob/c30c04edd8a0a85f3ee980324b7edc8e814fadb3/bug-bounty-research/skills/generate-fbdl/SKILL.md) | Generate FBDL scripts from the repository's block grammar. |
-| [`validate-fbdl`](https://github.com/facebookincubator/Zurp/blob/c30c04edd8a0a85f3ee980324b7edc8e814fadb3/bug-bounty-research/skills/validate-fbdl/SKILL.md) | Validate structure, entity/action references, and grammar rules before submission. |
+| [`meta-context`](https://github.com/facebookincubator/Zurp/tree/c30c04edd8a0a85f3ee980324b7edc8e814fadb3/bug-bounty-research/skills/meta-context) | Choose scan, batch, or single identifier resolution; interpret empty results, budgets, and token errors. |
+| [`sparta`](https://github.com/facebookincubator/Zurp/tree/c30c04edd8a0a85f3ee980324b7edc8e814fadb3/bug-bounty-research/skills/sparta) | List/scan/get/build findings; keep leads and PoC templates separate from confirmed vulnerabilities. |
+| [`use-fbdl-mcp`](https://github.com/facebookincubator/Zurp/tree/c30c04edd8a0a85f3ee980324b7edc8e814fadb3/bug-bounty-research/skills/use-fbdl-mcp) | Read-only language tools versus API-backed runs, cooldowns, archive flow, and error handling. |
+| [`generate-fbdl`](https://github.com/facebookincubator/Zurp/tree/c30c04edd8a0a85f3ee980324b7edc8e814fadb3/bug-bounty-research/skills/generate-fbdl) | Generate FBDL scripts from the repository's block grammar. |
+| [`validate-fbdl`](https://github.com/facebookincubator/Zurp/tree/c30c04edd8a0a85f3ee980324b7edc8e814fadb3/bug-bounty-research/skills/validate-fbdl) | Validate structure, entity/action references, and grammar rules before submission. |
 
 Read these files when the matching branch is requested; do not run them as shell programs or
 silently install them into another agent host.

@@ -47,7 +47,7 @@ fastmcp list server.py --input-schema --output-schema
 fastmcp list server.py --resources --prompts --skills
 
 # Stdio command
-fastmcp list --command "uvx mcp-server-sqlite --db test.db"
+fastmcp list --command "uvx mcp-server-sqlite==2025.4.25 --db test.db"
 ```
 
 ### 3. `fastmcp call`

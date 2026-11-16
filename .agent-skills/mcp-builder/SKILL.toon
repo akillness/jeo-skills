@@ -32,7 +32,7 @@ R[10]:
   MCP spec and SDKs move independently of this pin so prefer live sources for version-sensitive signatures
 
 E[5]{type,command}:
-  Install skill,npx skills add https://github.com/akillness/jeo-skills --skill mcp-builder
+  Install skill,npx skills@1.9.0 add https://github.com/akillness/jeo-skills --skill mcp-builder
   Fetch TypeScript guide,curl -fsS https://raw.githubusercontent.com/anthropics/skills/3b3fad96af16a10759d930941b4520ba0c40edae/skills/mcp-builder/reference/node_mcp_server.md -o node_mcp_server.md
   Fetch Python guide,curl -fsS https://raw.githubusercontent.com/anthropics/skills/3b3fad96af16a10759d930941b4520ba0c40edae/skills/mcp-builder/reference/python_mcp_server.md -o python_mcp_server.md
   Validate evals,node .agent-skills/mcp-builder/scripts/validate-evals.mjs --json

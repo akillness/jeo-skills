@@ -30,7 +30,7 @@ can be installed side by side and shadow each other.
 
 **`torch_scatter` / `torch_cluster` build takes forever or fails**
 You are compiling from source because the wheel index did not match. Re-run with the exact index:
-`-f https://data.pyg.org/whl/torch-<torch>+<cuda>.html`.
+`-f <PyG-wheel-index-for-your-torch-and-cuda>.html` (from the official PyG wheel index).
 
 **`numpy` ABI errors after installing requirements**
 Re-pin last: `pip install numpy==1.26.4`. `bpy==4.2` and `open3d` are built against numpy 1.x.

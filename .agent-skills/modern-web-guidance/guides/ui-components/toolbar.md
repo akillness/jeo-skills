@@ -1,13 +1,13 @@
 # Build a toolbar
 
-A toolbar groups related controls (formatting, alignment, view options) into one composite widget with a **single tab stop**. Users `Tab` into it once, move between controls with the arrow keys, and `Tab` out. Use it only for controls that act on something else (an editor, preview, canvas). For site navigation, see `navbar` (via `npx -y modern-web-guidance@latest retrieve "navbar"`); for a dropdown or context menu of commands without a persistent row of controls, see `menu` (via `npx -y modern-web-guidance@latest retrieve "menu"`).
+A toolbar groups related controls (formatting, alignment, view options) into one composite widget with a **single tab stop**. Users `Tab` into it once, move between controls with the arrow keys, and `Tab` out. Use it only for controls that act on something else (an editor, preview, canvas). For site navigation, see `navbar` (via `npx -y modern-web-guidance@1.0.0 retrieve "navbar"`); for a dropdown or context menu of commands without a persistent row of controls, see `menu` (via `npx -y modern-web-guidance@1.0.0 retrieve "menu"`).
 
 ## Structure and semantics
 
 MANDATORY: Put `role="toolbar"` and an `aria-label` on the container. Wrap related controls in `role="group"` with their own `aria-label`, and divide groups with `role="separator"` and `aria-orientation="vertical"`. If a wrapped separator would sit alone at a row end, hide it visually with `opacity: 0`, not `display: none` or `visibility: hidden`, which also remove it from the accessibility tree. Optionally add `aria-controls` pointing at the element the toolbar acts on; it is only worth adding when the toolbar controls one specific element.
 
 * Use real `<button type="button">` elements.
-* Icon-only buttons need an `aria-label`; tooltips do not replace it. Render decorative icons with `<svg aria-hidden="true">` and `currentColor`, or with a CSS `mask`, `background-color: currentColor`, and `forced-color-adjust: none` so forced-colors mode does not strip the fill. For a reusable CSS icon token system, see `icons` (via `npx -y modern-web-guidance@latest retrieve "icons"`).
+* Icon-only buttons need an `aria-label`; tooltips do not replace it. Render decorative icons with `<svg aria-hidden="true">` and `currentColor`, or with a CSS `mask`, `background-color: currentColor`, and `forced-color-adjust: none` so forced-colors mode does not strip the fill. For a reusable CSS icon token system, see `icons` (via `npx -y modern-web-guidance@1.0.0 retrieve "icons"`).
 * Toggle buttons (bold, italic) use `aria-pressed="true|false"`. Do not change their label when toggled.
 * A mutually exclusive set (left/center/right) uses `aria-pressed` on each button, with script keeping exactly one `true`.
 * Action buttons (copy, undo, save) run once and have no on/off state, so DO NOT add `aria-pressed` to them. Mark `aria-pressed` only on buttons that stay on or off.
@@ -27,7 +27,7 @@ MANDATORY: Put `role="toolbar"` and an `aria-label` on the container. Wrap relat
 
 ## Action buttons and feedback
 
-Toggles show their result through `aria-pressed`. An action has no state to show, so a screen reader user gets no confirmation unless you provide it. When the result is not otherwise visible or announced (copy, save), write a short message to a live region outside the toolbar. If the action changes content that is already announced or focused, skip the message.
+Toggles show their result through `aria-pressed`. An action has no state to show, so a screen reader user gets no visible confirmation unless you provide it. When the result is not otherwise visible or announced (copy, save), write a short message to a live region outside the toolbar. If the action changes content that is already announced or focused, skip the message.
 
 ```html
 <!-- Always present in the DOM so the announcement is reliable; keep it outside the toolbar -->
@@ -63,7 +63,7 @@ Choose a vertical toolbar when controls stack along a side edge (a tool palette 
 
 * Keep a clear `:focus-visible` outline with an offset; never remove it.
 * Style toggled state from the ARIA attribute (`[aria-pressed="true"]`), not a separate class, so visual and accessible state cannot diverge.
-* Show the toggled state by changing the button background; if the contrast between the button background and the adjacent background color is less than 3:1 in each supported color scheme, provide an additional visual cue such as an outline or inset shadow around the background that meets the 3:1 threshold. For more information, see `color` (via `npx -y modern-web-guidance@latest retrieve "color"`).
+* Show the toggled state by changing the button background; if the contrast between the button background and the adjacent background color is less than 3:1 in each supported color scheme, provide an additional visual cue such as an outline or inset shadow around the background that meets the 3:1 threshold. For more information, see `color` (via `npx -y modern-web-guidance@1.0.0 retrieve "color"`).
 * Under `forced-colors: active`, use system colors (`ButtonText`, `Highlight`).
 * Draw separators and tooltip boxes with a border (a `transparent` one is fine), not `background` alone, which forced colors replaces with the page color.
 * Wrap hover styles in `@media (hover: hover)` and transitions in `@media (prefers-reduced-motion: no-preference)`.
@@ -152,7 +152,7 @@ Two patterns fit a toolbar into a narrow space: an overflow menu, better on desk
 Add a trailing "More actions" menu when the toolbar has secondary actions or must fit narrow containers; skip it if every control is common and fits. If items must move into the menu dynamically as space runs out, build that overflow behavior yourself.
 
 * Make the trigger the last toolbar item (`aria-label="More actions"`, `aria-haspopup="menu"`, `aria-expanded="false"`, and `popovertarget` pointing at the menu popover) with the conventional three vertical dots icon (`⋮`). Open it only on activation—never preview on focus when arrowing across the toolbar.
-* Anchor the `popover` container to its trigger (`inset: auto; position-area: block-end span-inline-start; position-try-fallbacks: flip-block, flip-inline`) and nest `<div focusgroup="menu nomemory" aria-label="More actions">` inside it, adding `role="menu"`, `role="menuitem"`, `tabindex="-1"`, and `ArrowDown`/`ArrowUp`/`Home`/`End` only when `'focusGroup' in HTMLElement.prototype` is false. Sync `aria-expanded` and focus the first item on `toggle`, close the popover on `Tab` without trapping focus, and let `Space` on `role="menuitemcheckbox"` toggle `aria-checked` without closing. For nested submenus or radio groups, see `menu` (via `npx -y modern-web-guidance@latest retrieve "menu"`).
+* Anchor the `popover` container to its trigger (`inset: auto; position-area: block-end span-inline-start; position-try-fallbacks: flip-block, flip-inline`) and nest `<div focusgroup="menu nomemory" aria-label="More actions">` inside it, adding `role="menu"`, `role="menuitem"`, `tabindex="-1"`, and `ArrowDown`/`ArrowUp`/`Home`/`End` only when `'focusGroup' in HTMLElement.prototype` is false. Sync `aria-expanded` and focus the first item on `toggle`, close the popover on `Tab` without trapping focus, and let `Space` on `role="menuitemcheckbox"` toggle `aria-checked` without closing. For nested submenus or radio groups, see `menu` (via `npx -y modern-web-guidance@1.0.0 retrieve "menu"`).
 * Announce the result of every menu activation in the toolbar's live region, such as `"Strikethrough on"` or `"Formatting cleared"`. When closing the menu returns focus to the trigger, delay the live-region write slightly—for example `500ms`—so the focus-change announcement does not preempt it.
 
 ## Fallback strategies

@@ -30,15 +30,11 @@ Registers the `/open-code-review:review` slash command, which runs OCR and filte
 issues. Quick setup without a package manager — copy the command file directly:
 
 ```bash
-# Project-level (shared via git)
-mkdir -p .claude/commands
-curl -o .claude/commands/open-code-review.md \
+# Download and inspect before placing in your commands directory
+curl -fsSL -o /tmp/open-code-review.md \
   https://raw.githubusercontent.com/alibaba/open-code-review/main/plugins/open-code-review/commands/review.md
-
-# User-level (global)
-mkdir -p ~/.claude/commands
-curl -o ~/.claude/commands/open-code-review.md \
-  https://raw.githubusercontent.com/alibaba/open-code-review/main/plugins/open-code-review/commands/review.md
+less /tmp/open-code-review.md
+# Then copy to your project or user commands directory (<commands-dir>/open-code-review.md)
 ```
 
 ## 3. Codex plugin

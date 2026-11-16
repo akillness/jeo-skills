@@ -125,7 +125,7 @@ expect_artifact() { # <path> <label>
   log "$2 ready: $1"
 }
 
-abspath() { # keep paths valid after `cd $UNIRIG_HOME`
+abspath() { # keep paths valid after cd $UNIRIG_HOME
   case "$1" in
     /*) printf '%s\n' "$1" ;;
     *) printf '%s\n' "$PWD/$1" ;;

@@ -55,15 +55,14 @@ HIGH/MEDIUM rules are skipped only with a concrete reason.
 Match the first screen to the product type. The product surface itself is screen
 one — never a splash, never a marketing hero.
 
-| Product type                              | Surface shape                                                                                                       | Base recipe                                                        |
-| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| Product type | Surface shape | Base recipe |
+| --- | --- | --- |
 | Generator / console (image, video, audio) | Prompt box on center in main page + settings pane in prompt box, results screen after first generation with gallery | Studio layout — `app/src/layouts/studio.tsx` (`references/app-layouts.md`) |
-| Feed / gallery / history                  | Filterable grid or list, item overlay/inspector                                                                     | App shell + grid section                                            |
-| Editor / notes / project tool             | List sidebar, work canvas, optional inspector                                                                       | Split editor/tool                                                   |
-| Board / pipeline                          | Horizontal scroll columns inside fixed shell                                                                        | App shell, `overflow-x-auto` region                                 |
-| Settings / profile / billing              | Single constrained column of grouped sections                                                                       | Form panel                                                          |
-| Dashboard / stats                         | Bands of metric groups, one chart per question                                                                      | App shell + sections                                                |
-
+| Feed / gallery / history | Filterable grid or list, item overlay/inspector | App shell + grid section |
+| Editor / notes / project tool | List sidebar, work canvas, optional inspector | Split editor/tool |
+| Board / pipeline | Horizontal scroll columns inside fixed shell | App shell, `overflow-x-auto` region |
+| Settings / profile / billing | Single constrained column of grouped sections | Form panel |
+| Dashboard / stats | Bands of metric groups, one chart per question | App shell + sections |
 Density: consoles and tables run tight (`gap-3`, `p-4`); content-first surfaces
 (feed, gallery, forms) run spacious (`gap-4 md:gap-6`, `p-4 md:p-6 xl:p-8`). Pick one density per region, not per element.
 
@@ -273,28 +272,27 @@ Bad:
 Use Quanta components before legacy `app/src/components/ui/*`, before direct Radix,
 and before third-party equivalents.
 
-| Need                           | Use                                                                                                                                                     |
-| ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Actions and links              | `Button` from `@higgsfield/quanta/button`                                                                                                                 |
-| Top navigation                 | `NavigationMenu` from `@higgsfield/quanta/navigation-menu`                                                                                                |
-| App navigation rail            | `Sidebar` from `@higgsfield/quanta/sidebar`                                                                                                               |
-| Text fields                    | `Input` from `@higgsfield/quanta/input`                                                                                                                   |
-| Generation prompt surface      | BUILD it from Quanta primitives per the composer anatomy in `references/app-layouts.md` (glass card, attachments strip, chips row, tall marketingPrimary GENERATE) — there is no prompt-box component |
-| Multi-line text (non-prompt)   | `Textarea` from `@higgsfield/quanta/textarea`                                                                                                             |
-| Binary settings                | `Switch`, `Checkbox`, `Toggle`                                                                                                                            |
-| Exclusive choices              | `RadioGroup`, `RadioLabel` from `@higgsfield/quanta/radio`                                                                                                |
-| Option pickers (settings)      | `Select` from `@higgsfield/quanta/select`                                                                                                                 |
-| Segmented modes/views          | `Tabs`                                                                                                                                                    |
-| Menus/model pickers            | `Dropdown`                                                                                                                                                |
-| Command palette/search actions | `Command` from `@higgsfield/quanta/cmdk`                                                                                                                  |
-| Dialog/editor/confirm          | `Modal`                                                                                                                                                   |
-| Edge sheet/mobile panel        | `Vault`                                                                                                                                                   |
-| Toasts                         | `Toaster`, `toast` from `@higgsfield/quanta/sonner`                                                                                                       |
-| Progress/loading               | `Progress`                                                                                                                                                |
-| In-button/inline busy spinner  | `Loader` from `@higgsfield/quanta/loader`                                                                                                                 |
-| Generation feeds / result grids | `Grid` from `@higgsfield/quanta/grid` (`cols="auto-fit"` + `minColWidth` for generation feeds — never breakpoint column ladders)                         |
-| Metadata/status                | `Badge`, `Tag`, `Dot`, `Kbd`, `Avatar`, `Divider`                                                                                                         |
-
+| Need | Use |
+| --- | --- |
+| Actions and links | `Button` from `@higgsfield/quanta/button` |
+| Top navigation | `NavigationMenu` from `@higgsfield/quanta/navigation-menu` |
+| App navigation rail | `Sidebar` from `@higgsfield/quanta/sidebar` |
+| Text fields | `Input` from `@higgsfield/quanta/input` |
+| Generation prompt surface | BUILD it from Quanta primitives per the composer anatomy in `references/app-layouts.md` (glass card, attachments strip, chips row, tall marketingPrimary GENERATE) — there is no prompt-box component |
+| Multi-line text (non-prompt) | `Textarea` from `@higgsfield/quanta/textarea` |
+| Binary settings | `Switch`, `Checkbox`, `Toggle` |
+| Exclusive choices | `RadioGroup`, `RadioLabel` from `@higgsfield/quanta/radio` |
+| Option pickers (settings) | `Select` from `@higgsfield/quanta/select` |
+| Segmented modes/views | `Tabs` |
+| Menus/model pickers | `Dropdown` |
+| Command palette/search actions | `Command` from `@higgsfield/quanta/cmdk` |
+| Dialog/editor/confirm | `Modal` |
+| Edge sheet/mobile panel | `Vault` |
+| Toasts | `Toaster`, `toast` from `@higgsfield/quanta/sonner` |
+| Progress/loading | `Progress` |
+| In-button/inline busy spinner | `Loader` from `@higgsfield/quanta/loader` |
+| Generation feeds / result grids | `Grid` from `@higgsfield/quanta/grid` (`cols="auto-fit"` + `minColWidth` for generation feeds — never breakpoint column ladders) |
+| Metadata/status | `Badge`, `Tag`, `Dot`, `Kbd`, `Avatar`, `Divider` |
 Legacy shadcn-style components may remain for scaffold compatibility, but new
 client UI should not start there. Also do not import `cmdk`, `sonner`, or
 `vaul` directly for new UI; Quanta already wraps those interaction patterns with

@@ -8,7 +8,7 @@ description: >
   fit check, pinned install/setup, preflight, rig launch, status, capture,
   messaging, teardown, bundle/spec work, or troubleshooting. Do not use for
   generic agent-team design, generic environment setup, or ordinary log triage.
-allowed-tools: Bash Read Write Edit Glob Grep
+allowed-tools: Bash Read Write Edit Glob Grep Env
 compatibility: >
   OpenRig 0.6.x at the audited source pin needs Node.js 22 or 24 and tmux on
   macOS or Linux; Apple silicon should use Node.js 22. Native Windows is not

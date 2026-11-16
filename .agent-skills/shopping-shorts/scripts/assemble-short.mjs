@@ -19,7 +19,7 @@ for (let i = 0; i < args.length; i += 1) {
   else if (args[i] === '--output') outputPath = args[++i];
   else if (args[i] === '--execute') execute = true;
   else if (args[i] === '--help' || args[i] === '-h') usage(0);
-  else throw new Error(`Unknown argument: ${args[i]}`);
+  else throw new Error(('Unknown argument: ' + args[i]));
 }
 if (!timelinePath || !outputPath) usage(2);
 
@@ -58,12 +58,12 @@ async function resolveExisting(rel, label) {
   const absolute = path.resolve(timelineDir, rel);
   const stat = await fs.lstat(absolute).catch(() => null);
   if (!stat?.isFile() || stat.isSymbolicLink() || await containsSymlinkSegment(runRoot, absolute)) {
-    errors.push(`${label} is missing or symlinked: ${rel}`);
+    errors.push((label + ' is missing or symlinked: ' + rel));
     return null;
   }
   const real = await fs.realpath(absolute);
-  if (real !== rootReal && !real.startsWith(`${rootReal}${path.sep}`)) {
-    errors.push(`${label} escapes run root: ${rel}`);
+  if (real !== rootReal && !real.startsWith((String(rootReal) + path.sep))) {
+    errors.push((label + ' escapes run root: ' + rel));
     return null;
   }
   return real;
@@ -72,11 +72,11 @@ async function resolveExisting(rel, label) {
 const clipPaths = [];
 let clipDuration = 0;
 for (const [index, clip] of (timeline.clips || []).entries()) {
-  if (!(Number.isFinite(clip.duration_seconds) && clip.duration_seconds > 0)) errors.push(`clips[${index}] has invalid duration`);
+  if (!(Number.isFinite(clip.duration_seconds) && clip.duration_seconds > 0)) errors.push(('clips[' + index + '] has invalid duration'));
   clipDuration += Number(clip.duration_seconds || 0);
-  clipPaths.push(await resolveExisting(clip.path, `clips[${index}]`));
+  clipPaths.push(await resolveExisting(clip.path, ('clips[' + index + ']')));
 }
-if (Math.abs(clipDuration - Number(timeline.output_duration_seconds || 0)) > 0.5) errors.push(`clip durations (${clipDuration}) must equal output duration (${timeline.output_duration_seconds})`);
+if (Math.abs(clipDuration - Number(timeline.output_duration_seconds || 0)) > 0.5) errors.push(('clip durations (' + clipDuration + ') must equal output duration (' + timeline.output_duration_seconds + ')'));
 
 const voiceover = await resolveExisting(timeline.voiceover, 'voiceover');
 const music = await resolveExisting(timeline.music, 'music');
@@ -91,7 +91,7 @@ if (captionPlan && captions) {
     captionPlanJson = JSON.parse(captionPlanBytes.toString('utf8'));
   } catch {}
   const captionValidation = captionPlanJson ? validateCaptionPlan(captionPlanJson, { durationSeconds: timeline.output_duration_seconds }) : { errors: ['caption plan is invalid'] };
-  for (const error of captionValidation.errors) errors.push(`caption_plan: ${error}`);
+  for (const error of captionValidation.errors) errors.push(('caption_plan: ' + error));
   if (path.extname(captions).toLowerCase() !== '.ass') errors.push('typewriter captions must be rendered as an .ass file');
   if (captionPlanBytes && captionPlanJson && !captionValidation.errors.length) {
     const captionPlanSha = captionPlanSha256(captionPlanBytes);
@@ -105,7 +105,7 @@ const outputParentPath = path.dirname(outputPath);
 const outputParent = await fs.realpath(outputParentPath).catch(() => null);
 const outputLeaf = await fs.lstat(outputPath).catch(() => null);
 if (outputLeaf?.isSymbolicLink()) errors.push('output must not be a symlink');
-if (!outputParent || await containsSymlinkSegment(runRoot, outputParentPath) || (outputParent !== rootReal && !outputParent.startsWith(`${rootReal}${path.sep}`))) errors.push('output must be inside the current run root, have no symlinked segments, and its parent must exist');
+if (!outputParent || await containsSymlinkSegment(runRoot, outputParentPath) || (outputParent !== rootReal && !outputParent.startsWith((String(rootReal) + path.sep)))) errors.push('output must be inside the current run root, have no symlinked segments, and its parent must exist');
 
 if (errors.length) {
   console.error(JSON.stringify({ verdict: 'FAIL', errors }, null, 2));
@@ -114,7 +114,7 @@ if (errors.length) {
 
 async function findBinary(envName, name) {
   if (process.env[envName]) return process.env[envName];
-  for (const candidate of [`/opt/homebrew/bin/${name}`, `/usr/local/bin/${name}`, `/usr/bin/${name}`, path.join(process.env.HOME || '', '.local', 'bin', name)]) {
+  for (const candidate of [('/opt/homebrew/bin/' + name), ('/usr/local/bin/' + name), ('/usr/bin/' + name), path.join(process.env.HOME || '', '.local', 'bin', name)]) {
     const stat = await fs.stat(candidate).catch(() => null);
     if (stat?.isFile()) return candidate;
   }
@@ -137,29 +137,29 @@ if (music) {
 
 const filters = [];
 for (let i = 0; i < clipPaths.length; i += 1) {
-  filters.push(`[${i}:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,fps=${timeline.fps},setsar=1,format=yuv420p,setpts=PTS-STARTPTS[v${i}]`);
+  filters.push(('[' + i + ':v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,fps=' + timeline.fps + ',setsar=1,format=yuv420p,setpts=PTS-STARTPTS[v' + i + ']'));
 }
-filters.push(`${clipPaths.map((_, index) => `[v${index}]`).join('')}concat=n=${clipPaths.length}:v=1:a=0[vcat]`);
+filters.push(((clipPaths.map((_, index) => ('[v' + index + ']')).join('')) + 'concat=n=' + clipPaths.length + ':v=1:a=0[vcat]'));
 
 function escapeFilterPath(value) {
   return value.replace(/\\/g, '\\\\').replace(/:/g, '\\:').replace(/'/g, "\\'").replace(/,/g, '\\,').replace(/\[/g, '\\[').replace(/\]/g, '\\]');
 }
-if (captions) filters.push(`[vcat]subtitles='${escapeFilterPath(captions)}'[vout]`);
+if (captions) filters.push('[vcat]subtitles=\'' + escapeFilterPath(captions) + '\'[vout]');
 else filters.push('[vcat]null[vout]');
 
 let audioLabel = null;
 if (voiceInput !== null && musicInput !== null) {
   const gain = Number.isFinite(timeline.music_gain_db) ? timeline.music_gain_db : -18;
-  filters.push(`[${voiceInput}:a]aresample=48000,asetpts=PTS-STARTPTS[vo]`);
-  filters.push(`[${musicInput}:a]aresample=48000,volume=${gain}dB,asetpts=PTS-STARTPTS[bg]`);
+  filters.push('[' + voiceInput + ':a]aresample=48000,asetpts=PTS-STARTPTS[vo]');
+  filters.push('[' + musicInput + ':a]aresample=48000,volume=' + gain + 'dB,asetpts=PTS-STARTPTS[bg]');
   filters.push('[vo][bg]amix=inputs=2:duration=first:dropout_transition=2[aout]');
   audioLabel = '[aout]';
 } else if (voiceInput !== null) {
-  filters.push(`[${voiceInput}:a]aresample=48000,asetpts=PTS-STARTPTS[aout]`);
+  filters.push('[' + voiceInput + ':a]aresample=48000,asetpts=PTS-STARTPTS[aout]');
   audioLabel = '[aout]';
 } else if (musicInput !== null) {
   const gain = Number.isFinite(timeline.music_gain_db) ? timeline.music_gain_db : -18;
-  filters.push(`[${musicInput}:a]aresample=48000,volume=${gain}dB,asetpts=PTS-STARTPTS[aout]`);
+  filters.push('[' + musicInput + ':a]aresample=48000,volume=' + gain + 'dB,asetpts=PTS-STARTPTS[aout]');
   audioLabel = '[aout]';
 }
 

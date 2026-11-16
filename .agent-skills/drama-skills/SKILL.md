@@ -85,7 +85,7 @@ Choose the smallest mode that answers the request:
 | `install-maintain` | install, pin, update, self-test, diagnose | verified suite checkout or links |
 | `route-create` | write, adapt, design, prompt, storyboard, review | one owner and its named files |
 | `project-ops` | initialize, status, Dashboard, package | filesystem project operation |
-| `produce` | image, video, TTS, or music execution | preview first; no run without confirmation |
+| `produce` | image, video, TTS, or music execution | preview first; require explicit confirmation before running |
 | `troubleshoot` | validator, continuity, install, or project-state failure | first failing contract and next check |
 
 Do not blend `produce` into a normal writing request. Do not add a review pass

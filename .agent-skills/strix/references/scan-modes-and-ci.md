@@ -56,8 +56,11 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Install Strix
-        run: curl -sSL https://strix.ai/install | bash
-
+        run: |
+          INSTALLER_TMP="$(mktemp)"
+          curl -fsSL --proto '=https' --tlsv1.2 https://strix.ai/install -o "$INSTALLER_TMP"
+          test -s "$INSTALLER_TMP"
+          bash "$INSTALLER_TMP"
       - name: Run Strix
         env:
           STRIX_LLM: ${{ secrets.STRIX_LLM }}

@@ -139,7 +139,7 @@ async function inspectMotion(page, rootSelector) {
         animations.push({
           playState: animation.playState,
           name: String(animation.animationName || ''),
-          target: target ? `${target.tagName?.toLowerCase?.() || ''}.${String(target.className || '').replace(/\s+/g, '.')}` : '',
+          target: target ? (target.tagName?.toLowerCase?.() || '') + '.' + String(target.className || '').replace(/\s+/g, '.') : '',
         });
       }
     } catch { /* motion introspection is supporting evidence */ }
@@ -154,7 +154,7 @@ async function inspectMotion(page, rootSelector) {
 }
 
 async function screenshotBeat(page, dir, beat, elapsedMs, rootSelector) {
-  const filename = `${String(Math.round(elapsedMs)).padStart(5, '0')}-${beat}.webp`;
+  const filename = String(Math.round(elapsedMs)).padStart(5, '0') + '-' + beat + '.webp';
   const target = path.join(dir, filename);
   const temporaryPng = target.replace(/\.webp$/, '.png');
   let primaryError;
@@ -185,7 +185,7 @@ async function screenshotBeat(page, dir, beat, elapsedMs, rootSelector) {
 
 
 async function runHome(page, dir, baseUrl) {
-  await page.goto(`${baseUrl}/#home`, { waitUntil: 'domcontentloaded', timeout: 30000 });
+  await page.goto((baseUrl + '/#home'), { waitUntil: 'domcontentloaded', timeout: 30000 });
   await waitForMetaSurface(page, '.egy-home-screen');
   const frames = [await screenshotBeat(page, dir, 'setup', 0, '.egy-home-screen')];
   const switched = await page.evaluate(() => {
@@ -205,7 +205,7 @@ async function runHome(page, dir, baseUrl) {
 }
 
 async function runTalent(page, dir, baseUrl) {
-  await page.goto(`${baseUrl}/#talent`, { waitUntil: 'domcontentloaded', timeout: 30000 });
+  await page.goto((baseUrl + '/#talent'), { waitUntil: 'domcontentloaded', timeout: 30000 });
   await waitForMetaSurface(page, '.egy-talent-root');
   const frames = [await screenshotBeat(page, dir, 'tree-setup', 0, '.egy-talent-root')];
   const selected = await page.evaluate(() => {
@@ -240,7 +240,7 @@ async function runTalent(page, dir, baseUrl) {
 }
 
 async function runFusion(page, dir, baseUrl) {
-  await page.goto(`${baseUrl}/#fusion`, { waitUntil: 'domcontentloaded', timeout: 30000 });
+  await page.goto((baseUrl + '/#fusion'), { waitUntil: 'domcontentloaded', timeout: 30000 });
   await waitForMetaSurface(page, '.fz-screen');
   await page.waitForFunction(() => typeof window.__darkboneReveal?._ensureMounted === 'function', null, { timeout: 20000 });
   await page.evaluate(() => { window.__darkboneReveal.fuse('mythic', { awaken: true }); });
@@ -256,7 +256,7 @@ async function runFusion(page, dir, baseUrl) {
 }
 
 async function runVictory(page, dir, baseUrl) {
-  await page.goto(`${baseUrl}/?perf=1&qa=1#game`, { waitUntil: 'domcontentloaded', timeout: 30000 });
+  await page.goto((baseUrl + '/?perf=1&qa=1#game'), { waitUntil: 'domcontentloaded', timeout: 30000 });
   await waitForGameSurface(page);
   await page.evaluate(() => window.__darkboneQA.showVictory('heavy'));
   await page.waitForSelector('.db-settlement-v2.reveal-mode .settle-v2-reveal', { state: 'visible', timeout: 15000 });
@@ -301,9 +301,9 @@ async function captureScenario(browser, options, surface, viewport) {
     runError = error?.stack || error?.message || String(error);
   }
   await page.close();
-  const videoName = `${surface}-${viewport.id}.webm`;
+  const videoName = surface + '-' + viewport.id + '.webm';
   const videoPath = path.join(outputDir, videoName);
-  try { await video.saveAs(videoPath); } catch (error) { runError ||= `video save failed: ${error.message}`; }
+  try { await video.saveAs(videoPath); } catch (error) { runError ||= 'video save failed: ' + error.message; }
   await context.close();
   const videoStat = await fs.stat(videoPath).catch(() => null);
   const assertions = [
@@ -314,7 +314,7 @@ async function captureScenario(browser, options, surface, viewport) {
     { label: 'runtime video was recorded', ok: !!videoStat?.isFile() && videoStat.size > 10000, detail: { bytes: videoStat?.size || 0 } },
   ];
   return {
-    id: `${surface}-${viewport.id}`,
+    id: surface + '-' + viewport.id,
     surface,
     locale: options.locale,
     viewport,
@@ -329,12 +329,12 @@ async function captureScenario(browser, options, surface, viewport) {
 }
 
 const options = parseArgs(process.argv);
-for (const surface of options.surfaces) if (!RUNNERS[surface]) throw new Error(`Unknown surface: ${surface}`);
-for (const viewport of options.viewports) if (!VIEWPORTS[viewport]) throw new Error(`Unknown viewport: ${viewport}`);
+for (const surface of options.surfaces) if (!RUNNERS[surface]) throw new Error('Unknown surface: ' + surface);
+for (const viewport of options.viewports) if (!VIEWPORTS[viewport]) throw new Error('Unknown viewport: ' + viewport);
 if (!['zh', 'en'].includes(options.locale)) throw new Error('--locale must be zh or en');
 await fs.mkdir(options.outDir, { recursive: true });
 const response = await fetch(options.baseUrl).catch(() => null);
-if (!response?.ok) throw new Error(`Runtime server is unavailable: ${options.baseUrl}`);
+if (!response?.ok) throw new Error('Runtime server is unavailable: ' + options.baseUrl);
 
 const browser = await chromium.launch({ headless: options.headless });
 const scenarios = [];
@@ -358,6 +358,6 @@ const manifest = {
   scenarios,
   ok: scenarios.length === options.surfaces.length * options.viewports.length && scenarios.every((scenario) => scenario.ok),
 };
-await fs.writeFile(path.join(options.outDir, 'manifest.json'), `${JSON.stringify(manifest, null, 2)}\n`);
+await fs.writeFile(path.join(options.outDir, 'manifest.json'), JSON.stringify(manifest, null, 2) + '\n');
 console.log(JSON.stringify({ ok: manifest.ok, outDir: options.outDir, scenarios: scenarios.map((scenario) => ({ id: scenario.id, ok: scenario.ok, frames: scenario.frames.length, videoBytes: scenario.videoBytes })) }, null, 2));
 if (!manifest.ok) process.exitCode = 1;

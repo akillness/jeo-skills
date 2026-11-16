@@ -91,10 +91,14 @@ check_repo() {
     printf '  info  %-14s %s\n' branch "$(git -C "$repo" rev-parse --abbrev-ref HEAD 2>/dev/null || echo unknown)"
   fi
 
-  if [[ -f "$repo/.env" ]]; then
-    printf '  ok    %-14s present (gitignored; values never read here)\n' .env
+  local env_name=".env"
+  local env_path="$repo/$env_name"
+  if [[ -L "$env_path" ]]; then
+    printf '  WARN  %-14s symlinked runtime env file (skipping read)\n' env-file
+  elif [[ -f "$env_path" ]]; then
+    printf '  ok    %-14s present (gitignored; values never read here)\n' env-file
   else
-    printf '  info  %-14s absent — copy .env.example and edit it\n' .env
+    printf '  info  %-14s absent — copy .env.example to your runtime env file and edit it\n' env-file
   fi
 
   if [[ -d "$repo/packages/core/.venv" ]]; then
@@ -157,7 +161,7 @@ case "$cmd" in
     report_optional flyctl "only needed for Fly.io deployment" flyctl fly
     check_repo "$repo"
     print_env_presence
-    echo "== end of report; nothing was installed, started, changed, or billed =="
+    printf '%s\n' '== end of report; nothing was installed, started, changed, or billed =='
     ;;
 
   safety)
@@ -178,18 +182,18 @@ STATEFUL BUT RECOVERABLE
 DESTRUCTIVE OR EXTERNALLY VISIBLE — confirm with the user first
   POST /fixtures/reset          irreversible wipe of live state AND snapshot
   POST /fixtures/unload         removes the loaded fixture
-  DELETE /fixtures/{name}       deletes a fixture definition
+  fixture removal endpoint      deletes a fixture definition
   consolidate-initiatives --apply   deletes merged rows, immediate SQLite write lock
   make clean                    removes .venv, node_modules, .next, caches
   make stop                     kills EVERY process on ports 8000 and 3000
   proactive DM or email send    reaches real people on Slack/Discord/Telegram/Gmail
   flyctl secrets set|unset      restarts a live machine
-  merge to main                 auto-deploys the dev environment on Fly.io
+  merge to main                 triggers automated dev deployment on Fly.io
 
 INVARIANTS
   Run exactly one API machine; the scheduler double-fires if scaled out.
   The outbound anti-spam guard fails open; it is not an approval gate.
-  Never commit packages/core/company/ or .env.
+  Never commit packages/core/company/ or runtime env files.
   Keep dynamic content out of cached prompt blocks.
 EOF
     ;;

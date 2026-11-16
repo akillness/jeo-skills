@@ -2,7 +2,7 @@ N:aidlc-workflows
 D:Operate awslabs/aidlc-workflows (AI-DLC, MIT-0): install the native aidlc command, configure a project for Claude Code, Kiro, Codex, Cursor, opencode or Copilot, pick a workflow profile, and audit what it pre-approves, hooks and registers, with every write previewed and approved first.
 G:aidlc ai-dlc aidlc-workflows workflow-profiles harness approval-gates cli
 U[5]:
-  Install AI-DLC download-first and verify it instead of piping curl into sh
+  Install AI-DLC download-first and verify it instead of piping a remote installer into a shell
   Configure one project for one harness with a dry run and a plan token
   Choose a profile such as bugfix express feature or enterprise or the composer
   Audit pre-approved permissions hooks and MCP servers without running aidlc
@@ -21,5 +21,5 @@ R[6]:
   Host trust and guard bypasses are the user's own acts; never script them silently
   Approval gates belong to the user; never answer one on their behalf
 E[2]{desc,in,out}:
-  "Install on a server from the README one-liner","User wants curl | sh as root","Explanation that the installer refuses root and a download-then-verify-then-run plan after preflight"
-  "Enable every MCP server with --yes","User wants MCP defaults in one command","Dry run plus plan token and an explicit MCP approval question naming context7 and the unpinned uvx servers"
+  "Install on a server from the README one-liner","User wants the piped shell installer as root","Explanation that the installer refuses root and a download-then-verify-then-run plan after preflight"
+  "Enable every MCP server with --yes","User wants MCP defaults in one command","Dry run plus plan token and an explicit MCP approval question naming context7 and the unpinned package-runner servers"

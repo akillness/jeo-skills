@@ -56,12 +56,12 @@ Override HTTP method (default: GET).
 ax https://api.example.com/search -X POST
 ```
 
-### `--no-check`
+### Custom CA certificates (`SSL_CERT_FILE`)
 
-Skip SSL certificate verification (insecure, development only).
+Keep TLS certificate verification enabled. For local development against self-signed endpoints, point `SSL_CERT_FILE` at your local CA bundle rather than disabling verification:
 
 ```bash
-ax https://self-signed.example.com --no-check
+SSL_CERT_FILE=/path/to/dev-ca.pem ax https://self-signed.example.com
 ```
 
 ### `--timeout <ms>`

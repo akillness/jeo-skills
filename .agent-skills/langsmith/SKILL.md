@@ -10,7 +10,7 @@ description: >
   annotation queues, feedback criteria, Prompt Hub, run trees, trace IDs, or
   production confidence for an AI feature. Not for generic SLO/alert design,
   non-LangSmith deployment orchestration, or runtime guardrails outside LangSmith.
-allowed-tools: Bash Read Write Edit Glob Grep WebFetch
+allowed-tools: Bash Read Write Edit Glob Grep WebFetch Env
 license: MIT
 compatibility: >
   Works best when LangSmith is already the chosen tracing/eval substrate or the user

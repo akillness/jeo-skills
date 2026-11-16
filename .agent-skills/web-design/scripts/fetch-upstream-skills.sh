@@ -117,7 +117,9 @@ Environment:
   SKILLS_ROOT      Destination root for skill folders (default: \$HOME/.agents/skills)
 
 Known sub-skills:
-$(printf '  - %s\n' "${ALL_SKILLS[@]}")
+EOF
+  printf '  - %s\n' "${ALL_SKILLS[@]}"
+  cat <<'EOF'
 
 Examples:
   fetch-upstream-skills.sh --list
@@ -243,6 +245,10 @@ fi
 for skill in "${VALID_SKILLS[@]}"; do
   src="$SOURCE_DIR/$skill"
   dest="$SKILLS_ROOT/$skill"
+  if [[ -L "$dest" ]]; then
+    echo "✗ Refusing symlinked destination: $dest" >&2
+    exit 1
+  fi
   if [[ ! -d "$src" ]]; then
     echo "✗ Sub-skill folder missing upstream: $skill" >&2
     continue

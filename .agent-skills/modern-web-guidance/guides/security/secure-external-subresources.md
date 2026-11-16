@@ -1,6 +1,6 @@
 # Secure external subresources with Subresource Integrity, CORS, and Referrer Policy
 
-When loading scripts, stylesheets, fonts, or images from third-party CDNs or external origins, verify their cryptographic integrity with Subresource Integrity (`integrity` in HTML and `integrity()` in CSS `url()`), configure cross-origin credential handling (`crossorigin` and `cross-origin()`), and restrict outgoing `Referer` headers (`referrerpolicy` and `referrer-policy()`). For document-level Content Security Policy and outbound connection allowlists, see `security` (via `npx -y modern-web-guidance@latest retrieve "security"`) and `restrict-outbound-connections` (via `npx -y modern-web-guidance@latest retrieve "restrict-outbound-connections"`).
+When loading scripts, stylesheets, fonts, or images from third-party CDNs or external origins, verify their cryptographic integrity with Subresource Integrity (`integrity` in HTML and `integrity()` in CSS `url()`), configure cross-origin credential handling (`crossorigin` and `cross-origin()`), and restrict outgoing `Referer` headers (`referrerpolicy` and `referrer-policy()`). For document-level Content Security Policy and outbound connection allowlists, see `security` (via `npx -y modern-web-guidance@1.0.0 retrieve "security"`) and `restrict-outbound-connections` (via `npx -y modern-web-guidance@1.0.0 retrieve "restrict-outbound-connections"`).
 
 ## 1. Generate cryptographic integrity digests for immutable assets
 

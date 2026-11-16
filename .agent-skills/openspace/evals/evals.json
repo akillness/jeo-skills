@@ -60,7 +60,7 @@
     {
       "id": 6,
       "prompt": "스킬 라우팅이 Claude뿐 아니라 GPT, Gemini, 작은 로컬 모델에서도 똑같이 동작하게 하고 싶어. 쿼리 입력할 때 앞단에서 스킬이 골라지게 해줘.",
-      "expected_output": "Uses prompt-routing mode: previews and installs route-hooks.py for detected hosts, explains that OpenSpace's local BM25 chooses skills before the model runs so every model gets the same suggestions, names the per-host event (UserPromptSubmit, BeforeAgent, before_agent_start, OpenCode prompt hook), notes Codex /hooks trust, and verifies with a live prompt against an OPENSPACE_ROUTE=off control.",
+      "expected_output": "Uses prompt-routing mode: previews and installs route-hooks.py for detected hosts, explains that OpenSpace's local BM25 chooses skills before the model runs so every model gets the same suggestions, names the per-host event (UserPromptSubmit, BeforeAgent, before_agent_start, OpenCode session.hook), notes Codex /hooks trust, and verifies with a live prompt against an OPENSPACE_ROUTE=off control.",
       "assertions": [
         "Output selects the prompt-time routing hooks (`route-hooks.py install`, or `install-openspace.sh --hooks`) after a dry-run preview",
         "Output explains that ranking happens before the model and without an LLM, so routing does not depend on the model",

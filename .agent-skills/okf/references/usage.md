@@ -245,4 +245,4 @@ context = '\n\n'.join(
 | Maintain a broader git/Obsidian knowledge vault | `llm-wiki` |
 | Obsidian vault automation | `obsidian` |
 | Build a committed knowledge graph from code/docs | `graphify` |
-| Install this skill globally | `npx skills add https://github.com/akillness/jeo-skills --skill okf` |
+| Install this skill globally | `npx skills@1.9.0 add https://github.com/akillness/jeo-skills --skill okf` |

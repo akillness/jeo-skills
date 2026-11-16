@@ -16,7 +16,7 @@
     {
       "id": 3,
       "prompt": "这些彩色拼贴静帧全部通过，帮我继续生成视频。",
-      "expected_output": "At Gate 3, should automatically use gemini-omni-flash-preview through the gemini-omni-flash-api workflow without asking for a model, use exact empty first and approved last frames, generate 5s 9:16 video, strip audio, create contact sheets and verify the end frame. It must not default to Veo.",
+      "expected_output": "At Gate 3, should automatically use gemini-omni-flash-preview through the gemini-omni-flash-api workflow (no separate model prompt needed), use exact empty first and approved last frames, generate 5s 9:16 video, strip audio, create contact sheets and verify the end frame. It must not default to Veo.",
       "files": []
     },
     {

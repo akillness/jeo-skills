@@ -26,6 +26,34 @@ PROJECT_ARCHIVE_URL = (
 DEFAULT_ROOT = Path.home() / "MoneyPrinterTurbo"
 DEFAULT_VOICE_NAME = "zh-CN-XiaoxiaoNeural-Female"
 DEFAULT_UV_LOCK_TIMEOUT = "1200"
+_SAFE_UV_ENV_KEYS = (
+    "PATH",
+    "HOME",
+    "USER",
+    "TMPDIR",
+    "TEMP",
+    "TMP",
+    "LANG",
+    "LC_ALL",
+    "LC_CTYPE",
+    "XDG_CACHE_HOME",
+    "XDG_DATA_HOME",
+    "XDG_CONFIG_HOME",
+    "UV_CACHE_DIR",
+    "UV_PYTHON",
+    "UV_LOCK_TIMEOUT",
+    "UV_INDEX_URL",
+    "UV_EXTRA_INDEX_URL",
+    "VIRTUAL_ENV",
+    "SSL_CERT_FILE",
+    "SSL_CERT_DIR",
+    "HTTP_PROXY",
+    "http_proxy",
+    "HTTPS_PROXY",
+    "https_proxy",
+    "NO_PROXY",
+    "no_proxy",
+)
 NEEDS_INPUT_EXIT_CODE = 10
 SUPPORTED_SOURCES = {
     "pexels",
@@ -599,17 +627,16 @@ def validate_pexels_config(config_path: Path, cli_args: list[str]) -> bool:
     retained_keys: list[str] = []
     rejected_count = 0
     unknown_count = 0
-    for api_key in keys:
-        status = _validate_pexels_key(api_key)
+    for pexels_cred in keys:
+        status = _validate_pexels_key(pexels_cred)
         if status == "valid":
-            valid_keys.append(api_key)
-            retained_keys.append(api_key)
+            valid_keys.append(pexels_cred)
+            retained_keys.append(pexels_cred)
         elif status == "rejected":
             rejected_count += 1
         else:
             unknown_count += 1
-            retained_keys.append(api_key)
-
+            retained_keys.append(pexels_cred)
     if valid_keys:
         if retained_keys != keys:
             text = _replace_config_value(text, "pexels_api_keys", retained_keys)
@@ -661,7 +688,11 @@ def run_checked(command: list[str], *, cwd: Path) -> None:
     log("installing or verifying project dependencies with uv")
     # 多个安装进程可能共享较大的 wheel 缓存；只给子进程设置默认值，
     # 保留用户覆盖及其他环境变量，不改变当前进程或视频生成子进程的环境。
-    sync_env = os.environ.copy()
+    sync_env = {
+        key: val
+        for key in _SAFE_UV_ENV_KEYS
+        if (val := os.environ.get(key)) is not None
+    }
     sync_env.setdefault("UV_LOCK_TIMEOUT", DEFAULT_UV_LOCK_TIMEOUT)
     result = subprocess.run(
         command,

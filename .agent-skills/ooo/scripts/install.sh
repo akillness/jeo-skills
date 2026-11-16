@@ -20,7 +20,7 @@
 # Idempotent and safe to re-run.
 #
 # Env knobs:
-#   GLOBAL=1              - install the skill globally (npx skills add -g)
+#   GLOBAL=1              - install the skill globally (npx skills@1.9.0 add -g)
 #   AGENTS=<list>         - comma/space agents for -a targeting (e.g. "claude-code,codex")
 #   SKIP_SKILL=1          - skip the jeo-skills plugin registration step
 #   SKIP_PACKAGE=1        - skip the `pip install ouroboros-ai[...]` step
@@ -81,7 +81,7 @@ install_skill() {
     return 1
   fi
   # shellcheck disable=SC2086
-  npx skills add $global_flag "$REPO_URL" --skill "$SKILL" $agent_flags -y \
+  npx skills@1.9.0 add $global_flag "$REPO_URL" --skill "$SKILL" $agent_flags -y \
     || { warn "plugin registration failed"; return 1; }
 }
 

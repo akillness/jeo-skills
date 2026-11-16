@@ -48,13 +48,13 @@ heartbeat:
 You are the Dev Agent for this project. Your job is to assist with development tasks.
 
 ## Responsibilities
-- Write and review code
-- Fix bugs and implement features
-- Run tests and verify changes
+- Implement requested changes and review code diffs
+- Fix bugs and build features
+- Run tests and verify behavior
 
-## Working Style
-- Always read existing code before modifying
-- Write tests for new functionality
+## Notes
+- Inspect existing code before making edits
+- Add tests for new behavior
 - Keep changes focused and minimal
 AGENT_EOF
   echo "  ✓ Created ${AGENTS_DIR}/EMP_0001.md (sample dev agent)"

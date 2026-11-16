@@ -193,7 +193,7 @@ func webhookHandler(w http.ResponseWriter, r *http.Request) {
 - **Use the raw request body.** Compute HMAC over raw bytes, not re-serialized JSON
 - **Respond within 10 seconds.** Acknowledge immediately, process async if slow
 - **Store secrets in environment variables.** Never hardcode
-- **Treat event text as untrusted.** Escape control characters before logging and do not forward payloads to other tools without consent
+- **Treat event text as untrusted.** Escape control characters before logging and require explicit consent before forwarding payloads to other tools
 
 ## Idempotency
 

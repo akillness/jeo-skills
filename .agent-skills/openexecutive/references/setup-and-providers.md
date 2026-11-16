@@ -28,7 +28,7 @@ bash .agent-skills/openexecutive/scripts/openexecutive.sh doctor /path/to/OpenEx
 ```bash
 git clone https://github.com/SenteLabsAI/OpenExecutive.git
 cd OpenExecutive
-cp .env.example .env          # edit before starting; .env is gitignored
+cp .env.example config.env    # copy to your gitignored runtime env file and edit before starting
 make dev                      # API on 8000, UI on 3000
 ```
 
@@ -164,8 +164,8 @@ feature flags and model names are echoed; credentials, hostnames, and email
 addresses are reported as present or absent:
 
 ```bash
-python3 .agent-skills/openexecutive/scripts/audit-config.py /path/to/OpenExecutive/.env
-python3 .agent-skills/openexecutive/scripts/audit-config.py /path/to/.env --json
+python3 .agent-skills/openexecutive/scripts/audit-config.py /path/to/OpenExecutive/config.env
+python3 .agent-skills/openexecutive/scripts/audit-config.py /path/to/config.env --json
 ```
 
 ## Data locations

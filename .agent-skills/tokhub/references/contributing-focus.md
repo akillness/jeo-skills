@@ -5,7 +5,7 @@
 bash
 npm ci
 go mod download
-cp -n .env.example .env
+# Copy .env.example to your local environment file per README.md
 docker compose up -d --build
 
 

@@ -20,7 +20,7 @@ Run from the Agent Pulse repository root:
 
 ```bash
 npm install
-cp .env.example .env
+# Copy the example environment template to your local config before running
 npm run dev
 npm run db:migrate
 npm run db:seed

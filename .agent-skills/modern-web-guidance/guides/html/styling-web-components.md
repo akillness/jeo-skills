@@ -84,7 +84,7 @@ When a custom element wraps a native control (`<my-button>` around a real `<butt
 
 ## `:state()`: style the component's own states
 
-A custom element can expose internal boolean states through `ElementInternals` via `this.#internals.states.add('busy')` and `.delete('busy')` (see `custom-elements` (via `npx -y modern-web-guidance@latest retrieve "custom-elements"`) for lifecycle usage), and those states become a styling channel across the boundary — like `::part` and custom properties, but for *state* rather than structure or values. Match them inside the shadow tree with `:host(:state(name))`, and from a consumer's stylesheet with `tag-name:state(name)`:
+A custom element can expose internal boolean states through `ElementInternals` via `this.#internals.states.add('busy')` and `.delete('busy')` (see `custom-elements` (via `npx -y modern-web-guidance@1.0.0 retrieve "custom-elements"`) for lifecycle usage), and those states become a styling channel across the boundary — like `::part` and custom properties, but for *state* rather than structure or values. Match them inside the shadow tree with `:host(:state(name))`, and from a consumer's stylesheet with `tag-name:state(name)`:
 
 ```css
 /* Inside the component's shadow tree. */

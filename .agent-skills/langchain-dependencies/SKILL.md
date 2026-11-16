@@ -285,7 +285,7 @@ Adding Tavily search and a vector store to a LangGraph project.
 
 **Breaking changes only happen in major versions** (1.x → 2.x) for all semver-compliant packages. Deprecated features remain functional across the entire 1.x series with warnings.
 
-**Prefer dedicated integration packages over langchain-community.** When a dedicated package exists (e.g. `langchain-chroma` instead of `langchain-community`'s Chroma integration), use it — dedicated packages are independently versioned and better tested.
+**Prefer dedicated integration packages over langchain-community.** When a dedicated package exists (e.g. `langchain-chroma` instead of the Chroma integration inside `langchain-community`), use it — dedicated packages are independently versioned and better tested.
 
 **Community tool packages (Tavily, vector stores, etc.) should be kept at latest** unless your project requires a locked environment. These packages frequently release compatibility fixes alongside LangChain/LangGraph updates.
 

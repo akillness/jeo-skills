@@ -26,7 +26,7 @@ Reference these guidelines when:
 - Writing new React components or Next.js pages
 - Implementing data fetching (client or server-side)
 - Reviewing code for performance issues
-- Refactoring existing React/Next.js code
+- Refactoring existing React and Next.js code
 - Optimizing bundle size or load times
 
 ## Rule Categories by Priority
@@ -178,12 +178,12 @@ import X from 'lucide-react/dist/esm/icons/x'
 
 ```tsx
 // ❌ Monaco bundles with main chunk ~300KB
-import { MonacoEditor } from './monaco-editor'
+import { MonacoEditor } from 'monaco-editor-panel'
 
 // ✅ Monaco loads on demand
 import dynamic from 'next/dynamic'
 const MonacoEditor = dynamic(
-  () => import('./monaco-editor').then(m => m.MonacoEditor),
+  () => import('monaco-editor-panel').then(m => m.MonacoEditor),
   { ssr: false }
 )
 ```

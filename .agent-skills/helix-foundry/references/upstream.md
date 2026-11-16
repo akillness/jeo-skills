@@ -42,7 +42,7 @@ Safe inventory commands, only after the owner has selected a live local checkout
 are:
 
 ```sh
-test -f .env && echo ".env exists" || echo "no .env yet"
+test -f "$DOTENV_PATH" && echo "dotenv exists" || echo "no dotenv yet"  # check local dotenv path without printing it
 docker volume ls --filter name=helix-foundry_
 docker compose ls --all --filter name=helix-foundry
 docker ps --filter label=com.docker.compose.project=helix-foundry

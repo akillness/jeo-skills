@@ -79,7 +79,8 @@ surface; `seed/organism.py` is the default evolvable agent loop.
 ### Step 2: Provide credentials and prepare the runtime
 
 ```bash
-cp .env.example .env   # or let ./kadath.sh generate .kadath/config.env interactively
+# Copy .env.example to your local environment file per README.md,
+# or let ./kadath.sh generate .kadath/config.env interactively
 ```
 
 The interactive frontend (`./kadath.sh`) asks for an OpenAI API key and model ID on first launch,
@@ -172,7 +173,7 @@ exported `git-repository/`.
 - [KADATH GitHub Repository](https://github.com/i3T4AN/KADATH)
 - [smolagents (Hugging Face)](https://github.com/huggingface/smolagents) — the vendored organism
   framework KADATH evolves
-- Project standards: `.agent-skills/skill-standardization/SKILL.md`
+- Project standards: `skill-standardization` (`.agent-skills/skill-standardization/`)
 
 ## Examples
 
@@ -181,7 +182,7 @@ exported `git-repository/`.
 ```bash
 git clone https://github.com/i3T4AN/KADATH.git
 cd KADATH
-cp .env.example .env
+# Copy .env.example to your local environment file per README.md before running:
 ./kadath.sh
 # follow the prompts: OpenAI key, model, goal, epoch duration, population size, epoch count
 # review and approve the Architect's proposed benchmark

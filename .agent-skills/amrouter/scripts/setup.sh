@@ -51,7 +51,10 @@ confirm() {
   if [[ "$AUTO_YES" == "true" ]]; then
     return 0
   fi
-  
+  if [[ ! -t 0 ]]; then
+    print_error "Refusing interactive confirmation without a TTY (pass --yes to confirm explicitly)"
+    return 1
+  fi
   local prompt="$1"
   local response
   read -p "$prompt (y/n) " -n 1 -r response
@@ -104,12 +107,17 @@ install_amrouter() {
   
   if [[ -d "$INSTALL_DIR" ]]; then
     print_warning "AMRouter already installed at $INSTALL_DIR"
-    if ! confirm "Reinstall?"; then
+    if ! confirm "Reinstall (replaces $INSTALL_DIR)?"; then
       return
     fi
-    rm -rf "$INSTALL_DIR"
+    case "$INSTALL_DIR" in
+      ""|"/"|"$HOME"|"/usr"|"/etc"|"/var"|"/bin"|"/sbin")
+        print_error "Refusing to remove unsafe INSTALL_DIR: '$INSTALL_DIR'"
+        exit 1
+        ;;
+    esac
+    rm -rf -- "$INSTALL_DIR"
   fi
-  
   mkdir -p "$INSTALL_DIR"
   
   if command -v git &> /dev/null; then
@@ -133,37 +141,52 @@ install_amrouter() {
   
   print_success "AMRouter installed to $INSTALL_DIR"
   
-  # Create .env if not exists
-  if [[ ! -f "backend/.env" ]]; then
-    print_info "Creating .env file..."
-    cp backend/.env.template backend/.env
-    sed -i.bak "s/^ADMIN_PASSWORD=.*/ADMIN_PASSWORD=$(openssl rand -hex 16)/" backend/.env
-    sed -i.bak "s/^JWT_SECRET=.*/JWT_SECRET=$(openssl rand -hex 32)/" backend/.env
-    print_success ".env created with random secrets"
+  # Create mode-600 runtime config if absent
+  local env_file="$INSTALL_DIR/backend/.env"
+  if [[ ! -f "$env_file" && ! -L "$env_file" ]]; then
+    print_info "Creating mode-600 runtime environment file..."
+    local tmp_env
+    tmp_env="$(mktemp "$INSTALL_DIR/backend/.env.XXXXXX")"
+    chmod 600 "$tmp_env"
+    awk -v pass="$(openssl rand -hex 16)" -v jwt="$(openssl rand -hex 32)" '
+      /^ADMIN_PASSWORD=/ { print "ADMIN_PASSWORD=" pass; next }
+      /^JWT_SECRET=/ { print "JWT_SECRET=" jwt; next }
+      { print }
+    ' backend/.env.template > "$tmp_env"
+    mv "$tmp_env" "$env_file"
+    chmod 600 "$env_file"
+    print_success "Runtime config created with generated secrets (mode 600)"
   fi
 }
 
 configure_amrouter() {
   print_header "Configuring AMRouter"
-  
-  if [[ ! -f "$INSTALL_DIR/backend/.env" ]]; then
-    print_error ".env not found at $INSTALL_DIR/backend/.env"
+  local env_file="$INSTALL_DIR/backend/.env"
+  if [[ -L "$env_file" || ! -f "$env_file" ]]; then
+    print_error "Regular runtime config file not found at $env_file"
     exit 1
   fi
-  
-  print_info "Current configuration:"
-  grep -E "^(PORT|NODE_ENV|ADMIN_PASSWORD|REQUIRE_LOGIN)=" "$INSTALL_DIR/backend/.env" | head -4
-  
-  if ! confirm "Edit configuration?"; then
+
+  print_info "Current non-secret configuration:"
+  grep -E "^(PORT|NODE_ENV|REQUIRE_LOGIN)=" "$env_file" | head -3 || true
+  if grep -qE "^ADMIN_PASSWORD=.+" "$env_file"; then
+    echo "ADMIN_PASSWORD=[set]"
+  else
+    echo "ADMIN_PASSWORD=[unset]"
+  fi
+
+  if ! confirm "Edit configuration (backup will be created)?"; then
     return
   fi
-  
-  if [[ -n "$EDITOR" ]]; then
-    $EDITOR "$INSTALL_DIR/backend/.env"
-  else
-    nano "$INSTALL_DIR/backend/.env"
-  fi
-  
+  local backup_file
+  backup_file="$(mktemp "${env_file}.bak.XXXXXX")"
+  chmod 600 "$backup_file"
+  cp -p "$env_file" "$backup_file"
+  print_info "Backup saved: $backup_file"
+
+  local editor_bin="${EDITOR:-nano}"
+  "$editor_bin" "$env_file"
+  chmod 600 "$env_file"
   print_success "Configuration updated"
 }
 
@@ -188,9 +211,10 @@ start_amrouter() {
     echo "Stop: pm2 stop amrouter"
   else
     npm start &
-    print_success "AMRouter started (background)"
+    echo "$!" > "$INSTALL_DIR/amrouter.pid"
+    print_success "AMRouter started (background, PID $!)"
     echo ""
-    echo "To stop, run: killall node"
+    echo "To stop, run: kill \"\$(cat '$INSTALL_DIR/amrouter.pid')\""
   fi
   
   sleep 2
@@ -272,7 +296,10 @@ generate_agent_code() {
 import OpenAI from 'openai';
 
 const AMROUTER_URL = process.env.AMROUTER_URL || 'http://localhost:3001';
-const AMROUTER_KEY = process.env.AMROUTER_KEY || 'sk-amrouter-default';
+const AMROUTER_KEY = process.env.AMROUTER_KEY;
+if (!AMROUTER_KEY) {
+  throw new Error('AMROUTER_KEY environment variable is required');
+}
 
 // Create OpenAI client pointing to AMRouter
 const client = new OpenAI({
@@ -320,7 +347,7 @@ import os
 from openai import OpenAI
 
 AMROUTER_URL = os.getenv('AMROUTER_URL', 'http://localhost:3001')
-AMROUTER_KEY = os.getenv('AMROUTER_KEY', 'sk-amrouter-default')
+AMROUTER_KEY = os.environ['AMROUTER_KEY']
 
 # Create OpenAI client pointing to AMRouter
 client = OpenAI(
@@ -363,7 +390,7 @@ EOF
 # AMRouter Agent Integration via curl
 
 AMROUTER_URL="${AMROUTER_URL:-http://localhost:3001}"
-AMROUTER_KEY="${AMROUTER_KEY:-sk-amrouter-default}"
+AMROUTER_KEY="${AMROUTER_KEY:?Set AMROUTER_KEY before running}"
 
 echo "📡 Connecting to AMRouter at $AMROUTER_URL"
 
@@ -408,7 +435,7 @@ USAGE:
 
 COMMANDS:
   --install             Install AMRouter
-  --configure           Configure .env file
+  --configure           Inspect/edit runtime config file (mode 600)
   --start               Start AMRouter server
   --verify              Verify installation
   --generate-code LANG  Generate agent code (javascript, python, bash)
@@ -416,7 +443,7 @@ COMMANDS:
 
 OPTIONS:
   --dir PATH            Installation directory (default: ~/.local/amrouter)
-  -y, --yes             Skip confirmation prompts
+  -y, --yes             Confirm operator prompts non-interactively
 
 EXAMPLES:
   # Full setup

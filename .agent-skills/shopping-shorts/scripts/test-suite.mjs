@@ -20,11 +20,11 @@ function run(name, command, args, expectSuccess = true, options = {}) {
   else env.SHOPPING_SHORTS_ALLOW_FIXTURE = '1';
   const result = spawnSync(command, args, { encoding: 'utf8', maxBuffer: 32 * 1024 * 1024, timeout: 20 * 60 * 1000, env });
   const success = result.status === 0 && !result.error;
-  const output = `${result.stdout || ''}\n${result.stderr || ''}`;
+  const output = ((result.stdout || '') + '\n' + (result.stderr || ''));
   if (success !== expectSuccess) {
-    throw new Error(`${name} expected success=${expectSuccess}, got status=${result.status}\n${output}`);
+    throw new Error((name + ' expected success=' + expectSuccess + ', got status=' + result.status + '\n' + output));
   }
-  if (options.expectedError && !output.includes(options.expectedError)) throw new Error(`${name} did not emit expected error: ${options.expectedError}\n${output}`);
+  if (options.expectedError && !output.includes(options.expectedError)) throw new Error((name + ' did not emit expected error: ' + options.expectedError + '\n' + output));
   results.push({ name, verdict: 'PASS', expected_success: expectSuccess, ...(options.expectedError ? { expected_error: options.expectedError } : {}) });
   return result;
 }
@@ -39,7 +39,7 @@ async function mutateCopy(name, mutate) {
 const digest = (bytes) => crypto.createHash('sha256').update(bytes).digest('hex');
 
 async function writeJson(file, value) {
-  await fs.writeFile(file, `${JSON.stringify(value, null, 2)}\n`);
+  await fs.writeFile(file, (JSON.stringify(value, null, 2) + '\n'));
 }
 
 async function refreshCommerceHashes(root, commerceMode) {
@@ -61,7 +61,7 @@ async function markProgramAccountReady(root, programId) {
   const matrixPath = path.join(root, 'research', 'commerce-platforms.json');
   const matrix = JSON.parse(await fs.readFile(matrixPath, 'utf8'));
   const program = matrix.programs.find((item) => item.program_id === programId);
-  if (!program) throw new Error(`Missing fixture program ${programId}`);
+  if (!program) throw new Error(('Missing fixture program ' + programId));
   program.account_status = 'approved';
   for (const criterion of program.eligibility) criterion.status = 'verified';
   await writeJson(matrixPath, matrix);
@@ -86,7 +86,7 @@ async function setCommerceRoute(root, {
     product_source: 'owned-product',
     program_ids: programIds,
     production_supported: productionSupported,
-    account_checks: [{ check: `${monetizationProgram} current account state`, status: 'verified', evidence: 'Fixture-only verified account UI.' }],
+    account_checks: [{ check: (monetizationProgram + ' current account state'), status: 'verified', evidence: 'Fixture-only verified account UI.' }],
     media_registration: 'verified',
     asset_terms_status: 'verified',
     required_disclosures: disclosures,
@@ -94,7 +94,7 @@ async function setCommerceRoute(root, {
     automation_constraints: automation,
     compliance_evidence: complianceEvidence,
     blocking_unknowns: [],
-    selection_reason: `Fixture-only ${publicationSurface} route validation.`
+    selection_reason: ('Fixture-only ' + publicationSurface + ' route validation.')
   });
   await writeJson(routePath, route);
   const runPath = path.join(root, 'run.json');
@@ -181,7 +181,7 @@ try {
   const baseMatrix = JSON.parse(await fs.readFile(path.join(base, 'research', 'commerce-platforms.json'), 'utf8'));
   for (const programId of ['instagram-gifts', 'instagram-subscriptions', 'instagram-creator-marketplace']) {
     const text = baseMatrix.programs.find((program) => program.program_id === programId).eligibility.map((item) => item.criterion).join(' ');
-    if (!text.includes('age 19+') || text.includes('age 18+')) throw new Error(`${programId} KR age contract drifted`);
+    if (!text.includes('age 19+') || text.includes('age 18+')) throw new Error((programId + ' KR age contract drifted'));
   }
   const bonusText = baseMatrix.programs.find((program) => program.program_id === 'instagram-bonuses').eligibility.map((item) => item.criterion).join(' ');
   if (!bonusText.includes('5 million') || !bonusText.includes('1 million per month')) throw new Error('Instagram Bonuses thresholds are not separated');
@@ -641,7 +641,7 @@ try {
     const file = path.join(root, 'run.json');
     const json = JSON.parse(await fs.readFile(file, 'utf8'));
     json.max_outputs = 2;
-    await fs.writeFile(file, `${JSON.stringify(json, null, 2)}\n`);
+    await fs.writeFile(file, (JSON.stringify(json, null, 2) + '\n'));
   });
   run('one-output guard', process.execPath, [path.join(scriptDir, 'validate-run.mjs'), '--root', badOutputs, '--stage', 'intake'], false, { expectedError: 'run.json: max_outputs must be 1' });
 
@@ -649,7 +649,7 @@ try {
     const file = path.join(root, 'research', 'rights.json');
     const json = JSON.parse(await fs.readFile(file, 'utf8'));
     json.assets[0].rights_basis = 'unknown';
-    await fs.writeFile(file, `${JSON.stringify(json, null, 2)}\n`);
+    await fs.writeFile(file, (JSON.stringify(json, null, 2) + '\n'));
   });
   run('rights fail-closed', process.execPath, [path.join(scriptDir, 'validate-run.mjs'), '--root', badRights, '--stage', 'research'], false, { expectedError: 'rights.json assets[0]: unsupported rights_basis' });
 
@@ -667,7 +667,7 @@ try {
     const file = path.join(root, 'strategy', 'selected-concept.json');
     const json = JSON.parse(await fs.readFile(file, 'utf8'));
     json.narration = '직접 써보니 정말 좋았습니다.';
-    await fs.writeFile(file, `${JSON.stringify(json, null, 2)}\n`);
+    await fs.writeFile(file, (JSON.stringify(json, null, 2) + '\n'));
   });
   run('fabricated-experience guard', process.execPath, [path.join(scriptDir, 'validate-run.mjs'), '--root', badExperience, '--stage', 'pre-render'], false, { expectedError: 'selected-concept.json: possible unsupported first-person experience claim' });
 
@@ -675,7 +675,7 @@ try {
     const file = path.join(root, 'production', 'render-plan.json');
     const json = JSON.parse(await fs.readFile(file, 'utf8'));
     json.source_sha = '0000000000000000000000000000000000000000';
-    await fs.writeFile(file, `${JSON.stringify(json, null, 2)}\n`);
+    await fs.writeFile(file, (JSON.stringify(json, null, 2) + '\n'));
   });
   run('pinned-source guard', process.execPath, [path.join(scriptDir, 'validate-run.mjs'), '--root', badSha, '--stage', 'pre-render'], false, { expectedError: 'render-plan.json: source_sha mismatch' });
 
@@ -782,7 +782,7 @@ try {
   ], false, { expectedError: 'caption input contains a symlinked path segment' });
 
   if (withMedia) {
-    const ffmpeg = process.env.FFMPEG_BIN || ['/opt/homebrew/bin/ffmpeg', '/usr/local/bin/ffmpeg', '/usr/bin/ffmpeg'].find((candidate) => spawnSync(candidate, ['-version'], { stdio: 'ignore' }).status === 0);
+    const ffmpeg = process.env.FFMPEG_BIN || ['/opt/homebrew/bin/ffmpeg', '/usr/local/bin/ffmpeg', '/usr/bin/ffmpeg'].find((candidate) => spawnSync(candidate, ['-version'], { stdio: 'pipe' }).status === 0);
     if (!ffmpeg) throw new Error('ffmpeg not found for --media test');
     const mediaRoot = path.join(temp, 'media', '_workspace', 'current');
     await fs.mkdir(path.join(mediaRoot, 'production', 'clips'), { recursive: true });
@@ -803,7 +803,7 @@ try {
       voiceover: 'voiceover.wav', music: null, caption_plan: 'captions.json', captions: 'captions.ass', music_gain_db: -18, output_duration_seconds: 15
     };
     const timelinePath = path.join(mediaRoot, 'assembly', 'timeline.json');
-    await fs.writeFile(timelinePath, `${JSON.stringify(timeline, null, 2)}\n`);
+    await fs.writeFile(timelinePath, (JSON.stringify(timeline, null, 2) + '\n'));
     const final = path.join(mediaRoot, 'assembly', 'final.mp4');
     run('ffmpeg assembly', process.execPath, [path.join(scriptDir, 'assemble-short.mjs'), '--timeline', timelinePath, '--output', final, '--execute']);
     const mediaVerification = run('media verification', process.execPath, [path.join(scriptDir, 'verify-media.mjs'), '--file', final, '--require-audio']);
@@ -815,7 +815,7 @@ try {
       { position: 'middle', timestamp_seconds: 7.5, file: path.join(reviewFrameDir, 'middle.png') },
       { position: 'end', timestamp_seconds: 14.9, file: path.join(reviewFrameDir, 'end.png') }
     ];
-    for (const frame of reviewFrames) run(`review frame ${frame.position}`, ffmpeg, ['-hide_banner', '-loglevel', 'error', '-y', '-ss', String(frame.timestamp_seconds), '-i', final, '-frames:v', '1', frame.file]);
+    for (const frame of reviewFrames) run(('review frame ' + frame.position), ffmpeg, ['-hide_banner', '-loglevel', 'error', '-y', '-ss', String(frame.timestamp_seconds), '-i', final, '-frames:v', '1', frame.file]);
 
     const staleCaptionMediaRoot = path.join(temp, 'stale-caption-media');
     await fs.cp(mediaRoot, staleCaptionMediaRoot, { recursive: true });
@@ -878,7 +878,7 @@ try {
       const sourceClipSha = digest(await fs.readFile(path.join(root, 'production', 'clips', 'fixture.mp4')));
       const frameChecks = [];
       for (const frame of reviewFrames) {
-        const relativePath = `validation/frames/${path.basename(frame.file)}`;
+        const relativePath = ('validation/frames/' + path.basename(frame.file));
         frameChecks.push({
           position: frame.position,
           path: relativePath,
@@ -892,7 +892,7 @@ try {
       const runPath = path.join(root, 'run.json');
       const runJson = JSON.parse(await fs.readFile(runPath, 'utf8'));
       runJson.status = 'ready_for_release';
-      for (let index = 0; index <= 8; index += 1) runJson.gates[`G${index}`] = 'PASS';
+      for (let index = 0; index <= 8; index += 1) runJson.gates[('G' + index)] = 'PASS';
       runJson.gates.G9 = 'PENDING';
       runJson.output_paths = ['assembly/final.mp4'];
       await writeJson(runPath, runJson);

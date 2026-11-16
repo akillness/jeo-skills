@@ -6,7 +6,7 @@
 Best for: quick human-in-the-loop use with Claude Code, Cursor, Copilot Chat, Codex, or Gemini.
 
 ```bash
-npx -y grab@latest init
+npx -y grab@0.2.0 init
 ```
 
 Flow:
@@ -27,7 +27,7 @@ Use this as the default path unless the user explicitly wants MCP.
 Best for: agent tool calls after browser selection.
 
 ```bash
-npx -y grab@latest add mcp
+npx -y grab@0.2.0 add mcp
 ```
 
 Flow:
@@ -78,21 +78,21 @@ registerPlugin({
 ## Agent-specific commands
 
 ```bash
-npx -y grab@latest add claude-code
-npx -y grab@latest add cursor
-npx -y grab@latest add copilot
-npx -y grab@latest add codex
-npx -y grab@latest add gemini
-npx -y grab@latest add opencode
-npx -y grab@latest add amp
-npx -y grab@latest add droid
-npx -y grab@latest add mcp
+npx -y grab@0.2.0 add claude-code
+npx -y grab@0.2.0 add cursor
+npx -y grab@0.2.0 add copilot
+npx -y grab@0.2.0 add codex
+npx -y grab@0.2.0 add gemini
+npx -y grab@0.2.0 add opencode
+npx -y grab@0.2.0 add amp
+npx -y grab@0.2.0 add droid
+npx -y grab@0.2.0 add mcp
 ```
 
 Removal:
 
 ```bash
-npx -y grab@latest remove <agent>
+npx -y grab@0.2.0 remove <agent>
 ```
 
 ## Boundary reminders

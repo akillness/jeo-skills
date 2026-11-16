@@ -30,7 +30,7 @@ R[7]:
   Preserve every intermediate artifact under _workspace/; never delete it
 
 E[5]{type,command}:
-  Install skill,npx skills add https://github.com/akillness/jeo-skills --skill webtoon-harness
+  Install skill,npx -y skills@1.7.0 add https://github.com/akillness/jeo-skills --skill webtoon-harness
   Scaffold harness,bash scripts/install.sh
   Trigger via prompt,"트렌드 반영해서 웹툰 1화 만들어줘"
   Trigger via prompt,"다음 화 만들어"

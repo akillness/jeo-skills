@@ -11,35 +11,70 @@ Env:
 """
 from __future__ import annotations
 
+import http.client
 import json
 import os
 import time
+import urllib.parse
 from pathlib import Path
 from typing import Any
 
-import requests
 import yaml
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA_FILE = ROOT / "data" / "benchmarks.yaml"
 OUT_FILE = ROOT / "data" / "examples.json"
 BASE = "https://datasets-server.huggingface.co"
+ALLOWED_HOST = "datasets-server.huggingface.co"
 N_ROWS = 2
 MAX_STR = 700
 
 
+def validate_base_url(base_url: str) -> tuple[str, int, str]:
+    parsed = urllib.parse.urlparse(base_url)
+    if parsed.scheme != "https":
+        raise ValueError(f"BASE must use https:// (got {base_url!r})")
+    if parsed.hostname is None or parsed.hostname.lower() != ALLOWED_HOST:
+        raise ValueError(
+            f"Refusing to send HF_TOKEN to unexpected host {parsed.hostname!r}: {base_url!r}"
+        )
+    if parsed.username is not None or parsed.password is not None:
+        raise ValueError(f"BASE must not embed credentials: {base_url!r}")
+    if parsed.port not in (None, 443):
+        raise ValueError(f"BASE must use standard HTTPS port 443: {base_url!r}")
+    prefix = parsed.path.rstrip("/")
+    return parsed.hostname, parsed.port or 443, prefix
+
+
 def headers() -> dict[str, str]:
+    validate_base_url(BASE)
     tok = os.environ.get("HF_TOKEN") or os.environ.get("HUGGING_FACE_HUB_TOKEN")
     return {"Authorization": f"Bearer {tok}"} if tok else {}
 
 
+def _get_json(
+    endpoint_path: str, params: dict[str, str], h: dict[str, str], timeout: int
+) -> tuple[int, dict[str, Any]]:
+    host, port, prefix = validate_base_url(BASE)
+    query = urllib.parse.urlencode(params)
+    target = f"{prefix}{endpoint_path}?{query}"
+    conn = http.client.HTTPSConnection(host, port, timeout=timeout)
+    try:
+        conn.request("GET", target, headers=h)
+        resp = conn.getresponse()
+        body = resp.read()
+        if resp.status != 200:
+            return resp.status, {}
+        return resp.status, json.loads(body.decode("utf-8"))
+    finally:
+        conn.close()
+
+
 def pick_split(dataset: str, h: dict[str, str]) -> tuple[str, str] | None:
-    r = requests.get(
-        f"{BASE}/splits", params={"dataset": dataset}, headers=h, timeout=25
-    )
-    if r.status_code != 200:
+    status, payload = _get_json("/splits", {"dataset": dataset}, h, timeout=25)
+    if status != 200:
         return None
-    splits = r.json().get("splits", [])
+    splits = payload.get("splits", [])
     if not splits:
         return None
     # Prefer a test/validation split, else the first available.
@@ -66,21 +101,20 @@ def sanitize(value: Any) -> Any:
 def fetch_rows(
     dataset: str, config: str, split: str, h: dict[str, str]
 ) -> list[dict[str, Any]]:
-    r = requests.get(
-        f"{BASE}/first-rows",
-        params={"dataset": dataset, "config": config, "split": split},
-        headers=h,
+    status, payload = _get_json(
+        "/first-rows",
+        {"dataset": dataset, "config": config, "split": split},
+        h,
         timeout=30,
     )
-    if r.status_code != 200:
+    if status != 200:
         return []
-    rows = r.json().get("rows", [])
+    rows = payload.get("rows", [])
     out = []
     for item in rows[:N_ROWS]:
         row = item.get("row", {})
         out.append({k: sanitize(v) for k, v in row.items()})
     return out
-
 
 def main() -> int:
     benchmarks = yaml.safe_load(DATA_FILE.read_text(encoding="utf-8"))
@@ -112,7 +146,7 @@ def main() -> int:
                 )
             else:
                 print(f"  - {name:24} {dataset}: no rows (gated?)", flush=True)
-        except requests.RequestException as exc:
+        except (OSError, http.client.HTTPException, json.JSONDecodeError, ValueError) as exc:
             print(f"  ! {name:24} {dataset}: {exc}", flush=True)
         time.sleep(0.6)
 

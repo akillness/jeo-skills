@@ -27,13 +27,13 @@ Before deeper debugging, verify:
 node --version
 
 # Retry default install from project root
-npx -y grab@latest init
+npx -y grab@0.2.0 init
 
 # Add MCP workflow
-npx -y grab@latest add mcp
+npx -y grab@0.2.0 add mcp
 
 # Remove an integration
-npx -y grab@latest remove <agent>
+npx -y grab@0.2.0 remove <agent>
 ```
 
 ## When to escalate out of react-grab

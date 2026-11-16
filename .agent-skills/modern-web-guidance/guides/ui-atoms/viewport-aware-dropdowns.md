@@ -61,7 +61,7 @@ To prevent the panel from being cut off at the edge of the screen, define "try t
 }
 ```
 
-If your dropdown or flyout includes a directional arrow or border that needs to change style depending on which fallback position was chosen, see `position-aware-tooltips` (via `npx -y modern-web-guidance@latest retrieve "position-aware-tooltips"`). For declarative invocation of dialogs and popovers without JavaScript, see `declarative-dialog-popover-control` (via `npx -y modern-web-guidance@latest retrieve "declarative-dialog-popover-control"`).
+If your dropdown or flyout includes a directional arrow or border that needs to change style depending on which fallback position was chosen, see `position-aware-tooltips` (via `npx -y modern-web-guidance@1.0.0 retrieve "position-aware-tooltips"`). For declarative invocation of dialogs and popovers without JavaScript, see `declarative-dialog-popover-control` (via `npx -y modern-web-guidance@1.0.0 retrieve "declarative-dialog-popover-control"`).
 
 ## Fallback strategies
 

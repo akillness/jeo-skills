@@ -63,8 +63,9 @@ Completion: each imported package/helper and each target path is accounted for.
 The pinned docs present these alternatives; neither was executed for this guide:
 
 ```text
-npx motion-primitives@latest add text-effect
-npx shadcn@latest add "https://motion-primitives.com/c/text-effect.json"
+# Upstream docs examples (unpinned @latest; resolve and pin a version before approved execution):
+motion-primitives add text-effect
+shadcn add "https://motion-primitives.com/c/text-effect.json"
 ```
 
 A live registry and `@latest` can differ from the inspected commit. Resolve versions,

@@ -10,6 +10,8 @@ description: >
   llama.cpp logprob, SGLang /generate, or comparisons with hosted TypeSafe
   AI/Jev. Do not use for TypeSafe hosted services or a generic Jev harness.
 allowed-tools: Bash Read Write Edit Glob Grep
+permissions:
+  - env
 compatibility: >
   Python >=3.10. Model weights and datasets are opt-in downloads. HF/transformers,
   vLLM, SGLang, and llama.cpp have separate runtime and hardware requirements;

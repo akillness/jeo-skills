@@ -19,7 +19,7 @@ for (let i = 0; i < args.length; i += 1) {
   if (args[i] === '--input') input = args[++i];
   else if (args[i] === '--out') output = args[++i];
   else if (args[i] === '--help' || args[i] === '-h') usage(0);
-  else throw new Error(`Unknown argument: ${args[i]}`);
+  else throw new Error(('Unknown argument: ' + args[i]));
 }
 if (!input || !output) usage(2);
 
@@ -31,22 +31,22 @@ const credentialFieldPattern = /(api.?key|authorization|cookie|password|secret|t
 
 function scanCredentials(value, label, out) {
   if (Array.isArray(value)) {
-    value.forEach((item, index) => scanCredentials(item, `${label}[${index}]`, out));
+    value.forEach((item, index) => scanCredentials(item, (label + '[' + index + ']'), out));
     return;
   }
   if (!value || typeof value !== 'object') {
-    if (typeof value === 'string' && /Bearer\s+[A-Za-z0-9._~+\/-]{12,}/i.test(value)) out.push(`${label} appears to contain a bearer token`);
+    if (typeof value === 'string' && /Bearer\s+[A-Za-z0-9._~+\/-]{12,}/i.test(value)) out.push((label + ' appears to contain a bearer token'));
     return;
   }
   for (const [key, item] of Object.entries(value)) {
-    const field = `${label}.${key}`;
-    if (credentialFieldPattern.test(key)) out.push(`${field} is a credential field`);
+    const field = (label + '.' + key);
+    if (credentialFieldPattern.test(key)) out.push((field + ' is a credential field'));
     scanCredentials(item, field, out);
   }
 }
 
 if (plan.source_repo !== PINNED_REPO) errors.push('source_repo must be the audited Open-Generative-AI repository');
-if (plan.source_sha !== PINNED_SHA) errors.push(`source_sha must equal audited SHA ${PINNED_SHA}`);
+if (plan.source_sha !== PINNED_SHA) errors.push(('source_sha must equal audited SHA ' + PINNED_SHA));
 if (!['muapi-api', 'open-generative-ai-gui', 'wan2gp-gradio'].includes(plan.execution_surface)) errors.push('unsupported execution_surface');
 errors.push(...validateGeneratedTypographyPolicy(plan));
 if (plan.output?.width !== 1080 || plan.output?.height !== 1920) errors.push('output must be 1080x1920');
@@ -58,27 +58,27 @@ const seenIds = new Set();
 const seenOutputs = new Set();
 let summedDuration = 0;
 for (const [index, shot] of (plan.shots || []).entries()) {
-  const label = `shots[${index}]`;
-  if (!/^s\d{2,}$/.test(shot.shot_id || '')) errors.push(`${label}.shot_id is invalid`);
-  if (seenIds.has(shot.shot_id)) errors.push(`${label}.shot_id is duplicated`);
+  const label = ('shots[' + index + ']');
+  if (!/^s\d{2,}$/.test(shot.shot_id || '')) errors.push((label + '.shot_id is invalid'));
+  if (seenIds.has(shot.shot_id)) errors.push((label + '.shot_id is duplicated'));
   seenIds.add(shot.shot_id);
-  if (!allowedModes.has(shot.mode)) errors.push(`${label}.mode is unsupported`);
-  if (typeof shot.endpoint !== 'string' || !shot.endpoint.trim() || /\s/.test(shot.endpoint)) errors.push(`${label}.endpoint must be a verified non-empty endpoint`);
-  if (!(Number.isFinite(shot.duration_seconds) && shot.duration_seconds > 0 && shot.duration_seconds <= 30)) errors.push(`${label}.duration_seconds must be >0 and <=30`);
+  if (!allowedModes.has(shot.mode)) errors.push((label + '.mode is unsupported'));
+  if (typeof shot.endpoint !== 'string' || !shot.endpoint.trim() || /\s/.test(shot.endpoint)) errors.push((label + '.endpoint must be a verified non-empty endpoint'));
+  if (!(Number.isFinite(shot.duration_seconds) && shot.duration_seconds > 0 && shot.duration_seconds <= 30)) errors.push((label + '.duration_seconds must be >0 and <=30'));
   summedDuration += Number(shot.duration_seconds || 0);
-  if (shot.aspect_ratio !== '9:16') errors.push(`${label}.aspect_ratio must be 9:16`);
-  if (typeof shot.prompt !== 'string' || shot.prompt.trim().length < 10) errors.push(`${label}.prompt is too short`);
-  if (!Array.isArray(shot.source_asset_ids) || !Array.isArray(shot.claim_ids)) errors.push(`${label} asset and claim ids must be arrays`);
-  if (typeof shot.output_path !== 'string' || !shot.output_path.trim()) errors.push(`${label}.output_path is missing`);
-  if (seenOutputs.has(shot.output_path)) errors.push(`${label}.output_path is duplicated`);
+  if (shot.aspect_ratio !== '9:16') errors.push((label + '.aspect_ratio must be 9:16'));
+  if (typeof shot.prompt !== 'string' || shot.prompt.trim().length < 10) errors.push((label + '.prompt is too short'));
+  if (!Array.isArray(shot.source_asset_ids) || !Array.isArray(shot.claim_ids)) errors.push((label + ' asset and claim ids must be arrays'));
+  if (typeof shot.output_path !== 'string' || !shot.output_path.trim()) errors.push((label + '.output_path is missing'));
+  if (seenOutputs.has(shot.output_path)) errors.push((label + '.output_path is duplicated'));
   seenOutputs.add(shot.output_path);
 
   const payload = shot.provider_payload || {};
   const credentialFindings = [];
-  scanCredentials(payload, `${label}.provider_payload`, credentialFindings);
+  scanCredentials(payload, (label + '.provider_payload'), credentialFindings);
   errors.push(...credentialFindings);
 }
-if (Math.abs(summedDuration - Number(plan.output?.duration_seconds || 0)) > 0.5) errors.push(`shot durations (${summedDuration}) must equal output duration (${plan.output?.duration_seconds})`);
+if (Math.abs(summedDuration - Number(plan.output?.duration_seconds || 0)) > 0.5) errors.push(('shot durations (' + summedDuration + ') must equal output duration (' + (plan.output?.duration_seconds) + ')'));
 
 if (plan.estimated_cost === null || !Number.isFinite(plan.estimated_cost)) blockers.push('cost-not-verified');
 if (!plan.balance_verified && plan.execution_surface === 'muapi-api') blockers.push('balance-not-verified');
@@ -98,7 +98,7 @@ const requests = (plan.shots || []).map((shot) => {
     return {
       shot_id: shot.shot_id,
       method: 'POST',
-      url: `https://api.muapi.ai/api/v1/${endpoint}`,
+      url: ('https://api.muapi.ai/api/v1/' + endpoint),
       auth: { header: 'x-api-key', environment_variable: 'MUAPI_API_KEY' },
       body: shot.provider_payload || {},
       normalized_intent: {
@@ -147,10 +147,10 @@ const packet = {
 };
 
 await fs.mkdir(path.dirname(path.resolve(output)), { recursive: true });
-await fs.writeFile(output, `${JSON.stringify(packet, null, 2)}\n`, { flag: 'wx' }).catch(async (error) => {
+await fs.writeFile(output, (JSON.stringify(packet, null, 2) + '\n'), { flag: 'wx' }).catch(async (error) => {
   if (error.code !== 'EEXIST') throw error;
   const existing = await fs.readFile(output, 'utf8');
-  const next = `${JSON.stringify(packet, null, 2)}\n`;
-  if (existing !== next) throw new Error(`Refusing to overwrite different output: ${output}`);
+  const next = (JSON.stringify(packet, null, 2) + '\n');
+  if (existing !== next) throw new Error(('Refusing to overwrite different output: ' + output));
 });
 console.log(JSON.stringify({ verdict: 'PASS', output: path.resolve(output), ready_to_submit: packet.ready_to_submit, blockers: packet.blockers, request_count: requests.length }, null, 2));

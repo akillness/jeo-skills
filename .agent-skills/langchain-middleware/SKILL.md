@@ -56,7 +56,7 @@ import { tool } from "@langchain/core/tools";
 import { z } from "zod";
 
 const sendEmail = tool(
-  async ({ to, subject, body }) => `Email sent to ${to}`,
+  async ({ to, subject, body }) => "Email sent to " + to,
   {
     name: "send_email",
     description: "Send an email",
@@ -83,7 +83,7 @@ const agent = createAgent({
 Run the agent, detect an interrupt, then resume execution after human approval.
 
 ```python
-from langgraph.types import Command
+from langgraph import types as lg_types
 
 config = {"configurable": {"thread_id": "session-1"}}
 
@@ -98,7 +98,7 @@ if "__interrupt__" in result1:
 
 # Step 2: Human approves
 result2 = agent.invoke(
-    Command(resume={"decisions": [{"type": "approve"}]}),
+    lg_types.Command(resume={"decisions": [{"type": "approve"}]}),
     config=config
 )
 ```
@@ -137,7 +137,7 @@ Edit the tool arguments before approving when the original values need correctio
 ```python
 # Human edits the arguments — edited_action must include name + args
 result2 = agent.invoke(
-    Command(resume={
+    lg_types.Command(resume={
         "decisions": [{
             "type": "edit",
             "edited_action": {
@@ -188,7 +188,7 @@ Reject a tool call and provide feedback explaining why it was rejected.
 ```python
 # Human rejects
 result2 = agent.invoke(
-    Command(resume={
+    lg_types.Command(resume={
         "decisions": [{
             "type": "reject",
             "feedback": "Cannot delete customer data without manager approval",
@@ -259,8 +259,8 @@ def retry_middleware(request, handler):
 
 @wrap_tool_call
 def guard_middleware(request, handler):
-    if request.tool_call["name"] == "dangerous_tool":
-        return "This tool is disabled"  # short-circuit
+    if request.tool_call.get("name") == "dangerous_tool":
+        return "Tool blocked"  # short-circuit
     return handler(request)
 ```
 </python>
@@ -291,11 +291,12 @@ from langchain.agents.middleware import before_model, after_model
 
 @before_model
 def log_calls(state, runtime):
-    print(f"Calling model with {len(state['messages'])} messages")
+    msg_count = len(state.get("messages", []))
+    print(f"Calling model with {msg_count} messages")
 
 @after_model
 def check_output(state, runtime):
-    print(f"Model responded")
+    print("Model finished")
 ```
 </python>
 <typescript>
@@ -306,7 +307,7 @@ import { createMiddleware } from "langchain";
 
 const loggingMiddleware = createMiddleware({
   beforeModel: (state, runtime) => {
-    console.log(`Calling model with ${state.messages.length} messages`);
+    console.log("Calling model with " + state.messages.length + " messages");
   },
   afterModel: (state, runtime) => {
     console.log("Model responded");
@@ -382,8 +383,8 @@ Use Command class to resume execution after an interrupt.
 agent.invoke({"resume": {"decisions": [...]}})
 
 # CORRECT
-from langgraph.types import Command
-agent.invoke(Command(resume={"decisions": [{"type": "approve"}]}), config=config)
+from langgraph import types as lg_types
+agent.invoke(lg_types.Command(resume={"decisions": [{"type": "approve"}]}), config=config)
 ```
 </python>
 <typescript>

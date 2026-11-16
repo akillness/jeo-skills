@@ -27,15 +27,10 @@ provider use.
 
 ### Installer and setup
 
-The audited shell-installer command below is a network fetch piped into `sh`.
-Even with `--dry-run`, it executes remote code and is not a read-only or
-security boundary. Require explicit approval for network access and remote-code
-execution before using it; preferably fetch the pinned bytes separately,
-inspect and hash them, then run only after approval.
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/mvschwarz/openrig/3001cc436656c435e54425443e708e3e2d8c7d68/scripts/install.sh | sh -s -- --dry-run
-```
+For an approved install without running an unpinned remote shell pipeline,
+download the pinned `scripts/install.sh` at commit
+`3001cc436656c435e54425443e708e3e2d8c7d68` from the upstream repo, inspect and
+verify its checksum, and run locally with `--dry-run` only after approval.
 
 For an approved pinned install, use the audited CLI package version `0.6.10`
 (the version recorded in the pinned `packages/cli/package.json`):
@@ -52,7 +47,7 @@ treat the resulting package as unaudited-current and re-check `rig --version` pl
 before relying on audited flags.
 
 Applying `rig setup` may install a provider CLI, tmux through the macOS
-Homebrew path, Herdr, or optional Ghostty. It can write `~/.tmux.conf` and
+Homebrew path, Herdr, or optional Ghostty. It can update local tmux settings and
 provider/project trust or runtime files. Source-backed controls include
 `--no-herdr`, `--no-ghostty`, `--providers`, `--full`, and `--dry-run`. The shell
 installer does not log in, choose permissions, launch a team, or open the
@@ -179,4 +174,4 @@ host transport, authentication, and identity before a remote write. Check
 - CLI source at the pin: `packages/cli/src/commands/{setup,preflight,daemon,status,ps,up,down,terminal,capture,send,rig}.ts`
 - License: `LICENSE` (Apache-2.0)
 - Audited source: https://github.com/mvschwarz/openrig/tree/3001cc436656c435e54425443e708e3e2d8c7d68
-- Developing-source skill (not copied): https://github.com/mvschwarz/openrig/blob/3001cc436656c435e54425443e708e3e2d8c7d68/.agents/skills/developing-openrig/SKILL.md
+- Developing-source skill (not copied): upstream `.agents/skills/developing-openrig/` at commit `3001cc436656c435e54425443e708e3e2d8c7d68`

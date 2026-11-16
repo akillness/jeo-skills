@@ -107,8 +107,7 @@ setup_oauth2() {
     exit 1
   fi
 
-  mkdir -p "$TOKEN_DIR"
-  cp "$CREDS_FILE" "${TOKEN_DIR}/credentials.json"
+  (umask 077 && mkdir -p "$TOKEN_DIR" && cp "$CREDS_FILE" "${TOKEN_DIR}/credentials.json")
 
   echo "🔐 Starting OAuth2 browser flow..."
   python3 - <<PYEOF
@@ -143,7 +142,8 @@ token_file.write_text(json.dumps({
     'client_id':     creds.client_id,
     'client_secret': creds.client_secret,
     'scopes':        list(creds.scopes or []),
-}))
+}), encoding='utf-8')
+os.chmod(token_file, 0o600)
 print(f"✅ Token saved to: {token_file}")
 print(f"   Authorized scopes: {len(creds.scopes or [])} scopes")
 PYEOF

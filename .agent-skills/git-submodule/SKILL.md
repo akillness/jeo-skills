@@ -115,7 +115,7 @@ These truths should survive every answer:
 ### Step 5: Build the submodule brief
 Return this exact structure:
 
-```markdown
+````markdown
 # Git Submodule Brief
 
 ## Recommended mode
@@ -150,7 +150,7 @@ Return this exact structure:
 - `git-workflow` when ...
 - `npm-git-install` when ...
 - `deployment-automation` when ...
-```
+````
 
 ### Step 6: Use the mode packets, not a giant improvised command dump
 Pull the exact packet from [references/mode-packets-and-hosted-constraints.md](references/mode-packets-and-hosted-constraints.md).

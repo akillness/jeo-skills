@@ -79,9 +79,8 @@ These rules apply before choosing a mode:
    guide, and an agent skills directory containing only `asset-gen`:
 
    ```bash
-   bash .agent-skills/godogen/scripts/godogen.sh plan \
+   bash scripts/godogen.sh plan \
      --engine godot --agent claude --out /path/to/game
-   ```
 
    A recognized refresh must use normal publish after the game repo is committed or
    backed up. Never add `--force` to a refresh.
@@ -89,8 +88,8 @@ These rules apply before choosing a mode:
 2. **Treat `--force` as destructive.** Upstream runs `rm -rf` on the resolved target.
    Never use it on a path with valuable contents. Show the exact target and obtain the
    user's explicit approval before any forced publish.
-3. **A normal publish can still delete sibling skills.** Upstream uses `rsync --delete`
-   on the entire `.claude/skills/` or `.agents/skills/` directory, not just
+3. **A normal publish can still overwrite sibling skills.** Upstream uses `rsync --delete`
+   on the entire target skills directory (Claude or Codex skills folder), not just
    `asset-gen/`. An existing repo with unrelated skills is not a safe target.
 4. **Confirm spend before the first paid call.** Estimate the full plan, show provider,
    operation counts, and maximum cost, then get explicit approval. Do not treat a
@@ -125,11 +124,10 @@ unreviewable shell block.
 Run the read-only helper:
 
 ```bash
-bash .agent-skills/godogen/scripts/godogen.sh doctor all
-bash .agent-skills/godogen/scripts/godogen.sh doctor godot
-bash .agent-skills/godogen/scripts/godogen.sh doctor bevy
-bash .agent-skills/godogen/scripts/godogen.sh doctor babylon
-```
+bash scripts/godogen.sh doctor all
+bash scripts/godogen.sh doctor godot
+bash scripts/godogen.sh doctor bevy
+bash scripts/godogen.sh doctor babylon
 
 The helper checks command presence and versions without installing anything or
 printing key values. Interpret missing tools by lane; for example, Rust is not a
@@ -186,14 +184,14 @@ background process.
 Before any paid call, estimate the frozen upstream rates offline:
 
 ```bash
-python3 .agent-skills/godogen/scripts/cost-estimate.py \
+python3 scripts/cost-estimate.py \
   --grok-images 4 --gemini-1k 2 --video-seconds 6 \
   --glb 2 --rig 1 --retarget 3
 ```
 
 Show the estimate, state that provider prices can change, and obtain approval for the
-specific plan. Then use the published repo's `asset-gen` tools. Claude publishes them
-under `.claude/skills/asset-gen/`; Codex uses `.agents/skills/asset-gen/`.
+specific plan. Then use the published repo's `asset-gen` tools from its rendered
+Claude or Codex skills directory.
 
 For sprite, GLB, rigging, retargeting, background-removal, logging, and retry recipes,
 read `references/asset-generation.md`. Review each reference image before paying for a
@@ -233,7 +231,7 @@ and favors narrow, evidence-backed changes.
 ### Example 1: Check whether a Godot build host is ready
 
 ```bash
-bash .agent-skills/godogen/scripts/godogen.sh doctor godot
+bash scripts/godogen.sh doctor godot
 ```
 
 Resolve only Godot blockers, then verify `dotnet --version`, a `.mono` Godot build, and
@@ -242,18 +240,18 @@ Resolve only Godot blockers, then verify `dotnet --version`, a `.mono` Godot bui
 ### Example 2: Preview a Codex Babylon publication
 
 ```bash
-bash .agent-skills/godogen/scripts/godogen.sh plan \
+bash scripts/godogen.sh plan \
   --engine babylon --agent codex --out "$HOME/new-babylon-game"
 ```
 
 Proceed only if the helper reports a new/empty target or a recognized same-lane refresh.
-Expect `AGENTS.md`,
-`babylon.md`, `.agents/skills/asset-gen/`, an engine `.gitignore`, and a Git repository.
+Expect the rendered agent guide (`CLAUDE.md` or `AGENTS.md`),
+the engine guide (`babylon.md`), `asset-gen/`, an engine `.gitignore`, and a Git repository.
 
 ### Example 3: Recover a timed-out Tripo3D model
 
 ```bash
-python3 .agents/skills/asset-gen/tools/asset_gen.py resume -o assets/model.glb
+python3 <published-repo>/asset-gen/tools/asset_gen.py resume -o assets/model.glb
 ```
 
 Do not submit `glb` again while `assets/model.glb.tripo.json` records the task.
@@ -261,7 +259,7 @@ Do not submit `glb` again while `assets/model.glb.tripo.json` records the task.
 ### Example 4: Price a rigged character with three clips
 
 ```bash
-python3 .agent-skills/godogen/scripts/cost-estimate.py \
+python3 scripts/cost-estimate.py \
   --gemini-1k 1 --rig 1 --retarget 3 --json
 ```
 

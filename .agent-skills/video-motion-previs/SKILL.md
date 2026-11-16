@@ -3,6 +3,9 @@ name: video-motion-previs
 description: >
   Install and drive Motion Previs Studio v4 from the `video-motion-previs` CLI to turn reference video into pose, depth, camera-motion, control-layer, and AI-video/Blender production packs. Use when an agent must check or install the desktop app, import and trim a shot, run motion analysis, export a bundle, inspect its files, capture the app, or send a layer to Blockout. Triggers on: Motion Previs Studio, video motion previs, camera solve, pose extraction, OpenPose BODY_25, depth control video, production pack, motion-previs MCP.
 allowed-tools: Bash Read Write Edit Glob Grep
+permissions:
+  - env
+  - network
 compatibility: Node.js 18+; packaged app supports macOS Apple Silicon and Windows 11 x64, while source development also supports Linux with explicit media runtime overrides. The app must be running for motion commands.
 license: Apache-2.0
 metadata:
@@ -76,7 +79,7 @@ video-motion-previs screenshot /tmp/motion-previs.png
 
 If the descriptor exists but health fails, quit/relaunch the app. The descriptor is normally:
 
-- macOS/Linux: `~/.config/motion-previs/control.json`
+- macOS/Linux: `<config-home>/motion-previs/control.json`
 - Windows: `%APPDATA%\Motion Previs Studio\v4\control.json`
 - override: `MOTION_PREVIS_CONFIG_DIR` or `MPS_CONFIG_DIR`
 

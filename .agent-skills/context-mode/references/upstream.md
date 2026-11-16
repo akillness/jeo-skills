@@ -29,7 +29,7 @@ Inspect only relevant host configuration, record user/project scope and managed 
 | Host | MCP/plugin surface | Hook/routing surface | Verify |
 |---|---|---|---|
 | Claude Code | marketplace plugin, or `claude mcp add context-mode -- npx -y context-mode@1.0.169` | plugin hooks; optional settings status line | `/context-mode:ctx-doctor` |
-| Gemini | `~/.gemini/settings.json` `mcpServers` | Before/AfterTool, PreCompress, SessionStart | `/mcp list`; `ctx stats` |
+| Gemini | user Gemini settings (`mcpServers`) | Before/AfterTool, PreCompress, SessionStart | `/mcp list`; `ctx stats` |
 | VS Code / JetBrains Copilot | `.vscode/mcp.json` or IDE MCP UI | `.github/hooks/context-mode.json` | `ctx stats` |
 | Copilot CLI | plugin `mksglu/context-mode:configs/copilot-cli`, or `copilot mcp add` | `$COPILOT_HOME/hooks/context-mode.json` | `ctx stats`; `doctor` |
 | Cursor | `.cursor/mcp.json` | `.cursor/hooks.json` + `context-mode.mdc` | MCP indicator; `ctx stats` |
@@ -38,7 +38,7 @@ Inspect only relevant host configuration, record user/project scope and managed 
 | Codex CLI | marketplace `.codex-plugin/mcp.json`, or `[mcp_servers.context-mode]` | plugin hooks or `$CODEX_HOME/hooks.json` | `ctx stats`; hook trust separately |
 | Kimi / Qwen | host MCP JSON/settings | host hook arrays/config | `ctx stats` |
 | Antigravity IDE | `~/.gemini/antigravity/mcp_config.json` | none; copied `GEMINI.md` guidance | `ctx stats` |
-| Antigravity CLI (`agy`) | plugin bundle or `~/.gemini/config/mcp_config.json` | bounded plugin hooks | `ctx stats`; `doctor` |
+| Antigravity CLI (`agy`) | plugin bundle or user Gemini CLI MCP config | bounded plugin hooks | `ctx stats`; `doctor` |
 | Kiro | `.kiro/settings/mcp.json` | `.kiro/hooks/context-mode.json`, `KIRO.md` | MCP indicator; `ctx stats` |
 | Zed | `~/.config/zed/settings.json` `context_servers` | none; copied `AGENTS.md` guidance | context-server indicator; `ctx stats` |
 | OMP | `omp plugin install context-mode`, or `~/.omp/agent/mcp.json` | plugin lifecycle hooks | `omp plugin doctor`; `ctx stats` |
@@ -67,7 +67,7 @@ After explicit approval:
 npm install -g context-mode@1.0.169
 ```
 
-Then add only the named host's MCP/plugin and hook entries from the pinned docs. The pinned `scripts/postinstall.mjs` may mutate Claude state under `~/.claude/plugins/installed_plugins.json` and `~/.claude/settings.json`, heal cached plugin `mcpServers` args, remove stale cached `.mcp.json`, and create compatibility symlinks. Preview and back up those cross-host paths and obtain approval; do not describe this as host-local package installation.
+Then add only the named host's MCP/plugin and hook entries from the pinned docs. The pinned `scripts/postinstall.mjs` may mutate Claude state under the user Claude plugin registry and settings files, heal cached plugin `mcpServers` args, remove stale cached `.mcp.json`, and create compatibility symlinks. Preview and back up those cross-host paths and obtain approval; do not describe this as host-local package installation.
 
 ### Host-specific boundaries
 

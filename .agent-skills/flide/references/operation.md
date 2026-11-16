@@ -31,10 +31,14 @@ The model identifier can cause a Hugging Face download; gated models may require
 
 With a running authorized endpoint, use synthetic or otherwise approved content:
 
+```json
+{"state":"The customer received a damaged item.","questions":{"action":{"type":"choice","instructions":"What should support do next?","criteria":{"refund":"refund the order","replace":"send a replacement","escalate":"ask a human"}},"urgent":{"type":"noul","instructions":"Does this need a reply within the hour?"}}}
+```
+
 ```bash
 curl --fail-with-body http://127.0.0.1:8000/v1/systemone \
   -H 'Content-Type: application/json' \
-  -d '{"state":"The customer received a damaged item.","questions":{"action":{"type":"choice","instructions":"What should support do next?","criteria":{"refund":"refund the order","replace":"send a replacement","escalate":"ask a human"}},"urgent":{"type":"noul","instructions":"Does this need a reply within the hour?"}}}'
+  --data-binary @request.json
 ```
 
 Inspect status and returned answers; a server starting or `/health` succeeding does not prove inference correctness. For exact-forking comparison use `flide verify --help` and the installed version's documented model/request options, after permission to load weights and use GPU. Fork equivalence is not a guarantee that the model's decisions are correct. No claim of measured speedup applies without a comparable local benchmark.

@@ -14,7 +14,7 @@ description: >
   Triggers on: openexecutive, Open Executive, SenteLabs, virtual executive
   team, virtual CFO or CSO agent, consult_specialist, openexec-api,
   episodic memory executive, fixtures reset, single-instance scheduler.
-allowed-tools: Bash Read Write Edit Glob Grep
+allowed-tools: Bash Read Write Edit Glob Grep Env
 compatibility: >
   Self-hosted source install from GitHub; not published to PyPI or npm. Needs
   Python 3.11+ with uv and Node 22+ for the UI, or Docker Compose. Requires at
@@ -101,7 +101,7 @@ Run the read-only helpers before touching a real deployment:
 
 ```bash
 bash .agent-skills/openexecutive/scripts/openexecutive.sh doctor /path/to/OpenExecutive
-python3 .agent-skills/openexecutive/scripts/audit-config.py /path/to/OpenExecutive/.env
+python3 .agent-skills/openexecutive/scripts/audit-config.py /path/to/OpenExecutive/config.env
 ```
 
 ### Step 1: Pick exactly one operating mode
@@ -148,7 +148,7 @@ The app refuses to start with no provider. Pick one path:
 Audit the resulting file before any run:
 
 ```bash
-python3 .agent-skills/openexecutive/scripts/audit-config.py /path/to/OpenExecutive/.env
+python3 .agent-skills/openexecutive/scripts/audit-config.py /path/to/OpenExecutive/config.env
 ```
 
 It reports provider coverage, the effective web-search posture, outbound-guard
@@ -160,7 +160,7 @@ email addresses are shown as present or absent. Details are in
 ### Step 4: Run it locally
 
 ```bash
-cp .env.example .env      # then edit; .env is gitignored
+cp .env.example config.env  # or copy to your gitignored runtime env file and edit
 make dev                  # API on 8000, UI on 3000
 ```
 
@@ -207,7 +207,7 @@ Gmail, Slack, Discord, Telegram, or Google Chat.
 - **Stateful but recoverable**: loading a fixture, snapshotting, uploading a
   document, running a chat turn that spends money.
 - **Destructive**: `POST /fixtures/reset`, `POST /fixtures/unload`,
-  `DELETE /fixtures/{name}`, `openexecutive consolidate-initiatives --apply`,
+  fixture removal endpoint (`DELETE`), `openexecutive consolidate-initiatives --apply`,
   `make clean`, `make stop`, and any `flyctl secrets` change that restarts a
   live app.
 
@@ -233,7 +233,7 @@ uv run ruff check openexecutive/ && uv run mypy openexecutive/
 ```
 
 `make eval` passes a scenarios path that does not exist in the repository. The
-runner's own default is also relative to the current directory and only
+runner default is also relative to the current directory and only
 resolves from `evals/`, so pass an explicit scenario path instead. Adding an
 agent requires prompts, registry and tool-enum updates, knowledge, evals, and
 architecture-doc updates in the same pull request. See
@@ -252,7 +252,7 @@ Resolve only the lane you need, then configure exactly one provider.
 ### Example 2: Find the real spend posture of an existing config
 
 ```bash
-python3 .agent-skills/openexecutive/scripts/audit-config.py ~/src/OpenExecutive/.env --json
+python3 .agent-skills/openexecutive/scripts/audit-config.py ~/src/OpenExecutive/config.env --json
 ```
 
 Treat an unset `ENABLE_WEB_SEARCH` as billable searches enabled, because the

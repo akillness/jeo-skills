@@ -3,6 +3,7 @@ name: ax
 description: >-
   AI-era curl for agent web fetching, structure discovery, and deterministic structured extraction
   with token-budgeted output.
+allowed-tools: Bash Read Write Edit Glob Grep WebFetch
 ---
 # ax — The AI-Era Curl for Web Scraping & Extraction
 
@@ -40,7 +41,7 @@ AI-driven fetch, discover, extract framework
 
 ```bash
 # System-wide install (via shell script)
-curl -fsSL https://ax.yusuke.run/install | sh
+curl -fsSL https://ax.yusuke.run/install -o ax-install.sh && less ax-install.sh && sh ax-install.sh
 
 # Or via Homebrew (macOS/Linux)
 brew install yusukebe/tap/ax
@@ -95,7 +96,7 @@ Returns JSON-structured response: `{ status, ok, ms, headers, body }`. Never sil
 - Empty bodies still produce full report
 - JSON responses are automatically parsed
 - Use `--body` for classic `curl`-like stdout pipe
-- 100ms+ latency typical; use `--no-check` to skip SSL verification (development only)
+- 100ms+ latency typical; use trusted CA certificates (`SSL_CERT_FILE`) for private/local TLS endpoints
 
 ```bash
 ax https://api.github.com/repos/yusukebe/ax
@@ -352,7 +353,7 @@ ax https://shop.example.com '.item' --row 'name=h2, price=.price' --json
 
 ### 3. Respect Rate Limits & Robots.txt
 
-- Check `robots.txt` before automating scrapes
+- Check the target site's robots policy before automating scrapes
 - Use reasonable delays between requests (`--delay <ms>` if available)
 - Identify your agent in User-Agent headers when possible
 - Start with `--no-cache` sparingly; use cache hits to reduce load

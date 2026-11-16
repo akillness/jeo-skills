@@ -28,7 +28,7 @@ Goal: quickly grab *good-looking* images from Unsplash and deliver them in the *
 - Don't use this for Aura Assets (aura.build/assets) searches — route to `aura-asset-images` instead, which searches Aura's own asset library by tag rather than Unsplash.
 
 
-## Output rule
+## Deliverable format
 For each recommendation, output:
 1) **Unsplash page URL** (canonical)
 2) Suggested **ratios + sizes** for the use case

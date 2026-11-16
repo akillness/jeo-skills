@@ -44,8 +44,8 @@ export function validateGeneratedTypographyPolicy(renderPlan) {
   const errors = [];
   if (renderPlan?.generated_text_policy !== 'forbid-generated-typography') errors.push('generated_text_policy must forbid generated typography');
   for (const [index, shot] of (renderPlan?.shots || []).entries()) {
-    if (requestsGeneratedTypography(shot?.prompt)) errors.push(`shots[${index}].prompt requests generated typography`);
-    if (payloadRequestsGeneratedTypography(shot?.provider_payload || {})) errors.push(`shots[${index}].provider_payload requests generated typography`);
+    if (requestsGeneratedTypography(shot?.prompt)) errors.push(('shots[' + index + '].prompt requests generated typography'));
+    if (payloadRequestsGeneratedTypography(shot?.provider_payload || {})) errors.push(('shots[' + index + '].provider_payload requests generated typography'));
   }
   return errors;
 }

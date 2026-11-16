@@ -66,7 +66,7 @@ After the design read, set three dials. Every layout, motion, and density decisi
 * **`MOTION_INTENSITY: 6`** - 1 = Static, 10 = Cinematic / Physics
 * **`VISUAL_DENSITY: 4`** - 1 = Art Gallery / Airy, 10 = Cockpit / Packed Data
 
-**Baseline:** `8 / 6 / 4`. Use these unless the design read overrides them. Do not ask the user to edit this file - overrides happen conversationally.
+**Baseline:** `8 / 6 / 4`. Use these unless the design read overrides them. Users do not need to edit this file manually - overrides happen conversationally.
 
 ### 1.A Dial Inference (design read → dial values)
 | Signal | VARIANCE | MOTION | DENSITY |
@@ -114,7 +114,7 @@ Once you have the design read (Section 0) and dials (Section 1), pick the right 
 | US public-sector / trust-first | `uswds` | Same |
 | Fast local-business / agency MVP | Bootstrap 5.3 | Boring, fast, works |
 | Modern accessible React foundation | `@radix-ui/themes` | Primitives + polished theme |
-| Modern SaaS where you own the components | shadcn/ui (`npx shadcn@latest add ...`) | You own the code, easy to customise; never ship default state |
+| Modern SaaS where you own the components | shadcn/ui (`npx shadcn@4.23.0 add ...`) | You own the code, easy to customise; never ship default state |
 | Tailwind-based modern SaaS / AI marketing | Tailwind v4 utilities + `dark:` variant | Default for indie + small team builds |
 
 **Honesty rule:** if the brief reads as one of the systems above, install and use the **official** package. Do not recreate its CSS by hand. Do not import a system's tokens but then override 90% of them.
@@ -376,7 +376,7 @@ These are tools, not defaults. Use them when the design read calls for them. **N
 * **Perpetual Micro-Interactions** (Pulse, Typewriter, Float, Shimmer, Carousel): Use when `MOTION_INTENSITY > 5` AND the section actively benefits from motion (status indicators, live feeds, AI-feel). **Not every card needs an infinite loop.** If a section is informational, leave it still. Apply Spring Physics (`type: "spring", stiffness: 100, damping: 20`) - no linear easing.
 * **"Motion claimed, motion shown."** If `MOTION_INTENSITY > 4`, the page must actually move: entry transitions on hero, scroll-reveal on key sections, hover physics on CTAs, at minimum. A static page that claims `MOTION_INTENSITY: 7` is broken. Conversely, if you cannot ship working motion in the available scope, drop the dial to 3 and ship a clean static page. Never half-build motion that breaks (cut-off ScrollTriggers, jumpy enters, missing cleanups).
 * **MOTION MUST BE MOTIVATED (mandatory).** Before adding any animation, ask: "what does this animation communicate?" Valid answers: hierarchy (drawing attention to the right thing), storytelling (revealing content in sequence that matches a narrative), feedback (acknowledging a user action), state transition (showing something changed). Invalid answer: "it looked cool". GSAP everywhere because GSAP is available is amateur. Each ScrollTrigger, each marquee, each pinned section needs a reason. If you cannot articulate the reason in one sentence, drop the animation.
-* **MARQUEE MAX-ONE-PER-PAGE (mandatory).** Horizontal scrolling text marquees ("logos endlessly scrolling", "manifesto scrolling sideways", "kinetic word strip") are appropriate at most ONCE per page. Two or more marquees on the same page reads as lazy filler. Pick the one section where the marquee actually serves the content; the others get a different layout.
+* **MARQUEE MAX-ONE-PER-PAGE (mandatory).** Horizontal scrolling text marquees ("logos endlessly scrolling", "manifesto scrolling sideways", "kinetic text ticker") are appropriate at most ONCE per page. Two or more marquees on the same page reads as lazy filler. Pick the one section where the marquee actually serves the content; the others get a different layout.
 * **GSAP Sticky-Stack Pattern (when scroll-stack is used).** A "card stack on scroll" must be a REAL sticky-stack, not a sequential reveal list. See Section 5.A below for the canonical code skeleton. Common failure: trigger fires halfway through scroll instead of pinning at viewport top. Fix: `start: "top top"` not `start: "top center"` or `"top 80%"`.
 * **GSAP Horizontal-Pan Pattern (when horizontal scroll-hijack is used).** See Section 5.B below for the canonical skeleton. Common failure: animation starts before the section is pinned, so the user sees half a slide. Same fix: `start: "top top"`, pin the wrapper, scrub the inner track.
 
@@ -1021,8 +1021,8 @@ npm install @carbon/react @carbon/styles
 npm install @radix-ui/themes
 
 # shadcn/ui (open code, owned components)
-npx shadcn@latest init
-npx shadcn@latest add button card badge separator input
+npx shadcn@4.23.0 init
+npx shadcn@4.23.0 add button card badge separator input
 
 # Primer CSS (GitHub product/devtool UI)
 npm install --save @primer/css

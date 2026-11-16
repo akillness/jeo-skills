@@ -142,15 +142,15 @@ Harness² method의 행동 개선 후보를 채택했다고 주장하지 않는�
 - **S3** — [Evaluating skills](https://agentskills.io/skill-creation/evaluating-skills.md):
   with/without 또는 old/new 비교, 새 컨텍스트, assertions와 사람 검토.
 - **S4** — [고정 README](https://github.com/donchitos/claude-code-game-studios/blob/abc0de79d6ceb0b5d7aa693945849b3937afbe6a/README.md).
-- **S5** — [help 별칭](https://github.com/donchitos/claude-code-game-studios/blob/abc0de79d6ceb0b5d7aa693945849b3937afbe6a/.claude/skills/help/SKILL.md).
-- **S6** — [settings 별칭](https://github.com/donchitos/claude-code-game-studios/blob/abc0de79d6ceb0b5d7aa693945849b3937afbe6a/.claude/skills/settings/SKILL.md).
-- **S7** — [changelog 별칭](https://github.com/donchitos/claude-code-game-studios/blob/abc0de79d6ceb0b5d7aa693945849b3937afbe6a/.claude/skills/changelog/SKILL.md).
+- **S5** — [help 별칭](https://github.com/donchitos/claude-code-game-studios/tree/abc0de79d6ceb0b5d7aa693945849b3937afbe6a/.claude/skills/help).
+- **S6** — [settings 별칭](https://github.com/donchitos/claude-code-game-studios/tree/abc0de79d6ceb0b5d7aa693945849b3937afbe6a/.claude/skills/settings).
+- **S7** — [changelog 별칭](https://github.com/donchitos/claude-code-game-studios/tree/abc0de79d6ceb0b5d7aa693945849b3937afbe6a/.claude/skills/changelog).
 - **S8** — [평가기 quality_score.py](https://github.com/NVIDIA/SkillEvaluator/blob/12b387f7a62b5f3e0de9eff392a3f6b7e952f2c2/src/skillevaluator/validators/quality_score.py),
   설치본의 `_check_spec_fields`, `_check_discoverability`와 대조.
-- **S9** — [prototype](https://github.com/donchitos/claude-code-game-studios/blob/abc0de79d6ceb0b5d7aa693945849b3937afbe6a/.claude/skills/prototype/SKILL.md).
+- **S9** — [prototype](https://github.com/donchitos/claude-code-game-studios/tree/abc0de79d6ceb0b5d7aa693945849b3937afbe6a/.claude/skills/prototype).
 - **S10** — [studio-tests README](https://github.com/donchitos/claude-code-game-studios/blob/abc0de79d6ceb0b5d7aa693945849b3937afbe6a/studio-tests/README.md).
 - **S11** — [skill-lint.sh](https://github.com/donchitos/claude-code-game-studios/blob/abc0de79d6ceb0b5d7aa693945849b3937afbe6a/.claude/scripts/skill-lint.sh).
-- **S12** — [설정/훅 활성화 표면](https://github.com/donchitos/claude-code-game-studios/blob/abc0de79d6ceb0b5d7aa693945849b3937afbe6a/.claude/settings.json).
+- **S12** — [설정/훅 활성화 표면](https://github.com/donchitos/claude-code-game-studios/tree/abc0de79d6ceb0b5d7aa693945849b3937afbe6a/.claude) (`settings.json` 및 훅 설정, `source.json` 참조).
 
 소스 문서는 이 연구 시점의 관측이며 움직이는 최신 브랜치의 보증이 아니다.
 선택 파일의 원본 URL과 바이트 해시는 `source.json`에, 공식 문서 조회 URL·SHA-256은

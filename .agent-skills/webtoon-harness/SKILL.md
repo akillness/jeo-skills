@@ -51,12 +51,12 @@ For pure recommendation or critique ("what should I read?"), answer directly —
 
 ```bash
 # Install this routing skill from jeo-skills
-npx skills add https://github.com/akillness/jeo-skills --skill webtoon-harness
+npx -y skills@1.7.0 add https://github.com/akillness/jeo-skills --skill webtoon-harness
 
 # Scaffold the full upstream harness (27 agents + 6 skills) into your project's .claude/
 bash scripts/install.sh                       # into ./ (current project)
 TARGET=/path/to/project bash scripts/install.sh
-GLOBAL=1 bash scripts/install.sh              # also install the skill globally (npx skills add -g)
+GLOBAL=1 bash scripts/install.sh              # also install the skill globally (npx -y skills@1.7.0 add -g)
 ```
 
 

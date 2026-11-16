@@ -1,6 +1,7 @@
 ---
 name: "ozz-animation"
 description: "Operate guillaumeblanc/ozz-animation for pinned-source preflight, glTF or FBX-to-ozz conversion, CMake/runtime integration, animation-job debugging, and format migration. Use when the request names ozz-animation, gltf2ozz, fbx2ozz, SamplingJob, BlendingJob, or LocalToModelJob. Preserve engine boundaries and asset rights; route generic Three.js animation to threejs-animation and The Forge integration to the-forge. Installing this guide does not install the library, SDKs, tools, or assets."
+allowed-tools: Read Write Edit Bash
 metadata:
   version: "1.0.0"
   source: "https://github.com/guillaumeblanc/ozz-animation"

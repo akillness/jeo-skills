@@ -20,7 +20,7 @@ function fail(message) {
 
 function nonEmptyString(value, label) {
   if (typeof value !== 'string' || value.trim() === '') {
-    fail(`${label} must be a non-empty string`);
+    fail(label + ' must be a non-empty string');
   }
 }
 
@@ -41,24 +41,24 @@ function validate(payload) {
 
   for (let index = 0; index < payload.evals.length; index += 1) {
     const item = payload.evals[index];
-    const label = `evals[${index}]`;
+    const label = 'evals[' + index + ']';
     if (!item || typeof item !== 'object' || Array.isArray(item)) {
-      fail(`${label} must be an object`);
+      fail(label + ' must be an object');
     }
     if (!Number.isInteger(item.id) || item.id < 1) {
-      fail(`${label}.id must be a positive integer`);
+      fail(label + '.id must be a positive integer');
     }
     if (ids.has(item.id)) {
-      fail(`${label}.id duplicates ${item.id}`);
+      fail(label + '.id duplicates ' + item.id);
     }
     ids.add(item.id);
-    nonEmptyString(item.prompt, `${label}.prompt`);
-    nonEmptyString(item.expected_output, `${label}.expected_output`);
+    nonEmptyString(item.prompt, label + '.prompt');
+    nonEmptyString(item.expected_output, label + '.expected_output');
     if (!Array.isArray(item.assertions) || item.assertions.length < 3) {
-      fail(`${label}.assertions must contain at least three items`);
+      fail(label + '.assertions must contain at least three items');
     }
     for (let assertionIndex = 0; assertionIndex < item.assertions.length; assertionIndex += 1) {
-      nonEmptyString(item.assertions[assertionIndex], `${label}.assertions[${assertionIndex}]`);
+      nonEmptyString(item.assertions[assertionIndex], label + '.assertions[' + assertionIndex + ']');
     }
     assertionCount += item.assertions.length;
     if (/route-out|routes? to|technical-writing|audit-verify-explain-grade-5/i.test(item.expected_output)) {
@@ -99,7 +99,7 @@ async function main() {
   try {
     payload = JSON.parse(await readFile(inputPath, 'utf8'));
   } catch (error) {
-    console.error(`FAIL input=${inputPath} error=${error.message}`);
+    console.error('FAIL input=' + inputPath + ' error=' + error.message);
     return 1;
   }
 
@@ -109,12 +109,12 @@ async function main() {
       console.log(JSON.stringify({ ...report, input: inputPath }, null, 2));
     } else {
       console.log(
-        `PASS skill=${report.skill_name} evals=${report.evals} assertions=${report.assertions} route_out_cases=${report.route_out_cases}`,
+        'PASS skill=' + report.skill_name + ' evals=' + report.evals + ' assertions=' + report.assertions + ' route_out_cases=' + report.route_out_cases,
       );
     }
     return 0;
   } catch (error) {
-    console.error(`FAIL input=${inputPath} error=${error.message}`);
+    console.error('FAIL input=' + inputPath + ' error=' + error.message);
     return 1;
   }
 }

@@ -9,7 +9,7 @@
 - Immutable commit: `f9f05cd988c247dce6c072eaf9ac6b162f2ffc4b`.
 - Commit timestamp: `2026-08-21T05:23:23Z`.
 - Observation UTC: `2026-10-15T16:26:03Z`.
-- Source tree endpoint: https://api.github.com/repos/superdesigndev/superdesign-skill/git/trees/f9f05cd988c247dce6c072eaf9ac6b162f2ffc4b?recursive=1
+- Source tree endpoint: GitHub Git Trees API for `superdesigndev/superdesign-skill` at commit `f9f05cd988c247dce6c072eaf9ac6b162f2ffc4b` (`recursive=1`)
 - Tree response reported `truncated: false`; LICENSE was present at repository root.
 
 ## Resolution method
@@ -43,7 +43,7 @@ Every link is pinned; headings, symbols and ranges identify inspected material.
 
 ## Operational facts and caveats
 
-The current upstream skill uses `npx --yes @superdesign/cli@latest`, whereas README
+The current upstream skill documents running `@superdesign/cli` (`@latest` via package runner), whereas README
 installation examples also describe a global CLI install. Both execute external code;
 neither was run. An immutable documentation pin does not pin that mutable runner.
 Require separate installation/execution consent and verify help in an authorized session.

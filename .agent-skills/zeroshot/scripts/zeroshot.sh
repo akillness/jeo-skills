@@ -473,7 +473,7 @@ preflight() {
   if [ "$provider" = 'gateway' ]; then
     say 'provider.configuration=NOT_VALIDATED_UPSTREAM_RUN_PREFLIGHT_REMAINS_AUTHORITATIVE'
   else
-    say 'provider.authentication=NOT_VALIDATED_PROVIDER_CLI_OWNS_LOGIN'
+    say 'provider.authentication=UNVALIDATED_PROVIDER_CLI_OWNS_LOGIN'
   fi
   say "config=${config:-CONDUCTOR_DEFAULT}"
   say "workers=${workers:-WORKFLOW_DEFAULT}"

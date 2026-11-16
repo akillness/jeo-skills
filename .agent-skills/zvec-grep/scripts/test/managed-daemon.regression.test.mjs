@@ -429,14 +429,14 @@ test("warning store distinguishes absent records from malformed and unreadable r
   mkdirSync(store.directory, { recursive: true });
   const path = store.path(root);
   writeFileSync(path, '{broken json');
-  assert.throws(() => store.read(root), 'malformed JSON must not be treated as no warning');
+  assert.throws(() => store.read(root), 'malformed JSON must not be treated as an absent warning');
   assert.throws(() => store.clearIfResolvedBy(root, Date.now()), 'a malformed warning must not be cleared');
   assert.equal(readFileSync(path, 'utf8'), '{broken json', 'a malformed warning must remain at its canonical path');
   writeFileSync(path, JSON.stringify({ code: 4, message: 'invalid' }));
-  assert.throws(() => store.read(root), 'invalid warning fields must not be treated as no warning');
+  assert.throws(() => store.read(root), 'invalid warning fields must not be treated as an absent warning');
   rmSync(path);
   mkdirSync(path);
-  assert.throws(() => store.read(root), 'an unreadable warning path must not be treated as no warning');
+  assert.throws(() => store.read(root), 'an unreadable warning path must not be treated as an absent warning');
 });
 
 test("timed-out search is abandoned, records warning, and verified recovery reports it once", async (t) => {

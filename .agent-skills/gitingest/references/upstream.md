@@ -42,7 +42,7 @@ Observed locally (2026-11-06, PyPI `gitingest==0.3.1` in a throwaway Python 3.11
 ## Hosted service
 
 - The README's tagline and usage say to replace `hub` with `ingest` in any GitHub URL. That request goes to gitingest.com, which clones and digests the repository on the operator's servers.
-- The server's web form (`src/server/templates/components/git_form.jinja`) has a "Private Repository" checkbox and a password-style "Personal Access Token" field. A token typed there is sent to whoever runs the site.
+- The server's web form (`src/server/templates/components/git_form.jinja`) has a "Private Repository" checkbox and a password-style "Personal GitHub PAT" field. A token typed there is sent to whoever runs the site.
 - README stack lists PostHog analytics and Sentry error tracking for the hosted/server application.
 
 ## Safety findings
@@ -55,7 +55,7 @@ Observed locally (2026-11-06, PyPI `gitingest==0.3.1` in a throwaway Python 3.11
 
 ## Self-host
 
-- Docker: `docker build -t gitingest .` then `docker run -d --name gitingest -p 8000:8000 gitingest`; `ALLOWED_HOSTS` defaults to `gitingest.com, *.gitingest.com, localhost, 127.0.0.1`. `compose.yml` has `app` (prod), `app-dev` and `minio` services; the README lists default MinIO credentials `minioadmin` / `minioadmin` and app S3 credentials `gitingest` / `gitingest123`, and a metrics port bound to `127.0.0.1:9090` by default.
+- Docker: `docker build -t gitingest:0.3.1 .` then `docker run -d --name gitingest -p 8000:8000 gitingest:0.3.1`; `ALLOWED_HOSTS` defaults to `gitingest.com, *.gitingest.com, localhost, 127.0.0.1`. `compose.yml` has `app` (prod), `app-dev` and `minio` services; the README lists default MinIO credentials `minioadmin` / `minioadmin` and app S3 credentials `gitingest` / `gitingest123`, and a metrics port bound to `127.0.0.1:9090` by default.
 - Sentry: `GITINGEST_SENTRY_SEND_DEFAULT_PII` defaults to `"true"` when Sentry is enabled; `GITINGEST_SENTRY_ENABLED` and `GITINGEST_SENTRY_DSN` turn it on.
 - [INFERENCE] The server accepts repository URLs from clients, so it is plausibly an SSRF and resource-exhaustion surface; the audit did not review its hardening. Put it behind the user's own access control and change every default credential.
 

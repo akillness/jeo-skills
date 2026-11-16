@@ -8,7 +8,7 @@ This guide implements a spinner by:
 - Styling the component with `conic-gradient()` to create a visual "trail" and `background-clip: border-area` to hollow out the center into a ring.
 - Animating the spinner efficiently using CSS transforms and respecting `prefers-reduced-motion` to ensure a comfortable experience for all users.
 
-See `progress-ring` (via `npx -y modern-web-guidance@latest retrieve "progress-ring"`) for handling determinate tasks with a known duration.
+See `progress-ring` (via `npx -y modern-web-guidance@1.0.0 retrieve "progress-ring"`) for handling determinate tasks with a known duration.
 
 
 ## Implementation

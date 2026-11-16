@@ -182,7 +182,7 @@ If the user already asked for the finished artifact, produce the chosen document
 
 **Good output direction**
 - mode: `adr`
-- capture context, decision, alternatives, consequences, follow-up
+- document the problem context, decision, alternatives, consequences, follow-up
 - keep the document short and decision-focused
 
 ### Example 3: Incident runbook

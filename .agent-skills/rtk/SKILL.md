@@ -145,7 +145,7 @@ Use `bash scripts/check-status.sh --show` as the first diagnostic pass, then bra
 - Wrong binary installed: fix the name collision and reinstall
 - Hook missing or stale: rerun the correct `rtk init` mode
 - Agent still verbose: confirm whether the task used shell commands or built-in tools
-- PATH issue: ensure `~/.local/bin` or `~/.cargo/bin` is on `PATH`
+- PATH issue: ensure `$HOME/.local/bin` or `$HOME/.cargo/bin` is on `PATH`
 - Windows wrapper failure: recommend RTK `0.23.1+`
 
 The troubleshooting matrix is in [references/troubleshooting.md](references/troubleshooting.md).

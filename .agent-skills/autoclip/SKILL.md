@@ -94,7 +94,7 @@ Supported caption styles:
 - `clean_lower`: Minimal lower-third subtitle without bounce animation.
 - `boxed`: High-contrast text on solid background blocks.
 
-All intermediate artifacts and exported clips are saved in `~/.autoclip/work/{job_id}/`.
+All intermediate artifacts and exported clips are saved in `$HOME/.autoclip/work/{job_id}/`.
 
 ### Step 4: Review and adjust clips
 To inspect, preview, and trim clips visually:
@@ -115,7 +115,7 @@ Workflow:
    ```bash
    autoclip clip ./interview.mp4 --style karaoke_fill --aspect 9:16
    ```
-3. Check generated jobs with `autoclip jobs` and verify exported MP4 files in `~/.autoclip/work/<job_id>/`.
+3. Check generated jobs with `autoclip jobs` and verify exported MP4 files in `$HOME/.autoclip/work/<job_id>/`.
 4. Report clip titles, durations, and output paths to user.
 
 ## Best practices
@@ -123,7 +123,7 @@ Workflow:
 - **Ensure full FFmpeg build:** Always check that FFmpeg has `libass`. If plain `ffmpeg` was installed on macOS via Homebrew, captions fail silently with `No such filter: ass`. Reinstall with `brew install ffmpeg-full`.
 - **Match model to material:** A small 7B model finds obvious topic breaks, while a frontier model (Claude 3.5 Sonnet, GPT-4o) spots subtle narrative hooks and jokes with significantly higher accuracy.
 - **Shot-independent cropping:** AutoClip detects scene cuts first and crops frames independently. Never force smooth camera pan interpolation across hard cuts.
-- **Local storage cleanup:** Long video jobs produce audio WAVs, frame crops, and temporary segments under `~/.autoclip/work/`. Regularly clean up finished job folders after exporting.
+- **Local storage cleanup:** Long video jobs produce audio WAVs, frame crops, and temporary segments under `$HOME/.autoclip/work/`. Regularly clean up finished job folders after exporting.
 
 ## References
 

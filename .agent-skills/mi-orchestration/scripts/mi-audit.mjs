@@ -74,7 +74,7 @@ async function reader(root) {
     requireValue(++count <= 1000, 'too_many_artifacts');
     const safe = relativePath(relative), target = path.resolve(absolute, ...safe.split('/'));
     const inside = path.relative(absolute, target);
-    requireValue(inside && !inside.startsWith(`..${path.sep}`) && !path.isAbsolute(inside), 'path_escape');
+    requireValue(inside && !inside.startsWith('..' + path.sep) && !path.isAbsolute(inside), 'path_escape');
     const before = await inspectChain(target, false);
     requireValue(before.size <= MAX_BYTES, 'file_too_large');
     const handle = await fs.open(target, constants.O_RDONLY | (constants.O_NOFOLLOW ?? 0));
@@ -248,6 +248,6 @@ export async function main(argv = process.argv.slice(2)) {
     const options = parseArgs(argv);
     outcome = options.help ? { exitCode: 0, result: { ...envelope('help', 'help'), usage: ['node scripts/mi-audit.mjs check --root DIR --manifest RELPATH [--since ISO]', 'node scripts/mi-audit.mjs plan --root DIR --manifest RELPATH [--since ISO]', 'node scripts/mi-audit.mjs --help'], partial_alert_contract: 'On hold, inbox is one nonempty UTF-8 artifact starting with MI_PARTIAL_ALERT on its own line. This is only a structural alert marker.', exit_codes: { 0: 'verified or no-op plan', 1: 'not_verified, blocked or stale', 2: 'invalid input or error' } } } : await audit(options);
   } catch (error) { outcome = { exitCode: 2, result: { ...envelope('check', 'error'), issues: [{ code: error instanceof AuditError ? error.code : 'invalid_arguments' }] } }; }
-  process.stdout.write(`${JSON.stringify(outcome.result)}\n`); return outcome.exitCode;
+  process.stdout.write(JSON.stringify(outcome.result) + '\n'); return outcome.exitCode;
 }
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) process.exitCode = await main();

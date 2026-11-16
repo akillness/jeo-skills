@@ -86,13 +86,13 @@ Do not apply any styling that changes the dimensions of the tab (e.g., `padding`
 }
 ```
 
-To animate the underline between tabs, move the pseudo-element to the tablist and tether it to the selected tab with anchor positioning. See `anchor-positioning-tab-underline` (via `npx -y modern-web-guidance@latest retrieve "anchor-positioning-tab-underline"`) for details.
+To animate the underline between tabs, move the pseudo-element to the tablist and tether it to the selected tab with anchor positioning. See `anchor-positioning-tab-underline` (via `npx -y modern-web-guidance@1.0.0 retrieve "anchor-positioning-tab-underline"`) for details.
 
 
 - DO NOT put padding, borders, margins, or backgrounds on the panel element itself. `hidden=until-found` does not use `display: none`: it only hides the panel's contents, so a hidden panel still renders its padding, border, margin, and background as an empty strip. Put these styles on a child wrapper inside the panel instead.
 - `hidden=until-found` panels still participate in grid and flex layout, so `gap` adds space for every hidden panel. Place all panels in the same grid cell, or avoid `gap` between panels.
 
-See `search-hidden-content` (via `npx -y modern-web-guidance@latest retrieve "search-hidden-content"`) for more details.
+See `search-hidden-content` (via `npx -y modern-web-guidance@1.0.0 retrieve "search-hidden-content"`) for more details.
 
 ## Handling tabs that don’t fit
 
@@ -108,7 +108,7 @@ Optionally, also shrink the inactive tabs, so more tabs fit before either kicks 
 
 1. Make the tablist a horizontal scroll container: `display: flex`, `overflow-x: auto`, and `flex: none` on the tabs so they never shrink (unless combined with strategy 3).
 2. Optional: snap to tab edges with `scroll-snap-type: inline proximity` on the tablist and `scroll-snap-align: start` on the tabs. Use `proximity`, not `mandatory`, so the user can still stop between tabs.
-3. Hide the scrollbar and fade out each edge of the tablist that has more tabs beyond it, as described below. A fade suits a row of tabs better than a shadow, and works on any background. See `scrollability-affordance-hints` (via `npx -y modern-web-guidance@latest retrieve "scrollability-affordance-hints"`) for more details on scrollability hints.
+3. Hide the scrollbar and fade out each edge of the tablist that has more tabs beyond it, as described below. A fade suits a row of tabs better than a shadow, and works on any background. See `scrollability-affordance-hints` (via `npx -y modern-web-guidance@1.0.0 retrieve "scrollability-affordance-hints"`) for more details on scrollability hints.
 4. On every selection change, scroll the selected tab into view with `scrollIntoView({ block: 'nearest', inline: 'nearest', container: 'nearest' })`. `container: 'nearest'` scrolls only the tablist, not the page. Clicking a partially visible tab then reveals it along with part of the next one, so mouse users without a horizontal scroll wheel can still reach every tab. It also covers selection without focus, such as find-in-page.
 
 #### Fading the edges
@@ -173,7 +173,7 @@ Fade the content with a mask on the scroller itself: an opaque layer minus a gra
 ### Strategy 2: overflow menu
 
 Hide the tabs that don’t fit and list them in a menu opened by a “More” button after the tablist.
-Build the button and its menu as a menu button; see `menu` (via `npx -y modern-web-guidance@latest retrieve "menu"`) for structure, positioning, and keyboard behavior.
+Build the button and its menu as a menu button; see `menu` (via `npx -y modern-web-guidance@1.0.0 retrieve "menu"`) for structure, positioning, and keyboard behavior.
 The rest of this section covers only what is specific to tabs.
 
 - **Place the “More” button outside the tablist.** A tablist may only contain tabs. This makes it a separate `Tab` stop that arrow keys do not reach. If arrow-key access matters more, move focus from the last visible tab to the “More” button on `ArrowRight`/`End`, and back on `ArrowLeft`. The tablist itself does nothing at its last tab, so this does not conflict with it, but it is custom key handling that users of the tab pattern may not expect.
@@ -240,7 +240,7 @@ It is more well suited to user-driven tablists (e.g. a document editor) rather t
 - Let inactive tabs shrink and keep the selected tab at its full width: `flex: 0 1 auto` on the tabs, and `min-inline-size: max-content` on the selected tab, which also overrides any `max-inline-size`, so its label is never truncated. DO NOT use `flex-shrink: 0` for this: it cannot transition smoothly (see below).
 - Set a `min-inline-size` on the tabs. Once every inactive tab is at its minimum, the remaining overflow is handled by scrolling or the overflow menu.
 - Truncate shrunk labels with `text-overflow: ellipsis`. Put the label in its own element, so `overflow: hidden` applies to the text only and an icon beside it is never clipped.
-- Keep the full label in the DOM, so the accessible name and find-in-page are unaffected. Reveal it by scrolling the label inside the tab on hover, and on focus when activation is manual (with automatic activation the focused tab is selected, so it is already full width). See `single-line-overflow` (via `npx -y modern-web-guidance@latest retrieve "single-line-overflow"`) for more details.
+- Keep the full label in the DOM, so the accessible name and find-in-page are unaffected. Reveal it by scrolling the label inside the tab on hover, and on focus when activation is manual (with automatic activation the focused tab is selected, so it is already full width). See `single-line-overflow` (via `npx -y modern-web-guidance@1.0.0 retrieve "single-line-overflow"`) for more details.
 - If tabs have icons, keep the icon visible and truncate only the label, so a minimum-width tab is still recognizable.
 - Transition `min-inline-size` so tabs resize smoothly when the selection changes, instead of jumping. Set `interpolate-size: allow-keywords` on the tablist so it interpolates to and from `max-content`; no view transition is needed. Only transition it when `prefers-reduced-motion` is `no-preference`. Transitioning `flex-shrink` does not work: any value above 0 shrinks a tab all the way to its minimum when the tabs overflow.
 

@@ -121,8 +121,8 @@ can be specified explicitly or resolved automatically. When `host` is omitted or
 detection checks active environment variables (`SECOND_BRAIN_HOST`, `JEO_SECOND_BRAIN_HOST`,
 `JEV_AGENT`, `JEOPI_HOME`, `OMP_HOME`, `JEO_CONFIG`, `CODEX_HOME`, `CLAUDE_CONFIG_DIR`)
 before existing host configuration files (`~/.jeopi/agent/settings.json`,
-`~/.omp/agent/settings.json`, `~/.jeo/config.json`, `~/.codex/config.toml`,
-`~/.claude/settings.json`, `~/.pi/agent/settings.json`, `~/.gjc/agent/settings.json`).
+`~/.omp/agent/settings.json`, `~/.jeo/config.json`, default Codex `config.toml`,
+default Claude `settings.json`, `~/.pi/agent/settings.json`, `~/.gjc/agent/settings.json`).
 
 Vault/inbox parents must already exist unless the inbox is inside the newly
 created vault outside its reserved trees. Arbitrary existing vaults or inboxes,

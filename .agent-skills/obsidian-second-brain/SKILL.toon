@@ -20,7 +20,7 @@ U[6]:
 
 S[5]{n,action,details}:
   1,Classify into a layer,Pick Operations/Thinking/Context/Research first, then the command; state the route explicitly (e.g. "Operations → /obsidian-ingest")
-  2,Honor the AI-first vault rule,Every note: `## For future Claude` preamble + retrieval frontmatter · rewrite don't append · bi-temporal facts · Two-Output Rule · raw/ is immutable
+  2,Honor the AI-first vault rule,Every note: `## For future Claude` preamble + retrieval frontmatter · rewrite don't append · bi-temporal facts · Dual-Output Policy · raw/ is immutable
   3,Run the command and propagate,ingest saves raw/ then rewrites 5-15 pages, resolves contradictions, synthesizes, updates index/log/daily
   4,Install per CLI,Plugin: `npx skills add https://github.com/akillness/jeo-skills --skill obsidian-second-brain` · upstream Claude Code quick-install · Codex/Gemini/OpenCode via build.sh
   5,Automate to keep alive,Background agent (post-compaction) + scheduled morning/nightly/weekly/health agents + save reminders

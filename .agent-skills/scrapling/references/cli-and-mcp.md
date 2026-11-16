@@ -34,7 +34,7 @@ Examples:
 
 ```bash
 scrapling extract get "https://example.com" article.md
-scrapling extract post "https://api.example.com/search" result.html --json '{"query":"shoes"}'
+scrapling extract post "https://example.com/api/search" result.html --json '{"query":"shoes"}'
 scrapling extract fetch "https://app.example.com" dashboard.md --network-idle
 scrapling extract stealthy-fetch "https://protected.example.com" data.txt --solve-cloudflare
 ```

@@ -34,8 +34,7 @@ claude plugin marketplace add zep-us/zeude
 ```bash
 git clone https://github.com/zep-us/zeude.git
 cd zeude
-cp .env.example .env
-# Configure Supabase and ClickHouse credentials in .env
+# Copy .env.example to your local environment file and configure Supabase and ClickHouse credentials (see upstream README)
 
 # Start dashboard
 cd zeude/dashboard && pnpm install && pnpm dev
@@ -43,7 +42,7 @@ cd zeude/dashboard && pnpm install && pnpm dev
 
 ### Skill (any platform)
 ```bash
-npx skills add https://github.com/akillness/jeo-skills --skill zeude
+npx skills@1.9.0 add https://github.com/akillness/jeo-skills --skill zeude
 ```
 
 ## Requirements
@@ -82,7 +81,7 @@ Guidance  → User prompts → Hook analysis → Context-aware skill suggestions
 Zeude captures every Claude Code session via OpenTelemetry without modifying developer behavior.
 
 ```bash
-# Configure OTEL endpoint in .env
+# Configure OTEL endpoint in your local environment config
 OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
 CLICKHOUSE_DSN=clickhouse://...
 ```
@@ -98,8 +97,12 @@ Dashboard shows:
 The **Zeude Shim** intercepts `claude` commands and syncs centralized config before passing control to the real Claude CLI.
 
 ```bash
-# Per-developer install (using agent key from dashboard)
-curl -fsSL https://raw.githubusercontent.com/zep-us/zeude/main/install.sh | bash -s -- --key <AGENT_KEY>
+# Per-developer install (inspect the installer script before running with your agent key from dashboard)
+TMP_ZEUDE_INSTALL="$(mktemp)"
+curl -fsSL https://raw.githubusercontent.com/zep-us/zeude/main/install.sh -o "$TMP_ZEUDE_INSTALL"
+less "$TMP_ZEUDE_INSTALL"
+bash "$TMP_ZEUDE_INSTALL" --key <AGENT_KEY>
+rm -f -- "$TMP_ZEUDE_INSTALL"
 ```
 
 Config synced on every invocation:
@@ -119,7 +122,7 @@ Zeude uses 2-tier keyword matching to deliver relevant skill suggestions at prom
 ## Dashboard API
 
 ```bash
-# Start dashboard (after .env configuration)
+# Start dashboard (after local environment configuration)
 cd dashboard && pnpm dev
 
 # Available endpoints (via dashboard)

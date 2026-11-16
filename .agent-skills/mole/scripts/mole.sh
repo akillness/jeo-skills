@@ -55,7 +55,7 @@ case "$cmd" in
     else
       echo "  info  mole           not on PATH"
       echo "        brew install mole"
-      echo "        curl -fsSL https://raw.githubusercontent.com/tw93/mole/main/install.sh | bash"
+      echo "        curl -fsSL https://raw.githubusercontent.com/tw93/mole/main/install.sh -o mole-install.sh && less mole-install.sh && bash mole-install.sh"
     fi
 
     if command -v brew >/dev/null 2>&1; then

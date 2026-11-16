@@ -28,7 +28,7 @@ R[6]:
   Telemetry is opt-out by default — mention DO_NOT_TRACK=1 / MEX_TELEMETRY=0 / `mex-agent config set telemetry off` if the user cares
 
 E[4]{type,command}:
-  Install skill,npx skills add https://github.com/akillness/jeo-skills --skill mex
+  Install skill,npx skills@1.9.0 add https://github.com/akillness/jeo-skills --skill mex
   Auto-install + wiki,bash .agent-skills/mex/scripts/install.sh ~/code/my-project
   Detect drift,mex-agent check   (then: mex-agent sync)
   Doctor,bash .agent-skills/mex/scripts/mex.sh doctor /path/to/project

@@ -3,7 +3,7 @@
 Each operator ships an offline `scripts/preflight.py` that reads host facts and never runs the
 upstream program, opens a socket, or writes a file. This module runs those helpers for the installed
 skills, folds their JSON into one short report, and keeps "blocked" (a missing prerequisite) apart
-from "error" (a helper that could not report). It installs nothing, so no approval is needed to run it.
+from "error" (a helper that could not report). It installs nothing and remains strictly read-only.
 
 Exit codes of `report`: 0 every program is ready, 1 at least one is blocked or not installed,
 2 a helper failed to produce a valid report.
@@ -23,7 +23,31 @@ MAX_OUTPUT = 1 << 20
 DETAIL_WIDTH = 170
 LABELS = {"ready": "ready", "blocked": "blocked", "error": "error", "missing": "not installed"}
 STATE_FROM_STATUS = {"ok": "ready", "blocked": "blocked", "error": "error"}
+_SAFE_READINESS_ENV_KEYS = (
+    "PATH",
+    "HOME",
+    "TMPDIR",
+    "TEMP",
+    "TMP",
+    "LANG",
+    "LC_ALL",
+    "LC_CTYPE",
+    "LC_MESSAGES",
+    "XDG_CONFIG_HOME",
+    "XDG_DATA_HOME",
+    "XDG_CACHE_HOME",
+    "XDG_STATE_HOME",
+    "PYTHONDONTWRITEBYTECODE",
+    "VIRTUAL_ENV",
+    "UV_CACHE_DIR",
+    "UV_TOOL_DIR",
+    "UV_TOOL_BIN_DIR",
+    "SSL_CERT_FILE",
+    "SSL_CERT_DIR",
+)
 
+def _readiness_env() -> dict[str, str]:
+    return {k: v for k in _SAFE_READINESS_ENV_KEYS if (v := os.environ.get(k)) is not None}
 
 def helper_path(root: Path, name: str) -> Path:
     return root / name / "scripts" / "preflight.py"
@@ -43,9 +67,10 @@ def probe(root: Path, name: str, timeout: float = TIMEOUT) -> dict:
         result.update(state="missing", detail=f"{script.parent.parent.name} has no preflight helper at {script}")
         return result
     _, command = plan(root, [name])[0]
+    probe_env = _readiness_env()
     try:
         done = subprocess.run(command, capture_output=True, text=True, encoding="utf-8", errors="replace",
-                              timeout=timeout, check=False, stdin=subprocess.DEVNULL, env=os.environ.copy())
+                              timeout=timeout, check=False, stdin=subprocess.DEVNULL, env=probe_env)
     except subprocess.TimeoutExpired:
         result["detail"] = f"helper did not finish within {timeout:g} s"
         return result

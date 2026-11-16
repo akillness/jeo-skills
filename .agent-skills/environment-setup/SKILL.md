@@ -22,7 +22,7 @@ metadata:
 
 # Environment Configuration
 
-Use this skill as the repository's **narrower application-config and `.env` compatibility skill**.
+Use this skill as the **narrower application-config and `.env` compatibility skill**.
 
 The job is to make app configuration clear and safe across environments:
 - decide what belongs in env vars,

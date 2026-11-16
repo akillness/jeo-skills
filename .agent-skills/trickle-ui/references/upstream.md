@@ -55,7 +55,7 @@ notice with reused code, not merely this summary.
 
 [LICENSE-DEMOS](https://github.com/akaieuan/trickle-UI-kit/blob/41129071f15271046bdca5d2ca332231b59e8d4d/LICENSE-DEMOS)
 was fetched in its entirety. It dedicates only registry/examples files under CC0 1.0;
-allows copying, modification, distribution and commercial use without asking permission;
+allows copying, modification, distribution and commercial use without requesting additional permission;
 states all other repository files are MIT; and links the full CC0 legal text at
 https://creativecommons.org/publicdomain/zero/1.0/ . The file is a scoped dedication,
 not an included copy of that full legal code. The external full legal code was not

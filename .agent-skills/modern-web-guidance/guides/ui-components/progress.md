@@ -6,8 +6,8 @@ This guide implements a fully styled horizontal progress bar with style customiz
 
 ## Progress bar or progress ring?
 
-- If space is constrained or a square aspect ratio is preferable, consider using a circular progress bar (progress ring): `progress-ring` (via `npx -y modern-web-guidance@latest retrieve "progress-ring"`)
-- Prefer spinners for most indeterminate progress scenarios (`spinner` (via `npx -y modern-web-guidance@latest retrieve "spinner"`)). Use indeterminate progress bars when the indeterminate state is temporary and will soon be replaced by a determinate progress bar (e.g. waiting for metadata around an upload before a progress % can be shown)
+- If space is constrained or a square aspect ratio is preferable, consider using a circular progress bar (progress ring): `progress-ring` (via `npx -y modern-web-guidance@1.0.0 retrieve "progress-ring"`)
+- Prefer spinners for most indeterminate progress scenarios (`spinner` (via `npx -y modern-web-guidance@1.0.0 retrieve "spinner"`)). Use indeterminate progress bars when the indeterminate state is temporary and will soon be replaced by a determinate progress bar (e.g. waiting for metadata around an upload before a progress % can be shown)
 
 ## Markup
 

@@ -207,7 +207,7 @@
 
 ### Guidelines
 
-See `declarative-dialog-popover-control` (via `npx -y modern-web-guidance@latest retrieve "declarative-dialog-popover-control"`) for more info on fallback strategies for using the Popover API in a cross-browser way.
+See `declarative-dialog-popover-control` (via `npx -y modern-web-guidance@1.0.0 retrieve "declarative-dialog-popover-control"`) for more info on fallback strategies for using the Popover API in a cross-browser way.
 - **DO** use `<dialog>` for modal overlays (requires JS `.showModal()`) to automatically trap focus, dim backgrounds, and support dismissing via `Esc`. Use the `closedby="any"` attribute to enable native "light-dismiss" (closing on backdrop click) without custom JavaScript.
 - **DO** provide a visible control for closing modal overlays, so that people using voice control software can easily determine how to dismiss the modal dialog.
 - **DO** utilize the Popover API (`popover` attribute) for non-modal UI (menus, tooltips) that do not require focus traps.
@@ -332,7 +332,7 @@ See `declarative-dialog-popover-control` (via `npx -y modern-web-guidance@latest
 
 ### Guidelines
 
-See `forms` (via `npx -y modern-web-guidance@latest retrieve "forms"`) for more details on creating modern web forms.
+See `forms` (via `npx -y modern-web-guidance@1.0.0 retrieve "forms"`) for more details on creating modern web forms.
 
 - **DO** utilize the `form="form-id"` attribute to decouple inputs from the physical `<form>` tree.
 - **DO** use `<datalist>` coupled with `<input list="id">` for lightweight auto-suggestions (note: visually unstylable and has screen-reader quirks).

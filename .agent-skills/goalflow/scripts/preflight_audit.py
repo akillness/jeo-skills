@@ -74,11 +74,14 @@ def is_git_repo(repo: str) -> bool:
 
 
 def walk_sources(repo: str):
-    for root, dirs, files in os.walk(repo):
-        dirs[:] = [d for d in dirs if d not in SKIP_DIRS]
+    for root, dirs, files in os.walk(repo, followlinks=False):
+        dirs[:] = [d for d in dirs if d not in SKIP_DIRS and not os.path.islink(os.path.join(root, d))]
         for name in files:
+            full = os.path.join(root, name)
+            if os.path.islink(full):
+                continue
             if name.endswith(SOURCE_SUFFIXES) or name.startswith(".env"):
-                yield os.path.join(root, name)
+                yield full
 
 
 def read(path: str) -> str:
@@ -91,6 +94,14 @@ def read(path: str) -> str:
 
 def audit(repo: str) -> list[dict]:
     findings: list[dict] = []
+    if not os.path.isdir(repo):
+        return [{
+            "id": "invalid_repo",
+            "severity": "blocker",
+            "message": f"Target directory does not exist: {repo}",
+            "remediation": "Pass a valid checkout directory.",
+            "evidence": [],
+        }]
 
     def add(severity, check_id, message, remediation, evidence=None):
         findings.append({

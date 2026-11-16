@@ -1,6 +1,7 @@
 ---
 name: "the-forge"
 description: "Operate The Forge graphics framework at its current Codeberg source: inspect pinned Windows/D3D12 scope, audit component licenses, plan example builds, integrate IApp/resources/FSL, and debug graphics ownership. Use when the request names The Forge, The-Forge/The-Forge, ForgeShadingLanguage, or its framework examples. Separate legacy ConfettiFX GitHub versions, commercial platforms, restricted SDKs, and build-started ReloadServer; route standalone ozz work to ozz-animation."
+allowed-tools: Read Write Edit Bash
 metadata:
   version: "1.0.0"
   source: "https://codeberg.org/The-Forge/The-Forge"

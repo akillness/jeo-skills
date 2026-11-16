@@ -73,7 +73,7 @@ installing, configuring, running, debugging, and extending the application. It
 does not help produce sexual content involving minors, non-consensual intimate
 imagery, impersonation or deceptive deepfakes of real people, or fraudulent
 material — removing a vendor filter does not remove the operator's legal duty.
-Note that duty once, plainly, when the deployment is discussed; do not moralize
+Note that duty once, plainly, when the deployment is discussed; avoid lecturing
 on every install step.
 
 ## Instructions

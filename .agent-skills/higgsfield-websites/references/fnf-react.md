@@ -180,7 +180,7 @@ Required behavior:
 - Video cards use raw URL for playback and thumbnail/preview URL as poster.
 - Completed jobs with no result URL show an explicit preview-unavailable state
   plus refresh/get behavior.
-- Show prompt, model, status, created time, and failure reason where available.
+- Render the generation input, model, status, created time, and failure reason where available.
 - Opening a ready History generation keeps the feed mounted and presents its
   image/video and metadata in the shipped detail surface. Previous/Next moves
   through the current filtered/sorted feed without closing. Close restores the
@@ -225,7 +225,7 @@ Never render a completed generation as a blank rectangle that only says
 
 `useAttachments` is the right default for upload controls:
 
-- Render uploading, ready, blocked, failed, retry, remove, and clear states.
+- Render uploading, ready, blocked, failed, retry, remove, and empty states.
 - Use the returned refs in job submit input.
 - Keep file names and upload URLs out of logs and observability.
 - Use it only with a media client whose upload path is valid for the current

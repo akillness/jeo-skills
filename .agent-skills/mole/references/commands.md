@@ -21,7 +21,7 @@ Straight from `lib/core/commands.sh`:
 | `history` | Review cleanup activity |
 | `purge` | Remove old project artifacts |
 | `installer` | Find and remove installer files |
-| `touchid` | Configure Touch ID for sudo |
+| `touchid` | Configure Touch ID for elevated auth |
 | `completion` | Setup shell tab completion |
 | `update` | Update to latest version |
 | `remove` | Remove Mole from system |
@@ -151,12 +151,14 @@ and `~/.config/mole`.
 brew install mole      # homebrew-core (Formula/m/mole.rb) — NOT a tap
 brew upgrade mole
 
-curl -fsSL https://raw.githubusercontent.com/tw93/mole/main/install.sh | bash
-curl -fsSL https://raw.githubusercontent.com/tw93/mole/main/install.sh | bash -s -- 1.51.0
-curl -fsSL https://raw.githubusercontent.com/tw93/mole/main/install.sh | bash -s -- main
+curl -fsSL https://raw.githubusercontent.com/tw93/mole/main/install.sh -o mole-install.sh
+less mole-install.sh
+bash mole-install.sh
+bash mole-install.sh 1.51.0
+bash mole-install.sh main
 
 mkdir -p "$HOME/.local/bin"
-curl -fsSL https://raw.githubusercontent.com/tw93/mole/main/install.sh | bash -s -- --prefix "$HOME/.local/bin"
+bash mole-install.sh --prefix "$HOME/.local/bin"
 export PATH="$HOME/.local/bin:$PATH"
 ```
 
@@ -223,7 +225,7 @@ removed / trashed / skipped / failed.
 Written by `mo clean --dry-run` only — every candidate path. Read this file
 rather than the terminal summary when you need to reason about or show exactly
 what a real run would remove. `mo purge --dry-run` and
-`mo installer --dry-run` write no file.
+`mo installer --dry-run` do not emit a candidate file.
 
 ## Config, cache, and log paths
 
@@ -261,7 +263,7 @@ Default purge scan dirs when `purge_paths` is unset: `~/Projects`, `~/GitHub`,
 ### Development / test only — do not surface to end users
 
 `MOLE_DRY_RUN=1` (every safe-remove logs and returns 0 without touching the
-filesystem), `MOLE_TEST_NO_AUTH=1` (refuses sudo / `osascript` / `launchctl`;
+filesystem), `MOLE_TEST_NO_AUTH=1` (refuses elevation / `osascript` / `launchctl`;
 required for bats), `MOLE_TEST_MODE=1`, `MOLE_SKIP_MAIN=1`,
 `MOLE_ASSUME_SUDO_AUTH=1`, `MOLE_TEST_ANALYZE_BIN`, `MOLE_TEST_STATUS_BIN`,
 `MOLE_REQUIRE_ATTESTATION`, `MAX_RELEASE_MINOS` (default `13.0`).
@@ -280,7 +282,7 @@ required for bats), `MOLE_TEST_MODE=1`, `MOLE_SKIP_MAIN=1`,
 ## Quick launchers (Raycast / Alfred)
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/tw93/Mole/main/scripts/setup-quick-launchers.sh | bash
+curl -fsSL https://raw.githubusercontent.com/tw93/Mole/main/scripts/setup-quick-launchers.sh -o setup-launchers.sh && less setup-launchers.sh && bash setup-launchers.sh
 ```
 
 Installs launchers for Clean, Uninstall, Optimize, Analyze, and Status. Raycast

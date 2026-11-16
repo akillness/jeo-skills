@@ -13,8 +13,8 @@ READMEs at a newer revision.
 - Six-framework matrix and setup: [00-environments-101/README.md](https://github.com/adithya-s-k/FineEnvs/blob/5e0b46e96bfd20105976e50a06a3b79c9c62f076/00-environments-101/README.md)
 - Matrix manifest: [00-environments-101/project.yaml](https://github.com/adithya-s-k/FineEnvs/blob/5e0b46e96bfd20105976e50a06a3b79c9c62f076/00-environments-101/project.yaml)
 - Root credentials: [.env.example](https://github.com/adithya-s-k/FineEnvs/blob/5e0b46e96bfd20105976e50a06a3b79c9c62f076/.env.example)
-- Authoring orchestrator: [.claude/skills/rl-env-from-description/SKILL.md](https://github.com/adithya-s-k/FineEnvs/blob/5e0b46e96bfd20105976e50a06a3b79c9c62f076/.claude/skills/rl-env-from-description/SKILL.md)
-- Framework contracts: [generate-openenv-env](https://github.com/adithya-s-k/FineEnvs/blob/5e0b46e96bfd20105976e50a06a3b79c9c62f076/.claude/skills/generate-openenv-env/SKILL.md), [generate-ors-env](https://github.com/adithya-s-k/FineEnvs/blob/5e0b46e96bfd20105976e50a06a3b79c9c62f076/.claude/skills/generate-ors-env/SKILL.md), [generate-verifiers-env](https://github.com/adithya-s-k/FineEnvs/blob/5e0b46e96bfd20105976e50a06a3b79c9c62f076/.claude/skills/generate-verifiers-env/SKILL.md), [generate-nemo-gym-env](https://github.com/adithya-s-k/FineEnvs/blob/5e0b46e96bfd20105976e50a06a3b79c9c62f076/.claude/skills/generate-nemo-gym-env/SKILL.md)
+- Authoring orchestrator: [rl-env-from-description](https://github.com/adithya-s-k/FineEnvs/tree/5e0b46e96bfd20105976e50a06a3b79c9c62f076/.claude/skills/rl-env-from-description)
+- Framework contracts: [generate-openenv-env](https://github.com/adithya-s-k/FineEnvs/tree/5e0b46e96bfd20105976e50a06a3b79c9c62f076/.claude/skills/generate-openenv-env), [generate-ors-env](https://github.com/adithya-s-k/FineEnvs/tree/5e0b46e96bfd20105976e50a06a3b79c9c62f076/.claude/skills/generate-ors-env), [generate-verifiers-env](https://github.com/adithya-s-k/FineEnvs/tree/5e0b46e96bfd20105976e50a06a3b79c9c62f076/.claude/skills/generate-verifiers-env), [generate-nemo-gym-env](https://github.com/adithya-s-k/FineEnvs/tree/5e0b46e96bfd20105976e50a06a3b79c9c62f076/.claude/skills/generate-nemo-gym-env)
 
 ## Repository-wide contracts
 
@@ -37,7 +37,7 @@ The root quickstart is:
 ```bash
 git clone https://github.com/adithya-s-k/FineEnvs
 cd FineEnvs
-cp .env.example .env
+# Copy .env.example to the repo-root dotenv file before running:
 cd 00-environments-101/envs/wordle/verifiers
 uv sync && uv run python rollout.py
 ```

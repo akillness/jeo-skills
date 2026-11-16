@@ -8,7 +8,7 @@
 1. **分镜与设计是同一份文档、同一次确认。** 分镜表长在设计 spec 里
    （`| # | 时间 | 镜头 | 关键动效 |` 四列），用户一次确认同时放行风格细节
    与镜头结构——不设独立的分镜确认环节。
-2. **验收贯穿全程，不是最后一个阶段。** 每个镜头任务以 `npx remotion still`
+2. **验收贯穿全程，不是最后一个阶段。** 每个镜头任务以 `npx remotion@4.0.484 still`
    静帧肉眼验收收尾（产物按版本归档 `out/qa/`），每轮反馈修改后整片重渲。
    阶段 6 只是把这套贯穿动作升级为对照 aesthetic-rules.md 的正式自检报告。
 
@@ -177,7 +177,7 @@
 ## 阶段 4：逐镜头实现
 
 **前置条件**：需已有可跑的 Remotion 项目（30fps、1920×1080，`src/index.ts`
-注册 Composition；新项目可 `npx create-video@latest` 初始化后把
+注册 Composition；新项目可 `npx create-video@4.0.484` 初始化后把
 `assets/lib/` 组件 copy 进去；走模板路线则直接从 `template/` 起步）。
 
 **目标**：按帧级时间轴逐镜头落地，每镜头完成即自证质量——
@@ -194,10 +194,10 @@
 2. **PageCam 是一切"真实页面"镜头的地基**：整页纹理 + 关键帧 2.5D 相机 +
    页面空间 overlay，children 按页面 CSS px 定位、与 layout.json 共坐标系。
 3. **静帧验收（最高频动作）**：每镜头在计划里写死 2 个验收帧号，
-   完成即跑 `npx remotion still src/index.ts <Comp> out/qa/<name>.png
+   完成即跑 `npx remotion@4.0.484 still src/index.ts <Comp> out/qa/<name>.png
    --frame=<N>`，自己肉眼检查构图/穿帮/文字锐度后才算完成。
    静帧产物按迭代版本归档 `out/qa/`，用户贴帧反馈时可直接对号。
-4. **每轮修改后整片渲染**：`npx remotion render src/index.ts <Comp>
+4. **每轮修改后整片渲染**：`npx remotion@4.0.484 render src/index.ts <Comp>
    out/promo.mp4`，再用 `ffmpeg -i out/promo.mp4 -vf "select=eq(n,…)"`
    从成片抽关键帧回看。实际形态是"改哪个镜头就 still 哪几帧，
    然后整片重渲"，成本可接受且杜绝接缝意外。

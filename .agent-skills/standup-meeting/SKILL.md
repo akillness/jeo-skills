@@ -151,7 +151,7 @@ If the cadence is `no-recurring-standup`:
 ### Step 5: Produce one Coordination Cadence Brief
 Return one compact packet, not a general agile tutorial.
 
-```markdown
+````markdown
 # Coordination Cadence Brief
 
 ## Recommended cadence
@@ -198,7 +198,7 @@ Return one compact packet, not a general agile tutorial.
 - Use `task-planning` when ...
 - Use `task-estimation` when ...
 - Use `sprint-retrospective` when ...
-```
+````
 
 ### Step 6: Tailor the packet to the chosen mode or no-meeting outcome
 Use [references/intake-packets-and-route-outs.md](references/intake-packets-and-route-outs.md) for stable packet shapes.

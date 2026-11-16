@@ -53,7 +53,7 @@ Choose one primary mode before giving commands:
 ### Step 2: Confirm prerequisites truthfully
 
 Use the upstream project as source of truth:
-- `npx grab@latest init` is the default install path.
+- `npx grab@0.2.0 init` is the default install path (pin to the verified release).
 - Upstream `package.json` currently requires **Node.js >=22**.
 - The browser overlay is a **development-only** tool; never present it as a production feature.
 
@@ -67,7 +67,7 @@ Use this as the default path unless the user explicitly asks for MCP or plugins:
 
 ```bash
 # At the project root
-npx -y grab@latest init
+npx -y grab@0.2.0 init
 ```
 
 Then explain the runtime flow:
@@ -90,7 +90,7 @@ If the user needs framework-specific setup, use `references/install-and-routing.
 When the user wants programmatic access from the agent instead of manual paste:
 
 ```bash
-npx -y grab@latest add mcp
+npx -y grab@0.2.0 add mcp
 ```
 
 Explain the real flow clearly:
@@ -128,7 +128,7 @@ If the user wants fixes or teardown:
 - For removal, use upstream CLI removal commands:
 
 ```bash
-npx -y grab@latest remove <agent>
+npx -y grab@0.2.0 remove <agent>
 ```
 
 ### Step 4: Keep the boundary sharp
@@ -159,7 +159,7 @@ Keep the main answer short unless the user explicitly asks for the long path.
 
 **Response shape:**
 1. Confirm Node 22+ prerequisite.
-2. Use `npx -y grab@latest init` as the default path.
+2. Use `npx -y grab@0.2.0 init` as the default path.
 3. Explain dev-server → browser hover → Cmd/Ctrl+C → paste into Claude Code.
 4. Only load framework-specific setup if auto-detect is not viable.
 
@@ -169,7 +169,7 @@ Keep the main answer short unless the user explicitly asks for the long path.
 
 **Response shape:**
 1. Confirm Node 22+ prerequisite.
-2. Run `npx -y grab@latest add mcp`.
+2. Run `npx -y grab@0.2.0 add mcp`.
 3. Explain that the browser selection happens first, then the agent calls `get_element_context`.
 4. Route generic browser-control questions to `browser-harness` / `playwriter` if needed.
 
@@ -196,7 +196,7 @@ Keep the main answer short unless the user explicitly asks for the long path.
 ## Best practices
 
 1. **State the Node.js >=22 prerequisite truthfully** before recommending install commands.
-2. **Default to `npx -y grab@latest init`** unless the user explicitly needs manual framework setup.
+2. **Default to `npx -y grab@0.2.0 init`** unless the user explicitly needs manual framework setup.
 3. **Keep it dev-only** — never imply this belongs in production builds.
 4. **Explain clipboard vs MCP clearly** so users do not confuse paste-based and tool-based workflows.
 5. **Route broad browser or UI-review work out early** instead of letting `react-grab` absorb adjacent skills.

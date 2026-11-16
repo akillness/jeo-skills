@@ -98,7 +98,7 @@ interface Controller {
   jumpToSection: (index: number) => void;
 }
 
-type ThemeStyle = CSSProperties & Record<`--ss-${string}`, string | number>;
+type ThemeStyle = CSSProperties & Record<string, string | number | undefined>;
 
 const clamp = (value: number, min = 0, max = 1) =>
   Math.min(max, Math.max(min, value));
@@ -123,11 +123,11 @@ function buildSegments(
 
   for (const [index, scene] of scenes.entries()) {
     if (scene.mobileClip && !scene.mobilePoster) {
-      throw new Error(`Scene ${scene.id} needs mobilePoster for mobileClip`);
+      throw new Error("Scene " + scene.id + " needs mobilePoster for mobileClip");
     }
     result.push({
       clip: scene.clip,
-      key: `scene:${scene.id}`,
+      key: "scene:" + scene.id,
       kind: "scene",
       linger: scene.linger ?? 0,
       mobileClip: scene.mobileClip,
@@ -146,13 +146,13 @@ function buildSegments(
     if (index < scenes.length - 1 && connector?.clip) {
       if (connector.mobileClip && !connector.mobilePoster) {
         throw new Error(
-          `Connector after ${scene.id} needs mobilePoster for mobileClip`
+          "Connector after " + scene.id + " needs mobilePoster for mobileClip"
         );
       }
       const nextScene = scenes[index + 1];
       result.push({
         clip: connector.clip,
-        key: `connector:${scene.id}:${nextScene.id}`,
+        key: "connector:" + scene.id + ":" + nextScene.id,
         kind: "connector",
         linger: 0,
         mobileClip: connector.mobileClip,
@@ -318,7 +318,7 @@ export function ScrollScrub({
           signal: request.signal,
         });
         if (!response.ok) {
-          throw new Error(`Clip failed: ${response.status}`);
+          throw new Error("Clip failed: " + response.status);
         }
         const blob = await response.blob();
         if (
@@ -605,7 +605,7 @@ export function ScrollScrub({
             };
             return (
               <figure
-                className={`scroll-scrub__layer scroll-scrub__layer--${segment.kind}`}
+                className={"scroll-scrub__layer scroll-scrub__layer--" + segment.kind}
                 data-scroll-scrub-layer=""
                 key={segment.key}
                 style={layerStyle}
@@ -653,7 +653,7 @@ export function ScrollScrub({
       <div className="scroll-scrub__story">
         {segments.map((segment) => {
           const bandStyle: CSSProperties = {
-            minHeight: `${Math.max(segment.weight, 0.2) * 100}dvh`,
+            minHeight: Math.max(segment.weight, 0.2) * 100 + "dvh",
           };
 
           if (segment.kind === "connector") {

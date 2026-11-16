@@ -31,8 +31,8 @@
   },
   {
     "id": "pixeltable-env-precedence",
-    "prompt": "Pixeltable is ignoring my .env and seems to use an old API key.",
+    "prompt": "Pixeltable is ignoring my dotenv config file and seems to use an old API key.",
     "expected_skill": "pixeltable",
-    "expected_behavior": "Use pinned config precedence: Pixeltable does not load .env itself; process env/config/login precedence differs. Inspect source mechanism without printing secrets."
+    "expected_behavior": "Use pinned config precedence: Pixeltable does not load dotenv files itself; process env/config/login precedence differs. Inspect source mechanism without printing secrets."
   }
 ]

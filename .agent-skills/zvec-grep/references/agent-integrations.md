@@ -7,8 +7,8 @@ reference is pinned to upstream commit `6fa85a8e28c0b5a0f651c27f09f0247627c5d5c3
 
 | Target | Managed surface | Expected search tool |
 | --- | --- | --- |
-| `codex` | `~/.codex/config.toml`, `~/.codex/AGENTS.md` | `zvec_grep_search` |
-| `claude` | `~/.claude.json`, `~/.claude/settings.json`, `~/.claude/CLAUDE.md` | `zvec_grep_search` |
+| `codex` | `$CODEX_HOME/config.toml`, `$CODEX_HOME/AGENTS.md` | `zvec_grep_search` |
+| `claude` | user Claude desktop/CLI config (`$CLAUDE_CONFIG_DIR/settings.json`, `CLAUDE.md`) | `zvec_grep_search` |
 | `qwen` | `~/.qwen/settings.json`, `~/.qwen/QWEN.md` | `mcp__zvec_grep__zvec_grep_search` |
 | `qoder` | Qoder CLI config and user-level IDE `mcp.json` | `mcp__zvec_grep__zvec_grep_search` or IDE-displayed tool |
 | `opencode` | `~/.config/opencode/opencode.json`, adjacent `AGENTS.md` | `zvec_grep_zvec_grep_search` |

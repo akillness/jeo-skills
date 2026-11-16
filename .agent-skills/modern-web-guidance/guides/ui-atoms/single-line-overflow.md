@@ -261,7 +261,7 @@ A tooltip is exposed as the element's description, while the label stays its nam
 If the tooltip only repeats the label, hide it from assistive technology (`aria-hidden="true"`), or screen readers announce the text twice.
 If it adds information, leave it exposed: name and description are announced as different things. If it also repeats the label, hide that part of the tooltip (`aria-hidden="true"` on it), so the description holds only the addition.
 DO NOT rely on `title` alone: it is unreachable from the keyboard and on touch.
-See `interest-triggered-tooltips` (via `npx -y modern-web-guidance@latest retrieve "interest-triggered-tooltips"`) for tooltips.
+See `interest-triggered-tooltips` (via `npx -y modern-web-guidance@1.0.0 retrieve "interest-triggered-tooltips"`) for tooltips.
 
 ## Detecting whether the text is truncated
 

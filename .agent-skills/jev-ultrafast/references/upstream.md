@@ -88,7 +88,7 @@ uv run browser-harness --doctor
 uv run jev
 # Open http://127.0.0.1:8766 in a browser after the server starts.
 
-uv run --env-file .env python examples/run.py \
+uv run --env-file <local-dotenv> python examples/run.py \
   --url https://en.wikipedia.org/wiki/Main_Page \
   --goal 'Find and open the Wikipedia article about Gödel’s incompleteness theorems.'
 ```

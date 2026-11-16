@@ -2,7 +2,7 @@
 """Read-only OpenOcta source, configuration, and release auditor.
 
 The script never starts OpenOcta, writes configuration, extracts bundled archives,
-downloads files, or makes network requests. Configuration values are hidden by
+downloads files, or makes network calls. Configuration values are hidden by
 default: reports contain posture booleans, counts, integration names, and sensitive
 field names only.
 
@@ -40,6 +40,7 @@ SENSITIVE_KEY = re.compile(
 )
 LICENSE_NAME = re.compile(r"(?i)(^|/)(license|licence|notice|copying)(\.|$)")
 TRUTHY = {"1", "true", "yes", "on"}
+_SAFE_GIT_ENV_KEYS = ("PATH", "HOME", "TMPDIR", "TEMP", "TMP", "LANG", "LC_ALL", "LC_CTYPE")
 
 
 def read_text(path: Path) -> str:
@@ -62,7 +63,7 @@ def has_symlink_component(root: Path, relative: str) -> bool:
 
 
 def git(root: Path, *args: str) -> str:
-    env = os.environ.copy()
+    env = {key: val for key in _SAFE_GIT_ENV_KEYS if (val := os.environ.get(key)) is not None}
     env["GIT_TERMINAL_PROMPT"] = "0"
     result = subprocess.run(
         ["git", "-C", str(root), *args],

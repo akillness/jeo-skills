@@ -33,7 +33,7 @@ MCP client  --stdio-->  blender-mcp server  --TCP socket-->  Blender addon
 ```
 
 - The **server** is a normal MCP stdio server started by the client, usually
-  through `uvx blender-mcp`.
+  through `uvx blender-mcp==1.9.4`.
 - The **addon** is a Blender addon named `Interface: MCP for Blender` that the
   user enables in preferences and starts from the 3D viewport sidebar.
 - They speak a simple JSON protocol over TCP: commands carry a `type` and
@@ -138,9 +138,9 @@ treat a submitted job as a finished asset.
 
 The server never rewrites addon files on its own. On startup it compares the
 installed addon's protocol version against the bundled copy and reports how to
-update. `uvx blender-mcp install-addon` performs the write, copying the addon in
+update. `uvx blender-mcp==1.9.4 install-addon` performs the write, copying the addon in
 as `blender_mcp.py`, printing the destination, and keeping a `.bak` of any file
-it replaces. `uvx blender-mcp addon-paths` lists detected addon directories, and
+it replaces. `uvx blender-mcp==1.9.4 addon-paths` lists detected addon directories, and
 `BLENDERMCP_ADDONS_DIR` overrides the destination.
 
 After installing or upgrading, the user disables and re-enables the addon (or

@@ -126,7 +126,7 @@ You are an expert product manager reviewing a PRD for completeness and clarity.
 3. Rate each section: Complete / Needs Work / Missing
 4. Provide specific improvement recommendations
 
-# OUTPUT INSTRUCTIONS
+# RESPONSE FORMAT
 
 - Output in Markdown
 - Use ## sections: Summary, Missing Elements, Improvement Suggestions
@@ -149,7 +149,7 @@ You are a senior architect reviewing a BMAD architecture document.
 2. Identify gaps vs requirements (assumes PRD context was provided)
 3. Flag scalability, security, and operational risks
 
-# OUTPUT INSTRUCTIONS
+# RESPONSE FORMAT
 
 - Output in Markdown
 - ## sections: Architecture Summary, Gaps, Risks, Recommendations

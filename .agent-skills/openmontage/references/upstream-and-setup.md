@@ -58,14 +58,14 @@ Baseline:
 
 - Python 3.10+
 - FFmpeg and ffprobe
-- Node.js 18+ and npm/npx for the Remotion composer
+- Node.js 18+ and npm (for the Remotion composer)
 - Git
 - GNU Make on the documented quick-start path
 - A coding assistant that can read files and run shell/Python commands
 
-HyperFrames additionally needs Node.js 22+, FFmpeg, and a resolvable `npx hyperframes`
-command. A local GPU is optional and only needed for local generation lanes. Provider
-keys are optional; they expand capabilities but can introduce direct usage costs.
+HyperFrames additionally needs Node.js 22+, FFmpeg, and a resolvable `hyperframes`
+CLI command. A local GPU is optional and only needed for local generation lanes. Provider
+keys are optional; they enable additional capabilities but can introduce direct usage costs.
 
 Run the skill's read-only preflight before installing:
 
@@ -93,7 +93,7 @@ Node 18/22 readiness separately.
 | `make lint` | Compiles selected core modules | Fast syntax smoke check |
 | `make demo` | Renders zero-key demo videos | Explicit demo request only; writes media and can be slow |
 | `make hyperframes-doctor` | Executes the HyperFrames doctor through the tool adapter | HyperFrames troubleshooting |
-| `make hyperframes-warm` | Uses online npm resolution and refreshes the npx cache | Network-changing action; never blanket setup |
+| `make hyperframes-warm` | Uses online npm resolution and refreshes the local package cache | Network-changing action; never blanket setup |
 | `make clean` | Removes Python caches outside virtual environments | Explicit cleanup only |
 
 `make setup`, `make install*`, npm commands, and demo renders are not valid blanket-skill

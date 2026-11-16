@@ -74,7 +74,7 @@ bash .agent-skills/unity-cli/scripts/setup.sh --install
 Use official Unity Docker images with CLI pre-installed:
 
 ```bash
-docker pull unityci/editor:<version>-<platform>-<architecture>
+docker pull unityci/editor:2023.2.0-linux-il2cpp-1.0.0
 ```
 
 **Manual (system-wide):**
@@ -99,7 +99,7 @@ export UNITY_PASSWORD=<password>
 unity-cli manage licensing --validate
 ```
 
-For service accounts, use personal access tokens instead of plaintext passwords.
+For service accounts, use scoped CI credentials from a secret store instead of plaintext passwords.
 
 ### Step 5: Run common workflows
 

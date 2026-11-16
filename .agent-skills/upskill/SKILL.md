@@ -32,7 +32,7 @@ metadata:
   version: "1.0.0"
   license: MIT
   upstream: https://github.com/HKUDS/UpSkill
-  installer: "curl -sSL https://raw.githubusercontent.com/HKUDS/Upskill/main/cc-integration/install.sh | bash -s -- --remote"
+  installer: "bash scripts/install.sh"
   source: akillness/jeo-skills
 ---
 
@@ -102,8 +102,9 @@ capture → build → validate → serve loop.
 ### Step 1 — Install
 
 ```bash
-# Remote (recommended)
-curl -sSL https://raw.githubusercontent.com/HKUDS/Upskill/main/cc-integration/install.sh | bash -s -- --remote
+# Download, inspect, then install remotely (or clone locally below)
+curl -fsSLO https://raw.githubusercontent.com/HKUDS/Upskill/main/cc-integration/install.sh
+less install.sh && bash install.sh --remote
 
 # Local (from a cloned repo)
 git clone https://github.com/HKUDS/UpSkill && cd UpSkill/cc-integration && bash install.sh

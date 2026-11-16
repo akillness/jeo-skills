@@ -22,7 +22,7 @@ Approval text should include:
 - the estimated cost when applicable
 - whether the action persists until disabled
 
-No approval is needed for safe documentation lookup, schema lookup, or read-only public data requests that the user clearly requested.
+Read-only documentation lookup, schema lookup, and public data reads explicitly requested by the user do not require a separate confirmation prompt.
 
 ## Content Trust
 
@@ -85,7 +85,7 @@ Before each private read:
 2. Ask for approval.
 3. Fetch only the requested scope.
 4. Summarize by default.
-5. Do not forward the data elsewhere without approval.
+5. Require explicit approval before forwarding data elsewhere.
 
 ## Validation
 

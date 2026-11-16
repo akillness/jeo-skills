@@ -9,7 +9,7 @@
 - Immutable commit: `e146625f3041ef8089a2013587435fc763dc3b15`.
 - Commit timestamp: `2026-09-22T18:58:47Z`.
 - Observation UTC: `2026-10-15T16:26:03Z`.
-- Source tree endpoint: https://api.github.com/repos/marvkr/better-design/git/trees/e146625f3041ef8089a2013587435fc763dc3b15?recursive=1
+- Source tree endpoint: GitHub Git Trees API for `marvkr/better-design` at commit `e146625f3041ef8089a2013587435fc763dc3b15` (`recursive=1`)
 - Complete tree response: `truncated: false`, 6518 entries. Root LICENSE exists.
 
 ## Resolution method
@@ -81,7 +81,7 @@ The README documents this mutable public item URL:
 https://www.better-design.com/registry/linear/button.json
 ```
 
-It documents `npx shadcn@latest add <registry-url>` as installation, not a read-only
+It documents `shadcn@latest add <registry-url>` (unpinned package-runner command) as installation, not a read-only
 fetch. The inspected pinned button is `registry:ui`, writes
 `components/ui/button.tsx`, depends on `@radix-ui/react-slot` and
 `class-variance-authority`, and declares `registryDependencies: ["utils"]`.

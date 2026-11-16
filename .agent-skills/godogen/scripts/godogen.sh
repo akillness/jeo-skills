@@ -313,7 +313,7 @@ case "$cmd" in
       echo "  ok    target does not exist yet; publish.sh would create it (new publication)"
     fi
 
-    echo "  WARN  --force removes the whole resolved target with rm -rf"
+    echo "  WARN  --force wipes the whole resolved target with rm -rf"
     echo "  WARN  normal publish replaces $manifest, $engine.md, and the entire $skills_rel directory"
     if [[ "$update" -eq 1 ]]; then
       echo "  note  refresh with normal publish only; do not add --force"

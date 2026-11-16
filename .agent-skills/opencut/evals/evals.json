@@ -7,7 +7,7 @@
       "expected_output": "The skill identifies the classic repo (opencut-app/opencut-classic) as the one people actually run, and gives Bun/Docker setup steps.",
       "assertions": [
         "The response distinguishes classic vs the OpenCut-app/OpenCut rewrite",
-        "The response references references/classic-setup.md or its Bun install / .env.local / docker compose steps",
+        "The response references references/classic-setup.md or its Bun install / local environment setup / docker compose steps",
         "The response notes timeline work is a good contribution area"
       ]
     },

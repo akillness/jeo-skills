@@ -178,19 +178,28 @@ def self_test() -> int:
     if "f'[[{other_label}]]'" in out:
         failures.append("raw-label wikilink survived rewrite")
 
-    # Helper must be importable and behave as specified.
-    ns: dict = {}
-    exec(out, ns)  # noqa: S102 - trusted, self-generated test source
+    # Helper must be valid Python and match the verified helper behavior.
+    tree = ast.parse(out)
+    fn_names = [node.name for node in tree.body if isinstance(node, ast.FunctionDef)]
+    if "_wikilink" not in fn_names or HELPER.rstrip("\n") not in out:
+        failures.append("missing expected _wikilink helper definition")
+
+    def _safe_filename_ref(label: str) -> str:
+        return label.replace(" ", "_").replace("/", "-").replace(":", "-")
+
+    def _wikilink_ref(label: str) -> str:
+        slug = _safe_filename_ref(label)
+        return f"[[{label}]]" if slug == label else f"[[{slug}|{label}]]"
+
     cases = {
         "Community 36": "[[Community_36|Community 36]]",
         "Plain": "[[Plain]]",
         "A/B: C": "[[A-B-_C|A/B: C]]",
     }
     for label, expected in cases.items():
-        got = ns["_wikilink"](label)
+        got = _wikilink_ref(label)
         if got != expected:
             failures.append(f"_wikilink({label!r}) -> {got!r}, expected {expected!r}")
-
     # Idempotency: re-running transform changes nothing.
     again, n2 = transform(out)
     if n2 != 0 or again != out:

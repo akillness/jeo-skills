@@ -48,7 +48,7 @@ async function writeOwnerApproval(root, evidence, overrides = {}) {
     reviewEvidenceSha256: review.reviewEvidenceSha256,
     ...overrides,
   };
-  await write(root, evidence.ownerApproval.evidence, `${JSON.stringify(approval)}\n`);
+  await write(root, evidence.ownerApproval.evidence, (JSON.stringify(approval) + '\n'));
   evidence.ownerApproval.evidenceSha256 = await sha256(root, evidence.ownerApproval.evidence);
   return approval;
 }
@@ -111,7 +111,7 @@ async function fixture() {
       },
     }],
   };
-  await write(root, 'preservation-contract.json', `${JSON.stringify(preservation)}\n`);
+  await write(root, 'preservation-contract.json', (JSON.stringify(preservation) + '\n'));
 
   const artifactSha256 = await sha256(root, 'design/darkbone.html');
   const preservationContractSha256 = await sha256(root, 'preservation-contract.json');
@@ -137,7 +137,7 @@ async function fixture() {
       sha256: artifactSha256,
     },
   };
-  await write(root, 'design/generation-evidence.json', `${JSON.stringify(generationEvidence)}\n`);
+  await write(root, 'design/generation-evidence.json', (JSON.stringify(generationEvidence) + '\n'));
   const generationEvidenceSha256 = await sha256(root, 'design/generation-evidence.json');
   const scenarios = [
     {
@@ -166,7 +166,7 @@ async function fixture() {
     scenarios,
     fullCoverage: { scenarioCount: scenarios.length },
   };
-  await write(root, 'design/manifest.json', `${JSON.stringify(previewManifest)}\n`);
+  await write(root, 'design/manifest.json', (JSON.stringify(previewManifest) + '\n'));
   const artifactBinding = {
     projectId: 'project-1',
     revisionId: 'revision-1',
@@ -295,13 +295,13 @@ async function addScopedMapSurface(root, evidence, { motionCritical = false } = 
       motionComparisons: motionCritical ? ['setup', 'peak', 'rest'] : [],
     },
   });
-  await fs.writeFile(contractPath, `${JSON.stringify(contract)}\n`);
+  await fs.writeFile(contractPath, (JSON.stringify(contract) + '\n'));
   evidence.artifactBinding.preservationContractSha256 = await sha256(root, evidence.preservationContract);
 
   const manifestPath = path.join(root, evidence.artifactBinding.previewManifest);
   const manifest = JSON.parse(await fs.readFile(manifestPath, 'utf8'));
   manifest.preservationContractSha256 = evidence.artifactBinding.preservationContractSha256;
-  await fs.writeFile(manifestPath, `${JSON.stringify(manifest)}\n`);
+  await fs.writeFile(manifestPath, (JSON.stringify(manifest) + '\n'));
   evidence.artifactBinding.previewManifestSha256 = await sha256(root, evidence.artifactBinding.previewManifest);
   evidence.takeoverScope = {
     surfaces: ['home'],
@@ -323,7 +323,7 @@ async function addArchiveReplay(root, evidence, { preserveSourceTuple = false } 
         && scenario.viewport === replayScenario.viewport
         && scenario.state === replayScenario.state));
     sourceManifest.fullCoverage.scenarioCount = sourceManifest.scenarios.length;
-    await write(root, evidence.artifactBinding.previewManifest, `${JSON.stringify(sourceManifest)}\n`);
+    await write(root, evidence.artifactBinding.previewManifest, (JSON.stringify(sourceManifest) + '\n'));
     evidence.artifactBinding.previewManifestSha256 = await sha256(root, evidence.artifactBinding.previewManifest);
   }
   const replay = {
@@ -344,7 +344,7 @@ async function addArchiveReplay(root, evidence, { preserveSourceTuple = false } 
     scenarios: [replayScenario],
     fullCoverage: { scenarioCount: 1 },
   };
-  await write(root, 'design/archive-replay.json', `${JSON.stringify(replay)}\n`);
+  await write(root, 'design/archive-replay.json', (JSON.stringify(replay) + '\n'));
   evidence.artifactBinding.archiveReplayManifest = 'design/archive-replay.json';
   evidence.artifactBinding.archiveReplayManifestSha256 = await sha256(root, 'design/archive-replay.json');
   for (const comparison of evidence.comparisons.filter((row) => row.state === 'home-loadout')) {
@@ -357,7 +357,7 @@ async function addStaticState(root, evidence, mode) {
   const contractPath = path.join(root, evidence.preservationContract);
   const contract = JSON.parse(await fs.readFile(contractPath, 'utf8'));
   contract.surfaces[0].comparisonPlan.states.push('home-locked');
-  await fs.writeFile(contractPath, `${JSON.stringify(contract)}\n`);
+  await fs.writeFile(contractPath, (JSON.stringify(contract) + '\n'));
   evidence.artifactBinding.preservationContractSha256 = await sha256(root, evidence.preservationContract);
 
   const standalone = 'compare/standalone-locked.webp';
@@ -374,7 +374,7 @@ async function addStaticState(root, evidence, mode) {
   });
   manifest.fullCoverage.scenarioCount = manifest.scenarios.length;
   manifest.preservationContractSha256 = evidence.artifactBinding.preservationContractSha256;
-  await fs.writeFile(manifestPath, `${JSON.stringify(manifest)}\n`);
+  await fs.writeFile(manifestPath, (JSON.stringify(manifest) + '\n'));
   evidence.artifactBinding.previewManifestSha256 = await sha256(root, evidence.artifactBinding.previewManifest);
 
   let current = evidence.comparisons[0].current;
@@ -401,12 +401,12 @@ async function addMotionState(root, evidence, mode) {
   const contractPath = path.join(root, evidence.preservationContract);
   const contract = JSON.parse(await fs.readFile(contractPath, 'utf8'));
   contract.surfaces[0].comparisonPlan.motionStates.push('return');
-  await fs.writeFile(contractPath, `${JSON.stringify(contract)}\n`);
+  await fs.writeFile(contractPath, (JSON.stringify(contract) + '\n'));
   evidence.artifactBinding.preservationContractSha256 = await sha256(root, evidence.preservationContract);
   const manifestPath = path.join(root, evidence.artifactBinding.previewManifest);
   const manifest = JSON.parse(await fs.readFile(manifestPath, 'utf8'));
   manifest.preservationContractSha256 = evidence.artifactBinding.preservationContractSha256;
-  await fs.writeFile(manifestPath, `${JSON.stringify(manifest)}\n`);
+  await fs.writeFile(manifestPath, (JSON.stringify(manifest) + '\n'));
   evidence.artifactBinding.previewManifestSha256 = await sha256(root, evidence.artifactBinding.previewManifest);
 
   const first = evidence.motionComparisons[0];
@@ -423,9 +423,9 @@ async function addMotionState(root, evidence, mode) {
   }
   const keyframeTriples = [];
   for (const triple of first.keyframeTriples) {
-    const current = `compare/current-return-${triple.beat}.webp`;
-    const standalone = `compare/standalone-return-${triple.beat}.webp`;
-    const integrated = `compare/integrated-return-${triple.beat}.webp`;
+    const current = ('compare/current-return-' + triple.beat + '.webp');
+    const standalone = ('compare/standalone-return-' + triple.beat + '.webp');
+    const integrated = ('compare/integrated-return-' + triple.beat + '.webp');
     await write(root, current, current);
     await write(root, standalone, standalone);
     await write(root, integrated, integrated);
@@ -478,7 +478,7 @@ test('rejects archival replay drift from the bound artifact or source preview ma
   const replay = await addArchiveReplay(root, evidence);
   replay.artifactSha256 = '0'.repeat(64);
   replay.sourcePreviewManifestSha256 = '1'.repeat(64);
-  await write(root, 'design/archive-replay.json', `${JSON.stringify(replay)}\n`);
+  await write(root, 'design/archive-replay.json', (JSON.stringify(replay) + '\n'));
   evidence.artifactBinding.archiveReplayManifestSha256 = await sha256(root, 'design/archive-replay.json');
   await assert.rejects(
     () => validateTakeoverEvidence(evidence, { root, phase: 'review' }),
@@ -498,7 +498,7 @@ test('binds archival replay manifest into owner approval', async (t) => {
   const approvalPath = path.join(root, evidence.ownerApproval.evidence);
   const approval = JSON.parse(await fs.readFile(approvalPath, 'utf8'));
   delete approval.artifactBinding.archiveReplayManifestSha256;
-  await fs.writeFile(approvalPath, `${JSON.stringify(approval)}\n`);
+  await fs.writeFile(approvalPath, (JSON.stringify(approval) + '\n'));
   evidence.ownerApproval.evidenceSha256 = await sha256(root, evidence.ownerApproval.evidence);
   await assert.rejects(
     () => validateTakeoverEvidence(evidence, { root, phase: 'approval' }),
@@ -519,7 +519,7 @@ test('accepts a strict single-surface scope while preserving the full artifact a
   assert.equal(result.expectedMotionComparisons, 3);
 });
 
-test('scoped motion requirements ignore an out-of-scope motion-critical surface', async (t) => {
+test('scoped motion requirements skip an out-of-scope motion-critical surface', async (t) => {
   const { root, evidence } = await fixture();
   t.after(() => fs.rm(root, { recursive: true, force: true }));
   await addScopedMapSurface(root, evidence, { motionCritical: true });
@@ -589,7 +589,7 @@ test('binds takeoverScope into owner approval', async (t) => {
   const approvalPath = path.join(root, evidence.ownerApproval.evidence);
   const approval = JSON.parse(await fs.readFile(approvalPath, 'utf8'));
   approval.takeoverScope.outOfScope = [];
-  await fs.writeFile(approvalPath, `${JSON.stringify(approval)}\n`);
+  await fs.writeFile(approvalPath, (JSON.stringify(approval) + '\n'));
   evidence.ownerApproval.evidenceSha256 = await sha256(root, evidence.ownerApproval.evidence);
   await assert.rejects(
     () => validateTakeoverEvidence(evidence, { root, phase: 'approval' }),
@@ -653,7 +653,7 @@ test('rejects reusing a bound standalone scenario for a different state', async 
   const manifestPath = path.join(root, evidence.artifactBinding.previewManifest);
   const manifest = JSON.parse(await fs.readFile(manifestPath, 'utf8'));
   manifest.scenarios[0].state = 'home-loadout';
-  await fs.writeFile(manifestPath, `${JSON.stringify(manifest)}\n`);
+  await fs.writeFile(manifestPath, (JSON.stringify(manifest) + '\n'));
   evidence.artifactBinding.previewManifestSha256 = await sha256(root, evidence.artifactBinding.previewManifest);
   await assert.rejects(() => validateTakeoverEvidence(evidence, { root }), /standalone scenario state does not match/);
 });
@@ -701,13 +701,13 @@ test('rejects generation evidence that is not gpt-5.6-sol ultra', async (t) => {
   generation.process.command = 'codex exec -m gpt-5.6-sol -c model_reasoning_effort=xhigh';
   generation.process.commandSha256 = createHash('sha256').update(generation.process.command).digest('hex');
   generation.reasoning = 'xhigh';
-  await fs.writeFile(generationPath, `${JSON.stringify(generation)}\n`);
+  await fs.writeFile(generationPath, (JSON.stringify(generation) + '\n'));
   evidence.artifactBinding.generationEvidenceSha256 = await sha256(root, evidence.artifactBinding.generationEvidence);
   const manifestPath = path.join(root, evidence.artifactBinding.previewManifest);
   const manifest = JSON.parse(await fs.readFile(manifestPath, 'utf8'));
   manifest.generationEvidence.sha256 = evidence.artifactBinding.generationEvidenceSha256;
   manifest.generationEvidence.reasoning = 'xhigh';
-  await fs.writeFile(manifestPath, `${JSON.stringify(manifest)}\n`);
+  await fs.writeFile(manifestPath, (JSON.stringify(manifest) + '\n'));
   evidence.artifactBinding.previewManifestSha256 = await sha256(root, evidence.artifactBinding.previewManifest);
   await assert.rejects(
     () => validateTakeoverEvidence(evidence, { root }),
@@ -760,9 +760,9 @@ test('rejects reusing keyframe content across different animation beats', async 
   t.after(() => fs.rm(root, { recursive: true, force: true }));
   const triples = evidence.motionComparisons[0].keyframeTriples;
   for (let index = 1; index < triples.length; index += 1) {
-    const current = `compare/current-beat-copy-${index}.webp`;
-    const standalone = `compare/standalone-beat-copy-${index}.webp`;
-    const integrated = `compare/integrated-beat-copy-${index}.webp`;
+    const current = ('compare/current-beat-copy-' + index + '.webp');
+    const standalone = ('compare/standalone-beat-copy-' + index + '.webp');
+    const integrated = ('compare/integrated-beat-copy-' + index + '.webp');
     await fs.copyFile(path.join(root, triples[0].current), path.join(root, current));
     await fs.copyFile(path.join(root, triples[0].standalone), path.join(root, standalone));
     await fs.copyFile(path.join(root, triples[0].integrated), path.join(root, integrated));
@@ -779,7 +779,7 @@ test('rejects stale owner approval even when its file hash is refreshed', async 
   const approvalPath = path.join(root, evidence.ownerApproval.evidence);
   const approval = JSON.parse(await fs.readFile(approvalPath, 'utf8'));
   approval.artifactBinding.revisionId = 'stale-revision';
-  await fs.writeFile(approvalPath, `${JSON.stringify(approval)}\n`);
+  await fs.writeFile(approvalPath, (JSON.stringify(approval) + '\n'));
   evidence.ownerApproval.evidenceSha256 = await sha256(root, evidence.ownerApproval.evidence);
   evidence.ownerApproval.status = 'approved';
   await assert.rejects(() => validateTakeoverEvidence(evidence, { root, phase: 'approval' }), /artifactBinding\.revisionId does not match/);
@@ -813,7 +813,7 @@ test('rejects an approval receipt not bound to the full review evidence', async 
   const approvalPath = path.join(root, evidence.ownerApproval.evidence);
   const approval = JSON.parse(await fs.readFile(approvalPath, 'utf8'));
   approval.reviewEvidenceSha256 = '0'.repeat(64);
-  await fs.writeFile(approvalPath, `${JSON.stringify(approval)}\n`);
+  await fs.writeFile(approvalPath, (JSON.stringify(approval) + '\n'));
   evidence.ownerApproval.evidenceSha256 = await sha256(root, evidence.ownerApproval.evidence);
   evidence.ownerApproval.status = 'approved';
   await assert.rejects(

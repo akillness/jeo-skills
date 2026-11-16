@@ -409,7 +409,7 @@ await store.put(["alice", "preferences"], "language", { preference: "short respo
 // Node with store — access via runtime
 const respond = async (state: typeof State.State, runtime: any) => {
   const item = await runtime.store?.get(["alice", "preferences"], "language");
-  return { response: `Using preference: ${item?.value?.preference}` };
+  return { response: "Using preference: " + (item?.value?.preference ?? "") };
 };
 
 // Compile with BOTH checkpointer and store
@@ -508,7 +508,7 @@ await checkpointer.setup(); // only needed on first use to create tables
 
 <fix-update-state-with-reducers>
 <python>
-Use Overwrite to replace state values instead of passing through reducers.
+Use Overwrite to set or overwrite reducer-managed field values directly instead of passing through reducers.
 
 ```python
 from langgraph.types import Overwrite
@@ -524,7 +524,7 @@ graph.update_state(config, {"items": Overwrite(["C"])})  # Result: ["C"] - Repla
 ```
 </python>
 <typescript>
-Use Overwrite to replace state values instead of passing through reducers.
+Use Overwrite to set or overwrite reducer-managed field values directly instead of passing through reducers.
 
 ```typescript
 import { Overwrite } from "@langchain/langgraph";

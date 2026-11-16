@@ -245,6 +245,19 @@ def host_checks(checks, args):
     env_report(checks, "env", ("GEMINI_API_KEY", "POST_BRIDGE_API_KEY"))
 
 
+def _extract_url_host(url):
+    if "://" not in url:
+        return ""
+    authority = url.split("://", 1)[1].split("/", 1)[0].split("?", 1)[0].split("#", 1)[0]
+    hostport = authority.rsplit("@", 1)[-1]
+    if not hostport:
+        return ""
+    if hostport.startswith("["):
+        end = hostport.find("]")
+        return hostport[1:end].lower() if end != -1 else ""
+    return hostport.split(":", 1)[0].lower()
+
+
 def secret_state(value):
     return "set" if isinstance(value, str) and value.strip() else "unset"
 
@@ -269,12 +282,7 @@ def extras(checks, args):
     add(checks, "config.firefox_profile", "info",
         "unset; Twitter and YouTube automation need a logged-in profile" if secret_state(profile) == "unset"
         else "set; directory exists" if Path(profile).is_dir() else "set; directory does not exist")
-    host = ""
-    try:
-        from urllib.parse import urlsplit
-        host = urlsplit(str(cfg.get("ollama_base_url", "http://127.0.0.1:11434"))).hostname or ""
-    except ValueError:
-        pass
+    host = _extract_url_host(str(cfg.get("ollama_base_url", "http://127.0.0.1:11434")))
     add(checks, "config.ollama", "info",
         f"{'loopback' if host in ('127.0.0.1', 'localhost', '::1') else 'non-loopback'} host; model {secret_state(cfg.get('ollama_model'))}"
         " (unset means the app asks interactively)")

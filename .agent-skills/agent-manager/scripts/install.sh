@@ -17,7 +17,7 @@ echo "Checking prerequisites..."
 if ! command -v python3 &>/dev/null; then
   echo "ERROR: python3 is required but not installed."
   echo "  macOS: brew install python3"
-  echo "  Ubuntu: sudo apt-get install python3"
+  echo "  Ubuntu/Debian: install python3 via your system package manager"
   exit 1
 fi
 echo "  ✓ python3 $(python3 --version 2>&1 | cut -d' ' -f2)"
@@ -25,7 +25,7 @@ echo "  ✓ python3 $(python3 --version 2>&1 | cut -d' ' -f2)"
 if ! command -v tmux &>/dev/null; then
   echo "ERROR: tmux is required but not installed."
   echo "  macOS: brew install tmux"
-  echo "  Ubuntu: sudo apt-get install tmux"
+  echo "  Ubuntu/Debian: install tmux via your system package manager"
   exit 1
 fi
 echo "  ✓ tmux $(tmux -V | cut -d' ' -f2)"
@@ -34,11 +34,11 @@ echo ""
 
 # Method 1: openskills (recommended)
 echo "Installing via openskills..."
-if npx --yes openskills install "${GITHUB_REPO}" 2>/dev/null; then
+if npx --yes openskills@1.5.0 install "${GITHUB_REPO}" 2>/dev/null; then
   echo "  ✓ Installed via openskills"
 else
   echo "  openskills install failed, trying global install..."
-  if npx --yes openskills install "${GITHUB_REPO}" --global 2>/dev/null; then
+  if npx --yes openskills@1.5.0 install "${GITHUB_REPO}" --global 2>/dev/null; then
     echo "  ✓ Installed globally via openskills"
   else
     echo "  openskills unavailable, falling back to git clone..."
@@ -55,10 +55,8 @@ else
     echo "  Cloning ${GITHUB_REPO}..."
     git clone --depth=1 "https://github.com/${GITHUB_REPO}.git" "${TMP_DIR}/repo" 2>/dev/null
 
-    mkdir -p "${INSTALL_DIR}"
-    cp -r "${TMP_DIR}/repo/agent-manager/." "${INSTALL_DIR}/"
+    mkdir -p "${INSTALL_DIR}" && cp -r "${TMP_DIR}/repo/agent-manager/." "${INSTALL_DIR}/"
     echo "  ✓ Installed to ${INSTALL_DIR}"
-  fi
 fi
 
 # Also install to alt path if it doesn't exist
@@ -88,7 +86,7 @@ done
 
 if [ -z "${MAIN_PY}" ]; then
   echo "WARNING: Could not locate main.py. Installation may have used a custom path."
-  echo "  Check: ls ~/.claude/skills/ or ls ~/.agent/skills/"
+  echo "  Verify main.py exists under your chosen install directory."
 else
   echo "  Found: ${MAIN_PY}"
   if python3 "${MAIN_PY}" doctor 2>/dev/null; then
