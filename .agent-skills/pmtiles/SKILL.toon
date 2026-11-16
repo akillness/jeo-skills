@@ -1,0 +1,22 @@
+N:pmtiles
+D:Use when creating, inspecting, extracting, serving, or troubleshooting PMTiles single-file map tile archives on cloud storage or local disk. Covers PMTiles v3 specification, header inspection (min/max zoom, bounds, clustered directories), converting MBTiles or directories with the pmtiles CLI or go-pmtiles, configuring HTTP Range Requests on S3, R2, GCS, or GitHub Pages, client integration with MapLibre GL JS, Leaflet, OpenLayers, and Python readers. Route format-only skill linting to skill-standardization, raw cloud deployment to deployment-automation, and custom vector graphic shaders to paper-shaders.
+G:pmtiles protomaps geospatial map-tiles cloud-storage vector-tiles raster-tiles s3 r2 mvt maplibre
+U[5]:
+  Inspect PMTiles v3 binary header, zoom bounds, and tile compression offline
+  Convert MBTiles archives into optimized single-file PMTiles v3 datasets
+  Configure S3, Cloudflare R2, or GCS CORS and HTTP Range request headers
+  Extract geographic bounding boxes and zoom subsets from global planet archives
+  Integrate PMTiles vector and raster sources into MapLibre GL JS and Leaflet
+S[6]{n,action,details}:
+  1,Preflight,Run scripts/preflight.py --json to verify CLI tooling and validate archive headers
+  2,Convert,Convert SQLite MBTiles or directory tiles to PMTiles v3 using pmtiles convert
+  3,Inspect,Examine header fields and JSON metadata via pmtiles show or scripts/preflight.py
+  4,Extract,Subset regional bounds using pmtiles extract with --bbox and --maxzoom flags
+  5,Storage,Configure object storage bucket CORS to expose Content-Range and allow Range headers
+  6,Client,Register pmtiles.Protocol with MapLibre GL JS or Leaflet and add pmtiles:// sources
+R[5]:
+  Run scripts/preflight.py --archive <path> before deploying or serving local PMTiles archives
+  Ensure cloud storage exposes Content-Range and ETag headers; otherwise range queries fail
+  Use pmtiles extract to subset planet files rather than re-rendering tiles from raw vectors
+  Verify tile_type matches client expectations (MVT vector vs PNG/JPEG/WEBP raster)
+  Route format linting to skill-standardization and raw cloud infrastructure to deployment-automation

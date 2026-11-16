@@ -1,7 +1,7 @@
 {
   "version": "2.1.0",
   "generated": "2026-10-21",
-  "skill_count": 438,
+  "skill_count": 440,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -220,7 +220,8 @@
       "zurp",
       "ai-knowledge-management-platform",
       "knowledge-catalog",
-      "cocoindex"
+      "cocoindex",
+      "pmtiles"
     ],
     "game": [
       "implement-fog-of-war",
@@ -436,7 +437,8 @@
       "elephant-goldfish-model",
       "kagent",
       "trulens",
-      "fastmcp"
+      "fastmcp",
+      "canyonos"
     ],
     "engineering": [
       "audit-reference-originality",
@@ -710,7 +712,8 @@
         "looker-studio-bigquery",
         "ai-knowledge-management-platform",
         "knowledge-catalog",
-        "cocoindex"
+        "cocoindex",
+        "pmtiles"
       ],
       "automation": [],
       "tooling": [
@@ -924,7 +927,8 @@
         "ruflo",
         "aidlc-workflows",
         "revfactory-harness",
-        "elephant-goldfish-model"
+        "elephant-goldfish-model",
+        "canyonos"
       ],
       "agent-frameworks": [
         "microsoft-agent-framework",
@@ -8867,7 +8871,7 @@
     },
     {
       "name": "codeburn",
-      "description": "Drive CodeBurn, a free open-source local-first CLI/TUI/web/menubar tool that reads the session files already on disk from 40 AI coding tools (Claude Code, Codex, Cursor, Gemini CLI, Grok, OpenCode, and more) and breaks down token usage and dollar cost by task, model, tool, and project. Use when the user wants to see where their AI coding spend went, find and fix token waste in a Claude Code / agent setup, cap a session's budget before it runs away, compare which model is actually worth its price, check whether AI spend shipped or was reverted, or wire live usage/savings data into an agent over MCP. Triggers on: \"codeburn\", \"npx codeburn\", \"AI token usage\", \"AI coding cost\", \"where did my Claude spend go\", \"codeburn optimize\", \"codeburn guard\", \"codeburn compare models\", \"codeburn yield\", \"token waste in CLAUDE.md\", \"AI spend dashboard\".",
+      "description": "Drive CodeBurn, a free open-source local-first CLI/TUI/web/menubar tool that reads the session files already on disk from 40 AI coding tools (Claude Code, Codex, Cursor, Gemini CLI, Grok, OpenCode, and more) and breaks down token usage and dollar cost by task, model, tool, and project. Use when the user wants to see where their AI coding spend went, find and fix token waste in a Claude Code / agent setup, cap a session's budget before it runs away, compare which model is actually worth its price, check whether AI agent over MCP. Triggers on: \"codeburn\", \"npx codeburn@0.9.28\", \"AI token usage\", \"AI coding cost\", \"where did my Claude spend go\", \"codeburn optimize\", \"codeburn guard\", \"codeburn compare models\", \"codeburn yield\", \"token waste in CLAUDE.md\", \"AI spend dashboard\".",
       "category": "cli-tools",
       "subcategory": "developer-cli",
       "interface": "workflow",
@@ -8982,7 +8986,7 @@
     },
     {
       "name": "chatbot-template",
-      "description": "Scaffold and extend chatbot-template, shadcn/ui's minimal Next.js starter for building an AI chatbot with the AI SDK, shadcn/react, shadcn/typeset, and the Vercel AI Gateway. It ships streaming markdown chat, tool calling (a server-executed GitHub repo lookup, provider-native web search, and a human-in-the-loop `ask_user` questionnaire), and one-click Vercel deploy with OIDC gateway auth. Use when the user wants to spin up a Next.js AI chat app fast, add a custom tool with a typed UI part, swap or restrict the model list, or harden the public `/api/chat` route before shipping. Triggers on: \"chatbot-template\", \"shadcn chatbot\", \"AI SDK chat app\", \"Next.js AI SDK starter\", \"Vercel AI Gateway chat\", \"streaming chat with shadcn/typeset\", \"ask_user questionnaire tool\", \"shadcn/react message scroller\".",
+      "description": "Scaffold and extend chatbot-template, shadcn/ui's minimal Next.js starter for building an AI chatbot with the AI SDK, shadcn/react, shadcn/typeset, and the Vercel AI Gateway. It ships streaming markdown chat, tool calling (a server-executed GitHub repo lookup, provider-native web search, and a human-in-the-loop `ask_user` questionnaire), and one-click Vercel deploy with OIDC gateway auth. Use when the user wants to spin up a Next.js AI chat app fast, add a custom tool with a typed UI part, swap or restrict the model list, or harden the public chat API route (`app/api/chat/route.ts`) before shipping. Triggers on: starter\", \"Vercel AI Gateway chat\", \"streaming chat with shadcn/typeset\", \"ask_user questionnaire tool\", \"shadcn/react message scroller\".",
       "category": "web",
       "subcategory": "frontend",
       "interface": "workflow",
@@ -15213,7 +15217,7 @@
     },
     {
       "name": "diagram-design",
-      "description": "Use when creating source-grounded branded diagrams with cathrynlavery/diagram-design: run its offline preflight, choose a semantic pattern and visual type, author self-contained HTML with inline SVG, verify accessibility and geometry, open or screenshot local output when a browser is available, export manually to SVG or PNG, import and redraw Mermaid, draw.io, or Excalidraw content, and adapt the style guide to approved brand tokens. Keep static output, local paths, and font/network boundaries explicit. Never install or publish without approval. Route editable .drawio diagrams and draw.io CLI exports to `drawio`, academic paper figures to `paperbanana`, and slide decks to `slides-grab` or `presentation-builder`.",
+      "description": "Use when creating source-grounded branded diagrams with cathrynlavery/diagram-design: run its offline preflight, choose a semantic pattern and visual type, author self-contained HTML with inline SVG, verify accessibility and geometry, open or screenshot local output when a browser is available, export manually to SVG or PNG, import and redraw Mermaid, draw.io, or Excalidraw content, and adapt the style guide to approved brand tokens. Keep static output, local paths, and font/network boundaries explicit. Require explicit approval before installing or publishing. Route editable .drawio diagrams and draw.io CLI exports to `drawio`, academic paper figures to `paperbanana`, and slide decks to `slides-grab` or `presentation-builder`.",
       "category": "creative-media",
       "subcategory": "diagram",
       "interface": "workflow",
@@ -16142,6 +16146,67 @@
       "keyword": "fastmcp",
       "version": "4.2.0",
       "source": "https://github.com/PrefectHQ/fastmcp"
+    },
+    {
+      "name": "pmtiles",
+      "description": "Use when creating, inspecting, extracting, serving, or troubleshooting PMTiles single-file map tile archives on cloud storage or local disk. Covers PMTiles v3 specification, header inspection (min/max zoom, bounds, clustered directories), converting MBTiles or directories with the pmtiles CLI or go-pmtiles, configuring HTTP Range Requests on S3, R2, GCS, or GitHub Pages, client integration with MapLibre GL JS, Leaflet, OpenLayers, and Python readers. Route format-only skill linting to skill-standardization, raw cloud deployment to deployment-automation, and custom vector graphic shaders to paper-shaders.",
+      "category": "infrastructure",
+      "subcategory": "cloud-data",
+      "interface": "cli",
+      "path": "pmtiles/SKILL.md",
+      "tags": [
+        "pmtiles",
+        "protomaps",
+        "geospatial",
+        "map-tiles",
+        "cloud-storage",
+        "vector-tiles",
+        "raster-tiles",
+        "s3",
+        "mvt",
+        "maplibre"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Grep",
+        "Glob"
+      ],
+      "keyword": "pmtiles",
+      "version": "3.0.0",
+      "source": "https://github.com/protomaps/PMTiles"
+    },
+    {
+      "name": "canyonos",
+      "description": "Deploy, observe, and scale multi-agent Python applications without decorators or SDK modifications using CanyonOS (v0.2.2). Use when converting plain Python, LangChain, or LangGraph projects into containerized agent replicas via .canyon and prepare.py; defining workflow topologies, entrypoints, and adapters; configuring state isolation, replicas, and autoscaling in scaling.yaml; managing LLM access and cost caps in llms.yaml; extracting versioned system prompts into prompts.yaml; generating OpenTelemetry metrics and traces; or running canyonos doctor, new-app, validate, deploy, status, test, logs, clean, and stop. Route Kubernetes-only CRD declarative cluster controllers to kagent, MCP application authoring to fastmcp, and LLM evaluation benchmarks to trulens or agent-evaluation.",
+      "category": "ai-agents",
+      "subcategory": "orchestration",
+      "interface": "cli",
+      "path": "canyonos/SKILL.md",
+      "tags": [
+        "canyonos",
+        "multi-agent",
+        "orchestration",
+        "agent-deployment",
+        "scaling",
+        "observability",
+        "containerization",
+        "opentelemetry",
+        "python"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Grep",
+        "Glob",
+        "Write",
+        "Edit"
+      ],
+      "keyword": "canyonos",
+      "version": "0.2.2",
+      "source": "https://github.com/CanyonCodeCoreAI/canyonos"
     }
   ]
 }

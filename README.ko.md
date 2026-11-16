@@ -399,7 +399,7 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 
 ## 📚 스킬 목록
 
-> `.agent-skills/skills.json`에서 생성 · 438개 스킬 · 카테고리를 펼치면 스킬 목록이 보입니다.
+> `.agent-skills/skills.json`에서 생성 · 440개 스킬 · 카테고리를 펼치면 스킬 목록이 보입니다.
 
 ### 🌐 웹 (73개)
 
@@ -486,9 +486,9 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 
 </details>
 
-### 🏗 인프라 (17개)
+### 🏗 인프라 (18개)
 
-하위 분류: `deployment` (2), `environment` (2), `observability` (3), `security` (3), `cloud-data` (6), `automation` (0), `tooling` (1)
+하위 분류: `deployment` (2), `environment` (2), `observability` (3), `security` (3), `cloud-data` (7), `automation` (0), `tooling` (1)
 
 <details>
 <summary>스킬 보기</summary>
@@ -512,6 +512,7 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 | `ai-knowledge-management-platform` |
 | `knowledge-catalog` |
 | `cocoindex` |
+| `pmtiles` |
 
 </details>
 
@@ -678,9 +679,9 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 
 </details>
 
-### 🤖 AI 및 에이전트 (81개)
+### 🤖 AI 및 에이전트 (82개)
 
-하위 분류: `orchestration` (19), `agent-frameworks` (22), `skill-authoring` (5), `evaluation` (10), `memory` (7), `planning-review` (13), `discovery` (3), `prompting` (2)
+하위 분류: `orchestration` (20), `agent-frameworks` (22), `skill-authoring` (5), `evaluation` (10), `memory` (7), `planning-review` (13), `discovery` (3), `prompting` (2)
 
 <details>
 <summary>스킬 보기</summary>
@@ -768,6 +769,7 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 | `kagent` |
 | `trulens` |
 | `fastmcp` |
+| `canyonos` |
 
 </details>
 
@@ -1016,6 +1018,13 @@ v1 마이그레이션, 실행 근거에 따른 `/harness:evolve`를 안내합니
 
 <!-- WHATS-NEW:START -->
 
+
+## 🆕 v2026-11-15 업데이트
+
+| 변경 사항 | 상세 내용 |
+|--------|---------|
+| **PMTiles 클라우드 네이티브 타일 아카이브 스킬** | 업스트림 `aec8fa1341222fdddb3318e9ffa8e18e19b312f7` (v3 규격)에 고정한 `pmtiles`를 추가했습니다. PMTiles v3 127바이트 헤더 검사, MBTiles에서 PMTiles로의 변환, 공간 하위 집합 추출(`--bbox`), S3·R2·GCS CORS 및 HTTP Range 요청 설정, MapLibre GL JS 프로토콜 등록, 오프라인 바이너리 헤더 프리플라이트 헬퍼를 제공합니다. 스킬 440개 카탈로그, README 3개 언어 목록과 setup 가이드를 동기화했습니다. |
+| **현재 카탈로그** | 현재 매니페스트는 `kagent`, `trulens`, `fastmcp`, `canyonos`, `pmtiles`를 포함한 스킬 440개·카테고리 10개를 담고 있습니다. 카탈로그 표는 `.agent-skills/skills.json`에서 다시 생성합니다. |
 
 ## 🆕 v2026-11-14 업데이트
 

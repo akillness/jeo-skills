@@ -392,7 +392,7 @@ See the [setup guide](setup-all-skills-prompt.md#claude-code-game-studios-on-dem
 
 ## 📚 Skills List
 
-> Generated from `.agent-skills/skills.json` · 438 skills · expand a category to see its skills.
+> Generated from `.agent-skills/skills.json` · 440 skills · expand a category to see its skills.
 
 ### 🌐 Web (73)
 
@@ -479,9 +479,9 @@ Subcategories: `frontend` (13), `backend` (3), `design` (16), `api` (2), `auth` 
 
 </details>
 
-### 🏗 Infrastructure (17)
+### 🏗 Infrastructure (18)
 
-Subcategories: `deployment` (2), `environment` (2), `observability` (3), `security` (3), `cloud-data` (6), `automation` (0), `tooling` (1)
+Subcategories: `deployment` (2), `environment` (2), `observability` (3), `security` (3), `cloud-data` (7), `automation` (0), `tooling` (1)
 
 <details>
 <summary>Show Infrastructure skills</summary>
@@ -505,6 +505,7 @@ Subcategories: `deployment` (2), `environment` (2), `observability` (3), `securi
 | `ai-knowledge-management-platform` |
 | `knowledge-catalog` |
 | `cocoindex` |
+| `pmtiles` |
 
 </details>
 
@@ -671,9 +672,9 @@ Subcategories: `developer-cli` (12), `ai-cli` (17), `media-cli` (1), `automation
 
 </details>
 
-### 🤖 AI & Agents (81)
+### 🤖 AI & Agents (82)
 
-Subcategories: `orchestration` (19), `agent-frameworks` (22), `skill-authoring` (5), `evaluation` (10), `memory` (7), `planning-review` (13), `discovery` (3), `prompting` (2)
+Subcategories: `orchestration` (20), `agent-frameworks` (22), `skill-authoring` (5), `evaluation` (10), `memory` (7), `planning-review` (13), `discovery` (3), `prompting` (2)
 
 <details>
 <summary>Show AI &amp; Agents skills</summary>
@@ -761,6 +762,7 @@ Subcategories: `orchestration` (19), `agent-frameworks` (22), `skill-authoring` 
 | `kagent` |
 | `trulens` |
 | `fastmcp` |
+| `canyonos` |
 
 </details>
 
@@ -1007,6 +1009,13 @@ See the [setup boundary](setup-all-skills-prompt.md#elephant-goldfish-model-on-d
 
 <!-- WHATS-NEW:START -->
 
+
+## 🆕 What's New in v2026-11-15
+
+| Change | Details |
+|--------|---------|
+| **PMTiles cloud-native tile archive skill** | Adds `pmtiles`, pinned to upstream `aec8fa1341222fdddb3318e9ffa8e18e19b312f7` (v3 spec), with PMTiles v3 127-byte header inspection, MBTiles-to-PMTiles conversion, spatial subset extraction (`--bbox`), S3/R2/GCS CORS and HTTP Range request setup, MapLibre GL JS protocol registration, and an offline binary header preflight helper. The 440-skill catalog, three README inventories, and setup guide are synchronized. |
+| **Current catalog** | The current manifest contains 440 skills in 10 categories, including `kagent`, `trulens`, `fastmcp`, `canyonos`, and `pmtiles`. Catalog tables are regenerated from `.agent-skills/skills.json`. |
 
 ## 🆕 What's New in v2026-11-14
 

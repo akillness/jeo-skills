@@ -341,7 +341,7 @@ y la [atribución MIT upstream](docs/attribution.md).
 
 ## 📚 Lista de Habilidades
 
-> Generado desde `.agent-skills/skills.json` · 438 habilidades · despliega una categoría para ver sus habilidades.
+> Generado desde `.agent-skills/skills.json` · 440 habilidades · despliega una categoría para ver sus habilidades.
 
 ### 🌐 Web (73)
 
@@ -428,9 +428,9 @@ Subcategorías: `frontend` (13), `backend` (3), `design` (16), `api` (2), `auth`
 
 </details>
 
-### 🏗 Infraestructura (17)
+### 🏗 Infraestructura (18)
 
-Subcategorías: `deployment` (2), `environment` (2), `observability` (3), `security` (3), `cloud-data` (6), `automation` (0), `tooling` (1)
+Subcategorías: `deployment` (2), `environment` (2), `observability` (3), `security` (3), `cloud-data` (7), `automation` (0), `tooling` (1)
 
 <details>
 <summary>Ver habilidades</summary>
@@ -454,6 +454,7 @@ Subcategorías: `deployment` (2), `environment` (2), `observability` (3), `secur
 | `ai-knowledge-management-platform` |
 | `knowledge-catalog` |
 | `cocoindex` |
+| `pmtiles` |
 
 </details>
 
@@ -620,9 +621,9 @@ Subcategorías: `developer-cli` (12), `ai-cli` (17), `media-cli` (1), `automatio
 
 </details>
 
-### 🤖 IA y Agentes (81)
+### 🤖 IA y Agentes (82)
 
-Subcategorías: `orchestration` (19), `agent-frameworks` (22), `skill-authoring` (5), `evaluation` (10), `memory` (7), `planning-review` (13), `discovery` (3), `prompting` (2)
+Subcategorías: `orchestration` (20), `agent-frameworks` (22), `skill-authoring` (5), `evaluation` (10), `memory` (7), `planning-review` (13), `discovery` (3), `prompting` (2)
 
 <details>
 <summary>Ver habilidades</summary>
@@ -710,6 +711,7 @@ Subcategorías: `orchestration` (19), `agent-frameworks` (22), `skill-authoring`
 | `kagent` |
 | `trulens` |
 | `fastmcp` |
+| `canyonos` |
 
 </details>
 
@@ -957,6 +959,13 @@ Consulta los [límites de instalación](setup-all-skills-prompt.md#elephant-gold
 
 <!-- WHATS-NEW:START -->
 
+
+## Novedades en v2026-11-15
+
+| Cambio | Detalles |
+|--------|---------|
+| **Operador PMTiles para archivos de teselas en la nube** | Añadida la guía `pmtiles`, fijada al commit `aec8fa1341222fdddb3318e9ffa8e18e19b312f7` (especificación v3), con inspección de cabecera de 127 bytes, conversión de MBTiles a PMTiles, extracción de subconjuntos espaciales (`--bbox`), configuración de CORS y solicitudes HTTP Range en S3/R2/GCS, registro de protocolo MapLibre GL JS y preflight de cabecera binaria sin conexión. El catálogo de 440 habilidades, tres inventarios README y la guía de setup están sincronizados. |
+| **Catálogo actual** | El manifiesto actual contiene 440 habilidades en 10 categorías, incluidas `kagent`, `trulens`, `fastmcp`, `canyonos` y `pmtiles`. Las tablas del catálogo se regeneran desde `.agent-skills/skills.json`. |
 
 ## Novedades en v2026-11-14
 

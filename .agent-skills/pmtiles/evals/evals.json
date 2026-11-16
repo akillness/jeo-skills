@@ -1,0 +1,30 @@
+{
+  "skill_name": "pmtiles",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "How do I convert an existing MBTiles file into a PMTiles v3 archive and inspect its header offsets and zoom levels?",
+      "expected_output": "Instruct the user to run `pmtiles convert <input.mbtiles> <output.pmtiles>`, optionally specify `--tile-compression`, and inspect the resulting archive using `pmtiles show <output.pmtiles>` or the offline `scripts/preflight.py --archive <path>` helper to verify the 127-byte header, bounds, and min/max zoom."
+    },
+    {
+      "id": 2,
+      "prompt": "We are hosting our vector basemap on Cloudflare R2 / AWS S3. What CORS and HTTP headers are required for browser map clients to load tiles?",
+      "expected_output": "Explain that PMTiles clients fetch tiles via HTTP Range requests. S3/R2 CORS rules must allow `GET` and `HEAD` methods, allow `Range` in `AllowedHeaders`, and expose `Content-Range`, `Content-Length`, and `ETag` in `ExposeHeaders`."
+    },
+    {
+      "id": 3,
+      "prompt": "How do I add a PMTiles vector tile source to a MapLibre GL JS web application?",
+      "expected_output": "Guide the user to import `pmtiles`, instantiate `const protocol = new pmtiles.Protocol()`, register it via `maplibregl.addProtocol('pmtiles', protocol.tile)`, and define vector sources using the `pmtiles://https://...` URL protocol."
+    },
+    {
+      "id": 4,
+      "prompt": "I need to extract only the Seoul metropolitan area up to zoom 14 from a massive global PMTiles file to host locally. How do I do that?",
+      "expected_output": "Direct the user to `pmtiles extract <source.pmtiles> <subset.pmtiles> --bbox=126.76,37.42,127.18,37.70 --maxzoom=14`, explaining that PMTiles extract selectively copies the clustered Hilbert tile records without decompressing or re-rendering tile payloads."
+    },
+    {
+      "id": 5,
+      "prompt": "Format and lint my custom SKILL.md file to ensure it conforms to agentskills.io frontmatter rules.",
+      "expected_output": "Route format-only skill linting to skill-standardization rather than pmtiles, explaining that pmtiles is focused on cloud-native geospatial tile archives, serving, and client integration."
+    }
+  ]
+}
