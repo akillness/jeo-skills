@@ -134,9 +134,11 @@ def main() -> int:
 
         # 5. missing key is a hard stop, not a silent unauthenticated call
         cmd = [sys.executable, str(AGENT), "--server", base, "animate", "--filename", "X-Bot.fbx", "--message", "x"]
-        env = dict(os.environ)
-        for key_var in ("ANIMATO_API_KEY", "GEMINI_API_KEY", "OPENAI_API_KEY"):
-            env.pop(key_var, None)
+        env = {
+            k: v
+            for k in ("PATH", "HOME", "TMPDIR", "LANG", "LC_ALL", "PYTHONNOUSERSITE")
+            if (v := os.environ.get(k)) is not None
+        }
         proc = subprocess.run(cmd, capture_output=True, text=True, cwd=workdir, env=env)
         if proc.returncode == 0 or "no API key" not in proc.stderr:
             failures.append(f"missing key must fail loudly: rc={proc.returncode} {proc.stderr}")

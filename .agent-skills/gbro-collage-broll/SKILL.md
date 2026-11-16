@@ -3,6 +3,7 @@ name: gbro-collage-broll
 description: >
   Turn a 5-second voiceover script, opinion statement, or abstract concept into an editorial halftone paper-collage assemble-from-empty B-roll video. Use when the user requests "collage b-roll", "paper collage B-roll", "halftone collage", "collage video", "gbro-collage-broll", or asks to convert voiceover lines into animated editorial collage visual metaphors. Enforces a 3-gate approval workflow (metaphor confirmation -> still frame confirmation -> video generation via Gemini Omni Flash).
 allowed-tools: Bash Read Write Edit Glob Grep
+permissions: [env, network]
 compatibility: Runs in Codex environment (Gate 2 depends on built-in image_gen). Requires Python >= 3.10, google-genai >= 2.10.0, GEMINI_API_KEY, and ffmpeg/ffprobe.
 metadata:
   tags: video-generation, b-roll, paper-collage, halftone, gemini-omni-flash, editorial-animation
@@ -32,7 +33,7 @@ When NOT to use this skill:
 Before Gate 1, run the setup validator script:
 
 ```bash
-bash .agent-skills/gbro-collage-broll/scripts/check_setup.sh
+bash scripts/check_setup.sh
 ```
 
 Ensure `GEMINI_API_KEY`, `ffmpeg`/`ffprobe`, Python >= 3.10, and `google-genai >= 2.10.0` (in `~/hyperframes-projects/.omni-venv`) are ready.
@@ -44,21 +45,21 @@ Ensure `GEMINI_API_KEY`, `ffmpeg`/`ffprobe`, Python >= 3.10, and `google-genai >
 - Output the metaphor proposal without generating images/videos, then STOP and await user approval.
 
 #### Gate 2: Still Frame Approval
-- After Gate 1 approval, write `visual-spec.json` and generate the 9:16 still frame via Codex `image_gen`.
-- Generate contact sheet `still-contact-sheet.jpg` and write `gate2-qa.md`. STOP and await user approval before calling any video model.
+- After Gate 1 approval, write `<project>/visual-spec.json` and generate the 9:16 still frame via Codex `image_gen`.
+- Generate contact sheet `<project>/still-contact-sheet.jpg` and write `<project>/gate2-qa.md`. STOP and await user approval before calling any video model.
 
 #### Gate 3: Video Generation & QA
-- After Gate 2 approval, prepare empty color first frame (`first-frame.png`) and target last frame (`last-frame.png`).
+- After Gate 2 approval, prepare empty color first frame (`<project>/first-frame.png`) and target last frame (`<project>/last-frame.png`).
 - Execute batch Gemini Omni Flash video generation using `scripts/generate_video.py` (defaulting to `gemini-omni-flash-preview`):
 
 ```bash
 ~/hyperframes-projects/.omni-venv/bin/python \
-  .agent-skills/gbro-collage-broll/scripts/generate_video.py \
+  scripts/generate_video.py \
   --batch <project>/omni-jobs.json \
   --concurrency 3
 ```
 
-- Convert output MP4 to silent format (`final-5s-noaudio.mp4`), run frame extraction contact sheets, and write `gate3-qa.md`.
+- Convert output MP4 to silent format (`<project>/final-5s-noaudio.mp4`), run frame extraction contact sheets, and write `<project>/gate3-qa.md`.
 
 ## Examples
 

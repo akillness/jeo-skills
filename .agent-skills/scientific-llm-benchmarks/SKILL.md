@@ -3,6 +3,7 @@ name: scientific-llm-benchmarks
 description: "A comprehensive reference of benchmarks for evaluating large language models on scientific reasoning and discovery."
 compatibility: ">"
 allowed-tools: Bash Read Write Edit Glob Grep WebFetch
+permissions: [env, network]
 metadata:
   tags: scientific-llm-benchmarks, llm-benchmarks, science-llms, evaluation, awesome-list, reasoning, discovery, stem
   version: 1.0.0

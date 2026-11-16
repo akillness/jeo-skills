@@ -10,6 +10,7 @@ description: >
   rigged model, bpy animation script, blender headless keyframe, /api/chat animation,
   character motion from a prompt, GEMINI_API_KEY animation.
 allowed-tools: Bash Read Write Edit Glob Grep
+permissions: [env, network]
 compatibility: Local Animato server (FastAPI + bpy 5.x, Python 3.13/uv) with any Gemini or OpenAI-compatible API key; scripts are stdlib-only
 metadata:
   tags: game-development, animation, blender, bpy, 3d, agent-loop, api-key
@@ -44,7 +45,7 @@ irreplaceable, copy it before uploading. `.obj` has no skeleton and cannot be an
 
 ```bash
 uv run fastapi run main.py   # in the Animato checkout, serves UI + API on :8000
-python3 .agent-skills/animato/scripts/animato_agent.py doctor
+python3 -B .agent-skills/animato/scripts/animato_agent.py doctor
 ```
 
 `doctor` checks server reachability, key presence (never printing the value), and the gate script.
@@ -55,7 +56,7 @@ and `ANIMATO_MODEL`; see `references/agent-loop.md`.
 
 ```bash
 export ANIMATO_API_KEY=...   # free-tier key is enough; one inference per animation
-python3 .agent-skills/animato/scripts/animato_agent.py animate \
+python3 -B .agent-skills/animato/scripts/animato_agent.py animate \
   --file "./X Bot.fbx" --message "wave hello with the right arm, 2 seconds"
 ```
 
@@ -69,7 +70,7 @@ you accept that `/api/chat` executes the script before any gate can run.
 A rejected script means the request or the model choice was wrong, not that the loop should retry.
 
 ```bash
-python3 .agent-skills/animato/scripts/validate_bpy_script.py animato-out/X-Bot.generated.py \
+python3 -B .agent-skills/animato/scripts/validate_bpy_script.py animato-out/X-Bot.generated.py \
   --model-path public/upload/X-Bot.fbx
 ```
 
@@ -84,7 +85,7 @@ loads and actually carries a clip (`gltf.animations` / FBX `.animations` non-emp
 called every frame). Fix a wrong clip with a fresh request; drop a bad clip deterministically:
 
 ```bash
-python3 .agent-skills/animato/scripts/animato_agent.py remove --filename X-Bot.fbx --name wave
+python3 -B .agent-skills/animato/scripts/animato_agent.py remove --filename X-Bot.fbx --name wave
 ```
 
 ### Step 6: Keep the loop honest
@@ -98,7 +99,7 @@ never claim an animation works from a passing gate alone — the gate is static.
 ### Verify the whole loop offline (no key, no Blender)
 
 ```bash
-python3 .agent-skills/animato/scripts/selftest.py
+python3 -B .agent-skills/animato/scripts/selftest.py
 ```
 
 Runs a stub Animato server and stub LLM through six cases: happy path, gate rejection blocking
@@ -108,14 +109,14 @@ execution, `--dry-run`, `/api/chat` mode, missing-key failure, and `doctor`.
 
 ```bash
 ANIMATO_PROVIDER=openai ANIMATO_LLM_ENDPOINT=http://localhost:11434/v1 ANIMATO_MODEL=my-model \
-python3 .agent-skills/animato/scripts/animato_agent.py animate \
+python3 -B .agent-skills/animato/scripts/animato_agent.py animate \
   --filename X-Bot.fbx --message "idle breathing loop, 3 seconds" --dry-run
 ```
 
 ### Inspect the prompt the server builds
 
 ```bash
-python3 .agent-skills/animato/scripts/animato_agent.py prompt \
+python3 -B .agent-skills/animato/scripts/animato_agent.py prompt \
   --filename X-Bot.fbx --message "wave hello" --out prompt.txt
 ```
 
