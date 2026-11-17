@@ -399,7 +399,7 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 
 ## 📚 스킬 목록
 
-> `.agent-skills/skills.json`에서 생성 · 441개 스킬 · 카테고리를 펼치면 스킬 목록이 보입니다.
+> `.agent-skills/skills.json`에서 생성 · 442개 스킬 · 카테고리를 펼치면 스킬 목록이 보입니다.
 
 ### 🌐 웹 (73개)
 
@@ -516,9 +516,9 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 
 </details>
 
-### 🎮 게임 (40개)
+### 🎮 게임 (41개)
 
-하위 분류: `client` (9), `web` (2), `server` (1), `design-ui` (7), `audio` (1), `animation` (3), `motion-vfx` (3), `sprite-image` (1), `art-resources` (1), `storytelling` (0), `tooling` (6), `qa-performance` (4), `release` (2)
+하위 분류: `client` (9), `web` (2), `server` (1), `design-ui` (7), `audio` (1), `animation` (3), `motion-vfx` (3), `sprite-image` (1), `art-resources` (1), `storytelling` (0), `tooling` (7), `qa-performance` (4), `release` (2)
 
 <details>
 <summary>스킬 보기</summary>
@@ -565,6 +565,7 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 | `fastnoise2` |
 | `donchitos-game-studios` |
 | `gamefactory-3a` |
+| `arnis` |
 
 </details>
 
@@ -1024,6 +1025,7 @@ v1 마이그레이션, 실행 근거에 따른 `/harness:evolve`를 안내합니
 
 | 변경 사항 | 상세 내용 |
 |--------|---------|
+| **Arnis 현실 OpenStreetMap-마인크래프트 복셀 생성 스킬** | 업스트림 `95594dbb5164d67d9a25a410a74c16f3c99b0d0d`에 고정한 `arnis`를 추가했습니다. OpenStreetMap 벡터 피처 파싱, DEM 고도 스케일링, 건물 및 지붕 돌출, 커스텀 JSON 블록 팔레트 매핑, Anvil 리전(`.mca`) 및 WorldEdit 스키매틱(`.schem`) 내보내기, 오프라인 바운딩 박스 프리플라이트 헬퍼를 제공합니다. 스킬 442개 카탈로그, README 3개 언어 목록과 setup 가이드를 동기화했습니다. |
 | **MiniMind 초경량 LLM 밑바닥 훈련 및 정렬 스킬** | 업스트림 `233d00fa068ec2b8c0d4f07b703934d6391a5a73`에 고정한 `minimind`를 추가했습니다. 초경량 Transformer 및 MoE 아키텍처(26M–104M 파라미터), 인과적 사전 훈련, Full 및 LoRA 지시 튜닝, DPO(Direct Preference Optimization), 추론 증류(`<think>` 토큰), GGUF 변환, 오프라인 파라미터 추정 프리플라이트 헬퍼를 제공합니다. 스킬 441개 카탈로그, README 3개 언어 목록과 setup 가이드를 동기화했습니다. |
 | **Jev SSOT 메타데이터 인덱싱·BM25+IDF 프리필터링 및 3계층 `assist` 주입** | `AGENTS.md` SSOT 원칙(`category`·`subcategory`·`tags`·`relationships`는 `.agent-skills/skills.json`에만 단일 소스로 유지하고 `SKILL.md`에 중복 기재하지 않음)을 준수하면서 `loadCatalog`와 `resolveExcerptRoot`가 440개 스킬 전체의 `category`·`subcategory`·`tags`·`keyword`·`platforms` 및 최상위 `relationship_groups`와 `SKILL.md` 보조 frontmatter(`compatibility`·`permissions`·`allowed-tools`·`triggers` 및 설명 내 트리거)를 함께 인덱싱합니다. `skillMetadataAndExcerpt`는 인접 `SKILL.toon` 요약(`extractToonExcerpt`로 `U`/`R`/`S` 섹션 우선 및 중복 헤더 제거) 또는 코드 블록을 피한 `SKILL.md` 핵심 섹션(`Triggers` / `When to Use` / `Route-outs` / `Non-goals` / `Constraints`)을 우선 추출해 `budgetCandidates`로 백엔드 상태 한도 내에 직렬화합니다. `--prefilter auto`에서 64개 이상 카탈로그는 OpenSpace 로컬 BM25 사전 가중치(`openspace/scripts/route_prompt.py --json`, `OPENSPACE_PRIOR_WEIGHT = 3.0`, 비활성화 `--no-openspace-prior` / `JEV_OPENSPACE_PRIOR=0`)와 결합된 한·영 BM25/IDF 필드 가중 압축(`name > tags/triggers > category/subcategory > description/relationships`) 후 단일 Jev `which` + `fits::<name>` 정밀 검증을 수행하고(어휘 일치가 없고 샤드 `<= 4`개면 메타 병기 `sharded`로 폴백), `route-skills` `topK` 응답에 `subcategory`·`tags`·`relationships`·`permissions`·해석된 `path` 및 선택적 `toonPath`/`allowedTools`/`compatibility`를 포함합니다. `jev-plugin.mjs` `assist` 주입(`echo-turn-jeopi` / `jev-setup.sh`)은 3계층(`SKILL.toon` → 1,536바이트 초과 `SKILL.md`의 핵심 메타·섹션 + `Source:` 전체 읽기 지시 → 소형 `SKILL.md` 전문)과 Jev 백엔드 장애 시 OpenSpace 폴백을 지원하며, `scripts/skills-upgrade.sh`가 비심볼릭 `~/.agents/jev/skills.json` 스냅샷도 함께 동기화합니다. |
 | **Jev System One 7대 유스케이스 CLI 확장 및 등급 게이팅** | `decide-action`(상한 적용 UI/브라우저 행동 선택, 미검증·모의 백엔드에서 `execute`→`confirm` 강등), `route-model`(복잡도·`needs_reasoning` 기반 모델 계층 라우팅), `gate-tool`(`choiceCap` 제한 도구 실행 전 안전 게이트, 미검증·모의 백엔드에서 `allow`→`confirm` 강등), `moderate --scope untrusted`(간접 프롬프트 인젝션 점검), `evaluate-run --detailed`(`qualityGrade`·`failureCategory`), `calibrate-judge`(라벨 데이터셋 기반 TPR/TNR 혼동 행렬), `manage-memory --score-importance`, 그리고 하이브리드 BM25+등급형 `rerank`를 추가했습니다. |

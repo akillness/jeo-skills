@@ -1,0 +1,22 @@
+N:arnis
+D:Use when generating, converting, inspecting, or troubleshooting Minecraft worlds and schematics from real-world OpenStreetMap (OSM) and elevation data with Arnis. Covers bounding-box queries, digital elevation models (DEM), 3D building and roof geometry reconstruction, road, railway, and water feature voxelization, custom block palette mappings, and exporting to Anvil region files (.mca) or WorldEdit schematics (.schem). Route format-only skill linting to skill-standardization, map tile rendering to pmtiles, and general Godot voxel terrain to godot-voxel-tools.
+G:arnis minecraft world-generation openstreetmap osm voxel dem elevation procedural-generation schematic
+U[5]:
+  Validate geographic bounding boxes and estimate Minecraft block and chunk footprints
+  Convert OpenStreetMap vector ways into extruded 3D building and roof structures
+  Integrate digital elevation models (DEM) to reproduce real-world terrain topographies
+  Customize material-to-block palettes mapping real construction surfaces to Minecraft blocks
+  Export voxelized regions into standalone Anvil world saves (.mca) or WorldEdit schematics (.schem)
+S[6]{n,action,details}:
+  1,Preflight,Run scripts/preflight.py --json to verify arnis CLI availability and validate bounding boxes
+  2,BBox,Define target geographic bounds (min_lon min_lat max_lon max_lat) and estimate chunk memory
+  3,Palette,Configure custom block palette JSON mapping OSM building and highway tags to namespaced blocks
+  4,Elevation,Select elevation source (SRTM Copernicus or flat) and set vertical scale factor
+  5,Generate,Execute arnis generate to assemble voxel terrain buildings and road networks into world saves
+  6,Export,Optionally export targeted districts as WorldEdit .schem files for server pasting
+R[5]:
+  Run scripts/preflight.py --bbox <coords> before generation to verify coordinates and chunk sizes
+  Test small bounding boxes (e.g. 500m x 500m) before generating large metropolitan districts
+  Ensure custom block identifiers include explicit namespaces (e.g. minecraft:bricks) in palettes
+  Use WorldEdit schematic export when integrating generated structures into existing multiplayer servers
+  Route format linting to skill-standardization and map tile archiving to pmtiles

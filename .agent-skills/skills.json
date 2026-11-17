@@ -1,7 +1,7 @@
 {
   "version": "2.1.0",
   "generated": "2026-10-21",
-  "skill_count": 441,
+  "skill_count": 442,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -263,7 +263,8 @@
       "meshoptimizer",
       "fastnoise2",
       "donchitos-game-studios",
-      "gamefactory-3a"
+      "gamefactory-3a",
+      "arnis"
     ],
     "creative-media": [
       "aura-asset-images",
@@ -775,7 +776,8 @@
         "meshoptimizer",
         "fastnoise2",
         "donchitos-game-studios",
-        "gamefactory-3a"
+        "gamefactory-3a",
+        "arnis"
       ],
       "qa-performance": [
         "game-build-log-triage",
@@ -16239,6 +16241,36 @@
       "keyword": "minimind",
       "version": "1.0.0",
       "source": "https://github.com/jingyaogong/minimind"
+    },
+    {
+      "name": "arnis",
+      "description": "Use when generating, converting, inspecting, or troubleshooting Minecraft worlds and schematics from real-world OpenStreetMap (OSM) and elevation data with Arnis. Covers bounding-box queries, digital elevation models (DEM), 3D building and roof geometry reconstruction, road, railway, and water feature voxelization, custom block palette mappings, and exporting to Anvil region files (.mca) or WorldEdit schematics (.schem). Route format-only skill linting to skill-standardization, map tile rendering to pmtiles, and general Godot voxel terrain to godot-voxel-tools.",
+      "category": "game",
+      "subcategory": "tooling",
+      "interface": "cli",
+      "path": "arnis/SKILL.md",
+      "tags": [
+        "arnis",
+        "minecraft",
+        "world-generation",
+        "openstreetmap",
+        "osm",
+        "voxel",
+        "dem",
+        "elevation",
+        "procedural-generation",
+        "schematic"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Grep",
+        "Glob"
+      ],
+      "keyword": "arnis",
+      "version": "1.0.0",
+      "source": "https://github.com/louis-e/arnis"
     }
   ]
 }

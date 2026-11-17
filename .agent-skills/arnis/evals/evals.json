@@ -1,0 +1,30 @@
+{
+  "skill_name": "arnis",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "How do I generate a Minecraft 1.20 world from real-world coordinates using Arnis and OpenStreetMap data?",
+      "expected_output": "Guide the user to define a bounding box `min_lon,min_lat,max_lon,max_lat`, run `python3 $SKILL_DIR/scripts/preflight.py --bbox <coords> --json` to estimate block and chunk footprints, and execute `arnis generate --bbox <coords> --output <world_dir>` with optional elevation data."
+    },
+    {
+      "id": 2,
+      "prompt": "I want to export just a small downtown city district as a WorldEdit schematic instead of replacing my whole server world. Can Arnis do that?",
+      "expected_output": "Instruct the user to run `arnis export-schematic --bbox <coords> --output <file.schem> --palette <palette.json>`, explaining that Arnis outputs standard Sponge/WorldEdit `.schem` files that can be pasted into existing worlds using `//schem load`."
+    },
+    {
+      "id": 3,
+      "prompt": "How does Arnis handle mountainous terrain and elevation so the heights match real-world topography in Minecraft?",
+      "expected_output": "Explain that Arnis samples Digital Elevation Models (DEMs like SRTM or Copernicus 30m) and scales real-world meters into Minecraft vertical Y levels (from Y=-64 to Y=320 in 1.18+), applying bilinear smoothing to avoid stepped terrain."
+    },
+    {
+      "id": 4,
+      "prompt": "How can I map custom building materials, like using quartz for modern office towers and dark oak for roofs?",
+      "expected_output": "Explain Arnis JSON palette configuration where OSM tags (like `building:material` or `roof:shape`) are mapped to namespaced Minecraft block states (e.g. `minecraft:smooth_quartz` and `minecraft:dark_oak_stairs`)."
+    },
+    {
+      "id": 5,
+      "prompt": "Lint and format my custom SKILL.md file to comply with agentskills.io frontmatter rules.",
+      "expected_output": "Route format-only skill linting to skill-standardization rather than arnis, explaining that Arnis specializes in OpenStreetMap-to-Minecraft procedural voxel generation."
+    }
+  ]
+}
