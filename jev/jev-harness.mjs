@@ -2186,10 +2186,12 @@ export async function decideAction(inputState, { mock = false, override = null, 
   const targetId = targetParts.length ? targetParts.join(':') : null;
   const goalReached = (envelope.answers?.goal_reached?.probability ?? 0) >= 0.7;
   const destructive = (envelope.answers?.destructive_or_irreversible?.probability ?? 0) >= 0.5;
-  const verdict = goalReached || actionChoice === 'done' ? 'done'
+  const rawVerdict = goalReached || actionChoice === 'done' ? 'done'
     : actionChoice === 'blocked' ? 'blocked'
       : destructive ? 'confirm'
         : 'execute';
+  const tierDegraded = rawVerdict === 'execute' && envelope.backend?.tier !== 'validated';
+  const verdict = tierDegraded ? 'confirm' : rawVerdict;
   const decision = {
     verdict,
     action: actionChoice,
@@ -2326,7 +2328,9 @@ export async function gateTool(input, { mock = false, override = null, model = n
   const safe = s?.answer === 'yes' && s.confidence >= threshold;
   const matched = m?.answer === 'yes' && m.confidence >= 0.5;
   const confirmNeeded = c?.answer === 'yes' && c.confidence >= 0.5;
-  const verdict = !safe ? 'block' : (!matched || confirmNeeded) ? 'confirm' : 'allow';
+  const rawVerdict = !safe ? 'block' : (!matched || confirmNeeded) ? 'confirm' : 'allow';
+  const tierDegraded = rawVerdict === 'allow' && envelope.backend?.tier !== 'validated';
+  const verdict = tierDegraded ? 'confirm' : rawVerdict;
   const decision = {
     verdict,
     selectedTool,
@@ -2788,12 +2792,12 @@ export async function selfTest() {
     url: 'https://example.com',
     elements: [{ id: 'e1', role: 'button', name: 'Submit search query' }, { id: 'e2', role: 'link', name: 'About' }],
   }, { mock: true });
-  cases.push(['UC1 decide-action selects bounded browser action', actStep.action === 'click:e1' && actStep.verdict === 'execute', true]);
+  cases.push(['UC1 decide-action selects bounded browser action (tier-gated in mock)', actStep.action === 'click:e1' && actStep.verdict === 'confirm', true]);
   const modelChoice = await routeModel('Design a multi-file distributed architecture migration with security audit', { mock: true });
   cases.push(['UC2 route-model classifies complexity and chooses tier', Boolean(modelChoice.chosen) && modelChoice.complexity.score > 0 && modelChoice.needsReasoning.answer === 'yes', true]);
   const toolAllow = await gateTool({ task: 'Inspect package.json', tool: 'read', args: { path: 'package.json' } }, { mock: true });
   const toolBlock = await gateTool({ task: 'Clean dir', tool: 'bash', args: { command: 'rm -rf /' } }, { mock: true });
-  cases.push(['UC3 gate-tool allows safe call and blocks destructive call', `${toolAllow.verdict}/${toolBlock.verdict}`, 'allow/block']);
+  cases.push(['UC3 gate-tool tier-gates mock read and blocks destructive call', `${toolAllow.verdict}/${toolBlock.verdict}`, 'confirm/block']);
   let failed = 0;
   console.log('=== JEV SYSTEM ONE HARNESS SELF-TEST ===');
   for (const [name, actual, expected] of cases) {

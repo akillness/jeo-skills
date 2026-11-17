@@ -560,7 +560,7 @@ test('jev-harness CLI supports all 7 Neo Kim use cases in mock mode', () => {
   assert.equal(actRes.status, 0, actRes.stderr);
   const actJson = JSON.parse(actRes.stdout);
   assert.equal(actJson.action, 'click:btn1');
-  assert.equal(actJson.verdict, 'execute');
+  assert.equal(actJson.verdict, 'confirm');
 
   const modRouteRes = spawnSync(process.execPath, [
     harnessPath, 'route-model', '--mock', 'Design a multi-file distributed migration and security audit',
@@ -575,7 +575,7 @@ test('jev-harness CLI supports all 7 Neo Kim use cases in mock mode', () => {
     JSON.stringify({ task: 'Read package.json', tool: 'read', args: { path: 'package.json' } }),
   ], { encoding: 'utf8', timeout: 8000 });
   assert.equal(gateAllowRes.status, 0, gateAllowRes.stderr);
-  assert.equal(JSON.parse(gateAllowRes.stdout).verdict, 'allow');
+  assert.equal(JSON.parse(gateAllowRes.stdout).verdict, 'confirm');
 
   const gateBlockRes = spawnSync(process.execPath, [
     harnessPath, 'gate-tool', '--mock',
