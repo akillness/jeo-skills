@@ -76,11 +76,11 @@ and the [substrate-gke](https://github.com/ai-on-gke/substrate-gke) repository.
 
 | Demo | Purpose |
 |---|---|
-| [Counter](demos/counter/) | Stateful Go HTTP server — state preservation across suspend/resume, on-demand actor routing |
-| [Claude Code Multiplex](demos/claude-code-multiplex/) | Oversubscribe hardware by multiplexing multiple Claude Code agents onto a limited worker pool |
-| [Multi-Template](demos/multi-template/) | Two ActorTemplates sharing one WorkerPool across different namespaces |
-| [Request Parking](demos/request-parking/) | Queue requests while actors are suspended; resume and deliver when ready |
-| [Substrate and Kagent](demos/substrate-and-kagent/) | Integrate Substrate sandboxes with kagent AI agents |
+| [Counter](https://github.com/agent-substrate/substrate/tree/main/demos/counter) | Stateful Go HTTP server — state preservation across suspend/resume, on-demand actor routing |
+| [Claude Code Multiplex](https://github.com/agent-substrate/substrate/tree/main/demos/claude-code-multiplex) | Oversubscribe hardware by multiplexing multiple Claude Code agents onto a limited worker pool |
+| [Multi-Template](https://github.com/agent-substrate/substrate/tree/main/demos/multi-template) | Two ActorTemplates sharing one WorkerPool across different namespaces |
+| [Request Parking](https://github.com/agent-substrate/substrate/tree/main/demos/request-parking) | Queue requests while actors are suspended; resume and deliver when ready |
+| [Substrate and Kagent](https://github.com/agent-substrate/substrate/tree/main/demos/substrate-and-kagent) | Integrate Substrate sandboxes with kagent AI agents |
 
 ## Routing
 
