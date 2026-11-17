@@ -1674,6 +1674,7 @@ function describeFor(skill, excerpt) {
   if (Array.isArray(skill.permissions) && skill.permissions.length) metaParts.push(`perms:${skill.permissions.join(',')}`);
   const relPeers = flattenRelationshipTerms(compactRelationshipsForState(skill.relationships)).slice(0, 4);
   if (relPeers.length) metaParts.push(`rel:${relPeers.join(',')}`);
+  if (Number.isFinite(skill.openspacePrior) && skill.openspacePrior > 0) metaParts.push(`os_prior:${round(skill.openspacePrior)}`);
   const prefix = metaParts.length ? `[${metaParts.join(' | ')}] ` : '';
   return excerpt ? `${prefix}${skill.description} — ${excerpt}` : `${prefix}${skill.description}`;
 }
@@ -1697,6 +1698,7 @@ export function budgetCandidates(task, candidates, maxStateChars) {
         if (c.subcategory) base.subcategory = c.subcategory;
         if (Array.isArray(c.tags) && c.tags.length) base.tags = c.tags.slice(0, metaLevel >= 3 ? 8 : metaLevel === 2 ? 6 : 4);
         if (Array.isArray(c.permissions) && c.permissions.length) base.permissions = c.permissions;
+        if (Number.isFinite(c.openspacePrior) && c.openspacePrior > 0) base.openspacePrior = round(c.openspacePrior);
       }
       if (metaLevel >= 2) {
         const compactRel = compactRelationshipsForState(c.relationships);
@@ -1875,7 +1877,7 @@ async function selectShortlist(catalog, task, backend, kind, topK, { limit = SHO
   const scored = topScoredSkills(catalog, task, limit, priorBoosts);
   if (!scored.length) return { gate: null, finalists: [], ranked: [], reason: 'shortlist-empty', envelope: null, requests: 0 };
   const excerptRoot = await resolveExcerptRoot(catalog);
-  const candidates = await Promise.all(scored.map(({ skill, score }) => enrichCandidate(catalog, skill, excerptRoot, { lexical: score })));
+  const candidates = await Promise.all(scored.map(({ skill, score, openspaceBoost }) => enrichCandidate(catalog, skill, excerptRoot, { lexical: score, ...(openspaceBoost ? { openspacePrior: round(openspaceBoost / OPENSPACE_PRIOR_WEIGHT) } : {}) })));
   const byCandName = Object.fromEntries(candidates.map(c => [c.name, c]));
   const budgeted = budgetCandidates(task, candidates, backend.maxStateChars);
   const envelope = await requestJev(budgeted, verifyQuestions(task, budgeted, backend), { op: 'route-skills', kinds: [kind], model: backend.modelOverride });
@@ -1888,6 +1890,7 @@ async function selectShortlist(catalog, task, backend, kind, topK, { limit = SHO
     fits: envelope.answers[`fits::${c.name}`]?.probability ?? 0,
     probability: which ? (which[c.name] ?? 0) : null,
     lexical: c.lexical,
+    ...(c.openspacePrior ? { openspacePrior: c.openspacePrior } : {}),
     resolvedPath: byCandName[c.name]?.resolvedPath || null,
     toonPath: byCandName[c.name]?.toonPath || null,
     permissions: byCandName[c.name]?.permissions || null,
@@ -1898,8 +1901,9 @@ async function selectShortlist(catalog, task, backend, kind, topK, { limit = SHO
 }
 
 function rankCandidates(items) {
+  const combinedScore = i => (i.probability ?? i.fits) + 0.15 * (i.openspacePrior ?? 0);
   return items.filter(i => i.fits >= FITS_THRESHOLD)
-    .sort((a, b) => ((b.probability ?? b.fits) - (a.probability ?? a.fits)) || (b.fits - a.fits) || a.name.localeCompare(b.name));
+    .sort((a, b) => (combinedScore(b) - combinedScore(a)) || (b.fits - a.fits) || a.name.localeCompare(b.name));
 }
 
 async function selectMock(catalog, task, topK, priorBoosts = null) {
@@ -1907,13 +1911,14 @@ async function selectMock(catalog, task, topK, priorBoosts = null) {
   const max = scored[0]?.score || 1;
   const sum = scored.reduce((n, x) => n + x.score, 0) || 1;
   const excerptRoot = await resolveExcerptRoot(catalog);
-  const ranked = await Promise.all(scored.map(async ({ skill, score }) => {
+  const ranked = await Promise.all(scored.map(async ({ skill, score, openspaceBoost }) => {
     const info = await skillMetadataAndExcerpt(catalog, skill, excerptRoot);
     return {
       name: skill.name,
       fits: score / max,
       probability: score / sum,
       lexical: score,
+      ...(openspaceBoost ? { openspacePrior: round(openspaceBoost / OPENSPACE_PRIOR_WEIGHT) } : {}),
       resolvedPath: info.resolvedPath,
       toonPath: info.toonPath,
       permissions: info.permissions,

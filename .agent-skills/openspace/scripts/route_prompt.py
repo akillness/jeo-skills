@@ -37,7 +37,7 @@ import sys
 import tempfile
 from pathlib import Path
 
-HOSTS = ("claude", "codex", "jeo", "gemini", "agy", "kimi", "pi", "opencode", "text")
+HOSTS = ("claude", "codex", "jeo", "gemini", "agy", "kimi", "pi", "jeopi", "omp", "gjc", "opencode", "text")
 INDEX_VERSION = 4
 BODY_CHARS = 2000  # OpenSpace's BM25 corpus uses body[:2000]
 DESCRIPTION_CHARS = 150
@@ -367,7 +367,7 @@ def host_output(host: str, note: str) -> str:
         return json.dumps({"hookSpecificOutput": {"hookEventName": "BeforeAgent", "additionalContext": note}})
     if host == "agy":
         return json.dumps({"injectSteps": [{"ephemeralMessage": note}]})
-    if host in ("pi", "opencode"):
+    if host in ("pi", "jeopi", "omp", "gjc", "opencode"):
         return json.dumps({"context": note})
     return note  # kimi reads plain stdout as the hook message
 
@@ -393,6 +393,68 @@ def prompt_from_stdin(raw: str, host: str) -> str:
             )
     return ""
 
+
+
+def _parse_dotenv_map(path: Path) -> dict[str, str]:
+    out: dict[str, str] = {}
+    try:
+        for line in path.read_text(encoding="utf-8").splitlines():
+            m = re.match(r"^\s*(JEV_[A-Z0-9_]+)\s*=(.*)$", line)
+            if not m:
+                continue
+            val = m.group(2).strip()
+            if len(val) >= 2 and ((val[0] == val[-1] == '"') or (val[0] == val[-1] == "'")):
+                val = val[1:-1]
+            out[m.group(1)] = val
+    except OSError:
+        return {}
+    return out
+
+
+def _host_has_jev_prompt_hook(host: str, home: Path) -> bool:
+    try:
+        if host == "claude":
+            cfg = json.loads((home / ".claude/settings.json").read_text(encoding="utf-8"))
+            groups = cfg.get("hooks", {}).get("UserPromptSubmit", [])
+            return any("jev-plugin.mjs" in str(h.get("command", "")) for g in groups if isinstance(g, dict) for h in (g.get("hooks") or []) if isinstance(h, dict))
+        if host == "codex":
+            cfg = json.loads((home / ".codex/hooks.json").read_text(encoding="utf-8"))
+            groups = cfg.get("hooks", {}).get("UserPromptSubmit", [])
+            return any("jev-plugin.mjs" in str(h.get("command", "")) for g in groups if isinstance(g, dict) for h in (g.get("hooks") or []) if isinstance(h, dict))
+        if host == "agy":
+            cfg = json.loads((home / ".gemini/config/hooks.json").read_text(encoding="utf-8"))
+            groups = cfg.get("hooks", {}).get("PreInvocation", [])
+            return any("jev-plugin.mjs" in str(h.get("command", "")) for g in groups if isinstance(g, dict) for h in (g.get("hooks") or []) if isinstance(h, dict))
+        if host in ("jeopi", "omp", "pi"):
+            ext_home = os.environ.get("JEV_EXTENSION_HOME")
+            ext = Path(ext_home) / "jev-control-plane.js" if ext_home else home / f".{host}" / "agent/extensions/jev-control-plane.js"
+            return ext.is_file()
+    except (OSError, ValueError, TypeError):
+        return False
+    return False
+
+
+def jev_prompt_hook_active(host: str) -> bool:
+    if os.environ.get("OPENSPACE_FORCE_ROUTE", "").strip() == "1" or host == "text":
+        return False
+    home = Path.home()
+    agents_path = home / ".agents/jev/agents.json"
+    if not agents_path.is_file():
+        return False
+    try:
+        agents_cfg = json.loads(agents_path.read_text(encoding="utf-8"))
+        host_entry = agents_cfg.get(host) if isinstance(agents_cfg.get(host), dict) else (agents_cfg.get("agents") or {}).get(host, {})
+        profile = host_entry.get("profile") if isinstance(host_entry, dict) else None
+    except (OSError, ValueError, TypeError):
+        return False
+    if not isinstance(profile, str) or not profile.strip():
+        return False
+    env_map = _parse_dotenv_map(home / ".agents/jev/profiles" / f"{profile}.env")
+    if env_map.get("JEV_ENABLED", "").strip().lower() != "true":
+        return False
+    if env_map.get("JEV_RUNTIME_MODE", "").strip().lower() == "off":
+        return False
+    return _host_has_jev_prompt_hook(host, home)
 
 def top_k() -> int:
     try:
@@ -469,7 +531,7 @@ def main(argv: list[str] | None = None) -> int:
         print(routing_note(suggestions) if suggestions else "(no suggestion)")
         return 0
     try:
-        if os.environ.get("OPENSPACE_ROUTE", "").strip().lower() == "off":
+        if os.environ.get("OPENSPACE_ROUTE", "").strip().lower() == "off" or jev_prompt_hook_active(args.host):
             if args.host == "agy":
                 print("{}")
             return 0
