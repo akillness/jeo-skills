@@ -28,6 +28,7 @@
 !/fix_frontmatter.py
 !/flatten_skills.py
 !/install.sh
+!/setup.md
 !/setup-all-skills-prompt.md
 !/skills-lock.json
 

@@ -28,6 +28,8 @@ Environment:
 from __future__ import annotations
 
 import argparse
+from bisect import bisect_left
+from datetime import datetime, timezone
 import hashlib
 import inspect
 import json
@@ -35,6 +37,7 @@ import os
 import re
 import sys
 import tempfile
+import time
 from pathlib import Path
 
 HOSTS = ("claude", "codex", "jeo", "gemini", "agy", "kimi", "pi", "jeopi", "omp", "gjc", "opencode", "text")
@@ -125,10 +128,100 @@ def tokens(text: str) -> list[str]:
 APPROVAL_TERMS = frozenset(tokens(" ".join(APPROVAL_WORDS)))
 
 
-def skill_roots() -> list[Path]:
+def _project_workflow_override(cwd: str | None = None) -> dict | None:
+    """Walk up from cwd stopping before $HOME to locate custom .harness2/workspace.json workflow overrides."""
+    try:
+        cur = Path(cwd or os.getcwd()).expanduser().resolve()
+        home = Path.home().expanduser().resolve()
+    except OSError:
+        return None
+    for _ in range(12):
+        if cur == home:
+            break
+        manifest = cur / ".harness2" / "workspace.json"
+        try:
+            if not manifest.is_symlink() and manifest.is_file() and manifest.stat().st_size <= 262_144:
+                data = json.loads(manifest.read_text(encoding="utf-8"))
+                wf = data.get("workflow") if isinstance(data, dict) else None
+                if isinstance(wf, dict) and wf.get("custom") is True:
+                    return {**wf, "project_root": str(cur)}
+                return None
+        except (OSError, ValueError):
+            return None
+        if cur.parent == cur:
+            break
+        cur = cur.parent
+    return None
+
+
+def _extract_event_cwd(raw: str) -> str | None:
+    try:
+        event = json.loads(raw)
+        if isinstance(event, dict) and isinstance(event.get("cwd"), str) and event["cwd"].strip():
+            return event["cwd"].strip()
+    except ValueError:
+        pass
+    return None
+
+
+def _append_workflow_event(stage: str, payload: dict) -> None:
+    try:
+        state_dir = Path(os.environ.get("JEO_SKILL_STATE_DIR") or (Path.home() / ".local/state/jeo-skill"))
+        state_dir.mkdir(parents=True, exist_ok=True)
+        os.chmod(state_dir, 0o700)
+        log_path = state_dir / "workflow-events.jsonl"
+        if log_path.is_symlink():
+            return
+        if log_path.exists() and log_path.stat().st_size > 5 * 1024 * 1024:
+            stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+            rotated = state_dir / f"workflow-events.{stamp}-{os.getpid()}.jsonl"
+            try:
+                os.replace(log_path, rotated)
+            except OSError:
+                pass
+        custom = bool(payload.get("customProject") or payload.get("flow_mode") == "project-custom")
+        entry = {
+            "v": 1,
+            "ts": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "stage": stage,
+            "outcome": payload.get("outcome") or ("skipped" if payload.get("skipped") else "ok"),
+            "flow_mode": payload.get("flow_mode") or ("project-custom" if custom else "global"),
+            "workflow_order": payload.get("workflow_order") or ["openspace", "rtk", "semble", "jev", "memory"],
+            **payload,
+        }
+        line = json.dumps(entry, sort_keys=True, ensure_ascii=False) + "\n"
+        fd = os.open(str(log_path), os.O_WRONLY | os.O_CREAT | os.O_APPEND, 0o600)
+        try:
+            os.write(fd, line.encode("utf-8"))
+            os.fchmod(fd, 0o600)
+        finally:
+            os.close(fd)
+    except OSError:
+        pass
+
+
+def _openspace_disabled_by_override(override: dict | None) -> bool:
+    if not override or not override.get("custom"):
+        return False
+    if override.get("openspace_enabled") is False:
+        return True
+    order = override.get("order")
+    return isinstance(order, list) and "openspace" not in order
+
+
+def skill_roots(override: dict | None = None) -> list[Path]:
     raw = os.environ.get("OPENSPACE_HOST_SKILL_DIRS", "").strip()
     items = re.split(rf"[,{re.escape(os.pathsep)}]", raw) if raw else [str(Path.home() / ".agents" / "skills")]
     roots: list[Path] = []
+    if override and override.get("custom"):
+        for cand_str in (
+            override.get("skills_root"),
+            str(Path(override["project_root"]) / ".agents" / "skills") if override.get("project_root") else None,
+        ):
+            if isinstance(cand_str, str) and cand_str.strip():
+                cand = Path(cand_str.strip()).expanduser()
+                if cand.is_dir() and cand not in roots:
+                    roots.append(cand)
     for item in items:
         item = item.strip()
         if item:
@@ -272,8 +365,10 @@ def rank(prompt: str, skills: list[dict], top_k: int) -> tuple[list[dict], list[
     frequency: dict[str, int] = {}
     for skill in skills:
         terms = skill["terms"]
+        n_terms = len(terms)
         for term in query_terms:
-            if term in terms:
+            idx = bisect_left(terms, term)
+            if idx < n_terms and terms[idx] == term:
                 frequency[term] = frequency.get(term, 0) + 1
     # Rarity is judged among skills written in the term's script: most of the
     # catalog is English, so a common Korean word would otherwise look rare.
@@ -502,7 +597,11 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.json is not None:
         try:
-            suggestions, _ = rank(args.json, load_index(skill_roots()), top_k())
+            override = _project_workflow_override()
+            if _openspace_disabled_by_override(override):
+                print("[]")
+                return 0
+            suggestions, _ = rank(args.json, load_index(skill_roots(override)), top_k())
             payload = [
                 {
                     "name": item["skill"]["name"],
@@ -520,7 +619,8 @@ def main(argv: list[str] | None = None) -> int:
         return 0
 
     if args.explain is not None:
-        suggestions, explained = rank(args.explain, load_index(skill_roots()), top_k())
+        override = _project_workflow_override()
+        suggestions, explained = rank(args.explain, load_index(skill_roots(override)), top_k())
         chosen = {id(item) for item in suggestions}
         for item in explained:
             mark = "*" if id(item) in chosen else " "
@@ -531,17 +631,54 @@ def main(argv: list[str] | None = None) -> int:
         print(routing_note(suggestions) if suggestions else "(no suggestion)")
         return 0
     try:
-        if os.environ.get("OPENSPACE_ROUTE", "").strip().lower() == "off" or jev_prompt_hook_active(args.host):
+        t0 = time.perf_counter()
+        cwd_override = _project_workflow_override()
+        if os.environ.get("OPENSPACE_ROUTE", "").strip().lower() == "off" or _openspace_disabled_by_override(cwd_override) or jev_prompt_hook_active(args.host):
+            if _openspace_disabled_by_override(cwd_override):
+                _append_workflow_event("openspace-skip", {
+                    "host": args.host,
+                    "outcome": "skipped",
+                    "skipped": "project-workflow-disabled",
+                    "flow_mode": "project-custom",
+                    "workflow_order": cwd_override.get("order"),
+                    "project": cwd_override.get("project_root"),
+                    "duration_ms": round((time.perf_counter() - t0) * 1000.0, 2),
+                })
             if args.host == "agy":
                 print("{}")
             return 0
-        prompt = prompt_from_stdin(sys.stdin.read(), args.host).strip()
+        raw_stdin = sys.stdin.read()
+        event_override = _project_workflow_override(_extract_event_cwd(raw_stdin)) if raw_stdin else cwd_override
+        if _openspace_disabled_by_override(event_override):
+            _append_workflow_event("openspace-skip", {
+                "host": args.host,
+                "outcome": "skipped",
+                "skipped": "project-workflow-disabled",
+                "flow_mode": "project-custom",
+                "workflow_order": event_override.get("order"),
+                "project": event_override.get("project_root"),
+                "duration_ms": round((time.perf_counter() - t0) * 1000.0, 2),
+            })
+            if args.host == "agy":
+                print("{}")
+            return 0
+        prompt = prompt_from_stdin(raw_stdin, args.host).strip()
         # Slash commands belong to the host, not to skill routing.
         if not prompt or prompt.startswith("/"):
             if args.host == "agy":
                 print("{}")
             return 0
-        suggestions, _ = rank(prompt, load_index(skill_roots()), top_k())
+        suggestions, _ = rank(prompt, load_index(skill_roots(event_override)), top_k())
+        _append_workflow_event("openspace-route", {
+            "host": args.host,
+            "outcome": "ok",
+            "customProject": bool(event_override),
+            "flow_mode": "project-custom" if event_override else "global",
+            "workflow_order": event_override.get("order") if event_override else ["openspace", "rtk", "semble", "jev", "memory"],
+            "project": (event_override.get("project_root") if event_override else str(Path(os.getcwd()).resolve())),
+            "routed": [item["skill"]["name"] for item in suggestions],
+            "duration_ms": round((time.perf_counter() - t0) * 1000.0, 2),
+        })
         if suggestions:
             sys.stdout.write(host_output(args.host, routing_note(suggestions)) + "\n")
         elif args.host == "agy":

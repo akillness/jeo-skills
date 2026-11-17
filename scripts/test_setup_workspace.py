@@ -465,5 +465,88 @@ class RuleSourceFrontmatterTests(unittest.TestCase):
                 self.assertTrue(lines[end + 1].startswith("<!--"), "marker block must follow the frontmatter")
 
 
+class CustomProjectWorkflowIsolationTests(unittest.TestCase):
+    """Global workspace defaults apply by default while per-project customWorkflow settings stay isolated."""
+
+    def test_global_default_vs_custom_project_isolation_and_reset(self):
+        box = Sandbox(jev=True)
+        self.addCleanup(box.cleanup)
+        proj_a = box.project / "proj-a"
+        proj_b = box.project / "proj-b"
+        proj_a.mkdir()
+        proj_b.mkdir()
+        state_dir = box.home / ".local/state/jeo-skill"
+        env = {"JEO_SKILL_STATE_DIR": str(state_dir)}
+
+        # 1. Project A uses global default workflow.
+        proc_a, rep_a = box.run("--no-activate", project=proj_a, env=env)
+        self.assertEqual(proc_a.returncode, 0, proc_a.stderr)
+        self.assertTrue((box.home / ".agents/harness/workspace.json").is_file())
+        global_ws = json.loads((box.home / ".agents/harness/workspace.json").read_text(encoding="utf-8"))
+        self.assertEqual(global_ws["scope"], "global")
+        self.assertFalse(global_ws["default_workflow"]["custom"])
+
+        ws_a = json.loads((proj_a / ".harness2/workspace.json").read_text(encoding="utf-8"))
+        self.assertFalse(ws_a["workflow"]["custom"])
+        self.assertEqual(ws_a["workflow"]["order"], ["openspace", "rtk", "semble", "jev", "memory"])
+        v_a, _ = box.run("--verify", project=proj_a, env=env)
+        self.assertEqual(v_a.returncode, 0, v_a.stdout)
+
+        # 2. Project B isolates its own custom workflow with Jev & OpenSpace disabled.
+        proc_b, _ = box.run(
+            "--no-activate", "--custom-workflow", "--workflow-order", "rtk,semble,mex", "--jev-profile", "off",
+            project=proj_b, env=env,
+        )
+        self.assertEqual(proc_b.returncode, 0, proc_b.stderr)
+        ws_b = json.loads((proj_b / ".harness2/workspace.json").read_text(encoding="utf-8"))
+        self.assertTrue(ws_b["workflow"]["custom"])
+        self.assertEqual(ws_b["workflow"]["order"], ["rtk", "semble", "mex"])
+        self.assertFalse(ws_b["workflow"]["openspace_enabled"])
+        self.assertFalse(ws_b["workflow"]["jev_enabled"])
+        rule_b = (proj_b / ".agents/rules" / RULE).read_text(encoding="utf-8")
+        self.assertIn("customWorkflow: true", rule_b)
+        self.assertIn("rtk, semble, mex", rule_b)
+        global_rule = (box.home / ".agents/rules" / RULE).read_text(encoding="utf-8")
+        self.assertNotIn("customWorkflow: true", global_rule)
+
+        # Verify passes even with customWorkflow: true!
+        v_b, v_b_rep = box.run("--verify", project=proj_b, env=env)
+        self.assertEqual(v_b.returncode, 0, v_b.stdout)
+        self.assertTrue(v_b_rep["workflow"]["custom"])
+
+        # 3. Re-running default setup-workspace on Project B must PRESERVE its isolated workflow & rule.
+        (proj_b / ".agents/rules" / RULE).write_text(rule_b + "\n<!-- custom-note -->\n", encoding="utf-8")
+        proc_b2, rep_b2 = box.run("--no-activate", project=proj_b, env=env)
+        self.assertEqual(proc_b2.returncode, 0, proc_b2.stderr)
+        self.assertIn("preserved (customWorkflow)", rep_b2["steps"]["rules"]["detail"])
+        self.assertIn("custom-note", (proj_b / ".agents/rules" / RULE).read_text(encoding="utf-8"))
+        ws_b2 = json.loads((proj_b / ".harness2/workspace.json").read_text(encoding="utf-8"))
+        self.assertTrue(ws_b2["workflow"]["custom"])
+        self.assertEqual(ws_b2["workflow"]["order"], ["rtk", "semble", "mex"])
+
+        # 4. Unified workflow-events.jsonl recorded on apply, not on dry-run.
+        events_file = state_dir / "workflow-events.jsonl"
+        self.assertTrue(events_file.is_file())
+        lines_before = len(events_file.read_text(encoding="utf-8").splitlines())
+        box.run("--dry-run", project=proj_b, env=env)
+        self.assertEqual(len(events_file.read_text(encoding="utf-8").splitlines()), lines_before)
+
+        # 5. OpenSpace route_prompt respects project override in Project B.
+        router_py = ROOT / ".agent-skills/openspace/scripts/route_prompt.py"
+        os_disabled = subprocess.run(
+            [sys.executable, str(router_py), "--json", "debug issue"],
+            cwd=proj_b, env={**os.environ, "HOME": str(box.home), "JEO_SKILL_STATE_DIR": str(state_dir)},
+            capture_output=True, text=True, check=True,
+        )
+        self.assertEqual(os_disabled.stdout.strip(), "[]")
+
+        # 6. --reset-project-workflow restores Project B to global inheritance.
+        proc_reset, _ = box.run("--no-activate", "--reset-project-workflow", project=proj_b, env=env)
+        self.assertEqual(proc_reset.returncode, 0, proc_reset.stderr)
+        ws_b_reset = json.loads((proj_b / ".harness2/workspace.json").read_text(encoding="utf-8"))
+        self.assertFalse(ws_b_reset["workflow"]["custom"])
+        self.assertNotIn("customWorkflow: true", (proj_b / ".agents/rules" / RULE).read_text(encoding="utf-8"))
+
+
 if __name__ == "__main__":
     unittest.main()

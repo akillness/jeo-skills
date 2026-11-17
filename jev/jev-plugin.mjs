@@ -137,24 +137,55 @@ function rotateUsageLedger(ledger, directory, measuredIno) {
   }
 }
 
-function recordSkillUsage({ agent, profile, routed, injected, backend } = {}) {
+const WORKFLOW_LEDGER_NAME = 'workflow-events.jsonl';
+const DEFAULT_WORKFLOW_ORDER = ['openspace', 'rtk', 'semble', 'jev', 'memory'];
+const WORKFLOW_SECRET_RE = /(?:sk-[A-Za-z0-9_-]{12,}|ctx7sk-[A-Za-z0-9_-]{8,}|ghp_[A-Za-z0-9]{20,}|AIza[0-9A-Za-z_-]{20,}|(?:Bearer|Basic)\s+[A-Za-z0-9._~+/=-]{8,})/g;
+
+function scrubWorkflowField(val) {
+  if (typeof val === 'string') return val.replace(WORKFLOW_SECRET_RE, '[REDACTED]');
+  if (Array.isArray(val)) return val.map(scrubWorkflowField);
+  if (val && typeof val === 'object') {
+    const out = {};
+    for (const [k, v] of Object.entries(val)) {
+      out[k] = /(?:API_KEY|SECRET|TOKEN|PASSWORD)/i.test(k) && v ? '[REDACTED]' : scrubWorkflowField(v);
+    }
+    return out;
+  }
+  return val;
+}
+
+function appendBoundedJsonl(directory, filename, prefix, event, rotateBytes = USAGE_LEDGER_ROTATE_BYTES, retentionBytes = USAGE_RETENTION_BYTES) {
   try {
-    if (!profile) return;
-    const routedNames = usageNames(routed);
-    if (!routedNames.length) return;
-    const directory = usageStateDir();
     mkdirSync(directory, { recursive: true, mode: 0o700 });
     const directoryInfo = lstatSync(directory);
     if (directoryInfo.isSymbolicLink() || !directoryInfo.isDirectory()) return;
     chmodSync(directory, 0o700);
-    const ledger = join(directory, USAGE_LEDGER_NAME);
+    const ledger = join(directory, filename);
     const ledgerInfo = lstatSync(ledger, { throwIfNoEntry: false });
     if (ledgerInfo) {
       if (ledgerInfo.isSymbolicLink() || !ledgerInfo.isFile()) return;
       chmodSync(ledger, 0o600);
     }
-    if (ledgerInfo && ledgerInfo.size >= USAGE_LEDGER_ROTATE_BYTES) rotateUsageLedger(ledger, directory, ledgerInfo.ino);
-    const event = {
+    if (ledgerInfo && ledgerInfo.size >= rotateBytes) {
+      if (filename === USAGE_LEDGER_NAME) rotateUsageLedger(ledger, directory, ledgerInfo.ino);
+      else {
+        const stamp = new Date().toISOString().replace(/[-:]/g, '').replace(/\.(\d{3})Z$/, '$1Z');
+        const rotated = join(directory, `${prefix}.${stamp}-${process.pid}-${randomUUID().slice(0, 8)}.jsonl`);
+        try { renameSync(ledger, rotated); } catch {}
+      }
+    }
+    appendFileSync(ledger, `${JSON.stringify(event)}\n`, { mode: 0o600 });
+  } catch {
+    // Telemetry is strictly best effort and must never block the host.
+  }
+}
+
+function recordSkillUsage({ agent, profile, routed, injected, backend } = {}) {
+  try {
+    if (!profile) return;
+    const routedNames = usageNames(routed);
+    if (!routedNames.length) return;
+    appendBoundedJsonl(usageStateDir(), USAGE_LEDGER_NAME, 'jev-usage', {
       v: 1,
       at: new Date().toISOString(),
       agent: usageValue(agent),
@@ -166,12 +197,78 @@ function recordSkillUsage({ agent, profile, routed, injected, backend } = {}) {
         model: usageValue(backend?.configuredModel),
         tier: usageValue(backend?.tier),
       },
-    };
-    const line = `${JSON.stringify(event)}\n`;
-    appendFileSync(ledger, line, { mode: 0o600 });
+    });
   } catch {
     // Usage telemetry is strictly best effort and must never block the host.
   }
+}
+
+export function recordWorkflowEvent(stage, payload = {}) {
+  const custom = Boolean(payload.customProject ?? payload.custom ?? payload.flow_mode === 'project-custom');
+  const normalized = scrubWorkflowField({
+    v: 1,
+    ts: new Date().toISOString(),
+    stage: usageValue(stage, 'unknown'),
+    outcome: payload.outcome || (payload.skipped ? 'skipped' : 'ok'),
+    flow_mode: payload.flow_mode || (custom ? 'project-custom' : 'global'),
+    workflow_order: Array.isArray(payload.workflow_order) && payload.workflow_order.length ? payload.workflow_order : DEFAULT_WORKFLOW_ORDER,
+    host: payload.host || payload.agent || null,
+    ...payload,
+  });
+  appendBoundedJsonl(usageStateDir(), WORKFLOW_LEDGER_NAME, 'workflow-events', normalized);
+}
+
+export function resolveProjectWorkflowOverride(startDir = process.cwd(), stopHome = homedir()) {
+  try {
+    const start = realpathSync(String(startDir || process.cwd()));
+    let homeReal;
+    try { homeReal = realpathSync(String(stopHome || homedir())); } catch { homeReal = resolve(String(stopHome || homedir())); }
+    let cur = start;
+    for (let depth = 0; depth < 12; depth++) {
+      if (cur === homeReal) break;
+      const manifestPath = join(cur, '.harness2', 'workspace.json');
+      const st = lstatSync(manifestPath, { throwIfNoEntry: false });
+      if (st && !st.isSymbolicLink() && st.isFile() && st.size <= 262_144) {
+        try {
+          const parsed = JSON.parse(readFileSync(manifestPath, 'utf8'));
+          const wf = parsed?.workflow;
+          if (wf && typeof wf === 'object' && wf.custom === true) {
+            return { projectRoot: cur, ...wf };
+          }
+        } catch {
+          // Ignore malformed project workspace manifest.
+        }
+        return null;
+      }
+      const parent = dirname(cur);
+      if (parent === cur) break;
+      cur = parent;
+    }
+  } catch {
+    // Non-existent cwd or filesystem error fails open.
+  }
+  return null;
+}
+
+function projectCatalogOverride(override) {
+  if (!override?.custom) return null;
+  const candidates = [];
+  if (typeof override.skills_root === 'string' && override.skills_root.trim()) {
+    candidates.push(join(override.skills_root.trim(), 'skills.json'));
+  }
+  if (override.projectRoot) {
+    candidates.push(
+      join(override.projectRoot, '.agent-skills', 'skills.json'),
+      join(override.projectRoot, '.agents', 'skills', 'skills.json'),
+    );
+  }
+  for (const cand of candidates) {
+    try {
+      const st = lstatSync(cand, { throwIfNoEntry: false });
+      if (st && !st.isSymbolicLink() && st.isFile() && st.size <= 16 * 1024 * 1024) return cand;
+    } catch {}
+  }
+  return null;
 }
 function homes() {
   const home = homedir();
@@ -354,19 +451,36 @@ function readState(profile) {
   return { base, backendFile, values, backend, configured, enabled, invalidEnabled, present: base.text !== null };
 }
 
-function resolveHookContext(flags) {
+function resolveHookContext(flags, { eventCwd = null } = {}) {
   const agent = validateAgent(flags.agent, false);
+  const projectOverride = resolveProjectWorkflowOverride(eventCwd || process.cwd());
+  if (projectOverride?.custom) {
+    const orderDisabled = Array.isArray(projectOverride.order) && !projectOverride.order.includes('jev');
+    if (projectOverride.jev_enabled === false || orderDisabled) {
+      return {
+        agent,
+        profile: null,
+        mappings: { path: homes().mapping, value: {} },
+        projectOverride,
+        projectDisabled: true,
+        state: { base: { text: null, values: {} }, backendFile: { text: null, values: {} }, values: {}, backend: null, configured: false, enabled: false, invalidEnabled: false, present: false },
+      };
+    }
+  }
   // A pinned installed hook must not depend on another agent's mapping file.
   const mappings = flags.profile !== undefined ? { path: homes().mapping, value: {} } : readMapping();
   const mapped = mappings.value[agent];
-  const requested = flags.profile !== undefined ? flags.profile : mapped?.profile;
+  const overrideProfile = projectOverride?.custom && typeof projectOverride.jev_profile === 'string' && projectOverride.jev_profile.trim()
+    ? projectOverride.jev_profile.trim()
+    : null;
+  const requested = overrideProfile || (flags.profile !== undefined ? flags.profile : mapped?.profile);
   const profile = validateProfile(requested, true);
   const base = readEnv(profilePath(profile));
   const values = base.values;
   const hasProfile = Boolean(profile);
   const enabled = hasProfile ? String(values.JEV_ENABLED || '').toLowerCase() === 'true' : true;
   const invalidEnabled = hasProfile && values.JEV_ENABLED !== undefined && !/^(true|false)$/i.test(values.JEV_ENABLED);
-  return { agent, profile, mappings, state: { base, backendFile: { text: null, values: {} }, values, backend: values.JEV_MODE || null, configured: false, enabled, invalidEnabled, present: base.text !== null } };
+  return { agent, profile, mappings, projectOverride, projectDisabled: false, state: { base, backendFile: { text: null, values: {} }, values, backend: values.JEV_MODE || null, configured: false, enabled, invalidEnabled, present: base.text !== null } };
 }
 
 function resolveContext(flags, { allowMissingProfile = true } = {}) {
@@ -1152,7 +1266,7 @@ function extractAssistSections(body, maxChars = 2400) {
   return combined.length >= 80 ? combined.slice(0, maxChars) : clean.slice(0, Math.min(1800, maxChars)).trim();
 }
 
-function selectedSkillContext(routed) {
+function selectedSkillContext(routed, preloaded = null) {
   const picks = Array.isArray(routed?.topK) ? routed.topK.slice(0, 3) : [];
   const wanted = new Set();
   for (const selected of picks) {
@@ -1160,11 +1274,16 @@ function selectedSkillContext(routed) {
   }
   if (!wanted.size) return { context: '', injected: [] };
   const snapshot = join(homes().jev, 'skills.json');
-  const catalogPath = process.env.JEV_CATALOG_PATH || snapshot;
-  const catalog = JSON.parse(readFileSync(catalogPath, 'utf8'));
-  const relMap = buildPluginRelationships(catalog);
+  const catalogPath = preloaded?.catalog?.__path || process.env.JEV_CATALOG_PATH || snapshot;
+  const catalog = preloaded?.catalog || JSON.parse(readFileSync(catalogPath, 'utf8'));
+  const relMap = preloaded?.meta?.relationshipsByName || buildPluginRelationships(catalog);
   const skillsByName = new Map();
-  if (Array.isArray(catalog.skills)) {
+  if (preloaded?.meta?.byName) {
+    for (const name of wanted) {
+      const item = preloaded.meta.byName[name];
+      if (item) skillsByName.set(name, item);
+    }
+  } else if (Array.isArray(catalog.skills)) {
     for (let i = 0; i < catalog.skills.length; i++) {
       const item = catalog.skills[i];
       if (item && wanted.has(item.name) && !skillsByName.has(item.name)) {
@@ -1173,7 +1292,8 @@ function selectedSkillContext(routed) {
       }
     }
   }
-  const root = realpathSync(resolve(catalogPath) === resolve(snapshot) ? join(homedir(), '.agents', 'skills') : dirname(catalogPath));
+  const root = preloaded?.meta?.excerptRoot
+    || realpathSync(resolve(catalogPath) === resolve(snapshot) ? join(homedir(), '.agents', 'skills') : dirname(catalogPath));
   const sections = [];
   const injected = [];
   let size = 0;
@@ -1345,6 +1465,7 @@ function resolveCachedTask(event, ctx) {
 }
 
 async function evaluatePreToolUse(ctx, event) {
+  const t0 = Date.now();
   const mode = reviewMode(ctx);
   if (mode === 'off') return {};
   const configuredMatcher = ctx.state.values.JEV_PRETOOL_MATCHER;
@@ -1356,6 +1477,16 @@ async function evaluatePreToolUse(ctx, event) {
   }
   const task = resolveCachedTask(event, ctx);
   if (!task) {
+    recordWorkflowEvent('jev-pretool', {
+      agent: ctx.agent,
+      profile: ctx.profile,
+      tool: event.tool_name || null,
+      outcome: mode === 'enforce' ? 'deny' : 'advisory',
+      customProject: Boolean(ctx.projectOverride?.custom),
+      workflow_order: ctx.projectOverride?.order || null,
+      project: ctx.projectOverride?.projectRoot || null,
+      duration_ms: Date.now() - t0,
+    });
     return mode === 'enforce'
       ? codexDecision(null, 'deny', 'Jev: no task context for this turn. Submit the task again before retrying.')
       : codexDecision('Jev review unavailable: no task context for this turn; host permissions remain unchanged.');
@@ -1365,7 +1496,18 @@ async function evaluatePreToolUse(ctx, event) {
   if (ctx.state.values.JEV_PRETOOL_OP === 'gate-tool' && typeof harness.gateTool === 'function') {
     const gated = await harness.gateTool({ task, tool: event.tool_name, args: event.tool_input });
     const tierOk = gated.backend?.tier === 'validated' || gated.backend?.tier === 'local_calibrated';
-    if (mode === 'enforce' && (gated.verdict === 'block' || (gated.verdict !== 'allow' && !tierOk))) {
+    const denied = mode === 'enforce' && (gated.verdict === 'block' || (gated.verdict !== 'allow' && !tierOk));
+    recordWorkflowEvent('jev-pretool', {
+      agent: ctx.agent,
+      profile: ctx.profile,
+      tool: event.tool_name || null,
+      outcome: denied ? 'deny' : (gated.verdict || 'allow'),
+      customProject: Boolean(ctx.projectOverride?.custom),
+      workflow_order: ctx.projectOverride?.order || null,
+      project: ctx.projectOverride?.projectRoot || null,
+      duration_ms: Date.now() - t0,
+    });
+    if (denied) {
       return codexDecision(null, 'deny', `Jev gate-tool: ${gated.verdict}; action withheld. Backend tier: ${gated.backend?.tier || 'unavailable'}. Host authorization is still required.`);
     }
     return codexDecision(`Jev gate-tool: ${gated.verdict}; backend tier ${gated.backend?.tier || 'unavailable'}. Jev did not execute validation commands and does not change host permissions.`);
@@ -1376,7 +1518,18 @@ async function evaluatePreToolUse(ctx, event) {
     input: event.tool_input,
     evidence: { source: sourceLabel, testsExecutedByJev: false },
   });
-  if (mode === 'enforce' && (result.verdict !== 'permit' || result.backend?.tier !== 'validated')) {
+  const denied = mode === 'enforce' && (result.verdict !== 'permit' || result.backend?.tier !== 'validated');
+  recordWorkflowEvent('jev-pretool', {
+    agent: ctx.agent,
+    profile: ctx.profile,
+    tool: event.tool_name || null,
+    outcome: denied ? 'deny' : (result.verdict || 'ok'),
+    customProject: Boolean(ctx.projectOverride?.custom),
+    workflow_order: ctx.projectOverride?.order || null,
+    project: ctx.projectOverride?.projectRoot || null,
+    duration_ms: Date.now() - t0,
+  });
+  if (denied) {
     return codexDecision(null, 'deny', `Jev: ${result.verdict}; action withheld. Backend tier: ${result.backend?.tier || 'unavailable'}. Host authorization is still required.`);
   }
   // Never return permissionDecision:allow: even a validated permit cannot override host approval.
@@ -1384,17 +1537,49 @@ async function evaluatePreToolUse(ctx, event) {
 }
 
 async function hook(flags, suppliedEvent) {
-  const activation = resolveHookContext(flags);
+  const hookStart = Date.now();
+  const explicitEnvCatalog = process.env.JEV_CATALOG_PATH;
+  let activation = resolveHookContext(flags, { eventCwd: suppliedEvent?.cwd || null });
+  if (activation.projectDisabled) {
+    recordWorkflowEvent('jev-skip', {
+      agent: activation.agent,
+      skipped: 'project-workflow-disabled',
+      outcome: 'skipped',
+      customProject: true,
+      workflow_order: activation.projectOverride?.order || null,
+      project: activation.projectOverride?.projectRoot || null,
+      duration_ms: Date.now() - hookStart,
+    });
+    return { ...common('hook', activation, false, false), skipped: 'project-workflow-disabled' };
+  }
   if (!activation.profile || !activation.state.present || !activation.state.enabled || activation.state.invalidEnabled) {
     return common('hook', activation, false, false);
   }
-  const ctx = { ...activation, state: readState(activation.profile) };
   let event;
   if (suppliedEvent !== undefined) event = suppliedEvent;
   else {
     const input = await readStdin();
     try { event = input.trim() ? JSON.parse(input) : {}; } catch { throw new Error('hook input must be JSON'); }
   }
+  if (event?.cwd) {
+    activation = resolveHookContext(flags, { eventCwd: event.cwd });
+    if (activation.projectDisabled) {
+      recordWorkflowEvent('jev-skip', {
+        agent: activation.agent,
+        skipped: 'project-workflow-disabled',
+        outcome: 'skipped',
+        customProject: true,
+        workflow_order: activation.projectOverride?.order || null,
+        project: activation.projectOverride?.projectRoot || null,
+        duration_ms: Date.now() - hookStart,
+      });
+      return { ...common('hook', activation, false, false), skipped: 'project-workflow-disabled' };
+    }
+    if (!activation.profile || !activation.state.present || !activation.state.enabled || activation.state.invalidEnabled) {
+      return common('hook', activation, false, false);
+    }
+  }
+  const ctx = { ...activation, state: readState(activation.profile) };
   const configuredMode = runtimeMode(ctx);
   // Cursor drops `additional_context` longer than 10,000 characters (read from the cursor-agent 2026.11.11 bundle), and
   // a skill body is routinely larger, so assist cannot be honored there: treat it as advisory so that no skill file is
@@ -1516,8 +1701,12 @@ async function hook(flags, suppliedEvent) {
   let runtime;
   try {
     process.env.JEV_PROFILE = ctx.profile;
-    if (!process.env.JEV_CATALOG_PATH) process.env.JEV_CATALOG_PATH = join(homes().jev, 'skills.json');
+    const preferredCatalog = explicitEnvCatalog || projectCatalogOverride(ctx.projectOverride) || join(homes().jev, 'skills.json');
+    if (!explicitEnvCatalog) process.env.JEV_CATALOG_PATH = preferredCatalog;
     const harness = await import('./jev-harness.mjs');
+    const preloadedCatalog = typeof harness.getCachedCatalogMeta === 'function'
+      ? await harness.getCachedCatalogMeta(preferredCatalog).catch(() => null)
+      : null;
     const routed = await harness.routeSkills(prompt || 'Review the current task', { topK: 3 });
     let modelHint = null;
     if (ctx.state.values.JEV_MODEL_ROUTING === 'auto' && prompt && typeof harness.routeModel === 'function') {
@@ -1525,14 +1714,26 @@ async function hook(flags, suppliedEvent) {
     }
     let selected = { context: '', injected: [] };
     try {
-      if (mode === 'assist') selected = selectedSkillContext(routed);
+      if (mode === 'assist') selected = selectedSkillContext(routed, preloadedCatalog);
     } finally {
+      const routedNames = (routed?.topK || []).map(item => item?.name);
       recordSkillUsage({
         agent: ctx.agent,
         profile: ctx.profile,
-        routed: (routed?.topK || []).map(item => item?.name),
+        routed: routedNames,
         injected: selected.injected,
         backend: routed?.backend,
+      });
+      recordWorkflowEvent('jev-route', {
+        agent: ctx.agent,
+        profile: ctx.profile,
+        customProject: Boolean(ctx.projectOverride?.custom),
+        workflow_order: ctx.projectOverride?.order || null,
+        project: ctx.projectOverride?.projectRoot || null,
+        routed: routedNames.slice(0, 3),
+        injected: selected.injected,
+        strategy: routed?.selection?.strategy || null,
+        duration_ms: Date.now() - hookStart,
       });
     }
     if (mode === 'assist') {
@@ -1677,8 +1878,9 @@ async function hooksInstall(flags) {
     const entries = hooks.hooks === undefined ? [] : hooks.hooks;
     if (!Array.isArray(entries)) throw new Error('jeo config.json hooks.hooks must be an array');
     const jeoMatcher = flags.matcher || JEO_DEFAULT_MATCHER;
+    const { node: nodeBin } = installNode();
     const controller = shellQuote(join(HERE, 'jev-plugin.mjs'));
-    const run = [process.execPath, join(HERE, 'jev-plugin.mjs'), 'jeo-pretool', '--agent', 'jeo', '--profile', ctx.profile].map(shellQuote).join(' ');
+    const run = [nodeBin, join(HERE, 'jev-plugin.mjs'), 'jeo-pretool', '--agent', 'jeo', '--profile', ctx.profile].map(shellQuote).join(' ');
     const managed = item => typeof item?.run === 'string' && item.run.includes(controller) && item.run.includes("'jeo-pretool'");
     const entry = { event: 'pre-tool', match: { tool: jeoMatcher }, run, timeoutMs: 90_000 };
     // jeo loads no hook at all until hooks.enabled is true; turning it on must not
@@ -1711,7 +1913,8 @@ async function hooksInstall(flags) {
     let config = readText(path);
     config = config === null ? {} : JSON.parse(config);
     if (!config || typeof config !== 'object' || Array.isArray(config)) throw new Error('hooks.json must contain an object');
-    const command = [process.execPath, join(HERE, 'jev-plugin.mjs'), 'codex-hook', '--agent', 'agy', '--profile', ctx.profile].map(shellQuote).join(' ');
+    const { node: nodeBin } = installNode();
+    const command = [nodeBin, join(HERE, 'jev-plugin.mjs'), 'codex-hook', '--agent', 'agy', '--profile', ctx.profile].map(shellQuote).join(' ');
     config['jev-control-plane'] = {
       PreInvocation: [{ type: 'command', command, timeout: 90, statusMessage: 'Jev: load selected skills' }],
       PreToolUse: [{ matcher, type: 'command', command, timeout: 90, statusMessage: 'Jev: review proposed action' }],
@@ -1796,7 +1999,8 @@ async function hooksInstall(flags) {
   if (!config || typeof config !== 'object' || Array.isArray(config)) throw new Error(`${fileLabel} must contain an object`);
   if (config.hooks === undefined) config.hooks = {};
   if (!config.hooks || typeof config.hooks !== 'object' || Array.isArray(config.hooks)) throw new Error(`${fileLabel} hooks must contain an object`);
-  const command = [process.execPath, join(HERE, 'jev-plugin.mjs'), 'codex-hook', '--agent', ctx.agent, '--profile', ctx.profile].map(shellQuote).join(' ');
+  const { node: nodeBin } = installNode();
+  const command = [nodeBin, join(HERE, 'jev-plugin.mjs'), 'codex-hook', '--agent', ctx.agent, '--profile', ctx.profile].map(shellQuote).join(' ');
   for (const event of ['UserPromptSubmit', 'PreToolUse']) {
     const groups = config.hooks[event] === undefined ? [] : config.hooks[event];
     if (!Array.isArray(groups)) throw new Error(`${event} hooks must be an array`);
@@ -1854,9 +2058,35 @@ async function codexHook(flags) {
   let mode = 'off';
   try {
     ctx = resolveHookContext(flags);
+    if (ctx.projectDisabled) {
+      recordWorkflowEvent('jev-skip', {
+        agent: ctx.agent,
+        skipped: 'project-workflow-disabled',
+        outcome: 'skipped',
+        customProject: true,
+        workflow_order: ctx.projectOverride?.order || null,
+        project: ctx.projectOverride?.projectRoot || null,
+      });
+      return {};
+    }
     if (!ctx.profile || !ctx.state.present || (!ctx.state.enabled && !ctx.state.invalidEnabled)) return {};
     const input = await readStdin();
     event = JSON.parse(input);
+    if (event?.cwd) {
+      ctx = resolveHookContext(flags, { eventCwd: event.cwd });
+      if (ctx.projectDisabled) {
+        recordWorkflowEvent('jev-skip', {
+          agent: ctx.agent,
+          skipped: 'project-workflow-disabled',
+          outcome: 'skipped',
+          customProject: true,
+          workflow_order: ctx.projectOverride?.order || null,
+          project: ctx.projectOverride?.projectRoot || null,
+        });
+        return {};
+      }
+      if (!ctx.profile || !ctx.state.present || (!ctx.state.enabled && !ctx.state.invalidEnabled)) return {};
+    }
     if (ctx.state.invalidEnabled) throw new Error('Invalid JEV_ENABLED');
     mode = reviewMode(ctx);
     const eventName = event.hook_event_name || (ctx.agent === 'agy' && typeof event.lastUserInput === 'string' ? 'PreInvocation' : null);
@@ -1901,6 +2131,7 @@ async function jeoPreTool(flags) {
   let mode = 'off';
   try {
     ctx = resolveHookContext(flags);
+    if (ctx.projectDisabled) return { exitCode: 0 };
     if (!ctx.profile || !ctx.state.present || (!ctx.state.enabled && !ctx.state.invalidEnabled)) return { exitCode: 0 };
     if (ctx.state.invalidEnabled) throw new Error('Invalid JEV_ENABLED');
     mode = reviewMode(ctx);

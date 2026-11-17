@@ -1,0 +1,138 @@
+#!/usr/bin/env python3
+"""Hermetic tests for scripts/setup-mcp-hosts.py across multi-host schemas and stdio probes."""
+from __future__ import annotations
+
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+import tempfile
+import tomllib
+import unittest
+
+ROOT = Path(__file__).resolve().parents[1]
+SCRIPT = ROOT / "scripts/setup-mcp-hosts.py"
+
+
+class SetupMcpHostsTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.tmp = tempfile.TemporaryDirectory(prefix="mcp-hosts-test-")
+        self.addCleanup(self.tmp.cleanup)
+        self.home = Path(self.tmp.name).resolve() / "home"
+        self.home.mkdir()
+        self.repo = Path(self.tmp.name).resolve() / "repo"
+        (self.repo / "scripts").mkdir(parents=True)
+        # Seed local Context7 entrypoint + installed mock binaries
+        c7_dist = self.home / ".local/share/jeo-skill/context7-mcp/node_modules/@upstash/context7-mcp/dist"
+        c7_dist.mkdir(parents=True)
+        (c7_dist / "index.js").write_text("console.log('mock');\n", encoding="utf-8")
+        (c7_dist.parent / "package.json").write_text(json.dumps({"name": "@upstash/context7-mcp", "bin": "dist/index.js"}), encoding="utf-8")
+
+        bin_dir = self.home / ".local/bin"
+        bin_dir.mkdir(parents=True)
+        for name in ("uvx", "aside", "headroom", "semble", "spec-kit-mcp"):
+            p = bin_dir / name
+            p.write_text("#!/bin/sh\nexit 0\n", encoding="utf-8")
+            p.chmod(0o755)
+        os_bin = self.home / ".agents/venvs/openspace/bin/openspace-mcp"
+        os_bin.parent.mkdir(parents=True)
+        os_bin.write_text("#!/bin/sh\nexit 0\n", encoding="utf-8")
+        os_bin.chmod(0o755)
+        (bin_dir / "jeox").symlink_to(ROOT / "scripts/jeox.py")
+
+        # Create host dirs & seed pre-existing quirky configs
+        (self.home / ".claude").mkdir()
+        (self.home / ".claude.json").write_text(json.dumps({"mcpServers": {"aside": {"command": "aside", "args": ["mcp"]}}}), encoding="utf-8")
+        (self.home / ".codex").mkdir()
+        (self.home / ".codex/config.toml").write_text('model = "gpt-5"\n', encoding="utf-8")
+        (self.home / ".gemini").mkdir()
+        (self.home / ".gemini/settings.json").write_text(json.dumps({
+            "mcpServers": {
+                "ouroboros": {"command": "/nonexistent/bin/ouroboros", "args": ["mcp", "serve"]},
+                "openspace": {"command": str(os_bin), "toolTimeout": 600},
+            }
+        }), encoding="utf-8")
+        (self.home / ".gemini/config").mkdir(parents=True)
+        (self.home / ".gemini/config/mcp_config.json").write_text(json.dumps({
+            "mcpServers": {"ouroboros": {"command": "/nonexistent/bin/ouroboros", "args": ["mcp", "serve"]}}
+        }), encoding="utf-8")
+        (self.home / ".gemini/antigravity").mkdir(parents=True)
+        (self.home / ".gemini/antigravity/mcp_config.json").symlink_to(self.home / ".gemini/config/mcp_config.json")
+        (self.home / ".cursor").mkdir()
+        (self.home / ".config/opencode").mkdir(parents=True)
+        (self.home / ".config/opencode/opencode.json").write_text(json.dumps({"mcp": {"servers": {}}}), encoding="utf-8")
+        (self.home / ".pi/agent").mkdir(parents=True)
+        (self.home / ".gjc/agent").mkdir(parents=True)
+        (self.home / ".jeopi/agent").mkdir(parents=True)
+        aside_cfg = self.home / ".aside/u/0/settings.json"
+        aside_cfg.parent.mkdir(parents=True)
+        aside_cfg.write_text(json.dumps({"mcp": {"servers": {"pencil": {}}}}), encoding="utf-8")
+        self.aside_before = aside_cfg.read_text(encoding="utf-8")
+
+    def test_applies_and_repairs_across_hosts_without_mutating_aside_or_symlinks(self) -> None:
+        env = {**os.environ, "HOME": str(self.home), "XDG_CONFIG_HOME": str(self.home / ".config"), "PYTHONDONTWRITEBYTECODE": "1"}
+        env.pop("CONTEXT7_API_KEY", None)
+        proc = subprocess.run(
+            [sys.executable, str(SCRIPT), "--home", str(self.home), "--repair", "--apply", "--json"],
+            env=env, capture_output=True, text=True, timeout=30, check=False,
+        )
+        self.assertEqual(proc.returncode, 0, proc.stdout + proc.stderr)
+        report = json.loads(proc.stdout)
+
+        # Gemini omits toolTimeout & repairs broken ouroboros
+        gem = json.loads((self.home / ".gemini/settings.json").read_text(encoding="utf-8"))
+        self.assertIn("context7", gem["mcpServers"])
+        for entry in gem["mcpServers"].values():
+            self.assertNotIn("toolTimeout", entry)
+        self.assertTrue(gem["mcpServers"]["ouroboros"]["command"].endswith("/uvx"))
+
+        # Antigravity IDE symlink remains intact
+        agy_ide = self.home / ".gemini/antigravity/mcp_config.json"
+        self.assertTrue(agy_ide.is_symlink())
+        agi = json.loads((self.home / ".gemini/config/mcp_config.json").read_text(encoding="utf-8"))
+        self.assertIn("context7", agi["mcpServers"])
+
+        # OpenCode v2 writes mcp.servers.context7
+        oc = json.loads((self.home / ".config/opencode/opencode.json").read_text(encoding="utf-8"))
+        self.assertIn("context7", oc["mcp"]["servers"])
+        self.assertEqual(oc["mcp"]["servers"]["context7"]["type"], "local")
+
+        # Pi sets exposure: direct for context7 and jeox
+        pi = json.loads((self.home / ".pi/agent/mcp.json").read_text(encoding="utf-8"))
+        self.assertEqual(pi["mcpServers"]["context7"]["exposure"], "direct")
+        self.assertEqual(pi["mcpServers"]["jeox"]["exposure"], "direct")
+
+        # Codex config is valid TOML containing context7
+        codex_data = tomllib.loads((self.home / ".codex/config.toml").read_text(encoding="utf-8"))
+        self.assertIn("context7", codex_data["mcp_servers"])
+
+        # Aside daemon config stays byte-identical (read-only audit only)
+        self.assertEqual((self.home / ".aside/u/0/settings.json").read_text(encoding="utf-8"), self.aside_before)
+        self.assertFalse(any(h["status"] == "error" for h in report["host_updates"]))
+
+    def test_refuses_arbitrary_config_symlink_and_probes_real_jeox_stdio(self) -> None:
+        secret_target = self.home / "outside.json"
+        secret_target.write_text('{"keep": true}\n', encoding="utf-8")
+        (self.home / ".cursor/mcp.json").symlink_to(secret_target)
+        env = {**os.environ, "HOME": str(self.home), "PYTHONDONTWRITEBYTECODE": "1"}
+        proc = subprocess.run(
+            [sys.executable, str(SCRIPT), "--home", str(self.home), "--apply", "--json"],
+            env=env, capture_output=True, text=True, timeout=30, check=False,
+        )
+        self.assertEqual(proc.returncode, 1)
+        self.assertEqual(secret_target.read_text(encoding="utf-8"), '{"keep": true}\n')
+
+        sys.path.insert(0, str(ROOT / "scripts"))
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("setup_mcp_hosts", SCRIPT)
+        mod = importlib.util.module_from_spec(spec)
+        assert spec.loader
+        spec.loader.exec_module(mod)
+        probe = mod.probe_stdio_mcp("jeox", sys.executable, [str(ROOT / "scripts/jeox.py"), "mcp"])
+        self.assertTrue(probe["ok"], probe)
+        self.assertIn("jeox_search", probe["tools"])
+
+
+if __name__ == "__main__":
+    unittest.main()

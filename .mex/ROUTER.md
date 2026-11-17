@@ -16,7 +16,7 @@ edges:
     condition: when checking code-to-knowledge pairings, query history links, or active work memory
   - target: patterns/INDEX.md
     condition: when starting a task — check the pattern index for a matching pattern file
-last_updated: 2026-11-17
+last_updated: 2026-11-18
 ---
 
 # Session Bootstrap
@@ -28,6 +28,10 @@ Then read this file fully before doing anything else in this session.
 ## Current Project State
 
 **Working:**
+  - 2026-11-18 `jev` + `harness2` 글로벌/프로젝트 워크플로우 격리 + 통합 플로우 로그(`flow-log`) + `setup.md` / `Context7` 다중 호스트 MCP 프로비저닝·검증 & 성능 최적화:
+    - 글로벌 기본(`~/.agents/harness/workspace.json`, `~/.agents/rules/jeo-workflows.md`) vs 프로젝트별 격리(`.harness2/workspace.json` `workflow.custom: true` / `customWorkflow: true` / `--custom-workflow`, `--workflow-order`, `--jev-profile`, `--reset-project-workflow`) 구현(`scripts/setup-workspace.py`, `jev/jev-plugin.mjs`, `.agent-skills/openspace/scripts/route_prompt.py`) + 통합 플로우 텔레메트리(`.agent-skills/jeo-skill/scripts/workflow_log_cli.py` `jeo-skill flow-log`, `scripts/workflow-log.py` / `~/.local/bin/jeo-flow-log`, `~/.local/state/jeo-skill/workflow-events.jsonl`).
+    - `scripts/setup-mcp-hosts.py` 및 [setup.md](../setup.md) (`!/setup.md` in `.gitignore`, `setup-all-skills-prompt.md` Step 5C) 추가: `@upstash/context7-mcp` 비대화형 로컬 설치(`~/.local/share/jeo-skill/context7-mcp`), 깨진 `ouroboros`/`scrapling`/상대경로 바이너리 및 Gemini `toolTimeout` 복구, Claude/Codex(Orca 프로필 포함)/Gemini/Antigravity(심볼릭링크 보존)/Cursor/OpenCode/Pi(`exposure: direct`)/GJC/JeoPi 등록(Aside 읽기 전용 감사) 및 라이브 JSON-RPC 핸드셰이크/Context7 검증.
+    - 성능·링크·버그 수정: `scripts/jeox.py` FTS5 이중 삭제 손상(`database disk image is malformed`) 근본 수정(`SCHEMA_VERSION=2` rebuild + `edges.src_path` + `O(lines)` monotonic caller + `executemany` + `deque` + `mcp --repo` / `$HOME` 가드), `jev/jev-harness.mjs` v3 컴팩트 인덱스 캐시 + 중복 `tokenizeText` 제거 + `getCachedCatalogMeta` 공유 + `calibrateJudge` 4-way 병렬화, `route_prompt.py` `bisect_left` 이진 탐색, `.agent-skills/agent-substrate/SKILL.md` 데모 링크 5개 GitHub URL로 복구.
   - 2026-11-17 성능·메모리 최적화 (`jev/jev-harness.mjs`, `jev/com.jeo-skills.qev-server.plist`, `jev/jev-setup.sh`, `jev/plugins/*/shared/jev-controller.mjs`, `scripts/jeox.py`): `loadCatalog` aux 헤더 `tmpdir` 영속 캐시(`JEV_NO_CATALOG_CACHE=1` 우회), `qev` `-c 4096 --cache-reuse 256` KV 메모리 절감, `tool_result` 정규식 프리필터로 정상 출력 서브프로세스 생략, `jeox.py` WAL/mmap + `mtime` 스킵 고속 증분 빌드 반영.
 - 2026-11-17 JEO Trinity (`jeo-code` × `jeopi` × `jeo-skills`) `qev:8017` + 그래프 DB + OAuth/런타임 통합:
   - `jev/jev-harness.mjs` & `jev/jev-setup.sh`: `local_calibrated` 등급(`CALIBRATION_MIN_RATE=0.85`, `--golden --save-calibration`), `manage-memory` 중요 블록(`Constraint`/`Decision`/`memory`/`schema vN`) 드롭 보호, `route-skills --fast` (`JEV_FAST_ROUTE=true`, `gate::prose_suffices` 단일 게이트 + top-3 `fits`로 3576ms→555~1074ms 단축), `--migrate-qev`/`--auto-model`/`--install-daemon` 및 `com.jeo-skills.qev-server` launchd 데몬(`-np 1 --no-kv-unified`) 부트스트랩·14개 프로필 교정(`tpr=1, tnr=1`).

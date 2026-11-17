@@ -42,6 +42,7 @@ def run_block(code: str, env: dict[str, str], cwd: Path, timeout: int = 60) -> s
         cwd=cwd,
         env=env,
         text=True,
+        stdin=subprocess.DEVNULL,
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
         timeout=timeout,
@@ -635,7 +636,7 @@ esac''')
                         HELPER_RESULT=str(helper_result),
                         FIXTURE_WORKSPACE=str(fixture_workspace), WORKSPACE_RESULT=str(workspace_result),
                     ),
-                    text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                    text=True, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                     timeout=60, check=False,
                 )
                 if global_scope == "true":

@@ -12,57 +12,27 @@ edges:
     condition: when specific technology details are needed
   - target: context/decisions.md
     condition: when understanding why the architecture is structured this way
-# Broad overview: keep this empty unless a claim depends on a few specific symbols.
-# Entry shape: { node: "function:<tier-1-id>", fingerprint: "mh2:64:<base64url>" }
 grounds_to: []
-last_updated: [YYYY-MM-DD]
+last_updated: 2026-11-18
 ---
 
 # Architecture
 
-<!-- Read broad, ground tight. Architecture usually grounds sparsely. When a
-     specific symbol is worth navigating to, use this inline form:
-```markdown
-[`someFunction()`](mex://function:<tier-1-id>)
-```
--->
-
 ## System Overview
-<!-- Describe how the major pieces connect.
-     Focus on FLOW not technology — how does a request/action move through the system?
-     Use the actual names of components, services, and modules from this codebase.
-     Format: a simple text flow diagram or short prose description.
-     Length: 5-15 lines. Minimum 5 lines. Should be readable in 30 seconds.
-     Example:
-     "Request comes in via Express router → validated by middleware →
-     passed to service layer → service calls repository for data →
-     repository queries PostgreSQL → result returned up the chain →
-     formatted by serializer → sent as JSON response." -->
+Requests enter a coding agent host (Claude Code, Codex CLI, Gemini CLI, Antigravity, Cursor, OpenCode, Pi, GJC, JeoPi) with the shared rule file `~/.agents/rules/jeo-workflows.md` (and `<project>/.agents/rules/jeo-workflows.md`) injected automatically. The per-prompt workflow follows `openspace → rtk → semble → jev → memory (.mex / jeox / zg / knowledge)`. Both `route_prompt.py` and `jev-plugin.mjs` walk ancestors upward from `cwd` (stopping before `$HOME` and rejecting symlinks) to check `.harness2/workspace.json`; when `workflow.custom` is `true`, per-project order, `jev_profile`, and `skills_root` override global defaults (`~/.agents/harness/workspace.json`), and outcomes append to `~/.local/state/jeo-skill/workflow-events.jsonl`.
 
 ## Key Components
-<!-- List the major components, modules, or services in this project.
-     For each: name, what it does, what it depends on.
-     Only include components that are non-obvious or have important constraints.
-     Minimum 3 components. If you cannot identify 3, write "[TO DETERMINE]" as a placeholder.
-     Length: 1-2 lines per component.
-     Example:
-     - **AuthService** — handles all authentication logic, depends on UserRepository and JWTLib
-     - **EventBus** — async communication between services, all side effects go through here -->
+- **Skill Catalog & Router (`.agent-skills/skills.json`, `.agent-skills/jeo-skill/`)**: SSOT manifest describing all cataloged skills, categories, and relationships; installed into `~/.agents/skills` and linked to host skill directories via `refresh-host-links.py`. `workflow_log_cli.py` (`jeo-skill flow-log`) + `scripts/workflow-log.py` (`~/.local/bin/jeo-flow-log`) provide one scrubbed, size-rotated JSONL ledger (`~/.local/state/jeo-skill/workflow-events.jsonl`) across global and custom project flows.
+- **Workspace & Harness² Orchestrator (`scripts/setup-workspace.py`, `.harness2/workspace.json`)**: Configures global (`~/.agents/harness/workspace.json`) and project (`<repo>/.harness2/workspace.json`) method-mode component maps, workflow rules, `.mex/`, `zg`, `jeox`, and git post-commit hooks while preserving `customWorkflow: true` projects across global refreshes.
+- **Jev Control Plane (`jev/jev-harness.mjs`, `jev/jev-plugin.mjs`)**: Evaluates local `qev` (`http://127.0.0.1:8017/v1/systemone`) or remote API policies (`route-skills`, `prune-context`, `moderate`, `gate-tool`, `decide-action`, `evaluate-run`, `calibrate-judge`) using a cached v3 catalog BM25 index (`tmpdir()/jev-index-v3-*.json`).
+- **Code Graph & BM25 Fallback (`scripts/jeox.py`, `.jeo/db/jeo.db`)**: Dependency-free SQLite + FTS5 (`SCHEMA_VERSION = 2`) symbol/call/import indexer and stdio MCP server (`--repo` / per-tool `repo` with `$HOME` guard).
+- **Multi-Host MCP Provisioner (`scripts/setup-mcp-hosts.py`, `setup.md`)**: Provisions `@upstash/context7-mcp`, repairs host binary references, configures Claude/Codex/Gemini/Antigravity/Cursor/OpenCode/Pi/GJC/JeoPi (plus Orca profile dirs), and verifies live JSON-RPC stdio handshakes.
 
 ## External Dependencies
-<!-- Third-party services, APIs, or databases this project connects to.
-     For each: what it is, what we use it for, any important constraints.
-     Minimum 3 items. If you cannot find 3, write "[TO DETERMINE]" as a placeholder.
-     Length: 1-2 lines per dependency.
-     Example:
-     - **PostgreSQL** — primary database, all writes go through the repository layer only
-     - **SendGrid** — transactional email, use the EmailService wrapper, never call directly -->
+- **Context7 Upstash Documentation Service** — queried locally via provisioned `context7` MCP stdio entrypoint (`~/.local/share/jeo-skill/context7-mcp`, `resolve-library-id`, `query-docs`); supports optional `CONTEXT7_API_KEY`.
+- **Loopback qev Inference Server & Host CLIs** — serves local Jev policy evaluation on port 8017 while host CLIs read user MCP/hook configs.
+- **Mex / zvec-grep / OpenSpace / RTK / Semble** — external developer CLIs invoked by `setup-workspace.py` and host workflow hooks.
 
 ## What Does NOT Exist Here
-<!-- Explicit boundaries — what is deliberately outside this system.
-     This prevents the agent from building things that belong elsewhere or making wrong assumptions.
-     Minimum 2 items. If you cannot find 2, write "[TO DETERMINE]" as a placeholder.
-     Length: 2-5 items.
-     Example:
-     - No background job processing — that lives in the worker service (separate repo)
-     - No file storage — we use S3 directly, no abstraction layer -->
+- No daemonized runtime in this repo other than the optional Jev launchd service and stdio MCP servers spawned on demand by hosts.
+- Aside daemon settings (`~/.aside/u/*/settings.json`) are never mutated by `scripts/setup-mcp-hosts.py` (read-only audit only).

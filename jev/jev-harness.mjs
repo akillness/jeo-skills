@@ -1225,9 +1225,13 @@ async function readSkillAuxHeader(excerptRoot, skill) {
   } catch { return empty; }
 }
 
-async function loadCatalog() {
+async function loadCatalog(preferredPath = null) {
   const errors = [];
-  for (const candidate of CATALOG_CANDIDATES) {
+  const baseCandidates = process.env.JEV_CATALOG_PATH !== undefined
+    ? [process.env.JEV_CATALOG_PATH]
+    : CATALOG_CANDIDATES;
+  const candidates = preferredPath ? [preferredPath, ...baseCandidates] : baseCandidates;
+  for (const candidate of candidates) {
     let info;
     try { info = await stat(candidate, { bigint: true }); }
     catch (err) { errors.push(`${candidate}: ${err.message}`); continue; }
@@ -1245,7 +1249,9 @@ async function loadCatalog() {
       const relationshipsByName = buildSkillRelationshipsMap(result);
       const excerptRoot = await resolveExcerptRoot(result);
       let auxList = null;
+      let cachedIndex = null;
       let auxCachePath = null;
+      let indexCachePath = null;
       const sysTmp = (() => { try { return realpathSync(tmpdir()); } catch { return resolve(tmpdir()); } })();
       const rawTmp = resolve(tmpdir());
       const isTmpPath = p => [sysTmp, rawTmp, '/tmp', '/private/tmp', '/var/folders', '/private/var/folders'].some(pref => p === pref || p.startsWith(pref + sep));
@@ -1257,80 +1263,148 @@ async function loadCatalog() {
             .update(`${candidate}\0${info.mtimeNs}\0${info.size}\0${excerptRoot}\0${rootInfo.mtimeNs}\0${catalog.skills.length}`)
             .digest('hex')
             .slice(0, 24);
+          indexCachePath = join(tmpdir(), `jev-index-v3-${cacheKey}.json`);
           auxCachePath = join(tmpdir(), `jev-aux-v1-${cacheKey}.json`);
-          const cachedAux = JSON.parse(await readFile(auxCachePath, 'utf8'));
-          if (Array.isArray(cachedAux) && cachedAux.length === catalog.skills.length) auxList = cachedAux;
+          try {
+            const v3 = JSON.parse(await readFile(indexCachePath, 'utf8'));
+            if (v3 && v3.version === 3 && v3.skillCount === catalog.skills.length
+                && Array.isArray(v3.auxList) && Array.isArray(v3.bm25Rows)
+                && v3.bm25Rows.length === catalog.skills.length && v3.idf && typeof v3.avgDocLen === 'number') {
+              cachedIndex = v3;
+              auxList = v3.auxList;
+            }
+          } catch {
+            cachedIndex = null;
+          }
+          if (!auxList) {
+            const cachedAux = JSON.parse(await readFile(auxCachePath, 'utf8'));
+            if (Array.isArray(cachedAux) && cachedAux.length === catalog.skills.length) auxList = cachedAux;
+          }
         } catch {
           auxList = null;
+          cachedIndex = null;
         }
       }
       if (!auxList) {
         auxList = await mapConcurrent(catalog.skills, CATALOG_AUX_CONCURRENCY, skill => readSkillAuxHeader(excerptRoot, skill));
-        if (auxCachePath) {
-          const tmpCache = `${auxCachePath}.${process.pid}.tmp`;
-          try {
-            writeFileSync(tmpCache, JSON.stringify(auxList), { encoding: 'utf8', mode: 0o600 });
-            renameSync(tmpCache, auxCachePath);
-          } catch {
-            try { unlinkSync(tmpCache); } catch {}
-          }
-        }
       }
       const auxByName = Object.create(null);
       const byName = Object.create(null);
       const entries = new Array(catalog.skills.length);
-      const df = Object.create(null);
-      let totalDocLen = 0;
-      let fullTokens = 0;
-      for (let i = 0; i < catalog.skills.length; i++) {
-        const skill = catalog.skills[i];
-        if (!skill.name || !skill.category || !skill.description) throw new Error(`Malformed skill entry in catalog (${skill.name || '<unnamed>'})`);
-        byName[skill.name] = skill;
-        const aux = auxList[i] || extractAuxFrontmatter({}, skill);
-        auxByName[skill.name] = aux;
-        const rel = relationshipsByName[skill.name] || null;
-        fullTokens += tokenEstimate(`${skill.name} ${skill.description}`);
-        const nameText = skill.name;
-        const trigText = Array.isArray(aux.triggers) ? aux.triggers.join(' ') : '';
-        const tagsText = `${Array.isArray(skill.tags) ? skill.tags.join(' ') : ''} ${skill.keyword || ''} ${trigText}`;
-        const catText = `${skill.category || ''} ${skill.subcategory || ''}`;
-        const relText = flattenRelationshipTerms(rel).join(' ');
-        const platText = Array.isArray(skill.platforms) ? skill.platforms.join(' ') : '';
-        const auxText = `${aux.compatibility || ''} ${Array.isArray(aux.allowedTools) ? aux.allowedTools.join(' ') : ''}`;
-        const descText = skill.description || '';
-        const nameTf = buildTermFreq(tokenizeText(nameText));
-        const tagsTf = buildTermFreq(tokenizeText(tagsText));
-        const catTf = buildTermFreq(tokenizeText(catText));
-        const descTf = buildTermFreq(tokenizeText(descText));
-        const relTf = buildTermFreq(tokenizeText(`${relText} ${platText} ${auxText}`));
-        const allTokens = new Set([
-          ...Object.keys(nameTf),
-          ...Object.keys(tagsTf),
-          ...Object.keys(catTf),
-          ...Object.keys(descTf),
-          ...Object.keys(relTf),
-        ]);
-        for (const tok of allTokens) df[tok] = (df[tok] || 0) + 1;
-        const docLen = Math.max(1, tokenizeText(`${nameText} ${tagsText} ${catText} ${descText} ${relText}`).length);
-        totalDocLen += docLen;
-        entries[i] = {
-          skill,
-          nameLower: skill.name.toLowerCase(),
-          tagsLower: tagsText.toLowerCase(),
-          corpusLower: `${descText} ${tagsText} ${catText} ${relText} ${platText} ${auxText}`.toLowerCase(),
-          nameTf,
-          tagsTf,
-          catTf,
-          descTf,
-          relTf,
-          docLen,
-        };
-      }
-      const avgDocLen = entries.length ? totalDocLen / entries.length : 1;
-      const idf = Object.create(null);
-      const nDocs = entries.length || 1;
-      for (const [tok, freq] of Object.entries(df)) {
-        idf[tok] = Math.log(1 + (nDocs - freq + 0.5) / (freq + 0.5));
+      let idf;
+      let avgDocLen;
+      let fullTokens;
+      if (cachedIndex) {
+        idf = cachedIndex.idf;
+        avgDocLen = cachedIndex.avgDocLen;
+        fullTokens = cachedIndex.fullTokens || 0;
+        const rows = cachedIndex.bm25Rows;
+        for (let i = 0; i < catalog.skills.length; i++) {
+          const skill = catalog.skills[i];
+          if (!skill.name || !skill.category || !skill.description) throw new Error(`Malformed skill entry in catalog (${skill.name || '<unnamed>'})`);
+          byName[skill.name] = skill;
+          const aux = auxList[i] || extractAuxFrontmatter({}, skill);
+          auxByName[skill.name] = aux;
+          const rel = relationshipsByName[skill.name] || null;
+          const trigText = Array.isArray(aux.triggers) ? aux.triggers.join(' ') : '';
+          const tagsText = `${Array.isArray(skill.tags) ? skill.tags.join(' ') : ''} ${skill.keyword || ''} ${trigText}`;
+          const catText = `${skill.category || ''} ${skill.subcategory || ''}`;
+          const relText = flattenRelationshipTerms(rel).join(' ');
+          const platText = Array.isArray(skill.platforms) ? skill.platforms.join(' ') : '';
+          const auxText = `${aux.compatibility || ''} ${Array.isArray(aux.allowedTools) ? aux.allowedTools.join(' ') : ''}`;
+          const [docLen, nameTf, tagsTf, catTf, descTf, relTf] = rows[i];
+          entries[i] = {
+            skill,
+            nameLower: skill.name.toLowerCase(),
+            tagsLower: tagsText.toLowerCase(),
+            corpusLower: `${skill.description || ''} ${tagsText} ${catText} ${relText} ${platText} ${auxText}`.toLowerCase(),
+            nameTf,
+            tagsTf,
+            catTf,
+            descTf,
+            relTf,
+            docLen,
+          };
+        }
+      } else {
+        const df = Object.create(null);
+        const bm25Rows = indexCachePath ? new Array(catalog.skills.length) : null;
+        let totalDocLen = 0;
+        fullTokens = 0;
+        for (let i = 0; i < catalog.skills.length; i++) {
+          const skill = catalog.skills[i];
+          if (!skill.name || !skill.category || !skill.description) throw new Error(`Malformed skill entry in catalog (${skill.name || '<unnamed>'})`);
+          byName[skill.name] = skill;
+          const aux = auxList[i] || extractAuxFrontmatter({}, skill);
+          auxByName[skill.name] = aux;
+          const rel = relationshipsByName[skill.name] || null;
+          fullTokens += tokenEstimate(`${skill.name} ${skill.description}`);
+          const nameText = skill.name;
+          const trigText = Array.isArray(aux.triggers) ? aux.triggers.join(' ') : '';
+          const tagsText = `${Array.isArray(skill.tags) ? skill.tags.join(' ') : ''} ${skill.keyword || ''} ${trigText}`;
+          const catText = `${skill.category || ''} ${skill.subcategory || ''}`;
+          const relText = flattenRelationshipTerms(rel).join(' ');
+          const platText = Array.isArray(skill.platforms) ? skill.platforms.join(' ') : '';
+          const auxText = `${aux.compatibility || ''} ${Array.isArray(aux.allowedTools) ? aux.allowedTools.join(' ') : ''}`;
+          const descText = skill.description || '';
+          const nameToks = tokenizeText(nameText);
+          const tagsToks = tokenizeText(tagsText);
+          const catToks = tokenizeText(catText);
+          const descToks = tokenizeText(descText);
+          const relCoreToks = tokenizeText(relText);
+          const extraRelToks = tokenizeText(`${platText} ${auxText}`);
+          const nameTf = buildTermFreq(nameToks);
+          const tagsTf = buildTermFreq(tagsToks);
+          const catTf = buildTermFreq(catToks);
+          const descTf = buildTermFreq(descToks);
+          const relTf = buildTermFreq(extraRelToks.length ? relCoreToks.concat(extraRelToks) : relCoreToks);
+          const allTokens = new Set([
+            ...Object.keys(nameTf),
+            ...Object.keys(tagsTf),
+            ...Object.keys(catTf),
+            ...Object.keys(descTf),
+            ...Object.keys(relTf),
+          ]);
+          for (const tok of allTokens) df[tok] = (df[tok] || 0) + 1;
+          const docLen = Math.max(1, nameToks.length + tagsToks.length + catToks.length + descToks.length + relCoreToks.length);
+          totalDocLen += docLen;
+          if (bm25Rows) bm25Rows[i] = [docLen, nameTf, tagsTf, catTf, descTf, relTf];
+          entries[i] = {
+            skill,
+            nameLower: skill.name.toLowerCase(),
+            tagsLower: tagsText.toLowerCase(),
+            corpusLower: `${descText} ${tagsText} ${catText} ${relText} ${platText} ${auxText}`.toLowerCase(),
+            nameTf,
+            tagsTf,
+            catTf,
+            descTf,
+            relTf,
+            docLen,
+          };
+        }
+        avgDocLen = entries.length ? totalDocLen / entries.length : 1;
+        idf = Object.create(null);
+        const nDocs = entries.length || 1;
+        for (const [tok, freq] of Object.entries(df)) {
+          idf[tok] = Math.log(1 + (nDocs - freq + 0.5) / (freq + 0.5));
+        }
+        if (indexCachePath && bm25Rows) {
+          const tmpCache = `${indexCachePath}.${process.pid}.tmp`;
+          try {
+            writeFileSync(tmpCache, JSON.stringify({
+              version: 3,
+              skillCount: catalog.skills.length,
+              auxList,
+              idf,
+              avgDocLen,
+              fullTokens,
+              bm25Rows,
+            }), { encoding: 'utf8', mode: 0o600 });
+            renameSync(tmpCache, indexCachePath);
+          } catch {
+            try { unlinkSync(tmpCache); } catch {}
+          }
+        }
       }
       CATALOG_META.set(result, { byName, fullTokens, entries, idf, avgDocLen, relationshipsByName, auxByName, excerptRoot });
       if (CATALOG_CACHE.size >= MAX_CATALOG_CACHE) {
@@ -1342,6 +1416,11 @@ async function loadCatalog() {
     } catch (err) { errors.push(`${candidate}: ${err.message}`); }
   }
   throw new Error(`Cannot load a valid skills catalog. Tried:\n  ${errors.join('\n  ')}`);
+}
+
+export async function getCachedCatalogMeta(preferredPath = null) {
+  const catalog = await loadCatalog(preferredPath);
+  return { catalog, meta: CATALOG_META.get(catalog) || null };
 }
 
 async function resolveExcerptRoot(catalog) {
@@ -1655,9 +1734,9 @@ function scoreFieldBm25(tfMap, terms, idfMap, docLen, avgDocLen) {
     const item = terms[i];
     const term = typeof item === 'string' ? item : item.term;
     const qWeight = typeof item === 'string' ? 1.0 : item.weight;
-    const tf = tfMap[term] || 0;
+    const tf = Object.hasOwn(tfMap, term) ? tfMap[term] : 0;
     if (tf <= 0) continue;
-    const idf = idfMap ? (idfMap[term] ?? 1.0) : 1.0;
+    const idf = idfMap && Object.hasOwn(idfMap, term) ? idfMap[term] : 1.0;
     total += qWeight * idf * ((tf * (k1 + 1)) / (tf + k1 * norm));
   }
   return total;
@@ -2782,31 +2861,39 @@ export async function calibrateJudge(criterion, labeledExamples, { mock = false,
   if (!criterion?.trim()) throw new Error('calibrate-judge requires a criterion string');
   if (!Array.isArray(labeledExamples) || !labeledExamples.length) throw new Error('calibrate-judge requires a non-empty array of { id?, input, expected } examples');
   let tp = 0; let tn = 0; let fp = 0; let fn = 0;
-  const cases = [];
   let backend = null;
   const attempted = new Set();
-  for (let i = 0; i < labeledExamples.length; i++) {
-    const ex = labeledExamples[i];
+  const evaluated = await mapConcurrent(labeledExamples, 4, async (ex, i) => {
     const expectedRaw = String(ex?.expected ?? '').toLowerCase();
     const expectedPos = /^(?:yes|pass|true|1|allow)$/.test(expectedRaw);
     const state = { criterion, sample: ex?.input ?? ex };
     const env = await requestJev(state, { judge_verdict: noul(criterion) }, { op: 'calibrate-judge', mock, override, model });
     if (!mock && (env.error || !env.answers)) throw new Error(`Jev unavailable for judge calibration: ${env.error || 'missing answers'}`);
-    if (!backend && env.backend) backend = env.backend;
-    (env.attempted || []).forEach(a => attempted.add(a));
     const prob = env.answers?.judge_verdict?.probability ?? 0.5;
     const predictedPos = prob >= threshold;
+    return {
+      env,
+      expectedPos,
+      predictedPos,
+      item: {
+        id: ex?.id ?? `case-${i}`,
+        expected: expectedPos ? 'yes' : 'no',
+        predicted: predictedPos ? 'yes' : 'no',
+        probability: round(prob),
+        matched: expectedPos === predictedPos,
+      },
+    };
+  });
+  const cases = new Array(evaluated.length);
+  for (let i = 0; i < evaluated.length; i++) {
+    const { env, expectedPos, predictedPos, item } = evaluated[i];
+    if (!backend && env.backend) backend = env.backend;
+    (env.attempted || []).forEach(a => attempted.add(a));
     if (expectedPos && predictedPos) tp++;
     else if (!expectedPos && !predictedPos) tn++;
     else if (!expectedPos && predictedPos) fp++;
     else fn++;
-    cases.push({
-      id: ex?.id ?? `case-${i}`,
-      expected: expectedPos ? 'yes' : 'no',
-      predicted: predictedPos ? 'yes' : 'no',
-      probability: round(prob),
-      matched: expectedPos === predictedPos,
-    });
+    cases[i] = item;
   }
   const tpr = (tp + fn) ? round(tp / (tp + fn)) : null;
   const tnr = (tn + fp) ? round(tn / (tn + fp)) : null;

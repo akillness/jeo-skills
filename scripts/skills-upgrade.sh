@@ -81,6 +81,11 @@ if [[ -f "$REPO_DIR/.agent-skills/skills.json" ]] && [[ -f "$HOME/.agents/jev/sk
     echo "would refresh: $HOME/.agents/jev/skills.json"
   else
     cp "$REPO_DIR/.agent-skills/skills.json" "$HOME/.agents/jev/skills.json"
+    for JEV_ASSET in jev-harness.mjs jev-plugin.mjs; do
+      if [[ -f "$REPO_DIR/jev/$JEV_ASSET" ]] && [[ ! -L "$HOME/.agents/jev/$JEV_ASSET" ]]; then
+        cp -f "$REPO_DIR/jev/$JEV_ASSET" "$HOME/.agents/jev/$JEV_ASSET"
+      fi
+    done
   fi
 fi
 
@@ -123,6 +128,9 @@ if [[ "$DRY_RUN" -eq 0 ]]; then
   echo "---"
   if [[ "$FAIL" -eq 0 ]]; then
     echo "verification: PASS"
+    if [[ -f "$REPO_DIR/scripts/workflow-log.py" ]]; then
+      PYTHONDONTWRITEBYTECODE=1 python3 "$REPO_DIR/scripts/workflow-log.py" record --stage skills-upgrade --outcome ok --project "$REPO_DIR" --host cli >/dev/null 2>&1 || true
+    fi
   else
     echo "verification: FAIL (broken links above)" >&2
     exit 5

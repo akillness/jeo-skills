@@ -23,6 +23,10 @@ from install_support import (copy_tree, remove_retired_installs, require_safe_pa
                              require_safe_tree, resolve_aside_user)
 import skill_readiness
 import skill_usage_cli
+try:
+    import workflow_log_cli
+except ModuleNotFoundError:  # Allow minimal bootstrap fixtures copying only jeo-skill.py + install_support.py
+    workflow_log_cli = None  # type: ignore[assignment]
 
 DEFAULT_SOURCE = "https://github.com/akillness/jeo-skills"
 DEFAULT_CATALOG_URL = (
@@ -1144,6 +1148,8 @@ def build_parser() -> argparse.ArgumentParser:
     readiness.add_argument("--json", action="store_true")
 
     skill_usage_cli.add_parsers(sub)
+    if workflow_log_cli is not None:
+        workflow_log_cli.add_parsers(sub)
 
     sub.add_parser("doctor", help="Verify catalog and installer prerequisites")
     return parser
@@ -1166,6 +1172,8 @@ def main() -> int:
         if args.command == "prune-retired":
             command_prune_retired(args)
             return 0
+        if workflow_log_cli is not None and args.command in workflow_log_cli.NO_CATALOG_COMMANDS:
+            return workflow_log_cli.run(args)
         if args.command in skill_usage_cli.NO_CATALOG_COMMANDS:
             return skill_usage_cli.run(args, None, None, retired_sweep_roots)
         source_catalog = Path(getattr(args, "source", "")).expanduser() / ".agent-skills/skills.json"

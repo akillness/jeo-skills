@@ -113,6 +113,15 @@ Run in this order. If a tool is missing, say so in one line and continue.
 - **Improving this agent harness (rules, prompts, skills, hooks)** → harness2 method
   mode. `.harness2/workspace.json` maps the eight harness components to real files.
 
+## Global Default vs Project Override
+
+- **Global defaults** live in `~/.agents/rules/{rule}` and `~/.agents/harness/workspace.json`.
+  Every project inherits this workflow automatically unless overridden locally.
+- **Per-project isolated workflow**: configuring `<project>/.harness2/workspace.json` with
+  `"workflow": {"custom": true, ...}` (via `scripts/setup-workspace.py --custom-workflow`)
+  isolates that project's pipeline order, Jev profile, and skill root so global refreshes
+  preserve project-specific workflows untouched.
+
 ## Staying current
 
 - After meaningful work: `mex-agent log "<note>"`, `mex-agent check`, `zg index`.
@@ -133,6 +142,21 @@ harness changes → `.harness2/`. Code graph/DB search fallback: `jeox` (`.jeo/d
 """
 
 
+DEFAULT_WORKFLOW_ORDER = ("openspace", "rtk", "semble", "jev", "memory")
+DISABLED_PROFILES = {"off", "none", "disabled", "false"}
+
+
+def _parse_order(raw: str | None) -> list[str]:
+    if not raw:
+        return list(DEFAULT_WORKFLOW_ORDER)
+    seen: list[str] = []
+    for part in raw.split(","):
+        token = part.strip()
+        if token and token not in seen:
+            seen.append(token)
+    return seen or list(DEFAULT_WORKFLOW_ORDER)
+
+
 class Ctx:
     def __init__(self, args: argparse.Namespace) -> None:
         self.home = Path(args.home).expanduser().resolve()
@@ -145,6 +169,13 @@ class Ctx:
         self.env["PATH"] = os.pathsep.join([str(p) for p in extra] + [self.env.get("PATH", "")])
         self.vault = Path(args.vault).expanduser() if args.vault else self.home / "vaults/jeo-second-brain"
         self.inbox = Path(args.inbox).expanduser() if args.inbox else self.home / "vaults/jeo-second-brain-inbox"
+        self.custom_workflow_flag = bool(getattr(args, "custom_workflow", False))
+        self.workflow_order_arg = getattr(args, "workflow_order", None)
+        self.jev_profile_arg = getattr(args, "jev_profile", None)
+        self.reset_project_workflow = bool(getattr(args, "reset_project_workflow", False))
+        self.has_explicit_workflow_flags = bool(
+            self.custom_workflow_flag or self.workflow_order_arg or self.jev_profile_arg is not None
+        )
         self.results: dict[str, dict] = {}
 
     def veto(self, name: str) -> bool:
@@ -240,32 +271,37 @@ def split_frontmatter(text: str) -> tuple[list[str] | None, str]:
     return None, text
 
 
-def with_always_apply(fm: list[str] | None) -> list[str]:
-    """Force ``alwaysApply: true`` and keep every other key, so the harness injects the rule."""
+def with_always_apply(fm: list[str] | None, custom_workflow: bool | None = None) -> list[str]:
+    """Force ``alwaysApply: true`` and manage optional ``customWorkflow`` flag."""
     out: list[str] = []
     seen = False
     for line in fm or []:
-        if frontmatter_key(line) == "alwaysApply":
+        key = frontmatter_key(line)
+        if key == "alwaysApply":
             if not seen:
                 out.append("alwaysApply: true")
             seen = True
+        elif key == "customWorkflow":
+            continue
         else:
             out.append(line)
     if not seen:
         out.append("alwaysApply: true")
+    if custom_workflow is True:
+        out.append("customWorkflow: true")
     if not any(frontmatter_key(line) == "description" for line in out):
         out.insert(0, f"description: {RULE_DESCRIPTION}")
     return out
 
 
-def upsert_rule_file(ctx: Ctx, path: Path, body: str) -> str:
+def upsert_rule_file(ctx: Ctx, path: Path, body: str, custom_workflow: bool | None = None) -> str:
     """Write the rule as an always-applied harness rule: frontmatter first, marker block below."""
     real = path.resolve()
     existing = real.read_text(encoding="utf-8") if real.is_file() else None
     fm, rest = split_frontmatter(existing) if existing is not None else (None, "")
     new_body, status = merge_block(None if existing is None else rest.lstrip("\n"),
                                    body, START, END, str(path))
-    new = "---\n" + "\n".join(with_always_apply(fm)) + "\n---\n" + new_body
+    new = "---\n" + "\n".join(with_always_apply(fm, custom_workflow=custom_workflow)) + "\n---\n" + new_body
     if existing is not None:
         status = "unchanged" if new == existing else "updated"
     if status != "unchanged" and not ctx.dry:
@@ -274,7 +310,148 @@ def upsert_rule_file(ctx: Ctx, path: Path, body: str) -> str:
 
 
 def rule_text(ctx: Ctx) -> str:
-    return RULE_TEMPLATE.replace("{vault}", str(brain_vault(ctx)))
+    return RULE_TEMPLATE.replace("{vault}", str(brain_vault(ctx))).replace("{rule}", RULE_NAME)
+
+
+def read_existing_harness_manifest(project: Path) -> dict:
+    """Safely read existing .harness2/workspace.json if it is a regular non-symlink file."""
+    path = project / ".harness2/workspace.json"
+    if path.is_symlink() or not path.is_file():
+        return {}
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+        return data if isinstance(data, dict) else {}
+    except (OSError, ValueError):
+        return {}
+
+
+def is_existing_custom_project(ctx: Ctx) -> bool:
+    manifest = read_existing_harness_manifest(ctx.project)
+    wf = manifest.get("workflow") if isinstance(manifest.get("workflow"), dict) else {}
+    if wf.get("custom") is True:
+        return True
+    rule_path = ctx.project / ".agents/rules" / RULE_NAME
+    if rule_path.is_file() and not rule_path.is_symlink():
+        fm, _ = split_frontmatter(rule_path.read_text(encoding="utf-8"))
+        for line in fm or []:
+            if frontmatter_key(line) == "customWorkflow" and line.split(":", 1)[1].strip().lower() == "true":
+                return True
+    return False
+
+
+def resolve_project_workflow(ctx: Ctx) -> tuple[dict, bool]:
+    """Return (workflow_config, preserved_existing_custom) for project isolation."""
+    global_manifest_path = str(ctx.home / ".agents/harness/workspace.json")
+    default_wf = {
+        "custom": False,
+        "inherits": global_manifest_path,
+        "order": list(DEFAULT_WORKFLOW_ORDER),
+        "openspace_enabled": True,
+        "jev_enabled": True,
+        "jev_profile": None,
+        "skills_root": str(ctx.skills_root),
+    }
+    if ctx.reset_project_workflow:
+        return default_wf, False
+
+    existing_manifest = read_existing_harness_manifest(ctx.project)
+    existing_wf = existing_manifest.get("workflow") if isinstance(existing_manifest.get("workflow"), dict) else {}
+    project_skills = ctx.project / ".agents/skills"
+
+    if ctx.has_explicit_workflow_flags:
+        order = _parse_order(ctx.workflow_order_arg) if ctx.workflow_order_arg else (
+            list(existing_wf["order"]) if isinstance(existing_wf.get("order"), list) else list(DEFAULT_WORKFLOW_ORDER)
+        )
+        raw_profile = ctx.jev_profile_arg
+        if raw_profile is None:
+            jev_profile = existing_wf.get("jev_profile")
+        elif raw_profile.strip().lower() in DISABLED_PROFILES:
+            jev_profile = None
+        else:
+            jev_profile = raw_profile.strip()
+        jev_enabled = ("jev" in order) and (
+            raw_profile is None or raw_profile.strip().lower() not in DISABLED_PROFILES
+        )
+        skills_dir = str(project_skills) if project_skills.is_dir() else str(ctx.skills_root)
+        return {
+            "custom": True,
+            "order": order,
+            "openspace_enabled": "openspace" in order,
+            "jev_enabled": jev_enabled,
+            "jev_profile": jev_profile if jev_enabled else None,
+            "skills_root": skills_dir,
+        }, False
+
+    if is_existing_custom_project(ctx):
+        preserved = dict(default_wf)
+        preserved.update(existing_wf)
+        preserved["custom"] = True
+        preserved.pop("inherits", None)
+        return preserved, True
+
+    return default_wf, False
+
+
+def project_rule_text(ctx: Ctx, wf: dict) -> str:
+    base = rule_text(ctx).rstrip()
+    if not wf.get("custom"):
+        return base + "\n"
+    order = ", ".join(wf.get("order") or DEFAULT_WORKFLOW_ORDER)
+    jev_desc = (
+        f"disabled (`jev_enabled: false`)"
+        if not wf.get("jev_enabled", True)
+        else (f"profile `{wf['jev_profile']}`" if wf.get("jev_profile") else "default profile")
+    )
+    os_desc = "enabled" if wf.get("openspace_enabled", True) else "disabled"
+    override_block = (
+        "\n\n## Project-Isolated Workflow Override (`customWorkflow: true`)\n\n"
+        f"- Order: `{order}`\n"
+        f"- OpenSpace router: `{os_desc}`\n"
+        f"- Jev control plane: {jev_desc}\n"
+        f"- Skills root: `{wf.get('skills_root') or ctx.skills_root}`\n"
+        "- Preserved automatically across global `setup-workspace.py` runs "
+        "(use `--reset-project-workflow` to restore global defaults).\n"
+    )
+    return base + override_block
+
+
+def append_workflow_log(ctx: Ctx, stage: str, details: dict) -> None:
+    if ctx.dry:
+        return
+    state_dir = Path(ctx.env.get("JEO_SKILL_STATE_DIR") or (ctx.home / ".local/state/jeo-skill"))
+    log_path = state_dir / "workflow-events.jsonl"
+    try:
+        state_dir.mkdir(parents=True, exist_ok=True)
+        os.chmod(state_dir, 0o700)
+        if log_path.is_symlink():
+            return
+        if log_path.exists() and log_path.stat().st_size > 5 * 1024 * 1024:
+            stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+            rotated = state_dir / f"workflow-events.{stamp}-{os.getpid()}.jsonl"
+            try:
+                os.replace(log_path, rotated)
+            except OSError:
+                pass
+        custom = bool(details.get("custom"))
+        entry = {
+            "v": 1,
+            "ts": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "stage": stage,
+            "outcome": details.get("outcome") or "ok",
+            "flow_mode": details.get("flow_mode") or ("project-custom" if custom else "global"),
+            "workflow_order": details.get("workflow_order") or details.get("order") or list(DEFAULT_WORKFLOW_ORDER),
+            "host": details.get("host") or "cli",
+            "project": str(ctx.project),
+            **details,
+        }
+        fd = os.open(str(log_path), os.O_WRONLY | os.O_CREAT | os.O_APPEND, 0o600)
+        try:
+            os.write(fd, (json.dumps(entry, sort_keys=True) + "\n").encode("utf-8"))
+            os.fchmod(fd, 0o600)
+        finally:
+            os.close(fd)
+    except OSError:
+        pass
 
 
 def brain_config_path(ctx: Ctx) -> Path:
@@ -337,6 +514,18 @@ def step_jeox(ctx: Ctx) -> dict:
             os.symlink(want, tmp)
             os.replace(tmp, link)
             notes.append(f"jeox symlink {link}")
+    flow_src = ctx.project / "scripts/workflow-log.py"
+    if flow_src.is_file():
+        flow_link = bin_dir / "jeo-flow-log"
+        want_flow = str(flow_src)
+        if flow_link.is_symlink() and os.readlink(flow_link) == want_flow:
+            notes.append("jeo-flow-log symlink current")
+        elif not ctx.dry and (not flow_link.exists() or flow_link.is_symlink()):
+            tmp_f = flow_link.with_suffix(".tmp")
+            tmp_f.unlink(missing_ok=True)
+            os.symlink(want_flow, tmp_f)
+            os.replace(tmp_f, flow_link)
+            notes.append(f"jeo-flow-log symlink {flow_link}")
     code, out = ctx.run([sys.executable or "python3", str(src), "build", "--repo", str(ctx.project)], 300, ctx.project)
     notes.append("jeox build " + (tail(out) if code == 0 else f"exit {code}"))
     if code != 0:
@@ -544,16 +733,33 @@ def host_rule_targets(ctx: Ctx) -> list[tuple[str, Path, str]]:
 
 
 def step_rules(ctx: Ctx) -> dict:
-    text = rule_text(ctx)
+    global_text = rule_text(ctx)
+    wf, preserved_custom = resolve_project_workflow(ctx)
+    is_custom = bool(wf.get("custom"))
+    proj_text = project_rule_text(ctx, wf)
     pointer = POINTER_TEMPLATE.replace("{rule}", RULE_NAME)
     changed = []
-    for path in (ctx.home / ".agents/rules" / RULE_NAME, ctx.project / ".agents/rules" / RULE_NAME):
-        changed.append(f"{path}: {upsert_rule_file(ctx, path, text)}")
+    global_rule = ctx.home / ".agents/rules" / RULE_NAME
+    changed.append(f"{global_rule}: {upsert_rule_file(ctx, global_rule, global_text, custom_workflow=False)}")
+
+    project_rule = ctx.project / ".agents/rules" / RULE_NAME
+    if preserved_custom and project_rule.is_file():
+        changed.append(f"{project_rule}: preserved (customWorkflow)")
+    else:
+        changed.append(f"{project_rule}: {upsert_rule_file(ctx, project_rule, proj_text, custom_workflow=is_custom)}")
+
     anchors = [ctx.project / n for n in ("AGENTS.md", "CLAUDE.md") if (ctx.project / n).is_file()]
     for anchor in anchors or [ctx.project / "AGENTS.md"]:
         changed.append(f"{anchor.name}: {upsert_block(ctx, anchor, pointer)}")
     for label, target, mode in host_rule_targets(ctx):
-        status = upsert_rule_file(ctx, target, text) if mode == "rule" else upsert_block(ctx, target, pointer)
+        if mode == "rule":
+            if preserved_custom and target.is_file():
+                status = "preserved (customWorkflow)"
+            else:
+                status = upsert_rule_file(ctx, target, proj_text if is_custom else global_text,
+                                          custom_workflow=is_custom if is_custom else None)
+        else:
+            status = upsert_block(ctx, target, pointer)
         changed.append(f"{label} {target}: {status}")
     return result("ok", "; ".join(changed))
 
@@ -576,19 +782,41 @@ def step_harness2(ctx: Ctx) -> dict:
     if preflight:
         code, out = ctx.run([sys.executable, str(preflight), "--bench", "method", "--json"], 60)
         pre = "ok" if code == 0 else f"exit {code}"
+    now_iso = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    global_path = ctx.home / ".agents/harness/workspace.json"
+    if not ctx.dry and not global_path.is_symlink():
+        global_manifest = {
+            "version": 1,
+            "scope": "global",
+            "mode": "method",
+            "updated": now_iso,
+            "default_workflow": {
+                "custom": False,
+                "order": list(DEFAULT_WORKFLOW_ORDER),
+                "openspace_enabled": True,
+                "jev_enabled": True,
+                "jev_profile": None,
+                "skills_root": str(ctx.skills_root),
+            },
+        }
+        atomic_write(global_path, json.dumps(global_manifest, indent=2, sort_keys=True) + "\n")
+
+    wf, preserved_custom = resolve_project_workflow(ctx)
     manifest = {
         "version": 1, "mode": "method", "project": str(ctx.project),
-        "updated": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "updated": now_iso,
         "preflight_method": pre,
         "components": {k: [p for p in paths if (ctx.project / p).exists()] for k, paths in COMPONENTS.items()},
+        "workflow": wf,
         "workflow_status": {k: v["status"] for k, v in ctx.results.items()},
         "benchmarks": "on demand: need Vertex credentials, Docker and explicit approval",
     }
     path = ctx.project / ".harness2/workspace.json"
     text = json.dumps(manifest, indent=2, sort_keys=True) + "\n"
-    if not ctx.dry:
+    if not ctx.dry and not path.is_symlink():
         atomic_write(path, text)
-    return result("ok", f"{path} (method-mode component map, preflight {pre})")
+    mode_tag = "custom-preserved" if preserved_custom else ("custom" if wf.get("custom") else "global-default")
+    return result("ok", f"{path} (method-mode component map, workflow={mode_tag}, preflight {pre})")
 
 
 # Hosts whose rule loading was read from the installed harness source, not assumed.
@@ -600,7 +828,7 @@ RULE_LOADERS = (
 )
 
 
-def check_rule_file(path: Path, expected: str, label: str) -> dict:
+def check_rule_file(path: Path, expected: str, label: str, allow_custom: bool = False) -> dict:
     """Read-only: would a harness that honours frontmatter inject this rule file?"""
     entry = {"target": label, "path": str(path)}
     if not path.is_file():
@@ -612,6 +840,8 @@ def check_rule_file(path: Path, expected: str, label: str) -> dict:
                 "detail": "no `alwaysApply: true` frontmatter; jeopi skips it. Re-run setup-workspace.py"}
     if START not in rest or END not in rest:
         return {**entry, "state": "inert", "detail": "marker block missing; re-run setup-workspace.py"}
+    if allow_custom and keys.get("customWorkflow", "").lower() == "true":
+        return {**entry, "state": "ok", "detail": "alwaysApply true, customWorkflow preserved"}
     if rest.partition(START)[2].partition(END)[0].strip() != expected.strip():
         return {**entry, "state": "stale", "detail": "rule text differs from this installer's; re-run to refresh"}
     return {**entry, "state": "ok", "detail": "alwaysApply true, marker block current"}
@@ -641,20 +871,22 @@ def check_pointer_block(path: Path, expected_pointer: str, label: str) -> dict:
 def run_verify(ctx: Ctx, as_json: bool) -> int:
     expected = rule_text(ctx)
     pointer = POINTER_TEMPLATE.replace("{rule}", RULE_NAME)
+    allow_custom = is_existing_custom_project(ctx)
+    wf, _ = resolve_project_workflow(ctx)
     checks = [
-        check_rule_file(ctx.home / ".agents/rules" / RULE_NAME, expected, "global rule"),
-        check_rule_file(ctx.project / ".agents/rules" / RULE_NAME, expected, "project rule"),
+        check_rule_file(ctx.home / ".agents/rules" / RULE_NAME, expected, "global rule", allow_custom=False),
+        check_rule_file(ctx.project / ".agents/rules" / RULE_NAME, expected, "project rule", allow_custom=allow_custom),
         check_pointer(ctx.project),
     ]
     for label, target, mode in host_rule_targets(ctx):
         checks.append(
-            check_rule_file(target, expected, f"host {label}")
+            check_rule_file(target, expected, f"host {label}", allow_custom=(allow_custom and label == "cursor"))
             if mode == "rule"
             else check_pointer_block(target, pointer, f"host {label}")
         )
     bad = [c for c in checks if c["state"] != "ok"]
     if as_json:
-        print(json.dumps({"project": str(ctx.project), "checks": checks,
+        print(json.dumps({"project": str(ctx.project), "checks": checks, "workflow": wf,
                           "loaders": dict(RULE_LOADERS), "ok": not bad}, indent=2))
     else:
         for c in checks:
@@ -681,6 +913,12 @@ def parse(argv: list[str]) -> argparse.Namespace:
     p.add_argument("--vault", help="new second-brain vault (default: ~/vaults/jeo-second-brain)")
     p.add_argument("--inbox", help="second-brain inbox (default: ~/vaults/jeo-second-brain-inbox)")
     p.add_argument("--skip", action="append", choices=STEPS, default=[], help="skip a step (repeatable)")
+    p.add_argument("--custom-workflow", action="store_true",
+                   help="isolate this project's workflow/rules/harness2 from global defaults")
+    p.add_argument("--workflow-order", help="comma-separated per-project order (e.g. rtk,semble,mex)")
+    p.add_argument("--jev-profile", help="per-project Jev profile name, or 'off' to disable Jev in this project")
+    p.add_argument("--reset-project-workflow", action="store_true",
+                   help="clear project customWorkflow lock and restore global defaults")
     p.add_argument("--no-activate", action="store_true",
                    help="write only the rules and the .harness2 manifest; run no tool")
     p.add_argument("--dry-run", action="store_true", help="report the plan; run and write nothing")
@@ -715,6 +953,19 @@ def main(argv: list[str] | None = None) -> int:
         for res in ctx.results.values():
             if res["status"] == "ok":
                 res["status"] = "planned"
+    else:
+        wf, preserved_custom = resolve_project_workflow(ctx)
+        failed_steps = [k for k, v in ctx.results.items() if v["status"] == "failed"]
+        outcome = "failed" if failed_steps else ("reset" if ctx.reset_project_workflow else ("preserved" if preserved_custom else "ok"))
+        append_workflow_log(ctx, "setup-workspace", {
+            "outcome": outcome,
+            "custom": bool(wf.get("custom")),
+            "flow_mode": "project-custom" if wf.get("custom") else "global",
+            "order": wf.get("order"),
+            "workflow_order": wf.get("order"),
+            "jev_profile": wf.get("jev_profile"),
+            "statuses": {k: v["status"] for k, v in ctx.results.items()},
+        })
     failed = [k for k, v in ctx.results.items() if v["status"] == "failed"]
     if args.json:
         print(json.dumps({"project": str(ctx.project), "dry_run": ctx.dry, "steps": ctx.results,

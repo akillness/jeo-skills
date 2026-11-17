@@ -1796,6 +1796,32 @@ not silent defaults. Opt-outs: `JEO_SKILLS_WORKSPACE=skip` (installer), `--no-ac
 installer exit 1. Hook and cron registration is configuration, not proof of execution:
 verify a live prompt per host as described in the OpenSpace section.
 
+### Step 5C — Per-project workflow isolation and multi-host MCP provisioning (Context7 + core servers)
+
+Global defaults live in `~/.agents/harness/workspace.json` and `~/.agents/rules/jeo-workflows.md`.
+To isolate one repository with its own workflow order, Jev profile, or local skill root (preserved across future global `setup-workspace.py` runs):
+
+```bash
+python3 scripts/setup-workspace.py \
+  --project "$PROJECT_DIR" \
+  --custom-workflow \
+  --workflow-order openspace,rtk,semble,jev,memory
+```
+
+To restore global workflow inheritance later, pass `--reset-project-workflow`.
+
+To provision `@upstash/context7-mcp` non-interactively, repair broken host MCP paths (such as missing `~/.local/bin/ouroboros`, bare binaries, or Gemini `toolTimeout`), register `context7`, `openspace`, `jeox`, and local tools across installed hosts (`claude`, `codex`, `gemini`, `antigravity-cli`, `antigravity-ide`, `cursor`, `opencode`, `pi`, `gjc`, `jeopi`), and verify live JSON-RPC `initialize` + `tools/list` + Context7 probes:
+
+```bash
+MCP_HELPER="${JEO_CHECKOUT:+$JEO_CHECKOUT/scripts/setup-mcp-hosts.py}"
+if [ -n "$MCP_HELPER" ] && [ -f "$MCP_HELPER" ]; then
+  python3 "$MCP_HELPER" --provision-context7 --repair --project "$PROJECT_DIR" --dry-run
+  python3 "$MCP_HELPER" --provision-context7 --repair --project "$PROJECT_DIR" --apply
+  python3 "$MCP_HELPER" --verify --probe-context7 --project "$PROJECT_DIR" --json
+fi
+jeo-skill flow-log summary
+```
+
 ## Step 6 — Runtime-specific shared-root checks
 
 - `jeo`, `jeopi`, and OMP discover `~/.agents/skills` directly; no skills CLI agent ID is

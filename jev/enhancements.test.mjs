@@ -828,3 +828,46 @@ test('bm25 zero-hit falls back to sharded and UC1-UC3 bound options by backend c
     server.close();
   }
 });
+
+test('getCachedCatalogMeta, resolveProjectWorkflowOverride, and parallel calibrateJudge work deterministically', async () => {
+  const { getCachedCatalogMeta, calibrateJudge } = await import(pathToFileURL(join(here, 'jev-harness.mjs')).href);
+  const { resolveProjectWorkflowOverride } = await import(pathToFileURL(join(here, 'jev-plugin.mjs')).href);
+  const metaResult = await getCachedCatalogMeta(join(here, '..', '.agent-skills', 'skills.json'));
+  assert.ok(metaResult?.catalog?.skills?.length > 100);
+  assert.ok(metaResult?.meta?.idf && typeof metaResult.meta.avgDocLen === 'number');
+
+  const examples = Array.from({ length: 6 }, (_, i) => ({
+    id: `ex-${i}`,
+    input: i % 2 === 0 ? 'passed cleanly' : 'failed error',
+    expected: i % 2 === 0 ? 'pass' : 'fail',
+  }));
+  const cal = await calibrateJudge('Did the run pass all tests?', examples, { mock: true });
+  assert.deepEqual(cal.cases.map(c => c.id), examples.map(e => e.id));
+  assert.equal(cal.total, 6);
+
+  const root = mkdtempSync(join(tmpdir(), 'jev-proj-wf-'));
+  fixtures.push(root);
+  const fakeHome = join(root, 'home');
+  const projOff = join(root, 'proj-off');
+  const nested = join(projOff, 'sub', 'dir');
+  mkdirSync(fakeHome, { recursive: true });
+  mkdirSync(nested, { recursive: true });
+  write(join(projOff, '.harness2', 'workspace.json'), JSON.stringify({
+    version: 1,
+    workflow: { custom: true, order: ['rtk', 'semble', 'mex'], jev_enabled: false, jev_profile: null },
+  }));
+  const found = resolveProjectWorkflowOverride(nested, fakeHome);
+  assert.equal(found?.custom, true);
+  assert.equal(found?.jev_enabled, false);
+
+  const pluginPath = join(here, 'jev-plugin.mjs');
+  const hookRes = spawnSync(process.execPath, [pluginPath, 'hook', '--agent', 'jeopi', '--profile', 'nonexistent'], {
+    cwd: nested,
+    env: { ...process.env, HOME: fakeHome, JEO_SKILL_STATE_DIR: join(root, 'state') },
+    input: JSON.stringify({ hook_event_name: 'UserPromptSubmit', prompt: 'hello', cwd: nested }),
+    encoding: 'utf8',
+    timeout: 8000,
+  });
+  assert.equal(hookRes.status, 0, hookRes.stderr);
+  assert.equal(JSON.parse(hookRes.stdout).skipped, 'project-workflow-disabled');
+});

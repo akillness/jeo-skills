@@ -16,6 +16,8 @@ CLI:
 from __future__ import annotations
 
 import argparse
+from collections import OrderedDict, deque
+from datetime import datetime, timezone
 import fnmatch
 import hashlib
 import json
@@ -24,10 +26,12 @@ import re
 import sqlite3
 import sys
 import tempfile
+import time
 import urllib.request
 from pathlib import Path
 
 DB_NAME = ".jeo/db/jeo.db"
+SCHEMA_VERSION = 2
 SKIP_DIRS = {
     "node_modules", ".git", ".mex", ".zvec-grep", ".jeo", "dist", "build",
     "__pycache__", ".venv", "venv", "target", ".next", ".turbo", ".cache",
@@ -45,10 +49,11 @@ CREATE TABLE IF NOT EXISTS symbols (
 CREATE INDEX IF NOT EXISTS idx_symbols_name ON symbols(name);
 CREATE TABLE IF NOT EXISTS edges (
   caller_id INTEGER REFERENCES symbols(id), callee_name TEXT NOT NULL,
-  kind TEXT, src_line INTEGER
+  kind TEXT, src_line INTEGER, src_path TEXT
 );
 CREATE INDEX IF NOT EXISTS idx_edges_caller ON edges(caller_id);
 CREATE INDEX IF NOT EXISTS idx_edges_callee ON edges(callee_name);
+CREATE INDEX IF NOT EXISTS idx_edges_src_path ON edges(src_path);
 CREATE TABLE IF NOT EXISTS chunks (
   id INTEGER PRIMARY KEY, path TEXT NOT NULL, heading TEXT, body TEXT NOT NULL, lang TEXT
 );
@@ -98,18 +103,43 @@ CHUNK_MAX = 3600
 CHUNK_OVERLAP = 540
 
 
-def open_db(repo: Path) -> sqlite3.Connection:
-    db_path = repo / DB_NAME
-    db_path.parent.mkdir(parents=True, exist_ok=True)
-    con = sqlite3.connect(db_path)
+def _configure_con(con: sqlite3.Connection) -> None:
     con.execute("PRAGMA journal_mode=WAL")
     con.execute("PRAGMA synchronous=NORMAL")
     con.execute("PRAGMA temp_store=MEMORY")
     con.execute("PRAGMA cache_size=-16000")
     con.execute("PRAGMA mmap_size=67108864")
     con.execute("PRAGMA busy_timeout=5000")
-    con.executescript(SCHEMA)
-    return con
+
+
+def open_db(repo: Path) -> sqlite3.Connection:
+    db_path = repo / DB_NAME
+    db_path.parent.mkdir(parents=True, exist_ok=True)
+    con = sqlite3.connect(db_path)
+    _configure_con(con)
+    try:
+        con.executescript(SCHEMA)
+        cols = {r[1] for r in con.execute("PRAGMA table_info(edges)")}
+        if "src_path" not in cols:
+            con.execute("ALTER TABLE edges ADD COLUMN src_path TEXT")
+        con.execute("CREATE INDEX IF NOT EXISTS idx_edges_src_path ON edges(src_path)")
+        ver = con.execute("PRAGMA user_version").fetchone()[0]
+        if ver < SCHEMA_VERSION:
+            if con.execute("SELECT 1 FROM chunks LIMIT 1").fetchone():
+                con.execute("INSERT INTO chunks_fts(chunks_fts) VALUES('rebuild')")
+            con.execute(f"PRAGMA user_version = {SCHEMA_VERSION}")
+            con.commit()
+        return con
+    except sqlite3.DatabaseError:
+        con.close()
+        for suffix in ("", "-wal", "-shm"):
+            Path(f"{db_path}{suffix}").unlink(missing_ok=True)
+        con = sqlite3.connect(db_path)
+        _configure_con(con)
+        con.executescript(SCHEMA)
+        con.execute(f"PRAGMA user_version = {SCHEMA_VERSION}")
+        con.commit()
+        return con
 
 
 def iter_files(repo: Path):
@@ -124,51 +154,48 @@ def iter_files(repo: Path):
 
 
 def extract_symbols_and_edges(rel: str, text: str, lang: str):
-    """Return (symbols, edges) — heuristic: caller = nearest preceding def."""
+    """Return (symbols, edges) — O(lines) heuristic: caller = nearest preceding def."""
+    lines = text.splitlines()
     defs = []
-    if lang in DEF_PATTERNS:
-        for i, line in enumerate(text.splitlines(), 1):
-            for pat in DEF_PATTERNS[lang]:
+    def_lines: set[int] = set()
+    patterns = DEF_PATTERNS.get(lang, [])
+    if patterns:
+        for i, line in enumerate(lines, 1):
+            for pat in patterns:
                 m = pat.match(line)
                 if m:
                     kind = "class" if re.search(r"\bclass\b|\bstruct\b|\btrait\b|\benum\b", line) else "function"
-                    defs.append((m.group(1), kind, i, line))
+                    defs.append((m.group(1), kind, i))
+                    def_lines.add(i)
                     break
-    symbols = [(name, kind, rel, i, lang) for (name, kind, i, _l) in defs]
-
-    # resolve caller by nearest preceding def (simple nesting collapse)
-    def caller_at(line_no):
-        best = None
-        for (name, kind, i, _l) in defs:
-            if i <= line_no and (best is None or i > best[2]):
-                best = (name, kind, i)
-        return best
+    symbols = [(name, kind, rel, i, lang) for (name, kind, i) in defs]
 
     edges = []
-    lines = text.splitlines()
+    imp = IMPORT_PATTERNS.get(lang)
+    first_def_line = defs[0][2] if defs else 1
+    def_idx = 0
+    n_defs = len(defs)
     for i, line in enumerate(lines, 1):
-        imp = IMPORT_PATTERNS.get(lang)
-        if imp:
+        while def_idx + 1 < n_defs and defs[def_idx + 1][2] <= i:
+            def_idx += 1
+        if imp and i <= first_def_line:
             m = imp.match(line)
-            if m and i <= (defs[0][2] if defs else 1):
+            if m:
                 names = (m.group(1) or "").split(",")
                 for n in names:
                     n = n.strip().split(" as ")[0].strip()
                     if n:
                         edges.append((None, n, "import", i))
                 continue
-        # skip def lines themselves
-        if any(pat.match(line) for pat in DEF_PATTERNS.get(lang, [])):
+        if i in def_lines:
             continue
+        caller_name = defs[def_idx][0] if (n_defs and defs[def_idx][2] <= i) else None
         for m in CALL_PATTERN.finditer(line):
             callee = m.group(1)
             if callee in ("if", "for", "while", "switch", "catch", "return",
                           "match", "elif", "with", "fn", "def", "new", "typeof"):
                 continue
-            c = caller_at(i)
-            caller_name = c[0] if c else None
             edges.append((caller_name, callee, "call", i))
-    # resolve caller names to symbol rows later in build()
     return symbols, edges
 
 
@@ -328,11 +355,56 @@ def rerank_hits_with_qev(query: str, hits: list[dict], explicit_rerank: bool | N
         return hits
 
 
+def _record_jeox_event(repo: Path, stage: str, outcome: str, duration_ms: float, **extra) -> None:
+    try:
+        state_dir = Path(os.environ.get("JEO_SKILL_STATE_DIR") or (Path.home() / ".local/state/jeo-skill"))
+        state_dir.mkdir(parents=True, exist_ok=True)
+        os.chmod(state_dir, 0o700)
+        log_path = state_dir / "workflow-events.jsonl"
+        if log_path.is_symlink():
+            return
+        flow_mode = "global"
+        workflow_order = ["openspace", "rtk", "semble", "jev", "memory"]
+        manifest = repo / ".harness2/workspace.json"
+        if not manifest.is_symlink() and manifest.is_file():
+            try:
+                wf = json.loads(manifest.read_text(encoding="utf-8")).get("workflow")
+                if isinstance(wf, dict):
+                    if wf.get("custom") is True:
+                        flow_mode = "project-custom"
+                    if isinstance(wf.get("order"), list) and wf["order"]:
+                        workflow_order = wf["order"]
+            except (OSError, ValueError):
+                pass
+        entry = {
+            "v": 1,
+            "ts": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "stage": stage,
+            "outcome": outcome,
+            "flow_mode": flow_mode,
+            "workflow_order": workflow_order,
+            "project": str(repo),
+            "host": extra.pop("host", "jeox"),
+            "duration_ms": round(duration_ms, 2),
+            **extra,
+        }
+        fd = os.open(str(log_path), os.O_WRONLY | os.O_CREAT | os.O_APPEND, 0o600)
+        try:
+            os.write(fd, (json.dumps(entry, sort_keys=True, ensure_ascii=False) + "\n").encode("utf-8"))
+            os.fchmod(fd, 0o600)
+        finally:
+            os.close(fd)
+    except OSError:
+        pass
+
+
 def cmd_build(args):
+    t0 = time.perf_counter()
     repo = Path(args.repo or os.getcwd()).resolve()
     con = open_db(repo)
     full = bool(getattr(args, "full", False))
-    state = {} if full else {row[0]: (row[1], row[2]) for row in con.execute("SELECT path, mtime, sha256 FROM files_state")}
+    disk_state = {row[0]: (row[1], row[2]) for row in con.execute("SELECT path, mtime, sha256 FROM files_state")}
+    state = {} if full else disk_state
     changed, removed = [], []
     seen = set()
     entries = [(str(path.relative_to(repo)), path, False) for path in iter_files(repo)] + [
@@ -355,56 +427,68 @@ def cmd_build(args):
             con.execute("UPDATE files_state SET mtime=? WHERE path=?", (st.st_mtime, rel))
             continue
         changed.append((rel, path, st, sha, text, is_wiki))
-    for rel in state:
+    for rel in disk_state:
         if rel not in seen:
             removed.append(rel)
 
     cur = con.cursor()
     if changed or removed:
+        state_rows = []
         for rel, path, st, sha, text, is_wiki in changed:
             lang = "md" if is_wiki else (CODE_EXT.get(path.suffix) or MD_EXT.get(path.suffix))
-            cur.execute("SELECT id FROM chunks WHERE path=?", (rel,))
-            chunk_ids = [r[0] for r in cur.fetchall()]
-            for cid in chunk_ids:
-                cur.execute("INSERT INTO chunks_fts(chunks_fts,rowid,body,heading,path) VALUES('delete',?,NULL,NULL,NULL)", (cid,))
+            # Trigger `chunks_ad` keeps chunks_fts synchronized automatically on DELETE.
             cur.execute("DELETE FROM chunks WHERE path=?", (rel,))
-            cur.execute("DELETE FROM edges WHERE caller_id IN (SELECT id FROM symbols WHERE path=?)", (rel,))
+            cur.execute("DELETE FROM edges WHERE src_path=? OR caller_id IN (SELECT id FROM symbols WHERE path=?)", (rel, rel))
             cur.execute("DELETE FROM symbols WHERE path=?", (rel,))
-            cur.execute("DELETE FROM edges WHERE kind='import' AND src_line IS NOT NULL AND caller_id IS NULL AND callee_name IN (SELECT name FROM symbols WHERE path=?)", (rel,))
             if lang == "md":
-                for (r, h, b, l) in chunk_markdown(rel, text):
-                    cur.execute("INSERT INTO chunks(path,heading,body,lang) VALUES(?,?,?,?)", (r, h, b, l))
+                md_chunks = chunk_markdown(rel, text)
+                if md_chunks:
+                    cur.executemany("INSERT INTO chunks(path,heading,body,lang) VALUES(?,?,?,?)", md_chunks)
                 if is_wiki:
                     refs = _extract_wiki_refs(text)
                     if refs:
                         cur.execute("INSERT INTO symbols(name,kind,path,line,lang) VALUES(?,?,?,?,?)", (rel, "wiki", rel, 1, "wiki"))
                         wiki_sym_id = cur.lastrowid
-                        for ident in refs:
-                            cur.execute("INSERT INTO edges(caller_id,callee_name,kind,src_line) VALUES(?,?,?,?)", (wiki_sym_id, ident, "references", 1))
+                        cur.executemany(
+                            "INSERT INTO edges(caller_id,callee_name,kind,src_line,src_path) VALUES(?,?,?,?,?)",
+                            [(wiki_sym_id, ident, "references", 1, rel) for ident in refs],
+                        )
             else:
                 cur.execute("INSERT INTO chunks(path,heading,body,lang) VALUES(?,NULL,?,?)", (rel, text[:2048], lang))
                 syms, edges = extract_symbols_and_edges(rel, text, lang)
                 id_by_name = {}
-                for (name, kind, r, line, lg) in syms:
-                    cur.execute("INSERT INTO symbols(name,kind,path,line,lang) VALUES(?,?,?,?,?)", (name, kind, r, line, lg))
-                    id_by_name.setdefault(name, cur.lastrowid)
-                for (caller, callee, kind, line) in edges:
-                    caller_id = id_by_name.get(caller) if caller else None
-                    cur.execute("INSERT INTO edges(caller_id,callee_name,kind,src_line) VALUES(?,?,?,?)", (caller_id, callee, kind, line))
-            cur.execute("INSERT OR REPLACE INTO files_state(path,mtime,sha256) VALUES(?,?,?)", (rel, st.st_mtime, sha))
+                if syms:
+                    cur.executemany("INSERT INTO symbols(name,kind,path,line,lang) VALUES(?,?,?,?,?)", syms)
+                    for sid, sname in cur.execute("SELECT id, name FROM symbols WHERE path=? ORDER BY id", (rel,)):
+                        id_by_name.setdefault(sname, sid)
+                if edges:
+                    cur.executemany(
+                        "INSERT INTO edges(caller_id,callee_name,kind,src_line,src_path) VALUES(?,?,?,?,?)",
+                        [(id_by_name.get(caller) if caller else None, callee, kind, line, rel) for (caller, callee, kind, line) in edges],
+                    )
+            state_rows.append((rel, st.st_mtime, sha))
+        if state_rows:
+            cur.executemany("INSERT OR REPLACE INTO files_state(path,mtime,sha256) VALUES(?,?,?)", state_rows)
         for rel in removed:
-            cur.execute("SELECT id FROM chunks WHERE path=?", (rel,))
-            for (cid,) in cur.fetchall():
-                cur.execute("INSERT INTO chunks_fts(chunks_fts,rowid,body,heading,path) VALUES('delete',?,NULL,NULL,NULL)", (cid,))
             cur.execute("DELETE FROM chunks WHERE path=?", (rel,))
-            cur.execute("DELETE FROM edges WHERE caller_id IN (SELECT id FROM symbols WHERE path=?)", (rel,))
+            cur.execute("DELETE FROM edges WHERE src_path=? OR caller_id IN (SELECT id FROM symbols WHERE path=?)", (rel, rel))
             cur.execute("DELETE FROM symbols WHERE path=?", (rel,))
-            cur.execute("DELETE FROM edges WHERE caller_id IS NULL", ())
             cur.execute("DELETE FROM files_state WHERE path=?", (rel,))
     con.commit()
     n_sym = cur.execute("SELECT count(*) FROM symbols").fetchone()[0]
     n_edges = cur.execute("SELECT count(*) FROM edges").fetchone()[0]
     n_chunks = cur.execute("SELECT count(*) FROM chunks").fetchone()[0]
+    _record_jeox_event(
+        repo,
+        "jeox-build",
+        "ok",
+        (time.perf_counter() - t0) * 1000.0,
+        changed=len(changed),
+        removed=len(removed),
+        symbols=n_sym,
+        edges=n_edges,
+        chunks=n_chunks,
+    )
     print(json.dumps({"repo": str(repo), "changed": len(changed), "removed": len(removed),
                       "symbols": n_sym, "edges": n_edges, "chunks": n_chunks,
                       "db": str(repo / DB_NAME)}))
@@ -449,9 +533,9 @@ def cmd_impact(args):
     con = open_db(Path(args.repo or os.getcwd()).resolve())
     start = args.target
     seen: dict[str, dict] = {}
-    frontier = [(start, 0)]
+    frontier = deque([(start, 0)])
     while frontier and len(seen) < 200:
-        name, depth = frontier.pop(0)
+        name, depth = frontier.popleft()
         if name in seen:
             continue
         seen[name] = {"depth": depth}
@@ -480,7 +564,9 @@ def _glob_ok(rel: str, globs: list[str]) -> bool:
 
 
 def cmd_query(args):
-    con = open_db(Path(args.repo or os.getcwd()).resolve())
+    t0 = time.perf_counter()
+    repo = Path(args.repo or os.getcwd()).resolve()
+    con = open_db(repo)
     rows = con.execute("""
         SELECT c.path, c.heading, snippet(chunks_fts, 0, '', '', '…', 12), bm25(chunks_fts) AS score
         FROM chunks_fts c JOIN chunks ON chunks.id = c.rowid
@@ -492,6 +578,7 @@ def cmd_query(args):
             out.append({"path": path, "heading": heading, "snippet": snip,
                         "score": round(score, 4)})
     out = rerank_hits_with_qev(args.q, out, getattr(args, "rerank", None))
+    _record_jeox_event(repo, "jeox-query", "ok", (time.perf_counter() - t0) * 1000.0, query_hits=len(out))
     print(json.dumps(out, ensure_ascii=False, indent=None if args.json else 2))
 
 
@@ -509,20 +596,41 @@ def cmd_status(args):
 
 
 # --- MCP stdio server -------------------------------------------------------
-def mcp_serve():
-    con = open_db(Path(os.getcwd()).resolve())
+def mcp_serve(default_repo: str | None = None):
+    db_cache: OrderedDict[Path, sqlite3.Connection] = OrderedDict()
+    home_dir = Path.home().resolve()
 
+    def get_con(repo_arg: str | None) -> sqlite3.Connection:
+        raw = repo_arg or default_repo or os.environ.get("JEOX_REPO") or os.getcwd()
+        repo_path = Path(raw).expanduser().resolve()
+        if repo_path in (home_dir, Path(repo_path.anchor)) and not (repo_path / DB_NAME).is_file():
+            raise ValueError(
+                f"Refusing to initialize {DB_NAME} at {repo_path}; pass 'repo' argument or --repo <project>"
+            )
+        if repo_path in db_cache:
+            db_cache.move_to_end(repo_path)
+            return db_cache[repo_path]
+        con = open_db(repo_path)
+        db_cache[repo_path] = con
+        if len(db_cache) > 4:
+            _, evicted = db_cache.popitem(last=False)
+            evicted.close()
+        return con
+
+    repo_prop = {"type": "string", "description": "Optional repository root path (defaults to --repo or cwd)"}
     TOOLS = [
-        {"name": "jeox_who_calls", "description": "Who calls the named symbol (code graph)", "inputSchema": {"type": "object", "properties": {"name": {"type": "string"}}, "required": ["name"]}},
-        {"name": "jeox_what_calls", "description": "What the named symbol calls out to", "inputSchema": {"type": "object", "properties": {"name": {"type": "string"}}, "required": ["name"]}},
-        {"name": "jeox_where_defined", "description": "Where a symbol is defined (path + line)", "inputSchema": {"type": "object", "properties": {"name": {"type": "string"}}, "required": ["name"]}},
-        {"name": "jeox_impact", "description": "Transitive callers of a symbol (impact radius)", "inputSchema": {"type": "object", "properties": {"name": {"type": "string"}}, "required": ["name"]}},
-        {"name": "jeox_search", "description": "BM25 hybrid-lite search across repo docs/code with optional scope globs", "inputSchema": {"type": "object", "properties": {"q": {"type": "string"}, "globs": {"type": "array", "items": {"type": "string"}}, "limit": {"type": "integer", "default": 5}}, "required": ["q"]}},
+        {"name": "jeox_who_calls", "description": "Who calls the named symbol (code graph)", "inputSchema": {"type": "object", "properties": {"name": {"type": "string"}, "repo": repo_prop}, "required": ["name"]}},
+        {"name": "jeox_what_calls", "description": "What the named symbol calls out to", "inputSchema": {"type": "object", "properties": {"name": {"type": "string"}, "repo": repo_prop}, "required": ["name"]}},
+        {"name": "jeox_where_defined", "description": "Where a symbol is defined (path + line)", "inputSchema": {"type": "object", "properties": {"name": {"type": "string"}, "repo": repo_prop}, "required": ["name"]}},
+        {"name": "jeox_impact", "description": "Transitive callers of a symbol (impact radius)", "inputSchema": {"type": "object", "properties": {"name": {"type": "string"}, "repo": repo_prop}, "required": ["name"]}},
+        {"name": "jeox_search", "description": "BM25 hybrid-lite search across repo docs/code with optional scope globs", "inputSchema": {"type": "object", "properties": {"q": {"type": "string"}, "globs": {"type": "array", "items": {"type": "string"}}, "limit": {"type": "integer", "default": 5}, "repo": repo_prop}, "required": ["q"]}},
     ]
 
     def call_tool(name, a):
+        a = a or {}
+        con = get_con(a.get("repo"))
         if name == "jeox_who_calls":
-            rows = _edge_query(con, "SELECT s.path,s.name,s.line,e.src_line FROM edges e LEFT JOIN symbols s ON s.id=e.caller_id WHERE e.callee_name=? AND e.kind IN ('call', 'references')", (a["name"],))
+            rows = _edge_query(con, "SELECT COALESCE(s.path, e.src_path), s.name, s.line, e.src_line FROM edges e LEFT JOIN symbols s ON s.id=e.caller_id WHERE e.callee_name=? AND e.kind IN ('call', 'references')", (a["name"],))
             return [{"path": r[0] or "(module-scope)", "symbol": r[1], "call_line": r[3]} for r in rows]
         if name == "jeox_what_calls":
             rows = _edge_query(con, "SELECT DISTINCT e.callee_name FROM edges e JOIN symbols s ON s.id=e.caller_id WHERE s.name=? AND e.kind='call'", (a["name"],))
@@ -549,33 +657,42 @@ def mcp_serve():
             return [{"path": p, "heading": h, "snippet": s} for (p, h, s) in rows if _glob_ok(p, globs)]
         raise ValueError(f"unknown tool {name}")
 
-    for line in sys.stdin:
-        line = line.strip()
-        if not line:
-            continue
-        try:
-            req = json.loads(line)
-            mid = req.get("id")
-            method = req.get("method", "")
-            if method == "initialize":
-                resp = {"jsonrpc": "2.0", "id": mid, "result": {"protocolVersion": "2024-11-05", "capabilities": {"tools": {}}, "serverInfo": {"name": "jeox", "version": "0.1.0"}}}
-            elif method == "tools/list":
-                resp = {"jsonrpc": "2.0", "id": mid, "result": {"tools": TOOLS}}
-            elif method == "tools/call":
-                p = req.get("params", {})
-                result = call_tool(p.get("name", ""), p.get("arguments", {}))
-                resp = {"jsonrpc": "2.0", "id": mid, "result": {"content": [{"type": "text", "text": json.dumps(result, ensure_ascii=False)}]}}
-            elif method.startswith("notifications/"):
+    try:
+        for line in sys.stdin:
+            line = line.strip()
+            if not line:
                 continue
-            else:
-                resp = {"jsonrpc": "2.0", "id": mid, "error": {"code": -32601, "message": "method not found"}}
-            sys.stdout.write(json.dumps(resp) + "\n")
-            sys.stdout.flush()
-        except BrokenPipeError:
-            return
-        except Exception as exc:  # noqa: BLE001
-            sys.stdout.write(json.dumps({"jsonrpc": "2.0", "id": None, "error": {"code": -32603, "message": str(exc)}}) + "\n")
-            sys.stdout.flush()
+            try:
+                req = json.loads(line)
+                mid = req.get("id")
+                method = req.get("method", "")
+                if method == "initialize":
+                    resp = {"jsonrpc": "2.0", "id": mid, "result": {"protocolVersion": "2024-11-05", "capabilities": {"tools": {}}, "serverInfo": {"name": "jeox", "version": "0.2.0"}}}
+                elif method == "tools/list":
+                    resp = {"jsonrpc": "2.0", "id": mid, "result": {"tools": TOOLS}}
+                elif method == "tools/call":
+                    t0 = time.perf_counter()
+                    p = req.get("params", {})
+                    tname = p.get("name", "")
+                    targs = p.get("arguments", {}) or {}
+                    result = call_tool(tname, targs)
+                    raw_r = targs.get("repo") or default_repo or os.environ.get("JEOX_REPO") or os.getcwd()
+                    _record_jeox_event(Path(raw_r).expanduser().resolve(), "jeox-mcp", "ok", (time.perf_counter() - t0) * 1000.0, host="mcp", mcp_tool=tname)
+                    resp = {"jsonrpc": "2.0", "id": mid, "result": {"content": [{"type": "text", "text": json.dumps(result, ensure_ascii=False)}]}}
+                elif method.startswith("notifications/"):
+                    continue
+                else:
+                    resp = {"jsonrpc": "2.0", "id": mid, "error": {"code": -32601, "message": "method not found"}}
+                sys.stdout.write(json.dumps(resp) + "\n")
+                sys.stdout.flush()
+            except BrokenPipeError:
+                return
+            except Exception as exc:  # noqa: BLE001
+                sys.stdout.write(json.dumps({"jsonrpc": "2.0", "id": None, "error": {"code": -32603, "message": str(exc)}}) + "\n")
+                sys.stdout.flush()
+    finally:
+        for cached_con in db_cache.values():
+            cached_con.close()
 
 
 def main():
@@ -587,10 +704,10 @@ def main():
         sp = sub.add_parser(name); sp.add_argument("name" if name != "impact" else "target"); sp.add_argument("--repo"); sp.add_argument("--json", action="store_true"); sp.add_argument("--depth", type=int, default=3); sp.set_defaults(fn=fn)
     sp = sub.add_parser("query"); sp.add_argument("q"); sp.add_argument("-g", action="append", dest="g"); sp.add_argument("--limit", type=int, default=10); sp.add_argument("--repo"); sp.add_argument("--rerank", action="store_true", default=None); sp.add_argument("--no-rerank", action="store_false", dest="rerank"); sp.add_argument("--json", action="store_true"); sp.set_defaults(fn=cmd_query)
     sp = sub.add_parser("status"); sp.add_argument("--repo"); sp.add_argument("--json", action="store_true"); sp.set_defaults(fn=cmd_status)
-    sub.add_parser("mcp")
+    sp_mcp = sub.add_parser("mcp"); sp_mcp.add_argument("--repo")
     args = p.parse_args()
     if args.cmd == "mcp":
-        mcp_serve()
+        mcp_serve(args.repo)
     else:
         args.fn(args)
 
