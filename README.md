@@ -392,7 +392,7 @@ See the [setup guide](setup-all-skills-prompt.md#claude-code-game-studios-on-dem
 
 ## 📚 Skills List
 
-> Generated from `.agent-skills/skills.json` · 443 skills · expand a category to see its skills.
+> Generated from `.agent-skills/skills.json` · 444 skills · expand a category to see its skills.
 
 ### 🌐 Web (73)
 
@@ -768,9 +768,9 @@ Subcategories: `orchestration` (21), `agent-frameworks` (22), `skill-authoring` 
 
 </details>
 
-### 🧰 Engineering (25)
+### 🧰 Engineering (26)
 
-Subcategories: `code-quality` (12), `testing` (3), `architecture` (6), `documentation` (2), `code-navigation` (2)
+Subcategories: `code-quality` (13), `testing` (3), `architecture` (6), `documentation` (2), `code-navigation` (2)
 
 <details>
 <summary>Show Engineering skills</summary>
@@ -802,6 +802,7 @@ Subcategories: `code-quality` (12), `testing` (3), `architecture` (6), `document
 | `prototype` |
 | `codebase-memory-mcp` |
 | `ponytail` |
+| `rust-anything` |
 
 </details>
 
@@ -1016,6 +1017,7 @@ See the [setup boundary](setup-all-skills-prompt.md#elephant-goldfish-model-on-d
 
 | Change | Details |
 |--------|---------|
+| **Rust Anything incremental codebase rewrite & differential verification skill** | Adds `rust-anything`, pinned to upstream `075335cf4b05f51c82fcf389acd3003266a32fc6`, with Strangler Fig incremental FFI bridging (PyO3, napi-rs, C-ABI), golden behavioral record-and-replay verification across CLI and HTTP services, tolerance calibration, and an offline workspace preflight helper. The 444-skill catalog, three README inventories, and setup guide are synchronized. |
 | **Arnis real-world OpenStreetMap to Minecraft voxel generation skill** | Adds `arnis`, pinned to upstream `95594dbb5164d67d9a25a410a74c16f3c99b0d0d`, with OpenStreetMap vector feature parsing, DEM elevation scaling, building and roof extrusion, custom JSON block palette mappings, Anvil region (`.mca`) and WorldEdit schematic (`.schem`) export, and an offline bounding box preflight helper. The 442-skill catalog, three README inventories, and setup guide are synchronized. |
 | **MiniMind from-scratch LLM training & alignment skill** | Adds `minimind`, pinned to upstream `233d00fa068ec2b8c0d4f07b703934d6391a5a73`, with compact Transformer and MoE architectures (26M–104M parameters), causal pretraining, full and LoRA instruction fine-tuning, Direct Preference Optimization (DPO), reasoning distillation (`<think>` tokens), GGUF export, and an offline parameter estimation preflight helper. The 441-skill catalog, three README inventories, and setup guide are synchronized. |
 | **Jev SSOT metadata indexing, BM25+IDF prefiltering & 3-tier `assist` injection** | Preserves `AGENTS.md` SSOT taxonomy rules (`category`, `subcategory`, `tags`, `relationships` live solely in `.agent-skills/skills.json`) while expanding `loadCatalog` and `resolveExcerptRoot` to index all 440 skills' `category`, `subcategory`, `tags`, `keyword`, `platforms`, and top-level `relationship_groups` alongside auxiliary `SKILL.md` frontmatter (`compatibility`, `permissions`, `allowed-tools`, `triggers`, plus inline description triggers). `skillMetadataAndExcerpt` prefers compact sibling `SKILL.toon` summaries (`extractToonExcerpt`, keeping `U`/`R`/`S` sections and trimming duplicate headers) or fenced-code-aware `SKILL.md` headings (`Triggers` / `When to Use` / `Route-outs` / `Non-goals` / `Constraints`), packed within backend state limits by `budgetCandidates`. Under `--prefilter auto`, catalogs with `>= 64` skills run bilingual KO/EN BM25+IDF field-weighted compression (`name > tags/triggers > category/subcategory > description/relationships`) unified with OpenSpace's local BM25 prior (`openspace/scripts/route_prompt.py --json`, `OPENSPACE_PRIOR_WEIGHT = 3.0`, opt-out `--no-openspace-prior` / `JEV_OPENSPACE_PRIOR=0`) before single-pass Jev `which` + `fits::<name>` verification (with metadata-annotated `sharded` fallback when lexical hits are empty and `shards <= 4`). `route-skills` `topK` returns `subcategory`, `tags`, `relationships`, `permissions`, resolved `path`, and optional `toonPath`/`allowedTools`/`compatibility`. `jev-plugin.mjs` `assist` injection (`selectedSkillContext` via `echo-turn-jeopi` / `jev-setup.sh`) uses 3 tiers (`SKILL.toon` → key metadata/sections + `Source:` escalation for `> 1,536`-byte `SKILL.md` → full body for compact skills) with OpenSpace fallback on Jev backend outages, and `scripts/skills-upgrade.sh` keeps non-symlink `~/.agents/jev/skills.json` snapshots current. |

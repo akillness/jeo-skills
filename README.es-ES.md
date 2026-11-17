@@ -341,7 +341,7 @@ y la [atribución MIT upstream](docs/attribution.md).
 
 ## 📚 Lista de Habilidades
 
-> Generado desde `.agent-skills/skills.json` · 443 habilidades · despliega una categoría para ver sus habilidades.
+> Generado desde `.agent-skills/skills.json` · 444 habilidades · despliega una categoría para ver sus habilidades.
 
 ### 🌐 Web (73)
 
@@ -717,9 +717,9 @@ Subcategorías: `orchestration` (21), `agent-frameworks` (22), `skill-authoring`
 
 </details>
 
-### 🧰 Ingeniería (25)
+### 🧰 Ingeniería (26)
 
-Subcategorías: `code-quality` (12), `testing` (3), `architecture` (6), `documentation` (2), `code-navigation` (2)
+Subcategorías: `code-quality` (13), `testing` (3), `architecture` (6), `documentation` (2), `code-navigation` (2)
 
 <details>
 <summary>Ver habilidades</summary>
@@ -751,6 +751,7 @@ Subcategorías: `code-quality` (12), `testing` (3), `architecture` (6), `documen
 | `prototype` |
 | `codebase-memory-mcp` |
 | `ponytail` |
+| `rust-anything` |
 
 </details>
 
@@ -967,6 +968,7 @@ Consulta los [límites de instalación](setup-all-skills-prompt.md#elephant-gold
 
 | Cambio | Detalles |
 |--------|---------|
+| **Operador Rust Anything para reescritura incremental de bases de código y verificación diferencial** | Añadida la guía `rust-anything`, fijada al commit `075335cf4b05f51c82fcf389acd3003266a32fc6`, con puente FFI incremental mediante el patrón Strangler Fig (PyO3, napi-rs, C-ABI), verificación de comportamiento por grabación y reproducción (golden records) en CLI y servicios HTTP, calibración de tolerancias y preflight de espacio de trabajo sin conexión. El catálogo de 444 habilidades, tres inventarios README y la guía de setup están sincronizados. |
 | **Operador Arnis para generación de vóxeles de Minecraft desde OpenStreetMap** | Añadida la guía `arnis`, fijada al commit `95594dbb5164d67d9a25a410a74c16f3c99b0d0d`, con análisis de entidades vectoriales de OpenStreetMap, escalado de elevación DEM, extrusión de edificios y tejados, paletas de bloques JSON personalizadas, exportación a región Anvil (`.mca`) y esquemáticos de WorldEdit (`.schem`) y preflight sin conexión con validación de cajas delimitadoras. El catálogo de 442 habilidades, tres inventarios README y la guía de setup están sincronizados. |
 | **Operador MiniMind para entrenamiento y alineación de LLM desde cero** | Añadida la guía `minimind`, fijada al commit `233d00fa068ec2b8c0d4f07b703934d6391a5a73`, con arquitecturas Transformer y MoE compactas (26M a 104M parámetros), preentrenamiento causal, ajuste fino completo y LoRA, optimización directa de preferencias (DPO), destilación de razonamiento (tokens `<think>`), exportación a GGUF y preflight sin conexión con estimación de parámetros. El catálogo de 441 habilidades, tres inventarios README y la guía de setup están sincronizados. |
 | **Indexación SSOT de metadatos Jev, prefiltrado BM25+IDF e inyección `assist` en 3 niveles** | Mantiene la regla SSOT de `AGENTS.md` (`category`, `subcategory`, `tags` y `relationships` viven solo en `.agent-skills/skills.json`) mientras `loadCatalog` y `resolveExcerptRoot` indexan las 440 habilidades (`relationship_groups` incluido) junto con el frontmatter auxiliar de `SKILL.md` (`compatibility`, `permissions`, `allowed-tools`, `triggers` y disparadores en la descripción). `skillMetadataAndExcerpt` prioriza resúmenes compactos `SKILL.toon` (`extractToonExcerpt`) o secciones clave de `SKILL.md` (`Triggers` / `When to Use` / `Route-outs` / `Non-goals` / `Constraints`) serializadas dentro del límite del backend mediante `budgetCandidates`. Con `--prefilter auto`, los catálogos con `>= 64` habilidades comprimen candidatos con BM25/IDF bilingüe KO/EN (`name > tags/triggers > category/subcategory > description/relationships`) unificado con el prior BM25 local de OpenSpace (`openspace/scripts/route_prompt.py --json`, `OPENSPACE_PRIOR_WEIGHT = 3.0`, desactivable con `--no-openspace-prior` / `JEV_OPENSPACE_PRIOR=0`) antes de la verificación Jev `which` + `fits::<name>` (con respaldo `sharded` anotado si no hay coincidencias léxicas y `shards <= 4`), enriqueciendo `route-skills` `topK` con `subcategory`, `tags`, `relationships`, `permissions`, `path` resuelto y `toonPath`/`allowedTools`/`compatibility`. La inyección `assist` en `jev-plugin.mjs` (`selectedSkillContext`) usa 3 niveles (`SKILL.toon` → metadatos y secciones clave con `Source:` para `SKILL.md` `> 1.536` bytes → cuerpo completo en habilidades compactas) con respaldo a OpenSpace ante fallos de backend Jev, y `scripts/skills-upgrade.sh` mantiene al día la copia `~/.agents/jev/skills.json`. |

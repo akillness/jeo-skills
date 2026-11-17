@@ -1,0 +1,22 @@
+N:rust-anything
+D:Use when incrementally rewriting, porting, or migrating applications and libraries from TypeScript, Python, C, Go, Ruby, or Java into memory-safe, idiomatic Rust with rust-anything. Covers dependency graph decomposition, record-and-replay behavioral verification (golden recordings), incremental FFI bridging (PyO3, napi-rs, C-ABI), CLI and HTTP server porting (Axum, Clap), differential test execution, and final cutover. Route format-only skill linting to skill-standardization, manual high-level code refactoring without Rust porting to code-refactoring, and general architecture review to improve-codebase-architecture.
+G:rust-anything rust rewrite code-migration differential-testing ffi refactoring transpilation pyo3 napi-rs
+U[5]:
+  Deconstruct legacy application architectures into incremental Rust migration graphs
+  Capture and replay golden behavioral test recordings across CLI and HTTP workloads
+  Implement intermediate FFI bridging layers using PyO3, napi-rs, or C-ABI
+  Verify bit-for-bit or tolerance-cleared semantic parity between legacy and Rust code
+  Execute zero-overhead final cutovers removing bridging shims for 100% native Rust builds
+S[6]{n,action,details}:
+  1,Preflight,Run scripts/preflight.py --workspace <dir> --json to inspect toolchains and manifests
+  2,Record,Capture baseline execution fixtures and traffic with rust-anything record
+  3,Decompose,Identify leaf dependency modules and scaffold companion Rust crate
+  4,Bridge,Implement Rust module and export bindings via PyO3 napi-rs or extern C
+  5,Verify,Run differential test suite with rust-anything verify against recorded golden fixtures
+  6,Cutover,Decommission legacy source modules and remove FFI bridging shims upon 100% pass
+R[5]:
+  Run scripts/preflight.py before initiating rewrites to verify Cargo toolchain and manifest paths
+  Never delete legacy source modules until 100% of recorded golden fixtures pass verification
+  Normalize volatile headers (Date, Set-Cookie, UUIDs) when verifying HTTP web services
+  Use PyO3 for Python extensions and napi-rs for Node.js native add-ons during hybrid execution
+  Route format linting to skill-standardization and manual code refactoring to code-refactoring

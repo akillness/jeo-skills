@@ -3408,6 +3408,10 @@ Preview `jeo-skill install minimind --global --dry-run`, then install the select
 
 Preview `jeo-skill install arnis --global --dry-run`, then install the selected guide with `jeo-skill install arnis --global --yes`. Installing `arnis` copies operator guidance, OpenStreetMap tagging rules, DEM elevation scaling references, palette configuration templates, and offline support tools only, not the Arnis binary, Rust toolchain, OSM dataset files, or Minecraft worlds. Resolve `SKILL_DIR` to the installed skill directory and run `python3 "$SKILL_DIR/scripts/preflight.py"` for offline tooling discovery, bounding box coordinate validation, and chunk footprint estimation without network calls or process execution. Review the skill's operations and elevation references before separately authorizing world generation (`arnis generate`), schematic export (`arnis export-schematic`), or Overpass API queries.
 
+### Rust Anything operator (on demand)
+
+Preview `jeo-skill install rust-anything --global --dry-run`, then install the selected guide with `jeo-skill install rust-anything --global --yes`. Installing `rust-anything` copies operator guidance, Strangler Fig FFI bridging references, differential test schemas, and offline support tools only, not the Rust compiler, Cargo toolchain, or source code repositories. Resolve `SKILL_DIR` to the installed skill directory and run `python3 "$SKILL_DIR/scripts/preflight.py"` for offline tooling discovery, manifest detection, and `rust-anything.toml` inspection without network calls or process execution. Review the skill's operations and differential verification references before separately authorizing behavioral recording (`rust-anything record`), crate scaffolding, or differential test execution (`rust-anything verify`).
+
 
 ### Agent Substrate operator (on demand)
 

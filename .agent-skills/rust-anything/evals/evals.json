@@ -1,0 +1,30 @@
+{
+  "skill_name": "rust-anything",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "How do I rewrite our existing Python FastAPI microservice into Rust piece-by-piece without breaking production behavior?",
+      "expected_output": "Guide the user to apply the Strangler Fig pattern using `rust-anything`: run `scripts/preflight.py --workspace <dir> --json` to detect manifests, record live HTTP traffic into golden fixtures with `rust-anything record`, port individual route handlers to Axum, verify responses against golden fixtures with `rust-anything verify`, and cut over when 100% equivalence is achieved."
+    },
+    {
+      "id": 2,
+      "prompt": "Our Node.js TypeScript application has a heavy CPU data processing loop. Can we port just that module to Rust while keeping the rest in TypeScript?",
+      "expected_output": "Explain incremental FFI bridging via `napi-rs`: create a companion Rust crate, port the data processing logic, export bindings via `#[napi]`, verify parity against recorded JSON test cases, and import the compiled native addon directly into the existing TypeScript codebase."
+    },
+    {
+      "id": 3,
+      "prompt": "How do we port a legacy CLI tool into a native Rust binary with clap and verify that all exit codes and stdout flags match exactly?",
+      "expected_output": "Instruct the user to capture argument combinations, stdin, stdout, stderr, and exit codes using `rust-anything record --app '<legacy-cli>'`, scaffold the Rust binary with `clap` derive parser, and run differential regression tests with `rust-anything verify`."
+    },
+    {
+      "id": 4,
+      "prompt": "The differential test fails because our Python app outputs float numbers with slight precision differences compared to Rust f64. How do I configure tolerances?",
+      "expected_output": "Direct the user to configure `[verification.tolerances]` in `rust-anything.toml` with `float_epsilon = 1e-6` and `json_order_insensitive = true` to prevent false positives from IEEE-754 runtime precision differences."
+    },
+    {
+      "id": 5,
+      "prompt": "Check my SKILL.md file for syntax errors and validate agentskills.io frontmatter format.",
+      "expected_output": "Route format-only skill linting to skill-standardization rather than rust-anything, explaining that rust-anything focuses on incremental application and library rewrites into Rust with differential behavioral verification."
+    }
+  ]
+}
