@@ -1033,17 +1033,45 @@ function selectedSkillContext(routed) {
   const sections = [];
   const injected = [];
   let size = 0;
-  for (const selected of picks) {
+  for (let idx = 0; idx < picks.length; idx++) {
+    const selected = picks[idx];
     const skill = skillsByName.get(selected?.name);
     if (!skill || skill.path !== `${skill.name}/SKILL.md`) continue;
     try {
       const path = realpathSync(join(root, skill.path));
       const info = lstatSync(path);
       if (!within(root, path) || !info.isFile() || info.size > 65_536) continue;
-      const body = readFileSync(path, 'utf8');
-      const bodyBytes = Buffer.byteLength(body);
-      if (bodyBytes > 65_536) continue;
-      const section = `### Skill: ${skill.name}\nSource: ${path}\nResolve referenced files relative to this source.\n\n${body}`;
+      const metaLines = [];
+      if (skill.category) metaLines.push(`Category: ${skill.subcategory ? `${skill.category}/${skill.subcategory}` : skill.category}`);
+      if (Array.isArray(skill.tags) && skill.tags.length) metaLines.push(`Tags: ${skill.tags.slice(0, 8).join(', ')}`);
+      if (skill.relationships && Object.keys(skill.relationships).length) {
+        const relStr = Object.entries(skill.relationships)
+          .map(([k, v]) => `${k}=${Array.isArray(v) ? v.join(',') : typeof v === 'object' ? JSON.stringify(v) : v}`)
+          .join('; ');
+        if (relStr) metaLines.push(`Relationships: ${relStr}`);
+      }
+      const metaHeader = metaLines.length ? `${metaLines.join('\n')}\n` : '';
+      let sectionBody = null;
+      let headerNote = 'Resolve referenced files relative to this source.';
+      if (sections.length >= 1) {
+        try {
+          const toonCandidate = realpathSync(join(dirname(path), 'SKILL.toon'));
+          const toonInfo = lstatSync(toonCandidate);
+          if (within(root, toonCandidate) && dirname(toonCandidate) === dirname(path) && basename(toonCandidate) === 'SKILL.toon' && toonInfo.isFile() && toonInfo.size <= 16_384) {
+            const toonBody = readFileSync(toonCandidate, 'utf8');
+            if (Buffer.byteLength(toonBody) <= 16_384) {
+              sectionBody = toonBody;
+              headerNote = 'Compact SKILL.toon summary; read full SKILL.md at Source if executing this secondary skill.';
+            }
+          }
+        } catch { /* fallback to full SKILL.md */ }
+      }
+      if (sectionBody === null) {
+        const body = readFileSync(path, 'utf8');
+        if (Buffer.byteLength(body) > 65_536) continue;
+        sectionBody = body;
+      }
+      const section = `### Skill: ${skill.name}\nSource: ${path}\n${metaHeader}${headerNote}\n\n${sectionBody}`;
       const sectionBytes = Buffer.byteLength(section);
       if (size + sectionBytes > 98_304) continue;
       sections.push(section);
