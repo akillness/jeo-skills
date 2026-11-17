@@ -102,6 +102,12 @@ def open_db(repo: Path) -> sqlite3.Connection:
     db_path = repo / DB_NAME
     db_path.parent.mkdir(parents=True, exist_ok=True)
     con = sqlite3.connect(db_path)
+    con.execute("PRAGMA journal_mode=WAL")
+    con.execute("PRAGMA synchronous=NORMAL")
+    con.execute("PRAGMA temp_store=MEMORY")
+    con.execute("PRAGMA cache_size=-16000")
+    con.execute("PRAGMA mmap_size=67108864")
+    con.execute("PRAGMA busy_timeout=5000")
     con.executescript(SCHEMA)
     return con
 
@@ -325,7 +331,8 @@ def rerank_hits_with_qev(query: str, hits: list[dict], explicit_rerank: bool | N
 def cmd_build(args):
     repo = Path(args.repo or os.getcwd()).resolve()
     con = open_db(repo)
-    state = dict(con.execute("SELECT path, sha256 FROM files_state"))
+    full = bool(getattr(args, "full", False))
+    state = {} if full else {row[0]: (row[1], row[2]) for row in con.execute("SELECT path, mtime, sha256 FROM files_state")}
     changed, removed = [], []
     seen = set()
     entries = [(str(path.relative_to(repo)), path, False) for path in iter_files(repo)] + [
@@ -334,6 +341,9 @@ def cmd_build(args):
     for rel, path, is_wiki in entries:
         seen.add(rel)
         st = path.stat()
+        prev = state.get(rel)
+        if prev is not None and prev[0] == st.st_mtime:
+            continue
         with open(path, "rb") as fh:
             raw = fh.read()
         try:
@@ -341,7 +351,8 @@ def cmd_build(args):
         except UnicodeDecodeError:
             continue
         sha = hashlib.sha256(raw).hexdigest()
-        if state.get(rel) == sha:
+        if prev is not None and prev[1] == sha:
+            con.execute("UPDATE files_state SET mtime=? WHERE path=?", (st.st_mtime, rel))
             continue
         changed.append((rel, path, st, sha, text, is_wiki))
     for rel in state:
@@ -349,46 +360,47 @@ def cmd_build(args):
             removed.append(rel)
 
     cur = con.cursor()
-    for rel, path, st, sha, text, is_wiki in changed:
-        lang = "md" if is_wiki else (CODE_EXT.get(path.suffix) or MD_EXT.get(path.suffix))
-        cur.execute("SELECT id FROM chunks WHERE path=?", (rel,))
-        chunk_ids = [r[0] for r in cur.fetchall()]
-        for cid in chunk_ids:
-            cur.execute("INSERT INTO chunks_fts(chunks_fts,rowid,body,heading,path) VALUES('delete',?,NULL,NULL,NULL)", (cid,))
-        cur.execute("DELETE FROM chunks WHERE path=?", (rel,))
-        cur.execute("DELETE FROM edges WHERE caller_id IN (SELECT id FROM symbols WHERE path=?)", (rel,))
-        cur.execute("DELETE FROM symbols WHERE path=?", (rel,))
-        cur.execute("DELETE FROM edges WHERE kind='import' AND src_line IS NOT NULL AND caller_id IS NULL AND callee_name IN (SELECT name FROM symbols WHERE path=?)", (rel,))
-        if lang == "md":
-            for (r, h, b, l) in chunk_markdown(rel, text):
-                cur.execute("INSERT INTO chunks(path,heading,body,lang) VALUES(?,?,?,?)", (r, h, b, l))
-            if is_wiki:
-                refs = _extract_wiki_refs(text)
-                if refs:
-                    cur.execute("INSERT INTO symbols(name,kind,path,line,lang) VALUES(?,?,?,?,?)", (rel, "wiki", rel, 1, "wiki"))
-                    wiki_sym_id = cur.lastrowid
-                    for ident in refs:
-                        cur.execute("INSERT INTO edges(caller_id,callee_name,kind,src_line) VALUES(?,?,?,?)", (wiki_sym_id, ident, "references", 1))
-        else:
-            cur.execute("INSERT INTO chunks(path,heading,body,lang) VALUES(?,NULL,?,?)", (rel, text[:2048], lang))
-            syms, edges = extract_symbols_and_edges(rel, text, lang)
-            id_by_name = {}
-            for (name, kind, r, line, lg) in syms:
-                cur.execute("INSERT INTO symbols(name,kind,path,line,lang) VALUES(?,?,?,?,?)", (name, kind, r, line, lg))
-                id_by_name.setdefault(name, cur.lastrowid)
-            for (caller, callee, kind, line) in edges:
-                caller_id = id_by_name.get(caller) if caller else None
-                cur.execute("INSERT INTO edges(caller_id,callee_name,kind,src_line) VALUES(?,?,?,?)", (caller_id, callee, kind, line))
-        cur.execute("INSERT OR REPLACE INTO files_state(path,mtime,sha256) VALUES(?,?,?)", (rel, st.st_mtime, sha))
-    for rel in removed:
-        cur.execute("SELECT id FROM chunks WHERE path=?", (rel,))
-        for (cid,) in cur.fetchall():
-            cur.execute("INSERT INTO chunks_fts(chunks_fts,rowid,body,heading,path) VALUES('delete',?,NULL,NULL,NULL)", (cid,))
-        cur.execute("DELETE FROM chunks WHERE path=?", (rel,))
-        cur.execute("DELETE FROM edges WHERE caller_id IN (SELECT id FROM symbols WHERE path=?)", (rel,))
-        cur.execute("DELETE FROM symbols WHERE path=?", (rel,))
-        cur.execute("DELETE FROM edges WHERE caller_id IS NULL", ())
-        cur.execute("DELETE FROM files_state WHERE path=?", (rel,))
+    if changed or removed:
+        for rel, path, st, sha, text, is_wiki in changed:
+            lang = "md" if is_wiki else (CODE_EXT.get(path.suffix) or MD_EXT.get(path.suffix))
+            cur.execute("SELECT id FROM chunks WHERE path=?", (rel,))
+            chunk_ids = [r[0] for r in cur.fetchall()]
+            for cid in chunk_ids:
+                cur.execute("INSERT INTO chunks_fts(chunks_fts,rowid,body,heading,path) VALUES('delete',?,NULL,NULL,NULL)", (cid,))
+            cur.execute("DELETE FROM chunks WHERE path=?", (rel,))
+            cur.execute("DELETE FROM edges WHERE caller_id IN (SELECT id FROM symbols WHERE path=?)", (rel,))
+            cur.execute("DELETE FROM symbols WHERE path=?", (rel,))
+            cur.execute("DELETE FROM edges WHERE kind='import' AND src_line IS NOT NULL AND caller_id IS NULL AND callee_name IN (SELECT name FROM symbols WHERE path=?)", (rel,))
+            if lang == "md":
+                for (r, h, b, l) in chunk_markdown(rel, text):
+                    cur.execute("INSERT INTO chunks(path,heading,body,lang) VALUES(?,?,?,?)", (r, h, b, l))
+                if is_wiki:
+                    refs = _extract_wiki_refs(text)
+                    if refs:
+                        cur.execute("INSERT INTO symbols(name,kind,path,line,lang) VALUES(?,?,?,?,?)", (rel, "wiki", rel, 1, "wiki"))
+                        wiki_sym_id = cur.lastrowid
+                        for ident in refs:
+                            cur.execute("INSERT INTO edges(caller_id,callee_name,kind,src_line) VALUES(?,?,?,?)", (wiki_sym_id, ident, "references", 1))
+            else:
+                cur.execute("INSERT INTO chunks(path,heading,body,lang) VALUES(?,NULL,?,?)", (rel, text[:2048], lang))
+                syms, edges = extract_symbols_and_edges(rel, text, lang)
+                id_by_name = {}
+                for (name, kind, r, line, lg) in syms:
+                    cur.execute("INSERT INTO symbols(name,kind,path,line,lang) VALUES(?,?,?,?,?)", (name, kind, r, line, lg))
+                    id_by_name.setdefault(name, cur.lastrowid)
+                for (caller, callee, kind, line) in edges:
+                    caller_id = id_by_name.get(caller) if caller else None
+                    cur.execute("INSERT INTO edges(caller_id,callee_name,kind,src_line) VALUES(?,?,?,?)", (caller_id, callee, kind, line))
+            cur.execute("INSERT OR REPLACE INTO files_state(path,mtime,sha256) VALUES(?,?,?)", (rel, st.st_mtime, sha))
+        for rel in removed:
+            cur.execute("SELECT id FROM chunks WHERE path=?", (rel,))
+            for (cid,) in cur.fetchall():
+                cur.execute("INSERT INTO chunks_fts(chunks_fts,rowid,body,heading,path) VALUES('delete',?,NULL,NULL,NULL)", (cid,))
+            cur.execute("DELETE FROM chunks WHERE path=?", (rel,))
+            cur.execute("DELETE FROM edges WHERE caller_id IN (SELECT id FROM symbols WHERE path=?)", (rel,))
+            cur.execute("DELETE FROM symbols WHERE path=?", (rel,))
+            cur.execute("DELETE FROM edges WHERE caller_id IS NULL", ())
+            cur.execute("DELETE FROM files_state WHERE path=?", (rel,))
     con.commit()
     n_sym = cur.execute("SELECT count(*) FROM symbols").fetchone()[0]
     n_edges = cur.execute("SELECT count(*) FROM edges").fetchone()[0]

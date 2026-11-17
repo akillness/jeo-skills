@@ -28,6 +28,7 @@ Then read this file fully before doing anything else in this session.
 ## Current Project State
 
 **Working:**
+  - 2026-11-17 성능·메모리 최적화 (`jev/jev-harness.mjs`, `jev/com.jeo-skills.qev-server.plist`, `jev/jev-setup.sh`, `jev/plugins/*/shared/jev-controller.mjs`, `scripts/jeox.py`): `loadCatalog` aux 헤더 `tmpdir` 영속 캐시(`JEV_NO_CATALOG_CACHE=1` 우회), `qev` `-c 4096 --cache-reuse 256` KV 메모리 절감, `tool_result` 정규식 프리필터로 정상 출력 서브프로세스 생략, `jeox.py` WAL/mmap + `mtime` 스킵 고속 증분 빌드 반영.
 - 2026-11-17 JEO Trinity (`jeo-code` × `jeopi` × `jeo-skills`) `qev:8017` + 그래프 DB + OAuth/런타임 통합:
   - `jev/jev-harness.mjs` & `jev/jev-setup.sh`: `local_calibrated` 등급(`CALIBRATION_MIN_RATE=0.85`, `--golden --save-calibration`), `manage-memory` 중요 블록(`Constraint`/`Decision`/`memory`/`schema vN`) 드롭 보호, `route-skills --fast` (`JEV_FAST_ROUTE=true`, `gate::prose_suffices` 단일 게이트 + top-3 `fits`로 3576ms→555~1074ms 단축), `--migrate-qev`/`--auto-model`/`--install-daemon` 및 `com.jeo-skills.qev-server` launchd 데몬(`-np 1 --no-kv-unified`) 부트스트랩·14개 프로필 교정(`tpr=1, tnr=1`).
   - 공유 `.jeo/db/jeo.db` & `llm-wiki` 브리지: `jeopi/packages/mnemopi/src/db.ts` `defaultCodeDbPath()`를 `.jeo/db/jeo.db`로 통일(+ `.jeopi/db/jeo.db` 자동 이관), `jeopi`/`jeo-code`/`scripts/jeox.py` 인덱서에 `@wiki/...` 프로젝트 문서·백틱 심볼 `references` 엣지 브리지(temp workspace 격리 유지) 및 `qev:8017` Noul `rerank` 추가.

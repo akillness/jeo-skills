@@ -6,7 +6,7 @@ import { open, readFile, realpath, stat } from 'node:fs/promises';
 
 // Pre-warm Node's internal fetch/Response JSON pipeline without opening any socket.
 try { await new Response('{}').json(); new Request('http://127.0.0.1'); } catch {}
-import { homedir } from 'node:os';
+import { homedir, tmpdir } from 'node:os';
 import { basename, dirname, join, resolve, sep } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
@@ -1244,7 +1244,38 @@ async function loadCatalog() {
       const result = { ...catalog, __path: candidate };
       const relationshipsByName = buildSkillRelationshipsMap(result);
       const excerptRoot = await resolveExcerptRoot(result);
-      const auxList = await mapConcurrent(catalog.skills, CATALOG_AUX_CONCURRENCY, skill => readSkillAuxHeader(excerptRoot, skill));
+      let auxList = null;
+      let auxCachePath = null;
+      const sysTmp = (() => { try { return realpathSync(tmpdir()); } catch { return resolve(tmpdir()); } })();
+      const rawTmp = resolve(tmpdir());
+      const isTmpPath = p => [sysTmp, rawTmp, '/tmp', '/private/tmp', '/var/folders', '/private/var/folders'].some(pref => p === pref || p.startsWith(pref + sep));
+      const isNonTempCatalog = excerptRoot && !isTmpPath(resolve(candidate)) && !isTmpPath(resolve(excerptRoot));
+      if (catalog.skills.length >= 64 && isNonTempCatalog && process.env.JEV_NO_CATALOG_CACHE !== '1') {
+        try {
+          const rootInfo = await stat(excerptRoot, { bigint: true });
+          const cacheKey = createHash('sha256')
+            .update(`${candidate}\0${info.mtimeNs}\0${info.size}\0${excerptRoot}\0${rootInfo.mtimeNs}\0${catalog.skills.length}`)
+            .digest('hex')
+            .slice(0, 24);
+          auxCachePath = join(tmpdir(), `jev-aux-v1-${cacheKey}.json`);
+          const cachedAux = JSON.parse(await readFile(auxCachePath, 'utf8'));
+          if (Array.isArray(cachedAux) && cachedAux.length === catalog.skills.length) auxList = cachedAux;
+        } catch {
+          auxList = null;
+        }
+      }
+      if (!auxList) {
+        auxList = await mapConcurrent(catalog.skills, CATALOG_AUX_CONCURRENCY, skill => readSkillAuxHeader(excerptRoot, skill));
+        if (auxCachePath) {
+          const tmpCache = `${auxCachePath}.${process.pid}.tmp`;
+          try {
+            writeFileSync(tmpCache, JSON.stringify(auxList), { encoding: 'utf8', mode: 0o600 });
+            renameSync(tmpCache, auxCachePath);
+          } catch {
+            try { unlinkSync(tmpCache); } catch {}
+          }
+        }
+      }
       const auxByName = Object.create(null);
       const byName = Object.create(null);
       const entries = new Array(catalog.skills.length);

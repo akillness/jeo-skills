@@ -413,10 +413,13 @@ export function registerBeforeAgentStart(api, { agent, profile, envelope = 'syst
   api.on('tool_call', handleToolCall);
   api.on('before_tool_call', handleToolCall);
 
+  const SUSPICIOUS_UNTRUSTED_RE = /(?:ignore\s+(?:all\s+)?(?:previous|prior|above)|disregard\s+(?:all\s+)?(?:previous|prior)|system\s*prompt|<\|im_start\|>|<\/?system>|you\s+are\s+now|new\s+instructions|curl\s+|wget\s+|nc\s+-|\|\s*(?:sh|bash|zsh)\b|base64\s+-d|eval\s*\()/i;
+
   api.on('tool_result', async (event = {}) => {
     if (!untrustedModEnabled) return {};
     const text = messageText(event);
     if (!text || text.trim().length <= 16) return {};
+    if (!SUSPICIOUS_UNTRUSTED_RE.test(text)) return {};
     const result = await invokeControllerHook({
       agent,
       profile,

@@ -1324,7 +1324,7 @@ PY
       else
         mkdir -p "$MODEL_DIR"
         info "Starting $LOCAL_MODEL via llama-server on http://$local_host:$local_port ..."
-        nohup "$LLAMA_BIN" -m "$MODEL_FILE" --alias "$LOCAL_MODEL" --host "$local_host" --port "$local_port" -c 16384 -np 1 --no-kv-unified -fa on -b 2048 -ub 1024 -ctk q8_0 -ctv q8_0 -ngl 99 --no-webui </dev/null > "$MODEL_DIR/llama-server.log" 2>&1 &
+        nohup "$LLAMA_BIN" -m "$MODEL_FILE" --alias "$LOCAL_MODEL" --host "$local_host" --port "$local_port" -c "${JEV_QEV_CTX:-4096}" --cache-reuse 256 -np 1 --no-kv-unified -fa on -b 2048 -ub 1024 -ctk q8_0 -ctv q8_0 -ngl 99 --no-webui </dev/null > "$MODEL_DIR/llama-server.log" 2>&1 &
         server_pid=$!
         write_pid_file "$PID_FILE" "$server_pid" "qev" "$LOCAL_MODEL" "$local_host" "$local_port"
         qev_ready=false
