@@ -1009,6 +1009,149 @@ function within(root, path) {
   return rel !== '..' && !rel.startsWith(`..${process.platform === 'win32' ? '\\' : '/'}`) && !isAbsolute(rel);
 }
 
+function buildPluginRelationships(catalog) {
+  const byName = Object.create(null);
+  const mergePeers = (rel, mode, peers) => {
+    if (!peers.length) return;
+    const prev = Array.isArray(rel[mode]) ? rel[mode] : [];
+    rel[mode] = [...new Set([...prev, ...peers])];
+  };
+  for (const skill of catalog.skills || []) {
+    if (!skill?.name) continue;
+    if (skill.relationships && typeof skill.relationships === 'object' && !Array.isArray(skill.relationships) && Object.keys(skill.relationships).length) {
+      const cloned = {};
+      for (const [k, v] of Object.entries(skill.relationships)) {
+        if (k === 'groups') continue;
+        cloned[k] = Array.isArray(v) ? [...v] : v;
+      }
+      if (Object.keys(cloned).length) byName[skill.name] = cloned;
+    }
+  }
+  const groups = catalog.relationship_groups;
+  if (groups && typeof groups === 'object' && !Array.isArray(groups)) {
+    for (const group of Object.values(groups)) {
+      if (!group || typeof group !== 'object' || !Array.isArray(group.members)) continue;
+      const members = [...new Set(group.members.filter(m => typeof m === 'string' && m))];
+      if (members.length < 2) continue;
+      const mode = typeof group.mode === 'string' && group.mode ? group.mode : 'related';
+      for (const member of members) {
+        const peers = members.filter(m => m !== member);
+        if (!peers.length) continue;
+        const rel = byName[member] || (byName[member] = {});
+        mergePeers(rel, mode, peers);
+      }
+    }
+  }
+  return byName;
+}
+
+function parseAssistFrontmatter(text) {
+  const m = String(text || '').match(/^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/);
+  if (!m) return { frontmatter: {}, body: String(text || '') };
+  const body = String(text || '').slice(m[0].length);
+  const fm = {};
+  let activeListKey = null;
+  let blockKey = null;
+  let blockFolded = true;
+  let blockLines = [];
+  const flushBlock = () => {
+    if (!blockKey) return;
+    const joined = blockFolded
+      ? blockLines.map(s => s.trim()).filter(Boolean).join(' ')
+      : blockLines.join('\n').trim();
+    if (joined) fm[blockKey] = joined;
+    blockKey = null;
+    blockLines = [];
+  };
+  for (const line of m[1].split(/\r?\n/)) {
+    if (blockKey) {
+      if (!line.trim()) { blockLines.push(''); continue; }
+      if (/^\s+/.test(line)) { blockLines.push(line.replace(/^\s+/, '')); continue; }
+      flushBlock();
+    }
+    if (!line.trim() || line.trim().startsWith('#')) continue;
+    const listMatch = line.match(/^\s+-\s+(.+)$/);
+    if (listMatch && activeListKey) {
+      if (!Array.isArray(fm[activeListKey])) fm[activeListKey] = [];
+      fm[activeListKey].push(listMatch[1].trim().replace(/^["']|["']$/g, ''));
+      continue;
+    }
+    if (/^\s+/.test(line)) { activeListKey = null; continue; }
+    const kv = line.match(/^([A-Za-z0-9_-]+):\s*(.*)$/);
+    if (!kv) { activeListKey = null; continue; }
+    const key = kv[1];
+    const val = kv[2].trim();
+    if (!val) { activeListKey = key; fm[key] = []; }
+    else if (/^[>|][+-]?$/.test(val)) { activeListKey = null; blockKey = key; blockFolded = val.startsWith('>'); blockLines = []; }
+    else if (val.startsWith('[') && val.endsWith(']')) {
+      activeListKey = null;
+      fm[key] = val.slice(1, -1).split(',').map(s => s.trim().replace(/^["']|["']$/g, '')).filter(Boolean);
+    } else {
+      activeListKey = null;
+      fm[key] = val.replace(/^["']|["']$/g, '');
+    }
+  }
+  flushBlock();
+  return { frontmatter: fm, body };
+}
+
+const ASSIST_HEADING_P1 = /^(?:triggers?|trigger\s+phrases?|when\s+to\s+use(?:\s+this\s+skill)?|use\s+when|사용\s*시점|트리거)\b/i;
+const ASSIST_HEADING_P2 = /^(?:route[-\s]?outs?|when\s+not\s+to\s+use(?:\s+this\s+skill)?|do\s+not\s+use(?:\s+when)?|what\s+not\s+to\s+do(?:\s+yet)?|non[-\s]?goals?|not\s+for|anti[-\s]?patterns?)\b/i;
+const ASSIST_HEADING_P3 = /^(?:constraints?|limitations?|boundary|boundaries|scope|operating\s+rules|quick\s*start|overview|instructions?|제약)\b/i;
+
+function extractAssistSections(body, maxChars = 2400) {
+  const clean = String(body || '').trim();
+  if (!clean) return '';
+  if (clean.length <= maxChars) return clean;
+  const buckets = { 1: [], 2: [], 3: [] };
+  let inFence = false;
+  let activePriority = 0;
+  let activeLines = [];
+  const flush = () => {
+    if (activePriority && activeLines.length) {
+      const joined = activeLines.join('\n').trim();
+      if (joined) buckets[activePriority].push(joined);
+    }
+    activeLines = [];
+  };
+  for (const line of clean.split(/\r?\n/)) {
+    if (/^\s*```/.test(line)) {
+      inFence = !inFence;
+      if (activePriority) activeLines.push(line);
+      continue;
+    }
+    if (!inFence) {
+      const hm = line.match(/^#{1,4}\s+(.+)$/);
+      if (hm) {
+        flush();
+        const title = hm[1].trim();
+        activePriority = ASSIST_HEADING_P1.test(title) ? 1 : ASSIST_HEADING_P2.test(title) ? 2 : ASSIST_HEADING_P3.test(title) ? 3 : 0;
+        if (activePriority) activeLines.push(line.trim());
+        continue;
+      }
+    }
+    if (activePriority) activeLines.push(line);
+  }
+  flush();
+
+  const nonEmpty = [1, 2, 3].filter(p => buckets[p].length > 0);
+  if (!nonEmpty.length) return clean.slice(0, Math.min(1800, maxChars)).trim();
+  const out = [];
+  let remaining = maxChars;
+  for (let i = 0; i < nonEmpty.length; i++) {
+    const text = buckets[nonEmpty[i]].join('\n\n');
+    const share = i === nonEmpty.length - 1 ? remaining : Math.max(300, Math.floor(remaining / (nonEmpty.length - i)));
+    const piece = text.slice(0, share).trim();
+    if (piece) {
+      out.push(piece);
+      remaining = Math.max(0, remaining - piece.length - 2);
+    }
+    if (remaining <= 40) break;
+  }
+  const combined = out.join('\n\n').trim();
+  return combined.length >= 80 ? combined.slice(0, maxChars) : clean.slice(0, Math.min(1800, maxChars)).trim();
+}
+
 function selectedSkillContext(routed) {
   const picks = Array.isArray(routed?.topK) ? routed.topK.slice(0, 3) : [];
   const wanted = new Set();
@@ -1019,6 +1162,7 @@ function selectedSkillContext(routed) {
   const snapshot = join(homes().jev, 'skills.json');
   const catalogPath = process.env.JEV_CATALOG_PATH || snapshot;
   const catalog = JSON.parse(readFileSync(catalogPath, 'utf8'));
+  const relMap = buildPluginRelationships(catalog);
   const skillsByName = new Map();
   if (Array.isArray(catalog.skills)) {
     for (let i = 0; i < catalog.skills.length; i++) {
@@ -1041,36 +1185,68 @@ function selectedSkillContext(routed) {
       const path = realpathSync(join(root, skill.path));
       const info = lstatSync(path);
       if (!within(root, path) || !info.isFile() || info.size > 65_536) continue;
+      let toonPath = null;
+      let toonBody = null;
+      try {
+        const toonCandidate = realpathSync(join(dirname(path), 'SKILL.toon'));
+        const toonInfo = lstatSync(toonCandidate);
+        if (within(root, toonCandidate) && dirname(toonCandidate) === dirname(path) && basename(toonCandidate) === 'SKILL.toon' && toonInfo.isFile() && toonInfo.size <= 16_384) {
+          const candidateText = readFileSync(toonCandidate, 'utf8');
+          if (Buffer.byteLength(candidateText) <= 16_384) {
+            toonPath = toonCandidate;
+            toonBody = candidateText;
+          }
+        }
+      } catch { /* optional sibling SKILL.toon */ }
+
+      let sectionBody = null;
+      let headerNote = 'Resolve referenced files relative to this source.';
+      let fm = {};
+      if (toonBody !== null) {
+        sectionBody = toonBody;
+        headerNote = `Tier 1 (SKILL.toon compact summary). Read full SKILL.md at Source (${path}) only if detailed procedures, scripts, or edge-case rules are needed.`;
+      } else {
+        const body = readFileSync(path, 'utf8');
+        const bodyBytes = Buffer.byteLength(body);
+        if (bodyBytes > 65_536) continue;
+        const parsed = parseAssistFrontmatter(body);
+        fm = parsed.frontmatter;
+        if (bodyBytes > 1_536) {
+          sectionBody = extractAssistSections(parsed.body, 2400);
+          headerNote = `Tier 1 (routed key metadata & sections; full SKILL.md is ${bodyBytes} bytes). Read full SKILL.md at Source (${path}) before executing detailed workflows.`;
+        } else {
+          sectionBody = body;
+        }
+      }
+
       const metaLines = [];
+      if (toonPath) metaLines.push(`Toon: ${toonPath}`);
       if (skill.category) metaLines.push(`Category: ${skill.subcategory ? `${skill.category}/${skill.subcategory}` : skill.category}`);
       if (Array.isArray(skill.tags) && skill.tags.length) metaLines.push(`Tags: ${skill.tags.slice(0, 8).join(', ')}`);
-      if (skill.relationships && Object.keys(skill.relationships).length) {
-        const relStr = Object.entries(skill.relationships)
+      const rel = relMap[skill.name] || (selected?.relationships && typeof selected.relationships === 'object' ? selected.relationships : null);
+      if (rel && Object.keys(rel).length) {
+        const relStr = Object.entries(rel)
+          .filter(([k]) => k !== 'groups')
           .map(([k, v]) => `${k}=${Array.isArray(v) ? v.join(',') : typeof v === 'object' ? JSON.stringify(v) : v}`)
+          .filter(Boolean)
           .join('; ');
         if (relStr) metaLines.push(`Relationships: ${relStr}`);
       }
+      const perms = Array.isArray(selected?.permissions) && selected.permissions.length
+        ? selected.permissions
+        : Array.isArray(fm.permissions) && fm.permissions.length
+          ? fm.permissions
+          : typeof fm.permissions === 'string' && fm.permissions
+            ? [fm.permissions]
+            : null;
+      if (perms?.length) metaLines.push(`Permissions: ${perms.join(', ')}`);
+      const allowedRaw = selected?.allowedTools || fm['allowed-tools'] || fm.allowed_tools || skill.allowed_tools;
+      const allowedList = Array.isArray(allowedRaw) ? allowedRaw : typeof allowedRaw === 'string' && allowedRaw ? allowedRaw.split(/[\s,]+/).filter(Boolean) : [];
+      if (allowedList.length) metaLines.push(`Allowed-Tools: ${allowedList.slice(0, 8).join(', ')}`);
+      const compat = selected?.compatibility || (typeof fm.compatibility === 'string' ? fm.compatibility : '');
+      if (compat) metaLines.push(`Compatibility: ${String(compat).replace(/\s+/g, ' ').trim().slice(0, 180)}`);
       const metaHeader = metaLines.length ? `${metaLines.join('\n')}\n` : '';
-      let sectionBody = null;
-      let headerNote = 'Resolve referenced files relative to this source.';
-      if (sections.length >= 1) {
-        try {
-          const toonCandidate = realpathSync(join(dirname(path), 'SKILL.toon'));
-          const toonInfo = lstatSync(toonCandidate);
-          if (within(root, toonCandidate) && dirname(toonCandidate) === dirname(path) && basename(toonCandidate) === 'SKILL.toon' && toonInfo.isFile() && toonInfo.size <= 16_384) {
-            const toonBody = readFileSync(toonCandidate, 'utf8');
-            if (Buffer.byteLength(toonBody) <= 16_384) {
-              sectionBody = toonBody;
-              headerNote = 'Compact SKILL.toon summary; read full SKILL.md at Source if executing this secondary skill.';
-            }
-          }
-        } catch { /* fallback to full SKILL.md */ }
-      }
-      if (sectionBody === null) {
-        const body = readFileSync(path, 'utf8');
-        if (Buffer.byteLength(body) > 65_536) continue;
-        sectionBody = body;
-      }
+
       const section = `### Skill: ${skill.name}\nSource: ${path}\n${metaHeader}${headerNote}\n\n${sectionBody}`;
       const sectionBytes = Buffer.byteLength(section);
       if (size + sectionBytes > 98_304) continue;
@@ -1317,7 +1493,25 @@ async function hook(flags, suppliedEvent) {
     const models = (routed.routing || []).map(item => item.chosen).filter(isApprovedModelChoice).join(', ');
     advice = `Jev advisory only (profile ${ctx.profile}): suggested skills: ${names}${models ? `; host model candidates: ${models}` : ''}. This does not change host permissions or the host model.`;
   } catch (error) {
-    advice = `Jev advisory only (profile ${ctx.profile}): routing unavailable (${classifyRoutingError(error)}). This does not change host permissions or the host model.`;
+    let osFallbackText = '';
+    try {
+      const pyBin = join(homedir(), '.agents', 'venvs', 'openspace', 'bin', 'python');
+      const routerScript = join(homedir(), '.agents', 'skills', 'openspace', 'scripts', 'route_prompt.py');
+      if (prompt && existsSync(pyBin) && existsSync(routerScript)) {
+        const osRes = spawnSync(pyBin, ['-B', routerScript, '--json', prompt], { encoding: 'utf8', timeout: 1200 });
+        if (osRes.status === 0 && osRes.stdout?.trim()) {
+          const osPicks = JSON.parse(osRes.stdout.trim()).filter(x => x && SKILL_ID.test(x.name || ''));
+          if (osPicks.length) {
+            osFallbackText = ` OpenSpace fallback skills: ${osPicks.map(x => x.name).join(', ')}.`;
+            if (mode === 'assist') {
+              const selected = selectedSkillContext({ topK: osPicks });
+              if (selected.context) runtime = { mode, skillContext: selected.context, pruneContext: true, ...(memMode === 'extended' ? { memoryMode: 'extended' } : {}) };
+            }
+          }
+        }
+      }
+    } catch { /* best-effort openspace fallback */ }
+    advice = `Jev advisory only (profile ${ctx.profile}): routing unavailable (${classifyRoutingError(error)}).${osFallbackText} This does not change host permissions or the host model.`;
   }
   const combinedContext = [advice, runtime?.skillContext].filter(Boolean).join('\n\n');
   if (ctx.agent === 'claude') {

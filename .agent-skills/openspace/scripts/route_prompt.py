@@ -431,11 +431,31 @@ def main(argv: list[str] | None = None) -> int:
     mode = parser.add_mutually_exclusive_group(required=True)
     mode.add_argument("--host", choices=HOSTS)
     mode.add_argument("--explain", metavar="PROMPT", help="print the ranking and gate decisions")
+    mode.add_argument("--json", metavar="PROMPT", help="print ranked suggestions as JSON for weighted router priors")
     mode.add_argument("--check", action="store_true", help="verify the OpenSpace ranker contract offline")
     args = parser.parse_args(argv)
 
     if args.check:
         return check()
+
+    if args.json is not None:
+        try:
+            suggestions, _ = rank(args.json, load_index(skill_roots()), top_k())
+            payload = [
+                {
+                    "name": item["skill"]["name"],
+                    "score": round(float(item["score"]), 4),
+                    "coverage": round(float(item["coverage"]), 4),
+                    "named": bool(item["named"]),
+                    "anchors": list(item["anchors"]),
+                    "path": str(item["skill"]["path"]),
+                }
+                for item in suggestions
+            ]
+            print(json.dumps(payload, ensure_ascii=False))
+        except Exception:
+            print("[]")
+        return 0
 
     if args.explain is not None:
         suggestions, explained = rank(args.explain, load_index(skill_roots()), top_k())
@@ -448,7 +468,6 @@ def main(argv: list[str] | None = None) -> int:
             )
         print(routing_note(suggestions) if suggestions else "(no suggestion)")
         return 0
-
     try:
         if os.environ.get("OPENSPACE_ROUTE", "").strip().lower() == "off":
             if args.host == "agy":

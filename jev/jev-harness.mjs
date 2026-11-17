@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import { createHash } from 'node:crypto';
+import { execFile } from 'node:child_process';
 import { chmodSync, existsSync, lstatSync, mkdirSync, readFileSync, realpathSync, renameSync, unlinkSync, writeFileSync } from 'node:fs';
 import { open, readFile, realpath, stat } from 'node:fs/promises';
 
@@ -46,8 +47,11 @@ export const FITS_THRESHOLD = 0.30;
 export const SHARD_FINALISTS = 3;
 export const MAX_CHOICE_SHARDS = 4;
 export const SHORTLIST_SIZE = 12;
+export const BM25_AUTO_CATALOG_THRESHOLD = 64;
 const EXCERPT_CHARS = 900;
 const SHARD_DESCRIPTION_CHARS = 220;
+const MAX_AUX_FRONTMATTER_BYTES = 4096;
+const CATALOG_AUX_CONCURRENCY = 32;
 const RECEIPT_VERSION = 2;
 const GEN_DEFAULTS = {
   ollama: { endpoint: 'http://127.0.0.1:11434', model: 'hf.co/mradermacher/JEV-9B-GGUF:Q4_K_M', start: 'ollama serve' },
@@ -885,34 +889,298 @@ const MAX_EXCERPT_READ_BYTES = 16384;
 const CATALOG_CACHE = new Map();
 const CATALOG_META = new WeakMap();
 
+const KO_EN_TECH_TERMS = {
+  '코드': ['code'],
+  '리뷰': ['review'],
+  '브라우저': ['browser'],
+  '자동화': ['automation', 'automate'],
+  '테스트': ['test', 'testing'],
+  '검증': ['verify', 'validation', 'evaluate'],
+  '배포': ['deploy', 'deployment'],
+  '보안': ['security'],
+  '디버깅': ['debug', 'debugging'],
+  '버그': ['bug', 'debug'],
+  '성능': ['performance'],
+  '최적화': ['optimize', 'optimization'],
+  '데이터베이스': ['database'],
+  '쿼리': ['query', 'sql'],
+  '문서': ['document', 'docs'],
+  '맞춤법': ['grammar', 'proofread'],
+  '교정': ['proofread', 'grammar'],
+  '프론트엔드': ['frontend'],
+  '백엔드': ['backend'],
+  '에이전트': ['agent'],
+  '유니티': ['unity'],
+  '게임': ['game'],
+  '특허': ['patent'],
+  '한글': ['korean', 'hwp'],
+  '설치': ['install', 'setup'],
+  '설정': ['config', 'setup'],
+  '스크래핑': ['scraping'],
+  '크롤링': ['scraping', 'crawler'],
+  '리팩터링': ['refactor', 'refactoring'],
+  '마이그레이션': ['migration'],
+};
+
+const KO_PARTICLE_RE = /^([가-힣]{2,}?)(?:으로|에서|에게|부터|까지|이랑|하고|이나|처럼|보다|은|는|이|가|을|를|의|에|로|와|과|랑|도|만)$/;
+
+function stripKoParticle(tok) {
+  if (!/^[가-힣]{3,}$/.test(tok)) return null;
+  const m = tok.match(KO_PARTICLE_RE);
+  return m && m[1].length >= 2 ? m[1] : null;
+}
+
+function stemEnToken(tok) {
+  if (!/^[a-z]{5,}$/.test(tok)) return null;
+  if (tok.endsWith('ies') && tok.length >= 5) return `${tok.slice(0, -3)}y`;
+  if (tok.endsWith('ations') && tok.length >= 8) return tok.slice(0, -6);
+  if (tok.endsWith('ation') && tok.length >= 7) return tok.slice(0, -5);
+  if (tok.endsWith('ments') && tok.length >= 8) return tok.slice(0, -5);
+  if (tok.endsWith('ment') && tok.length >= 7) return tok.slice(0, -4);
+  if (tok.endsWith('ing') && tok.length >= 6) {
+    let stem = tok.slice(0, -3);
+    if (stem.length >= 4 && stem.at(-1) === stem.at(-2)) stem = stem.slice(0, -1);
+    return stem;
+  }
+  if (tok.endsWith('ed') && tok.length >= 6) {
+    let stem = tok.slice(0, -2);
+    if (stem.length >= 4 && stem.at(-1) === stem.at(-2)) stem = stem.slice(0, -1);
+    return stem;
+  }
+  if (tok.endsWith('es') && tok.length >= 5) return tok.slice(0, -2);
+  if (tok.endsWith('s') && !tok.endsWith('ss') && !tok.endsWith('us') && !tok.endsWith('is') && tok.length >= 4) {
+    return tok.slice(0, -1);
+  }
+  return null;
+}
+
+function buildSkillRelationshipsMap(catalog) {
+  const byName = Object.create(null);
+  const mergePeers = (rel, mode, peers) => {
+    if (!peers.length) return;
+    const existing = Array.isArray(rel[mode]) ? rel[mode] : [];
+    rel[mode] = [...new Set([...existing, ...peers])];
+  };
+  for (const skill of catalog.skills || []) {
+    if (!skill?.name) continue;
+    if (skill.relationships && typeof skill.relationships === 'object' && !Array.isArray(skill.relationships) && Object.keys(skill.relationships).length) {
+      const cloned = {};
+      for (const [k, v] of Object.entries(skill.relationships)) {
+        cloned[k] = Array.isArray(v) ? [...v] : v;
+      }
+      byName[skill.name] = cloned;
+    }
+  }
+  const groups = catalog.relationship_groups;
+  if (groups && typeof groups === 'object' && !Array.isArray(groups)) {
+    for (const [groupName, group] of Object.entries(groups)) {
+      if (!group || typeof group !== 'object' || !Array.isArray(group.members)) continue;
+      const members = [...new Set(group.members.filter(m => typeof m === 'string' && m))];
+      if (members.length < 2) continue;
+      const mode = typeof group.mode === 'string' && group.mode ? group.mode : 'related';
+      const note = typeof group.note === 'string' && group.note ? group.note : null;
+      for (const member of members) {
+        const peers = members.filter(m => m !== member);
+        if (!peers.length) continue;
+        const rel = byName[member] || (byName[member] = {});
+        mergePeers(rel, mode, peers);
+        if (!Array.isArray(rel.groups)) rel.groups = [];
+        if (!rel.groups.some(g => g.group === groupName && g.mode === mode)) {
+          rel.groups.push({ group: groupName, mode, peers, ...(note ? { note } : {}) });
+        }
+      }
+    }
+  }
+  return byName;
+}
+
+function compactRelationshipsForState(rel) {
+  if (!rel || typeof rel !== 'object' || Array.isArray(rel)) return null;
+  const out = {};
+  for (const [k, v] of Object.entries(rel)) {
+    if (k === 'groups') continue;
+    if (Array.isArray(v) && v.length) out[k] = v.slice(0, 6);
+    else if (typeof v === 'string' && v) out[k] = v;
+  }
+  if (!Object.keys(out).length && Array.isArray(rel.groups) && rel.groups.length) {
+    for (const g of rel.groups.slice(0, 3)) {
+      if (g?.mode && Array.isArray(g.peers) && g.peers.length) {
+        out[g.mode] = [...new Set([...(out[g.mode] || []), ...g.peers])].slice(0, 6);
+      }
+    }
+  }
+  return Object.keys(out).length ? out : null;
+}
+
 function flattenRelationshipTerms(rel) {
   if (!rel || typeof rel !== 'object') return [];
+  const terms = new Set();
+  const hasModeKeys = Object.keys(rel).some(k => k !== 'groups');
+  for (const [key, val] of Object.entries(rel)) {
+    if (key === 'groups' && Array.isArray(val)) {
+      for (const g of val) {
+        if (!g || typeof g !== 'object') continue;
+        if (typeof g.group === 'string' && g.group) terms.add(g.group);
+        if (typeof g.mode === 'string' && g.mode) terms.add(g.mode);
+        if (typeof g.note === 'string' && g.note) terms.add(g.note);
+        if (!hasModeKeys && Array.isArray(g.peers)) {
+          for (const p of g.peers) if (typeof p === 'string' && p) terms.add(p);
+        }
+      }
+      continue;
+    }
+    if (typeof val === 'string' && val) terms.add(val);
+    else if (Array.isArray(val)) {
+      for (const x of val) if (typeof x === 'string' && x) terms.add(x);
+    } else if (val && typeof val === 'object') {
+      for (const nested of flattenRelationshipTerms(val)) terms.add(nested);
+    }
+  }
+  return [...terms];
+}
+
+function tokenizeText(text) {
+  const raw = String(text || '').toLowerCase().match(/[a-z0-9][a-z0-9+#.-]*|[가-힣]{2,}/g) || [];
   const out = [];
-  for (const val of Object.values(rel)) {
-    if (typeof val === 'string') out.push(val);
-    else if (Array.isArray(val)) out.push(...val.filter(x => typeof x === 'string'));
-    else if (val && typeof val === 'object') out.push(...flattenRelationshipTerms(val));
+  for (let i = 0; i < raw.length; i++) {
+    const t = raw[i];
+    if (t.length <= 1 || STOPWORDS.has(t)) continue;
+    out.push(t);
   }
   return out;
 }
 
-function tokenizeText(text) {
-  return (String(text || '').toLowerCase().match(/[a-z0-9][a-z0-9+#.-]*|[가-힣]{2,}/g) || [])
-    .filter(t => t.length > 1 && !STOPWORDS.has(t));
-}
-
 function buildTermFreq(tokens) {
   const tf = Object.create(null);
+  const add = (tok, weight) => {
+    if (!tok || tok.length <= 1 || STOPWORDS.has(tok)) return;
+    tf[tok] = (tf[tok] || 0) + weight;
+  };
   for (let i = 0; i < tokens.length; i++) {
     const tok = tokens[i];
-    tf[tok] = (tf[tok] || 0) + 1;
+    add(tok, 1);
     if (tok.includes('-') || tok.includes('/')) {
       for (const part of tok.split(/[-/]+/)) {
-        if (part.length > 1 && !STOPWORDS.has(part)) tf[part] = (tf[part] || 0) + 0.5;
+        add(part, 0.55);
+        const partStem = stemEnToken(part);
+        if (partStem && partStem !== part) add(partStem, 0.35);
       }
     }
+    const enStem = stemEnToken(tok);
+    if (enStem && enStem !== tok) add(enStem, 0.6);
+    const koStem = stripKoParticle(tok);
+    if (koStem && koStem !== tok) add(koStem, 0.85);
   }
   return tf;
+}
+
+async function mapConcurrent(items, limit, fn) {
+  const results = new Array(items.length);
+  let cursor = 0;
+  const workerCount = Math.min(Math.max(1, limit), items.length || 1);
+  const workers = Array.from({ length: workerCount }, async () => {
+    while (cursor < items.length) {
+      const idx = cursor++;
+      results[idx] = await fn(items[idx], idx);
+    }
+  });
+  await Promise.all(workers);
+  return results;
+}
+
+function normalizeStringList(value, { splitSpaces = false } = {}) {
+  const rawItems = Array.isArray(value)
+    ? value
+    : typeof value === 'string'
+      ? value.replace(/^\[|\]$/g, '').split(splitSpaces ? /[\s,]+/ : /[,;]+/)
+      : [];
+  const seen = new Set();
+  const out = [];
+  for (const item of rawItems) {
+    const clean = String(item || '').trim().replace(/^["']|["']$/g, '');
+    if (!clean) continue;
+    const key = clean.toLowerCase();
+    if (!seen.has(key)) { seen.add(key); out.push(clean); }
+  }
+  return out;
+}
+
+function extractDescriptionTriggers(description) {
+  const text = String(description || '');
+  const m = text.match(/\btriggers?\s*(?:on)?:\s*([^\n]+)/i);
+  if (!m) return [];
+  let slice = m[1].trim();
+  const stopIdx = slice.search(/\.\s+(?:route|do\s+not|use\s+when|when\s+not|avoid|not\s+for)\b/i);
+  if (stopIdx >= 0) slice = slice.slice(0, stopIdx);
+  slice = slice.replace(/\.$/, '');
+  return slice
+    .split(/[,;|]+/)
+    .map(s => s.replace(/^\s*(?:and|or)\s+/i, '').trim().replace(/^["']|["']$/g, ''))
+    .filter(s => s.length >= 2 && s.length <= 80)
+    .slice(0, 12);
+}
+
+function extractAuxFrontmatter(frontmatter, skill) {
+  const fm = frontmatter && typeof frontmatter === 'object' ? frontmatter : {};
+  const compatibilityRaw = typeof fm.compatibility === 'string'
+    ? fm.compatibility.replace(/\s+/g, ' ').trim()
+    : '';
+  const compatibility = compatibilityRaw ? compatibilityRaw.slice(0, 240) : null;
+  const permsList = normalizeStringList(fm.permissions);
+  const permissions = permsList.length ? permsList : null;
+  const rawAllowed = fm['allowed-tools'] !== undefined
+    ? fm['allowed-tools']
+    : fm.allowed_tools !== undefined
+      ? fm.allowed_tools
+      : skill?.allowed_tools;
+  const allowedList = normalizeStringList(rawAllowed, { splitSpaces: true });
+  const allowedTools = allowedList.length ? allowedList : null;
+  const trigMerged = normalizeStringList([
+    ...normalizeStringList(fm.triggers),
+    ...extractDescriptionTriggers(skill?.description),
+  ]);
+  const triggers = trigMerged.length ? trigMerged : null;
+  return { compatibility, permissions, allowedTools, triggers };
+}
+
+async function readBoundedFrontmatter(file) {
+  const fh = await open(file, 'r');
+  try {
+    const info = await fh.stat();
+    if (!info.isFile()) return '';
+    if (info.size <= MAX_AUX_FRONTMATTER_BYTES) return await fh.readFile('utf8');
+    const buf = Buffer.allocUnsafe(MAX_AUX_FRONTMATTER_BYTES);
+    const { bytesRead } = await fh.read(buf, 0, MAX_AUX_FRONTMATTER_BYTES, 0);
+    const head = buf.toString('utf8', 0, bytesRead);
+    if (head.startsWith('---') && !/^---[\s\S]*?\r?\n---\s*(?:\r?\n|$)/.test(head)) {
+      return await readBoundedText(file);
+    }
+    return head;
+  } finally {
+    await fh.close();
+  }
+}
+
+async function readSkillAuxHeader(excerptRoot, skill) {
+  const fallback = extractAuxFrontmatter({}, skill);
+  const empty = { resolvedPath: null, toonPath: null, ...fallback };
+  if (!excerptRoot || typeof skill?.path !== 'string' || !skill.path) return empty;
+  try {
+    const file = await realpath(resolve(excerptRoot, skill.path));
+    if (!file.startsWith(excerptRoot + sep) || basename(file) !== 'SKILL.md') return empty;
+    const head = await readBoundedFrontmatter(file);
+    const { frontmatter } = parseSkillFrontmatter(head);
+    const aux = extractAuxFrontmatter(frontmatter, skill);
+    let toonPath = null;
+    try {
+      const realToon = await realpath(resolve(dirname(file), 'SKILL.toon'));
+      if (realToon.startsWith(excerptRoot + sep) && dirname(realToon) === dirname(file) && basename(realToon) === 'SKILL.toon') {
+        const toonInfo = await stat(realToon);
+        if (toonInfo.isFile()) toonPath = realToon;
+      }
+    } catch { /* optional sibling SKILL.toon */ }
+    return { resolvedPath: file, toonPath, ...aux };
+  } catch { return empty; }
 }
 
 async function loadCatalog() {
@@ -930,6 +1198,12 @@ async function loadCatalog() {
     catch (err) { errors.push(`${candidate}: ${err.message}`); continue; }
     try {
       if (!Array.isArray(catalog.skills) || !catalog.categories || typeof catalog.categories !== 'object') throw new Error('Unexpected skills catalog schema');
+      if (catalog.model_policies !== undefined && (typeof catalog.model_policies !== 'object' || Array.isArray(catalog.model_policies))) throw new Error('model_policies must be an object');
+      const result = { ...catalog, __path: candidate };
+      const relationshipsByName = buildSkillRelationshipsMap(result);
+      const excerptRoot = await resolveExcerptRoot(result);
+      const auxList = await mapConcurrent(catalog.skills, CATALOG_AUX_CONCURRENCY, skill => readSkillAuxHeader(excerptRoot, skill));
+      const auxByName = Object.create(null);
       const byName = Object.create(null);
       const entries = new Array(catalog.skills.length);
       const df = Object.create(null);
@@ -939,18 +1213,23 @@ async function loadCatalog() {
         const skill = catalog.skills[i];
         if (!skill.name || !skill.category || !skill.description) throw new Error(`Malformed skill entry in catalog (${skill.name || '<unnamed>'})`);
         byName[skill.name] = skill;
+        const aux = auxList[i] || extractAuxFrontmatter({}, skill);
+        auxByName[skill.name] = aux;
+        const rel = relationshipsByName[skill.name] || null;
         fullTokens += tokenEstimate(`${skill.name} ${skill.description}`);
         const nameText = skill.name;
-        const tagsText = `${Array.isArray(skill.tags) ? skill.tags.join(' ') : ''} ${skill.keyword || ''}`;
+        const trigText = Array.isArray(aux.triggers) ? aux.triggers.join(' ') : '';
+        const tagsText = `${Array.isArray(skill.tags) ? skill.tags.join(' ') : ''} ${skill.keyword || ''} ${trigText}`;
         const catText = `${skill.category || ''} ${skill.subcategory || ''}`;
-        const relText = flattenRelationshipTerms(skill.relationships).join(' ');
+        const relText = flattenRelationshipTerms(rel).join(' ');
         const platText = Array.isArray(skill.platforms) ? skill.platforms.join(' ') : '';
+        const auxText = `${aux.compatibility || ''} ${Array.isArray(aux.allowedTools) ? aux.allowedTools.join(' ') : ''}`;
         const descText = skill.description || '';
         const nameTf = buildTermFreq(tokenizeText(nameText));
         const tagsTf = buildTermFreq(tokenizeText(tagsText));
         const catTf = buildTermFreq(tokenizeText(catText));
         const descTf = buildTermFreq(tokenizeText(descText));
-        const relTf = buildTermFreq(tokenizeText(`${relText} ${platText}`));
+        const relTf = buildTermFreq(tokenizeText(`${relText} ${platText} ${auxText}`));
         const allTokens = new Set([
           ...Object.keys(nameTf),
           ...Object.keys(tagsTf),
@@ -964,7 +1243,8 @@ async function loadCatalog() {
         entries[i] = {
           skill,
           nameLower: skill.name.toLowerCase(),
-          corpusLower: `${descText} ${tagsText} ${catText} ${relText} ${platText}`.toLowerCase(),
+          tagsLower: tagsText.toLowerCase(),
+          corpusLower: `${descText} ${tagsText} ${catText} ${relText} ${platText} ${auxText}`.toLowerCase(),
           nameTf,
           tagsTf,
           catTf,
@@ -979,9 +1259,7 @@ async function loadCatalog() {
       for (const [tok, freq] of Object.entries(df)) {
         idf[tok] = Math.log(1 + (nDocs - freq + 0.5) / (freq + 0.5));
       }
-      if (catalog.model_policies !== undefined && (typeof catalog.model_policies !== 'object' || Array.isArray(catalog.model_policies))) throw new Error('model_policies must be an object');
-      const result = { ...catalog, __path: candidate };
-      CATALOG_META.set(result, { byName, fullTokens, entries, idf, avgDocLen });
+      CATALOG_META.set(result, { byName, fullTokens, entries, idf, avgDocLen, relationshipsByName, auxByName, excerptRoot });
       if (CATALOG_CACHE.size >= MAX_CATALOG_CACHE) {
         const oldest = CATALOG_CACHE.keys().next().value;
         if (oldest !== undefined) CATALOG_CACHE.delete(oldest);
@@ -995,7 +1273,9 @@ async function loadCatalog() {
 
 async function resolveExcerptRoot(catalog) {
   try {
-    return await realpath(catalog.__path === CATALOG_SNAPSHOT ? SHARED_SKILLS_ROOT : dirname(catalog.__path));
+    const isSnapshot = catalog.__path === CATALOG_SNAPSHOT
+      || (typeof catalog.__path === 'string' && resolve(catalog.__path) === resolve(CATALOG_SNAPSHOT));
+    return await realpath(isSnapshot ? SHARED_SKILLS_ROOT : dirname(catalog.__path));
   } catch { return null; }
 }
 
@@ -1024,12 +1304,40 @@ function parseSkillFrontmatter(text) {
   const fm = {};
   const lines = raw.split(/\r?\n/);
   let activeListKey = null;
+  let blockScalarKey = null;
+  let blockScalarFolded = true;
+  let blockScalarLines = [];
+  const flushBlockScalar = () => {
+    if (!blockScalarKey) return;
+    const joined = blockScalarFolded
+      ? blockScalarLines.map(s => s.trim()).filter(Boolean).join(' ')
+      : blockScalarLines.join('\n').trim();
+    if (joined) fm[blockScalarKey] = joined;
+    blockScalarKey = null;
+    blockScalarLines = [];
+  };
   for (const line of lines) {
+    if (blockScalarKey) {
+      if (!line.trim()) {
+        blockScalarLines.push('');
+        continue;
+      }
+      if (/^\s+/.test(line)) {
+        blockScalarLines.push(line.replace(/^\s+/, ''));
+        continue;
+      }
+      flushBlockScalar();
+    }
     if (!line.trim() || line.trim().startsWith('#')) continue;
     const listMatch = line.match(/^\s+-\s+(.+)$/);
     if (listMatch && activeListKey) {
       if (!Array.isArray(fm[activeListKey])) fm[activeListKey] = [];
       fm[activeListKey].push(listMatch[1].trim().replace(/^["']|["']$/g, ''));
+      continue;
+    }
+    if (/^\s+/.test(line)) {
+      // Ignore nested YAML sub-mappings (e.g. metadata.tags) so skills.json stays SSOT.
+      activeListKey = null;
       continue;
     }
     const kv = line.match(/^([A-Za-z0-9_-]+):\s*(.*)$/);
@@ -1039,40 +1347,121 @@ function parseSkillFrontmatter(text) {
     if (!val) {
       activeListKey = key;
       fm[key] = [];
+    } else if (/^[>|][+-]?$/.test(val)) {
+      activeListKey = null;
+      blockScalarKey = key;
+      blockScalarFolded = val.startsWith('>');
+      blockScalarLines = [];
     } else if (val.startsWith('[') && val.endsWith(']')) {
       activeListKey = null;
       fm[key] = val.slice(1, -1).split(',').map(s => s.trim().replace(/^["']|["']$/g, '')).filter(Boolean);
     } else {
       activeListKey = null;
-      if (!val.startsWith('>') && !val.startsWith('|')) {
-        fm[key] = val.replace(/^["']|["']$/g, '');
-      }
+      fm[key] = val.replace(/^["']|["']$/g, '');
     }
   }
+  flushBlockScalar();
   return { frontmatter: fm, body };
 }
 
-const HIGH_SIGNAL_HEADINGS = /^(?:#{1,3}\s+)(?:when\s+to\s+use|triggers?|use\s+when|route[-\s]?outs?|non[-\s]?goals?|not\s+for|constraints?|boundary|scope|overview|routing|사용\s*시점|트리거|제약)/i;
-
-function extractStructuredBodyExcerpt(body, maxChars = EXCERPT_CHARS) {
-  const cleanBody = String(body || '').trim();
-  if (!cleanBody) return '';
-  const compactAll = cleanBody.replace(/\s+/g, ' ').trim();
-  if (compactAll.length <= maxChars) return compactAll;
-  const lines = cleanBody.split(/\r?\n/);
-  const selected = [];
-  let capture = false;
-  for (const line of lines) {
-    if (/^#{1,3}\s+/.test(line)) {
-      capture = HIGH_SIGNAL_HEADINGS.test(line);
-      if (capture) selected.push(line.trim());
+function extractToonExcerpt(toonText, maxChars = EXCERPT_CHARS) {
+  const raw = String(toonText || '').trim();
+  if (!raw) return { excerpt: '', hasRouteOuts: false };
+  const hasStructuredSections = /^(?:U|R|S|E)(?:\[\d+\])?(?:\{[^}]*\})?:/m.test(raw);
+  if (!hasStructuredSections) {
+    return { excerpt: raw.replace(/\s+/g, ' ').trim().slice(0, maxChars), hasRouteOuts: false };
+  }
+  const sections = { U: [], R: [], S: [], E: [] };
+  let active = null;
+  for (const line of raw.split(/\r?\n/)) {
+    const header = line.match(/^([NDGURSE])(?:\[\d+\])?(?:\{[^}]*\})?:\s*(.*)$/);
+    if (header) {
+      const tag = header[1];
+      active = Object.prototype.hasOwnProperty.call(sections, tag) ? tag : null;
+      if (active && header[2]?.trim()) sections[active].push(header[2].trim());
       continue;
     }
-    if (capture && line.trim()) selected.push(line.trim());
-    if (selected.join(' ').length >= maxChars) break;
+    if (active && line.trim()) sections[active].push(line.trim());
   }
-  const structured = selected.join(' ').replace(/\s+/g, ' ').trim();
-  if (structured.length >= 120) return structured.slice(0, maxChars);
+  const hasRouteOuts = sections.R.length > 0;
+  const parts = [];
+  if (sections.U.length) parts.push(`When to use: ${sections.U.join('; ')}`);
+  if (sections.R.length) parts.push(`Route-outs/Rules: ${sections.R.join('; ')}`);
+  if (sections.S.length) parts.push(`Steps: ${sections.S.join(' -> ')}`);
+  if (!parts.length && sections.E.length) parts.push(`Examples: ${sections.E.join('; ')}`);
+  const out = (parts.length ? parts.join(' | ') : raw).replace(/\s+/g, ' ').trim();
+  return { excerpt: out.slice(0, maxChars), hasRouteOuts };
+}
+
+const HEADING_TRIGGERS_WHEN_TO_USE = /^(?:triggers?|trigger\s+phrases?|when\s+to\s+use(?:\s+this\s+skill)?|use\s+when|사용\s*시점|트리거)\b/i;
+const HEADING_ROUTEOUTS_NON_GOALS = /^(?:route[-\s]?outs?|when\s+not\s+to\s+use(?:\s+this\s+skill)?|do\s+not\s+use(?:\s+when)?|what\s+not\s+to\s+do(?:\s+yet)?|non[-\s]?goals?|not\s+for|anti[-\s]?patterns?)\b/i;
+const HEADING_CONSTRAINTS_SCOPE = /^(?:constraints?|limitations?|boundary|boundaries|scope|operating\s+rules|제약)\b/i;
+
+function classifySectionHeading(title) {
+  const clean = String(title || '').trim();
+  if (HEADING_TRIGGERS_WHEN_TO_USE.test(clean)) return 1;
+  if (HEADING_ROUTEOUTS_NON_GOALS.test(clean)) return 2;
+  if (HEADING_CONSTRAINTS_SCOPE.test(clean)) return 3;
+  return 0;
+}
+
+function extractStructuredBodyExcerpt(body, maxChars = EXCERPT_CHARS, { negativeOnly = false } = {}) {
+  const cleanBody = String(body || '').trim();
+  if (!cleanBody || maxChars <= 0) return '';
+  const compactAll = cleanBody.replace(/\s+/g, ' ').trim();
+  if (!negativeOnly && compactAll.length <= maxChars) return compactAll;
+  const lines = cleanBody.split(/\r?\n/);
+  const buckets = { 1: [], 2: [], 3: [] };
+  let inFence = false;
+  let activePriority = 0;
+  let activeLines = [];
+  const flushSection = () => {
+    if (activePriority && activeLines.length) {
+      const joined = activeLines.join(' ').replace(/\s+/g, ' ').trim();
+      if (joined) buckets[activePriority].push(joined);
+    }
+    activeLines = [];
+  };
+  for (const line of lines) {
+    if (/^\s*```/.test(line)) {
+      inFence = !inFence;
+      if (activePriority && line.trim()) activeLines.push(line.trim());
+      continue;
+    }
+    if (!inFence) {
+      const hm = line.match(/^#{1,4}\s+(.+)$/);
+      if (hm) {
+        flushSection();
+        activePriority = classifySectionHeading(hm[1]);
+        if (activePriority) activeLines.push(`${hm[1].trim()}:`);
+        continue;
+      }
+    }
+    if (activePriority && line.trim()) activeLines.push(line.trim());
+  }
+  flushSection();
+
+  const order = negativeOnly ? [2, 3] : [1, 2, 3];
+  const nonEmpty = order.filter(p => buckets[p].length > 0);
+  if (!nonEmpty.length) return negativeOnly ? '' : compactAll.slice(0, maxChars);
+
+  const chunks = [];
+  let remaining = maxChars;
+  for (let idx = 0; idx < nonEmpty.length; idx++) {
+    const p = nonEmpty[idx];
+    const text = buckets[p].join(' | ');
+    const share = idx === nonEmpty.length - 1
+      ? remaining
+      : Math.max(120, Math.floor(remaining / (nonEmpty.length - idx)));
+    const piece = text.slice(0, share).trim();
+    if (piece) {
+      chunks.push(piece);
+      remaining = Math.max(0, remaining - piece.length - 3);
+    }
+    if (remaining <= 20) break;
+  }
+  const structured = chunks.join(' | ').replace(/\s+/g, ' ').trim();
+  if (structured.length >= 60 || negativeOnly) return structured.slice(0, maxChars);
   return compactAll.slice(0, maxChars);
 }
 
@@ -1082,7 +1471,17 @@ function extractStructuredBodyExcerpt(body, maxChars = EXCERPT_CHARS) {
 // containment is checked on canonical paths: neither `../` in an untrusted catalog
 // nor an in-root symlink (directory or SKILL.md) may reach a file outside the root.
 async function skillMetadataAndExcerpt(catalog, skill, resolvedRoot = undefined) {
-  const empty = { excerpt: '', resolvedPath: null, toonPath: null, permissions: null, triggers: null, compatibility: null };
+  const cachedAux = CATALOG_META.get(catalog)?.auxByName?.[skill.name] || null;
+  const fallbackAux = extractAuxFrontmatter({}, skill);
+  const empty = {
+    excerpt: '',
+    resolvedPath: cachedAux?.resolvedPath || null,
+    toonPath: cachedAux?.toonPath || null,
+    permissions: cachedAux?.permissions || fallbackAux.permissions,
+    allowedTools: cachedAux?.allowedTools || fallbackAux.allowedTools,
+    triggers: cachedAux?.triggers || fallbackAux.triggers,
+    compatibility: cachedAux?.compatibility || fallbackAux.compatibility,
+  };
   if (typeof skill.path !== 'string' || !skill.path) return empty;
   try {
     const root = resolvedRoot !== undefined ? resolvedRoot : await resolveExcerptRoot(catalog);
@@ -1091,28 +1490,41 @@ async function skillMetadataAndExcerpt(catalog, skill, resolvedRoot = undefined)
     if (!file.startsWith(root + sep) || basename(file) !== 'SKILL.md') return empty;
     const text = await readBoundedText(file);
     const { frontmatter, body } = parseSkillFrontmatter(text);
+    const parsedAux = extractAuxFrontmatter(frontmatter, skill);
     let toonSummary = '';
+    let toonHasRouteOuts = false;
     let toonPath = null;
     try {
       const candidateToon = resolve(dirname(file), 'SKILL.toon');
       const realToon = await realpath(candidateToon);
-      if (realToon.startsWith(root + sep) && basename(realToon) === 'SKILL.toon') {
+      if (realToon.startsWith(root + sep) && dirname(realToon) === dirname(file) && basename(realToon) === 'SKILL.toon') {
         const toonInfo = await stat(realToon);
         if (toonInfo.isFile()) {
           toonPath = realToon;
           const toonText = await readBoundedText(realToon);
-          toonSummary = toonText.replace(/\s+/g, ' ').trim().slice(0, Math.floor(EXCERPT_CHARS * 0.55));
+          const extractedToon = extractToonExcerpt(toonText, EXCERPT_CHARS);
+          toonSummary = extractedToon.excerpt;
+          toonHasRouteOuts = extractedToon.hasRouteOuts;
         }
       }
     } catch { /* optional sibling SKILL.toon */ }
-    const mdExcerpt = extractStructuredBodyExcerpt(body, toonSummary ? Math.max(240, EXCERPT_CHARS - toonSummary.length - 4) : EXCERPT_CHARS);
-    const combined = toonSummary && mdExcerpt && mdExcerpt.length > 0
-      ? `${toonSummary} | ${mdExcerpt}`.slice(0, EXCERPT_CHARS)
-      : (toonSummary || mdExcerpt);
-    const permissions = Array.isArray(frontmatter.permissions) && frontmatter.permissions.length ? frontmatter.permissions : null;
-    const triggers = Array.isArray(frontmatter.triggers) && frontmatter.triggers.length ? frontmatter.triggers : null;
-    const compatibility = typeof frontmatter.compatibility === 'string' && frontmatter.compatibility ? frontmatter.compatibility.slice(0, 160) : null;
-    return { excerpt: combined, resolvedPath: file, toonPath, permissions, triggers, compatibility };
+
+    let combined = toonSummary;
+    if (!toonSummary) {
+      combined = extractStructuredBodyExcerpt(body, EXCERPT_CHARS);
+    } else if (!toonHasRouteOuts && EXCERPT_CHARS - toonSummary.length >= 160) {
+      const negSupp = extractStructuredBodyExcerpt(body, EXCERPT_CHARS - toonSummary.length - 3, { negativeOnly: true });
+      if (negSupp) combined = `${toonSummary} | ${negSupp}`.slice(0, EXCERPT_CHARS);
+    }
+    return {
+      excerpt: combined,
+      resolvedPath: file,
+      toonPath,
+      permissions: parsedAux.permissions || cachedAux?.permissions || null,
+      allowedTools: parsedAux.allowedTools || cachedAux?.allowedTools || null,
+      triggers: parsedAux.triggers || cachedAux?.triggers || null,
+      compatibility: parsedAux.compatibility || cachedAux?.compatibility || null,
+    };
   } catch { return empty; }
 }
 
@@ -1124,8 +1536,41 @@ async function skillExcerpt(catalog, skill, resolvedRoot = undefined) {
 // ── Skill selection ──────────────────────────────────────────────────────────
 function tokenEstimate(text) { return Math.ceil(text.length / 4); }
 export function taskTerms(task) {
-  const terms = task.toLowerCase().match(/[a-z0-9][a-z0-9+#.-]*|[가-힣]{2,}/g) || [];
+  const terms = String(task || '').toLowerCase().match(/[a-z0-9][a-z0-9+#.-]*|[가-힣]{2,}/g) || [];
   return [...new Set(terms.filter(t => t.length > 1 && !STOPWORDS.has(t)))];
+}
+function expandTaskTermsForBm25(task) {
+  const primaryTerms = Array.isArray(task) ? [...new Set(task.map(t => String(t).toLowerCase()).filter(Boolean))] : taskTerms(task);
+  const weightMap = new Map();
+  const add = (term, weight) => {
+    if (!term || term.length <= 1 || STOPWORDS.has(term)) return;
+    const prev = weightMap.get(term) || 0;
+    if (weight > prev) weightMap.set(term, weight);
+  };
+  for (const tok of primaryTerms) {
+    add(tok, 1.0);
+    if (tok.includes('-') || tok.includes('/')) {
+      for (const part of tok.split(/[-/]+/)) {
+        add(part, 0.8);
+        const pStem = stemEnToken(part);
+        if (pStem) add(pStem, 0.65);
+      }
+    }
+    const enStem = stemEnToken(tok);
+    if (enStem) add(enStem, 0.65);
+    const koStem = stripKoParticle(tok) || tok;
+    if (koStem !== tok) add(koStem, 0.9);
+    const bridged = KO_EN_TECH_TERMS[koStem] || KO_EN_TECH_TERMS[tok];
+    if (Array.isArray(bridged)) {
+      for (const en of bridged) {
+        add(en, 0.65);
+        const bStem = stemEnToken(en);
+        if (bStem) add(bStem, 0.55);
+      }
+    }
+  }
+  const weightedTerms = [...weightMap.entries()].map(([term, weight]) => ({ term, weight }));
+  return { primaryTerms, weightedTerms };
 }
 function scoreFieldBm25(tfMap, terms, idfMap, docLen, avgDocLen) {
   if (!tfMap) return 0;
@@ -1134,38 +1579,51 @@ function scoreFieldBm25(tfMap, terms, idfMap, docLen, avgDocLen) {
   const norm = 1 - b + b * (docLen / (avgDocLen || 1));
   let total = 0;
   for (let i = 0; i < terms.length; i++) {
-    const term = terms[i];
+    const item = terms[i];
+    const term = typeof item === 'string' ? item : item.term;
+    const qWeight = typeof item === 'string' ? 1.0 : item.weight;
     const tf = tfMap[term] || 0;
     if (tf <= 0) continue;
     const idf = idfMap ? (idfMap[term] ?? 1.0) : 1.0;
-    total += idf * ((tf * (k1 + 1)) / (tf + k1 * norm));
+    total += qWeight * idf * ((tf * (k1 + 1)) / (tf + k1 * norm));
   }
   return total;
 }
-function scoreIndexed(nameLower, corpusLower, terms, entry = null, meta = null) {
+function scoreIndexed(nameLower, corpusLower, termsOrExpanded, entry = null, meta = null) {
+  const expanded = Array.isArray(termsOrExpanded)
+    ? { primaryTerms: termsOrExpanded, weightedTerms: termsOrExpanded.map(term => ({ term, weight: 1.0 })) }
+    : termsOrExpanded;
+  const { primaryTerms, weightedTerms } = expanded;
   let score = 0;
   if (entry && meta?.idf) {
-    score += 3.5 * scoreFieldBm25(entry.nameTf, terms, meta.idf, entry.docLen, meta.avgDocLen);
-    score += 2.5 * scoreFieldBm25(entry.tagsTf, terms, meta.idf, entry.docLen, meta.avgDocLen);
-    score += 2.0 * scoreFieldBm25(entry.catTf, terms, meta.idf, entry.docLen, meta.avgDocLen);
-    score += 1.2 * scoreFieldBm25(entry.descTf, terms, meta.idf, entry.docLen, meta.avgDocLen);
-    score += 0.8 * scoreFieldBm25(entry.relTf, terms, meta.idf, entry.docLen, meta.avgDocLen);
+    score += 4.0 * scoreFieldBm25(entry.nameTf, weightedTerms, meta.idf, entry.docLen, meta.avgDocLen);
+    score += 2.8 * scoreFieldBm25(entry.tagsTf, weightedTerms, meta.idf, entry.docLen, meta.avgDocLen);
+    score += 2.0 * scoreFieldBm25(entry.catTf, weightedTerms, meta.idf, entry.docLen, meta.avgDocLen);
+    score += 1.2 * scoreFieldBm25(entry.descTf, weightedTerms, meta.idf, entry.docLen, meta.avgDocLen);
+    score += 0.9 * scoreFieldBm25(entry.relTf, weightedTerms, meta.idf, entry.docLen, meta.avgDocLen);
   }
-  for (let i = 0; i < terms.length; i++) {
-    const term = terms[i];
-    if (nameLower.includes(term)) score += 1.5;
-    if (corpusLower.includes(term)) score += 0.4;
+  const tagsLower = entry?.tagsLower || '';
+  for (let i = 0; i < primaryTerms.length; i++) {
+    const term = primaryTerms[i];
+    if (nameLower === term) score += 4.0;
+    else if (nameLower.includes(term)) score += 1.5;
+    if (tagsLower && tagsLower.includes(term)) score += 0.8;
+    if (corpusLower.includes(term)) score += 0.35;
   }
   return score;
 }
 export function scoreSkill(skill, task) {
-  const terms = Array.isArray(task) ? task : taskTerms(task);
+  const expanded = Array.isArray(task)
+    ? { primaryTerms: task, weightedTerms: task.map(term => ({ term, weight: 1.0 })) }
+    : expandTaskTermsForBm25(task);
   const name = skill.name.toLowerCase();
-  const tagsText = `${(skill.tags || []).join(' ')} ${skill.keyword || ''}`;
+  const trigText = Array.isArray(skill.triggers) ? skill.triggers.join(' ') : '';
+  const tagsText = `${(skill.tags || []).join(' ')} ${skill.keyword || ''} ${trigText}`;
   const catText = `${skill.category || ''} ${skill.subcategory || ''}`;
   const relText = flattenRelationshipTerms(skill.relationships).join(' ');
   const corpus = `${skill.description} ${tagsText} ${catText} ${relText}`.toLowerCase();
   const syntheticEntry = {
+    tagsLower: tagsText.toLowerCase(),
     nameTf: buildTermFreq(tokenizeText(skill.name)),
     tagsTf: buildTermFreq(tokenizeText(tagsText)),
     catTf: buildTermFreq(tokenizeText(catText)),
@@ -1173,7 +1631,7 @@ export function scoreSkill(skill, task) {
     relTf: buildTermFreq(tokenizeText(relText)),
     docLen: Math.max(1, tokenizeText(`${skill.name} ${corpus}`).length),
   };
-  return scoreIndexed(name, corpus, terms, syntheticEntry, { idf: {}, avgDocLen: 20 });
+  return scoreIndexed(name, corpus, expanded, syntheticEntry, { idf: {}, avgDocLen: 20 });
 }
 export function selectionStrategy(catalogSize, choiceCap) {
   const shards = Math.max(1, Math.ceil(catalogSize / Math.max(2, choiceCap || 2)));
@@ -1202,17 +1660,20 @@ function gateFrom(answers) {
   }
   return { value: oriented.length ? oriented.reduce((a, b) => a + b, 0) / oriented.length : null, threshold: GATE_THRESHOLD, values };
 }
-function formatShardDescription(skill) {
+function formatShardDescription(skill, rel = null) {
   const cat = skill.subcategory ? `${skill.category}/${skill.subcategory}` : skill.category;
   const tags = Array.isArray(skill.tags) && skill.tags.length ? skill.tags.slice(0, 4).join(',') : '';
-  const prefix = tags ? `[${cat} | ${tags}] ` : `[${cat}] `;
-  return `${prefix}${skill.description || ''}`.slice(0, SHARD_DESCRIPTION_CHARS);
+  const relPeers = flattenRelationshipTerms(compactRelationshipsForState(rel)).slice(0, 3).join(',');
+  const meta = [cat, tags, relPeers ? `rel:${relPeers}` : ''].filter(Boolean).join(' | ');
+  return `[${meta}] ${skill.description || ''}`.slice(0, SHARD_DESCRIPTION_CHARS);
 }
 function describeFor(skill, excerpt) {
   const metaParts = [];
   if (skill.category) metaParts.push(skill.subcategory ? `${skill.category}/${skill.subcategory}` : skill.category);
   if (Array.isArray(skill.tags) && skill.tags.length) metaParts.push(`tags:${skill.tags.slice(0, 5).join(',')}`);
   if (Array.isArray(skill.permissions) && skill.permissions.length) metaParts.push(`perms:${skill.permissions.join(',')}`);
+  const relPeers = flattenRelationshipTerms(compactRelationshipsForState(skill.relationships)).slice(0, 4);
+  if (relPeers.length) metaParts.push(`rel:${relPeers.join(',')}`);
   const prefix = metaParts.length ? `[${metaParts.join(' | ')}] ` : '';
   return excerpt ? `${prefix}${skill.description} — ${excerpt}` : `${prefix}${skill.description}`;
 }
@@ -1223,7 +1684,7 @@ function describeFor(skill, excerpt) {
 // the caller treats it as that backend's failure and may fall back.
 export function budgetCandidates(task, candidates, maxStateChars) {
   const size = s => JSON.stringify(s).length;
-  const render = (ex, desc, metaLevel = 2) => ({
+  const render = (ex, desc, metaLevel = 3) => ({
     request: task,
     candidates: candidates.map(c => {
       const base = {
@@ -1234,19 +1695,26 @@ export function budgetCandidates(task, candidates, maxStateChars) {
       if (metaLevel >= 1) {
         if (c.category) base.category = c.category;
         if (c.subcategory) base.subcategory = c.subcategory;
-        if (Array.isArray(c.tags) && c.tags.length) base.tags = c.tags.slice(0, 6);
+        if (Array.isArray(c.tags) && c.tags.length) base.tags = c.tags.slice(0, metaLevel >= 3 ? 8 : metaLevel === 2 ? 6 : 4);
         if (Array.isArray(c.permissions) && c.permissions.length) base.permissions = c.permissions;
       }
       if (metaLevel >= 2) {
-        if (c.relationships && Object.keys(c.relationships).length) base.relationships = c.relationships;
+        const compactRel = compactRelationshipsForState(c.relationships);
+        if (compactRel) base.relationships = compactRel;
+      }
+      if (metaLevel >= 3) {
         if (Array.isArray(c.triggers) && c.triggers.length) base.triggers = c.triggers.slice(0, 6);
+        if (Array.isArray(c.allowedTools) && c.allowedTools.length) base.allowedTools = c.allowedTools.slice(0, 8);
+        if (typeof c.compatibility === 'string' && c.compatibility) base.compatibility = c.compatibility.slice(0, 160);
       }
       return base;
     }),
   });
-  let state = render(EXCERPT_CHARS, Infinity, 2);
+  let state = render(EXCERPT_CHARS, Infinity, 3);
   if (size(state) <= maxStateChars) return state;
-  state = render(EXCERPT_CHARS, Infinity, 1);
+  state = render(EXCERPT_CHARS, Infinity, 2);
+  if (size(state) <= maxStateChars) return state;
+  state = render(Math.min(EXCERPT_CHARS, 450), Infinity, 1);
   if (size(state) <= maxStateChars) return state;
   let ex = EXCERPT_CHARS;
   state = render(ex, Infinity, 0);
@@ -1278,14 +1746,17 @@ function verifyQuestions(task, budgeted, backend, { withGate = true } = {}) {
 
 async function enrichCandidate(catalog, skill, excerptRoot, extra = {}) {
   const metaInfo = await skillMetadataAndExcerpt(catalog, skill, excerptRoot);
+  const rel = compactRelationshipsForState(CATALOG_META.get(catalog)?.relationshipsByName?.[skill.name] || skill.relationships);
   return {
     ...extra,
     name: skill.name,
     category: skill.category,
     ...(skill.subcategory ? { subcategory: skill.subcategory } : {}),
     ...(Array.isArray(skill.tags) && skill.tags.length ? { tags: skill.tags } : {}),
-    ...(skill.relationships && Object.keys(skill.relationships).length ? { relationships: skill.relationships } : {}),
+    ...(rel ? { relationships: rel } : {}),
     ...(metaInfo.permissions ? { permissions: metaInfo.permissions } : {}),
+    ...(metaInfo.allowedTools ? { allowedTools: metaInfo.allowedTools } : {}),
+    ...(metaInfo.compatibility ? { compatibility: metaInfo.compatibility } : {}),
     ...(metaInfo.triggers ? { triggers: metaInfo.triggers } : {}),
     description: skill.description,
     excerpt: metaInfo.excerpt,
@@ -1300,10 +1771,11 @@ async function selectSharded(catalog, task, backend, kind, shards, topK) {
     || String(a.subcategory || '').localeCompare(String(b.subcategory || ''))
     || a.name.localeCompare(b.name));
   const groups = chunk(ordered, shards);
+  const relationshipsByName = CATALOG_META.get(catalog)?.relationshipsByName || {};
   const questions = gateQuestions(task);
   groups.forEach((group, i) => {
     questions[`shard::${i}`] = { ...choice('Which of these skills, if any, is the right one to load to help with the user\'s `request`?',
-      Object.fromEntries(group.map(s => [s.name, formatShardDescription(s)]))), state: { request: task } };
+      Object.fromEntries(group.map(s => [s.name, formatShardDescription(s, relationshipsByName[s.name] || s.relationships)]))), state: { request: task } };
   });
   const first = await requestJev({ request: task }, questions, { op: 'route-skills', kinds: [kind], model: backend.modelOverride });
   if (first.error || !first.answers) return { error: first, envelope: first };
@@ -1330,32 +1802,77 @@ async function selectSharded(catalog, task, backend, kind, shards, topK) {
     resolvedPath: byCandName[c.name]?.resolvedPath || null,
     toonPath: byCandName[c.name]?.toonPath || null,
     permissions: byCandName[c.name]?.permissions || null,
+    allowedTools: byCandName[c.name]?.allowedTools || null,
+    compatibility: byCandName[c.name]?.compatibility || null,
   }));
   return { gate, finalists: ranked, ranked: rankCandidates(ranked), reason: null, envelope: second, requests: (first.requests ?? 1) + (second.requests ?? 1) };
 }
 
-function topScoredSkills(catalog, task, limit = SHORTLIST_SIZE) {
-  const terms = taskTerms(task);
+const OPENSPACE_PRIOR_WEIGHT = 3.0;
+
+function normalizeOpenspacePriors(raw) {
+  const list = Array.isArray(raw) ? raw : [];
+  const items = list
+    .filter(item => item && typeof item.name === 'string' && Number.isFinite(Number(item.score)) && Number(item.score) > 0)
+    .map(item => ({ name: item.name, score: Number(item.score) }));
+  if (!items.length) return { items: [], boostByName: Object.create(null) };
+  const maxScore = Math.max(...items.map(i => i.score)) || 1;
+  const boostByName = Object.create(null);
+  for (const item of items) {
+    boostByName[item.name] = round(OPENSPACE_PRIOR_WEIGHT * (item.score / maxScore));
+  }
+  return { items, boostByName };
+}
+
+async function fetchOpenspacePrior(task, { openspaceHints = null, useOpenspacePrior = true, timeoutMs = 1500 } = {}) {
+  if (openspaceHints !== null && openspaceHints !== undefined) {
+    return normalizeOpenspacePriors(openspaceHints);
+  }
+  if (!useOpenspacePrior || process.env.JEV_OPENSPACE_PRIOR === '0') {
+    return { items: [], boostByName: Object.create(null) };
+  }
+  const pyBin = join(homedir(), '.agents', 'venvs', 'openspace', 'bin', 'python');
+  const routerScript = join(homedir(), '.agents', 'skills', 'openspace', 'scripts', 'route_prompt.py');
+  if (!existsSync(pyBin) || !existsSync(routerScript)) {
+    return { items: [], boostByName: Object.create(null) };
+  }
+  try {
+    const stdout = await new Promise((resolveDone) => {
+      execFile(pyBin, ['-B', routerScript, '--json', task], { timeout: timeoutMs, maxBuffer: 262144 }, (err, out) => {
+        if (err) resolveDone('[]');
+        else resolveDone(String(out || '[]'));
+      });
+    });
+    return normalizeOpenspacePriors(JSON.parse(stdout.trim() || '[]'));
+  } catch {
+    return { items: [], boostByName: Object.create(null) };
+  }
+}
+
+function topScoredSkills(catalog, task, limit = SHORTLIST_SIZE, priorBoosts = null) {
+  const expanded = expandTaskTermsForBm25(task);
   const meta = CATALOG_META.get(catalog);
   const scored = [];
   if (meta) {
     for (let i = 0; i < meta.entries.length; i++) {
       const entry = meta.entries[i];
-      const score = scoreIndexed(entry.nameLower, entry.corpusLower, terms, entry, meta);
-      if (score > 0) scored.push({ skill: entry.skill, score });
+      const boost = priorBoosts?.[entry.skill.name] || 0;
+      const score = scoreIndexed(entry.nameLower, entry.corpusLower, expanded, entry, meta) + boost;
+      if (score > 0) scored.push({ skill: entry.skill, score, ...(boost > 0 ? { openspaceBoost: boost } : {}) });
     }
   } else {
     for (let i = 0; i < catalog.skills.length; i++) {
       const s = catalog.skills[i];
-      const score = scoreSkill(s, terms);
-      if (score > 0) scored.push({ skill: s, score });
+      const boost = priorBoosts?.[s.name] || 0;
+      const score = scoreSkill(s, task) + boost;
+      if (score > 0) scored.push({ skill: s, score, ...(boost > 0 ? { openspaceBoost: boost } : {}) });
     }
   }
   return scored.sort((a, b) => b.score - a.score || a.skill.name.localeCompare(b.skill.name)).slice(0, limit);
 }
 
-async function selectShortlist(catalog, task, backend, kind, topK, { limit = SHORTLIST_SIZE } = {}) {
-  const scored = topScoredSkills(catalog, task, limit);
+async function selectShortlist(catalog, task, backend, kind, topK, { limit = SHORTLIST_SIZE, priorBoosts = null } = {}) {
+  const scored = topScoredSkills(catalog, task, limit, priorBoosts);
   if (!scored.length) return { gate: null, finalists: [], ranked: [], reason: 'shortlist-empty', envelope: null, requests: 0 };
   const excerptRoot = await resolveExcerptRoot(catalog);
   const candidates = await Promise.all(scored.map(({ skill, score }) => enrichCandidate(catalog, skill, excerptRoot, { lexical: score })));
@@ -1374,6 +1891,8 @@ async function selectShortlist(catalog, task, backend, kind, topK, { limit = SHO
     resolvedPath: byCandName[c.name]?.resolvedPath || null,
     toonPath: byCandName[c.name]?.toonPath || null,
     permissions: byCandName[c.name]?.permissions || null,
+    allowedTools: byCandName[c.name]?.allowedTools || null,
+    compatibility: byCandName[c.name]?.compatibility || null,
   }));
   return { gate, finalists: ranked, ranked: rankCandidates(ranked), reason: null, envelope, requests: envelope.requests ?? 1 };
 }
@@ -1383,8 +1902,8 @@ function rankCandidates(items) {
     .sort((a, b) => ((b.probability ?? b.fits) - (a.probability ?? a.fits)) || (b.fits - a.fits) || a.name.localeCompare(b.name));
 }
 
-async function selectMock(catalog, task, topK) {
-  const scored = topScoredSkills(catalog, task, Math.max(SHORTLIST_SIZE, topK));
+async function selectMock(catalog, task, topK, priorBoosts = null) {
+  const scored = topScoredSkills(catalog, task, Math.max(SHORTLIST_SIZE, topK), priorBoosts);
   const max = scored[0]?.score || 1;
   const sum = scored.reduce((n, x) => n + x.score, 0) || 1;
   const excerptRoot = await resolveExcerptRoot(catalog);
@@ -1398,6 +1917,8 @@ async function selectMock(catalog, task, topK) {
       resolvedPath: info.resolvedPath,
       toonPath: info.toonPath,
       permissions: info.permissions,
+      allowedTools: info.allowedTools,
+      compatibility: info.compatibility,
     };
   }));
   return { gate: { value: scored.length ? 1 : 0, threshold: GATE_THRESHOLD, values: {} }, finalists: ranked, ranked: rankCandidates(ranked), reason: scored.length ? null : 'shortlist-empty', envelope: null, requests: 0 };
@@ -1407,25 +1928,29 @@ function registryFallback(task, note) {
   return { skill: 'find-skills', command: `npx skills find '${task.replace(/'/g, "'\\''")}'`, note };
 }
 
-export async function routeSkills(task, { mock = false, topK = 3, override = null, model = null, prefilter = null } = {}) {
+export async function routeSkills(task, { mock = false, topK = 3, override = null, model = null, prefilter = null, openspaceHints = null, useOpenspacePrior = true } = {}) {
   if (!task?.trim()) throw new Error('route-skills requires a task string');
   if (!Number.isInteger(topK) || topK < 1 || topK > 50) throw new Error('--top-k must be an integer from 1 to 50');
   if (PROFILE_ERROR) throw new Error(PROFILE_ERROR);
   if (PROFILE_DISABLED) throw new Error(`Jev profile '${PROFILE}' is disabled`);
   const effectivePrefilter = prefilter || process.env.JEV_ROUTE_PREFILTER || 'auto';
-  if (!['auto', 'bm25'].includes(effectivePrefilter)) throw new Error(`--prefilter must be 'auto' or 'bm25'`);
+  if (!['auto', 'bm25', 'sharded'].includes(effectivePrefilter)) throw new Error(`--prefilter must be 'auto', 'bm25', or 'sharded'`);
   const catalog = await loadCatalog();
   const meta = CATALOG_META.get(catalog);
   const byName = meta?.byName || Object.fromEntries(catalog.skills.map(s => [s.name, s]));
+  const relationshipsByName = meta?.relationshipsByName || buildSkillRelationshipsMap(catalog);
+  const auxByName = meta?.auxByName || Object.create(null);
   const fullTokens = meta ? meta.fullTokens : catalog.skills.reduce((n, s) => n + tokenEstimate(`${s.name} ${s.description}`), 0);
   const base = { task, mode: mock ? 'mock' : 'jev', fullCatalogSkills: catalog.skills.length, estimatedFullTokens: fullTokens };
+  const prior = await fetchOpenspacePrior(task, { openspaceHints, useOpenspacePrior });
+  const priorSummary = { used: prior.items.length > 0, weight: OPENSPACE_PRIOR_WEIGHT, matches: prior.items.map(p => ({ name: p.name, score: round(p.score) })) };
   let outcome = null;
   let selection = null;
   let backendUsed = null;
   let attempted = [];
   if (mock) {
-    outcome = await selectMock(catalog, task, topK);
-    selection = { strategy: 'mock', prefilter: 'bm25', choiceCap: null, shards: 0, requests: 0 };
+    outcome = await selectMock(catalog, task, topK, prior.boostByName);
+    selection = { strategy: 'mock', prefilter: 'bm25', openspacePrior: priorSummary, choiceCap: null, shards: 0, requests: 0 };
     backendUsed = { kind: 'mock', driver: 'mock', model: 'jev-mock', configuredModel: 'jev-mock', tier: 'mock', attestation: null };
   } else {
     const chain = resolveChain('route-skills', { override }).chain;
@@ -1439,26 +1964,35 @@ export async function routeSkills(task, { mock = false, topK = 3, override = nul
         continue;
       }
       const baseStrat = selectionStrategy(catalog.skills.length, backend.choiceCap);
-      let strategy = effectivePrefilter === 'bm25' ? 'bm25-shortlist' : baseStrat.strategy;
-      let shards = strategy === 'sharded' ? baseStrat.shards : 0;
+      let strategy;
+      if (effectivePrefilter === 'bm25') strategy = 'bm25-shortlist';
+      else if (effectivePrefilter === 'sharded') strategy = 'sharded';
+      else strategy = catalog.skills.length >= BM25_AUTO_CATALOG_THRESHOLD ? 'shortlist' : baseStrat.strategy;
+      let shards = strategy === 'sharded' ? Math.max(1, baseStrat.shards) : 0;
       let fallbackFrom = null;
       let result;
       try {
-        result = strategy === 'sharded'
-          ? await selectSharded(catalog, task, backend, kind, shards, topK)
-          : await selectShortlist(catalog, task, backend, kind, topK, { limit: strategy === 'bm25-shortlist' ? Math.max(SHORTLIST_SIZE, Math.min(24, backend.choiceCap || SHORTLIST_SIZE)) : SHORTLIST_SIZE });
-        if (strategy === 'bm25-shortlist' && result.reason === 'shortlist-empty' && baseStrat.strategy === 'sharded') {
-          fallbackFrom = 'bm25-shortlist';
-          strategy = 'sharded';
-          shards = baseStrat.shards;
+        if (strategy === 'sharded') {
           result = await selectSharded(catalog, task, backend, kind, shards, topK);
+        } else {
+          const cap = Math.max(2, backend.choiceCap || SHORTLIST_SIZE);
+          const limit = strategy === 'bm25-shortlist'
+            ? Math.min(Math.max(16, topK), cap)
+            : Math.min(Math.max(SHORTLIST_SIZE, topK), cap);
+          result = await selectShortlist(catalog, task, backend, kind, topK, { limit, priorBoosts: prior.boostByName });
+          if (result.reason === 'shortlist-empty' && baseStrat.shards <= MAX_CHOICE_SHARDS) {
+            fallbackFrom = strategy;
+            strategy = 'sharded';
+            shards = baseStrat.shards;
+            result = await selectSharded(catalog, task, backend, kind, shards, topK);
+          }
         }
       } catch (error) {
         errors.push({ kind, error: String(error.message || error) }); attempted.push(kind); continue;
       }
       if (result.error) { errors.push({ kind, error: result.error.error }); attempted.push(kind); continue; }
       outcome = result;
-      selection = { strategy, prefilter: effectivePrefilter, ...(fallbackFrom ? { fallbackFrom } : {}), choiceCap: backend.choiceCap, shards, requests: result.requests ?? 0 };
+      selection = { strategy, prefilter: effectivePrefilter, openspacePrior: priorSummary, ...(fallbackFrom ? { fallbackFrom } : {}), choiceCap: backend.choiceCap, shards, requests: result.requests ?? 0 };
       backendUsed = result.envelope ? result.envelope.backend : backendSummary(backend, null);
       attempted.push(kind);
       break;
@@ -1468,16 +2002,24 @@ export async function routeSkills(task, { mock = false, topK = 3, override = nul
 
   const top = outcome.ranked.slice(0, topK).map(r => {
     const skill = byName[r.name];
+    const rel = relationshipsByName[r.name] || (skill.relationships && typeof skill.relationships === 'object' ? skill.relationships : {});
+    const aux = auxByName[r.name] || {};
+    const permissions = Array.isArray(r.permissions) ? r.permissions : (Array.isArray(aux.permissions) ? aux.permissions : []);
+    const allowedTools = Array.isArray(r.allowedTools) ? r.allowedTools : (Array.isArray(aux.allowedTools) ? aux.allowedTools : null);
+    const compatibility = r.compatibility || aux.compatibility || null;
+    const toonPath = r.toonPath || aux.toonPath || null;
     return {
       name: r.name,
       category: skill.category,
-      ...(skill.subcategory ? { subcategory: skill.subcategory } : {}),
+      subcategory: skill.subcategory || null,
       description: skill.description,
-      ...(Array.isArray(skill.tags) && skill.tags.length ? { tags: skill.tags } : {}),
-      ...(skill.relationships && Object.keys(skill.relationships).length ? { relationships: skill.relationships } : {}),
-      ...(r.permissions ? { permissions: r.permissions } : {}),
-      path: r.resolvedPath || skill.path || `${skill.name}/SKILL.md`,
-      ...(r.toonPath ? { toonPath: r.toonPath } : {}),
+      tags: Array.isArray(skill.tags) ? skill.tags : [],
+      relationships: rel,
+      permissions,
+      ...(allowedTools?.length ? { allowedTools } : {}),
+      ...(compatibility ? { compatibility } : {}),
+      path: r.resolvedPath || aux.resolvedPath || skill.path || `${skill.name}/SKILL.md`,
+      ...(toonPath ? { toonPath } : {}),
       fits: round(r.fits),
       probability: r.probability === null || r.probability === undefined ? null : round(r.probability),
     };
@@ -2683,6 +3225,8 @@ function parseArgs(args) {
     scoreImportance: false,
     detailed: false,
     candidates: null,
+    openspaceHints: null,
+    useOpenspacePrior: true,
   };
   const rest = [];
   for (let i = 0; i < args.length; i++) {
@@ -2704,6 +3248,9 @@ function parseArgs(args) {
     else if (a.startsWith('--scope=')) flags.scope = a.slice(8);
     else if (a === '--candidates') flags.candidates = next();
     else if (a.startsWith('--candidates=')) flags.candidates = a.slice(13);
+    else if (a === '--openspace-hints') flags.openspaceHints = next();
+    else if (a.startsWith('--openspace-hints=')) flags.openspaceHints = a.slice(18);
+    else if (a === '--no-openspace-prior') flags.useOpenspacePrior = false;
     else if (a === '--top-k') flags.topK = Number(next());
     else if (a.startsWith('--top-k=')) flags.topK = Number(a.slice(8));
     else if (a === '--backend') flags.backend = next();
@@ -2848,7 +3395,7 @@ async function main() {
     console.log(JSON.stringify(status, null, 2));
     process.exitCode = status.ready === false ? 3 : status.active ? 0 : 2;
   }
-  else if (command === 'route-skills') console.log(JSON.stringify(await routeSkills(rest.join(' '), { mock: flags.mock, topK: flags.topK, override: flags.backend, model: flags.model, prefilter: flags.prefilter }), null, 2));
+  else if (command === 'route-skills') console.log(JSON.stringify(await routeSkills(rest.join(' '), { mock: flags.mock, topK: flags.topK, override: flags.backend, model: flags.model, prefilter: flags.prefilter, openspaceHints: flags.openspaceHints ? JSON.parse(flags.openspaceHints) : null, useOpenspacePrior: flags.useOpenspacePrior }), null, 2));
   else if (command === 'route-model') {
     const parsedCands = flags.candidates ? JSON.parse(flags.candidates) : null;
     console.log(JSON.stringify(await routeModel(rest.join(' '), { mock: flags.mock, override: flags.backend, model: flags.model, candidates: parsedCands }), null, 2));

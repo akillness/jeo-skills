@@ -68,9 +68,11 @@ re-running the installer updates this block in place.
 
 Run in this order. If a tool is missing, say so in one line and continue.
 
-1. **openspace** — skill routing. If the host hook already appended an OpenSpace
-   route note, load the named skill's `SKILL.md` before acting. Otherwise, for any
-   task that could match an installed skill, run
+1. **openspace** — weighted prior / standalone fallback. When a Jev profile is enabled
+   for this host, OpenSpace's local BM25 (`~/.agents/venvs/openspace/bin/python ~/.agents/skills/openspace/scripts/route_prompt.py --json "<prompt>"`)
+   acts only as a weighted prior fed into Jev (do not treat a standalone OpenSpace hook
+   note as final when Jev is active). When NO Jev profile is enabled, OpenSpace is the
+   standalone skill router: load the named skill from any hook note, or run
    `~/.agents/venvs/openspace/bin/python ~/.agents/skills/openspace/scripts/route_prompt.py --explain "<prompt>"`
    (the system `python3` lacks the `openspace` module) and load the top match.
 2. **rtk** — every shell command goes through the rtk hook; where the hook is not
@@ -79,9 +81,11 @@ Run in this order. If a tool is missing, say so in one line and continue.
    `semble find-related <file> <line> <path>`. No grep-and-read of whole files.
 4. **jev** — only after steps 2 and 3 both ran for this prompt, and only when a Jev
    profile is enabled (`node ~/.agents/jev/jev-harness.mjs --profile "$JEV_PROFILE" status`).
-   Then `route-skills --top-k 3 "<task>"` (advisory) and, before a risky action,
-   `review`. Never run jev before rtk and semble; skip silently when no profile is
-   enabled. Details: `jev-control-plane.md`.
+   Then `route-skills --prefilter bm25 --top-k 3 "<task>"` is the unified skill router
+   (combining `skills.json` metadata BM25, `SKILL.toon`/section excerpts, and OpenSpace's
+   BM25 prior weights) and, before a risky action, `review` / `gate-tool`. Never run
+   jev before rtk and semble; skip silently when no profile is enabled (step 1 openspace
+   handles routing). Details: `jev-control-plane.md`.
 5. **Route by query type** (below).
 
 ## Route by query type
