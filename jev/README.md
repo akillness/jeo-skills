@@ -1,6 +1,6 @@
 # Jev Control Plane Harness
 
-Optional TypeSafe System One harness for skill routing, context pruning, and proposal review. Named profiles select isolated backends. Codex lifecycle hooks can inject selected skill instructions and review proposed tool calls; Claude and Pi-family extensions can inject selected instructions. Host permissions remain authoritative.
+Optional TypeSafe System One harness for BM25+metadata skill routing, context & memory pruning, proposal review, and extended System One operations (`decide-action`, `route-model`, `gate-tool`, `moderate`, `evaluate-run`, `calibrate-judge`, `manage-memory`, `rerank`). Named profiles select isolated backends. Codex lifecycle hooks can inject selected skill context and review proposed tool calls; Claude and Pi-family extensions can inject hierarchical skill context. Host permissions remain authoritative.
 
 ![Jev control-plane flow](./assets/jev-flow.gif)
 
@@ -78,7 +78,7 @@ When updating an API profile that already has a saved key, omit `--key-env` to p
 | Setting | Behavior |
 |---|---|
 | `JEV_RUNTIME_MODE=advisory` (default) | Return selected skill/model names as suggestions. |
-| `JEV_RUNTIME_MODE=assist` | Read selected installed `SKILL.md` files and inject their full text and source paths into model context. |
+| `JEV_RUNTIME_MODE=assist` | Read selected installed `SKILL.toon` summaries (or key `SKILL.md` sections when larger than 1,536 bytes; full text for compact `SKILL.md` skills) alongside `skills.json` taxonomy/relationship metadata and canonical `Source` paths, escalating to full `SKILL.md` reads on demand. |
 | `JEV_REVIEW_MODE=off` (default) | PreToolUse returns neutral without a review request. |
 | `JEV_REVIEW_MODE=advisory` | PreToolUse calls `review` and injects its verdict; host approvals remain unchanged. |
 | `JEV_REVIEW_MODE=enforce` | Explicitly deny matched tool calls unless review returns `permit` on a `validated` backend. Provider/contract failures and missing turn context deny. A permit never returns a host `allow` decision. |
@@ -109,7 +109,7 @@ The hook commands name the Node that ran `hooks-install`. Under Homebrew that is
 
 In extended memory mode a dropped tool result keeps its message, with its text replaced by a placeholder, so the matching tool call is never orphaned. Results containing images or other non-text parts are never rewritten.
 
-Assist mode loads only catalog-listed paths `<name>/SKILL.md` within the selected skill root. Escaped symlinks, missing files and oversize skills are skipped; instructions are never partially truncated. Limits are 64 KiB per skill and 96 KiB combined. An explicit `JEV_CATALOG_PATH` selects a caller-trusted catalog/root; native callbacks otherwise pin the installed snapshot instead of trusting the working directory.
+Assist mode loads only catalog-listed paths `<name>/SKILL.md` and optional sibling `<name>/SKILL.toon` within the selected skill root. Escaped symlinks, missing files and oversize skills are skipped; full bodies are never partially truncated mid-file (Tier 1 injects `SKILL.toon` or key markdown sections with the canonical `Source` path for on-demand full reads). Limits are 64 KiB per skill, 16 KiB per `SKILL.toon`, and 96 KiB combined. An explicit `JEV_CATALOG_PATH` selects a caller-trusted catalog/root; native callbacks otherwise pin the installed snapshot instead of trusting the working directory.
 
 For review, the latest task is cached privately per profile/session/turn for up to 24 hours, with mode-600 files. A new prompt cleans up expired cache entries. Jev does not execute tests/builds: the review input describes the proposed tool call, and host validation and approvals remain separate.
 
@@ -132,7 +132,7 @@ node ~/.agents/jev/jev-plugin.mjs enable --agent claude --profile claude --apply
 node ~/.agents/jev/jev-plugin.mjs status --agent claude --profile claude
 ```
 
-When a host loads the native package, its callback remains registered while the selected profile is ON or OFF. An OFF profile returns neutral before stdin/catalog/backend work. `JEV_ENABLED` is the profile activation switch; copying/loading assets does not change it. An ON advisory profile returns suggestions prefixed `Jev advisory only`. In assist mode, Claude injects selected full skill instructions with the prompt; jeopi, OMP, and Pi inject a `jev-skill-context` custom message. Their context callback can remove older Jev-owned messages after a confident prune decision. The newest skill message, all user/system/assistant/tool messages, tool-call pairs and other extensions' messages are preserved. At most 32 old Jev blocks/262,144 characters are considered per callback; errors preserve them. Native extensions do not automatically switch models or enforce action review. Codex uses the separate lifecycle hooks above.
+When a host loads the native package, its callback remains registered while the selected profile is ON or OFF. An OFF profile returns neutral before stdin/catalog/backend work. `JEV_ENABLED` is the profile activation switch; copying/loading assets does not change it. An ON advisory profile returns suggestions prefixed `Jev advisory only`. In assist mode, Claude injects selected Tier 1 skill context (`SKILL.toon` summary or key `SKILL.md` sections with canonical `Source` escalation, or full text for compact skills) with the prompt; jeopi, OMP, and Pi inject a `jev-skill-context` custom message. Their context callback can remove older Jev-owned messages after a confident prune decision. The newest skill message, all user/system/assistant/tool messages, tool-call pairs and other extensions' messages are preserved. At most 32 old Jev blocks/262,144 characters are considered per callback; errors preserve them. Native extensions do not automatically switch models or enforce action review. Codex uses the separate lifecycle hooks above.
 
 For jeopi, OMP, and Pi, helpers tolerate subprocess stdin `EPIPE` only after a parsed `enabled:false` response. Actual-OFF registered callbacks with a 1 MiB prompt return `{}` without changing prior host context, exit 0, and emit no unhandled-error/EPIPE stderr; other stdin errors remain `CONTROLLER_INPUT_ERROR`.
 
@@ -308,7 +308,7 @@ jev/                                  # source in this repository
 node ~/.agents/jev/jev-harness.mjs --profile "${JEV_PROFILE:?Select the current agent profile first}" route-skills --top-k 3 "<task>"
 ```
 
-`route-skills` retains `task`, mode, `families` (categories of `topK`), `topK`, token estimates, and `publicRegistryFallback`, and adds `selection` and advisory `routing`. Gate and fit thresholds are both `0.30`. A gate below threshold returns explicit none (`topK: []`, `selection.reason: "gate"`) and `publicRegistryFallback`; no candidate meeting fit threshold returns explicit none with `selection.reason: "fits"`. Strategy is `sharded` when `ceil(catalogSize / choiceCap) <= 4` and `shortlist` otherwise. The sharded path chooses per-shard finalists, then a final choice; shortlist is lexical and cap-aware.
+`route-skills` retains `task`, mode, `families` (categories of `topK`), `topK` (including `subcategory`, `tags`, `relationships` from `skills.json`, `permissions`, resolved `path`, and optional `toonPath`/`allowedTools`/`compatibility`), token estimates, and `publicRegistryFallback`, and adds `selection` and advisory `routing`. Gate and fit thresholds are both `0.30`. A gate below threshold returns explicit none (`topK: []`, `selection.reason: "gate"`) and `publicRegistryFallback`; no candidate meeting fit threshold returns explicit none with `selection.reason: "fits"`. Under default `--prefilter auto`, large catalogs (`>= 64` skills) compress candidates via bilingual BM25+IDF metadata scoring (`name > tags/triggers > category/subcategory > description/relationships`) boosted by OpenSpace's local BM25 prior (`openspace/scripts/route_prompt.py --json`, `OPENSPACE_PRIOR_WEIGHT = 3.0`; disable with `--no-openspace-prior` or `JEV_OPENSPACE_PRIOR=0`) into a cap-aware shortlist verified in one Jev `which` + `fits::<name>` pass, falling back to metadata-annotated `sharded` when BM25 has zero hits and `ceil(catalogSize / choiceCap) <= 4`; smaller catalogs follow `selectionStrategy` (`sharded` when `ceil(catalogSize / choiceCap) <= 4`, otherwise `shortlist`). Pass `--prefilter bm25|sharded` to override; during Jev backend outages, `jev-plugin.mjs` falls back best-effort to OpenSpace matches.
 
 If `.agent-skills/skills.json` supplies `model_policies`, `routing` is advisory: candidates use `provider/model` strings such as `openai/gpt-6.1-sol`, `google/gemini-2.5-pro`, `anthropic/claude-fable-5-1`, and `ollama/qwen2.5:7b`; these names identify models, not hosts. Each result carries the resolved `policy` (`{id, candidates, fallback, constraints}`), ranked candidates with probabilities, the chosen value (or `other`), confidence, and `provenance: {backend: {kind, driver, model, tier}}`. Native hosts receive model suggestions and `model-plan` can render host launch arguments; neither automatically switches the coding model. `model_policies` is not projected into `skills.toon` or README catalog tables. If no policy exists, `routing: []`.
 
@@ -339,9 +339,26 @@ Review envelopes and results bind `backend: {kind, model, tier}`. A proposed `pe
 | `reject` | Supplied validation fails. | Do not proceed. |
 | `unavailable` | Missing credentials, ineligible/unreachable backend, contract error, timeout, or malformed response. | No autonomous action. |
 
+### Extended System One commands
+
+Beyond `route-skills`, `prune-context`, and `review`, `jev-harness.mjs` exposes extended System One commands (all fail closed or degrade safely when a backend is unvalidated or unavailable):
+
+| Command | Purpose | Key flags / contract notes |
+|---|---|---|
+| `decide-action` | Select bounded UI/browser next step (`click:<id>`, `type:<id>`, `done`, `blocked`) | Bounds options to `choiceCap`; degrades `execute` → `confirm` unless `backend.tier === 'validated'` |
+| `route-model` | Classify task complexity and select model tier (`tier:cheap\|balanced\|strong\|reasoning`) | Combines complexity + `needs_reasoning` signals |
+| `gate-tool` | Pre-execution tool safety/task/confirmation gate (`allow`, `confirm`, `block`) | Bounds tool choices by `choiceCap`; degrades `allow` → `confirm` unless `backend.tier === 'validated'` |
+| `moderate` | Inspect content for secrets/PII, destructive actions, and prompt injection | `--scope untrusted` adds `indirect_prompt_injection` checks |
+| `evaluate-run` | Score completed execution (`pass`, `fail`, score, 64-hex receipt) | `--detailed` adds `qualityGrade` and `failureCategory` |
+| `calibrate-judge` | Compute TPR/TNR confusion matrix for a judge criterion against labeled samples | Offline `--mock` or configured backend scoring |
+| `manage-memory` | Compress tool outputs, summarize dropped turns, and optionally persist memory store | `--score-importance` adds weighted Noul+choice retention scoring; `--persist-memory` redacts secrets (mode 0600) |
+| `rerank` | Hybrid BM25 + Noul relevance (plus optional graded scoring) document reranking | Preserves highest-signal candidates within `--top-k` |
+
 ### Smoke and offline checks
 
-Fresh 2026-10-14 verification: six Node suites reported **117 passed, 1 opt-in live skip**; Python Jev+installer regressions passed **112 tests**; mock self-test passed **20/20**. Real TypeSafe routing selected `react-best-practices` through served `jev-1.13.0`. Two new actual Codex 0.162.1 sessions confirmed injected skill/source recognition and advisory PreToolUse findings before a successful read-only command. The installed profile uses assist/advisory, with both generated definitions reported trusted by the actual host. This verifies the stated transport and integration, not calibration, broad routing quality, or automatic permission grants.
+Fresh 2026-11-17 verification: offline `self-test` passed **28/28** checks; nine Jev Node test suites (`enhancements`, `runtime`, `lifecycle`, `plugin`, `install`, `profile`, `cursor`, `codex`, `usage-ledger` with `JEV_LIVE_SMOKE=0`) reported **194 tests: 193 passed, 0 failed, 1 opt-in live skip**; Python Jev regressions (`scripts.test_jev_regressions`) passed **72 tests**; and all **440** catalog skills passed `skills.json` SSOT projection, strict link, frontmatter, and flat-layout checks. `route-skills --mock --top-k 3` resolves `category`/`subcategory`, `tags`, `relationship_groups`, `SKILL.md` auxiliary frontmatter (`permissions`, `allowedTools`, `compatibility`), `path`, and sibling `toonPath`. This verifies offline routing, harness contracts, and fixture integrations rather than paid hosted model calibration or live host-session enforcement.
+
+Recorded 2026-10-14 verification: six Node suites reported **117 passed, 1 opt-in live skip**; Python Jev+installer regressions passed **112 tests**; mock self-test passed **20/20**. Real TypeSafe routing selected `react-best-practices` through served `jev-1.13.0`. Two new actual Codex 0.162.1 sessions confirmed injected skill/source recognition and advisory PreToolUse findings before a successful read-only command. The installed profile uses assist/advisory, with both generated definitions reported trusted by the actual host. This verifies the stated transport and integration, not calibration, broad routing quality, or automatic permission grants.
 
 ```sh
 node ~/.agents/jev/jev-harness.mjs --profile "${JEV_PROFILE:?Select the current agent profile first}" smoke --backend local --task "<task>"

@@ -283,7 +283,7 @@ python3 scripts/retire-unused-skills.py --usage-report report.json --apply \
 
 | Integración | Propósito | Configuración |
 |---|---|---|
-| **Jev** | Arnés de decisiones: dirige una tarea a habilidades, reduce el contexto y revisa propuestas de limpieza | `bash jev/jev-setup.sh --profile <name> ...` · [jev/README.md](jev/README.md) |
+| **Jev** | Arnés de decisiones: enrutamiento de habilidades BM25+metadatos (inyección jerárquica `assist` con `SKILL.toon`/secciones), poda de contexto/memoria, control de acciones y herramientas, moderación, evaluación de ejecuciones y reranking | `bash jev/jev-setup.sh --profile <name> ...` · [jev/README.md](jev/README.md) |
 | **Jevgrep** | Descubrimiento remoto sobre documentos seleccionados de habilidades o de la wiki | `jeo-skill explore "<question>" --root <dir> --dry-run` · [jevgrep](.agent-skills/jevgrep/SKILL.md) |
 
 Ninguna forma parte de la instalación del catálogo. Ambas pueden enviar datos a un backend configurado. En `jeo-skill`, los comandos que las llaman (`prune-unused --apply`, `usage relevance`, `explore`) rechazan el uso remoto sin `--allow-remote`; el arnés Jev independiente envía directamente a su backend configurado, así que aprueba un perfil alojado antes de usarlo.
@@ -959,6 +959,13 @@ Consulta los [límites de instalación](setup-all-skills-prompt.md#elephant-gold
 ---
 
 <!-- WHATS-NEW:START -->
+
+## 🆕 Novedades en v2026-11-17
+
+| Cambio | Detalles |
+|--------|---------|
+| **Indexación SSOT de metadatos Jev, prefiltrado BM25+IDF e inyección `assist` en 3 niveles** | Mantiene la regla SSOT de `AGENTS.md` (`category`, `subcategory`, `tags` y `relationships` viven solo en `.agent-skills/skills.json`) mientras `loadCatalog` y `resolveExcerptRoot` indexan las 440 habilidades (`relationship_groups` incluido) junto con el frontmatter auxiliar de `SKILL.md` (`compatibility`, `permissions`, `allowed-tools`, `triggers` y disparadores en la descripción). `skillMetadataAndExcerpt` prioriza resúmenes compactos `SKILL.toon` (`extractToonExcerpt`) o secciones clave de `SKILL.md` (`Triggers` / `When to Use` / `Route-outs` / `Non-goals` / `Constraints`) serializadas dentro del límite del backend mediante `budgetCandidates`. Con `--prefilter auto`, los catálogos con `>= 64` habilidades comprimen candidatos con BM25/IDF bilingüe KO/EN (`name > tags/triggers > category/subcategory > description/relationships`) unificado con el prior BM25 local de OpenSpace (`openspace/scripts/route_prompt.py --json`, `OPENSPACE_PRIOR_WEIGHT = 3.0`, desactivable con `--no-openspace-prior` / `JEV_OPENSPACE_PRIOR=0`) antes de la verificación Jev `which` + `fits::<name>` (con respaldo `sharded` anotado si no hay coincidencias léxicas y `shards <= 4`), enriqueciendo `route-skills` `topK` con `subcategory`, `tags`, `relationships`, `permissions`, `path` resuelto y `toonPath`/`allowedTools`/`compatibility`. La inyección `assist` en `jev-plugin.mjs` (`selectedSkillContext`) usa 3 niveles (`SKILL.toon` → metadatos y secciones clave con `Source:` para `SKILL.md` `> 1.536` bytes → cuerpo completo en habilidades compactas) con respaldo a OpenSpace ante fallos de backend Jev, y `scripts/skills-upgrade.sh` mantiene al día la copia `~/.agents/jev/skills.json`. |
+| **Expansión CLI de los 7 casos de uso System One en Jev y control por nivel** | Añade `decide-action` (selección acotada de acción UI/navegador, degradada a `confirm` en backends no validados), `route-model` (clasificación de complejidad y selección de nivel de modelo), `gate-tool` (compuerta previa de herramientas acotada por `choiceCap`, degradada en backends no validados), `moderate --scope untrusted` (detección de inyección indirecta), `evaluate-run --detailed` (`qualityGrade` y `failureCategory`), `calibrate-judge` (TPR/TNR), `manage-memory --score-importance` y `rerank` híbrido BM25 + calificación gradual. |
 
 ## 🆕 Novedades en v2026-11-16
 

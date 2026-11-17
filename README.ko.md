@@ -341,7 +341,7 @@ python3 scripts/refresh-host-links.py       # 링크 계획만 표시 (읽기 �
 
 1. 신뢰된 체크아웃에서 `git pull --ff-only` — non-fast-forward면 실행 중단
 2. `jeo-skill doctor`로 카탈로그 메타데이터·설치 사전 요건·CLI 링크 상태를 표시합니다. 이 단계의 실패만으로 업그레이드가 중단되지는 않으며, 전체 카탈로그 정합성 검증을 대신하지 않습니다.
-3. `jeo-skill install --all --global --yes`로 공유 루트를 최신 카탈로그로 재작성
+3. `jeo-skill install --all --global --yes`로 공유 루트를 최신 카탈로그로 재작성(비심볼릭 `~/.agents/jev/skills.json` 스냅샷이 있으면 함께 갱신)
 4. `jeo-skill prune-retired --global`로 은퇴한 카탈로그 사본 제거 (레거시 중복 정리 단계)
 5. `scripts/refresh-host-links.py --apply` — 새로 추가된 스킬의 링크 생성, 끊긴 링크 제거, **호스트 로컬 비카탈로그 스킬은 절대 삭제하지 않음**
 6. 검증: 스크립트에 경로가 정의된 선택 호스트 루트의 끊긴 링크를 검사합니다. `--dry-run`에서는 이 검사를 건너뛰며, 실제 호스트 활성화나 스킬 로드는 검증하지 않습니다.
@@ -373,7 +373,7 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 
 | 통합 | 목적 | 설정 |
 |---|---|---|
-| **Jev** | 의사결정 하네스: 작업을 스킬로 라우팅하고, 컨텍스트를 정리하며, 정리 제안을 검토합니다 | `bash jev/jev-setup.sh --profile <name> ...` · [jev/README.md](jev/README.md) |
+| **Jev** | 의사결정 하네스: BM25+메타데이터 스킬 라우팅(`SKILL.toon`·핵심 섹션 계층적 `assist` 주입), 컨텍스트·메모리 정리, 행동·도구 게이팅, 모더레이션, 실행 평가 및 리랭킹 | `bash jev/jev-setup.sh --profile <name> ...` · [jev/README.md](jev/README.md) |
 | **Jevgrep** | 선택한 스킬 또는 위키 문서의 원격 검색 | `jeo-skill explore "<question>" --root <dir> --dry-run` · [jevgrep](.agent-skills/jevgrep/SKILL.md) |
 
 카탈로그에 포함된 운영 가이드를 설치해도 이 두 통합이 자동으로 활성화되지는 않습니다. 둘 다 구성된 백엔드로 데이터를 보낼 수 있습니다. `jeo-skill`에서는 이를 호출하는 명령(`prune-unused --apply`, `usage relevance`, `explore`)이 `--allow-remote` 없이는 원격 사용을 거부합니다. 독립 실행형 Jev 하네스는 구성된 백엔드로 직접 전송하므로, 사용하기 전에 호스팅 프로필을 승인하세요.
@@ -1019,6 +1019,13 @@ v1 마이그레이션, 실행 근거에 따른 `/harness:evolve`를 안내합니
 
 <!-- WHATS-NEW:START -->
 
+## 🆕 v2026-11-17 업데이트
+
+| 변경 사항 | 상세 내용 |
+|--------|---------|
+| **Jev SSOT 메타데이터 인덱싱·BM25+IDF 프리필터링 및 3계층 `assist` 주입** | `AGENTS.md` SSOT 원칙(`category`·`subcategory`·`tags`·`relationships`는 `.agent-skills/skills.json`에만 단일 소스로 유지하고 `SKILL.md`에 중복 기재하지 않음)을 준수하면서 `loadCatalog`와 `resolveExcerptRoot`가 440개 스킬 전체의 `category`·`subcategory`·`tags`·`keyword`·`platforms` 및 최상위 `relationship_groups`와 `SKILL.md` 보조 frontmatter(`compatibility`·`permissions`·`allowed-tools`·`triggers` 및 설명 내 트리거)를 함께 인덱싱합니다. `skillMetadataAndExcerpt`는 인접 `SKILL.toon` 요약(`extractToonExcerpt`로 `U`/`R`/`S` 섹션 우선 및 중복 헤더 제거) 또는 코드 블록을 피한 `SKILL.md` 핵심 섹션(`Triggers` / `When to Use` / `Route-outs` / `Non-goals` / `Constraints`)을 우선 추출해 `budgetCandidates`로 백엔드 상태 한도 내에 직렬화합니다. `--prefilter auto`에서 64개 이상 카탈로그는 OpenSpace 로컬 BM25 사전 가중치(`openspace/scripts/route_prompt.py --json`, `OPENSPACE_PRIOR_WEIGHT = 3.0`, 비활성화 `--no-openspace-prior` / `JEV_OPENSPACE_PRIOR=0`)와 결합된 한·영 BM25/IDF 필드 가중 압축(`name > tags/triggers > category/subcategory > description/relationships`) 후 단일 Jev `which` + `fits::<name>` 정밀 검증을 수행하고(어휘 일치가 없고 샤드 `<= 4`개면 메타 병기 `sharded`로 폴백), `route-skills` `topK` 응답에 `subcategory`·`tags`·`relationships`·`permissions`·해석된 `path` 및 선택적 `toonPath`/`allowedTools`/`compatibility`를 포함합니다. `jev-plugin.mjs` `assist` 주입(`echo-turn-jeopi` / `jev-setup.sh`)은 3계층(`SKILL.toon` → 1,536바이트 초과 `SKILL.md`의 핵심 메타·섹션 + `Source:` 전체 읽기 지시 → 소형 `SKILL.md` 전문)과 Jev 백엔드 장애 시 OpenSpace 폴백을 지원하며, `scripts/skills-upgrade.sh`가 비심볼릭 `~/.agents/jev/skills.json` 스냅샷도 함께 동기화합니다. |
+| **Jev System One 7대 유스케이스 CLI 확장 및 등급 게이팅** | `decide-action`(상한 적용 UI/브라우저 행동 선택, 미검증·모의 백엔드에서 `execute`→`confirm` 강등), `route-model`(복잡도·`needs_reasoning` 기반 모델 계층 라우팅), `gate-tool`(`choiceCap` 제한 도구 실행 전 안전 게이트, 미검증·모의 백엔드에서 `allow`→`confirm` 강등), `moderate --scope untrusted`(간접 프롬프트 인젝션 점검), `evaluate-run --detailed`(`qualityGrade`·`failureCategory`), `calibrate-judge`(라벨 데이터셋 기반 TPR/TNR 혼동 행렬), `manage-memory --score-importance`, 그리고 하이브리드 BM25+등급형 `rerank`를 추가했습니다. |
+
 ## 🆕 v2026-11-16 업데이트
 
 | 변경 사항 | 상세 내용 |
@@ -1047,12 +1054,6 @@ v1 마이그레이션, 실행 근거에 따른 `/harness:evolve`를 안내합니
 | **NVIDIA SkillEvaluator 운영 스킬** | 업스트림 `12b387f7a62b5f3e0de9eff392a3f6b7e952f2c2`에 고정한 `nvidia-skill-evaluator`를 추가했습니다. 단계별 명령, 스캐너·제공자·샌드박스·CI 승인 경계, Apache-2.0 출처, 파일 12개의 SHA-256 매니페스트와 독립 오프라인 헬퍼를 제공합니다. 스킬 432개 카탈로그, README 3개 언어 목록과 setup 가이드를 동기화했습니다. 오프라인 회귀 테스트 15개, 선택 파일 12개 해시, 격리 HOME 설치 파일 5개의 바이트 일치 검증을 통과했습니다. 라우팅 시나리오 10개는 작성만 했으며 모델로 실행하지 않았습니다. 평가기·보안 스캐너·유료 모델·실제 Tier 3 실행은 수행하지 않았습니다. |
 | **현재 카탈로그** | 현재 매니페스트는 `donchitos-game-studios`와 `nvidia-skill-evaluator`를 포함한 스킬 432개·카테고리 10개를 담고 있으며, `agenticskills` 번들 설치기는 제거했습니다. 카탈로그 표는 `.agent-skills/skills.json`에서 다시 생성합니다. |
 | **README 3개 언어의 운영 안내 정렬** | 영어·한국어·스페인어 안내에서 설치와 활성화, 관찰된 사용 기록과 런타임 설치 경로의 한계를 구분하고 카탈로그 유지관리 명령을 추가했습니다. 현재 설치·갱신 동작은 과거 업데이트 요약보다 README의 운영 안내를 기준으로 확인하세요. |
-
-## 🆕 v2026-11-07 업데이트
-
-| 변경 사항 | 상세 내용 |
-|--------|---------|
-| **심볼릭 링크 호스트용 원커맨드 공유 루트 업그레이드** | `scripts/skills-upgrade.sh`가 전체 설치 이후의 유지보수 부담(pull → 검증 → 갱신 → 은퇴 정리 → 호스트 링크 재조정 → 검증)을 하나의 멱등 커맨드로 통합했습니다. `setup-all-skills-prompt.md`를 따르는 머신에서는 카탈로그가 하나의 공유 루트(`~/.agents/skills`)에 있고 각 호스트 디렉터리(claude, pi, gjc, antigravity, cursor, aside-user)에 스킬당 심볼릭 링크가 생기는데, 스크립트는 그 공유 루트만 갱신하고 안전하지 않은 호스트별 복사 설치기(rmtree가 심볼릭 링크 슬롯을 따라 공유 루트 원본까지 삭제할 수 있음)는 의도적으로 피합니다. 함께 추가된 `scripts/refresh-host-links.py`는 새 스킬의 링크를 생성하고 끊긴 링크를 제거하며, 교체된 사본과 낡은 링크를 삭제하지 않고 `~/.local/state/jeo-skill/quarantine/upgrade-<UTC>/` 아래로 격리하고, 호스트 로컬 비카탈로그 스킬은 절대 만지지 않습니다. 스크립트가 직접 최신 nvm Node bin을 `PATH`에 추가해 헤드리스 실행에서도 `npx`를 찾고, `scripts/com.jeo-skills.skills-upgrade.plist`가 launchd로 주간 스케줄을 담당합니다. README와 `README.ko.md`에는 이 워크플로우를 담은 "설치된 스킬 최신 상태 유지" 섹션이 새로 생겼습니다. |
 
 > 📜 이전 기록: [`changelog/ko/`](changelog/ko/) (월별 파일, 최신순).
 

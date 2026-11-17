@@ -300,7 +300,7 @@ What each step does:
 
 1. `git pull --ff-only` on the trusted checkout — any non-fast-forward stops the run
 2. `jeo-skill doctor` reports catalog metadata, installer prerequisites and CLI-link status; it does not run the catalog-projection validators
-3. `jeo-skill install --all --global --yes` rewrites the shared root with the latest catalog
+3. `jeo-skill install --all --global --yes` rewrites the shared root with the latest catalog (and `scripts/skills-upgrade.sh` refreshes non-symlink `~/.agents/jev/skills.json` snapshots when present)
 4. `jeo-skill prune-retired --global` removes retired catalog copies (the legacy-dedupe step)
 5. `scripts/refresh-host-links.py --apply` creates links for newly added skills, removes dangling ones, and **never deletes host-local non-catalog skills**
 6. verification: a broken-link scan of the helper's known host roots (skipped during dry run); the earlier doctor is informational and does not gate the upgrade
@@ -334,7 +334,7 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 | Integration | Purpose | Setup |
 |---|---|---|
 | **OpenSpace** | Optional local prompt-time skill finder and routing | [OpenSpace setup](setup-all-skills-prompt.md#openspace-skill-finder-and-prompt-time-skill-routing) |
-| **Jev** | Decision harness: route a task to skills, prune context, review cleanup proposals | `bash jev/jev-setup.sh --profile <name> ...` · [jev/README.md](jev/README.md) |
+| **Jev** | Decision harness: BM25+metadata skill routing (hierarchical `SKILL.toon`/section assist), context/memory pruning, action & tool gating, moderation, run evaluation, and reranking | `bash jev/jev-setup.sh --profile <name> ...` · [jev/README.md](jev/README.md) |
 | **Jevgrep** | Remote discovery over selected skill or wiki documents | `jeo-skill explore "<question>" --root <dir> --dry-run` · [jevgrep](.agent-skills/jevgrep/SKILL.md) |
 
 These integrations are independent of catalog installation and of each other. Jev and Jevgrep can send data to a configured backend. In `jeo-skill`, commands that call them (`prune-unused --apply`, `usage relevance`, `explore`) refuse remote use without `--allow-remote`; the standalone Jev harness sends to its configured backend directly, so approve a hosted profile before using it. OpenSpace setup and host activation also require their own approval.
@@ -1009,6 +1009,13 @@ See the [setup boundary](setup-all-skills-prompt.md#elephant-goldfish-model-on-d
 
 <!-- WHATS-NEW:START -->
 
+## 🆕 What's New in v2026-11-17
+
+| Change | Details |
+|--------|---------|
+| **Jev SSOT metadata indexing, BM25+IDF prefiltering & 3-tier `assist` injection** | Preserves `AGENTS.md` SSOT taxonomy rules (`category`, `subcategory`, `tags`, `relationships` live solely in `.agent-skills/skills.json`) while expanding `loadCatalog` and `resolveExcerptRoot` to index all 440 skills' `category`, `subcategory`, `tags`, `keyword`, `platforms`, and top-level `relationship_groups` alongside auxiliary `SKILL.md` frontmatter (`compatibility`, `permissions`, `allowed-tools`, `triggers`, plus inline description triggers). `skillMetadataAndExcerpt` prefers compact sibling `SKILL.toon` summaries (`extractToonExcerpt`, keeping `U`/`R`/`S` sections and trimming duplicate headers) or fenced-code-aware `SKILL.md` headings (`Triggers` / `When to Use` / `Route-outs` / `Non-goals` / `Constraints`), packed within backend state limits by `budgetCandidates`. Under `--prefilter auto`, catalogs with `>= 64` skills run bilingual KO/EN BM25+IDF field-weighted compression (`name > tags/triggers > category/subcategory > description/relationships`) unified with OpenSpace's local BM25 prior (`openspace/scripts/route_prompt.py --json`, `OPENSPACE_PRIOR_WEIGHT = 3.0`, opt-out `--no-openspace-prior` / `JEV_OPENSPACE_PRIOR=0`) before single-pass Jev `which` + `fits::<name>` verification (with metadata-annotated `sharded` fallback when lexical hits are empty and `shards <= 4`). `route-skills` `topK` returns `subcategory`, `tags`, `relationships`, `permissions`, resolved `path`, and optional `toonPath`/`allowedTools`/`compatibility`. `jev-plugin.mjs` `assist` injection (`selectedSkillContext` via `echo-turn-jeopi` / `jev-setup.sh`) uses 3 tiers (`SKILL.toon` → key metadata/sections + `Source:` escalation for `> 1,536`-byte `SKILL.md` → full body for compact skills) with OpenSpace fallback on Jev backend outages, and `scripts/skills-upgrade.sh` keeps non-symlink `~/.agents/jev/skills.json` snapshots current. |
+| **Jev System One 7-use-case CLI expansion & tier-gating** | Adds `decide-action` (bounded UI/browser action choice, tier-gated from `execute` to `confirm` when `backend.tier !== 'validated'`), `route-model` (complexity scoring + `needs_reasoning` model-tier routing), `gate-tool` (`choiceCap`-bounded pre-tool safety gate, tier-gated from `allow` to `confirm` on unvalidated/mock backends), `moderate --scope untrusted` (indirect prompt-injection checks), `evaluate-run --detailed` (`qualityGrade` + `failureCategory`), `calibrate-judge` (TPR/TNR confusion matrix on labeled examples), `manage-memory --score-importance`, and hybrid BM25 + graded `rerank`. |
+
 ## 🆕 What's New in v2026-11-16
 
 | Change | Details |
@@ -1037,12 +1044,6 @@ See the [setup boundary](setup-all-skills-prompt.md#elephant-goldfish-model-on-d
 | **NVIDIA SkillEvaluator operator skill** | Adds `nvidia-skill-evaluator`, pinned to upstream `12b387f7a62b5f3e0de9eff392a3f6b7e952f2c2`, with tier-specific commands, scanner/provider/sandbox/CI approval boundaries, Apache-2.0 attribution, a 12-file SHA-256 manifest, and a standalone offline helper. The 432-skill catalog, three README inventories and setup guide are synchronized. Verification: 15 offline regression tests, all 12 selected-file hashes, and byte-identical five-file installation into an isolated HOME passed. Ten routing scenarios are authored, not model-executed; the evaluator, scanners, paid models and live Tier 3 runs were not executed. |
 | **Current catalog** | The current manifest contains 432 skills in 10 categories, including `donchitos-game-studios` and `nvidia-skill-evaluator`; the `agenticskills` bundle installer has been removed. Catalog tables are regenerated from `.agent-skills/skills.json`. |
 | **README guidance aligned across languages** | English, Korean and Spanish now distinguish installation from activation, document observed usage and runtime-destination limits, and include catalog maintenance commands. For current installation and refresh behavior, consult the README's operational sections rather than older release summaries. |
-
-## 🆕 What's New in v2026-11-07
-
-| Change | Details |
-|--------|---------|
-| **One-command shared-root upgrade for symlinked hosts** | `scripts/skills-upgrade.sh` turns the post-full-install maintenance burden (pull → validate → refresh → prune-retired → host-link reconcile → verify) into a single idempotent command. On machines following `setup-all-skills-prompt.md`, the catalog lives in one shared root (`~/.agents/skills`) with per-skill symlinks in each host directory (claude, pi, gjc, antigravity, cursor, aside-user); the script refreshes that root only and explicitly avoids unsafe per-host copy installers, whose rmtree can follow symlink slots back into the shared root and delete originals. Paired `scripts/refresh-host-links.py` creates links for new skills, removes dangling ones, quarantines replaced copies and stale links under `~/.local/state/jeo-skill/quarantine/upgrade-<UTC>/` instead of deleting them, and never touches host-local non-catalog skills. The script adds the newest nvm Node bin to `PATH` itself so headless runs still find `npx`, and `scripts/com.jeo-skills.skills-upgrade.plist` schedules the same flow weekly via launchd. The README and `README.ko.md` now document this workflow in a new "Keeping installed skills current" section. |
 
 > 📜 Older entries: [`changelog/en/`](changelog/en/) (monthly files, newest first).
 

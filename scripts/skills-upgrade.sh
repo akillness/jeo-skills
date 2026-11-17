@@ -76,6 +76,13 @@ step "2/6 catalog doctor"
 
 step "3/6 shared-root refresh (never per-host copy targets)"
 "$JEO_SKILL_CMD" install --all --global --yes "${DRY_FLAG[@]+"${DRY_FLAG[@]}"}"
+if [[ -f "$REPO_DIR/.agent-skills/skills.json" ]] && [[ -f "$HOME/.agents/jev/skills.json" ]] && [[ ! -L "$HOME/.agents/jev/skills.json" ]]; then
+  if [[ "$DRY_RUN" -eq 1 ]]; then
+    echo "would refresh: $HOME/.agents/jev/skills.json"
+  else
+    cp "$REPO_DIR/.agent-skills/skills.json" "$HOME/.agents/jev/skills.json"
+  fi
+fi
 
 step "4/6 prune retired catalog copies"
 "$JEO_SKILL_CMD" prune-retired --global "${DRY_FLAG[@]+"${DRY_FLAG[@]}"}"

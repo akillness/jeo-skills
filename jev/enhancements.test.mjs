@@ -484,24 +484,89 @@ test('jev-harness CLI supports manage-memory, moderate, evaluate-run, rerank, an
   assert.equal(rerankJson.topK[0].id, 'sqlite-doc');
 });
 
-test('metadata-aware routeSkills and hierarchical SKILL.toon assist injection', () => {
+test('metadata-aware routeSkills, relationship_groups SSOT, and 3-tier hierarchical assist injection', () => {
   const harnessPath = join(here, 'jev-harness.mjs');
   const root = mkdtempSync(join(tmpdir(), 'jev-meta-route-'));
   fixtures.push(root);
   const catDir = join(root, 'skills');
-  write(join(catDir, 'primary-skill', 'SKILL.md'), '---\nname: primary-skill\ndescription: Primary automation workflow.\npermissions:\n  - file_read\ntriggers:\n  - browser automation\n---\n# Primary Skill\n## When to Use\nUse for browser automation.\nPRIMARY FULL BODY MARKER\n');
-  write(join(catDir, 'secondary-skill', 'SKILL.md'), '---\nname: secondary-skill\ndescription: Secondary automation helper.\n---\n# Secondary Skill\nSECONDARY VERBOSE BODY SHOULD BE DEFERRED\n');
-  write(join(catDir, 'secondary-skill', 'SKILL.toon'), '@skill secondary-skill\n@summary Compact toon summary for secondary automation helper.\n');
+  write(
+    join(catDir, 'primary-skill', 'SKILL.md'),
+    [
+      '---',
+      'name: primary-skill',
+      'description: Primary automation workflow.',
+      'category: rogue-override',
+      'tags: [rogue-tag]',
+      'compatibility: >',
+      '  Requires Node 22+',
+      '  and headless Chrome.',
+      'allowed-tools: Bash Read Grep',
+      'permissions:',
+      '  - file_read',
+      'triggers:',
+      '  - browser automation',
+      'metadata:',
+      '  tags: ignored-nested-tag',
+      '---',
+      '# Primary Skill',
+      '## When to Use',
+      'Use for browser automation.',
+      'PRIMARY FULL BODY MARKER',
+      '',
+    ].join('\n')
+  );
+  write(
+    join(catDir, 'secondary-skill', 'SKILL.md'),
+    '---\nname: secondary-skill\ndescription: Secondary automation helper.\n---\n# Secondary Skill\nSECONDARY VERBOSE BODY SHOULD BE DEFERRED\n'
+  );
+  write(
+    join(catDir, 'secondary-skill', 'SKILL.toon'),
+    [
+      'N:secondary-skill',
+      'D:Secondary automation helper.',
+      'G:playwright|selectors',
+      'U[1]:',
+      '  Compact toon summary for secondary automation helper.',
+      'R[1]:',
+      '  Route full browser navigation to primary-skill.',
+      '',
+    ].join('\n')
+  );
+  const longFiller = 'Detailed step-by-step troubleshooting prose. '.repeat(60);
+  write(
+    join(catDir, 'large-no-toon-skill', 'SKILL.md'),
+    [
+      '---',
+      'name: large-no-toon-skill',
+      'description: Large skill without SKILL.toon for Tier 1B section injection.',
+      'permissions: [env]',
+      '---',
+      '# Large Skill',
+      '## When to Use',
+      'LARGE_SECTION_TRIGGER_MARKER use for large workflow auditing.',
+      '## Route-outs',
+      'LARGE_ROUTEOUT_MARKER avoid trivial formatting tasks.',
+      '## Deep Appendix',
+      `LARGE_FULL_APPENDIX_DEFERRED_MARKER ${longFiller}`,
+      '',
+    ].join('\n')
+  );
   const catPath = join(catDir, 'skills.json');
   write(catPath, JSON.stringify({
-    categories: { testing: ['primary-skill', 'secondary-skill'] },
+    categories: { testing: ['primary-skill', 'secondary-skill', 'large-no-toon-skill'] },
+    relationship_groups: {
+      'browser-qa-pair': {
+        mode: 'adjacent',
+        members: ['primary-skill', 'secondary-skill'],
+        note: 'Primary orchestrates flows while secondary handles selectors.',
+      },
+    },
     skills: [
       {
         name: 'primary-skill',
         category: 'testing',
         subcategory: 'browser-qa',
         tags: ['playwright', 'automation', 'cdp'],
-        relationships: { complements: ['secondary-skill'] },
         path: 'primary-skill/SKILL.md',
         description: 'Primary browser automation skill with playwright cdp.',
       },
@@ -510,33 +575,56 @@ test('metadata-aware routeSkills and hierarchical SKILL.toon assist injection', 
         category: 'testing',
         subcategory: 'browser-qa',
         tags: ['playwright', 'selectors'],
-        relationships: { related: ['primary-skill'] },
         path: 'secondary-skill/SKILL.md',
         description: 'Secondary browser automation helper.',
+      },
+      {
+        name: 'large-no-toon-skill',
+        category: 'testing',
+        subcategory: 'audits',
+        tags: ['audit', 'workflow'],
+        path: 'large-no-toon-skill/SKILL.md',
+        description: 'Large skill without SKILL.toon for Tier 1B section injection.',
       },
     ],
   }));
   const routeRes = spawnSync(
     process.execPath,
-    [harnessPath, 'route-skills', '--mock', '--top-k', '2', 'playwright browser automation'],
+    [harnessPath, 'route-skills', '--mock', '--top-k', '3', 'playwright browser automation'],
     { env: { ...process.env, JEV_CATALOG_PATH: catPath }, encoding: 'utf8', timeout: 8000 }
   );
   assert.equal(routeRes.status, 0, `${routeRes.stdout}\n${routeRes.stderr}`);
   const routed = JSON.parse(routeRes.stdout);
   assert.equal(routed.topK[0].name, 'primary-skill');
+  assert.equal(routed.topK[0].category, 'testing');
   assert.equal(routed.topK[0].subcategory, 'browser-qa');
+  assert.deepEqual(routed.topK[0].tags, ['playwright', 'automation', 'cdp']);
   assert.deepEqual(routed.topK[0].permissions, ['file_read']);
+  assert.deepEqual(routed.topK[0].allowedTools, ['Bash', 'Read', 'Grep']);
+  assert.match(routed.topK[0].compatibility, /Requires Node 22\+ and headless Chrome/);
+  assert.deepEqual(routed.topK[0].relationships.adjacent, ['secondary-skill']);
   assert.ok(routed.topK[0].path.endsWith('primary-skill/SKILL.md'));
   assert.ok(routed.topK[1].toonPath.endsWith('secondary-skill/SKILL.toon'));
 
-  // Verify hierarchical injection via jev-plugin.mjs
+  // Verify SSOT immunity: rogue frontmatter tag/category inside SKILL.md must not match
+  const rogueRes = spawnSync(
+    process.execPath,
+    [harnessPath, 'route-skills', '--mock', '--top-k', '3', 'rogue-override rogue-tag ignored-nested-tag'],
+    { env: { ...process.env, JEV_CATALOG_PATH: catPath }, encoding: 'utf8', timeout: 8000 }
+  );
+  assert.equal(rogueRes.status, 0, rogueRes.stderr);
+  assert.deepEqual(JSON.parse(rogueRes.stdout).topK, []);
+
+  // Verify hierarchical injection via jev-plugin.mjs across all 3 tiers:
+  // idx=0 with SKILL.toon -> Tier 1A SKILL.toon; idx=1 large without SKILL.toon -> Tier 1B sections; idx=2 compact -> Tier 1C full
   const f = createFixture({ agent: 'claude', profile: 'hier-profile', runtimeMode: 'assist' });
   write(join(f.runtime, 'skills.json'), readFileSync(catPath, 'utf8'));
-  write(join(f.home, '.agents', 'skills', 'primary-skill', 'SKILL.md'), readFileSync(join(catDir, 'primary-skill', 'SKILL.md'), 'utf8'));
-  write(join(f.home, '.agents', 'skills', 'secondary-skill', 'SKILL.md'), readFileSync(join(catDir, 'secondary-skill', 'SKILL.md'), 'utf8'));
+  for (const name of ['primary-skill', 'secondary-skill', 'large-no-toon-skill']) {
+    write(join(f.home, '.agents', 'skills', name, 'SKILL.md'), readFileSync(join(catDir, name, 'SKILL.md'), 'utf8'));
+  }
   write(join(f.home, '.agents', 'skills', 'secondary-skill', 'SKILL.toon'), readFileSync(join(catDir, 'secondary-skill', 'SKILL.toon'), 'utf8'));
   write(join(f.runtime, 'jev-harness.mjs'), `export async function routeSkills() {
-  return { topK: [{ name: 'primary-skill' }, { name: 'secondary-skill' }], routing: [] };
+  return { topK: [{ name: 'secondary-skill' }, { name: 'large-no-toon-skill' }, { name: 'primary-skill' }], routing: [] };
 }
 export async function pruneContext(blocks) { return blocks.map(b => ({ id: b.id, verdict: 'keep' })); }
 export async function manageMemory(blocks) { return { verdicts: blocks.map(b => ({ id: b.id, verdict: 'keep' })), keptIds: blocks.map(b => b.id), dropContextIds: [], compressedBlocks: {}, conversationSummary: null, charsSaved: 0, memoryStore: null }; }
@@ -544,11 +632,16 @@ export async function review() { return { verdict: 'permit', reason: 'ok', backe
 `);
   const hookOut = f.invoke('hook', { prompt: 'Run playwright browser automation', session_id: 's-hier', turn_id: 't1' });
   const ctxText = hookOut.hookSpecificOutput.additionalContext;
-  assert.match(ctxText, /PRIMARY FULL BODY MARKER/);
   assert.match(ctxText, /Compact toon summary for secondary automation helper/);
   assert.doesNotMatch(ctxText, /SECONDARY VERBOSE BODY SHOULD BE DEFERRED/);
+  assert.match(ctxText, /LARGE_SECTION_TRIGGER_MARKER/);
+  assert.match(ctxText, /LARGE_ROUTEOUT_MARKER/);
+  assert.doesNotMatch(ctxText, /LARGE_FULL_APPENDIX_DEFERRED_MARKER/);
+  assert.match(ctxText, /PRIMARY FULL BODY MARKER/);
   assert.match(ctxText, /Category: testing\/browser-qa/);
-  assert.match(ctxText, /Tags: playwright, automation, cdp/);
+  assert.match(ctxText, /Tags: playwright, selectors/);
+  assert.match(ctxText, /Relationships: adjacent=primary-skill/);
+  assert.match(ctxText, /Permissions: env/);
 });
 
 test('jev-harness CLI supports all 7 Neo Kim use cases in mock mode', () => {
@@ -659,13 +752,65 @@ test('bm25 zero-hit falls back to sharded and UC1-UC3 bound options by backend c
     write(join(home, '.agents/jev/profiles/captest.env'), 'JEV_ENABLED=true\nJEV_MODE=api\n');
     write(join(home, '.agents/jev/profiles/captest.api.env'), `JEV_API_ENDPOINT=http://127.0.0.1:${port}/v1/systemone\nJEV_API_KEY=test-key\n`);
     const envApi = { ...process.env, HOME: home, JEV_CATALOG_PATH: catPath };
-    // Korean/synonym query has 0 English BM25 hits -> falls back from bm25-shortlist to sharded
-    const fbRes = await runAsync([harnessPath, '--profile', 'captest', 'route-skills', '--prefilter', 'bm25', '화면 최적화 작업'], envApi);
+    // Zero-hit Korean query has 0 BM25 hits -> falls back from bm25-shortlist to metadata-annotated sharded
+    const fbRes = await runAsync([harnessPath, '--profile', 'captest', 'route-skills', '--prefilter', 'bm25', '은하계 성운 분광 관측'], envApi);
     assert.equal(fbRes.status, 0, fbRes.stderr);
     const fbJson = JSON.parse(fbRes.stdout);
     assert.equal(fbJson.selection.strategy, 'sharded');
     assert.equal(fbJson.selection.fallbackFrom, 'bm25-shortlist');
     assert.ok(fbJson.topK.length >= 1);
+
+    // Large catalog (>= 64 skills) on api (choiceCap=255) defaults to BM25 shortlist in 1 Jev request with structured candidate state
+    const largeDir = join(root, 'large-cat');
+    write(
+      join(largeDir, 'code-review-pro', 'SKILL.md'),
+      '---\nname: code-review-pro\ndescription: Review pull requests.\npermissions: [read]\n---\n# Code Review Pro\n## Triggers\nUse on PR code review requests.\n## Route-outs\nRoute generic formatting to lint.\n'
+    );
+    write(
+      join(largeDir, 'code-review-pro', 'SKILL.toon'),
+      'N:code-review-pro\nD:Duplicate header should be trimmed.\nG:code-review\nU[1]:\n  TOON_USE_WHEN_PR_REVIEW\nR[1]:\n  TOON_ROUTEOUT_NO_AUTO_MERGE\n'
+    );
+    const largeSkills = [
+      {
+        name: 'code-review-pro',
+        category: 'engineering',
+        subcategory: 'code-quality',
+        tags: ['code-review', 'pull-request'],
+        path: 'code-review-pro/SKILL.md',
+        description: 'Review code diffs and pull requests.',
+      },
+      ...Array.from({ length: 69 }, (_, i) => ({
+        name: `filler-skill-${i}`,
+        category: 'utilities',
+        subcategory: 'general',
+        tags: ['misc'],
+        path: `filler-skill-${i}/SKILL.md`,
+        description: `Unrelated helper ${i}.`,
+      })),
+    ];
+    const largeCatPath = join(largeDir, 'skills.json');
+    write(largeCatPath, JSON.stringify({
+      categories: { engineering: ['code-review-pro'], utilities: largeSkills.slice(1).map(s => s.name) },
+      relationship_groups: {
+        'review-pair': { mode: 'adjacent', members: ['code-review-pro', 'filler-skill-0'] },
+      },
+      skills: largeSkills,
+    }));
+    const reqCountBefore = seenRequests.length;
+    const largeRes = await runAsync([harnessPath, '--profile', 'captest', 'route-skills', '코드 리뷰 도와줘'], { ...envApi, JEV_CATALOG_PATH: largeCatPath });
+    assert.equal(largeRes.status, 0, largeRes.stderr);
+    const largeJson = JSON.parse(largeRes.stdout);
+    assert.equal(largeJson.selection.strategy, 'shortlist');
+    assert.equal(largeJson.selection.requests, 1);
+    assert.equal(largeJson.topK[0].name, 'code-review-pro');
+    assert.deepEqual(largeJson.topK[0].relationships.adjacent, ['filler-skill-0']);
+    const verifyReq = seenRequests[reqCountBefore];
+    assert.ok(verifyReq && verifyReq.questions?.which && !Object.keys(verifyReq.questions).some(k => k.startsWith('shard::')));
+    const cand0 = verifyReq.state?.candidates?.[0];
+    assert.equal(cand0?.subcategory, 'code-quality');
+    assert.deepEqual(cand0?.relationships?.adjacent, ['filler-skill-0']);
+    assert.match(cand0?.excerpt || '', /TOON_USE_WHEN_PR_REVIEW/);
+    assert.doesNotMatch(cand0?.excerpt || '', /Duplicate header should be trimmed/);
 
     // On 24-cap local qev profile, verify decideAction and gateTool cap options cleanly
     write(join(home, '.agents/jev/profiles/qevcap.env'), 'JEV_ENABLED=true\nJEV_MODE=local\n');

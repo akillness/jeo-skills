@@ -100,6 +100,10 @@ class WorkspaceSetupTests(unittest.TestCase):
         box = self.sandbox(jev=True)
         subprocess.run(["git", "init", "-q"], cwd=box.project, check=True)
         (box.project / ".mex").mkdir()
+        jeox_stub = box.project / "scripts" / "jeox.py"
+        jeox_stub.parent.mkdir(parents=True, exist_ok=True)
+        jeox_stub.write_text("#!/usr/bin/env python3\nimport sys\nraise SystemExit(0)\n", encoding="utf-8")
+        jeox_stub.chmod(0o755)
         proc, report = box.run()
         self.assertEqual(proc.returncode, 0, proc.stderr + proc.stdout)
         statuses = {k: v["status"] for k, v in report["steps"].items()}
