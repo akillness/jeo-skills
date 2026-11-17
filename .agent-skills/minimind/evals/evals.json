@@ -1,0 +1,30 @@
+{
+  "skill_name": "minimind",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "How do I configure and launch pretraining for a 26M parameter MiniMind model from scratch on my local GPU?",
+      "expected_output": "Guide the user to configure `LMConfig(dim=512, n_layers=8, n_heads=8, vocab_size=6400, max_seq_len=512)`, run `python3 $SKILL_DIR/scripts/preflight.py --json` to verify PyTorch and accelerator availability, prepare tokenized binary corpus files, and execute `python train_pretrain.py` (or `torchrun` for multi-GPU DDP) with AdamW and cosine decay."
+    },
+    {
+      "id": 2,
+      "prompt": "I only have a single GPU with 4GB of VRAM. Can I fine-tune MiniMind on custom instruction pairs?",
+      "expected_output": "Explain that MiniMind supports parameter-efficient fine-tuning via LoRA (`train_lora.py`), which adapts only `q_proj` and `v_proj` attention weights (<1% of parameters), comfortably fitting within 4GB VRAM. Advise ensuring prompt tokens are masked with `-100` so loss is computed solely on assistant responses."
+    },
+    {
+      "id": 3,
+      "prompt": "How does MiniMind implement Direct Preference Optimization (DPO) to align responses without an explicit reward model?",
+      "expected_output": "Explain `train_dpo.py` using `{prompt, chosen, rejected}` preference triplets. Describe the Bradley-Terry implicit reward formulation parameterized by policy model $\\pi_\\theta$ and frozen reference model $\\pi_\\text{ref}$ with temperature parameter $\\beta \\in [0.1, 0.5]$."
+    },
+    {
+      "id": 4,
+      "prompt": "How do I export my fine-tuned MiniMind checkpoint to GGUF format so I can run it locally in Ollama or llama.cpp?",
+      "expected_output": "Instruct the user to run `python export_model.py --checkpoint <path.pth> --out_dir <output>`, which serializes the PyTorch weights and configuration into standard GGUF format suitable for quantization (e.g. Q4_K_M) and edge deployment."
+    },
+    {
+      "id": 5,
+      "prompt": "Format my custom SKILL.md document and check for agentskills.io frontmatter errors.",
+      "expected_output": "Route format-only skill linting to skill-standardization rather than minimind, noting that minimind specializes in small language model architecture design, pretraining, fine-tuning, and alignment."
+    }
+  ]
+}

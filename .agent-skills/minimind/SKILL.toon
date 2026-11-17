@@ -1,0 +1,22 @@
+N:minimind
+D:Use when training, fine-tuning, evaluating, or exporting small language models from scratch with MiniMind. Covers compact PyTorch Transformer and MoE model architectures (26M to 104M parameters), causal pretraining, full and LoRA instruction fine-tuning, Direct Preference Optimization (DPO), reasoning and thinking mode distillation, and converting checkpoints to GGUF, vLLM, or HuggingFace transformers formats. Route format-only skill linting to skill-standardization, LLM evaluation and RAG Triad benchmarking to trulens, and generic model serving deployment to deployment-automation.
+G:minimind llm-from-scratch pytorch pretraining sft lora dpo moe small-language-models model-training
+U[5]:
+  Design and inspect compact Transformer and MoE architectures with LMConfig
+  Launch causal language model pretraining from scratch on custom corpora
+  Execute supervised instruction fine-tuning with full weights or parameter-efficient LoRA
+  Align model generation preferences using Direct Preference Optimization (DPO)
+  Export trained PyTorch checkpoints to GGUF for edge inference via llama.cpp or Ollama
+S[6]{n,action,details}:
+  1,Preflight,Run scripts/preflight.py --json to verify PyTorch accelerator readiness and validate LMConfig
+  2,Architecture,Define model hyperparameters using LMConfig (dim n_layers n_heads vocab_size use_moe)
+  3,Pretrain,Train base language representations from raw tokenized text arrays with train_pretrain.py
+  4,FineTune,Apply instruction tuning with prompt loss masking via train_full_sft.py or train_lora.py
+  5,Align,Perform preference alignment without separate reward models using train_dpo.py
+  6,Export,Convert PyTorch weights to GGUF or SafeTensors format with export_model.py for inference
+R[5]:
+  Run scripts/preflight.py before launching training jobs to confirm GPU accelerator capabilities
+  Mask user prompt tokens with -100 during SFT so the loss function optimizes only assistant outputs
+  Use LoRA fine-tuning when training on consumer GPUs with 4GB VRAM to avoid out-of-memory crashes
+  Incorporate <think> tokens when distilling multi-step reasoning capabilities into compact models
+  Route format linting to skill-standardization and LLM evaluation benchmarking to trulens
