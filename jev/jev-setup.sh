@@ -15,6 +15,7 @@ RAW_BASE="${JEO_SKILLS_RAW_BASE:-https://raw.githubusercontent.com/akillness/jeo
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 FILES=(jev-setup.sh jev-harness.mjs jev_local_server.py README.md jev-control-plane.rule.md)
 [ -f "$SCRIPT_DIR/jev-plugin.mjs" ] && FILES+=(jev-plugin.mjs)
+[ -f "$SCRIPT_DIR/com.jeo-skills.qev-server.plist" ] && FILES+=(com.jeo-skills.qev-server.plist)
 NATIVE_PLUGIN_DIR="$SCRIPT_DIR/plugins"
 NATIVE_PLUGIN_FILES=(
   plugins/shared/jev-controller.mjs
@@ -69,6 +70,23 @@ ROUTE_FALLBACK=""
 PRUNE_FALLBACK=""
 REVIEW_FALLBACK=""
 VALIDATED_MODEL=""
+AUTO_MODEL=false
+MIGRATE_QEV=false
+CALIBRATE_LOCAL=false
+INSTALL_DAEMON=false
+
+detect_ram_gib() {
+  local bytes=""
+  if [ "$(uname -s)" = Darwin ] && command -v sysctl >/dev/null 2>&1; then
+    bytes="$(sysctl -n hw.memsize 2>/dev/null || true)"
+    [ -n "$bytes" ] && echo $((bytes / 1073741824)) && return 0
+  elif [ -r /proc/meminfo ]; then
+    local kb
+    kb="$(awk '/^MemTotal:/ {print $2; exit}' /proc/meminfo 2>/dev/null || true)"
+    [ -n "$kb" ] && echo $((kb / 1048576)) && return 0
+  fi
+  echo 0
+}
 validate_kind() {
   case "$1" in api|local|ollama|lmstudio|systemone) ;; *) fail "Unknown backend kind '$1'; expected api, local, ollama, lmstudio, or systemone" ;; esac
 }
@@ -132,6 +150,10 @@ while [ "$#" -gt 0 ]; do
     --validated-model)
       [ "$#" -ge 2 ] && [ -n "$2" ] || fail '--validated-model requires a non-empty model id'
       VALIDATED_MODEL="$2"; shift 2 ;;
+    --auto-model) AUTO_MODEL=true; shift ;;
+    --migrate-qev) MIGRATE_QEV=true; shift ;;
+    --calibrate) CALIBRATE_LOCAL=true; shift ;;
+    --install-daemon) INSTALL_DAEMON=true; shift ;;
     --enable) ACTION=enable; shift ;;
     --disable) ACTION=disable; shift ;;
     --status) ACTION=status; shift ;;
@@ -141,6 +163,7 @@ while [ "$#" -gt 0 ]; do
       printf '       [--config-only] [--endpoint <url>] [--model <id>] [--model-dir <path>] [--key-env <ENVNAME>]\n'
       printf '       [--route-backend <kind>] [--prune-backend <kind>] [--review-backend <kind>]\n'
       printf '       [--fallback <op>=<kind[,kind]>] [--validated-model <id>]\n'
+      printf '       [--auto-model] [--migrate-qev] [--calibrate] [--install-daemon]\n'
       printf '       jev-setup.sh --profile <id> --enable|--disable|--status\n'
       printf '       jev-setup.sh [--profile <id>] --stop\n'
       exit 0 ;;
@@ -849,7 +872,17 @@ if [ "$CONFIG_ONLY" = true ]; then
       ;;
     local)
       [ "$MODEL_DIR_OVERRIDE_SET" = false ] || :
-      model="${MODEL_OVERRIDE:-$(profile_value JEV_LOCAL_MODEL)}"; [ -n "$model" ] || model='qev-0.8b-text-Q8_0'
+      model="${MODEL_OVERRIDE:-$(profile_value JEV_LOCAL_MODEL)}"
+      if [ "$model" = 'jev-9b-local' ] && [ "$MODEL_OVERRIDE_SET" = false ] && { [ "$MIGRATE_QEV" = true ] || [ "${JEV_MIGRATE_LEGACY_QEV:-false}" = true ]; }; then
+        model=''
+      fi
+      if [ -z "$model" ]; then
+        if [ "$AUTO_MODEL" = true ] && [ "$(detect_ram_gib)" -ge 24 ]; then
+          model='h2o-lightning-4b-Q4_K_M'
+        else
+          model='qev-0.8b-text-Q8_0'
+        fi
+      fi
       case "$model" in jev-9b-local|jevos|jevos-*|qev-0.8b*|h2o-lightning-4b*) ;; *) fail 'Local model id must be qev-0.8b-text-Q8_0 (or qev-0.8b*), h2o-lightning-4b-Q4_K_M, jevos-v5, or jev-9b-local' ;; esac
       if [ "$model" = 'jev-9b-local' ]; then
         DEFAULT_LOCAL_PORT=8763
@@ -869,13 +902,22 @@ if [ "$CONFIG_ONLY" = true ]; then
         printf 'JEV_LOCAL_ENGINE=jevos\nJEV_LOCAL_ENDPOINT=%s\nJEV_LOCAL_HOST=%s\nJEV_LOCAL_PORT=%s\nJEV_LOCAL_MODEL=%s\nJEV_LOCAL_MODEL_DIR=%s\nJEV_LOCAL_BIN=%s\n' "$endpoint" "$local_host" "$local_port" "$model" "$model_dir" "$JEVOS_BIN" | write_config_only_selected
       else
         DEFAULT_LOCAL_PORT=8017
-        endpoint="${ENDPOINT_OVERRIDE:-$(profile_value JEV_LOCAL_ENDPOINT)}"; [ -n "$endpoint" ] || endpoint='http://127.0.0.1:8017/v1/systemone'
+        endpoint="${ENDPOINT_OVERRIDE:-$(profile_value JEV_LOCAL_ENDPOINT)}"
+        case "$endpoint" in ''|*:8763|*:8763/*) endpoint='http://127.0.0.1:8017/v1/systemone' ;; esac
         local_info="$(validate_local_endpoint "$endpoint")"
         local_host="${local_info%%$'\n'*}"; local_port="${local_info#*$'\n'}"
-        model_dir="${MODEL_DIR_OVERRIDE:-$(profile_value JEV_LOCAL_MODEL_DIR)}"; [ -n "$model_dir" ] || model_dir="$QEV_MODELS_ROOT"
+        model_dir="${MODEL_DIR_OVERRIDE:-$(profile_value JEV_LOCAL_MODEL_DIR)}"
+        case "$model_dir" in ''|*/models/JEV-9B) model_dir="$QEV_MODELS_ROOT" ;; esac
         validate_flag_value "$model_dir" 'Model directory'
         model_file="$model_dir/$model.gguf"
-        printf 'JEV_LOCAL_ENGINE=qev\nJEV_LOCAL_ENDPOINT=%s\nJEV_LOCAL_HOST=%s\nJEV_LOCAL_PORT=%s\nJEV_LOCAL_MODEL=%s\nJEV_LOCAL_MODEL_DIR=%s\nJEV_LOCAL_MODEL_FILE=%s\n' "$endpoint" "$local_host" "$local_port" "$model" "$model_dir" "$model_file" | write_config_only_selected
+        qev_llama_bin=""
+        for cand in "$(command -v llama-server 2>/dev/null || true)" "$HOME/.unsloth/llama.cpp/build/bin/llama-server" "$LLAMA_ROOT/llama-server" "$LLAMA_ROOT/build/bin/llama-server"; do
+          if [ -n "$cand" ] && [ -x "$cand" ]; then qev_llama_bin="$cand"; break; fi
+        done
+        {
+          printf 'JEV_LOCAL_ENGINE=qev\nJEV_LOCAL_ENDPOINT=%s\nJEV_LOCAL_HOST=%s\nJEV_LOCAL_PORT=%s\nJEV_LOCAL_MODEL=%s\nJEV_LOCAL_MODEL_DIR=%s\nJEV_LOCAL_MODEL_FILE=%s\n' "$endpoint" "$local_host" "$local_port" "$model" "$model_dir" "$model_file"
+          [ -n "$qev_llama_bin" ] && printf 'JEV_LOCAL_BIN=%s\n' "$qev_llama_bin" || :
+        } | write_config_only_selected
       fi
       ;;
     ollama)
@@ -1113,9 +1155,21 @@ PY
     info "Local mode configured${PROFILE:+ for profile '$PROFILE'} with $LOCAL_MODEL ($LOCAL_ENDPOINT_VAL)."
     info "Note: jevos-v5 is an open-source OpenVINO INT8 decision model (feder-cr/jev), not the original hosted TypeSafe Jev model."
   else
-    LOCAL_MODEL="${JEV_LOCAL_MODEL:-qev-0.8b-text-Q8_0}"
+    _def_qev_model='qev-0.8b-text-Q8_0'
+    _ram_gib="$(detect_ram_gib)"
+    if [ "$AUTO_MODEL" = true ] && [ "$_ram_gib" -ge 24 ]; then
+      _def_qev_model='h2o-lightning-4b-Q4_K_M'
+    elif [ -z "${JEV_LOCAL_MODEL:-}" ] && [ "$_ram_gib" -ge 24 ]; then
+      info "Detected ${_ram_gib} GiB RAM: optional 4B local model available via --model h2o-lightning-4b-Q4_K_M (or --auto-model)."
+    fi
+    LOCAL_MODEL="${JEV_LOCAL_MODEL:-$_def_qev_model}"
+    if [ "$LOCAL_MODEL" = 'jev-9b-local' ] && { [ "$MIGRATE_QEV" = true ] || [ "${JEV_MIGRATE_LEGACY_QEV:-false}" = true ]; }; then
+      LOCAL_MODEL="$_def_qev_model"
+    fi
     DEFAULT_LOCAL_PORT=8017
     LOCAL_ENDPOINT_VAL="${JEV_LOCAL_ENDPOINT:-${JEV_ENDPOINT:-http://127.0.0.1:8017/v1/systemone}}"
+    case "$LOCAL_ENDPOINT_VAL" in *:8763|*:8763/*) [ "$ENDPOINT_OVERRIDE_SET" = false ] && LOCAL_ENDPOINT_VAL='http://127.0.0.1:8017/v1/systemone' ;; esac
+    case "$MODEL_DIR" in */models/JEV-9B) MODEL_DIR="$QEV_MODELS_ROOT" ;; esac
     local_info="$(validate_local_endpoint "$LOCAL_ENDPOINT_VAL")"
     local_host="${local_info%%$'\n'*}"; local_port="${local_info#*$'\n'}"
     case "$LOCAL_MODEL" in
@@ -1255,7 +1309,7 @@ PY
     if [ -n "$PROFILE" ] && [ -f "$PROFILE_CONFIG" ] && grep -q '^JEV_ENABLED=false$' "$PROFILE_CONFIG"; then
       _profile_disabled=true
     fi
-    if [ "$_profile_disabled" != true ] && [ "${JEV_SKIP_SERVER_START:-false}" != true ] && [ "${JEV_SKIP_MODEL_DOWNLOAD:-false}" != true ] && [ -x "$LLAMA_BIN" ] && [ -f "$MODEL_FILE" ]; then
+    if [ "$_profile_disabled" != true ] && [ "$INSTALL_DAEMON" != true ] && [ "${JEV_SKIP_SERVER_START:-false}" != true ] && [ "${JEV_SKIP_MODEL_DOWNLOAD:-false}" != true ] && [ -x "$LLAMA_BIN" ] && [ -f "$MODEL_FILE" ]; then
       PID_FILE="$RUN_DIR/local-${local_port}.pid"
       if [ -f "$PID_FILE" ] && [ ! -L "$PID_FILE" ]; then
         IFS=$'\t' read -r old_pid old_engine old_model _old_host _old_port < "$PID_FILE" || true
@@ -1298,6 +1352,45 @@ PY
     fi
     info "Local mode configured${PROFILE:+ for profile '$PROFILE'} with $LOCAL_MODEL ($LOCAL_ENDPOINT_VAL)."
     info "Note: $LOCAL_MODEL is an open-weight System One decision model (~1.0 GB RAM/VRAM), not TypeSafe's calibrated cloud Jev."
+    if [ "$INSTALL_DAEMON" = true ] && [ "$(uname -s)" = Darwin ] && [ -x "$LLAMA_BIN" ] && [ -f "$MODEL_FILE" ] && [ -f "$JEV_HOME/com.jeo-skills.qev-server.plist" ]; then
+      LAUNCH_DIR="$HOME/Library/LaunchAgents"
+      PLIST_DST="$LAUNCH_DIR/com.jeo-skills.qev-server.plist"
+      mkdir -p "$LAUNCH_DIR"
+      python3 -c '
+import pathlib, sys
+tpl = pathlib.Path(sys.argv[1]).read_text()
+for k, v in zip(["__LLAMA_BIN__", "__MODEL_FILE__", "__MODEL_NAME__", "__HOST__", "__PORT__", "__LOG_PATH__"], sys.argv[2:8]):
+    tpl = tpl.replace(k, v)
+pathlib.Path(sys.argv[8]).write_text(tpl)
+' "$JEV_HOME/com.jeo-skills.qev-server.plist" "$LLAMA_BIN" "$MODEL_FILE" "$LOCAL_MODEL" "$local_host" "$local_port" "$MODEL_DIR/llama-server.log" "$PLIST_DST"
+      if command -v launchctl >/dev/null 2>&1; then
+        PID_FILE="$RUN_DIR/local-${local_port}.pid"
+        if [ -f "$PID_FILE" ] && [ ! -L "$PID_FILE" ]; then
+          IFS=$'\t' read -r old_pid _rest < "$PID_FILE" || true
+          if [ -n "${old_pid:-}" ] && kill -0 "$old_pid" 2>/dev/null; then
+            kill "$old_pid" 2>/dev/null || true
+            sleep 0.5
+          fi
+          rm -f "$PID_FILE"
+        fi
+        launchctl bootout "gui/$(id -u)" "$PLIST_DST" >/dev/null 2>&1 || true
+        launchctl bootstrap "gui/$(id -u)" "$PLIST_DST" >/dev/null 2>&1 || true
+        for _ in $(seq 1 40); do
+          curl -fsS --max-time 1 "$health_url" >/dev/null 2>&1 && break
+          sleep 0.25
+        done
+      fi
+      info "Installed macOS launchd daemon at $PLIST_DST"
+    fi
+  fi
+fi
+
+if [ "$CALIBRATE_LOCAL" = true ] && [ "$MODE" = local ]; then
+  info "Running golden calibration for local profile '${PROFILE:-legacy}'..."
+  if [ -n "$PROFILE" ]; then
+    node "$JEV_HOME/jev-harness.mjs" --profile "$PROFILE" calibrate-judge --golden --save-calibration >/dev/null 2>&1 || info 'WARNING: local golden calibration skipped or server unavailable'
+  else
+    JEV_MODE="$MODE" node "$JEV_HOME/jev-harness.mjs" calibrate-judge --golden --save-calibration >/dev/null 2>&1 || info 'WARNING: local golden calibration skipped or server unavailable'
   fi
 fi
 

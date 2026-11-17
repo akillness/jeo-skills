@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.jeo-skills.qev-server</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>__LLAMA_BIN__</string>
+    <string>-m</string>
+    <string>__MODEL_FILE__</string>
+    <string>--alias</string>
+    <string>__MODEL_NAME__</string>
+    <string>--host</string>
+    <string>__HOST__</string>
+    <string>--port</string>
+    <string>__PORT__</string>
+    <string>-c</string>
+    <string>16384</string>
+    <string>-np</string>
+    <string>1</string>
+    <string>--no-kv-unified</string>
+    <string>-fa</string>
+    <string>on</string>
+    <string>-b</string>
+    <string>2048</string>
+    <string>-ub</string>
+    <string>1024</string>
+    <string>-ctk</string>
+    <string>q8_0</string>
+    <string>-ctv</string>
+    <string>q8_0</string>
+    <string>-ngl</string>
+    <string>99</string>
+    <string>--no-webui</string>
+  </array>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>KeepAlive</key>
+  <true/>
+  <key>StandardOutPath</key>
+  <string>__LOG_PATH__</string>
+  <key>StandardErrorPath</key>
+  <string>__LOG_PATH__</string>
+</dict>
+</plist>

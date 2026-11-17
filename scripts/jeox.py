@@ -23,6 +23,8 @@ import os
 import re
 import sqlite3
 import sys
+import tempfile
+import urllib.request
 from pathlib import Path
 
 DB_NAME = ".jeo/db/jeo.db"
@@ -194,14 +196,142 @@ def chunk_markdown(rel: str, text: str):
     return [(rel, h, b, "md") for (h, b) in out if b]
 
 
+MAX_WIKI_FILES = 40
+WIKI_SUBDIRS = ("projects", "concepts", "entities", "reports", "queries")
+_BACKTICK_IDENT_RE = re.compile(r"`([A-Za-z_][A-Za-z0-9_]{2,})`")
+
+
+def _is_temp_workspace(repo: Path) -> bool:
+    try:
+        resolved = repo.resolve()
+    except OSError:
+        resolved = repo
+    tmp_resolved = Path(tempfile.gettempdir()).resolve()
+    prefixes = (
+        str(tmp_resolved),
+        "/tmp",
+        "/private/tmp",
+        "/var/folders",
+        "/private/var/folders",
+    )
+    target = str(resolved)
+    return any(target == p or target.startswith(p + "/") for p in prefixes)
+
+
+def discover_project_wiki_files(repo: Path, explicit_wiki_root: str | None = None) -> list[tuple[str, Path]]:
+    env_vault = (os.environ.get("JEO_WIKI_ROOT") or os.environ.get("LLM_WIKI_VAULT") or "").strip()
+    vault_str = (explicit_wiki_root or "").strip() or env_vault or ("" if _is_temp_workspace(repo) else str(Path.home() / "vaults" / "llm-wiki"))
+    if not vault_str:
+        return []
+    wiki_dir = Path(vault_str) / "wiki"
+    if not wiki_dir.is_dir():
+        return []
+    real_wiki = wiki_dir.resolve()
+    project_slug = repo.resolve().name.lower()
+    if len(project_slug) < 2:
+        return []
+
+    matched: dict[Path, tuple[int, float]] = {}
+    projects_dir = real_wiki / "projects"
+    sub_dir = projects_dir / project_slug
+    if sub_dir.is_dir():
+        for p in sub_dir.rglob("*.md"):
+            if p.is_file() and not p.name.startswith("."):
+                try:
+                    matched[p.resolve()] = (0, p.stat().st_mtime)
+                except OSError:
+                    pass
+    if projects_dir.is_dir():
+        for p in projects_dir.iterdir():
+            if p.is_file() and p.suffix.lower() in (".md", ".mdx") and project_slug in p.name.lower():
+                try:
+                    matched.setdefault(p.resolve(), (0, p.stat().st_mtime))
+                except OSError:
+                    pass
+    for sub in WIKI_SUBDIRS:
+        if sub == "projects":
+            continue
+        d = real_wiki / sub
+        if not d.is_dir():
+            continue
+        for p in d.iterdir():
+            if p.is_file() and p.suffix.lower() in (".md", ".mdx") and project_slug in p.name.lower():
+                try:
+                    matched.setdefault(p.resolve(), (1, p.stat().st_mtime))
+                except OSError:
+                    pass
+
+    ordered = sorted(matched.items(), key=lambda kv: (kv[1][0], -kv[1][1]))[:MAX_WIKI_FILES]
+    out: list[tuple[str, Path]] = []
+    for abs_p, _ in ordered:
+        rel_virt = "@wiki/" + abs_p.relative_to(real_wiki).as_posix()
+        out.append((rel_virt, abs_p))
+    return out
+
+
+def _extract_wiki_refs(text: str) -> list[str]:
+    refs: list[str] = []
+    seen_ref: set[str] = set()
+    for m in _BACKTICK_IDENT_RE.finditer(text):
+        tok = m.group(1)
+        if tok not in seen_ref:
+            seen_ref.add(tok)
+            refs.append(tok)
+            if len(refs) >= 64:
+                break
+    return refs
+
+
+def rerank_hits_with_qev(query: str, hits: list[dict], explicit_rerank: bool | None = None) -> list[dict]:
+    enabled = explicit_rerank is True or (explicit_rerank is not False and os.environ.get("JEOX_JEV_RERANK") == "1")
+    if not enabled or len(hits) <= 1:
+        return hits
+    endpoint = (os.environ.get("JEOX_QEV_URL") or "").strip() or "http://127.0.0.1:8017/v1/systemone"
+    capped = hits[:12]
+    state: dict[str, str] = {"query": query}
+    questions: dict[str, dict] = {}
+    for i, item in enumerate(capped):
+        key = f"cand_{i}"
+        state[key] = f"{item.get('path', '')} {item.get('heading') or ''}: {item.get('snippet', '')}"[:200]
+        questions[f"relevant::{i}"] = {
+            "type": "noul",
+            "instructions": f"Is candidate {key} directly relevant to the query?",
+        }
+    try:
+        req = urllib.request.Request(
+            endpoint,
+            data=json.dumps({"state": state, "model": "qev-0.8b-text-Q8_0", "questions": questions}).encode("utf-8"),
+            headers={"Content-Type": "application/json"},
+            method="POST",
+        )
+        with urllib.request.urlopen(req, timeout=0.5) as resp:
+            payload = json.loads(resp.read().decode("utf-8"))
+        answers = payload.get("answers") if isinstance(payload, dict) else None
+        if not isinstance(answers, dict):
+            return hits
+        total = len(capped)
+        scored = []
+        for idx, item in enumerate(capped):
+            bm25_norm = 1.0 - (idx / (total - 1)) if total > 1 else 1.0
+            ans = answers.get(f"relevant::{idx}")
+            noul_prob = float(ans["noul"]) if isinstance(ans, dict) and isinstance(ans.get("noul"), (int, float)) else bm25_norm
+            scored.append((-(0.45 * bm25_norm + 0.55 * noul_prob), idx, item))
+        scored.sort(key=lambda t: (t[0], t[1]))
+        return [t[2] for t in scored] + hits[12:]
+    except Exception:
+        return hits
+
+
 def cmd_build(args):
     repo = Path(args.repo or os.getcwd()).resolve()
     con = open_db(repo)
     state = dict(con.execute("SELECT path, sha256 FROM files_state"))
     changed, removed = [], []
     seen = set()
-    for path in iter_files(repo):
-        rel = str(path.relative_to(repo))
+    entries = [(str(path.relative_to(repo)), path, False) for path in iter_files(repo)] + [
+        (virt, p, True) for virt, p in discover_project_wiki_files(repo, getattr(args, "wiki_root", None))
+    ]
+    for rel, path, is_wiki in entries:
         seen.add(rel)
         st = path.stat()
         with open(path, "rb") as fh:
@@ -213,14 +343,14 @@ def cmd_build(args):
         sha = hashlib.sha256(raw).hexdigest()
         if state.get(rel) == sha:
             continue
-        changed.append((rel, path, st, sha, text))
+        changed.append((rel, path, st, sha, text, is_wiki))
     for rel in state:
         if rel not in seen:
             removed.append(rel)
 
     cur = con.cursor()
-    for rel, path, st, sha, text in changed:
-        lang = CODE_EXT.get(path.suffix) or MD_EXT.get(path.suffix)
+    for rel, path, st, sha, text, is_wiki in changed:
+        lang = "md" if is_wiki else (CODE_EXT.get(path.suffix) or MD_EXT.get(path.suffix))
         cur.execute("SELECT id FROM chunks WHERE path=?", (rel,))
         chunk_ids = [r[0] for r in cur.fetchall()]
         for cid in chunk_ids:
@@ -232,6 +362,13 @@ def cmd_build(args):
         if lang == "md":
             for (r, h, b, l) in chunk_markdown(rel, text):
                 cur.execute("INSERT INTO chunks(path,heading,body,lang) VALUES(?,?,?,?)", (r, h, b, l))
+            if is_wiki:
+                refs = _extract_wiki_refs(text)
+                if refs:
+                    cur.execute("INSERT INTO symbols(name,kind,path,line,lang) VALUES(?,?,?,?,?)", (rel, "wiki", rel, 1, "wiki"))
+                    wiki_sym_id = cur.lastrowid
+                    for ident in refs:
+                        cur.execute("INSERT INTO edges(caller_id,callee_name,kind,src_line) VALUES(?,?,?,?)", (wiki_sym_id, ident, "references", 1))
         else:
             cur.execute("INSERT INTO chunks(path,heading,body,lang) VALUES(?,NULL,?,?)", (rel, text[:2048], lang))
             syms, edges = extract_symbols_and_edges(rel, text, lang)
@@ -244,7 +381,11 @@ def cmd_build(args):
                 cur.execute("INSERT INTO edges(caller_id,callee_name,kind,src_line) VALUES(?,?,?,?)", (caller_id, callee, kind, line))
         cur.execute("INSERT OR REPLACE INTO files_state(path,mtime,sha256) VALUES(?,?,?)", (rel, st.st_mtime, sha))
     for rel in removed:
+        cur.execute("SELECT id FROM chunks WHERE path=?", (rel,))
+        for (cid,) in cur.fetchall():
+            cur.execute("INSERT INTO chunks_fts(chunks_fts,rowid,body,heading,path) VALUES('delete',?,NULL,NULL,NULL)", (cid,))
         cur.execute("DELETE FROM chunks WHERE path=?", (rel,))
+        cur.execute("DELETE FROM edges WHERE caller_id IN (SELECT id FROM symbols WHERE path=?)", (rel,))
         cur.execute("DELETE FROM symbols WHERE path=?", (rel,))
         cur.execute("DELETE FROM edges WHERE caller_id IS NULL", ())
         cur.execute("DELETE FROM files_state WHERE path=?", (rel,))
@@ -266,7 +407,7 @@ def cmd_who_calls(args):
     rows = _edge_query(con, """
         SELECT s.path, s.name, s.line, e.src_line, e.caller_id IS NOT NULL
         FROM edges e LEFT JOIN symbols s ON s.id = e.caller_id
-        WHERE e.callee_name = ? AND e.kind = 'call'
+        WHERE e.callee_name = ? AND e.kind IN ('call', 'references')
         ORDER BY s.path, e.src_line""", (args.name,))
     out = [{"path": r[0] or "(module-scope)", "symbol": r[1], "line": r[2],
             "call_line": r[3], "resolved": bool(r[4])} for r in rows]
@@ -338,6 +479,7 @@ def cmd_query(args):
         if _glob_ok(path, args.g or []):
             out.append({"path": path, "heading": heading, "snippet": snip,
                         "score": round(score, 4)})
+    out = rerank_hits_with_qev(args.q, out, getattr(args, "rerank", None))
     print(json.dumps(out, ensure_ascii=False, indent=None if args.json else 2))
 
 
@@ -368,7 +510,7 @@ def mcp_serve():
 
     def call_tool(name, a):
         if name == "jeox_who_calls":
-            rows = _edge_query(con, "SELECT s.path,s.name,s.line,e.src_line FROM edges e LEFT JOIN symbols s ON s.id=e.caller_id WHERE e.callee_name=? AND e.kind='call'", (a["name"],))
+            rows = _edge_query(con, "SELECT s.path,s.name,s.line,e.src_line FROM edges e LEFT JOIN symbols s ON s.id=e.caller_id WHERE e.callee_name=? AND e.kind IN ('call', 'references')", (a["name"],))
             return [{"path": r[0] or "(module-scope)", "symbol": r[1], "call_line": r[3]} for r in rows]
         if name == "jeox_what_calls":
             rows = _edge_query(con, "SELECT DISTINCT e.callee_name FROM edges e JOIN symbols s ON s.id=e.caller_id WHERE s.name=? AND e.kind='call'", (a["name"],))
@@ -428,10 +570,10 @@ def main():
     p = argparse.ArgumentParser(prog="jeox", description=__doc__,
                                 formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = p.add_subparsers(dest="cmd", required=True)
-    sp = sub.add_parser("build"); sp.add_argument("--repo"); sp.add_argument("--full", action="store_true"); sp.add_argument("--json", action="store_true", help="build output is always JSON; flag accepted for symmetry"); sp.set_defaults(fn=cmd_build)
+    sp = sub.add_parser("build"); sp.add_argument("--repo"); sp.add_argument("--wiki-root", dest="wiki_root"); sp.add_argument("--full", action="store_true"); sp.add_argument("--json", action="store_true", help="build output is always JSON; flag accepted for symmetry"); sp.set_defaults(fn=cmd_build)
     for name, fn in [("who-calls", cmd_who_calls), ("what-calls", cmd_what_calls), ("where-defined", cmd_where_defined), ("impact", cmd_impact)]:
         sp = sub.add_parser(name); sp.add_argument("name" if name != "impact" else "target"); sp.add_argument("--repo"); sp.add_argument("--json", action="store_true"); sp.add_argument("--depth", type=int, default=3); sp.set_defaults(fn=fn)
-    sp = sub.add_parser("query"); sp.add_argument("q"); sp.add_argument("-g", action="append", dest="g"); sp.add_argument("--limit", type=int, default=10); sp.add_argument("--repo"); sp.add_argument("--json", action="store_true"); sp.set_defaults(fn=cmd_query)
+    sp = sub.add_parser("query"); sp.add_argument("q"); sp.add_argument("-g", action="append", dest="g"); sp.add_argument("--limit", type=int, default=10); sp.add_argument("--repo"); sp.add_argument("--rerank", action="store_true", default=None); sp.add_argument("--no-rerank", action="store_false", dest="rerank"); sp.add_argument("--json", action="store_true"); sp.set_defaults(fn=cmd_query)
     sp = sub.add_parser("status"); sp.add_argument("--repo"); sp.add_argument("--json", action="store_true"); sp.set_defaults(fn=cmd_status)
     sub.add_parser("mcp")
     args = p.parse_args()
