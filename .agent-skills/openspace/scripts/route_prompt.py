@@ -423,8 +423,8 @@ def _host_has_jev_prompt_hook(host: str, home: Path) -> bool:
             return any("jev-plugin.mjs" in str(h.get("command", "")) for g in groups if isinstance(g, dict) for h in (g.get("hooks") or []) if isinstance(h, dict))
         if host == "agy":
             cfg = json.loads((home / ".gemini/config/hooks.json").read_text(encoding="utf-8"))
-            groups = cfg.get("hooks", {}).get("PreInvocation", [])
-            return any("jev-plugin.mjs" in str(h.get("command", "")) for g in groups if isinstance(g, dict) for h in (g.get("hooks") or []) if isinstance(h, dict))
+            entries = (cfg.get("jev-control-plane") or {}).get("PreInvocation", [])
+            return any("jev-plugin.mjs" in str(h.get("command", "")) for h in entries if isinstance(h, dict))
         if host in ("jeopi", "omp", "pi"):
             ext_home = os.environ.get("JEV_EXTENSION_HOME")
             ext = Path(ext_home) / "jev-control-plane.js" if ext_home else home / f".{host}" / "agent/extensions/jev-control-plane.js"
