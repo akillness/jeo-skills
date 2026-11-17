@@ -341,7 +341,7 @@ y la [atribución MIT upstream](docs/attribution.md).
 
 ## 📚 Lista de Habilidades
 
-> Generado desde `.agent-skills/skills.json` · 442 habilidades · despliega una categoría para ver sus habilidades.
+> Generado desde `.agent-skills/skills.json` · 443 habilidades · despliega una categoría para ver sus habilidades.
 
 ### 🌐 Web (73)
 
@@ -622,9 +622,9 @@ Subcategorías: `developer-cli` (12), `ai-cli` (17), `media-cli` (1), `automatio
 
 </details>
 
-### 🤖 IA y Agentes (82)
+### 🤖 IA y Agentes (83)
 
-Subcategorías: `orchestration` (20), `agent-frameworks` (22), `skill-authoring` (5), `evaluation` (10), `memory` (7), `planning-review` (13), `discovery` (3), `prompting` (2)
+Subcategorías: `orchestration` (21), `agent-frameworks` (22), `skill-authoring` (5), `evaluation` (10), `memory` (7), `planning-review` (13), `discovery` (3), `prompting` (2)
 
 <details>
 <summary>Ver habilidades</summary>
@@ -713,6 +713,7 @@ Subcategorías: `orchestration` (20), `agent-frameworks` (22), `skill-authoring`
 | `trulens` |
 | `fastmcp` |
 | `canyonos` |
+| `agent-substrate` |
 
 </details>
 
