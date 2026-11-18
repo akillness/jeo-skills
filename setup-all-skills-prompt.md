@@ -396,6 +396,7 @@ SKILLS_AGENT_ARGS=(-a universal)
 CLAUDE_SKILLS="${CLAUDE_CONFIG_DIR:-$USER_HOME/.claude}/skills"
 command -v claude >/dev/null 2>&1 \
   && [ ! -L "$CLAUDE_SKILLS" ] && [ ! -L "$CLAUDE_SKILLS/jeo-skill" ] \
+  && [ ! -L "$USER_HOME/.claude/skills" ] && [ ! -L "$USER_HOME/.claude/skills/jeo-skill" ] \
   && SKILLS_AGENT_ARGS+=(-a claude-code)
 
 # Antigravity IDE only (if present and not symlink-managed; CLI/agy is handled later via jeo-skill)
@@ -559,11 +560,12 @@ EOF
     done
   fi
   # Reconcile newly installed catalog skills in any host root already using per-skill symlinks
-  for hroot in "${CLAUDE_CONFIG_DIR:-$USER_HOME/.claude}/skills" \
+  for hroot in "$USER_HOME/.claude/skills" \
+               ${CLAUDE_CONFIG_DIR:+"$CLAUDE_CONFIG_DIR/skills"} \
                "$USER_HOME/.pi/agent/skills" \
                "$USER_HOME/.cursor/skills" \
                "${XDG_CONFIG_HOME:-$USER_HOME/.config}/opencode/skills"; do
-    [ ! -L "$hroot" ] && [ -L "$hroot/jeo-skill" ] || continue
+    [ -n "$hroot" ] && [ ! -L "$hroot" ] && [ -L "$hroot/jeo-skill" ] || continue
     linked=0
     while IFS= read -r name; do
       [ -n "$name" ] && [ -f "$SKILLS_ROOT/$name/SKILL.md" ] || continue
@@ -1990,7 +1992,7 @@ command -v aside >/dev/null 2>&1 && aside --version
 for acct in "$USER_HOME"/.aside/u/*/; do
   [ -d "$acct/skills/user" ] || continue
   printf 'aside %s: %s user skills\n' "$(basename "${acct%/}")" \
-    "$(find "$acct/skills/user" -maxdepth 2 -name SKILL.md 2>/dev/null | wc -l | tr -d ' ')"
+    "$(find -L "$acct/skills/user" -maxdepth 2 -name SKILL.md 2>/dev/null | wc -l | tr -d ' ')"
 done
 if [ "${JEO_SKILLS_STAR:-}" = true ] && [ "${JEO_SKILLS_DRY_RUN:-false}" != true ]; then
   if [ -n "${INSTALLER:-}" ] && [ -f "$INSTALLER" ]; then

@@ -2057,6 +2057,10 @@ for row in rows:
             hroot.mkdir(parents=True)
             (hroot / "jeo-skill").symlink_to(shared / "jeo-skill")
 
+        orca_claude_home = self.work / "orca-claude-home"
+        orca_claude_home.mkdir()
+        (orca_claude_home / "skills").symlink_to(self.home / ".claude/skills")
+
         bin_dir = self.work / "symlink-bin"
         bin_dir.mkdir()
         for name in ("claude", "pi", "gjc", "agy"):
@@ -2078,6 +2082,7 @@ for row in rows:
             HOME=str(self.home),
             USER_HOME=str(self.home),
             SKILLS_ROOT=str(shared),
+            CLAUDE_CONFIG_DIR=str(orca_claude_home),
         )
         res = run_block(code, env, self.project)
         self.assertEqual(res.returncode, 0, res.stdout)
