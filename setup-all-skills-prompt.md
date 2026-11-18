@@ -886,6 +886,13 @@ follow-up; do **not** run `npx skills remove <name>`, which deletes same-named d
 across every agent root without this fingerprint check and would remove a kept third-party
 `harness`.
 
+To upgrade already-installed skills and prune redundant host shared-root links in place from a checked-out `jeo-skills` repository:
+
+```bash
+bash scripts/skills-upgrade.sh
+python3 scripts/refresh-host-links.py --prune-shared-links
+```
+
 Stop here in minimal mode. In core mode, install only dependencies explicitly required
 by the selected starter skills; do not continue into the full shared-tool setup by default.
 
@@ -1246,6 +1253,28 @@ Review and trust the exact generated definitions in Codex `/hooks`, then verify 
 
 
 **Plan-only hosts** (analysis or browser-only environments): Receive advisory routing output but cannot enforce gating. Jev remains available as read-only reference.
+
+#### Checkout sync and multi-host hook installation (including Jeo)
+
+When provisioning or refreshing Jev directly from a `jeo-skills` checkout into `~/.agents/jev` (replace `<profile>` and `<agent>` such as `claude`, `codex`, `agy`, `cursor`, `jeo`, `jeopi`, or `pi`):
+
+```bash
+mkdir -p ~/.agents/jev/plugins
+cp -f jev/jev-harness.mjs jev/jev-plugin.mjs jev/jev-setup.sh jev/com.jeo-skills.qev-server.plist ~/.agents/jev/
+cp -Rf jev/plugins/. ~/.agents/jev/plugins/
+cp -f .agent-skills/skills.json ~/.agents/jev/skills.json
+# Or, on a fresh setup, initialize a profile first (e.g. local qev-0.8b with 32K ctx daemon):
+# bash jev/jev-setup.sh --profile "${JEV_PROFILE:-jeo}" --agent "${JEV_AGENT:-jeo}" --mode local --install-daemon
+node ~/.agents/jev/jev-harness.mjs --profile "${JEV_PROFILE:-agy}" status
+node ~/.agents/jev/jev-plugin.mjs doctor --agent "${JEV_AGENT:-codex}" --profile "${JEV_PROFILE:-agy}"
+```
+
+To bind persistent hooks across supported hosts (example: Codex, Claude, Agy, Cursor, Jeo):
+
+```bash
+node ~/.agents/jev/jev-plugin.mjs hooks-install --agent codex --profile "${JEV_PROFILE:-codex}" --apply
+node ~/.agents/jev/jev-plugin.mjs hooks-install --agent jeo --profile "${JEV_PROFILE:-jeo}" --apply
+```
 
 #### ON/OFF and private profile files
 
@@ -1925,7 +1954,7 @@ verify a live prompt per host as described in the OpenSpace section.
 ### Step 5C — Per-project workflow isolation and multi-host MCP provisioning (Context7 + core servers)
 
 Global defaults live in `~/.agents/harness/workspace.json` and `~/.agents/rules/jeo-workflows.md`.
-To isolate one repository with its own workflow order, Jev profile, or local skill root (preserved across future global `setup-workspace.py` runs):
+To isolate one repository with its own workflow order, Jev profile (or `--jev-profile off`), or local skill root without affecting other repositories:
 
 ```bash
 python3 scripts/setup-workspace.py \
@@ -1934,9 +1963,13 @@ python3 scripts/setup-workspace.py \
   --workflow-order openspace,rtk,semble,jev,memory
 ```
 
-To restore global workflow inheritance later, pass `--reset-project-workflow`.
+Once isolated (`"custom": true` in `.harness2/workspace.json` and `customWorkflow: true` in `.agents/rules/jeo-workflows.md`):
 
-To provision `@upstash/context7-mcp` non-interactively, repair broken host MCP paths (such as missing `~/.local/bin/ouroboros`, bare binaries, or Gemini `toolTimeout`), register `context7`, `openspace`, `jeox`, and local tools across installed hosts (`claude`, `codex`, `gemini`, `antigravity-cli`, `antigravity-ide`, `cursor`, `opencode`, `pi`, `gjc`, `jeopi`), and verify live JSON-RPC `initialize` + `tools/list` + Context7 probes:
+- Future global or default `setup-workspace.py` runs **preserve** that project's custom `.agents/rules/jeo-workflows.md` and `workflow` config rather than overwriting it.
+- Both `jev-plugin.mjs` and OpenSpace `route_prompt.py` inspect ancestor `.harness2/workspace.json` from `cwd` (stopping before `$HOME` and rejecting symlinks) and honor per-project enable/profile/order flags while writing unified telemetry to `~/.local/state/jeo-skill/workflow-events.jsonl`.
+- To restore global workflow inheritance later, pass `--reset-project-workflow`.
+
+To provision `@upstash/context7-mcp` locally (npm `--ignore-scripts`, zero OAuth prompt required; optionally set `CONTEXT7_API_KEY="ctx7sk-..."` in your shell env for higher Context7 rate limits), repair stale or relative host MCP paths (such as legacy `~/.local/bin/ouroboros`, `scrapling`, bare binaries, or Gemini `toolTimeout`), register `context7`, `openspace`, `jeox`, `zvec_grep`, `aside`, `semble`, and `headroom` across installed hosts (`claude`, `codex`, `gemini`, `antigravity-cli`/`antigravity-ide`, `cursor`, `opencode`, `pi`, `gjc`, `jeopi`, `jeo`), and verify live JSON-RPC `initialize` + `tools/list` + Context7 (`resolve-library-id`) probes:
 
 ```bash
 (
@@ -1958,6 +1991,27 @@ To provision `@upstash/context7-mcp` non-interactively, repair broken host MCP p
   fi
   command -v jeo-skill >/dev/null 2>&1 && HOME="$USER_HOME" jeo-skill flow-log summary || true
 )
+```
+
+Host specifics enforced automatically by `setup-mcp-hosts.py`:
+
+- **Gemini CLI** (`~/.gemini/settings.json`): omits `toolTimeout` cleanly (strict schema validation rejects it).
+- **Antigravity IDE** (`~/.gemini/antigravity/mcp_config.json`): preserves the symlink to `~/.gemini/config/mcp_config.json` when linked.
+- **OpenCode v2** (`~/.config/opencode/opencode.json`): writes under `mcp.servers` if v2 object exists or keeps v1-compatible `mcp` shape cleanly.
+- **Pi** (`~/.pi/agent/mcp.json`): sets `"exposure": "direct"` on `context7` and `jeox` so tools are immediately callable.
+- **Aside** (`~/.aside/u/*/settings.json`): audited read-only; never overwritten by scripts.
+
+#### Unified Flow Log Management (Global vs. Per-Project Isolated Flows)
+
+All workflow events (`setup-workspace`, `openspace-route` / `openspace-skip`, `jev-route` / `jev-skip` / `jev-pretool`, `jeox-build` / `jeox-query` / `jeox-mcp`, `setup-mcp-hosts` / `mcp-verify`, `skills-upgrade`) are recorded in one single canonical ledger (`~/.local/state/jeo-skill/workflow-events.jsonl`, mode `0600`) tagged with `"flow_mode": "global" | "project-custom"`:
+
+```bash
+jeo-skill flow-log doctor
+jeo-skill flow-log summary
+jeo-skill flow-log tail -n 25
+jeo-skill flow-log tail --custom-only
+# Standalone symlink installed by setup-workspace:
+jeo-flow-log summary
 ```
 
 ## Step 6 — Runtime-specific shared-root checks
@@ -2044,6 +2098,17 @@ if [ "${JEO_SKILLS_STAR:-true}" = true ] && [ "${JEO_SKILLS_STAR_DONE:-false}" !
   fi
 fi
 fi
+```
+
+When verifying directly from a `jeo-skills` checkout, also run the catalog, frontmatter, test, and `jeo-code` code-graph checks:
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 python3 scripts/validate-catalog-projections.py
+PYTHONDONTWRITEBYTECODE=1 python3 scripts/repair-skill-frontmatter.py --check
+node --test jev/*.test.mjs
+python3 -m unittest scripts/test_setup_workspace.py scripts/test_mcp_hosts.py scripts/test_jeox_regressions.py scripts/test_workflow_log.py
+# `.jeo/db/jeo.db` is managed exclusively by `../jeo-code` (`jeo jeox` / `packages/jeo-mem`):
+bun ../jeo-code/src/cli.ts jeox build --repo "${PROJECT_DIR:-$PWD}" --full
 ```
 
 Finally report:

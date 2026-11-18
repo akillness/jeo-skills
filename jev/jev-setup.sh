@@ -1324,7 +1324,7 @@ PY
       else
         mkdir -p "$MODEL_DIR"
         info "Starting $LOCAL_MODEL via llama-server on http://$local_host:$local_port ..."
-        nohup "$LLAMA_BIN" -m "$MODEL_FILE" --alias "$LOCAL_MODEL" --host "$local_host" --port "$local_port" -c "${JEV_QEV_CTX:-4096}" --cache-reuse 256 -np 1 --no-kv-unified -fa on -b 2048 -ub 1024 -ctk q8_0 -ctv q8_0 -ngl 99 --no-webui </dev/null > "$MODEL_DIR/llama-server.log" 2>&1 &
+        nohup "$LLAMA_BIN" -m "$MODEL_FILE" --alias "$LOCAL_MODEL" --host "$local_host" --port "$local_port" -c "${JEV_QEV_CTX:-32768}" --cache-reuse 256 -np 1 --no-kv-unified -fa on -b 2048 -ub 1024 -ctk q8_0 -ctv q8_0 -ngl 99 --no-webui </dev/null > "$MODEL_DIR/llama-server.log" 2>&1 &
         server_pid=$!
         write_pid_file "$PID_FILE" "$server_pid" "qev" "$LOCAL_MODEL" "$local_host" "$local_port"
         qev_ready=false
@@ -1357,12 +1357,15 @@ PY
       PLIST_DST="$LAUNCH_DIR/com.jeo-skills.qev-server.plist"
       mkdir -p "$LAUNCH_DIR"
       python3 -c '
-import pathlib, sys
+import pathlib, re, sys
 tpl = pathlib.Path(sys.argv[1]).read_text()
 for k, v in zip(["__LLAMA_BIN__", "__MODEL_FILE__", "__MODEL_NAME__", "__HOST__", "__PORT__", "__LOG_PATH__"], sys.argv[2:8]):
     tpl = tpl.replace(k, v)
-pathlib.Path(sys.argv[8]).write_text(tpl)
-' "$JEV_HOME/com.jeo-skills.qev-server.plist" "$LLAMA_BIN" "$MODEL_FILE" "$LOCAL_MODEL" "$local_host" "$local_port" "$MODEL_DIR/llama-server.log" "$PLIST_DST"
+ctx = sys.argv[8]
+if ctx.isdigit():
+    tpl = re.sub(r"(<string>-c</string>\s*<string>)\d+(</string>)", rf"\g<1>{ctx}\g<2>", tpl, count=1)
+pathlib.Path(sys.argv[9]).write_text(tpl)
+' "$JEV_HOME/com.jeo-skills.qev-server.plist" "$LLAMA_BIN" "$MODEL_FILE" "$LOCAL_MODEL" "$local_host" "$local_port" "$MODEL_DIR/llama-server.log" "${JEV_QEV_CTX:-32768}" "$PLIST_DST"
       if command -v launchctl >/dev/null 2>&1; then
         PID_FILE="$RUN_DIR/local-${local_port}.pid"
         if [ -f "$PID_FILE" ] && [ ! -L "$PID_FILE" ]; then

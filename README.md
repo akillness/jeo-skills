@@ -1013,6 +1013,13 @@ See the [setup boundary](setup-all-skills-prompt.md#elephant-goldfish-model-on-d
 
 <!-- WHATS-NEW:START -->
 
+## 🆕 What's New in v2026-11-19
+
+| Change | Details |
+|--------|---------|
+| **Jev hook deduplication, benign prefiltering & `qev-0.8b` 32K context tuning** | Cuts redundant local/API Jev backend calls across high-frequency loops without weakening enforcement: `jev-plugin.mjs` adds TTL caches in `~/.agents/jev/cache/` for prompt routing (`route-v1`, 10m default via `JEV_PROMPT_CACHE_TTL_MS`), `jeo-preprompt`, and `advisory` `PreToolUse` (`pretool-v1`, 60s default via `JEV_PRETOOL_CACHE_TTL_MS`, disabled in `enforce`), plus benign prefiltering in `PostToolUse`/`jeo-posttool` (skipping short/non-suspicious outputs unless `JEV_UNTRUSTED_MODERATION=strict`). Extension controllers (`jev-controller.mjs` across `jeopi`, `omp`, `pi`, `gjc`) skip `tool_call` subprocesses when `reviewMode === 'off'` and deduplicate `tool_call`/`before_tool_call` by `toolCallId` and unchanged `context` blocks. `jev-harness.mjs` expands Korean verb-ending/prompt-writing BM25 bridging (`jev-index-v4`), raises the `qev` `local` `maxStateChars` cap from `12,000` to `36,000` (`JEV_QEV_MAX_STATE_CHARS`), and aligns `com.jeo-skills.qev-server.plist` and `jev-setup.sh` to `-c 32768` (`JEV_QEV_CTX`). |
+| **`setup-all-skills-prompt.md` `jeo` hook & MCP parity** | Consolidates `setup.md` into `setup-all-skills-prompt.md`, adds `jeo` (`hooks-install --agent jeo`, `jev/plugins/`, `jev-setup.sh`, `com.jeo-skills.qev-server.plist`, and `setup-mcp-hosts.py` host coverage), and documents the new Jev tuning variables in `jev/README.md`. |
+
 ## 🆕 What's New in v2026-11-17
 
 | Change | Details |
@@ -1043,14 +1050,6 @@ See the [setup boundary](setup-all-skills-prompt.md#elephant-goldfish-model-on-d
 |--------|---------|
 | **TruLens evaluation and tracking operator skill** | Adds `trulens`, pinned to upstream `32f57106c7f897a05806107737c413e65665fe46` (v2.16.0), with RAG Triad evaluations (Context Relevance, Groundedness, Answer Relevance), feedback function definitions across Snowflake Cortex, OpenAI, Bedrock, and LiteLLM providers, application instrumentation (`TruChain`, `TruLlama`, `TruCustomApp`), guardrail filters, and an offline stdlib preflight helper. The 435-skill catalog, three README inventories, and setup guide are synchronized. |
 | **Current catalog** | The current manifest contains 435 skills in 10 categories, including `kagent`, `modern-web-guidance`, and `trulens`. Catalog tables are regenerated from `.agent-skills/skills.json`. |
-
-## 🆕 What's New in v2026-11-13
-
-| Change | Details |
-|--------|---------|
-| **NVIDIA SkillEvaluator operator skill** | Adds `nvidia-skill-evaluator`, pinned to upstream `12b387f7a62b5f3e0de9eff392a3f6b7e952f2c2`, with tier-specific commands, scanner/provider/sandbox/CI approval boundaries, Apache-2.0 attribution, a 12-file SHA-256 manifest, and a standalone offline helper. The 432-skill catalog, three README inventories and setup guide are synchronized. Verification: 15 offline regression tests, all 12 selected-file hashes, and byte-identical five-file installation into an isolated HOME passed. Ten routing scenarios are authored, not model-executed; the evaluator, scanners, paid models and live Tier 3 runs were not executed. |
-| **Current catalog** | The current manifest contains 432 skills in 10 categories, including `donchitos-game-studios` and `nvidia-skill-evaluator`; the `agenticskills` bundle installer has been removed. Catalog tables are regenerated from `.agent-skills/skills.json`. |
-| **README guidance aligned across languages** | English, Korean and Spanish now distinguish installation from activation, document observed usage and runtime-destination limits, and include catalog maintenance commands. For current installation and refresh behavior, consult the README's operational sections rather than older release summaries. |
 
 > 📜 Older entries: [`changelog/en/`](changelog/en/) (monthly files, newest first).
 

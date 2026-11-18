@@ -20,7 +20,7 @@ last_updated: 2026-11-18
 ## Naming
 - Python maintenance/setup helpers live under `scripts/` using kebab-case filenames (`setup-workspace.py`, `setup-mcp-hosts.py`) and paired `test_*.py` unittest modules (`test_setup_workspace.py`, `test_mcp_hosts.py`, `test_jeox_regressions.py`).
 - Jev modules and tests use ES module `.mjs` extensions under `jev/`.
-- Root repository files are denied by default in `.gitignore`; every tracked root artifact (`!/setup.md`) requires its own explicit allowlist line.
+- Root repository files are denied by default in `.gitignore`; every tracked root artifact (`!/setup-all-skills-prompt.md`) requires its own explicit allowlist line.
 
 ## Structure
 - **SSOT Metadata:** `.agent-skills/skills.json` owns skill categories, tags, and relationships; never duplicate taxonomy metadata into individual `SKILL.md` frontmatter or hand-edit `.agent-skills/skills.toon` / README tables.

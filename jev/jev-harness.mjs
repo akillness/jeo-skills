@@ -261,12 +261,14 @@ export function describeBackend(kind, { model: modelOverride } = {}) {
         choiceCap: CHOICE_CAPS.jevos, batch: true, timeoutMs: 60000, maxStateChars: MAX_STATE_CHARS.local };
     }
     if (isQev) {
+      const qevMaxStateRaw = Number(cfg('local', 'JEV_QEV_MAX_STATE_CHARS'));
+      const qevMaxStateChars = Number.isInteger(qevMaxStateRaw) && qevMaxStateRaw >= 1000 ? qevMaxStateRaw : 36000;
       return { ...base, driver: 'qev', endpoint: localEndpoint || DEFAULT_JEVOS_URL,
         model: localModel || 'qev-0.8b-text-Q8_0', modelDir: cfg('local', 'JEV_LOCAL_MODEL_DIR') || null,
         modelFile: cfg('local', 'JEV_LOCAL_MODEL_FILE') || null,
         binPath: cfg('local', 'JEV_LOCAL_BIN') || null,
         localCalibration,
-        choiceCap: CHOICE_CAPS.qev, batch: true, timeoutMs: 60000, maxStateChars: 12000 };
+        choiceCap: CHOICE_CAPS.qev, batch: true, timeoutMs: 60000, maxStateChars: qevMaxStateChars };
     }
     return { ...base, driver: 'local', endpoint: localEndpoint || DEFAULT_LOCAL_URL,
       // Legacy single-file installs share JEV_LOCAL_MODEL with the generative kinds; only honor it here when it is scoped to `local`.
@@ -942,6 +944,7 @@ const KO_EN_TECH_TERMS = {
   '보안': ['security'],
   '디버깅': ['debug', 'debugging'],
   '버그': ['bug', 'debug'],
+  '고쳐': ['fix', 'debug', 'refactor'],
   '성능': ['performance'],
   '최적화': ['optimize', 'optimization'],
   '데이터베이스': ['database'],
@@ -962,15 +965,35 @@ const KO_EN_TECH_TERMS = {
   '크롤링': ['scraping', 'crawler'],
   '리팩터링': ['refactor', 'refactoring'],
   '마이그레이션': ['migration'],
+  '프롬프트': ['prompt', 'prompts', 'prompting'],
+  '프롬프팅': ['prompting', 'prompt', 'prompts'],
+  '다듬기': ['refine', 'refining', 'polish', 'improve'],
+  '다듬': ['refine', 'refining', 'polish', 'improve'],
+  '개선': ['improve', 'refine', 'enhance', 'optimization'],
+  '작성': ['write', 'writing', 'author', 'authoring', 'draft', 'create'],
+  '템플릿': ['template', 'templates'],
+  '엔지니어링': ['engineering'],
+  '생성': ['generate', 'generation', 'create'],
+  '글쓰기': ['writing', 'write', 'copywriting'],
+  '만들': ['create', 'build', 'generate'],
+  '요약': ['summarize', 'summary'],
+  '번역': ['translate', 'translation'],
+  '기획': ['plan', 'planning', 'spec'],
+  '설계': ['design', 'architecture', 'spec'],
+  '디자인': ['design', 'ui'],
+  '스킬': ['skill', 'skills'],
+  '분석': ['analyze', 'analysis'],
 };
 
 const KO_PARTICLE_RE = /^([가-힣]{2,}?)(?:으로|에서|에게|부터|까지|이랑|하고|이나|처럼|보다|은|는|이|가|을|를|의|에|로|와|과|랑|도|만)$/;
+const KO_VERB_ENDING_RE = /^([가-힣]{2,}?)(?:해주세요|해줘요|해주고|해주는|해준|해줘|해야|해서|해도|하기|하고|하는|하다|할래|할까|어주세요|어줘요|어주고|어주는|어준|어줘|아주세요|아줘요|아주고|아주는|아준|아줘|시켜주세요|시켜줘요|시켜줘|시키고|시키는|시켜|주세요|줘요|줘|기)$/;
 
 function stripKoParticle(tok) {
   if (!/^[가-힣]{3,}$/.test(tok)) return null;
-  const m = tok.match(KO_PARTICLE_RE);
+  const m = tok.match(KO_PARTICLE_RE) || tok.match(KO_VERB_ENDING_RE);
   return m && m[1].length >= 2 ? m[1] : null;
 }
+
 
 function stemEnToken(tok) {
   if (!/^[a-z]{5,}$/.test(tok)) return null;
@@ -1263,15 +1286,15 @@ async function loadCatalog(preferredPath = null) {
             .update(`${candidate}\0${info.mtimeNs}\0${info.size}\0${excerptRoot}\0${rootInfo.mtimeNs}\0${catalog.skills.length}`)
             .digest('hex')
             .slice(0, 24);
-          indexCachePath = join(tmpdir(), `jev-index-v3-${cacheKey}.json`);
+          indexCachePath = join(tmpdir(), `jev-index-v4-${cacheKey}.json`);
           auxCachePath = join(tmpdir(), `jev-aux-v1-${cacheKey}.json`);
           try {
-            const v3 = JSON.parse(await readFile(indexCachePath, 'utf8'));
-            if (v3 && v3.version === 3 && v3.skillCount === catalog.skills.length
-                && Array.isArray(v3.auxList) && Array.isArray(v3.bm25Rows)
-                && v3.bm25Rows.length === catalog.skills.length && v3.idf && typeof v3.avgDocLen === 'number') {
-              cachedIndex = v3;
-              auxList = v3.auxList;
+            const v4 = JSON.parse(await readFile(indexCachePath, 'utf8'));
+            if (v4 && v4.version === 4 && v4.skillCount === catalog.skills.length
+                && Array.isArray(v4.auxList) && Array.isArray(v4.bm25Rows)
+                && v4.bm25Rows.length === catalog.skills.length && v4.idf && typeof v4.avgDocLen === 'number') {
+              cachedIndex = v4;
+              auxList = v4.auxList;
             }
           } catch {
             cachedIndex = null;
@@ -1392,7 +1415,7 @@ async function loadCatalog(preferredPath = null) {
           const tmpCache = `${indexCachePath}.${process.pid}.tmp`;
           try {
             writeFileSync(tmpCache, JSON.stringify({
-              version: 3,
+              version: 4,
               skillCount: catalog.skills.length,
               auxList,
               idf,
@@ -1712,12 +1735,22 @@ function expandTaskTermsForBm25(task) {
     if (enStem) add(enStem, 0.65);
     const koStem = stripKoParticle(tok) || tok;
     if (koStem !== tok) add(koStem, 0.9);
-    const bridged = KO_EN_TECH_TERMS[koStem] || KO_EN_TECH_TERMS[tok];
+    const bridged = KO_EN_TECH_TERMS[tok] || KO_EN_TECH_TERMS[koStem];
     if (Array.isArray(bridged)) {
       for (const en of bridged) {
         add(en, 0.65);
         const bStem = stemEnToken(en);
         if (bStem) add(bStem, 0.55);
+      }
+    } else if (/^[가-힣]{4,}$/.test(koStem)) {
+      for (const [koKey, enList] of Object.entries(KO_EN_TECH_TERMS)) {
+        if (koKey.length >= 2 && koStem.includes(koKey)) {
+          for (const en of enList) {
+            add(en, 0.55);
+            const bStem = stemEnToken(en);
+            if (bStem) add(bStem, 0.45);
+          }
+        }
       }
     }
   }
@@ -3401,7 +3434,7 @@ async function backendStatus(kind, { timeoutMs = 3000, referenced = true } = {})
     entry.state = classifyProbeError(err);
     const start = kind === 'local'
       ? (backend.driver === 'qev'
-          ? `${backend.binPath || 'llama-server'} -m ${backend.modelFile || '~/.agents/jev/models/qev/qev-0.8b-text-Q8_0.gguf'} --host 127.0.0.1 --port 8017 -c 16384 -np 1 --no-kv-unified -fa on -b 2048 -ub 1024 -ctk q8_0 -ctv q8_0 -ngl 99`
+          ? `${backend.binPath || 'llama-server'} -m ${backend.modelFile || '~/.agents/jev/models/qev/qev-0.8b-text-Q8_0.gguf'} --host 127.0.0.1 --port 8017 -c 32768 -np 1 --no-kv-unified -fa on -b 2048 -ub 1024 -ctk q8_0 -ctv q8_0 -ngl 99`
           : backend.driver === 'jevos'
             ? `${backend.binPath || '~/.agents/jev/jevos/jev/jev'} serve --model-dir ${backend.modelDir || '~/.agents/jev/jevos/jev/model'}`
             : (PROFILE ? `JEV_PROFILE=${PROFILE} ~/.agents/jev/venv/bin/python ~/.agents/jev/jev_local_server.py --profile ${PROFILE}` : 'start ~/.agents/jev/venv/bin/python ~/.agents/jev/jev_local_server.py'))

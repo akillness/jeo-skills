@@ -16,7 +16,7 @@
     <string>--port</string>
     <string>__PORT__</string>
     <string>-c</string>
-    <string>4096</string>
+    <string>32768</string>
     <string>--cache-reuse</string>
     <string>256</string>
     <string>-np</string>

@@ -1876,3 +1876,70 @@ test('model-plan rechecks snapshot freshness after reads and candidate evaluatio
     assert.equal(existsSync(join(f.home, 'jev-plugin-command.log')), false, variant.name + ': host command ran');
   }
 });
+
+function jeoPrePromptFixture(runtimeMode) {
+  const f = fixture({ enabled: true });
+  const jevHome = join(f.home, '.agents', 'jev');
+  privateWrite(join(f.profileDir, `${f.profile}.env`), `JEV_ENABLED=true\nJEV_MODE=api\nJEV_RUNTIME_MODE=${runtimeMode}\n`);
+  const skills = join(f.root, 'skills');
+  const catalog = join(skills, 'skills.json');
+  privateWrite(catalog, JSON.stringify({
+    skills: [
+      { name: 'prompts-chat', path: 'prompts-chat/SKILL.md', category: 'writing', description: 'Write and refine prompts' },
+      { name: 'gitingest', path: 'gitingest/SKILL.md', category: 'engineering', description: 'Ingest git repositories into text digests' },
+    ],
+    categories: { writing: ['prompts-chat'], engineering: ['gitingest'] },
+    model_policies: {},
+  }));
+  privateWrite(join(skills, 'prompts-chat', 'SKILL.md'), '---\nname: prompts-chat\ndescription: Write and refine prompts\n---\n# Prompts Chat\nPROMPTS_CHAT_BODY_MARKER\n');
+  privateWrite(join(skills, 'gitingest', 'SKILL.md'), '---\nname: gitingest\ndescription: Ingest git repositories\n---\n# Gitingest\nGITINGEST_BODY_MARKER\n');
+  // The controller imports ./jev-harness.mjs next to itself, so a copied controller gets a deterministic local harness.
+  const controller = join(jevHome, 'jev-plugin.mjs');
+  mkdirSync(jevHome, { recursive: true });
+  copyFileSync(plugin, controller);
+  writeFileSync(join(jevHome, 'jev-harness.mjs'), [
+    'export async function routeSkills(prompt) {',
+    "  const name = /프롬프트/.test(prompt) ? 'prompts-chat' : 'gitingest';",
+    '  return { topK: [{ name }], routing: [] };',
+    '}',
+    '',
+  ].join('\n'));
+  const run = prompt => runPlugin(f, ['jeo-preprompt', '--agent', 'jeo', '--profile', f.profile], {
+    input: JSON.stringify({ prompt }),
+    env: { JEV_PLUGIN_CONTROLLER: controller, JEV_CATALOG_PATH: catalog },
+    entry: controller,
+  });
+  return { f, run };
+}
+
+test('jeo-preprompt advisory mode suggests the routed skill for a Korean prompt without injecting skill bodies', () => {
+  const { run } = jeoPrePromptFixture('advisory');
+  const result = run('프롬프트 작성하고 다듬기');
+  assert.equal(result.status, 0, `${result.stdout}\n${result.stderr}`);
+  assert.match(result.stdout, /\[Jev route-skills\] \(advisory\) suggested skills: prompts-chat\n$/);
+  assert.doesNotMatch(result.stdout, /gitingest|PROMPTS_CHAT_BODY_MARKER/);
+});
+
+test('jeo-preprompt assist mode injects the routed skill context', () => {
+  const { run } = jeoPrePromptFixture('assist');
+  const result = run('프롬프트 작성하고 다듬기');
+  assert.equal(result.status, 0, `${result.stdout}\n${result.stderr}`);
+  assert.match(result.stdout, /\[Jev route-skills\] \(assist\) suggested skills: prompts-chat/);
+  assert.match(result.stdout, /PROMPTS_CHAT_BODY_MARKER/);
+  assert.doesNotMatch(result.stdout, /GITINGEST_BODY_MARKER/);
+});
+
+test('jeo-preprompt with an unsupported or off runtime mode emits no skill routing and exits cleanly', () => {
+  const { run } = jeoPrePromptFixture('off');
+  const result = run('프롬프트 작성하고 다듬기');
+  assert.equal(result.status, 0, `${result.stdout}\n${result.stderr}`);
+  assert.doesNotMatch(result.stdout, /route-skills/);
+  assert.equal(result.stdout.trim(), '');
+});
+
+test('jeo-preprompt with a blank prompt routes nothing', () => {
+  const { run } = jeoPrePromptFixture('advisory');
+  const result = run('   ');
+  assert.equal(result.status, 0, `${result.stdout}\n${result.stderr}`);
+  assert.equal(result.stdout.trim(), '');
+});

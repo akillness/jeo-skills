@@ -25,7 +25,7 @@ last_updated: 2026-11-18
 - `git` and core developer tools (`mex-agent`, `zg`, `rtk`, `semble`, `~/.agents/venvs/openspace/bin/python`) when activating full workspaces
 
 ## First-time Setup
-1. See [setup.md](../../setup.md) or [setup-all-skills-prompt.md](../../setup-all-skills-prompt.md) and install catalog skills into `~/.agents/skills`.
+1. See [setup-all-skills-prompt.md](../../setup-all-skills-prompt.md) and install catalog skills into `~/.agents/skills`.
 2. Activate global & project workspace + `harness2`: `python3 scripts/setup-workspace.py --project "$PWD"` (add `--custom-workflow --workflow-order ... --jev-profile ...` to isolate a repository).
 3. Verify rule injection & frontmatter: `python3 scripts/setup-workspace.py --project "$PWD" --verify --json`.
 4. Provision Context7 & multi-host MCP configs: `python3 scripts/setup-mcp-hosts.py --provision-context7 --repair --project "$PWD" --apply`.

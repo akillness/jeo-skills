@@ -1023,6 +1023,13 @@ v1 마이그레이션, 실행 근거에 따른 `/harness:evolve`를 안내합니
 
 <!-- WHATS-NEW:START -->
 
+## 🆕 v2026-11-19 업데이트
+
+| 변경 사항 | 상세 내용 |
+|--------|---------|
+| **Jev 고빈도 훅 중복 제거·정상 출력 사전 필터링 및 `qev-0.8b` 32K/36,000자 튜닝** | 강제(`enforce`) 경계를 약화하지 않으면서 반복 에이전트 루프의 불필요한 로컬/API 호출을 크게 줄였습니다. `jev-plugin.mjs`는 `~/.agents/jev/cache/`에 프롬프트 라우팅(`route-v1`, 기본 10분 `JEV_PROMPT_CACHE_TTL_MS`)·`jeo-preprompt`·`advisory` `PreToolUse`(`pretool-v1`, 기본 60초 `JEV_PRETOOL_CACHE_TTL_MS`, `enforce`는 미캐시) TTL 캐시를 추가하고, `PostToolUse`/`jeo-posttool`에서 16자 이하 또는 의심 패턴이 없는 정상 출력을 사전 스킵합니다(`JEV_UNTRUSTED_MODERATION=strict`로 해제 가능). 확장 컨트롤러(`jeopi`/`omp`/`pi`/`gjc` 공용 `jev-controller.mjs`)는 `reviewMode === 'off'`일 때 `tool_call` 서브프로세스를 띄우지 않고, `toolCallId` 기준 중복 `tool_call`/`before_tool_call`과 동일 `context` 블록 반복을 차단합니다. `jev-harness.mjs`는 한국어 동사 어미/프롬프트 작성 BM25 확장(`jev-index-v4`)을 반영하고, `qev` `local` `maxStateChars` 상한을 `12,000`에서 `36,000`자로 상향(`JEV_QEV_MAX_STATE_CHARS`)했으며 `com.jeo-skills.qev-server.plist`·`jev-setup.sh` 기본 컨텍스트를 `-c 32768`(`JEV_QEV_CTX`)로 통일했습니다. |
+| **`setup-all-skills-prompt.md` 통합 및 `jeo` 훅·MCP 호스트 추가** | `setup.md`를 `setup-all-skills-prompt.md`로 통합하고 `jeo`(`hooks-install --agent jeo`, `jev/plugins/`, `jev-setup.sh`, `com.jeo-skills.qev-server.plist`, `setup-mcp-hosts.py` 호스트 목록)를 추가했으며 `jev/README.md`에 신규 Jev 환경 변수를 반영했습니다. |
+
 ## 🆕 v2026-11-17 업데이트
 
 | 변경 사항 | 상세 내용 |
@@ -1053,14 +1060,6 @@ v1 마이그레이션, 실행 근거에 따른 `/harness:evolve`를 안내합니
 |--------|---------|
 | **TruLens 평가 및 트래킹 운영 스킬** | 업스트림 `32f57106c7f897a05806107737c413e65665fe46` (v2.16.0)에 고정한 `trulens`를 추가했습니다. RAG Triad 평가(문맥 관련성, 근거성, 답변 관련성), Snowflake Cortex·OpenAI·Bedrock·LiteLLM 제공자 기반 피드백 함수 정의, 애플리케이션 계측(`TruChain`, `TruLlama`, `TruCustomApp`), 가드레일 필터, 표준 라이브러리 오프라인 프리플라이트 헬퍼를 제공합니다. 스킬 435개 카탈로그, README 3개 언어 목록과 setup 가이드를 동기화했습니다. |
 | **현재 카탈로그** | 현재 매니페스트는 `kagent`, `modern-web-guidance`, `trulens`를 포함한 스킬 435개·카테고리 10개를 담고 있습니다. 카탈로그 표는 `.agent-skills/skills.json`에서 다시 생성합니다. |
-
-## 🆕 v2026-11-13 업데이트
-
-| 변경 사항 | 상세 내용 |
-|--------|---------|
-| **NVIDIA SkillEvaluator 운영 스킬** | 업스트림 `12b387f7a62b5f3e0de9eff392a3f6b7e952f2c2`에 고정한 `nvidia-skill-evaluator`를 추가했습니다. 단계별 명령, 스캐너·제공자·샌드박스·CI 승인 경계, Apache-2.0 출처, 파일 12개의 SHA-256 매니페스트와 독립 오프라인 헬퍼를 제공합니다. 스킬 432개 카탈로그, README 3개 언어 목록과 setup 가이드를 동기화했습니다. 오프라인 회귀 테스트 15개, 선택 파일 12개 해시, 격리 HOME 설치 파일 5개의 바이트 일치 검증을 통과했습니다. 라우팅 시나리오 10개는 작성만 했으며 모델로 실행하지 않았습니다. 평가기·보안 스캐너·유료 모델·실제 Tier 3 실행은 수행하지 않았습니다. |
-| **현재 카탈로그** | 현재 매니페스트는 `donchitos-game-studios`와 `nvidia-skill-evaluator`를 포함한 스킬 432개·카테고리 10개를 담고 있으며, `agenticskills` 번들 설치기는 제거했습니다. 카탈로그 표는 `.agent-skills/skills.json`에서 다시 생성합니다. |
-| **README 3개 언어의 운영 안내 정렬** | 영어·한국어·스페인어 안내에서 설치와 활성화, 관찰된 사용 기록과 런타임 설치 경로의 한계를 구분하고 카탈로그 유지관리 명령을 추가했습니다. 현재 설치·갱신 동작은 과거 업데이트 요약보다 README의 운영 안내를 기준으로 확인하세요. |
 
 > 📜 이전 기록: [`changelog/ko/`](changelog/ko/) (월별 파일, 최신순).
 

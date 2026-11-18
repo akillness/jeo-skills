@@ -214,6 +214,10 @@ export function registerBeforeAgentStart(api, { agent, profile, envelope = 'syst
   let evaluateGoalsMode = process.env.JEV_EVALUATE_GOALS || 'off';
   let pruneEnabled = false;
   let activeMemoryMode = configuredMemoryMode || 'jev-only';
+  let activeReviewMode = null;
+  let lastContextKey = null;
+  let lastContextResult = null;
+  const seenToolCalls = new Map();
   let generation = 0;
   const matcherRe = compileToolMatcher(toolMatcher);
 
@@ -222,6 +226,10 @@ export function registerBeforeAgentStart(api, { agent, profile, envelope = 'syst
     latestPrompt = typeof event.prompt === 'string' ? event.prompt : '';
     pruneEnabled = false;
     activeMemoryMode = configuredMemoryMode || 'jev-only';
+    activeReviewMode = null;
+    lastContextKey = null;
+    lastContextResult = null;
+    seenToolCalls.clear();
     const result = await invokeControllerHook({
       agent,
       profile,
@@ -239,6 +247,7 @@ export function registerBeforeAgentStart(api, { agent, profile, envelope = 'syst
     const assist = result?.ok === true && result?.enabled === true && result?.runtime?.mode === 'assist';
     if (generation === currentGeneration) {
       pruneEnabled = assist && result.runtime.pruneContext === true;
+      if (typeof result?.runtime?.reviewMode === 'string') activeReviewMode = result.runtime.reviewMode;
       if (typeof result?.runtime?.memoryMode === 'string') activeMemoryMode = result.runtime.memoryMode;
       if (typeof result?.runtime?.untrustedModeration === 'string') untrustedModEnabled = result.runtime.untrustedModeration !== 'off';
       if (typeof result?.runtime?.evaluateGoals === 'string') evaluateGoalsMode = result.runtime.evaluateGoals;
@@ -316,6 +325,8 @@ export function registerBeforeAgentStart(api, { agent, profile, envelope = 'syst
       chars += text.length;
     }
     if (!eligible.length) return {};
+    const contextKey = JSON.stringify([activeMemoryMode, latestPrompt, eligible.map(b => [b.id, b.kind || '', b.text])]);
+    if (contextKey === lastContextKey && lastContextResult) return lastContextResult;
     const currentGeneration = generation;
     const result = await invokeControllerHook({
       agent, profile, controllerPath, timeoutMs,
@@ -363,12 +374,20 @@ export function registerBeforeAgentStart(api, { agent, profile, envelope = 'syst
         attribution: 'agent',
       });
     }
-    return changed ? { messages: nextMessages } : {};
+    const out = changed ? { messages: nextMessages } : {};
+    lastContextKey = contextKey;
+    lastContextResult = out;
+    return out;
   });
 
   const handleToolCall = async (event = {}) => {
+    if (activeReviewMode === 'off') return {};
     const toolName = String(event.toolName || event.name || event.tool_name || event.tool || '');
     if (!toolName || !matcherRe.test(toolName)) return {};
+    const callId = typeof (event.toolCallId || event.callId) === 'string' && (event.toolCallId || event.callId)
+      ? `${generation}:${event.toolCallId || event.callId}`
+      : null;
+    if (callId && seenToolCalls.has(callId)) return seenToolCalls.get(callId);
     const toolInput = event.input ?? event.arguments ?? event.tool_input ?? {};
     const result = await invokeControllerHook({
       agent,
@@ -389,25 +408,30 @@ export function registerBeforeAgentStart(api, { agent, profile, envelope = 'syst
       },
     });
     const out = result?.hookSpecificOutput;
-    if (!out || typeof out !== 'object') return {};
-    if (out.permissionDecision === 'deny') {
-      return {
-        block: true,
-        cancel: true,
-        permissionDecision: 'deny',
-        permissionDecisionReason: out.permissionDecisionReason || 'Jev withheld action.',
-        reason: out.permissionDecisionReason || 'Jev withheld action.',
-        hookSpecificOutput: out,
-      };
+    let decision = {};
+    if (out && typeof out === 'object') {
+      if (out.permissionDecision === 'deny') {
+        decision = {
+          block: true,
+          cancel: true,
+          permissionDecision: 'deny',
+          permissionDecisionReason: out.permissionDecisionReason || 'Jev withheld action.',
+          reason: out.permissionDecisionReason || 'Jev withheld action.',
+          hookSpecificOutput: out,
+        };
+      } else if (typeof out.additionalContext === 'string' && out.additionalContext.trim()) {
+        decision = {
+          block: false,
+          additionalContext: out.additionalContext.trim(),
+          hookSpecificOutput: out,
+        };
+      }
     }
-    if (typeof out.additionalContext === 'string' && out.additionalContext.trim()) {
-      return {
-        block: false,
-        additionalContext: out.additionalContext.trim(),
-        hookSpecificOutput: out,
-      };
+    if (callId) {
+      if (seenToolCalls.size >= 64) seenToolCalls.clear();
+      seenToolCalls.set(callId, decision);
     }
-    return {};
+    return decision;
   };
 
   api.on('tool_call', handleToolCall);

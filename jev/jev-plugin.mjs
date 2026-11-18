@@ -15,6 +15,7 @@ import {
   readdirSync,
   realpathSync,
   renameSync,
+  statSync,
   unlinkSync,
   writeFileSync,
 } from 'node:fs';
@@ -38,6 +39,9 @@ const ENV_ID = /^[A-Z_][A-Z0-9_]*$/;
 const MODEL_ID = /^[A-Za-z0-9][A-Za-z0-9_.:/@+-]*$/;
 const MODEL_PLAN_INPUT_BYTES = 1024 * 1024;
 const HOST_MODEL_SNAPSHOT_MAX_AGE_MS = 60_000;
+const DEFAULT_PROMPT_CACHE_TTL_MS = 600_000;
+const DEFAULT_PRETOOL_CACHE_TTL_MS = 60_000;
+const SUSPICIOUS_UNTRUSTED_RE = /(?:ignore\s+(?:all\s+)?(?:previous|prior|above)|disregard\s+(?:all\s+)?(?:previous|prior)|system\s*prompt|<\|im_start\|>|<\/?system>|you\s+are\s+now|new\s+instructions|curl\s+|wget\s+|nc\s+-|\|\s*(?:sh|bash|zsh)\b|base64\s+-d|eval\s*\()/i;
 const HOST_PROVIDERS = new Set(['anthropic', 'openai', 'openai-codex', 'google', 'gemini', 'openrouter']);
 // 'gemini' is a known routing-advice provider name but no host's CLI provider
 // alias/model-selector for it was verified (AgentPluginResearch lane-d); keep
@@ -1433,7 +1437,7 @@ function saveSessionTask(path, task) {
   let checked = 0;
   // Only our own hashed, regular cache files are eligible for expiry cleanup.
   for (const entry of readdirSync(sessionDir, { withFileTypes: true })) {
-    if (!entry.isFile() || !/^[a-f0-9]{64}\.json$/.test(entry.name)) continue;
+    if (!entry.isFile() || !/^(?:cache-)?[a-f0-9]{64}\.json$/.test(entry.name)) continue;
     if (checked++ >= 512) break;
     const candidate = join(sessionDir, entry.name);
     try {
@@ -1446,6 +1450,63 @@ function saveSessionTask(path, task) {
     return;
   }
   atomicWrite(path, JSON.stringify({ task, time: now }));
+}
+function fileMtimeMs(path) {
+  try { return path ? statSync(path).mtimeMs : 0; } catch { return 0; }
+}
+
+function ttlMsSetting(raw, fallback) {
+  if (raw === undefined || raw === null || raw === '') return fallback;
+  const trimmed = String(raw).trim().toLowerCase();
+  if (trimmed === '0' || trimmed === 'off' || trimmed === 'false') return 0;
+  const parsed = Number(trimmed);
+  return Number.isFinite(parsed) && parsed > 0 ? Math.floor(parsed) : fallback;
+}
+
+function ttlCachePath(kind, parts) {
+  const key = createHash('sha256').update(JSON.stringify([kind, ...parts])).digest('hex');
+  return join(homes().jev, 'cache', `cache-${key}.json`);
+}
+
+function readTtlCache(path, ttlMs) {
+  if (!path || ttlMs <= 0 || !existsSync(path)) return null;
+  try {
+    ensureRegular(path);
+    const saved = JSON.parse(readText(path) || '{}');
+    if (typeof saved.time === 'number' && saved.time > Date.now() - ttlMs && saved.payload !== undefined) {
+      return saved.payload;
+    }
+  } catch { /* Treat corrupt or missing cache entries as misses. */ }
+  return null;
+}
+
+function writeTtlCache(path, payload) {
+  if (!path) return;
+  try {
+    ensureParent(path);
+    ensureRegular(path);
+    const cacheDir = dirname(path);
+    const expiryCutoff = Date.now() - 3_600_000;
+    let checked = 0;
+    for (const entry of readdirSync(cacheDir, { withFileTypes: true })) {
+      if (!entry.isFile() || !/^cache-[a-f0-9]{64}\.json$/.test(entry.name)) continue;
+      if (checked++ >= 256) break;
+      const candidate = join(cacheDir, entry.name);
+      try {
+        const info = lstatSync(candidate);
+        if (info.isFile() && info.mtimeMs < expiryCutoff) unlinkSync(candidate);
+      } catch { /* Ignore concurrent removals. */ }
+    }
+    atomicWrite(path, JSON.stringify({ time: Date.now(), payload }));
+  } catch { /* Cache writes are best-effort. */ }
+}
+
+function sessionScopeFor(event, agent) {
+  for (const field of ['session_id', 'sessionId', 'conversation_id', 'conversationId', 'thread_id', 'threadId']) {
+    if (typeof event?.[field] === 'string' && event[field]) return event[field];
+  }
+  if (agent === 'codex') return null;
+  return `default-${agent}`;
 }
 
 function codexDecision(context, decision, reason) {
@@ -1507,6 +1568,40 @@ async function evaluatePreToolUse(ctx, event) {
       ? codexDecision(null, 'deny', 'Jev: no task context for this turn. Submit the task again before retrying.')
       : codexDecision('Jev review unavailable: no task context for this turn; host permissions remain unchanged.');
   }
+  const pretoolTtlMs = ttlMsSetting(
+    ctx.state.values.JEV_PRETOOL_CACHE_TTL_MS,
+    mode === 'enforce' ? 0 : DEFAULT_PRETOOL_CACHE_TTL_MS,
+  );
+  const pretoolSessionScope = sessionScopeFor(event, ctx.agent);
+  const pretoolCacheFile = pretoolTtlMs > 0 && pretoolSessionScope !== null
+    ? ttlCachePath('pretool-v1', [
+        ctx.profile,
+        ctx.agent,
+        pretoolSessionScope,
+        mode,
+        ctx.state.values.JEV_PRETOOL_OP || 'review',
+        fileMtimeMs(profilePath(ctx.profile)),
+        fileMtimeMs(join(HERE, 'jev-harness.mjs')),
+        task,
+        event.tool_name || '',
+        event.tool_input ?? {},
+      ])
+    : null;
+  const cachedDecision = readTtlCache(pretoolCacheFile, pretoolTtlMs);
+  if (cachedDecision) {
+    recordWorkflowEvent('jev-pretool', {
+      agent: ctx.agent,
+      profile: ctx.profile,
+      tool: event.tool_name || null,
+      outcome: cachedDecision.outcome || 'cached',
+      cached: true,
+      customProject: Boolean(ctx.projectOverride?.custom),
+      workflow_order: ctx.projectOverride?.order || null,
+      project: ctx.projectOverride?.projectRoot || null,
+      duration_ms: Date.now() - t0,
+    });
+    return cachedDecision.response;
+  }
   process.env.JEV_PROFILE = ctx.profile;
   const harness = await import('./jev-harness.mjs');
   if (ctx.state.values.JEV_PRETOOL_OP === 'gate-tool' && typeof harness.gateTool === 'function') {
@@ -1526,7 +1621,9 @@ async function evaluatePreToolUse(ctx, event) {
     if (denied) {
       return codexDecision(null, 'deny', `Jev gate-tool: ${gated.verdict}; action withheld. Backend tier: ${gated.backend?.tier || 'unavailable'}. Host authorization is still required.`);
     }
-    return codexDecision(`Jev gate-tool: ${gated.verdict}; backend tier ${gated.backend?.tier || 'unavailable'}. Jev did not execute validation commands and does not change host permissions.`);
+    const response = codexDecision(`Jev gate-tool: ${gated.verdict}; backend tier ${gated.backend?.tier || 'unavailable'}. Jev did not execute validation commands and does not change host permissions.`);
+    writeTtlCache(pretoolCacheFile, { outcome: gated.verdict || 'allow', response });
+    return response;
   }
   const sourceLabel = ctx.agent === 'codex' ? 'Codex PreToolUse' : `${ctx.agent} PreToolUse`;
   const result = await harness.review(task, {
@@ -1549,7 +1646,9 @@ async function evaluatePreToolUse(ctx, event) {
     return codexDecision(null, 'deny', `Jev: ${result.verdict}; action withheld. Backend tier: ${result.backend?.tier || 'unavailable'}. Host authorization is still required.`);
   }
   // Never return permissionDecision:allow: even a validated permit cannot override host approval.
-  return codexDecision(`Jev review: ${result.verdict}; backend tier ${result.backend?.tier || 'unavailable'}. Jev did not execute validation commands and does not change host permissions.`);
+  const response = codexDecision(`Jev review: ${result.verdict}; backend tier ${result.backend?.tier || 'unavailable'}. Jev did not execute validation commands and does not change host permissions.`);
+  writeTtlCache(pretoolCacheFile, { outcome: result.verdict || 'ok', response });
+  return response;
 }
 
 async function hook(flags, suppliedEvent) {
@@ -1619,12 +1718,17 @@ async function hook(flags, suppliedEvent) {
   }
 
   if (event.type === 'PostToolUse' || event.hook_event_name === 'PostToolUse') {
-    if (ctx.state.values.JEV_UNTRUSTED_MODERATION === 'off') {
+    const modSetting = ctx.state.values.JEV_UNTRUSTED_MODERATION || 'on';
+    if (modSetting === 'off') {
       return { ...common('hook', ctx, false, true), flagged: false };
     }
     const rawOut = event.tool_response ?? event.output ?? event.text ?? '';
     const outputText = typeof rawOut === 'string' ? rawOut.slice(0, 4000) : JSON.stringify(rawOut ?? '').slice(0, 4000);
-    if (!outputText.trim()) return { ...common('hook', ctx, false, true), flagged: false };
+    const trimmedOut = outputText.trim();
+    if (!trimmedOut) return { ...common('hook', ctx, false, true), flagged: false };
+    if (modSetting !== 'strict' && (trimmedOut.length <= 16 || !SUSPICIOUS_UNTRUSTED_RE.test(outputText))) {
+      return { ...common('hook', ctx, false, true), flagged: false, verdict: 'allow', skipped: 'benign-prefilter' };
+    }
     try {
       process.env.JEV_PROFILE = ctx.profile;
       const harness = await import('./jev-harness.mjs');
@@ -1715,9 +1819,47 @@ async function hook(flags, suppliedEvent) {
 
   let advice = 'Jev advisory context unavailable.';
   let runtime;
-  try {
+  const preferredCatalog = explicitEnvCatalog || projectCatalogOverride(ctx.projectOverride) || join(homes().jev, 'skills.json');
+  const promptCacheTtlMs = ttlMsSetting(ctx.state.values.JEV_PROMPT_CACHE_TTL_MS, DEFAULT_PROMPT_CACHE_TTL_MS);
+  const promptSessionScope = sessionScopeFor(event, ctx.agent);
+  const promptCacheFile = prompt && promptCacheTtlMs > 0 && promptSessionScope !== null
+    ? ttlCachePath('route-v1', [
+        ctx.profile,
+        ctx.agent,
+        promptSessionScope,
+        mode,
+        memMode,
+        revMode,
+        ctx.state.values.JEV_MODEL_ROUTING || '',
+        ctx.state.values.JEV_FAST_ROUTE || '',
+        ctx.state.values.JEV_UNTRUSTED_MODERATION || '',
+        ctx.state.values.JEV_EVALUATE_GOALS || '',
+        preferredCatalog,
+        fileMtimeMs(preferredCatalog),
+        fileMtimeMs(profilePath(ctx.profile)),
+        fileMtimeMs(join(HERE, 'jev-harness.mjs')),
+        prompt,
+      ])
+    : null;
+  const cachedRoute = readTtlCache(promptCacheFile, promptCacheTtlMs);
+  if (cachedRoute) {
+    advice = cachedRoute.advice;
+    runtime = cachedRoute.runtime;
+    recordWorkflowEvent('jev-route', {
+      agent: ctx.agent,
+      profile: ctx.profile,
+      customProject: Boolean(ctx.projectOverride?.custom),
+      workflow_order: ctx.projectOverride?.order || null,
+      project: ctx.projectOverride?.projectRoot || null,
+      routed: Array.isArray(cachedRoute.routedNames) ? cachedRoute.routedNames.slice(0, 3) : [],
+      injected: Array.isArray(cachedRoute.injected) ? cachedRoute.injected : [],
+      strategy: cachedRoute.strategy || null,
+      outcome: 'cached',
+      cached: true,
+      duration_ms: Date.now() - hookStart,
+    });
+  } else try {
     process.env.JEV_PROFILE = ctx.profile;
-    const preferredCatalog = explicitEnvCatalog || projectCatalogOverride(ctx.projectOverride) || join(homes().jev, 'skills.json');
     if (!explicitEnvCatalog) process.env.JEV_CATALOG_PATH = preferredCatalog;
     const harness = await import('./jev-harness.mjs');
     const preloadedCatalog = typeof harness.getCachedCatalogMeta === 'function'
@@ -1730,10 +1872,11 @@ async function hook(flags, suppliedEvent) {
     }
     const hostInvokedSkills = extractHostInvokedSkills(prompt);
     let selected = { context: '', injected: [] };
+    let routedNames = [];
     try {
       if (mode === 'assist') selected = selectedSkillContext(routed, preloadedCatalog, hostInvokedSkills);
     } finally {
-      const routedNames = (routed?.topK || []).map(item => item?.name);
+      routedNames = (routed?.topK || []).map(item => item?.name);
       recordSkillUsage({
         agent: ctx.agent,
         profile: ctx.profile,
@@ -1756,6 +1899,7 @@ async function hook(flags, suppliedEvent) {
     if (mode === 'assist') {
       runtime = {
         mode,
+        reviewMode: revMode,
         skillContext: selected.context,
         pruneContext: true,
         ...(memMode === 'extended' ? { memoryMode: 'extended' } : {}),
@@ -1771,6 +1915,13 @@ async function hook(flags, suppliedEvent) {
     }
     const models = routeModels.join(', ');
     advice = `Jev advisory only (profile ${ctx.profile}): suggested skills: ${names}${models ? `; host model candidates: ${models}` : ''}. This does not change host permissions or the host model.`;
+    writeTtlCache(promptCacheFile, {
+      advice,
+      runtime,
+      routedNames,
+      injected: selected.injected,
+      strategy: routed?.selection?.strategy || null,
+    });
   } catch (error) {
     let osFallbackText = '';
     try {
@@ -2171,19 +2322,71 @@ async function jeoPreTool(flags) {
 
 async function jeoPrePrompt(flags) {
   try {
-    const ctx = resolveHookContext(flags);
+    const explicitEnvCatalog = process.env.JEV_CATALOG_PATH;
+    let ctx = resolveHookContext(flags);
+    if (ctx.projectDisabled) return { exitCode: 0 };
     if (!ctx.profile || !ctx.state.present || !ctx.state.enabled || ctx.state.invalidEnabled) return { exitCode: 0 };
     const event = JSON.parse(await readStdin());
+    if (event?.cwd) {
+      ctx = resolveHookContext(flags, { eventCwd: event.cwd });
+      if (ctx.projectDisabled) return { exitCode: 0 };
+      if (!ctx.profile || !ctx.state.present || !ctx.state.enabled || ctx.state.invalidEnabled) return { exitCode: 0 };
+    }
     const prompt = typeof event?.prompt === 'string' ? event.prompt.trim() : '';
     if (prompt) {
       const fallbackPath = fallbackSessionTaskPath(event, ctx.profile, 'jeo');
       if (fallbackPath) saveSessionTask(fallbackPath, prompt);
     }
-    if (ctx.state.values.JEV_MODEL_ROUTING === 'auto' && prompt) {
+    let mode = 'off';
+    try { mode = runtimeMode(ctx); } catch { /* unsupported runtime mode disables skill routing only */ }
+    const wantSkillRoute = mode !== 'off';
+    const wantModelRoute = ctx.state.values.JEV_MODEL_ROUTING === 'auto';
+    if (prompt && (wantSkillRoute || wantModelRoute)) {
+      const preferredCatalog = explicitEnvCatalog || projectCatalogOverride(ctx.projectOverride) || join(homes().jev, 'skills.json');
+      const promptCacheTtlMs = ttlMsSetting(ctx.state.values.JEV_PROMPT_CACHE_TTL_MS, DEFAULT_PROMPT_CACHE_TTL_MS);
+      const cacheFile = promptCacheTtlMs > 0
+        ? ttlCachePath('jeo-preprompt-v2', [
+            ctx.profile,
+            sessionScopeFor(event, 'jeo'),
+            mode,
+            wantModelRoute ? 'auto' : 'off',
+            preferredCatalog,
+            fileMtimeMs(preferredCatalog),
+            fileMtimeMs(profilePath(ctx.profile)),
+            fileMtimeMs(join(HERE, 'jev-harness.mjs')),
+            prompt,
+          ])
+        : null;
+      const cached = readTtlCache(cacheFile, promptCacheTtlMs);
+      if (cached) return cached.message ? { exitCode: 0, message: cached.message } : { exitCode: 0 };
       process.env.JEV_PROFILE = ctx.profile;
+      if (!explicitEnvCatalog) process.env.JEV_CATALOG_PATH = preferredCatalog;
       const harness = await import('./jev-harness.mjs');
-      const mr = await harness.routeModel(prompt).catch(() => null);
-      if (mr?.chosen) return { exitCode: 0, message: `[Jev route-model] suggested tier: ${mr.chosen}` };
+      const [preloadedCatalog, routed, mr] = await Promise.all([
+        mode === 'assist' && typeof harness.getCachedCatalogMeta === 'function'
+          ? harness.getCachedCatalogMeta(preferredCatalog).catch(() => null)
+          : null,
+        wantSkillRoute ? harness.routeSkills(prompt, { topK: 3 }).catch(() => null) : null,
+        wantModelRoute && typeof harness.routeModel === 'function' ? harness.routeModel(prompt).catch(() => null) : null,
+      ]);
+      const lines = [];
+      if (routed?.topK?.length) {
+        const routedNames = routed.topK.map(item => item?.name);
+        const names = routedNames.filter(name => SKILL_ID.test(name));
+        if (names.length) lines.push(`[Jev route-skills] (${mode}) suggested skills: ${names.join(', ')}`);
+        let selected = { context: '', injected: [] };
+        try {
+          if (mode === 'assist') selected = selectedSkillContext(routed, preloadedCatalog, extractHostInvokedSkills(prompt));
+        } catch {}
+        if (selected.context) lines.push(selected.context);
+        try {
+          recordSkillUsage({ agent: 'jeo', profile: ctx.profile, routed: routedNames, injected: selected.injected, backend: routed?.backend });
+        } catch {}
+      }
+      if (mr?.chosen) lines.push(`[Jev route-model] suggested tier: ${mr.chosen}`);
+      const message = lines.join('\n');
+      writeTtlCache(cacheFile, { message });
+      return message ? { exitCode: 0, message } : { exitCode: 0 };
     }
   } catch {}
   return { exitCode: 0 };
@@ -2193,13 +2396,17 @@ async function jeoPostTool(flags) {
   try {
     const ctx = resolveHookContext(flags);
     if (!ctx.profile || !ctx.state.present || !ctx.state.enabled || ctx.state.invalidEnabled) return { exitCode: 0 };
-    if (ctx.state.values.JEV_UNTRUSTED_MODERATION === 'off') return { exitCode: 0 };
+    const modSetting = ctx.state.values.JEV_UNTRUSTED_MODERATION || 'on';
+    if (modSetting === 'off') return { exitCode: 0 };
     const event = JSON.parse(await readStdin());
     const calls = Array.isArray(event?.calls) ? event.calls : [];
     const parts = calls.map(c => (typeof c?.output === 'string' ? c.output : '')).filter(Boolean);
     if (typeof event?.output === 'string' && event.output.trim()) parts.push(event.output);
     const combined = parts.join('\n').trim().slice(0, 4000);
     if (!combined) return { exitCode: 0 };
+    if (modSetting !== 'strict' && (combined.length <= 16 || !SUSPICIOUS_UNTRUSTED_RE.test(combined))) {
+      return { exitCode: 0 };
+    }
     process.env.JEV_PROFILE = ctx.profile;
     const harness = await import('./jev-harness.mjs');
     const mod = await harness.moderate(combined, { scope: 'untrusted' });
