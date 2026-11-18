@@ -392,21 +392,29 @@ those IDEs are present:
 ```bash
 SKILLS_AGENT_ARGS=(-a universal)
 
-# Claude Code (if present): native ~/.claude/skills, not the shared root
-command -v claude >/dev/null 2>&1 && SKILLS_AGENT_ARGS+=(-a claude-code)
+# Claude Code (if present and not symlink-managed): native ~/.claude/skills
+CLAUDE_SKILLS="${CLAUDE_CONFIG_DIR:-$USER_HOME/.claude}/skills"
+command -v claude >/dev/null 2>&1 \
+  && [ ! -L "$CLAUDE_SKILLS" ] && [ ! -L "$CLAUDE_SKILLS/jeo-skill" ] \
+  && SKILLS_AGENT_ARGS+=(-a claude-code)
 
-# Antigravity IDE only (if present; CLI/agy is handled later via jeo-skill)
-command -v antigravity >/dev/null 2>&1 && SKILLS_AGENT_ARGS+=(-a antigravity)
+# Antigravity IDE only (if present and not symlink-managed; CLI/agy is handled later via jeo-skill)
+command -v antigravity >/dev/null 2>&1 \
+  && [ ! -L "$USER_HOME/.gemini/config/skills" ] && [ ! -L "$USER_HOME/.gemini/config/skills/jeo-skill" ] \
+  && SKILLS_AGENT_ARGS+=(-a antigravity)
 
 # Grok Build (only with explicit selection): its native .grok/skills root is a real skills target.
 # A `grok` executable alone is Superagent/VibeKit-compatible inventory, not proof of Grok Build.
 [ "${JEO_SKILLS_AGENT:-}" = grok ] && command -v grok >/dev/null 2>&1 \
   && SKILLS_AGENT_ARGS+=(-a grok)
 
-# Pi and Crush (only when their native agent roots exist)
-(command -v pi >/dev/null 2>&1 && [ -d "$USER_HOME/.pi/agent" ]) \
+# Pi and Crush (only when their native agent roots exist and are not symlink-managed)
+(command -v pi >/dev/null 2>&1 && [ -d "$USER_HOME/.pi/agent" ] \
+  && [ ! -L "$USER_HOME/.pi/agent/skills" ] && [ ! -L "$USER_HOME/.pi/agent/skills/jeo-skill" ]) \
   && SKILLS_AGENT_ARGS+=(-a pi)
-command -v crush >/dev/null 2>&1 && SKILLS_AGENT_ARGS+=(-a crush)
+command -v crush >/dev/null 2>&1 && [ ! -L "${XDG_CONFIG_HOME:-$USER_HOME/.config}/crush/skills" ] \
+  && [ ! -L "${XDG_CONFIG_HOME:-$USER_HOME/.config}/crush/skills/jeo-skill" ] \
+  && SKILLS_AGENT_ARGS+=(-a crush)
 
 printf 'skills targets:'; printf ' %q' "${SKILLS_AGENT_ARGS[@]}"; printf '\n'
 ```
@@ -516,25 +524,56 @@ case "$ASIDE_MODE" in
              | python3 -c 'import json,sys; print("\n".join(s["name"] for s in json.load(sys.stdin)))') ;;
 esac
 
-if [ ! -d "$ASIDE_HOME/u" ]; then
-  printf 'aside: not installed, skipping mirror\n'
-elif [ -z "${ASIDE_NAMES:-}" ]; then
+if [ -z "${ASIDE_NAMES:-}" ]; then
   printf 'aside: ERROR could not resolve catalog names from %s — mirror skipped, report this\n' "$JEO_ROUTER" >&2
 else
-  for acct in "$ASIDE_HOME"/u/*/; do
-    [ -d "$acct/skills" ] || continue
-    dest="${acct%/}/skills/user"
-    mkdir -p "$dest"
-    synced=0
+  if [ ! -d "$ASIDE_HOME/u" ]; then
+    printf 'aside: not installed, skipping mirror\n'
+  else
+    for acct in "$ASIDE_HOME"/u/*/; do
+      [ -d "$acct/skills" ] || continue
+      dest="${acct%/}/skills/user"
+      [ ! -L "$dest" ] || { printf 'aside: skipping symlinked user root %s\n' "$dest" >&2; continue; }
+      mkdir -p "$dest"
+      synced=0
+      while IFS= read -r name; do
+        [ -n "$name" ] || continue
+        [ -f "$SKILLS_ROOT/$name/SKILL.md" ] || continue
+        if [ -L "$dest/$name" ]; then
+          if [ -f "$dest/$name/SKILL.md" ] && cmp -s "$SKILLS_ROOT/$name/SKILL.md" "$dest/$name/SKILL.md"; then
+            synced=$((synced + 1))
+          else
+            printf 'aside: skipping non-matching or dangling symlink %s\n' "$dest/$name" >&2
+          fi
+          continue
+        elif [ -L "$dest/jeo-skill" ] && [ ! -e "$dest/$name" ]; then
+          ln -s "$SKILLS_ROOT/$name" "$dest/$name" && synced=$((synced + 1))
+          continue
+        fi
+        mkdir -p "$dest/$name"
+        cp -R "$SKILLS_ROOT/$name/." "$dest/$name/" && synced=$((synced + 1))
+      done <<EOF
+$ASIDE_NAMES
+EOF
+      printf 'aside_synced=%s -> %s\n' "$synced" "$dest"
+    done
+  fi
+  # Reconcile newly installed catalog skills in any host root already using per-skill symlinks
+  for hroot in "${CLAUDE_CONFIG_DIR:-$USER_HOME/.claude}/skills" \
+               "$USER_HOME/.pi/agent/skills" \
+               "$USER_HOME/.cursor/skills" \
+               "${XDG_CONFIG_HOME:-$USER_HOME/.config}/opencode/skills"; do
+    [ ! -L "$hroot" ] && [ -L "$hroot/jeo-skill" ] || continue
+    linked=0
     while IFS= read -r name; do
-      [ -n "$name" ] || continue
-      [ -f "$SKILLS_ROOT/$name/SKILL.md" ] || continue
-      mkdir -p "$dest/$name"
-      cp -R "$SKILLS_ROOT/$name/." "$dest/$name/" && synced=$((synced + 1))
+      [ -n "$name" ] && [ -f "$SKILLS_ROOT/$name/SKILL.md" ] || continue
+      if [ ! -e "$hroot/$name" ] && [ ! -L "$hroot/$name" ]; then
+        ln -s "$SKILLS_ROOT/$name" "$hroot/$name" && linked=$((linked + 1))
+      fi
     done <<EOF
 $ASIDE_NAMES
 EOF
-    printf 'aside_synced=%s -> %s\n' "$synced" "$dest"
+    printf 'host_links_added=%s -> %s\n' "$linked" "$hroot"
   done
 fi
 fi
@@ -579,19 +618,34 @@ case "$ASIDE_MODE" in
   *) printf 'Unknown installation mode: %s\n' "$ASIDE_MODE" >&2; exit 1 ;;
 esac
 if command -v gjc >/dev/null 2>&1; then
-  # Preview GJC projection without making changes
-  HOME="$USER_HOME" python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" \
-    install "${RUNTIME_SELECTION[@]}" --agent gjc --global --dry-run || exit 1
-  
-  # Install selected skills to GJC native root (global)
-  HOME="$USER_HOME" python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" \
-    install "${RUNTIME_SELECTION[@]}" --agent gjc --global --yes || exit 1
-  
-  # For project-local GJC skills, omit --global:
-  # HOME="$USER_HOME" python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" \
-  #   install "${RUNTIME_SELECTION[@]}" --agent gjc --yes
-  
-  printf 'gjc: native projection completed\n'
+  GJC_SKILLS="${GJC_CONFIG_DIR:-$USER_HOME/.gjc}/agent/skills"
+  if [ ! -L "$GJC_SKILLS" ] && [ -L "$GJC_SKILLS/jeo-skill" ]; then
+    SEL_NAMES=$(HOME="$USER_HOME" python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" \
+      install "${RUNTIME_SELECTION[@]}" --agent universal --global --dry-run \
+      | sed -n 's/^Selected [0-9]* skill(s): //p' | tr ',' '\n' | tr -d ' ')
+    [ -n "$SEL_NAMES" ] || exit 1
+    while IFS= read -r name; do
+      [ -n "$name" ] && [ -f "$SKILLS_ROOT/$name/SKILL.md" ] || continue
+      [ -e "$GJC_SKILLS/$name" ] || [ -L "$GJC_SKILLS/$name" ] || ln -s "$SKILLS_ROOT/$name" "$GJC_SKILLS/$name"
+    done <<EOF
+$SEL_NAMES
+EOF
+    printf 'gjc: per-skill symlink root reconciled (%s)\n' "$GJC_SKILLS"
+  else
+    # Preview GJC projection without making changes
+    HOME="$USER_HOME" python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" \
+      install "${RUNTIME_SELECTION[@]}" --agent gjc --global --dry-run || exit 1
+    
+    # Install selected skills to GJC native root (global)
+    HOME="$USER_HOME" python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" \
+      install "${RUNTIME_SELECTION[@]}" --agent gjc --global --yes || exit 1
+    
+    # For project-local GJC skills, omit --global:
+    # HOME="$USER_HOME" python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" \
+    #   install "${RUNTIME_SELECTION[@]}" --agent gjc --yes
+    
+    printf 'gjc: native projection completed\n'
+  fi
 fi
 fi
 ```
@@ -618,15 +672,30 @@ if [ "${INSTALL_GLOBAL:-true}" = false ]; then
   false
 else
 if command -v agy >/dev/null 2>&1; then
-  # Preview Antigravity CLI projection without making changes
-  HOME="$USER_HOME" python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" \
-    install "${RUNTIME_SELECTION[@]}" --agent antigravity-cli --global --dry-run || exit 1
-  
-  # Install the same selected skills to the CLI's global native root
-  HOME="$USER_HOME" python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" \
-    install "${RUNTIME_SELECTION[@]}" --agent antigravity-cli --global --yes || exit 1
-  
-  printf 'antigravity-cli: native projection completed\n'
+  AGY_CLI_SKILLS="$USER_HOME/.gemini/antigravity-cli/skills"
+  if [ ! -L "$AGY_CLI_SKILLS" ] && [ -L "$AGY_CLI_SKILLS/jeo-skill" ]; then
+    SEL_NAMES=$(HOME="$USER_HOME" python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" \
+      install "${RUNTIME_SELECTION[@]}" --agent universal --global --dry-run \
+      | sed -n 's/^Selected [0-9]* skill(s): //p' | tr ',' '\n' | tr -d ' ')
+    [ -n "$SEL_NAMES" ] || exit 1
+    while IFS= read -r name; do
+      [ -n "$name" ] && [ -f "$SKILLS_ROOT/$name/SKILL.md" ] || continue
+      [ -e "$AGY_CLI_SKILLS/$name" ] || [ -L "$AGY_CLI_SKILLS/$name" ] || ln -s "$SKILLS_ROOT/$name" "$AGY_CLI_SKILLS/$name"
+    done <<EOF
+$SEL_NAMES
+EOF
+    printf 'antigravity-cli: per-skill symlink root reconciled (%s)\n' "$AGY_CLI_SKILLS"
+  else
+    # Preview Antigravity CLI projection without making changes
+    HOME="$USER_HOME" python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" \
+      install "${RUNTIME_SELECTION[@]}" --agent antigravity-cli --global --dry-run || exit 1
+    
+    # Install the same selected skills to the CLI's global native root
+    HOME="$USER_HOME" python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" \
+      install "${RUNTIME_SELECTION[@]}" --agent antigravity-cli --global --yes || exit 1
+    
+    printf 'antigravity-cli: native projection completed\n'
+  fi
 fi
 fi
 ```
@@ -646,15 +715,30 @@ if [ "${INSTALL_GLOBAL:-true}" = false ]; then
   false
 else
 if command -v antigravity >/dev/null 2>&1; then
-  # Preview Antigravity IDE projection without making changes
-  HOME="$USER_HOME" python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" \
-    install "${RUNTIME_SELECTION[@]}" --agent antigravity --global --dry-run || exit 1
-  
-  # Install selected skills to Antigravity IDE native root (global only)
-  HOME="$USER_HOME" python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" \
-    install "${RUNTIME_SELECTION[@]}" --agent antigravity --global --yes || exit 1
-  
-  printf 'antigravity-ide: native projection completed\n'
+  AGY_IDE_SKILLS="$USER_HOME/.gemini/config/skills"
+  if [ ! -L "$AGY_IDE_SKILLS" ] && [ -L "$AGY_IDE_SKILLS/jeo-skill" ]; then
+    SEL_NAMES=$(HOME="$USER_HOME" python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" \
+      install "${RUNTIME_SELECTION[@]}" --agent universal --global --dry-run \
+      | sed -n 's/^Selected [0-9]* skill(s): //p' | tr ',' '\n' | tr -d ' ')
+    [ -n "$SEL_NAMES" ] || exit 1
+    while IFS= read -r name; do
+      [ -n "$name" ] && [ -f "$SKILLS_ROOT/$name/SKILL.md" ] || continue
+      [ -e "$AGY_IDE_SKILLS/$name" ] || [ -L "$AGY_IDE_SKILLS/$name" ] || ln -s "$SKILLS_ROOT/$name" "$AGY_IDE_SKILLS/$name"
+    done <<EOF
+$SEL_NAMES
+EOF
+    printf 'antigravity-ide: per-skill symlink root reconciled (%s)\n' "$AGY_IDE_SKILLS"
+  else
+    # Preview Antigravity IDE projection without making changes
+    HOME="$USER_HOME" python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" \
+      install "${RUNTIME_SELECTION[@]}" --agent antigravity --global --dry-run || exit 1
+    
+    # Install selected skills to Antigravity IDE native root (global only)
+    HOME="$USER_HOME" python3 "$SKILLS_ROOT/jeo-skill/scripts/jeo-skill.py" \
+      install "${RUNTIME_SELECTION[@]}" --agent antigravity --global --yes || exit 1
+    
+    printf 'antigravity-ide: native projection completed\n'
+  fi
 fi
 fi
 ```
@@ -1813,13 +1897,25 @@ To restore global workflow inheritance later, pass `--reset-project-workflow`.
 To provision `@upstash/context7-mcp` non-interactively, repair broken host MCP paths (such as missing `~/.local/bin/ouroboros`, bare binaries, or Gemini `toolTimeout`), register `context7`, `openspace`, `jeox`, and local tools across installed hosts (`claude`, `codex`, `gemini`, `antigravity-cli`, `antigravity-ide`, `cursor`, `opencode`, `pi`, `gjc`, `jeopi`), and verify live JSON-RPC `initialize` + `tools/list` + Context7 probes:
 
 ```bash
-MCP_HELPER="${JEO_CHECKOUT:+$JEO_CHECKOUT/scripts/setup-mcp-hosts.py}"
-if [ -n "$MCP_HELPER" ] && [ -f "$MCP_HELPER" ]; then
-  python3 "$MCP_HELPER" --provision-context7 --repair --project "$PROJECT_DIR" --dry-run
-  python3 "$MCP_HELPER" --provision-context7 --repair --project "$PROJECT_DIR" --apply
-  python3 "$MCP_HELPER" --verify --probe-context7 --project "$PROJECT_DIR" --json
-fi
-jeo-skill flow-log summary
+(
+  MCP_HELPER="${JEO_CHECKOUT:+$JEO_CHECKOUT/scripts/setup-mcp-hosts.py}"
+  if [ -z "$MCP_HELPER" ] || [ ! -f "$MCP_HELPER" ]; then
+    mcp_tmp=$(mktemp -d "${TMPDIR:-/tmp}/jeo-mcp.XXXXXX") || exit 1
+    trap 'rm -rf "$mcp_tmp"' EXIT
+    MCP_HELPER="$mcp_tmp/setup-mcp-hosts.py"
+    curl -fsSL 'https://raw.githubusercontent.com/akillness/jeo-skills/main/scripts/setup-mcp-hosts.py' -o "$MCP_HELPER" || MCP_HELPER=''
+  fi
+  if [ -n "$MCP_HELPER" ] && [ -f "$MCP_HELPER" ]; then
+    HOME="$USER_HOME" python3 "$MCP_HELPER" --provision-context7 --repair --project "$PROJECT_DIR" --dry-run
+    if [ "${JEO_SKILLS_APPROVE_MCP_HOSTS:-${JEO_SKILLS_APPROVE_ALL_HOOKS_MCP:-false}}" = true ]; then
+      HOME="$USER_HOME" python3 "$MCP_HELPER" --provision-context7 --repair --project "$PROJECT_DIR" --apply
+      HOME="$USER_HOME" python3 "$MCP_HELPER" --verify --probe-context7 --project "$PROJECT_DIR" --json
+    else
+      printf '%s\n' 'MCP host provisioning apply skipped: set JEO_SKILLS_APPROVE_MCP_HOSTS=true after reviewing --dry-run'
+    fi
+  fi
+  command -v jeo-skill >/dev/null 2>&1 && HOME="$USER_HOME" jeo-skill flow-log summary || true
+)
 ```
 
 ## Step 6 — Runtime-specific shared-root checks
@@ -2897,7 +2993,7 @@ that limitation is separate from the upstream CLI's platform support.
 - A passing `quality-check` is not proof of safety or behavioral impact. Keep structural
   quality, scanner findings, and measured evaluation evidence separate; use
   `skill-standardization` for format/catalog compliance and `skill-autoresearch` for a
-  bounded skill-improvement experiment.
+  bounded skill-improvement experiment. Keep `PYTHONDONTWRITEBYTECODE=1` (`python3 -B`) when running skill helpers so `.agent-skills/` never accumulates `__pycache__` artifacts; across the 440-skill catalog baseline, static `skillevaluator security-scan` (`SkillSpector 2.13.3`) remediation lowered `CRITICAL` findings from 4 to 0, `HIGH` from 956 to 290, eliminated `LP1`/`E2`/`AE1`/`LP3`/`SC8`/`SC9`, raised passing skills from 221 to 366, and raised zero-`CRITICAL`/`HIGH` skills from 248 to 377/440 (85.7%).
 
 ### Claude Code Game Studios (on demand, project template not global skill pack)
 
@@ -3416,10 +3512,6 @@ Preview `jeo-skill install rust-anything --global --dry-run`, then install the s
 ### Agent Substrate operator (on demand)
 
 Preview `jeo-skill install agent-substrate --global --dry-run`, then install the selected guide with `jeo-skill install agent-substrate --global --yes`. Installing `agent-substrate` copies operator guidance, CRD schema references, and demo descriptions only, not the Agent Substrate control plane, Go toolchain, `kind` clusters, or GKE infrastructure. Review the skill's operations and architecture references before separately authorizing cluster creation (`hack/create-kind-cluster.sh`), control plane deployment (`go run ./cmd/ate-setup deploy`), demo runs, or any `kubectl-ate` commands that modify cluster state.
-
-### NVIDIA SkillEvaluator operator (on demand)
-
-Preview `jeo-skill install nvidia-skill-evaluator --global --dry-run`, then install the selected guide with `jeo-skill install nvidia-skill-evaluator --global --yes`. Installing `nvidia-skill-evaluator` copies operator guidance, a pinned 12-file SHA-256 manifest (`NVIDIA/SkillEvaluator` v0.8.0 at `12b387f7a62b5f3e0de9eff392a3f6b7e952f2c2`), and the offline stdlib helper `scripts/preflight.py` only — it does not install `skillevaluator`, external scanners (`SkillSpector`, `Gitleaks`, `Bandit`, `Semgrep`), Docker, or provider keys. Run `python3 -B "$SKILL_DIR/scripts/preflight.py" --json` for offline inventory/hash checks (`runtime_verified: false`), and keep `PYTHONDONTWRITEBYTECODE=1` when running skill scripts so `.agent-skills/` never accumulates `__pycache__` bytecode artifacts. Across the 440-skill catalog, static `skillevaluator security-scan` (`SkillSpector 2.13.3`) remediation lowered `CRITICAL` findings from 4 to 0, lowered `HIGH` findings from 956 to 290, eliminated `LP1`/`E2`/`AE1`/`LP3`/`SC8`/`SC9`, raised passing skills from 221 to 366, and raised zero-`CRITICAL`/`HIGH` skills from 248 to 377/440 (85.7%); approve scanner downloads, Tier 2 egress, Tier 3 sandboxes, and CI mutations separately before running `tier1`, `tier2`, `tier3`, or `ci init`.
 
 ### Impeccable design operator (on demand)
 

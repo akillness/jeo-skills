@@ -5,13 +5,13 @@ Per-repo DB at `<repo>/.jeo/db/jeo.db`. No external dependencies.
 
 CLI:
   jeox build [--repo PATH] [--full]
-  jeox who-calls NAME [--json]
-  jeox what-calls NAME [--json]
-  jeox where-defined NAME [--json]
-  jeox impact NAME|PATH [--json]
-  jeox query "q" [-g GLOB]... [--limit N] [--json]
-  jeox status [--json]
-  jeox mcp
+  jeox who-calls NAME [--repo PATH] [--json]
+  jeox what-calls NAME [--repo PATH] [--json]
+  jeox where-defined NAME [--repo PATH] [--json]
+  jeox impact NAME|PATH [--repo PATH] [--json]
+  jeox query "q" [--repo PATH] [-g GLOB]... [--limit N] [--json]
+  jeox status [--repo PATH] [--json]
+  jeox mcp [--repo PATH]
 """
 from __future__ import annotations
 

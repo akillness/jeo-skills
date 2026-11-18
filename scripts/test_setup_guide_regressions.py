@@ -2032,6 +2032,110 @@ for row in rows:
             f"obsidian-second-brain must run last so graphify/mex-agent/zg exist first: {plan_lines}",
         )
 
+    def test_step_three_and_four_reconcile_per_skill_symlinked_hosts_without_copy_errors(self) -> None:
+        shared = self.home / ".agents/skills"
+        shutil.copytree(self.router_scripts.parent, shared / "jeo-skill")
+        rust_skill = shared / "rust-anything"
+        rust_skill.mkdir(parents=True)
+        (rust_skill / "SKILL.md").write_text("---\nname: rust-anything\ndescription: fixture\n---\n\n# rust-anything\n", encoding="utf-8")
+        unrelated = shared / "local-private"
+        unrelated.mkdir(parents=True)
+        (unrelated / "SKILL.md").write_text("---\nname: local-private\ndescription: private\n---\n\n# local-private\n", encoding="utf-8")
+
+        catalog = self.home / ".cache/jeo-skill/skills.json"
+        catalog.parent.mkdir(parents=True)
+        catalog.write_text(json.dumps(self.catalog(["jeo-skill", "rust-anything"])), encoding="utf-8")
+
+        host_roots = [
+            self.home / ".claude/skills",
+            self.home / ".pi/agent/skills",
+            self.home / ".gjc/agent/skills",
+            self.home / ".gemini/antigravity-cli/skills",
+            self.home / ".aside/u/0/skills/user",
+        ]
+        for hroot in host_roots:
+            hroot.mkdir(parents=True)
+            (hroot / "jeo-skill").symlink_to(shared / "jeo-skill")
+
+        bin_dir = self.work / "symlink-bin"
+        bin_dir.mkdir()
+        for name in ("claude", "pi", "gjc", "agy"):
+            exe = bin_dir / name
+            exe.write_text("#!/bin/sh\nexit 0\n", encoding="utf-8")
+            exe.chmod(0o755)
+        (bin_dir / "python3").symlink_to(sys.executable)
+
+        code = "\n".join((
+            'ASIDE_MODE=full',
+            guide_block("## Step 3 — Build non-duplicating agent targets"),
+            'printf "ARGS=%s\\n" "${SKILLS_AGENT_ARGS[*]}"',
+            guide_block("### Step 4A — Mirror the installed skills into Aside (all modes)"),
+            guide_block("### Step 4B — Materialize skills for GJC (all modes when GJC is detected)"),
+            guide_block("#### Antigravity CLI (agy)"),
+        ))
+        env = self.env(
+            PATH=f"{bin_dir}:/usr/bin:/bin",
+            HOME=str(self.home),
+            USER_HOME=str(self.home),
+            SKILLS_ROOT=str(shared),
+        )
+        res = run_block(code, env, self.project)
+        self.assertEqual(res.returncode, 0, res.stdout)
+        self.assertIn("ARGS=-a universal\n", res.stdout)
+        self.assertIn("aside_synced=2 ->", res.stdout)
+        for hroot in host_roots:
+            link = hroot / "rust-anything"
+            self.assertTrue(link.is_symlink(), f"missing symlink in {hroot}: {res.stdout}")
+            self.assertEqual(os.path.realpath(link), os.path.realpath(rust_skill))
+            self.assertFalse((hroot / "local-private").exists(), f"non-catalog skill leaked into {hroot}")
+
+    def test_step_five_c_respects_mcp_approval_gate_and_cleans_up_remote_helper(self) -> None:
+        bin_dir = self.work / "mcp-bin"
+        bin_dir.mkdir()
+        log = self.work / "mcp-calls.log"
+        helper_fixture = self.work / "fixture-mcp.py"
+        helper_fixture.write_text(
+            'import os, sys\nopen(os.environ["MCP_LOG"], "a").write(" ".join(sys.argv[1:]) + "\\n")\n',
+            encoding="utf-8",
+        )
+        curl = bin_dir / "curl"
+        curl.write_text(
+            '#!/bin/sh\n[ "$1" = -fsSL ] && [ "$2" = "https://raw.githubusercontent.com/akillness/jeo-skills/main/scripts/setup-mcp-hosts.py" ] && [ "$3" = -o ] || exit 41\ncp "$MCP_FIXTURE" "$4"\n',
+            encoding="utf-8",
+        )
+        curl.chmod(0o755)
+        (bin_dir / "python3").symlink_to(sys.executable)
+
+        scratch = self.work / "mcp-tmp"
+        scratch.mkdir()
+        block = guide_block("### Step 5C — Per-project workflow isolation and multi-host MCP provisioning", 1)
+
+        env_base = self.env(
+            PATH=f"{bin_dir}:/usr/bin:/bin",
+            TMPDIR=str(scratch),
+            HOME=str(self.home),
+            USER_HOME=str(self.home),
+            PROJECT_DIR=str(self.project),
+            MCP_FIXTURE=str(helper_fixture),
+            MCP_LOG=str(log),
+        )
+        res_dry = run_block(block, env_base, self.project)
+        self.assertEqual(res_dry.returncode, 0, res_dry.stdout)
+        calls_dry = log.read_text(encoding="utf-8")
+        self.assertIn("--dry-run", calls_dry)
+        self.assertNotIn("--apply", calls_dry)
+        self.assertIn("apply skipped", res_dry.stdout)
+        self.assertEqual(list(scratch.iterdir()), [], res_dry.stdout)
+
+        log.write_text("", encoding="utf-8")
+        res_apply = run_block(block, {**env_base, "JEO_SKILLS_APPROVE_MCP_HOSTS": "true"}, self.project)
+        self.assertEqual(res_apply.returncode, 0, res_apply.stdout)
+        calls_apply = log.read_text(encoding="utf-8")
+        self.assertIn("--dry-run", calls_apply)
+        self.assertIn("--apply", calls_apply)
+        self.assertIn("--verify --probe-context7", calls_apply)
+        self.assertEqual(list(scratch.iterdir()), [], res_apply.stdout)
+
 
 if __name__ == "__main__":
     unittest.main()

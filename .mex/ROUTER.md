@@ -28,6 +28,9 @@ Then read this file fully before doing anything else in this session.
 ## Current Project State
 
 **Working:**
+  - 2026-11-18 `setup-all-skills-prompt.md` 심볼릭링크 호스트 호환성·Step 5C 원격 MCP/동의 게이트·CI 회귀 보강 (`444` 스킬 기준):
+    - `setup-all-skills-prompt.md` Step 3/4A/4B/4C가 per-skill 심볼릭링크 호스트(`claude`, `pi`, `gjc`, `agy`, `antigravity`, `aside`, `cursor`, `opencode`)에서 중복 복사/충돌 없이 신규 스킬(`rust-anything` 등)을 안전하게 심볼릭링크 재조정하도록 보강, Step 5C `setup-mcp-hosts.py` 원격 `curl` 폴백·`JEO_SKILLS_APPROVE_MCP_HOSTS` 게이트 추가, 중복 `NVIDIA SkillEvaluator` 섹션 통합.
+    - `.github/workflows/ci.yml`에 `jev/enhancements.test.mjs`, `test_workflow_log.py`, `test_setup_workspace.py`, `test_jeox_regressions.py`, `test_mcp_hosts.py`, `test_context7_preflight.py`, `test_rust_anything_preflight.py` 추가 및 `scripts/jeox.py` CLI docstring 보완.
   - 2026-11-18 `jev` + `harness2` 글로벌/프로젝트 워크플로우 격리 + 통합 플로우 로그(`flow-log`) + `setup.md` / `Context7` 다중 호스트 MCP 프로비저닝·검증 & 성능 최적화:
     - 글로벌 기본(`~/.agents/harness/workspace.json`, `~/.agents/rules/jeo-workflows.md`) vs 프로젝트별 격리(`.harness2/workspace.json` `workflow.custom: true` / `customWorkflow: true` / `--custom-workflow`, `--workflow-order`, `--jev-profile`, `--reset-project-workflow`) 구현(`scripts/setup-workspace.py`, `jev/jev-plugin.mjs`, `.agent-skills/openspace/scripts/route_prompt.py`) + 통합 플로우 텔레메트리(`.agent-skills/jeo-skill/scripts/workflow_log_cli.py` `jeo-skill flow-log`, `scripts/workflow-log.py` / `~/.local/bin/jeo-flow-log`, `~/.local/state/jeo-skill/workflow-events.jsonl`).
     - `scripts/setup-mcp-hosts.py` 및 [setup.md](../setup.md) (`!/setup.md` in `.gitignore`, `setup-all-skills-prompt.md` Step 5C) 추가: `@upstash/context7-mcp` 비대화형 로컬 설치(`~/.local/share/jeo-skill/context7-mcp`), 깨진 `ouroboros`/`scrapling`/상대경로 바이너리 및 Gemini `toolTimeout` 복구, Claude/Codex(Orca 프로필 포함)/Gemini/Antigravity(심볼릭링크 보존)/Cursor/OpenCode/Pi(`exposure: direct`)/GJC/JeoPi 등록(Aside 읽기 전용 감사) 및 라이브 JSON-RPC 핸드셰이크/Context7 검증.
