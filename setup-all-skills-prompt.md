@@ -192,13 +192,13 @@ if [ "${INSTALL_GLOBAL:-true}" != false ] && [ "${JEO_SKILLS_STAR:-true}" = true
     if [ -n "${INSTALLER:-}" ]; then
       [ -f "$INSTALLER" ] || exit 1
       JEO_SKILLS_STAR_ONLY=true JEO_SKILLS_STAR=true bash "$INSTALLER"
-    elif [ -f "./install.sh" ] && python3 -I -c 'import hashlib,sys; sys.exit(hashlib.sha256(open(sys.argv[1], "rb").read()).hexdigest() != "5df639a7c8d6ae967fbbde950ab320a5431273306585c06c0286159ca6d48522")' "./install.sh"; then
+    elif [ -f "./install.sh" ] && python3 -I -c 'import hashlib,sys; sys.exit(hashlib.sha256(open(sys.argv[1], "rb").read()).hexdigest() != "dee23e2df232bc0961640a04164134a9ce73e570ea41bcf926350386a2a240e1")' "./install.sh"; then
       JEO_SKILLS_STAR_ONLY=true JEO_SKILLS_STAR=true bash "./install.sh"
     elif [ "${JEO_SKILLS_STAR_DOWNLOAD:-true}" = true ]; then
       tmp=$(mktemp "${TMPDIR:-/tmp}/jeo-skills-star.XXXXXXXX") || exit 1
       trap 'rm -f "$tmp"' EXIT
       curl --disable --proto '=https' --max-time 15 -fsS 'https://raw.githubusercontent.com/akillness/jeo-skills/main/install.sh' -o "$tmp" || exit 1
-      python3 -I -c 'import hashlib,sys; sys.exit(hashlib.sha256(open(sys.argv[1], "rb").read()).hexdigest() != "5df639a7c8d6ae967fbbde950ab320a5431273306585c06c0286159ca6d48522")' "$tmp" || exit 1
+      python3 -I -c 'import hashlib,sys; sys.exit(hashlib.sha256(open(sys.argv[1], "rb").read()).hexdigest() != "dee23e2df232bc0961640a04164134a9ce73e570ea41bcf926350386a2a240e1")' "$tmp" || exit 1
       JEO_SKILLS_STAR_ONLY=true JEO_SKILLS_STAR=true bash "$tmp"
     else
       exit 1
@@ -1525,8 +1525,15 @@ PY
   if [ -n "${JEO_SECOND_BRAIN_SOURCE:-}" ]; then
     BRAIN_ARGS+=(--source "$JEO_SECOND_BRAIN_SOURCE")
   fi
-  HOME="$USER_HOME" python3 "$BRAIN_SETUP" "${BRAIN_ARGS[@]}" --dry-run
-  HOME="$USER_HOME" python3 "$BRAIN_SETUP" "${BRAIN_ARGS[@]}"
+  if BRAIN_DRY=$(HOME="$USER_HOME" python3 "$BRAIN_SETUP" "${BRAIN_ARGS[@]}" --dry-run 2>&1); then
+    printf '%s\n' "$BRAIN_DRY"
+    HOME="$USER_HOME" python3 "$BRAIN_SETUP" "${BRAIN_ARGS[@]}"
+  elif [ -z "${JEO_SECOND_BRAIN_CONFIG:-}" ] && printf '%s' "$BRAIN_DRY" | grep -q 'explicit model identifier is required'; then
+    printf '%s\n' 'second-brain: pending — configure SECOND_BRAIN_MODEL or a host model in ~/.claude/settings.json / ~/.codex/config.toml and rerun'
+  else
+    printf '%s\n' "$BRAIN_DRY" >&2
+    false
+  fi
 else
   printf '%s\n' 'second-brain: skipped by environment veto or project scope; existing knowledge environment unchanged'
 fi

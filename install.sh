@@ -117,9 +117,9 @@ command -v python3 >/dev/null 2>&1 || fail 'Python 3.9+ is required'
 python3 -I -c 'import sys; sys.exit(0 if sys.version_info >= (3, 9) else 1)' >/dev/null 2>&1 || fail 'python3 is not usable; check your Python installation or Xcode license'
 if [ "$STAR_ONLY" != true ]; then
 command -v node >/dev/null 2>&1 || fail 'Node.js 22.20+ is required by skills@1.7.0'
-node -e 'const v=process.versions.node.split(".").map(Number);process.exit(v[0]>22||(v[0]===22&&v[1]>=20)?0:1)' || fail 'Node.js 22.20+ is required by skills@1.7.0'
+node -e 'const v=process.versions.node.split(".").map(Number);process.exit(v[0]>22||(v[0]===22&&v[1]>=20)?0:1)' </dev/null || fail 'Node.js 22.20+ is required by skills@1.7.0'
 command -v npx >/dev/null 2>&1 || fail 'Node.js/npx is required'
-npx --version >/dev/null 2>&1 || fail 'npx does not run; reinstall Node.js'
+npx --version </dev/null >/dev/null 2>&1 || fail 'npx does not run; reinstall Node.js'
 fi
 # GitHub starring is forcibly enabled by default (set JEO_SKILLS_STAR=false to skip).
 STAR="${JEO_SKILLS_STAR:-true}"
@@ -150,7 +150,7 @@ finally:
 try:
     token_result = subprocess.run(
         ['gh', 'auth', 'token', '--hostname', 'github.com'],
-        stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, timeout=10, check=False, env=env,
+        stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, timeout=10, check=False, env=env,
     )
     token = token_result.stdout.decode('utf-8').strip()
     if token_result.returncode != 0 or not token or '\n' in token or '\r' in token:
@@ -206,11 +206,11 @@ if router_dir.is_dir():
 PY
 
 info 'Installing the lightweight shared jeo-skill router'
-npx --yes skills@1.7.0 add "$REPO_URL" "${ADD_ARGS[@]}"
+npx --yes skills@1.7.0 add "$REPO_URL" "${ADD_ARGS[@]}" </dev/null
 [ -f "$CLI_PATH" ] && [ -f "$ROOT/jeo-skill/SKILL.md" ] && [ -f "$ROOT/jeo-skill/scripts/install_support.py" ] || fail "Router verification failed at $ROOT"
-python3 "$CLI_PATH" bootstrap "${TARGET_ARGS[@]}"
+python3 "$CLI_PATH" bootstrap "${TARGET_ARGS[@]}" </dev/null
 if [ "$SELECTION" != router ]; then
-  python3 "$CLI_PATH" install "${TARGET_ARGS[@]}" "${SELECT_ARGS[@]}" --yes
+  python3 "$CLI_PATH" install "${TARGET_ARGS[@]}" "${SELECT_ARGS[@]}" --yes </dev/null
 fi
 FULL_STATUS=0
 if [ "$SELECTION" = all ] && [ "$GLOBAL" != true ]; then
@@ -234,7 +234,7 @@ elif [ "$SELECTION" = all ]; then
   if [ -z "$FULL_HELPER" ] || [ ! -f "$FULL_HELPER" ]; then
     info 'ERROR: Full tool helper unavailable; skills were installed but tool installation did not complete.' >&2
     FULL_STATUS=1
-  elif ! bash "$FULL_HELPER" "$PROJECT_DIR"; then
+  elif ! bash "$FULL_HELPER" "$PROJECT_DIR" </dev/null; then
     info 'WARNING: Full tool installation partially failed; installed skills remain available.' >&2
     FULL_STATUS=1
   fi
@@ -253,7 +253,7 @@ if [ "$SELECTION" = all ] && [ "$GLOBAL" = true ]; then
     info 'No JEO_SECOND_BRAIN_CONFIG: the workspace activation below creates $HOME/.jeo/second-brain-config.json (0600) and a NEW vault at $HOME/vaults/jeo-second-brain with default budgets ($0.50/run, $5/day). Existing knowledge settings are unchanged.'
   else
     if ! command -v graphify >/dev/null 2>&1 && command -v uv >/dev/null 2>&1; then
-      uv tool install graphifyy >/dev/null 2>&1 || info 'WARNING: graphify installation did not complete prior to second-brain setup.'
+      uv tool install graphifyy </dev/null >/dev/null 2>&1 || info 'WARNING: graphify installation did not complete prior to second-brain setup.'
     fi
     BRAIN_SETUP="$ROOT/obsidian-second-brain/scripts/setup.py"
     BRAIN_ARGS=(--config "$JEO_SECOND_BRAIN_CONFIG")
@@ -261,7 +261,7 @@ if [ "$SELECTION" = all ] && [ "$GLOBAL" = true ]; then
     if [ ! -f "$BRAIN_SETUP" ]; then
       info 'ERROR: Installed obsidian-second-brain setup helper is missing.' >&2
       FULL_STATUS=1
-    elif ! python3 "$BRAIN_SETUP" "${BRAIN_ARGS[@]}"; then
+    elif ! python3 "$BRAIN_SETUP" "${BRAIN_ARGS[@]}" </dev/null; then
       info 'ERROR: Second-brain setup did not complete; existing knowledge settings were not migrated.' >&2
       FULL_STATUS=1
     fi
@@ -290,13 +290,13 @@ if [ "$SELECTION" = all ] && [ "$GLOBAL" = true ] && [ "${JEO_SKILLS_WORKSPACE:-
   else
     WS_ARGS=(--project "$PROJECT_DIR" --skills-root "$ROOT")
     if [ "${JEO_SKILLS_SECOND_BRAIN:-}" = skip ] || [ -n "${JEO_SECOND_BRAIN_CONFIG:-}" ]; then WS_ARGS+=(--skip second-brain); fi
-    if ! python3 "$WS_HELPER" "${WS_ARGS[@]}"; then
+    if ! python3 "$WS_HELPER" "${WS_ARGS[@]}" </dev/null; then
       info 'WARNING: Workspace activation reported failed steps (see above); re-run the installer to refresh.' >&2
       FULL_STATUS=1
     elif grep -q -- '--verify' "$WS_HELPER"; then
       # Written is not applied: confirm the harness would inject the rules (alwaysApply frontmatter,
       # current marker block, project pointer) and fail the install rather than report inert rules as active.
-      if ! python3 "$WS_HELPER" --project "$PROJECT_DIR" --skills-root "$ROOT" --verify; then
+      if ! python3 "$WS_HELPER" --project "$PROJECT_DIR" --skills-root "$ROOT" --verify </dev/null; then
         info 'WARNING: Workflow rules were written but would not be applied (see verify output above); re-run the installer to refresh.' >&2
         FULL_STATUS=1
       fi
@@ -306,13 +306,13 @@ fi
 if [ -n "${FULL_TMP:-}" ]; then rm -rf "$FULL_TMP" || info 'WARNING: Full tool temporary cleanup failed.'; fi
 if [ "${READY_WANTED:-false}" = true ]; then
   # Exit 1 means a program has a missing prerequisite: that is the report, not an install failure.
-  python3 "$CLI_PATH" "${READY_ARGS[@]}" || [ "$?" -le 1 ] || info 'WARNING: readiness report could not run; installed skills remain available.'
+  python3 "$CLI_PATH" "${READY_ARGS[@]}" </dev/null || [ "$?" -le 1 ] || info 'WARNING: readiness report could not run; installed skills remain available.'
 fi
 # Remove stale catalog copies of retired skills (jeo, harness) from every runtime root in scope.
 if [ "$GLOBAL" = true ]; then
-  python3 "$CLI_PATH" prune-retired --global || info 'WARNING: retired-skill cleanup did not complete; installed skills remain available.'
+  python3 "$CLI_PATH" prune-retired --global </dev/null || info 'WARNING: retired-skill cleanup did not complete; installed skills remain available.'
 else
-  python3 "$CLI_PATH" prune-retired || info 'WARNING: retired-skill cleanup did not complete; installed skills remain available.'
+  python3 "$CLI_PATH" prune-retired </dev/null || info 'WARNING: retired-skill cleanup did not complete; installed skills remain available.'
 fi
 if [ "$GLOBAL" = true ] && ! command -v jeo-skill >/dev/null 2>&1; then
   info 'Add $HOME/.local/bin to PATH to use jeo-skill.'
@@ -322,7 +322,14 @@ fi
 if [ "$GLOBAL" = true ] && [ "${JEO_SKILLS_JEV:-}" != skip ] && { [ -n "${JEO_SKILLS_JEV:-}" ] || [ -t 0 ]; }; then
   SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" 2>/dev/null && pwd || echo "$PWD")"
   if [ -f "$SCRIPT_DIR/jev/jev-setup.sh" ]; then
-    if ! bash "$SCRIPT_DIR/jev/jev-setup.sh" --profile "$JEV_PROFILE" --agent "$AGENT"; then
+    if [ -t 0 ]; then
+      JEV_RUN_STATUS=0
+      bash "$SCRIPT_DIR/jev/jev-setup.sh" --profile "$JEV_PROFILE" --agent "$AGENT" || JEV_RUN_STATUS=$?
+    else
+      JEV_RUN_STATUS=0
+      bash "$SCRIPT_DIR/jev/jev-setup.sh" --profile "$JEV_PROFILE" --agent "$AGENT" </dev/null || JEV_RUN_STATUS=$?
+    fi
+    if [ "$JEV_RUN_STATUS" != 0 ]; then
       info 'WARNING: Jev setup did not complete; installed skills remain available. Re-run approved standalone setup later.' >&2
       if [ "$JEV_REQUESTED" = true ]; then JEV_STATUS=1; fi
     fi
@@ -330,10 +337,20 @@ if [ "$GLOBAL" = true ] && [ "${JEO_SKILLS_JEV:-}" != skip ] && { [ -n "${JEO_SK
     JEV_SETUP_URL="${JEO_SKILLS_RAW_BASE:-https://raw.githubusercontent.com/akillness/jeo-skills/main/jev}/jev-setup.sh"
     if JEV_SETUP_TMP="$(mktemp -d "${TMPDIR:-/tmp}/jev-setup.XXXXXX")"; then
       trap 'rm -rf "$JEV_SETUP_TMP" || info "WARNING: Optional Jev temporary setup cleanup failed."' EXIT
-      if ! curl -fsSL "$JEV_SETUP_URL" -o "$JEV_SETUP_TMP/jev-setup.sh" 2>/dev/null \
-        || ! bash "$JEV_SETUP_TMP/jev-setup.sh" --profile "$JEV_PROFILE" --agent "$AGENT"; then
+      if ! curl -fsSL "$JEV_SETUP_URL" -o "$JEV_SETUP_TMP/jev-setup.sh" 2>/dev/null; then
         info 'WARNING: Jev setup unavailable or failed; installed skills remain available. Run approved standalone setup later.' >&2
         if [ "$JEV_REQUESTED" = true ]; then JEV_STATUS=1; fi
+      else
+        JEV_RUN_STATUS=0
+        if [ -t 0 ]; then
+          bash "$JEV_SETUP_TMP/jev-setup.sh" --profile "$JEV_PROFILE" --agent "$AGENT" || JEV_RUN_STATUS=$?
+        else
+          bash "$JEV_SETUP_TMP/jev-setup.sh" --profile "$JEV_PROFILE" --agent "$AGENT" </dev/null || JEV_RUN_STATUS=$?
+        fi
+        if [ "$JEV_RUN_STATUS" != 0 ]; then
+          info 'WARNING: Jev setup unavailable or failed; installed skills remain available. Run approved standalone setup later.' >&2
+          if [ "$JEV_REQUESTED" = true ]; then JEV_STATUS=1; fi
+        fi
       fi
       rm -rf "$JEV_SETUP_TMP" || info 'WARNING: Optional Jev temporary setup cleanup failed.'
       trap - EXIT

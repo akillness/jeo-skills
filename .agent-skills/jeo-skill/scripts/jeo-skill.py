@@ -656,7 +656,7 @@ def provision_context7(selected: list[str], *, global_install: bool, dry_run: bo
     if dry_run:
         return
     try:
-        completed = subprocess.run(command, check=False)
+        completed = subprocess.run(command, check=False, stdin=subprocess.DEVNULL)
     except OSError as error:
         raise JeoSkillError(f"Context7 provisioning failed: {error}") from error
     if completed.returncode:
@@ -940,7 +940,7 @@ def run_skill_setup(root: Path | None, selected: list[str], *,
                 with os.fdopen(fd, "w", encoding="utf-8") as handle:
                     json.dump(payload, handle, indent=2)
                     handle.write("\n")
-        completed = subprocess.run(cmd, env=env, check=False)
+        completed = subprocess.run(cmd, env=env, check=False, stdin=subprocess.DEVNULL)
         if completed.returncode != 0:
             raise JeoSkillError(f"Post-install setup failed for {skill_name} (exit {completed.returncode}): {shlex.join(cmd)}")
     run_readiness_report(root, selected)
@@ -1027,7 +1027,7 @@ def command_install(args: argparse.Namespace, catalog: dict[str, Any]) -> None:
     errors = installer_prerequisite_errors()
     if errors:
         raise JeoSkillError("; ".join(errors))
-    completed = subprocess.run(command, check=False)
+    completed = subprocess.run(command, check=False, stdin=subprocess.DEVNULL)
     if completed.returncode:
         raise JeoSkillError(f"skills installer exited with {completed.returncode}")
     finish_install(args, selected)
@@ -1049,7 +1049,7 @@ def command_bootstrap(args: argparse.Namespace) -> None:
         except (JeoSkillError, ValueError, OSError) as error:
             raise JeoSkillError("Router installed, but CLI link failed") from error
         return
-    result = subprocess.run([sys.executable, "-B", str(source), "link"], check=False)
+    result = subprocess.run([sys.executable, "-B", str(source), "link"], check=False, stdin=subprocess.DEVNULL)
     if result.returncode:
         raise JeoSkillError("Router installed, but CLI link failed")
 

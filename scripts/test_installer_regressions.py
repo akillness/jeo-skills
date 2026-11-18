@@ -2339,5 +2339,54 @@ if not os.environ.get("NPM_NO_BINARY"):
         self.assertEqual(plain.returncode, with_programs.returncode)
         self.assertLess(with_programs.stdout.index("Program readiness"), with_programs.stdout.index("Full-tool result"))
 
+    def test_piped_install_sh_does_not_let_npx_or_gh_consume_script_stdin(self):
+        real_npx = self.bin / "npx"
+        wrapped_npx = self.work / "real-npx"
+        shutil.move(str(real_npx), str(wrapped_npx))
+        real_npx.write_text(
+            f"#!{sys.executable}\n"
+            "import os, subprocess, sys\n"
+            "leaked = sys.stdin.read()\n"
+            "if leaked:\n"
+            "    raise SystemExit('npx consumed piped script stdin')\n"
+            f"raise SystemExit(subprocess.run([{str(wrapped_npx)!r}, *sys.argv[1:]]).returncode)\n",
+            encoding="utf-8",
+        )
+        real_npx.chmod(0o700)
+        gh = self.bin / "gh"
+        gh.write_text(
+            f"#!{sys.executable}\n"
+            "import sys\n"
+            "if sys.stdin.read():\n"
+            "    raise SystemExit('gh consumed piped script stdin')\n"
+            "raise SystemExit(1)\n",
+            encoding="utf-8",
+        )
+        gh.chmod(0o700)
+        env = {
+            **self.env,
+            "JEO_SKILLS_SOURCE": str(self.source),
+            "JEO_SKILLS_AGENT": "universal",
+            "JEO_SKILLS_SELECTION": "bundle",
+            "JEO_SKILLS_BUNDLE": "pair",
+            "JEO_SKILLS_JEV": "skip",
+        }
+        result = subprocess.run(
+            ["/bin/bash"],
+            cwd=self.project,
+            env=env,
+            input=(ROOT / "install.sh").read_text(encoding="utf-8"),
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            timeout=60,
+        )
+        self.successful(result)
+        self.assertTrue((self.home / ".local/bin/jeo-skill").is_symlink(), result.stdout)
+        self.assert_skill(self.home / ".agents/skills", "alpha")
+        self.assert_skill(self.home / ".agents/skills", "beta")
+        self.assertIn("Selected installation completed", result.stdout)
+
+
 if __name__ == "__main__":
     unittest.main()

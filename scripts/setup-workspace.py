@@ -655,6 +655,8 @@ def step_second_brain(ctx: Ctx) -> dict:
         cmd += ["--source", ctx.env["JEO_SECOND_BRAIN_SOURCE"]]
     code, out = ctx.run(cmd, 900)
     if code != 0:
+        if "explicit model identifier is required" in out and not ctx.env.get("JEO_SECOND_BRAIN_CONFIG"):
+            return result("pending", "no host model configured (set SECOND_BRAIN_MODEL or model in host settings, then re-run)")
         return result("failed", f"second-brain setup exit {code}: {tail(out)}")
     return result("ok", f"vault {brain_vault(ctx)} (budget ${BRAIN_DEFAULTS['max_run_usd']}/run, "
                         f"${BRAIN_DEFAULTS['daily_budget_usd']}/day)")

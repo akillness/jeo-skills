@@ -144,6 +144,26 @@ class WorkspaceSetupTests(unittest.TestCase):
         self.assertNotIn("graphify_provider", data["consent"])
         self.assertEqual(cfg_path.stat().st_mode & 0o777, 0o600)
 
+    def test_second_brain_missing_host_model_is_pending_for_default_config(self):
+        box = self.sandbox()
+        setup_script = box.skills / "obsidian-second-brain/scripts/setup.py"
+        setup_script.write_text(
+            "#!/usr/bin/env python3\n"
+            "import json\n"
+            "print(json.dumps({'status': 'error', 'error': 'explicit model identifier is required'}))\n"
+            "raise SystemExit(1)\n",
+            encoding="utf-8",
+        )
+        setup_script.chmod(0o755)
+        proc, report = box.run()
+        self.assertEqual(proc.returncode, 0, proc.stderr + proc.stdout)
+        self.assertEqual(report["steps"]["second-brain"]["status"], "pending")
+        self.assertIn("SECOND_BRAIN_MODEL", report["steps"]["second-brain"]["detail"])
+        custom_cfg = Path(box.tmp.name) / "custom-brain.json"
+        custom_cfg.write_text('{"version": 1, "model": "auto"}\n', encoding="utf-8")
+        proc_custom, report_custom = box.run(env={"JEO_SECOND_BRAIN_CONFIG": str(custom_cfg)})
+        self.assertEqual(proc_custom.returncode, 1)
+        self.assertEqual(report_custom["steps"]["second-brain"]["status"], "failed")
     def test_existing_second_brain_config_is_never_overwritten(self):
         box = self.sandbox()
         cfg = box.home / ".jeo/second-brain-config.json"
