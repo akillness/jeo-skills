@@ -143,3 +143,13 @@ test('backend outage injects no skill body and preserves context', () => {
   assert.deepEqual(context.runtime?.dropContextIds ?? [], []);
   assert.doesNotMatch(JSON.stringify({ prompt, context }), /fixture backend unavailable|fixture-only/);
 });
+
+test('assist hook skips duplicate injection when host already expanded invoked skill', () => {
+  const f = fixture({ selected: ['trusted-skill', 'other-skill'] });
+  const expandedPrompt = '[IMPORTANT: The user has invoked the "trusted-skill" skill, indicating they want you to follow its instructions.]\nRun tests';
+  const res1 = f.run({ prompt: expandedPrompt });
+  assert.doesNotMatch(res1.runtime?.skillContext || '', /### Skill: trusted-skill/);
+  assert.match(res1.runtime?.skillContext || '', /### Skill: other-skill/);
+  const res2 = f.run({ prompt: '/skill:trusted-skill run tests' });
+  assert.doesNotMatch(res2.runtime?.skillContext || '', /### Skill: trusted-skill/);
+});

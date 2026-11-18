@@ -42,12 +42,18 @@ DEFAULT_HOSTS: dict[str, Path] = {
     "pi": Path("~/.pi/agent/skills"),
     "gjc": Path("~/.gjc/agent/skills"),
     "antigravity": Path("~/.gemini/antigravity-cli/skills"),
-    "cursor": Path("~/.cursor/skills"),
     "aside-user": Path("~/.aside/u/0/skills/user"),
-    "opencode-config": Path("~/.config/opencode/skills"),
 }
 
-SUPPORTED_HOSTS = dict(DEFAULT_HOSTS)
+# Hosts that natively discover ~/.agents/skills; symlinking catalog skills into
+# their host-specific skill directories duplicates every skill.
+SHARED_ROOT_HOSTS: dict[str, Path] = {
+    "opencode-config": Path("~/.config/opencode/skills"),
+    "cursor": Path("~/.cursor/skills"),
+    "jeo": Path("~/.jeo/skills"),
+}
+
+SUPPORTED_HOSTS = {**DEFAULT_HOSTS, **SHARED_ROOT_HOSTS}
 
 
 def shared_root() -> Path:
@@ -142,6 +148,29 @@ def plan_host(host: str, root: Path, shared: Path, catalog: set[str], replace_co
     return actions
 
 
+
+def plan_shared_link_prune(shared: Path, roots: dict[str, Path] | None = None) -> list[dict]:
+    """Plan removal of redundant symlinks in shared-root hosts that point into `shared`.
+
+    Real directories, non-catalog external symlinks (e.g. ~/.orchestra/skills/*),
+    and symlinked root directories themselves are always left untouched.
+    """
+    targets = roots if roots is not None else SHARED_ROOT_HOSTS
+    actions: list[dict] = []
+    for host, raw_root in targets.items():
+        root = raw_root.expanduser()
+        skip = _host_is_symlinked_or_missing(root, shared)
+        if skip:
+            continue
+        for entry in sorted(root.iterdir()):
+            if not os.path.islink(entry):
+                continue
+            raw = Path(os.readlink(entry))
+            resolved = raw if raw.is_absolute() else (root / raw).absolute()
+            if is_inside_shared(resolved, shared):
+                actions.append(_action(host, entry.name, "prune-shared-link", detail=f"target={resolved}"))
+    return actions
+
 def _quarantine_root() -> Path:
     ts = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     configured = os.environ.get("JEO_SKILLS_STATE_DIR", "~/.local/state/jeo-skill")
@@ -154,9 +183,9 @@ def apply_action(item: dict, host_roots: dict[str, Path]) -> str:
         return "noop"
     root = host_roots[item["host"]]
     entry = root / item["name"]
-    if action == "remove-stale-link":
+    if action in ("remove-stale-link", "prune-shared-link"):
         entry.unlink()
-        return "removed-stale-link"
+        return {"remove-stale-link": "removed-stale-link", "prune-shared-link": "pruned-shared-link"}[action]
     if action in ("create-link", "relink", "replace-copy"):
         if action == "replace-copy":
             quarantined = _quarantine_root() / f"{item['host']}__{item['name']}"
@@ -198,6 +227,11 @@ def main() -> int:
         action="store_true",
         help="also convert host-local legacy copies of catalog skills into links (quarantined first)",
     )
+    parser.add_argument(
+        "--prune-shared-links",
+        action="store_true",
+        help="remove redundant symlinks in shared-root hosts (opencode, cursor, jeo) pointing into ~/.agents/skills",
+    )
     args = parser.parse_args()
 
     host_ids = [h.strip() for h in args.hosts.split(",") if h.strip()]
@@ -212,11 +246,16 @@ def main() -> int:
         return 3
     catalog = catalog_names()
     host_roots = {h: SUPPORTED_HOSTS[h].expanduser() for h in host_ids}
+    if args.prune_shared_links:
+        for h, p in SHARED_ROOT_HOSTS.items():
+            host_roots.setdefault(h, p.expanduser())
 
     plan: list[dict] = []
     for host, root in host_roots.items():
-        plan.extend(plan_host(host, root, shared, catalog, args.replace_copies))
-
+        if host in host_ids:
+            plan.extend(plan_host(host, root, shared, catalog, args.replace_copies))
+    if args.prune_shared_links:
+        plan.extend(plan_shared_link_prune(shared, {h: SUPPORTED_HOSTS[h] for h in SHARED_ROOT_HOSTS}))
     tally: dict[str, int] = {}
     for item in plan:
         tally[item["action"]] = tally.get(item["action"], 0) + 1

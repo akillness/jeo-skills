@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Install the six default full-mode tools without activating project memory,
+# Install the seven default full-mode tools without activating project memory,
 # indexes, models, MCP servers, or hooks. Each tool is attempted independently.
 set -u
 
@@ -10,6 +10,7 @@ SPEC_KIT_COMMIT=99e047e9b48c3ecbbc5c3e530fb45bed671960bc
 RTK_VERSION=1.1.0
 SEMBLE_VERSION=0.7.0
 CLIHUB_VERSION=0.4.1
+HEADROOM_VERSION=0.42.0
 
 EXTENDED="${JEO_FULL_TOOLS_EXTENDED:-0}"
 # --programs adds an offline, read-only readiness report for the five program operators after the tools;
@@ -31,7 +32,7 @@ case ":$PATH:" in
 esac
 failures=()
 successes=()
-total_tools=6
+total_tools=7
 record() {
   local name=$1
   shift
@@ -301,6 +302,18 @@ install_clihub() {
   check_version "cli-hub $CLIHUB_VERSION" cli-hub --version
 }
 
+install_headroom() {
+  case "$(uname -s 2>/dev/null || true)" in
+    MINGW*|MSYS*|CYGWIN*)
+      printf 'Headroom needs its documented MSVC and Rust prerequisites on Windows; install it on demand after those prerequisites are available.\n' >&2
+      return 1
+      ;;
+  esac
+  command -v uv >/dev/null 2>&1 || return 1
+  uv tool install --force --python 3.13 "headroom-ai[proxy,mcp,code]==$HEADROOM_VERSION" || return
+  check_version "headroom, version $HEADROOM_VERSION" headroom --version
+}
+
 install_graphify() {
   if ! command -v graphify >/dev/null 2>&1; then
     command -v uv >/dev/null 2>&1 || return 1
@@ -362,9 +375,10 @@ record spec-kit install_spec_kit
 record RTK install_rtk
 record Semble install_semble
 record CLI-Hub install_clihub
+record Headroom install_headroom
 
 if [ "$EXTENDED" = 1 ]; then
-  total_tools=10
+  total_tools=11
   record Graphify install_graphify
   record OpenSpace install_openspace
   record Open-Ontologies install_open_ontologies
@@ -393,5 +407,5 @@ fi
 if [ "$EXTENDED" = 1 ]; then
   printf 'All %s extended full-mode tool setup attempts succeeded; optional integration activation and readiness may require separate approval and verification.\n' "$total_tools"
 else
-  printf 'All six full-mode tools installed and executable.\n'
+  printf 'All seven full-mode tools installed and executable.\n'
 fi

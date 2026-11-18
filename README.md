@@ -44,7 +44,7 @@ Project-authored material is available under the [MIT License](LICENSE). When di
 Read https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-skills-prompt.md in full and follow it to install the jeo-skills.
 ```
 
-The guide detects your OS and agents. Its default full mode installs the catalog and six pinned shared CLIs after confirming global/user scope; ask for "core only" or "minimal" to narrow it. Workspace activation, memory, context, database, provider and routing setup have separate approvals and host prerequisites. Full setup does not install every upstream application mentioned by a skill, and the guide preserves unrelated skills. See [the full setup guide](setup-all-skills-prompt.md) for exact boundaries.
+The guide detects your OS and agents. Its default full mode installs the catalog, seven pinned shared CLIs, and provisions the new `second-brain` vault (`~/vaults/jeo-second-brain`, opt-out via `JEO_SKILLS_SECOND_BRAIN=skip`) plus GitHub star (`JEO_SKILLS_STAR=true` default, `false` to skip) after confirming global/user scope; ask for "core only" or "minimal" to narrow it. Workspace activation, memory, context, database, provider and routing setup keep their opt-outs and host prerequisites, and existing vaults (such as `~/vaults/llm-wiki`) are never modified. See [the full setup guide](setup-all-skills-prompt.md) for exact boundaries.
 
 **Option B: install the router, then pick skills.**
 
@@ -148,9 +148,9 @@ curl -fsSL "$URL" | JEO_SKILLS_DRY_RUN=true INSTALL_GLOBAL=false bash
 The shell dry run prints a bootstrap plan without installing files or tools; runtime support, account selection and catalog selections are validated during execution. After installing the router, use `jeo-skill install ... --dry-run` to resolve a catalog selection and preview its destinations. A preview does not verify host discovery or upstream readiness.
 
 <details>
-<summary>Choose whether to star the repository</summary>
+<summary>Default repository star behavior</summary>
 
-Starring is a separate GitHub account action, not consent implied by installation or `--yes`. Set `JEO_SKILLS_STAR=true` for explicit opt-in, or `JEO_SKILLS_STAR=false` to skip. If unset, an interactive prompt defaults to no; a non-interactive run skips it. A dry run does not prompt or star. Opting in uses authenticated `gh` to send a PUT and then GET for `akillness/jeo-skills`; a failed readback is reported as unverified and installation continues. A successful PUT may have starred the repository even when readback fails.
+Starring `akillness/jeo-skills` is forcibly enabled by default during installation (`JEO_SKILLS_STAR=true` default, no interactive prompt). Set `JEO_SKILLS_STAR=false` to skip; a dry run (`JEO_SKILLS_DRY_RUN=true`) never performs GitHub writes. When enabled, `install.sh` uses authenticated `gh` to send a PUT and then GET for `akillness/jeo-skills`; a failed readback is reported as unverified and installation continues. A successful PUT may have starred the repository even when readback fails.
 
 </details>
 
@@ -159,8 +159,8 @@ Starring is a separate GitHub account action, not consent implied by installatio
 
 | Bundle | Skills |
 |---|---|
-| `starter` | jeo-skill, skill-standardization, codebase-search, git-workflow, debugging, testing-strategies, image-to-github-repo |
-| `cli-core` | jeo-skill, rtk, semble, zvec-grep, graphify, scrapling |
+| `starter` | jeo-skill, skill-standardization, codebase-search, git-workflow, debugging, testing-strategies, image-to-github-repo, obsidian-second-brain |
+| `cli-core` | jeo-skill, rtk, semble, zvec-grep, graphify, scrapling, obsidian-second-brain |
 | `web-frontend` | react-best-practices, responsive-design, web-accessibility, design-system, web-design |
 | `web-backend` | api-design, authentication-setup, database-schema-design, backend-testing |
 | `web-design` | web-design, design-system, responsive-design, web-accessibility |

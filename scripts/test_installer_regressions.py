@@ -354,12 +354,19 @@ class InstallerRegressions(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0, result.stdout)
         self.assertIn("unverified", result.stdout.lower())
 
-    def test_star_only_without_consent_or_in_dry_run_has_no_calls(self):
+    def test_star_only_defaults_true_and_respects_false_or_dry_run(self):
         record = self.star_fixture()
-        for options in ({}, {"JEO_SKILLS_STAR": "false"},
+        result = self.bootstrap(JEO_SKILLS_STAR_ONLY="true")
+        self.successful(result)
+        self.assertEqual([call[1] for call in self.star_calls(record) if call[0] == "HTTP"], ["PUT", "GET"])
+        self.assertIn("star verified", result.stdout.lower())
+        for options in ({"JEO_SKILLS_STAR": "false"},
+                        {"JEO_SKILLS_DRY_RUN": "true"},
                         {"JEO_SKILLS_STAR": "true", "JEO_SKILLS_DRY_RUN": "true"}):
             with self.subTest(options=options):
+                record.unlink(missing_ok=True)
                 result = self.bootstrap(JEO_SKILLS_STAR_ONLY="true", **options)
+                self.successful(result)
                 self.assertEqual(self.star_calls(record), [])
                 self.assertNotIn("star verified", result.stdout.lower())
 
@@ -367,46 +374,56 @@ class InstallerRegressions(unittest.TestCase):
         record = self.star_fixture()
         unrelated = {"JEO_SKILLS_SELECTION": "category", "JEO_SKILLS_AGENT": "aside",
                      "INSTALL_GLOBAL": "invalid"}
-        approved = self.bootstrap(JEO_SKILLS_STAR_ONLY="true", JEO_SKILLS_STAR="true", **unrelated)
-        self.successful(approved)
-        self.assertEqual([call[1] for call in self.star_calls(record) if call[0] == "HTTP"], ["PUT", "GET"])
-        record.unlink()
-        for options in ({}, {"JEO_SKILLS_DRY_RUN": "true"}, {"JEO_SKILLS_DRY_RUN": "invalid"}):
+        for extra in ({}, {"JEO_SKILLS_STAR": "true"}):
+            with self.subTest(extra=extra):
+                record.unlink(missing_ok=True)
+                approved = self.bootstrap(JEO_SKILLS_STAR_ONLY="true", **unrelated, **extra)
+                self.successful(approved)
+                self.assertEqual([call[1] for call in self.star_calls(record) if call[0] == "HTTP"], ["PUT", "GET"])
+        record.unlink(missing_ok=True)
+        for options in ({"JEO_SKILLS_STAR": "false"}, {"JEO_SKILLS_DRY_RUN": "true"},
+                        {"JEO_SKILLS_DRY_RUN": "invalid"}, {"JEO_SKILLS_STAR": "invalid"}):
             with self.subTest(options=options):
                 result = self.bootstrap(JEO_SKILLS_STAR_ONLY="true", **unrelated, **options)
-                if options.get("JEO_SKILLS_DRY_RUN") == "invalid":
+                if options.get("JEO_SKILLS_DRY_RUN") == "invalid" or options.get("JEO_SKILLS_STAR") == "invalid":
                     self.assertNotEqual(result.returncode, 0, result.stdout)
                 else:
                     self.successful(result)
                 self.assertEqual(self.star_calls(record), [])
 
-    def test_star_interactive_prompt_requires_affirmative_answer(self):
+    def test_star_forced_default_runs_without_prompt_on_pty(self):
         record = self.star_fixture()
-        for answer, expected in (("n\n", []), ("\n", []), ("y\n", ["PUT", "GET"])):
-            with self.subTest(answer=answer):
+        for extra, expected in (({}, ["PUT", "GET"]), ({"JEO_SKILLS_STAR": "false"}, [])):
+            with self.subTest(extra=extra):
                 record.unlink(missing_ok=True)
                 master, slave = pty.openpty()
                 try:
-                    os.write(master, answer.encode())
                     result = subprocess.run(
                         ["/bin/bash", str(ROOT / "install.sh")], cwd=self.project,
                         env={**self.env, "INSTALL_GLOBAL": "false", "JEO_SKILLS_AGENT": "universal",
-                             "JEO_SKILLS_SELECTION": "router", "JEO_SKILLS_JEV": "skip"},
+                             "JEO_SKILLS_SELECTION": "router", "JEO_SKILLS_JEV": "skip", **extra},
                         stdin=slave, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                         text=True, timeout=30)
                 finally:
                     os.close(master)
                     os.close(slave)
                 self.successful(result)
-                self.assertIn("Star akillness/jeo-skills", result.stdout)
+                self.assertNotIn("Star akillness/jeo-skills", result.stdout)
                 self.assertEqual([call[1] for call in self.star_calls(record) if call[0] == "HTTP"], expected)
                 self.assertEqual(bool(self.star_calls(record)), bool(expected))
 
-    def test_star_no_consent_decline_and_dry_run_never_invoke_gh(self):
+    def test_star_defaults_true_on_devnull_and_skips_when_false_invalid_or_dry_run(self):
         record = self.star_fixture()
-        for options in ({}, {"JEO_SKILLS_STAR": "false"},
+        result = self.star_bootstrap()
+        self.successful(result)
+        self.assertEqual([call[1] for call in self.star_calls(record) if call[0] == "HTTP"], ["PUT", "GET"])
+        self.assertIn("star verified", result.stdout.lower())
+        for options in ({"JEO_SKILLS_STAR": "false"},
+                        {"JEO_SKILLS_STAR": "maybe"},
+                        {"JEO_SKILLS_DRY_RUN": "true"},
                         {"JEO_SKILLS_STAR": "true", "JEO_SKILLS_DRY_RUN": "true"}):
             with self.subTest(options=options):
+                record.unlink(missing_ok=True)
                 result = self.star_bootstrap(**options)
                 self.successful(result)
                 self.assertEqual(self.star_calls(record), [])
@@ -2174,9 +2191,19 @@ if not os.environ.get("NPM_NO_BINARY"):
         self.assertEqual(settings.read_bytes(), before)
         self.assertEqual(note.read_text(), "existing vault is not an install target\n")
         self.assertFalse((self.home / ".second-brain").exists())
+        self.assertFalse((self.home / ".jeo/second-brain-config.json").exists())
+        for veto_env in ({"JEO_SKILLS_SECOND_BRAIN": "skip"}, {"JEO_SKILLS_APPROVE_KNOWLEDGE_HOOKS": "false"}):
+            with self.subTest(veto_env=veto_env):
+                skipped = self.cli("install", "obsidian-second-brain", "--agent", "universal", "--global", "--yes", "--source", str(self.source), "--with-hooks", extra_env=veto_env)
+                self.successful(skipped)
+                self.assertIn("Setup skipped (obsidian-second-brain)", skipped.stdout)
+                self.assertFalse((self.home / ".jeo/second-brain-config.json").exists())
         result = self.cli("install", "obsidian-second-brain", "--agent", "universal", "--global", "--yes", "--source", str(self.source), "--with-hooks")
         self.assertNotEqual(result.returncode, 0, result.stdout)
-        self.assertIn("JEO_SECOND_BRAIN_CONFIG", result.stdout)
+        default_cfg = self.home / ".jeo/second-brain-config.json"
+        self.assertTrue(default_cfg.is_file(), result.stdout)
+        self.assertEqual(default_cfg.stat().st_mode & 0o777, 0o600)
+        self.assertEqual(json.loads(default_cfg.read_text())["vault"], str(self.home / "vaults/jeo-second-brain"))
         self.assertEqual(settings.read_bytes(), before)
         self.assertEqual(note.read_text(), "existing vault is not an install target\n")
 
@@ -2308,7 +2335,7 @@ if not os.environ.get("NPM_NO_BINARY"):
         self.assertNotIn("Program readiness", plain.stdout)
         self.assertEqual(with_programs.stdout.count("nothing was installed, started or contacted"), 1, with_programs.stdout)
         for result in (plain, with_programs):
-            self.assertIn("Full-tool result: 0/6 succeeded.", result.stdout)
+            self.assertIn("Full-tool result: 0/7 succeeded.", result.stdout)
         self.assertEqual(plain.returncode, with_programs.returncode)
         self.assertLess(with_programs.stdout.index("Program readiness"), with_programs.stdout.index("Full-tool result"))
 

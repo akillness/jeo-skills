@@ -50,9 +50,9 @@ For full project context, patterns, and task guidance — everything is there.
 Every prompt: openspace route → rtk shell → semble search → jev (only after rtk and
 semble, if a profile is enabled) → then by query: knowledge → second-brain vault,
 code/memory → `.mex/`, semantic search → `zg query`, ontology → open-ontologies,
-harness changes → `.harness2/`. Code graph/DB search fallback: `jeox` (`.jeo/db/jeo.db` —
-`jeox who-calls|what-calls|where-defined|impact|query`, MCP `tools.jeox.*`). Full rules:
-`.agents/rules/jeo-workflows.md` (global copy `~/.agents/rules/jeo-workflows.md`).
+harness changes → `.harness2/`. Code graph/DB fallback: `jeox` (`.jeo/db/jeo.db`,
+managed exclusively by `../jeo-code` — `jeo jeox who-calls|what-calls|where-defined|impact|query`,
+MCP `tools.jeox.*`). Full rules: `.agents/rules/jeo-workflows.md` (global copy `~/.agents/rules/jeo-workflows.md`).
 <!-- JEO-WORKFLOWS:END -->
 
 <!-- mex-setup:start -->

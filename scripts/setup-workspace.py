@@ -11,6 +11,7 @@ Steps (in order): mex, zvec, second-brain, open-ontologies, openspace,
 rtk-semble, jev, refresh, rules, harness2.
 
 Opt-outs: --no-activate (rules + harness2 manifest only), --skip STEP,
+JEO_SKILLS_SECOND_BRAIN=skip /
 JEO_SKILLS_APPROVE_KNOWLEDGE_HOOKS=false / JEO_SKILLS_APPROVE_KNOWLEDGE_DATA=false
 (veto second-brain), JEO_SKILLS_APPROVE_OPENSPACE=false,
 JEO_SKILLS_APPROVE_SKILL_ROUTING_HOOKS=false and
@@ -39,7 +40,7 @@ HOOK_START = "# JEO-WORKFLOWS:START zvec refresh"
 HOOK_END = "# JEO-WORKFLOWS:END"
 RULE_NAME = "jeo-workflows.md"
 STEPS = ("mex", "knowledge", "rules", "jeox", "zvec", "second-brain", "open-ontologies", "openspace",
-         "rtk-semble", "jev", "refresh", "harness2")
+         "rtk-semble", "jev", "refresh", "host-isolation", "harness2")
 ALWAYS_STEPS = ("jev", "rules", "jeox", "harness2")
 ZVEC_EMBEDDING = "local/potion-code-16m-v2"
 ZVEC_GREP_VERSION = "0.2.2"
@@ -104,10 +105,11 @@ Run in this order. If a tool is missing, say so in one line and continue.
   - Past queries/work/concepts: `zg query "<q>" -g 'knowledge/**' -g '!knowledge/raw/**' -g '!knowledge/work/archive/**' --preview none --limit 5`, then read matched line ranges only.
   - Code only: `zg query "<q>" -g '!knowledge/**' --preview none --limit 8`, then confirm with `rg` or a file read. Exact identifiers go to `rg`, not `zg`.
   If `zg status --check-ready` fails, run `zg index` (incremental), then query.
-- **Code graph / DB fallback (jeox)** — when `.mex/` is missing or mex is unavailable,
-  use `jeox` (per-repo DB `.jeo/db/jeo.db`): `jeox who-calls|what-calls|where-defined|
-  impact <name>`, `jeox query "<q>" -g GLOB...`, `jeox build` to refresh. MCP hosts can
-  call the same via the `jeox` server (`jeox_where_defined`, `jeox_who_calls`, ...).
+- **Code graph / DB fallback (jeox via ../jeo-code)** — when `.mex/` is missing or mex is unavailable,
+  `.jeo/db/jeo.db` is managed exclusively by `../jeo-code` (`jeo jeox` / `packages/jeo-mem`):
+  `jeo jeox who-calls|what-calls|where-defined|impact <name>`, `jeo jeox query "<q>" -g GLOB...`,
+  `jeo jeox build` to refresh. MCP hosts call the same via the `jeox` server
+  (`jeox_where_defined`, `jeox_who_calls`, ...).
 - **RDF / OWL / SHACL / ontology work** → the `open-ontologies` skill, via its CLI
   `batch -` mode. Start no network listener and register no MCP server on your own.
 - **Improving this agent harness (rules, prompts, skills, hooks)** → harness2 method
@@ -129,6 +131,9 @@ Run in this order. If a tool is missing, say so in one line and continue.
   second-brain cron schedules refresh memory without a command from the user.
 - Re-running the installer refreshes rules, `.mex/`, the zvec index and the
   `.harness2/` manifest.
+- **Single-source host skill isolation**: shared-root runtimes (`jeopi`, `omp`, `gjc`,
+  `jeo`, `codex`, `opencode`, `cursor`, `kimi`) read `~/.agents/skills` and their own
+  native root without scanning foreign `.claude/skills` or duplicating shared-root symlinks.
 """
 
 POINTER_TEMPLATE = """\
@@ -136,9 +141,9 @@ POINTER_TEMPLATE = """\
 Every prompt: openspace route → rtk shell → semble search → jev (only after rtk and
 semble, if a profile is enabled) → then by query: knowledge → second-brain vault,
 code/memory → `.mex/`, semantic search → `zg query`, ontology → open-ontologies,
-harness changes → `.harness2/`. Code graph/DB search fallback: `jeox` (`.jeo/db/jeo.db` —
-`jeox who-calls|what-calls|where-defined|impact|query`, MCP `tools.jeox.*`). Full rules:
-`.agents/rules/{rule}` (global copy `~/.agents/rules/{rule}`).
+harness changes → `.harness2/`. Code graph/DB fallback: `jeox` (`.jeo/db/jeo.db`,
+managed exclusively by `../jeo-code` — `jeo jeox who-calls|what-calls|where-defined|impact|query`,
+MCP `tools.jeox.*`). Full rules: `.agents/rules/{rule}` (global copy `~/.agents/rules/{rule}`).
 """
 
 
@@ -492,28 +497,52 @@ def step_knowledge(ctx: Ctx) -> dict:
     return result("ok", "knowledge/ scaffold and .mex/context/knowledge-pairings.md bridge ready")
 
 
+def _find_jeo_code_mem(ctx: Ctx) -> tuple[list[str], Path | None] | None:
+    """Resolve `../jeo-code`'s jeo-mem runner. `.jeo/db/jeo.db` is managed exclusively by jeo-code."""
+    override = ctx.env.get("JEO_CODE_ROOT")
+    candidates: list[Path] = []
+    if override is not None:
+        raw = override.strip()
+        if not raw or raw.lower() in {"none", "off", "skip"}:
+            return None
+        candidates.append(Path(raw).expanduser().resolve())
+    else:
+        candidates.append((ctx.project.parent / "jeo-code").resolve())
+        candidates.append((Path(__file__).resolve().parents[2] / "jeo-code").resolve())
+        candidates.append((ctx.home / ".jeo/global/node_modules/jeo-code").resolve())
+
+    bun_bin = ctx.which("bun")
+    if bun_bin:
+        for cand in candidates:
+            mem_cli = cand / "packages/jeo-mem/src/cli.ts"
+            if mem_cli.is_file():
+                return [bun_bin, str(mem_cli)], mem_cli
+            jeo_entry = cand / "src/cli.ts"
+            if (cand / "src/commands/jeox.ts").is_file() and jeo_entry.is_file():
+                return [bun_bin, str(jeo_entry), "jeox"], mem_cli if mem_cli.is_file() else None
+
+    if override is None:
+        jeo_bin = ctx.which("jeo")
+        if jeo_bin:
+            try:
+                pkg_root = Path(jeo_bin).resolve().parent.parent
+                if (pkg_root / "src/commands/jeox.ts").is_file():
+                    mem_cli = pkg_root / "packages/jeo-mem/src/cli.ts"
+                    return [jeo_bin, "jeox"], (mem_cli if mem_cli.is_file() else None)
+                if bun_bin and (pkg_root / "packages/jeo-mem/src/cli.ts").is_file():
+                    mem_cli = pkg_root / "packages/jeo-mem/src/cli.ts"
+                    return [bun_bin, str(mem_cli)], mem_cli
+            except OSError:
+                pass
+    return None
+
+
 def step_jeox(ctx: Ctx) -> dict:
-    """Per-repo code-graph + BM25 DB (scripts/jeox.py → .jeo/db/jeo.db)."""
-    src = ctx.project / "scripts/jeox.py"
-    if not src.is_file():
-        return result("skipped", "scripts/jeox.py not found (not the jeo-skills checkout)")
+    """Delegate per-repo `.jeo/db/jeo.db` indexing & MCP setup exclusively to `../jeo-code`."""
     notes = []
     bin_dir = ctx.home / ".local/bin"
     if not ctx.dry:
         bin_dir.mkdir(parents=True, exist_ok=True)
-    link = bin_dir / "jeox"
-    want = str(src)
-    if link.is_symlink() and os.readlink(link) == want:
-        notes.append("jeox symlink current")
-    else:
-        if ctx.dry:
-            notes.append(f"jeox symlink would update {link}")
-        else:
-            tmp = link.with_suffix(".tmp")
-            tmp.unlink(missing_ok=True)
-            os.symlink(want, tmp)
-            os.replace(tmp, link)
-            notes.append(f"jeox symlink {link}")
     flow_src = ctx.project / "scripts/workflow-log.py"
     if flow_src.is_file():
         flow_link = bin_dir / "jeo-flow-log"
@@ -526,10 +555,37 @@ def step_jeox(ctx: Ctx) -> dict:
             os.symlink(want_flow, tmp_f)
             os.replace(tmp_f, flow_link)
             notes.append(f"jeo-flow-log symlink {flow_link}")
-    code, out = ctx.run([sys.executable or "python3", str(src), "build", "--repo", str(ctx.project)], 300, ctx.project)
-    notes.append("jeox build " + (tail(out) if code == 0 else f"exit {code}"))
+
+    resolved = _find_jeo_code_mem(ctx)
+    if resolved is None:
+        detail = "; ".join(notes + [".jeo/db/jeo.db is managed exclusively by ../jeo-code (unavailable)"])
+        return result("skipped", detail)
+    cmd_prefix, mem_cli = resolved
+
+    if mem_cli is not None:
+        link = bin_dir / "jeox"
+        want = str(mem_cli)
+        if link.is_symlink() and os.readlink(link) == want:
+            notes.append("jeox symlink -> jeo-code current")
+        elif ctx.dry:
+            notes.append(f"jeox symlink would point {link} -> {want}")
+        elif not link.exists() or link.is_symlink():
+            if os.access(mem_cli, os.X_OK) is False:
+                try:
+                    mem_cli.chmod(0o755)
+                except OSError:
+                    pass
+            tmp = link.with_suffix(".tmp")
+            tmp.unlink(missing_ok=True)
+            os.symlink(want, tmp)
+            os.replace(tmp, link)
+            notes.append(f"jeox symlink -> {want}")
+
+    code, out = ctx.run([*cmd_prefix, "build", "--repo", str(ctx.project)], 300, ctx.project)
+    notes.append("jeo-code build " + (tail(out) if code == 0 else f"exit {code}"))
     if code != 0:
         return result("failed", "; ".join(notes))
+
     oc = ctx.project / ".opencode/opencode.json"
     if oc.parent.is_dir() and not ctx.dry:
         try:
@@ -537,10 +593,11 @@ def step_jeox(ctx: Ctx) -> dict:
         except json.JSONDecodeError:
             cfg = {}
         mcp = cfg.setdefault("mcp", {})
-        if mcp.get("jeox") != {"type": "local", "command": [sys.executable or "python3", "scripts/jeox.py", "mcp"], "enabled": True}:
-            mcp["jeox"] = {"type": "local", "command": [sys.executable or "python3", "scripts/jeox.py", "mcp"], "enabled": True}
+        want_oc = {"type": "local", "command": [*cmd_prefix, "mcp", "--repo", str(ctx.project)], "enabled": True}
+        if mcp.get("jeox") != want_oc:
+            mcp["jeox"] = want_oc
             oc.write_text(json.dumps(cfg, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-            notes.append("opencode mcp jeox registered")
+            notes.append("opencode mcp jeox -> jeo-code")
         else:
             notes.append("opencode mcp jeox current")
     return result("ok", "; ".join(notes))
@@ -570,6 +627,9 @@ def step_zvec(ctx: Ctx) -> dict:
 
 
 def step_second_brain(ctx: Ctx) -> dict:
+    sb_env = ctx.env.get("JEO_SKILLS_SECOND_BRAIN", "").strip().lower()
+    if sb_env in {"skip", "false", "0", "no", "off"}:
+        return result("skipped", f"skipped by JEO_SKILLS_SECOND_BRAIN={sb_env}")
     if ctx.veto("JEO_SKILLS_APPROVE_KNOWLEDGE_HOOKS") or ctx.veto("JEO_SKILLS_APPROVE_KNOWLEDGE_DATA"):
         return result("skipped", "vetoed by JEO_SKILLS_APPROVE_KNOWLEDGE_HOOKS/DATA=false")
     setup = ctx.skill_script("obsidian-second-brain", "setup.py")
@@ -712,6 +772,191 @@ def step_refresh(ctx: Ctx) -> dict:
             notes.append("zg post-commit refresh")
     return result("ok", ", ".join(notes) if notes else "nothing to hook (mex/zg absent)")
 
+
+
+_PI_HOST_SKILL_FLAGS: tuple[tuple[str, str], ...] = (
+    ("enabled", "true"),
+    ("enableClaudeUser", "false"),
+    ("enableClaudeProject", "false"),
+    ("enableCodexUser", "false"),
+    ("enablePiUser", "true"),
+    ("enablePiProject", "true"),
+    ("enableAgentsUser", "true"),
+    ("enableAgentsProject", "true"),
+)
+
+
+def _update_yaml_section_keys(lines: list[str], section: str, updates: tuple[tuple[str, str], ...]) -> list[str]:
+    """Update or insert scalar keys under a top-level YAML mapping block, preserving other keys/lists."""
+    desired = dict(updates)
+    start = next((i for i, ln in enumerate(lines) if ln.startswith(f"{section}:") and ln.strip() == f"{section}:"), None)
+    if start is None:
+        out = list(lines)
+        out.append(f"{section}:")
+        for key, val in updates:
+            out.append(f"  {key}: {val}")
+        return out
+
+    end = len(lines)
+    for i in range(start + 1, len(lines)):
+        stripped = lines[i].strip()
+        if stripped and not stripped.startswith("#") and not lines[i][0].isspace():
+            end = i
+            break
+
+    block = lines[start + 1 : end]
+    indent = "  "
+    for ln in block:
+        s = ln.lstrip()
+        if s and not s.startswith("#") and len(ln) > len(s):
+            indent = ln[: len(ln) - len(s)]
+            break
+
+    seen: set[str] = set()
+    new_block: list[str] = []
+    for ln in block:
+        if ln.startswith(indent) and len(ln) > len(indent) and not ln[len(indent)].isspace():
+            key_part, sep, _ = ln.strip().partition(":")
+            if sep and key_part in desired:
+                seen.add(key_part)
+                new_block.append(f"{indent}{key_part}: {desired[key_part]}")
+                continue
+        new_block.append(ln)
+    for key, val in updates:
+        if key not in seen:
+            new_block.append(f"{indent}{key}: {val}")
+    return lines[: start + 1] + new_block + lines[end:]
+
+
+def _ensure_yaml_list_item(lines: list[str], section: str, item: str) -> list[str]:
+    """Ensure a string item exists in a top-level YAML list (e.g. disabledProviders)."""
+    for i, ln in enumerate(lines):
+        if ln.startswith(f"{section}:") and not ln[0].isspace():
+            rest = ln[len(section) + 1 :].strip()
+            if rest == "[]":
+                return lines[:i] + [f"{section}:", f"  - {item}"] + lines[i + 1 :]
+            if rest.startswith("[") and rest.endswith("]"):
+                items = [p.strip().strip("'\"") for p in rest[1:-1].split(",") if p.strip()]
+                if item in items:
+                    return lines
+                items.append(item)
+                return lines[:i] + [f"{section}: [{', '.join(items)}]"] + lines[i + 1 :]
+            end = len(lines)
+            for j in range(i + 1, len(lines)):
+                stripped = lines[j].strip()
+                if stripped and not stripped.startswith("#") and not lines[j][0].isspace():
+                    end = j
+                    break
+            block = lines[i + 1 : end]
+            existing = {
+                ln2.strip()[2:].strip().strip("'\"")
+                for ln2 in block
+                if ln2.strip().startswith("- ")
+            }
+            if item in existing:
+                return lines
+            return lines[:end] + [f"  - {item}"] + lines[end:]
+    return list(lines) + [f"{section}:", f"  - {item}"]
+
+
+def _isolate_pi_family_config(ctx: Ctx, host: str, cfg_path: Path) -> str:
+    if cfg_path.is_symlink():
+        return f"{host}: skipped (symlinked config)"
+    old = cfg_path.read_text(encoding="utf-8") if cfg_path.is_file() else ""
+    lines = old.splitlines()
+    lines = _update_yaml_section_keys(lines, "skills", _PI_HOST_SKILL_FLAGS)
+    lines = _ensure_yaml_list_item(lines, "disabledProviders", "claude-plugins")
+    new = "\n".join(lines).rstrip() + "\n"
+    if new == old:
+        return f"{host}: current"
+    if ctx.dry:
+        return f"{host}: would isolate skills in {cfg_path}"
+    mode = cfg_path.stat().st_mode & 0o777 if cfg_path.is_file() else 0o600
+    atomic_write(cfg_path, new, mode)
+    return f"{host}: isolated ({cfg_path})"
+
+
+def _isolate_jeo_config(ctx: Ctx, cfg_path: Path) -> str:
+    if cfg_path.is_symlink():
+        return "jeo: skipped (symlinked config)"
+    data: dict = {}
+    if cfg_path.is_file():
+        try:
+            parsed = json.loads(cfg_path.read_text(encoding="utf-8"))
+            if not isinstance(parsed, dict):
+                return "jeo: skipped (non-object config.json)"
+            data = parsed
+        except (OSError, ValueError):
+            return "jeo: skipped (unreadable config.json)"
+    skills_cfg = data.get("skills")
+    if skills_cfg is not None and not isinstance(skills_cfg, dict):
+        return "jeo: skipped (non-object skills block)"
+    desired = dict(skills_cfg or {})
+    if desired.get("includeForeignDirs") is False and desired.get("enableClaude") is False:
+        return "jeo: current"
+    desired["includeForeignDirs"] = False
+    desired["enableClaude"] = False
+    data["skills"] = desired
+    if ctx.dry:
+        return f"jeo: would isolate skills in {cfg_path}"
+    mode = cfg_path.stat().st_mode & 0o777 if cfg_path.is_file() else 0o600
+    atomic_write(cfg_path, json.dumps(data, indent=2, ensure_ascii=False) + "\n", mode)
+    return f"jeo: isolated ({cfg_path})"
+
+
+def _prune_redundant_shared_links(ctx: Ctx) -> list[str]:
+    shared_targets = {
+        ctx.skills_root.resolve(),
+        (ctx.home / ".agents/skills").resolve(),
+        ctx.skills_root.absolute(),
+        (ctx.home / ".agents/skills").absolute(),
+    }
+    notes: list[str] = []
+    for label, root in (
+        ("opencode", ctx.home / ".config/opencode/skills"),
+        ("cursor", ctx.home / ".cursor/skills"),
+        ("jeo", ctx.home / ".jeo/skills"),
+    ):
+        if root.is_symlink() or not root.is_dir():
+            continue
+        pruned = 0
+        for entry in sorted(root.iterdir()):
+            if not entry.is_symlink():
+                continue
+            try:
+                raw = Path(os.readlink(entry))
+                direct = Path(os.path.abspath(raw if raw.is_absolute() else (root / raw)))
+                resolved = entry.resolve()
+            except OSError:
+                continue
+            if any(
+                cand == target or target in cand.parents
+                for cand in (direct, resolved)
+                for target in shared_targets
+            ):
+                if not ctx.dry:
+                    entry.unlink()
+                pruned += 1
+        if pruned:
+            verb = "would prune" if ctx.dry else "pruned"
+            notes.append(f"{label}: {verb} {pruned} redundant shared-root link(s)")
+    return notes
+
+
+def step_host_isolation(ctx: Ctx) -> dict:
+    if ctx.env.get("JEO_SKILLS_HOST_ISOLATION", "").strip().lower() in ("skip", "false", "0"):
+        return result("skipped", "JEO_SKILLS_HOST_ISOLATION=skip")
+    notes: list[str] = []
+    for host in ("jeopi", "omp", "gjc"):
+        agent_dir = ctx.home / f".{host}/agent"
+        cfg_path = agent_dir / "config.yml"
+        if cfg_path.is_file() or agent_dir.is_dir() or ctx.which(host):
+            notes.append(_isolate_pi_family_config(ctx, host, cfg_path))
+    jeo_dir = ctx.home / ".jeo"
+    if (jeo_dir / "config.json").is_file() or jeo_dir.is_dir() or ctx.which("jeo"):
+        notes.append(_isolate_jeo_config(ctx, jeo_dir / "config.json"))
+    notes.extend(_prune_redundant_shared_links(ctx))
+    return result("ok", "; ".join(notes) if notes else "no installed hosts required skill isolation")
 
 def host_rule_targets(ctx: Ctx) -> list[tuple[str, Path, str]]:
     """Return (label, path, mode) for installed host instruction files."""
@@ -901,6 +1146,7 @@ STEP_FUNCS = {
     "second-brain": step_second_brain,
     "open-ontologies": step_ontologies, "openspace": step_openspace,
     "rtk-semble": step_rtk_semble, "jev": step_jev, "refresh": step_refresh,
+    "host-isolation": step_host_isolation,
     "rules": step_rules, "harness2": step_harness2, "jeox": step_jeox,
 }
 

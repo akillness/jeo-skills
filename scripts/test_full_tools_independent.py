@@ -51,9 +51,11 @@ class FullToolsIndependent(unittest.TestCase):
         self.command("cargo", 'exit 0')
         self.command("rtk", 'if [ "$1" = "--version" ]; then echo "rtk 1.1.0"; fi')
         self.command("semble", 'if [ "$1" = "--version" ]; then echo "0.7.0"; fi')
+        self.command("headroom", '''printf 'headroom %s\\n' "$*" >> "$FIXTURE_LOG"
+if [ "$1" = "--version" ]; then echo "headroom, version ${HEADROOM_TEST_VERSION:-0.42.0}"; fi''')
         self.command("uv", '''printf 'uv %s\\n' "$*" >> "$FIXTURE_LOG"
 case "$*" in
-  "tool install --force specify-cli --from "*|"tool install --force semble=="*|"tool install --force cli-anything-hub=="*) exit 0 ;;
+  "tool install --force specify-cli --from "*|"tool install --force semble=="*|"tool install --force cli-anything-hub=="*|"tool install --force --python 3.13 headroom-ai[proxy,mcp,code]=="* ) exit 0 ;;
   *) echo "fixture rejected package: $*" >&2; exit 41 ;;
 esac''')
         self.command("specify", '''if [ "$1" = "--version" ]; then echo "specify 1.2.6.dev0"; exit 0; fi
@@ -159,7 +161,7 @@ exec(compile(sys.stdin.read(), "<installer merge>", "exec"), {"__name__": "__mai
         self.assertEqual(sentinel.read_bytes(), b"user data\n")
         self.assertNotEqual(result.returncode, 0, result.stdout)
         self.assertIn("fixture staging traversal denied", result.stdout)
-        self.assertIn("Full-tool result: 5/6 succeeded.", result.stdout)
+        self.assertIn("Full-tool result: 6/7 succeeded.", result.stdout)
         self.assertIn("PARTIAL SUCCESS - failed: spec-kit", result.stdout)
 
     def test_failed_copy_or_chmod_leaves_no_partial_file_and_retry_succeeds(self):
@@ -195,7 +197,7 @@ exec(compile(sys.stdin.read(), "<installer merge>", "exec"), {"__name__": "__mai
                     target = self.project / ".specify/nested/existing.txt"
                     self.assertNotEqual(result.returncode, 0, result.stdout)
                     self.assertIn(f"fixture {mode} interrupted", result.stdout)
-                    self.assertIn("Full-tool result: 5/6 succeeded.", result.stdout)
+                    self.assertIn("Full-tool result: 6/7 succeeded.", result.stdout)
                     self.assertIn("PARTIAL SUCCESS - failed: spec-kit", result.stdout)
                     self.assertFalse(target.exists(), result.stdout)
                     remaining_files = [path.relative_to(self.project) for path in self.project.rglob("*")
@@ -211,7 +213,7 @@ exec(compile(sys.stdin.read(), "<installer merge>", "exec"), {"__name__": "__mai
     def test_official_cli_hub_install_and_executable_are_used(self):
         result = self.run_installer()
         self.assertEqual(result.returncode, 0, result.stdout)
-        self.assertIn("Full-tool result: 6/6 succeeded.", result.stdout)
+        self.assertIn("Full-tool result: 7/7 succeeded.", result.stdout)
         self.assertEqual((self.project / ".specify/nested/new.txt").read_bytes(), b"generated new file\n")
         commands = self.log.read_text(encoding="utf-8").splitlines()
         self.assertTrue(any(line.startswith("uv tool install --force cli-anything-hub==") for line in commands), commands)
@@ -220,7 +222,7 @@ exec(compile(sys.stdin.read(), "<installer merge>", "exec"), {"__name__": "__mai
     def test_cli_hub_execution_failure_is_partial_success(self):
         result = self.run_installer(FAIL_CLI_HUB="1")
         self.assertNotEqual(result.returncode, 0, result.stdout)
-        self.assertIn("Full-tool result: 5/6 succeeded.", result.stdout)
+        self.assertIn("Full-tool result: 6/7 succeeded.", result.stdout)
         self.assertIn("PARTIAL SUCCESS - failed: CLI-Hub", result.stdout)
         self.assertIn("cli-hub ", self.log.read_text(encoding="utf-8"))
         self.assertEqual((self.project / ".specify/nested/new.txt").read_bytes(), b"generated new file\n")
@@ -274,11 +276,11 @@ PY''')
             stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=30,
         )
         self.assertEqual(result.returncode, 0, result.stdout)
-        self.assertIn("Full-tool result: 10/10 succeeded.", result.stdout)
+        self.assertIn("Full-tool result: 11/11 succeeded.", result.stdout)
         self.assertIn("setup attempts succeeded", result.stdout)
         self.assertIn("readiness", result.stdout)
         self.assertIn("separate approval and verification", result.stdout)
-        self.assertNotIn("All 10 extended full-mode tools installed and executable", result.stdout)
+        self.assertNotIn("All 11 extended full-mode tools installed and executable", result.stdout)
         self.assertIn("openspace --skip-mcp", self.log.read_text())
 
     def test_extended_mode_requires_openspace_bm25_probe_even_when_openspace_mcp_is_present(self):
@@ -317,7 +319,7 @@ exit 0''')
         foreign.write_bytes(b"texlive mex\n")
         result = self.run_installer(**env)
         self.assertEqual(result.returncode, 0, result.stdout)
-        self.assertIn("Full-tool result: 6/6 succeeded.", result.stdout)
+        self.assertIn("Full-tool result: 7/7 succeeded.", result.stdout)
         self.assertEqual(foreign.read_bytes(), b"texlive mex\n")
         self.assertIn("belongs to another program", result.stdout)
         installs = [line for line in self.npm_installs() if "mex-agent@" in line]
@@ -356,7 +358,7 @@ exit 0''')
         (self.bin / "cargo").unlink()
         result = self.run_installer()
         self.assertEqual(result.returncode, 0, result.stdout)
-        self.assertIn("Full-tool result: 6/6 succeeded.", result.stdout)
+        self.assertIn("Full-tool result: 7/7 succeeded.", result.stdout)
         self.assertNotIn("cargo is required", result.stdout)
 
     def test_rtk_without_cargo_still_fails_unless_it_is_the_working_pinned_release(self):
@@ -375,7 +377,7 @@ exit 0''')
                 self.assertNotEqual(result.returncode, 0, result.stdout)
                 self.assertIn("cargo is required for pinned RTK installation", result.stdout)
                 self.assertIn("PARTIAL SUCCESS - failed: RTK", result.stdout)
-                self.assertIn("Full-tool result: 5/6 succeeded.", result.stdout)
+                self.assertIn("Full-tool result: 6/7 succeeded.", result.stdout)
 
     def test_cargo_build_failure_is_still_reported_when_cargo_exists(self):
         self.command("cargo", 'exit 1')
@@ -383,6 +385,25 @@ exit 0''')
         self.assertNotEqual(result.returncode, 0, result.stdout)
         self.assertIn("PARTIAL SUCCESS - failed: RTK", result.stdout)
 
+    def test_official_headroom_install_and_version_check(self):
+        result = self.run_installer()
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertIn("Full-tool result: 7/7 succeeded.", result.stdout)
+        commands = self.log.read_text(encoding="utf-8").splitlines()
+        self.assertIn("uv tool install --force --python 3.13 headroom-ai[proxy,mcp,code]==0.42.0", commands)
+        self.assertIn("headroom --version", commands)
+
+        bad_ver = self.run_installer(HEADROOM_TEST_VERSION="0.37.0")
+        self.assertNotEqual(bad_ver.returncode, 0, bad_ver.stdout)
+        self.assertIn("Full-tool result: 6/7 succeeded.", bad_ver.stdout)
+        self.assertIn("PARTIAL SUCCESS - failed: Headroom", bad_ver.stdout)
+
+        (self.bin / "uname").unlink()
+        self.command("uname", 'echo MINGW64_NT')
+        win = self.run_installer()
+        self.assertNotEqual(win.returncode, 0, win.stdout)
+        self.assertIn("MSVC and Rust prerequisites on Windows", win.stdout)
+        self.assertIn("PARTIAL SUCCESS - failed: Headroom", win.stdout)
 
 if __name__ == "__main__":
     unittest.main()

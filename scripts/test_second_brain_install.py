@@ -741,6 +741,26 @@ else:
                 self.assertEqual(self.cron.read_bytes(), cron)
         self.assertEqual(self.model_calls(), [])
 
+    def test_default_guide_creates_private_config_and_provisions_default_vault(self) -> None:
+        import re
+        settings = self.home / ".claude/settings.json"
+        settings.parent.mkdir(parents=True, exist_ok=True)
+        settings.write_text('{"model":"claude-fable-5-1"}\n', encoding="utf-8")
+        before_settings = settings.read_bytes()
+        text = (ROOT / "setup-all-skills-prompt.md").read_text()
+        section = text.split("### Knowledge pipeline (second brain + graphify, new vault)", 1)[1]
+        block = re.findall(r"```bash\n(.*?)\n```", section, re.S)[0]
+        env = {k: v for k, v in self.env.items() if k != "JEO_SECOND_BRAIN_CONFIG"}
+        env.update(SKILLS_ROOT=str(self.package.parent), JEO_SECOND_BRAIN_SOURCE=str(self.source))
+        result = subprocess.run(["/bin/bash", "-c", block], env=env, cwd=self.work,
+                                text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=20)
+        self.assertEqual(result.returncode, 0, result.stdout)
+        default_cfg = self.home / ".jeo/second-brain-config.json"
+        self.assertTrue(default_cfg.is_file(), result.stdout)
+        self.assertEqual(default_cfg.stat().st_mode & 0o777, 0o600)
+        self.assertTrue((self.home / "vaults/jeo-second-brain/index.md").is_file())
+        self.assertEqual(settings.read_bytes(), before_settings)
+
     def test_changed_source_keeps_prior_raw_bytes_and_processes_new_version_once(self) -> None:
         self.install()
         source = self.inbox / "versioned.md"

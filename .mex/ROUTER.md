@@ -28,6 +28,10 @@ Then read this file fully before doing anything else in this session.
 ## Current Project State
 
 **Working:**
+  - 2026-11-18 `.jeo/db/jeo.db` `../jeo-code` 단일 소유권 전환 + `second-brain` 기본 설치 + GitHub 스타 강제 기본 활성화:
+    - `.jeo/db/jeo.db` 관리를 `../jeo-code`(`packages/jeo-mem`, `src/commands/jeox.ts` `jeo jeox`)로 단일화: `jeo-code/packages/jeo-mem`에 `--repo`/`--json`/`-g` glob 필터, `.py`/`.rs` 추출+import 해석, 멀티레포 LRU·`$HOME` 가드 MCP, 레거시 Python 테이블 자동 정리(`pruneLegacyForeignTables`)를 추가하고 `scripts/jeox.py`를 SQLite 의존 없는 얇은 `../jeo-code` 위임 심(shim)으로 전환했으며 `scripts/setup-workspace.py`·`scripts/setup-mcp-hosts.py`도 `jeo-code`만 직접 호출하도록 개편.
+    - `.agent-skills/skills.json` `starter`/`cli-core` 번들에 `obsidian-second-brain` 추가, `jeo-skill.py` (`--setup`/`--with-hooks`) 및 `setup-all-skills-prompt.md`가 `JEO_SECOND_BRAIN_CONFIG` 미설정 시 `~/.jeo/second-brain-config.json`(`0600`, `~/vaults/jeo-second-brain`, 기존 `~/vaults/llm-wiki/` 비침해)을 기본 생성·설정하도록 변경.
+    - `install.sh` 및 `setup-all-skills-prompt.md` Step 1/Step 7에서 대화형 `[y/N]` 프롬프트를 제거하고 `JEO_SKILLS_STAR` 기본값을 `true`로 강제 활성화 + `headroom` 7번째 기본 도구 및 `host-isolation` 스텝·테스트 정렬 완료.
   - 2026-11-18 `setup-all-skills-prompt.md` 심볼릭링크 호스트 호환성·Step 5C 원격 MCP/동의 게이트·CI 회귀 보강 (`444` 스킬 기준):
     - `setup-all-skills-prompt.md` Step 3/4A/4B/4C가 per-skill 심볼릭링크 호스트(`claude`, `pi`, `gjc`, `agy`, `antigravity`, `aside`, `cursor`, `opencode`)에서 중복 복사/충돌 없이 신규 스킬(`rust-anything` 등)을 안전하게 심볼릭링크 재조정하도록 보강, Step 5C `setup-mcp-hosts.py` 원격 `curl` 폴백·`JEO_SKILLS_APPROVE_MCP_HOSTS` 게이트 추가, 중복 `NVIDIA SkillEvaluator` 섹션 통합.
     - `.github/workflows/ci.yml`에 `jev/enhancements.test.mjs`, `test_workflow_log.py`, `test_setup_workspace.py`, `test_jeox_regressions.py`, `test_mcp_hosts.py`, `test_context7_preflight.py`, `test_rust_anything_preflight.py` 추가 및 `scripts/jeox.py` CLI docstring 보완.

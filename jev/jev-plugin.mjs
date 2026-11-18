@@ -1266,11 +1266,27 @@ function extractAssistSections(body, maxChars = 2400) {
   return combined.length >= 80 ? combined.slice(0, maxChars) : clean.slice(0, Math.min(1800, maxChars)).trim();
 }
 
-function selectedSkillContext(routed, preloaded = null) {
+function extractHostInvokedSkills(promptText) {
+  const names = new Set();
+  if (typeof promptText !== 'string' || !promptText) return names;
+  const expandedRe = /\[IMPORTANT:\s*The user has invoked the "([a-z0-9][a-z0-9._-]*)" skill\b/gi;
+  for (const m of promptText.matchAll(expandedRe)) {
+    if (m[1]) names.add(m[1].toLowerCase());
+  }
+  const trimmed = promptText.trimStart();
+  const slashMatch = /^\/skill:([a-z0-9][a-z0-9._-]*)\b/i.exec(trimmed);
+  if (slashMatch?.[1]) names.add(slashMatch[1].toLowerCase());
+  return names;
+}
+
+function selectedSkillContext(routed, preloaded = null, skipNames = null) {
   const picks = Array.isArray(routed?.topK) ? routed.topK.slice(0, 3) : [];
   const wanted = new Set();
   for (const selected of picks) {
-    if (SKILL_ID.test(selected?.name || '')) wanted.add(selected.name);
+    const name = selected?.name || '';
+    if (SKILL_ID.test(name) && !(skipNames && skipNames.has(name.toLowerCase()))) {
+      wanted.add(name);
+    }
   }
   if (!wanted.size) return { context: '', injected: [] };
   const snapshot = join(homes().jev, 'skills.json');
@@ -1712,9 +1728,10 @@ async function hook(flags, suppliedEvent) {
     if (ctx.state.values.JEV_MODEL_ROUTING === 'auto' && prompt && typeof harness.routeModel === 'function') {
       try { modelHint = await harness.routeModel(prompt); } catch {}
     }
+    const hostInvokedSkills = extractHostInvokedSkills(prompt);
     let selected = { context: '', injected: [] };
     try {
-      if (mode === 'assist') selected = selectedSkillContext(routed, preloadedCatalog);
+      if (mode === 'assist') selected = selectedSkillContext(routed, preloadedCatalog, hostInvokedSkills);
     } finally {
       const routedNames = (routed?.topK || []).map(item => item?.name);
       recordSkillUsage({

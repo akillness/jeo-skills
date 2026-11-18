@@ -100,20 +100,35 @@ class WorkspaceSetupTests(unittest.TestCase):
         box = self.sandbox(jev=True)
         subprocess.run(["git", "init", "-q"], cwd=box.project, check=True)
         (box.project / ".mex").mkdir()
-        jeox_stub = box.project / "scripts" / "jeox.py"
-        jeox_stub.parent.mkdir(parents=True, exist_ok=True)
-        jeox_stub.write_text("#!/usr/bin/env python3\nimport sys\nraise SystemExit(0)\n", encoding="utf-8")
-        jeox_stub.chmod(0o755)
-        proc, report = box.run()
+        fake_jeo_code = Path(box.tmp.name).resolve() / "jeo-code"
+        mem_cli = fake_jeo_code / "packages/jeo-mem/src/cli.ts"
+        mem_cli.parent.mkdir(parents=True, exist_ok=True)
+        mem_cli.write_text("#!/usr/bin/env bun\n", encoding="utf-8")
+        write_exec(
+            box.bin / "bun",
+            f'#!/bin/sh\necho "bun $*" >> "{box.log}"\nexit 0\n',
+        )
+        proc, report = box.run(env={"JEO_CODE_ROOT": str(fake_jeo_code)})
         self.assertEqual(proc.returncode, 0, proc.stderr + proc.stdout)
         statuses = {k: v["status"] for k, v in report["steps"].items()}
         self.assertEqual(set(statuses.values()), {"ok"}, statuses)
         for prefix in ("mex-install", "knowledge-bootstrap", "zg index", "zg status --check-ready", "brain-setup",
-                       "oo-smoke", "openspace-install", "route-hooks install", "rtk init -g --auto-patch"):
+                       "oo-smoke", "openspace-install", "route-hooks install", "rtk init -g --auto-patch",
+                       f"bun {mem_cli} build --repo {box.project}"):
             self.assertTrue(box.called(prefix), f"{prefix} not called: {box.calls()}")
+        self.assertEqual(os.readlink(box.home / ".local/bin/jeox"), str(mem_cli))
+        self.assertFalse((box.project / ".jeo/db/jeo.db").exists())
         self.assertIn(f"mex-install {box.project} --skip-skill", box.calls())
         # zvec indexes the project with the pinned local embedding on first run only
         self.assertIn("zg index --embedding local/potion-code-16m-v2", box.calls())
+
+    def test_jeox_skips_when_jeo_code_unavailable(self):
+        box = self.sandbox()
+        proc, report = box.run(env={"JEO_CODE_ROOT": "none"})
+        self.assertEqual(proc.returncode, 0, proc.stderr)
+        self.assertEqual(report["steps"]["jeox"]["status"], "skipped")
+        self.assertFalse((box.project / ".jeo/db/jeo.db").exists())
+        self.assertFalse((box.home / ".local/bin/jeox").exists())
 
     def test_second_brain_config_uses_new_vault_and_bounded_budget(self):
         box = self.sandbox()
@@ -308,10 +323,14 @@ class WorkspaceSetupTests(unittest.TestCase):
                          "<!-- JEO-WORKFLOWS:START -->\nhalf written\n")
 
     def test_knowledge_veto_blocks_second_brain_only(self):
-        for var in ("JEO_SKILLS_APPROVE_KNOWLEDGE_HOOKS", "JEO_SKILLS_APPROVE_KNOWLEDGE_DATA"):
-            with self.subTest(var=var):
+        for var, val in (
+            ("JEO_SKILLS_APPROVE_KNOWLEDGE_HOOKS", "false"),
+            ("JEO_SKILLS_APPROVE_KNOWLEDGE_DATA", "false"),
+            ("JEO_SKILLS_SECOND_BRAIN", "skip"),
+        ):
+            with self.subTest(var=var, val=val):
                 box = self.sandbox()
-                proc, report = box.run(env={var: "false"})
+                proc, report = box.run(env={var: val})
                 self.assertEqual(proc.returncode, 0, proc.stderr)
                 self.assertEqual(report["steps"]["second-brain"]["status"], "skipped")
                 self.assertFalse(box.called("brain-setup"))
@@ -547,6 +566,123 @@ class CustomProjectWorkflowIsolationTests(unittest.TestCase):
         self.assertFalse(ws_b_reset["workflow"]["custom"])
         self.assertNotIn("customWorkflow: true", (proj_b / ".agents/rules" / RULE).read_text(encoding="utf-8"))
 
+
+
+class HostSkillIsolationTests(unittest.TestCase):
+    """Host skill isolation keeps jeopi/omp/gjc/jeo off .claude/skills and prunes duplicate shared links."""
+
+    def test_host_isolation_configures_pi_family_and_jeo_and_prunes_shared_links(self):
+        box = Sandbox()
+        self.addCleanup(box.cleanup)
+        # Populate shared root + installed host configs + redundant shared-root symlinks
+        shared = box.home / ".agents/skills"
+        (shared / "alpha").mkdir(parents=True)
+        (shared / "alpha/SKILL.md").write_text("---\nname: alpha\ndescription: alpha\n---\n", encoding="utf-8")
+
+        jeopi_cfg = box.home / ".jeopi/agent/config.yml"
+        jeopi_cfg.parent.mkdir(parents=True)
+        jeopi_cfg.write_text("setupVersion: 1\nmodelRoles:\n  default: anthropic/claude-opus-5-5\n", encoding="utf-8")
+
+        gjc_cfg = box.home / ".gjc/agent/config.yml"
+        gjc_cfg.parent.mkdir(parents=True)
+        gjc_cfg.write_text(
+            "skills:\n  enabled: true\n  enablePiUser: true\n  ignoredSkills:\n    - '*test*'\n",
+            encoding="utf-8",
+        )
+
+        jeo_cfg = box.home / ".jeo/config.json"
+        jeo_cfg.parent.mkdir(parents=True)
+        jeo_cfg.write_text(json.dumps({"defaultModel": "openai/gpt-5.4"}) + "\n", encoding="utf-8")
+
+        # Redundant shared-root links (should be pruned) vs external/real entries (must be kept)
+        opencode_dir = box.home / ".config/opencode/skills"
+        opencode_dir.mkdir(parents=True)
+        (opencode_dir / "alpha").symlink_to(shared / "alpha")
+        ext_target = box.home / ".orchestra/skills/custom"
+        ext_target.mkdir(parents=True)
+        (opencode_dir / "custom").symlink_to(ext_target)
+        (opencode_dir / "local-real").mkdir()
+
+        cursor_dir = box.home / ".cursor/skills"
+        cursor_dir.mkdir(parents=True)
+        (cursor_dir / "alpha").symlink_to(shared / "alpha")
+
+        jeo_skills_dir = box.home / ".jeo/skills"
+        jeo_skills_dir.mkdir(parents=True)
+        (jeo_skills_dir / "alpha").symlink_to(shared / "alpha")
+
+        # Dry-run must leave everything untouched
+        dry_proc, dry_rep = box.run("--dry-run", "--skills-root", str(shared))
+        self.assertEqual(dry_proc.returncode, 0, dry_proc.stderr)
+        self.assertEqual(dry_rep["steps"]["host-isolation"]["status"], "planned")
+        self.assertTrue((opencode_dir / "alpha").is_symlink())
+        self.assertNotIn("enableClaudeUser", jeopi_cfg.read_text(encoding="utf-8"))
+
+        # Apply
+        proc, rep = box.run("--skills-root", str(shared))
+        self.assertEqual(proc.returncode, 0, proc.stderr + proc.stdout)
+        self.assertEqual(rep["steps"]["host-isolation"]["status"], "ok")
+
+        jeopi_text = jeopi_cfg.read_text(encoding="utf-8")
+        for needle in (
+            "default: anthropic/claude-opus-5-5",
+            "enableClaudeUser: false",
+            "enableClaudeProject: false",
+            "enableCodexUser: false",
+            "enablePiUser: true",
+            "enableAgentsUser: true",
+            "- claude-plugins",
+        ):
+            self.assertIn(needle, jeopi_text)
+
+        gjc_text = gjc_cfg.read_text(encoding="utf-8")
+        self.assertIn("- '*test*'", gjc_text)
+        self.assertIn("enableClaudeUser: false", gjc_text)
+        self.assertIn("- claude-plugins", gjc_text)
+
+        jeo_data = json.loads(jeo_cfg.read_text(encoding="utf-8"))
+        self.assertEqual(jeo_data["defaultModel"], "openai/gpt-5.4")
+        self.assertFalse(jeo_data["skills"]["includeForeignDirs"])
+        self.assertFalse(jeo_data["skills"]["enableClaude"])
+
+        # Redundant shared links removed; external link & real dir preserved
+        self.assertFalse((opencode_dir / "alpha").exists() or (opencode_dir / "alpha").is_symlink())
+        self.assertTrue((opencode_dir / "custom").is_symlink())
+        self.assertTrue((opencode_dir / "local-real").is_dir())
+        self.assertFalse((cursor_dir / "alpha").exists() or (cursor_dir / "alpha").is_symlink())
+        self.assertFalse((jeo_skills_dir / "alpha").exists() or (jeo_skills_dir / "alpha").is_symlink())
+
+        # Idempotent second run
+        proc2, rep2 = box.run("--skills-root", str(shared))
+        self.assertEqual(proc2.returncode, 0, proc2.stderr)
+        self.assertIn("jeopi: current", rep2["steps"]["host-isolation"]["detail"])
+        self.assertIn("jeo: current", rep2["steps"]["host-isolation"]["detail"])
+
+    def test_refresh_host_links_excludes_shared_hosts_by_default_and_prunes_when_requested(self):
+        tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(tmp.cleanup)
+        home = Path(tmp.name)
+        shared = home / ".agents/skills"
+        (shared / "demo").mkdir(parents=True)
+        (shared / "demo/SKILL.md").write_text("---\nname: demo\ndescription: demo\n---\n", encoding="utf-8")
+        catalog = home / "skills.json"
+        catalog.write_text(json.dumps({"skills": [{"name": "demo"}]}), encoding="utf-8")
+        for sub in (".claude/skills", ".config/opencode/skills", ".cursor/skills"):
+            (home / sub).mkdir(parents=True)
+        (home / ".config/opencode/skills/demo").symlink_to(shared / "demo")
+        (home / ".cursor/skills/demo").symlink_to(shared / "demo")
+
+        script = ROOT / "scripts/refresh-host-links.py"
+        proc = subprocess.run(
+            [sys.executable, str(script), "--apply", "--prune-shared-links"],
+            env={"HOME": str(home), "JEO_SKILLS_SHARED_ROOT": str(shared), "JEO_SKILLS_CATALOG_JSON": str(catalog)},
+            capture_output=True, text=True, check=True,
+        )
+        report = json.loads(proc.stdout)
+        self.assertTrue((home / ".claude/skills/demo").is_symlink())
+        self.assertFalse((home / ".config/opencode/skills/demo").is_symlink())
+        self.assertFalse((home / ".cursor/skills/demo").is_symlink())
+        self.assertEqual(report["tally"].get("prune-shared-link"), 2)
 
 if __name__ == "__main__":
     unittest.main()

@@ -15,11 +15,13 @@ export SKILLS_ROOT="${SKILLS_ROOT:-$HOME/.agents/skills}"
 bash ./install.sh
 ```
 
+Note: `install.sh` forcibly enables GitHub starring for `akillness/jeo-skills` by default (set `JEO_SKILLS_STAR=false` to skip). Global `all` installs and `setup-workspace.py` also provision `obsidian-second-brain` (`~/.jeo/second-brain-config.json`, `~/vaults/jeo-second-brain`) by default without modifying any existing vault such as `~/vaults/llm-wiki/` (set `JEO_SKILLS_SECOND_BRAIN=skip` to skip).
+
 Or check/upgrade already-installed skills and host links in place:
 
 ```bash
 bash scripts/skills-upgrade.sh
-python3 scripts/refresh-host-links.py
+python3 scripts/refresh-host-links.py --prune-shared-links
 ```
 
 ---
@@ -55,6 +57,8 @@ python3 scripts/setup-workspace.py --project "${PROJECT_DIR:-$PWD}" --dry-run
 python3 scripts/setup-workspace.py --project "${PROJECT_DIR:-$PWD}"
 python3 scripts/setup-workspace.py --project "${PROJECT_DIR:-$PWD}" --verify
 ```
+
+`setup-workspace.py` also runs `host-isolation` automatically so `jeopi`, `omp`, `gjc`, and `jeo` load skills only from their native root and `~/.agents/skills` (never cross-loading `~/.claude/skills` or `~/.claude/plugins`), and prunes redundant shared-root symlinks under `~/.config/opencode/skills`, `~/.cursor/skills`, and `~/.jeo/skills`.
 
 ### Isolate a Specific Project Workflow
 
@@ -114,7 +118,8 @@ PYTHONDONTWRITEBYTECODE=1 python3 scripts/validate-catalog-projections.py
 PYTHONDONTWRITEBYTECODE=1 python3 scripts/repair-skill-frontmatter.py --check
 node --test jev/*.test.mjs
 python3 -m unittest scripts/test_setup_workspace.py scripts/test_mcp_hosts.py scripts/test_jeox_regressions.py scripts/test_workflow_log.py
-python3 scripts/jeox.py build --full
+# `.jeo/db/jeo.db` is managed exclusively by `../jeo-code` (`jeo jeox` / `packages/jeo-mem`):
+bun ../jeo-code/src/cli.ts jeox build --repo "${PROJECT_DIR:-$PWD}" --full
 ```
 
 ---

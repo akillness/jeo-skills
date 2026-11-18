@@ -126,7 +126,7 @@ class SetupGuideRegressions(unittest.TestCase):
 
     def test_star_download_is_pinned_consent_gated_and_cleans_up(self) -> None:
         block = guide_block("## Step 1 — Detect OS, prerequisites, and coding agents")
-        helper = block.split('# Optional star action:', 1)[1].split(
+        helper = block.split('# Forced default star action:', 1)[1].split('\n', 1)[1].split(
             'if [ "${INSTALL_GLOBAL:-true}" = false ]; then', 1)[0]
         digest = re.search(r'hexdigest\(\) != "([0-9a-f]{64})"', helper)
         self.assertIsNotNone(digest)
@@ -162,28 +162,35 @@ with open(os.environ["RECORD"], "a") as f:
             return [json.loads(line) for line in record.read_text().splitlines()] if record.exists() else []
 
         source.write_bytes((ROOT / "install.sh").read_bytes())
-        for options in ({}, {"JEO_SKILLS_STAR": "true"},
+        for options in ({"JEO_SKILLS_STAR": "false"},
+                        {"INSTALL_GLOBAL": "false"},
+                        {"JEO_SKILLS_STAR_DOWNLOAD": "false"},
+                        {"JEO_SKILLS_DRY_RUN": "true"},
                         {"JEO_SKILLS_STAR": "true", "JEO_SKILLS_STAR_DOWNLOAD": "true", "JEO_SKILLS_DRY_RUN": "true"}):
-            result = run_block(helper, {**env, **options}, self.project)
-            self.assertEqual(result.returncode, 0, result.stdout)
-            self.assertEqual(calls(), [])
-        approved = {**env, "JEO_SKILLS_STAR": "true", "JEO_SKILLS_STAR_DOWNLOAD": "true"}
-        result = run_block(helper, approved, self.project)
-        self.assertEqual(result.returncode, 0, result.stdout)
-        events = calls()
-        self.assertEqual([event[0] for event in events], ["curl", "bash"])
-        self.assertEqual(bytes.fromhex(events[1][1]), source.read_bytes())
-        self.assertEqual(events[1][2:], [0o600, "true", "true"])
-        self.assertFalse(Path(events[0][-1]).exists(), "temporary installer must be removed")
-        self.assertFalse(marker.exists(), "digest verifier loaded hostile sitecustomize")
-        record.unlink()
-        result = run_block(block, approved, self.project)
+            with self.subTest(options=options):
+                record.unlink(missing_ok=True)
+                result = run_block(helper, {**env, **options}, self.project)
+                self.assertEqual(result.returncode, 0, result.stdout)
+                self.assertEqual(calls(), [])
+        for options in ({}, {"JEO_SKILLS_STAR": "true", "JEO_SKILLS_STAR_DOWNLOAD": "true"}):
+            with self.subTest(options=options):
+                record.unlink(missing_ok=True)
+                result = run_block(helper, {**env, **options}, self.project)
+                self.assertEqual(result.returncode, 0, result.stdout)
+                events = calls()
+                self.assertEqual([event[0] for event in events], ["curl", "bash"])
+                self.assertEqual(bytes.fromhex(events[1][1]), source.read_bytes())
+                self.assertEqual(events[1][2:], [0o600, "true", "true"])
+                self.assertFalse(Path(events[0][-1]).exists(), "temporary installer must be removed")
+                self.assertFalse(marker.exists(), "digest verifier loaded hostile sitecustomize")
+        record.unlink(missing_ok=True)
+        result = run_block(block, env, self.project)
         self.assertEqual(result.returncode, 0, result.stdout)
         self.assertEqual([event[0] for event in calls()], ["curl", "bash"])
         self.assertFalse(marker.exists(), "guide fence loaded hostile sitecustomize")
         record.unlink()
         source.write_text("malicious replacement\n")
-        result = run_block(helper, approved, self.project)
+        result = run_block(helper, env, self.project)
         self.assertIn("unverified", result.stdout.lower())
         self.assertEqual([event[0] for event in calls()], ["curl"])
         self.assertFalse(Path(calls()[0][-1]).exists(), "rejected download must be removed")
@@ -309,12 +316,14 @@ case "$*" in
   *specify-cli*99e047e9b48c3ecbbc5c3e530fb45bed671960bc*) [ "${FAIL_SPEC:-0}" != 1 ] ;;
   *semble==0.7.0*) [ "${FAIL_SEMBLE:-0}" != 1 ] ;;
   *cli-anything-hub==0.4.1*) [ "${FAIL_CLI:-0}" != 1 ] ;;
+  *headroom-ai*==0.42.0*) [ "${FAIL_HEADROOM:-0}" != 1 ] ;;
   *) echo "fixture rejected package: $*" >&2; exit 41 ;;
 esac''')
         executable("mex", 'printf "mex %s\\n" "$*" >> "$FIXTURE_LOG"; echo "${MEX_OUTPUT:-0.8.5}"')
         executable("zg", 'printf "zg %s\\n" "$*" >> "$FIXTURE_LOG"; [ "${1:-}" = version ] && echo "${ZVEC_OUTPUT:-0.2.2}"; exit 0')
         executable("rtk", 'printf "rtk %s\\n" "$*" >> "$FIXTURE_LOG"; [ "${1:-}" = --version ] && echo "${RTK_OUTPUT:-rtk 1.1.0}"; exit 0')
         executable("semble", 'printf "semble %s\\n" "$*" >> "$FIXTURE_LOG"; [ "${1:-}" = --version ] && echo "${SEMBLE_OUTPUT:-0.7.0}"; exit 0')
+        executable("headroom", 'printf "headroom %s\\n" "$*" >> "$FIXTURE_LOG"; [ "${1:-}" = --version ] && echo "${HEADROOM_OUTPUT:-headroom, version 0.42.0}"; exit 0')
         executable("cli-hub", 'printf "cli-hub %s\\n" "$*" >> "$FIXTURE_LOG"; [ "${FAIL_CLI_EXEC:-0}" != 1 ] || exit 43; echo "${CLI_OUTPUT:-cli-hub 0.4.1}"')
         executable("clihub", 'echo "incorrect executable" >&2; exit 44')
         executable("specify", '''printf 'specify %s\n' "$*" >> "$FIXTURE_LOG"
@@ -345,7 +354,7 @@ fi''')
         (self.project / "README.md").write_bytes(original)
         result = self.run_full_tool_installer(bin_dir, log)
         self.assertEqual(result.returncode, 0, result.stdout)
-        self.assertIn("6/6 succeeded", result.stdout)
+        self.assertIn("7/7 succeeded", result.stdout)
         self.assertIn("collision", result.stdout.lower())
         self.assertIn("README.md", result.stdout)
         self.assertEqual((self.project / "README.md").read_bytes(), original)
@@ -355,6 +364,7 @@ fi''')
             "mex-agent@0.8.5", "@zvec/zvec-grep@0.2.2",
             "github/spec-kit.git@99e047e9b48c3ecbbc5c3e530fb45bed671960bc",
             "--tag v1.1.0", "semble==0.7.0", "cli-anything-hub==0.4.1",
+            "headroom-ai[proxy,mcp,code]==0.42.0",
         ):
             self.assertIn(pin, commands)
 
@@ -374,18 +384,19 @@ fi''')
             ("FAIL_MEX", "mex"), ("FAIL_ZVEC", "zvec-grep"),
             ("FAIL_SPEC", "spec-kit"), ("FAIL_RTK", "RTK"),
             ("FAIL_SEMBLE", "Semble"), ("FAIL_CLI", "CLI-Hub"),
-            ("FAIL_CLI_EXEC", "CLI-Hub"),
+            ("FAIL_CLI_EXEC", "CLI-Hub"), ("FAIL_HEADROOM", "Headroom"),
         )
         for variable, name in failures:
             with self.subTest(tool=name, failure=variable):
                 log.write_text("")
                 result = self.run_full_tool_installer(bin_dir, log, **{variable: "1"})
                 self.assertEqual(result.returncode, 1, result.stdout)
-                self.assertIn("5/6 succeeded", result.stdout)
+                self.assertIn("6/7 succeeded", result.stdout)
                 self.assertIn(f"PARTIAL SUCCESS - failed: {name}\n", result.stdout)
                 commands = log.read_text(encoding="utf-8")
                 self.assertIn("cli-anything-hub==0.4.1", commands)
                 self.assertIn("semble==0.7.0", commands)
+                self.assertIn("headroom-ai[proxy,mcp,code]==0.42.0", commands)
 
     def test_full_tool_installer_rejects_incorrect_executable_versions(self) -> None:
         bin_dir, log = self.full_tool_fixture()
@@ -393,11 +404,12 @@ fi''')
             ("MEX_OUTPUT", "mex"), ("ZVEC_OUTPUT", "zvec-grep"),
             ("SPEC_OUTPUT", "spec-kit"), ("RTK_OUTPUT", "RTK"),
             ("SEMBLE_OUTPUT", "Semble"), ("CLI_OUTPUT", "CLI-Hub"),
+            ("HEADROOM_OUTPUT", "Headroom"),
         ):
             with self.subTest(tool=name):
                 result = self.run_full_tool_installer(bin_dir, log, **{variable: "wrong-version"})
                 self.assertEqual(result.returncode, 1, result.stdout)
-                self.assertIn("5/6 succeeded", result.stdout)
+                self.assertIn("6/7 succeeded", result.stdout)
                 self.assertIn(f"PARTIAL SUCCESS - failed: {name}\n", result.stdout)
                 self.assertIn("wrong-version", result.stdout)
 
@@ -405,7 +417,7 @@ fi''')
         bin_dir, log = self.full_tool_fixture()
         result = self.run_full_tool_installer(bin_dir, log, FAIL_ZVEC="1", FAIL_CLI_EXEC="1")
         self.assertEqual(result.returncode, 1, result.stdout)
-        self.assertIn("4/6 succeeded", result.stdout)
+        self.assertIn("5/7 succeeded", result.stdout)
         self.assertIn("PARTIAL SUCCESS - failed: zvec-grep CLI-Hub\n", result.stdout)
         self.assertIn("semble==0.7.0", log.read_text(encoding="utf-8"))
         self.assertEqual((self.project / ".specify/templates/plan.md").read_text(), "generated")
@@ -414,11 +426,11 @@ fi''')
         bin_dir, log = self.full_tool_fixture()
         result = self.run_full_tool_installer(
             bin_dir, log, FAIL_MEX="1", FAIL_ZVEC="1", FAIL_SPEC="1",
-            FAIL_RTK="1", FAIL_SEMBLE="1", FAIL_CLI="1",
+            FAIL_RTK="1", FAIL_SEMBLE="1", FAIL_CLI="1", FAIL_HEADROOM="1",
         )
         self.assertEqual(result.returncode, 1, result.stdout)
-        self.assertIn("0/6 succeeded", result.stdout)
-        self.assertIn("PARTIAL SUCCESS - failed: mex zvec-grep spec-kit RTK Semble CLI-Hub\n", result.stdout)
+        self.assertIn("0/7 succeeded", result.stdout)
+        self.assertIn("PARTIAL SUCCESS - failed: mex zvec-grep spec-kit RTK Semble CLI-Hub Headroom\n", result.stdout)
         self.assertNotIn("unbound variable", result.stdout.lower())
 
     def test_step_two_global_fences_respect_project_only_scope(self) -> None:
@@ -650,7 +662,7 @@ esac''')
                     self.assertFalse(helper_result.exists(), result.stdout)
                 self.assertEqual(list(scratch.iterdir()), [], result.stdout)
 
-    def test_second_brain_guide_requires_config_and_honors_explicit_veto_without_touching_legacy_hooks(self) -> None:
+    def test_second_brain_guide_honors_explicit_veto_without_touching_legacy_hooks(self) -> None:
         block = guide_block("### Knowledge pipeline (second brain + graphify, new vault)")
         wrapper = self.home / ".claude/hooks/llm-wiki-ingest.sh"
         wrapper.parent.mkdir(parents=True)
@@ -659,8 +671,11 @@ esac''')
         settings.write_text('{"env":{"keep":"사용자"},"hooks":{"Stop":[{"hooks":[{"type":"command","command":"legacy-stop"}]}]}}\n')
         before = tree_snapshot(self.home)
         cases = (
-            {"JEO_SKILLS_APPROVE_ALL_HOOKS": "true"},
-            {"JEO_SKILLS_APPROVE_KNOWLEDGE_HOOKS": "true", "JEO_SKILLS_APPROVE_KNOWLEDGE_DATA": "true"},
+            {"INSTALL_GLOBAL": "false"},
+            {"JEO_SKILLS_SECOND_BRAIN": "skip"},
+            {"JEO_SKILLS_APPROVE_KNOWLEDGE_HOOKS": "false"},
+            {"JEO_SKILLS_APPROVE_KNOWLEDGE_DATA": "false"},
+            {"JEO_SECOND_BRAIN_CONFIG": str(self.work / "unread-config.json"), "JEO_SKILLS_SECOND_BRAIN": "skip"},
             {"JEO_SECOND_BRAIN_CONFIG": str(self.work / "unread-config.json"), "JEO_SKILLS_APPROVE_KNOWLEDGE_HOOKS": "false"},
             {"JEO_SECOND_BRAIN_CONFIG": str(self.work / "unread-config.json"), "JEO_SKILLS_APPROVE_KNOWLEDGE_DATA": "false"},
         )
@@ -670,16 +685,15 @@ esac''')
                 self.assertEqual(result.returncode, 0, result.stdout)
                 self.assertEqual(tree_snapshot(self.home), before)
 
-    def test_second_brain_guide_reports_missing_helper_instead_of_silent_activation(self) -> None:
+    def test_second_brain_guide_reports_missing_helper_by_default_without_silent_writes(self) -> None:
         block = guide_block("### Knowledge pipeline (second brain + graphify, new vault)")
         before = tree_snapshot(self.home)
-        result = run_block(block, self.env(
-            SKILLS_ROOT=str(self.work / "no-helper"),
-            JEO_SECOND_BRAIN_CONFIG=str(self.work / "approved.json"),
-        ), self.work)
-        self.assertNotEqual(result.returncode, 0, result.stdout)
-        self.assertIn("helper missing", result.stdout)
-        self.assertEqual(tree_snapshot(self.home), before)
+        for extra in ({}, {"JEO_SECOND_BRAIN_CONFIG": str(self.work / "approved.json")}):
+            with self.subTest(extra=extra):
+                result = run_block(block, self.env(SKILLS_ROOT=str(self.work / "no-helper"), **extra), self.work)
+                self.assertNotEqual(result.returncode, 0, result.stdout)
+                self.assertIn("helper missing", result.stdout)
+                self.assertEqual(tree_snapshot(self.home), before)
 
     def write_python_stub(self, path: Path, source: str) -> None:
         path.write_text(f"#!{sys.executable}\n" + source, encoding="utf-8")
@@ -2010,27 +2024,28 @@ for row in rows:
 
         cfg = self.work / "sb-config.json"
         cfg.write_text("{}", encoding="utf-8")
-        dry = self.run_router(
-            router,
-            [
-                "install",
-                "rtk", "semble", "mex", "zvec", "graphify", "secondbrain", "cli-hub", "specity",
-                "--global", "--yes", "--setup", "--dry-run",
-            ],
-            ROOT,
-            {**env, "JEO_SECOND_BRAIN_CONFIG": str(cfg)},
-        )
-        self.assertEqual(dry.returncode, 0, dry.stdout)
-        self.assertIn(
-            "Selected 8 skill(s): rtk, semble, mex, zvec-grep, graphify, obsidian-second-brain, cli-anything, spec-kit",
-            dry.stdout,
-        )
-        plan_lines = [line for line in dry.stdout.splitlines() if line.startswith("Setup plan (")]
-        self.assertTrue(plan_lines, dry.stdout)
-        self.assertTrue(
-            plan_lines[-1].startswith("Setup plan (obsidian-second-brain):"),
-            f"obsidian-second-brain must run last so graphify/mex-agent/zg exist first: {plan_lines}",
-        )
+        for extra_env in (env, {**env, "JEO_SECOND_BRAIN_CONFIG": str(cfg)}):
+            dry = self.run_router(
+                router,
+                [
+                    "install",
+                    "rtk", "semble", "mex", "zvec", "graphify", "secondbrain", "cli-hub", "specity",
+                    "--global", "--yes", "--setup", "--dry-run",
+                ],
+                ROOT,
+                extra_env,
+            )
+            self.assertEqual(dry.returncode, 0, dry.stdout)
+            self.assertIn(
+                "Selected 8 skill(s): rtk, semble, mex, zvec-grep, graphify, obsidian-second-brain, cli-anything, spec-kit",
+                dry.stdout,
+            )
+            plan_lines = [line for line in dry.stdout.splitlines() if line.startswith("Setup plan (")]
+            self.assertTrue(plan_lines, dry.stdout)
+            self.assertTrue(
+                plan_lines[-1].startswith("Setup plan (obsidian-second-brain):"),
+                f"obsidian-second-brain must run last so graphify/mex-agent/zg exist first: {plan_lines}",
+            )
 
     def test_step_three_and_four_reconcile_per_skill_symlinked_hosts_without_copy_errors(self) -> None:
         shared = self.home / ".agents/skills"
@@ -2141,6 +2156,48 @@ for row in rows:
         self.assertIn("--verify --probe-context7", calls_apply)
         self.assertEqual(list(scratch.iterdir()), [], res_apply.stdout)
 
+    def test_router_install_headroom_setup_plans_and_runs_cli_install(self) -> None:
+        router = self.install_router_copy()
+        catalog_path = self.project / ".agent-skills/skills.json"
+        catalog_path.parent.mkdir(parents=True)
+        catalog_path.write_text(json.dumps(self.catalog(["headroom"])), encoding="utf-8")
+
+        bin_dir = self.work / "hr-setup-bin"
+        bin_dir.mkdir()
+        for util in ("bash", "dirname", "head", "ln", "mkdir", "mktemp", "rm", "uname"):
+            resolved = shutil.which(util, path=os.defpath)
+            if resolved:
+                (bin_dir / util).symlink_to(resolved)
+        (bin_dir / "python3").symlink_to(sys.executable)
+        self.write_python_stub(bin_dir / "node", 'print("v22.20.0")\n')
+        repo_skills = ROOT / ".agent-skills"
+        self.write_python_stub(bin_dir / "npx", f'''import shutil, sys
+from pathlib import Path
+shutil.copytree(Path({str(repo_skills)!r}) / "headroom", Path({str(self.home / ".agents/skills")!r}) / "headroom", dirs_exist_ok=True)
+''')
+        uv_log = self.work / "hr-uv.log"
+        local_bin = self.home / ".local/bin"
+        local_bin.mkdir(parents=True, exist_ok=True)
+        self.write_python_stub(local_bin / "uv", f'''import json, os, pathlib, sys
+with open({str(uv_log)!r}, "a", encoding="utf-8") as fh:
+    fh.write(json.dumps(sys.argv[1:]) + "\\n")
+hr = pathlib.Path(os.environ["HOME"]) / ".local/bin/headroom"
+hr.parent.mkdir(parents=True, exist_ok=True)
+hr.write_text("#!/bin/sh\\necho \\"headroom, version 0.42.0\\"\\n", encoding="utf-8")
+hr.chmod(0o755)
+''')
+        env = self.env(PATH=f"{local_bin}:{bin_dir}", JEO_SKILLS_CATALOG=str(catalog_path))
+        dry = self.run_router(router, ["install", "headroom", "--global", "--yes", "--setup", "--dry-run"], self.project, env)
+        self.assertEqual(dry.returncode, 0, dry.stdout)
+        self.assertIn("Setup plan (headroom): uv tool install --python 3.13", dry.stdout)
+        self.assertIn("headroom-ai[proxy,mcp,code]==0.42.0", dry.stdout)
+        self.assertFalse(uv_log.exists())
+
+        res = self.run_router(router, ["install", "headroom", "--global", "--yes", "--setup"], self.project, env)
+        self.assertEqual(res.returncode, 0, res.stdout)
+        self.assertTrue((self.home / ".local/bin/headroom").is_file())
+        uv_calls = [json.loads(line) for line in uv_log.read_text(encoding="utf-8").splitlines()]
+        self.assertEqual(uv_calls, [["tool", "install", "--python", "3.13", "headroom-ai[proxy,mcp,code]==0.42.0"]])
 
 if __name__ == "__main__":
     unittest.main()

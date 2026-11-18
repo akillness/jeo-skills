@@ -57,13 +57,13 @@
 Read https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-skills-prompt.md in full and follow it to install the jeo-skills.
 ```
 
-이 가이드는 운영체제와 에이전트를 감지하고 기본 `full` 모드에서 전체 카탈로그와 고정 버전 공유 CLI 6종을 설치합니다. 먼저 전역·사용자 범위를 확인하며, 새 second-brain 볼트와 자동화는 대상·모델·비용에 대한 명시적 동의 후 준비합니다. `core only`는 `starter` 번들만, `minimal`은 라우터와 CLI 링크만 설치합니다. 사용자나 타사 스킬을 임의로 삭제하지 않습니다.
+이 가이드는 운영체제와 에이전트를 감지하고 기본 `full` 모드에서 전체 카탈로그와 고정 버전 공유 CLI 7종을 설치합니다. 먼저 전역·사용자 범위를 확인하며, 새 `second-brain` 볼트(`~/vaults/jeo-second-brain`)와 자동화를 기본 설정으로 함께 설치합니다(`JEO_SKILLS_SECOND_BRAIN=skip`으로 건너뛰기 가능; 기존 `~/vaults/llm-wiki` 등 기존 볼트는 변경하지 않음). `core only`는 `starter` 번들만, `minimal`은 라우터와 CLI 링크만 설치합니다. 사용자나 타사 스킬을 임의로 삭제하지 않습니다.
 
 가이드 설치와 아래 라우터 전용 설치는 별개입니다. 대부분의 스킬은 안내 파일만 설치합니다. 예외로 `jeo-skill install`에서 `context7`을 선택하면 기존 `ctx7`이 없을 때 npm으로 `ctx7@0.11.1`을 설치합니다(Node.js 22.20 이상 필요). `--dry-run`은 다운로드 없이 미리 봅니다. 프로젝트 설치는 `.agents/context7`, 전역 설치는 `~/.local/share/jeo-skill/context7` 아래에 두며 사용하려면 해당 `node_modules/.bin`을 `PATH`에 추가하세요. 불완전한 기존 대상은 덮어쓰지 않고 실패합니다. CLI 설치는 서비스 활성화가 아닙니다. 로그인, MCP 등록, 설정 변경 및 외부 요청에는 별도 승인이 필요합니다. 직접 실행하는 `npx skills add`는 이 CLI를 설치하지 않습니다.
 
 Windows에서는 Context7 자동 설치를 지원하지 않아 안전하게 실패합니다. 별도로 설치한 가이드와 CLI는 이 자동 경로의 대상이 아닙니다.
 
-GitHub 스타는 별도 선택입니다. `JEO_SKILLS_STAR=true`를 명시하면 `akillness/jeo-skills`에 `gh`로 PUT한 직후 GET으로 확인합니다. `false`면 건너뛰고, 미설정이면 대화형 환경에서 기본값이 아니요인 질문을 표시합니다. 미리 보기에서는 스타를 누르지 않으며, 일반 `--yes`는 스타에 대한 동의가 아닙니다.
+GitHub 스타(`akillness/jeo-skills`)는 기본값(`JEO_SKILLS_STAR=true`)으로 강제 활성화되어 프롬프트 없이 `gh`로 PUT 직후 GET 검증을 수행합니다. 건너뛰려면 `JEO_SKILLS_STAR=false`를 지정하세요. `--dry-run` 미리 보기에서는 스타를 누르지 않습니다.
 
 **옵션 B: 라우터를 설치한 다음 스킬을 선택합니다.**
 
@@ -128,7 +128,7 @@ jeo-skill install react-best-practices --global --yes      # install
 | 에이전트의 안내에 따라 전체 설치 | [빠른 시작](#-빠른-시작)의 설정 프롬프트를 붙여 넣습니다 |
 | 라우터만 설치(기본값) | 한 줄 명령을 그대로 사용합니다 |
 | 라우터 + `starter` 번들 | `JEO_SKILLS_SELECTION=bundle`을 지정한 한 줄 명령 |
-| 전체 카탈로그 + 공유 도구·워크스페이스 설정 | `JEO_SKILLS_SELECTION=all`을 지정한 한 줄 명령. 전역 모드에서는 공유 CLI 6종과 워크스페이스 설정도 실행하므로 [설치 가이드](setup-all-skills-prompt.md)의 승인 경계를 먼저 확인합니다 |
+| 전체 카탈로그 + 공유 도구·워크스페이스 설정 | `JEO_SKILLS_SELECTION=all`을 지정한 한 줄 명령. 전역 모드에서는 공유 CLI 7종과 워크스페이스 설정도 실행하므로 [설치 가이드](setup-all-skills-prompt.md)의 승인 경계를 먼저 확인합니다 |
 | 선택적 설정 없이 전체 카탈로그 설치 | `jeo-skill install --all --global --yes` (`--setup` 없이 실행; 위에 설명한 Context7 CLI 설치 포함) |
 | 현재 프로젝트에만 설치 | `INSTALL_GLOBAL=false`를 지정한 한 줄 명령. `all`은 전역 도구 설치를 건너뛰고 부분 실패로 보고합니다 |
 | 변경 없이 미리 보기 | `JEO_SKILLS_DRY_RUN=true`를 지정한 한 줄 명령 |
@@ -166,8 +166,8 @@ curl -fsSL "$URL" | JEO_SKILLS_DRY_RUN=true INSTALL_GLOBAL=false bash
 
 | 번들 | 스킬 |
 |---|---|
-| `starter` | jeo-skill, skill-standardization, codebase-search, git-workflow, debugging, testing-strategies, image-to-github-repo |
-| `cli-core` | jeo-skill, rtk, semble, zvec-grep, graphify, scrapling |
+| `starter` | jeo-skill, skill-standardization, codebase-search, git-workflow, debugging, testing-strategies, image-to-github-repo, obsidian-second-brain |
+| `cli-core` | jeo-skill, rtk, semble, zvec-grep, graphify, scrapling, obsidian-second-brain |
 | `web-frontend` | react-best-practices, responsive-design, web-accessibility, design-system, web-design |
 | `web-backend` | api-design, authentication-setup, database-schema-design, backend-testing |
 | `web-design` | web-design, design-system, responsive-design, web-accessibility |

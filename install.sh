@@ -61,10 +61,17 @@ if [ "$STAR_ONLY" = true ]; then
     info 'Star-only dry run: no GitHub calls made.'
     exit 0
   fi
-  if [ "${JEO_SKILLS_STAR:-}" != true ]; then
-    info 'Star skipped: star-only mode requires JEO_SKILLS_STAR=true explicit consent.'
-    exit 0
-  fi
+  case "${JEO_SKILLS_STAR:-true}" in
+    true) ;;
+    false)
+      info 'Star skipped: JEO_SKILLS_STAR=false.'
+      exit 0
+      ;;
+    *)
+      info 'WARNING: Invalid JEO_SKILLS_STAR; star skipped. Use true or false.'
+      exit 1
+      ;;
+  esac
 fi
 
 if [ "$DRY_RUN" = true ]; then
@@ -77,12 +84,14 @@ if [ "$DRY_RUN" = true ]; then
   if [ "$SELECTION" = all ]; then
     if [ "$GLOBAL" = true ]; then
       info "Would obtain scripts/install-full-tools.sh from $REPO_URL and run it for project $PROJECT_DIR."
-      info 'Would install or update mex-agent, zvec-grep, specify-cli, RTK, Semble, and cli-anything-hub in the user-global scope; no tools are run during dry run.'
+      info 'Would install or update mex-agent, zvec-grep, specify-cli, RTK, Semble, cli-anything-hub, and Headroom in the user-global scope; no tools are run during dry run.'
       info "Would run scripts/setup-workspace.py for project $PROJECT_DIR (rules, mex, knowledge, zvec, second-brain, open-ontologies, openspace, rtk/semble, jev, harness2 manifest); set JEO_SKILLS_WORKSPACE=skip to opt out."
-      if [ -n "${JEO_SECOND_BRAIN_CONFIG:-}" ]; then
-        info "Would configure obsidian-second-brain from $JEO_SECOND_BRAIN_CONFIG after explicit target/model/cost/automation consent; no setup runs during dry run."
+      if [ "${JEO_SKILLS_SECOND_BRAIN:-}" = skip ] || [ "${JEO_SKILLS_APPROVE_KNOWLEDGE_HOOKS:-}" = false ] || [ "${JEO_SKILLS_APPROVE_KNOWLEDGE_DATA:-}" = false ]; then
+        info 'Second-brain setup would be skipped by environment veto; existing knowledge settings remain unchanged.'
+      elif [ -n "${JEO_SECOND_BRAIN_CONFIG:-}" ]; then
+        info "Would configure obsidian-second-brain from $JEO_SECOND_BRAIN_CONFIG; no setup runs during dry run."
       else
-        info 'Without JEO_SECOND_BRAIN_CONFIG the workspace step would create a NEW vault with default budgets; no existing vault or hook is migrated.'
+        info 'By default, obsidian-second-brain would initialize $HOME/.jeo/second-brain-config.json (0600) and a NEW vault at $HOME/vaults/jeo-second-brain ($0.50/run, $5/day) without touching any existing vault; set JEO_SKILLS_SECOND_BRAIN=skip to opt out.'
       fi
     else
       info 'Project-scoped all would skip user-global tool installation and report partial success; set INSTALL_GLOBAL=true to allow global installation.'
@@ -97,6 +106,7 @@ if [ "$DRY_RUN" = true ]; then
     printf 'Command: '; printf '%q ' python3 "$CLI_PATH" prune-retired; printf '\n'
   fi
   info "Dry run: shared router destination $ROOT; bootstrap resolves target $AGENT; no changes made."
+  info 'GitHub star for akillness/jeo-skills is enabled by default (set JEO_SKILLS_STAR=false to skip); skipped during dry run.'
   info 'Runtime support, account selection, and catalog selections are validated during execution, not by this bootstrap preview.'
   info "After install, optional Jev setup targets profile '$JEV_PROFILE'; set JEO_SKILLS_JEV_PROFILE for an independent profile when AGENT=universal."
 
@@ -111,13 +121,8 @@ node -e 'const v=process.versions.node.split(".").map(Number);process.exit(v[0]>
 command -v npx >/dev/null 2>&1 || fail 'Node.js/npx is required'
 npx --version >/dev/null 2>&1 || fail 'npx does not run; reinstall Node.js'
 fi
-# Starring is a separate account action, never implied by installation approval.
-STAR="${JEO_SKILLS_STAR:-}"
-if [ -z "$STAR" ] && [ -t 0 ]; then
-  printf 'Star akillness/jeo-skills on github.com using the active gh credential now? GH_TOKEN, then GITHUB_TOKEN, override stored credentials; gh may refresh its credential. [y/N] '
-  IFS= read -r STAR || STAR=''
-  case "$STAR" in y|Y|yes|YES) STAR=true ;; *) STAR=false ;; esac
-fi
+# GitHub starring is forcibly enabled by default (set JEO_SKILLS_STAR=false to skip).
+STAR="${JEO_SKILLS_STAR:-true}"
 case "$STAR" in
   true)
     info 'Using the active github.com gh credential (GH_TOKEN, then GITHUB_TOKEN, override stored credentials); gh may refresh its credential.'
@@ -173,7 +178,7 @@ PY
     elif [ "$STAR_ONLY" = true ]; then exit 1
     fi
     ;;
-  ''|false) ;;
+  false) ;;
   *) info 'WARNING: Invalid JEO_SKILLS_STAR; star skipped. Use true or false.' ;;
 esac
 if [ "$STAR_ONLY" = true ]; then exit 0; fi
@@ -235,14 +240,17 @@ elif [ "$SELECTION" = all ]; then
   fi
 fi
 
-# New knowledge installs use second brain; selection/--yes is not model or job consent.
+# New knowledge installs use second brain by default; JEO_SKILLS_SECOND_BRAIN=skip or
+# JEO_SKILLS_APPROVE_KNOWLEDGE_{HOOKS,DATA}=false opt out.
 if [ "$SELECTION" = all ] && [ "$GLOBAL" = true ]; then
   case ":$PATH:" in
     *":$HOME/.local/bin:"*) ;;
     *) export PATH="$HOME/.local/bin:${CARGO_HOME:-$HOME/.cargo}/bin:$PATH" ;;
   esac
-  if [ -z "${JEO_SECOND_BRAIN_CONFIG:-}" ]; then
-    info 'No JEO_SECOND_BRAIN_CONFIG: the workspace activation below creates a NEW vault with default budgets ($0.50/run, $5/day). Existing knowledge settings are unchanged.'
+  if [ "${JEO_SKILLS_SECOND_BRAIN:-}" = skip ] || [ "${JEO_SKILLS_APPROVE_KNOWLEDGE_HOOKS:-}" = false ] || [ "${JEO_SKILLS_APPROVE_KNOWLEDGE_DATA:-}" = false ]; then
+    info 'Second-brain setup skipped by environment veto; existing knowledge settings are unchanged.'
+  elif [ -z "${JEO_SECOND_BRAIN_CONFIG:-}" ]; then
+    info 'No JEO_SECOND_BRAIN_CONFIG: the workspace activation below creates $HOME/.jeo/second-brain-config.json (0600) and a NEW vault at $HOME/vaults/jeo-second-brain with default budgets ($0.50/run, $5/day). Existing knowledge settings are unchanged.'
   else
     if ! command -v graphify >/dev/null 2>&1 && command -v uv >/dev/null 2>&1; then
       uv tool install graphifyy >/dev/null 2>&1 || info 'WARNING: graphify installation did not complete prior to second-brain setup.'
@@ -261,7 +269,8 @@ if [ "$SELECTION" = all ] && [ "$GLOBAL" = true ]; then
 fi
 # Workspace activation: after install, wire rules, mex, knowledge, zvec, second-brain,
 # open-ontologies, openspace, rtk/semble, jev and the harness2 manifest so queries alone drive the workflows.
-# JEO_SKILLS_WORKSPACE=skip opts out; JEO_SKILLS_APPROVE_KNOWLEDGE_{HOOKS,DATA}=false veto second-brain.
+# JEO_SKILLS_WORKSPACE=skip opts out; JEO_SKILLS_SECOND_BRAIN=skip or
+# JEO_SKILLS_APPROVE_KNOWLEDGE_{HOOKS,DATA}=false veto second-brain.
 if [ "$SELECTION" = all ] && [ "$GLOBAL" = true ] && [ "${JEO_SKILLS_WORKSPACE:-}" != skip ]; then
   WS_HELPER=''
   if [ -n "${FULL_HELPER:-}" ] && [ -f "$(dirname "$FULL_HELPER")/setup-workspace.py" ]; then
@@ -280,7 +289,7 @@ if [ "$SELECTION" = all ] && [ "$GLOBAL" = true ] && [ "${JEO_SKILLS_WORKSPACE:-
     if [ "$REPO_URL" = 'https://github.com/akillness/jeo-skills' ]; then FULL_STATUS=1; fi
   else
     WS_ARGS=(--project "$PROJECT_DIR" --skills-root "$ROOT")
-    if [ -n "${JEO_SECOND_BRAIN_CONFIG:-}" ]; then WS_ARGS+=(--skip second-brain); fi
+    if [ "${JEO_SKILLS_SECOND_BRAIN:-}" = skip ] || [ -n "${JEO_SECOND_BRAIN_CONFIG:-}" ]; then WS_ARGS+=(--skip second-brain); fi
     if ! python3 "$WS_HELPER" "${WS_ARGS[@]}"; then
       info 'WARNING: Workspace activation reported failed steps (see above); re-run the installer to refresh.' >&2
       FULL_STATUS=1

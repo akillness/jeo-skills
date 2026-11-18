@@ -1230,7 +1230,8 @@
       "git-workflow",
       "debugging",
       "testing-strategies",
-      "image-to-github-repo"
+      "image-to-github-repo",
+      "obsidian-second-brain"
     ],
     "web-frontend": [
       "react-best-practices",
@@ -1293,7 +1294,8 @@
       "semble",
       "zvec-grep",
       "graphify",
-      "scrapling"
+      "scrapling",
+      "obsidian-second-brain"
     ],
     "product-management": [
       "pm-skills",

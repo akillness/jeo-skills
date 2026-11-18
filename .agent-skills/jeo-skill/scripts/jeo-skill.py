@@ -86,6 +86,9 @@ _SAFE_SETUP_ENV_KEYS = (
     "KIMI_CODE_HOME",
     "JEO_SECOND_BRAIN_CONFIG",
     "JEO_SECOND_BRAIN_SOURCE",
+    "JEO_SKILLS_SECOND_BRAIN",
+    "JEO_SKILLS_APPROVE_KNOWLEDGE_HOOKS",
+    "JEO_SKILLS_APPROVE_KNOWLEDGE_DATA",
     "LLM_WIKI_VAULT",
     "JEV_PROFILE",
     "JEV_AGENT",
@@ -667,8 +670,43 @@ def provision_context7(selected: list[str], *, global_install: bool, dry_run: bo
 SUPPORTED_SETUP_SKILLS = frozenset({
     "open-ontologies", "okf-agent-memory", "mex", "openspace", "ooo", "rtk",
     "cli-anything", "spec-kit", "ecc", "jev-control-plane", "graphify",
-    "semble", "zvec-grep", "llm-wiki", "obsidian-second-brain",
+    "headroom", "semble", "zvec-grep", "llm-wiki", "obsidian-second-brain",
 })
+_SECOND_BRAIN_DEFAULTS = {
+    "version": 1,
+    "host": "auto",
+    "model": "auto",
+    "max_run_usd": 0.5,
+    "daily_budget_usd": 5.0,
+    "timeout_seconds": 300,
+    "max_input_bytes": 262144,
+    "consent": {
+        "data": True,
+        "model": True,
+        "hooks": True,
+        "schedule": True,
+        "postcompact": True,
+        "download": True,
+    },
+    "integrations": {"ctx": True, "graphify": True, "mex": True, "zvec": True},
+    "schedules": {
+        "scan": "* * * * *",
+        "morning": "0 8 * * *",
+        "nightly": "0 22 * * *",
+        "weekly": "0 18 * * 5",
+        "health": "0 21 * * 0",
+    },
+}
+
+
+def _is_second_brain_vetoed() -> str | None:
+    sb = os.environ.get("JEO_SKILLS_SECOND_BRAIN", "").strip().lower()
+    if sb in {"skip", "false", "0", "no", "off"}:
+        return f"JEO_SKILLS_SECOND_BRAIN={sb}"
+    for var in ("JEO_SKILLS_APPROVE_KNOWLEDGE_HOOKS", "JEO_SKILLS_APPROVE_KNOWLEDGE_DATA"):
+        if os.environ.get(var, "").strip().lower() in {"false", "0", "no", "off"}:
+            return f"vetoed by {var}"
+    return None
 
 
 def _resolve_jev_profile_for_agent(agent: str) -> str | None:
@@ -775,6 +813,16 @@ def skill_setup_commands(root: Path | None, selected: list[str], *,
             else:
                 plans.append((name, ["uv", "tool", "install", "graphifyy"]))
                 plans.append((name, ["graphify", "--version"]))
+        elif name == "headroom":
+            hr_bin = home / ".local/bin/headroom"
+            resolved_hr = str(hr_bin) if hr_bin.is_file() and os.access(hr_bin, os.X_OK) else shutil.which("headroom")
+            if resolved_hr:
+                plans.append((name, [resolved_hr, "--version"]))
+            else:
+                plans.append((name, ["uv", "tool", "install", "--python", "3.13", "headroom-ai[proxy,mcp,code]==0.42.0"]))
+                plans.append((name, ["headroom", "--version"]))
+            if with_hooks and shutil.which("claude") and (skill_dir / "scripts/setup-claude-code-policy-hook.sh").is_file():
+                plans.append((name, ["bash", str(skill_dir / "scripts/setup-claude-code-policy-hook.sh")]))
         elif name == "semble":
             if shutil.which("semble"):
                 plans.append((name, ["semble", "--version"]))
@@ -800,10 +848,17 @@ def skill_setup_commands(root: Path | None, selected: list[str], *,
                 if zvec_target:
                     plans.append((name, [sys.executable, str(skill_dir / "scripts/host-install.py"), "--target", zvec_target, "--apply"]))
         elif name == "obsidian-second-brain":
+            veto_reason = _is_second_brain_vetoed()
+            if veto_reason:
+                print(f"Setup skipped (obsidian-second-brain): {veto_reason}")
+                continue
             config = os.environ.get("JEO_SECOND_BRAIN_CONFIG", "").strip()
-            if not config:
-                raise JeoSkillError("obsidian-second-brain --setup requires JEO_SECOND_BRAIN_CONFIG with explicit new-vault, model, cost and automation consent; --with-hooks alone is not consent")
-            command = [sys.executable, str(skill_dir / "scripts/setup.py"), "--config", str(Path(config).expanduser())]
+            if not config and not global_install:
+                raise JeoSkillError(
+                    "obsidian-second-brain project-scoped --setup requires explicit JEO_SECOND_BRAIN_CONFIG or --global"
+                )
+            cfg_path = Path(config).expanduser() if config else (home / ".jeo/second-brain-config.json")
+            command = [sys.executable, str(skill_dir / "scripts/setup.py"), "--config", str(cfg_path)]
             source = os.environ.get("JEO_SECOND_BRAIN_SOURCE", "").strip()
             if source:
                 command.extend(["--source", str(Path(source).expanduser())])
@@ -871,6 +926,20 @@ def run_skill_setup(root: Path | None, selected: list[str], *,
             fallback_harness = checkout_repo / "jev/jev-harness.mjs"
             if fallback_harness.is_file():
                 cmd = [cmd[0], str(fallback_harness), *cmd[2:]]
+        elif skill_name == "obsidian-second-brain" and not os.environ.get("JEO_SECOND_BRAIN_CONFIG", "").strip():
+            cfg_path = home / ".jeo/second-brain-config.json"
+            if cfg_path.is_symlink() or cfg_path.parent.is_symlink():
+                raise JeoSkillError(f"Refusing symlinked second-brain config path: {cfg_path}")
+            if not cfg_path.exists():
+                vault_dir = home / "vaults/jeo-second-brain"
+                inbox_dir = home / "vaults/jeo-second-brain-inbox"
+                cfg_path.parent.mkdir(parents=True, exist_ok=True)
+                vault_dir.parent.mkdir(parents=True, exist_ok=True)
+                payload = dict(_SECOND_BRAIN_DEFAULTS, vault=str(vault_dir), inbox=str(inbox_dir))
+                fd = os.open(cfg_path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+                with os.fdopen(fd, "w", encoding="utf-8") as handle:
+                    json.dump(payload, handle, indent=2)
+                    handle.write("\n")
         completed = subprocess.run(cmd, env=env, check=False)
         if completed.returncode != 0:
             raise JeoSkillError(f"Post-install setup failed for {skill_name} (exit {completed.returncode}): {shlex.join(cmd)}")

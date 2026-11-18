@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import os
 from pathlib import Path
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -39,11 +40,37 @@ class SetupMcpHostsTests(unittest.TestCase):
         os_bin.parent.mkdir(parents=True)
         os_bin.write_text("#!/bin/sh\nexit 0\n", encoding="utf-8")
         os_bin.chmod(0o755)
-        (bin_dir / "jeox").symlink_to(ROOT / "scripts/jeox.py")
 
-        # Create host dirs & seed pre-existing quirky configs
+        # Fixture jeo-code checkout + bun runner (hermetic across CI without ../jeo-code)
+        self.jeo_code = Path(self.tmp.name).resolve() / "jeo-code"
+        self.mem_cli = self.jeo_code / "packages/jeo-mem/src/cli.ts"
+        self.mem_cli.parent.mkdir(parents=True)
+        self.mem_cli.write_text(
+            "import json, sys\n"
+            "if len(sys.argv) > 1 and sys.argv[1] == 'mcp':\n"
+            "    for raw in sys.stdin:\n"
+            "        raw = raw.strip()\n"
+            "        if not raw:\n"
+            "            continue\n"
+            "        req = json.loads(raw)\n"
+            "        mid = req.get('id')\n"
+            "        m = req.get('method')\n"
+            "        if m == 'initialize':\n"
+            "            print(json.dumps({'jsonrpc':'2.0','id':mid,'result':{'protocolVersion':'2024-11-05','capabilities':{'tools':{}},'serverInfo':{'name':'jeo-mem','version':'0.2.0'}}}), flush=True)\n"
+            "        elif m == 'tools/list':\n"
+            "            print(json.dumps({'jsonrpc':'2.0','id':mid,'result':{'tools':[{'name':'jeox_search'},{'name':'jeox_where_defined'}]}}), flush=True)\n"
+            "        elif m and m.startswith('notifications/'):\n"
+            "            pass\n",
+            encoding="utf-8",
+        )
+        bun_bin = bin_dir / "bun"
+        bun_bin.write_text(f"#!/bin/sh\nexec '{sys.executable}' \"$@\"\n", encoding="utf-8")
+        bun_bin.chmod(0o755)
+        self.bun_bin = bun_bin
+
+        # Create host dirs & seed pre-existing quirky configs (including stale scripts/jeox.py)
         (self.home / ".claude").mkdir()
-        (self.home / ".claude.json").write_text(json.dumps({"mcpServers": {"aside": {"command": "aside", "args": ["mcp"]}}}), encoding="utf-8")
+        (self.home / ".claude.json").write_text(json.dumps({"mcpServers": {"aside": {"command": "aside", "args": ["mcp"]}, "jeox": {"command": str(ROOT / "scripts/jeox.py"), "args": ["mcp"]}}}), encoding="utf-8")
         (self.home / ".codex").mkdir()
         (self.home / ".codex/config.toml").write_text('model = "gpt-5"\n', encoding="utf-8")
         (self.home / ".gemini").mkdir()
@@ -71,7 +98,8 @@ class SetupMcpHostsTests(unittest.TestCase):
         self.aside_before = aside_cfg.read_text(encoding="utf-8")
 
     def test_applies_and_repairs_across_hosts_without_mutating_aside_or_symlinks(self) -> None:
-        env = {**os.environ, "HOME": str(self.home), "XDG_CONFIG_HOME": str(self.home / ".config"), "PYTHONDONTWRITEBYTECODE": "1"}
+        env = {**os.environ, "HOME": str(self.home), "XDG_CONFIG_HOME": str(self.home / ".config"),
+               "JEO_CODE_ROOT": str(self.jeo_code), "PYTHONDONTWRITEBYTECODE": "1"}
         env.pop("CONTEXT7_API_KEY", None)
         proc = subprocess.run(
             [sys.executable, str(SCRIPT), "--home", str(self.home), "--repair", "--apply", "--json"],
@@ -98,10 +126,13 @@ class SetupMcpHostsTests(unittest.TestCase):
         self.assertIn("context7", oc["mcp"]["servers"])
         self.assertEqual(oc["mcp"]["servers"]["context7"]["type"], "local")
 
-        # Pi sets exposure: direct for context7 and jeox
+        # Pi sets exposure: direct for context7 and jeox, and claude migrates jeox onto jeo-code
         pi = json.loads((self.home / ".pi/agent/mcp.json").read_text(encoding="utf-8"))
         self.assertEqual(pi["mcpServers"]["context7"]["exposure"], "direct")
         self.assertEqual(pi["mcpServers"]["jeox"]["exposure"], "direct")
+        self.assertEqual(pi["mcpServers"]["jeox"]["args"], [str(self.mem_cli), "mcp"])
+        claude = json.loads((self.home / ".claude.json").read_text(encoding="utf-8"))
+        self.assertEqual(claude["mcpServers"]["jeox"]["args"], [str(self.mem_cli), "mcp"])
 
         # Codex config is valid TOML containing context7
         codex_data = tomllib.loads((self.home / ".codex/config.toml").read_text(encoding="utf-8"))
@@ -115,7 +146,7 @@ class SetupMcpHostsTests(unittest.TestCase):
         secret_target = self.home / "outside.json"
         secret_target.write_text('{"keep": true}\n', encoding="utf-8")
         (self.home / ".cursor/mcp.json").symlink_to(secret_target)
-        env = {**os.environ, "HOME": str(self.home), "PYTHONDONTWRITEBYTECODE": "1"}
+        env = {**os.environ, "HOME": str(self.home), "JEO_CODE_ROOT": str(self.jeo_code), "PYTHONDONTWRITEBYTECODE": "1"}
         proc = subprocess.run(
             [sys.executable, str(SCRIPT), "--home", str(self.home), "--apply", "--json"],
             env=env, capture_output=True, text=True, timeout=30, check=False,
@@ -129,7 +160,32 @@ class SetupMcpHostsTests(unittest.TestCase):
         mod = importlib.util.module_from_spec(spec)
         assert spec.loader
         spec.loader.exec_module(mod)
-        probe = mod.probe_stdio_mcp("jeox", sys.executable, [str(ROOT / "scripts/jeox.py"), "mcp"])
+        prev = os.environ.get("JEO_CODE_ROOT")
+        os.environ["JEO_CODE_ROOT"] = "none"
+        try:
+            self.assertIsNone(mod.resolve_jeox_cmd(self.home, self.repo))
+        finally:
+            if prev is None:
+                os.environ.pop("JEO_CODE_ROOT", None)
+            else:
+                os.environ["JEO_CODE_ROOT"] = prev
+        probe = mod.probe_stdio_mcp("jeox", str(self.bun_bin), [str(self.mem_cli), "mcp"])
+        self.assertTrue(probe["ok"], probe)
+        self.assertIn("jeox_search", probe["tools"])
+
+    @unittest.skipUnless(
+        (ROOT.parent / "jeo-code/packages/jeo-mem/src/cli.ts").is_file() and bool(shutil.which("bun")),
+        "sibling ../jeo-code and bun required for live stdio MCP probe",
+    )
+    def test_probes_real_sibling_jeo_code_mcp_stdio(self) -> None:
+        sys.path.insert(0, str(ROOT / "scripts"))
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("setup_mcp_hosts", SCRIPT)
+        mod = importlib.util.module_from_spec(spec)
+        assert spec.loader
+        spec.loader.exec_module(mod)
+        real_cli = ROOT.parent / "jeo-code/packages/jeo-mem/src/cli.ts"
+        probe = mod.probe_stdio_mcp("jeox", shutil.which("bun"), [str(real_cli), "mcp"])
         self.assertTrue(probe["ok"], probe)
         self.assertIn("jeox_search", probe["tools"])
 

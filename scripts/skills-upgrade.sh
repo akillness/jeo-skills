@@ -25,7 +25,7 @@ REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 DRY_RUN=0
 SKIP_PULL=0
 REPLACE_COPIES=0
-HOSTS="${SKILLS_UPGRADE_HOSTS:-claude,pi,gjc,antigravity,cursor,aside-user,opencode-config}"
+HOSTS="${SKILLS_UPGRADE_HOSTS:-claude,pi,gjc,antigravity,aside-user}"
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -96,7 +96,7 @@ step "5/6 reconcile host symlinks"
 # refresh-host-links.py has no --dry-run; it is read-only without --apply.
 # In dry-run mode, do NOT pass --apply (the old code passed both, which
 # would have written links while claiming to be a plan).
-REFRESH_ARGS=()
+REFRESH_ARGS=(--prune-shared-links)
 [[ "$DRY_RUN" -eq 0 ]] && REFRESH_ARGS+=(--apply)
 [[ "$REPLACE_COPIES" -eq 1 ]] && REFRESH_ARGS+=(--replace-copies)
 [[ -n "$HOSTS" ]] && REFRESH_ARGS+=(--hosts "$HOSTS")

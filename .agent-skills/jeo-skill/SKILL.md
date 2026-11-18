@@ -76,7 +76,7 @@ whole repository unless the user explicitly selects every skill. Omit `--global`
 project-local install. Use `--agent <runtime>` to target a specific supported runtime.
 Pass `--setup` to also run the selected skills' bundled CLI/smoke verification helpers
 (for example `open-ontologies`, `okf-agent-memory`, `mex`, `openspace`, `ooo`, `rtk`,
-`semble`, `cli-anything`, `spec-kit`, `graphify`, `llm-wiki`, `jev-control-plane`, `ecc`),
+`semble`, `cli-anything`, `spec-kit`, `graphify`, `headroom`, `llm-wiki`, `jev-control-plane`, `ecc`),
 and `--with-hooks` when you also approve hook/MCP registration.
 For `fabric`, `moneyprinter-v2`, `agent-s`, `google-maps-scraper` and `gitingest`, `--setup` installs
 nothing: it runs each skill's offline `scripts/preflight.py` and prints one report. A blocked program is a
@@ -233,10 +233,11 @@ last so that `graphify`, `mex-agent`, and `zg` are installed and verified before
 `obsidian-second-brain/scripts/setup.py` validates its binary dependencies:
 
 ```bash
-# Install and run --setup for the 7 standalone CLIs (shorthand aliases supported):
-jeo-skill install rtk semble mex zvec graphify cli-hub specity --global --yes --setup
+# Install and run --setup for all 8 workflow tools (secondbrain auto-initializes
+# ~/.jeo/second-brain-config.json -> ~/vaults/jeo-second-brain by default when global):
+jeo-skill install rtk semble mex zvec graphify secondbrain cli-hub specity --global --yes --setup
 
-# Or include secondbrain once JEO_SECOND_BRAIN_CONFIG is prepared with explicit consent:
+# Or supply an explicit custom config path (or skip with JEO_SKILLS_SECOND_BRAIN=skip):
 JEO_SECOND_BRAIN_CONFIG=/path/to/second-brain-config.json \
   jeo-skill install rtk semble mex zvec graphify secondbrain cli-hub specity --global --yes --setup
 ```

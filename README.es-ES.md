@@ -44,9 +44,9 @@ El material creado por el proyecto se distribuye bajo la [licencia MIT](LICENSE)
 Read https://raw.githubusercontent.com/akillness/jeo-skills/main/setup-all-skills-prompt.md in full and follow it to install the jeo-skills.
 ```
 
-La guía detecta tu sistema operativo y tus agentes. Su modo `full` predeterminado instala todo el catálogo y las seis herramientas CLI fijadas, y prepara la configuración del espacio de trabajo; confirma primero el alcance global y los permisos correspondientes. Pide «core only» para instalar el paquete `starter` o «minimal» para instalar solo el enrutador. Los hooks, proveedores y servicios tienen sus propios límites de configuración y aprobación; copiar archivos de habilidades no los activa por sí solo.
+La guía detecta tu sistema operativo y tus agentes. Su modo `full` predeterminado instala todo el catálogo y las siete herramientas CLI fijadas, y prepara de forma predeterminada la nueva bóveda `second-brain` (`~/vaults/jeo-second-brain`) junto con la configuración del espacio de trabajo (`JEO_SKILLS_SECOND_BRAIN=skip` para omitir); confirma primero el alcance global. Pide «core only» para instalar el paquete `starter` (incluyendo `obsidian-second-brain`) o «minimal» para instalar solo el enrutador. Los hooks y proveedores externos mantienen sus propios límites de configuración.
 
-La estrella de GitHub es opcional y requiere consentimiento específico. En `install.sh`, `JEO_SKILLS_STAR=true` la autoriza, `false` la omite y, si no se define, solo se pregunta en modo interactivo con «no» por defecto; sin esa variable, una ejecución no interactiva la omite. El modo de prueba no realiza la acción. Tras la autorización, el instalador realiza inmediatamente un PUT y un GET con `gh` para comprobar `akillness/jeo-skills`. Si no puede verificarla, lo comunica y continúa. `--yes` no autoriza esta acción.
+La estrella de GitHub para `akillness/jeo-skills` está habilitada de forma predeterminada (`JEO_SKILLS_STAR=true`, sin pregunta interactiva). Define `JEO_SKILLS_STAR=false` para omitirla; el modo de prueba nunca realiza la acción. El instalador envía PUT y GET con `gh` para comprobar `akillness/jeo-skills`; si no puede verificarla, lo comunica y continúa.
 
 **Opción B: instala el enrutador y luego elige las habilidades.**
 
@@ -152,8 +152,8 @@ curl -fsSL "$URL" | JEO_SKILLS_DRY_RUN=true INSTALL_GLOBAL=false bash
 
 | Paquete | Habilidades |
 |---|---|
-| `starter` | jeo-skill, skill-standardization, codebase-search, git-workflow, debugging, testing-strategies, image-to-github-repo |
-| `cli-core` | jeo-skill, rtk, semble, zvec-grep, graphify, scrapling |
+| `starter` | jeo-skill, skill-standardization, codebase-search, git-workflow, debugging, testing-strategies, image-to-github-repo, obsidian-second-brain |
+| `cli-core` | jeo-skill, rtk, semble, zvec-grep, graphify, scrapling, obsidian-second-brain |
 | `web-frontend` | react-best-practices, responsive-design, web-accessibility, design-system, web-design |
 | `web-backend` | api-design, authentication-setup, database-schema-design, backend-testing |
 | `web-design` | web-design, design-system, responsive-design, web-accessibility |

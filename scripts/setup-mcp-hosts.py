@@ -129,13 +129,41 @@ def provision_context7(home: Path, dry_run: bool = False, force: bool = False) -
 
 
 def resolve_jeox_cmd(home: Path, project: Path | None) -> tuple[str, list[str]] | None:
-    installed_jeox = home / ".local/bin/jeox"
-    if installed_jeox.exists() and os.access(installed_jeox, os.X_OK):
-        return str(installed_jeox), ["mcp"]
-    repo_script = (project / "scripts/jeox.py") if project else (Path(__file__).resolve().parent / "jeox.py")
-    if repo_script.is_file():
-        py = sys.executable or resolve_bin("python3", home) or "python3"
-        return str(py), [str(repo_script.resolve()), "mcp"]
+    """Resolve jeo-code's jeo-mem MCP command; .jeo/db/jeo.db is managed exclusively by ../jeo-code."""
+    override = os.environ.get("JEO_CODE_ROOT")
+    candidates: list[Path] = []
+    if override is not None:
+        raw = override.strip()
+        if not raw or raw.lower() in {"none", "off", "skip"}:
+            return None
+        candidates.append(Path(raw).expanduser().resolve())
+    else:
+        if project is not None:
+            candidates.append((project.resolve().parent / "jeo-code").resolve())
+        candidates.append((Path(__file__).resolve().parents[2] / "jeo-code").resolve())
+        candidates.append((home / ".jeo/global/node_modules/jeo-code").resolve())
+
+    bun_bin = resolve_bin("bun", home)
+    if bun_bin:
+        for cand in candidates:
+            mem_cli = cand / "packages/jeo-mem/src/cli.ts"
+            if mem_cli.is_file():
+                return bun_bin, [str(mem_cli.resolve()), "mcp"]
+            jeo_entry = cand / "src/cli.ts"
+            if (cand / "src/commands/jeox.ts").is_file() and jeo_entry.is_file():
+                return bun_bin, [str(jeo_entry.resolve()), "jeox", "mcp"]
+
+    if override is None:
+        jeo_bin = resolve_bin("jeo", home)
+        if jeo_bin:
+            try:
+                pkg_root = Path(jeo_bin).resolve().parent.parent
+                if (pkg_root / "src/commands/jeox.ts").is_file():
+                    return jeo_bin, ["jeox", "mcp"]
+                if bun_bin and (pkg_root / "packages/jeo-mem/src/cli.ts").is_file():
+                    return bun_bin, [str((pkg_root / "packages/jeo-mem/src/cli.ts").resolve()), "mcp"]
+            except OSError:
+                pass
     return None
 
 
@@ -789,7 +817,7 @@ def verify_hosts(home: Path, project: Path | None, specs: dict[str, dict[str, An
 def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--home", default=str(Path.home()))
-    p.add_argument("--project", help="optional checkout path (for scripts/jeox.py resolution)")
+    p.add_argument("--project", help="optional checkout path (for ../jeo-code jeo-mem resolution)")
     p.add_argument("--provision-context7", action="store_true", help="install @upstash/context7-mcp locally (npm --ignore-scripts)")
     p.add_argument("--force-provision", action="store_true", help="reinstall @upstash/context7-mcp even if already installed")
     p.add_argument("--repair", action="store_true", help="repair broken ouroboros paths, bare binaries, and Gemini toolTimeout")
