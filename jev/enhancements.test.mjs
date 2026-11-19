@@ -1,7 +1,8 @@
 import test, { after } from 'node:test';
 import assert from 'node:assert/strict';
-import { spawnSync } from 'node:child_process';
+import { spawn, spawnSync } from 'node:child_process';
 import { copyFileSync, existsSync, mkdtempSync, mkdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
+import { createServer } from 'node:http';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -1029,4 +1030,128 @@ test('qev local backend defaults maxStateChars to 36000, honors JEV_QEV_MAX_STAT
   if (prevHome !== undefined) process.env.HOME = prevHome;
   if (prevProfile !== undefined) process.env.JEV_PROFILE = prevProfile;
   if (prevOverride !== undefined) process.env.JEV_QEV_MAX_STATE_CHARS = prevOverride;
+});
+
+test('driverTypesafe retries transient local gateway 503 with Retry-After and forwards deadline/agent/no-cache headers', async () => {
+  let attempts = 0;
+  let capturedHeaders = null;
+  const server = createServer((req, res) => {
+    const chunks = [];
+    req.on('data', (c) => chunks.push(c));
+    req.on('end', () => {
+      attempts += 1;
+      capturedHeaders = req.headers;
+      if (attempts === 1) {
+        res.writeHead(503, { 'Content-Type': 'application/json', 'Retry-After': '0' });
+        res.end(JSON.stringify({ error: { code: 503, message: 'Queue backpressure' } }));
+        return;
+      }
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({
+        model: 'qev-0.8b-text-Q8_0',
+        answers: { ok: { type: 'noul', noul: 0.95 } },
+        usage: { input_tokens: 10, output_tokens: 1 },
+      }));
+    });
+  });
+  await new Promise((r) => server.listen(0, '127.0.0.1', r));
+  const port = server.address().port;
+
+  const prevDeadline = process.env.JEV_DEADLINE_MS;
+  const prevAgent = process.env.JEV_AGENT;
+  const prevNoCache = process.env.JEV_NO_CACHE;
+  try {
+    process.env.JEV_DEADLINE_MS = '12000';
+    process.env.JEV_AGENT = 'jeo';
+    process.env.JEV_NO_CACHE = '1';
+    const { driverTypesafe } = await import(pathToFileURL(join(here, 'jev-harness.mjs')).href);
+    const backend = {
+      kind: 'local',
+      driver: 'qev',
+      endpoint: `http://127.0.0.1:${port}/v1/systemone`,
+      model: 'qev-0.8b-text-Q8_0',
+      choiceCap: 24,
+    };
+    const out = await driverTypesafe(
+      backend,
+      { task: 'retry check' },
+      { ok: { type: 'noul', instructions: 'Is this ok?' } },
+      60000,
+      { op: 'review', sessionId: 'sess-retry' },
+    );
+    assert.equal(attempts, 2);
+    assert.equal(out.model, 'qev-0.8b-text-Q8_0');
+    assert.equal(out.answers.ok.answer, 'yes');
+    assert.equal(capturedHeaders['x-jev-op'], 'review');
+    assert.equal(capturedHeaders['x-jev-session-id'], 'sess-retry');
+    assert.equal(capturedHeaders['x-jev-agent'], 'jeo');
+    assert.equal(capturedHeaders['x-jev-no-cache'], '1');
+    const sentDeadline = Number(capturedHeaders['x-jev-deadline-ms']);
+    assert.ok(Number.isFinite(sentDeadline) && sentDeadline <= 12000 && sentDeadline >= 500, `expected deadline <= 12000, got ${sentDeadline}`);
+  } finally {
+    if (prevDeadline === undefined) delete process.env.JEV_DEADLINE_MS; else process.env.JEV_DEADLINE_MS = prevDeadline;
+    if (prevAgent === undefined) delete process.env.JEV_AGENT; else process.env.JEV_AGENT = prevAgent;
+    if (prevNoCache === undefined) delete process.env.JEV_NO_CACHE; else process.env.JEV_NO_CACHE = prevNoCache;
+    await new Promise((r) => server.close(r));
+  }
+});
+
+test('pruneContext preserves exact block order across concurrent multi-batch execution', async () => {
+  const root = mkdtempSync(join(tmpdir(), 'jev-prune-order-'));
+  fixtures.push(root);
+  const server = createServer((req, res) => {
+    const chunks = [];
+    req.on('data', (c) => chunks.push(c));
+    req.on('end', () => {
+      const body = JSON.parse(Buffer.concat(chunks).toString('utf8') || '{}');
+      const blocks = body.state?.blocks || [];
+      const answers = {};
+      blocks.forEach((b, i) => {
+        const keep = b.id.endsWith('0') || b.id.endsWith('2');
+        answers[`essential::${i}`] = { type: 'noul', noul: keep ? 0.95 : 0.05 };
+      });
+      // Delay first batch slightly more than second batch to prove out-of-order completion still preserves order
+      const delay = blocks[0]?.id === 'b-0' ? 40 : 5;
+      setTimeout(() => {
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ model: 'qev-0.8b-text-Q8_0', answers, usage: { input_tokens: 20, output_tokens: 1 } }));
+      }, delay);
+    });
+  });
+  await new Promise((r) => server.listen(0, '127.0.0.1', r));
+  const port = server.address().port;
+
+  try {
+    write(join(root, '.agents/jev/profiles/porder.env'), 'JEV_ENABLED=true\nJEV_MODE=local\n');
+    write(
+      join(root, '.agents/jev/profiles/porder.local.env'),
+      `JEV_LOCAL_ENGINE=qev\nJEV_LOCAL_ENDPOINT=http://127.0.0.1:${port}/v1/systemone\nJEV_QEV_MAX_STATE_CHARS=1200\n`,
+    );
+    const blocks = [0, 1, 2, 3].map((i) => ({ id: `b-${i}`, text: `payload-${i} ` + 'x'.repeat(420) }));
+    const script = `
+      import { pruneContext } from ${JSON.stringify(pathToFileURL(join(here, 'jev-harness.mjs')).href)};
+      const out = await pruneContext(${JSON.stringify(blocks)}, { override: 'local' });
+      console.log(JSON.stringify(out));
+    `;
+    const run = await new Promise((resolve) => {
+      const child = spawn(process.execPath, ['--input-type=module', '-e', script], {
+        env: { ...process.env, HOME: root, JEV_PROFILE: 'porder' },
+      });
+      let stdout = '';
+      let stderr = '';
+      child.stdout.on('data', (d) => { stdout += d; });
+      child.stderr.on('data', (d) => { stderr += d; });
+      child.on('close', (status) => resolve({ status, stdout, stderr }));
+    });
+    assert.equal(run.status, 0, run.stderr);
+    const verdicts = JSON.parse(run.stdout);
+    assert.deepEqual(verdicts.map((v) => [v.id, v.verdict]), [
+      ['b-0', 'keep'],
+      ['b-1', 'drop'],
+      ['b-2', 'keep'],
+      ['b-3', 'drop'],
+    ]);
+  } finally {
+    await new Promise((r) => server.close(r));
+  }
 });

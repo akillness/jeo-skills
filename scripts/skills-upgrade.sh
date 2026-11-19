@@ -81,11 +81,15 @@ if [[ -f "$REPO_DIR/.agent-skills/skills.json" ]] && [[ -f "$HOME/.agents/jev/sk
     echo "would refresh: $HOME/.agents/jev/skills.json"
   else
     cp "$REPO_DIR/.agent-skills/skills.json" "$HOME/.agents/jev/skills.json"
-    for JEV_ASSET in jev-harness.mjs jev-plugin.mjs jev-gateway.mjs com.jeo-skills.qev-server.plist com.jeo-skills.qev-gateway.plist; do
+    for JEV_ASSET in jev-harness.mjs jev-plugin.mjs jev-gateway.mjs jev-setup.sh jev_local_server.py jev-control-plane.rule.md README.md com.jeo-skills.qev-server.plist com.jeo-skills.qev-gateway.plist; do
       if [[ -f "$REPO_DIR/jev/$JEV_ASSET" ]] && [[ ! -L "$HOME/.agents/jev/$JEV_ASSET" ]]; then
         cp -f "$REPO_DIR/jev/$JEV_ASSET" "$HOME/.agents/jev/$JEV_ASSET"
       fi
     done
+    if [[ -d "$REPO_DIR/jev/plugins" ]] && [[ ! -L "$HOME/.agents/jev/plugins" ]]; then
+      mkdir -p "$HOME/.agents/jev/plugins"
+      cp -Rf "$REPO_DIR/jev/plugins/." "$HOME/.agents/jev/plugins/"
+    fi
   fi
 fi
 

@@ -64,11 +64,15 @@ export function invokeControllerHook({ agent, profile, input, inputStream, contr
   const args = [executable, 'hook', '--agent', agent];
   if (profile) args.push('--profile', profile);
   return new Promise((resolveResult) => {
+    const timeout = normalizeControllerTimeout(timeoutMs);
+    const childEnv = { ...process.env };
+    if (!childEnv.JEV_DEADLINE_MS) {
+      childEnv.JEV_DEADLINE_MS = String(Math.max(3000, timeout - 3000));
+    }
     const child = spawn(process.execPath, args, {
-      env: { ...process.env },
+      env: childEnv,
       stdio: ['pipe', 'pipe', 'pipe'],
     });
-    const timeout = normalizeControllerTimeout(timeoutMs);
     let stdout = '';
     let stderr = '';
     let stdinError;
@@ -295,6 +299,8 @@ export function registerBeforeAgentStart(api, { agent, profile, envelope = 'syst
         chars += text.length;
       }
       if (!eligible.length) return {};
+      const contextKey = JSON.stringify([activeMemoryMode, latestPrompt, eligible.map(b => [b.id, b.text])]);
+      if (contextKey === lastContextKey && lastContextResult) return lastContextResult;
       const currentGeneration = generation;
       const result = await invokeControllerHook({
         agent, profile, controllerPath, timeoutMs,
@@ -303,7 +309,10 @@ export function registerBeforeAgentStart(api, { agent, profile, envelope = 'syst
       if (generation !== currentGeneration || result?.ok !== true || result?.enabled !== true || result?.runtime?.mode !== 'assist' || !Array.isArray(result.runtime.dropContextIds)) return {};
       const dropIds = new Set(result.runtime.dropContextIds.filter(id => typeof id === 'string'));
       const dropIndices = new Set(eligible.filter(({ id }) => dropIds.has(id)).map(({ index }) => index));
-      return dropIndices.size ? { messages: event.messages.filter((_message, index) => !dropIndices.has(index)) } : {};
+      const out = dropIndices.size ? { messages: event.messages.filter((_message, index) => !dropIndices.has(index)) } : {};
+      lastContextKey = contextKey;
+      lastContextResult = out;
+      return out;
     }
 
     // Extended memory management mode: supports Jev skill messages, tool output

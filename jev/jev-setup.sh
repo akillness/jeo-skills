@@ -390,6 +390,16 @@ if [ "$ACTION" = stop ]; then
       if stop_managed_server "$pid_file"; then stopped=$((stopped + 1)); fi
     done
   fi
+  if [ "$(uname -s)" = Darwin ]; then
+    real_home="$(eval echo ~"$(id -un)")"
+    if [ "$HOME" = "$real_home" ]; then
+      for plist in "$HOME/Library/LaunchAgents/com.jeo-skills.qev-gateway.plist" "$HOME/Library/LaunchAgents/com.jeo-skills.qev-server.plist"; do
+        if [ -f "$plist" ]; then
+          launchctl bootout "gui/$(id -u)" "$plist" >/dev/null 2>&1 || true
+        fi
+      done
+    fi
+  fi
   if [ "$stopped" -gt 0 ]; then
     info "Stopped $stopped Jev local server(s)."
   else
@@ -687,7 +697,7 @@ if [ "$STANDALONE_SETUP" = true ] && [ ! -f "$SCRIPT_DIR/jev-plugin.mjs" ] && [ 
   PUBLISH_FILES+=(jev-plugin.mjs)
 fi
 if [ "$STANDALONE_SETUP" = true ] && [ "$CONFIG_ONLY" != true ]; then
-  for opt_file in jev-gateway.mjs com.jeo-skills.qev-gateway.plist; do
+  for opt_file in jev-gateway.mjs com.jeo-skills.qev-server.plist com.jeo-skills.qev-gateway.plist; do
     if [ ! -f "$SCRIPT_DIR/$opt_file" ] && curl -fsSL "$RAW_BASE/$opt_file" -o "$SETUP_STAGE/files/$opt_file" 2>/dev/null; then
       PUBLISH_FILES+=("$opt_file")
     fi

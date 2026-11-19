@@ -1260,13 +1260,14 @@ When provisioning or refreshing Jev directly from a `jeo-skills` checkout into `
 
 ```bash
 mkdir -p ~/.agents/jev/plugins
-cp -f jev/jev-harness.mjs jev/jev-plugin.mjs jev/jev-gateway.mjs jev/jev-setup.sh jev/com.jeo-skills.qev-server.plist jev/com.jeo-skills.qev-gateway.plist ~/.agents/jev/
+cp -f jev/jev-harness.mjs jev/jev-plugin.mjs jev/jev-gateway.mjs jev/jev-setup.sh jev/jev_local_server.py jev/jev-control-plane.rule.md jev/README.md jev/com.jeo-skills.qev-server.plist jev/com.jeo-skills.qev-gateway.plist ~/.agents/jev/
 cp -Rf jev/plugins/. ~/.agents/jev/plugins/
 cp -f .agent-skills/skills.json ~/.agents/jev/skills.json
-# Or, on a fresh setup, initialize a profile first (e.g. local qev-0.8b with 32K ctx daemon):
+# Or, on a fresh setup, initialize a profile first (e.g. local qev-0.8b with 32K ctx daemon + jev-gateway):
 # bash jev/jev-setup.sh --profile "${JEV_PROFILE:-jeo}" --agent "${JEV_AGENT:-jeo}" --mode local --install-daemon
 node ~/.agents/jev/jev-harness.mjs --profile "${JEV_PROFILE:-agy}" status
-node ~/.agents/jev/jev-plugin.mjs doctor --agent "${JEV_AGENT:-codex}" --profile "${JEV_PROFILE:-agy}"
+node ~/.agents/jev/jev-plugin.mjs status --agent "${JEV_AGENT:-codex}" --profile "${JEV_PROFILE:-agy}"
+curl -fsS http://127.0.0.1:8017/jev/queue-metrics
 ```
 
 To bind persistent hooks across supported hosts (example: Codex, Claude, Agy, Cursor, Jeo):

@@ -1943,3 +1943,43 @@ test('jeo-preprompt with a blank prompt routes nothing', () => {
   assert.equal(result.status, 0, `${result.stdout}\n${result.stderr}`);
   assert.equal(result.stdout.trim(), '');
 });
+
+test('jev-controller forwards JEV_DEADLINE_MS and memoizes unchanged context events in jev-only mode', async () => {
+  const dir = mkdtempSync(join(tmpdir(), 'jev-ctrl-memo-'));
+  const stub = join(dir, 'stub-plugin.mjs');
+  const logFile = join(dir, 'invocations.jsonl');
+  writeFileSync(stub, [
+    'import { appendFileSync } from "node:fs";',
+    'let raw = "";',
+    'for await (const chunk of process.stdin) raw += chunk;',
+    'const ev = raw.trim() ? JSON.parse(raw) : {};',
+    `appendFileSync(${JSON.stringify(logFile)}, JSON.stringify({ type: ev.type || "prompt", deadline: process.env.JEV_DEADLINE_MS || null }) + "\\n");`,
+    'if (ev.type === "Context") {',
+    '  console.log(JSON.stringify({ ok: true, enabled: true, runtime: { mode: "assist", memoryMode: "jev-only", dropContextIds: ["jev-context-0"] } }));',
+    '} else {',
+    '  console.log(JSON.stringify({ ok: true, enabled: true, context: "ok", runtime: { mode: "assist", memoryMode: "jev-only", pruneContext: true, skillContext: "s" } }));',
+    '}',
+  ].join('\n'));
+  try {
+    const { registerBeforeAgentStart } = await import(pathToFileURL(join(here, 'plugins/shared/jev-controller.mjs')).href);
+    const handlers = {};
+    const api = { on: (name, fn) => { handlers[name] = fn; } };
+    registerBeforeAgentStart(api, { agent: 'jeopi', profile: 'jeopi', controllerPath: stub, timeoutMs: 15000 });
+    await handlers.before_agent_start({ prompt: 'optimize gateway' });
+    const messages = [
+      { role: 'custom', customType: 'jev-skill-context', content: 'old skill body' },
+      { role: 'custom', customType: 'jev-skill-context', content: 'newest skill body' },
+    ];
+    const first = await handlers.context({ messages });
+    const second = await handlers.context({ messages });
+    assert.equal(first.messages.length, 1);
+    assert.equal(second.messages.length, 1);
+    const lines = readFileSync(logFile, 'utf8').trim().split('\n').map(l => JSON.parse(l));
+    assert.equal(lines.length, 2, `expected 1 prompt + 1 memoized context invocation, got ${lines.length}`);
+    assert.equal(lines[0].deadline, '12000');
+    assert.equal(lines[1].type, 'Context');
+    assert.equal(lines[1].deadline, '12000');
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});

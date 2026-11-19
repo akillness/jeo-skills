@@ -405,7 +405,7 @@ function postJson(url, body, headers, timeoutMs) {
 }
 
 // ── Drivers (each returns { model, answers, usage? } or throws) ──────────────
-async function driverTypesafe(backend, state, questions, timeoutMs, meta = {}) {
+export async function driverTypesafe(backend, state, questions, timeoutMs, meta = {}) {
   if (backend.kind === 'api' && !backend.apiKey) throw new Error('Missing JEV_API_KEY');
   if (!backend.endpoint) throw new Error('Missing JEV_SYSTEMONE_ENDPOINT');
   if (!backend.model) throw new Error('Missing model id');
@@ -413,11 +413,21 @@ async function driverTypesafe(backend, state, questions, timeoutMs, meta = {}) {
     if (q.type === 'choice' && optionsOf(q).length > backend.choiceCap) throw new Error(`Choice '${id}' has ${optionsOf(q).length} options; ${backend.kind} cap is ${backend.choiceCap}`);
   }
   const headers = backend.apiKey ? { Authorization: `Bearer ${backend.apiKey}` } : {};
-  if (backend.kind === 'local' || backend.driver === 'qev' || backend.driver === 'jevos') {
+  const isLocalGateway = backend.kind === 'local' || backend.driver === 'qev' || backend.driver === 'jevos';
+  let callTimeoutMs = timeoutMs;
+  if (isLocalGateway) {
+    const envDeadline = Number(process.env.JEV_DEADLINE_MS);
+    const effectiveTimeoutMs = (Number.isFinite(envDeadline) && envDeadline >= 1000)
+      ? (Number.isFinite(timeoutMs) ? Math.min(timeoutMs, envDeadline) : envDeadline)
+      : timeoutMs;
+    callTimeoutMs = effectiveTimeoutMs;
     if (meta.op) headers['X-Jev-Op'] = String(meta.op);
     const sess = meta.sessionId || process.env.JEV_SESSION_ID || PROFILE || process.env.JEV_AGENT || 'default';
     headers['X-Jev-Session-Id'] = String(sess).slice(0, 128);
-    if (Number.isFinite(timeoutMs) && timeoutMs > 0) headers['X-Jev-Deadline-Ms'] = String(Math.round(timeoutMs));
+    const agentHeader = process.env.JEV_AGENT || PROFILE || '';
+    if (agentHeader) headers['X-Jev-Agent'] = String(agentHeader);
+    if (meta?.noCache || process.env.JEV_NO_CACHE === '1') headers['X-Jev-No-Cache'] = '1';
+    if (Number.isFinite(effectiveTimeoutMs) && effectiveTimeoutMs > 0) headers['X-Jev-Deadline-Ms'] = String(Math.round(effectiveTimeoutMs));
   }
   const wire = {};
   for (const [id, q] of Object.entries(questions)) {
@@ -425,7 +435,49 @@ async function driverTypesafe(backend, state, questions, timeoutMs, meta = {}) {
       ? { type: 'choice', instructions: q.instructions, criteria: q.criteria }
       : q.criteria ? { type: 'noul', instructions: q.instructions, criteria: q.criteria } : { type: 'noul', instructions: q.instructions };
   }
-  const { response, payload, text } = await postJson(backend.endpoint, { state, model: backend.model, questions: wire }, headers, timeoutMs);
+
+  const startTime = Date.now();
+  const maxRetries = isLocalGateway ? 2 : 0;
+  let response = null;
+  let payload = null;
+  let text = '';
+
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    const attemptTimeout = attempt === 0 || !Number.isFinite(callTimeoutMs)
+      ? callTimeoutMs
+      : Math.max(1, callTimeoutMs - (Date.now() - startTime));
+    if (isLocalGateway && Number.isFinite(attemptTimeout) && attemptTimeout > 0) {
+      headers['X-Jev-Deadline-Ms'] = String(Math.round(attemptTimeout));
+    }
+    const result = await postJson(backend.endpoint, { state, model: backend.model, questions: wire }, headers, attemptTimeout);
+    response = result.response;
+    payload = result.payload;
+    text = result.text;
+
+    if (response.status === 503 && isLocalGateway && attempt < maxRetries) {
+      const elapsed = Date.now() - startTime;
+      const remainingBudget = Number.isFinite(callTimeoutMs) ? (callTimeoutMs - elapsed) : Infinity;
+      if (remainingBudget > 500) {
+        let delayMs;
+        const retryAfter = typeof response.headers?.get === 'function'
+          ? response.headers.get('retry-after')
+          : (response.headers?.['retry-after'] || response.headers?.['Retry-After']);
+        const parsedSec = (retryAfter !== null && retryAfter !== undefined && String(retryAfter).trim() !== '')
+          ? Number(String(retryAfter).trim())
+          : NaN;
+        if (Number.isFinite(parsedSec) && parsedSec >= 0) {
+          delayMs = Math.max(100, Math.min(1000, parsedSec * 1000));
+        } else {
+          delayMs = attempt === 0 ? 150 : 350;
+        }
+        delayMs = Math.min(delayMs + Math.random() * 100, Math.max(50, remainingBudget - 500));
+        await new Promise(r => setTimeout(r, delayMs));
+        continue;
+      }
+    }
+    break;
+  }
+
   if (!response.ok) throw httpError(response, text);
   // The served model id comes only from the response; a missing id leaves the
   // served identity unknown so attestation can never match it.
@@ -2151,14 +2203,25 @@ export async function routeSkills(task, { mock = false, topK = 3, override = nul
   const fastRoute = fast !== null && fast !== undefined
     ? Boolean(fast)
     : /^(?:true|1|yes)$/i.test(cfg(null, 'JEV_FAST_ROUTE') || '');
-  const catalog = await loadCatalog();
+  const openspaceEnabled = useOpenspacePrior && !(fastRoute && !openspaceHints);
+  const hasSuppliedHints = openspaceHints !== null && openspaceHints !== undefined;
+  let catalog;
+  let prior;
+  if (openspaceEnabled && !hasSuppliedHints) {
+    [catalog, prior] = await Promise.all([
+      loadCatalog(),
+      fetchOpenspacePrior(task, { openspaceHints, useOpenspacePrior: openspaceEnabled }),
+    ]);
+  } else {
+    catalog = await loadCatalog();
+    prior = await fetchOpenspacePrior(task, { openspaceHints, useOpenspacePrior: openspaceEnabled });
+  }
   const meta = CATALOG_META.get(catalog);
   const byName = meta?.byName || Object.fromEntries(catalog.skills.map(s => [s.name, s]));
   const relationshipsByName = meta?.relationshipsByName || buildSkillRelationshipsMap(catalog);
   const auxByName = meta?.auxByName || Object.create(null);
   const fullTokens = meta ? meta.fullTokens : catalog.skills.reduce((n, s) => n + tokenEstimate(`${s.name} ${s.description}`), 0);
   const base = { task, mode: mock ? 'mock' : 'jev', fullCatalogSkills: catalog.skills.length, estimatedFullTokens: fullTokens };
-  const prior = await fetchOpenspacePrior(task, { openspaceHints, useOpenspacePrior: useOpenspacePrior && !(fastRoute && !openspaceHints) });
   const priorSummary = { used: prior.items.length > 0, weight: OPENSPACE_PRIOR_WEIGHT, matches: prior.items.map(p => ({ name: p.name, score: round(p.score) })) };
   let outcome = null;
   let selection = null;
@@ -2475,18 +2538,27 @@ export async function pruneContext(blocks, { mock = false, override = null, mode
       const { batches, oversized } = planPruneBatches(blocks, backend.maxStateChars);
       const verdicts = new Array(blocks.length).fill(null);
       let failed = null;
-      for (const batch of batches) {
-        const questions = {};
-        // Keys index the `blocks` array of THIS request, so a backend reading
-        // `blocks[i]` and the harness agree; the global position is mapped back here.
-        batch.forEach((item, i) => { questions[`essential::${i}`] = noul(`Does \`blocks[${i}].text\` contain facts essential for future steps?`); });
-        const envelope = await requestJev({ blocks: batch.map(b => ({ id: b.id, text: b.text })) }, questions, { op: 'prune-context', kinds: [kind], model });
-        if (envelope.error || !envelope.answers) { failed = `${kind}: ${envelope.error}`; break; }
-        batch.forEach((item, i) => {
-          const a = envelope.answers[`essential::${i}`];
-          verdicts[item.index] = { id: item.id, verdict: !(a.answer === 'no' && a.confidence >= THRESHOLD) ? 'keep' : 'drop' };
-        });
-      }
+      const batchConcurrency = batches.length > 1 ? 2 : 1;
+      let nextBatchIdx = 0;
+      const runBatchWorker = async () => {
+        while (!failed && nextBatchIdx < batches.length) {
+          const batch = batches[nextBatchIdx++];
+          const questions = {};
+          // Keys index the `blocks` array of THIS request, so a backend reading
+          // `blocks[i]` and the harness agree; the global position is mapped back here.
+          batch.forEach((item, i) => { questions[`essential::${i}`] = noul(`Does \`blocks[${i}].text\` contain facts essential for future steps?`); });
+          const envelope = await requestJev({ blocks: batch.map(b => ({ id: b.id, text: b.text })) }, questions, { op: 'prune-context', kinds: [kind], model });
+          if (envelope.error || !envelope.answers) {
+            if (!failed) failed = `${kind}: ${envelope.error}`;
+            return;
+          }
+          batch.forEach((item, i) => {
+            const a = envelope.answers[`essential::${i}`];
+            verdicts[item.index] = { id: item.id, verdict: !(a.answer === 'no' && a.confidence >= THRESHOLD) ? 'keep' : 'drop' };
+          });
+        }
+      };
+      await Promise.all(Array.from({ length: Math.min(batchConcurrency, batches.length) }, () => runBatchWorker()));
       if (failed) { errors.push(failed); continue; }
       for (const index of oversized) verdicts[index] = { id: blocks[index].id, verdict: 'keep', reason: `block exceeds ${kind} state limit (${backend.maxStateChars} chars); preserved unjudged` };
       baseVerdicts = verdicts;

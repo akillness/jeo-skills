@@ -195,7 +195,9 @@ With `--profile <id>`, the harness reads only that profile's base file and selec
 | `JEV_LOCAL_ENDPOINT` / `JEV_OLLAMA_ENDPOINT` / `JEV_LMSTUDIO_ENDPOINT` | Profile-specific local backend URLs. |
 | `JEV_LOCAL_MODEL` / `JEV_LOCAL_MODEL_DIR` | Generative model ID or full-precision model directory for local adapters. |
 | `JEV_QEV_CTX` / `JEV_QEV_MAX_STATE_CHARS` | `llama-server` context window for `qev` (`32768` default) and `qev` serialized-state limit (`36000` default, minimum `1000`). |
-| `JEV_QEV_GATEWAY` / `JEV_QEV_SLOTS` / `JEV_QEV_BACKEND_PORT` | Enable `jev-gateway` queue proxy (`on` default; `off` binds `llama-server` directly), parallel `llama-server` slots (`1` default; `>1` enables `--kv-unified`), and internal `llama-server` port (`18017` default for `8017`). |
+| `JEV_QEV_GATEWAY` / `JEV_QEV_SLOTS` / `JEV_QEV_BACKEND_PORT` | Enable `jev-gateway` queue proxy (`on` default; `off` binds `llama-server` directly), parallel `llama-server` slots (`1` default — empirically ~2× faster than `-np 2` on Apple Silicon hybrid `qev-0.8b` because `-np 1 --no-kv-unified` avoids recurrent-state branching overhead while `jev-gateway` handles fair multi-session queuing), and internal `llama-server` port (`18017` default for `8017`). |
+| `JEV_QEV_UPSTREAM` / `JEV_QEV_MAX_QUEUE` / `JEV_QEV_AGING_MS` / `JEV_QEV_P0_RESERVE` | `jev-gateway` upstream URL, hard queue cap (`64` default, reserving headroom for P0), lane aging interval (`2000` ms default), and optional P0 reserved slots when `concurrency > 1`. |
+| `JEV_QEV_CACHE_ENTRIES` / `JEV_QEV_CACHE_BYTES` / `JEV_QEV_CACHE_TTL_MS` / `JEV_DEADLINE_MS` | `jev-gateway` LRU response cache caps (`512` entries, `32 MiB`, `300000` ms TTL) and client deadline ceiling (`JEV_DEADLINE_MS`, set automatically by `jev-controller.mjs` below its child kill timer). |
 | `JEV_PROMPT_CACHE_TTL_MS` / `JEV_PRETOOL_CACHE_TTL_MS` | Hook deduplication TTL caches in `~/.agents/jev/cache/` (`600000` ms prompt routing / `jeo-preprompt`, `60000` ms `advisory` `PreToolUse`, `0` for `enforce`). |
 | `JEV_UNTRUSTED_MODERATION` / `JEV_MODEL_ROUTING` | Moderation prefiltering (`on` skips short/benign outputs, `strict` inspects all, `off` disables) and optional advisory model routing (`off` default, `auto` calls `routeModel`). |
 | `JEV_CATALOG_PATH` | Explicit read-only `skills.json` location. Otherwise `route-skills` reads the working checkout's `.agent-skills/skills.json`, then the setup-installed snapshot `~/.agents/jev/skills.json` (excerpts from `~/.agents/skills/<name>/SKILL.md`), then a legacy `~/.agents/jeo-skills-repo` clone. |
@@ -269,18 +271,29 @@ Readiness probes do not install or session-load native hooks and do not establis
 jev/                                  # source in this repository
 ├── jev-harness.mjs                    # Node ESM CLI, built-in modules only (route/prune/review operations)
 ├── jev-plugin.mjs                     # Node ESM native plugin and configuration CLI
+├── jev-gateway.mjs                    # localhost priority-queue, DRR fairness, single-flight & LRU cache proxy
 ├── jev-setup.sh                       # canonical optional installer
 ├── jev_local_server.py                # full-precision Python backend
 ├── jev-control-plane.rule.md          # host integration instructions
+├── com.jeo-skills.qev-server.plist    # macOS LaunchAgent template for local llama-server (127.0.0.1:18017)
+├── com.jeo-skills.qev-gateway.plist   # macOS LaunchAgent template for jev-gateway (127.0.0.1:8017)
+├── plugins/                           # host-native controller bundles (shared/jev-controller.mjs)
 ├── README.md
 └── assets/                           # repository illustrations
 
 ~/.agents/jev/                        # installed runtime files + README
 ├── jev-harness.mjs
 ├── jev-plugin.mjs
+├── jev-gateway.mjs
 ├── jev-setup.sh
 ├── jev_local_server.py
 ├── jev-control-plane.rule.md
+├── com.jeo-skills.qev-server.plist
+├── com.jeo-skills.qev-gateway.plist
+├── plugins/                          # synced native host controllers
+├── run/                              # managed daemon PID files (non-launchd starts)
+├── cache/                            # hook TTL deduplication cache
+├── sessions/                         # per-session task context cache
 ├── README.md
 ├── skills.json                       # catalog snapshot for route-skills outside a checkout
 ├── .env                              # intentional legacy private configuration

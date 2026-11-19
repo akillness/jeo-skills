@@ -1428,22 +1428,37 @@ function fallbackSessionTaskPath(event, profile, agent) {
   return join(homes().jev, 'sessions', `${key}.json`);
 }
 
+function shouldRunDirGc(dir, intervalMs = 300_000) {
+  const stampName = `.gc-${basename(dir)}.stamp`;
+  const stampPath = join(dirname(dir), stampName);
+  try {
+    const info = statSync(stampPath);
+    if (Date.now() - info.mtimeMs < intervalMs) return false;
+  } catch { /* Missing stamp triggers GC. */ }
+  try {
+    writeFileSync(stampPath, String(Date.now()), { mode: 0o600 });
+  } catch { /* Best-effort GC stamp. */ }
+  return true;
+}
+
 function saveSessionTask(path, task) {
   ensureParent(path);
   ensureRegular(path);
   const sessionDir = dirname(path);
   const now = Date.now();
-  const expiryCutoff = now - 86_400_000;
-  let checked = 0;
-  // Only our own hashed, regular cache files are eligible for expiry cleanup.
-  for (const entry of readdirSync(sessionDir, { withFileTypes: true })) {
-    if (!entry.isFile() || !/^(?:cache-)?[a-f0-9]{64}\.json$/.test(entry.name)) continue;
-    if (checked++ >= 512) break;
-    const candidate = join(sessionDir, entry.name);
-    try {
-      const info = lstatSync(candidate);
-      if (info.isFile() && info.mtimeMs < expiryCutoff) unlinkSync(candidate);
-    } catch { /* Ignore files removed concurrently. */ }
+  if (shouldRunDirGc(sessionDir)) {
+    const expiryCutoff = now - 86_400_000;
+    let checked = 0;
+    // Only our own hashed, regular cache files are eligible for expiry cleanup.
+    for (const entry of readdirSync(sessionDir, { withFileTypes: true })) {
+      if (!entry.isFile() || !/^(?:cache-)?[a-f0-9]{64}\.json$/.test(entry.name)) continue;
+      if (checked++ >= 512) break;
+      const candidate = join(sessionDir, entry.name);
+      try {
+        const info = lstatSync(candidate);
+        if (info.isFile() && info.mtimeMs < expiryCutoff) unlinkSync(candidate);
+      } catch { /* Ignore files removed concurrently. */ }
+    }
   }
   if (task.length > 100_000) {
     if (existsSync(path)) unlinkSync(path);
@@ -1486,16 +1501,18 @@ function writeTtlCache(path, payload) {
     ensureParent(path);
     ensureRegular(path);
     const cacheDir = dirname(path);
-    const expiryCutoff = Date.now() - 3_600_000;
-    let checked = 0;
-    for (const entry of readdirSync(cacheDir, { withFileTypes: true })) {
-      if (!entry.isFile() || !/^cache-[a-f0-9]{64}\.json$/.test(entry.name)) continue;
-      if (checked++ >= 256) break;
-      const candidate = join(cacheDir, entry.name);
-      try {
-        const info = lstatSync(candidate);
-        if (info.isFile() && info.mtimeMs < expiryCutoff) unlinkSync(candidate);
-      } catch { /* Ignore concurrent removals. */ }
+    if (shouldRunDirGc(cacheDir)) {
+      const expiryCutoff = Date.now() - 3_600_000;
+      let checked = 0;
+      for (const entry of readdirSync(cacheDir, { withFileTypes: true })) {
+        if (!entry.isFile() || !/^cache-[a-f0-9]{64}\.json$/.test(entry.name)) continue;
+        if (checked++ >= 256) break;
+        const candidate = join(cacheDir, entry.name);
+        try {
+          const info = lstatSync(candidate);
+          if (info.isFile() && info.mtimeMs < expiryCutoff) unlinkSync(candidate);
+        } catch { /* Ignore concurrent removals. */ }
+      }
     }
     atomicWrite(path, JSON.stringify({ time: Date.now(), payload }));
   } catch { /* Cache writes are best-effort. */ }
@@ -1603,6 +1620,7 @@ async function evaluatePreToolUse(ctx, event) {
     return cachedDecision.response;
   }
   process.env.JEV_PROFILE = ctx.profile;
+  process.env.JEV_SESSION_ID = String(pretoolSessionScope || ctx.profile || ctx.agent || 'default').slice(0, 128);
   const harness = await import('./jev-harness.mjs');
   if (ctx.state.values.JEV_PRETOOL_OP === 'gate-tool' && typeof harness.gateTool === 'function') {
     const gated = await harness.gateTool({ task, tool: event.tool_name, args: event.tool_input });
@@ -1651,10 +1669,11 @@ async function evaluatePreToolUse(ctx, event) {
   return response;
 }
 
-async function hook(flags, suppliedEvent) {
+async function hook(flags, suppliedEvent, options = {}) {
   const hookStart = Date.now();
   const explicitEnvCatalog = process.env.JEV_CATALOG_PATH;
-  let activation = resolveHookContext(flags, { eventCwd: suppliedEvent?.cwd || null });
+  const initialCwd = suppliedEvent?.cwd || null;
+  let activation = resolveHookContext(flags, { eventCwd: initialCwd });
   if (activation.projectDisabled) {
     recordWorkflowEvent('jev-skip', {
       agent: activation.agent,
@@ -1676,7 +1695,7 @@ async function hook(flags, suppliedEvent) {
     const input = await readStdin();
     try { event = input.trim() ? JSON.parse(input) : {}; } catch { throw new Error('hook input must be JSON'); }
   }
-  if (event?.cwd) {
+  if (event?.cwd && event.cwd !== initialCwd) {
     activation = resolveHookContext(flags, { eventCwd: event.cwd });
     if (activation.projectDisabled) {
       recordWorkflowEvent('jev-skip', {
@@ -1694,7 +1713,7 @@ async function hook(flags, suppliedEvent) {
       return common('hook', activation, false, false);
     }
   }
-  const ctx = { ...activation, state: readState(activation.profile) };
+  const ctx = activation;
   const configuredMode = runtimeMode(ctx);
   // Cursor drops `additional_context` longer than 10,000 characters (read from the cursor-agent 2026.11.11 bundle), and
   // a skill body is routinely larger, so assist cannot be honored there: treat it as advisory so that no skill file is
@@ -1812,7 +1831,7 @@ async function hook(flags, suppliedEvent) {
         ? event.lastUserInput
         : '';
 
-  if (revMode !== 'off' && prompt) {
+  if (!options.skipSaveTask && revMode !== 'off' && prompt) {
     const exactPath = sessionTaskPath(event, ctx.profile);
     if (exactPath) saveSessionTask(exactPath, prompt);
     const fallbackPath = fallbackSessionTaskPath(event, ctx.profile, ctx.agent);
@@ -1864,14 +1883,15 @@ async function hook(flags, suppliedEvent) {
     process.env.JEV_PROFILE = ctx.profile;
     if (!explicitEnvCatalog) process.env.JEV_CATALOG_PATH = preferredCatalog;
     const harness = await import('./jev-harness.mjs');
-    const preloadedCatalog = typeof harness.getCachedCatalogMeta === 'function'
-      ? await harness.getCachedCatalogMeta(preferredCatalog).catch(() => null)
-      : null;
-    const routed = await harness.routeSkills(prompt || 'Review the current task', { topK: 3 });
-    let modelHint = null;
-    if (ctx.state.values.JEV_MODEL_ROUTING === 'auto' && prompt && typeof harness.routeModel === 'function') {
-      try { modelHint = await harness.routeModel(prompt); } catch {}
-    }
+    const [preloadedCatalog, routed, modelHint] = await Promise.all([
+      typeof harness.getCachedCatalogMeta === 'function'
+        ? harness.getCachedCatalogMeta(preferredCatalog).catch(() => null)
+        : null,
+      harness.routeSkills(prompt || 'Review the current task', { topK: 3 }),
+      ctx.state.values.JEV_MODEL_ROUTING === 'auto' && prompt && typeof harness.routeModel === 'function'
+        ? harness.routeModel(prompt).catch(() => null)
+        : null,
+    ]);
     const hostInvokedSkills = extractHostInvokedSkills(prompt);
     let selected = { context: '', injected: [] };
     let routedNames = [];
@@ -2268,7 +2288,8 @@ async function codexHook(flags) {
         const fallbackPath = fallbackSessionTaskPath(event, ctx.profile, ctx.agent);
         if (fallbackPath) saveSessionTask(fallbackPath, promptText);
       }
-      const result = await hook(flags, { ...event, ...(promptText !== null ? { prompt: promptText } : {}) });
+      const savedInCodexHook = mode !== 'off' && typeof promptText === 'string' && promptText.length > 0;
+      const result = await hook(flags, { ...event, ...(promptText !== null ? { prompt: promptText } : {}) }, { skipSaveTask: savedInCodexHook });
       const combined = result.hookSpecificOutput?.additionalContext || [result.context, result.runtime?.skillContext].filter(Boolean).join('\n\n');
       if (ctx.agent === 'agy') {
         return {
