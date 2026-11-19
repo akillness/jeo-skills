@@ -15,7 +15,9 @@ RAW_BASE="${JEO_SKILLS_RAW_BASE:-https://raw.githubusercontent.com/akillness/jeo
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 FILES=(jev-setup.sh jev-harness.mjs jev_local_server.py README.md jev-control-plane.rule.md)
 [ -f "$SCRIPT_DIR/jev-plugin.mjs" ] && FILES+=(jev-plugin.mjs)
+[ -f "$SCRIPT_DIR/jev-gateway.mjs" ] && FILES+=(jev-gateway.mjs)
 [ -f "$SCRIPT_DIR/com.jeo-skills.qev-server.plist" ] && FILES+=(com.jeo-skills.qev-server.plist)
+[ -f "$SCRIPT_DIR/com.jeo-skills.qev-gateway.plist" ] && FILES+=(com.jeo-skills.qev-gateway.plist)
 NATIVE_PLUGIN_DIR="$SCRIPT_DIR/plugins"
 NATIVE_PLUGIN_FILES=(
   plugins/shared/jev-controller.mjs
@@ -307,34 +309,57 @@ write_pid_file() {
 }
 
 stop_managed_server() {
-  local pid_file="$1" old_pid="" old_engine="" old_model="" old_host="" old_port="" i
+  local pid_file="$1" old_pid="" old_engine="" old_model="" old_host="" old_port="" i base_name backend_pid_file
   [ ! -L "$RUN_DIR" ] || fail "Refusing symlink destination: $RUN_DIR"
   [ ! -L "$pid_file" ] || fail "Refusing symlink PID file: $pid_file"
-  [ -f "$pid_file" ] || return 1
-  IFS=$'\t' read -r old_pid old_engine old_model old_host old_port < "$pid_file" || true
-  if [[ "$old_pid" =~ ^[0-9]+$ ]] && [ "$old_pid" -gt 1 ] && kill -0 "$old_pid" 2>/dev/null; then
-    info "Stopping Jev local server (${old_engine:-local}/${old_model:-unknown}, PID $old_pid)..."
-    kill -TERM "$old_pid" 2>/dev/null || true
-    for i in $(seq 1 20); do
-      if ! kill -0 "$old_pid" 2>/dev/null; then
-        break
-      fi
-      sleep 0.25
-    done
-    if kill -0 "$old_pid" 2>/dev/null; then
-      kill -KILL "$old_pid" 2>/dev/null || true
-      for i in $(seq 1 4); do
-        if ! kill -0 "$old_pid" 2>/dev/null; then
-          break
-        fi
+  base_name="$(basename "$pid_file")"
+  backend_pid_file=""
+  if [[ "$base_name" == local-*.pid ]]; then
+    backend_pid_file="$RUN_DIR/backend-${base_name#local-}"
+  fi
+  local stopped_any=1
+  if [ -f "$pid_file" ]; then
+    IFS=$'\t' read -r old_pid old_engine old_model old_host old_port < "$pid_file" || true
+    if [[ "$old_pid" =~ ^[0-9]+$ ]] && [ "$old_pid" -gt 1 ] && kill -0 "$old_pid" 2>/dev/null; then
+      info "Stopping Jev local server (${old_engine:-local}/${old_model:-unknown}, PID $old_pid)..."
+      kill -TERM "$old_pid" 2>/dev/null || true
+      for i in $(seq 1 20); do
+        if ! kill -0 "$old_pid" 2>/dev/null; then break; fi
         sleep 0.25
       done
+      if kill -0 "$old_pid" 2>/dev/null; then
+        kill -KILL "$old_pid" 2>/dev/null || true
+        for i in $(seq 1 4); do
+          if ! kill -0 "$old_pid" 2>/dev/null; then break; fi
+          sleep 0.25
+        done
+      fi
+      stopped_any=0
     fi
     rm -f "$pid_file"
-    return 0
   fi
-  rm -f "$pid_file"
-  return 1
+  if [ -n "$backend_pid_file" ] && [ -f "$backend_pid_file" ] && [ ! -L "$backend_pid_file" ]; then
+    local b_pid="" b_engine="" b_model="" _bh="" _bp=""
+    IFS=$'\t' read -r b_pid b_engine b_model _bh _bp < "$backend_pid_file" || true
+    if [[ "$b_pid" =~ ^[0-9]+$ ]] && [ "$b_pid" -gt 1 ] && kill -0 "$b_pid" 2>/dev/null; then
+      info "Stopping Jev local backend (${b_engine:-llama-server}/${b_model:-unknown}, PID $b_pid)..."
+      kill -TERM "$b_pid" 2>/dev/null || true
+      for i in $(seq 1 20); do
+        if ! kill -0 "$b_pid" 2>/dev/null; then break; fi
+        sleep 0.25
+      done
+      if kill -0 "$b_pid" 2>/dev/null; then
+        kill -KILL "$b_pid" 2>/dev/null || true
+        for i in $(seq 1 4); do
+          if ! kill -0 "$b_pid" 2>/dev/null; then break; fi
+          sleep 0.25
+        done
+      fi
+      stopped_any=0
+    fi
+    rm -f "$backend_pid_file"
+  fi
+  return "$stopped_any"
 }
 
 if [ "$ACTION" = enable ] || [ "$ACTION" = disable ]; then
@@ -660,6 +685,13 @@ done
 if [ "$STANDALONE_SETUP" = true ] && [ ! -f "$SCRIPT_DIR/jev-plugin.mjs" ] && [ "$CONFIG_ONLY" != true ]; then
   curl -fsSL "$RAW_BASE/jev-plugin.mjs" -o "$SETUP_STAGE/files/jev-plugin.mjs" || fail 'Cannot fetch jev-plugin.mjs (no local copy, download failed)'
   PUBLISH_FILES+=(jev-plugin.mjs)
+fi
+if [ "$STANDALONE_SETUP" = true ] && [ "$CONFIG_ONLY" != true ]; then
+  for opt_file in jev-gateway.mjs com.jeo-skills.qev-gateway.plist; do
+    if [ ! -f "$SCRIPT_DIR/$opt_file" ] && curl -fsSL "$RAW_BASE/$opt_file" -o "$SETUP_STAGE/files/$opt_file" 2>/dev/null; then
+      PUBLISH_FILES+=("$opt_file")
+    fi
+  done
 fi
 
 if [ "$STANDALONE_SETUP" = true ] && [ ! -d "$NATIVE_PLUGIN_DIR" ] && [ "$CONFIG_ONLY" != true ]; then
@@ -1309,12 +1341,31 @@ PY
     if [ -n "$PROFILE" ] && [ -f "$PROFILE_CONFIG" ] && grep -q '^JEV_ENABLED=false$' "$PROFILE_CONFIG"; then
       _profile_disabled=true
     fi
+    use_gateway=false
+    if [ "${JEV_QEV_GATEWAY:-on}" != "off" ] && [ "${JEV_QEV_GATEWAY:-on}" != "false" ] && [ -f "$JEV_HOME/jev-gateway.mjs" ] && command -v node >/dev/null 2>&1; then
+      use_gateway=true
+    fi
+    qev_slots="${JEV_QEV_SLOTS:-1}"
+    [[ "$qev_slots" =~ ^[0-9]+$ ]] && [ "$qev_slots" -ge 1 ] || qev_slots=1
+    if [ "$use_gateway" = true ]; then
+      if [ -n "${JEV_QEV_BACKEND_PORT:-}" ] && [[ "${JEV_QEV_BACKEND_PORT}" =~ ^[0-9]+$ ]]; then
+        backend_port="$JEV_QEV_BACKEND_PORT"
+      elif [ "$local_port" = "8017" ]; then
+        backend_port=18017
+      else
+        backend_port="$(node -e "const net=require('node:net');const s=net.createServer();s.listen(0,'$local_host',()=>{console.log(s.address().port);s.close();});")"
+      fi
+    else
+      backend_port="$local_port"
+    fi
     if [ "$_profile_disabled" != true ] && [ "$INSTALL_DAEMON" != true ] && [ "${JEV_SKIP_SERVER_START:-false}" != true ] && [ "${JEV_SKIP_MODEL_DOWNLOAD:-false}" != true ] && [ -x "$LLAMA_BIN" ] && [ -f "$MODEL_FILE" ]; then
       PID_FILE="$RUN_DIR/local-${local_port}.pid"
+      BACKEND_PID_FILE="$RUN_DIR/backend-${local_port}.pid"
       if [ -f "$PID_FILE" ] && [ ! -L "$PID_FILE" ]; then
         IFS=$'\t' read -r old_pid old_engine old_model _old_host _old_port < "$PID_FILE" || true
         if [[ ! "${old_pid:-}" =~ ^[0-9]+$ ]] || ! kill -0 "$old_pid" 2>/dev/null; then
           rm -f "$PID_FILE"
+          [ -f "$BACKEND_PID_FILE" ] && stop_managed_server "$PID_FILE" || true
         elif [ "${old_engine:-}" != "qev" ] || [ "${old_model:-}" != "$LOCAL_MODEL" ]; then
           stop_managed_server "$PID_FILE" || true
         fi
@@ -1323,30 +1374,56 @@ PY
         info "Local qev llama-server already listening on http://$local_host:$local_port"
       else
         mkdir -p "$MODEL_DIR"
-        info "Starting $LOCAL_MODEL via llama-server on http://$local_host:$local_port ..."
-        nohup "$LLAMA_BIN" -m "$MODEL_FILE" --alias "$LOCAL_MODEL" --host "$local_host" --port "$local_port" -c "${JEV_QEV_CTX:-32768}" --cache-reuse 256 -np 1 --no-kv-unified -fa on -b 2048 -ub 1024 -ctk q8_0 -ctv q8_0 -ngl 99 --no-webui </dev/null > "$MODEL_DIR/llama-server.log" 2>&1 &
+        if [ "$qev_slots" -gt 1 ]; then
+          kv_args=(-np "$qev_slots" --kv-unified --kv-unified-per-slot "${JEV_QEV_CTX:-32768}")
+        else
+          kv_args=(-np 1 --no-kv-unified)
+        fi
+        info "Starting $LOCAL_MODEL via llama-server on http://$local_host:$backend_port ..."
+        nohup "$LLAMA_BIN" -m "$MODEL_FILE" --alias "$LOCAL_MODEL" --host "$local_host" --port "$backend_port" -c "${JEV_QEV_CTX:-32768}" --cache-reuse 256 "${kv_args[@]}" -fa on -b 2048 -ub 1024 -ctk q8_0 -ctv q8_0 -ngl 99 --no-webui </dev/null > "$MODEL_DIR/llama-server.log" 2>&1 &
         server_pid=$!
-        write_pid_file "$PID_FILE" "$server_pid" "qev" "$LOCAL_MODEL" "$local_host" "$local_port"
+        backend_health_url="http://$local_host:$backend_port/health"
         qev_ready=false
         qev_crashed=false
         for _wait_sec in $(seq 1 80); do
-          if curl -fsS --max-time 1 "$health_url" >/dev/null 2>&1; then
+          if curl -fsS --max-time 1 "$backend_health_url" >/dev/null 2>&1; then
             qev_ready=true
             break
           fi
           if ! kill -0 "$server_pid" 2>/dev/null; then
-            rm -f "$PID_FILE"
             qev_crashed=true
             break
           fi
           sleep 0.25
         done
+        if [ "$use_gateway" = true ] && [ "$qev_crashed" != true ]; then
+          write_pid_file "$BACKEND_PID_FILE" "$server_pid" "qev-backend" "$LOCAL_MODEL" "$local_host" "$backend_port"
+          info "Starting jev-gateway queue proxy on http://$local_host:$local_port -> http://$local_host:$backend_port ..."
+          nohup node "$JEV_HOME/jev-gateway.mjs" --host "$local_host" --port "$local_port" --upstream "http://$local_host:$backend_port" --concurrency "$qev_slots" </dev/null > "$MODEL_DIR/jev-gateway.log" 2>&1 &
+          gw_pid=$!
+          write_pid_file "$PID_FILE" "$gw_pid" "qev" "$LOCAL_MODEL" "$local_host" "$local_port"
+          qev_ready=false
+          for _wait_sec in $(seq 1 40); do
+            if curl -fsS --max-time 1 "$health_url" >/dev/null 2>&1; then
+              qev_ready=true
+              break
+            fi
+            if ! kill -0 "$gw_pid" 2>/dev/null; then
+              rm -f "$PID_FILE"
+              qev_crashed=true
+              break
+            fi
+            sleep 0.25
+          done
+        elif [ "$qev_crashed" != true ]; then
+          write_pid_file "$PID_FILE" "$server_pid" "qev" "$LOCAL_MODEL" "$local_host" "$local_port"
+        fi
         if [ "$qev_ready" = true ]; then
-          info "Local $LOCAL_MODEL ready on $LOCAL_ENDPOINT_VAL (PID $server_pid)"
+          info "Local $LOCAL_MODEL ready on $LOCAL_ENDPOINT_VAL"
         elif [ "$qev_crashed" = true ]; then
           info "Local $LOCAL_MODEL exited early before becoming ready (check $MODEL_DIR/llama-server.log)"
         else
-          info "Local $LOCAL_MODEL still warming up (PID $server_pid; check $MODEL_DIR/llama-server.log)"
+          info "Local $LOCAL_MODEL still warming up (check $MODEL_DIR/llama-server.log)"
         fi
       fi
     fi
@@ -1355,6 +1432,7 @@ PY
     if [ "$INSTALL_DAEMON" = true ] && [ "$(uname -s)" = Darwin ] && [ -x "$LLAMA_BIN" ] && [ -f "$MODEL_FILE" ] && [ -f "$JEV_HOME/com.jeo-skills.qev-server.plist" ]; then
       LAUNCH_DIR="$HOME/Library/LaunchAgents"
       PLIST_DST="$LAUNCH_DIR/com.jeo-skills.qev-server.plist"
+      GW_PLIST_DST="$LAUNCH_DIR/com.jeo-skills.qev-gateway.plist"
       mkdir -p "$LAUNCH_DIR"
       python3 -c '
 import pathlib, re, sys
@@ -1364,26 +1442,40 @@ for k, v in zip(["__LLAMA_BIN__", "__MODEL_FILE__", "__MODEL_NAME__", "__HOST__"
 ctx = sys.argv[8]
 if ctx.isdigit():
     tpl = re.sub(r"(<string>-c</string>\s*<string>)\d+(</string>)", rf"\g<1>{ctx}\g<2>", tpl, count=1)
+slots = int(sys.argv[9]) if sys.argv[9].isdigit() and int(sys.argv[9]) >= 1 else 1
+if slots > 1:
+    tpl = re.sub(r"<string>-np</string>\s*<string>1</string>\s*<string>--no-kv-unified</string>", f"<string>-np</string>\n    <string>{slots}</string>\n    <string>--kv-unified</string>\n    <string>--kv-unified-per-slot</string>\n    <string>{ctx if ctx.isdigit() else 32768}</string>", tpl)
+pathlib.Path(sys.argv[10]).write_text(tpl)
+' "$JEV_HOME/com.jeo-skills.qev-server.plist" "$LLAMA_BIN" "$MODEL_FILE" "$LOCAL_MODEL" "$local_host" "$backend_port" "$MODEL_DIR/llama-server.log" "${JEV_QEV_CTX:-32768}" "$qev_slots" "$PLIST_DST"
+      if [ "$use_gateway" = true ] && [ -f "$JEV_HOME/com.jeo-skills.qev-gateway.plist" ]; then
+        NODE_BIN="$(command -v node)"
+        python3 -c '
+import pathlib, sys
+tpl = pathlib.Path(sys.argv[1]).read_text()
+for k, v in zip(["__NODE_BIN__", "__GATEWAY_SCRIPT__", "__HOST__", "__PORT__", "__UPSTREAM__", "__CONCURRENCY__", "__LOG_PATH__"], sys.argv[2:9]):
+    tpl = tpl.replace(k, v)
 pathlib.Path(sys.argv[9]).write_text(tpl)
-' "$JEV_HOME/com.jeo-skills.qev-server.plist" "$LLAMA_BIN" "$MODEL_FILE" "$LOCAL_MODEL" "$local_host" "$local_port" "$MODEL_DIR/llama-server.log" "${JEV_QEV_CTX:-32768}" "$PLIST_DST"
+' "$JEV_HOME/com.jeo-skills.qev-gateway.plist" "$NODE_BIN" "$JEV_HOME/jev-gateway.mjs" "$local_host" "$local_port" "http://$local_host:$backend_port" "$qev_slots" "$MODEL_DIR/jev-gateway.log" "$GW_PLIST_DST"
+      fi
       if command -v launchctl >/dev/null 2>&1; then
         PID_FILE="$RUN_DIR/local-${local_port}.pid"
-        if [ -f "$PID_FILE" ] && [ ! -L "$PID_FILE" ]; then
-          IFS=$'\t' read -r old_pid _rest < "$PID_FILE" || true
-          if [ -n "${old_pid:-}" ] && kill -0 "$old_pid" 2>/dev/null; then
-            kill "$old_pid" 2>/dev/null || true
-            sleep 0.5
-          fi
-          rm -f "$PID_FILE"
-        fi
+        stop_managed_server "$PID_FILE" >/dev/null 2>&1 || true
+        launchctl bootout "gui/$(id -u)" "$GW_PLIST_DST" >/dev/null 2>&1 || true
         launchctl bootout "gui/$(id -u)" "$PLIST_DST" >/dev/null 2>&1 || true
         launchctl bootstrap "gui/$(id -u)" "$PLIST_DST" >/dev/null 2>&1 || true
+        if [ "$use_gateway" = true ] && [ -f "$GW_PLIST_DST" ]; then
+          for _ in $(seq 1 40); do
+            curl -fsS --max-time 1 "http://$local_host:$backend_port/health" >/dev/null 2>&1 && break
+            sleep 0.25
+          done
+          launchctl bootstrap "gui/$(id -u)" "$GW_PLIST_DST" >/dev/null 2>&1 || true
+        fi
         for _ in $(seq 1 40); do
           curl -fsS --max-time 1 "$health_url" >/dev/null 2>&1 && break
           sleep 0.25
         done
       fi
-      info "Installed macOS launchd daemon at $PLIST_DST"
+      info "Installed macOS launchd daemon at $PLIST_DST${use_gateway:+ and $GW_PLIST_DST}"
     fi
   fi
 fi

@@ -973,6 +973,7 @@ Consulta los [límites de instalación](setup-all-skills-prompt.md#elephant-gold
 
 | Cambio | Detalles |
 |--------|---------|
+| **Cola local multisesión `jev-gateway` y proxy de fusión (`:8017` → `:18017`)** | Añade `jev/jev-gateway.mjs` + `jev/com.jeo-skills.qev-gateway.plist` y los integra en `jev-setup.sh`, `scripts/skills-upgrade.sh`, `jev-harness.mjs` y `jev-plugin.mjs`: planificación por 3 carriles de prioridad (`P0` > `P1` > `P2` con envejecimiento), equidad DRR por sesión (`X-Jev-Session-Id`), fusión single-flight + caché LRU en RAM, cancelación anticipada por plazo/desconexión, alivio de carga `P2` (`503 Retry-After`) y `GET /jev/queue-metrics` (`jev/gateway.test.mjs`). |
 | **Cinco nuevas habilidades de UI para IA, OCR en CPU y radar de términos (449 en total)** | Añade `affectui` (`flohoeller/affectui` @ `60308e4e`), `open-intelligent-ui` (`thesysdev/open-intelligent-ui` @ `dd45370b`), `solid-glass` (`deeplethe/solid-glass` @ `6e8903e4`), `indra` (`datalab-to/indra` @ `ca81e18f`) y `new-term-radar` (`zhuyansen/new-term-radar` @ `6ae52fc0`), cada una con `SKILL.md`, `SKILL.toon`, `references/` + `sources.md`, `evals/evals.json`, ayudantes offline `scripts/preflight.py` y pruebas de regresión (`scripts/test_five_new_skills_preflight.py`). El catálogo de 449 habilidades, los tres inventarios README y `setup-all-skills-prompt.md` están sincronizados. |
 
 ## 🆕 Novedades en v2026-11-17

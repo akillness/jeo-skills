@@ -405,7 +405,7 @@ function postJson(url, body, headers, timeoutMs) {
 }
 
 // ── Drivers (each returns { model, answers, usage? } or throws) ──────────────
-async function driverTypesafe(backend, state, questions, timeoutMs) {
+async function driverTypesafe(backend, state, questions, timeoutMs, meta = {}) {
   if (backend.kind === 'api' && !backend.apiKey) throw new Error('Missing JEV_API_KEY');
   if (!backend.endpoint) throw new Error('Missing JEV_SYSTEMONE_ENDPOINT');
   if (!backend.model) throw new Error('Missing model id');
@@ -413,6 +413,12 @@ async function driverTypesafe(backend, state, questions, timeoutMs) {
     if (q.type === 'choice' && optionsOf(q).length > backend.choiceCap) throw new Error(`Choice '${id}' has ${optionsOf(q).length} options; ${backend.kind} cap is ${backend.choiceCap}`);
   }
   const headers = backend.apiKey ? { Authorization: `Bearer ${backend.apiKey}` } : {};
+  if (backend.kind === 'local' || backend.driver === 'qev' || backend.driver === 'jevos') {
+    if (meta.op) headers['X-Jev-Op'] = String(meta.op);
+    const sess = meta.sessionId || process.env.JEV_SESSION_ID || PROFILE || process.env.JEV_AGENT || 'default';
+    headers['X-Jev-Session-Id'] = String(sess).slice(0, 128);
+    if (Number.isFinite(timeoutMs) && timeoutMs > 0) headers['X-Jev-Deadline-Ms'] = String(Math.round(timeoutMs));
+  }
   const wire = {};
   for (const [id, q] of Object.entries(questions)) {
     wire[id] = q.type === 'choice'
@@ -675,7 +681,7 @@ export function groupByScope(state, questions, backend) {
   }
   return [...groups.values()];
 }
-async function dispatchGroups(driver, backend, state, questions, budget) {
+async function dispatchGroups(driver, backend, state, questions, budget, meta = {}) {
   const groups = groupByScope(state, questions, backend);
   const answers = {};
   let model;
@@ -692,7 +698,7 @@ async function dispatchGroups(driver, backend, state, questions, budget) {
     }
   }
   for (const group of groups) {
-    const result = await driver(backend, group.state, group.questions, budget);
+    const result = await driver(backend, group.state, group.questions, budget, meta);
     Object.assign(answers, result.answers);
     model = model === undefined ? (result.model ?? null) : (model === (result.model ?? null) ? model : null);
     if (result.usage) usage = usage ? { input_tokens: (usage.input_tokens || 0) + (result.usage.input_tokens || 0), output_tokens: (usage.output_tokens || 0) + (result.usage.output_tokens || 0) } : result.usage;
@@ -721,7 +727,7 @@ export async function requestJev(state, questions, { op = 'review', mock = false
     const driver = DRIVERS[backend.driver];
     const budget = timeoutMs ?? backend.timeoutMs;
     try {
-      const result = await dispatchGroups(driver, backend, state, questions, budget);
+      const result = await dispatchGroups(driver, backend, state, questions, budget, { op });
       return { ...result, source: kind, backend: backendSummary(backend, result.model), attempted, attemptDetails, error: null, latencyMs: Date.now() - started };
     } catch (error) {
       record.error = String(error.message || error);

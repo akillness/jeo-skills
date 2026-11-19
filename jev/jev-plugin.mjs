@@ -1702,6 +1702,8 @@ async function hook(flags, suppliedEvent) {
   const mode = ctx.agent === 'cursor' ? 'advisory' : configuredMode;
   const memMode = event.memoryMode === 'extended' ? 'extended' : memoryMode(ctx);
   const revMode = reviewMode(ctx);
+  const hookSessionScope = sessionScopeFor(event, ctx.agent);
+  process.env.JEV_SESSION_ID = String(hookSessionScope || ctx.profile || ctx.agent || 'default').slice(0, 128);
 
   if (event.type === 'PreToolUse' || event.hook_event_name === 'PreToolUse') {
     try {
@@ -2360,6 +2362,7 @@ async function jeoPrePrompt(flags) {
       const cached = readTtlCache(cacheFile, promptCacheTtlMs);
       if (cached) return cached.message ? { exitCode: 0, message: cached.message } : { exitCode: 0 };
       process.env.JEV_PROFILE = ctx.profile;
+      process.env.JEV_SESSION_ID = String(sessionScopeFor(event, 'jeo') || ctx.profile || 'jeo').slice(0, 128);
       if (!explicitEnvCatalog) process.env.JEV_CATALOG_PATH = preferredCatalog;
       const harness = await import('./jev-harness.mjs');
       const [preloadedCatalog, routed, mr] = await Promise.all([
@@ -2408,6 +2411,7 @@ async function jeoPostTool(flags) {
       return { exitCode: 0 };
     }
     process.env.JEV_PROFILE = ctx.profile;
+    process.env.JEV_SESSION_ID = String(sessionScopeFor(event, 'jeo') || ctx.profile || 'jeo').slice(0, 128);
     const harness = await import('./jev-harness.mjs');
     const mod = await harness.moderate(combined, { scope: 'untrusted' });
     if (mod?.verdict === 'block') {

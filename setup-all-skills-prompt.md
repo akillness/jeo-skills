@@ -1014,7 +1014,7 @@ Run `rtk init -g --auto-patch` only after separate hook approval. It merges the
 Jev is optional even in full mode. Leave `JEO_SKILLS_JEV` unset (or set it to `skip`)
 unless the user explicitly approves a backend: `api` uses a hosted paid service and
 requires `JEV_API_KEY`; `local` configures `qev-0.8b-text-Q8_0` (~775 MB GGUF via
-`llama-server` on `127.0.0.1:8017`, or optional `h2o-lightning-4b-Q4_K_M` on >=24 GB RAM machines; legacy `--model jev-9b-local` uses Python); `ollama` may start its server and pull a quantized model; `lmstudio` may
+`jev-gateway` + `llama-server` on `127.0.0.1:8017` → `18017`, or optional `h2o-lightning-4b-Q4_K_M` on >=24 GB RAM machines; legacy `--model jev-9b-local` uses Python); `ollama` may start its server and pull a quantized model; `lmstudio` may
 download/load a model and start its server when `lms` is available; `systemone` points
 at an operator-run System One endpoint (driver `typesafe`, `decide`, or
 `vllm-jev-decision`; `JEV_SYSTEMONE_ENDPOINT` and `JEV_SYSTEMONE_MODEL` are required
@@ -1260,7 +1260,7 @@ When provisioning or refreshing Jev directly from a `jeo-skills` checkout into `
 
 ```bash
 mkdir -p ~/.agents/jev/plugins
-cp -f jev/jev-harness.mjs jev/jev-plugin.mjs jev/jev-setup.sh jev/com.jeo-skills.qev-server.plist ~/.agents/jev/
+cp -f jev/jev-harness.mjs jev/jev-plugin.mjs jev/jev-gateway.mjs jev/jev-setup.sh jev/com.jeo-skills.qev-server.plist jev/com.jeo-skills.qev-gateway.plist ~/.agents/jev/
 cp -Rf jev/plugins/. ~/.agents/jev/plugins/
 cp -f .agent-skills/skills.json ~/.agents/jev/skills.json
 # Or, on a fresh setup, initialize a profile first (e.g. local qev-0.8b with 32K ctx daemon):
