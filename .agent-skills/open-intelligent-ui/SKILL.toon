@@ -1,0 +1,20 @@
+N:open-intelligent-ui
+D:Build, customize, and benchmark ChatGPT-style Generative UI apps with thesysdev/open-intelligent-ui and OpenUI Lang 1.0 (@openuidev/intelligent-ui-library). Supports OpenUI Cloud, OpenAI-compatible endpoints, and local Ollama (32K context), library.extend components, prompt regeneration, and Vitest/bench checks. Route standalone React agent cards to affectui, glass CSS themes to solid-glass, and SKILL.md linting to skill-standardization.
+G:open-intelligent-ui openui generative-ui intelligent-ui react nextjs ollama langchain-ui
+U[5]:
+  Validate Node 24+, @openuidev dependencies, and .env variable readiness via scripts/preflight.py
+  Configure OpenUI Cloud Gateway, OpenAI-compatible LLM_BASE_URL, or 32K-context local Ollama
+  Extend @openuidev/intelligent-ui-library via library.extend and preserve OpenUI Lang 1.0 positional schemas
+  Regenerate specs and prompts (npm run generate && npm run prompt) and run Vitest + typecheck
+  Inspect /gallery offline and execute scripts/bench/run.mjs with --fake or approved live models
+S[5]{n,action,details}:
+  1,Preflight,Run scripts/preflight.py --workspace <dir> --json to check Node 24+ and generated artifacts
+  2,Configure,Pick Gateway (THESYS_API_KEY) or Chat Completions (LLM_BASE_URL) or Ollama (32K ctx)
+  3,Extend,Edit src/lib/library.ts or prompt-options.ts without breaking positional argument order
+  4,Regenerate,Run npm run generate && npm run prompt && npm test && npm run typecheck
+  5,Verify,Preview /gallery offline or run npm run bench -- --fake before live model calls
+R[4]:
+  Always set OLLAMA_CONTEXT_LENGTH=32768 (or num_ctx 32768) for Ollama because the OpenUI prompt is ~8000 tokens
+  Never edit component schemas or prompt options without running npm run generate && npm run prompt
+  Never print or commit API keys from .env; preflight reports boolean presence only
+  Route zero-Tailwind static agent React cards to affectui and Tailwind v4 glass CSS tokens to solid-glass

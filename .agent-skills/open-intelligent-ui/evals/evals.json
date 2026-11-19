@@ -1,0 +1,30 @@
+{
+  "skill_name": "open-intelligent-ui",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I want to run thesysdev/open-intelligent-ui locally with Ollama and no API key, but the UI responses keep breaking.",
+      "expected_output": "Explain that the OpenUI 1.0 system prompt is ~8,000 tokens while Ollama defaults to a 4,096-token context window; instruct the user to set `OLLAMA_CONTEXT_LENGTH=32768 ollama serve` (or create a Modelfile with `PARAMETER num_ctx 32768`), configure `MODEL_PROVIDER=ollama` and `OLLAMA_MODEL=qwen3.8:27b`, and run `scripts/preflight.py`."
+    },
+    {
+      "id": 2,
+      "prompt": "We added a custom component via library.extend in src/lib/library.ts and updated prompt-options.ts. What must we run next?",
+      "expected_output": "Run `npm run generate && npm run prompt` to regenerate `src/generated/spec.json` and `src/generated/system-prompt.txt` (plus dashboard/coach/chess variants if modified), then run `npm test`, `npm run typecheck`, and inspect `/gallery`."
+    },
+    {
+      "id": 3,
+      "prompt": "How can we verify our OpenUI Lang gallery programs and parser rules offline without paying for OpenRouter or OpenUI Cloud calls?",
+      "expected_output": "Use `/gallery` (`npm run dev`, requires no API key), run `npm test`, and run `npm run bench -- --fake` so hand-written gallery programs stand in for the model against the 1.0 parser."
+    },
+    {
+      "id": 4,
+      "prompt": "Can we skip OpenUI Cloud and call OpenRouter directly while keeping interactive maps and charts?",
+      "expected_output": "Yes — configure `LLM_BASE_URL=https://openrouter.ai/api/v1`, `LLM_API_KEY`, and `LLM_MODEL` in `.env`; `/api/chat` builds the full OpenUI 1.0 prompt locally via `generateSystemPrompt` and streams Chat Completions directly (noting Cloud's post-generation validation/correction step is bypassed)."
+    },
+    {
+      "id": 5,
+      "prompt": "We just want to drop a single self-contained ToolCallCard.tsx component into a standard React app without streaming OpenUI Lang.",
+      "expected_output": "Route to `affectui` rather than `open-intelligent-ui`, explaining that `affectui` provides standalone zero-Tailwind `.tsx` agent components via shadcn whereas `open-intelligent-ui` is a full OpenUI Lang 1.0 streaming runtime."
+    }
+  ]
+}

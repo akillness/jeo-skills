@@ -3612,6 +3612,26 @@ Preview `jeo-skill install arnis --global --dry-run`, then install the selected 
 
 Preview `jeo-skill install rust-anything --global --dry-run`, then install the selected guide with `jeo-skill install rust-anything --global --yes`. Installing `rust-anything` copies operator guidance, Strangler Fig FFI bridging references, differential test schemas, and offline support tools only, not the Rust compiler, Cargo toolchain, or source code repositories. Resolve `SKILL_DIR` to the installed skill directory and run `python3 "$SKILL_DIR/scripts/preflight.py"` for offline tooling discovery, manifest detection, and `rust-anything.toml` inspection without network calls or process execution. Review the skill's operations and differential verification references before separately authorizing behavioral recording (`rust-anything record`), crate scaffolding, or differential test execution (`rust-anything verify`).
 
+### affectUI operator (on demand)
+
+Preview `jeo-skill install affectui --global --dry-run`, then install the selected guide with `jeo-skill install affectui --global --yes`. Installing `affectui` copies operator guidance, the 74-item MIT registry inventory (`-clean` vs classic), MCP configuration notes, and offline support tools only, not npm packages, `.tsx` components, or an MCP server registration. Resolve `SKILL_DIR` to the installed skill directory and run `python3 "$SKILL_DIR/scripts/preflight.py" --workspace "/abs/path/to/app" --json` for offline React 19, `@/*` alias, and `components.json` checks without running `npx` or opening network sockets. Obtain explicit user approval before running `npx shadcn@latest add`, modifying `components.json`, or registering `https://www.affectui.com/api/mcp`; never fabricate registry URLs for commercial affectUI Pro components.
+
+### Open Intelligent UI operator (on demand)
+
+Preview `jeo-skill install open-intelligent-ui --global --dry-run`, then install the selected guide with `jeo-skill install open-intelligent-ui --global --yes`. Installing `open-intelligent-ui` copies operator guidance, OpenUI Lang 1.0 provider/extension references, and offline support tools only, not Node.js 24, npm dependencies, model checkpoints, or API keys. Resolve `SKILL_DIR` to the installed skill directory and run `python3 "$SKILL_DIR/scripts/preflight.py" --workspace "/abs/path/to/open-intelligent-ui" --json` for offline `@openuidev/*` manifest, `src/generated/` artifact, and boolean `.env` key-presence checks (never printing key values). Obtain explicit user approval before starting dev servers, configuring Gateway/OpenAI-compatible/Ollama endpoints (ensure `OLLAMA_CONTEXT_LENGTH=32768`), or running live benchmarks (`scripts/bench/run.mjs`).
+
+### Solid Glass operator (on demand)
+
+Preview `jeo-skill install solid-glass --global --dry-run`, then install the selected guide with `jeo-skill install solid-glass --global --yes`. Installing `solid-glass` copies operator guidance, CSS glass-material token references, and offline support tools only, not `solid-glass.css`, shadcn/ui components, or Tailwind CSS packages. Resolve `SKILL_DIR` to the installed skill directory and run `python3 "$SKILL_DIR/scripts/preflight.py" --workspace "/abs/path/to/app" --json` for offline Tailwind v4, Base UI, `components.json`, and `@import "./solid-glass.css"` ordering checks without executing `npx`. Obtain explicit user approval before modifying stylesheets or removing `:root`/`.dark` variables in a target project.
+
+### Indra OCR operator (on demand)
+
+Preview `jeo-skill install indra --global --dry-run`, then install the selected guide with `jeo-skill install indra --global --yes`. Installing `indra` copies operator guidance, CLI/Python/limitations references, and offline support tools only, not the `indra-ocr` package or Hugging Face ONNX weights (~76 MB). Resolve `SKILL_DIR` to the installed skill directory and run `python3 "$SKILL_DIR/scripts/preflight.py" --input "/abs/path/to/doc.pdf" --json` for offline Python `>= 3.10`, binary, `INDRA_OCR_MODEL_DIR`, and file checks without downloading models or spawning `indra-ocr`. Obtain explicit user approval before running `pip install indra-ocr`, downloading Hugging Face weights, launching `indra-ocr-viewer` (`http://localhost:8765`), or sending complex/handwritten documents to managed cloud APIs; model weights follow Datalab's modified OpenRAIL-M terms.
+
+### New Term Radar operator (on demand)
+
+Preview `jeo-skill install new-term-radar --global --dry-run`, then install the selected guide with `jeo-skill install new-term-radar --global --yes`. Installing `new-term-radar` copies operator guidance, signal/config/MCP timeout references, and offline support tools only, not `new-term-radar`, `uvx`, `config.json` snapshots, or API keys. Resolve `SKILL_DIR` to the installed skill directory and run `python3 "$SKILL_DIR/scripts/preflight.py" --config "/abs/path/to/config.json" --state "/abs/path/to/state" --json` for offline `uvx`/`config.json` validation and boolean env-var checks (never printing secret values). Disclose estimated AIsa/GoAnyAPI charges and obtain explicit user approval before running paid scans, sending `--mail` (Resend) reports, or registering the MCP server (raise `startup_timeout_sec >= 120` and `tool_timeout_sec >= 900`).
+
 
 ### Agent Substrate operator (on demand)
 

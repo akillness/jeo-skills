@@ -341,11 +341,11 @@ y la [atribución MIT upstream](docs/attribution.md).
 
 ## 📚 Lista de Habilidades
 
-> Generado desde `.agent-skills/skills.json` · 444 habilidades · despliega una categoría para ver sus habilidades.
+> Generado desde `.agent-skills/skills.json` · 449 habilidades · despliega una categoría para ver sus habilidades.
 
-### 🌐 Web (73)
+### 🌐 Web (76)
 
-Subcategorías: `frontend` (13), `backend` (3), `design` (16), `api` (2), `auth` (1), `data` (13), `testing` (4), `accessibility` (1), `performance` (1), `graphics` (12), `capture` (7)
+Subcategorías: `frontend` (15), `backend` (3), `design` (17), `api` (2), `auth` (1), `data` (13), `testing` (4), `accessibility` (1), `performance` (1), `graphics` (12), `capture` (7)
 
 <details>
 <summary>Ver habilidades</summary>
@@ -425,6 +425,9 @@ Subcategorías: `frontend` (13), `backend` (3), `design` (16), `api` (2), `auth`
 | `trickle-ui` |
 | `browser-use` |
 | `modern-web-guidance` |
+| `affectui` |
+| `open-intelligent-ui` |
+| `solid-glass` |
 
 </details>
 
@@ -563,9 +566,9 @@ Subcategorías: `image` (10), `video` (18), `motion` (1), `audio` (2), `presenta
 
 </details>
 
-### ⌨️ Herramientas CLI (47)
+### ⌨️ Herramientas CLI (48)
 
-Subcategorías: `developer-cli` (12), `ai-cli` (17), `media-cli` (1), `automation-cli` (8), `search-cli` (8), `benchmark-cli` (1)
+Subcategorías: `developer-cli` (12), `ai-cli` (18), `media-cli` (1), `automation-cli` (8), `search-cli` (8), `benchmark-cli` (1)
 
 <details>
 <summary>Ver habilidades</summary>
@@ -619,6 +622,7 @@ Subcategorías: `developer-cli` (12), `ai-cli` (17), `media-cli` (1), `automatio
 | `craft-anything` |
 | `connectonion` |
 | `flide` |
+| `indra` |
 
 </details>
 
@@ -755,9 +759,9 @@ Subcategorías: `code-quality` (13), `testing` (3), `architecture` (6), `documen
 
 </details>
 
-### 🔭 Investigación y Análisis (16)
+### 🔭 Investigación y Análisis (17)
 
-Subcategorías: `academic` (3), `web-research` (4), `data-analysis` (2), `experimentation` (3), `benchmarking` (1), `intelligence` (3)
+Subcategorías: `academic` (3), `web-research` (4), `data-analysis` (2), `experimentation` (3), `benchmarking` (1), `intelligence` (4)
 
 <details>
 <summary>Ver habilidades</summary>
@@ -780,6 +784,7 @@ Subcategorías: `academic` (3), `web-research` (4), `data-analysis` (2), `experi
 | `mi-orchestration` |
 | `image-to-github-repo` |
 | `minimind` |
+| `new-term-radar` |
 
 </details>
 
@@ -963,6 +968,12 @@ Consulta los [límites de instalación](setup-all-skills-prompt.md#elephant-gold
 ---
 
 <!-- WHATS-NEW:START -->
+
+## 🆕 Novedades en v2026-11-19
+
+| Cambio | Detalles |
+|--------|---------|
+| **Cinco nuevas habilidades de UI para IA, OCR en CPU y radar de términos (449 en total)** | Añade `affectui` (`flohoeller/affectui` @ `60308e4e`), `open-intelligent-ui` (`thesysdev/open-intelligent-ui` @ `dd45370b`), `solid-glass` (`deeplethe/solid-glass` @ `6e8903e4`), `indra` (`datalab-to/indra` @ `ca81e18f`) y `new-term-radar` (`zhuyansen/new-term-radar` @ `6ae52fc0`), cada una con `SKILL.md`, `SKILL.toon`, `references/` + `sources.md`, `evals/evals.json`, ayudantes offline `scripts/preflight.py` y pruebas de regresión (`scripts/test_five_new_skills_preflight.py`). El catálogo de 449 habilidades, los tres inventarios README y `setup-all-skills-prompt.md` están sincronizados. |
 
 ## 🆕 Novedades en v2026-11-17
 

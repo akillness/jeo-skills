@@ -1,0 +1,20 @@
+N:indra
+D:Run fast CPU document OCR and layout extraction on PDFs and images using datalab-to/indra (indra-ocr). Converts scans and digital PDFs across 80+ languages into Markdown, plain text, or JSON boxes/blocks via ONNX Runtime without PyTorch/GPU, with optional --math LaTeX, convert_many multiprocessing, and local indra-ocr-viewer. Route HWP/HWPX documents to hwp or rhwp-edit and SKILL.md linting to skill-standardization.
+G:indra indra-ocr ocr pdf-to-markdown onnx-runtime cpu-ocr layout-extraction datalab
+U[5]:
+  Check Python 3.10+, indra-ocr CLI, INDRA_OCR_MODEL_DIR, and input files offline via scripts/preflight.py
+  Convert PDFs and images to Markdown, text, or JSON boxes on CPU with indra-ocr
+  Toggle --mode auto|ocr|text and --math LaTeX mode based on latency and document type
+  Run parallel batch extraction with convert_many guarded by if __name__ == "__main__"
+  Respect Apache-2.0 code vs OpenRAIL-M weight license and complex-table/handwriting limits
+S[5]{n,action,details}:
+  1,Preflight,Run scripts/preflight.py --input <abs-path> --json without downloading weights
+  2,Install,Run pip install indra-ocr (uses ONNX Runtime, OpenCV, pypdfium2; no PyTorch)
+  3,Extract,Run indra-ocr <file> --format md|text|json --mode auto|ocr|text
+  4,Batch,Use --out DIR --cores N or Python indra_ocr.convert_many under __main__ guard
+  5,Inspect,Optionally launch indra-ocr-viewer --port 8765 locally for line/block debugging
+R[4]:
+  Always guard indra_ocr.convert_many with if __name__ == "__main__" on macOS and Windows
+  Do not enable --math unless inline LaTeX is needed (adds ~30-40% latency and downloads math weights)
+  Flag OpenRAIL-M model weight restrictions for commercial/competing API deployments
+  Route Korean HWP/HWPX document parsing to hwp or rhwp-edit

@@ -77,7 +77,7 @@ jobs:
       - name: Setup guide install-block regressions
         run: python3 scripts/test_setup_guide_regressions.py -v
       - name: Workspace isolation, unified flow-log, jeox, MCP hosts, Context7, and Rust Anything regressions
-        run: python3 -B -m unittest scripts/test_workflow_log.py scripts/test_setup_workspace.py scripts/test_jeox_regressions.py scripts/test_mcp_hosts.py scripts/test_context7_preflight.py scripts/test_rust_anything_preflight.py -v
+        run: python3 -B -m unittest scripts/test_workflow_log.py scripts/test_setup_workspace.py scripts/test_jeox_regressions.py scripts/test_mcp_hosts.py scripts/test_context7_preflight.py scripts/test_rust_anything_preflight.py scripts/test_five_new_skills_preflight.py -v
       - name: Second-brain new-vault installation and automation contracts
         run: python3 -B scripts/test_second_brain_install.py -v
       - name: Independent full-tools installation safety regressions

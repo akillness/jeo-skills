@@ -1,0 +1,30 @@
+{
+  "skill_name": "affectui",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I'm building a React 19 agent dashboard without Tailwind and need a tool call status card, thinking pill, and human approval inbox.",
+      "expected_output": "Recommend affectui free components (`tool-call-card-clean`, `thinking-loader-clean`, `decision-inbox-clean`), run `scripts/preflight.py --workspace <dir> --json` to check React 19 and `@/*` aliases, and show `npx shadcn@latest add` or `@affectui` namespace installation."
+    },
+    {
+      "id": 2,
+      "prompt": "Can you install affectUI's Trace Waterfall and Agent Tree components from GitHub using shadcn CLI?",
+      "expected_output": "Explain clearly that `Trace Waterfall` and `Agent Tree` (along with `Agent Inbox`, `Context Map`, and `Agent Handoff`) are part of commercial affectUI Pro and are not included in the MIT `flohoeller/affectui` repository or free public registry."
+    },
+    {
+      "id": 3,
+      "prompt": "How do I connect affectUI to Claude Code or Cursor so my coding agent can browse and install components?",
+      "expected_output": "Show how to register the HTTP MCP server (`claude mcp add --transport http affectui https://www.affectui.com/api/mcp` or `mcpServers` JSON for Cursor/Codex) after user approval, or point the agent to `https://www.affectui.com/llms.txt`."
+    },
+    {
+      "id": 4,
+      "prompt": "How do I install affectUI components with short names instead of typing full registry URLs every time?",
+      "expected_output": "Add `\"@affectui\": \"https://www.affectui.com/r/{name}.json\"` under `registries` in `components.json` and run `npx shadcn@latest add @affectui/<item>-clean`."
+    },
+    {
+      "id": 5,
+      "prompt": "We already use Tailwind CSS 4 with shadcn/ui Base UI components and want a frosted glass theme stylesheet with `--glass-rim` and `glass-panel` tokens.",
+      "expected_output": "Route to `solid-glass` rather than `affectui`, explaining that `solid-glass` provides the Tailwind CSS 4 + Base UI glass stylesheet and token system whereas `affectui` ships self-contained zero-Tailwind TSX components."
+    }
+  ]
+}

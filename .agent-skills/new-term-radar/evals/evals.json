@@ -1,0 +1,30 @@
+{
+  "skill_name": "new-term-radar",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Run new-term-radar daily right now to scan X accounts, build the keyword table, and email me the report.",
+      "expected_output": "Run `scripts/preflight.py` first, explain the estimated AIsa/GoAnyAPI cost and `--mail` (Resend) external action, and wait for explicit user confirmation before executing a paid scan or sending email (or offer free-only signals / `leads` preview first)."
+    },
+    {
+      "id": 2,
+      "prompt": "My Codex or DeepSeek Harness MCP client keeps timing out when calling `keyword_table` or `run_radar` on new-term-radar.",
+      "expected_output": "Explain that `keyword_table` takes 40-90s per name and `daily` takes 5-15 minutes while Codex/DSH default to 60s tool timeouts; show how to configure `startup_timeout_sec = 120` and `tool_timeout_sec = 900` (or `toolCallTimeoutMs: 900000`)."
+    },
+    {
+      "id": 3,
+      "prompt": "Can I run new-term-radar without any AIsa or GoAnyAPI key to track Hugging Face trending models, GitHub breakouts, and sitemaps?",
+      "expected_output": "Yes — run `uvx new-term-radar==0.6.1 daily --skip x,newsites,asks,sellers,money,sidelights,review,judge,usecases --state <dir>` (or without `AISA_API_KEY`), noting that terms appear unsorted without the LLM name judge and first run builds baseline snapshots."
+    },
+    {
+      "id": 4,
+      "prompt": "The keyword table shows 'flat' for a rising term, and GOANYAPI_API_KEY is not set. Does that mean nobody is searching it in the US?",
+      "expected_output": "No — point out the table's missing-signal footer warning: without `GOANYAPI_API_KEY`, curves fall back to worldwide series where regional US surges can read flat, and related queries (`🔎`) are disabled."
+    },
+    {
+      "id": 5,
+      "prompt": "Validate our SKILL.md frontmatter and check whether skills.json matches our README inventory.",
+      "expected_output": "Route to `skill-standardization` rather than `new-term-radar`."
+    }
+  ]
+}

@@ -392,11 +392,11 @@ See the [setup guide](setup-all-skills-prompt.md#claude-code-game-studios-on-dem
 
 ## 📚 Skills List
 
-> Generated from `.agent-skills/skills.json` · 444 skills · expand a category to see its skills.
+> Generated from `.agent-skills/skills.json` · 449 skills · expand a category to see its skills.
 
-### 🌐 Web (73)
+### 🌐 Web (76)
 
-Subcategories: `frontend` (13), `backend` (3), `design` (16), `api` (2), `auth` (1), `data` (13), `testing` (4), `accessibility` (1), `performance` (1), `graphics` (12), `capture` (7)
+Subcategories: `frontend` (15), `backend` (3), `design` (17), `api` (2), `auth` (1), `data` (13), `testing` (4), `accessibility` (1), `performance` (1), `graphics` (12), `capture` (7)
 
 <details>
 <summary>Show Web skills</summary>
@@ -476,6 +476,9 @@ Subcategories: `frontend` (13), `backend` (3), `design` (16), `api` (2), `auth` 
 | `trickle-ui` |
 | `browser-use` |
 | `modern-web-guidance` |
+| `affectui` |
+| `open-intelligent-ui` |
+| `solid-glass` |
 
 </details>
 
@@ -614,9 +617,9 @@ Subcategories: `image` (10), `video` (18), `motion` (1), `audio` (2), `presentat
 
 </details>
 
-### ⌨️ CLI Tools (47)
+### ⌨️ CLI Tools (48)
 
-Subcategories: `developer-cli` (12), `ai-cli` (17), `media-cli` (1), `automation-cli` (8), `search-cli` (8), `benchmark-cli` (1)
+Subcategories: `developer-cli` (12), `ai-cli` (18), `media-cli` (1), `automation-cli` (8), `search-cli` (8), `benchmark-cli` (1)
 
 <details>
 <summary>Show CLI Tools skills</summary>
@@ -670,6 +673,7 @@ Subcategories: `developer-cli` (12), `ai-cli` (17), `media-cli` (1), `automation
 | `craft-anything` |
 | `connectonion` |
 | `flide` |
+| `indra` |
 
 </details>
 
@@ -806,9 +810,9 @@ Subcategories: `code-quality` (13), `testing` (3), `architecture` (6), `document
 
 </details>
 
-### 🔭 Research & Analysis (16)
+### 🔭 Research & Analysis (17)
 
-Subcategories: `academic` (3), `web-research` (4), `data-analysis` (2), `experimentation` (3), `benchmarking` (1), `intelligence` (3)
+Subcategories: `academic` (3), `web-research` (4), `data-analysis` (2), `experimentation` (3), `benchmarking` (1), `intelligence` (4)
 
 <details>
 <summary>Show Research &amp; Analysis skills</summary>
@@ -831,6 +835,7 @@ Subcategories: `academic` (3), `web-research` (4), `data-analysis` (2), `experim
 | `mi-orchestration` |
 | `image-to-github-repo` |
 | `minimind` |
+| `new-term-radar` |
 
 </details>
 
@@ -1017,6 +1022,7 @@ See the [setup boundary](setup-all-skills-prompt.md#elephant-goldfish-model-on-d
 
 | Change | Details |
 |--------|---------|
+| **Five AI UI, CPU OCR & term-intelligence operator skills (449 total)** | Adds `affectui` (`flohoeller/affectui` @ `60308e4e`), `open-intelligent-ui` (`thesysdev/open-intelligent-ui` @ `dd45370b`), `solid-glass` (`deeplethe/solid-glass` @ `6e8903e4`), `indra` (`datalab-to/indra` @ `ca81e18f`), and `new-term-radar` (`zhuyansen/new-term-radar` @ `6ae52fc0`), each with `SKILL.md`, compact `SKILL.toon`, curated `references/` + `sources.md`, behavioral `evals/evals.json`, offline stdlib `scripts/preflight.py` helpers, and regression tests (`scripts/test_five_new_skills_preflight.py`). The 449-skill catalog, three README inventories, and `setup-all-skills-prompt.md` are synchronized. |
 | **Jev hook deduplication, benign prefiltering & `qev-0.8b` 32K context tuning** | Cuts redundant local/API Jev backend calls across high-frequency loops without weakening enforcement: `jev-plugin.mjs` adds TTL caches in `~/.agents/jev/cache/` for prompt routing (`route-v1`, 10m default via `JEV_PROMPT_CACHE_TTL_MS`), `jeo-preprompt`, and `advisory` `PreToolUse` (`pretool-v1`, 60s default via `JEV_PRETOOL_CACHE_TTL_MS`, disabled in `enforce`), plus benign prefiltering in `PostToolUse`/`jeo-posttool` (skipping short/non-suspicious outputs unless `JEV_UNTRUSTED_MODERATION=strict`). Extension controllers (`jev-controller.mjs` across `jeopi`, `omp`, `pi`, `gjc`) skip `tool_call` subprocesses when `reviewMode === 'off'` and deduplicate `tool_call`/`before_tool_call` by `toolCallId` and unchanged `context` blocks. `jev-harness.mjs` expands Korean verb-ending/prompt-writing BM25 bridging (`jev-index-v4`), raises the `qev` `local` `maxStateChars` cap from `12,000` to `36,000` (`JEV_QEV_MAX_STATE_CHARS`), and aligns `com.jeo-skills.qev-server.plist` and `jev-setup.sh` to `-c 32768` (`JEV_QEV_CTX`). |
 | **`setup-all-skills-prompt.md` `jeo` hook & MCP parity** | Consolidates `setup.md` into `setup-all-skills-prompt.md`, adds `jeo` (`hooks-install --agent jeo`, `jev/plugins/`, `jev-setup.sh`, `com.jeo-skills.qev-server.plist`, and `setup-mcp-hosts.py` host coverage), and documents the new Jev tuning variables in `jev/README.md`. |
 

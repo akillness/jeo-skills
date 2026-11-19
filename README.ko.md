@@ -399,11 +399,11 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 
 ## 📚 스킬 목록
 
-> `.agent-skills/skills.json`에서 생성 · 444개 스킬 · 카테고리를 펼치면 스킬 목록이 보입니다.
+> `.agent-skills/skills.json`에서 생성 · 449개 스킬 · 카테고리를 펼치면 스킬 목록이 보입니다.
 
-### 🌐 웹 (73개)
+### 🌐 웹 (76개)
 
-하위 분류: `frontend` (13), `backend` (3), `design` (16), `api` (2), `auth` (1), `data` (13), `testing` (4), `accessibility` (1), `performance` (1), `graphics` (12), `capture` (7)
+하위 분류: `frontend` (15), `backend` (3), `design` (17), `api` (2), `auth` (1), `data` (13), `testing` (4), `accessibility` (1), `performance` (1), `graphics` (12), `capture` (7)
 
 <details>
 <summary>스킬 보기</summary>
@@ -483,6 +483,9 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 | `trickle-ui` |
 | `browser-use` |
 | `modern-web-guidance` |
+| `affectui` |
+| `open-intelligent-ui` |
+| `solid-glass` |
 
 </details>
 
@@ -621,9 +624,9 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 
 </details>
 
-### ⌨️ CLI 도구 (47개)
+### ⌨️ CLI 도구 (48개)
 
-하위 분류: `developer-cli` (12), `ai-cli` (17), `media-cli` (1), `automation-cli` (8), `search-cli` (8), `benchmark-cli` (1)
+하위 분류: `developer-cli` (12), `ai-cli` (18), `media-cli` (1), `automation-cli` (8), `search-cli` (8), `benchmark-cli` (1)
 
 <details>
 <summary>스킬 보기</summary>
@@ -677,6 +680,7 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 | `craft-anything` |
 | `connectonion` |
 | `flide` |
+| `indra` |
 
 </details>
 
@@ -813,9 +817,9 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 
 </details>
 
-### 🔭 연구 및 분석 (16개)
+### 🔭 연구 및 분석 (17개)
 
-하위 분류: `academic` (3), `web-research` (4), `data-analysis` (2), `experimentation` (3), `benchmarking` (1), `intelligence` (3)
+하위 분류: `academic` (3), `web-research` (4), `data-analysis` (2), `experimentation` (3), `benchmarking` (1), `intelligence` (4)
 
 <details>
 <summary>스킬 보기</summary>
@@ -838,6 +842,7 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 | `mi-orchestration` |
 | `image-to-github-repo` |
 | `minimind` |
+| `new-term-radar` |
 
 </details>
 
@@ -1027,6 +1032,7 @@ v1 마이그레이션, 실행 근거에 따른 `/harness:evolve`를 안내합니
 
 | 변경 사항 | 상세 내용 |
 |--------|---------|
+| **AI UI · CPU OCR · AI 신조어 레이더 스킬 5종 추가 (총 449개)** | `affectui` (`flohoeller/affectui` @ `60308e4e`), `open-intelligent-ui` (`thesysdev/open-intelligent-ui` @ `dd45370b`), `solid-glass` (`deeplethe/solid-glass` @ `6e8903e4`), `indra` (`datalab-to/indra` @ `ca81e18f`), `new-term-radar` (`zhuyansen/new-term-radar` @ `6ae52fc0`) 5개 스킬을 추가했습니다. 각 스킬은 표준 `SKILL.md`, 압축 요약 `SKILL.toon`, `references/`·`sources.md`, `evals/evals.json`, 오프라인 표준 라이브러리 `scripts/preflight.py` 헬퍼와 회귀 테스트(`scripts/test_five_new_skills_preflight.py`)를 포함하며 449개 카탈로그, README 3개 언어 목록, `setup-all-skills-prompt.md`를 동기화했습니다. |
 | **Jev 고빈도 훅 중복 제거·정상 출력 사전 필터링 및 `qev-0.8b` 32K/36,000자 튜닝** | 강제(`enforce`) 경계를 약화하지 않으면서 반복 에이전트 루프의 불필요한 로컬/API 호출을 크게 줄였습니다. `jev-plugin.mjs`는 `~/.agents/jev/cache/`에 프롬프트 라우팅(`route-v1`, 기본 10분 `JEV_PROMPT_CACHE_TTL_MS`)·`jeo-preprompt`·`advisory` `PreToolUse`(`pretool-v1`, 기본 60초 `JEV_PRETOOL_CACHE_TTL_MS`, `enforce`는 미캐시) TTL 캐시를 추가하고, `PostToolUse`/`jeo-posttool`에서 16자 이하 또는 의심 패턴이 없는 정상 출력을 사전 스킵합니다(`JEV_UNTRUSTED_MODERATION=strict`로 해제 가능). 확장 컨트롤러(`jeopi`/`omp`/`pi`/`gjc` 공용 `jev-controller.mjs`)는 `reviewMode === 'off'`일 때 `tool_call` 서브프로세스를 띄우지 않고, `toolCallId` 기준 중복 `tool_call`/`before_tool_call`과 동일 `context` 블록 반복을 차단합니다. `jev-harness.mjs`는 한국어 동사 어미/프롬프트 작성 BM25 확장(`jev-index-v4`)을 반영하고, `qev` `local` `maxStateChars` 상한을 `12,000`에서 `36,000`자로 상향(`JEV_QEV_MAX_STATE_CHARS`)했으며 `com.jeo-skills.qev-server.plist`·`jev-setup.sh` 기본 컨텍스트를 `-c 32768`(`JEV_QEV_CTX`)로 통일했습니다. |
 | **`setup-all-skills-prompt.md` 통합 및 `jeo` 훅·MCP 호스트 추가** | `setup.md`를 `setup-all-skills-prompt.md`로 통합하고 `jeo`(`hooks-install --agent jeo`, `jev/plugins/`, `jev-setup.sh`, `com.jeo-skills.qev-server.plist`, `setup-mcp-hosts.py` 호스트 목록)를 추가했으며 `jev/README.md`에 신규 Jev 환경 변수를 반영했습니다. |
 

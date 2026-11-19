@@ -1,0 +1,20 @@
+N:affectui
+D:Integrate flohoeller/affectui React 19 UI components for AI agents (tool calls, decision inbox, thinking loaders, message actions, blocks, illustrations, motion) via single-file TSX, shadcn CLI, or HTTP MCP server. Route solid-glass CSS theming to solid-glass, OpenUI Lang streaming to open-intelligent-ui, and skill linting to skill-standardization.
+G:affectui react-19 agent-ui shadcn mcp tool-call-card decision-inbox thinking-loader
+U[5]:
+  Check React 19 and shadcn @/* alias readiness with scripts/preflight.py
+  Install self-contained single-file TSX agent components via shadcn CLI or direct copy
+  Pick consistently between -clean and classic component registry variants
+  Connect the affectUI HTTP MCP server or llms.txt for AI-assisted component lookup
+  Separate 74 MIT open-source items from commercial affectUI Pro components
+S[5]{n,action,details}:
+  1,Preflight,Run scripts/preflight.py --workspace <dir> --json to check React 19 and components.json
+  2,Style,Pick -clean (default modern) or classic variant consistently across the app
+  3,Install,Run npx shadcn@latest add @affectui/<name> or registry JSON URL
+  4,Wire,Pass runtime agent state and approval callbacks into component props
+  5,MCP,Optionally register https://www.affectui.com/api/mcp with user approval
+R[4]:
+  Never fabricate registry URLs for Pro-only items (Agent Tree, Trace Waterfall, Context Map, Agent Inbox, Agent Handoff)
+  Do not add external CSS or Tailwind setup to wrap affectUI components since styles are self-contained
+  Use dark class or data-theme="dark" on an ancestor element for built-in dark mode
+  Route Tailwind 4 glass design tokens to solid-glass and OpenUI Lang streaming to open-intelligent-ui

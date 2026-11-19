@@ -1,0 +1,30 @@
+{
+  "skill_name": "indra",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We need to convert 500 scanned multilingual PDFs (Korean and English) to Markdown on a CPU-only Linux server without installing PyTorch or CUDA.",
+      "expected_output": "Recommend `indra-ocr` (`pip install indra-ocr`), run `scripts/preflight.py` first, and use `indra-ocr *.pdf --out results/ --cores <N>` (or `indra_ocr.convert_many` with an `if __name__ == \"__main__\":` guard) since it runs on ONNX Runtime with ~76 MB models and no PyTorch."
+    },
+    {
+      "id": 2,
+      "prompt": "My Python script calling indra_ocr.convert_many keeps spawning recursive processes and warning on macOS.",
+      "expected_output": "Wrap the `indra_ocr.convert_many(...)` call inside `if __name__ == \"__main__\":` because each worker process re-imports the entry script on macOS and Windows."
+    },
+    {
+      "id": 3,
+      "prompt": "Can Indra OCR extract complex merged-cell financial tables and faint cursive handwriting accurately?",
+      "expected_output": "Warn honestly about Indra OCR's documented limitations: complex tables with merged/spanning cells or no ruling lines, cursive handwriting (25.2% on OmniParseBench handwriting), and degraded scans perform poorly; suggest Datalab's managed Chandra model only if the user approves cloud upload."
+    },
+    {
+      "id": 4,
+      "prompt": "We want to deploy indra-ocr inside an air-gapped Docker image and extract inline LaTeX equations.",
+      "expected_output": "Pre-cache weights from `datalab-to/indra-ocr` (including optional math weights), pass `--model-dir` or set `INDRA_OCR_MODEL_DIR`, and enable `--math` (noting ~30-40% slower throughput and slight table accuracy trade-off)."
+    },
+    {
+      "id": 5,
+      "prompt": "How do I extract text and tables from a Korean .hwp government application form?",
+      "expected_output": "Route to `hwp` or `rhwp-edit` rather than `indra`, explaining that `.hwp` files are binary Hangul documents whereas `indra` handles PDFs and raster images."
+    }
+  ]
+}

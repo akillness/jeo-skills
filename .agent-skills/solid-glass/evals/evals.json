@@ -1,0 +1,30 @@
+{
+  "skill_name": "solid-glass",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I installed deeplethe/solid-glass into our Tailwind CSS 4 + shadcn/ui Base UI project, but the cards look flat and borders show a double ring.",
+      "expected_output": "Run `scripts/preflight.py` to check CSS import order and token collisions; verify `@import \"./solid-glass.css\";` comes after `tailwindcss`, `tw-animate-css`, and `shadcn/tailwind.css`, delete the `:root` and `.dark` color variables written by `shadcn init`, and remove extra Tailwind border classes on `bg-card`, `bg-popover`, or `glass-panel`."
+    },
+    {
+      "id": 2,
+      "prompt": "Which AI-specific UI components come in the Solid Glass registry, and how do I install them?",
+      "expected_output": "List the 12 Solid Glass AI components (`status-glyph`, `panel`, `tag`, `dot-loader`, `turn-status`, `composer`, `tool-steps`, `diff-view`, `ask-card`, `context-ring`, `task-notice`, `reasoning`) plus the `solid-glass` stylesheet, installed via `npx shadcn@latest add deeplethe/solid-glass/<name>`."
+    },
+    {
+      "id": 3,
+      "prompt": "How do I style an active/selected list item and a primary action button in Solid Glass, and disable backdrop blur on a dense code sidebar?",
+      "expected_output": "Use `glass-chosen` / `glass-held` for selected or open-menu triggers, `<Button variant=\"glass\" data-strong>` for emphasized glass buttons, and `<aside data-glass=\"opaque\">` to drop backdrop blur while retaining rim highlights, hairlines, and shadows."
+    },
+    {
+      "id": 4,
+      "prompt": "How do I change the Solid Glass accent color from green-teal to our product brand color?",
+      "expected_output": "Override `--brand`, `--brand-foreground`, and `--brand-muted` once in `:root` and `.dark` while keeping primary surfaces monochrome."
+    },
+    {
+      "id": 5,
+      "prompt": "Our React 19 app does not use Tailwind CSS or shadcn at all, and we want drop-in single-file TSX tool-call and decision-inbox components.",
+      "expected_output": "Route to `affectui` rather than `solid-glass`, explaining that `affectui` ships self-contained zero-Tailwind `.tsx` files while `solid-glass` requires Tailwind CSS 4 + shadcn/ui."
+    }
+  ]
+}
