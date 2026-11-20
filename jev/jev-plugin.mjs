@@ -2343,7 +2343,7 @@ async function jeoPreTool(flags) {
   }
 }
 
-async function jeoPrePrompt(flags) {
+async function jeoPrePrompt(flags, { localOnly = false } = {}) {
   try {
     const explicitEnvCatalog = process.env.JEV_CATALOG_PATH;
     let ctx = resolveHookContext(flags);
@@ -2363,7 +2363,7 @@ async function jeoPrePrompt(flags) {
     let mode = 'off';
     try { mode = runtimeMode(ctx); } catch { /* unsupported runtime mode disables skill routing only */ }
     const wantSkillRoute = mode !== 'off';
-    const wantModelRoute = ctx.state.values.JEV_MODEL_ROUTING === 'auto';
+    const wantModelRoute = !localOnly && ctx.state.values.JEV_MODEL_ROUTING === 'auto';
     if (prompt && (wantSkillRoute || wantModelRoute)) {
       const preferredCatalog = explicitEnvCatalog || projectCatalogOverride(ctx.projectOverride) || join(homes().jev, 'skills.json');
       const promptCacheTtlMs = ttlMsSetting(ctx.state.values.JEV_PROMPT_CACHE_TTL_MS, DEFAULT_PROMPT_CACHE_TTL_MS);
@@ -2372,6 +2372,7 @@ async function jeoPrePrompt(flags) {
             ctx.profile,
             sessionScopeFor(event, 'jeo'),
             mode,
+            ...(localOnly ? ['local-only'] : []),
             wantModelRoute ? 'auto' : 'off',
             preferredCatalog,
             fileMtimeMs(preferredCatalog),
@@ -2390,7 +2391,7 @@ async function jeoPrePrompt(flags) {
         mode === 'assist' && typeof harness.getCachedCatalogMeta === 'function'
           ? harness.getCachedCatalogMeta(preferredCatalog).catch(() => null)
           : null,
-        wantSkillRoute ? harness.routeSkills(prompt, { topK: 3 }).catch(() => null) : null,
+        wantSkillRoute ? harness.routeSkills(prompt, { topK: 3, localOnly }).catch(() => null) : null,
         wantModelRoute && typeof harness.routeModel === 'function' ? harness.routeModel(prompt).catch(() => null) : null,
       ]);
       const lines = [];
@@ -2496,8 +2497,8 @@ async function main() {
       process.exitCode = exitCode;
       return;
     }
-    else if (action === 'jeo-preprompt') {
-      const { exitCode, message } = await jeoPrePrompt(flags);
+    else if (action === 'jeo-preprompt' || action === 'jeo-preprompt-local') {
+      const { exitCode, message } = await jeoPrePrompt(flags, { localOnly: action === 'jeo-preprompt-local' });
       if (message) process.stdout.write(`${message}\n`);
       process.exitCode = exitCode;
       return;

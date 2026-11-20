@@ -1877,10 +1877,13 @@ test('model-plan rechecks snapshot freshness after reads and candidate evaluatio
   }
 });
 
-function jeoPrePromptFixture(runtimeMode) {
+function jeoPrePromptFixture(runtimeMode, { mapped = false, projectOff = false } = {}) {
   const f = fixture({ enabled: true });
   const jevHome = join(f.home, '.agents', 'jev');
-  privateWrite(join(f.profileDir, `${f.profile}.env`), `JEV_ENABLED=true\nJEV_MODE=api\nJEV_RUNTIME_MODE=${runtimeMode}\n`);
+  privateWrite(join(f.profileDir, `${f.profile}.env`), `JEV_ENABLED=true\nJEV_MODE=api\nJEV_RUNTIME_MODE=${runtimeMode}\nJEV_MODEL_ROUTING=auto\n`);
+  if (mapped) {
+    privateWrite(join(jevHome, 'agents.json'), JSON.stringify({ jeo: { profile: f.profile, native: 'jeo', scope: 'user' } }));
+  }
   const skills = join(f.root, 'skills');
   const catalog = join(skills, 'skills.json');
   privateWrite(catalog, JSON.stringify({
@@ -1893,23 +1896,34 @@ function jeoPrePromptFixture(runtimeMode) {
   }));
   privateWrite(join(skills, 'prompts-chat', 'SKILL.md'), '---\nname: prompts-chat\ndescription: Write and refine prompts\n---\n# Prompts Chat\nPROMPTS_CHAT_BODY_MARKER\n');
   privateWrite(join(skills, 'gitingest', 'SKILL.md'), '---\nname: gitingest\ndescription: Ingest git repositories\n---\n# Gitingest\nGITINGEST_BODY_MARKER\n');
-  // The controller imports ./jev-harness.mjs next to itself, so a copied controller gets a deterministic local harness.
   const controller = join(jevHome, 'jev-plugin.mjs');
   mkdirSync(jevHome, { recursive: true });
   copyFileSync(plugin, controller);
+  const routeLog = join(f.root, 'route-call.json');
   writeFileSync(join(jevHome, 'jev-harness.mjs'), [
-    'export async function routeSkills(prompt) {',
+    'import { writeFileSync } from "node:fs";',
+    `const routeLog = ${JSON.stringify(routeLog)};`,
+    'export async function routeModel() { writeFileSync(routeLog + ".model", "called"); }',
+    'export async function routeSkills(prompt, options) {',
+    '  writeFileSync(routeLog, JSON.stringify({ prompt, options }));',
     "  const name = /프롬프트/.test(prompt) ? 'prompts-chat' : 'gitingest';",
     '  return { topK: [{ name }], routing: [] };',
     '}',
     '',
   ].join('\n'));
-  const run = prompt => runPlugin(f, ['jeo-preprompt', '--agent', 'jeo', '--profile', f.profile], {
-    input: JSON.stringify({ prompt }),
-    env: { JEV_PLUGIN_CONTROLLER: controller, JEV_CATALOG_PATH: catalog },
-    entry: controller,
-  });
-  return { f, run };
+  const run = prompt => {
+    if (projectOff) {
+      privateWrite(join(f.root, '.harness2', 'workspace.json'), JSON.stringify({ workflow: { custom: true, jev_enabled: false } }));
+    }
+    const args = mapped ? ['jeo-preprompt-local', '--agent', 'jeo'] : ['jeo-preprompt', '--agent', 'jeo', '--profile', f.profile];
+    return runPlugin(f, args, {
+      input: JSON.stringify({ prompt, cwd: f.root }),
+      env: { JEV_PLUGIN_CONTROLLER: controller, JEV_CATALOG_PATH: catalog },
+      entry: controller,
+      cwd: f.root,
+    });
+  };
+  return { f, run, routeLog };
 }
 
 test('jeo-preprompt advisory mode suggests the routed skill for a Korean prompt without injecting skill bodies', () => {
@@ -1943,6 +1957,32 @@ test('jeo-preprompt with a blank prompt routes nothing', () => {
   assert.equal(result.status, 0, `${result.stdout}\n${result.stderr}`);
   assert.equal(result.stdout.trim(), '');
 });
+test('jeo-preprompt mapped opt-in routes skills locally and skips model advice', () => {
+  const { run, routeLog } = jeoPrePromptFixture('assist', { mapped: true });
+  const result = run('프롬프트 작성하고 다듬기');
+  assert.equal(result.status, 0, `${result.stdout}\n${result.stderr}`);
+  assert.match(result.stdout, /PROMPTS_CHAT_BODY_MARKER/);
+  assert.doesNotMatch(result.stdout, /model-plan|model advice|jev-test-model/);
+  const call = JSON.parse(readFileSync(routeLog, 'utf8'));
+  assert.equal(call.options.localOnly, true);
+  assert.equal(existsSync(routeLog + ".model"), false);
+});
+
+test('jeo-preprompt mapped profile OFF and project OFF both suppress routing', () => {
+  const mappedOff = jeoPrePromptFixture('assist', { mapped: true });
+  privateWrite(join(mappedOff.f.profileDir, `${mappedOff.f.profile}.env`), 'JEV_ENABLED=false\nJEV_MODE=api\nJEV_RUNTIME_MODE=assist\n');
+  const disabled = mappedOff.run('프롬프트 작성하고 다듬기');
+  assert.equal(disabled.status, 0, `${disabled.stdout}\n${disabled.stderr}`);
+  assert.equal(disabled.stdout.trim(), '');
+  assert.equal(existsSync(mappedOff.routeLog), false);
+
+  const projectOff = jeoPrePromptFixture('assist', { mapped: true, projectOff: true });
+  const projectDisabled = projectOff.run('프롬프트 작성하고 다듬기');
+  assert.equal(projectDisabled.status, 0, `${projectDisabled.stdout}\n${projectDisabled.stderr}`);
+  assert.equal(projectDisabled.stdout.trim(), '');
+  assert.equal(existsSync(projectOff.routeLog), false);
+});
+
 
 test('jev-controller forwards JEV_DEADLINE_MS and memoizes unchanged context events in jev-only mode', async () => {
   const dir = mkdtempSync(join(tmpdir(), 'jev-ctrl-memo-'));

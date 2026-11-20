@@ -12,6 +12,7 @@ import json
 import os
 from pathlib import Path
 import shutil
+import shlex
 import stat
 import subprocess
 import sys
@@ -800,28 +801,45 @@ class HookInstaller(Fixture):
         config = jeo / "config.json"
         jeo.mkdir()
         config.write_text('{"defaultModel": "m", "oauth": {"anthropic": "secret"}}\n')
-        original = {"enabled": True, "hooks": [{"event": "turn-end", "run": "other-turn-end", "timeoutMs": 5000}]}
-        self.write(registry, original)
+        shell = self.home / ".agents/hooks/openspace-route.sh"
+        wrapper = shell.with_name("jeo-prompt-route.py")
+        plugin = self.home / ".agents/jev/jev-plugin.mjs"
+        old_os = f"/bin/sh {shell} jeo"
+        old_jev = f"node {plugin} jeo-preprompt --agent jeo --profile jeo"
+        original = {"enabled": True, "label": "keep", "hooks": [
+            {"event": "turn-end", "run": "other-turn-end", "timeoutMs": 5000},
+            {"event": "post-turn", "run": old_os},
+            {"event": "ingest", "run": "other-ingest"},
+            {"event": "pre-prompt", "run": f"echo {old_jev}"},
+        ]}
+        self.write(registry, {**original, "hooks": original["hooks"] + [
+            {"event": "pre-prompt", "run": cmd} for cmd in (old_os, old_jev, old_os, shlex.join([self.python, "-B", str(shell.with_name("jeo-skill-route.py"))]))
+        ]})
         registry.chmod(0o640)
         config_before = config.read_bytes()
-        status = self.hooks("status", "--host", "jeo")
-        self.assertIn("not installed", status.stdout)
+        self.assertIn("stale or duplicate", self.hooks("status", "--host", "jeo").stdout)
+        preview = self.hooks("install", "--host", "jeo", "--dry-run")
+        self.assertEqual(preview.returncode, 0, preview.stderr)
+        self.assertFalse(wrapper.exists())
         result = self.hooks("install", "--host", "jeo")
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         self.assertIn("jeo-code build with pre-prompt hooks", result.stdout)
-        wrapper = self.home / ".agents/hooks/openspace-route.sh"
         installed = json.loads(registry.read_text())
-        self.assertEqual(installed["enabled"], True)
-        self.assertEqual(installed["hooks"][0], original["hooks"][0])
-        self.assertEqual(installed["hooks"][1:], [{"event": "pre-prompt", "run": f"/bin/sh {wrapper} jeo", "timeoutMs": 10000}])
+        command = installed["hooks"][-1]["run"]
+        python, *args = shlex.split(command)
+        self.assertEqual(Path(python).resolve(), Path(self.python).resolve())
+        self.assertEqual(args, ["-B", str(wrapper), str(shell), str(plugin), "5", "10"])
+        self.assertEqual(installed, {**original, "hooks": original["hooks"] + [
+            {"event": "pre-prompt", "run": command, "timeoutMs": 16000}
+        ]})
         self.assertEqual(stat.S_IMODE(registry.stat().st_mode), 0o640)
         self.assertEqual(config.read_bytes(), config_before, "credentials config is never touched")
         self.assertIn("installed", self.hooks("status", "--host", "jeo").stdout)
-        # The registered command is the real thing: jeo's pre-prompt payload yields a Claude-style context object.
-        routed = subprocess.run(["/bin/sh", "-c", installed["hooks"][1]["run"]], input=json.dumps({"prompt": "use graphify", "hook_event_name": "UserPromptSubmit"}),
-                                text=True, capture_output=True, env=self.hook_env, timeout=60)
+        # Execute the installed hook with no Jev and the offline OpenSpace ranker fixture.
+        routed = subprocess.run(["/bin/sh", "-c", command], input=json.dumps({"prompt": "use graphify", "hook_event_name": "UserPromptSubmit"}),
+                                text=True, capture_output=True, env=self.hook_env, timeout=20)
         self.assertEqual((routed.returncode, routed.stderr), (0, ""))
-        self.assertIn("graphify", json.loads(routed.stdout)["hookSpecificOutput"]["additionalContext"])
+        self.assertIn("graphify", json.loads(routed.stdout)["additionalContext"])
         again = self.hooks("install", "--host", "jeo")
         self.assertIn("unchanged", again.stdout)
         self.assertEqual(json.loads(registry.read_text()), installed)
@@ -829,6 +847,62 @@ class HookInstaller(Fixture):
         self.assertEqual(removed.returncode, 0, removed.stdout + removed.stderr)
         self.assertEqual(json.loads(registry.read_text())["hooks"], original["hooks"])
         self.assertEqual(config.read_bytes(), config_before)
+
+    def test_jeo_chain_always_runs_openspace_on_the_same_event(self):
+        (self.home / ".jeo").mkdir()
+        self.assertEqual(self.hooks("install", "--host", "jeo").returncode, 0)
+        command = json.loads((self.home / ".jeo/hooks.json").read_text())["hooks"][0]["run"]
+        argv = shlex.split(command)
+        _, shell, plugin = map(Path, argv[2:5])
+        # Bound the timeout fixture without changing the installed production timeouts.
+        argv[-2] = "2"
+        plugin.parent.mkdir(parents=True)
+        plugin.touch()
+        node = self.bin / "node"
+        fixture = """import json, os, pathlib, sys, time
+log = pathlib.Path(os.environ['ROUTE_LOG'])
+kind = sys.argv[1]
+with log.open('a') as out:
+    out.write(json.dumps([kind, sys.stdin.buffer.read().decode(), sys.argv[2:]]) + '\\n')
+if kind == 'jev':
+    mode = os.environ['JEV_FIXTURE']
+    if mode == 'error':
+        print('discard me')
+        raise SystemExit(1)
+    if mode == 'timeout':
+        print('discard me', flush=True)
+        time.sleep(30)
+    if mode == 'ready':
+        with log.open('a') as out:
+            out.write('"jev finished"\\n')
+        print('Jev advice')
+elif os.environ.get('OPENSPACE_FIXTURE') == 'malformed':
+    print('invalid')
+else:
+    print(json.dumps({'hookSpecificOutput': {'additionalContext': 'OpenSpace advice'}}))
+"""
+        for path, kind in ((node, "jev"), (shell, "openspace")):
+            path.write_text(f"#!/bin/sh\nexec {shlex.quote(self.python)} -c {shlex.quote(fixture)} {kind} \"$@\"\n")
+            path.chmod(0o755)
+        event = '{  "prompt": "fixture", "cwd": "/tmp/test project" }\n'
+        log = self.work / "route-log"
+        for mode in ("ready", "inactive", "no-match", "error", "timeout"):
+            with self.subTest(mode=mode):
+                log.unlink(missing_ok=True)
+                env = {**self.hook_env, "ROUTE_LOG": str(log), "JEV_FIXTURE": mode}
+                routed = subprocess.run(argv, input=event, text=True, capture_output=True, env=env, timeout=5)
+                self.assertEqual((routed.returncode, routed.stderr), (0, ""))
+                records = [["jev", event, [str(plugin), "jeo-preprompt-local", "--agent", "jeo"]]]
+                if mode == "ready":
+                    records.append("jev finished")
+                records.append(["openspace", event, ["jeo"]])
+                self.assertEqual([json.loads(line) for line in log.read_text().splitlines()], records)
+                expected = "Jev advice\n\nOpenSpace advice" if mode == "ready" else "OpenSpace advice"
+                self.assertEqual(json.loads(routed.stdout), {"additionalContext": expected})
+        routed = subprocess.run(argv, input=event, text=True, capture_output=True, timeout=5,
+                                env={**self.hook_env, "ROUTE_LOG": str(log), "JEV_FIXTURE": "ready",
+                                     "OPENSPACE_FIXTURE": "malformed"})
+        self.assertEqual(json.loads(routed.stdout), {"additionalContext": "Jev advice"})
 
     def test_jeo_install_creates_the_registry_only_when_jeo_is_present(self):
         result = self.hooks("install", "--host", "jeo")

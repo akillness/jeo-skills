@@ -15,12 +15,12 @@ model sees it, and passes the ranked skill note to the model as context:
   jeo       ~/.jeo/hooks.json               pre-prompt        additionalContext (jeo-code with pre-prompt hooks)
             (a hooks-only registry jeo reads itself; ~/.jeo/config.json is never touched)
 
-The hooks call one wrapper, ~/.agents/hooks/openspace-route.sh, which runs a
-copy of the router with the OpenSpace venv's Python and exits 0 silently when
-either is missing, so routing can never block a prompt. Hosts whose config
-directory does not exist are skipped. Existing files keep their mode, other
-hooks and keys are preserved, symlinked or non-regular configs are refused,
-and every write is an atomic same-directory replace.
+Most hosts call ~/.agents/hooks/openspace-route.sh, which runs a copy of the
+router with the OpenSpace venv's Python. Jeo calls one sequential wrapper: local
+Jev advice first, then the same standalone OpenSpace router. Missing runtimes
+are silent no-ops. Hosts whose config directory does not exist are skipped.
+Existing files keep their mode, other hooks and keys are preserved, symlinked or
+non-regular configs are refused, and every write is an atomic same-directory replace.
 
     route-hooks.py install [--host NAME ...] [--dry-run]
     route-hooks.py remove  [--host NAME ...] [--dry-run]
@@ -56,6 +56,11 @@ XDG_CONFIG = Path(os.environ.get("XDG_CONFIG_HOME") or HOME / ".config").expandu
 ROUTER_SIGNATURE = '"""OpenSpace prompt-time skill router.'
 KIMI_HOME = Path(os.environ.get("KIMI_CODE_HOME") or HOME / ".kimi-code").expanduser()
 TIMEOUT_SECONDS = 10
+JEV_TIMEOUT_SECONDS = 5
+JEO_TIMEOUT_MS = (JEV_TIMEOUT_SECONDS + TIMEOUT_SECONDS + 1) * 1000
+JEO_WRAPPER = HOOK_DIR / "jeo-prompt-route.py"
+JEO_WRAPPER_SOURCE = Path(__file__).resolve().with_name("jeo-prompt-route.py")
+JEV_PLUGIN = HOME / ".agents/jev/jev-plugin.mjs"
 
 
 def command(host_arg: str) -> str:
@@ -561,7 +566,36 @@ class JeoHooks:
         return self.dir.is_dir()
 
     def entry(self) -> dict:
-        return {"event": "pre-prompt", "run": command(self.host_arg), "timeoutMs": TIMEOUT_SECONDS * 1000}
+        argv = [sys.executable, "-B", str(JEO_WRAPPER), str(WRAPPER), str(JEV_PLUGIN),
+                str(JEV_TIMEOUT_SECONDS), str(TIMEOUT_SECONDS)]
+        return {"event": "pre-prompt", "run": shlex.join(argv), "timeoutMs": JEO_TIMEOUT_MS}
+
+    def managed(self, entry: object) -> bool:
+        if not isinstance(entry, dict) or entry.get("event") != "pre-prompt":
+            return False
+        run = entry.get("run")
+        if not isinstance(run, str):
+            return False
+        try:
+            argv = shlex.split(run)
+        except ValueError:
+            return False
+        if len(argv) == 7 and argv[1:3] == ["-B", str(JEO_WRAPPER)] and Path(argv[0]).name.startswith("python"):
+            return True
+        default_hooks = HOME / ".agents/hooks"
+        # Migrate the exact command from the previous manual Jeo setup.
+        if len(argv) == 3 and argv[1:] == ["-B", str(default_hooks / "jeo-skill-route.py")] and Path(argv[0]).name.startswith("python"):
+            return True
+        if argv in (["/bin/sh", str(path), "jeo"] for path in (WRAPPER, default_hooks / WRAPPER.name)):
+            return True
+        # Exact legacy standalone invocations, not arbitrary scripts containing these paths.
+        if not argv or Path(argv[0]).name not in ("node", "nodejs"):
+            return False
+        if argv[1:5] not in ([str(JEV_PLUGIN), action, "--agent", "jeo"]
+                            for action in ("jeo-preprompt", "jeo-preprompt-local")):
+            return False
+        return len(argv) == 5 or (len(argv) == 7 and argv[5] == "--profile"
+                                  and re.fullmatch(r"[a-zA-Z0-9_-]+", argv[6]) is not None)
 
     def load(self) -> tuple[dict, int]:
         existing = read_regular(self.path)
@@ -580,18 +614,18 @@ class JeoHooks:
         return entries
 
     def without_ours(self, entries: list) -> list:
-        return [e for e in entries if not (isinstance(e, dict) and ours(str(e.get("run", ""))))]
+        return [e for e in entries if not self.managed(e)]
 
     def status(self) -> str:
         if not self.path.exists():
             return "not installed"
         data, _ = self.load()
-        found = [e for e in self.entries(data) if isinstance(e, dict) and ours(str(e.get("run", "")))]
+        found = [e for e in self.entries(data) if self.managed(e)]
         if not found:
             return "not installed"
         if data.get("enabled") is False:
             return "installed (registry disabled: enabled=false in hooks.json)"
-        return "installed" if self.entry() in found else "installed (stale command)"
+        return "installed" if found == [self.entry()] else "installed (stale or duplicate command)"
 
     def install(self, dry: bool) -> str:
         data, mode = self.load()
@@ -687,15 +721,15 @@ def hosts() -> dict:
 # ---------------------------------------------------------------- commands
 
 
-def install_runtime(dry: bool) -> list[str]:
-    """Copy the router and write the wrapper; both are shared by every host."""
-    if not ROUTER_SOURCE.is_file():
-        raise RuntimeError(f"router source missing: {ROUTER_SOURCE}")
+def install_runtime(dry: bool, jeo: bool) -> list[str]:
+    """Install the shared runtime and, when selected, Jeo's sequential wrapper."""
     lines = []
-    runtime = (
+    runtime = [
         (ROUTER, ROUTER_SOURCE.read_text(encoding="utf-8"), 0o644, ROUTER_SIGNATURE),
         (WRAPPER, wrapper_text(), 0o755, MARKER),
-    )
+    ]
+    if jeo:
+        runtime.append((JEO_WRAPPER, JEO_WRAPPER_SOURCE.read_text(encoding="utf-8"), 0o644, MARKER))
     for path, text, _, signature in runtime:
         existing = read_regular(path)
         if existing is not None and existing[0] != text and signature not in existing[0]:
@@ -725,7 +759,7 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.action == "install":
         try:
-            for line in install_runtime(args.dry_run):
+            for line in install_runtime(args.dry_run, "jeo" in selected and table["jeo"].detected()):
                 print(line)
         except Exception as exc:
             print(f"FAILED shared runtime: {exc}", file=sys.stderr)
@@ -748,14 +782,15 @@ def main(argv: list[str] | None = None) -> int:
         print(f"{name:{width}s} {result}")
 
     if args.action == "status":
-        for path in (WRAPPER, ROUTER):
+        paths = (WRAPPER, ROUTER, JEO_WRAPPER) if "jeo" in selected and table["jeo"].detected() else (WRAPPER, ROUTER)
+        for path in paths:
             print(f"{'present' if path.is_file() else 'missing'}  {path}")
         installed, source = read_regular(ROUTER), read_regular(ROUTER_SOURCE)
         if installed is not None and source is not None and installed[0] != source[0]:
             # A hook for a newer host (e.g. jeo's `--host jeo`) is silently inert against an older router.
             print(f"stale    {ROUTER} differs from {ROUTER_SOURCE.name}; run `install` to refresh it")
     elif args.action == "remove" and not args.host and not args.dry_run and not failed:
-        for path in (WRAPPER, ROUTER):
+        for path in (WRAPPER, ROUTER, JEO_WRAPPER):
             existing = read_regular(path)
             if existing is not None and (MARKER in existing[0] or ROUTER_SIGNATURE in existing[0]):
                 path.unlink()

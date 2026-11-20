@@ -400,8 +400,15 @@ async function fetchWithTimeout(url, options = {}, timeoutMs = 3000, what = null
   } finally { clearTimeout(timer); }
 }
 function httpError(response, text) { return new Error(`${response.status} ${response.statusText}${text ? `: ${text}` : ''}`); }
-function postJson(url, body, headers, timeoutMs) {
-  return fetchWithTimeout(url, { method: 'POST', headers: { 'Content-Type': 'application/json', ...headers }, body: JSON.stringify(body) }, timeoutMs);
+function postJson(url, body, headers, timeoutMs, localOnly = false) {
+  if (localOnly) {
+    const parsed = new URL(url);
+    if (!['http:', 'https:'].includes(parsed.protocol) ||
+        !['127.0.0.1', '[::1]', 'localhost'].includes(parsed.hostname) || parsed.username || parsed.password) {
+      throw new Error('Local skill routing requires a loopback endpoint');
+    }
+  }
+  return fetchWithTimeout(url, { ...(localOnly ? { redirect: 'error' } : {}), method: 'POST', headers: { 'Content-Type': 'application/json', ...headers }, body: JSON.stringify(body) }, timeoutMs);
 }
 
 // ── Drivers (each returns { model, answers, usage? } or throws) ──────────────
@@ -449,7 +456,7 @@ export async function driverTypesafe(backend, state, questions, timeoutMs, meta 
     if (isLocalGateway && Number.isFinite(attemptTimeout) && attemptTimeout > 0) {
       headers['X-Jev-Deadline-Ms'] = String(Math.round(attemptTimeout));
     }
-    const result = await postJson(backend.endpoint, { state, model: backend.model, questions: wire }, headers, attemptTimeout);
+    const result = await postJson(backend.endpoint, { state, model: backend.model, questions: wire }, headers, attemptTimeout, backend.localOnly);
     response = result.response;
     payload = result.payload;
     text = result.text;
@@ -490,7 +497,7 @@ async function driverLocal(backend, state, questions, timeoutMs) {
     wire[id] = q.type === 'choice' ? { type: 'choice', instructions: q.instructions, options: optionsOf(q) } : { type: 'noul', instructions: q.instructions };
   }
   // The real server ignores `model`; the documented shape requires it, so send it.
-  const { response, payload, text } = await postJson(backend.endpoint, { state, model: backend.model, questions: wire }, {}, timeoutMs);
+  const { response, payload, text } = await postJson(backend.endpoint, { state, model: backend.model, questions: wire }, {}, timeoutMs, backend.localOnly);
   if (!response.ok) throw httpError(response, text);
   return { model: typeof payload?.model === 'string' && payload.model ? payload.model : null, answers: normalizeAnswers(payload, questions, { legacy: true }) };
 }
@@ -759,13 +766,14 @@ async function dispatchGroups(driver, backend, state, questions, budget, meta = 
 }
 
 // ── Dispatcher: resolves the operation chain and tries each eligible kind ────
-export async function requestJev(state, questions, { op = 'review', mock = false, timeoutMs, override = null, kinds = null, model = null } = {}) {
+export async function requestJev(state, questions, { op = 'review', mock = false, timeoutMs, override = null, kinds = null, model = null, localOnly = false } = {}) {
   const fail = (error, kind = DEFAULT_KIND) => ({ model: null, source: kind, backend: { kind, driver: null, model: null, configuredModel: null, tier: 'unvalidated', attestation: null }, attempted: [], attemptDetails: [], error, latencyMs: 0, answers: null });
   if (PROFILE_ERROR) return fail(PROFILE_ERROR);
   if (PROFILE_DISABLED) return fail(`Jev profile '${PROFILE}' is disabled`);
   if (mock) return { model: 'jev-mock', source: 'mock', backend: { kind: 'mock', driver: 'mock', model: 'jev-mock', tier: 'mock', attestation: null }, attempted: [], error: null, latencyMs: 0, answers: simulateAnswers(state, questions) };
   if (CONFIG_ERROR) return fail(CONFIG_ERROR);
-  const chain = kinds ? kinds : resolveChain(op, { override }).chain;
+  const configuredChain = kinds ?? resolveChain(op, { override }).chain;
+  const chain = localOnly ? configuredChain.filter(kind => kind === 'local') : configuredChain;
   const attemptDetails = [];
   const attempted = [];
   const started = Date.now();
@@ -779,7 +787,7 @@ export async function requestJev(state, questions, { op = 'review', mock = false
     const driver = DRIVERS[backend.driver];
     const budget = timeoutMs ?? backend.timeoutMs;
     try {
-      const result = await dispatchGroups(driver, backend, state, questions, budget, { op });
+      const result = await dispatchGroups(driver, { ...backend, localOnly }, state, questions, budget, { op });
       return { ...result, source: kind, backend: backendSummary(backend, result.model), attempted, attemptDetails, error: null, latencyMs: Date.now() - started };
     } catch (error) {
       record.error = String(error.message || error);
@@ -2032,7 +2040,7 @@ async function selectSharded(catalog, task, backend, kind, shards, topK) {
     questions[`shard::${i}`] = { ...choice('Which of these skills, if any, is the right one to load to help with the user\'s `request`?',
       Object.fromEntries(group.map(s => [s.name, formatShardDescription(s, relationshipsByName[s.name] || s.relationships)]))), state: { request: task } };
   });
-  const first = await requestJev({ request: task }, questions, { op: 'route-skills', kinds: [kind], model: backend.modelOverride });
+  const first = await requestJev({ request: task }, questions, { op: 'route-skills', kinds: [kind], model: backend.modelOverride, localOnly: backend.localOnly });
   if (first.error || !first.answers) return { error: first, envelope: first };
   const gate = gateFrom(first.answers);
   if (gate.value !== null && gate.value < GATE_THRESHOLD) return { gate, finalists: [], ranked: [], reason: 'gate', envelope: first, requests: first.requests ?? 1 };
@@ -2046,7 +2054,7 @@ async function selectSharded(catalog, task, backend, kind, shards, topK) {
   const candidates = await Promise.all(finalists.map(f => enrichCandidate(catalog, byName[f.name], excerptRoot, { shard: f.shard, shardProbability: f.shardProbability })));
   const byCandName = Object.fromEntries(candidates.map(c => [c.name, c]));
   const budgeted = budgetCandidates(task, candidates, backend.maxStateChars);
-  const second = await requestJev(budgeted, verifyQuestions(task, budgeted, backend, { withGate: false }), { op: 'route-skills', kinds: [kind], model: backend.modelOverride });
+  const second = await requestJev(budgeted, verifyQuestions(task, budgeted, backend, { withGate: false }), { op: 'route-skills', kinds: [kind], model: backend.modelOverride, localOnly: backend.localOnly });
   if (second.error || !second.answers) return { error: second, envelope: second };
   const which = second.answers.which?.probabilities || {};
   const ranked = candidates.map(c => ({
@@ -2140,7 +2148,7 @@ async function selectShortlist(catalog, task, backend, kind, topK, { limit = SHO
   const byCandName = Object.fromEntries(candidates.map(c => [c.name, c]));
   const budgeted = budgetCandidates(task, candidates, backend.maxStateChars, { compact: useFast });
   const verifyOpts = useFast ? { fastGate: true, fitsLimit: Math.min(candidates.length, Math.min(topK, 3)) } : {};
-  const envelope = await requestJev(budgeted, verifyQuestions(task, budgeted, backend, verifyOpts), { op: 'route-skills', kinds: [kind], model: backend.modelOverride });
+  const envelope = await requestJev(budgeted, verifyQuestions(task, budgeted, backend, verifyOpts), { op: 'route-skills', kinds: [kind], model: backend.modelOverride, localOnly: backend.localOnly });
   if (envelope.error || !envelope.answers) return { error: envelope, envelope };
   const gate = gateFrom(envelope.answers);
   if (gate.value !== null && gate.value < GATE_THRESHOLD) return { gate, finalists: [], ranked: [], reason: 'gate', envelope, requests: envelope.requests ?? 1 };
@@ -2193,7 +2201,7 @@ function registryFallback(task, note) {
   return { skill: 'find-skills', command: `npx skills find '${task.replace(/'/g, "'\\''")}'`, note };
 }
 
-export async function routeSkills(task, { mock = false, topK = 3, override = null, model = null, prefilter = null, openspaceHints = null, useOpenspacePrior = true, fast = null } = {}) {
+export async function routeSkills(task, { mock = false, topK = 3, override = null, model = null, prefilter = null, openspaceHints = null, useOpenspacePrior = true, localOnly = false, fast = null } = {}) {
   if (!task?.trim()) throw new Error('route-skills requires a task string');
   if (!Number.isInteger(topK) || topK < 1 || topK > 50) throw new Error('--top-k must be an integer from 1 to 50');
   if (PROFILE_ERROR) throw new Error(PROFILE_ERROR);
@@ -2207,7 +2215,10 @@ export async function routeSkills(task, { mock = false, topK = 3, override = nul
   const hasSuppliedHints = openspaceHints !== null && openspaceHints !== undefined;
   let catalog;
   let prior;
-  if (openspaceEnabled && !hasSuppliedHints) {
+  if (localOnly) {
+    catalog = await loadCatalog();
+    prior = normalizeOpenspacePriors(null);
+  } else if (openspaceEnabled && !hasSuppliedHints) {
     [catalog, prior] = await Promise.all([
       loadCatalog(),
       fetchOpenspacePrior(task, { openspaceHints, useOpenspacePrior: openspaceEnabled }),
@@ -2232,10 +2243,11 @@ export async function routeSkills(task, { mock = false, topK = 3, override = nul
     selection = { strategy: 'mock', prefilter: 'bm25', openspacePrior: priorSummary, choiceCap: null, shards: 0, requests: 0 };
     backendUsed = { kind: 'mock', driver: 'mock', model: 'jev-mock', configuredModel: 'jev-mock', tier: 'mock', attestation: null };
   } else {
-    const chain = resolveChain('route-skills', { override }).chain;
+    const configuredChain = resolveChain('route-skills', { override }).chain;
+    const chain = localOnly ? configuredChain.filter(kind => kind === 'local') : configuredChain;
     const errors = [];
     for (const kind of chain) {
-      const backend = describeBackend(kind, { model });
+      const backend = { ...describeBackend(kind, { model }), localOnly };
       backend.modelOverride = model; // carried into every selection-stage request
       if (backend.error || !backend.configured) {
         errors.push({ kind, error: backend.error || `${kind} is not configured` });
@@ -2321,7 +2333,7 @@ export async function routeSkills(task, { mock = false, topK = 3, override = nul
       ? 'The request does not appear to need a skill (gate below threshold); if it does, search the public skills.sh registry with the find-skills skill (triage installs/source/stars before installing).'
       : 'No confident local catalog match; use the find-skills skill to search the public skills.sh registry (triage installs/source/stars before installing).');
   }
-  result.routing = (fastRoute && backendUsed?.driver === 'qev') ? [] : await routingAdvice(catalog, task, top, { mock, backendUsed, kind: backendUsed?.kind, model });
+  result.routing = (localOnly || (fastRoute && backendUsed?.driver === 'qev')) ? [] : await routingAdvice(catalog, task, top, { mock, backendUsed, kind: backendUsed?.kind, model });
   return result;
 }
 function round(x) { return Number.isFinite(x) ? Math.round(x * 1e4) / 1e4 : x; }

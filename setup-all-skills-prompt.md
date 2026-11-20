@@ -1677,36 +1677,27 @@ fi
 
 #### Jeo: install one sequential pre-prompt hook
 
-When the target is `jeo` (`jeo-code`) and skill-routing hook installation is approved above,
-complete this step after OpenSpace setup and any separately approved Jev setup. The OpenSpace
-installer alone registers a standalone hook; it does not configure Jev-first routing.
+The approved `route-hooks.py install` command above also installs this hook for detected
+Jeo configurations (`${JEO_CONFIG_DIR:-$USER_HOME/.jeo}/hooks.json`). To refresh only Jeo
+on an existing setup, run the same installer with `--host jeo` after approval:
 
-1. Resolve the Jeo registry (`${JEO_CONFIG_DIR:-$USER_HOME/.jeo}/hooks.json`) and back it up
-   before editing. Use only the Jeo-assigned Jev profile (normally `jeo`). Do not enable Jev,
-   select another profile, or authorize hosted inference as part of hook installation.
-2. If that profile is not configured or is disabled, leave only the standalone OpenSpace
-   routing hook. Otherwise, install a Jeo-only wrapper and register it as a single `pre-prompt`
-   entry. Replace the standalone OpenSpace entry and any standalone Jev prompt-routing entry
-   for that profile; preserve registry settings, ingest, review, and other hooks. On reinstall,
-   update the existing wrapper entry rather than adding a duplicate. Registry order alone does
-   not work: Jeo runs separate pre-prompt entries concurrently.
-3. In the wrapper, read the input JSON once. Pass it unchanged to the installed Jev plugin
-   (`jeo-preprompt --agent jeo --profile <profile>`, five seconds), then to the installed
-   OpenSpace shell wrapper (`openspace-route.sh jeo`, ten seconds). Disable Jev's OpenSpace
-   prior for this invocation (`JEV_OPENSPACE_PRIOR=0`). Before wiring Jev, verify that the
-   selected profile's prompt-routing backends, including fallbacks and any enabled model
-   routing, stay local; if this cannot be verified, keep the OpenSpace-only hook. Do not rely
-   on environment overrides for a named profile's backend settings.
-4. Run OpenSpace after Jev even when Jev succeeds. If Jev emits no recommendation, fails,
-   times out, or is later disabled, keep OpenSpace's result. Emit one JSON object with
-   `additionalContext` containing the nonempty Jev text and OpenSpace's
-   `hookSpecificOutput.additionalContext`, in that order. Give the registered wrapper a
-   timeout longer than the sum of the two child timeouts (for example, 16 seconds).
+```bash
+if [ "${JEO_SKILLS_APPROVE_SKILL_ROUTING_HOOKS:-false}" = true ] && [ -f "$SKILLS_ROOT/openspace/scripts/route-hooks.py" ]; then
+  HOME="$USER_HOME" SKILLS_ROOT="$SKILLS_ROOT" python3 "$SKILLS_ROOT/openspace/scripts/route-hooks.py" install --host jeo
+fi
+```
 
-Verify with a matching prompt in a fresh Jeo session. Check that Jev finishes before
-OpenSpace starts and that both results, when present, appear in that order. Use an isolated
-registry and profile fixture to check missing or disabled Jev without changing the real
-profile. Other hosts keep their existing routing setup.
+The installer replaces recognized standalone routing entries with one `pre-prompt`
+wrapper and preserves unrelated entries and registry settings. Separate Jeo hooks run in
+parallel, so changing registry order is not enough.
+
+The wrapper sends the same event to the installed Jev plugin (five seconds), then to
+OpenSpace (ten seconds), even when Jev succeeds. It returns both nonempty notes in order.
+It uses only the Jeo-assigned, enabled Jev profile and the plugin's loopback-only skill
+routing command (no hosted fallback, model routing, or internal OpenSpace prior). The hook
+does not install or enable Jev. With old, missing, disabled, silent, failed, or timed-out
+Jev, only OpenSpace can contribute a note. OpenSpace's own opt-outs still apply. Other
+hosts keep their existing setup.
 
 `route-hooks.py status` reports configuration, not execution. Verify each intended host in
 a fresh session with a matching live prompt and compare an `OPENSPACE_ROUTE=off` control
