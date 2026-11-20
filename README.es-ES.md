@@ -341,7 +341,7 @@ y la [atribución MIT upstream](docs/attribution.md).
 
 ## 📚 Lista de Habilidades
 
-> Generado desde `.agent-skills/skills.json` · 449 habilidades · despliega una categoría para ver sus habilidades.
+> Generado desde `.agent-skills/skills.json` · 450 habilidades · despliega una categoría para ver sus habilidades.
 
 ### 🌐 Web (76)
 
@@ -759,9 +759,9 @@ Subcategorías: `code-quality` (13), `testing` (3), `architecture` (6), `documen
 
 </details>
 
-### 🔭 Investigación y Análisis (17)
+### 🔭 Investigación y Análisis (18)
 
-Subcategorías: `academic` (3), `web-research` (4), `data-analysis` (2), `experimentation` (3), `benchmarking` (1), `intelligence` (4)
+Subcategorías: `academic` (3), `web-research` (5), `data-analysis` (2), `experimentation` (3), `benchmarking` (1), `intelligence` (4)
 
 <details>
 <summary>Ver habilidades</summary>
@@ -785,6 +785,7 @@ Subcategorías: `academic` (3), `web-research` (4), `data-analysis` (2), `experi
 | `image-to-github-repo` |
 | `minimind` |
 | `new-term-radar` |
+| `last30days` |
 
 </details>
 

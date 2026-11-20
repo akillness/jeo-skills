@@ -1,7 +1,7 @@
 {
   "version": "2.1.0",
   "generated": "2026-10-21",
-  "skill_count": 449,
+  "skill_count": 450,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -491,7 +491,8 @@
       "mi-orchestration",
       "image-to-github-repo",
       "minimind",
-      "new-term-radar"
+      "new-term-radar",
+      "last30days"
     ],
     "business": [
       "marketing-automation",
@@ -1070,7 +1071,8 @@
         "deep-research",
         "heretic",
         "research",
-        "image-to-github-repo"
+        "image-to-github-repo",
+        "last30days"
       ],
       "data-analysis": [
         "data-analysis",
@@ -16483,6 +16485,39 @@
       "keyword": "new-term-radar",
       "version": "0.1.0",
       "source": "https://github.com/zhuyansen/new-term-radar"
+    },
+    {
+      "name": "last30days",
+      "description": "Research what people actually say about any topic in the last 30 days using mvanhorn/last30days-skill (v4.4.0). Pulls posts, threads, and engagement from Reddit, X, YouTube, TikTok, Hacker News, Polymarket, GitHub, and the web. Includes a doctor health check to diagnose broken or missing sources.",
+      "category": "research",
+      "subcategory": "web-research",
+      "interface": "cli",
+      "path": "last30days/SKILL.md",
+      "tags": [
+        "last30days",
+        "research",
+        "deep-research",
+        "reddit",
+        "x",
+        "twitter",
+        "youtube",
+        "tiktok",
+        "hackernews",
+        "polymarket",
+        "trends",
+        "citations"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "AskUserQuestion",
+        "WebSearch"
+      ],
+      "keyword": "last30days",
+      "version": "4.4.0",
+      "source": "https://github.com/mvanhorn/last30days-skill"
     }
   ]
 }

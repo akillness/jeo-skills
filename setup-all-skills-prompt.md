@@ -3658,6 +3658,10 @@ Preview `jeo-skill install indra --global --dry-run`, then install the selected 
 Preview `jeo-skill install new-term-radar --global --dry-run`, then install the selected guide with `jeo-skill install new-term-radar --global --yes`. Installing `new-term-radar` copies operator guidance, signal/config/MCP timeout references, and offline support tools only, not `new-term-radar`, `uvx`, `config.json` snapshots, or API keys. Resolve `SKILL_DIR` to the installed skill directory and run `python3 "$SKILL_DIR/scripts/preflight.py" --config "/abs/path/to/config.json" --state "/abs/path/to/state" --json` for offline `uvx`/`config.json` validation and boolean env-var checks (never printing secret values). Disclose estimated AIsa/GoAnyAPI charges and obtain explicit user approval before running paid scans, sending `--mail` (Resend) reports, or registering the MCP server (raise `startup_timeout_sec >= 120` and `tool_timeout_sec >= 900`).
 
 
+### last30days multi-source research operator (on demand)
+
+Preview `jeo-skill install last30days --global --dry-run`, then install the selected guide with `jeo-skill install last30days --global --yes`. Installing `last30days` copies operator guidance, multi-platform references, and support scripts for `mvanhorn/last30days-skill` (v4.4.0, MIT). It enables deep 30-day cross-platform research across Reddit, X, YouTube, TikTok, Hacker News, Polymarket, GitHub, and the web, including a diagnostic doctor health check to verify search lane availability.
+
 ### Agent Substrate operator (on demand)
 
 Preview `jeo-skill install agent-substrate --global --dry-run`, then install the selected guide with `jeo-skill install agent-substrate --global --yes`. Installing `agent-substrate` copies operator guidance, CRD schema references, and demo descriptions only, not the Agent Substrate control plane, Go toolchain, `kind` clusters, or GKE infrastructure. Review the skill's operations and architecture references before separately authorizing cluster creation (`hack/create-kind-cluster.sh`), control plane deployment (`go run ./cmd/ate-setup deploy`), demo runs, or any `kubectl-ate` commands that modify cluster state.
