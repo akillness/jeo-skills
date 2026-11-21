@@ -3662,6 +3662,10 @@ Preview `jeo-skill install new-term-radar --global --dry-run`, then install the 
 
 Preview `jeo-skill install last30days --global --dry-run`, then install the selected guide with `jeo-skill install last30days --global --yes`. Installing `last30days` copies operator guidance, multi-platform references, and support scripts for `mvanhorn/last30days-skill` (v4.4.0, MIT). It enables deep 30-day cross-platform research across Reddit, X, YouTube, TikTok, Hacker News, Polymarket, GitHub, and the web, including a diagnostic doctor health check to verify search lane availability.
 
+
+### Motionmaxxing motion graphics operator (on demand)
+
+Preview `jeo-skill install motionmaxxing --global --dry-run`, then install the selected guide with `jeo-skill install motionmaxxing --global --yes`. Installing `motionmaxxing` copies operator guidance, measured craft laws, frame-by-frame curve references, and automated verification scripts (`look.py`, `lint.mjs`) for `Tejashmakwana/motionmaxxing` (Apache-2.0). It directs and builds professional, brand-specific motion graphics films (launch videos, product promos, feature reveals, brand stings) using a seek-safe GSAP runtime without generic AI motion slop.
 ### Agent Substrate operator (on demand)
 
 Preview `jeo-skill install agent-substrate --global --dry-run`, then install the selected guide with `jeo-skill install agent-substrate --global --yes`. Installing `agent-substrate` copies operator guidance, CRD schema references, and demo descriptions only, not the Agent Substrate control plane, Go toolchain, `kind` clusters, or GKE infrastructure. Review the skill's operations and architecture references before separately authorizing cluster creation (`hack/create-kind-cluster.sh`), control plane deployment (`go run ./cmd/ate-setup deploy`), demo runs, or any `kubectl-ate` commands that modify cluster state.

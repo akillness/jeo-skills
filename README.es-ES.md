@@ -341,7 +341,7 @@ y la [atribución MIT upstream](docs/attribution.md).
 
 ## 📚 Lista de Habilidades
 
-> Generado desde `.agent-skills/skills.json` · 450 habilidades · despliega una categoría para ver sus habilidades.
+> Generado desde `.agent-skills/skills.json` · 451 habilidades · despliega una categoría para ver sus habilidades.
 
 ### 🌐 Web (76)
 
@@ -514,9 +514,9 @@ Subcategorías: `client` (9), `web` (2), `server` (1), `design-ui` (7), `audio` 
 
 </details>
 
-### 🎬 Medios Creativos (40)
+### 🎬 Medios Creativos (41)
 
-Subcategorías: `image` (10), `video` (18), `motion` (1), `audio` (2), `presentation` (1), `diagram` (2), `design` (4), `capture` (0), `storytelling` (2)
+Subcategorías: `image` (10), `video` (18), `motion` (2), `audio` (2), `presentation` (1), `diagram` (2), `design` (4), `capture` (0), `storytelling` (2)
 
 <details>
 <summary>Ver habilidades</summary>
@@ -563,6 +563,7 @@ Subcategorías: `image` (10), `video` (18), `motion` (1), `audio` (2), `presenta
 | `voicestudio` |
 | `diagram-design` |
 | `artcraft` |
+| `motionmaxxing` |
 
 </details>
 

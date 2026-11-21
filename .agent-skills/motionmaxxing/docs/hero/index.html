@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>motionmaxxing face-rating banner</title>
+<meta name="viewport" content="width=1600, height=500">
+<!-- Made WITH the skill: runtime/motion.js, measured eases, rendered by scripts/render.mjs, checked by scripts/lint.mjs.
+     Concept: "your keyframes get a face rating". The viral looksmaxxing face-analysis edit (thin measurement lines, degree wedges,
+     dashed symmetry lines, coloured arrows, dark glitchy desaturated ground) is applied to MOTION instead of a face.
+     MID: a default serif word and a straight linear ease get analysed, every reading is "?" or wrong. Hard glitch cut.
+     MAXXED: the brand type lands, the overlays re-snap on the real letterforms and on the real softLand curve, and read measured values.
+     Purely typographic and vector: no photograph, no person, no third-party image. -->
+<link rel="stylesheet" href="../../runtime/fonts.css">
+<style>
+:root { --ink: #F3F1EC; --accent: #FF6A3D; --font: "Inter", system-ui, sans-serif; }
+* { box-sizing: border-box; }
+html, body { margin: 0; width: 1600px; height: 500px; overflow: hidden; background: #000; }
+#main { position: absolute; left: 0; top: 0; width: 1600px; height: 500px; overflow: hidden; background: #131418; color: var(--ink); font-family: var(--font); }
+.fill { position: absolute; inset: 0; }
+
+/* grounds: flat and dull while mid, lit like a statue once maxxed */
+#flat { background: #15161A; }
+#rich { background: linear-gradient(180deg, #0D0E12 0%, #06070A 100%); }
+#lightA { position: absolute; left: -380px; top: -520px; width: 1500px; height: 1100px; border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(176,196,230,.30), rgba(150,172,210,.11) 48%, rgba(150,172,210,0) 100%); }
+#lightB { position: absolute; left: 760px; top: 120px; width: 1100px; height: 800px; border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255,106,61,.20), rgba(255,106,61,.06) 50%, rgba(255,106,61,0) 100%); }
+#mottle { opacity: .5; mix-blend-mode: soft-light;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='500'><filter id='m'><feTurbulence type='fractalNoise' baseFrequency='.006 .02' numOctaves='3' seed='4' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%' height='100%' filter='url(%23m)'/></svg>"); background-size: 800px 500px; }
+
+#stage { position: absolute; inset: 0; }
+
+/* MID: the default word. Times, flat grey. */
+#mid { position: absolute; left: 0; top: 86px; width: 1600px; height: 240px; text-align: center; font: 400 220px/240px "Times New Roman", Times, serif;
+  color: #7E8088; white-space: pre; transform: translateX(-17px); }
+
+/* MAXXED: the brand type, set on absolute positions so the overlays can be measured once (160 px Inter, weight 640, tracking -0.045em) */
+#lock { position: absolute; left: 280px; top: 122px; width: 1040px; height: 200px; font: 640 160px/200px var(--font); letter-spacing: -0.045em; white-space: pre; text-align: center; }
+#w1 { --ls: .07; display: inline-block; letter-spacing: calc(var(--ls) * 1em);
+  background: linear-gradient(180deg, #FFFFFF 16%, #DCE0E7 40%, #9AA0AC 62%, #666B76 80%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+#w2 { display: inline-block; padding-right: .06em; margin-right: -.06em;
+  background: linear-gradient(100deg, #FFA070 0%, #FF6A3D 46%, #F2452A 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+#tag { position: absolute; left: 0; top: 414px; width: 1600px; text-align: center; font-size: 34px; line-height: 44px; font-weight: 450; letter-spacing: -0.005em; color: rgba(214,219,229,.74); white-space: pre; }
+
+/* measurement overlays */
+.it { position: absolute; left: 0; top: 0; width: 1600px; height: 500px; overflow: visible; pointer-events: none; }
+.lab { position: absolute; white-space: pre; font: 600 28px/1 var(--font); padding: 4px 8px 5px; background: rgba(5,6,8,.84); color: #F4F5F7; border-radius: 3px; }
+
+/* glitch layers */
+.gs { position: absolute; white-space: pre; mix-blend-mode: screen; pointer-events: none; }
+.gsA { transform: translateX(-17px); left: 0; top: 86px; width: 1600px; height: 240px; text-align: center; font: 400 220px/240px "Times New Roman", Times, serif; }
+.gsB { left: 280px; top: 122px; width: 1100px; height: 200px; font: 640 160px/200px var(--font); letter-spacing: -0.045em; }
+.blk { position: absolute; pointer-events: none; }
+#flash { background: #D8DEEA; opacity: 0; mix-blend-mode: screen; }
+
+/* finish */
+#scan { background: repeating-linear-gradient(180deg, rgba(0,0,0,.2) 0 2px, rgba(0,0,0,0) 2px 4px); pointer-events: none; }
+#sband { position: absolute; left: 0; top: -140px; width: 1600px; height: 140px; background: linear-gradient(180deg, rgba(190,205,230,0), rgba(190,205,230,.07) 55%, rgba(190,205,230,0)); mix-blend-mode: screen; pointer-events: none; }
+#vig { background: radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0) 38%, rgba(0,0,0,.72) 100%); pointer-events: none; }
+#grain { opacity: 0; mix-blend-mode: overlay; pointer-events: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' seed='5' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); }
+</style>
+</head>
+<body>
+<div id="main">
+  <div class="fill" id="flat"></div>
+  <div class="fill" id="rich"></div>
+  <div id="lightA"></div><div id="lightB"></div>
+  <div class="fill" id="mottle"></div>
+
+  <div id="stage">
+    <div id="mid">motion</div>
+    <div id="lock"><span id="w1">motion</span><span id="w2">maxxing</span></div>
+    <div id="tag">looksmaxxing for motion graphics</div>
+    <div id="ov"></div>
+    <div id="gl"></div>
+  </div>
+
+  <div class="fill" id="flash"></div>
+  <div class="fill" id="scan"></div>
+  <div id="sband"></div>
+  <div class="fill" id="vig"></div>
+  <div class="fill" id="grain"></div>
+</div>
+
+<script src="../../runtime/vendor/gsap.min.js"></script>
+<script src="../../runtime/motion.js"></script>
+<script>
+const M = Motion.film({ fps: 30, duration: 6.5, width: 1600, height: 500, clock: 'smooth' });
+const ACCENT = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
+const GRAIN = /nograin/.test(location.search) ? 0 : .12;
+const $ = (s) => document.querySelector(s);
+const CUT = 90, END = 188;                       // mid -> maxxed cut; maxxed -> mid cut (the loop closes on the word it started with)
+
+/* ------------------------------------------------------------------ overlay vocabulary (what the meme is made of) */
+const NS = 'http://www.w3.org/2000/svg';
+const COL = { blue: '#3E8BFF', white: '#F4F5F7', grey: '#9097A3', red: '#FF4A4A', amber: '#FFA21F', green: '#38E08A', mag: '#FF3FD2', yel: '#FFE347' };
+const rad = (d) => d * Math.PI / 180, deg = (r) => r * 180 / Math.PI;
+const f1 = (n) => (+n).toFixed(1);
+const ln = (x1, y1, x2, y2, c, w = 2, dash = '') => `<line x1="${f1(x1)}" y1="${f1(y1)}" x2="${f1(x2)}" y2="${f1(y2)}" stroke="${c}" stroke-width="${w}"${dash ? ` stroke-dasharray="${dash}"` : ''}/>`;
+function head(x, y, a, c, s = 11) {            // arrowhead with its tip at (x, y), pointing along screen angle a (rad)
+  const dx = Math.cos(a), dy = Math.sin(a), bx = x - dx * s * 1.7, by = y - dy * s * 1.7, nx = -dy * s * .62, ny = dx * s * .62;
+  return `<polygon points="${f1(x)},${f1(y)} ${f1(bx + nx)},${f1(by + ny)} ${f1(bx - nx)},${f1(by - ny)}" fill="${c}"/>`;
+}
+function arrow(x1, y1, x2, y2, c, w = 3) {     // tail -> tip
+  const a = Math.atan2(y2 - y1, x2 - x1), s = 11;
+  return ln(x1, y1, x2 - Math.cos(a) * s * 1.5, y2 - Math.sin(a) * s * 1.5, c, w) + head(x2, y2, a, c, s);
+}
+function dbl(x, y1, y2, c) {                   // vertical double arrow
+  return ln(x, y1 + 14, x, y2 - 14, c, 2) + head(x, y1, -Math.PI / 2, c, 9) + head(x, y2, Math.PI / 2, c, 9);
+}
+const P = (vx, vy, a, r) => [vx + r * Math.cos(rad(a)), vy - r * Math.sin(rad(a))];    // math angle (y up) -> screen point
+function wedge(vx, vy, a1, a2, l1, l2, r, c = COL.white) {
+  const [x1, y1] = P(vx, vy, a1, l1), [x2, y2] = P(vx, vy, a2, l2), [ax, ay] = P(vx, vy, a1, r), [bx, by] = P(vx, vy, a2, r);
+  return ln(vx, vy, x1, y1, c, 2.5) + ln(vx, vy, x2, y2, c, 2.5)
+    + `<path d="M${f1(ax)} ${f1(ay)} A${r} ${r} 0 0 ${a2 > a1 ? 0 : 1} ${f1(bx)} ${f1(by)}" fill="none" stroke="${c}" stroke-width="2"/>`
+    + `<circle cx="${f1(vx)}" cy="${f1(vy)}" r="4.5" fill="${c}"/>`;
+}
+const ov = $('#ov'), gl = $('#gl');
+function item(inner) { const s = document.createElementNS(NS, 'svg'); s.setAttribute('class', 'it'); s.setAttribute('viewBox', '0 0 1600 500'); s.innerHTML = inner; ov.appendChild(s); return s; }
+/* an item that draws on with a crisp stepped wipe (a pose every 2 frames), then stays until `off` */
+function draw(inner, at, frames, off, dir = 'x') {
+  const s = item(inner), fmt = (v) => (dir === 'y' ? `inset(0 0 ${v}% 0)` : `inset(0 ${v}% 0 0)`);
+  M.kf(s, 'clipPath', [[at, 100], [at + frames, 0]], { step: 2, fmt });
+  M.hide(s, off); return s;
+}
+function pop(inner, at, off) { const s = item(inner); M.show(s, at, off); return s; }                     // hard cut in
+function lab(text, x, y, o = {}) {
+  const e = document.createElement('div'); e.className = 'lab'; e.textContent = text;
+  const ax = o.a === 'r' ? '-100%' : o.a === 'l' ? '0' : '-50%';
+  e.style.cssText = `left:${x}px;top:${y}px;transform:translate(${ax},-50%);${o.col ? `color:${o.col};` : ''}${o.size ? `font-size:${o.size}px;` : ''}${o.bd ? `box-shadow:inset 0 0 0 2px ${o.bd};` : ''}`;
+  ov.appendChild(e); return e;
+}
+/* a reading that "computes": a few stepped wrong values (2 frames each), then the final one holds until `off` */
+function reading(texts, x, y, at, off, o = {}) {
+  texts.forEach((t, i) => { const e = lab(t, x, y, o), a = at + 2 * i, b = i === texts.length - 1 ? off : a + 2; M.show(e, a, b); });
+}
+
+/* ------------------------------------------------------------------ geometry (measured once: Times 220 px centred -17 px; Inter 640 160 px at left 280) */
+const BASE = 280;
+const MID = { x0: 471.5, e: [0, 171.1, 281.1, 342.3, 403.4, 513.4, 623.4], xh: BASE - 98.3, asc: BASE - 152.7, desc: BASE + 47.7, cx: 783 };   // char edges relative to x0
+const MX = { x0: 280, xh: BASE - 82.5, asc: BASE - 117.3, desc: BASE + 33.8,
+  e: [0, 132.8, 217.4, 267.4, 298.2, 382.9, 468.1, 600.9, 681, 758.7, 836.5, 867.3, 952.5, 1039.9] };                                              // m o t i o n | m a x x i n g
+const cx = (i) => MX.x0 + (MX.e[i] + MX.e[i + 1]) / 2, ex = (i) => MX.x0 + MX.e[i];
+const BOX = { x: 880, y: 313, s: 210 };      // the ease graph sits over the word like a face mesh
+
+/* ------------------------------------------------------------------ ground + the two words */
+M.show('#flat', 0, CUT); M.show('#flat', END);
+M.show('#rich', CUT, END); M.show('#lightA', CUT, END); M.show('#lightB', CUT, END);
+M.kf('#mottle', 'opacity', [[0, 0], [CUT - 1, 0], [CUT, .5], [END - 1, .5], [END, 0]]);
+M.show('#mid', 0, CUT); M.show('#mid', END);
+M.kf('#stage', 'scale', [[0, 1], [CUT - 1, 1.012], [CUT, 1.05], [CUT + 14, 1, 'softLand'], [END - 1, 1.016], [END, 1], [195, 1.0]], { ease: 'cruise' });
+M.kf('#sband', 'y', [[0, 0], [97, 660, 'cruise'], [98, 0], [195, 660]], { step: 3 });
+M.kf('#vig', 'opacity', [[0, .55], [CUT - 1, .55], [CUT, 1], [END - 1, 1], [END, .55]]);
+M.kf('#grain', 'opacity', [[0, GRAIN], [195, GRAIN]]);
+M.kf('#lightA', 'x', [[CUT, 0], [END, 90]], { ease: 'cruise' });
+M.kf('#lightB', 'x', [[CUT, 0], [END, -70]], { ease: 'cruise' });
+
+M.enter('#w1', { at: CUT + 2, frames: 12, ease: 'snapSettle', from: { scale: 2.1, blur: 14 }, smear: { axis: 'x', px: 40, frames: 3 } });
+M.hide('#w1', END);
+M.kf('#w1', '--ls', [[0, .07], [CUT + 2, .07], [CUT + 26, -.045, 'softLand']], { fmt: (v) => v });
+M.enter('#w2', { at: CUT + 10, frames: 14, ease: 'softLand', from: { x: 260, blur: 12, opacity: 0 }, smear: { axis: 'x', px: 52, frames: 3 } });
+M.hide('#w2', END);
+
+/* ------------------------------------------------------------------ MID: the analysis (frames 6-88). Every reading is "?" or wrong. */
+const A_OFF = CUT - 2;
+const aLeft = 372, aRight = 1192;
+[[MID.asc, 6], [MID.xh, 8], [BASE, 10], [MID.desc, 12]].forEach(([y, at]) => draw(ln(aLeft, y, aRight, y, COL.blue, 2), at, 10, A_OFF));
+[[MID.asc, MID.xh, 22], [MID.xh, BASE, 25], [BASE, MID.desc, 28]].forEach(([y1, y2, at]) => {
+  draw(dbl(430, y1, y2, COL.blue), at, 6, A_OFF, 'y');
+  const my = (y1 + y2) / 2; reading(['?'], 416, my, at + 6, A_OFF, { a: 'r', col: COL.blue, size: 32 });
+});
+draw(ln(MID.cx, 112, MID.cx, 372, COL.grey, 2, '9 7'), 30, 8, A_OFF, 'y');
+draw(ln(800, 112, 800, 372, COL.grey, 2, '9 7'), 32, 8, A_OFF, 'y');
+reading(['17 px'], 770, 400, 38, A_OFF, { a: 'r', col: '#C9CED8' });
+reading(['?'], 814, 400, 40, A_OFF, { a: 'l', col: '#C9CED8' });
+// the linear ease, drawn as a graph with equal axes over the word, and its angle
+draw(ln(BOX.x, BOX.y, BOX.x + BOX.s, BOX.y, COL.white, 2) + ln(BOX.x, BOX.y, BOX.x, BOX.y - BOX.s, COL.white, 2), 38, 8, A_OFF);
+draw(ln(BOX.x, BOX.y, BOX.x + BOX.s, BOX.y - BOX.s, COL.yel, 3) + `<circle cx="${BOX.x + BOX.s}" cy="${BOX.y - BOX.s}" r="5" fill="${COL.yel}"/>`, 44, 10, A_OFF);
+pop(wedge(BOX.x, BOX.y, 0, 45, 128, 128, 70), 54, A_OFF);
+reading(['linear 8.0°', 'linear 31.0°', 'linear 45.0°'], BOX.x + 96, BOX.y - 52, 56, A_OFF, { a: 'l' });
+// arrows at what is wrong
+const below = (c, x, text, at, off, tipY = BASE + 10) => { pop(arrow(x, tipY + 40, x, tipY, c), at, off); reading([text], x, tipY + 66, at + 2, off, { col: c }); };
+below(COL.red, MID.x0 + 20, 'default serif', 58, A_OFF);
+below(COL.amber, MID.x0 + MID.e[2], 'tracking 0.0', 62, A_OFF);
+below(COL.green, MID.x0 + MID.e[6] - 12, 'ease 0.0', 66, A_OFF);
+pop(arrow(870, 100, 846, 126, COL.yel), 70, A_OFF); reading(['?'], 886, 94, 72, A_OFF, { a: 'l', col: COL.yel });
+pop(arrow(1176, 222, 1110, 222, COL.mag), 74, A_OFF); reading(['mid'], 1190, 222, 76, A_OFF, { a: 'l', col: COL.mag, bd: COL.mag, size: 30 });
+
+/* ------------------------------------------------------------------ MAXXED: re-snapped on the real letterforms (frames 100-186). Readings are measured values. */
+const B_OFF = END - 2;
+const bLeft = 206, bRight = 1396;
+[[MX.asc, 104], [MX.xh, 106], [BASE, 108], [MX.desc, 110]].forEach(([y, at]) => draw(ln(bLeft, y, bRight, y, COL.blue, 2), at, 6, B_OFF));
+const zones = [[MX.asc, MX.xh], [MX.xh, BASE], [BASE, MX.desc]], zh = zones.map(([a, b]) => b - a);
+zones.forEach(([y1, y2], i) => {
+  const at = 114 + 3 * i; draw(dbl(236, y1, y2, COL.blue), at, 4, B_OFF, 'y');
+  reading(['?', f1(zh[i] / zh[0])], 222, (y1 + y2) / 2, at + 4, B_OFF, { a: 'r', col: COL.blue, size: i === 1 ? 30 : 26 });
+});
+// the symmetry line: dead centre, 0 px (mid was 17 px off)
+draw(ln(800, 112, 800, 372, COL.grey, 2, '9 7'), 98, 6, B_OFF, 'y');
+reading(['17 px', '0 px'], 800, 100, 102, B_OFF, { a: 'c', col: '#C9CED8' });
+// measured arrival of "maxxing": its leading edge, and the ease it lands on
+draw(ln(ex(6), 120, ex(6), 372, COL.grey, 2, '9 7'), 102, 6, B_OFF, 'y');
+const belowB = (c, x, text, at, tipY = BASE + 10) => { pop(arrow(x, tipY + 40, x, tipY, c), at, B_OFF); reading([text], x, tipY + 66, at + 2, B_OFF, { col: c }); };
+belowB(COL.green, ex(6) + 66, 'softLand', 108);
+belowB(COL.mag, cx(1) + 4, 'weight 640', 126);
+belowB(COL.amber, cx(4) + 20, 'snapSettle', 130);
+belowB(COL.yel, ex(12) + 2, '−0.045 em', 134);
+// the ease graph: the real softLand curve, and the angle it leaves at
+const EZ = M.ease.softLand, SX = .32, ang = deg(Math.atan2(EZ(SX), SX));
+let d = ''; for (let i = 0; i <= 28; i++) { const t = i / 28; d += (i ? 'L' : 'M') + f1(BOX.x + t * BOX.s) + ' ' + f1(BOX.y - EZ(t) * BOX.s); }
+draw(ln(BOX.x, BOX.y, BOX.x + BOX.s, BOX.y, COL.white, 2) + ln(BOX.x, BOX.y, BOX.x, BOX.y - BOX.s, COL.white, 2), 118, 6, B_OFF);
+draw(`<path d="${d}" fill="none" stroke="${COL.yel}" stroke-width="3.5" stroke-linejoin="round"/><circle cx="${BOX.x + BOX.s}" cy="${BOX.y - BOX.s}" r="5" fill="${COL.yel}"/>`, 122, 10, B_OFF);
+pop(wedge(BOX.x, BOX.y, 0, ang, 150, Math.hypot(SX * BOX.s, EZ(SX) * BOX.s) + 36, 76), 134, B_OFF);
+reading(['linear 45.0°', 'softLand ' + f1(ang) + '°'], BOX.x + 100, BOX.y - 60, 134, B_OFF, { a: 'l' });
+// angle wedges on the letterforms (the drawn rays are the measurement)
+pop(wedge(MX.x0 + 14, BASE, 0, 73.2, 158, 158, 66), 138, B_OFF);       reading(['73.2°'], ...P(MX.x0 + 14, BASE, 73.2, 158 + 30), 140, B_OFF);
+pop(wedge(cx(4), MX.xh, -90 + 40.75, -90 - 40.75, 84, 84, 50), 142, B_OFF);   reading(['81.5°'], cx(4), MX.asc - 20, 144, B_OFF);
+pop(wedge(cx(10), MX.asc + 12, -90 + 59.45, -90 - 59.45, 70, 70, 40), 146, B_OFF);  reading(['118.9°'], cx(10) + 96, MX.asc - 6, 148, B_OFF, { a: 'l' });
+pop(wedge(MX.x0 + 1039, BASE, 180, 180 - 41.9, 130, 130, 56), 150, B_OFF);   reading(['41.9°'], MX.x0 + 1039 + 22, BASE - 22, 152, B_OFF, { a: 'l' });
+// the verdict
+pop(arrow(1426, 224, 1346, 224, COL.green), 164, B_OFF); reading(['maxxed'], 1438, 224, 166, B_OFF, { a: 'l', col: COL.green, bd: COL.green, size: 30 });
+
+/* the tagline, at speech rhythm; the last word tints on arrival */
+M.words('#tag', { at: 156, mech: 'rise', dist: 22, gaps: [6, 4, 5], frames: 11, smear: true, accent: { color: ACCENT, frames: 22, word: -1 } });
+M.kf('#tag', 'opacity', [[0, 1], [END - 1, 1], [END, 0]]);
+
+/* ------------------------------------------------------------------ glitch: hard-stepped slices and macroblocks (no Math.random: seeded) */
+let seed = 20260;
+const rnd = () => (seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0) / 4294967296;
+const SL = ['#37D6FF', '#FF3A55', '#E6EAF2'];
+function slice(kind, y0, y1, dx, a, b, ci) {
+  const e = document.createElement('div'); e.className = 'gs ' + (kind === 'A' ? 'gsA' : 'gsB'); e.textContent = kind === 'A' ? 'motion' : 'motionmaxxing';
+  e.style.color = SL[ci % 3]; e.style.opacity = ci % 3 === 2 ? .85 : .9; const T = kind === 'A' ? 86 : 122, H = kind === 'A' ? 240 : 200; e.style.clipPath = `inset(${y0 - T}px 0 ${H - (y1 - T)}px 0)`; e.style.translate = dx + 'px 0';
+  gl.appendChild(e); M.show(e, a, b);
+}
+function blocks(f, n, len = 1) {
+  for (let i = 0; i < n; i++) {
+    const e = document.createElement('div'); e.className = 'blk';
+    const w = 16 * (2 + Math.floor(rnd() * 9)), h = 4 * (2 + Math.floor(rnd() * 9)), x = 16 * Math.floor(rnd() * 100), y = 4 * Math.floor(rnd() * 124);
+    const k = rnd(); e.style.cssText = `left:${x - 8}px;top:${y}px;width:${w}px;height:${h}px;background:${k < .55 ? 'rgba(205,212,226,.2)' : k < .8 ? 'rgba(205,212,226,.38)' : k < .92 ? 'rgba(0,0,0,.6)' : 'rgba(150,175,255,.22)'};`;
+    gl.appendChild(e); M.show(e, f, f + len);
+  }
+}
+const tear = (kind, f, len, rows) => rows.forEach(([y0, y1, dx], i) => slice(kind, y0, y1, dx, f, f + len, i));
+// every glitch event sits on an even frame and lasts 2 frames, so it survives the 15 fps GIF as well as the 30 fps MP4
+tear('A', 0, 2, [[140, 190, 38], [220, 250, -52]]); tear('A', 2, 2, [[170, 200, 16]]);
+tear('A', 30, 2, [[160, 205, 30], [240, 262, -36]]); tear('A', 56, 2, [[130, 170, -42], [200, 232, 26]]); tear('A', 76, 2, [[150, 215, 54]]);
+tear('A', 84, 2, [[120, 170, 60], [200, 245, -74], [262, 300, 26]]); tear('A', 86, 2, [[150, 190, -90], [210, 270, 48]]); tear('A', 88, 2, [[110, 210, 120], [235, 285, -64]]);
+tear('B', 92, 2, [[150, 210, 90], [240, 295, -80]]); tear('B', 94, 2, [[130, 175, -60], [215, 250, 70]]); tear('B', 96, 2, [[170, 235, 34]]);
+tear('B', 128, 2, [[170, 205, 28], [250, 300, -34]]); tear('B', 168, 2, [[160, 215, -40], [255, 296, 32]]);
+tear('B', 180, 2, [[150, 200, 26]]); tear('B', 182, 2, [[170, 240, -50], [260, 300, 40]]); tear('B', 184, 2, [[130, 215, 80], [235, 300, -90]]);
+tear('B', 186, 2, [[120, 180, -120], [200, 260, 100], [270, 320, -40], [110, 330, 160]]);
+tear('A', 188, 2, [[120, 180, 110], [200, 250, -90], [262, 320, 50]]); tear('A', 190, 2, [[150, 215, -70], [240, 300, 64]]); tear('A', 192, 2, [[170, 230, 40]]);
+[[0, 6], [2, 2], [14, 1], [40, 2], [52, 1], [66, 2], [84, 9], [86, 12], [88, 14], [90, 11], [92, 9], [94, 5], [96, 2], [128, 2], [168, 3],
+ [180, 3], [182, 6], [184, 9], [186, 12], [188, 10], [190, 6], [192, 3]].forEach(([f, n]) => blocks(f, n, 2));
+M.kf('#flash', 'opacity', [[0, 0], [CUT, 0], [CUT, .14], [CUT + 2, .14], [CUT + 2, 0], [END - 2, 0], [END - 2, .1], [END, .1], [END, 0]]);
+
+window.__ready = Motion.loaded().then(() => {
+  if (/selftest/.test(location.search)) Motion.selfTest(M, { samples: 24 });
+  console.log('softLand angle at x=' + SX + ': ' + ang.toFixed(2) + ' deg');
+});
+</script>
+</body>
+</html>

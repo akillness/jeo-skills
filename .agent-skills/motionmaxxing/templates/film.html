@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>FILM TITLE</title>
+<meta name="viewport" content="width=1920, height=1080">
+<!-- RUNTIME PATHS: copy this file to film/index.html and the whole runtime/ folder to film/runtime/ (paths below are ./runtime/).
+     To use it in place from templates/, change ./runtime/ to ../runtime/, or point at the runtime by absolute path.
+     fonts.css finds fonts/ relative to itself. -->
+<link rel="stylesheet" href="./runtime/fonts.css">
+<!-- OPTIONAL phone / notification UI at true iOS proportions (runtime/README.md "Phone UI"):
+<link rel="stylesheet" href="./runtime/native-ui/native-ui.css"> -->
+<style>
+/* One sans (weights 400-550, 600 on the wordmark only), one accent with ONE meaning. Write that meaning here: ACCENT = ______________ */
+:root {
+  --ground: #EDEBE6;     /* main ground */
+  --ground-2: #0F1013;   /* second ground (closing / contrast beat) */
+  --ink: #101114;        /* text on --ground */
+  --ink-soft: #6A6862;   /* secondary text */
+  --accent: #F2542D;     /* the single accent */
+  --font: "Inter", system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #000; }
+/* the 1920x1080 stage. Motion.film() writes data-composition-id / data-start / data-duration / data-width / data-height onto #main. */
+#main { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden; background: var(--ground); color: var(--ink); font-family: var(--font); font-weight: 500; }
+.scene { position: absolute; inset: 0; }              /* one .scene per beat; M.cut() swaps them with a hard cut */
+.cam { position: absolute; inset: 0; }                /* camera group inside a scene: M.camera / M.snap / M.dive / M.drift act on it */
+/* Text you plan to build with M.words / M.type: position:absolute, white-space:pre, explicit font-size and line-height. */
+</style>
+</head>
+<body>
+<div id="main">
+
+  <!-- ============ BEAT 1  HOOK  (frames 0-__)  the claim, mid-motion on frame 0 ============
+  <section id="s1" class="scene"><div id="headline" style="position:absolute;left:0;top:410px;width:1920px;text-align:center;font-size:156px;line-height:190px;white-space:pre">Your claim here.</div></section>
+  -->
+
+  <!-- ============ BEAT 2  TURN  (frames __-__)  the problem flips; carry one object across the cut ============
+  <section id="s2" class="scene"><div id="cam2" class="cam"> ... </div></section>
+  -->
+
+  <!-- ============ BEAT 3  PROOF  (frames __-__)  magnified UI / number / result; cause then effect ============
+  <section id="s3" class="scene"><div id="cam3" class="cam"> ... </div></section>
+  -->
+
+  <!-- ============ BEAT 4  CTA  (frames __-end)  brand lands and is still moving on the last frame ============
+  <section id="s4" class="scene" style="background:var(--ground-2);color:#F4F2EE"> ... </section>
+  -->
+
+</div>
+
+<script src="./runtime/vendor/gsap.min.js"></script>
+<script src="./runtime/motion.js"></script>
+<!-- OPTIONAL includes (delete if unused). native-ui: `NativeUI.phone / notification / lockScreen / arrive / macro`, load AFTER motion.js:
+<script src="./runtime/native-ui/native-ui.js"></script>
+     hero3d needs NO tag: add a <canvas id="gl" style="position:absolute;inset:0"></canvas> inside #main (under or over your text) and call M.hero3d('#gl', {...}) below.
+     It loads runtime/hero3d/hero3d.js as an ES module, so open the film through scripts/render.mjs or a local server, not by double-click. See runtime/README.md "3D (hero3d)". -->
+<script>
+/* SEEK CONTRACT (do not break): everything visible is a pure function of t. Author only through Motion calls (or M.tl with fromTo + immediateRender:false).
+   No setTimeout, no Math.random, no Date, no CSS animations, no gsap.set outside the build. Motion.film() exposes
+   window.__seek(t), window.__duration, window.__timelines.main and window.__events; scripts/render.mjs drives __seek. */
+const M = Motion.film({ fps: 30, duration: 15, width: 1920, height: 1080, clock: 'smooth' });   // clock:'twos' = every pose held 2 frames
+const ACCENT = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
+
+/* OPTIONAL 3D hero object (one event, one beat; never two consecutive beats): the state function is a pure function of t in SECONDS.
+   const hero = M.hero3d('#gl', { envMap: 'studio', ground: { y: -1.6 },
+     objects: [{ id: 'mark', kind: 'logo', svg: LOGO_PATH_D, size: 3, material: 'satin', color: '#2b3a78' }],
+     state: (t, o, { key }) => ({ camera: { position: key(t, [[0, [1.8, 1, 14]], [3, [0, .3, 11], 'glide']]), target: [0, -.7, 0] },
+                                  objects: { mark: { rotation: key(t, [[0, [.6, -1.7, 0]], [1.5, [.1, -.3, 0], 'snapSettle']]) } } }) });
+   // then selfTest also hashes the canvas; draft renders: WebGL is ~7 fps at 1080p, use render.mjs --to for the hardest beat only. */
+
+/* BEAT 1  HOOK
+   M.words('#headline', { at: 2, mech: 'rise', dist: 84, gaps: [5, 4, 7], smear: true, accent: { color: ACCENT, frames: 24 } });
+   M.kf('#headline', 'scale', [[2, 1], [50, 1.03], [65, 1.11, 'gentleIn']]);              // never freeze; accelerate into the cut */
+
+/* BEAT 2  TURN
+   M.cut(66, { hide: ['#s1'], show: ['#s2'] });
+   M.enter('#panel', { at: 66, frames: 14, from: { y: 46, scale: .93 }, smear: { axis: 'y', px: 30 } }); */
+
+/* BEAT 3  PROOF  (hard gates: readable object >= 0.04 H text and >= 0.55 W, one object per frame, no empty frame at the seam)
+   // independent transform origins on one element: const w = M.wrap('#cam3'); M.camera('#inner', ..., {origin:'0% 0%'}); M.snap(w, ..., {origin:'960px 440px'});
+   M.type('#prompt', { at: 74, style: 'prompt', seed: 5, caret: '#caret', accentNewest: { color: ACCENT, frames: 2 } });
+   M.cursor('#cursor', { keys: [[96, 2050, 1260, 3.4, -28], [121, 1498, 548, 1, 0]] });
+   M.press('#cursor', '#send', { at: 127 });
+   M.count('#num', { at: 130, from: 0, to: 10000, frames: 23, format: 'comma' });
+   M.snap('#cam3', { at: 157, from: { scale: 2 }, to: { scale: 1 }, tail: 15, origin: '960px 440px' }); */
+
+/* BEAT 4  CTA  (hard gates: whole beat <= 25 % of the film; resolved end hold 0.6-1.4 s; if the film is short add a proof beat, not logo time)
+   M.cut(188, { hide: ['#s3'], show: ['#s4'] });
+   M.enter('#lockup', { at: 188, frames: 20, ease: 'snapSettle', from: { scale: 3.5, blur: 12 } });
+   M.drift('#lockup', { prop: 'scale', from: 1, to: .9, start: 208, end: 450 }); */
+
+// Optional: prove seek-safety while developing (open the file with ?selftest, result lands in window.__seekcheck and the console)
+window.__ready = Motion.loaded().then(() => { if (/selftest/.test(location.search)) Motion.selfTest(M, { samples: 24 }); });
+</script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+/* Inter variable (SIL OFL 1.1, see fonts/OFL.txt). One family, weights 100-900 from a single file. */
+@font-face {
+  font-family: "Inter";
+  src: url("fonts/InterVariable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: block;
+}

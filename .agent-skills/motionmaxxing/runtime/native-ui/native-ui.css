@@ -1,0 +1,347 @@
+/* native-ui.css: product UI at TRUE iOS proportions (iPhone 15/16 logical size 393 x 852 pt).
+   Everything is sized in var(--u) = 1 point, so a whole device scales from ONE variable:
+     .nu { --s: 0.72 }  -> phone is 613 px tall (a device in context: 45-65 % of frame height)
+     .nu { --s: 2.6 }   -> one notification is 960 px wide (macro: the component IS the frame)
+   Never inflate UI font sizes to make them readable: readability comes from the camera (NativeUI.macro / M.camera push-in).
+   Tokens (--app-*) are the PRODUCT's own look; set --app-font to the brand font if the UI is the brand's own (default: the system font, which is SF on macOS).
+   Classes are prefixed .nu-* (no clash with .mwrap / .cam / .scene). Do not put `filter` on an ancestor of .nu-notif / .nu-tabbar: it kills their backdrop blur. */
+.nu {
+  --s: 1;
+  --app-bg: #f2f2f7;
+  --app-surface: #ffffff;
+  --app-fg: #000000;
+  --app-muted: #8a8a8e;
+  --app-sep: rgba(60, 60, 67, 0.18);
+  --app-accent: #0a84ff;
+  --app-font: -apple-system, "SF Pro Text", "Inter", system-ui, sans-serif;
+  --u: calc(var(--s) * 1px);
+  font-size: calc(var(--s) * 15px);
+  font-family: var(--app-font);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.25;
+}
+.nu * {
+  box-sizing: border-box;
+}
+
+/* ---------- device: bezel, titanium edge, Dynamic Island, home indicator ---------- */
+.nu-phone {
+  position: relative;
+  width: calc(393 * var(--u));
+  height: calc(852 * var(--u));
+  border-radius: calc(56 * var(--u));
+  background: #000;
+  box-shadow:
+    0 0 0 calc(10 * var(--u)) #0a0a0b,
+    0 0 0 calc(11.5 * var(--u)) #48484c,
+    0 0 0 calc(12.5 * var(--u)) #1c1c1e,
+    0 calc(20 * var(--u)) calc(40 * var(--u)) rgba(0, 0, 0, 0.25),
+    0 calc(60 * var(--u)) calc(140 * var(--u)) calc(-30 * var(--u)) rgba(0, 0, 0, 0.5);
+}
+.nu-screen {
+  position: absolute;
+  inset: 0;
+  border-radius: calc(56 * var(--u));
+  overflow: hidden;
+  background: var(--app-bg);
+  color: var(--app-fg);
+}
+.nu-screen.dark,
+.nu-screen:has(.nu-lock) {
+  color: #fff;
+}
+.nu-island {
+  position: absolute;
+  top: calc(11 * var(--u));
+  left: 50%;
+  width: calc(126 * var(--u));
+  height: calc(37 * var(--u));
+  margin-left: calc(-63 * var(--u));
+  border-radius: calc(20 * var(--u));
+  background: #000;
+  z-index: 20;
+}
+.nu-home {
+  position: absolute;
+  bottom: calc(8 * var(--u));
+  left: 50%;
+  width: calc(139 * var(--u));
+  height: calc(5 * var(--u));
+  margin-left: calc(-69.5 * var(--u));
+  border-radius: calc(3 * var(--u));
+  background: currentColor;
+  opacity: 0.85;
+  z-index: 20;
+}
+.nu-status {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: calc(54 * var(--u));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: calc(4 * var(--u)) calc(32 * var(--u)) 0 calc(52 * var(--u));
+  font-size: calc(17 * var(--u));
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  z-index: 19;
+}
+.nu-status svg {
+  height: calc(12 * var(--u));
+  width: auto;
+  display: block;
+}
+.nu-status .nu-glyphs {
+  display: flex;
+  gap: calc(6 * var(--u));
+  align-items: center;
+}
+
+/* ---------- app icon: iOS superellipse approximated at 22.37 % radius ---------- */
+.nu-icon {
+  flex: none;
+  width: calc(var(--isz, 38) * var(--u));
+  height: calc(var(--isz, 38) * var(--u));
+  border-radius: 22.37%;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  background: var(--app-accent);
+  color: #fff;
+  font-weight: 700;
+  font-size: calc(var(--isz, 38) * 0.5 * var(--u));
+  box-shadow: inset 0 0 0 calc(0.5 * var(--u)) rgba(0, 0, 0, 0.12);
+}
+.nu-icon img,
+.nu-icon svg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ---------- lock screen ---------- */
+.nu-lock {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  color: #fff;
+}
+.nu-lock-lock {
+  position: absolute;
+  top: calc(58 * var(--u));
+  left: 50%;
+  width: calc(14 * var(--u));
+  height: calc(18 * var(--u));
+  margin-left: calc(-7 * var(--u));
+  opacity: 0.9;
+}
+.nu-lock-date {
+  position: absolute;
+  top: calc(84 * var(--u));
+  width: 100%;
+  text-align: center;
+  font-size: calc(21 * var(--u));
+  font-weight: 600;
+  opacity: 0.88;
+}
+.nu-lock-time {
+  position: absolute;
+  top: calc(104 * var(--u));
+  width: 100%;
+  text-align: center;
+  font-size: calc(104 * var(--u));
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.nu-lock-stack {
+  position: absolute;
+  left: calc(12 * var(--u));
+  right: calc(12 * var(--u));
+  bottom: calc(120 * var(--u));
+  display: flex;
+  flex-direction: column;
+  gap: calc(8 * var(--u));
+  z-index: 3;
+}
+.nu-lock-btn {
+  position: absolute;
+  bottom: calc(46 * var(--u));
+  width: calc(50 * var(--u));
+  height: calc(50 * var(--u));
+  border-radius: 50%;
+  background: rgba(40, 40, 40, 0.45);
+  backdrop-filter: blur(20px);
+  display: grid;
+  place-items: center;
+}
+.nu-lock-btn.l {
+  left: calc(46 * var(--u));
+}
+.nu-lock-btn.r {
+  right: calc(46 * var(--u));
+}
+.nu-lock-btn svg {
+  width: calc(22 * var(--u));
+  height: calc(22 * var(--u));
+}
+
+/* ---------- notification (iOS 18 anatomy: icon, bold title, time, body) ---------- */
+.nu-notif {
+  display: flex;
+  gap: calc(10 * var(--u));
+  align-items: flex-start;
+  width: calc(369 * var(--u));
+  padding: calc(13 * var(--u)) calc(14 * var(--u)) calc(14 * var(--u)) calc(13 * var(--u));
+  border-radius: calc(23 * var(--u));
+  background: rgba(246, 246, 246, 0.72);
+  color: #000;
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  box-shadow: 0 calc(2 * var(--u)) calc(12 * var(--u)) rgba(0, 0, 0, 0.12);
+}
+.nu-notif.dark {
+  background: rgba(38, 38, 40, 0.62);
+  color: #fff;
+}
+.nu-notif-main {
+  flex: 1;
+  min-width: 0;
+}
+.nu-notif-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: calc(8 * var(--u));
+}
+.nu-notif-title {
+  font-size: calc(15 * var(--u));
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.nu-notif-time {
+  font-size: calc(13 * var(--u));
+  opacity: 0.5;
+  white-space: nowrap;
+}
+.nu-notif-body {
+  font-size: calc(15 * var(--u));
+  letter-spacing: -0.01em;
+  margin-top: calc(1 * var(--u));
+}
+/* banner: the same notification dropped from the top over any screen (below the island) */
+.nu-banner {
+  position: absolute;
+  top: calc(58 * var(--u));
+  left: calc(12 * var(--u));
+  z-index: 18;
+}
+
+/* ---------- in-app building blocks ---------- */
+.nu-app {
+  position: absolute;
+  inset: 0;
+  padding: calc(54 * var(--u)) 0 calc(83 * var(--u));
+  display: flex;
+  flex-direction: column;
+}
+.nu-nav {
+  padding: calc(6 * var(--u)) calc(16 * var(--u)) calc(8 * var(--u));
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+.nu-large-title {
+  font-size: calc(34 * var(--u));
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.nu-caption {
+  font-size: calc(13 * var(--u));
+  color: var(--app-muted);
+}
+.nu-section {
+  margin: calc(8 * var(--u)) calc(16 * var(--u));
+  background: var(--app-surface);
+  border-radius: calc(12 * var(--u));
+  overflow: hidden;
+}
+.nu-section-h {
+  font-size: calc(13 * var(--u));
+  color: var(--app-muted);
+  padding: 0 calc(32 * var(--u));
+  margin: calc(14 * var(--u)) 0 calc(-2 * var(--u));
+}
+.nu-row {
+  display: flex;
+  align-items: center;
+  gap: calc(12 * var(--u));
+  padding: calc(11 * var(--u)) calc(16 * var(--u));
+  min-height: calc(52 * var(--u));
+  position: relative;
+}
+.nu-row + .nu-row::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: calc(58 * var(--u));
+  right: 0;
+  height: 1px;
+  background: var(--app-sep);
+}
+.nu-row-main {
+  flex: 1;
+  min-width: 0;
+}
+.nu-row-title {
+  font-size: calc(17 * var(--u));
+  letter-spacing: -0.02em;
+}
+.nu-row-sub {
+  font-size: calc(13 * var(--u));
+  color: var(--app-muted);
+}
+.nu-row-value {
+  font-size: calc(17 * var(--u));
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+/* tab bar: 49 pt bar + 34 pt home-indicator zone = 83 pt, 25-26 pt glyphs, 10 pt labels */
+.nu-tabbar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: calc(83 * var(--u));
+  padding: calc(7 * var(--u)) calc(18 * var(--u)) 0;
+  display: flex;
+  justify-content: space-around;
+  background: color-mix(in oklab, var(--app-surface) 88%, transparent);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid var(--app-sep);
+}
+.nu-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(2 * var(--u));
+  color: var(--app-muted);
+  min-width: calc(60 * var(--u));
+}
+.nu-tab.on {
+  color: var(--app-accent);
+}
+.nu-tab svg {
+  width: calc(26 * var(--u));
+  height: calc(24 * var(--u));
+  display: block;
+}
+.nu-tab span {
+  font-size: calc(10 * var(--u));
+  font-weight: 500;
+}

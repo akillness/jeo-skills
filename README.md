@@ -392,7 +392,7 @@ See the [setup guide](setup-all-skills-prompt.md#claude-code-game-studios-on-dem
 
 ## 📚 Skills List
 
-> Generated from `.agent-skills/skills.json` · 450 skills · expand a category to see its skills.
+> Generated from `.agent-skills/skills.json` · 451 skills · expand a category to see its skills.
 
 ### 🌐 Web (76)
 
@@ -565,9 +565,9 @@ Subcategories: `client` (9), `web` (2), `server` (1), `design-ui` (7), `audio` (
 
 </details>
 
-### 🎬 Creative Media (40)
+### 🎬 Creative Media (41)
 
-Subcategories: `image` (10), `video` (18), `motion` (1), `audio` (2), `presentation` (1), `diagram` (2), `design` (4), `capture` (0), `storytelling` (2)
+Subcategories: `image` (10), `video` (18), `motion` (2), `audio` (2), `presentation` (1), `diagram` (2), `design` (4), `capture` (0), `storytelling` (2)
 
 <details>
 <summary>Show Creative Media skills</summary>
@@ -614,6 +614,7 @@ Subcategories: `image` (10), `video` (18), `motion` (1), `audio` (2), `presentat
 | `voicestudio` |
 | `diagram-design` |
 | `artcraft` |
+| `motionmaxxing` |
 
 </details>
 

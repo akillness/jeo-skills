@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Motion runtime self-test page</title>
+<meta name="viewport" content="width=1920, height=1080">
+<link rel="stylesheet" href="../../runtime/fonts.css">
+<style>
+* { box-sizing: border-box; }
+html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #000; }
+#main { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden; background: #EDEBE6; color: #101114; font-family: Inter, system-ui, sans-serif; font-weight: 500; }
+.scene { position: absolute; inset: 0; }
+.abs { position: absolute; white-space: pre; }
+.k { color: #B0361A; } .s { color: #1E7A4C; } .p { color: #6A6862; }
+.code { font-family: ui-monospace, Menlo, monospace; font-size: 52px; line-height: 76px; }
+</style></head>
+<body>
+<div id="main">
+  <!-- A1: authored style WITHOUT a space after the colon (used to give false selfTest fails) -->
+  <section id="s1" class="scene" style="visibility:hidden">
+    <div id="hl" class="abs" style="left:0;top:120px;width:1920px;text-align:center;font-size:150px;line-height:170px">Email for developers</div>
+    <div id="thesis" class="abs" style="left:0;top:340px;width:1920px;text-align:center;font-size:110px;line-height:130px">One small thing</div>
+    <div id="vtag" class="abs" style="left:160px;top:560px;font-size:60px;visibility:hidden">tag shows 30..60 only</div>
+    <div id="etag" class="abs" style="left:160px;top:660px;font-size:60px;visibility:hidden">enter + show window</div>
+  </section>
+  <!-- A2: multi-line, pre-styled typing -->
+  <section id="s2" class="scene" style="visibility:hidden">
+    <div id="codeBox" class="abs code" style="left:160px;top:200px;width:1500px;height:400px"><span class="k">const</span> <span class="p">name</span> = <span class="s">'Maya'</span>;
+<span class="k">await</span> <span class="p">send</span>({
+  to: <span class="s">'a@b.dev'</span>,
+});</div>
+    <div id="caret" class="abs" style="left:0;top:210px;width:6px;height:60px;background:#F2542D;visibility:hidden"></div>
+    <div id="plain" class="abs code" style="left:160px;top:700px;width:1500px;height:200px">line one
+line two is longer
+three</div>
+    <div id="caret2" class="abs" style="left:0;top:710px;width:6px;height:60px;background:#101114;visibility:hidden"></div>
+  </section>
+  <!-- A3: camera + snap + dive on one element with different origins, plus the wrap helper -->
+  <section id="s3" class="scene" style="visibility:hidden">
+    <div id="cam" class="scene"><div id="box" class="abs" style="left:300px;top:300px;width:600px;height:300px;background:#101114"></div><div id="box2" class="abs" style="left:1100px;top:600px;width:400px;height:300px;background:#F2542D"></div>
+      <div id="step" class="abs" style="left:200px;top:80px;width:300px;height:100px;background:#6A6862"></div></div>
+  </section>
+</div>
+<script src="../../runtime/vendor/gsap.min.js"></script>
+<script src="../../runtime/motion.js"></script>
+<script>
+/* Runtime regression page: every runtime behaviour described in runtime/README.md (visibility track, per-word options, multi-line typing, origin claims, kf steps) is exercised here. Open with ?selftest -> Motion.selfTest + the assertions below
+   (window.__seekcheck, window.__asserts, console). Not a film: do not copy it. */
+const M = Motion.film({ fps: 30, duration: 8, width: 1920, height: 1080, clock: 'smooth' });
+M.show('#s1', 0, 100); M.cut(100, { hide: ['#s1'], show: ['#s2'] }); M.cut(170, { hide: ['#s2'], show: ['#s3'] });
+
+// per-word options: the last word enters bigger and from further away; accent per word
+M.words('#hl', { at: 2, mech: 'rise', dist: 60, gaps: 5, accent: { color: '#F2542D', frames: 20, word: -1 },
+  words: (i) => (i === 2 ? { dist: 160, scale: 1.25 } : null) });
+M.words('#thesis', { at: 20, mech: 'pop', dist: [.5, .5, .2], words: [{}, { frames: 18 }, { from: { scale: 2.4 }, accent: '#F2542D' }] });
+
+// visibility is ONE track per element: enter + show(a, b) = visible on [at, b); show window alone; later explicit hide wins
+M.show('#vtag', 30, 60);
+M.enter('#etag', { at: 20, frames: 8, from: { y: 30, opacity: 0 } }); M.show('#etag', 20, 70);
+
+// multi-line, pre-styled typing: spans keep their classes; the caret follows the last glyph in 2D
+M.type('#codeBox', { at: 104, style: 'fast', seed: 3, caret: '#caret', accentNewest: { color: '#F2542D', frames: 2 } });
+M.type('#plain', { at: 112, style: 'fast', seed: 2, caret: '#caret2', caretGap: 4 });
+
+// duplicate frames in M.kf = a hard step (value b is on screen from frame 190)
+M.kf('#step', 'opacity', [[172, 1], [190, 1], [190, .2], [210, .2]]);
+
+// transform-origin: one element, three different origins, each in its own wrapper (nested wrappers = independent origins)
+const wA = M.wrap('#box'), wB = M.wrap(wA);
+M.camera('#box', [[172, { scale: 1 }], [190, { scale: 1.6 }, 'softInOut'], [196, { scale: 1 }, 'softInOut']], { origin: '0% 0%' });   // about the box's own top-left
+M.snap(wA, { at: 200, from: { rotation: 20 }, to: { rotation: 0 }, origin: '100% 100%' });
+M.dive(wB, { at: 222, frames: 6, perStep: 1.3, origin: [900, 300] });
+const wC = M.wrap('#box2'); M.camera(wC, [[172, { scale: 1 }], [200, { scale: 2 }]], { origin: '100% 0%' });
+
+// same element, two origins, sequential and neutral in between: allowed (origin switches on the claim's frame, seek-safe)
+M.camera('#thesis', [[4, { scale: 1 }], [10, { scale: 1.1 }], [14, { scale: 1 }]], { origin: '0% 50%' });
+M.camera('#thesis', [[90, { scale: 1 }], [95, { scale: 1.1 }], [99, { scale: 1 }]], { origin: '100% 50%' });
+
+function asserts() {
+  const bad = [], at = f => window.__seek(f / 30), vis = id => getComputedStyle(document.querySelector(id)).visibility !== 'hidden';
+  const chk = (ok, m) => { if (!ok) bad.push(m); };
+  const R = id => document.querySelector(id).getBoundingClientRect();
+  // visibility composition
+  at(19); chk(!vis('#etag'), 'etag hidden before enter'); at(21); chk(vis('#etag'), 'etag visible after enter');
+  at(69); chk(vis('#etag'), 'etag visible at 69'); at(70); chk(!vis('#etag'), 'etag hidden again at 70 (show window wins over enter)');
+  at(29); chk(!vis('#vtag'), 'vtag hidden before 30'); at(30); chk(vis('#vtag'), 'vtag visible at 30'); at(60); chk(!vis('#vtag'), 'vtag hidden at 60');
+  // duplicate-frame kf is a hard step
+  at(189); chk(+getComputedStyle(document.querySelector('#step')).opacity === 1, 'kf step: a before frame 190'); at(190); chk(Math.abs(getComputedStyle(document.querySelector('#step')).opacity - .2) < 1e-6, 'kf step: b on frame 190');
+  // origins: each element has the origin of the claim active on that frame; wrapper origins are in the wrapper's (= scene) px
+  const org = (id, f) => { at(f); return getComputedStyle(document.querySelector(id)).transformOrigin; };
+  chk(org('#box', 190) === '0px 0px', 'camera origin 0 0 on #box: ' + org('#box', 190));
+  chk(org('#thesis', 8).startsWith('0px'), 'thesis origin before the switch (frame 8): ' + org('#thesis', 8));
+  chk(org('#thesis', 92).startsWith('1920px'), 'thesis origin after the switch (frame 92): ' + org('#thesis', 92));
+  at(172); chk(Math.abs(R('#box2').right - 1500) < 1, 'box2 right at 172');
+  at(200); { const r = R('#box2'); chk(Math.abs(r.right - 1080) < 1 && Math.abs(r.width - 800) < 1, 'wrapper origin 100% 0% (scene px): scale 2 about (1920, 0) puts right at 1080, got ' + r.right + '/' + r.width); }
+  // M.type multi-line: caret x/y follow the last glyph, spans keep classes
+  at(104 + 40); { const host = document.querySelector('#codeBox'); chk(host.querySelectorAll('.k').length >= 1, 'typed spans keep their classes'); }
+  at(168); { const host = document.querySelector('#codeBox'), c = document.querySelector('#caret');
+    chk(host.textContent === "const name = 'Maya';\nawait send({\n  to: 'a@b.dev',\n});", 'typed text is the full source: ' + JSON.stringify(host.textContent));
+    chk(host.querySelectorAll('.k').length === 2 && host.querySelectorAll('.s').length === 2 && host.querySelectorAll('.p').length === 2, 'all spans present');
+    chk(Math.abs(parseFloat(c.style.top) - (210 + 3 * 76)) < 3, 'code caret on line 4 (top 438): ' + c.style.top); }
+  at(104 + 3); { const host = document.querySelector('#codeBox'), c = document.querySelector('#caret'); chk(host.textContent.length > 0 && host.textContent.length < 14 && !host.textContent.includes('\n'), 'code partially typed early'); chk(Math.abs(parseFloat(c.style.top || 210) - 210) < 3, 'caret on line 1 early: ' + c.style.top); }
+  at(168); { const host = document.querySelector('#plain'), c = document.querySelector('#caret2'); chk(host.textContent === 'line one\nline two is longer\nthree', 'plain multi-line typed: ' + JSON.stringify(host.textContent)); chk(Math.abs(parseFloat(c.style.top) - (710 + 2 * 76)) < 3, 'plain caret on line 3: ' + c.style.top); chk(parseFloat(c.style.left) < 160 + 400, 'plain caret x after "three": ' + c.style.left); }
+  // per-word options: word 3 of #hl (onset frame 12) starts at scale 1.25 and y 160; word 1 (frame 2) at scale 1 and y 60
+  const mat = el => new DOMMatrix(getComputedStyle(el).transform), W = Array.from(document.querySelectorAll('#hl .mw'));
+  at(12); { const m = mat(W[2]); chk(W.length === 3 && Math.abs(m.a - 1.25) < .01 && Math.abs(m.f - 160) < 1, 'per-word start pose: scale ' + m.a + ' y ' + m.f); }
+  at(2); { const m = mat(W[0]); chk(Math.abs(m.a - 1) < .01 && Math.abs(m.f - 60) < 1, 'default word start pose: scale ' + m.a + ' y ' + m.f); }
+  at(40); chk(Math.abs(mat(W[2]).f) < .5 && Math.abs(mat(W[2]).a - 1) < .01, 'thesis word lands on neutral');
+  window.__asserts = { ok: bad.length === 0, failures: bad }; console.log('[asserts] ' + (bad.length ? 'FAIL ' + bad.join(' | ') : 'PASS'));
+}
+window.__ready = Motion.loaded().then(() => { if (/selftest/.test(location.search)) { Motion.selfTest(M, { samples: 40 }); asserts(); window.__seek(0); } });
+</script></body></html>

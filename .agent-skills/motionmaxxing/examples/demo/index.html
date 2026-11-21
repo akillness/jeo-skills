@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Kestrel - demo film (Motion runtime)</title>
+<meta name="viewport" content="width=1920, height=1080">
+<link rel="stylesheet" href="../../runtime/fonts.css">
+<style>
+/* Kestrel is an invented brand. This page is a MECHANICS demo (every Motion call once), not a model film: its centred count-up beat is the stat-slide pattern the skill warns against. One sans (400-550, 600 on the wordmark), one accent with one meaning: "the newest thing" (arriving word, new glyph, live dot). */
+:root {
+  --ground: #EDEBE6;     /* warm paper */
+  --ground-2: #0F1013;   /* closing ground */
+  --ink: #101114;
+  --ink-soft: #6A6862;
+  --accent: #F2542D;     /* arrival / newest */
+  --font: "Inter", system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #000; }
+#main { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden; background: var(--ground); font-family: var(--font); color: var(--ink); }
+.scene { position: absolute; inset: 0; }
+.cam { position: absolute; inset: 0; }
+
+/* A  hook */
+#headline { position: absolute; left: 0; top: 410px; width: 1920px; text-align: center; font-size: 156px; line-height: 190px; font-weight: 550; letter-spacing: -0.04em; white-space: pre; }
+
+/* B  proof: magnified prompt card */
+#card { position: absolute; left: 330px; top: 420px; width: 1260px; height: 240px; border-radius: 52px; background: #fff; border: 2px solid rgba(16,17,20,.07); }
+#ptext { position: absolute; left: 72px; top: 76px; height: 88px; font-size: 66px; line-height: 88px; font-weight: 450; letter-spacing: -0.02em; }
+#caret { position: absolute; top: 84px; width: 7px; height: 72px; background: var(--accent); border-radius: 2px; }
+#send { position: absolute; left: 1122px; top: 72px; width: 96px; height: 96px; border-radius: 50%; background: var(--accent); }
+#send svg { position: absolute; inset: 0; }
+#cursor { position: absolute; left: 0; top: 0; overflow: visible; }
+
+/* the carried object: it is the send button, travelling before it lands */
+#dot { position: absolute; left: -48px; top: -48px; width: 96px; height: 96px; border-radius: 50%; background: var(--accent); }
+
+/* C  number */
+#stat { position: absolute; inset: 0; }
+#num { position: absolute; left: 0; top: 290px; width: 1920px; text-align: center; font-size: 270px; line-height: 300px; font-weight: 500; letter-spacing: -0.045em; }
+#label { position: absolute; left: 0; top: 610px; width: 1920px; text-align: center; font-size: 58px; line-height: 70px; font-weight: 450; letter-spacing: -0.015em; color: var(--ink-soft); }
+
+/* D  close */
+#sceneD { background: var(--ground-2); color: #F4F2EE; }
+#lockup { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; display: flex; align-items: center; justify-content: center; gap: 40px; }
+#mark { width: 150px; height: 150px; }
+#word { font-size: 190px; line-height: 200px; font-weight: 600; letter-spacing: -0.05em; }
+</style>
+</head>
+<body>
+<div id="main">
+  <!-- A -->
+  <section id="sceneA" class="scene"><div id="headline">Notes that keep up.</div></section>
+
+  <!-- B -->
+  <section id="sceneB" class="scene"><div id="camB" class="cam">
+    <div id="card">
+      <div id="ptext">Summarise Tuesday's calls</div><i id="caret"></i>
+      <div id="send"><svg viewBox="0 0 96 96"><path d="M30 48 H66 M50 31 L67 48 L50 65" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    </div>
+    <svg id="cursor" width="32" height="46" viewBox="0 0 32 46"><path d="M0 0 L0 38 L10 29 L17 45 L25 41 L18 26 L31 26 Z" fill="#101114" stroke="#fff" stroke-width="3" stroke-linejoin="round" paint-order="stroke"/></svg>
+  </div></section>
+
+  <!-- C -->
+  <section id="sceneC" class="scene"><div id="camC" class="cam"><div id="stat"><div id="num">0</div><div id="label">notes written this week</div></div></div></section>
+
+  <!-- D -->
+  <section id="sceneD" class="scene"><div id="lockup">
+    <svg id="mark" viewBox="0 0 64 64"><path d="M9 38 L32 15 L55 38" fill="none" stroke="#F4F2EE" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 49 L32 38 L43 49" fill="none" stroke="#F4F2EE" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span id="word">Kestrel</span>
+  </div></section>
+
+  <div id="dot"></div>
+</div>
+
+<script src="../../runtime/vendor/gsap.min.js"></script>
+<script src="../../runtime/motion.js"></script>
+<script>
+const M = window.__M = Motion.film({ fps: 30, duration: 9, width: 1920, height: 1080, clock: 'smooth' });
+const ACC = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
+
+/* ---- A  HOOK 0-66: whole-word build, speech gaps (5,4,7 f), accent on the arriving last word ---- */
+M.words('#headline', { at: 2, mech: 'rise', dist: 84, gaps: [5, 4, 7], frames: 13, fixedSlots: false, smear: { px: 36 }, accent: { color: ACC, frames: 24 } });
+M.kf('#headline', 'scale', [[2, 1], [50, 1.03], [65, 1.11, 'gentleIn']]);       // never freezes, accelerates into the cut
+// the carried dot appears on its own, then travels on the vector it keeps after the cut
+M.show('#dot', 30);
+M.kf('#dot', 'x', [[30, 1380], [66, 1470, 'gentleIn'], [84, 1500, 'glide']]);
+M.kf('#dot', 'y', [[30, 820], [66, 650, 'gentleIn'], [84, 540, 'glide']]);
+M.kf('#dot', 'scale', [[30, .46], [66, .46], [84, 1, 'glide']]);
+
+/* ---- B  PROOF 66-131: cut mid-motion; card already moving on its first frame; authored typing; cursor press ---- */
+M.cut(66, { hide: ['#sceneA'], show: ['#sceneB'] });
+M.enter('#card', { at: 66, frames: 14, ease: 'softLand', from: { y: 46, scale: .93 }, smear: { axis: 'y', px: 30 } });
+M.cut(84, { hide: ['#dot'], show: ['#send'], label: 'dot lands as send button' });
+M.type('#ptext', { at: 74, style: 'prompt', seed: 5, caret: '#caret', caretGap: 6, accentNewest: { color: ACC, frames: 2 } });
+M.drift('#camB', { prop: 'scale', from: 1, to: 1.05, start: 84, end: 131 });
+// cursor enters oversized (3.4x, from below right of frame), scales about its tip, parks 6 f, presses; cut lands before release
+M.cursor('#cursor', { keys: [[96, 2050, 1260, 3.4, -28], [104, 1760, 930, 2.3, -16], [112, 1580, 650, 1.45, -6], [121, 1498, 548, 1, 0]], ease: 'glide' });
+M.press('#cursor', '#send', { at: 127, cursorDepth: .8, targetDepth: .8, lag: 1, frames: 3, release: true });
+
+/* ---- C  NUMBER 131-188: magnified count, one-frame snap pull-back ---- */
+M.cut(131, { hide: ['#sceneB'], show: ['#sceneC'] });
+M.count('#num', { at: 130, from: 0, to: 10000, frames: 23, format: 'comma', skip: .12, seed: 2 });
+M.snap('#camC', { at: 157, from: { scale: 2 }, to: { scale: 1 }, firstFrameShare: .62, tail: 15, origin: '960px 440px' });
+M.drift('#stat', { prop: 'scale', from: 1, to: 1.035, start: 131, end: 188 });
+
+/* ---- D  CLOSE 188-270: wordmark crashes in from 3.5x and keeps contracting to the last frame (no fade) ---- */
+M.cut(188, { hide: ['#sceneC'], show: ['#sceneD'] });
+M.enter('#lockup', { at: 188, frames: 20, ease: 'snapSettle', from: { scale: 3.5, blur: 12 }, smear: { axis: 'x', px: 56, frames: 3 } });
+M.drift('#lockup', { prop: 'scale', from: 1, to: .9, start: 208, end: 270 });
+M.mark(188, 'logo', 'Kestrel crash-in');
+
+window.__ready = Motion.loaded().then(() => { if (/selftest/.test(location.search)) Motion.selfTest(M, { samples: 24 }); });
+</script>
+</body>
+</html>

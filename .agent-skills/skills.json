@@ -1,7 +1,7 @@
 {
   "version": "2.1.0",
   "generated": "2026-10-21",
-  "skill_count": 450,
+  "skill_count": 451,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -309,7 +309,8 @@
       "opencreator",
       "voicestudio",
       "diagram-design",
-      "artcraft"
+      "artcraft",
+      "motionmaxxing"
     ],
     "cli-tools": [
       "context7",
@@ -835,7 +836,8 @@
         "opencreator"
       ],
       "motion": [
-        "video-motion-previs"
+        "video-motion-previs",
+        "motionmaxxing"
       ],
       "audio": [
         "elevenlabs-tts",
@@ -16518,6 +16520,36 @@
       "keyword": "last30days",
       "version": "4.4.0",
       "source": "https://github.com/mvanhorn/last30days-skill"
+    },
+    {
+      "name": "motionmaxxing",
+      "description": "Direct and build professional motion-graphics films (launch videos, product promos, feature reveals, brand stings, kinetic-type pieces, social ads, CTAs) that read as made by a senior motion designer, not AI slop, using Tejashmakwana/motionmaxxing. Builds with a seek-safe GSAP runtime driven by curves measured frame by frame from 53 professional recreations, automated gates (look.py, lint.mjs), and brand capture.",
+      "category": "creative-media",
+      "subcategory": "motion",
+      "interface": "workflow",
+      "path": "motionmaxxing/SKILL.md",
+      "tags": [
+        "motionmaxxing",
+        "motion-graphics",
+        "animation",
+        "video",
+        "gsap",
+        "creative-direction",
+        "product-promo",
+        "launch-video"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "motionmaxxing",
+      "version": "1.0.0",
+      "source": "https://github.com/Tejashmakwana/motionmaxxing"
     }
   ]
 }

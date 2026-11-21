@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Relay - phone notification demo (Motion + native-ui)</title>
+<meta name="viewport" content="width=1920, height=1080">
+<!-- "Relay" (messages) and "Cadence" (calendar) are INVENTED apps; Priya and Maya are invented people. Label such UI illustrative in NOTE.md.
+     Beat: a message rolls up onto the lock screen (device in context, 0.63 H), then the camera pushes in until that one notification is the frame (readable: body text 0.045 H). -->
+<link rel="stylesheet" href="../../runtime/fonts.css">
+<link rel="stylesheet" href="../../runtime/native-ui/native-ui.css">
+<style>
+* { box-sizing: border-box; }
+html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #000; }
+#main { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden; font-family: "Inter", system-ui, sans-serif;
+  background:
+    radial-gradient(ellipse 34% 52% at 50% 46%, rgba(255,196,150,.16) 0%, rgba(255,196,150,0) 100%),
+    radial-gradient(ellipse 80% 80% at 50% 40%, #2c2a30 0%, #18171b 58%, #0c0c0f 100%); }
+#grain { position: absolute; inset: 0; width: 100%; height: 100%; opacity: .07; mix-blend-mode: screen; pointer-events: none; }
+.layer { position: absolute; inset: 0; }
+#ui { position: absolute; left: 803px; top: 199px; --s: .8; }            /* 393 x 852 pt at .8 = 314 x 682 px (0.63 H), centred on the frame */
+#ui .nu-screen { box-shadow: none; }
+</style>
+</head>
+<body>
+<div id="main">
+  <div id="drift" class="layer"><div id="cam" class="layer">
+    <div id="ui" class="nu"></div>
+  </div></div>
+  <svg id="grain" viewBox="0 0 1920 1080" preserveAspectRatio="none" aria-hidden="true"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" seed="3"/></filter><rect width="100%" height="100%" filter="url(#n)"/></svg>
+</div>
+
+<script src="../../runtime/vendor/gsap.min.js"></script>
+<script src="../../runtime/motion.js"></script>
+<script src="../../runtime/native-ui/native-ui.js"></script>
+<script>
+const M = Motion.film({ fps: 30, duration: 6, width: 1920, height: 1080, clock: 'smooth' });
+
+/* ---- the UI: real anatomy, real sentences. Identity = icon, sender, time, a sentence somebody would send. ---- */
+const relay = NativeUI.appIcon({ bg: 'linear-gradient(180deg,#8a7cff,#4636d9)', glyph: '<svg viewBox="0 0 38 38"><path d="M19 9c5.6 0 10 3.5 10 8s-4.4 8-10 8c-1 0-1.9-.1-2.8-.3L12 27l1-3.6C11 22 9 19.800 9 17c0-4.500 4.400-8 10-8z" fill="#fff"/></svg>' });
+const cadence = NativeUI.appIcon({ bg: 'linear-gradient(180deg,#ff6a5f,#e23b30)', glyph: '<svg viewBox="0 0 38 38"><rect x="8" y="9" width="22" height="20" rx="4" fill="#fff"/><rect x="8" y="9" width="22" height="6" rx="3" fill="#fff" opacity=".6"/><rect x="13" y="19" width="4" height="4" rx="1" fill="#e23b30"/></svg>' });
+const WALL = 'radial-gradient(120% 70% at 18% 8%, #ff9d6c 0%, rgba(255,157,108,0) 56%), radial-gradient(90% 70% at 92% 78%, #4a35e8 0%, rgba(74,53,232,0) 62%), linear-gradient(172deg,#241d52,#0c0a1c)';
+document.getElementById('ui').innerHTML = NativeUI.phone(NativeUI.lockScreen({
+  time: '7:52', date: 'Monday 5 October', wallpaper: WALL,
+  notifs: [   // oldest first; the last one is the newest and sits at the bottom
+    { icon: cadence, title: 'Standup moved to 10:30', time: '8m ago', body: 'Room 4 instead of the usual spot. Maya is bringing the Q3 numbers.' },
+    { icon: relay, title: 'Priya Raman', time: 'now', body: 'Landed early. Meet me at door 4? I have two bags.' },
+  ] }), { time: '7:52' });
+
+const older = '#ui .nu-notif:nth-child(1)', newest = '#ui .nu-notif:nth-child(2)';
+
+/* ---- the beats (frames) ---- */
+NativeUI.arrive(M, newest, { at: 18, dir: 'up', frames: 14, push: [older] });          // the message rolls up; the older one makes room
+NativeUI.macro(M, newest, { at: 58, frames: 28, world: '#cam', fill: .62 });           // camera push-in: that notification IS the frame
+M.drift('#drift', { prop: 'scale', from: 1, to: 1.06, start: 0, end: 180 });          // never freeze: a slow creep about the frame centre (the target sits there)
+
+window.__ready = Motion.loaded().then(() => { if (/selftest/.test(location.search)) Motion.selfTest(M, { samples: 24 }); });
+</script>
+</body>
+</html>
