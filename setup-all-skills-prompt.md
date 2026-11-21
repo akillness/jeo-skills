@@ -192,13 +192,13 @@ if [ "${INSTALL_GLOBAL:-true}" != false ] && [ "${JEO_SKILLS_STAR:-true}" = true
     if [ -n "${INSTALLER:-}" ]; then
       [ -f "$INSTALLER" ] || exit 1
       JEO_SKILLS_STAR_ONLY=true JEO_SKILLS_STAR=true bash "$INSTALLER"
-    elif [ -f "./install.sh" ] && python3 -I -c 'import hashlib,sys; sys.exit(hashlib.sha256(open(sys.argv[1], "rb").read()).hexdigest() != "dee23e2df232bc0961640a04164134a9ce73e570ea41bcf926350386a2a240e1")' "./install.sh"; then
+    elif [ -f "./install.sh" ] && python3 -I -c 'import hashlib,sys; sys.exit(hashlib.sha256(open(sys.argv[1], "rb").read()).hexdigest() != "70f3228fead7969bd30f384b1626c69e2085d62d6e8a0f2c6da81b3826023557")' "./install.sh"; then
       JEO_SKILLS_STAR_ONLY=true JEO_SKILLS_STAR=true bash "./install.sh"
     elif [ "${JEO_SKILLS_STAR_DOWNLOAD:-true}" = true ]; then
       tmp=$(mktemp "${TMPDIR:-/tmp}/jeo-skills-star.XXXXXXXX") || exit 1
       trap 'rm -f "$tmp"' EXIT
       curl --disable --proto '=https' --max-time 15 -fsS 'https://raw.githubusercontent.com/akillness/jeo-skills/main/install.sh' -o "$tmp" || exit 1
-      python3 -I -c 'import hashlib,sys; sys.exit(hashlib.sha256(open(sys.argv[1], "rb").read()).hexdigest() != "dee23e2df232bc0961640a04164134a9ce73e570ea41bcf926350386a2a240e1")' "$tmp" || exit 1
+      python3 -I -c 'import hashlib,sys; sys.exit(hashlib.sha256(open(sys.argv[1], "rb").read()).hexdigest() != "70f3228fead7969bd30f384b1626c69e2085d62d6e8a0f2c6da81b3826023557")' "$tmp" || exit 1
       JEO_SKILLS_STAR_ONLY=true JEO_SKILLS_STAR=true bash "$tmp"
     else
       exit 1
@@ -1066,7 +1066,8 @@ no remote Jev script is fetched in that case or when host/profile selection is a
 (
 case "${JEO_SKILLS_JEV:-skip}" in
   skip) printf '%s\n' 'Optional Jev setup skipped; existing configuration unchanged.' ;;
-  api|local|ollama|lmstudio|systemone)
+  api|local|localhost|ollama|lmstudio|systemone)
+    if [ "${JEO_SKILLS_JEV:-}" = localhost ]; then JEO_SKILLS_JEV=local; fi
     if [ "${INSTALL_GLOBAL:-true}" != true ]; then
       printf '%s\n' 'WARNING: Jev is home-scoped; skipping optional Jev for project installation. Run approved standalone setup separately.' >&2
       exit 0

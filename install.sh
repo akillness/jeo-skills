@@ -23,6 +23,7 @@ if [ "$AGENT" = aside ] && [ "$GLOBAL" != true ]; then fail 'Aside is account-sc
 JEV_STATUS=0
 JEV_REQUESTED=false
 if [ -n "${JEO_SKILLS_JEV:-}" ] && [ "${JEO_SKILLS_JEV:-}" != skip ]; then JEV_REQUESTED=true; fi
+case "${JEO_SKILLS_JEV:-}" in localhost) export JEO_SKILLS_JEV=local ;; esac
 case "${JEO_SKILLS_JEV:-}" in ''|skip|api|local|ollama|lmstudio|systemone) ;; *) info 'WARNING: Invalid optional JEO_SKILLS_JEV; skipping Jev. JEO_SKILLS_JEV must be skip, api, local, ollama, lmstudio, or systemone. Continuing skill installation.'; JEV_STATUS=1; JEO_SKILLS_JEV=skip ;; esac
 if [ "$GLOBAL" != true ] && [ -n "${JEO_SKILLS_JEV:-}" ] && [ "${JEO_SKILLS_JEV:-}" != skip ]; then
   info 'WARNING: Jev is home-scoped; skipping optional Jev for project installation. Run approved standalone setup separately.'

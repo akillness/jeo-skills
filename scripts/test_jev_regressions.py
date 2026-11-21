@@ -2004,6 +2004,251 @@ class JevRegressions(unittest.TestCase):
         self.assertEqual(stopped_status.returncode, 3)
         self.assertFalse(json.loads(stopped_status.stdout)["ready"])
 
+    def test_local_qev_crash_with_cached_model_is_not_success(self):
+        self.stub("npx", "exit 0")
+        model = self.work / "cached.gguf"
+        model.write_bytes(b"GGUF-fixture")
+        self.stub("llama-server", "exit 42")
+        with socket.socket() as sock:
+            sock.bind(("127.0.0.1", 0))
+            port = sock.getsockname()[1]
+        result = self.execute(
+            ["/bin/bash", str(SETUP), "--profile", "cached", "--mode", "local"],
+            {"JEV_LOCAL_MODEL_FILE": str(model), "JEV_SKIP_MODEL_DOWNLOAD": "true",
+             "JEV_QEV_GATEWAY": "off", "JEV_LOCAL_ENDPOINT": f"http://127.0.0.1:{port}/v1/systemone"},
+            cwd=ROOT,
+        )
+        self.assertIn("llama-server", self.external_log.read_text())
+        self.assertNotEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertIn("exited early", result.stderr)
+        self.assertIn("llama-server.log", result.stderr)
+        self.assertFalse((self.home / f".agents/jev/run/local-{port}.pid").exists())
+
+    def test_local_qev_health_only_listener_is_not_accepted(self):
+        self.stub("npx", "exit 0")
+        model = self.work / "cached.gguf"
+        model.write_bytes(b"GGUF-fixture")
+        self.stub("llama-server", "exit 42")
+        self.stub("curl", r'''
+case "$*" in
+  *--noproxy*http://127.0.0.1:*/health) printf '%s' '{"status":"ok"}' ;;
+  *--noproxy*-X\ POST*http://127.0.0.1:*/v1/systemone) exit 22 ;;
+  *http://127.0.0.1:*/health) printf '%s' '{"status":"ok"}' ;;
+  *) exit 91 ;;
+esac
+''')
+        result = self.execute(
+            ["/bin/bash", str(SETUP), "--profile", "foreign", "--mode", "local"],
+            {"JEV_LOCAL_MODEL_FILE": str(model), "JEV_SKIP_MODEL_DOWNLOAD": "true",
+             "JEV_LOCAL_ENDPOINT": "http://127.0.0.1:18021/v1/systemone"},
+            cwd=ROOT,
+        )
+        self.assertNotEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertIn("System One probe failed", result.stderr)
+        log = self.external_log.read_text()
+        self.assertIn("--noproxy *", log)
+        self.assertIn("-X POST", log)
+        self.assertNotIn("llama-server", log)  # don't replace a process on an occupied port
+
+    def _enable_loopback_curl(self):
+        real_curl = shutil.which("curl")
+        self.assertIsNotNone(real_curl, "A real curl binary is required")
+        self.stub("curl", f'''
+case "$*" in
+  *http://127.0.0.1:*|*http://\\[::1\\]:*) exec '{real_curl}' "$@" ;;
+  *) exit 91 ;;
+esac
+''')
+
+    def test_local_systemone_probe_accepts_post_listener_and_rejects_foreign_200(self):
+        self.stub("npx", "exit 0")
+        self._enable_loopback_curl()
+        model = self.work / "cached.gguf"
+        model.write_bytes(b"GGUF-fixture")
+        self.stub("llama-server", "exit 42")
+
+        class RealSystemOneHandler(BaseHTTPRequestHandler):
+            def log_message(self, *a): pass
+            def do_GET(self):
+                if self.path == "/health":
+                    body = b'{"status":"ok"}'
+                    self.send_response(200)
+                    self.send_header("Content-Type", "application/json")
+                    self.send_header("Content-Length", str(len(body)))
+                    self.end_headers()
+                    self.wfile.write(body)
+                else:
+                    # Real llama-server/jevos reject GET /v1/systemone with 404/405.
+                    self.send_response(404)
+                    self.end_headers()
+            def do_POST(self):
+                length = int(self.headers.get("Content-Length", "0"))
+                raw = self.rfile.read(length) if length else b"{}"
+                payload = json.loads(raw.decode("utf-8") or "{}")
+                if self.path == "/v1/systemone" and "questions" in payload:
+                    body = json.dumps({
+                        "model": payload.get("model") or "qev-0.8b-text-Q8_0",
+                        "answers": {"p": {"type": "noul", "noul": 0.9}},
+                    }).encode("utf-8")
+                    self.send_response(200)
+                    self.send_header("Content-Type", "application/json")
+                    self.send_header("Content-Length", str(len(body)))
+                    self.end_headers()
+                    self.wfile.write(body)
+                else:
+                    self.send_response(404)
+                    self.end_headers()
+
+        good_srv = ThreadingHTTPServer(("127.0.0.1", 0), RealSystemOneHandler)
+        threading.Thread(target=good_srv.serve_forever, daemon=True).start()
+        self.addCleanup(good_srv.shutdown)
+        self.addCleanup(good_srv.server_close)
+        good_port = good_srv.server_address[1]
+
+        ok_res = self.execute(
+            ["/bin/bash", str(SETUP), "--profile", "reuse-ok", "--mode", "local"],
+            {"JEV_LOCAL_MODEL_FILE": str(model), "JEV_SKIP_MODEL_DOWNLOAD": "true",
+             "JEV_LOCAL_ENDPOINT": f"http://127.0.0.1:{good_port}/v1/systemone"},
+            cwd=ROOT,
+        )
+        self.successful(ok_res)
+        self.assertIn("already listening", ok_res.stdout)
+        self.assertNotIn("llama-server", self.external_log.read_text())
+
+        class CatchAllHtmlHandler(BaseHTTPRequestHandler):
+            def log_message(self, *a): pass
+            def _html(self):
+                body = b"<html><body>unrelated app</body></html>"
+                self.send_response(200)
+                self.send_header("Content-Type", "text/html")
+                self.send_header("Content-Length", str(len(body)))
+                self.end_headers()
+                self.wfile.write(body)
+            def do_GET(self): self._html()
+            def do_POST(self):
+                length = int(self.headers.get("Content-Length", "0"))
+                if length:
+                    self.rfile.read(length)
+                self._html()
+
+        bad_srv = ThreadingHTTPServer(("127.0.0.1", 0), CatchAllHtmlHandler)
+        threading.Thread(target=bad_srv.serve_forever, daemon=True).start()
+        self.addCleanup(bad_srv.shutdown)
+        self.addCleanup(bad_srv.server_close)
+        bad_port = bad_srv.server_address[1]
+
+        bad_res = self.execute(
+            ["/bin/bash", str(SETUP), "--profile", "foreign-html", "--mode", "local"],
+            {"JEV_LOCAL_MODEL_FILE": str(model), "JEV_SKIP_MODEL_DOWNLOAD": "true",
+             "JEV_LOCAL_ENDPOINT": f"http://127.0.0.1:{bad_port}/v1/systemone"},
+            cwd=ROOT,
+        )
+        self.assertNotEqual(bad_res.returncode, 0, bad_res.stdout + bad_res.stderr)
+        self.assertIn("System One probe failed", bad_res.stderr)
+        self.assertNotIn("llama-server", self.external_log.read_text())
+
+    def test_local_qev_gateway_early_exit_stops_backend_without_orphan(self):
+        self.stub("npx", "exit 0")
+        self._enable_loopback_curl()
+        model = self.work / "cached.gguf"
+        model.write_bytes(b"GGUF-fixture")
+        backend_pid_record = self.work / "backend.pid"
+
+        # Occupy local_port with a listener returning 404 on /health so setup tries to start
+        # llama-server + jev-gateway, and jev-gateway crashes with EADDRINUSE on local_port.
+        class OccupiedNonHealthHandler(BaseHTTPRequestHandler):
+            def log_message(self, *a): pass
+            def do_GET(self):
+                self.send_response(404)
+                self.end_headers()
+
+        occ_srv = ThreadingHTTPServer(("127.0.0.1", 0), OccupiedNonHealthHandler)
+        threading.Thread(target=occ_srv.serve_forever, daemon=True).start()
+        self.addCleanup(occ_srv.shutdown)
+        self.addCleanup(occ_srv.server_close)
+        occ_port = occ_srv.server_address[1]
+
+        mock_llama = self.bin / "llama-server"
+        mock_llama.write_text(
+            f"#!{sys.executable}\n"
+            "import os, sys\n"
+            "from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer\n"
+            f"open({str(backend_pid_record)!r}, 'w').write(str(os.getpid()))\n"
+            "args = sys.argv[1:]\n"
+            "host = args[args.index('--host') + 1]\n"
+            "port = int(args[args.index('--port') + 1])\n"
+            "class H(BaseHTTPRequestHandler):\n"
+            "    def log_message(self, *a): pass\n"
+            "    def do_GET(self):\n"
+            "        body = b'{\"status\":\"ok\"}'\n"
+            "        self.send_response(200)\n"
+            "        self.send_header('Content-Length', str(len(body)))\n"
+            "        self.end_headers()\n"
+            "        self.wfile.write(body)\n"
+            "ThreadingHTTPServer((host, port), H).serve_forever()\n",
+            encoding="utf-8",
+        )
+        mock_llama.chmod(0o700)
+
+        res = self.execute(
+            ["/bin/bash", str(SETUP), "--profile", "gw-crash", "--mode", "local"],
+            {"JEV_LOCAL_MODEL_FILE": str(model), "JEV_SKIP_MODEL_DOWNLOAD": "true",
+             "JEV_LLAMA_SERVER_BIN": str(mock_llama),
+             "JEV_LOCAL_ENDPOINT": f"http://127.0.0.1:{occ_port}/v1/systemone"},
+            cwd=ROOT,
+            timeout=30,
+        )
+        self.assertNotEqual(res.returncode, 0, res.stdout + res.stderr)
+        self.assertIn("jev-gateway exited early", res.stderr)
+        self.assertIn("jev-gateway.log", res.stderr)
+        self.assertFalse((self.home / f".agents/jev/run/local-{occ_port}.pid").exists())
+        self.assertFalse((self.home / f".agents/jev/run/backend-{occ_port}.pid").exists())
+        self.assertTrue(backend_pid_record.is_file(), "mock llama-server never started")
+        backend_pid = int(backend_pid_record.read_text().strip())
+        for _ in range(20):
+            try:
+                os.kill(backend_pid, 0)
+            except OSError:
+                break
+            time.sleep(0.1)
+        else:
+            os.kill(backend_pid, signal.SIGKILL)
+            self.fail(f"backend llama-server PID {backend_pid} leaked as orphan after gateway early exit")
+
+    def test_localhost_alias_normalizes_to_local_across_modes_and_routing_flags(self):
+        self.stub("npx", "exit 0")
+        res = self.execute(
+            ["/bin/bash", str(SETUP),
+             "--profile", "lh-norm",
+             "--mode", "localhost",
+             "--config-only",
+             "--route-backend", "localhost",
+             "--prune-backend", "api",
+             "--review-backend", "localhost",
+             "--fallback", "prune-context=ollama,localhost"],
+            cwd=ROOT,
+        )
+        self.successful(res)
+        profile_env = (self.home / ".agents/jev/profiles/lh-norm.env").read_text(encoding="utf-8")
+        self.assertIn("JEV_MODE=local", profile_env)
+        self.assertIn("JEV_ROUTE_SKILLS_BACKEND=local", profile_env)
+        self.assertIn("JEV_PRUNE_CONTEXT_BACKEND=api", profile_env)
+        self.assertIn("JEV_REVIEW_BACKEND=local", profile_env)
+        self.assertIn("JEV_PRUNE_CONTEXT_FALLBACK=ollama,local", profile_env)
+        self.assertNotIn("=localhost", profile_env)
+        self.assertNotIn(",localhost", profile_env)
+
+        self.successful(self.execute(["/bin/bash", str(SETUP), "--profile", "lh-norm", "--enable"], cwd=ROOT))
+        # Harness must parse the normalized profile and all operation policies without validation errors.
+        status = self.run_cli("status", env={"JEV_PROFILE": "lh-norm"})
+        self.assertIn(status.returncode, (0, 3), status.stdout + status.stderr)
+        payload = json.loads(status.stdout)
+        self.assertEqual(payload["mode"], "local")
+        self.assertEqual(payload["policies"]["route_skills"]["backend"], "local")
+        self.assertEqual(payload["policies"]["prune_context"]["backend"], "api")
+        self.assertEqual(payload["policies"]["prune_context"]["fallback"], ["ollama", "local"])
+        self.assertEqual(payload["policies"]["review"]["backend"], "local")
+
     def test_local_default_qev_download_verify_and_host(self):
         pid_file = self.work / "mock-qev.pid"
         calls_file = self.work / "mock-qev-calls.jsonl"

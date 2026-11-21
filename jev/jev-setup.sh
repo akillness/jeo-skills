@@ -89,14 +89,37 @@ detect_ram_gib() {
   fi
   echo 0
 }
-validate_kind() {
-  case "$1" in api|local|ollama|lmstudio|systemone) ;; *) fail "Unknown backend kind '$1'; expected api, local, ollama, lmstudio, or systemone" ;; esac
+normalize_kind() {
+  case "$1" in
+    localhost) printf 'local\n' ;;
+    api|local|ollama|lmstudio|systemone) printf '%s\n' "$1" ;;
+    *) fail "Unknown backend kind '$1'; expected api, local, ollama, lmstudio, or systemone" ;;
+  esac
+}
+probe_systemone_endpoint() {
+  local endpoint="$1" model="${2:-}" safe_model payload resp
+  safe_model="${model//\\/\\\\}"
+  safe_model="${safe_model//\"/\\\"}"
+  if [ -n "$safe_model" ]; then
+    payload="{\"state\":\"probe\",\"model\":\"${safe_model}\",\"questions\":{\"p\":{\"type\":\"noul\",\"instructions\":\"ok?\"}}}"
+  else
+    payload='{"state":"probe","questions":{"p":{"type":"noul","instructions":"ok?"}}}'
+  fi
+  resp="$(curl -fsS --noproxy '*' --max-time 5 -X POST \
+    -H 'Content-Type: application/json' \
+    -H 'X-Jev-No-Cache: 1' \
+    -d "$payload" \
+    "$endpoint" 2>/dev/null)" || return 1
+  case "$resp" in
+    *'"answers"'*':'*) return 0 ;;
+    *) return 1 ;;
+  esac
 }
 validate_operation() {
   case "$1" in route-skills|prune-context|review) ;; *) fail "Unknown fallback operation '$1'; expected route-skills, prune-context, or review" ;; esac
 }
 parse_fallback() {
-  local spec="$1" operation kinds kind old_ifs
+  local spec="$1" operation kinds kind normalized_kind normalized_kinds="" old_ifs
   case "$spec" in *=*) ;; *) fail '--fallback requires <op>=<kind[,kind]>' ;; esac
   operation="${spec%%=*}"
   kinds="${spec#*=}"
@@ -104,12 +127,15 @@ parse_fallback() {
   [ -n "$kinds" ] || fail '--fallback requires at least one backend kind'
   case "$kinds" in ,*|*,|*,,*) fail '--fallback backend list contains an empty kind' ;; esac
   old_ifs="$IFS"; IFS=','
-  for kind in $kinds; do validate_kind "$kind"; done
+  for kind in $kinds; do
+    normalized_kind="$(normalize_kind "$kind")" || exit 1
+    normalized_kinds="${normalized_kinds:+$normalized_kinds,}$normalized_kind"
+  done
   IFS="$old_ifs"
   case "$operation" in
-    route-skills) ROUTE_FALLBACK="$kinds" ;;
-    prune-context) PRUNE_FALLBACK="$kinds" ;;
-    review) REVIEW_FALLBACK="$kinds" ;;
+    route-skills) ROUTE_FALLBACK="$normalized_kinds" ;;
+    prune-context) PRUNE_FALLBACK="$normalized_kinds" ;;
+    review) REVIEW_FALLBACK="$normalized_kinds" ;;
   esac
 }
 while [ "$#" -gt 0 ]; do
@@ -121,7 +147,7 @@ while [ "$#" -gt 0 ]; do
       [ "$#" -ge 2 ] || fail '--agent requires a runtime target'
       AGENT_TARGET="$2"; shift 2 ;;
     --mode)
-      [ "$#" -ge 2 ] || fail '--mode requires api, local, jevos, ollama, lmstudio, or systemone'
+      [ "$#" -ge 2 ] || fail '--mode requires api, local, localhost, jevos, ollama, lmstudio, or systemone'
       MODE="$2"; MODE_CLI_SET=true; shift 2 ;;
     --config-only)
       CONFIG_ONLY=true; shift ;;
@@ -139,13 +165,13 @@ while [ "$#" -gt 0 ]; do
       KEY_ENV="$2"; KEY_ENV_SET=true; shift 2 ;;
     --route-backend)
       [ "$#" -ge 2 ] || fail '--route-backend requires a backend kind'
-      validate_kind "$2"; ROUTE_BACKEND="$2"; shift 2 ;;
+      ROUTE_BACKEND="$(normalize_kind "$2")" || exit 1; shift 2 ;;
     --prune-backend)
       [ "$#" -ge 2 ] || fail '--prune-backend requires a backend kind'
-      validate_kind "$2"; PRUNE_BACKEND="$2"; shift 2 ;;
+      PRUNE_BACKEND="$(normalize_kind "$2")" || exit 1; shift 2 ;;
     --review-backend)
       [ "$#" -ge 2 ] || fail '--review-backend requires a backend kind'
-      validate_kind "$2"; REVIEW_BACKEND="$2"; shift 2 ;;
+      REVIEW_BACKEND="$(normalize_kind "$2")" || exit 1; shift 2 ;;
     --fallback)
       [ "$#" -ge 2 ] || fail '--fallback requires <op>=<kind[,kind]>'
       parse_fallback "$2"; shift 2 ;;
@@ -220,6 +246,8 @@ if [ "$CONFIG_ONLY" = true ]; then
   if [ "$MODE" = jevos ]; then
     MODE=local
     if [ "$MODEL_OVERRIDE_SET" = false ]; then MODEL_OVERRIDE='jevos-v5'; MODEL_OVERRIDE_SET=true; fi
+  elif [ "$MODE" = localhost ]; then
+    MODE=local
   fi
   case "$MODE" in api|local|ollama|lmstudio|systemone) ;; *) fail "Unknown config-only backend '$MODE'" ;; esac
   [ -z "$AGENT_TARGET" ] || { validate_flag_value "$AGENT_TARGET" 'Agent id'; case "$AGENT_TARGET" in *[!a-z0-9-]*|-*|*-|*--*) fail 'Agent id must contain lowercase letters, digits, and single hyphens only' ;; esac; }
@@ -468,6 +496,8 @@ fi
 if [ "$MODE" = jevos ]; then
   MODE=local
   if [ "$MODEL_OVERRIDE_SET" = false ] && [ -z "${JEV_LOCAL_MODEL:-}" ]; then JEV_LOCAL_MODEL='jevos-v5'; fi
+elif [ "$MODE" = localhost ]; then
+  MODE=local
 fi
 case "$MODE" in skip) info 'JEO_SKILLS_JEV=skip — not installing Jev.'; exit 0 ;; api|local|ollama|lmstudio|systemone) ;; *) fail "JEO_SKILLS_JEV must be skip, api, local, jevos, ollama, lmstudio, or systemone (got '$MODE')" ;; esac
 export JEV_MODE="$MODE"
@@ -1148,12 +1178,14 @@ PY
     else
       printf 'JEV_MODE=local\nJEV_LOCAL_ENGINE=jevos\nJEV_LOCAL_MODEL=%s\nJEV_LOCAL_MODEL_DIR=%s\nJEV_LOCAL_BIN=%s\nJEV_ENDPOINT=%s\n' "$LOCAL_MODEL" "$MODEL_DIR" "$JEVOS_BIN" "$LOCAL_ENDPOINT_VAL" | write_env
     fi
-    health_url="http://$local_host:$local_port/health"
+    local_url_host="$local_host"
+    case "$local_url_host" in *:*) local_url_host="[$local_url_host]" ;; esac
+    health_url="http://$local_url_host:$local_port/health"
     _profile_disabled=false
     if [ -n "$PROFILE" ] && [ -f "$PROFILE_CONFIG" ] && grep -q '^JEV_ENABLED=false$' "$PROFILE_CONFIG"; then
       _profile_disabled=true
     fi
-    if [ "$_profile_disabled" != true ] && [ "${JEV_SKIP_SERVER_START:-false}" != true ] && [ "${JEV_SKIP_MODEL_DOWNLOAD:-false}" != true ] && [ -x "$JEVOS_BIN" ] && [ -f "$MODEL_DIR/openvino_model.bin" ]; then
+    if [ "$_profile_disabled" != true ] && [ "${JEV_SKIP_SERVER_START:-false}" != true ] && [ -x "$JEVOS_BIN" ] && [ -f "$MODEL_DIR/openvino_model.bin" ]; then
       PID_FILE="$RUN_DIR/local-${local_port}.pid"
       if [ -f "$PID_FILE" ] && [ ! -L "$PID_FILE" ]; then
         IFS=$'\t' read -r old_pid old_engine old_model _old_host _old_port < "$PID_FILE" || true
@@ -1163,18 +1195,21 @@ PY
           stop_managed_server "$PID_FILE" || true
         fi
       fi
-      if curl -fsS --max-time 2 "$health_url" >/dev/null 2>&1; then
-        info "jevos server already listening on http://$local_host:$local_port"
+      if curl -fsS --noproxy '*' --max-time 2 "$health_url" >/dev/null 2>&1; then
+        if ! probe_systemone_endpoint "$LOCAL_ENDPOINT_VAL" "$LOCAL_MODEL"; then
+          fail "System One probe failed for $LOCAL_ENDPOINT_VAL (port is occupied by an incompatible service)"
+        fi
+        info "jevos server already listening on http://$local_url_host:$local_port"
       else
         mkdir -p "$JEVOS_ROOT"
-        info "Starting jevos server on http://$local_host:$local_port ..."
+        info "Starting jevos server on http://$local_url_host:$local_port ..."
         nohup "$JEVOS_BIN" serve --host "$local_host" --port "$local_port" --model-dir "$MODEL_DIR" </dev/null > "$JEVOS_ROOT/jevos.log" 2>&1 &
         server_pid=$!
         write_pid_file "$PID_FILE" "$server_pid" "jevos" "$LOCAL_MODEL" "$local_host" "$local_port"
         jevos_ready=false
         jevos_crashed=false
         for _wait_sec in $(seq 1 60); do
-          if curl -fsS --max-time 1 "$health_url" >/dev/null 2>&1; then
+          if curl -fsS --noproxy '*' --max-time 1 "$health_url" >/dev/null 2>&1; then
             jevos_ready=true
             break
           fi
@@ -1188,7 +1223,8 @@ PY
         if [ "$jevos_ready" = true ]; then
           info "jevos server ready on $LOCAL_ENDPOINT_VAL (PID $server_pid)"
         elif [ "$jevos_crashed" = true ]; then
-          info "jevos server exited early before becoming ready (check $JEVOS_ROOT/jevos.log)"
+          rm -f "$PID_FILE"
+          fail "jevos server exited early before becoming ready (check $JEVOS_ROOT/jevos.log)"
         else
           info "jevos server still warming up (PID $server_pid; check $JEVOS_ROOT/jevos.log)"
         fi
@@ -1346,7 +1382,9 @@ PY
     else
       printf 'JEV_MODE=local\nJEV_LOCAL_ENGINE=qev\nJEV_LOCAL_MODEL=%s\nJEV_LOCAL_MODEL_DIR=%s\nJEV_LOCAL_MODEL_FILE=%s\nJEV_LOCAL_BIN=%s\nJEV_ENDPOINT=%s\n' "$LOCAL_MODEL" "$MODEL_DIR" "$MODEL_FILE" "$LLAMA_BIN" "$LOCAL_ENDPOINT_VAL" | write_env
     fi
-    health_url="http://$local_host:$local_port/health"
+    local_url_host="$local_host"
+    case "$local_url_host" in *:*) local_url_host="[$local_url_host]" ;; esac
+    health_url="http://$local_url_host:$local_port/health"
     _profile_disabled=false
     if [ -n "$PROFILE" ] && [ -f "$PROFILE_CONFIG" ] && grep -q '^JEV_ENABLED=false$' "$PROFILE_CONFIG"; then
       _profile_disabled=true
@@ -1368,7 +1406,7 @@ PY
     else
       backend_port="$local_port"
     fi
-    if [ "$_profile_disabled" != true ] && [ "$INSTALL_DAEMON" != true ] && [ "${JEV_SKIP_SERVER_START:-false}" != true ] && [ "${JEV_SKIP_MODEL_DOWNLOAD:-false}" != true ] && [ -x "$LLAMA_BIN" ] && [ -f "$MODEL_FILE" ]; then
+    if [ "$_profile_disabled" != true ] && [ "$INSTALL_DAEMON" != true ] && [ "${JEV_SKIP_SERVER_START:-false}" != true ] && [ -x "$LLAMA_BIN" ] && [ -f "$MODEL_FILE" ]; then
       PID_FILE="$RUN_DIR/local-${local_port}.pid"
       BACKEND_PID_FILE="$RUN_DIR/backend-${local_port}.pid"
       if [ -f "$PID_FILE" ] && [ ! -L "$PID_FILE" ]; then
@@ -1380,8 +1418,11 @@ PY
           stop_managed_server "$PID_FILE" || true
         fi
       fi
-      if curl -fsS --max-time 2 "$health_url" >/dev/null 2>&1; then
-        info "Local qev llama-server already listening on http://$local_host:$local_port"
+      if curl -fsS --noproxy '*' --max-time 2 "$health_url" >/dev/null 2>&1; then
+        if ! probe_systemone_endpoint "$LOCAL_ENDPOINT_VAL" "$LOCAL_MODEL"; then
+          fail "System One probe failed for $LOCAL_ENDPOINT_VAL (port is occupied by an incompatible service)"
+        fi
+        info "Local qev llama-server already listening on http://$local_url_host:$local_port"
       else
         mkdir -p "$MODEL_DIR"
         if [ "$qev_slots" -gt 1 ]; then
@@ -1389,14 +1430,15 @@ PY
         else
           kv_args=(-np 1 --no-kv-unified)
         fi
-        info "Starting $LOCAL_MODEL via llama-server on http://$local_host:$backend_port ..."
+        info "Starting $LOCAL_MODEL via llama-server on http://$local_url_host:$backend_port ..."
         nohup "$LLAMA_BIN" -m "$MODEL_FILE" --alias "$LOCAL_MODEL" --host "$local_host" --port "$backend_port" -c "${JEV_QEV_CTX:-32768}" --cache-reuse 256 "${kv_args[@]}" -fa on -b 2048 -ub 1024 -ctk q8_0 -ctv q8_0 -ngl 99 --no-webui </dev/null > "$MODEL_DIR/llama-server.log" 2>&1 &
         server_pid=$!
-        backend_health_url="http://$local_host:$backend_port/health"
+        backend_health_url="http://$local_url_host:$backend_port/health"
         qev_ready=false
         qev_crashed=false
+        gw_crashed=false
         for _wait_sec in $(seq 1 80); do
-          if curl -fsS --max-time 1 "$backend_health_url" >/dev/null 2>&1; then
+          if curl -fsS --noproxy '*' --max-time 1 "$backend_health_url" >/dev/null 2>&1; then
             qev_ready=true
             break
           fi
@@ -1408,18 +1450,21 @@ PY
         done
         if [ "$use_gateway" = true ] && [ "$qev_crashed" != true ]; then
           write_pid_file "$BACKEND_PID_FILE" "$server_pid" "qev-backend" "$LOCAL_MODEL" "$local_host" "$backend_port"
-          info "Starting jev-gateway queue proxy on http://$local_host:$local_port -> http://$local_host:$backend_port ..."
-          nohup node "$JEV_HOME/jev-gateway.mjs" --host "$local_host" --port "$local_port" --upstream "http://$local_host:$backend_port" --concurrency "$qev_slots" </dev/null > "$MODEL_DIR/jev-gateway.log" 2>&1 &
+          info "Starting jev-gateway queue proxy on http://$local_url_host:$local_port -> http://$local_url_host:$backend_port ..."
+          nohup node "$JEV_HOME/jev-gateway.mjs" --host "$local_host" --port "$local_port" --upstream "http://$local_url_host:$backend_port" --concurrency "$qev_slots" </dev/null > "$MODEL_DIR/jev-gateway.log" 2>&1 &
           gw_pid=$!
           write_pid_file "$PID_FILE" "$gw_pid" "qev" "$LOCAL_MODEL" "$local_host" "$local_port"
           qev_ready=false
           for _wait_sec in $(seq 1 40); do
-            if curl -fsS --max-time 1 "$health_url" >/dev/null 2>&1; then
+            if curl -fsS --noproxy '*' --max-time 1 "$health_url" >/dev/null 2>&1; then
               qev_ready=true
               break
             fi
             if ! kill -0 "$gw_pid" 2>/dev/null; then
-              rm -f "$PID_FILE"
+              gw_crashed=true
+              break
+            fi
+            if ! kill -0 "$server_pid" 2>/dev/null; then
               qev_crashed=true
               break
             fi
@@ -1430,8 +1475,12 @@ PY
         fi
         if [ "$qev_ready" = true ]; then
           info "Local $LOCAL_MODEL ready on $LOCAL_ENDPOINT_VAL"
+        elif [ "$gw_crashed" = true ]; then
+          stop_managed_server "$PID_FILE" || true
+          fail "jev-gateway exited early before becoming ready (check $MODEL_DIR/jev-gateway.log)"
         elif [ "$qev_crashed" = true ]; then
-          info "Local $LOCAL_MODEL exited early before becoming ready (check $MODEL_DIR/llama-server.log)"
+          stop_managed_server "$PID_FILE" || true
+          fail "Local $LOCAL_MODEL exited early before becoming ready (check $MODEL_DIR/llama-server.log)"
         else
           info "Local $LOCAL_MODEL still warming up (check $MODEL_DIR/llama-server.log)"
         fi
@@ -1465,7 +1514,7 @@ tpl = pathlib.Path(sys.argv[1]).read_text()
 for k, v in zip(["__NODE_BIN__", "__GATEWAY_SCRIPT__", "__HOST__", "__PORT__", "__UPSTREAM__", "__CONCURRENCY__", "__LOG_PATH__"], sys.argv[2:9]):
     tpl = tpl.replace(k, v)
 pathlib.Path(sys.argv[9]).write_text(tpl)
-' "$JEV_HOME/com.jeo-skills.qev-gateway.plist" "$NODE_BIN" "$JEV_HOME/jev-gateway.mjs" "$local_host" "$local_port" "http://$local_host:$backend_port" "$qev_slots" "$MODEL_DIR/jev-gateway.log" "$GW_PLIST_DST"
+' "$JEV_HOME/com.jeo-skills.qev-gateway.plist" "$NODE_BIN" "$JEV_HOME/jev-gateway.mjs" "$local_host" "$local_port" "http://$local_url_host:$backend_port" "$qev_slots" "$MODEL_DIR/jev-gateway.log" "$GW_PLIST_DST"
       fi
       if command -v launchctl >/dev/null 2>&1; then
         PID_FILE="$RUN_DIR/local-${local_port}.pid"
@@ -1475,13 +1524,13 @@ pathlib.Path(sys.argv[9]).write_text(tpl)
         launchctl bootstrap "gui/$(id -u)" "$PLIST_DST" >/dev/null 2>&1 || true
         if [ "$use_gateway" = true ] && [ -f "$GW_PLIST_DST" ]; then
           for _ in $(seq 1 40); do
-            curl -fsS --max-time 1 "http://$local_host:$backend_port/health" >/dev/null 2>&1 && break
+            curl -fsS --noproxy '*' --max-time 1 "http://$local_url_host:$backend_port/health" >/dev/null 2>&1 && break
             sleep 0.25
           done
           launchctl bootstrap "gui/$(id -u)" "$GW_PLIST_DST" >/dev/null 2>&1 || true
         fi
         for _ in $(seq 1 40); do
-          curl -fsS --max-time 1 "$health_url" >/dev/null 2>&1 && break
+          curl -fsS --noproxy '*' --max-time 1 "$health_url" >/dev/null 2>&1 && break
           sleep 0.25
         done
       fi
