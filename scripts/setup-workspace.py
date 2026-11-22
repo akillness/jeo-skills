@@ -95,7 +95,8 @@ Run in this order. If a tool is missing, say so in one line and continue.
   `knowledge/work/active/`, paired to code via `.mex/context/knowledge-pairings.md`)
   and second-brain vault `{vault}`. Read `knowledge/index.md` or vault `index.md`
   first; `raw/**` is immutable. If neither is initialised, say "second-brain pending"
-  and fall back to normal search.
+  and fall back to normal search. For direct second-brain CRUD & search use
+  `second-brain save|update|delete|search|init-indexes` (or MCP `sb_save`/`sb_update`/`sb_delete`/`sb_search`).
 - **Code structure, callers, impact, project conventions** → mex. Read
   `.mex/ROUTER.md` first when it exists (an empty `.mex/` means mex has not run:
   say so and use semble), then `mex-agent wiki for-code <nodeId>`,
@@ -111,7 +112,8 @@ Run in this order. If a tool is missing, say so in one line and continue.
   `jeo jeox build` to refresh. MCP hosts call the same via the `jeox` server
   (`jeox_where_defined`, `jeox_who_calls`, ...).
 - **RDF / OWL / SHACL / ontology work** → the `open-ontologies` skill, via its CLI
-  `batch -` mode. Start no network listener and register no MCP server on your own.
+  `batch -` mode (`open-ontologies --no-connect --pretty batch -`) and `jeo-ontology save|update|delete|search`
+  (or managed stdio MCP `open-ontologies` registered by `setup-mcp-hosts.py`). Start no network listener and register no MCP server on your own.
 - **Improving this agent harness (rules, prompts, skills, hooks)** → harness2 method
   mode. `.harness2/workspace.json` maps the eight harness components to real files.
 
@@ -627,6 +629,17 @@ def step_zvec(ctx: Ctx) -> dict:
     return result("ok", "workspace index ready (incremental on re-run)")
 
 
+def _install_python_wrapper(ctx: Ctx, bin_name: str, target_script: Path) -> Path | None:
+    if ctx.dry or not target_script.is_file():
+        return None
+    bin_dir = ctx.home / ".local/bin"
+    bin_dir.mkdir(parents=True, exist_ok=True)
+    wrapper = bin_dir / bin_name
+    content = f'#!/usr/bin/env bash\nexec "{sys.executable}" "{target_script}" "$@"\n'
+    atomic_write(wrapper, content, mode=0o755)
+    return wrapper
+
+
 def step_second_brain(ctx: Ctx) -> dict:
     sb_env = ctx.env.get("JEO_SKILLS_SECOND_BRAIN", "").strip().lower()
     if sb_env in {"skip", "false", "0", "no", "off"}:
@@ -661,8 +674,41 @@ def step_second_brain(ctx: Ctx) -> dict:
         if "explicit model identifier is required" in out and not ctx.env.get("JEO_SECOND_BRAIN_CONFIG"):
             return result("pending", "no host model configured (set SECOND_BRAIN_MODEL or model in host settings, then re-run)")
         return result("failed", f"second-brain setup exit {code}: {tail(out)}")
+    notes: list[str] = []
+    vault_ops = ctx.skill_script("obsidian-second-brain", "vault_ops.py")
+    if vault_ops:
+        wrapper = _install_python_wrapper(ctx, "second-brain", vault_ops)
+        if wrapper:
+            notes.append(f"cli {wrapper}")
+        idx_code, _ = ctx.run([sys.executable, str(vault_ops), "--config", str(config), "init-indexes", "--json"], 120)
+        if idx_code == 0 and not ctx.dry:
+            notes.append("indexes ready")
+    extra_note = f"; {', '.join(notes)}" if notes else ""
     return result("ok", f"vault {brain_vault(ctx)} (budget ${BRAIN_DEFAULTS['max_run_usd']}/run, "
-                        f"${BRAIN_DEFAULTS['daily_budget_usd']}/day)")
+                        f"${BRAIN_DEFAULTS['daily_budget_usd']}/day{extra_note})")
+
+
+def _ensure_ontology_ops(ctx: Ctx) -> list[str]:
+    notes: list[str] = []
+    onto_ops = ctx.skill_script("open-ontologies", "onto_ops.py")
+    if not onto_ops:
+        return notes
+    wrapper = _install_python_wrapper(ctx, "jeo-ontology", onto_ops)
+    if wrapper:
+        notes.append(f"cli {wrapper}")
+    cmd = [sys.executable, str(onto_ops), "init-store", "--json"]
+    proj_onto = ctx.project / "knowledge/ontology"
+    if proj_onto.is_dir():
+        cmd += ["--dir", str(proj_onto)]
+    init_code, init_out = ctx.run(cmd, 120)
+    if init_code == 0 and not ctx.dry:
+        try:
+            parsed = json.loads(init_out)
+            if isinstance(parsed, dict):
+                notes.append("store initialized" + (" with embeddings" if parsed.get("embeddings") else ""))
+        except Exception:
+            notes.append("store initialized")
+    return notes
 
 
 def step_ontologies(ctx: Ctx) -> dict:
@@ -680,14 +726,19 @@ def step_ontologies(ctx: Ctx) -> dict:
         binary = ctx.which("open-ontologies")
         if not binary and not ctx.dry:
             return result("failed", "install.sh finished but open-ontologies is not on PATH")
-        return result("ok", f"built and smoke-tested {binary or 'binary'}")
+        notes = _ensure_ontology_ops(ctx)
+        suffix = f" ({'; '.join(notes)})" if notes else ""
+        return result("ok", f"built and smoke-tested {binary or 'binary'}{suffix}")
     if not smoke:
-        return result("ok", f"binary {binary} present (smoke helper unavailable)")
+        notes = _ensure_ontology_ops(ctx)
+        suffix = f"; {'; '.join(notes)}" if notes else ""
+        return result("ok", f"binary {binary} present (smoke helper unavailable{suffix})")
     code, out = ctx.run([sys.executable, str(smoke), "--binary", binary, "--json"], 300)
     if code != 0:
         return result("failed", f"smoke test exit {code}: {tail(out)}")
-    return result("ok", f"binary {binary} passes the offline smoke test")
-
+    notes = _ensure_ontology_ops(ctx)
+    suffix = f" ({'; '.join(notes)})" if notes else ""
+    return result("ok", f"binary {binary} passes the offline smoke test{suffix}")
 
 def step_openspace(ctx: Ctx) -> dict:
     notes = []

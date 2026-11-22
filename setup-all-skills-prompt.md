@@ -192,13 +192,13 @@ if [ "${INSTALL_GLOBAL:-true}" != false ] && [ "${JEO_SKILLS_STAR:-true}" = true
     if [ -n "${INSTALLER:-}" ]; then
       [ -f "$INSTALLER" ] || exit 1
       JEO_SKILLS_STAR_ONLY=true JEO_SKILLS_STAR=true bash "$INSTALLER"
-    elif [ -f "./install.sh" ] && python3 -I -c 'import hashlib,sys; sys.exit(hashlib.sha256(open(sys.argv[1], "rb").read()).hexdigest() != "70f3228fead7969bd30f384b1626c69e2085d62d6e8a0f2c6da81b3826023557")' "./install.sh"; then
+    elif [ -f "./install.sh" ] && python3 -I -c 'import hashlib,sys; sys.exit(hashlib.sha256(open(sys.argv[1], "rb").read()).hexdigest() != "36ef821f58916e88608272502dce9ef425ba4f6986978659caf1add068cc471b")' "./install.sh"; then
       JEO_SKILLS_STAR_ONLY=true JEO_SKILLS_STAR=true bash "./install.sh"
     elif [ "${JEO_SKILLS_STAR_DOWNLOAD:-true}" = true ]; then
       tmp=$(mktemp "${TMPDIR:-/tmp}/jeo-skills-star.XXXXXXXX") || exit 1
       trap 'rm -f "$tmp"' EXIT
       curl --disable --proto '=https' --max-time 15 -fsS 'https://raw.githubusercontent.com/akillness/jeo-skills/main/install.sh' -o "$tmp" || exit 1
-      python3 -I -c 'import hashlib,sys; sys.exit(hashlib.sha256(open(sys.argv[1], "rb").read()).hexdigest() != "70f3228fead7969bd30f384b1626c69e2085d62d6e8a0f2c6da81b3826023557")' "$tmp" || exit 1
+      python3 -I -c 'import hashlib,sys; sys.exit(hashlib.sha256(open(sys.argv[1], "rb").read()).hexdigest() != "36ef821f58916e88608272502dce9ef425ba4f6986978659caf1add068cc471b")' "$tmp" || exit 1
       JEO_SKILLS_STAR_ONLY=true JEO_SKILLS_STAR=true bash "$tmp"
     else
       exit 1
@@ -1999,7 +1999,7 @@ Once isolated (`"custom": true` in `.harness2/workspace.json` and `customWorkflo
 - Both `jev-plugin.mjs` and OpenSpace `route_prompt.py` inspect ancestor `.harness2/workspace.json` from `cwd` (stopping before `$HOME` and rejecting symlinks) and honor per-project enable/profile/order flags while writing unified telemetry to `~/.local/state/jeo-skill/workflow-events.jsonl`.
 - To restore global workflow inheritance later, pass `--reset-project-workflow`.
 
-To provision `@upstash/context7-mcp` locally (npm `--ignore-scripts`, zero OAuth prompt required; optionally set `CONTEXT7_API_KEY="ctx7sk-..."` in your shell env for higher Context7 rate limits), repair stale or relative host MCP paths (such as legacy `~/.local/bin/ouroboros`, `scrapling`, bare binaries, or Gemini `toolTimeout`), register `context7`, `openspace`, `jeox`, `zvec_grep`, `aside`, `semble`, and `headroom` across installed hosts (`claude`, `codex`, `gemini`, `antigravity-cli`/`antigravity-ide`, `cursor`, `opencode`, `pi`, `gjc`, `jeopi`, `jeo`), and verify live JSON-RPC `initialize` + `tools/list` + Context7 (`resolve-library-id`) probes:
+To provision `@upstash/context7-mcp` locally (npm `--ignore-scripts`, zero OAuth prompt required; optionally set `CONTEXT7_API_KEY="ctx7sk-..."` in your shell env for higher Context7 rate limits), repair stale or relative host MCP paths (such as legacy `~/.local/bin/ouroboros`, `scrapling`, bare binaries, or Gemini `toolTimeout`), register `context7`, `openspace`, `jeox`, `zvec_grep`, `aside`, `semble`, `headroom`, `open-ontologies` (`serve`), and `second-brain` (`mcp`) across installed hosts (`claude`, `codex`, `gemini`, `antigravity-cli`/`antigravity-ide`, `cursor`, `opencode`, `pi`, `gjc`, `jeopi`, `jeo`), and verify live JSON-RPC `initialize` + `tools/list` + Context7 (`resolve-library-id`) probes:
 
 ```bash
 (
@@ -2028,7 +2028,7 @@ Host specifics enforced automatically by `setup-mcp-hosts.py`:
 - **Gemini CLI** (`~/.gemini/settings.json`): omits `toolTimeout` cleanly (strict schema validation rejects it).
 - **Antigravity IDE** (`~/.gemini/antigravity/mcp_config.json`): preserves the symlink to `~/.gemini/config/mcp_config.json` when linked.
 - **OpenCode v2** (`~/.config/opencode/opencode.json`): writes under `mcp.servers` if v2 object exists or keeps v1-compatible `mcp` shape cleanly.
-- **Pi** (`~/.pi/agent/mcp.json`): sets `"exposure": "direct"` on `context7` and `jeox` so tools are immediately callable.
+- **Pi** (`~/.pi/agent/mcp.json`): sets `"exposure": "direct"` on `context7`, `jeox`, `open-ontologies`, and `second-brain` so tools are immediately callable.
 - **Aside** (`~/.aside/u/*/settings.json`): audited read-only; never overwritten by scripts.
 
 #### Unified Flow Log Management (Global vs. Per-Project Isolated Flows)
@@ -2102,7 +2102,9 @@ command -v specify >/dev/null 2>&1 && specify --version
 BRAIN_CFG="${JEO_SECOND_BRAIN_CONFIG:-$USER_HOME/.jeo/second-brain-config.json}"
 if [ -f "$BRAIN_CFG" ] && [ -f "$SKILLS_ROOT/obsidian-second-brain/scripts/ctx_guard.py" ]; then
   python3 "$SKILLS_ROOT/obsidian-second-brain/scripts/ctx_guard.py" --config "$BRAIN_CFG" --check
+  command -v second-brain >/dev/null 2>&1 && second-brain status --json || true
 fi
+command -v jeo-ontology >/dev/null 2>&1 && jeo-ontology init-store --json || true
 if [ "${JEO_SKILLS_APPROVE_MCP_INSPECTION:-false}" = true ]; then
   command -v claude >/dev/null 2>&1 && claude mcp list
   command -v codex >/dev/null 2>&1 && codex mcp list

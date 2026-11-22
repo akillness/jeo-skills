@@ -37,8 +37,8 @@ except ModuleNotFoundError:  # pragma: no cover
     tomllib = None  # type: ignore[assignment]
 
 
-BARE_BIN_NAMES = ("zg", "aside", "uvx", "spec-kit-mcp", "headroom", "scrapling", "openspace-mcp", "jeox")
-DIRECT_EXPOSURE_SERVERS = {"context7", "jeox"}
+BARE_BIN_NAMES = ("zg", "aside", "uvx", "spec-kit-mcp", "headroom", "scrapling", "openspace-mcp", "jeox", "open-ontologies", "second-brain")
+DIRECT_EXPOSURE_SERVERS = {"context7", "jeox", "open-ontologies", "second-brain"}
 
 
 def _search_path(home: Path) -> str:
@@ -166,6 +166,46 @@ def resolve_jeox_cmd(home: Path, project: Path | None) -> tuple[str, list[str]] 
                 pass
     return None
 
+def resolve_open_ontologies_cmd(home: Path) -> tuple[str, list[str]] | None:
+    mcp_gate = os.environ.get("OPEN_ONTOLOGIES_MCP", "").strip().lower()
+    if mcp_gate in {"none", "off", "skip", "false", "0"}:
+        return None
+    env_bin = os.environ.get("OPEN_ONTOLOGIES_BIN", "").strip()
+    if env_bin:
+        if env_bin.lower() in {"none", "off", "skip"}:
+            return None
+        cand = Path(env_bin).expanduser()
+        if cand.is_file():
+            return str(cand), ["serve"]
+    local_bin = home / ".local/bin/open-ontologies"
+    if local_bin.is_file():
+        return str(local_bin), ["serve"]
+    resolved = resolve_bin("open-ontologies", home)
+    if resolved:
+        return resolved, ["serve"]
+    return None
+
+
+def resolve_second_brain_cmd(home: Path) -> tuple[str, list[str]] | None:
+    mcp_gate = os.environ.get("SECOND_BRAIN_MCP", "").strip().lower()
+    if mcp_gate in {"none", "off", "skip", "false", "0"}:
+        return None
+    local_bin = home / ".local/bin/second-brain"
+    if local_bin.is_file():
+        return str(local_bin), ["mcp"]
+    resolved = resolve_bin("second-brain", home)
+    if resolved:
+        return resolved, ["mcp"]
+    cfg_file = home / ".jeo/second-brain-config.json"
+    if cfg_file.is_file():
+        for cand in (
+            home / ".agents/skills/obsidian-second-brain/scripts/vault_ops.py",
+            Path(__file__).resolve().parents[1] / ".agent-skills/obsidian-second-brain/scripts/vault_ops.py",
+        ):
+            if cand.is_file():
+                return sys.executable, [str(cand.resolve()), "mcp"]
+    return None
+
 
 def build_managed_specs(home: Path, project: Path | None) -> dict[str, dict[str, Any]]:
     specs: dict[str, dict[str, Any]] = {}
@@ -216,8 +256,15 @@ def build_managed_specs(home: Path, project: Path | None) -> dict[str, dict[str,
     if hr_bin:
         specs["headroom"] = {"command": hr_bin, "args": ["mcp", "serve"]}
 
-    return specs
+    oo_cmd = resolve_open_ontologies_cmd(home)
+    if oo_cmd:
+        specs["open-ontologies"] = {"command": oo_cmd[0], "args": oo_cmd[1]}
 
+    sb_cmd = resolve_second_brain_cmd(home)
+    if sb_cmd:
+        specs["second-brain"] = {"command": sb_cmd[0], "args": sb_cmd[1]}
+
+    return specs
 
 def _atomic_write(path: Path, text: str, mode: int, validate) -> None:
     validate(text)

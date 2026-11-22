@@ -189,6 +189,42 @@ class SetupMcpHostsTests(unittest.TestCase):
         self.assertTrue(probe["ok"], probe)
         self.assertIn("jeox_search", probe["tools"])
 
+    def test_registers_and_probes_second_brain_and_open_ontologies_mcp(self) -> None:
+        import importlib.util
+
+        vault_ops = ROOT / ".agent-skills/obsidian-second-brain/scripts/vault_ops.py"
+        sb_bin = self.home / ".local/bin/second-brain"
+        sb_bin.parent.mkdir(parents=True, exist_ok=True)
+        sb_bin.write_text(f'#!/usr/bin/env bash\nexec "{sys.executable}" "{vault_ops}" "$@"\n', encoding="utf-8")
+        sb_bin.chmod(0o755)
+
+        fake_oo = self.home / ".local/bin/open-ontologies"
+        fake_oo.write_text("#!/bin/sh\nexit 0\n", encoding="utf-8")
+        fake_oo.chmod(0o755)
+
+        spec = importlib.util.spec_from_file_location("setup_mcp_hosts", SCRIPT)
+        mod = importlib.util.module_from_spec(spec)
+        assert spec.loader
+        spec.loader.exec_module(mod)
+
+        probe = mod.probe_stdio_mcp("second-brain", sys.executable, [str(vault_ops), "mcp"])
+        self.assertTrue(probe["ok"], probe)
+        self.assertEqual(set(probe["tools"]), {"sb_save", "sb_update", "sb_delete", "sb_search", "sb_status"})
+
+        proc = subprocess.run(
+            [sys.executable, str(SCRIPT), "--project", str(self.repo), "--apply"],
+            env={**os.environ, "HOME": str(self.home), "OPEN_ONTOLOGIES_BIN": str(fake_oo)},
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+        claude_cfg = json.loads((self.home / ".claude.json").read_text(encoding="utf-8"))
+        self.assertEqual(claude_cfg["mcpServers"]["second-brain"]["args"], ["mcp"])
+        self.assertEqual(claude_cfg["mcpServers"]["open-ontologies"]["command"], str(fake_oo))
+        self.assertEqual(claude_cfg["mcpServers"]["open-ontologies"]["args"], ["serve"])
+        self.assertIn("open-ontologies", proc.stdout)
+        self.assertIn("second-brain", proc.stdout)
+
 
 if __name__ == "__main__":
     unittest.main()

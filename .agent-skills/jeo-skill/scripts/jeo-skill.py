@@ -901,7 +901,7 @@ def run_skill_setup(root: Path | None, selected: list[str], *,
     if with_hooks:
         env["JEO_SKILLS_APPROVE_ALL_HOOKS_MCP"] = "true"
     checkout_repo = Path(__file__).resolve().parents[3]
-    if with_hooks and "llm-wiki" in selected:
+    if with_hooks and ("llm-wiki" in selected or "obsidian-second-brain" in selected):
         repo_hooks = checkout_repo / "hooks"
         dest_hooks = home / ".agents/hooks"
         if (repo_hooks / "ingest-prompt.py").is_file() and not dest_hooks.is_symlink():
@@ -914,6 +914,18 @@ def run_skill_setup(root: Path | None, selected: list[str], *,
                     dst_f.chmod(0o755)
             if (repo_hooks / "ctx").is_dir() and not (dest_hooks / "ctx").exists():
                 shutil.copytree(repo_hooks / "ctx", dest_hooks / "ctx")
+
+    def _install_cli_wrapper(bin_name: str, script_path: Path) -> None:
+        if not script_path.is_file():
+            return
+        bin_dir = home / ".local/bin"
+        wrapper = bin_dir / bin_name
+        if bin_dir.is_symlink() or wrapper.is_symlink():
+            return
+        bin_dir.mkdir(parents=True, exist_ok=True)
+        wrapper.write_text(f'#!/usr/bin/env bash\nexec "{sys.executable}" "{script_path}" "$@"\n', encoding="utf-8")
+        wrapper.chmod(0o755)
+
     for skill_name, cmd in plans:
         if skill_name == "mex" and cmd[0] == "bash" and root is not None:
             wrapper_src = root / "mex/scripts/mex-agent-wrapper.sh"
@@ -943,8 +955,18 @@ def run_skill_setup(root: Path | None, selected: list[str], *,
         completed = subprocess.run(cmd, env=env, check=False, stdin=subprocess.DEVNULL)
         if completed.returncode != 0:
             raise JeoSkillError(f"Post-install setup failed for {skill_name} (exit {completed.returncode}): {shlex.join(cmd)}")
+        if skill_name == "obsidian-second-brain" and root is not None:
+            vault_ops = root / "obsidian-second-brain/scripts/vault_ops.py"
+            _install_cli_wrapper("second-brain", vault_ops)
+            sb_cfg = os.environ.get("JEO_SECOND_BRAIN_CONFIG", "").strip() or str(home / ".jeo/second-brain-config.json")
+            if vault_ops.is_file():
+                subprocess.run([sys.executable, str(vault_ops), "--config", sb_cfg, "init-indexes", "--json"], env=env, check=False, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        elif skill_name == "open-ontologies" and root is not None:
+            onto_ops = root / "open-ontologies/scripts/onto_ops.py"
+            _install_cli_wrapper("jeo-ontology", onto_ops)
+            if onto_ops.is_file():
+                subprocess.run([sys.executable, str(onto_ops), "init-store", "--json"], env=env, check=False, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     run_readiness_report(root, selected)
-
 
 def run_readiness_report(root: Path | None, selected: list[str]) -> None:
     """Print the offline readiness report for selected program operators; blocked is a report, not a failure."""

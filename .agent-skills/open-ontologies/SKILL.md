@@ -55,7 +55,8 @@ metadata:
 ## References
 
 - [`references/upstream.md`](references/upstream.md) - setup, verified build/toolchain facts, command families, scope limits, license, safety.
-- [`scripts/install.sh`](scripts/install.sh) - approved clone + `cargo build --locked` + copy to `BIN_DIR` + smoke test; the only helper with side effects.
+- [`scripts/install.sh`](scripts/install.sh) - approved clone + `cargo build --locked --features embeddings` + copy to `BIN_DIR` + `jeo-ontology` CLI + smoke test.
+- [`scripts/onto_ops.py`](scripts/onto_ops.py) - deterministic CLI (`jeo-ontology save|update|delete|search|init-store`) wrapping validated Turtle/N-Triples mutations, SPARQL queries, keyword search, and `~/.open-ontologies` store setup.
 - [`scripts/smoke.py`](scripts/smoke.py) - runtime check of one binary (load, query, RDFS reason, query) in a temporary data directory.
 - [`references/source.json`](references/source.json) - selected pinned file SHA256s; not a whole-revision attestation.
 - [`evals/evals.json`](evals/evals.json) - authored routing and boundary scenarios, not executed model-quality tests.

@@ -1001,6 +1001,72 @@ else:
         self.assertEqual(clean.returncode, 0, clean.stdout)
         self.assertEqual(json.loads(clean.stdout)["status"], "unchanged")
 
+    def test_vault_ops_save_update_delete_search_and_runtime_delete_respect_raw_guard(self) -> None:
+        self.install()
+        vault_ops = self.vault / ".second-brain/scripts/vault_ops.py"
+        self.assertTrue(vault_ops.is_file(), "setup.py must install vault_ops.py")
+
+        def run_ops(*args: str) -> subprocess.CompletedProcess[str]:
+            return subprocess.run(
+                [sys.executable, str(vault_ops), "--config", str(self.config_path), *args],
+                env=self.env,
+                cwd=self.work,
+                text=True,
+                capture_output=True,
+                timeout=20,
+            )
+
+        # 1. Save wiki note + immutable raw capture
+        saved = run_ops("save", "--title", "도깨비 심지 계약", "--content", "마포나루 계약과 시진 부정의 기록", "--tag", "lore", "--json")
+        self.assertEqual(saved.returncode, 0, saved.stderr)
+        saved_data = json.loads(saved.stdout)
+        note_rel = saved_data["path"]
+        self.assertTrue((self.vault / note_rel).is_file())
+        self.assertIn(note_rel, (self.vault / "index.md").read_text(encoding="utf-8"))
+
+        saved_raw = run_ops("save", "--kind", "raw", "--title", "raw-capture", "--content", "Immutable field log\n", "--json")
+        self.assertEqual(saved_raw.returncode, 0, saved_raw.stderr)
+        raw_rel = json.loads(saved_raw.stdout)["path"]
+        self.assertTrue(raw_rel.startswith("raw/"))
+
+        # 2. Search across vault (Korean + English)
+        found = run_ops("search", "마포나루", "--json")
+        self.assertEqual(found.returncode, 0, found.stderr)
+        found_data = json.loads(found.stdout)
+        self.assertGreaterEqual(found_data["count"], 1)
+        self.assertEqual(found_data["hits"][0]["path"], note_rel)
+
+        # 3. Update wiki note with optimistic SHA256 lock; RawGuard blocks raw/ updates
+        updated = run_ops("update", "--path", note_rel, "--content", "업데이트된 마포나루 서사", "--expected-sha256", saved_data["sha256"], "--json")
+        self.assertEqual(updated.returncode, 0, updated.stderr)
+        self.assertIn("업데이트된 마포나루 서사", (self.vault / note_rel).read_text(encoding="utf-8"))
+
+        raw_update = run_ops("update", "--path", raw_rel, "--content", "tamper", "--json")
+        self.assertNotEqual(raw_update.returncode, 0)
+
+        # 4. Delete wiki note (archives to .second-brain/trash, removes from index.md); RawGuard blocks raw/ delete
+        raw_del = run_ops("delete", "--path", raw_rel, "--json")
+        self.assertNotEqual(raw_del.returncode, 0)
+        self.assertTrue((self.vault / raw_rel).is_file())
+
+        deleted = run_ops("delete", "--path", note_rel, "--json")
+        self.assertEqual(deleted.returncode, 0, deleted.stderr)
+        del_data = json.loads(deleted.stdout)
+        self.assertFalse((self.vault / note_rel).exists())
+        self.assertTrue((self.vault / del_data["trash_path"]).is_file())
+        self.assertNotIn(note_rel, (self.vault / "index.md").read_text(encoding="utf-8"))
+
+        # 5. runtime.py also supports op="delete" for obsolete wiki notes during scheduled synthesis
+        obsolete = self.vault / "wiki/obsolete-note.md"
+        obsolete.parent.mkdir(parents=True, exist_ok=True)
+        obsolete.write_text("stale page\n", encoding="utf-8")
+        before_sha = hashlib.sha256(obsolete.read_bytes()).hexdigest()
+        (self.inbox / "trigger-delete.md").write_text("supersedes obsolete-note\n", encoding="utf-8")
+        self.propose([{"path": "wiki/obsolete-note.md", "content": "", "before_sha256": before_sha, "op": "delete"}])
+        rt_del = self.runtime()
+        self.assertEqual(rt_del.returncode, 0, rt_del.stdout)
+        self.assertFalse(obsolete.exists())
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -173,12 +173,14 @@ exact-match `obsidian` skill. No SessionStart/PostCompact event is invented for 
 ### Step 5 — Use the consented runtime and retain tool roles
 
 `setup.py` copies actual command/reference/template assets and standalone
-`runtime.py`/`ctx_guard.py` modules. The model returns tool-free JSON proposals;
+`runtime.py`/`ctx_guard.py`/`vault_ops.py` modules. The model returns tool-free JSON
+proposals (supporting `create`, `update`, and RawGuard-checked non-raw `delete`);
 host code validates allowed wiki destinations and prior hashes before committing.
+Direct CLI/MCP CRUD & search is available via `second-brain save|update|delete|search|init-indexes|status`
+(installed by `setup-workspace.py` / `install.sh` / `jeo-skill --setup`, or stdio MCP `sb_save`/`sb_update`/`sb_delete`/`sb_search`/`sb_status` via `setup-mcp-hosts.py`).
 Scheduled scans and maintenance use this shared runtime. Native PostCompact is
 registered only in the new Claude vault; other hosts use copied operating docs
 and the shared runner, not fake native hooks.
-
 The portable lifecycle retains Graphify/mex/zvec/ctx roles without a private HOME
 `ctx` source. Index creation is separately approved and reported pending until
 initialized. Graphify rebuilding is checkpoint-only and requires separate provider

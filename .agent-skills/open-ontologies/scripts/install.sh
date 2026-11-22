@@ -14,13 +14,13 @@ source_dir="${SOURCE_DIR:-$HOME/.local/share/open-ontologies/src}"
 target_dir="${TARGET_DIR:-$HOME/.local/share/open-ontologies/target}"
 bin_dir="${BIN_DIR:-$HOME/.local/bin}"
 profile="${PROFILE:-release}"
+features="${OPEN_ONTOLOGIES_FEATURES:-embeddings}"
 toolchain="${RUST_TOOLCHAIN:-}"
 # Highest rust-version in the pinned Cargo.lock (darling 0.23.0 -> 1.88; the Oxigraph
 # patch -> 1.87). cargo 1.87 refuses the locked set before compiling anything.
 min_rust="1.88"
 force=false
 skip_smoke=false
-
 usage() {
   cat <<'EOF'
 usage: install.sh [--force] [--skip-smoke]
@@ -112,8 +112,9 @@ echo "HEAD $(git -C "$source_dir" rev-parse HEAD)"
 step "offline selected-file check (scripts/preflight.py)"
 python3 "$skill_dir/scripts/preflight.py" --repo "$source_dir" --json
 
-step "building with cargo (first build downloads crates; several minutes)"
+step "building with cargo (first build downloads crates; features=${features:-none})"
 build_args=(build --locked --manifest-path "$source_dir/Cargo.toml" --target-dir "$target_dir")
+[[ -n "$features" ]] && build_args+=(--features "$features")
 [[ "$profile" == release ]] && build_args+=(--release)
 "${cargo_cmd[@]}" "${build_args[@]}"
 built="$target_dir/$([[ "$profile" == release ]] && echo release || echo debug)/open-ontologies"
@@ -122,12 +123,25 @@ built="$target_dir/$([[ "$profile" == release ]] && echo release || echo debug)/
 step "installing to $bin_dir/open-ontologies"
 dest="$bin_dir/open-ontologies"
 if [[ -e "$dest" ]] && ! $force; then
-  echo "destination exists (use --force to overwrite): $dest" >&2
-  exit 1
+  if [[ -n "$features" ]] && grep -q "Compiled without embeddings feature" "$dest" 2>/dev/null; then
+    echo "upgrading existing binary without embeddings support: $dest"
+  else
+    echo "destination exists (use --force to overwrite): $dest" >&2
+    exit 1
+  fi
 fi
 mkdir -p "$bin_dir"
 install -m 0755 "$built" "$dest"
 "$dest" --help | head -1
+
+if [[ -f "$skill_dir/scripts/onto_ops.py" ]]; then
+  cat > "$bin_dir/jeo-ontology" <<EOF
+#!/usr/bin/env bash
+exec python3 "$skill_dir/scripts/onto_ops.py" "\$@"
+EOF
+  chmod +x "$bin_dir/jeo-ontology"
+  python3 "$skill_dir/scripts/onto_ops.py" init-store --json >/dev/null 2>&1 || true
+fi
 
 if $skip_smoke; then
   echo "smoke test skipped; run: python3 \"$skill_dir/scripts/smoke.py\" --binary \"$dest\""
@@ -136,5 +150,5 @@ fi
 step "runtime smoke test (scripts/smoke.py)"
 python3 "$skill_dir/scripts/smoke.py" --binary "$dest"
 echo
-echo "installed: $dest (source $ref, profile $profile)"
+echo "installed: $dest (source $ref, profile $profile, features=${features:-none})"
 case ":$PATH:" in *":$bin_dir:"*) ;; *) echo "note: $bin_dir is not on PATH" ;; esac

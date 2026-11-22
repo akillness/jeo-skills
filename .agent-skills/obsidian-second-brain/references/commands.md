@@ -90,3 +90,15 @@ same high-stakes topic. **Contradictions across the two are where the insight is
 Scholar, CrossRef, DuckDuckGo). Pass `--free` to force it even when keyed, or
 `--academic` to restrict to scholarly sources. The other research commands
 (`/x-read`, `/x-pulse`, `/notebooklm`, `/youtube`) still need their keys.
+
+## Installed Host CLI & MCP (`vault_ops.py` / `second-brain`)
+
+| Command / MCP Tool | What it does |
+|---|---|
+| `second-brain save` / `sb_save` | Saves a new wiki note under `wiki/` (updates `index.md`, `log.md`, `.zvec-grep`) or immutable source under `raw/sources/` |
+| `second-brain update` / `sb_update` | Updates an existing non-raw `wiki/` note with RawGuard protection + optional SHA-256 lock |
+| `second-brain delete` / `sb_delete` | Safely deletes a non-raw `wiki/` note (archives to `.second-brain/trash/` unless `--hard`), cleans `index.md` & `log.md` |
+| `second-brain search` / `sb_search` | Searches `index.md`, `wiki/`, and read-only `raw/` via `zg query` + UTF-8 lexical ranking |
+| `second-brain init-indexes` | Initializes `.zvec-grep` and `.mex` inside the vault |
+| `second-brain status` / `sb_status` | Reports note counts, index readiness, and capabilities |
+| `second-brain mcp` | Runs the stdio JSON-RPC MCP server exposing `sb_save`, `sb_update`, `sb_delete`, `sb_search`, `sb_status` |

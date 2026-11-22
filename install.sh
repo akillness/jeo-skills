@@ -265,6 +265,14 @@ if [ "$SELECTION" = all ] && [ "$GLOBAL" = true ]; then
     elif ! python3 "$BRAIN_SETUP" "${BRAIN_ARGS[@]}" </dev/null; then
       info 'ERROR: Second-brain setup did not complete; existing knowledge settings were not migrated.' >&2
       FULL_STATUS=1
+    elif [ -f "$ROOT/obsidian-second-brain/scripts/vault_ops.py" ]; then
+      mkdir -p "$HOME/.local/bin"
+      cat > "$HOME/.local/bin/second-brain" <<EOF
+#!/usr/bin/env bash
+exec python3 "$ROOT/obsidian-second-brain/scripts/vault_ops.py" "\$@"
+EOF
+      chmod +x "$HOME/.local/bin/second-brain"
+      python3 "$ROOT/obsidian-second-brain/scripts/vault_ops.py" --config "$JEO_SECOND_BRAIN_CONFIG" init-indexes --json </dev/null >/dev/null 2>&1 || true
     fi
   fi
 fi
@@ -301,6 +309,46 @@ if [ "$SELECTION" = all ] && [ "$GLOBAL" = true ] && [ "${JEO_SKILLS_WORKSPACE:-
         info 'WARNING: Workflow rules were written but would not be applied (see verify output above); re-run the installer to refresh.' >&2
         FULL_STATUS=1
       fi
+    fi
+  fi
+  if [ -f "$ROOT/open-ontologies/scripts/onto_ops.py" ]; then
+    mkdir -p "$HOME/.local/bin"
+    cat > "$HOME/.local/bin/jeo-ontology" <<EOF
+#!/usr/bin/env bash
+exec python3 "$ROOT/open-ontologies/scripts/onto_ops.py" "\$@"
+EOF
+    chmod +x "$HOME/.local/bin/jeo-ontology"
+    python3 "$ROOT/open-ontologies/scripts/onto_ops.py" init-store --json </dev/null >/dev/null 2>&1 || true
+  fi
+  if [ "${JEO_SKILLS_APPROVE_KNOWLEDGE_HOOKS:-}" != false ]; then
+    HOOKS_SRC=''
+    if [ -d "$REPO_URL/hooks" ]; then
+      HOOKS_SRC="$REPO_URL/hooks"
+    elif [ -n "${FULL_HELPER:-}" ] && [ -d "$(dirname "$FULL_HELPER")/../hooks" ]; then
+      HOOKS_SRC="$(cd "$(dirname "$FULL_HELPER")/.." && pwd -P)/hooks"
+    fi
+    if [ -n "$HOOKS_SRC" ] && [ -f "$HOOKS_SRC/ingest-prompt.py" ] && [ ! -L "$HOME/.agents/hooks" ]; then
+      mkdir -p "$HOME/.agents/hooks"
+      for hook_f in ingest-prompt.py ingest-output.py; do
+        if [ -f "$HOOKS_SRC/$hook_f" ] && [ ! -e "$HOME/.agents/hooks/$hook_f" ]; then
+          cp "$HOOKS_SRC/$hook_f" "$HOME/.agents/hooks/$hook_f"
+          chmod +x "$HOME/.agents/hooks/$hook_f"
+        fi
+      done
+      if [ -d "$HOOKS_SRC/ctx" ] && [ ! -e "$HOME/.agents/hooks/ctx" ]; then
+        cp -R "$HOOKS_SRC/ctx" "$HOME/.agents/hooks/ctx"
+      fi
+    fi
+  fi
+  if [ "${JEO_SKILLS_APPROVE_MCP_HOSTS:-false}" = true ] || [ "${JEO_SKILLS_APPROVE_ALL_HOOKS_MCP:-false}" = true ]; then
+    MCP_HELPER=''
+    if [ -n "${FULL_HELPER:-}" ] && [ -f "$(dirname "$FULL_HELPER")/setup-mcp-hosts.py" ]; then
+      MCP_HELPER="$(dirname "$FULL_HELPER")/setup-mcp-hosts.py"
+    elif [ -n "${WS_HELPER:-}" ] && [ -f "$(dirname "$WS_HELPER")/setup-mcp-hosts.py" ]; then
+      MCP_HELPER="$(dirname "$WS_HELPER")/setup-mcp-hosts.py"
+    fi
+    if [ -n "$MCP_HELPER" ]; then
+      python3 "$MCP_HELPER" --project "$PROJECT_DIR" --apply </dev/null || info 'WARNING: MCP host configuration reported warnings.' >&2
     fi
   fi
 fi

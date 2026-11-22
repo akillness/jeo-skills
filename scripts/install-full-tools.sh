@@ -382,9 +382,11 @@ install_openspace() {
 install_open_ontologies() {
   local oo_smoke="$SCRIPT_DIR/../.agent-skills/open-ontologies/scripts/smoke.py"
   local oo_install="$SCRIPT_DIR/../.agent-skills/open-ontologies/scripts/install.sh"
+  local oo_ops="$SCRIPT_DIR/../.agent-skills/open-ontologies/scripts/onto_ops.py"
   if [ ! -f "$oo_smoke" ]; then
     oo_smoke="$HOME/.agents/skills/open-ontologies/scripts/smoke.py"
     oo_install="$HOME/.agents/skills/open-ontologies/scripts/install.sh"
+    oo_ops="$HOME/.agents/skills/open-ontologies/scripts/onto_ops.py"
   fi
   local oo_bin="${HOME}/.local/bin/open-ontologies"
   [ -x "$oo_bin" ] || oo_bin="$(command -v open-ontologies 2>/dev/null || true)"
@@ -395,6 +397,15 @@ install_open_ontologies() {
   else
     printf 'open-ontologies binary not installed (set OPEN_ONTOLOGIES_BUILD_APPROVED=1 to build from source).\n' >&2
     return 1
+  fi
+  if [ -f "$oo_ops" ]; then
+    mkdir -p "$HOME/.local/bin"
+    cat > "$HOME/.local/bin/jeo-ontology" <<EOF
+#!/usr/bin/env bash
+exec python3 "$oo_ops" "\$@"
+EOF
+    chmod +x "$HOME/.local/bin/jeo-ontology"
+    python3 "$oo_ops" init-store --json >/dev/null 2>&1 || true
   fi
 }
 

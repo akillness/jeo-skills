@@ -12,6 +12,7 @@ from __future__ import annotations
 import json
 import os
 from pathlib import Path
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -717,6 +718,63 @@ class HostSkillIsolationTests(unittest.TestCase):
         self.assertEqual(proc2.returncode, 0, proc2.stderr)
         brain_calls2 = [c for c in box.calls() if c.startswith("brain-setup ")]
         self.assertIn("--repair", brain_calls2[-1])
+
+    def test_setup_workspace_installs_second_brain_and_ontology_crud_search_wrappers(self):
+        box = Sandbox()
+        self.addCleanup(box.cleanup)
+        shutil.copy2(ROOT / ".agent-skills/obsidian-second-brain/scripts/vault_ops.py",
+                     box.skills / "obsidian-second-brain/scripts/vault_ops.py")
+        shutil.copy2(ROOT / ".agent-skills/obsidian-second-brain/scripts/ctx_guard.py",
+                     box.skills / "obsidian-second-brain/scripts/ctx_guard.py")
+        shutil.copy2(ROOT / ".agent-skills/open-ontologies/scripts/onto_ops.py",
+                     box.skills / "open-ontologies/scripts/onto_ops.py")
+        (box.project / "knowledge/ontology").mkdir(parents=True, exist_ok=True)
+        proc, rep = box.run()
+        self.assertEqual(proc.returncode, 0, proc.stderr)
+        self.assertTrue((box.home / ".local/bin/second-brain").is_file())
+        self.assertTrue((box.home / ".local/bin/jeo-ontology").is_file())
+        self.assertTrue((box.home / ".open-ontologies/config.toml").is_file())
+        cfg_text = (box.home / ".open-ontologies/config.toml").read_text(encoding="utf-8")
+        self.assertIn("ontology_dirs", cfg_text)
+
+    def test_onto_ops_save_update_delete_search_and_embeddings_install_contract(self):
+        install_sh = (ROOT / ".agent-skills/open-ontologies/scripts/install.sh").read_text(encoding="utf-8")
+        self.assertIn("OPEN_ONTOLOGIES_FEATURES:-embeddings", install_sh)
+        self.assertIn("--features", install_sh)
+
+        tmp = Path(tempfile.mkdtemp(prefix="onto-ops-test-"))
+        self.addCleanup(lambda: shutil.rmtree(tmp, ignore_errors=True))
+        onto_ops = ROOT / ".agent-skills/open-ontologies/scripts/onto_ops.py"
+        ttl = tmp / "sample.ttl"
+        env = {**os.environ, "HOME": str(tmp), "OPEN_ONTOLOGIES_BIN": "none"}
+
+        def run_oo(*args: str) -> dict:
+            p = subprocess.run(
+                [sys.executable, str(onto_ops), *args],
+                env=env,
+                capture_output=True,
+                text=True,
+                check=True,
+            )
+            return json.loads(p.stdout)
+
+        s1 = run_oo("save", "--file", str(ttl), "--subject", "jb:Maponaru", "--predicate", "rdfs:label", "--object", "마포나루", "--json")
+        self.assertEqual(s1["status"], "saved")
+        s2 = run_oo("save", "--file", str(ttl), "--subject", "jb:Maponaru", "--predicate", "rdfs:comment", "--object", "나루터 배경", "--json")
+        self.assertEqual(s2["total_triples"], 2)
+
+        q1 = run_oo("search", "마포나루", "--file", str(ttl), "--json")
+        self.assertGreaterEqual(q1["count"], 1)
+        self.assertEqual(q1["hits"][0]["subject"], "jb:Maponaru")
+
+        u1 = run_oo("update", "--file", str(ttl), "--subject", "jb:Maponaru", "--predicate", "rdfs:label", "--object", "새 마포나루", "--json")
+        self.assertEqual(u1["status"], "updated")
+        q2 = run_oo("search", "새 마포나루", "--file", str(ttl), "--json")
+        self.assertGreaterEqual(q2["count"], 1)
+
+        d1 = run_oo("delete", "--file", str(ttl), "--subject", "jb:Maponaru", "--predicate", "rdfs:comment", "--json")
+        self.assertEqual(d1["status"], "deleted")
+        self.assertEqual(d1["total_triples"], 1)
 
 
 if __name__ == "__main__":

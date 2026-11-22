@@ -49,8 +49,10 @@ SCHEMA = {
     "properties": {"updates": {"type": "array", "items": {
         "type": "object", "additionalProperties": False,
         "required": ["path", "content", "before_sha256"],
-        "properties": {key: {"type": "string"} for key in
-                       ("path", "content", "before_sha256")},
+        "properties": {
+            **{key: {"type": "string"} for key in ("path", "content", "before_sha256")},
+            "op": {"type": "string", "enum": ["create", "update", "delete"]},
+        },
     }}},
 }
 POLICY = """You are a tool-free knowledge editor. Return only the structured JSON
@@ -61,7 +63,8 @@ Rewrite relevant wiki pages, reconcile contradictions with provenance and both
 fact/learning dates, preserve opposing evidence, synthesize grounded connections,
 and update index.md/log.md as needed. New knowledge notes start with a
 '## For future Claude' preamble. Do not invent facts or claim actions not taken.
-Only wiki/**, index.md and log.md may change; no raw path at any depth. No deletes.
+Only wiki/**, index.md and log.md may change; no raw path at any depth. Use op='delete'
+only for obsolete non-raw wiki/** files with exact before_sha256 (never index.md/log.md/raw/**).
 For existing files copy before_sha256 from supplied current wiki exactly; for new
 files use ''. All current wiki pages are supplied. Source originals are preserved
 by the host. Propose complete replacement contents, not patches. Schedule commands
@@ -503,6 +506,21 @@ def writer_lock(path: Path):
         os.close(fd)
 
 
+def _augmented_path(existing_path: str, config: dict) -> str:
+    parts = [p for p in existing_path.split(os.pathsep) if p] if existing_path else []
+    extra: list[str] = []
+    for key in ("claude_bin", "codex_bin", "gemini_bin", "python_bin", "zvec_bin", "mex_bin", "graphify_bin"):
+        val = str(config.get(key) or "").strip()
+        if val:
+            extra.append(str(Path(val).expanduser().parent))
+    home = Path(os.environ.get("USER_HOME") or os.environ.get("HOME") or str(Path.home()))
+    extra.extend([str(home / ".local/bin"), "/opt/homebrew/bin", "/usr/local/bin"])
+    for item in extra:
+        if item and item not in parts:
+            parts.append(item)
+    return os.pathsep.join(parts)
+
+
 def invoke(argv: list[str], prompt: bytes, config: dict) -> bytes:
     allowed_keys = (
         "PATH", "HOME", "USER_HOME", "TMPDIR", "TEMP", "TMP",
@@ -524,6 +542,7 @@ def invoke(argv: list[str], prompt: bytes, config: dict) -> bytes:
         "SB_CALLS", "SB_RESPONSE", "SB_CRON", "SB_TREE", "SB_PIN", "SB_HELP", "SB_INDEX_FAIL", "SB_CTX_FAIL",
     )
     environment = {key: os.environ[key] for key in allowed_keys if key in os.environ}
+    environment["PATH"] = _augmented_path(environment.get("PATH", ""), config)
     environment["SECOND_BRAIN_RUNNING"] = "1"
     environment["CLAUDE_CODE_SAFE_MODE"] = "1"
     # Temporary output streams bound memory even for a malfunctioning CLI.
@@ -548,7 +567,20 @@ def invoke(argv: list[str], prompt: bytes, config: dict) -> bytes:
             raise
         if process.returncode:
             errors.seek(0)
-            raise RuntimeFailure(f"Host CLI ({Path(argv[0]).name}) exited {process.returncode}: " + errors.read(2048).decode("utf-8", "replace"))
+            err_msg = errors.read(2048).decode("utf-8", "replace").strip()
+            if not err_msg:
+                output.seek(0)
+                out_raw = output.read(2048).decode("utf-8", "replace").strip()
+                if out_raw:
+                    try:
+                        parsed_err = json.loads(out_raw)
+                        if isinstance(parsed_err, dict):
+                            err_msg = str(parsed_err.get("result") or parsed_err.get("error") or out_raw)
+                        else:
+                            err_msg = out_raw
+                    except Exception:
+                        err_msg = out_raw
+            raise RuntimeFailure(f"Host CLI ({Path(argv[0]).name}) exited {process.returncode}: {err_msg}")
         output.seek(0)
         limit = max(config["max_input_bytes"] * 4, 65536)
         result = output.read(limit + 1)
@@ -895,7 +927,15 @@ def validate_proposal(proposal: object, vault: Path, limit: int) -> list[dict]:
         raise RuntimeFailure("Expected complete updates proposal")
     validated, seen, size = [], set(), 0
     for update in proposal["updates"]:
-        if not isinstance(update, dict) or set(update) != {"path", "content", "before_sha256"} or any(not isinstance(v, str) for v in update.values()):
+        if not isinstance(update, dict):
+            raise RuntimeFailure("Invalid update object")
+        keys = set(update)
+        if not {"path", "content", "before_sha256"}.issubset(keys) or (keys - {"path", "content", "before_sha256", "op"}):
+            raise RuntimeFailure("Invalid update object")
+        if any(not isinstance(v, str) for v in update.values()):
+            raise RuntimeFailure("Invalid update object")
+        op = update.get("op", "upsert")
+        if op not in ("upsert", "create", "update", "delete"):
             raise RuntimeFailure("Invalid update object")
         relative = update["path"]
         target = safe_destination(vault, relative)
@@ -910,6 +950,14 @@ def validate_proposal(proposal: object, vault: Path, limit: int) -> list[dict]:
         before = sha(read_bytes(target)) if target.exists() else ""
         if update["before_sha256"] != before:
             raise RuntimeFailure(f"Stale or missing base hash: {relative}")
+        if op == "delete":
+            parts = relative.split("/")
+            if relative in ("index.md", "log.md") or not (len(parts) > 1 and parts[0] == "wiki"):
+                raise RuntimeFailure(f"Refusing deletion of non-wiki path: {relative}")
+            if len(parts) >= 3 and parts[1] == "archive" and parts[2] == "roots":
+                raise RuntimeFailure(f"Refusing deletion of archived root path: {relative}")
+            if not target.exists():
+                raise RuntimeFailure(f"Cannot delete missing file: {relative}")
         validated.append(dict(update))
     for first in seen:
         if any(other.startswith(first + "/") for other in seen):
@@ -939,10 +987,19 @@ def finish_transaction(vault: Path, state_path: Path, journal: Path) -> dict:
     for update in updates:
         target = safe_destination(vault, update["path"])
         actual = sha(read_bytes(target)) if target.exists() else ""
-        if actual not in (update["before_sha256"], sha(update["content"].encode("utf-8"))):
+        op = update.get("op", "upsert")
+        if op == "delete":
+            if actual not in (update["before_sha256"], ""):
+                raise RuntimeFailure("Interrupted transaction conflicts with external wiki edit")
+        elif actual not in (update["before_sha256"], sha(update["content"].encode("utf-8"))):
             raise RuntimeFailure("Interrupted transaction conflicts with external wiki edit")
     for update in updates:
-        atomic_bytes(safe_destination(vault, update["path"]), update["content"].encode("utf-8"))
+        target = safe_destination(vault, update["path"])
+        if update.get("op") == "delete":
+            if target.exists():
+                target.unlink()
+        else:
+            atomic_bytes(target, update["content"].encode("utf-8"))
     state = transaction["state"]
     save_json(state_path, state)
     journal.unlink()

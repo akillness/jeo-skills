@@ -683,7 +683,7 @@ def installed_files(config: dict, assets: dict[str, bytes]) -> dict[str, bytes]:
         text = assets[f"references/bases/{name}.base.template"].decode("utf-8")
         files[f"Bases/{title}.base"] = text.replace("{{" + placeholder + "}}", folder).encode("utf-8")
     package = Path(__file__).resolve().parent
-    for name in ("runtime.py", "ctx_guard.py"):
+    for name in ("runtime.py", "ctx_guard.py", "vault_ops.py"):
         source = package / name
         no_symlinks(source)
         files[f".second-brain/scripts/{name}"] = source.read_bytes()
@@ -896,10 +896,13 @@ def install(config: dict, source: Path | None, dry_run: bool, repair: bool = Fal
                     raise ValueError("owned schedule changed; repair requires an explicit reviewed operation (re-run with --repair)")
                 subprocess.run([config["crontab_bin"], "-"], input=new_cron, text=True, capture_output=True, check=True, timeout=15)
                 updated_actions.append("repair managed crontab block")
-            for name in ("runtime.py", "ctx_guard.py"):
-                src_bytes = (package / name).read_bytes()
+            for name in ("runtime.py", "ctx_guard.py", "vault_ops.py"):
+                src = package / name
+                if not src.is_file():
+                    continue
+                src_bytes = src.read_bytes()
                 dst_path = vault / ".second-brain/scripts" / name
-                if dst_path.read_bytes() != src_bytes:
+                if not dst_path.is_file() or dst_path.read_bytes() != src_bytes:
                     atomic_write_bytes(dst_path, src_bytes)
                     updated_actions.append(f"sync {name}")
             if not updated_actions:
@@ -908,10 +911,13 @@ def install(config: dict, source: Path | None, dry_run: bool, repair: bool = Fal
                     "model": config["model"], "actions": updated_actions, "integrations": integration_status, "model_invoked": False}
 
         # Owned vault configuration update (e.g., host/model/schedules/timeout/allowances)
-        for name in ("runtime.py", "ctx_guard.py"):
-            src_bytes = (package / name).read_bytes()
+        for name in ("runtime.py", "ctx_guard.py", "vault_ops.py"):
+            src = package / name
+            if not src.is_file():
+                continue
+            src_bytes = src.read_bytes()
             dst_path = vault / ".second-brain/scripts" / name
-            if dst_path.read_bytes() != src_bytes:
+            if not dst_path.is_file() or dst_path.read_bytes() != src_bytes:
                 atomic_write_bytes(dst_path, src_bytes)
                 updated_actions.append(f"update {name}")
         atomic_write_bytes(config_file, json_bytes(config))
