@@ -19,3 +19,4 @@
 .agent-skills/motion2mixamo
 .agent-skills/unimate
 .agent-skills/3d-vibe-coding
+.agent-skills/motionmaxxing

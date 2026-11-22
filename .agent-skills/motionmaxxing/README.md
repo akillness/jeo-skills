@@ -52,27 +52,27 @@ The skill's job is to move a film one notch right and to say honestly which notc
 
 Three before / after comparisons. In each, the same brand is filmed twice: once without the skill (mid) and once with it (maxxed). The brands belong to their owners and are used only to show the difference (see [Ethics and credits](#ethics-and-credits)).
 
-**Cluely, mid to maxxed. Same model, same brief: both films were generated with GPT-6.1.** Left: without the skill. Right: with it. You don't need the most expensive model to get motion that looks designed. The difference is the skill, not the price tag. [Watch the MP4](docs/media/cluely-comparison.mp4) (30 s with sound, 1920x600).
+**Cluely, mid to maxxed. Same model, same brief: both films were generated with GPT-6.1.** Left: without the skill. Right: with it. You don't need the most expensive model to get motion that looks designed. The difference is the skill, not the price tag. [Watch the MP4](https://github.com/Tejashmakwana/motionmaxxing/raw/main/docs/media/cluely-comparison.mp4) (30 s with sound, 1920x600).
 
-[![Cluely, without the skill on the left and with it on the right, both generated with GPT-6.1](docs/media/cluely-comparison.gif)](docs/media/cluely-comparison.mp4)
+[![Cluely, without the skill on the left and with it on the right, both generated with GPT-6.1](https://raw.githubusercontent.com/Tejashmakwana/motionmaxxing/main/docs/media/cluely-comparison.gif)](https://github.com/Tejashmakwana/motionmaxxing/raw/main/docs/media/cluely-comparison.mp4)
 
 The left film is a slide deck: a brand label top-left, a "REAL-TIME ASSISTANCE" tag top-right, a held left headline in two colours, two cards, and a "02 / 05" counter. The right film is the product: the real assist overlay on a lit desktop, the ⌘ + ↵ shortcut as physical keys, then the overlay sitting on a live call.
 
 <br>
 
-**Spotify, mid to maxxed.** Left: without the skill. Right: with it. The without arm is a left headline beside a phone mock-up in every frame. The with arm carries one idea (the green full stop becomes a switch, floods the frame, and becomes the icon) through type, a wall of lines that collapses, and a full-bleed ending. [Watch the MP4](docs/media/spotify-comparison.mp4) (15 s, 2560x720).
+**Spotify, mid to maxxed.** Left: without the skill. Right: with it. The without arm is a left headline beside a phone mock-up in every frame. The with arm carries one idea (the green full stop becomes a switch, floods the frame, and becomes the icon) through type, a wall of lines that collapses, and a full-bleed ending. [Watch the MP4](https://github.com/Tejashmakwana/motionmaxxing/raw/main/docs/media/spotify-comparison.mp4) (15 s, 2560x720).
 
-[![Spotify, without the skill on the left and with it on the right](docs/media/spotify-comparison.gif)](docs/media/spotify-comparison.mp4)
+[![Spotify, without the skill on the left and with it on the right](https://raw.githubusercontent.com/Tejashmakwana/motionmaxxing/main/docs/media/spotify-comparison.gif)](https://github.com/Tejashmakwana/motionmaxxing/raw/main/docs/media/spotify-comparison.mp4)
 
 <br>
 
-**Wispr Flow, mid to maxxed.** Top: without the skill. Bottom: with it. [Watch the MP4](docs/media/wispr-comparison.mp4) (24 s with sound, 1080x1440).
+**Wispr Flow, mid to maxxed.** Top: without the skill. Bottom: with it. [Watch the MP4](https://github.com/Tejashmakwana/motionmaxxing/raw/main/docs/media/wispr-comparison.mp4) (24 s with sound, 1080x1440).
 
 <table>
 <tr>
 <td width="360" valign="top">
 
-[![Wispr Flow, without the skill above and with it below](docs/media/wispr-comparison.gif)](docs/media/wispr-comparison.mp4)
+[![Wispr Flow, without the skill above and with it below](https://raw.githubusercontent.com/Tejashmakwana/motionmaxxing/main/docs/media/wispr-comparison.gif)](https://github.com/Tejashmakwana/motionmaxxing/raw/main/docs/media/wispr-comparison.mp4)
 
 </td>
 <td valign="top">
