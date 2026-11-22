@@ -23,7 +23,7 @@ mkdir -p "$WORK" "$DST"
 cd "$WORK"
 
 if [ ! -x node_modules/.bin/gltf-transform ]; then
-  echo "装 gltf-transform 到 $WORK（只装一次）…"
+  echo "装 gltf-transform 到 ${WORK}（只装一次）…"
   npm i --silent --no-audit --no-fund @gltf-transform/cli@4.5.0
 fi
 GT="$WORK/node_modules/.bin/gltf-transform"
