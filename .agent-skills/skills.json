@@ -1,7 +1,7 @@
 {
   "version": "2.1.0",
   "generated": "2026-10-21",
-  "skill_count": 468,
+  "skill_count": 469,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -224,7 +224,8 @@
       "ai-knowledge-management-platform",
       "knowledge-catalog",
       "cocoindex",
-      "pmtiles"
+      "pmtiles",
+      "vespa"
     ],
     "game": [
       "implement-fog-of-war",
@@ -744,7 +745,8 @@
         "ai-knowledge-management-platform",
         "knowledge-catalog",
         "cocoindex",
-        "pmtiles"
+        "pmtiles",
+        "vespa"
       ],
       "automation": [],
       "tooling": [
@@ -17066,6 +17068,37 @@
       "keyword": "opencompass",
       "version": "1.0.0",
       "source": "https://github.com/open-compass/opencompass"
+    },
+    {
+      "name": "vespa",
+      "description": "Deploy, configure, feed, and query enterprise-scale vector, lexical, and hybrid search applications using vespa-engine/vespa. Manages application packages (services.xml, schemas/*.sd), HNSW tensor indexing, BM25 rank profiles, PyVespa Python integration, and YQL queries.",
+      "category": "infrastructure",
+      "subcategory": "cloud-data",
+      "interface": "cli",
+      "path": "vespa/SKILL.md",
+      "tags": [
+        "vespa",
+        "vector-search",
+        "hybrid-search",
+        "rag",
+        "hnsw",
+        "bm25",
+        "search-engine",
+        "pyvespa",
+        "yql"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "vespa",
+      "version": "1.0.0",
+      "source": "https://github.com/vespa-engine/vespa"
     }
   ]
 }

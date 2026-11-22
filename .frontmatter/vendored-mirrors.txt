@@ -22,3 +22,4 @@
 .agent-skills/motionmaxxing
 .agent-skills/fast-anything
 .agent-skills/opencompass
+.agent-skills/vespa

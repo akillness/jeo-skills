@@ -1,0 +1,16 @@
+schema article {
+  document article {
+    field id type string { indexing: summary | attribute }
+    field title type string { indexing: summary | index; index: enable-bm25 }
+    field body type string { indexing: summary | index; index: enable-bm25 }
+    field embedding type tensor<float>(x[384]) {
+      indexing: attribute | index
+      attribute { distance-metric: angular }
+      index { hnsw { max-links-per-node: 16 } }
+    }
+  }
+  fieldset default { fields: title, body }
+  rank-profile hybrid {
+    first-phase { expression: 0.5 * bm25(title) + 0.5 * closeness(field, embedding) }
+  }
+}

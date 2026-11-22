@@ -399,7 +399,7 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 
 ## 📚 스킬 목록
 
-> `.agent-skills/skills.json`에서 생성 · 468개 스킬 · 카테고리를 펼치면 스킬 목록이 보입니다.
+> `.agent-skills/skills.json`에서 생성 · 469개 스킬 · 카테고리를 펼치면 스킬 목록이 보입니다.
 
 ### 🌐 웹 (76개)
 
@@ -489,9 +489,9 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 
 </details>
 
-### 🏗 인프라 (18개)
+### 🏗 인프라 (19개)
 
-하위 분류: `deployment` (2), `environment` (2), `observability` (3), `security` (3), `cloud-data` (7), `automation` (0), `tooling` (1)
+하위 분류: `deployment` (2), `environment` (2), `observability` (3), `security` (3), `cloud-data` (8), `automation` (0), `tooling` (1)
 
 <details>
 <summary>스킬 보기</summary>
@@ -516,6 +516,7 @@ launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.jeo-skills.skills-up
 | `knowledge-catalog` |
 | `cocoindex` |
 | `pmtiles` |
+| `vespa` |
 
 </details>
 

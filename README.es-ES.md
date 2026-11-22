@@ -341,7 +341,7 @@ y la [atribución MIT upstream](docs/attribution.md).
 
 ## 📚 Lista de Habilidades
 
-> Generado desde `.agent-skills/skills.json` · 468 habilidades · despliega una categoría para ver sus habilidades.
+> Generado desde `.agent-skills/skills.json` · 469 habilidades · despliega una categoría para ver sus habilidades.
 
 ### 🌐 Web (76)
 
@@ -431,9 +431,9 @@ Subcategorías: `frontend` (15), `backend` (3), `design` (17), `api` (2), `auth`
 
 </details>
 
-### 🏗 Infraestructura (18)
+### 🏗 Infraestructura (19)
 
-Subcategorías: `deployment` (2), `environment` (2), `observability` (3), `security` (3), `cloud-data` (7), `automation` (0), `tooling` (1)
+Subcategorías: `deployment` (2), `environment` (2), `observability` (3), `security` (3), `cloud-data` (8), `automation` (0), `tooling` (1)
 
 <details>
 <summary>Ver habilidades</summary>
@@ -458,6 +458,7 @@ Subcategorías: `deployment` (2), `environment` (2), `observability` (3), `secur
 | `knowledge-catalog` |
 | `cocoindex` |
 | `pmtiles` |
+| `vespa` |
 
 </details>
 
