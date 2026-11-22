@@ -392,7 +392,7 @@ See the [setup guide](setup-all-skills-prompt.md#claude-code-game-studios-on-dem
 
 ## 📚 Skills List
 
-> Generated from `.agent-skills/skills.json` · 467 skills · expand a category to see its skills.
+> Generated from `.agent-skills/skills.json` · 468 skills · expand a category to see its skills.
 
 ### 🌐 Web (76)
 
@@ -827,9 +827,9 @@ Subcategories: `code-quality` (14), `testing` (3), `architecture` (6), `document
 
 </details>
 
-### 🔭 Research & Analysis (18)
+### 🔭 Research & Analysis (19)
 
-Subcategories: `academic` (3), `web-research` (5), `data-analysis` (2), `experimentation` (3), `benchmarking` (1), `intelligence` (4)
+Subcategories: `academic` (3), `web-research` (5), `data-analysis` (2), `experimentation` (3), `benchmarking` (2), `intelligence` (4)
 
 <details>
 <summary>Show Research &amp; Analysis skills</summary>
@@ -854,6 +854,7 @@ Subcategories: `academic` (3), `web-research` (5), `data-analysis` (2), `experim
 | `minimind` |
 | `new-term-radar` |
 | `last30days` |
+| `opencompass` |
 
 </details>
 

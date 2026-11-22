@@ -1,0 +1,334 @@
+"""Basic Inferencer."""
+import json
+import os
+import shutil
+from pathlib import Path
+from typing import List, Optional
+
+import numpy as np
+from mmengine.dist import is_main_process
+from torch.utils.data import DataLoader
+
+from opencompass.utils import get_logger
+
+from ..icl_prompt_template import PromptTemplate
+from ..icl_retriever import BaseRetriever
+
+
+class BaseInferencer:
+    """Base Inferencer class for all evaluation Inferencer.
+
+    Attributes:
+        model (:obj:`BaseModel`, optional): The module to inference.
+        max_model_token_num (:obj:`int`, optional): Maximum number of
+            tokenized words allowed by the LM.
+        batch_size (:obj:`int`, optional): Batch size for the
+            :obj:`DataLoader`.
+        output_json_filepath (:obj:`str`, optional): File path for output
+            `JSON` file.
+        output_json_filename (:obj:`str`, optional): File name for output
+            `JSON` file.
+    """
+    model = None
+
+    def __init__(
+        self,
+        model,
+        max_seq_len: Optional[int] = None,
+        batch_size: Optional[int] = 1,
+        output_json_filepath: Optional[str] = './icl_inference_output',
+        output_json_filename: Optional[str] = 'predictions',
+        fix_id_list: Optional[List[int]] = None,
+        **kwargs,
+    ) -> None:
+
+        if fix_id_list:
+            raise ValueError('Passing fix_id_list to Inferencer is no longer '
+                             'allowed. Please pass it to FixKRetriever '
+                             'instead.')
+
+        self.model = model
+
+        self.max_seq_len = max_seq_len
+        self.batch_size = batch_size
+        self.output_json_filepath = output_json_filepath
+        self.output_json_filename = output_json_filename
+        self.is_main_process = is_main_process()
+        os.makedirs(self.output_json_filepath, exist_ok=True)
+
+    def inference(self,
+                  retriever: BaseRetriever,
+                  ice_template: Optional[PromptTemplate] = None,
+                  prompt_template: Optional[PromptTemplate] = None,
+                  output_json_filepath: Optional[str] = None,
+                  output_json_filename: Optional[str] = None) -> List:
+        """Perform In-Context Inference given a retriever and optional
+        templates.
+
+        Args:
+            retriever (:obj:`BaseRetriever`): An instance of a Retriever class
+                that will be used to retrieve in-context examples
+            ice_template (:obj:`PromptTemplate`, optional): A template for
+                generating the in-context examples prompt. Defaults to None.
+            prompt_template (:obj:`PromptTemplate`, optional): A template for
+                generating the final prompt. Defaults to None.
+            output_json_filepath (:obj:`str`, optional): The file path to save
+                the results as a `JSON` file. Defaults to None.
+            output_json_filename (:obj:`str`, optional): The file name to save
+                the results as a `JSON` file. Defaults to None.
+
+        Raises:
+            NotImplementedError: If the function is not implemented in the
+                subclass.
+
+        Returns:
+            :obj:`List:` A list of string, each representing the results of one
+                inference.
+        """
+        raise NotImplementedError("Method hasn't been implemented yet")
+
+    @staticmethod
+    def get_dataloader(datalist: List[List],
+                       batch_size: Optional[int]) -> DataLoader:
+        """Return a dataloader of the input data list."""
+        if batch_size is None:
+            batch_size = 1
+        dataloader = DataLoader(datalist,
+                                batch_size=batch_size,
+                                collate_fn=lambda x: x)
+        return dataloader
+
+
+def dump_results_dict(results_dict, filename):
+    with open(filename, 'w', encoding='utf-8') as json_file:
+        json.dump(results_dict, json_file, indent=4, ensure_ascii=False)
+
+
+class GenInferencerOutputHandler:
+    origin_prompt_dict = {}
+    output_dict = {}
+    prediction_dict = {}
+    results_dict = {}
+
+    def __init__(self) -> None:
+        self.results_dict = {}
+        self.dumped_indices = set()
+
+    def write_to_jsonl(self, save_dir: str, filename: str):
+        filename = Path(save_dir) / filename
+        with open(filename, 'a', encoding='utf-8') as json_file:
+            new_lines = []
+            for idx, result in self.results_dict.items():
+                if idx in self.dumped_indices:
+                    continue
+                new_lines.append(
+                    json.dumps({
+                        'idx': idx,
+                        **result
+                    }, ensure_ascii=False))
+                self.dumped_indices.add(idx)
+            if new_lines:
+                json_file.write('\n'.join(new_lines) + '\n')
+
+    def restore_from_jsonl(self, save_dir: str, filename: str) -> dict:
+        logger = get_logger()
+
+        path = Path(save_dir) / filename
+        if path.exists():
+            try:
+                result_dict = {}
+                with path.open(encoding='utf-8') as json_file:
+                    for line in json_file:
+                        if line.strip():
+                            item = json.loads(line)
+                            idx = item.pop('idx')
+                            result_dict[idx] = item
+            except Exception:
+                bak_file = path.with_name(path.name + '.bak')
+                shutil.move(path, bak_file)
+                logger.warning(f'Failed to load {path}, '
+                               f'move to {bak_file} to avoid error.')
+            else:
+                self.results_dict = result_dict
+                self.dumped_indices.update(result_dict.keys())
+        return self.results_dict
+
+    def write_to_json(self, save_dir: str, filename: str):
+        """Dump the result to a json file."""
+        dump_results_dict(self.results_dict, Path(save_dir) / filename)
+
+    def save_results(self,
+                     origin_prompt,
+                     prediction,
+                     idx,
+                     gold=None,
+                     res_length=None,
+                     input_length=None):
+        self.results_dict[str(idx)] = {
+            'origin_prompt': origin_prompt,
+            'prediction': prediction,
+        }
+        if gold:
+            self.results_dict[str(idx)]['gold'] = gold
+        if res_length is not None:
+            self.results_dict[str(idx)]['res_length'] = res_length
+        if input_length is not None:
+            self.results_dict[str(idx)]['all_input_length'] = input_length
+
+
+class ChatOutputHandler:
+
+    def __init__(self) -> None:
+        self.results_dict = {}
+        self.dumped_indices = set()
+
+    def write_to_jsonl(self, save_dir: str, filename: str):
+        filename = Path(save_dir) / filename
+        with open(filename, 'a', encoding='utf-8') as json_file:
+            new_lines = []
+            for idx, result in self.results_dict.items():
+                if idx in self.dumped_indices:
+                    continue
+                new_lines.append(
+                    json.dumps({
+                        'idx': idx,
+                        **result
+                    }, ensure_ascii=False))
+                self.dumped_indices.add(idx)
+            if new_lines:
+                json_file.write('\n'.join(new_lines) + '\n')
+
+    def restore_from_jsonl(self, save_dir: str, filename: str) -> dict:
+        logger = get_logger()
+
+        path = Path(save_dir) / filename
+        if path.exists():
+            try:
+                result_dict = {}
+                with path.open(encoding='utf-8') as json_file:
+                    for line in json_file:
+                        if line.strip():
+                            item = json.loads(line)
+                            idx = item.pop('idx')
+                            result_dict[idx] = item
+            except Exception:
+                bak_file = path.with_name(path.name + '.bak')
+                shutil.move(path, bak_file)
+                logger.warning(f'Failed to load {path}, '
+                               f'move to {bak_file} to avoid error.')
+            else:
+                self.results_dict = result_dict
+                self.dumped_indices.update(result_dict.keys())
+        return self.results_dict
+
+    def write_to_json(self, save_dir: str, filename: str):
+        """Dump the result to a json file."""
+        dump_results_dict(self.results_dict, Path(save_dir) / filename)
+
+    def save_results(self,
+                     origin_prompt: list,
+                     prediction: str,
+                     idx: int,
+                     gold: str = None):
+        result_dict = {}
+        if gold:
+            result_dict['gold'] = gold
+        result_dict.update({
+            'prediction': prediction,
+            'origin_prompt': origin_prompt,
+        })
+        self.results_dict[str(idx)] = result_dict
+
+    def save_multiround_results(self,
+                                origin_prompt: list,
+                                prediction: str,
+                                idx: int,
+                                gold: str = None):
+        result_dict = self.results_dict.get(str(idx), {
+            'gold': [],
+            'prediction': [],
+            'origin_prompt': [],
+        })
+        result_dict['gold'].append(gold)
+        result_dict['prediction'].append(prediction)
+        result_dict['origin_prompt'].append(origin_prompt)
+        self.results_dict[str(idx)] = result_dict
+
+
+class PPLInferencerOutputHandler:
+    results_dict = {}
+
+    def __init__(self) -> None:
+        self.results_dict = {}
+
+    def write_to_json(self, save_dir: str, filename: str):
+        """Dump the result to a json file."""
+        dump_results_dict(self.results_dict, Path(save_dir) / filename)
+
+    def save_ice(self, ice):
+        for idx, example in enumerate(ice):
+            if str(idx) not in self.results_dict.keys():
+                self.results_dict[str(idx)] = {}
+            self.results_dict[str(idx)]['in-context examples'] = example
+
+    def save_predictions(self, predictions):
+        for idx, prediction in enumerate(predictions):
+            if str(idx) not in self.results_dict.keys():
+                self.results_dict[str(idx)] = {}
+            self.results_dict[str(idx)]['prediction'] = prediction
+
+    def save_prompt_and_ppl(self, label, input, prompt, ppl, idx):
+        if str(idx) not in self.results_dict.keys():
+            self.results_dict[str(idx)] = {}
+        if 'origin_prompt' not in self.results_dict[str(idx)]:
+            self.results_dict[str(idx)]['origin_prompt'] = input
+        if 'label: ' + str(label) not in self.results_dict[str(idx)].keys():
+            self.results_dict[str(idx)]['label: ' + str(label)] = {}
+        self.results_dict[str(idx)]['label: ' +
+                                    str(label)]['testing input'] = input
+        self.results_dict[str(idx)]['label: ' + str(label)]['prompt'] = prompt
+        self.results_dict[str(idx)]['label: ' + str(label)]['PPL'] = ppl
+
+    def save_golds(self, golds):
+        for idx, gold in enumerate(golds):
+            if str(idx) not in self.results_dict.keys():
+                self.results_dict[str(idx)] = {}
+            self.results_dict[str(idx)]['gold'] = gold
+
+
+class CLPInferencerOutputHandler:
+    results_dict = {}
+
+    def __init__(self) -> None:
+        self.results_dict = {}
+
+    def write_to_json(self, save_dir: str, filename: str):
+        """Dump the result to a json file."""
+        dump_results_dict(self.results_dict, Path(save_dir) / filename)
+
+    def save_ice(self, ice):
+        for idx, example in enumerate(ice):
+            if str(idx) not in self.results_dict.keys():
+                self.results_dict[str(idx)] = {}
+            self.results_dict[str(idx)]['in-context examples'] = example
+
+    def save_prompt_and_condprob(self,
+                                 input,
+                                 prompt,
+                                 cond_prob,
+                                 idx,
+                                 choices,
+                                 gold=None):
+        if str(idx) not in self.results_dict.keys():
+            self.results_dict[str(idx)] = {}
+        # TODO:
+        # for single token situation, the input will always be yes currently
+        self.results_dict[str(idx)]['testing input'] = input
+        self.results_dict[str(idx)]['prompt'] = prompt
+        # TODO: hard code here
+        self.results_dict[str(idx)]['choices'] = choices
+        # For calculate auc scores, set scores as prediction
+        self.results_dict[str(idx)]['prediction'] = cond_prob
+        # set pred label in case needed
+        self.results_dict[str(idx)]['pred_label'] = int(np.argmax(cond_prob))
+        self.results_dict[str(idx)]['gold'] = gold

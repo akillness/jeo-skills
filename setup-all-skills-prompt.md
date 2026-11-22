@@ -3673,6 +3673,10 @@ Preview `jeo-skill install new-term-radar --global --dry-run`, then install the 
 
 Preview `jeo-skill install last30days --global --dry-run`, then install the selected guide with `jeo-skill install last30days --global --yes`. Installing `last30days` copies operator guidance, multi-platform references, and support scripts for `mvanhorn/last30days-skill` (v4.4.0, MIT). It enables deep 30-day cross-platform research across Reddit, X, YouTube, TikTok, Hacker News, Polymarket, GitHub, and the web, including a diagnostic doctor health check to verify search lane availability.
 
+### OpenCompass benchmark evaluation operator (on demand)
+
+Preview `jeo-skill install opencompass --global --dry-run`, then install the selected guide with `jeo-skill install opencompass --global --yes`. Installing `opencompass` copies operator guidance, dataset evaluation indexes (`dataset-index.yml`), model backend recipes (`vLLM`, `LMDeploy`, `HuggingFace`, API endpoints), and summarization tools for `open-compass/opencompass` (Apache-2.0). It evaluates large language models across 100+ standard academic and industry benchmarks (MMLU, GSM8K, MATH, HumanEval, BBH, ARC) with distributed execution and automated score report generation.
+
 
 ### Motionmaxxing motion graphics operator (on demand)
 

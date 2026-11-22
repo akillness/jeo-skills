@@ -1,7 +1,7 @@
 {
   "version": "2.1.0",
   "generated": "2026-10-21",
-  "skill_count": 467,
+  "skill_count": 468,
   "taxonomy": {
     "web": {
       "subcategories": [
@@ -509,7 +509,8 @@
       "image-to-github-repo",
       "minimind",
       "new-term-radar",
-      "last30days"
+      "last30days",
+      "opencompass"
     ],
     "business": [
       "marketing-automation",
@@ -1118,7 +1119,8 @@
         "minimind"
       ],
       "benchmarking": [
-        "scientific-llm-benchmarks"
+        "scientific-llm-benchmarks",
+        "opencompass"
       ],
       "intelligence": [
         "agent-pulse",
@@ -17033,6 +17035,37 @@
       "keyword": "fast-anything",
       "version": "1.0.0",
       "source": "https://github.com/EL4CTEO/fast-anything"
+    },
+    {
+      "name": "opencompass",
+      "description": "Evaluate large language models and multimodal foundation models across 100+ standard benchmarks (MMLU, GSM8K, MATH, HumanEval, BBH, ARC) using open-compass/opencompass. Configures datasets, models (HuggingFace, vLLM, LMDeploy, API endpoints), execution partitions, and generates comprehensive leaderboard score reports.",
+      "category": "research",
+      "subcategory": "benchmarking",
+      "interface": "cli",
+      "path": "opencompass/SKILL.md",
+      "tags": [
+        "opencompass",
+        "llm-evaluation",
+        "benchmarking",
+        "mmlu",
+        "gsm8k",
+        "humaneval",
+        "vllm",
+        "lmdeploy",
+        "leaderboard"
+      ],
+      "platforms": [],
+      "allowed_tools": [
+        "Bash",
+        "Read",
+        "Write",
+        "Edit",
+        "Glob",
+        "Grep"
+      ],
+      "keyword": "opencompass",
+      "version": "1.0.0",
+      "source": "https://github.com/open-compass/opencompass"
     }
   ]
 }

@@ -21,3 +21,4 @@
 .agent-skills/3d-vibe-coding
 .agent-skills/motionmaxxing
 .agent-skills/fast-anything
+.agent-skills/opencompass
